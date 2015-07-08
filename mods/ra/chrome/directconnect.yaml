@@ -10,7 +10,7 @@ Background@DIRECTCONNECT_PANEL:
 			Y: 20
 			Width: 400
 			Height: 25
-			Text: Connect to Server
+			Text: @DIRECTCONNECT-PANEL-DIRECTCONNECT-LABEL-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@ADDRESS_LABEL:
@@ -19,7 +19,7 @@ Background@DIRECTCONNECT_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Server Address:
+			Text: @DIRECTCONNECT-PANEL-ADDRESS-LABEL-TEXT@
 		TextField@IP:
 			X: 150
 			Y: 60
@@ -37,7 +37,7 @@ Background@DIRECTCONNECT_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Join
+			Text: @DIRECTCONNECT-PANEL-JOIN-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@BACK_BUTTON:
@@ -45,7 +45,7 @@ Background@DIRECTCONNECT_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @DIRECTCONNECT-PANEL-BACK-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 

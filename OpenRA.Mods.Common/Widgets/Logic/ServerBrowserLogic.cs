@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Failed: return "Failed to contact master server.";
-				case SearchStatus.NoGames: return "No games found.";
+				case SearchStatus.Failed: return FieldLoader.Translate("SERVERBROWSER-SEARCH-STATUS-FAILED");
+				case SearchStatus.NoGames: return FieldLoader.Translate("SERVERBROWSER-SEARCH-STATUS-NOGAMES");
 				default: return "";
 			}
 		}
@@ -64,7 +64,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Menu buttons
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
-			refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
+			refreshButton.GetText = () => searchStatus == SearchStatus.Fetching
+				? FieldLoader.Translate("SERVERBROWSER-SEARCH-STATUS-REFRESHING")
+				: FieldLoader.Translate("SERVERBROWSER-SEARCH-STATUS-REFRESH");
 			refreshButton.OnClick = RefreshServerList;
 
 			panel.Get<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = OpenDirectConnectPanel;
@@ -231,7 +233,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (players != null)
 					{
 						players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
-							+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
+							+ (game.Spectators > 0 ? game.Spectators > 1
+								? " " + FieldLoader.Translate("SERVERBROWSER-SPECTATORS").F(game.Spectators)
+								: FieldLoader.Translate("SERVERBROWSER-SPECTATOR") : "");
 						players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : players.TextColor;
 					}
 
@@ -340,26 +344,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					var runTime = DateTime.Now - System.DateTime.Parse(game.Started);
-					label = "In progress for {0} minute{1}".F(runTime.Minutes, runTime.Minutes > 1 ? "s" : "");
+					if (runTime.Minutes > 1)
+						label = FieldLoader.Translate("SERVERBROWSER-STATE-GAMESTARTED-MINUTES").F(runTime.Minutes);
+					else
+						label = FieldLoader.Translate("SERVERBROWSER-STATE-GAMESTARTED-MINUTE");
 				}
 				catch (Exception)
 				{
-					label = "In progress";
+					label = FieldLoader.Translate("SERVERBROWSER-STATE-GAMESTARTED");
 				}
 
-				return game.Protected ? label + " (Password protected)" : label;
+				return game.Protected ? label + " " + FieldLoader.Translate("SERVERBROWSER-PROTECTED") : label;
 			}
 
 			if (game.State == (int)ServerState.WaitingPlayers)
 			{
-				var label = "Waiting for players";
-				return game.Protected ? label + " (Password protected)" : label;
+				var label = FieldLoader.Translate("SERVERBROWSER-STATE-WAITING");
+				return game.Protected ? label + " " + FieldLoader.Translate("SERVERBROWSER-PROTECTED") : label;
 			}
 
 			if (game.State == (int)ServerState.ShuttingDown)
-				return "Server shutting down";
+				return FieldLoader.Translate("SERVERBROWSER-STATE-SHUTTINGDOWN");
 
-			return "Unknown server state";
+			return FieldLoader.Translate("SERVERBROWSER-STATE-UNKNOWN");
 		}
 
 		static Color GetStateColor(GameServer game, LabelWidget label, bool darkened)

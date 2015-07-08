@@ -11,7 +11,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: 20
 			Width: 450
 			Height: 25
-			Text: Connection Failed
+			Text: @CONNECTIONFAILED-PANEL-CONNECTION-FAILED-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@CONNECTING_DESC:
@@ -19,14 +19,14 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: 45
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Could not connect to AAA.BBB.CCC.DDD:EEEE
+			Text: @CONNECTIONFAILED-PANEL-CONNECTING-DESC-TEXT@
 			Align: Center
 		Label@CONNECTION_ERROR:
 			X: 0
 			Y: 75
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: ServerError
+			Text: @CONNECTIONFAILED-PANEL-CONNECTION-ERROR-TEXT@
 			Align: Center
 			Font: Bold
 		Label@PASSWORD_LABEL:
@@ -34,7 +34,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: 110
 			Width: 95
 			Height: 25
-			Text: Password:
+			Text: @CONNECTIONFAILED-PANEL-PASSWORD-LABEL-TEXT@
 			Font: Bold
 		PasswordField@PASSWORD:
 			X: PARENT_RIGHT - 285
@@ -47,7 +47,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Retry
+			Text: @CONNECTIONFAILED-PANEL-RETRY-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@ABORT_BUTTON:
@@ -55,7 +55,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: @CONNECTIONFAILED-PANEL-ABORT-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 
@@ -71,7 +71,7 @@ Background@CONNECTING_PANEL:
 			Y: 20
 			Width: 450
 			Height: 25
-			Text: Connecting
+			Text: @CONNECTING-PANEL-CONNECTING-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@CONNECTING_DESC:
@@ -79,14 +79,14 @@ Background@CONNECTING_PANEL:
 			Y: 60
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Connecting to AAA.BBB.CCC.DDD:EEEE...
+			Text: @CONNECTING-PANEL-CONNECTING-DESC-TEXT@
 			Align: Center
 		Button@ABORT_BUTTON:
 			X: PARENT_RIGHT - 180
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Abort
+			Text: @CONNECTING-PANEL-ABORT-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 

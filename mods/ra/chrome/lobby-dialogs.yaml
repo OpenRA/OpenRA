@@ -20,7 +20,7 @@ Background@KICK_CLIENT_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: You may also apply a temporary ban, preventing
+			Text: @KICK-CLIENT-DIALOG-TEXTA-TEXT@
 		Label@TEXTB:
 			X: 0
 			Y: 85
@@ -28,26 +28,26 @@ Background@KICK_CLIENT_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: them from joining for the remainder of this game.
+			Text: @KICK-CLIENT-DIALOG-TEXTB-TEXT@
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
 			X: (PARENT_RIGHT - WIDTH)/2
 			Y: 120
 			Width: 150
 			Height: 20
-			Text: Temporarily Ban
+			Text: @KICK-CLIENT-DIALOG-PREVENT-REJOINING-CHECKBOX-TEXT@
 		Button@OK_BUTTON:
 			X: (PARENT_RIGHT - WIDTH)/2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Kick
+			Text: @KICK-CLIENT-DIALOG-OK-BUTTON-TEXT@
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: (PARENT_RIGHT - WIDTH)/2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @KICK-CLIENT-DIALOG-CANCEL-BUTTON-TEXT@
 			Font: Bold
 
 Background@KICK_SPECTATORS_DIALOG:
@@ -65,7 +65,7 @@ Background@KICK_SPECTATORS_DIALOG:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Kick Spectators
+			Text: @KICK-SPECTATORS-DIALOG-TITLE-TEXT@
 		Label@TEXT:
 			X: 0
 			Y: 85
@@ -78,14 +78,14 @@ Background@KICK_SPECTATORS_DIALOG:
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Ok
+			Text: @KICK-SPECTATORS-DIALOG-OK-BUTTON-TEXT@
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: (PARENT_RIGHT - WIDTH)/2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @KICK-SPECTATORS-DIALOG-CANCEL-BUTTON-TEXT@
 			Font: Bold
 
 Background@LOBBY_OPTIONS_BIN:
@@ -102,7 +102,7 @@ Background@LOBBY_OPTIONS_BIN:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Map Options
+			Text: @LOBBY-OPTIONS-BIN-TITLE-TEXT@
 		Container:
 			X: 30
 			Y: 30
@@ -112,44 +112,44 @@ Background@LOBBY_OPTIONS_BIN:
 				Checkbox@SHROUD_CHECKBOX:
 					Width: 140
 					Height: 20
-					Text: Shroud
+					Text: @LOBBY-OPTIONS-BIN-SHROUD-CHECKBOX-TEXT@
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
 					Width: 140
 					Height: 20
-					Text: Fog of War
+					Text: @LOBBY-OPTIONS-BIN-FOG-CHECKBOX-TEXT@
 				Checkbox@SHORTGAME_CHECKBOX:
 					X: 150
 					Width: 140
 					Height: 20
-					Text: Short Game
+					Text: @LOBBY-OPTIONS-BIN-SHORTGAME-CHECKBOX-TEXT@
 				Checkbox@CRATES_CHECKBOX:
 					X: 150
 					Y: 35
 					Width: 140
 					Height: 20
-					Text: Crates
+					Text: @LOBBY-OPTIONS-BIN-CRATES-CHECKBOX-TEXT@
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
 					X: 290
 					Width: 140
 					Height: 20
-					Text: Build off Allies' ConYards
+					Text: @LOBBY-OPTIONS-BIN-ALLYBUILDRADIUS-CHECKBOX-TEXT@
 				Checkbox@FRAGILEALLIANCES_CHECKBOX:
 					X: 290
 					Y: 35
 					Width: 140
 					Height: 20
-					Text: Diplomacy Changes
+					Text: @LOBBY-OPTIONS-BIN-FRAGILEALLIANCES-CHECKBOX-TEXT@
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					Y: 70
 					Width: 140
 					Height: 20
-					Text: Debug Menu
+					Text: @LOBBY-OPTIONS-BIN-ALLOWCHEATS-CHECKBOX-TEXT@
 				Label@STARTINGCASH_DESC:
 					Y: 110
 					Width: 80
 					Height: 25
-					Text: Starting Cash:
+					Text: @LOBBY-OPTIONS-BIN-STARTINGCASH-DESC-TEXT@
 					Align: Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X: 85
@@ -157,13 +157,13 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 130
 					Height: 25
 					Font: Regular
-					Text: $5000
+					Text: @LOBBY-OPTIONS-BIN-STARTINGCASH-DROPDOWNBUTTON-TEXT@
 				Label@STARTINGUNITS_DESC:
 					X: PARENT_RIGHT - WIDTH - 145
 					Y: 110
 					Width: 120
 					Height: 25
-					Text: Starting Units:
+					Text: @LOBBY-OPTIONS-BIN-STARTINGUNITS-DESC-TEXT@
 					Align: Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
@@ -176,7 +176,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Y: 150
 					Width: 120
 					Height: 25
-					Text: Mission Difficulty:
+					Text: @LOBBY-OPTIONS-BIN-DIFFICULTY-DESC-TEXT@
 					Align: Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
@@ -190,12 +190,12 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 130
 					Height: 25
 					Font: Regular
-					Text: 10
+					Text: @LOBBY-OPTIONS-BIN-TECHLEVEL-DROPDOWNBUTTON-TEXT@
 				Label@TECHLEVEL_DESC:
 					Y: 150
 					Width: 80
 					Height: 25
-					Text: Tech Level:
+					Text: @LOBBY-OPTIONS-BIN-TECHLEVEL-DESC-TEXT@
 					Align: Right
 
 Background@FORCE_START_DIALOG:
@@ -212,7 +212,7 @@ Background@FORCE_START_DIALOG:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Start Game?
+			Text: @FORCE-START-DIALOG-TITLE-TEXT@
 		Label@TEXTA:
 			X: 0
 			Y: 67
@@ -220,7 +220,7 @@ Background@FORCE_START_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: One or more players are not yet ready.
+			Text: @FORCE-START-DIALOG-TEXTA-TEXT@
 		Label@TEXTB:
 			X: 0
 			Y: 85
@@ -228,7 +228,7 @@ Background@FORCE_START_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: Are you sure that you want to force start the game?
+			Text: @FORCE-START-DIALOG-TEXTB-TEXT@
 		Container@KICK_WARNING:
 			Width: PARENT_RIGHT
 			Children:
@@ -239,7 +239,7 @@ Background@FORCE_START_DIALOG:
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: One or more clients are missing the selected
+					Text: @KICK-WARNING-KICK-WARNING-A-TEXT@
 				Label@KICK_WARNING_B:
 					X: 0
 					Y: 123
@@ -247,19 +247,19 @@ Background@FORCE_START_DIALOG:
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: map, and will be kicked from the server.
+					Text: @KICK-WARNING-KICK-WARNING-B-TEXT@
 		Button@OK_BUTTON:
 			X: (PARENT_RIGHT - WIDTH)/2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Start
+			Text: @FORCE-START-DIALOG-OK-BUTTON-TEXT@
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: (PARENT_RIGHT - WIDTH)/2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @FORCE-START-DIALOG-CANCEL-BUTTON-TEXT@
 			Font: Bold
 

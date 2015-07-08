@@ -10,7 +10,7 @@ Background@CREATESERVER_PANEL:
 			Y: 20
 			Width: 400
 			Height: 25
-			Text: Create Server
+			Text: @CREATESERVER-PANEL-LABEL-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@SERVER_NAME_LABEL:
@@ -19,21 +19,21 @@ Background@CREATESERVER_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Game Title:
+			Text: @CREATESERVER-PANEL-SERVER-NAME-LABEL-TEXT@
 		TextField@SERVER_NAME:
 			X: 150
 			Y: 60
 			Width: 210
 			MaxLength: 50
 			Height: 25
-			Text: OpenRA Game
+			Text: @CREATESERVER-PANEL-SERVER-NAME-TEXT@
 		Label@PASSWORD_LABEL:
 			X: 50
 			Y: 94
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Password:
+			Text: @CREATESERVER-PANEL-PASSWORD-LABEL-TEXT@
 		PasswordField@PASSWORD:
 			X: 150
 			Y: 95
@@ -46,28 +46,28 @@ Background@CREATESERVER_PANEL:
 			Width: 95
 			Height: 25
 			Align: Left
-			Text: (optional)
+			Text: @CREATESERVER-PANEL-AFTER-PASSWORD-LABEL-TEXT@
 		Label@EXTERNAL_PORT_LABEL:
 			X: 50
 			Y: 129
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: External Port:
+			Text: @CREATESERVER-PANEL-EXTERNAL-PORT-LABEL-TEXT@
 		TextField@EXTERNAL_PORT:
 			X: 150
 			Y: 130
 			Width: 50
 			MaxLength: 5
 			Height: 25
-			Text: OpenRA Game
+			Text: @CREATESERVER-PANEL-EXTERNAL-PORT-TEXT@
 		Label@LISTEN_PORT_LABEL:
 			X: 210
 			Y: 129
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Listen Port:
+			Text: @CREATESERVER-PANEL-LISTEN-PORT-LABEL-TEXT@
 		TextField@LISTEN_PORT:
 			X: 310
 			Y: 130
@@ -79,19 +79,19 @@ Background@CREATESERVER_PANEL:
 			Y: 165
 			Width: 300
 			Height: 20
-			Text: Automatic port forwarding
+			Text: @CREATESERVER-PANEL-UPNP-CHECKBOX-TEXT@
 		Checkbox@ADVERTISE_CHECKBOX:
 			X: 150
 			Y: 200
 			Width: 300
 			Height: 20
-			Text: Advertise game Online
+			Text: @CREATESERVER-PANEL-ADVERTISE-CHECKBOX-TEXT@
 		Button@CREATE_BUTTON:
 			X: 130
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Create
+			Text: @CREATESERVER-PANEL-CREATE-BUTTON-TEXT@
 			Font: Bold
 			Key: return
 		Button@BACK_BUTTON:
@@ -99,7 +99,7 @@ Background@CREATESERVER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @CREATESERVER-PANEL-BACK-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 

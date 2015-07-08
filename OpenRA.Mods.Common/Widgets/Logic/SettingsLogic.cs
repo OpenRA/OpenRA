@@ -6,7 +6,6 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
-
 #endregion
 
 using System;
@@ -73,12 +72,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.PromptConfirmAction(
-						"Restart Now?",
-						"Some changes will not be applied until\nthe game is restarted. Restart now?",
+						FieldLoader.Translate("SETTINGS-PANEL-CONFIRMATION-TITLE"),
+						FieldLoader.Translate("SETTINGS-PANEL-CONFIRMATION-TEXT"),
 						Game.Restart,
 						closeAndExit,
-						"Restart Now",
-						"Restart Later");
+						FieldLoader.Translate("SETTINGS-PANEL-CONFIRMATION-CONFIRMTEXT"),
+						FieldLoader.Translate("SETTINGS-PANEL-CONFIRMATION-CANCELTEXT"));
 				else
 					closeAndExit();
 			};
@@ -162,8 +161,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
-			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
-				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+			windowModeDropdown.GetText = () =>
+				ds.Mode == WindowMode.Windowed ? FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-WINDOWED")
+				: ds.Mode == WindowMode.Fullscreen ? FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-FULLSCREEN")
+				: FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-PSEUDO-FULLSCREEN");
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
@@ -356,29 +357,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "CycleBaseKey", "Jump to base" },
-					{ "ToLastEventKey", "Jump to last radar event" },
-					{ "ToSelectionKey", "Jump to selection" },
-					{ "SelectAllUnitsKey", "Select all units on screen" },
-					{ "SelectUnitsByTypeKey", "Select units by type" },
+					{ "CycleBaseKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-CYCLEBASE") },
+					{ "ToLastEventKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-TOLASTEVENT") },
+					{ "ToSelectionKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-TOSELECTION") },
+					{ "SelectAllUnitsKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-SELECTALLUNITS") },
+					{ "SelectUnitsByTypeKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-SELECTUNITSBYTYPE") },
 
-					{ "PlaceBeaconKey", "Place beacon" },
+					{ "PlaceBeaconKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-PLACEBEACON") },
 
-					{ "PauseKey", "Pause / Unpause" },
-					{ "SellKey", "Sell mode" },
-					{ "PowerDownKey", "Power-down mode" },
-					{ "RepairKey", "Repair mode" },
+					{ "PauseKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-PAUSE") },
+					{ "SellKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-SELL") },
+					{ "PowerDownKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-POWERDOWN") },
+					{ "RepairKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-REAPIR") },
 
-					{ "NextProductionTabKey", "Next production tab" },
-					{ "PreviousProductionTabKey", "Previous production tab" },
-					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
+					{ "NextProductionTabKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-NEXTPRODUCTION") },
+					{ "PreviousProductionTabKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-PREVIOUSPRODUCTIONTAB") },
+					{ "CycleProductionBuildingsKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-CYCLEPRODUCTIONBUILDING") },
 
-					{ "ToggleStatusBarsKey", "Toggle status bars" },
-					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+					{ "ToggleStatusBarsKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-TOGGLESTATUSBARS") },
+					{ "TogglePixelDoubleKey", FieldLoader.Translate("INPUT-GAME-HOTKEYS-TOGGLEPIXELDOUBLE") },
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-GAME-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -389,12 +390,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "ObserverCombinedView", "All Players" },
-					{ "ObserverWorldView", "Disable Shroud" }
+					{ "ObserverCombinedView", FieldLoader.Translate("INPUT-OBSERVER-ALLPLAYERS") },
+					{ "ObserverWorldView", FieldLoader.Translate("INPUT-OBSERVER-DISABLESHROUD") }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-OBSERVER-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -405,16 +406,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "AttackMoveKey", "Attack Move" },
-					{ "StopKey", "Stop" },
-					{ "ScatterKey", "Scatter" },
-					{ "StanceCycleKey", "Cycle Stance" },
-					{ "DeployKey", "Deploy" },
-					{ "GuardKey", "Guard" }
+					{ "AttackMoveKey", FieldLoader.Translate("INPUT-UNIT-ATTACKMOVE") },
+					{ "StopKey", FieldLoader.Translate("INPUT-UNIT-STOP") },
+					{ "ScatterKey", FieldLoader.Translate("INPUT-UNIT-SCATTER") },
+					{ "StanceCycleKey", FieldLoader.Translate("INPUT-UNIT-CYCLESTANCE") },
+					{ "DeployKey", FieldLoader.Translate("INPUT-UNIT-DEPLOY") },
+					{ "GuardKey", FieldLoader.Translate("INPUT-UNIT-GUARD") }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-UNIT-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -425,22 +426,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "ProductionTypeBuildingKey", "Building Tab" },
-					{ "ProductionTypeDefenseKey", "Defense Tab" },
-					{ "ProductionTypeInfantryKey", "Infantry Tab" },
-					{ "ProductionTypeVehicleKey", "Vehicle Tab" },
-					{ "ProductionTypeAircraftKey", "Aircraft Tab" },
-					{ "ProductionTypeNavalKey", "Naval Tab" },
-					{ "ProductionTypeTankKey", "Tank Tab" },
-					{ "ProductionTypeMerchantKey", "Starport Tab" },
-					{ "ProductionTypeUpgradeKey", "Upgrade Tab" }
+					{ "ProductionTypeBuildingKey", FieldLoader.Translate("INPUT-PRODUCTION-BUILDING") },
+					{ "ProductionTypeDefenseKey", FieldLoader.Translate("INPUT-PRODUCTION-DEFENSE") },
+					{ "ProductionTypeInfantryKey", FieldLoader.Translate("INPUT-PRODUCTION-INFANTRY") },
+					{ "ProductionTypeVehicleKey", FieldLoader.Translate("INPUT-PRODUCTION-VEHICLE") },
+					{ "ProductionTypeAircraftKey", FieldLoader.Translate("INPUT-PRODUCTION-AIRCRAFT") },
+					{ "ProductionTypeNavalKey", FieldLoader.Translate("INPUT-PRODUCTION-NAVAL") },
+					{ "ProductionTypeTankKey", FieldLoader.Translate("INPUT-PRODUCTION-TANK") },
+					{ "ProductionTypeMerchantKey", FieldLoader.Translate("INPUT-PRODUCTION-MERCHANT") },
+					{ "ProductionTypeUpgradeKey", FieldLoader.Translate("INPUT-PRODUCTION-UPGRADE") }
 				};
 
 				for (var i = 1; i <= 24; i++)
 					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-PRODUCTION-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -454,7 +455,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					hotkeys.Add("SupportPower{0:D2}Key".F(i), "Slot {0}".F(i));
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Support Power Commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-SUPPORTPOWER-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -465,13 +466,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "DevReloadChromeKey", "Reload Chrome" },
-					{ "HideUserInterfaceKey", "Hide UI" },
-					{ "TakeScreenshotKey", "Take screenshot" }
+					{ "DevReloadChromeKey", FieldLoader.Translate("INPUT-PANEL-DEVELOPER-RELOAD-CHROME") },
+					{ "HideUserInterfaceKey", FieldLoader.Translate("INPUT-PANEL-DEVELOPER-HIDE-USER-INTERFACE") },
+					{ "TakeScreenshotKey", FieldLoader.Translate("INPUT-PANEL-DEVELOPER-TAKE-SCREENSHOT") }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Developer commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate("INPUT-PANEL-HEADER-TEXT-DEVELOPER-COMMANDS");
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -559,9 +560,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
-				{ "Disabled", MouseScrollType.Disabled },
-				{ "Standard", MouseScrollType.Standard },
-				{ "Inverted", MouseScrollType.Inverted },
+				{ FieldLoader.Translate("INPUT-PANEL-MOUSE-SCROLL-TYPE-DISABLED"), MouseScrollType.Disabled },
+				{ FieldLoader.Translate("INPUT-PANEL-MOUSE-SCROLL-TYPE-STANDARD"), MouseScrollType.Standard },
+				{ FieldLoader.Translate("INPUT-PANEL-MOUSE-SCROLL-TYPE-INVERTED"), MouseScrollType.Inverted },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
@@ -600,9 +601,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
-				{ "Fullscreen", WindowMode.Fullscreen },
-				{ "Windowed", WindowMode.Windowed },
+				{ FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-PSEUDO-FULLSCREEN"), WindowMode.PseudoFullscreen },
+				{ FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-FULLSCREEN"), WindowMode.Fullscreen },
+				{ FieldLoader.Translate("DISPLAY-PANEL-WINDOWMODE-WINDOWED"), WindowMode.Windowed },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>

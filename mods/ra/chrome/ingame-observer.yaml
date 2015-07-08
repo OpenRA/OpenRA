@@ -30,7 +30,7 @@ Container@OBSERVER_WIDGETS:
 							Height: PARENT_BOTTOM
 							Align: Right
 							Font: TinyBold
-				Container@TOP_BUTTONS:
+				Container@TOP_OBSERVER_BUTTONS:
 					Logic: MenuButtonsChromeLogic
 					X: 9
 					Y: 7
@@ -44,7 +44,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button-observer
-							TooltipText: Statistics
+							TooltipText: @TOP-OBSERVER-BUTTONS-OBSERVER-STATS-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -59,7 +59,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button-observer
-							TooltipText: Options
+							TooltipText: @TOP-OBSERVER-BUTTONS-OPTIONS-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -125,7 +125,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 28
 					Height: 28
 					Background: sidebar-button-observer
-					TooltipText: Pause
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-PAUSE-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Children:
@@ -140,7 +140,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 28
 					Height: 28
 					Background: sidebar-button-observer
-					TooltipText: Play
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-PLAY-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Children:
@@ -156,10 +156,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
-					TooltipText: Slow speed
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-SLOW-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 50%
+					Text: @OBSERVER-WIDGETS-BUTTON-SLOW-TEXT@
 					Font: TinyBold
 				Button@BUTTON_REGULAR:
 					X: 95
@@ -168,10 +168,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
-					TooltipText: Regular speed
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-REGULAR-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 100%
+					Text: @OBSERVER-WIDGETS-BUTTON-REGULAR-TEXT@
 					Font: TinyBold
 				Button@BUTTON_FAST:
 					X: 141
@@ -180,10 +180,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
-					TooltipText: Fast speed
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-FAST-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 200%
+					Text: @OBSERVER-WIDGETS-BUTTON-FAST-TEXT@
 					Font: TinyBold
 				Button@BUTTON_MAXIMUM:
 					X: 187
@@ -192,8 +192,9 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
-					TooltipText: Maximum speed
+					TooltipText: @OBSERVER-WIDGETS-BUTTON-MAXIMUM-TOOLTIPTEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: MAX
+					Text: @OBSERVER-WIDGETS-BUTTON-MAXIMUM-TEXT@
 					Font: TinyBold
+

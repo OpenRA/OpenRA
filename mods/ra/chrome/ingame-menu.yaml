@@ -34,7 +34,7 @@ Container@INGAME_MENU:
 					Y: 20
 					Width: 200
 					Height: 30
-					Text: Options
+					Text: @MENU-BUTTONS-LABEL-TITLE-TEXT@
 					Align: Center
 					Font: Bold
 				Button@RESUME:
@@ -42,7 +42,7 @@ Container@INGAME_MENU:
 					Y: 60
 					Width: 140
 					Height: 30
-					Text: Resume
+					Text: @MENU-BUTTONS-RESUME-TEXT@
 					Font: Bold
 					Key: escape
 				Button@SETTINGS:
@@ -50,40 +50,41 @@ Container@INGAME_MENU:
 					Y: 100
 					Width: 140
 					Height: 30
-					Text: Settings
+					Text: @MENU-BUTTONS-SETTINGS-TEXT@
 					Font: Bold
 				Button@MUSIC:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 140
 					Width: 140
 					Height: 30
-					Text: Music
+					Text: @MENU-BUTTONS-MUSIC-TEXT@
 					Font: Bold
 				Button@SURRENDER:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 180
 					Width: 140
 					Height: 30
-					Text: Surrender
+					Text: @MENU-BUTTONS-SURRENDER-TEXT@
 					Font: Bold
 				Button@SAVE_MAP:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 180
 					Width: 140
 					Height: 30
-					Text: Save Map
+					Text: @MENU-BUTTONS-SAVE-MAP-TEXT@
 					Font: Bold
 				Button@ABORT_MISSION:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 220
 					Width: 140
 					Height: 30
-					Text: Abort Mission
+					Text: @MENU-BUTTONS-ABORT-MISSION-TEXT@
 					Font: Bold
 				Button@EXIT_EDITOR:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 220
 					Width: 140
 					Height: 30
-					Text: Exit Map Editor
+					Text: @MENU-BUTTONS-EXIT-EDITOR-TEXT@
 					Font: Bold
+

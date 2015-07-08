@@ -36,14 +36,14 @@ Background@MUSIC_PANEL:
 				Label@TITLE:
 					Width: 100
 					Height: 25
-					Text: Track
+					Text: @LABEL-CONTAINER-TITLE-TEXT@
 					Align: Center
 					Font: Bold
 				Label@TYPE:
 					X: PARENT_RIGHT-85
 					Height: 25
 					Width: 50
-					Text: Length
+					Text: @LABEL-CONTAINER-TYPE-TEXT@
 					Align: Right
 					Font: Bold
 		Container@BUTTONS:
@@ -134,13 +134,13 @@ Background@MUSIC_PANEL:
 			Y: 335
 			Width: 85
 			Height: 20
-			Text: Shuffle
+			Text: @MUSIC-PANEL-SHUFFLE-TEXT@
 		Checkbox@REPEAT:
 			X: PARENT_RIGHT-15-WIDTH
 			Y: 335
 			Width: 70
 			Height: 20
-			Text: Loop
+			Text: @MUSIC-PANEL-REPEAT-TEXT@
 		Label@NO_MUSIC_LABEL:
 			X: 15
 			Y: 147
@@ -149,20 +149,20 @@ Background@MUSIC_PANEL:
 			Font: Bold
 			Align: Center
 			Visible: false
-			Text: No Music Installed
+			Text: @MUSIC-PANEL-NO-MUSIC-LABEL-TEXT@
 		Button@INSTALL_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Install Music
+			Text: @MUSIC-PANEL-INSTALL-BUTTON-TEXT@
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Close
+			Text: @MUSIC-PANEL-BACK-BUTTON-TEXT@
 			Font: Bold
 			Key: escape
 
@@ -178,7 +178,7 @@ Background@INSTALL_MUSIC_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Install Music
+			Text: @INSTALL-MUSIC-PANEL-TITLE-TEXT@
 			Align: Center
 			Font: Bold
 		Label@DESC1:
@@ -186,33 +186,34 @@ Background@INSTALL_MUSIC_PANEL:
 			Y: 50
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: The soundtrack is currently unavailable.
+			Text: @INSTALL-MUSIC-PANEL-DESC1-TEXT@
 			Align: Center
 		Label@DESC2:
 			X: 0
 			Y: 70
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Please choose an installation method.
+			Text: @INSTALL-MUSIC-PANEL-DESC2-TEXT@
 			Align: Center
 		Button@COPY_FROM_CD_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
 			Width: 110
 			Height: 25
-			Text: Use CD
+			Text: @INSTALL-MUSIC-PANEL-COPY-FROM-CD-BUTTON-TEXT@
 			Font: Bold
 		Button@DOWNLOAD_BUTTON:
 			X: 140
 			Y: PARENT_BOTTOM - 45
 			Width: 110
 			Height: 25
-			Text: Download
+			Text: @INSTALL-MUSIC-PANEL-DOWNLOAD-BUTTON-TEXT@
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT - 130
 			Y: PARENT_BOTTOM - 45
 			Width: 110
 			Height: 25
-			Text: Back
+			Text: @INSTALL-MUSIC-PANEL-CANCEL-BUTTON-TEXT@
 			Font: Bold
+

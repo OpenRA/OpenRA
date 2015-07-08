@@ -37,13 +37,13 @@ Container@LEAVE_MAP_WIDGET:
 							Height: 25
 							Font: Bold
 							Align: Center
-							Text: The game has ended
+							Text: @LEAVE-MAP-SIMPLE-BG-GAME-ENDED-LABEL-TEXT@
 						Label@BLURB:
 							X: 15
 							Y: 50
 							Width: PARENT_RIGHT - 30
 							Height: 65
-							Text: Press 'Leave' to return to the main menu.
+							Text: @LEAVE-MAP-SIMPLE-BG-BLURB-TEXT@
 							Align: Center
 						Button@STATS_BUTTON:
 							X: 20
@@ -51,14 +51,14 @@ Container@LEAVE_MAP_WIDGET:
 							Width: 140
 							Height: 25
 							Font: Bold
-							Text: Statistics
+							Text: @LEAVE-MAP-SIMPLE-BG-STATS-BUTTON-TEXT@
 						Button@LEAVE_BUTTON:
 							X: PARENT_RIGHT - WIDTH - 20
 							Y: PARENT_BOTTOM - 45
 							Width: 140
 							Height: 25
 							Font: Bold
-							Text: Leave
+							Text: @LEAVE-MAP-SIMPLE-BG-LEAVE-BUTTON-TEXT@
 		Container@LEAVE_MAP_FULL:
 			X: (WINDOW_RIGHT - WIDTH) / 2
 			Y: (WINDOW_BOTTOM - HEIGHT) / 2
@@ -82,7 +82,7 @@ Container@LEAVE_MAP_WIDGET:
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: The game has ended
+					Text: @LEAVE-MAP-FULL-GAME-ENDED-LABEL-TEXT@
 				Label@GAME_ENDED_LABEL_NO_TABS:
 					X: 20
 					Y: 45
@@ -90,7 +90,7 @@ Container@LEAVE_MAP_WIDGET:
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: The game has ended
+					Text: @LEAVE-MAP-FULL-GAME-ENDED-LABEL-NO-TABS-TEXT@
 				Container@TAB_CONTAINER:
 					X: (PARENT_RIGHT - WIDTH) / 2
 					Width: 240
@@ -102,28 +102,28 @@ Container@LEAVE_MAP_WIDGET:
 							Width: 120
 							Height: 25
 							Font: Bold
-							Text: Objectives
+							Text: @TAB-CONTAINER-OBJECTIVES-BUTTON-TEXT@
 						Button@CHAT_BUTTON:
 							X: 120
 							Y: 50
 							Width: 120
 							Height: 25
 							Font: Bold
-							Text: Chat
+							Text: @TAB-CONTAINER-CHAT-BUTTON-TEXT@
 				Button@STATS_BUTTON:
 					X: PARENT_RIGHT - 2 * (WIDTH + 20)
 					Y: PARENT_BOTTOM - 45
 					Width: 120
 					Height: 25
 					Font: Bold
-					Text: Statistics
+					Text: @LEAVE-MAP-FULL-STATS-BUTTON-TEXT@
 				Button@LEAVE_BUTTON:
 					X: PARENT_RIGHT - WIDTH - 20
 					Y: PARENT_BOTTOM - 45
 					Width: 120
 					Height: 25
 					Font: Bold
-					Text: Leave
+					Text: @LEAVE-MAP-FULL-LEAVE-BUTTON-TEXT@
 				Container@OBJECTIVES_PANEL:
 					Y: 65
 					Width: PARENT_RIGHT
@@ -135,7 +135,7 @@ Container@LEAVE_MAP_WIDGET:
 					Logic: IngameChatLogic
 					Visible: False
 					Children:
-						Container@CHAT_CHROME:
+						Container@LEAVEMAP_CHAT_CHROME:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Children:
@@ -143,7 +143,7 @@ Container@LEAVE_MAP_WIDGET:
 									Y: PARENT_BOTTOM - HEIGHT
 									Width: 50
 									Height: 25
-									Text: Team
+									Text: @LEAVEMAP-CHAT-CHROME-CHAT-MODE-TEXT@
 									Font: Bold
 								TextField@CHAT_TEXTFIELD:
 									X: 55
@@ -173,3 +173,4 @@ Container@LEAVE_MAP_WIDGET:
 													Height: 15
 													WordWrap: true
 													VAlign: Top
+

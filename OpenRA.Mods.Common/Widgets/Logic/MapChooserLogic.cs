@@ -173,7 +173,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// 'all game types' extra item
 				gameModes.Insert(0, Pair.New(null as string, tabMaps[tab].Count()));
 
-				Func<Pair<string, int>, string> showItem = x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
+				Func<Pair<string, int>, string> showItem = x =>
+					"{0} ({1})".F(x.First ?? FieldLoader.Translate("MAP-CHOOSER-ALLMAPTYPES"), x.Second);
 
 				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
@@ -237,21 +238,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
-					detailsWidget.GetText = () => "{0} ({1} players)".F(preview.Type, preview.PlayerCount);
+					detailsWidget.GetText = () => FieldLoader.Translate("MAP-CHOOSER-PREVIEW-PLAYERS").F(preview.Type, preview.PlayerCount);
 
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
-					authorWidget.GetText = () => "Created by {0}".F(preview.Author);
+					authorWidget.GetText = () => FieldLoader.Translate("MAP-CHOOSER-CREATEDBY").F(preview.Author);
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
 					var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " (Huge)";
-					else if (numberPlayableCells >= 90 * 90) size += " (Large)";
-					else if (numberPlayableCells >= 60 * 60) size += " (Medium)";
-					else size += " (Small)";
+					if (numberPlayableCells >= 120 * 120) size += " " + FieldLoader.Translate("MAP-SIZE>120");
+					else if (numberPlayableCells >= 90 * 90) size += " " + FieldLoader.Translate("MAP-SIZE>90");
+					else if (numberPlayableCells >= 60 * 60) size += " " + FieldLoader.Translate("MAP-SIZE>60");
+					else size += " " + FieldLoader.Translate("MAP-SIZE<60");
 					sizeWidget.GetText = () => size;
 				}
 
@@ -295,8 +296,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void DeleteOneMap(string map, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete map",
-				"Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
+				FieldLoader.Translate("MAP-CHOOSER-DELETE-CONFIRMATION-TITLE"),
+				FieldLoader.Translate("MAP-CHOOSER-DELETE-CONFIRMATION-TEXT").F(Game.ModData.MapCache[map].Title),
 				() =>
 				{
 					var newUid = DeleteMap(map);
@@ -304,14 +305,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						after(newUid);
 				},
 				null,
-				"Delete");
+				FieldLoader.Translate("MAP-CHOOSER-DELETE-CONFIRMATION-CONFIRMTEXT"));
 		}
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete maps",
-				"Delete all maps on this page?",
+				FieldLoader.Translate("MAP-CHOOSER-DELETEALL-CONFIRMATION-TITLE"),
+				FieldLoader.Translate("MAP-CHOOSER-DELETEALL-CONFIRMATION-TEXT"),
 				() =>
 				{
 					maps.Do(m => DeleteMap(m));
@@ -319,7 +320,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						after(WidgetUtils.ChooseInitialMap(null));
 				},
 				null,
-				"Delete");
+				FieldLoader.Translate("MAP-CHOOSER-DELETEALL-CONFIRMATION-CONFIRMTEXT"));
 		}
 	}
 }

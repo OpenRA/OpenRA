@@ -35,13 +35,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 11
 					Height: 25
 				TextField@NAME:
-					Text: Name
+					Text: @TEMPLATE-EDITABLE-PLAYER-NAME-TEXT@
 					X: 15
 					Width: 165
 					Height: 25
 					MaxLength: 16
 				DropDownButton@SLOT_OPTIONS:
-					Text: Name
+					Text: @TEMPLATE-EDITABLE-PLAYER-SLOT-OPTIONS-TEXT@
 					X: 15
 					Width: 165
 					Height: 25
@@ -65,7 +65,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					IgnoreChildMouseOver: true
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
-					PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
+					PanelRoot: FACTION_DROPDOWN_PANEL_ROOT
 					Children:
 						Image@FACTIONFLAG:
 							Width: 30
@@ -73,7 +73,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 							X: 5
 							Y: 5
 						Label@FACTIONNAME:
-							Text: Faction
+							Text: @TEMPLATE-EDITABLE-PLAYER-FACTIONNAME-TEXT@
 							Width: 60
 							Height: 25
 							X: 40
@@ -82,12 +82,12 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 420
 					Width: 48
 					Height: 25
-					Text: Team
+					Text: @TEMPLATE-EDITABLE-PLAYER-TEAM-TEXT@
 				DropDownButton@SPAWN:
 					X: 478
 					Width: 48
 					Height: 25
-					Text: Spawn
+					Text: @TEMPLATE-EDITABLE-PLAYER-SPAWN-TEXT@
 				Checkbox@STATUS_CHECKBOX:
 					X: 535
 					Y: 2
@@ -133,13 +133,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 11
 					Height: 25
 				Label@NAME:
-					Text: Name
+					Text: @TEMPLATE-NONEDITABLE-PLAYER-NAME-TEXT@
 					Width: 165
 					Height: 25
 					X: 20
 					Y: 0-1
 				Button@KICK:
-					Text: X
+					Text: @TEMPLATE-NONEDITABLE-PLAYER-KICK-TEXT@
 					Width: 25
 					Height: 23
 					X: 155
@@ -162,13 +162,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 							X: 5
 							Y: 5
 						Label@FACTIONNAME:
-							Text: Faction
+							Text: @FACTION-FACTIONNAME-TEXT@
 							Width: 60
 							Height: 25
 							X: 40
 							Y: 0
 				Label@TEAM:
-					Text: Team
+					Text: @TEMPLATE-NONEDITABLE-PLAYER-TEAM-TEXT@
 					Width: 23
 					Height: 25
 					Align: Center
@@ -195,20 +195,20 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 			Visible: false
 			Children:
 				Label@NAME:
-					Text: Name
+					Text: @TEMPLATE-EMPTY-NAME-TEXT@
 					Width: 165
 					Height: 25
 					X: 20
 					Y: 0-1
 				DropDownButton@SLOT_OPTIONS:
-					Text: Name
+					Text: @TEMPLATE-EMPTY-SLOT-OPTIONS-TEXT@
 					Width: 165
 					Height: 25
 					X: 15
 					Y: 0
 					Visible: false
 				Button@JOIN:
-					Text: Play in this slot
+					Text: @TEMPLATE-EMPTY-JOIN-TEXT@
 					Width: 336
 					Height: 25
 					X: 190
@@ -243,13 +243,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 11
 					Height: 25
 				TextField@NAME:
-					Text: Name
+					Text: @TEMPLATE-EDITABLE-SPECTATOR-NAME-TEXT@
 					X: 15
 					Width: 165
 					Height: 25
 					MaxLength: 16
 				Label@SPECTATOR:
-					Text: Spectator
+					Text: @TEMPLATE-EDITABLE-SPECTATOR-SPECTATOR-TEXT@
 					Width: 336
 					Height: 25
 					X: 190
@@ -286,20 +286,20 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 11
 					Height: 25
 				Label@NAME:
-					Text: Name
+					Text: @TEMPLATE-NONEDITABLE-SPECTATOR-NAME-TEXT@
 					Width: 160
 					Height: 25
 					X: 20
 					Y: 0-1
 				Button@KICK:
-					Text: X
+					Text: @TEMPLATE-NONEDITABLE-SPECTATOR-KICK-TEXT@
 					Width: 25
 					Height: 23
 					X: 155
 					Y: 2
 					Font: Bold
 				Label@SPECTATOR:
-					Text: Spectator
+					Text: @TEMPLATE-NONEDITABLE-SPECTATOR-SPECTATOR-TEXT@
 					Width: 336
 					Height: 25
 					X: 190
@@ -319,9 +319,9 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Height: 20
 					X: 15
 					Y: 0
-					Text: Allow Spectators?
+					Text: @TEMPLATE-NEW-SPECTATOR-TOGGLE-SPECTATORS-TEXT@
 				Button@SPECTATE:
-					Text: Spectate
+					Text: @TEMPLATE-NEW-SPECTATOR-SPECTATE-TEXT@
 					Font: Regular
 					Width: 336
 					Height: 25
@@ -362,3 +362,4 @@ ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 					X: 40
 					Width: 60
 					Height: 25
+

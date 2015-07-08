@@ -9,7 +9,7 @@ Container@SKIRMISH_STATS:
 			Width: 482
 			Height: 25
 			Font: MediumBold
-			Text: Mission:
+			Text: @SKIRMISH-STATS-MISSION-TEXT@
 		Label@STATS_STATUS:
 			X: 100
 			Y: 20
@@ -22,7 +22,7 @@ Container@SKIRMISH_STATS:
 			Width: 482
 			Height: 20
 			Font: Bold
-			Text: Destroy all opposition!
+			Text: @SKIRMISH-STATS-STATS-CHECKBOX-TEXT@
 			Disabled: yes
 			TextColorDisabled: 255,255,255
 		Container@STATS_HEADERS:
@@ -34,34 +34,34 @@ Container@SKIRMISH_STATS:
 					X: 10
 					Width: 150
 					Height: 25
-					Text: Player
+					Text: @STATS-HEADERS-NAME-TEXT@
 					Font: Bold
 				Label@RACE:
 					X: 150
 					Width: 80
 					Height: 25
-					Text: Faction
+					Text: @STATS-HEADERS-RACE-TEXT@
 					Font: Bold
 					Align: Center
 				Label@STANCE:
 					X: 260
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: @STATS-HEADERS-STANCE-TEXT@
 					Font: Bold
 					Align: Center
 				Label@KILLS:
 					X: 310
 					Width: 70
 					Height: 25
-					Text: Kills
+					Text: @STATS-HEADERS-KILLS-TEXT@
 					Font: Bold
 					Align: Center
 				Label@DEATHS:
 					X: 380
 					Width: 70
 					Height: 25
-					Text: Deaths
+					Text: @STATS-HEADERS-DEATHS-TEXT@
 					Font: Bold
 					Align: Center
 		ScrollPanel@PLAYER_LIST:

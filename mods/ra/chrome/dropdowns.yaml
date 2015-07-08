@@ -119,7 +119,7 @@ ScrollPanel@NEWS_PANEL:
 					Width: PARENT_RIGHT
 					Height: 15
 					Align: Center
-					Text: by {0} at {1}
+					Text: @NEWS-ITEM-TEMPLATE-AUTHOR-DATETIME-TEXT@
 					Font: TinyBold
 				Label@CONTENT:
 					Y: 45
@@ -131,3 +131,4 @@ ScrollPanel@NEWS_PANEL:
 			Height: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+

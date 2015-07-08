@@ -11,21 +11,21 @@ Background@MAPCHOOSER_PANEL:
 			Align: Center
 			Width: 858
 			Height: 20
-			Text: Choose Map
+			Text: @MAPCHOOSER-PANEL-MAPCHOOSER-TITLE-TEXT@
 			Font: Bold
 		Button@SYSTEM_MAPS_TAB_BUTTON:
 			X: 20
 			Y: 43
 			Height: 25
 			Width: 140
-			Text: Official Maps
+			Text: @MAPCHOOSER-PANEL-SYSTEM-MAPS-TAB-BUTTON-TEXT@
 			Font: Bold
 		Button@USER_MAPS_TAB_BUTTON:
 			X: 160
 			Y: 43
 			Height: 25
 			Width: 140
-			Text: Custom Maps
+			Text: @MAPCHOOSER-PANEL-USER-MAPS-TAB-BUTTON-TEXT@
 			Font: Bold
 		Container@SYSTEM_MAPS_TAB:
 			X: 20
@@ -91,7 +91,7 @@ Background@MAPCHOOSER_PANEL:
 			Height: 24
 			Font: Bold
 			Align: Right
-			Text: Filter:
+			Text: @MAPCHOOSER-PANEL-FILTER-DESC-TEXT@
 		TextField@MAPFILTER_INPUT:
 			X: PARENT_RIGHT - 401
 			Y: 40
@@ -104,7 +104,7 @@ Background@MAPCHOOSER_PANEL:
 			Height: 24
 			Font: Bold
 			Align: Center
-			Text: in
+			Text: @MAPCHOOSER-PANEL-FILTER-DESC-JOINER-TEXT@
 		DropDownButton@GAMEMODE_FILTER:
 			X: PARENT_RIGHT - 220
 			Y: 40
@@ -115,28 +115,28 @@ Background@MAPCHOOSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Random Map
+			Text: @MAPCHOOSER-PANEL-RANDOMMAP-BUTTON-TEXT@
 			Font: Bold
 		Button@DELETE_MAP_BUTTON:
 			X: 160
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Delete Map
+			Text: @MAPCHOOSER-PANEL-DELETE-MAP-BUTTON-TEXT@
 			Font: Bold
 		Button@DELETE_ALL_MAPS_BUTTON:
 			X: 300
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Delete All Maps
+			Text: @MAPCHOOSER-PANEL-DELETE-ALL-MAPS-BUTTON-TEXT@
 			Font: Bold
 		Button@BUTTON_OK:
 			X: PARENT_RIGHT - 270
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Ok
+			Text: @MAPCHOOSER-PANEL-BUTTON-OK-TEXT@
 			Font: Bold
 			Key: return
 		Button@BUTTON_CANCEL:
@@ -144,7 +144,7 @@ Background@MAPCHOOSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: @MAPCHOOSER-PANEL-BUTTON-CANCEL-TEXT@
 			Font: Bold
 			Key: escape
 

@@ -86,8 +86,8 @@ namespace OpenRA
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("AL", null, "Default Output"),
-				new SoundDevice("Null", null, "Output Disabled")
+				new SoundDevice("AL", null, FieldLoader.Translate("SOUND-DEFAULT")),
+				new SoundDevice("Null", null, FieldLoader.Translate("SOUND-DISABLED"))
 			};
 
 			var devices = OpenAlSoundEngine.AvailableDevices()

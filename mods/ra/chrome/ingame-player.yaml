@@ -12,14 +12,14 @@ Container@PLAYER_WIDGETS:
 					IconSize: 62, 46
 					IconSpriteOffset: -1, -1
 					TooltipContainer: TOOLTIP_CONTAINER
-					ReadyText: READY
-					HoldText: ON HOLD
+					ReadyText: @SUPPORT-POWERS-SUPPORT-PALETTE-READYTEXT@
+					HoldText: @SUPPORT-POWERS-SUPPORT-PALETTE-HOLDTEXT@
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ICON_TEMPLATE:
 							Logic: AddRaceSuffixLogic
-							X:0-2
-							Y:0-2
+							X: 0-2
+							Y: 0-2
 							Width: 62
 							Height: 46
 							IgnoreMouseOver: true
@@ -45,7 +45,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Place Beacon
+							TooltipText: @TOP-BUTTONS-BEACON-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -59,7 +59,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Sell
+							TooltipText: @TOP-BUTTONS-SELL-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -73,7 +73,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Power Down
+							TooltipText: @TOP-BUTTONS-POWER-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -87,7 +87,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Repair
+							TooltipText: @TOP-BUTTONS-REPAIR-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -102,7 +102,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Debug Menu
+							TooltipText: @TOP-BUTTONS-DEBUG-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -121,7 +121,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Diplomacy
+							TooltipText: @TOP-BUTTONS-DIPLOMACY-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -137,7 +137,7 @@ Container@PLAYER_WIDGETS:
 							Width: 28
 							Height: 28
 							Background: sidebar-button
-							TooltipText: Options
+							TooltipText: @TOP-BUTTONS-OPTIONS-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -183,7 +183,7 @@ Container@PLAYER_WIDGETS:
 					Width: 50
 					Height: 22
 					Font: Bold
-					Text: {0}
+					Text: @PLAYER-WIDGETS-CASH-TEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				LabelWithTooltip@POWER:
@@ -194,7 +194,7 @@ Container@PLAYER_WIDGETS:
 					Height: 22
 					Align: Right
 					Font: Bold
-					Text: {0}
+					Text: @PLAYER-WIDGETS-POWER-TEXT@
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
@@ -231,8 +231,8 @@ Container@PLAYER_WIDGETS:
 					X: 42
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
-					ReadyText: READY
-					HoldText: ON HOLD
+					ReadyText: @SIDEBAR-PRODUCTION-PRODUCTION-PALETTE-READYTEXT@
+					HoldText: @SIDEBAR-PRODUCTION-PRODUCTION-PALETTE-HOLDTEXT@
 					IconSize: 62, 46
 					IconMargin: 1, 1
 					IconSpriteOffset: -1, -1
@@ -258,7 +258,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Buildings
+							TooltipText: @PRODUCTION-TYPES-BUILDING-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
 							HotkeyName: ProductionTypeBuildingKey
@@ -274,7 +274,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Defense
+							TooltipText: @PRODUCTION-TYPES-DEFENSE-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defense
 							HotkeyName: ProductionTypeDefenseKey
@@ -290,7 +290,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Infantry
+							TooltipText: @PRODUCTION-TYPES-INFANTRY-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
 							HotkeyName: ProductionTypeInfantryKey
@@ -306,7 +306,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Vehicles
+							TooltipText: @PRODUCTION-TYPES-VEHICLE-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
 							HotkeyName: ProductionTypeVehicleKey
@@ -322,7 +322,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Aircraft
+							TooltipText: @PRODUCTION-TYPES-AIRCRAFT-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
 							HotkeyName: ProductionTypeAircraftKey
@@ -338,7 +338,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Naval
+							TooltipText: @PRODUCTION-TYPES-NAVAL-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Ship
 							HotkeyName: ProductionTypeNavalKey
@@ -354,7 +354,7 @@ Container@PLAYER_WIDGETS:
 							Height: 22
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Scroll up
+							TooltipText: @PRODUCTION-TYPES-SCROLL-UP-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
@@ -369,7 +369,7 @@ Container@PLAYER_WIDGETS:
 							Height: 22
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Scroll down
+							TooltipText: @PRODUCTION-TYPES-SCROLL-DOWN-BUTTON-TOOLTIPTEXT@
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
@@ -377,3 +377,4 @@ Container@PLAYER_WIDGETS:
 									Y: 3
 									ImageCollection: scrollbar
 									ImageName: down_arrow
+
