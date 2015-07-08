@@ -6,7 +6,6 @@
 	GivesExperience:
 	BodyOrientation:
 	ScriptTriggers:
-	UpgradeManager:
 	Huntable:
 
 ^GainsExperience:

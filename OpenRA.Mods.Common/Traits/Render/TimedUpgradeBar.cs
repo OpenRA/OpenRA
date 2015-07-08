@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the remaining time for an upgrade.")]
-	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
+	class TimedUpgradeBarInfo : ITraitInfo, RequiresSingleton<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Upgrade that this bar corresponds to")]

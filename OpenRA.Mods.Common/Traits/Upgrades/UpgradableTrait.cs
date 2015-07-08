@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo : IUpgradableInfo
+	public abstract class UpgradableTraitInfo : IUpgradableInfo, RequiresSingleton<UpgradeManagerInfo>
 	{
 		[UpgradeUsedReference]
 		[Desc("The upgrade types which can enable or disable this trait.")]

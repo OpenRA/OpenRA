@@ -274,6 +274,12 @@ namespace OpenRA.Traits
 
 	public interface ITraitInfo { object Create(ActorInitializer init); }
 
+	/// <summary>This trait should only exist once per actor.</summary>
+	public interface ISingletonTraitInfo : ITraitInfo { }
+
+	/// <summary>This trait should only exist once per actor and is included implicitly.</summary>
+	public interface IImplicitSingletonTraitInfo : ISingletonTraitInfo { }
+
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
 	/// <summary>This trait must come after trait T because T is used in the constructor</summary>
@@ -283,6 +289,10 @@ namespace OpenRA.Traits
 	/// <summary>Use if trait T is required.</summary>
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
+
+	/// <summary>This trait requires implicit singleton trait, which may be added automatically.</summary>
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	public interface RequiresSingleton<T> where T : class, IImplicitSingletonTraitInfo { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> where T : IActorInit { }
 

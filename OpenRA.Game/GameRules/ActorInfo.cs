@@ -16,11 +16,22 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public class MultipleOfSingletonTraitException : YamlException
+	{
+		public MultipleOfSingletonTraitException(Type info, string actor)
+			: base("Multiple occurances of singleton trait "
+				+ info.Name.Substring(0, info.Name.Length - 4)
+				+ " when there only can be one.") { }
+	}
+
 	/// <summary>
 	/// A unit/building inside the game. Every rules starts with one and adds trait to it.
 	/// </summary>
 	public class ActorInfo
 	{
+		static readonly Type[] NoTypes = new Type[] { };
+		static readonly object[] NoObjects = new object[] { };
+
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
 		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
@@ -121,7 +132,32 @@ namespace OpenRA
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = Traits.WithInterface<ITraitInfo>().Select(i => new
+			List<ITraitInfo> traitInfos = new List<ITraitInfo>(Traits.WithInterface<ITraitInfo>());
+			HashSet<Type> singletons = new HashSet<Type>(); // Track singletons added
+
+			// Note explicit singletons and throw if there are multiple of the same type.
+			foreach (var ti in traitInfos)
+				if (!(ti is IImplicitSingletonTraitInfo))
+					continue;
+				else if (singletons.Contains(ti.GetType()))
+					throw new MultipleOfSingletonTraitException(ti.GetType(), Name);
+				else
+					singletons.Add(ti.GetType());
+
+			// Add implicit singletons recursively
+			Queue<ITraitInfo> queue = new Queue<ITraitInfo>(traitInfos);
+			while (queue.Any())
+				foreach (var t in SingletonsFor(queue.Dequeue()))
+					if (!singletons.Contains(t))
+					{
+						singletons.Add(t);
+						ITraitInfo s = (ITraitInfo)t.GetConstructor(NoTypes).Invoke(NoObjects);
+						Traits.Add(s);
+						traitInfos.Add(s);
+						queue.Enqueue(s);
+					}
+
+			var source = traitInfos.Select(i => new
 			{
 				Trait = i,
 				Type = i.GetType(),
@@ -186,6 +222,15 @@ namespace OpenRA
 				.GetType()
 				.GetInterfaces()
 				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
+		static IEnumerable<Type> SingletonsFor(ITraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(RequiresSingleton<>))
 				.Select(t => t.GetGenericArguments()[0]);
 		}
 
