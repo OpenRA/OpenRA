@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 						catch (Exception e)
 						{
-							EmitError("{0} failed with exception: {0}".F(customPassType, e));
+							EmitError("{0} failed with exception: {1}".F(customPassType, e));
 						}
 					}
 				}
