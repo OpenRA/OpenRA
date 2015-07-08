@@ -65,9 +65,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			var crateActions = self.TraitsImplementing<CrateAction>();
 
-			self.Dispose();
-			collected = true;
-
 			if (crateActions.Any())
 			{
 				var shares = crateActions.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
@@ -79,7 +76,11 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (n < s.Second)
 					{
+						if (!crusher.HasTrait<Armament>() && s.First.GetEffectName().Equals("firepower"))
+							return;
 						s.First.Activate(crusher);
+						self.Dispose();
+						collected = true;
 						return;
 					}
 					else

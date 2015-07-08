@@ -65,6 +65,13 @@ namespace OpenRA.Mods.Common.Traits
 			return GetSelectionShares(collector);
 		}
 
+		public string GetEffectName()
+		{
+			if (info.Effect == null)
+				return "";
+			return info.Effect.ToString();
+		}
+
 		public virtual int GetSelectionShares(Actor collector)
 		{
 			return info.SelectionShares;
