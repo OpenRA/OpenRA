@@ -20,9 +20,15 @@ namespace OpenRA.Mods.RA.Effects
 	class TeslaZapInfo : IProjectileInfo
 	{
 		public readonly string Image = "litning";
+
+		[SequenceReference("Image")] public readonly string BrightSequence = "bright";
+		[SequenceReference("Image")] public readonly string DimSequence = "dim";
+
 		public readonly string Palette = "effect";
+
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;
+
 		public IEffect Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
@@ -59,7 +65,8 @@ namespace OpenRA.Mods.RA.Effects
 			if (!initialized)
 			{
 				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source, info.Image, info.BrightZaps, info.DimZaps, info.Palette);
+				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
+					info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 			}
 
 			yield return zap;

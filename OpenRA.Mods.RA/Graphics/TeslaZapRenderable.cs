@@ -35,13 +35,15 @@ namespace OpenRA.Mods.RA.Graphics
 		readonly WVec length;
 		readonly string image;
 		readonly string palette;
+		readonly string dimSequence;
+		readonly string brightSequence;
 		readonly int brightZaps, dimZaps;
 
 		WPos cachedPos;
 		WVec cachedLength;
 		IEnumerable<IFinalizedRenderable> cache;
 
-		public TeslaZapRenderable(WPos pos, int zOffset, WVec length, string image, int brightZaps, int dimZaps, string palette)
+		public TeslaZapRenderable(WPos pos, int zOffset, WVec length, string image, string brightSequence, int brightZaps, string dimSequence, int dimZaps, string palette)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
@@ -50,6 +52,8 @@ namespace OpenRA.Mods.RA.Graphics
 			this.palette = palette;
 			this.brightZaps = brightZaps;
 			this.dimZaps = dimZaps;
+			this.dimSequence = dimSequence;
+			this.brightSequence = brightSequence;
 
 			cachedPos = WPos.Zero;
 			cachedLength = WVec.Zero;
@@ -61,17 +65,20 @@ namespace OpenRA.Mods.RA.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
-		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps, palette); }
-		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps, palette); }
+		public IRenderable WithPalette(PaletteReference newPalette)
+		{
+			return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette);
+		}
+
+		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
+		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
-			if (wr.World.FogObscures(pos) &&
-				wr.World.FogObscures(pos + length))
+			if (wr.World.FogObscures(pos) && wr.World.FogObscures(pos + length))
 				return;
 
 			if (!cache.Any() || length != cachedLength || pos != cachedPos)
@@ -84,8 +91,8 @@ namespace OpenRA.Mods.RA.Graphics
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{
-			var bright = wr.World.Map.SequenceProvider.GetSequence(image, "bright");
-			var dim = wr.World.Map.SequenceProvider.GetSequence(image, "dim");
+			var bright = wr.World.Map.SequenceProvider.GetSequence(image, brightSequence);
+			var dim = wr.World.Map.SequenceProvider.GetSequence(image, dimSequence);
 
 			var source = wr.ScreenPosition(pos);
 			var target = wr.ScreenPosition(pos + length);
