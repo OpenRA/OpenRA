@@ -127,6 +127,7 @@ Rules:
 			Scripts: shellmap.lua
 		MusicPlaylist:
 			StartingMusic: score
+		GlobalLightingPaletteEffect:
 	rockettower:
 		Power:
 			Amount: 100
