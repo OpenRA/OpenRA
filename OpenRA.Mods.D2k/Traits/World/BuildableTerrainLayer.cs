@@ -17,11 +17,15 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
 	public class BuildableTerrainLayerInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self); }
+		[Desc("Palette to render the layer sprites in.")]
+		public readonly string Palette = "terrain";
+
+		public object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
 	}
 
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
 	{
+		readonly BuildableTerrainLayerInfo info;
 		readonly Dictionary<CPos, Sprite> dirty = new Dictionary<CPos, Sprite>();
 		readonly TileSet tileset;
 		readonly Map map;
@@ -29,8 +33,9 @@ namespace OpenRA.Mods.D2k.Traits
 		TerrainSpriteLayer render;
 		Theater theater;
 
-		public BuildableTerrainLayer(Actor self)
+		public BuildableTerrainLayer(Actor self, BuildableTerrainLayerInfo info)
 		{
+			this.info = info;
 			tileset = self.World.TileSet;
 			map = self.World.Map;
 		}
@@ -38,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
-			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette("terrain"), wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)
