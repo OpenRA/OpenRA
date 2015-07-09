@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return "3D World Position";
 
 			if (t == typeof(WDist))
-				return "1D World Range";
+				return "1D World Distance";
 
 			if (t == typeof(WVec))
 				return "3D World Vector";
