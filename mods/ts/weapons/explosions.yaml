@@ -44,3 +44,24 @@ TiberiumExplosion:
 		Explosion: large_explosion
 		ImpactSound: expnew09.aud
 
+SmallDebris:
+	ReloadDelay: 60
+	Range: 4c0
+	Report:
+	Projectile: Bullet
+		Speed: 50, 125
+		Blockable: false
+		Angle: 91, 264
+		Inaccuracy: 416
+		Image: dbris1sm # TODO: add some variation
+
+LargeDebris:
+	ReloadDelay: 60
+	Range: 4c0
+	Report:
+	Projectile: Bullet
+		Speed: 50, 125
+		Blockable: false
+		Angle: 91, 264
+		Inaccuracy: 416
+		Image: dbris1lg # TODO: add some variation
