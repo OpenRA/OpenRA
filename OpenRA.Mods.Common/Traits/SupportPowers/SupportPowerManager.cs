@@ -230,7 +230,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.First(i => !InstanceDisabled(i));
+			var power = Instances.FirstOrDefault(i => !InstanceDisabled(i));
+			if (power == null)
+				return;
 
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, manager);
