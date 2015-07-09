@@ -57,6 +57,16 @@ namespace OpenRA
 				}
 			}
 
+			foreach (var a in newSelection)
+				foreach (var sel in a.TraitsImplementing<INotifySelected>())
+					sel.Selected(a);
+
+			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
+				ns.SelectionChanged();
+
+			if (world.IsGameOver)
+				return;
+
 			// Play the selection voice from one of the selected actors
 			// TODO: This probably should only be considering the newly selected actors
 			// TODO: Ship this into an INotifySelection trait to remove the engine dependency on Selectable
@@ -72,12 +82,6 @@ namespace OpenRA
 				actor.PlayVoice(selectable.Voice);
 				break;
 			}
-
-			foreach (var a in newSelection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
-					sel.Selected(a);
-			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
-				ns.SelectionChanged();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
