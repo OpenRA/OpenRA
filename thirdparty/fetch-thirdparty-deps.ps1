@@ -120,7 +120,7 @@ if (!(Test-Path "SDL2-CS.dll"))
 {
 	echo "Fetching SDL2 C# from GitHub."
 	$target = Join-Path $pwd.ToString() "SDL2-CS.dll"
-	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/SDL2-CS/releases/download/20140407/SDL2-CS.dll", $target)
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/SDL2-CS/releases/download/20150709/SDL2-CS.dll", $target)
 }
 
 if (!(Test-Path "Eluant.dll"))
