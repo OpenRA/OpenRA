@@ -13,7 +13,7 @@ local unpack = table.unpack or unpack
 local q = EscapeMagic
 
 local margin = { LINENUMBER = 0, MARKER = 1, FOLD = 2 }
-local linenummask = "99999"
+local linenumlen = 4 + 0.5
 local foldtypes = {
   [0] = { wxstc.wxSTC_MARKNUM_FOLDEROPEN, wxstc.wxSTC_MARKNUM_FOLDER,
     wxstc.wxSTC_MARKNUM_FOLDERSUB, wxstc.wxSTC_MARKNUM_FOLDERTAIL, wxstc.wxSTC_MARKNUM_FOLDEREND,
@@ -735,7 +735,7 @@ function CreateEditor(bare)
   editor:SetMarginType(margin.LINENUMBER, wxstc.wxSTC_MARGIN_NUMBER)
   editor:SetMarginMask(margin.LINENUMBER, 0)
   editor:SetMarginWidth(margin.LINENUMBER,
-    editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
+    math.floor(linenumlen * editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, "8")))
 
   editor:SetMarginWidth(margin.MARKER, 18)
   editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
@@ -1121,6 +1121,14 @@ function CreateEditor(bare)
           editor:Refresh()
         end
       end
+
+      -- adjust line number margin, but only if it's already shown
+      local linecount = #tostring(editor:GetLineCount()) + 0.5
+      local mwidth = editor:GetMarginWidth(margin.LINENUMBER)
+      if mwidth > 0 then
+        local width = math.max(linecount, linenumlen) * editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, "8")
+        if mwidth ~= width then editor:SetMarginWidth(margin.LINENUMBER, math.floor(width)) end
+      end
     end)
 
   local alreadyProcessed = 0
@@ -1352,8 +1360,6 @@ function CreateEditor(bare)
 
   editor:Connect(wxstc.wxEVT_STC_ZOOM,
     function(event)
-      editor:SetMarginWidth(margin.LINENUMBER,
-        editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, linenummask))
       -- if Shift+Zoom is used, then zoom all editors, not just the current one
       if wx.wxGetKeyState(wx.WXK_SHIFT) then
         local zoom = editor:GetZoom()
