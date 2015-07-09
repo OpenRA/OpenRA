@@ -84,13 +84,13 @@ namespace OpenRA.Mods.Common.Traits
 		public void Created(Actor self)
 		{
 			if (info.SearchOnCreation)
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 		}
 
 		public void BuildingComplete(Actor self)
 		{
 			if (info.SearchOnCreation)
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 		}
 
 		public void SetProcLines(Actor proc)
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Move out of the refinery dock and continue harvesting:
 			UnblockRefinery(self);
-			self.QueueActivity(new FindResources());
+			self.QueueActivity(new FindResources(self));
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -199,11 +199,11 @@ namespace OpenRA.Mods.Common.Traits
 					if (territory != null) territory.ClaimResource(self, moveTo);
 
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var next = new FindResources();
+					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
 
-					self.QueueActivity(new FindResources());
+					self.QueueActivity(new FindResources(self));
 					return;
 				}
 			}
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 				// Find more resources but not at this location:
-				self.QueueActivity(new FindResources(cell));
+				self.QueueActivity(new FindResources(self, cell));
 			}
 		}
 
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var next = new FindResources();
+					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, loc, next);
 
@@ -358,7 +358,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
 				LastHarvestedCell = LastOrderLocation;
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 			}
 			else if (order.OrderString == "Deliver")
 			{
@@ -443,7 +443,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Our claim on a resource was stolen, find more unclaimed resources:
 			self.CancelActivity();
-			self.QueueActivity(new FindResources());
+			self.QueueActivity(new FindResources(self));
 		}
 
 		PipType GetPipAt(int i)
