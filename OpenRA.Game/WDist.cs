@@ -110,7 +110,7 @@ namespace OpenRA
 			WDist a;
 			WDist b;
 			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
-				throw new LuaException("Attempted to call WRange.Add(WRange, WRange) with invalid arguments.");
+				throw new LuaException("Attempted to call WDist.Add(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -120,7 +120,7 @@ namespace OpenRA
 			WDist a;
 			WDist b;
 			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
-				throw new LuaException("Attempted to call WRange.Subtract(WRange, WRange) with invalid arguments.");
+				throw new LuaException("Attempted to call WDist.Subtract(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a - b);
 		}
@@ -130,7 +130,7 @@ namespace OpenRA
 			WDist a;
 			WDist b;
 			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
-				throw new LuaException("Attempted to call WRange.Equals(WRange, WRange) with invalid arguments.");
+				throw new LuaException("Attempted to call WDist.Equals(WDist, WDist) with invalid arguments.");
 
 			return a == b;
 		}
@@ -141,15 +141,14 @@ namespace OpenRA
 			{
 				switch (key.ToString())
 				{
-					case "Range": return Length;
-					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
+					case "Length": return Length;
 					default: throw new LuaException("WDist does not define a member '{0}'".F(key));
 				}
 			}
 
 			set
 			{
-				throw new LuaException("WRange is read-only. Use WRange.New to create a new value");
+				throw new LuaException("WDist is read-only. Use WDist.New to create a new value");
 			}
 		}
 		#endregion

@@ -243,8 +243,8 @@ SetupBridges = function()
 	Media.DisplayMessage("Commander! The Soviets destroyed the bridges to disable our reinforcements. Repair them for additional reinforcements.", "Incoming Report")
 	RepairBridges = allies.AddSecondaryObjective("Repair the two southern bridges.")
 
-	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WRange.FromCells(1), function(self) return self.Type == "bridge1" end)
-	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WRange.FromCells(1), function(self) return self.Type == "bridge1" end)
+	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
+	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
 
 	Utils.Do(bridgeA, function(bridge)
 		Trigger.OnDamaged(bridge, function()

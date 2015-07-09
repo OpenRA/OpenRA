@@ -240,7 +240,7 @@ WorldLoaded = function()
 		end)
 	end)
 
-	Trigger.OnEnteredProximityTrigger(USSRExpansionPoint.CenterPosition, WRange.New(4 * 1024), function(unit, id)
+	Trigger.OnEnteredProximityTrigger(USSRExpansionPoint.CenterPosition, WDist.New(4 * 1024), function(unit, id)
 		if unit.Owner == player and Radar.Owner == player then
 			Trigger.RemoveProximityTrigger(id)
 

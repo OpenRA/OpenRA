@@ -332,7 +332,7 @@ getAirstrikeTarget = function()
 	local list = Nod.GetGroundAttackers()
 	local target = list[DateTime.GameTime % #list + 1].CenterPosition
 
-	local sams = Map.ActorsInCircle(target, WRange.New(8 * 1024), function(actor)
+	local sams = Map.ActorsInCircle(target, WDist.New(8 * 1024), function(actor)
 		return actor.Type == "sam" end)
 
 	if #sams == 0 then

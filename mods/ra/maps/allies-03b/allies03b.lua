@@ -284,7 +284,7 @@ InitTriggers = function()
 					USSRTruk.Move(BaseCameraWaypoint.Location)
 				end
 			end)
-			Trigger.OnEnteredProximityTrigger(BaseCameraWaypoint.CenterPosition, WRange.New(7 * 1024), function(a, id)
+			Trigger.OnEnteredProximityTrigger(BaseCameraWaypoint.CenterPosition, WDist.New(7 * 1024), function(a, id)
 				if a.Type == "truk" and not baseCamera then
 					Trigger.RemoveProximityTrigger(id)
 					baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
