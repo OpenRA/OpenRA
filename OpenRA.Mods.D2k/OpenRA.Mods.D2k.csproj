@@ -93,7 +93,6 @@
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
     <Compile Include="Traits\Sandworm.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
-    <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />
     <Compile Include="Traits\World\FogPaletteFromR8.cs" />

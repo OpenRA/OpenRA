@@ -12,7 +12,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
 	public class ThrowsShrapnelInfo : ITraitInfo

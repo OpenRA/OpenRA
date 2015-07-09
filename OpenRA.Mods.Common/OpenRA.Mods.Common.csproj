@@ -693,6 +693,7 @@
     <Compile Include="Traits\CreatesShroud.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Lint\CheckRevealFootprint.cs" />
+    <Compile Include="Traits\ThrowsShrapnel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
