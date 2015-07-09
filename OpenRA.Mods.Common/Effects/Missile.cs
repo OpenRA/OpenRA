@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Effects
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
-		[Desc("Projectile speed in WRange / tick")]
+		[Desc("Projectile speed in WDist / tick")]
 		public readonly WDist Speed = new WDist(8);
 		[Desc("Maximum vertical pitch when changing altitude.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Effects
 			var cell = world.Map.CellContaining(pos);
 
 			var shouldExplode = (pos.Z < 0) // Hit the ground
-				|| (dist.LengthSquared < info.CloseEnough.RangeSquared) // Within range
+				|| (dist.LengthSquared < info.CloseEnough.LengthSquared) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksProjectiles>())) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.

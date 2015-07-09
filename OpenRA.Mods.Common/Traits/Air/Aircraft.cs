@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var d = self.CenterPosition - other.CenterPosition;
 			var distSq = d.HorizontalLengthSquared;
-			if (distSq > info.IdealSeparation.RangeSquared)
+			if (distSq > info.IdealSeparation.LengthSquared)
 				return WVec.Zero;
 
 			if (distSq < 1)

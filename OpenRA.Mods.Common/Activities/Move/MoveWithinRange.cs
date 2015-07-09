@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Common.Activities
 			var maxCells = (maxRange.Length + 1023) / 1024;
 			var minCells = minRange.Length / 1024;
 
-			var outerSq = maxRange.RangeSquared;
-			var innerSq = minRange.RangeSquared;
+			var outerSq = maxRange.LengthSquared;
+			var innerSq = minRange.LengthSquared;
 			var center = Target.CenterPosition;
 
 			return map.FindTilesInAnnulus(targetPosition, minCells + 1, maxCells).Where(c =>

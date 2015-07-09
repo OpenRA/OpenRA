@@ -59,15 +59,27 @@ namespace OpenRA.Mods.Common.Scripting
 		public WVec Zero { get { return WVec.Zero; } }
 	}
 
+	[ScriptGlobal("WDist")]
+	public class WDistGlobal : ScriptGlobal
+	{
+		public WDistGlobal(ScriptContext context) : base(context) { }
+
+		[Desc("Create a new WDist.")]
+		public WDist New(int r) { return new WDist(r); }
+
+		[Desc("Create a new WDist by cell distance")]
+		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
+	}
+
 	[ScriptGlobal("WRange")]
 	public class WRangeGlobal : ScriptGlobal
 	{
 		public WRangeGlobal(ScriptContext context) : base(context) { }
 
-		[Desc("Create a new WRange.")]
-		public WDist New(int r) { return new WDist(r); }
+		[Desc("Create a new WRange. DEPRECATED! Will be removed.")]
+		public WDist New(int r) { Game.Debug("WRange is deprecated. Use WDist instead."); return new WDist(r); }
 
-		[Desc("Create a new WRange by cell distance")]
-		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
+		[Desc("Create a new WRange by cell distance. DEPRECATED! Will be removed.")]
+		public WDist FromCells(int numCells) { Game.Debug("WRange is deprecated. Use WDist instead."); return WDist.FromCells(numCells); }
 	}
 }

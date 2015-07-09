@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Travel time - split equally between ascent and descent")]
 		public readonly int FlightDelay = 400;
 
-		[Desc("Visual ascent velocity in WRange / tick")]
+		[Desc("Visual ascent velocity in WDist / tick")]
 		public readonly WDist FlightVelocity = new WDist(512);
 
 		[Desc("Descend immediately on the target, with half the FlightDelay")]

@@ -391,7 +391,7 @@ InitTriggers = function()
 	end)
 
 	local tanksLeft = 0
-	Trigger.OnExitedProximityTrigger(ProvingGroundsCameraPoint.CenterPosition, WRange.New(10 * 1024), function(a, id)
+	Trigger.OnExitedProximityTrigger(ProvingGroundsCameraPoint.CenterPosition, WDist.New(10 * 1024), function(a, id)
 		if a.Type == "5tnk" then
 			tanksLeft = tanksLeft + 1
 			if tanksLeft == 3 then

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void RequestTransport(CPos destination, Activity afterLandActivity)
 		{
 			var destPos = self.World.Map.CenterOfCell(destination);
-			if (destination == CPos.Zero || (self.CenterPosition - destPos).LengthSquared < info.MinDistance.RangeSquared)
+			if (destination == CPos.Zero || (self.CenterPosition - destPos).LengthSquared < info.MinDistance.LengthSquared)
 			{
 				WantsTransport = false; // Be sure to cancel any pending transports
 				return;
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return false;
 
 			var destPos = self.World.Map.CenterOfCell(Destination);
-			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.RangeSquared)
+			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.LengthSquared)
 			{
 				MovementCancelled(self);
 				return false;
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// Last change to change our mind...
 			var destPos = self.World.Map.CenterOfCell(Destination);
-			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.RangeSquared)
+			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.LengthSquared)
 			{
 				MovementCancelled(self);
 				return false;

@@ -75,7 +75,7 @@ namespace OpenRA.Traits
 		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WDist range)
 		{
 			var r = (range.Length + 1023) / 1024;
-			var limit = range.RangeSquared;
+			var limit = range.LengthSquared;
 			var cell = map.CellContaining(pos);
 
 			foreach (var c in map.FindTilesInCircle(cell, r, true))
