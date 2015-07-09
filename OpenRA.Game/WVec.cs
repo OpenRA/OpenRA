@@ -43,7 +43,12 @@ namespace OpenRA
 
 		public WVec Rotate(WRot rot)
 		{
-			var mtx = rot.AsMatrix();
+			return Rotate(rot.AsMatrix());
+		}
+
+		public WVec Rotate(int[] rotationMatrix)
+		{
+			var mtx = rotationMatrix;
 			var lx = (long)X;
 			var ly = (long)Y;
 			var lz = (long)Z;

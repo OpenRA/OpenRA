@@ -21,6 +21,10 @@ namespace OpenRA.Graphics
 		public static readonly Func<IRenderable, int> RenderableScreenZPositionComparisonKey =
 			r => ZPosition(r.Pos, r.ZOffset);
 
+		const int RangeCircleSegments = 32;
+		static readonly int[][] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
+		static readonly int[][] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
+
 		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
@@ -197,10 +201,10 @@ namespace OpenRA.Graphics
 		public void DrawRangeCircle(WPos pos, WDist range, Color c)
 		{
 			var offset = new WVec(range.Length, 0, 0);
-			for (var i = 0; i < 32; i++)
+			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));
-				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
+				var pa = pos + offset.Rotate(RangeCircleStartRotations[i]);
+				var pb = pos + offset.Rotate(RangeCircleEndRotations[i]);
 				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c);
 			}
 		}
