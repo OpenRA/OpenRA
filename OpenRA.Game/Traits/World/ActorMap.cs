@@ -132,7 +132,7 @@ namespace OpenRA.Traits
 				var oldActors = currentActors;
 				var delta = new WVec(Range, Range, WDist.Zero);
 				currentActors = am.ActorsInBox(Position - delta, Position + delta)
-					.Where(a => (a.CenterPosition - Position).HorizontalLengthSquared < Range.RangeSquared)
+					.Where(a => (a.CenterPosition - Position).HorizontalLengthSquared < Range.LengthSquared)
 					.ToList();
 
 				var entered = currentActors.Except(oldActors);

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 			var diff = new WVec(radius, radius, WDist.Zero);
 			var candidates = self.World.ActorMap.ActorsInBox(self.CenterPosition - diff, self.CenterPosition + diff)
 				.Where(primaryFilter).Select(a => new { Actor = a, Ls = (self.CenterPosition - a.CenterPosition).HorizontalLengthSquared })
-				.Where(p => p.Ls <= radius.RangeSquared).OrderBy(p => p.Ls).Select(p => p.Actor);
+				.Where(p => p.Ls <= radius.LengthSquared).OrderBy(p => p.Ls).Select(p => p.Actor);
 			if (preferenceFilters != null)
 				foreach (var filter in preferenceFilters)
 				{

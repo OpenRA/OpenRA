@@ -23,7 +23,7 @@ namespace OpenRA
 	public struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Length;
-		public long RangeSquared { get { return (long)Length * (long)Length; } }
+		public long LengthSquared { get { return (long)Length * (long)Length; } }
 
 		public WDist(int r) { Length = r; }
 		public static readonly WDist Zero = new WDist(0);
