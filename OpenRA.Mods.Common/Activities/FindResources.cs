@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var n in notify)
 				n.MovingToResources(self, path[0], next);
 
-			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), next);
+			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(self), next);
 		}
 
 		// Diagonal distance heuristic
@@ -148,56 +148,6 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromCell(self.World, self.Location);
-		}
-	}
-
-	public class HarvestResource : Activity
-	{
-		public override Activity Tick(Actor self)
-		{
-			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-			if (IsCanceled)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			var harv = self.Trait<Harvester>();
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			harv.LastHarvestedCell = self.Location;
-
-			if (harv.IsFull)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			// Turn to one of the harvestable facings
-			if (harvInfo.HarvestFacings != 0)
-			{
-				var facing = self.Trait<IFacing>().Facing;
-				var desired = Util.QuantizeFacing(facing, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
-				if (desired != facing)
-					return Util.SequenceActivities(new Turn(self, desired), this);
-			}
-
-			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var resource = resLayer.Harvest(self.Location);
-			if (resource == null)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			harv.AcceptResource(resource);
-
-			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
-				t.Harvested(self, resource);
-
-			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }
