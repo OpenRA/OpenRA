@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Plane plane;
 		readonly Target target;
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
 		public Fly(Actor self, Target t)
 		{
@@ -28,24 +28,24 @@ namespace OpenRA.Mods.Common.Activities
 			target = t;
 		}
 
-		public Fly(Actor self, Target t, WRange minRange, WRange maxRange)
+		public Fly(Actor self, Target t, WDist minRange, WDist maxRange)
 			: this(self, t)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
 		}
 
-		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WRange desiredAltitude)
+		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WDist desiredAltitude)
 		{
 			var move = plane.FlyStep(plane.Facing);
 			var altitude = plane.CenterPosition.Z;
 
 			plane.Facing = Util.TickFacing(plane.Facing, desiredFacing, plane.ROT);
 
-			if (altitude != desiredAltitude.Range)
+			if (altitude != desiredAltitude.Length)
 			{
 				var delta = move.HorizontalLength * plane.Info.MaximumPitch.Tan() / 1024;
-				var dz = (desiredAltitude.Range - altitude).Clamp(-delta, delta);
+				var dz = (desiredAltitude.Length - altitude).Clamp(-delta, delta);
 				move += new WVec(0, 0, dz);
 			}
 
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Range > 0 && target.IsInRange(plane.CenterPosition, maxRange);
-			var insideMinRange = minRange.Range > 0 && target.IsInRange(plane.CenterPosition, minRange);
+			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(plane.CenterPosition, maxRange);
+			var insideMinRange = minRange.Length > 0 && target.IsInRange(plane.CenterPosition, minRange);
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
 
 			// Don't turn until we've reached the cruise altitude
-			if (plane.CenterPosition.Z < plane.Info.CruiseAltitude.Range)
+			if (plane.CenterPosition.Z < plane.Info.CruiseAltitude.Length)
 				desiredFacing = plane.Facing;
 
 			FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);

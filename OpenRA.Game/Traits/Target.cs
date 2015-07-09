@@ -140,7 +140,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public bool IsInRange(WPos origin, WRange range)
+		public bool IsInRange(WPos origin, WDist range)
 		{
 			if (Type == TargetType.Invalid)
 				return false;

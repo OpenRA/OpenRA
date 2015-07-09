@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WRange velocity, int delay, bool skipAscent, string flashType)
+		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.turn = delay / 2;
 			this.flashType = flashType;
 
-			var offset = new WVec(WRange.Zero, WRange.Zero, velocity * turn);
+			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * turn);
 			ascendSource = launchPos;
 			ascendTarget = launchPos + offset;
 			descendSource = targetPos + offset;

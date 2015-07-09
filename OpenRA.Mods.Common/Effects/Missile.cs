@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
 		[Desc("Projectile speed in WRange / tick")]
-		public readonly WRange Speed = new WRange(8);
+		public readonly WDist Speed = new WDist(8);
 		[Desc("Maximum vertical pitch when changing altitude.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
 		[Desc("How many ticks before this missile is armed and can explode.")]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
 		public readonly bool Blockable = true;
 		[Desc("Maximum offset at the maximum range")]
-		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WDist Inaccuracy = WDist.Zero;
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
 		[Desc("In n/256 per tick.")]
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Explodes when inside this proximity radius to target.",
 			"Note: If this value is lower than the missile speed, this check might",
 			"not trigger fast enough, causing the missile to fly past the target.")]
-		public readonly WRange CloseEnough = new WRange(298);
+		public readonly WDist CloseEnough = new WDist(298);
 
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
@@ -101,9 +101,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
 				lockOn = true;
 
-			if (info.Inaccuracy.Range > 0)
+			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Effects
 				desiredFacing = facing;
 
 			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
-			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Range / 1024;
+			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Length / 1024;
 
 			if (pos.Z != desiredAltitude)
 			{

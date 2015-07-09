@@ -16,11 +16,11 @@ namespace OpenRA.Mods.Common.Activities
 	public class Follow : Activity
 	{
 		readonly Target target;
-		readonly WRange minRange;
-		readonly WRange maxRange;
+		readonly WDist minRange;
+		readonly WDist maxRange;
 		readonly IMove move;
 
-		public Follow(Actor self, Target target, WRange minRange, WRange maxRange)
+		public Follow(Actor self, Target target, WDist minRange, WDist maxRange)
 		{
 			this.target = target;
 			this.minRange = minRange;

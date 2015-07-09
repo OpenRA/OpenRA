@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
 		public readonly int QuantizedFacings = 32;
-		public readonly WRange Cordon = new WRange(5120);
+		public readonly WDist Cordon = new WDist(5120);
 
 		[ActorReference]
 		[Desc("Actor to spawn when the aircraft start attacking")]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CameraRemoveDelay = 25;
 
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
-		public readonly WRange BeaconDistanceOffset = WRange.FromCells(6);
+		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
@@ -61,12 +61,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (randomize)
 				attackFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Range;
+			var altitude = self.World.Map.Rules.Actors[info.UnitType].Traits.Get<PlaneInfo>().CruiseAltitude.Length;
 			var attackRotation = WRot.FromFacing(attackFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
 			target = target + new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Range * delta / 1024;
-			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Range * delta / 1024;
+			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
+			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
 			Actor camera = null;
 			Beacon beacon = null;
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 						Info.BeaconPalettePrefix,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
-						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Range) * 1f / distance);
+							() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance);
 
 					w.Add(beacon);
 				}

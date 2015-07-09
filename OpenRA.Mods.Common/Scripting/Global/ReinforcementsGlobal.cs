@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (entryLocation.HasValue)
 			{
 				var pi = ai.Traits.GetOrDefault<AircraftInfo>();
-				initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi != null ? pi.CruiseAltitude.Range : 0)));
+				initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi != null ? pi.CruiseAltitude.Length : 0)));
 				initDict.Add(new LocationInit(entryLocation.Value));
 			}
 

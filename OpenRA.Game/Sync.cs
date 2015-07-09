@@ -36,7 +36,7 @@ namespace OpenRA
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
 			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
-			{ typeof(WRange), ((Func<WRange, int>)Hash<WRange>).Method },
+			{ typeof(WDist), ((Func<WDist, int>)Hash<WDist>).Method },
 			{ typeof(WPos), ((Func<WPos, int>)Hash<WPos>).Method },
 			{ typeof(WVec), ((Func<WVec, int>)Hash<WVec>).Method },
 			{ typeof(WAngle), ((Func<WAngle, int>)Hash<WAngle>).Method },

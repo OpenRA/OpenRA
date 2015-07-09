@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Upgrades = { };
 
 		[Desc("The range to search for actors to upgrade.")]
-		public readonly WRange Range = WRange.FromCells(3);
+		public readonly WDist Range = WDist.FromCells(3);
 
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally;
@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		int proximityTrigger;
 		WPos cachedPosition;
-		WRange cachedRange;
-		WRange desiredRange;
+		WDist cachedRange;
+		WDist desiredRange;
 
 		bool cachedDisabled = true;
 
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cachedDisabled != disabled)
 			{
 				Sound.Play(disabled ? info.DisableSound : info.EnableSound, self.CenterPosition);
-				desiredRange = disabled ? WRange.Zero : info.Range;
+				desiredRange = disabled ? WDist.Zero : info.Range;
 				cachedDisabled = disabled;
 			}
 

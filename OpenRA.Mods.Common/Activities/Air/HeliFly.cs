@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Helicopter helicopter;
 		readonly Target target;
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
 		public HeliFly(Actor self, Target t)
 		{
@@ -28,21 +28,21 @@ namespace OpenRA.Mods.Common.Activities
 			target = t;
 		}
 
-		public HeliFly(Actor self, Target t, WRange minRange, WRange maxRange)
+		public HeliFly(Actor self, Target t, WDist minRange, WDist maxRange)
 			: this(self, t)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
 		}
 
-		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WRange targetAltitude)
+		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WDist targetAltitude)
 		{
 			var altitude = helicopter.CenterPosition.Z;
-			if (altitude == targetAltitude.Range)
+			if (altitude == targetAltitude.Length)
 				return false;
 
-			var delta = helicopter.Info.AltitudeVelocity.Range;
-			var dz = (targetAltitude.Range - altitude).Clamp(-delta, delta);
+			var delta = helicopter.Info.AltitudeVelocity.Length;
+			var dz = (targetAltitude.Length - altitude).Clamp(-delta, delta);
 			helicopter.SetPosition(self, helicopter.CenterPosition + new WVec(0, 0, dz));
 
 			return true;
@@ -65,20 +65,20 @@ namespace OpenRA.Mods.Common.Activities
 			var move = helicopter.FlyStep(desiredFacing);
 
 			// Inside the minimum range, so reverse
-			if (minRange.Range > 0 && target.IsInRange(helicopter.CenterPosition, minRange))
+			if (minRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, minRange))
 			{
 				helicopter.SetPosition(self, helicopter.CenterPosition - move);
 				return this;
 			}
 
 			// Inside the maximum range, so we're done
-			if (maxRange.Range > 0 && target.IsInRange(helicopter.CenterPosition, maxRange))
+			if (maxRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, maxRange))
 				return NextActivity;
 
 			// The next move would overshoot, so just set the final position
 			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				helicopter.SetPosition(self, pos + new WVec(0, 0, helicopter.Info.CruiseAltitude.Range - pos.Z));
+				helicopter.SetPosition(self, pos + new WVec(0, 0, helicopter.Info.CruiseAltitude.Length - pos.Z));
 				return NextActivity;
 			}
 

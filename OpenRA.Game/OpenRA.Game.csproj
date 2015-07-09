@@ -305,8 +305,8 @@
     <Compile Include="CPos.cs" />
     <Compile Include="CVec.cs" />
     <Compile Include="WAngle.cs" />
+    <Compile Include="WDist.cs" />
     <Compile Include="WPos.cs" />
-    <Compile Include="WRange.cs" />
     <Compile Include="WRot.cs" />
     <Compile Include="WVec.cs" />
     <Compile Include="Primitives\TypeDictionary.cs" />

@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyTimed : Activity
 	{
 		readonly Plane plane;
-		readonly WRange cruiseAltitude;
+		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
 		public FlyTimed(int ticks, Actor self)

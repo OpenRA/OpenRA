@@ -23,9 +23,9 @@ namespace OpenRA.Mods.Common.Effects
 	public class BulletInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WRange / tick, two values indicate variable velocity.")]
-		public readonly WRange[] Speed = { new WRange(17) };
+		public readonly WDist[] Speed = { new WDist(17) };
 		[Desc("Maximum offset at the maximum range.")]
-		public readonly WRange Inaccuracy = WRange.Zero;
+		public readonly WDist Inaccuracy = WDist.Zero;
 		public readonly string Image = null;
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly ProjectileArgs args;
 		readonly Animation anim;
 		[Sync] readonly WAngle angle;
-		[Sync] readonly WRange speed;
+		[Sync] readonly WDist speed;
 
 		ContrailRenderable contrail;
 		string trailPalette;
@@ -82,20 +82,20 @@ namespace OpenRA.Mods.Common.Effects
 				angle = info.Angle[0];
 
 			if (info.Speed.Length > 1)
-				speed = new WRange(world.SharedRandom.Next(info.Speed[0].Range, info.Speed[1].Range));
+				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Length, info.Speed[1].Length));
 			else
 				speed = info.Speed[0];
 
 			target = args.PassiveTarget;
-			if (info.Inaccuracy.Range > 0)
+			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Range, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Range;
+				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Length;
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			facing = OpenRA.Traits.Util.GetFacing(target - pos, 0);
-			length = Math.Max((target - pos).Length / speed.Range, 1);
+			length = Math.Max((target - pos).Length / speed.Length, 1);
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{

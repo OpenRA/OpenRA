@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
 			var pi = ai.Traits.GetOrDefault<ICruiseAltitudeInfo>();
-			return pi != null ? pi.GetCruiseAltitude().Range : 0;
+			return pi != null ? pi.GetCruiseAltitude().Length : 0;
 		}
 	}
 }

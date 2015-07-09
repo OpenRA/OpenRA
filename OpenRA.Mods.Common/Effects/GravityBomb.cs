@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string OpenSequence = null;
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
-		public readonly WRange Velocity = WRange.Zero;
+		public readonly WDist Velocity = WDist.Zero;
 		[Desc("Value added to velocity every tick.")]
-		public readonly WRange Acceleration = new WRange(15);
+		public readonly WDist Acceleration = new WDist(15);
 
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
-			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
-			acceleration = new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
+			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Velocity);
+			acceleration = new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
 
 			anim = new Animation(args.SourceActor.World, info.Image);
 

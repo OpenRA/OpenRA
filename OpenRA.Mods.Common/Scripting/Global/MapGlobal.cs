@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns a table of all actors within the requested region, filtered using the specified function.")]
-		public Actor[] ActorsInCircle(WPos location, WRange radius, LuaFunction filter = null)
+		public Actor[] ActorsInCircle(WPos location, WDist radius, LuaFunction filter = null)
 		{
 			var actors = Context.World.FindActorsInCircle(location, radius);
 

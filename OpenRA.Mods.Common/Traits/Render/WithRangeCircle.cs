@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Color Color = Color.FromArgb(128, Color.White);
 
 		[Desc("Range of the circle")]
-		public readonly WRange Range = WRange.Zero;
+		public readonly WDist Range = WDist.Zero;
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{

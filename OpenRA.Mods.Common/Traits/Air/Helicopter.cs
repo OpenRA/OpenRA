@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Allow the helicopter turn before landing.")]
 		public readonly bool TurnToLand = false;
-		public readonly WRange LandAltitude = WRange.Zero;
+		public readonly WDist LandAltitude = WDist.Zero;
 
 		[Desc("How fast the helicopter ascends or descends.")]
-		public readonly WRange AltitudeVelocity = new WRange(43);
+		public readonly WDist AltitudeVelocity = new WDist(43);
 
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
@@ -145,9 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(self, target, WRange.Zero, range); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange) { return new HeliFly(self, target, minRange, maxRange); }
-		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new Follow(self, target, minRange, maxRange); }
+		public Activity MoveWithinRange(Target target, WDist range) { return new HeliFly(self, target, WDist.Zero, range); }
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return new HeliFly(self, target, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return new Follow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)

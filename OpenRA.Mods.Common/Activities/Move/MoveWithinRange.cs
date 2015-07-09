@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveWithinRange : MoveAdjacentTo
 	{
-		readonly WRange maxRange;
-		readonly WRange minRange;
+		readonly WDist maxRange;
+		readonly WDist minRange;
 
-		public MoveWithinRange(Actor self, Target target, WRange minRange, WRange maxRange)
+		public MoveWithinRange(Actor self, Target target, WDist minRange, WDist maxRange)
 			: base(self, target)
 		{
 			this.minRange = minRange;
@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 		protected override IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
 			var map = self.World.Map;
-			var maxCells = (maxRange.Range + 1023) / 1024;
-			var minCells = minRange.Range / 1024;
+			var maxCells = (maxRange.Length + 1023) / 1024;
+			var minCells = minRange.Length / 1024;
 
 			var outerSq = maxRange.RangeSquared;
 			var innerSq = minRange.RangeSquared;

@@ -21,11 +21,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackBase attack;
 		readonly IMove move;
 		readonly IFacing facing;
-		readonly WRange minRange;
-		readonly WRange maxRange;
+		readonly WDist minRange;
+		readonly WDist maxRange;
 		readonly IPositionable positionable;
 
-		public Attack(Actor self, Target target, WRange minRange, WRange maxRange, bool allowMovement)
+		public Attack(Actor self, Target target, WDist minRange, WDist maxRange, bool allowMovement)
 		{
 			Target = target;
 			this.minRange = minRange;

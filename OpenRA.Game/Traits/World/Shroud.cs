@@ -72,9 +72,9 @@ namespace OpenRA.Traits
 				Hash += 1;
 		}
 
-		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WRange range)
+		public static IEnumerable<CPos> CellsInRange(Map map, WPos pos, WDist range)
 		{
-			var r = (range.Range + 1023) / 1024;
+			var r = (range.Length + 1023) / 1024;
 			var limit = range.RangeSquared;
 			var cell = map.CellContaining(pos);
 
@@ -83,7 +83,7 @@ namespace OpenRA.Traits
 					yield return c;
 		}
 
-		public static IEnumerable<CPos> CellsInRange(Map map, CPos cell, WRange range)
+		public static IEnumerable<CPos> CellsInRange(Map map, CPos cell, WDist range)
 		{
 			return CellsInRange(map, map.CenterOfCell(cell), range);
 		}

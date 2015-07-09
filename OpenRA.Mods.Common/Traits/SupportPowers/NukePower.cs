@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int FlightDelay = 400;
 
 		[Desc("Visual ascent velocity in WRange / tick")]
-		public readonly WRange FlightVelocity = new WRange(512);
+		public readonly WDist FlightVelocity = new WDist(512);
 
 		[Desc("Descend immediately on the target, with half the FlightDelay")]
 		public readonly bool SkipAscent = false;

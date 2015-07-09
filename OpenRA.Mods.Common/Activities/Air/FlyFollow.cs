@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		Target target;
 		Plane plane;
-		WRange minRange;
-		WRange maxRange;
+		WDist minRange;
+		WDist maxRange;
 
-		public FlyFollow(Actor self, Target target, WRange minRange, WRange maxRange)
+		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange)
 		{
 			this.target = target;
 			plane = self.Trait<Plane>();

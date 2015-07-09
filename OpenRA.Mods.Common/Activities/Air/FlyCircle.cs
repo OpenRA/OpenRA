@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyCircle : Activity
 	{
 		readonly Plane plane;
-		readonly WRange cruiseAltitude;
+		readonly WDist cruiseAltitude;
 
 		public FlyCircle(Actor self)
 		{

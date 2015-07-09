@@ -17,13 +17,13 @@ namespace OpenRA.Mods.Common.Warheads
 	public class SpreadDamageWarhead : DamageWarhead
 	{
 		[Desc("Range between falloff steps.")]
-		public readonly WRange Spread = new WRange(43);
+		public readonly WDist Spread = new WDist(43);
 
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WRange[] Range = null;
+		public WDist[] Range = null;
 
 		public void InitializeRange()
 		{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Warheads
 				var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
 				if (healthInfo != null)
 				{
-					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Range);
+					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
 					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 				}
 
@@ -67,10 +67,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		int GetDamageFalloff(int distance)
 		{
-			var inner = Range[0].Range;
+			var inner = Range[0].Length;
 			for (var i = 1; i < Range.Length; i++)
 			{
-				var outer = Range[i].Range;
+				var outer = Range[i].Length;
 				if (outer > distance)
 					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 

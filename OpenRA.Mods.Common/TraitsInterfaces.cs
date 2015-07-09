@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
-	public interface ICruiseAltitudeInfo { WRange GetCruiseAltitude(); }
+	public interface ICruiseAltitudeInfo { WDist GetCruiseAltitude(); }
 
 	public interface IUpgradable
 	{
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface ICallForTransport
 	{
-		WRange MinimumDistance { get; }
+		WDist MinimumDistance { get; }
 		bool WantsTransport { get; set; }
 		void MovementCancelled(Actor self);
 		void RequestTransport(CPos destination, Activity afterLandActivity);

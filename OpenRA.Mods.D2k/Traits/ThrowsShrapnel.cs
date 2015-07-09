@@ -20,7 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[WeaponReference]
 		public string[] Weapons = { };
 		public int[] Pieces = { 3, 10 };
-		public WRange[] Range = { WRange.FromCells(2), WRange.FromCells(5) };
+		public WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };
 		public object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
 	}
 
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				var wep = self.World.Map.Rules.Weapons[name.ToLowerInvariant()];
 				var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]);
-				var range = self.World.SharedRandom.Next(info.Range[0].Range, info.Range[1].Range);
+				var range = self.World.SharedRandom.Next(info.Range[0].Length, info.Range[1].Length);
 
 				for (var i = 0; pieces > i; i++)
 				{

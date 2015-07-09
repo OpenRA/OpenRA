@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <returns>A path from start to target</returns>
 		List<CPos> FindUnitPath(CPos source, CPos target, Actor self);
 
-		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self);
+		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self);
 
 		/// <summary>
 		/// Calculates a path given a search specification
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WRange range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
 		{
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Select only the tiles that are within range from the requested SubCell
 			// This assumes that the SubCell does not change during the path traversal
-			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
+			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Length / 1024 + 1)
 				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= range.RangeSquared
 							&& mi.CanEnterCell(self.World as World, self as Actor, t));
 

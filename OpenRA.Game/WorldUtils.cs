@@ -30,12 +30,12 @@ namespace OpenRA
 			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
 		}
 
-		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
+		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
-				var vec = new WVec(r, r, WRange.Zero);
+				var vec = new WVec(r, r, WDist.Zero);
 				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.RangeSquared);
 			}

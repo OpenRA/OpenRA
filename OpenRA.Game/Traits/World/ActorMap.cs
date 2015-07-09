@@ -90,7 +90,7 @@ namespace OpenRA.Traits
 		{
 			public readonly int Id;
 			public WPos Position { get; private set; }
-			public WRange Range { get; private set; }
+			public WDist Range { get; private set; }
 
 			public WPos TopLeft { get; private set; }
 			public WPos BottomRight { get; private set; }
@@ -102,7 +102,7 @@ namespace OpenRA.Traits
 
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public ProximityTrigger(int id, WPos pos, WRange range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public ProximityTrigger(int id, WPos pos, WDist range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
 				Id = id;
 
@@ -112,12 +112,12 @@ namespace OpenRA.Traits
 				Update(pos, range);
 			}
 
-			public void Update(WPos newPos, WRange newRange)
+			public void Update(WPos newPos, WDist newRange)
 			{
 				Position = newPos;
 				Range = newRange;
 
-				var offset = new WVec(newRange, newRange, WRange.Zero);
+				var offset = new WVec(newRange, newRange, WDist.Zero);
 				TopLeft = newPos - offset;
 				BottomRight = newPos + offset;
 
@@ -130,7 +130,7 @@ namespace OpenRA.Traits
 					return;
 
 				var oldActors = currentActors;
-				var delta = new WVec(Range, Range, WRange.Zero);
+				var delta = new WVec(Range, Range, WDist.Zero);
 				currentActors = am.ActorsInBox(Position - delta, Position + delta)
 					.Where(a => (a.CenterPosition - Position).HorizontalLengthSquared < Range.RangeSquared)
 					.ToList();
@@ -407,7 +407,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public int AddProximityTrigger(WPos pos, WRange range, Action<Actor> onEntry, Action<Actor> onExit)
+		public int AddProximityTrigger(WPos pos, WDist range, Action<Actor> onEntry, Action<Actor> onExit)
 		{
 			var id = nextTriggerId++;
 			var t = new ProximityTrigger(id, pos, range, onEntry, onExit);
@@ -431,7 +431,7 @@ namespace OpenRA.Traits
 			t.Dispose();
 		}
 
-		public void UpdateProximityTrigger(int id, WPos newPos, WRange newRange)
+		public void UpdateProximityTrigger(int id, WPos newPos, WDist newRange)
 		{
 			ProximityTrigger t;
 			if (!proximityTriggers.TryGetValue(id, out t))

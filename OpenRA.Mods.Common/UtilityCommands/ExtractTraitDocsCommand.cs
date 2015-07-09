@@ -149,8 +149,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (t == typeof(WPos))
 				return "3D World Position";
 
-			if (t == typeof(WRange))
-				return "1D World Range";
+			if (t == typeof(WDist))
+				return "1D World Distance";
 
 			if (t == typeof(WVec))
 				return "3D World Vector";

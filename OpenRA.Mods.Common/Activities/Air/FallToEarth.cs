@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var move = info.Moves ? aircraft.FlyStep(aircraft.Facing) : WVec.Zero;
-			move -= new WVec(WRange.Zero, WRange.Zero, info.Velocity);
+			move -= new WVec(WDist.Zero, WDist.Zero, info.Velocity);
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
 			return this;

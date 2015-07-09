@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool Spins = true;
 		public readonly bool Moves = false;
-		public readonly WRange Velocity = new WRange(43);
+		public readonly WDist Velocity = new WDist(43);
 
 		public object Create(ActorInitializer init) { return new FallsToEarth(init.Self, this); }
 	}

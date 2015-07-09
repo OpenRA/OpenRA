@@ -128,13 +128,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Util.SequenceActivities(new Fly(self, Target.FromCell(self.World, cell)), new FlyCircle(self)); }
-		public Activity MoveWithinRange(Target target, WRange range) { return Util.SequenceActivities(new Fly(self, target, WRange.Zero, range), new FlyCircle(self)); }
-		public Activity MoveWithinRange(Target target, WRange minRange, WRange maxRange)
+		public Activity MoveWithinRange(Target target, WDist range) { return Util.SequenceActivities(new Fly(self, target, WDist.Zero, range), new FlyCircle(self)); }
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
 		{
 			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), new FlyCircle(self));
 		}
 
-		public Activity MoveFollow(Actor self, Target target, WRange minRange, WRange maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return new FlyFollow(self, target, minRange, maxRange); }
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return new Fly(self, Target.FromCell(self.World, cell)); }
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)), new Fly(self, Target.FromPos(toPos)));
 		}
 
-		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, WRange.FromCells(3), WRange.FromCells(5)); }
+		public Activity MoveToTarget(Actor self, Target target) { return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5)); }
 		public Activity MoveIntoTarget(Actor self, Target target) { return new Land(self, target); }
 	}
 }

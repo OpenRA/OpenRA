@@ -23,10 +23,10 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int[] Falloff = { 100, 100, 25, 11, 6, 4, 3, 2, 1, 0 };
 
 		[Desc("Range between falloff steps.")]
-		public readonly WRange Spread = new WRange(3072);
+		public readonly WDist Spread = new WDist(3072);
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WRange[] Range = null;
+		public WDist[] Range = null;
 
 		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
@@ -46,10 +46,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 		int GetNoisePercentageAtDistance(int distance)
 		{
-			var inner = Info.Range[0].Range;
+			var inner = Info.Range[0].Length;
 			for (var i = 1; i < Info.Range.Length; i++)
 			{
-				var outer = Info.Range[i].Range;
+				var outer = Info.Range[i].Length;
 				if (outer > distance)
 					return int2.Lerp(Info.Falloff[i - 1], Info.Falloff[i], distance - inner, outer - inner);
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var length = distance.Length;
 
 			// Actor is too far to hear anything.
-			if (length > Info.Range[Info.Range.Length - 1].Range)
+			if (length > Info.Range[Info.Range.Length - 1].Length)
 				return WVec.Zero;
 
 			var direction = 1024 * distance / length;

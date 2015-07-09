@@ -91,7 +91,7 @@ namespace OpenRA.Mods.D2k.Traits
 			// If aircraft, spawn at cruise altitude
 			var aircraftInfo = self.World.Map.Rules.Actors[deliveringActorName.ToLower()].Traits.GetOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
-				spawn += new WVec(0, 0, aircraftInfo.CruiseAltitude.Range);
+				spawn += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
 			// Create delivery actor
 			carrier = self.World.CreateActor(false, deliveringActorName, new TypeDictionary

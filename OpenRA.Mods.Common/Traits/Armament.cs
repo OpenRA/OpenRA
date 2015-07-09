@@ -48,10 +48,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle[] LocalYaw = { };
 
 		[Desc("Move the turret backwards when firing.")]
-		public readonly WRange Recoil = WRange.Zero;
+		public readonly WDist Recoil = WDist.Zero;
 
 		[Desc("Recoil recovery per-frame")]
-		public readonly WRange RecoilRecovery = new WRange(9);
+		public readonly WDist RecoilRecovery = new WDist(9);
 
 		[Desc("Muzzle flash sequence to render")]
 		public readonly string MuzzleSequence = null;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		Lazy<AmmoPool> ammoPool;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
-		public WRange Recoil;
+		public WDist Recoil;
 		public int FireDelay { get; private set; }
 		public int Burst { get; private set; }
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (FireDelay > 0)
 				--FireDelay;
 
-			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
+			Recoil = new WDist(Math.Max(0, Recoil.Length - Info.RecoilRecovery.Length));
 
 			for (var i = 0; i < delayedActions.Count; i++)
 			{
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
 				return null;
 
-			if (Weapon.MinRange != WRange.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
+			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
 				return null;
 
 			if (!Weapon.IsValidAgainst(target, self.World, self))
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
 			var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
-			var localOffset = b.Offset + new WVec(-Recoil, WRange.Zero, WRange.Zero);
+			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
 			if (turret.Value != null)
 			{
 				var turretOrientation = coords.Value.QuantizeOrientation(self, turret.Value.LocalOrientation(self));

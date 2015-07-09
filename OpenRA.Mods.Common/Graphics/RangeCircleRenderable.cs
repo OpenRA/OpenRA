@@ -16,12 +16,12 @@ namespace OpenRA.Mods.Common.Graphics
 	public struct RangeCircleRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos centerPosition;
-		readonly WRange radius;
+		readonly WDist radius;
 		readonly int zOffset;
 		readonly Color color;
 		readonly Color contrastColor;
 
-		public RangeCircleRenderable(WPos centerPosition, WRange radius, int zOffset, Color color, Color contrastColor)
+		public RangeCircleRenderable(WPos centerPosition, WDist radius, int zOffset, Color color, Color contrastColor)
 		{
 			this.centerPosition = centerPosition;
 			this.radius = radius;

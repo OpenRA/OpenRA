@@ -19,7 +19,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class CarryableInfo : ITraitInfo
 	{
 		[Desc("Required distance away from destination before requesting a pickup. Default is 6 cells.")]
-		public WRange MinDistance = WRange.FromCells(6);
+		public WDist MinDistance = WDist.FromCells(6);
 
 		public object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { RequestTransport(targetCell, next); }
 		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { RequestTransport(targetCell, next); }
 
-		public WRange MinimumDistance { get { return info.MinDistance; } }
+		public WDist MinimumDistance { get { return info.MinDistance; } }
 
 		public void RequestTransport(CPos destination, Activity afterLandActivity)
 		{

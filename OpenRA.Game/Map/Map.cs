@@ -841,13 +841,13 @@ namespace OpenRA
 			return new MPos(x, y).ToCPos(this);
 		}
 
-		public WRange DistanceToEdge(WPos pos, WVec dir)
+		public WDist DistanceToEdge(WPos pos, WVec dir)
 		{
 			var tl = CenterOfCell(CellsInsideBounds.TopLeft) - new WVec(512, 512, 0);
 			var br = CenterOfCell(CellsInsideBounds.BottomRight) + new WVec(511, 511, 0);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
-			return new WRange(Math.Min(x, y) * dir.Length);
+			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
 		static readonly CVec[][] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);

@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, ICruiseAltitudeInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
-		public readonly WRange CruiseAltitude = new WRange(1280);
-		public readonly WRange IdealSeparation = new WRange(1706);
+		public readonly WDist CruiseAltitude = new WDist(1280);
+		public readonly WDist IdealSeparation = new WDist(1706);
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 		public int GetInitialFacing() { return InitialFacing; }
-		public WRange GetCruiseAltitude() { return CruiseAltitude; }
+		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Repulsion only applies when we're flying!
 			var altitude = CenterPosition.Z;
-			if (altitude != info.CruiseAltitude.Range)
+			if (altitude != info.CruiseAltitude.Length)
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)

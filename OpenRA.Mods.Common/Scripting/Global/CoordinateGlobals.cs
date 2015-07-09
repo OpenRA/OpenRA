@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public WRangeGlobal(ScriptContext context) : base(context) { }
 
 		[Desc("Create a new WRange.")]
-		public WRange New(int r) { return new WRange(r); }
+		public WDist New(int r) { return new WDist(r); }
 
 		[Desc("Create a new WRange by cell distance")]
-		public WRange FromCells(int numCells) { return WRange.FromCells(numCells); }
+		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
 	}
 }
