@@ -143,6 +143,7 @@ namespace OpenRA
 				{
 					case "Range": return Length;
 					default: throw new LuaException("WPos does not define a member '{0}'".F(key));
+					default: throw new LuaException("WDist does not define a member '{0}'".F(key));
 				}
 			}
 
