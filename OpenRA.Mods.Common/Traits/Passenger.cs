@@ -111,22 +111,22 @@ namespace OpenRA.Mods.Common.Traits
 	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld
 	{
 		public readonly PassengerInfo Info;
-		public Passenger(PassengerInfo info) { Info = info; }
+		public Passenger(PassengerInfo info)
+		{
+			Info = info;
+			Func<Actor, bool> canTarget = IsCorrectCargoType;
+			Func<Actor, bool> useEnterCursor = CanEnter;
+			Orders = new EnterAlliedActorTargeter<Cargo>[]
+			{
+				new EnterTransportTargeter("EnterTransport", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode),
+				new EnterTransportsTargeter("EnterTransports", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode)
+			};
+		}
+
 		public Actor Transport;
 		public Cargo ReservedCargo { get; private set; }
 
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get
-			{
-				yield return new EnterTransportTargeter("EnterTransport", 5,
-					target => IsCorrectCargoType(target), target => CanEnter(target),
-					Info.AlternateTransportsMode);
-				yield return new EnterTransportsTargeter("EnterTransports", 5,
-					target => IsCorrectCargoType(target), target => CanEnter(target),
-					Info.AlternateTransportsMode);
-			}
-		}
+		public IEnumerable<IOrderTargeter> Orders { get; private set; }
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
