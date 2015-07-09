@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Effects
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 		public readonly string Palette = "effect";
 		public readonly bool Shadow = false;
-		[Desc("Projectile speed in WRange / tick")]
+		[Desc("Projectile speed in WDist / tick")]
 		public readonly WDist Speed = new WDist(8);
 		[Desc("Maximum vertical pitch when changing altitude.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);

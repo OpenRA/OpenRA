@@ -247,7 +247,7 @@ namespace OpenRA.Graphics
 			}
 
 			// Cells can be pushed up from below if they have non-zero height.
-			// Each height step is equivalent to 512 WRange units, which is
+			// Each height step is equivalent to 512 WDist units, which is
 			// one MPos step for diamond cells, but only half a MPos step
 			// for classic cells. Doh!
 			var heightOffset = map.TileShape == TileShape.Diamond ? map.MaximumTerrainHeight : map.MaximumTerrainHeight / 2;

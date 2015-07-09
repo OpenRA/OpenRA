@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class BulletInfo : IProjectileInfo
 	{
-		[Desc("Projectile speed in WRange / tick, two values indicate variable velocity.")]
+		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;

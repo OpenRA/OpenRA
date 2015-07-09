@@ -59,15 +59,15 @@ namespace OpenRA.Mods.Common.Scripting
 		public WVec Zero { get { return WVec.Zero; } }
 	}
 
-	[ScriptGlobal("WRange")]
+	[ScriptGlobal("WDist")]
 	public class WRangeGlobal : ScriptGlobal
 	{
 		public WRangeGlobal(ScriptContext context) : base(context) { }
 
-		[Desc("Create a new WRange.")]
+		[Desc("Create a new WDist.")]
 		public WDist New(int r) { return new WDist(r); }
 
-		[Desc("Create a new WRange by cell distance")]
+		[Desc("Create a new WDist by cell distance")]
 		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
 	}
 }
