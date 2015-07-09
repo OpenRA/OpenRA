@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Common.Scripting
 	}
 
 	[ScriptGlobal("WDist")]
-	public class WRangeGlobal : ScriptGlobal
+	public class WDistGlobal : ScriptGlobal
 	{
-		public WRangeGlobal(ScriptContext context) : base(context) { }
+		public WDistGlobal(ScriptContext context) : base(context) { }
 
 		[Desc("Create a new WDist.")]
 		public WDist New(int r) { return new WDist(r); }
