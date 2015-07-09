@@ -383,3 +383,14 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+		Button@COORDINATES_BUTTON:
+			X: WINDOW_RIGHT - 660
+			Y: 5
+			Width: 100
+			Height: 25
+			Text: Coordinates
+			Font: Bold
+			Key: f2
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Show map coordinates
+			TooltipContainer: TOOLTIP_CONTAINER

@@ -516,6 +516,7 @@
     <Compile Include="Traits\World\SpawnMPUnits.cs" />
     <Compile Include="Traits\World\StartGameNotification.cs" />
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
+    <Compile Include="Traits\World\MapCoordinatesOverlay.cs" />
     <Compile Include="UtilityCommands\ActorStatsExport.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />

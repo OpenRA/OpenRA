@@ -4,6 +4,7 @@
 	ActorMap:
 	ScreenMap:
 	TerrainGeometryOverlay:
+	MapCoordinatesOverlay:
 	LoadWidgetAtGameStart:
 	ShroudRenderer:
 		FogVariants: shroud

@@ -4,6 +4,7 @@
 	ScreenMap:
 	ActorMap:
 	TerrainGeometryOverlay:
+	MapCoordinatesOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed

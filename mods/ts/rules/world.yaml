@@ -53,6 +53,7 @@
 		AllowUnderActors: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
+	MapCoordinatesOverlay:
 
 World:
 	Inherits: ^BaseWorld
