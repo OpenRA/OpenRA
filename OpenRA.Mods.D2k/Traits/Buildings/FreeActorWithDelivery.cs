@@ -51,18 +51,15 @@ namespace OpenRA.Mods.D2k.Traits
 			self = init.Self;
 			Info = info;
 
-			DoDelivery(self.Location + info.DeliveryOffset, info.Actor, info.DeliveringActor, info.InitialActivity);
+			DoDelivery(self.Location + info.DeliveryOffset, info.Actor, info.DeliveringActor);
 		}
 
-		public void DoDelivery(CPos location, string actorName, string carrierActorName, string clientInitialActivity)
+		public void DoDelivery(CPos location, string actorName, string carrierActorName)
 		{
 			Actor cargo;
 			Actor carrier;
 
 			CreateActors(actorName, carrierActorName, out cargo, out carrier);
-
-			if (clientInitialActivity != null)
-				cargo.QueueActivity(Game.CreateObject<Activity>(clientInitialActivity));
 
 			var carryable = cargo.Trait<Carryable>();
 			carryable.Destination = location;

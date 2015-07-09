@@ -42,7 +42,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var refinery = refineries.First().Actor;
 			var delivery = refinery.Trait<FreeActorWithDelivery>();
 			delivery.DoDelivery(refinery.Location + delivery.Info.DeliveryOffset, delivery.Info.Actor,
-				delivery.Info.DeliveringActor, delivery.Info.InitialActivity);
+				delivery.Info.DeliveringActor);
 		}
 	}
 }

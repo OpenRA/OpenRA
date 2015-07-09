@@ -180,7 +180,6 @@ PROC:
 		Value: 500
 	FreeActor:
 		Actor: HARV
-		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
 	WithResources:

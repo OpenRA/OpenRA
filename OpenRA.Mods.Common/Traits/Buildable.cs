@@ -29,9 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable production when there are more than this many of this actor on the battlefield. Set to 0 to disable.")]
 		public readonly int BuildLimit = 0;
 
-		[Desc("What the unit should start doing. Warning: If this is not a harvester", "it will break if you use FindResources.")]
-		public readonly string InitialActivity = null;
-
 		[Desc("Force a specific race variant, overriding the race of the producing actor.")]
 		public readonly string ForceRace = null;
 
