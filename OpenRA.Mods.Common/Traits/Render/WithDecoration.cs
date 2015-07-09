@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -87,27 +88,27 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (IsTraitDisabled)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (self.IsDead || !self.IsInWorld)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (anim == null)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			var allied = self.Owner.IsAlliedWith(self.World.RenderPlayer);
 
 			if (!allied && !info.ShowToEnemies)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (allied && !info.ShowToAllies)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (!ShouldRender(self))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (self.World.FogObscures(self))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			var pxPos = wr.ScreenPxPosition(self.CenterPosition);
 			var actorBounds = self.Bounds;
@@ -150,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			anim.Tick();
 
-			yield return new SpriteRenderable(img, renderPos, WVec.Zero, info.ZOffset, wr.Palette(info.Palette), info.Scale, true);
+			return new IRenderable[] { new SpriteRenderable(img, renderPos, WVec.Zero, info.ZOffset, wr.Palette(info.Palette), info.Scale, true) };
 		}
 	}
 }
