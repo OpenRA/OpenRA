@@ -58,6 +58,7 @@ Container@GAME_INFO_PANEL:
 			Height: PARENT_BOTTOM
 		Container@OBJECTIVES_PANEL:
 			Y: 65
+			Width: PARENT_RIGHT
 		Container@DEBUG_PANEL:
 			Y: 65
 			Width: PARENT_RIGHT

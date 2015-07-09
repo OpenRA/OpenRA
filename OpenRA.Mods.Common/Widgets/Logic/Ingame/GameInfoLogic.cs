@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Scripting;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -28,8 +29,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.IsVisible = () => activePanel != IngameInfoPanel.AutoSelect;
 
 			// Objectives/Stats tab
+			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			if (lp != null && iop != null && iop.PanelName != null)
+			var hasObjectives = hasError || (lp != null && iop != null && iop.PanelName != null);
+
+			if (hasObjectives)
 			{
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
@@ -38,10 +43,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
 				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
 
+				var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
 				var objectivesPanel = widget.Get<ContainerWidget>("OBJECTIVES_PANEL");
 				objectivesPanel.IsVisible = () => activePanel == IngameInfoPanel.Objectives;
 
-				Game.LoadWidget(world, iop.PanelName, objectivesPanel, new WidgetArgs());
+				Game.LoadWidget(world, panel, objectivesPanel, new WidgetArgs());
 
 				if (activePanel == IngameInfoPanel.AutoSelect)
 					activePanel = IngameInfoPanel.Objectives;
@@ -73,6 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var debugTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				debugTabButton.Text = "Debug";
 				debugTabButton.IsVisible = () => lp != null && world.LobbyInfo.GlobalSettings.AllowCheats && numTabs > 1;
+				debugTabButton.IsDisabled = () => world.IsGameOver;
 				debugTabButton.OnClick = () => activePanel = IngameInfoPanel.Debug;
 				debugTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Debug;
 

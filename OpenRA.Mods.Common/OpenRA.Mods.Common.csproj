@@ -586,7 +586,6 @@
     <Compile Include="Widgets\Logic\Ingame\IngamePowerCounterLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameSiloBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\IngameRadarDisplayLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\LeaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadIngamePlayerOrObserverUILogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\LoadMapEditorLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ObserverShroudSelectorLogic.cs" />

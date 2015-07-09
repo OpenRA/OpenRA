@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer, IngameInfoPanel activePanel)
 		{
-			var resumeDisabled = false;
+			var leaving = false;
 			menu = widget.Get("INGAME_MENU");
 			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
 			if (mpe != null)
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (world.Type == WorldType.Regular)
 					Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Faction.InternalName);
 
-				resumeDisabled = true;
+				leaving = true;
 
 				var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 				var exitDelay = iop != null ? iop.ExitDelay : 0;
@@ -71,8 +71,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var abortMissionButton = menu.Get<ButtonWidget>("ABORT_MISSION");
 			abortMissionButton.IsVisible = () => world.Type == WorldType.Regular;
+			abortMissionButton.IsDisabled = () => leaving;
+			if (world.IsGameOver)
+				abortMissionButton.GetText = () => "Leave";
+
 			abortMissionButton.OnClick = () =>
 			{
+				if (world.IsGameOver)
+				{
+					onQuit();
+					return;
+				}
+
 				hideMenu = true;
 				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu);
 			};
@@ -116,7 +126,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			menu.Get<ButtonWidget>("MUSIC").OnClick = () =>
+			var musicButton = menu.Get<ButtonWidget>("MUSIC");
+			musicButton.IsDisabled = () => leaving;
+			musicButton.OnClick = () =>
 			{
 				hideMenu = true;
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -127,6 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var settingsButton = widget.Get<ButtonWidget>("SETTINGS");
+			settingsButton.IsDisabled = () => leaving;
 			settingsButton.OnClick = () =>
 			{
 				hideMenu = true;
@@ -139,7 +152,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var resumeButton = menu.Get<ButtonWidget>("RESUME");
-			resumeButton.IsDisabled = () => resumeDisabled;
+			resumeButton.IsDisabled = () => leaving;
+			if (world.IsGameOver)
+				resumeButton.GetText = () => "Return to map";
+
 			resumeButton.OnClick = closeMenu;
 
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");

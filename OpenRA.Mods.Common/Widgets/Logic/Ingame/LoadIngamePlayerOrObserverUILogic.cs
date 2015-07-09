@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Scripting;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -46,9 +47,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			world.GameOver += () =>
 			{
-				worldRoot.RemoveChildren();
+				Ui.CloseWindow();
 				menuRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
+
+				if (world.LocalPlayer != null)
+				{
+					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+					var video = world.LocalPlayer.WinState == WinState.Won ? world.Map.Videos.GameWon : world.Map.Videos.GameLost;
+
+					if (!string.IsNullOrEmpty(video) && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+						Media.PlayFMVFullscreen(world, video, () => { });
+				}
+
+				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
+				if (optionsButton != null)
+					optionsButton.OnClick();
 			};
 		}
 	}

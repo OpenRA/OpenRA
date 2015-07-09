@@ -33,9 +33,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			worldRoot = Ui.Root.Get("WORLD_ROOT");
 			menuRoot = Ui.Root.Get("MENU_ROOT");
 
-			Action removeCurrentWidget = () => menuRoot.RemoveChild(currentWidget);
-			world.GameOver += removeCurrentWidget;
-
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 			if (options != null)
