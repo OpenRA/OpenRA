@@ -1015,7 +1015,10 @@ function CreateEditor(bare)
 
   editor:Connect(wx.wxEVT_KILL_FOCUS,
     function (event)
-      if editor:AutoCompActive() then editor:AutoCompCancel() end
+      -- on OSX clicking on scrollbar in the popup is causing the editor to lose focus,
+      -- which causes canceling of auto-complete, which later cause crash because
+      -- the window is destroyed in wxwidgets after already being closed. Skip on OSX.
+      if ide.osname ~= 'Macintosh' and editor:AutoCompActive() then editor:AutoCompCancel() end
       PackageEventHandle("onEditorFocusLost", editor)
       event:Skip()
     end)
