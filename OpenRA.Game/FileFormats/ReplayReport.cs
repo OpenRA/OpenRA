@@ -19,7 +19,8 @@ namespace OpenRA.FileFormats
 {
 	public class ReplayReport
 	{
-		static int networkTickDuration = 120; // Engine constant (ms)
+		// Engine constant (ms)
+		static int networkTickDuration = 120;
 
 		public static string Read(ReplayMetadata metadata)
 		{
