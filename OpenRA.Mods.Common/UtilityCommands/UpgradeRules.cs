@@ -1367,6 +1367,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(n => n.Key == "InitialActivity");
 				}
 
+				// Make default upgrades explicit for GainsExperience
+				if (engineVersion < 20150709)
+				{
+					if (depth == 1 && (node.Key == "GainsExperience" || node.Key.StartsWith("GainsExperience@"))
+							&& node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades") == null)
+						node.Value.Nodes.Add(new MiniYamlNode("Upgrades", new MiniYaml("", new List<MiniYamlNode> {
+							new MiniYamlNode("200", "firepower, damage, speed, reload, inaccuracy, rank"),
+							new MiniYamlNode("400", "firepower, damage, speed, reload, inaccuracy, rank"),
+							new MiniYamlNode("800", "firepower, damage, speed, reload, inaccuracy, rank"),
+							new MiniYamlNode("1600", "firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal")
+						})));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

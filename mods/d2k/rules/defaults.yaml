@@ -10,6 +10,11 @@
 
 ^GainsExperience:
 	GainsExperience:
+		Upgrades:
+			200: firepower, damage, speed, reload, inaccuracy, rank
+			400: firepower, damage, speed, reload, inaccuracy, rank
+			800: firepower, damage, speed, reload, inaccuracy, rank
+			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
 	GainsStatUpgrades:
 	SelfHealing@ELITE:
 		Step: 2
