@@ -1,0 +1,274 @@
+Palettes:
+	cursor: mousepal.pal
+
+Cursors:
+	mouse.shp: cursor
+		default:
+			Start: 0
+			X: -28
+			Y: -21
+		default-minimap:
+			Start: 1
+			X: -28
+			Y: -21
+		scroll-t:
+			Start: 2
+		scroll-tr:
+			Start: 3
+		scroll-r:
+			Start: 4
+		scroll-br:
+			Start: 5
+		scroll-b:
+			Start: 6
+		scroll-bl:
+			Start: 7
+		scroll-l:
+			Start: 8
+		scroll-tl:
+			Start: 9
+		scroll-t-blocked:
+			Start: 10
+		scroll-tr-blocked:
+			Start: 11
+		scroll-r-blocked:
+			Start: 12
+		scroll-br-blocked:
+			Start: 13
+		scroll-b-blocked:
+			Start: 14
+		scroll-bl-blocked:
+			Start: 15
+		scroll-l-blocked:
+			Start: 16
+		scroll-tl-blocked:
+			Start: 17
+		select:
+			Start: 18
+			Length: 13
+		move:
+			Start: 31
+			Length: 10
+		move-blocked:
+			Start: 41
+		move-minimap:
+			Start: 42
+			Length: 10
+		move-blocked-minimap:
+			Start: 52
+		generic-blocked-minimap:
+			Start: 52
+		attack:
+			Start: 53
+			Length: 5
+		attackmove:
+			Start: 58
+			Length: 5
+		attack-minimap:
+			Start: 63
+			Length: 5
+		guard:
+			Start: 68
+			Length: 5
+		guard-minimap:
+			Start: 73
+			Length: 5
+		dsol-deploy:
+			Start: 78
+			Length: 10
+		drop-blocked:
+			Start: 88
+		enter:
+			Start: 89
+			Length: 10
+		enter-blocked:
+			Start: 99
+		capture:
+			Start: 89
+			Length: 10
+		capture-blocked:
+			Start: 99
+		enter-minimap:
+			Start: 100
+			Length: 10
+		enter-blocked-minimap:
+			Start: 33
+		capture-minimap:
+			Start: 100
+			Length: 10
+		deploy:
+			Start: 110
+			Length: 9
+		deploy-blocked:
+			Start: 119
+		undeploy:
+			Start: 120
+			Length: 9
+		sell:
+			Start: 129
+			Length: 10
+		sell-minimap:
+			Start: 139
+			Length: 10
+		sell2:
+			Start: 139
+			Length: 10
+		sell-blocked:
+			Start: 149
+		goldwrench:
+			Start: 150
+			Length: 20
+		repair:
+			Start: 170
+			Length: 20
+		goldwrench-blocked:
+			Start: 190
+		repair-blocked:
+			Start: 190
+		waypoint:
+			Start: 191
+			Length: 8
+		disguise:
+			Start: 199
+			Length: 4
+		bomb:
+			Start: 204
+			Length: 5
+		mindcontrol:
+			Start: 209
+			Length: 5
+		remove-squid:
+			Start: 214
+			Length: 5
+		squish:
+			Start: 219
+			Length: 4
+		steal-plans:
+			Start: 224
+			Length: 5
+		sabotage:
+			Start: 229
+			Length: 5
+		waypoint2:
+			Start: 234
+			Length: 5
+		deploy-sandbags:
+			Start: 239
+			Length: 10
+		chronowave:
+			Start: 249
+			Length: 10
+		praradrop:
+			Start: 259
+			Length: 10
+		rallypoint:
+			Start: 269
+			Length: 10
+		weatherstorm:
+			Start: 279
+			Length: 20
+		detonate:
+			Start: 299
+			Length: 10
+		c4:
+			Start: 309
+			Length: 10
+		nuke:
+			Start: 319
+			Length: 10
+		water-move:
+			Start: 329
+			Length: 10
+		powerdown:
+			Start: 339
+			Length: 5
+		water-move-blocked:
+			Start: 345
+		iron-curtain:
+			Start: 346
+			Length: 5
+		heal:
+			Start: 351
+			Length: 5
+		looped-patrol:
+			Start: 356
+		chronoshift:
+			Start: 357
+			Length: 12
+		remove-bomb:
+			Start: 369
+		generic-blocked:
+			Start: 384
+		scrollclick:
+			Start: 385
+		scrollclick-t:
+			Start: 386
+		scrollclick-tr:
+			Start: 387
+		scrollclick-r:
+			Start: 388
+		scrollclick-br:
+			Start: 389
+		scrollclick-b:
+			Start: 390
+		scrollclick-bl:
+			Start: 391
+		scrollclick-l:
+			Start: 392
+		scrollclick-tl:
+			Start: 393
+		guard2:
+			Start: 394
+			Length: 10
+		attackmove2:
+			Start: 404
+			Length: 9
+		deploy2:
+			Start: 413
+			Length: 9
+		clone:
+			Start: 422
+			Length: 9
+		mindcontrol-blocked:
+			Start: 431
+		rallypoint-blocked:
+			Start: 432
+		guard-minimap2:
+			Start: 433
+		attackmove-minimap:
+			Start: 434
+		beacon-mouseover:
+			Start: 435
+			Length: 20
+		attackoutsiderange:
+			Start: 58
+			Length: 5
+		attackoutsiderange-minimap:
+			Start: 63
+			Length: 5
+		move-rough:
+			Start: 31
+			Length: 10
+		attack-blocked:
+			Start: 384
+		harvest:
+			Start: 53
+			Length: 5
+		harvest-minimap:
+			Start: 63
+			Length: 5
+		c4-minimap:
+			Start: 63
+			Length: 5
+		heal-minimap:
+			Start: 351
+			Length: 5
+		ability:
+			Start: 68
+			Length: 5
+		ability-minimap:
+			Start: 73
+			Length: 5
+		powerdown-blocked:
+			Start: 52
+

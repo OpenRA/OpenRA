@@ -1,0 +1,59 @@
+MapFormat: 7
+
+RequiresMod: ra2
+
+Title: Blank
+
+Description: Placeholder
+
+Author: Matthias Mailänder
+
+Tileset: SNOW
+
+MapSize: 130,146
+
+Bounds: 1,1,128,144
+
+Visibility: Shellmap
+
+Type: Shellmap
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+
+Actors:
+
+Smudges:
+
+Rules:
+	World:
+		-StartGameNotification:
+		LoadWidgetAtGameStart:
+			Widget: MAINMENU
+		MusicPlaylist:
+			StartingMusic: grinder
+			LoopStartingMusic: true
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

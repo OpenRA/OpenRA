@@ -1,0 +1,17 @@
+mpspawn:
+	Immobile:
+		OccupiesSpace: false
+	BodyOrientation:
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	QuantizeFacingsFromSequence:
+
+waypoint:
+	Immobile:
+		OccupiesSpace: false
+	BodyOrientation:
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	QuantizeFacingsFromSequence:

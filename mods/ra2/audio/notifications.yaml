@@ -1,0 +1,17 @@
+Sounds:
+	DefaultVariant: .wav
+	Notifications:
+		RadarUp: uradaron
+		RadarDown: uradarof
+		CashTickUp: ucredup
+		CashTickDown: ucreddn
+		LevelUp: gupgrad1
+		DisablePower: gpowof
+		EnablePower: gpowon
+		ChatLine: umessage
+		BuildPaletteOpen: uslide1
+		BuildPaletteClose: uslide2
+		TabClick: utab
+		ClickSound: umenucl1
+		ClickDisabledSound: ugamclos
+		Beacon: ubeacon

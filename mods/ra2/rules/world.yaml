@@ -1,0 +1,117 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: score
+	ActorMap:
+	ScreenMap:
+	TerrainGeometryOverlay:
+	LoadWidgetAtGameStart:
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+		FogPalette: shroud
+		ShroudPalette: shroud
+	Faction@random:
+		Name: Random
+		InternalName: Random
+		RandomFactionMembers: random-allies, random-soviets
+		Side: Randoms
+	Faction@allies:
+		Name: Allies
+		InternalName: random-allies
+		RandomFactionMembers: america, germany, england, france, korea
+		Side: Randoms
+	Faction@soviets:
+		Name: Soviets
+		InternalName: random-soviets
+		RandomFactionMembers: cuba, libya, iraq, russia
+		Side: Randoms
+	Faction@1:
+		Name: America
+		InternalName: america
+		Side: Allies
+	Faction@2:
+		Name: Germany
+		InternalName: germany
+		Side: Allies
+	Faction@3:
+		Name: England
+		InternalName: england
+		Side: Allies
+	Faction@4:
+		Name: France
+		InternalName: france
+		Side: Allies
+	Faction@5:
+		Name: Korea
+		InternalName: korea
+		Side: Allies
+	Faction@6:
+		Name: Cuba
+		InternalName: cuba
+		Side: Soviets
+	Faction@7:
+		Name: Libya
+		InternalName: libya
+		Side: Soviets
+	Faction@8:
+		Name: Iraq
+		InternalName: iraq
+		Side: Soviets
+	Faction@9:
+		Name: Russia
+		InternalName: russia
+		Side: Soviets
+	ResourceType@Ore:
+		ResourceType: 1
+		Palette: resource
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 50
+		Name: Ore
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: false
+		TerrainType: Ore
+	ResourceType@Gems:
+		ResourceType: 2
+		Palette: resource
+		Variants: gem01, gem02, gem03, gem04, gem05, gem06, gem07, gem08, gem09, gem10, gem11, gem12
+		MaxDensity: 12
+		ValuePerUnit: 250
+		Name: Gems
+		PipColor: Red
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: false
+		TerrainType: Gems
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	DomainIndex:
+	ResourceLayer:
+	ResourceClaimLayer:
+	PathfinderDebugOverlay:
+	SpawnMapActors:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	RadarPings:
+	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:
+
