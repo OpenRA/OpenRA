@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Commands
 				help.RegisterHelp(name, helpText);
 			};
 
-			register("disableshroud", "toggles shroud and minimap.");
+			register("visibility", "toggles visibility checks and minimap.");
 			register("givecash", "gives the default or specified amount of money.");
 			register("givecashall", "gives the default or specified amount of money to all players and ai.");
 			register("instantbuild", "toggles instant building.");
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Commands
 
 					break;
 
-				case "disableshroud": IssueDevCommand(world, "DevShroudDisable"); break;
+				case "visibility": IssueDevCommand(world, "DevVisibility"); break;
 				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
 				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
 				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
