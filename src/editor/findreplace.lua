@@ -502,8 +502,6 @@ function findReplace:RunInFiles(replace)
     ide.config.editor.fold = true
     if showaseditor then
       reseditor = NewFile(resultsText)
-      -- set file path to avoid treating results as unsaved document
-      ide:GetDocument(reseditor).filePath = resultsText
     else
       reseditor = ide:CreateBareEditor()
       reseditor:SetupKeywords("")
