@@ -1,4 +1,4 @@
-Container@INGAME_MENU:
+Container@INGAME_MENU_EDITOR:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
 	Logic: IngameMenuLogic
@@ -22,12 +22,11 @@ Container@INGAME_MENU:
 			Align: Center
 			Font: Regular
 			Contrast: True
-		Container@PANEL_ROOT:
 		Background@MENU_BUTTONS:
 			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
 			Y: (WINDOW_BOTTOM - HEIGHT)/2
 			Width: 200
-			Height: 335
+			Height: 295
 			Children:
 				Label@LABEL_TITLE:
 					X: (PARENT_RIGHT - WIDTH)/2
@@ -59,24 +58,17 @@ Container@INGAME_MENU:
 					Height: 30
 					Text: Music
 					Font: Bold
-				Button@SURRENDER:
+				Button@SAVE_MAP:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 180
 					Width: 140
 					Height: 30
-					Text: Surrender
+					Text: Save Map
 					Font: Bold
-				Button@RESTART:
+				Button@EXIT_EDITOR:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 220
 					Width: 140
 					Height: 30
-					Text: Restart
-					Font: Bold
-				Button@ABORT_MISSION:
-					X: (PARENT_RIGHT - WIDTH)/2
-					Y: 260
-					Width: 140
-					Height: 30
-					Text: Abort Mission
+					Text: Exit Map Editor
 					Font: Bold

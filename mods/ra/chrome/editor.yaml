@@ -337,7 +337,7 @@ Container@EDITOR_WORLD_ROOT:
 					Font: Bold
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
-			MenuContainer: INGAME_MENU
+			MenuContainer: INGAME_MENU_EDITOR
 			HideIngameUI: true
 			Pause: true
 			Width: 160
