@@ -36,6 +36,7 @@ namespace OpenRA
 			try
 			{
 				var allParents = new HashSet<string>();
+				var abstractActorType = name.StartsWith("^");
 
 				// Guard against circular inheritance
 				allParents.Add(name);
@@ -49,7 +50,15 @@ namespace OpenRA
 						throw new YamlException("Bogus trait removal: " + t.Key);
 
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
-						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+						try
+						{
+							Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+						}
+						catch (FieldLoader.MissingFieldsException e)
+						{
+							if (!abstractActorType)
+								throw new YamlException(e.Message);
+						}
 				}
 			}
 			catch (YamlException e)
