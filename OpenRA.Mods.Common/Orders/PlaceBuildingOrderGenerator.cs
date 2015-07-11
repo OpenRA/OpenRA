@@ -49,7 +49,8 @@ namespace OpenRA.Mods.Common.Orders
 			buildingInfo = info.Traits.Get<BuildingInfo>();
 
 			var buildableInfo = info.Traits.Get<BuildableInfo>();
-			race = buildableInfo.ForceRace ?? queue.MostLikelyProducer().Trait.Race;
+			var mostLikelyProducer = queue.MostLikelyProducer();
+			race = buildableInfo.ForceRace ?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Race : producer.Owner.Country.Race);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
