@@ -142,6 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			restartButton.IsDisabled = () => !world.LobbyInfo.IsSinglePlayer;
 			Action restartMission = () =>
 			{
+				var isMission = world.Map.Visibility == MapVisibility.MissionSelector;
 				var difficulty = world.LobbyInfo.GlobalSettings.Difficulty;
 				OrderManager om = null;
 				Action lobbyReady = null;
@@ -155,10 +156,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				Game.Disconnect();
-				//Ui.ResetAll();
+				Ui.ResetAll();
+				Game.LoadShellMap();
 
 				Game.LobbyInfoChanged += lobbyReady;
-				om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(world.Map.Uid), "", false);
+				om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(world.Map.Uid), "", !isMission);
 			};
 			restartButton.OnClick = () => restartMission();
 
