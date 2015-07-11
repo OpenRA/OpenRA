@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>, Requires<UpgradeManagerInfo>
 	{
 		[FieldLoader.LoadUsing("LoadUpgrades")]
-		[Desc("Upgrades to grant at each level",
+		[Desc("Upgrades to grant at each level. (Required property)",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is a list of the upgrade types to grant")]
 		public readonly Dictionary<int, string[]> Upgrades = null;
@@ -39,15 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			MiniYaml upgrades;
 
 			if (!y.ToDictionary().TryGetValue("Upgrades", out upgrades))
-			{
-				return new Dictionary<int, string[]>()
-				{
-					{ 200, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
-					{ 400, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
-					{ 800, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank" } },
-					{ 1600, new[] { "firepower", "damage", "speed", "reload", "inaccuracy", "rank", "eliteweapon", "selfheal" } }
-				};
-			}
+				throw new YamlException("GainsExperience is missing Upgrades.");
 
 			return upgrades.Nodes.ToDictionary(
 				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
