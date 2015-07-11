@@ -19,9 +19,6 @@ namespace OpenRA.FileFormats
 {
 	public class ReplayReport
 	{
-		// Engine constant (ms)
-		static int networkTickDuration = 120;
-
 		public static string Read(ReplayMetadata metadata)
 		{
 			if (metadata == null || metadata.FilePath == null)
@@ -157,7 +154,7 @@ namespace OpenRA.FileFormats
 
 						// Time stamps are in game time.
 						if (gameStarted)
-							time = new TimeSpan(0, 0, networkTickCount * networkTickDuration / 1000) + " ";
+							time = new TimeSpan(0, 0, networkTickCount * Game.NetTickScale * Game.Timestep / 1000) + " ";
 
 						foreach (var o in orders)
 						{
