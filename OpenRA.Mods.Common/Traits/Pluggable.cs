@@ -19,18 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		[FieldLoader.LoadUsing("LoadUpgrades")]
+		[FieldLoader.LoadUsing("LoadUpgrades", true)]
 		[Desc("Upgrades to grant for each accepted plug type.")]
 		public readonly Dictionary<string, string[]> Upgrades = null;
 
 		static object LoadUpgrades(MiniYaml y)
 		{
-			MiniYaml upgrades;
-
-			if (!y.ToDictionary().TryGetValue("Upgrades", out upgrades))
-				return new Dictionary<string, string[]>();
-
-			return upgrades.Nodes.ToDictionary(
+			return y.ToDictionary()["Upgrades"].Nodes.ToDictionary(
 				kv => kv.Key,
 				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
 		}

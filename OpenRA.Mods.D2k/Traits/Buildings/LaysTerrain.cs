@@ -20,6 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 			"the actor footprint will be filled with this tile.")]
 		public readonly ushort Template = 0;
 
+		[FieldLoader.Require]
 		[Desc("The terrain types that this template will be placed on")]
 		public readonly string[] TerrainTypes = { };
 

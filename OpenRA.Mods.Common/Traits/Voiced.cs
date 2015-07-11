@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor has a voice.")]
 	public class VoicedInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("Which voice set to use.")]
 		[VoiceSetReference] public readonly string VoiceSet = null;
 

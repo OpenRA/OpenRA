@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		"at the same time. Will only work together with the Production: trait.")]
 	public class ProductionQueueInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("What kind of production will be added (e.g. Building, Infantry, Vehicle, ...)")]
 		public readonly string Type = null;
 

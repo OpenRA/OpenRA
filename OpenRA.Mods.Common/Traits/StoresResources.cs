@@ -18,9 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used for silos.")]
 	class StoresResourcesInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("Number of little squares used to display how filled unit is.")]
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
+		[FieldLoader.Require]
 		public readonly int Capacity = 0;
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}

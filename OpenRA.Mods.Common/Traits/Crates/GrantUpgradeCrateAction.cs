@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Grants an upgrade to the collector.")]
 	public class GrantUpgradeCrateActionInfo : CrateActionInfo
 	{
-		[UpgradeGrantedReference]
+		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("The upgrades to apply.")]
 		public readonly string[] Upgrades = { };
 

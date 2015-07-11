@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
-		[FieldLoader.LoadUsing("LoadSpeeds")]
+		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
 

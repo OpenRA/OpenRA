@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The list of units to spawn.")]
-		[ActorReference]
+		[ActorReference, FieldLoader.Require]
 		public readonly string[] Units = { };
 
 		[Desc("Races that are allowed to trigger this action")]

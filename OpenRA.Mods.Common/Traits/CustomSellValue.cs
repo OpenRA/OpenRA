@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Allow a non-standard sell/repair value to avoid buy-sell exploits.")]
 	public class CustomSellValueInfo : TraitInfo<CustomSellValue>
 	{
+		[FieldLoader.Require]
 		public readonly int Value = 0;
 	}
 

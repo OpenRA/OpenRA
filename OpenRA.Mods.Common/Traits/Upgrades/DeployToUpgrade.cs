@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class DeployToUpgradeInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
-		[UpgradeGrantedReference]
+		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("The upgrades to grant when deploying and revoke when undeploying.")]
 		public readonly string[] Upgrades = { };
 

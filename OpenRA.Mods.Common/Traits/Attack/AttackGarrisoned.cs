@@ -27,14 +27,17 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Cargo can fire their weapons out of fire ports.")]
 	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Fire port offsets in local coordinates.")]
-		public readonly WVec[] PortOffsets = { };
+		public readonly WVec[] PortOffsets = null;
 
+		[FieldLoader.Require]
 		[Desc("Fire port yaw angles.")]
-		public readonly WAngle[] PortYaws = { };
+		public readonly WAngle[] PortYaws = null;
 
+		[FieldLoader.Require]
 		[Desc("Fire port yaw cone angle.")]
-		public readonly WAngle[] PortCones = { };
+		public readonly WAngle[] PortCones = null;
 
 		public readonly string MuzzlePalette = "effect";
 

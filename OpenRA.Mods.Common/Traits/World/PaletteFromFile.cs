@@ -17,10 +17,12 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class PaletteFromFileInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
 		[Desc("If defined, load the palette only for this tileset.")]
 		public readonly string Tileset = null;
+		[FieldLoader.Require]
 		[Desc("filename to load")]
 		public readonly string Filename = null;
 		[Desc("Map listed indices to shadow. Ignores previous color.")]

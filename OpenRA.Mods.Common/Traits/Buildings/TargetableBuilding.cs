@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TargetableBuildingInfo : ITraitInfo, ITargetableInfo, Requires<BuildingInfo>
 	{
+		[FieldLoader.Require]
 		public readonly string[] TargetTypes = { };
 		public string[] GetTargetTypes() { return TargetTypes; }
 

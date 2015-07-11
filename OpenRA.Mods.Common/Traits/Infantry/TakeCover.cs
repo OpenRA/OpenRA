@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prone movement speed as a percentage of the normal speed.")]
 		public readonly int SpeedModifier = 50;
 
+		[FieldLoader.Require]
 		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
-		public readonly string[] DamageTriggers = new string[0];
+		public readonly string[] DamageTriggers = null;
 
 		[FieldLoader.LoadUsing("LoadModifiers")]
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]

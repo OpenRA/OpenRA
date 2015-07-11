@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("How much the unit is worth.")]
 	public class ValuedInfo : TraitInfo<Valued>
 	{
+		[FieldLoader.Require]
 		[Desc("Used in production, but also for bounties so remember to set it > 0 even for NPCs.")]
 		public readonly int Cost = 0;
 	}

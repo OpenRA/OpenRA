@@ -16,6 +16,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Actors with the \"ClonesProducedUnits\" trait will produce a free duplicate of me.")]
 	public class CloneableInfo : TraitInfo<Cloneable>
 	{
+		[FieldLoader.Require]
 		[Desc("This unit's cloneable type is:")]
 		public readonly string[] Types = { };
 	}

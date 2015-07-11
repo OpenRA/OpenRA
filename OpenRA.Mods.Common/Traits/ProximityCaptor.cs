@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor can capture ProximityCapturable actors.")]
 	public class ProximityCaptorInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		public readonly string[] Types = { };
 		public object Create(ActorInitializer init) { return new ProximityCaptor(this); }
 	}

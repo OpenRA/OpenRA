@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Creates a free duplicate of produced units.")]
 	public class ClonesProducedUnitsInfo : ITraitInfo, Requires<ProductionInfo>, Requires<ExitInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
 		public readonly string[] CloneableTypes = { };
 

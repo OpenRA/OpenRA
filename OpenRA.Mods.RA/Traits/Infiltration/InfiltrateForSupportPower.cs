@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class InfiltrateForSupportPowerInfo : ITraitInfo
 	{
-		[ActorReference] public readonly string Proxy = null;
+		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}

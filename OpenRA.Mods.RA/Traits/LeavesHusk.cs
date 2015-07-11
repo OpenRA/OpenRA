@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Spawn another actor immediately upon death.")]
 	public class LeavesHuskInfo : ITraitInfo
 	{
-		[ActorReference]
+		[ActorReference, FieldLoader.Require]
 		public readonly string HuskActor = null;
 
 		public object Create(ActorInitializer init) { return new LeavesHusk(init, this); }

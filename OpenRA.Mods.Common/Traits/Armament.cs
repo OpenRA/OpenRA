@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Name = "primary";
 
-		[WeaponReference]
-		[Desc("Has to be defined here and in weapons.yaml.")]
+		[WeaponReference, FieldLoader.Require]
+		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 
 		[Desc("Which limited ammo pool (if present) should this armament be assigned to.")]

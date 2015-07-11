@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Creates a single color palette without any base palette file.")]
 	class PaletteFromRGBAInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
 		[Desc("If defined, load the palette only for this tileset.")]
