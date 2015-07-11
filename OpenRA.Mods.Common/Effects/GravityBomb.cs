@@ -19,13 +19,19 @@ namespace OpenRA.Mods.Common.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+
 		[Desc("Sequence to loop while falling.")]
-		public readonly string Sequence = "idle";
+		[SequenceReference("Image")] public readonly string Sequence = "idle";
+
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
-		public readonly string OpenSequence = null;
+		[SequenceReference("Image")] public readonly string OpenSequence = null;
+
 		public readonly string Palette = "effect";
+
 		public readonly bool Shadow = false;
+
 		public readonly WDist Velocity = WDist.Zero;
+
 		[Desc("Value added to velocity every tick.")]
 		public readonly WDist Acceleration = new WDist(15);
 
