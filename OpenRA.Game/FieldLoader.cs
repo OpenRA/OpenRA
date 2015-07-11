@@ -24,6 +24,26 @@ namespace OpenRA
 {
 	public static class FieldLoader
 	{
+		public class MissingFieldsException : YamlException
+		{
+			public readonly string[] Missing;
+			public readonly string Header;
+			public override string Message
+			{
+				get
+				{
+					return (string.IsNullOrEmpty(Header) ? "" : Header + ": ") + Missing[0]
+						+ string.Concat(Missing.Skip(1).Select(m => ", " + m));
+				}
+			}
+
+			public MissingFieldsException(string[] missing, string header = null, string headerSingle = null) : base(null)
+			{
+				Header = missing.Length > 1 ? header : headerSingle ?? header;
+				Missing = missing;
+			}
+		}
+
 		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
 		{
 			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
@@ -45,6 +65,7 @@ namespace OpenRA
 		public static void Load(object self, MiniYaml my)
 		{
 			var loadInfo = TypeLoadInfo[self.GetType()];
+			var missing = new List<string>();
 
 			Dictionary<string, MiniYaml> md = null;
 
@@ -52,19 +73,33 @@ namespace OpenRA
 			{
 				object val;
 
+				if (md == null)
+					md = my.ToDictionary();
 				if (fli.Loader != null)
-					val = fli.Loader(my);
+				{
+					if (!fli.Attribute.Required || md.ContainsKey(fli.YamlName))
+						val = fli.Loader(my);
+					else
+					{
+						missing.Add(fli.YamlName);
+						continue;
+					}
+				}
 				else
 				{
-					if (md == null)
-						md = my.ToDictionary();
-
 					if (!TryGetValueFromYaml(fli.YamlName, fli.Field, md, out val))
+					{
+						if (fli.Attribute.Required)
+							missing.Add(fli.YamlName);
 						continue;
+					}
 				}
 
 				fli.Field.SetValue(self, val);
 			}
+
+			if (missing.Any())
+				throw new MissingFieldsException(missing.ToArray());
 		}
 
 		static bool TryGetValueFromYaml(string yamlName, FieldInfo field, Dictionary<string, MiniYaml> md, out object ret)
@@ -558,11 +593,19 @@ namespace OpenRA
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
+		public sealed class RequireAttribute : SerializeAttribute
+		{
+			public RequireAttribute()
+				: base(true, true) { }
+		}
+
+		[AttributeUsage(AttributeTargets.Field)]
 		public sealed class LoadUsingAttribute : SerializeAttribute
 		{
-			public LoadUsingAttribute(string loader)
+			public LoadUsingAttribute(string loader, bool required = false)
 			{
 				Loader = loader;
+				Required = required;
 			}
 		}
 
@@ -577,10 +620,12 @@ namespace OpenRA
 			public string YamlName;
 			public string Loader;
 			public bool FromYamlKey;
+			public bool Required;
 
-			public SerializeAttribute(bool serialize = true)
+			public SerializeAttribute(bool serialize = true, bool required = false)
 			{
 				Serialize = serialize;
+				Required = required;
 			}
 
 			internal Func<MiniYaml, object> GetLoader(Type type)
