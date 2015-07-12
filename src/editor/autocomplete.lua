@@ -224,7 +224,7 @@ local function resolveAssign(editor,tx)
   local c
   if (assigns) then
     -- find assign
-    local change, n, stopat = true, 0, os.clock() + 0.2
+    local change, n, refs, stopat = true, 0, {}, os.clock() + 0.2
     while (change) do
       -- abort the check if the auto-complete is taking too long
       if n > 50 and os.clock() > stopat then
@@ -253,6 +253,9 @@ local function resolveAssign(editor,tx)
           c = c..w..s
         end
       end
+      -- check for loops in type assignment
+      if refs[tx] then break end
+      refs[tx] = c
       tx = c
       -- if there is any class duplication, abort the loop
       if classname and select(2, c:gsub(classname, classname)) > 1 then break end
