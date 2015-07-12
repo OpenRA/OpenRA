@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
 		public readonly int SearchForDeliveryBuildingDelay = 125;
 
+		[Desc("Cell to move to when automatically unblocking DeliveryBuilding.")]
+		public readonly CVec UnblockCell = new CVec(0, 4);
+
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
 
@@ -196,7 +199,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
-					var moveTo = LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
+					var unblockCell = LastHarvestedCell ?? (deliveryLoc + info.UnblockCell);
+					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 

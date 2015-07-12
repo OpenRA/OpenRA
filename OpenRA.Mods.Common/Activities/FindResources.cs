@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Only do this if UnblockRefinery did nothing.
 				if (self.Location == cachedPosition)
 				{
-					var unblockCell = harv.LastHarvestedCell ?? (self.Location + new CVec(0, 4));
+					var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
