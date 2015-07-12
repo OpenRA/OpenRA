@@ -108,6 +108,12 @@ end
 ProjectSetInterpreter(interpreter)
 
 editor:SetText('')
+editor:AddText('local t = require("table")\nt.')
+local ac = CreateAutoCompList(editor, "t.")
+ok(ac ~= nil and ac:find("concat") ~= nil,
+  "Auto-complete recognizes variables set based on `require`.")
+
+editor:SetText('')
 editor:AddText('print(1,io.')
 
 local value

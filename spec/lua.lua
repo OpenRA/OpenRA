@@ -164,6 +164,9 @@ return {
         local var,typ = tx:match("%s*"..identifier.."%s*=%s*([^;]+)")
 
         var = var and var:gsub("local",""):gsub("%s","")
+        -- handle `require` as a special case that returns a type that matches its parameter
+        -- (this is without deeper analysis on loaded files and should work most of the time)
+        typ = typ and typ:match("^require%s*%(?%s*['\"](.+)['\"]%s*%)?") or typ
         typ = (typ and typ
           :gsub("%b()","")
           :gsub("%b{}","")
