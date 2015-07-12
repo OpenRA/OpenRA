@@ -84,13 +84,6 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Text: Change Map
 			Font: Bold
-		Button@START_GAME_BUTTON:
-			X: 478
-			Y: PARENT_BOTTOM - 291
-			Width: 135
-			Height: 25
-			Text: Start Game
-			Font: Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X: 20
 			Y: PARENT_BOTTOM - HEIGHT - 52

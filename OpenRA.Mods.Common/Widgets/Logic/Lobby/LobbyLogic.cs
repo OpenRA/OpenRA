@@ -283,41 +283,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
 
-			// Force start panel
-			Action startGame = () =>
-			{
-				gameStarting = true;
-				orderManager.IssueOrder(Order.Command("startgame"));
-			};
-
-			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
-			if (startGameButton != null)
-			{
-				startGameButton.IsDisabled = () => configurationDisabled() || Map.RuleStatus != MapRuleStatus.Cached ||
-					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
-				startGameButton.OnClick = () =>
-				{
-					Func<KeyValuePair<string, Session.Slot>, bool> notReady = sl =>
-					{
-						var cl = orderManager.LobbyInfo.ClientInSlot(sl.Key);
-
-						// Bots and admins don't count
-						return cl != null && !cl.IsAdmin && cl.Bot == null && !cl.IsReady;
-					};
-
-					if (orderManager.LobbyInfo.Slots.Any(notReady))
-						panel = PanelType.ForceStart;
-					else
-						startGame();
-				};
-			}
-
-			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby, new WidgetArgs());
-			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
-			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
-			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
-			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
-
 			// Options panel
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			if (allowCheats != null)
@@ -762,6 +727,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = editableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager);
+					LobbyUtils.SetupEditableReadyWidget(template, null, c, orderManager, Map);
 				}
 				else
 				{
@@ -770,6 +736,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupNameWidget(template, null, client);
+					LobbyUtils.SetupReadyWidget(template, null, client);
 					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 				}
