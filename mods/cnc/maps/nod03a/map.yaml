@@ -467,6 +467,8 @@ Rules:
 			Scripts: nod03a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: chrg226m
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

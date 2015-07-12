@@ -40,8 +40,9 @@ Rules:
 		-StartGameNotification:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		LuaScript:
-			Scripts: shellmap.lua
+		MusicPlaylist:
+			StartingMusic: intro
+			LoopStartingMusic: True
 
 Sequences:
 

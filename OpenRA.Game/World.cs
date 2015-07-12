@@ -388,7 +388,6 @@ namespace OpenRA
 			frameEndActions.Clear();
 
 			Sound.StopAudio();
-			Sound.StopMusic();
 			Sound.StopVideo();
 
 			// Dispose newer actors first, and the world actor last

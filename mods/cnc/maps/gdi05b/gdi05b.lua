@@ -118,12 +118,6 @@ IdleHunt = function(unit)
 	end
 end
 
-initialSong = "rain"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	gdi = Player.GetPlayer("GDI")
 	gdiBase = Player.GetPlayer("AbandonedBase")
@@ -185,8 +179,6 @@ WorldLoaded = function()
 	end)
 	
 	Camera.Position = UnitsRally.CenterPosition
-
-	PlayMusic()
 	
 	InsertGdiUnits()
 end

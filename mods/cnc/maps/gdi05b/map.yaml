@@ -639,6 +639,8 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		EnemyWatcher:
+		MusicPlaylist:
+			StartingMusic: rain
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:

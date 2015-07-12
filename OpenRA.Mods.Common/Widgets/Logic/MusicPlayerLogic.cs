@@ -18,29 +18,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MusicPlayerLogic
 	{
-		readonly Ruleset modRules;
+		readonly ScrollPanelWidget musicList;
+		readonly ScrollItemWidget itemTemplate;
 
-		bool installed;
+		readonly MusicPlaylist musicPlaylist;
 		MusicInfo currentSong = null;
-		MusicInfo[] music;
-		MusicInfo[] random;
-		ScrollPanelWidget musicList;
-
-		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
 		public MusicPlayerLogic(Widget widget, Ruleset modRules, World world, Action onExit)
 		{
-			this.modRules = modRules;
-
 			var panel = widget.Get("MUSIC_PANEL");
 
 			musicList = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
 			itemTemplate = musicList.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
+			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
 
 			BuildMusicTable();
 
-			Func<bool> noMusic = () => !installed;
+			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable;
 			panel.Get("NO_MUSIC_LABEL").IsVisible = noMusic;
 
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
@@ -54,15 +49,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			pauseButton.IsVisible = () => Sound.MusicPlaying;
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
-			stopButton.OnClick = Sound.StopMusic;
+			stopButton.OnClick = () => { musicPlaylist.Stop(); };
 			stopButton.IsDisabled = noMusic;
 
 			var nextButton = panel.Get<ButtonWidget>("BUTTON_NEXT");
-			nextButton.OnClick = () => { currentSong = GetNextSong(); Play(); };
+			nextButton.OnClick = () => { currentSong = musicPlaylist.GetNextSong(); Play(); };
 			nextButton.IsDisabled = noMusic;
 
 			var prevButton = panel.Get<ButtonWidget>("BUTTON_PREV");
-			prevButton.OnClick = () => { currentSong = GetPrevSong(); Play(); };
+			prevButton.OnClick = () => { currentSong = musicPlaylist.GetPrevSong(); Play(); };
 			prevButton.IsDisabled = noMusic;
 
 			var shuffleCheckbox = panel.Get<CheckboxWidget>("SHUFFLE");
@@ -111,11 +106,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void BuildMusicTable()
 		{
-			music = modRules.InstalledMusic.Select(a => a.Value).ToArray();
-			random = music.Shuffle(Game.CosmeticRandom).ToArray();
-			currentSong = Sound.CurrentMusic;
+			if (!musicPlaylist.IsMusicAvailable)
+				return;
+
+			var music = musicPlaylist.AvailablePlaylist();
+			currentSong = musicPlaylist.CurrentSong();
 			if (currentSong == null && music.Any())
-				currentSong = Game.Settings.Sound.Shuffle ? random.First() : music.First();
+				currentSong = musicPlaylist.GetNextSong();
 
 			musicList.RemoveChildren();
 			foreach (var s in music)
@@ -124,8 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (currentSong == null)
 					currentSong = song;
 
-				// TODO: We leak the currentSong MusicInfo across map load, so compare the Filename instead.
-				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong.Filename == song.Filename, () => { currentSong = song; Play(); }, () => { });
+				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); }, () => { });
 				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
 				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
 				musicList.AddChild(item);
@@ -133,8 +129,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (currentSong != null)
 				musicList.ScrollToItem(currentSong.Filename);
-
-			installed = modRules.InstalledMusic.Any();
 		}
 
 		void Play()
@@ -143,38 +137,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			musicList.ScrollToItem(currentSong.Filename);
-
-			Sound.PlayMusicThen(currentSong, () =>
-			{
-				if (!Game.Settings.Sound.Repeat)
-					currentSong = GetNextSong();
-				Play();
-			});
+			musicPlaylist.Play(currentSong);
 		}
 
 		static string SongLengthLabel(MusicInfo song)
 		{
 			return "{0:D1}:{1:D2}".F(song.Length / 60, song.Length % 60);
-		}
-
-		MusicInfo GetNextSong()
-		{
-			if (!music.Any())
-				return null;
-
-			var songs = Game.Settings.Sound.Shuffle ? random : music;
-			return songs.SkipWhile(m => m != currentSong)
-				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
-		}
-
-		MusicInfo GetPrevSong()
-		{
-			if (!music.Any())
-				return null;
-
-			var songs = Game.Settings.Sound.Shuffle ? random : music;
-			return songs.Reverse().SkipWhile(m => m != currentSong)
-				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault();
 		}
 	}
 }

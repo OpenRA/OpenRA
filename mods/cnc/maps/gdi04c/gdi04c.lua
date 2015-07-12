@@ -61,17 +61,9 @@ SendGDIReinforcements = function()
 	end)
 end
 
-initialSong = "ind"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
 	nod = Player.GetPlayer("Nod")
-
-	PlayMusic()
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

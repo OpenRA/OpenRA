@@ -994,6 +994,9 @@ Rules:
 			Effect: Desaturated
 		LuaScript:
 			Scripts: shellmap.lua
+		MusicPlaylist:
+			StartingMusic: map1
+			LoopStartingMusic: True
 	LST:
 		Mobile:
 			Speed: 42

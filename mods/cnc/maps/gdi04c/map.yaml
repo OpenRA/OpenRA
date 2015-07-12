@@ -785,6 +785,8 @@ Rules:
 			Scripts: gdi04c.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: ind
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:

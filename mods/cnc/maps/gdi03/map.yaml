@@ -730,6 +730,8 @@ Rules:
 			Scripts: gdi03.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: crep226m
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:

@@ -226,6 +226,8 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		LuaScript:
 			Scripts: nod02a.lua
+		MusicPlaylist:
+			StartingMusic: ind2
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

@@ -103,19 +103,11 @@ SetupWorld = function()
 	Trigger.OnRemovedFromWorld(crate, function() gdi.MarkCompletedObjective(gdiObjective) end)
 end
 
-initialSong = "fist226m"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	gdi = Player.GetPlayer("GDI")
 	nod = Player.GetPlayer("Nod")
 
 	SetupWorld()
-
-	PlayMusic()
 
 	Trigger.OnObjectiveAdded(gdi, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")

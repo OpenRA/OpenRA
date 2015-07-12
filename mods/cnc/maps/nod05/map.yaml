@@ -402,6 +402,8 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		LuaScript:
 			Scripts: nod05.lua
+		MusicPlaylist:
+			StartingMusic: airstrik
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

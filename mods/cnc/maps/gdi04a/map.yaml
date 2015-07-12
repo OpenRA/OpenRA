@@ -489,6 +489,8 @@ Rules:
 			Scripts: gdi04a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: fist226m
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:

@@ -82,12 +82,6 @@ InsertNodUnits = function()
 	Reinforcements.Reinforce(Nod, NodStartUnitsRight, { UnitsEntryRight.Location, UnitsRallyRight.Location }, 15)
 end
 
-initialSong = "rout"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -115,8 +109,6 @@ WorldLoaded = function()
 	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
 	NodObjective3 = Nod.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard.")
 	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
-
-	PlayMusic()
 
 	InsertNodUnits()
 

@@ -797,6 +797,8 @@ Rules:
 			Scripts: gdi05a.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: rain
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:

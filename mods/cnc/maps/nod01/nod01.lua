@@ -31,12 +31,6 @@ SendLastInfantryReinforcements = function()
 	end)
 end
 
-initialSong = "nomercy"
-PlayMusic = function()
-	Media.PlayMusic(initialSong, PlayMusic)
-	initialSong = nil
-end
-
 WorldLoaded = function()
 	nod = Player.GetPlayer("Nod")
 	gdi = Player.GetPlayer("GDI")
@@ -73,8 +67,6 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = StartRallyPoint.CenterPosition
-
-	PlayMusic()
 
 	SendInitialForces()
 	Trigger.AfterDelay(DateTime.Seconds(30), SendFirstInfantryReinforcements)

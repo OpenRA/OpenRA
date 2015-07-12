@@ -125,6 +125,8 @@ Rules:
 			Maximum: 1
 		LuaScript:
 			Scripts: shellmap.lua
+		MusicPlaylist:
+			StartingMusic: score
 	rockettower:
 		Power:
 			Amount: 100
