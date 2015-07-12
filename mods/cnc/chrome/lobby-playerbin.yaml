@@ -92,20 +92,20 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width: 50
 					Height: 25
 					Font: Regular
-				Image@STATUS_IMAGE:
+				Checkbox@STATUS_CHECKBOX:
+					X: 501
+					Y: 2
+					Width: 20
+					Height: 20
 					Visible: false
+				Image@STATUS_IMAGE:
 					X: 495
 					Y: 4
 					Width: 20
 					Height: 20
 					ImageCollection: checkbox-bits
 					ImageName: checked
-				Checkbox@STATUS_CHECKBOX:
 					Visible: false
-					X: 501
-					Y: 2
-					Width: 20
-					Height: 20
 		Container@TEMPLATE_NONEDITABLE_PLAYER:
 			X: 5
 			Y: 0
@@ -186,13 +186,13 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 445
 					Y: 0
 				Image@STATUS_IMAGE:
-					Visible: false
 					X: 501
 					Y: 4
 					Width: 20
 					Height: 20
 					ImageCollection: checkbox-bits
 					ImageName: checked
+					Visible: false
 		Container@TEMPLATE_EMPTY:
 			X: 5
 			Y: 0
@@ -258,12 +258,26 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					MaxLength: 16
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55+55
+					Width: 315
 					Height: 25
 					X: 210
 					Y: 0
 					Align: Center
 					Font: Bold
+				Checkbox@STATUS_CHECKBOX:
+					X: 501
+					Y: 2
+					Width: 20
+					Height: 20
+					Visible: false
+				Image@STATUS_IMAGE:
+					X: 495
+					Y: 4
+					Width: 20
+					Height: 20
+					ImageCollection: checkbox-bits
+					ImageName: checked
+					Visible: false
 		Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 			X: 5
 			Y: 0
@@ -308,12 +322,20 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55+55
+					Width: 315
 					Height: 25
 					X: 210
 					Y: 0
 					Align: Center
 					Font: Bold
+				Image@STATUS_IMAGE:
+					X: 495
+					Y: 4
+					Width: 20
+					Height: 20
+					ImageCollection: checkbox-bits
+					ImageName: checked
+					Visible: false
 		Container@TEMPLATE_NEW_SPECTATOR:
 			X: 5
 			Y: 0
