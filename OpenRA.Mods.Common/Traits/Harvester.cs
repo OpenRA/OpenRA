@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
-		Actor ClosestProc(Actor self, Actor ignore)
+		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
 			var refs = (
@@ -155,14 +155,16 @@ namespace OpenRA.Mods.Common.Traits
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
-					.WithCustomCost((loc) =>
+					.WithCustomCost(loc =>
 					{
-						if (!refs.ContainsKey(loc)) return 0;
+						if (!refs.ContainsKey(loc))
+							return 0;
 
 						var occupancy = refs[loc].Occupancy;
 
 						// 4 harvesters clogs up the refinery's delivery location:
-						if (occupancy >= 3) return int.MaxValue;
+						if (occupancy >= 3)
+							return int.MaxValue;
 
 						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 						return occupancy * 12;
@@ -199,7 +201,8 @@ namespace OpenRA.Mods.Common.Traits
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-					if (territory != null) territory.ClaimResource(self, moveTo);
+					if (territory != null)
+						territory.ClaimResource(self, moveTo);
 
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 					var next = new FindResources(self);
@@ -422,9 +425,9 @@ namespace OpenRA.Mods.Common.Traits
 						if (!harvInfo.Resources.Contains(resType.Info.Name))
 							return Constants.CellCost;
 
-						// Another harvester has claimed this resource:
 						if (territory != null)
 						{
+							// Another harvester has claimed this resource:
 							ResourceClaim claim;
 							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
 								return Constants.CellCost;
