@@ -114,6 +114,12 @@ ok(ac ~= nil and ac:find("concat") ~= nil,
   "Auto-complete recognizes variables set based on `require`.")
 
 editor:SetText('')
+editor:AddText('local table = require("io")\nt = require("table")\nt.')
+local ac = CreateAutoCompList(editor, "t.")
+ok(ac ~= nil and ac:find("concat") ~= nil,
+  "Auto-complete recognizes variables set based on `require` even when it's re-assigned.")
+
+editor:SetText('')
 editor:AddText('print(1,io.')
 
 local value
