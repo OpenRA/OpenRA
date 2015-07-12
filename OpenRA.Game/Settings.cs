@@ -108,7 +108,6 @@ namespace OpenRA
 
 		public bool Shuffle = false;
 		public bool Repeat = false;
-		public bool MapMusic = true;
 
 		public string Engine = "AL";
 		public string Device = null;

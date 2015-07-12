@@ -44,8 +44,7 @@ namespace OpenRA.Traits
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 
-			if (Game.Settings.Sound.MapMusic
-				&& !string.IsNullOrEmpty(info.StartingMusic)
+			if (!string.IsNullOrEmpty(info.StartingMusic)
 				&& world.Map.Rules.Music.ContainsKey(info.StartingMusic)
 				&& world.Map.Rules.Music[info.StartingMusic].Exists)
 			{

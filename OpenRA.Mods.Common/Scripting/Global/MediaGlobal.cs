@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
-			if (!Game.Settings.Sound.MapMusic || !playlist.IsMusicAvailable)
+			if (!playlist.IsMusicAvailable)
 				return;
 
 			var musicInfo = !string.IsNullOrEmpty(track) ? world.Map.Rules.Music[track]
