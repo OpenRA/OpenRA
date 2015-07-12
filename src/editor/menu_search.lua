@@ -226,15 +226,16 @@ local function navigateTo(default, selected)
 
       if ed and text and text:find(special.SYMBOL) then
         if not functions then
-          local funcs, nums = OutlineFunctions(ed), {}
+          local funcs, nums = {}, {}
           functions = {pos = {}, src = {}}
-          for _, func in ipairs(funcs) do
-            table.insert(functions, func.name)
-            nums[func.name] = (nums[func.name] or 0) + 1
-            local num = nums[func.name]
-            local line = ed:LineFromPosition(func.pos-1)
-            functions.src[func.name..num] = ed:GetLine(line):gsub("^%s+","")
-            functions.pos[func.name..num] = func.pos
+          for _, doc in pairs(ide:GetDocuments()) do
+            for _, func in ipairs(OutlineFunctions(doc:GetEditor())) do
+              table.insert(functions, func.name)
+              nums[func.name] = (nums[func.name] or 0) + 1
+              local num = nums[func.name]
+              functions.src[func.name..num] = doc:GetFilePath()
+              functions.pos[func.name..num] = func.pos
+            end
           end
         end
         local symbol = text:match(special.SYMBOL..'(.*)')
@@ -321,10 +322,10 @@ local function navigateTo(default, selected)
     end,
     onSelection = function(t, text)
       local _, file, tabindex = unpack(t)
+      local pos
       if text and text:find(special.SYMBOL) then
-        local ed = ide:GetEditor()
-        if ed then markLine(ed, ed:LineFromPosition(tabindex-1)+1) end
-        return
+        pos = tabindex
+        tabindex = nil
       elseif text and text:find(special.METHOD) then
         return
       end
@@ -359,6 +360,11 @@ local function navigateTo(default, selected)
         end
       end
       nb:SetEvtHandlerEnabled(true)
+
+      if text and text:find(special.SYMBOL) then
+        local ed = ide:GetEditor()
+        if ed then markLine(ed, ed:LineFromPosition(pos-1)+1) end
+      end
     end,
   })
 end
