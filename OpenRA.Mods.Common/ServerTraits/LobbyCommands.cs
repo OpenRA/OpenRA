@@ -55,21 +55,6 @@ namespace OpenRA.Mods.Common.Server
 			return true;
 		}
 
-		static void CheckAutoStart(S server)
-		{
-			var playerClients = server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
-
-			// Are all players ready?
-			if (!playerClients.Any() || playerClients.Any(c => c.State != Session.ClientState.Ready))
-				return;
-
-			// Are the map conditions satisfied?
-			if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
-				return;
-
-			server.StartGame();
-		}
-
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (server == null || conn == null || client == null || !ValidateCommand(server, conn, client, cmd))
@@ -93,9 +78,6 @@ namespace OpenRA.Mods.Common.Server
 							conn.Socket.RemoteEndPoint, client.State);
 
 						server.SyncLobbyClients();
-
-						CheckAutoStart(server);
-
 						return true;
 					}
 				},
@@ -136,8 +118,6 @@ namespace OpenRA.Mods.Common.Server
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 						server.SyncLobbyClients();
-						CheckAutoStart(server);
-
 						return true;
 					}
 				},

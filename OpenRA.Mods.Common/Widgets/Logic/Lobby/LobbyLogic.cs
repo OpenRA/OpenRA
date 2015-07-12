@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset modRules;
 		readonly World shellmapWorld;
 
-		enum PanelType { Players, Options, Kick, ForceStart }
+		enum PanelType { Players, Options, Kick }
 		PanelType panel = PanelType.Players;
 
 		readonly Widget lobby;
@@ -149,13 +149,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
-				panel == PanelType.Kick || panel == PanelType.ForceStart ||
-				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+				panel == PanelType.Kick || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
-				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
+				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick ||
 					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
 				{
@@ -279,44 +278,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
 			var optionsButton = lobby.Get<ButtonWidget>("OPTIONS_BUTTON");
-			optionsButton.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsButton.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick;
 			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
 			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
-
-			// Force start panel
-			Action startGame = () =>
-			{
-				gameStarting = true;
-				orderManager.IssueOrder(Order.Command("startgame"));
-			};
 
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
 			{
 				startGameButton.IsDisabled = () => configurationDisabled() || Map.RuleStatus != MapRuleStatus.Cached ||
-					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
+					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
+					orderManager.LobbyInfo.Clients.Any(c => !c.IsAdmin && c.Bot == null && !c.IsReady);
+
 				startGameButton.OnClick = () =>
 				{
-					Func<KeyValuePair<string, Session.Slot>, bool> notReady = sl =>
-					{
-						var cl = orderManager.LobbyInfo.ClientInSlot(sl.Key);
-
-						// Bots and admins don't count
-						return cl != null && !cl.IsAdmin && cl.Bot == null && !cl.IsReady;
-					};
-
-					if (orderManager.LobbyInfo.Slots.Any(notReady))
-						panel = PanelType.ForceStart;
-					else
-						startGame();
+					gameStarting = true;
+					orderManager.IssueOrder(Order.Command("startgame"));
 				};
 			}
-
-			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby, new WidgetArgs());
-			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
-			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
-			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
-			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			// Options panel
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
@@ -708,15 +686,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
+					{
 						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+						LobbyUtils.SetupReadyWidget(template, slot, client);
+					}
 					else
+					{
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
+						LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
+					}
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countries);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
 				}
 				else
 				{
