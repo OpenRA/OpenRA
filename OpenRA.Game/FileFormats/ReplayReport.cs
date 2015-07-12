@@ -179,8 +179,11 @@ namespace OpenRA.FileFormats
 
 			text.AppendLine();
 			text.AppendLine("#### Game Ended ####");
-			text.AppendLine();
-			text.AppendLine("Results:");
+			if (playersByTeam.Any())
+			{
+				text.AppendLine();
+				text.AppendLine("Results:");
+			}
 
 			foreach (var team in playersByTeam)
 			{
