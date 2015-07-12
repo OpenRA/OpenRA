@@ -685,16 +685,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 
-					if (client.Bot != null)
-					{
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
-						LobbyUtils.SetupReadyWidget(template, slot, client);
-					}
-					else
-					{
+					if (client.Bot == null)
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
+					else
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+
+					if (client.Bot == null && !client.IsAdmin)
 						LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
-					}
+					else
+						LobbyUtils.SetupReadyWidget(template, slot, client);
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, countries);

@@ -50,7 +50,8 @@ namespace OpenRA.Network
 			var mod = Game.ModData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
-			Directory.CreateDirectory(dir);
+			if (!Directory.Exists(dir))
+				Directory.CreateDirectory(dir);
 
 			FileStream file = null;
 			var id = -1;

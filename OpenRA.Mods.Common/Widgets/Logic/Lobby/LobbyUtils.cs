@@ -439,7 +439,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
 			status.IsChecked = () => orderManager.LocalClient.IsReady;
-			status.IsVisible = () => !c.IsAdmin;
+			status.IsVisible = () => true;
 			status.IsDisabled = () => map.Status != MapStatus.Available || map.RuleStatus != MapRuleStatus.Cached;
 
 			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
@@ -448,7 +448,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
+			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null || c.IsAdmin;
 		}
 
 		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
