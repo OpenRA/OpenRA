@@ -398,6 +398,8 @@
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
+    <Compile Include="Traits\BodyOrientation.cs" />
+    <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />

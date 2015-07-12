@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class WithVoxelWaterBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelWaterBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string WaterSequence = "water";
 		public readonly string LandSequence = "idle";
@@ -41,8 +41,6 @@ namespace OpenRA.Mods.TS.Traits
 				() => new[] { body.QuantizeOrientation(orientation, facings) },
 				() => false, () => 0);
 		}
-
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction) { return 0; }
 	}
 
 	public class WithVoxelWaterBody : IAutoSelectionSize

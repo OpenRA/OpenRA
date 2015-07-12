@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Basic render trait for immobile actors. Deprecated, use RenderSprites + WithSpriteBody instead.")]
-	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo, Requires<IBodyOrientationInfo>
+	public class RenderSimpleInfo : RenderSpritesInfo, IRenderActorPreviewSpritesInfo, Requires<IBodyOrientationInfo>
 	{
 		[SequenceReference] public readonly string Sequence = "idle";
 
@@ -32,11 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
-		}
-
-		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction)
-		{
-			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, faction), Sequence).Facings;
 		}
 	}
 
