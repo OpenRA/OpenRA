@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string[] DeliveryBuildings = { };
 
+		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
+		public readonly int SearchForDeliveryBuildingDelay = 125;
+
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
 

@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 				harv.ChooseNewProc(self, null);
 
-			// No refineries exist; check again after delay of 1s.
+			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-				return Util.SequenceActivities(new Wait(25), this);
+				return Util.SequenceActivities(new Wait(harvInfo.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
