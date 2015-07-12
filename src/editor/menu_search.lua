@@ -224,11 +224,12 @@ local function navigateTo(default, selected)
       -- reset cached methods if no method search
       if text and not text:find(special.METHOD) then methods = nil end
 
-      if ed and text and text:find(special.SYMBOL) then
+      if text and text:find(special.SYMBOL) then
+        local file, symbol = text:match('^(.*)'..special.SYMBOL..'(.*)')
         if not functions then
           local funcs, nums = {}, {}
           functions = {pos = {}, src = {}}
-          for _, doc in pairs(ide:GetDocuments()) do
+          for _, doc in pairs(#file > 0 and ed and {ide:GetDocument(ed)} or ide:GetDocuments()) do
             for _, func in ipairs(OutlineFunctions(doc:GetEditor())) do
               table.insert(functions, func.name)
               nums[func.name] = (nums[func.name] or 0) + 1
@@ -238,7 +239,6 @@ local function navigateTo(default, selected)
             end
           end
         end
-        local symbol = text:match(special.SYMBOL..'(.*)')
         local nums = {}
         if #symbol > 0 then
           local topscore
