@@ -16,6 +16,9 @@ hvr:
 	muzzle: gunfire
 		Length: *
 
+2tnk:
+	icon: xxicon
+
 lpst:
 	icon: lpsticon
 

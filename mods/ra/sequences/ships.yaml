@@ -4,12 +4,24 @@ ss:
 	icon: ssicon
 
 ca:
-	idle:
+	idle: pt
 		Facings: 16
-	turret: turr
+	idle-veteran: dd
+		Facings: 16
+	idle-elite:
+		Facings: 16
+	turret: mgun
+		Facings: 32
+	turret-veteran: ssam
+		Facings: 32
+	turret-elite: turr
 		Facings: 32
 	muzzle: gunfire2
 		Length: 5
+	barrel: patriot
+		Facings: 32
+	elitebarrel: v2
+		Facings: 32
 	icon: caicon
 
 dd:

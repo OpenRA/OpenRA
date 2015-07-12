@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 
 namespace OpenRA.Traits
 {
@@ -62,7 +63,7 @@ namespace OpenRA.Traits
 				if (info.QuantizedFacings >= 0)
 					return info.QuantizedFacings;
 
-				var qboi = self.Info.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
+				var qboi = self.Info.Traits.WithInterface<IQuantizeBodyOrientationInfo>().FirstOrDefault();
 				if (qboi == null)
 					throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
 

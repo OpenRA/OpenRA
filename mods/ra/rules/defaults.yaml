@@ -4,6 +4,7 @@
 	CombatDebugOverlay:
 	DrawLineToTarget:
 	GivesExperience:
+		FriendlyFire: true
 	BodyOrientation:
 	ScriptTriggers:
 	UpgradeManager:
@@ -368,6 +369,8 @@
 	ProximityCaptor:
 		Types: Building
 	GivesBounty:
+	GivesExperience:
+		FriendlyFire: true
 	Guardable:
 		Range: 3
 	FrozenUnderFog:

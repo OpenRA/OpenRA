@@ -170,7 +170,7 @@ TurretGun:
 		ValidImpactTypes: Water
 
 8Inch:
-	ReloadDelay: 250
+	ReloadDelay: 50#250
 	Range: 16c0
 	Burst: 2
 	Report: TURRET1.AUD

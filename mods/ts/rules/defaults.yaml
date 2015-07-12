@@ -3,6 +3,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
+		FriendlyFire: true
 	BodyOrientation:
 	ScriptTriggers:
 	UpgradeManager:
@@ -11,8 +12,8 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			500: rank, firepower, damage, speed, reload
-			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
+			200: rank, firepower, damage, speed, reload, veteranweapon, veteranvoxel
+			400: rank, firepower, damage, speed, reload, selfheal, eliteweapon, elitevoxel
 	GainsStatUpgrades:
 		FirepowerModifier: 110, 130
 		DamageModifier: 83, 66
@@ -304,7 +305,6 @@
 ^Vehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
-	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -335,6 +335,7 @@
 	AttackMove:
 		Voice: Move
 	HiddenUnderFog:
+	DrawLineToTarget:
 	ActorLostNotification:
 	Capturable:
 		Type: Vehicle
@@ -397,6 +398,7 @@
 			Tiberium: 70
 			BlueTiberium: 70
 			Veins: 70
+		ROT: 5
 
 ^VoxelVehicle:
 	Inherits: ^Vehicle

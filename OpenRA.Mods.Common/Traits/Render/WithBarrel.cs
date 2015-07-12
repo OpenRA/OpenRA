@@ -17,24 +17,25 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
-	class WithBarrelInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
+		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
-		[Desc("Sequence name to use")]
+		[Desc("Sequence name to use.")]
 		[SequenceReference] public readonly string Sequence = "barrel";
 
-		[Desc("Armament to use for recoil")]
+		[Desc("Armament to use for recoil.")]
 		public readonly string Armament = "primary";
 
-		[Desc("Turreted 'Barrel' key to display")]
-		public readonly string Barrel = "first";
-
-		[Desc("Visual offset")]
+		[Desc("Visual offset.")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public object Create(ActorInitializer init) { return new WithBarrel(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithBarrel(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
 				.First(a => a.Name == Armament);
@@ -51,38 +52,43 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class WithBarrel
+	public class WithBarrel : UpgradableTrait<WithBarrelInfo>
 	{
-		WithBarrelInfo info;
-		Actor self;
-		Armament armament;
-		Turreted turreted;
-		IBodyOrientation body;
-		Animation anim;
+		public readonly Animation DefaultAnimation;
+		readonly RenderSprites rs;
+		readonly Actor self;
+		readonly Armament armament;
+		readonly Turreted turreted;
+		readonly IBodyOrientation body;
 
 		public WithBarrel(Actor self, WithBarrelInfo info)
+			: base(info)
 		{
 			this.self = self;
-			this.info = info;
 			body = self.Trait<IBodyOrientation>();
 			armament = self.TraitsImplementing<Armament>()
-				.First(a => a.Info.Name == info.Armament);
+				.First(a => a.Info.Name == Info.Armament);
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
-			var rs = self.Trait<RenderSprites>();
-			anim = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);
-			anim.Play(info.Sequence);
+			rs = self.Trait<RenderSprites>();
+			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 			rs.Add(new AnimationWithOffset(
-				anim, () => BarrelOffset(), null, () => false, p => WithTurret.ZOffsetFromCenter(self, p, 0)));
+				DefaultAnimation, () => BarrelOffset(), () => IsTraitDisabled, () => false, p => WithTurret.ZOffsetFromCenter(self, p, 0)));
 
 			// Restrict turret facings to match the sprite
-			turreted.QuantizedFacings = anim.CurrentSequence.Facings;
+			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+		}
+
+		public string NormalizeSequence(Actor self, string sequence)
+		{
+			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
 		}
 
 		WVec BarrelOffset()
 		{
-			var localOffset = info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
+			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 			var turretOffset = turreted != null ? turreted.Position(self) : WVec.Zero;
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 
