@@ -22,6 +22,10 @@ namespace OpenRA.Traits
 
 		public readonly int ValuePerUnit = 0;
 		public readonly int MaxDensity = 10;
+
+		[Desc("Minimum density for this resource to be considered harvestable.")]
+		public readonly int MinDensityToHarvest = 1;
+
 		public readonly string Name = null;
 		public readonly string TerrainType = "Ore";
 
