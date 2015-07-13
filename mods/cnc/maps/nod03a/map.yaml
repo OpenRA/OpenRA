@@ -469,6 +469,7 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: chrg226m
+			VictoryMusic: nod_win1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

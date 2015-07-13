@@ -228,6 +228,7 @@ Rules:
 			Scripts: nod02a.lua
 		MusicPlaylist:
 			StartingMusic: ind2
+			VictoryMusic: nod_win1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
