@@ -72,9 +72,6 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMusic("win1")
-		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
