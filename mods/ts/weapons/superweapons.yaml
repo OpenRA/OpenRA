@@ -90,7 +90,6 @@ EMPulseCannon:
 		Range: 3c0
 		Duration: 250
 		Upgrades: empdisable
-		ValidTargets: Vehicle
 
 ClusterMissile:
 	ValidTargets: Ground, Water, Air
