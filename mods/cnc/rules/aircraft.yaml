@@ -162,7 +162,8 @@ C17:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 10
-	Invulnerable:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
 	Contrail@1:
 		Offset: -261,-650,0
 		TrailLength: 15

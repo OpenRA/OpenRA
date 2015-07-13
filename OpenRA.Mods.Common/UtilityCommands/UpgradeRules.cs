@@ -1380,6 +1380,131 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						})));
 				}
 
+				if (engineVersion < 20150711)
+				{
+					if (depth == 0)
+					{
+						var emptyYaml = new MiniYaml(null);
+
+						// Replace -GainsStatUpgrades
+						var trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-GainsStatUpgrades");
+						if (trait != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("-FirepowerMultiplier@EXPERIENCE", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-DamageMultiplier@EXPERIENCE", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-SpeedMultiplier@EXPERIENCE", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-ReloadDelayMultiplier@EXPERIENCE", emptyYaml));
+							node.Value.Nodes.Add(new MiniYamlNode("-InaccuracyMultiplier@EXPERIENCE", emptyYaml));
+							node.Value.Nodes.Remove(trait);
+						}
+
+						// Replace GainsStatUpgrades
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "GainsStatUpgrades");
+						if (trait != null)
+						{
+							// Common code for making each trait
+							Action<string, string, string> addTrait = (type, newType, values) =>
+							{
+								var upgradeTypes = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Upgrade");
+								var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
+
+								if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null || !string.IsNullOrEmpty(modifier.Value.Value))
+								{
+									var yaml = new MiniYaml(null);
+									if (modifier == null)
+										modifier = new MiniYamlNode("Modifier", new MiniYaml(values));
+									else
+										modifier.Key = "Modifier";
+									yaml.Nodes.Add(modifier);
+
+									if (upgradeTypes == null)
+										upgradeTypes = new MiniYamlNode("UpgradeTypes", new MiniYaml(type.ToLowerInvariant()));
+									else
+										upgradeTypes.Key = "UpgradeTypes";
+									yaml.Nodes.Add(upgradeTypes);
+
+									node.Value.Nodes.Add(new MiniYamlNode((newType ?? type) + "Multiplier@EXPERIENCE", yaml));
+								}
+							};
+
+							// Execute common code for each trait
+							addTrait("Firepower", null, "110, 115, 120, 130");
+							addTrait("Damage", null, "91, 87, 83, 65");
+							addTrait("Speed", null, "110, 115, 120, 150");
+							addTrait("Reload", "ReloadTime", "95, 90, 85, 75");
+							addTrait("Inaccuracy", null, "90, 80, 70, 50");
+
+							// Remove GainsStatUpgrades
+							node.Value.Nodes.Remove(trait);
+						}
+
+						// Replace -InvulnerabilityUpgrade
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-InvulnerabilityUpgrade");
+						if (trait != null)
+							trait.Key = "-DamageMultiplier@INVULNERABILITY_UPGRADE";
+
+						// Replace InvulnerabilityUpgrade with DamageMultiplier@INVULNERABILITY_UPGRADE
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvulnerabilityUpgrade");
+						if (trait != null)
+						{
+							trait.Key = "DamageMultiplier@INVULNERABILITY_UPGRADE";
+							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+
+							// Use UpgradeMinEnabledLevel as BaseLevel; otherwise, 1
+							var min = trait.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
+							if (min != null)
+							{
+								if (min.Value.Value != "1")
+									min.Key = "BaseLevel";
+								else
+									trait.Value.Nodes.Remove(min);
+							}
+
+							// Remove since level cap is based of Modifier.Length + BaseLevel
+							trait.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxAcceptedLevel");
+							trait.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxEnabledLevel");
+						}
+
+						// Replace -InvulnerabilityUpgrade@* with -DamageMultiplier@*
+						foreach (var n in node.Value.Nodes.Where(n => n.Key.StartsWith("-InvulnerabilityUpgrade@")))
+							n.Key = "-DamageMultiplier@" + n.Key.Substring("-InvulnerabilityUpgrade@".Length);
+
+						// Replace InvulnerabilityUpgrade@* with DamageMultiplier@*
+						foreach (var t in node.Value.Nodes.Where(n => n.Key.StartsWith("InvulnerabilityUpgrade@")))
+						{
+							t.Key = "DamageMultiplier@" + t.Key.Substring("InvulnerabilityUpgrade@".Length);
+							t.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+
+							// Use UpgradeMinEnabledLevel as BaseLevel; otherwise, 1
+							var min = t.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
+							if (min != null)
+							{
+								if (min.Value.Value != "1")
+									min.Key = "BaseLevel";
+								else
+									t.Value.Nodes.Remove(min);
+							}
+
+							// Remove since level cap is based of Modifier.Length + BaseLevel
+							t.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxAcceptedLevel");
+							t.Value.Nodes.RemoveAll(n => n.Key == "UpgradeMaxEnabledLevel");
+						}
+
+						// Replace -Invulnerable with -DamageMultiplier@INVULNERABLE
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Invulnerable");
+						if (trait != null)
+							trait.Key = "-DamageMultiplier@INVULNERABLE";
+
+						// Invulnerable with DamageMultiplier@INVULNERABLE
+						trait = node.Value.Nodes.FirstOrDefault(n => n.Key == "Invulnerable");
+						if (trait != null)
+						{
+							trait.Key = "DamageMultiplier@INVULNERABLE";
+							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0"));
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

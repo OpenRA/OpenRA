@@ -530,7 +530,8 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Bridge:
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
 	E2:
 		Buildable:
 			Prerequisites: ~pyle

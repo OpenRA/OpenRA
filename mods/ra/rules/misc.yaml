@@ -403,7 +403,8 @@ CTFLAG:
 		Name: Flag
 	Bib:
 		HasMinibib: Yes
-	Invulnerable:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
 	-Selectable:
 	-TargetableBuilding:
 

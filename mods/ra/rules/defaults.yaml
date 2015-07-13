@@ -16,7 +16,21 @@
 			400: firepower, damage, speed, reload, inaccuracy, rank
 			800: firepower, damage, speed, reload, inaccuracy, rank
 			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
-	GainsStatUpgrades:
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+		Modifier: 91, 87, 83, 65
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+		Modifier: 110, 115, 120, 130
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+		Modifier: 110, 115, 120, 150
+	ReloadDelayMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+		Modifier: 95, 90, 85, 75
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
+		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
@@ -39,10 +53,9 @@
 	UpgradeOverlay@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
-	InvulnerabilityUpgrade@IRONCURTAIN:
+	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+		Modifier: 0, 0
 	TimedUpgradeBar:
 		Upgrade: invulnerability
 

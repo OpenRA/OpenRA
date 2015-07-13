@@ -85,7 +85,8 @@ frigate:
 	Cargo:
 		MaxWeight: 20
 		PipCount: 10
-	Invulnerable:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
 	FlyAwayOnIdle:
 	RejectsOrders:
 

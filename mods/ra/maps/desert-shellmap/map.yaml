@@ -1267,17 +1267,17 @@ Rules:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	^Tank:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	^Infantry:
 		GivesBounty:
 			Percentage: 0
@@ -1289,29 +1289,29 @@ Rules:
 			VolumeMultiplier: 0.1
 		DeathSounds@ZAPPED:
 			VolumeMultiplier: 0.1
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	^Ship:
 		GivesBounty:
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	^Plane:
 		GivesBounty:
 			Percentage: 0
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	^Building:
 		GivesBounty:
 			Percentage: 0
-		InvulnerabilityUpgrade@UNKILLABLE:
+		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
-			UpgradeMinEnabledLevel: 1
+			Modifier: 0, 0
 	OILB:
 		CashTrickler:
 			ShowTicks: false
@@ -1319,7 +1319,8 @@ Rules:
 		Burns:
 			Damage: 0
 	MISS:
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
 	APC:
 		Cargo:
 			InitialUnits: e1, e1, e2, e3, e4

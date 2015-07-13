@@ -13,11 +13,18 @@
 		Upgrades:
 			500: rank, firepower, damage, speed, reload
 			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
-	GainsStatUpgrades:
-		FirepowerModifier: 110, 130
-		DamageModifier: 83, 66
-		SpeedModifier: 120, 150
-		ReloadModifier: 90, 75
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+		Modifier: 110, 130
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+		Modifier: 83, 66
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+		Modifier: 120, 150
+	ReloadDelayMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+		Modifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
