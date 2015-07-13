@@ -1282,7 +1282,7 @@ Rules:
 		Power:
 			Amount: 0
 		-Selectable:
-		-TargetableBuilding:
+		-Targetable:
 		-GivesBuildableArea:
 		-Huntable:
 		RenderSprites:

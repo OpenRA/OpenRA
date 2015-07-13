@@ -100,7 +100,7 @@ SPEN:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
@@ -181,7 +181,7 @@ SYRD:
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
@@ -476,7 +476,7 @@ DOME:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
@@ -823,7 +823,7 @@ WEAP:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: vehicles.upgraded
@@ -920,7 +920,7 @@ PROC:
 		Bounds: 72,50,0,12
 	SelectionDecorations:
 		VisualBounds: 72,70,0,-2
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
@@ -1050,7 +1050,7 @@ HPAD:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: aircraft.germany
 	ProvidesPrerequisite@buildingname:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
@@ -1159,7 +1159,7 @@ AFLD:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
@@ -1191,7 +1191,7 @@ POWR:
 		Amount: 100
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
@@ -1232,7 +1232,7 @@ APWR:
 		Amount: 200
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
@@ -1332,7 +1332,7 @@ BARR:
 	ProvidesPrerequisite@buildingname:
 	InfiltrateForSupportPower:
 		Proxy: barracks.upgraded
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 
 KENN:
@@ -1439,7 +1439,7 @@ TENT:
 	ProvidesPrerequisite@buildingname:
 	InfiltrateForSupportPower:
 		Proxy: barracks.upgraded
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 
 FIX:

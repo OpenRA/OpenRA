@@ -71,7 +71,7 @@
 		Palette: pips
 	Selectable:
 		Priority: 3
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Building, C4
 	Building:
 		Dimensions: 1,1
@@ -187,7 +187,7 @@
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Wall, C4
 	RenderSprites:
 	AutoSelectionSize:
@@ -252,7 +252,7 @@
 		Bounds: 14,23,-1,-9
 	Voiced:
 		VoiceSet: Infantry
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
 		Sequence: stand
@@ -378,7 +378,7 @@
 		Palette: pips
 	Voiced:
 		VoiceSet: Vehicle
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
 		RepairBuildings: gadept
@@ -520,7 +520,7 @@
 		Palette: pips
 	Selectable:
 		Bounds: 26,26,0,-3
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	AttackMove:
 	HiddenUnderFog:
@@ -651,7 +651,7 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Repair
 	Guardable:
 	HiddenUnderFog:
@@ -681,7 +681,7 @@
 		Palette: pips
 	Voiced:
 		VoiceSet: Vehicle
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Vehicle
 	Passenger:
 		CargoType: Infantry

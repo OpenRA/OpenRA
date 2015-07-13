@@ -1965,6 +1965,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150902)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "TargetableUnit" || node.Key == "TargetableBuilding")
+							node.Key = "Targetable";
+						else if (node.Key == "-TargetableUnit" || node.Key == "-TargetableBuilding")
+							node.Key = "-Targetable";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

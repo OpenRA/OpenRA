@@ -22,7 +22,7 @@ MINP:
 		Name: Mine
 	ProximityCaptor:
 		Types: Mine
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	BodyOrientation:
 		QuantizedFacings: 1
@@ -53,7 +53,7 @@ MINV:
 		Name: Mine
 	ProximityCaptor:
 		Types: Mine
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	BodyOrientation:
 		QuantizedFacings: 1
@@ -431,5 +431,5 @@ CTFLAG:
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
 	-Selectable:
-	-TargetableBuilding:
+	-Targetable:
 

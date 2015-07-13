@@ -65,7 +65,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 32,32
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Vehicle, C4
 	Passenger:
 		CargoType: Vehicle
@@ -130,7 +130,7 @@
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
 	Burns:
 		Interval: 4
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: yes
 	Capturable:
@@ -188,7 +188,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 12,18,0,-6
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
@@ -260,7 +260,7 @@
 	SelectionDecorations:
 	Selectable:
 		Priority: 2
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Building:
 		Dimensions: 1,1

@@ -77,7 +77,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24, 24
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Repair, Vehicle
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
@@ -149,7 +149,7 @@
 			Ore: 70
 			Gems: 70
 			Beach: 70
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, C4, Repair, Tank
 	ProximityCaptor:
 		Types: Tank
@@ -181,7 +181,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 12,18,0,-8
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry, Disguise
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
@@ -299,7 +299,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Water, Repair
 	HiddenUnderFog:
 	AttackMove:
@@ -385,7 +385,7 @@
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:
 		Dimensions: 1,1
@@ -433,7 +433,7 @@
 
 ^Defense:
 	Inherits: ^Building
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -462,7 +462,7 @@
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, DetonateAttack, Wall
 	RenderSprites:
 		Palette: effect
@@ -518,7 +518,7 @@
 	AutoTargetIgnore:
 	Armor:
 		Type: Light
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, DetonateAttack
 
 ^CivBuilding:
@@ -533,7 +533,7 @@
 	-Selectable:
 	Tooltip:
 		Name: Field
-	-TargetableBuilding:
+	-Targetable:
 	-Demolishable:
 	ProximityCaptor:
 		Types: CivilianField
@@ -598,7 +598,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Husk
 		RequiresForceFire: true
 	Chronoshiftable:
@@ -625,7 +625,7 @@
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Water
 		RequiresForceFire: true
 	Building:

@@ -374,7 +374,7 @@ BRIDGEHUT:
 	CustomSelectionSize:
 		CustomBounds: 48,48
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 C1:

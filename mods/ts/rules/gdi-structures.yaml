@@ -30,7 +30,7 @@ GAPOWR:
 		Amount: 100
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
@@ -288,7 +288,7 @@ GARADR:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
 		Amount: -50

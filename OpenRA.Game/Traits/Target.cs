@@ -130,9 +130,15 @@ namespace OpenRA.Traits
 						if (!targetable.Any())
 							return new[] { actor.CenterPosition };
 
-						var targeted = this.actor;
-						var positions = targetable.SelectMany(t => t.TargetablePositions(targeted)).Distinct();
-						return positions.Any() ? positions : new[] { targeted.CenterPosition };
+						var targetablePositions = actor.TraitOrDefault<ITargetablePositions>();
+						if (targetablePositions != null)
+						{
+							var positions = targetablePositions.TargetablePositions(actor);
+							if (positions.Any())
+								return positions;
+						}
+
+						return new[] { actor.CenterPosition };
 					case TargetType.FrozenActor:
 						return new[] { frozen.CenterPosition };
 					case TargetType.Terrain:

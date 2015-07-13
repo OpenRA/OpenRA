@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class TargetableSubmarineInfo : TargetableUnitInfo, Requires<CloakInfo>
+	public class TargetableSubmarineInfo : TargetableInfo, Requires<CloakInfo>
 	{
 		public readonly string[] CloakedTargetTypes = { };
 
 		public override object Create(ActorInitializer init) { return new TargetableSubmarine(init.Self, this); }
 	}
 
-	public class TargetableSubmarine : TargetableUnit
+	public class TargetableSubmarine : Targetable
 	{
 		readonly TargetableSubmarineInfo info;
 

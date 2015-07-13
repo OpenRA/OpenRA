@@ -293,7 +293,6 @@
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
-    <Compile Include="Traits\Buildings\TargetableBuilding.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
@@ -476,7 +475,7 @@
     <Compile Include="Traits\SupportPowers\SupportPower.cs" />
     <Compile Include="Traits\SupportPowers\SupportPowerManager.cs" />
     <Compile Include="Traits\SupportPowers\SpawnActorPower.cs" />
-    <Compile Include="Traits\TargetableUnit.cs" />
+    <Compile Include="Traits\Targetable.cs" />
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />

@@ -242,7 +242,7 @@ V19.Husk:
 		Sequence: fire-loop
 	-Health:
 	-Selectable:
-	-TargetableBuilding:
+	-Targetable:
 	-Demolishable:
 
 BARL:
@@ -259,7 +259,7 @@ BARL:
 	AutoTargetIgnore:
 	Armor:
 		Type: None
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, DemoTruck
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
@@ -279,7 +279,7 @@ BRL3:
 	AutoTargetIgnore:
 	Armor:
 		Type: None
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, DemoTruck
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
@@ -497,7 +497,7 @@ BRIDGEHUT:
 	CustomSelectionSize:
 		CustomBounds: 48,48
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 BRIDGEHUT.small:
@@ -508,7 +508,7 @@ BRIDGEHUT.small:
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 V20:

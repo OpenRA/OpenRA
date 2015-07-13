@@ -13,13 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TargetableAircraftInfo : TargetableUnitInfo
+	public class TargetableAircraftInfo : TargetableInfo
 	{
 		public readonly string[] GroundedTargetTypes = { };
 		public override object Create(ActorInitializer init) { return new TargetableAircraft(init.Self, this); }
 	}
 
-	public class TargetableAircraft : TargetableUnit
+	public class TargetableAircraft : Targetable
 	{
 		readonly TargetableAircraftInfo info;
 		readonly Actor self;

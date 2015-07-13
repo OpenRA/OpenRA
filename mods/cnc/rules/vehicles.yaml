@@ -528,7 +528,7 @@ STNK:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: HoldFire
-	TargetableUnit:
+	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
 	-MustBeDestroyed:

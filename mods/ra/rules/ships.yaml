@@ -19,7 +19,7 @@ SS:
 		Speed: 71
 	RevealsShroud:
 		Range: 6c0
-	-TargetableUnit:
+	-Targetable:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
 		CloakedTargetTypes: Underwater, Repair
@@ -68,7 +68,7 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	-TargetableUnit:
+	-Targetable:
 	TargetableSubmarine:
 		TargetTypes: Ground, Water, Repair
 		CloakedTargetTypes: Underwater, Repair

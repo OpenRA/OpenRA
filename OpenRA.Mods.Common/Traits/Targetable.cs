@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be targeted.")]
-	public class TargetableUnitInfo : UpgradableTraitInfo, ITargetableInfo
+	public class TargetableInfo : UpgradableTraitInfo, ITargetableInfo
 	{
 		[Desc("Target type. Used for filtering (in)valid targets.")]
 		public readonly string[] TargetTypes = { };
@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool RequiresForceFire = false;
 
-		public override object Create(ActorInitializer init) { return new TargetableUnit(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Targetable(init.Self, this); }
 	}
 
-	public class TargetableUnit : UpgradableTrait<TargetableUnitInfo>, ITargetable
+	public class Targetable : UpgradableTrait<TargetableInfo>, ITargetable
 	{
 		protected static readonly string[] None = new string[] { };
 		protected Cloak cloak;
 
-		public TargetableUnit(Actor self, TargetableUnitInfo info)
+		public Targetable(Actor self, TargetableInfo info)
 			: base(info)
 		{
 			cloak = self.TraitOrDefault<Cloak>();
@@ -47,11 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public virtual string[] TargetTypes { get { return Info.TargetTypes; } }
-
-		public virtual IEnumerable<WPos> TargetablePositions(Actor self)
-		{
-			yield return self.CenterPosition;
-		}
 
 		public bool RequiresForceFire { get { return Info.RequiresForceFire; } }
 	}

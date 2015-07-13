@@ -1382,21 +1382,15 @@ Rules:
 		-ExternalCaptures:
 		Captures:
 			CaptureTypes: building
-		Cloak@JAIL:
+		Targetable:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
 		RenderSprites:
 			Image: E6
 	MEDI:
-		Cloak@JAIL:
+		Targetable:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
 	E7.noautotarget:
 		Inherits: E7
 		AutoTarget:

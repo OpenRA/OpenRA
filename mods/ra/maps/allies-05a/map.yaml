@@ -1651,7 +1651,7 @@ Rules:
 			Prerequisites: ~disabled
 	LST:
 		-Selectable:
-		TargetableUnit:
+		Targetable:
 			TargetTypes: Ground, Water
 		Tooltip:
 			GenericVisibility: Enemy
@@ -1696,13 +1696,13 @@ Rules:
 			ShowOwnerRow: false
 	WEAP:
 		-InfiltrateForSupportPower:
-		TargetableBuilding:
+		Targetable:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	MISS:
 		Tooltip:
 			Name: Prison
 			ShowOwnerRow: False
-		TargetableBuilding:
+		Targetable:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	E7.noautotarget:
 		Inherits: E7
