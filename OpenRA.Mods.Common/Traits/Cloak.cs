@@ -38,13 +38,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string[] CloakTypes = { "Cloak" };
 
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant to self while cloaked.")]
+		public readonly string[] WhileCloakedUpgrades = { };
+
 		public override object Create(ActorInitializer init) { return new Cloak(init.Self, this); }
 	}
 
-	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier
+	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated
 	{
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
+		UpgradeManager upgradeManager;
 
 		Actor self;
 		CPos? lastPos;
@@ -55,6 +60,17 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			remainingTime = info.InitialDelay;
+		}
+
+		public void Created(Actor self)
+		{
+			upgradeManager = self.TraitOrDefault<UpgradeManager>();
+			if (remainingTime == 0)
+			{
+				if (upgradeManager != null)
+					foreach (var u in Info.WhileCloakedUpgrades)
+						upgradeManager.GrantUpgrade(self, u, this);
+			}
 		}
 
 		protected override void UpgradeDisabled(Actor self)
@@ -68,7 +84,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void Uncloak(int time)
 		{
 			if (Cloaked)
+			{
 				Sound.Play(Info.UncloakSound, self.CenterPosition);
+				if (upgradeManager != null)
+					foreach (var u in Info.WhileCloakedUpgrades)
+						upgradeManager.RevokeUpgrade(self, u, this);
+			}
 
 			remainingTime = Math.Max(remainingTime, time);
 		}
@@ -106,7 +127,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (remainingTime > 0 && !IsTraitDisabled && !damageDisabled && --remainingTime <= 0)
+			{
 				Sound.Play(Info.CloakSound, self.CenterPosition);
+				if (upgradeManager != null)
+					foreach (var u in Info.WhileCloakedUpgrades)
+						upgradeManager.GrantUpgrade(self, u, this);
+			}
 
 			if (self.IsDisabled())
 				Uncloak();
