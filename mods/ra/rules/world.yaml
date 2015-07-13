@@ -4,6 +4,8 @@
 	ActorMap:
 	ScreenMap:
 	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: map
 	TerrainGeometryOverlay:
 	LoadWidgetAtGameStart:
 	ShroudRenderer:

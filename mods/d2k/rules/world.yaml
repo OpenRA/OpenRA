@@ -4,6 +4,8 @@
 	ScreenMap:
 	ActorMap:
 	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: options
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed

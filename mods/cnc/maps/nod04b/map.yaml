@@ -509,6 +509,7 @@ Rules:
 			Scripts: nod04b.lua
 		MusicPlaylist:
 			StartingMusic: warfare
+			VictoryMusic: nod_win1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

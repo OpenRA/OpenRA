@@ -291,6 +291,7 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: nomercy
+			VictoryMusic: nod_win1
 	C10:
 		Tooltip:
 			Name: Nikoomba

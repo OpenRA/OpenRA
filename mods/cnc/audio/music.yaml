@@ -37,9 +37,15 @@ trouble2: In Trouble (Voiced)
 	Filename: trouble
 	Extension: var
 justdoit: Just Do it Up
+justdoit2: Just Do it Up (Voiced)
+	Filename: justdoit
+	Extension: var
 map1: Map Theme
 march: March to Doom
 nomercy: No Mercy
+nomercy2: No Mercy (Voiced)
+	Filename: nomercy
+	Extension: var
 otp: On the Prowl
 prp: Prepare for Battle
 radio: Radio
@@ -52,3 +58,6 @@ target: Target (Mechanical Man)
 j1: Untamed Land
 valkyrie: Ride of the Valkyries
 voic226m: Voice Rhythm
+outtakes: Outtakes
+nod_map1: Nod Map Theme
+nod_win1: Nod Win Theme

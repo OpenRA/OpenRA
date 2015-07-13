@@ -352,6 +352,8 @@ namespace OpenRA.Traits
 		void OnObjectiveFailed(Player player, int objectiveID);
 	}
 
+	public interface IGameOver { void GameOver(World world); }
+
 	public interface IWarhead
 	{
 		int Delay { get; }

@@ -570,6 +570,7 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: valkyrie
+			VictoryMusic: nod_win1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

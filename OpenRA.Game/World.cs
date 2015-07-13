@@ -58,6 +58,10 @@ namespace OpenRA
 			if (!gameOver)
 			{
 				gameOver = true;
+
+				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
+					t.GameOver(this);
+
 				GameOver();
 			}
 		}

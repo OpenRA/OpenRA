@@ -17,14 +17,31 @@ namespace OpenRA.Traits
 	[Desc("Trait for music handling. Attach this to the world actor.")]
 	public class MusicPlaylistInfo : ITraitInfo
 	{
+		[Desc("Music to play when the map starts.", "Plays the first song on the playlist when undefined.")]
 		public readonly string StartingMusic = null;
+
+		[Desc("Should the starting music loop?")]
 		public readonly bool LoopStartingMusic = false;
+
+		[Desc("Music to play when the game has been won.")]
+		public readonly string VictoryMusic = null;
+
+		[Desc("Should the victory music loop?")]
+		public readonly bool LoopVictoryMusic = false;
+
+		[Desc("Music to play when the game has been lost.")]
+		public readonly string DefeatMusic = null;
+
+		[Desc("Should the defeat music loop?")]
+		public readonly bool LoopDefeatMusic = false;
 
 		public object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
 	}
 
-	public class MusicPlaylist : INotifyActorDisposing
+	public class MusicPlaylist : INotifyActorDisposing, IGameOver
 	{
+		readonly MusicPlaylistInfo info;
+
 		readonly MusicInfo[] random;
 		readonly MusicInfo[] playlist;
 
@@ -35,6 +52,8 @@ namespace OpenRA.Traits
 
 		public MusicPlaylist(World world, MusicPlaylistInfo info)
 		{
+			this.info = info;
+
 			IsMusicAvailable = world.Map.Rules.InstalledMusic.Any();
 
 			playlist = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
@@ -69,6 +88,40 @@ namespace OpenRA.Traits
 		{
 			// TO-DO: add filter options for Race-specific music
 			return playlist;
+		}
+
+		public void GameOver(World world)
+		{
+			if (!IsMusicAvailable)
+				return;
+
+			var playedSong = currentSong;
+
+			if (world.LocalPlayer.WinState == WinState.Won)
+			{
+				if (!string.IsNullOrEmpty(info.VictoryMusic)
+				&& world.Map.Rules.Music.ContainsKey(info.VictoryMusic)
+				&& world.Map.Rules.Music[info.VictoryMusic].Exists)
+				{
+					currentSong = world.Map.Rules.Music[info.VictoryMusic];
+					repeat = info.LoopVictoryMusic;
+				}
+			}
+			else
+			{
+				// Most RTS treats observers losing the game,
+				// no need for a special handling involving them here.
+				if (!string.IsNullOrEmpty(info.DefeatMusic)
+				&& world.Map.Rules.Music.ContainsKey(info.DefeatMusic)
+				&& world.Map.Rules.Music[info.DefeatMusic].Exists)
+				{
+					currentSong = world.Map.Rules.Music[info.DefeatMusic];
+					repeat = info.LoopDefeatMusic;
+				}
+			}
+
+			if (playedSong != currentSong)
+				Play();
 		}
 
 		void Play()

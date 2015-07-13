@@ -505,6 +505,7 @@ Rules:
 			Scripts: nod06c.lua
 		MusicPlaylist:
 			StartingMusic: rout
+			VictoryMusic: nod_win1
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
