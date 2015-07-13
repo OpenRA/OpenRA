@@ -34,8 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				return IsTraitDisabled ? None
-					: (cloak.Cloaked ? info.CloakedTargetTypes : info.TargetTypes);
+				return cloak.Cloaked ? info.CloakedTargetTypes : info.TargetTypes;
 			}
 		}
 	}

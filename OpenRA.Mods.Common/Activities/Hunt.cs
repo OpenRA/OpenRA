@@ -29,8 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		bool IsTargetable(Actor self, Actor viewer)
 		{
-			var targetable = self.TraitOrDefault<ITargetable>();
-			return targetable != null && targetable.TargetableBy(self, viewer);
+			return self.TraitsImplementing<ITargetable>().Any(t => t.IsTraitEnabled() && t.TargetableBy(self, viewer));
 		}
 
 		public override Activity Tick(Actor self)

@@ -35,8 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return IsTraitDisabled ? None
-					: (self.CenterPosition.Z > 0 ? info.TargetTypes : info.GroundedTargetTypes);
+				return (self.CenterPosition.Z > 0) ? info.TargetTypes : info.GroundedTargetTypes;
 			}
 		}
 	}

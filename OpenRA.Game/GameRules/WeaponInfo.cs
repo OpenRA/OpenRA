@@ -125,8 +125,8 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null || !IsValidTarget(targetable.TargetTypes))
+			var targetable = victim.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
+			if (!IsValidTarget(targetable.SelectMany(t => t.TargetTypes)))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
@@ -138,8 +138,8 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !IsValidTarget(targetable.GetTargetTypes()))
+			var targetable = victim.Info.Traits.WithInterface<ITargetableInfo>();
+			if (!IsValidTarget(targetable.SelectMany(t => t.GetTargetTypes())))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))

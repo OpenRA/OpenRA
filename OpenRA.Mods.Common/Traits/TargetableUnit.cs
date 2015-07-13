@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cloak.IsVisible(self, viewer.Owner);
 		}
 
-		public virtual string[] TargetTypes { get { return IsTraitDisabled ? None : Info.TargetTypes; } }
+		public virtual string[] TargetTypes { get { return Info.TargetTypes; } }
 
 		public virtual IEnumerable<WPos> TargetablePositions(Actor self)
 		{

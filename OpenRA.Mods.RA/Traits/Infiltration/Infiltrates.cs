@@ -79,8 +79,8 @@ namespace OpenRA.Mods.RA.Traits
 			else
 				ai = order.TargetActor.Info;
 
-			var i = ai.Traits.GetOrDefault<ITargetableInfo>();
-			return i != null && i.GetTargetTypes().Intersect(Info.Types).Any();
+			return ai.Traits.WithInterface<ITargetableInfo>()
+				.SelectMany(t => t.GetTargetTypes()).Intersect(Info.Types).Any();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -95,7 +95,8 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
-			if (target.Type != TargetType.Actor)
+			if (target.Type != TargetType.Actor
+				|| target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes).Intersect(Info.Types).Any())
 				return;
 
 			if (!order.Queued)

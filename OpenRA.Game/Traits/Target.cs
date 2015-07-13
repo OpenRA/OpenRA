@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 
 		TargetType type;
 		Actor actor;
-		ITargetable targetable;
+		IEnumerable<ITargetable> targetable;
 		FrozenActor frozen;
 		WPos pos;
 		int generation;
@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 			return new Target
 			{
 				actor = a,
-				targetable = a.TraitOrDefault<ITargetable>(),
+				targetable = a.TraitsImplementing<ITargetable>(),
 				type = TargetType.Actor,
 				generation = a.Generation,
 			};
@@ -83,15 +83,18 @@ namespace OpenRA.Traits
 			if (targeter == null || Type == TargetType.Invalid)
 				return false;
 
-			if (targetable != null && !targetable.TargetableBy(actor, targeter))
+			var targeted = this.actor;
+			if (targeted != null && !targetable.Any(t => t.IsTraitEnabled() && t.TargetableBy(targeted, targeter)))
 				return false;
 
 			return true;
 		}
 
+		// Currently all or nothing.
+		// TODO: either replace based on target type or put in singleton trait
 		public bool RequiresForceFire
 		{
-			get { return targetable != null && targetable.RequiresForceFire; }
+			get { return targetable != null && targetable.Any(Exts.IsTraitEnabled) && targetable.Where(Exts.IsTraitEnabled).All(t => t.RequiresForceFire); }
 		}
 
 		// Representative position - see Positions for the full set of targetable positions.
@@ -123,12 +126,13 @@ namespace OpenRA.Traits
 				switch (Type)
 				{
 					case TargetType.Actor:
-						var targetable = actor.TraitOrDefault<ITargetable>();
-						if (targetable == null)
+						var targetable = actor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
+						if (!targetable.Any())
 							return new[] { actor.CenterPosition };
 
-						var positions = targetable.TargetablePositions(actor);
-						return positions.Any() ? positions : new[] { actor.CenterPosition };
+						var targeted = this.actor;
+						var positions = targetable.SelectMany(t => t.TargetablePositions(targeted)).Distinct();
+						return positions.Any() ? positions : new[] { targeted.CenterPosition };
 					case TargetType.FrozenActor:
 						return new[] { frozen.CenterPosition };
 					case TargetType.Terrain:
