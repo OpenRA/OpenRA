@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TerrainModifiesDamageInfo : ITraitInfo
 	{
-		[FieldLoader.LoadUsing("LoadPercents")]
+		[FieldLoader.LoadUsing("LoadPercents", true)]
 		[Desc("Damage percentage for specific terrain types. 120 = 120%, 80 = 80%, etc.")]
 		public readonly Dictionary<string, int> TerrainModifier = null;
 
@@ -28,12 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static object LoadPercents(MiniYaml y)
 		{
-			MiniYaml percents;
-
-			if (!y.ToDictionary().TryGetValue("TerrainModifier", out percents))
-				return new Dictionary<string, int>();
-
-			return percents.Nodes.ToDictionary(
+			return y.ToDictionary()["TerrainModifier"].Nodes.ToDictionary(
 				kv => FieldLoader.GetValue<string>("(key)", kv.Key),
 				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
 		}

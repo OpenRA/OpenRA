@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		"The icon change occurs when LevelupWhenCreated.Prerequisites are met.")]
 	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Image used for the overlay.")]
 		public readonly string Image = null;
 

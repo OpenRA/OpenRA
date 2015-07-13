@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TransformOnPassengerInfo : ITraitInfo
 	{
-		[ActorReference] public readonly string[] PassengerTypes = { };
+		[ActorReference, FieldLoader.Require] public readonly string[] PassengerTypes = { };
 		[ActorReference] public readonly string OnEnter = null;
 		[ActorReference] public readonly string OnExit = null;
 		public readonly bool SkipMakeAnims = false;

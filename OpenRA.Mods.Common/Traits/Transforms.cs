@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
 	public class TransformsInfo : ITraitInfo
 	{
-		[Desc("Actor to transform into."), ActorReference]
+		[Desc("Actor to transform into."), ActorReference, FieldLoader.Require]
 		public readonly string IntoActor = null;
 
 		[Desc("Offset to spawn the transformed actor relative to the current cell.")]

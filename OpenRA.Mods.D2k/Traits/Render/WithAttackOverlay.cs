@@ -17,6 +17,7 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Rendered together with an attack.")]
 	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = null;
 

@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	"Examples: bridge huts and crates.")]
 	public class CustomSelectionSizeInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		public readonly int[] CustomBounds = null;
 
 		public object Create(ActorInitializer init) { return new CustomSelectionSize(this); }

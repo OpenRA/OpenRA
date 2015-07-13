@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IBodyOrientationInfo>
 	{
+		[FieldLoader.Require]
 		public readonly string Anim = null;
 
 		[Desc("Initial position relative to body")]

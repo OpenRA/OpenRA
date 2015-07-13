@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This unit has access to build queues.")]
 	public class ProductionInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 

@@ -86,7 +86,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
 					var fieldType = FriendlyTypeName(info.Field.FieldType);
-					var defaultValue = FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
+					var loadInfo = info.Field.GetCustomAttributes<FieldLoader.SerializeAttribute>(true).FirstOrDefault();
+					var defaultValue = loadInfo != null && loadInfo.Required ? "<em>(required)</em>" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
 					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(info.YamlName, defaultValue, fieldType));
 					doc.Append("<td>");
 					foreach (var line in fieldDescLines)

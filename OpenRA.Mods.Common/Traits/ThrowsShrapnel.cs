@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
 	public class ThrowsShrapnelInfo : ITraitInfo
 	{
-		[WeaponReference]
+		[WeaponReference, FieldLoader.Require]
 		public string[] Weapons = { };
 		public int[] Pieces = { 3, 10 };
 		public WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };

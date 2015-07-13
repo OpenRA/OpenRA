@@ -19,9 +19,11 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Create player palettes by applying alpha transparency to another player palette.")]
 	class PaletteFromPlayerPaletteWithAlphaInfo : ITraitInfo
 	{
+		[FieldLoader.Require]
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = null;
 
+		[FieldLoader.Require]
 		[Desc("The name of the player palette to base off.")]
 		public readonly string BasePalette = null;
 

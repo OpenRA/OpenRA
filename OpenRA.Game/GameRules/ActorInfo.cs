@@ -36,6 +36,7 @@ namespace OpenRA
 			try
 			{
 				var allParents = new HashSet<string>();
+				var abstractActorType = name.StartsWith("^");
 
 				// Guard against circular inheritance
 				allParents.Add(name);
@@ -49,7 +50,15 @@ namespace OpenRA
 						throw new YamlException("Bogus trait removal: " + t.Key);
 
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
-						Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+						try
+						{
+							Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+						}
+						catch (FieldLoader.MissingFieldsException e)
+						{
+							if (!abstractActorType)
+								throw new YamlException(e.Message);
+						}
 				}
 			}
 			catch (YamlException e)
@@ -94,7 +103,16 @@ namespace OpenRA
 				throw new YamlException("Junk value `{0}` on trait node {1}"
 				.F(my.Value, traitName));
 			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
-			FieldLoader.Load(info, my);
+			try
+			{
+				FieldLoader.Load(info, my);
+			}
+			catch (FieldLoader.MissingFieldsException e)
+			{
+				var header = "Trait name " + traitName + ": " + (e.Missing.Length > 1 ? "Required properties missing" : "Required property missing");
+				throw new FieldLoader.MissingFieldsException(e.Missing, header);
+			}
+
 			return info;
 		}
 

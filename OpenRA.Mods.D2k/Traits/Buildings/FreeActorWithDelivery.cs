@@ -22,7 +22,7 @@ namespace OpenRA.Mods.D2k.Traits
 		"If you want more than one unit to be delivered, copy this section and assign IDs like FreeActorWithDelivery@2, ...")]
 	public class FreeActorWithDeliveryInfo : FreeActorInfo
 	{
-		[ActorReference]
+		[ActorReference, FieldLoader.Require]
 		[Desc("Name of the delivering actor. This actor must have the `Carryall` trait")]
 		public readonly string DeliveringActor = null;
 
@@ -43,11 +43,6 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public FreeActorWithDelivery(ActorInitializer init, FreeActorWithDeliveryInfo info)
 		{
-			if (string.IsNullOrEmpty(info.Actor))
-				throw new InvalidDataException("Actor type was not specified!");
-			if (string.IsNullOrEmpty(info.DeliveringActor))
-				throw new InvalidDataException("Delivering actor type was not specified!");
-
 			self = init.Self;
 			Info = info;
 
