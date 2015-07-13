@@ -36,9 +36,19 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly GlobalLightingPaletteEffectInfo info;
 
+		public float Red;
+		public float Green;
+		public float Blue;
+		public float Ambient;
+
 		public GlobalLightingPaletteEffect(GlobalLightingPaletteEffectInfo info)
 		{
 			this.info = info;
+
+			Red = info.Red;
+			Green = info.Green;
+			Blue = info.Blue;
+			Ambient = info.Ambient;
 		}
 
 		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
@@ -56,9 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 				for (var x = 0; x < Palette.Size; x++)
 				{
 					var from = palette.GetColor(x);
-					var red = (int)(from.R * info.Ambient * info.Red).Clamp(0, 255);
-					var green = (int)(from.G * info.Ambient * info.Green).Clamp(0, 255);
-					var blue = (int)(from.B * info.Ambient * info.Blue).Clamp(0, 255);
+					var red = (int)(from.R * Ambient * Red).Clamp(0, 255);
+					var green = (int)(from.G * Ambient * Green).Clamp(0, 255);
+					var blue = (int)(from.B * Ambient * Blue).Clamp(0, 255);
 					palette.SetColor(x, Color.FromArgb(from.A, red, green, blue));
 				}
 			}
