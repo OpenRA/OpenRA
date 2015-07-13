@@ -1278,21 +1278,15 @@ Rules:
 		Captures:
 			CaptureTypes: building
 		WithInfantryBody:
-		Cloak@JAIL:
+		TargetableUnit:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
 		RenderSprites:
 			Image: E6
 	MEDI:
-		Cloak@JAIL:
+		TargetableUnit:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
 	E7.noautotarget:
 		Inherits: E7
 		AutoTarget:
@@ -1312,12 +1306,6 @@ Rules:
 	CAMERA:
 		RevealsShroud:
 			Range: 8c5
-	FTUR:
-		DetectCloaked:
-			Range: 0
-	DOME:
-		DetectCloaked:
-			Range: 0
 	CAMERA.VeryLarge:
 		Inherits: CAMERA
 		RevealsShroud:
