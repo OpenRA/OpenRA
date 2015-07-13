@@ -70,10 +70,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			DefaultAnimation = new Animation(init.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
+			PlayStandAnimation(self);
 
-			DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(init.Self, info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
 			state = AnimationState.Waiting;
 			move = init.Self.Trait<IMove>();
+		}
+
+		public void PlayStandAnimation(Actor self)
+		{
+			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
+			if (sequence != null)
+				DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, sequence), () => 0);
 		}
 
 		public void Created(Actor self)
@@ -123,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((state == AnimationState.Moving || dirty) && !move.IsMoving)
 			{
 				state = AnimationState.Waiting;
-				DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
+				PlayStandAnimation(self);
 			}
 			else if ((state != AnimationState.Moving || dirty) && move.IsMoving)
 			{
@@ -138,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
 			{
-				DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, Info.StandSequences.Random(Game.CosmeticRandom)), () => 0);
+				PlayStandAnimation(self);
 				state = AnimationState.Idle;
 
 				if (Info.IdleSequences.Length > 0)
@@ -156,14 +163,14 @@ namespace OpenRA.Mods.Common.Traits
 						state = AnimationState.IdleAnimating;
 						DefaultAnimation.PlayThen(idleSequence, () =>
 						{
-							DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.StandSequences.Random(Game.CosmeticRandom)));
+							PlayStandAnimation(self);
 							state = AnimationState.Waiting;
 						});
 					}
 				}
 				else
 				{
-					DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.StandSequences.Random(Game.CosmeticRandom)));
+					PlayStandAnimation(self);
 					state = AnimationState.Waiting;
 				}
 			}
