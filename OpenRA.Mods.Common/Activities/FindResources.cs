@@ -21,31 +21,42 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FindResources : Activity
 	{
+		readonly Harvester harv;
+		readonly HarvesterInfo harvInfo;
+		readonly Mobile mobile;
+		readonly MobileInfo mobileInfo;
+		readonly ResourceLayer resLayer;
+		readonly ResourceClaimLayer territory;
+		readonly IPathFinder pathFinder;
+
 		CPos? avoidCell;
 
-		public FindResources()
+		public FindResources(Actor self)
 		{
+			harv = self.Trait<Harvester>();
+			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			mobile = self.Trait<Mobile>();
+			mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 		}
 
-		public FindResources(CPos avoidCell)
+		public FindResources(Actor self, CPos avoidCell)
+			: this(self)
 		{
 			this.avoidCell = avoidCell;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || NextActivity != null) return NextActivity;
+			if (IsCanceled || NextActivity != null)
+				return NextActivity;
 
-			var harv = self.Trait<Harvester>();
+			var deliver = new DeliverResources(self);
 
 			if (harv.IsFull)
-				return Util.SequenceActivities(new DeliverResources(), NextActivity);
-
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobile = self.Trait<Mobile>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
-			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+				return Util.SequenceActivities(deliver, NextActivity);
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
@@ -53,7 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find harvestable resources nearby:
-			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
+			var path = pathFinder.FindPath(
 				PathSearch.Search(self.World, mobileInfo, self, true)
 					.WithHeuristic(loc =>
 					{
@@ -87,19 +98,21 @@ namespace OpenRA.Mods.Common.Activities
 					})
 					.FromPoint(self.Location));
 
+			var next = this;
+
 			if (path.Count == 0)
 			{
 				if (!harv.IsEmpty)
-					return new DeliverResources();
+					return deliver;
 				else
 				{
 					// Get out of the way if we are:
 					harv.UnblockRefinery(self);
-					var randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
+					var randFrames = self.World.SharedRandom.Next(90, 160);
 					if (NextActivity != null)
-						return Util.SequenceActivities(NextActivity, new Wait(randFrames), new FindResources());
+						return Util.SequenceActivities(NextActivity, new Wait(randFrames), next);
 					else
-						return Util.SequenceActivities(new Wait(randFrames), new FindResources());
+						return Util.SequenceActivities(new Wait(randFrames), next);
 				}
 			}
 
@@ -107,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (territory != null)
 			{
 				if (!territory.ClaimResource(self, path[0]))
-					return Util.SequenceActivities(new Wait(25), new FindResources());
+					return Util.SequenceActivities(new Wait(25), next);
 			}
 
 			// If not given a direct order, assume ordered to the first resource location we find:
@@ -117,11 +130,10 @@ namespace OpenRA.Mods.Common.Activities
 			self.SetTargetLine(Target.FromCell(self.World, path[0]), Color.Red, false);
 
 			var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-			var next = new FindResources();
 			foreach (var n in notify)
 				n.MovingToResources(self, path[0], next);
 
-			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
+			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(self), next);
 		}
 
 		// Diagonal distance heuristic
@@ -136,56 +148,6 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromCell(self.World, self.Location);
-		}
-	}
-
-	public class HarvestResource : Activity
-	{
-		public override Activity Tick(Actor self)
-		{
-			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-			if (IsCanceled)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			var harv = self.Trait<Harvester>();
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			harv.LastHarvestedCell = self.Location;
-
-			if (harv.IsFull)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			// Turn to one of the harvestable facings
-			if (harvInfo.HarvestFacings != 0)
-			{
-				var facing = self.Trait<IFacing>().Facing;
-				var desired = Util.QuantizeFacing(facing, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
-				if (desired != facing)
-					return Util.SequenceActivities(new Turn(self, desired), this);
-			}
-
-			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var resource = resLayer.Harvest(self.Location);
-			if (resource == null)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
-
-			harv.AcceptResource(resource);
-
-			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
-				t.Harvested(self, resource);
-
-			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }

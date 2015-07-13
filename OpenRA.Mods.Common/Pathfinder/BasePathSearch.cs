@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
 
-		public Player Owner { get { return this.Graph.Actor.Owner; } }
+		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
 		string id;
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public IPathSearch FromPoint(CPos from)
 		{
-			if (this.Graph.World.Map.Contains(from))
+			if (Graph.World.Map.Contains(from))
 				AddInitialCell(from);
 
 			return this;

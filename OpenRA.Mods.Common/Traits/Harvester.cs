@@ -19,9 +19,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ITraitInfo
+	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
 	{
 		public readonly string[] DeliveryBuildings = { };
+
+		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
+		public readonly int SearchForDeliveryBuildingDelay = 125;
 
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
@@ -62,6 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
 		readonly HarvesterInfo info;
+		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -76,19 +80,20 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			this.info = info;
+			mobile = self.Trait<Mobile>();
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
 		public void Created(Actor self)
 		{
 			if (info.SearchOnCreation)
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 		}
 
 		public void BuildingComplete(Actor self)
 		{
 			if (info.SearchOnCreation)
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 		}
 
 		public void SetProcLines(Actor proc)
@@ -128,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Move out of the refinery dock and continue harvesting:
 			UnblockRefinery(self);
-			self.QueueActivity(new FindResources());
+			self.QueueActivity(new FindResources(self));
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -137,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
-		Actor ClosestProc(Actor self, Actor ignore)
+		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
 			var refs = (
@@ -150,14 +155,16 @@ namespace OpenRA.Mods.Common.Traits
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
-					.WithCustomCost((loc) =>
+					.WithCustomCost(loc =>
 					{
-						if (!refs.ContainsKey(loc)) return 0;
+						if (!refs.ContainsKey(loc))
+							return 0;
 
 						var occupancy = refs[loc].Occupancy;
 
 						// 4 harvesters clogs up the refinery's delivery location:
-						if (occupancy >= 3) return int.MaxValue;
+						if (occupancy >= 3)
+							return int.MaxValue;
 
 						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 						return occupancy * 12;
@@ -189,22 +196,20 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
-					var mobile = self.Trait<Mobile>();
-					var harv = self.Trait<Harvester>();
-
-					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
+					var moveTo = LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-					if (territory != null) territory.ClaimResource(self, moveTo);
+					if (territory != null)
+						territory.ClaimResource(self, moveTo);
 
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var next = new FindResources();
+					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
 
-					self.QueueActivity(new FindResources());
+					self.QueueActivity(new FindResources(self));
 					return;
 				}
 			}
@@ -219,7 +224,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (act is Wait)
 			{
 				self.CancelActivity();
-				var mobile = self.Trait<Mobile>();
 
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
@@ -227,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 				// Find more resources but not at this location:
-				self.QueueActivity(new FindResources(cell));
+				self.QueueActivity(new FindResources(self, cell));
 			}
 		}
 
@@ -239,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Are we not empty? Deliver resources:
 			if (!IsEmpty)
 			{
-				self.QueueActivity(new DeliverResources());
+				self.QueueActivity(new DeliverResources(self));
 				return;
 			}
 
@@ -316,7 +320,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 
-				var mobile = self.Trait<Mobile>();
 				if (order.TargetLocation != CPos.Zero)
 				{
 					var loc = order.TargetLocation;
@@ -338,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var next = new FindResources();
+					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, loc, next);
 
@@ -361,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
 				LastHarvestedCell = LastOrderLocation;
-				self.QueueActivity(new FindResources());
+				self.QueueActivity(new FindResources(self));
 			}
 			else if (order.OrderString == "Deliver")
 			{
@@ -381,10 +384,11 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
 
 				self.CancelActivity();
-				self.QueueActivity(new DeliverResources());
+
+				var next = new DeliverResources(self);
+				self.QueueActivity(next);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				var next = new DeliverResources();
 				foreach (var n in notify)
 					n.MovingToRefinery(self, order.TargetLocation, next);
 			}
@@ -421,9 +425,9 @@ namespace OpenRA.Mods.Common.Traits
 						if (!harvInfo.Resources.Contains(resType.Info.Name))
 							return Constants.CellCost;
 
-						// Another harvester has claimed this resource:
 						if (territory != null)
 						{
+							// Another harvester has claimed this resource:
 							ResourceClaim claim;
 							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
 								return Constants.CellCost;
@@ -445,7 +449,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Our claim on a resource was stolen, find more unclaimed resources:
 			self.CancelActivity();
-			self.QueueActivity(new FindResources());
+			self.QueueActivity(new FindResources(self));
 		}
 
 		PipType GetPipAt(int i)

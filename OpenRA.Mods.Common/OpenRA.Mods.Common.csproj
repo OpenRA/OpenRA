@@ -112,6 +112,7 @@
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\FindResources.cs" />
+    <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="Activities\Heal.cs" />
     <Compile Include="Activities\Hunt.cs" />

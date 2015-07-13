@@ -18,16 +18,25 @@ namespace OpenRA.Mods.Common.Activities
 	public class DeliverResources : Activity
 	{
 		const int NextChooseTime = 100;
+
+		readonly IMove movement;
+		readonly Harvester harv;
+		readonly HarvesterInfo harvInfo;
+
 		bool isDocking;
 		int chosenTicks;
+
+		public DeliverResources(Actor self)
+		{
+			movement = self.Trait<IMove>();
+			harv = self.Trait<Harvester>();
+			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (NextActivity != null)
 				return NextActivity;
-
-			var movement = self.Trait<IMove>();
-			var harv = self.Trait<Harvester>();
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
 			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)
@@ -46,8 +55,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 				harv.ChooseNewProc(self, null);
 
-			if (harv.LinkedProc == null)	// no procs exist; check again in 1s.
-				return Util.SequenceActivities(new Wait(25), this);
+			// No refineries exist; check again after delay defined in Harvester.
+			if (harv.LinkedProc == null)
+				return Util.SequenceActivities(new Wait(harvInfo.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
@@ -56,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				var next = new DeliverResources();
+				var next = new DeliverResources(self);
 				foreach (var n in notify)
 					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, next);
 
