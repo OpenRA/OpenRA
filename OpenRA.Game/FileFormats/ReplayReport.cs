@@ -105,7 +105,7 @@ namespace OpenRA.FileFormats
 							}
 						}
 
-						AddSettingsDisplay(session.GlobalSettings, text);
+						AddSettingsDisplay(session.GlobalSettings, gameInfo.Mod, text);
 						text.AppendLine();
 						gameStarted = true;
 					}
@@ -223,10 +223,15 @@ namespace OpenRA.FileFormats
 			text.AppendLine("\tLocation:    " + GeoIP.LookupCountry(client.IpAddress));
 		}
 
-		static void AddSettingsDisplay(Session.Global settings, StringBuilder text)
+		static void AddSettingsDisplay(Session.Global settings, string mod, StringBuilder text)
 		{
 			var setDisp = new List<string>();
 			var defaultSettings = new Session.Global();
+			if (ModMetadata.AllMods.ContainsKey(mod))
+			{
+				var modData = new ModData(mod);
+				FieldLoader.Load(defaultSettings, modData.Manifest.LobbyDefaults);
+			}
 
 			setDisp.Add("Default game settings");
 
