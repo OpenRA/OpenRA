@@ -1700,6 +1700,7 @@ Rules:
 	MISS:
 		Tooltip:
 			Name: Prison
+			ShowOwnerRow: False
 		TargetableBuilding:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	E7.noautotarget:
