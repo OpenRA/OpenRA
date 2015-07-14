@@ -438,9 +438,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
-			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
+			status.IsChecked = () => orderManager.LocalClient.IsReady;
 			status.IsVisible = () => true;
-			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || map.RuleStatus != MapRuleStatus.Cached;
+			status.IsDisabled = () => map.Status != MapStatus.Available || map.RuleStatus != MapRuleStatus.Cached;
 
 			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
 			status.OnClick = () => orderManager.IssueOrder(Order.Command("state {0}".F(state)));
@@ -448,7 +448,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
+			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null || c.IsAdmin;
 		}
 
 		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
