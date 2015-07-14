@@ -251,6 +251,7 @@ BARL:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+		ShowOwnerRow: False
 	AutoTargetIgnore:
 	Armor:
 		Type: None
@@ -270,6 +271,7 @@ BRL3:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+		ShowOwnerRow: False
 	AutoTargetIgnore:
 	Armor:
 		Type: None
