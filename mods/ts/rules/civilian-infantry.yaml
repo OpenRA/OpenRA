@@ -41,7 +41,7 @@ UMAGON:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 CHAMSPY:
@@ -98,7 +98,7 @@ MUTANT:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 MWMN:
@@ -123,7 +123,7 @@ MWMN:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 MUTANT3:
@@ -148,7 +148,7 @@ MUTANT3:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 TRATOS:
