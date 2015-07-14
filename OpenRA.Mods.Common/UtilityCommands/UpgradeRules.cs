@@ -2718,6 +2718,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150912)
+				{
+					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Missile" && node.Key == "Speed")
+						node.Key = "InitialSpeed";
+
+					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Missile" && node.Key == "RateOfTurn")
+						node.Key = "HorizontalRateOfTurn";
+
+					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Missile" && node.Key == "Trail")
+						node.Key = "TrailImage";
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
