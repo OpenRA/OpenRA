@@ -145,7 +145,7 @@ namespace OpenRA.Traits
 			{
 				if (Resources > 0.8 * ResourceCapacity)
 				{
-					Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", "SilosNeeded", owner.Country.Race);
+					Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", "SilosNeeded", owner.Country.InternalName);
 					AlertSilo = true;
 				}
 				else
@@ -187,14 +187,14 @@ namespace OpenRA.Traits
 		public void PlayCashTickUp(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks)
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Country.InternalName);
 		}
 
 		public void PlayCashTickDown(Actor self)
 		{
 			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
 			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Country.InternalName);
 				nextCashTickTime = 2;
 			}
 		}

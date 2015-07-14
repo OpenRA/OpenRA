@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 					Sound.PlayNotification(self.World.Map.Rules, null, info.NotificationType, info.Notification,
-						self.World.RenderPlayer != null ? self.World.RenderPlayer.Country.Race : null);
+						self.World.RenderPlayer != null ? self.World.RenderPlayer.Country.InternalName : null);
 
 				if (radarPings != null)
 				{

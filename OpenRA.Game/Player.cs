@@ -31,14 +31,14 @@ namespace OpenRA
 
 		public readonly string PlayerName;
 		public readonly string InternalName;
-		public readonly CountryInfo Country;
+		public readonly FactionInfo Country;
 		public readonly bool NonCombatant = false;
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 
 		// The country (including Random, etc) that was selected in the lobby
-		public readonly CountryInfo DisplayCountry;
+		public readonly FactionInfo DisplayCountry;
 
 		public WinState WinState = WinState.Undefined;
 		public bool IsBot;
@@ -51,20 +51,20 @@ namespace OpenRA
 
 		readonly IFogVisibilityModifier[] fogVisibilities;
 
-		CountryInfo ChooseCountry(World world, string name, bool requireSelectable = true)
+		FactionInfo ChooseCountry(World world, string name, bool requireSelectable = true)
 		{
 			var selectableCountries = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>().Where(c => !requireSelectable || c.Selectable)
+				.WithInterface<FactionInfo>().Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
-			var selected = selectableCountries.FirstOrDefault(c => c.Race == name)
+			var selected = selectableCountries.FirstOrDefault(f => f.InternalName == name)
 				?? selectableCountries.Random(world.SharedRandom);
 
 			// Don't loop infinite
-			for (var i = 0; i <= 10 && selected.RandomRaceMembers.Any(); i++)
+			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Any(); i++)
 			{
-				var race = selected.RandomRaceMembers.Random(world.SharedRandom);
-				selected = selectableCountries.FirstOrDefault(c => c.Race == race);
+				var race = selected.RandomFactionMembers.Random(world.SharedRandom);
+				selected = selectableCountries.FirstOrDefault(f => f.InternalName == race);
 
 				if (selected == null)
 					throw new YamlException("Unknown race: {0}".F(race));
@@ -73,12 +73,12 @@ namespace OpenRA
 			return selected;
 		}
 
-		CountryInfo ChooseDisplayCountry(World world, string race)
+		FactionInfo ChooseDisplayCountry(World world, string race)
 		{
 			var countries = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<CountryInfo>();
+				.WithInterface<FactionInfo>().ToArray();
 
-			return countries.FirstOrDefault(c => c.Race == race) ?? countries.First();
+			return countries.FirstOrDefault(f => f.InternalName == race) ?? countries.First();
 		}
 
 		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)

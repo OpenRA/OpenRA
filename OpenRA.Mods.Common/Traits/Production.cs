@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
-			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
+			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.InternalName;
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)

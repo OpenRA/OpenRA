@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
 
-			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.Race;
+			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.InternalName;
 			Enabled = !info.Race.Any() || info.Race.Contains(Race);
 
 			CacheProduceables(playerActor);
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!Info.Sticky)
 			{
-				Race = self.Owner.Country.Race;
+				Race = self.Owner.Country.InternalName;
 				Enabled = !Info.Race.Any() || Info.Race.Contains(Race);
 			}
 
@@ -277,13 +277,13 @@ namespace OpenRA.Mods.Common.Traits
 								var isBuilding = unit.Traits.Contains<BuildingInfo>();
 
 								if (isBuilding && !hasPlayedSound)
-									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.InternalName);
 								else if (!isBuilding)
 								{
 									if (BuildUnit(order.TargetString))
-										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.Race);
+										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Country.InternalName);
 									else if (!hasPlayedSound && time > 0)
-										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.Race);
+										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Country.InternalName);
 								}
 							})));
 						}

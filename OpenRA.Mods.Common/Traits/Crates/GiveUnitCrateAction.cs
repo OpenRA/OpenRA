@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Country.Race))
+			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Country.InternalName))
 				return false;
 
 			foreach (string unit in info.Units)

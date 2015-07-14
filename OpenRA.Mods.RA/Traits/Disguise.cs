@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA.Traits
 			var oldEffectiveOwner = AsPlayer;
 
 			var renderSprites = actorInfo.Traits.GetOrDefault<RenderSpritesInfo>();
-			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Country.Race);
+			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Country.InternalName);
 			AsPlayer = newOwner;
 			AsTooltipInfo = actorInfo.Traits.WithInterface<TooltipInfo>().FirstOrDefault();
 

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.info = info;
 
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.Race;
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)

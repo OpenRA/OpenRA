@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Lint
 			this.emitWarning = emitWarning;
 
 			sequenceDefinitions = MiniYaml.MergeLiberal(map.SequenceDefinitions,
-				Game.ModData.Manifest.Sequences.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
+				Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal));
 
-			var races = map.Rules.Actors["world"].Traits.WithInterface<CountryInfo>().Select(c => c.Race);
+			var races = map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
 
 			foreach (var actorInfo in map.Rules.Actors)
 			{
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var race in races)
 					{
 						var image = renderInfo.GetImage(actorInfo.Value, map.Rules.Sequences[map.Tileset], race);
-						if (!sequenceDefinitions.Any(s => s.Key == image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
+						if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
 							emitWarning("Sprite image {0} from actor {1} on tileset {2} using race {3} has no sequence definition."
 								.F(image, actorInfo.Value.Name, map.Tileset, race));
 					}
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Lint
 										{
 											foreach (var imageOverride in LintExts.GetFieldValues(traitInfo, imageField, emitError))
 											{
-												if (!string.IsNullOrEmpty(imageOverride) && !sequenceDefinitions.Any(s => s.Key == imageOverride.ToLowerInvariant()))
+												if (!string.IsNullOrEmpty(imageOverride) && sequenceDefinitions.All(s => s.Key != imageOverride.ToLowerInvariant()))
 													emitWarning("Custom sprite image {0} from actor {1} has no sequence definition.".F(imageOverride, actorInfo.Value.Name));
 												else
 													CheckDefintions(imageOverride, sequenceReference, actorInfo, sequence, race, field, traitInfo);
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Lint
 						emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence prefix {3} from field {4} of {5}"
 							.F(image, actorInfo.Value.Name, race, sequence, field.Name, traitInfo));
 				}
-				else if (!definitions.Value.Nodes.Any(n => n.Key == sequence))
+				else if (definitions.Value.Nodes.All(n => n.Key != sequence))
 				{
 					emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence {3} from field {4} of {5}"
 						.F(image, actorInfo.Value.Name, race, sequence, field.Name, traitInfo));

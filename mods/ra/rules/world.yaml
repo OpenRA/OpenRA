@@ -12,57 +12,57 @@
 		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
-	Country@0:
+	Faction@0:
 		Name: Allies
-		Race: allies
+		InternalName: allies
 		Side: Allies
 		Selectable: False
-	Country@1:
+	Faction@1:
 		Name: England
-		Race: england
+		InternalName: england
 		Side: Allies
 		Description: England: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
-	Country@2:
+	Faction@2:
 		Name: France
-		Race: france
+		InternalName: france
 		Side: Allies
 		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Mobile Gap Generator
-	Country@3:
+	Faction@3:
 		Name: Germany
-		Race: germany
+		InternalName: germany
 		Side: Allies
 		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
-	Country@4:
+	Faction@4:
 		Name: Soviet
-		Race: soviet
+		InternalName: soviet
 		Side: Soviet
 		Selectable: False
-	Country@5:
+	Faction@5:
 		Name: Russia
-		Race: russia
+		InternalName: russia
 		Side: Soviet
 		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
-	Country@6:
+	Faction@6:
 		Name: Ukraine
-		Race: ukraine
+		InternalName: ukraine
 		Side: Soviet
 		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
-	Country@random:
+	Faction@random:
 		Name: Any
-		Race: Random
-		RandomRaceMembers: RandomAllies, RandomSoviet
+		InternalName: Random
+		RandomFactionMembers: RandomAllies, RandomSoviet
 		Side: Random
 		Description: A random country.
-	Country@randomallies:
+	Faction@randomallies:
 		Name: Allies
-		Race: RandomAllies
-		RandomRaceMembers: england, france, germany
+		InternalName: RandomAllies
+		RandomFactionMembers: england, france, germany
 		Side: Random
 		Description: A random Allied country.
-	Country@randomsoviet:
+	Faction@randomsoviet:
 		Name: Soviet
-		Race: RandomSoviet
-		RandomRaceMembers: russia, ukraine
+		InternalName: RandomSoviet
+		RandomFactionMembers: russia, ukraine
 		Side: Random
 		Description: A random Soviet country.
 	ResourceType@ore:

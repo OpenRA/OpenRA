@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (showOwner)
 				{
-					flagRace = o.Country.Race;
+					flagRace = o.Country.InternalName;
 					ownerName = o.PlayerName;
 					ownerColor = o.Color.RGB;
 					widget.Bounds.Height = doubleHeight;

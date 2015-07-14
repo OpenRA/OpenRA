@@ -12,18 +12,18 @@
 		FogVariants: typea, typeb, typec, typed
 		OverrideFullShroud: full
 		OverrideFullFog: full
-	Country@Random:
+	Faction@Random:
 		Name: Any
-		Race: Random
-		RandomRaceMembers: gdi, nod
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
 		Description: Select a random faction.
-	Country@gdi:
+	Faction@gdi:
 		Name: GDI
-		Race: gdi
+		InternalName: gdi
 		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
-	Country@nod:
+	Faction@nod:
 		Name: Nod
-		Race: nod
+		InternalName: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ResourceType@green-tib:
 		ResourceType: 1

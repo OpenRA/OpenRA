@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Player = p;
 				Label = p.PlayerName;
 				Color = p.Color.RGB;
-				Race = p.Country.Race;
+				Race = p.Country.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;
 				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };
 			}

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var players = new MapPlayers(map.PlayerDefinitions).Players;
 
-			var playerNames = players.Values.Select(p => p.Name);
+			var playerNames = players.Values.Select(p => p.Name).ToHashSet();
 			foreach (var player in players.Values)
 			{
 				foreach (var ally in player.Allies)
@@ -38,14 +38,14 @@ namespace OpenRA.Mods.Common.Lint
 
 			var worldActor = map.Rules.Actors["world"];
 
-			var races = worldActor.Traits.WithInterface<CountryInfo>().Select(c => c.Race);
+			var races = worldActor.Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !races.Contains(player.Faction))
 					emitError("Invalid race {0} chosen for player {1}.".F(player.Faction, player.Name));
 
 			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
 			{
-				var multiPlayers = players.Where(p => p.Value.Playable).Count();
+				var multiPlayers = players.Count(p => p.Value.Playable);
 				var spawns = map.ActorDefinitions.Where(a => a.Value.Value == "mpspawn");
 				var spawnCount = spawns.Count();
 

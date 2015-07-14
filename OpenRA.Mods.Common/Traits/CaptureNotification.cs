@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (captor.World.LocalPlayer != captor.Owner)
 				return;
 
-			var race = info.NewOwnerVoice ? newOwner.Country.Race : oldOwner.Country.Race;
+			var race = info.NewOwnerVoice ? newOwner.Country.InternalName : oldOwner.Country.InternalName;
 			Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, race);
 		}
 	}

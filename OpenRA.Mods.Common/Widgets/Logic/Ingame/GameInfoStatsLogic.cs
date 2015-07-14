@@ -62,12 +62,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				flag.GetImageCollection = () => "flags";
 				if (lp.Stances[pp] == Stance.Ally || lp.WinState != WinState.Undefined)
 				{
-					flag.GetImageName = () => pp.Country.Race;
+					flag.GetImageName = () => pp.Country.InternalName;
 					item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 				}
 				else
 				{
-					flag.GetImageName = () => pp.DisplayCountry.Race;
+					flag.GetImageName = () => pp.DisplayCountry.InternalName;
 					item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayCountry.Name;
 				}
 

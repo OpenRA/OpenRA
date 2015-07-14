@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var s in Sounds)
 					Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Notification, self.Owner.Country.Race);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Notification, self.Owner.Country.InternalName);
 
 				var init = new TypeDictionary
 				{
