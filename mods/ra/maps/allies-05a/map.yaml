@@ -1695,6 +1695,7 @@ Rules:
 		DisguiseToolTip:
 			ShowOwnerRow: false
 	WEAP:
+		-InfiltrateForSupportPower:
 		TargetableBuilding:
 			TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	MISS:
