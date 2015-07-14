@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
 				return true;
 
-			if ((game.State == (int)ServerState.WaitingPlayers) && !showWaiting)
+			if ((game.State == (int)ServerState.WaitingPlayers) && !showWaiting && game.Players != 0)
 				return true;
 
 			if ((game.Players == 0) && !showEmpty)
