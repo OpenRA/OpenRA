@@ -358,15 +358,15 @@ end
 function FixUTF8(s, repl)
   local p, len, invalid = 1, #s, {}
   while p <= len do
-    if     p == s:find("[%z\1-\127]", p) then p = p + 1
-    elseif p == s:find("[\194-\223][\128-\191]", p) then p = p + 2
-    elseif p == s:find(       "\224[\160-\191][\128-\191]", p)
-        or p == s:find("[\225-\236][\128-\191][\128-\191]", p)
-        or p == s:find(       "\237[\128-\159][\128-\191]", p)
-        or p == s:find("[\238-\239][\128-\191][\128-\191]", p) then p = p + 3
-    elseif p == s:find(       "\240[\144-\191][\128-\191][\128-\191]", p)
-        or p == s:find("[\241-\243][\128-\191][\128-\191][\128-\191]", p)
-        or p == s:find(       "\244[\128-\143][\128-\191][\128-\191]", p) then p = p + 4
+    if     s:find("^[%z\1-\127]", p) then p = p + 1
+    elseif s:find("^[\194-\223][\128-\191]", p) then p = p + 2
+    elseif s:find(       "^\224[\160-\191][\128-\191]", p)
+        or s:find("^[\225-\236][\128-\191][\128-\191]", p)
+        or s:find(       "^\237[\128-\159][\128-\191]", p)
+        or s:find("^[\238-\239][\128-\191][\128-\191]", p) then p = p + 3
+    elseif s:find(       "^\240[\144-\191][\128-\191][\128-\191]", p)
+        or s:find("^[\241-\243][\128-\191][\128-\191][\128-\191]", p)
+        or s:find(       "^\244[\128-\143][\128-\191][\128-\191]", p) then p = p + 4
     else
       local repl = type(repl) == 'function' and repl(s:sub(p,p)) or repl
       s = s:sub(1, p-1)..repl..s:sub(p+1)
