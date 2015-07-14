@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.worldRenderer = worldRenderer;
 
 			if (!actor.InitDict.Contains<RaceInit>())
-				actor.InitDict.Add(new RaceInit(owner.Race));
+				actor.InitDict.Add(new RaceInit(owner.Faction));
 
 			if (!actor.InitDict.Contains<OwnerInit>())
 				actor.InitDict.Add(new OwnerInit(owner.Name));
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			Func<object, bool> saveInit = init =>
 			{
 				var race = init as RaceInit;
-				if (race != null && race.Race == Owner.Race)
+				if (race != null && race.Race == Owner.Faction)
 					return false;
 
 				// TODO: Other default values will need to be filtered

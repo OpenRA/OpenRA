@@ -27,89 +27,89 @@ Options:
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 5000
-	ConfigurableStartingUnits: False
 	TechLevel: Unrestricted
+	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi8:
 		Name: Multi8
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi9:
 		Name: Multi9
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9
 
 Actors:

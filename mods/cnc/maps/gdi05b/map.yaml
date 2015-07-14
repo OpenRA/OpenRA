@@ -39,7 +39,7 @@ Options:
 Players:
 	PlayerReference@Nod:
 		Name: Nod
-		Race: nod
+		Faction: nod
 		ColorRamp: 3,255,127
 		Enemies: GDI, AbandonedBase
 	PlayerReference@GDI:
@@ -47,8 +47,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: gdi
+		LockFaction: True
+		Faction: gdi
 		LockColor: True
 		ColorRamp: 31,222,183
 		LockSpawn: True
@@ -58,12 +58,12 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 	PlayerReference@AbandonedBase:
 		Name: AbandonedBase
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Enemies: Nod
 

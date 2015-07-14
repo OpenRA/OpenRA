@@ -26,24 +26,24 @@ Options:
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 50
+	TechLevel: Unrestricted
 	ConfigurableStartingUnits: False
 	ShortGame: False
-	TechLevel: Unrestricted
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
 		LockTeam: True
 		Team: 1
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		Allies: Multi1, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi1:
@@ -52,8 +52,8 @@ Players:
 		AllowBots: False
 		LockTeam: True
 		Team: 1
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		Allies: Multi0, Multi2, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi2:
@@ -62,8 +62,8 @@ Players:
 		AllowBots: False
 		LockTeam: True
 		Team: 1
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		Allies: Multi0, Multi1, Multi3
 		Enemies: Soviets
 	PlayerReference@Multi3:
@@ -72,13 +72,13 @@ Players:
 		AllowBots: False
 		LockTeam: True
 		Team: 1
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		Allies: Multi0, Multi1, Multi2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
-		Race: soviet
+		Faction: soviet
 		LockTeam: True
 		Team: 2
 		ColorRamp: 0,255,128

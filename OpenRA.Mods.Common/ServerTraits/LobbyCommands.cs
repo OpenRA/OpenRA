@@ -900,7 +900,7 @@ namespace OpenRA.Mods.Common.Server
 				PlayerReference = pr.Name,
 				Closed = false,
 				AllowBots = pr.AllowBots,
-				LockRace = pr.LockRace,
+				LockRace = pr.LockFaction,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
 				LockSpawn = pr.LockSpawn,

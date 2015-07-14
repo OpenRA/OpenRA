@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			td.Add(new FacingInit(facing));
 			td.Add(new TurretFacingInit(facing));
 			td.Add(new OwnerInit(owner.Name));
-			td.Add(new RaceInit(owner.Race));
+			td.Add(new RaceInit(owner.Faction));
 			preview.SetPreview(actor, td);
 
 			var ios = actor.Traits.GetOrDefault<IOccupySpaceInfo>();

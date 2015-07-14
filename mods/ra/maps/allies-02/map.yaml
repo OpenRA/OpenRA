@@ -37,14 +37,14 @@ Options:
 Players:
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: Ukraine
 		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		ColorRamp: 115,115,143
 		Allies: Greece, France
 		Enemies: USSR, Ukraine
@@ -52,10 +52,10 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Ukraine:
 		Name: Ukraine
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
 		Enemies: Greece, France
@@ -64,8 +64,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 161,134,200
 		LockSpawn: True

@@ -39,14 +39,14 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@NodSupporter:
 		Name: NodSupporter
 		NonCombatant: True
-		Race: nod
+		Faction: nod
 	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Enemies: Nod
 	PlayerReference@Nod:
@@ -54,8 +54,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True

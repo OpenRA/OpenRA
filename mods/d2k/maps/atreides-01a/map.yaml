@@ -29,33 +29,33 @@ Options:
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 2300
-	ConfigurableStartingUnits: False
-	ShortGame: False
 	TechLevel: Low
+	ConfigurableStartingUnits: False
 	Difficulties: Easy, Normal, Hard
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: Random
+		Faction: Random
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: Random
+		Faction: Random
 	PlayerReference@Atreides:
 		Name: Atreides
 		Playable: true
-		Race: atreides
-		LockRace: true
+		Faction: atreides
+		LockFaction: true
 		ColorRamp: 170,255,200
 		LockColor: true
 		Enemies: Harkonnen
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
-		Race: harkonnen
-		LockRace: true
+		Faction: harkonnen
+		LockFaction: true
 		ColorRamp: 0,255,127
 		LockColor: true
 		Enemies: Atreides

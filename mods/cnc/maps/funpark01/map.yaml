@@ -31,24 +31,24 @@ Options:
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	Difficulties: Easy, Normal
 	ShortGame: False
-	Difficulties: Easy,Normal
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@Civilian:
 		Name: Civilian
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		Enemies: Nod, Dinosaur
 	PlayerReference@Dinosaur:
 		Name: Dinosaur
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 14,119,96
 		Enemies: Nod, Civilian
 	PlayerReference@Nod:
@@ -56,8 +56,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True

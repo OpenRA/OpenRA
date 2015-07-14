@@ -40,10 +40,10 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Allies: GDI
 		Enemies: Nod
@@ -52,8 +52,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
@@ -63,7 +63,7 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: Random
+		Faction: Random
 		Enemies: Nod, GDI
 
 Actors:

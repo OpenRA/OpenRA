@@ -95,7 +95,7 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Country = ChooseCountry(world, client.Race, !pr.LockRace);
+				Country = ChooseCountry(world, client.Race, !pr.LockFaction);
 				DisplayCountry = ChooseDisplayCountry(world, client.Race);
 			}
 			else
@@ -108,8 +108,8 @@ namespace OpenRA
 				Playable = pr.Playable;
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
-				Country = ChooseCountry(world, pr.Race, false);
-				DisplayCountry = ChooseDisplayCountry(world, pr.Race);
+				Country = ChooseCountry(world, pr.Faction, false);
+				DisplayCountry = ChooseDisplayCountry(world, pr.Faction);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });

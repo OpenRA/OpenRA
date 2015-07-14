@@ -35,14 +35,14 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Allies:
 		Name: Allies
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 115,240,130
 		LockSpawn: True
@@ -50,7 +50,7 @@ Players:
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 0,255,128
 		Enemies: Allies
 

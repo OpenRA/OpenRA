@@ -37,21 +37,21 @@ Options:
 Players:
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Enemies: Greece, England
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 161,134,200
 		LockSpawn: True
@@ -60,7 +60,7 @@ Players:
 		Enemies: USSR
 	PlayerReference@England:
 		Name: England
-		Race: allies
+		Faction: allies
 		ColorRamp: 76,196,190
 		Allies: Greece
 		Enemies: USSR

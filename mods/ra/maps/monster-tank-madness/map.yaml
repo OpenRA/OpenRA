@@ -36,8 +36,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 161,134,200
 		LockSpawn: True
@@ -45,13 +45,13 @@ Players:
 		Enemies: BadGuy, USSR, Ukraine, Turkey
 	PlayerReference@BadGuy:
 		Name: BadGuy
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
 		Enemies: Greece, Turkey
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: BadGuy, Ukraine
 		Enemies: Greece, Turkey
@@ -59,22 +59,22 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Ukraine:
 		Name: Ukraine
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 32,255,202
 		Allies: BadGuy, USSR
 		Enemies: Greece, Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 14,123,167
 		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
 	PlayerReference@Outpost:
 		Name: Outpost
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		Enemies: BadGuy, USSR, Ukraine, Turkey
 
 Actors:
