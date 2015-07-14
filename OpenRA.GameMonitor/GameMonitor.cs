@@ -28,6 +28,8 @@ namespace OpenRA
 			var executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			var processName = Path.Combine(executableDirectory, "OpenRA.Game.exe");
 
+			Directory.SetCurrentDirectory(executableDirectory);
+
 			var psi = new ProcessStartInfo(processName, string.Join(" ", args));
 
 			try
