@@ -95,12 +95,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var u in upgrades)
 					um.GrantUpgrade(self, u, this);
-			}
 
-			if (!silent)
-			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.InternalName);
-				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
+				if (!silent)
+				{
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Country.InternalName);
+					self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
+				}
 			}
 		}
 
