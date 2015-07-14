@@ -29,7 +29,7 @@ V2RL:
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 1TNK:
@@ -69,7 +69,7 @@ V2RL:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 1TNK.Husk
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 2TNK:
@@ -111,7 +111,7 @@ V2RL:
 		HuskActor: 2TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 3TNK:
@@ -153,7 +153,7 @@ V2RL:
 		HuskActor: 3TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 4TNK:
@@ -209,7 +209,7 @@ V2RL:
 		DamageCooldown: 150
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 ARTY:
@@ -242,7 +242,7 @@ ARTY:
 		Weapon: UnitExplode
 		Chance: 75
 	AutoTarget:
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 HARV:
@@ -366,7 +366,7 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 APC:
@@ -400,7 +400,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 MNLY.AP:
@@ -585,7 +585,7 @@ TTNK:
 	SelectionDecorations:
 		VisualBounds: 30,30
 	AutoTarget:
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 FTRK:
@@ -622,7 +622,7 @@ FTRK:
 	AutoTarget:
 	SelectionDecorations:
 		VisualBounds: 28,28
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 DTRK:
@@ -688,7 +688,7 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 QTNK:
@@ -759,6 +759,6 @@ STNK:
 	DetectCloaked:
 		Range: 6
 	-MustBeDestroyed:
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 

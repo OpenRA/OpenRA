@@ -122,7 +122,7 @@ MIG:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 
 YAK:
@@ -180,7 +180,7 @@ YAK:
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 
 TRAN:
@@ -269,7 +269,7 @@ HELI:
 		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 
 HIND:
@@ -323,7 +323,7 @@ HIND:
 		HuskActor: HIND.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 
 U2:

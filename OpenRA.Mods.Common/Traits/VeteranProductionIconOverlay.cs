@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in self.World.Map.Rules.Actors.Values)
 			{
-				var uwc = a.Traits.GetOrDefault<ProduceableWithLevelInfo>();
+				var uwc = a.Traits.GetOrDefault<ProducibleWithLevelInfo>();
 				if (uwc != null)
 					ttc.Add(MakeKey(a.Name), uwc.Prerequisites, 0, this);
 			}

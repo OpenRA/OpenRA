@@ -21,7 +21,7 @@ E2:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: throw
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 MEDIC:
@@ -83,7 +83,7 @@ JUMPJET:
 	WithInfantryBody:
 		AttackSequence: shoot
 	-TakeCover:
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 GHOST:
@@ -121,6 +121,6 @@ GHOST:
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot
-	ProduceableWithLevel:
+	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 

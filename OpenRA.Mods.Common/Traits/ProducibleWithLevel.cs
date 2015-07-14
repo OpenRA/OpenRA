@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actors possessing this trait should define the GainsExperience trait. When the prerequisites are fulfilled, ",
 		"this trait grants a level-up to newly spawned actors. If additionally the actor's owning player defines the ProductionIconOverlay ",
 		"trait, the production queue icon renders with an overlay defined in that trait.")]
-	public class ProduceableWithLevelInfo : ITraitInfo, Requires<GainsExperienceInfo>
+	public class ProducibleWithLevelInfo : ITraitInfo, Requires<GainsExperienceInfo>
 	{
 		public readonly string[] Prerequisites = { };
 
@@ -25,14 +25,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;
 
-		public object Create(ActorInitializer init) { return new ProduceableWithLevel(init, this); }
+		public object Create(ActorInitializer init) { return new ProducibleWithLevel(init, this); }
 	}
 
-	public class ProduceableWithLevel : INotifyCreated
+	public class ProducibleWithLevel : INotifyCreated
 	{
-		readonly ProduceableWithLevelInfo info;
+		readonly ProducibleWithLevelInfo info;
 
-		public ProduceableWithLevel(ActorInitializer init, ProduceableWithLevelInfo info)
+		public ProducibleWithLevel(ActorInitializer init, ProducibleWithLevelInfo info)
 		{
 			this.info = info;
 		}
