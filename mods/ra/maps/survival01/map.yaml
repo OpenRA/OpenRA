@@ -1263,7 +1263,12 @@ Rules:
 	ARTY:
 		Parachutable:
 			KilledOnImpassableTerrain: false
-			ParachuteSequence: parach
+		WithParachute:
+			UpgradeTypes: parachute
+			UpgradeMinEnabledLevel: 1
+			Image: parach
+		UpgradeManager:
+		BodyOrientation:
 	AFLD.mission:
 		Inherits: AFLD
 		-AirstrikePower@spyplane:

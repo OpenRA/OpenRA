@@ -30,25 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("CorpseSequenceCollection")] public readonly string WaterCorpseSequence = null;
 		public readonly string WaterCorpsePalette = "effect";
 
-		public readonly string ParachuteSequence = null;
-		[SequenceReference("ParachuteSequence")] public readonly string ParachuteOpenSequence = null;
-		[SequenceReference("ParachuteSequence")] public readonly string ParachuteIdleSequence = null;
-
-		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
-		public readonly string ParachutePalette = null;
-
-		[Desc("Used to clone the actor with this palette and render it with a visual offset below.")]
-		public readonly string ParachuteShadowPalette = "shadow";
-
-		public readonly WVec ParachuteOffset = WVec.Zero;
-
 		public readonly int FallRate = 13;
 
-		[Desc("Alternative to ParachuteShadowPalette which disables it and allows to set a custom sprite sequence instead.")]
-		public readonly string ShadowSequence = null;
-
-		[Desc("Optional, otherwise defaults to the palette the actor is using.")]
-		public readonly string ShadowPalette = null;
+		[UpgradeGrantedReference]
+		[Desc("Upgrade to grant to this actor when parachuting. Normally used to render the parachute using the WithParachute trait.")]
+		public readonly string[] ParachuteUpgrade = { "parachute" };
 
 		public object Create(ActorInitializer init) { return new Parachutable(init, this); }
 	}

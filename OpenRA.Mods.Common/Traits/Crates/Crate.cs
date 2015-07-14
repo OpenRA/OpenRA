@@ -125,8 +125,40 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return new[] { Pair.New(Location, SubCell.FullCell) }; }
 
 		public WPos CenterPosition { get; private set; }
-		public void SetPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
-		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, self.World.Map.CellContaining(pos)); }
+
+		// Sets the location (Location) and visual position (CenterPosition)
+		public void SetPosition(Actor self, WPos pos)
+		{
+			var cell = self.World.Map.CellContaining(pos);
+			SetLocation(self, cell);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, pos.Z));
+		}
+
+		// Sets the location (Location) and visual position (CenterPosition)
+		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
+		{
+			SetLocation(self, cell, subCell);
+			SetVisualPosition(self, self.World.Map.CenterOfCell(cell));
+		}
+
+		// Sets only the visual position (CenterPosition)
+		public void SetVisualPosition(Actor self, WPos pos)
+		{
+			CenterPosition = pos;
+			if (self.IsInWorld)
+			{
+				self.World.ScreenMap.Update(self);
+				self.World.ActorMap.UpdatePosition(self, this);
+			}
+		}
+
+		// Sets only the location (Location)
+		void SetLocation(Actor self, CPos cell, SubCell subCell = SubCell.Any)
+		{
+			self.World.ActorMap.RemoveInfluence(self, this);
+			Location = cell;
+			self.World.ActorMap.AddInfluence(self, this);
+		}
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return self.Location == location && ticks + 1 == info.Lifetime * 25; }
 		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
@@ -155,21 +187,12 @@ namespace OpenRA.Mods.Common.Traits
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
-		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			Location = cell;
-			CenterPosition = self.World.Map.CenterOfCell(cell);
-
-			if (self.IsInWorld)
-			{
-				self.World.ActorMap.UpdatePosition(self, this);
-				self.World.ScreenMap.Update(self);
-			}
-		}
-
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
+			// Crate can only be crushed if it is not in the air or underground
+			if (CenterPosition.Z != 0)
+				return false;
+
 			return crushClasses.Contains(info.CrushClass);
 		}
 

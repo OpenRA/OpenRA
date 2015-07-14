@@ -127,15 +127,16 @@ namespace OpenRA.Mods.Common.Traits
 				wasModifying = rsm.IsModifyingSequence;
 			}
 
-			if ((state == AnimationState.Moving || dirty) && !move.IsMoving)
-			{
-				state = AnimationState.Waiting;
-				PlayStandAnimation(self);
-			}
-			else if ((state != AnimationState.Moving || dirty) && move.IsMoving)
+			if ((state != AnimationState.Moving || dirty) && move.IsMoving)
 			{
 				state = AnimationState.Moving;
 				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
+			}
+			else if (((state == AnimationState.Moving || dirty) && !move.IsMoving)
+				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
+			{
+				state = AnimationState.Waiting;
+				PlayStandAnimation(self);
 			}
 
 			dirty = false;

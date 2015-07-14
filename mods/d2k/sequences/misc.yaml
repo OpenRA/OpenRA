@@ -384,3 +384,7 @@ sandcraters:
 		Start: 162
 		Length: 16
 		Offset: -16,-16
+
+parach-shadow:
+	idle:
+		Length: *
