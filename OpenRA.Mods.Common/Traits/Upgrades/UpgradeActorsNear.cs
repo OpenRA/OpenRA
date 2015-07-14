@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var stance = self.Owner.Stances[a.Owner];
-			if (!info.ValidStances.HasFlag(stance))
+			if (!info.ValidStances.HasStance(stance))
 				return;
 
 			var um = a.TraitOrDefault<UpgradeManager>();
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.LengthSquared)
 			{
 				var stance = self.Owner.Stances[produced.Owner];
-				if (!info.ValidStances.HasFlag(stance))
+				if (!info.ValidStances.HasStance(stance))
 					return;
 
 				var um = produced.TraitOrDefault<UpgradeManager>();
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var stance = self.Owner.Stances[a.Owner];
-			if (!info.ValidStances.HasFlag(stance))
+			if (!info.ValidStances.HasStance(stance))
 				return;
 
 			var um = a.TraitOrDefault<UpgradeManager>();

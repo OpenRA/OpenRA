@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var stance = self.Owner.Stances[byPlayer];
-			return info.AlwaysVisibleStances.HasFlag(stance) || visible[byPlayer];
+			return info.AlwaysVisibleStances.HasStance(stance) || visible[byPlayer];
 		}
 
 		public void Tick(Actor self)

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string TooltipForPlayerStance(Stance stance)
 		{
-			if (stance == Stance.None || !GenericVisibility.HasFlag(stance))
+			if (stance == Stance.None || !GenericVisibility.HasStance(stance))
 				return Name;
 
 			if (GenericStancePrefix && stance == Stance.Ally)

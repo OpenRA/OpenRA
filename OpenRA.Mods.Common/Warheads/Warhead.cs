@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			var stance = firedBy.Owner.Stances[victim.Owner];
-			if (!ValidStances.HasFlag(stance))
+			if (!ValidStances.HasStance(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
 			var stance = firedBy.Owner.Stances[victim.Owner];
-			if (!ValidStances.HasFlag(stance))
+			if (!ValidStances.HasStance(stance))
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.

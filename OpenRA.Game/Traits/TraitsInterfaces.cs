@@ -32,6 +32,14 @@ namespace OpenRA.Traits
 		Ally = 4,
 	}
 
+	public static class StanceExts
+	{
+		public static bool HasStance(this Stance s, Stance stance)
+		{
+			return (s & stance) == stance;
+		}
+	}
+
 	[Flags]
 	public enum ImpactType
 	{
