@@ -79,6 +79,8 @@
 		Bounds: 24, 24
 	TargetableUnit:
 		TargetTypes: Ground, Repair, Vehicle
+		UpgradeTypes: parachute
+		UpgradeMaxEnabledLevel: 0
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -112,10 +114,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	Parachutable:
-		ParachuteOffset: 0,0,200
 		KilledOnImpassableTerrain: true
-		ParachuteSequence: parach
-		ShadowSequence:
 		GroundCorpseSequence:
 		GroundCorpsePalette:
 		WaterCorpseSequence:
@@ -126,6 +125,11 @@
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
+	WithParachute:
+		UpgradeTypes: parachute
+		UpgradeMinEnabledLevel: 1
+		Image: parach
+		Offset: 0,0,200
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -173,6 +177,8 @@
 		Bounds: 12,18,0,-8
 	TargetableUnit:
 		TargetTypes: Ground, Infantry, Disguise
+		UpgradeTypes: parachute
+		UpgradeMaxEnabledLevel: 0
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -217,12 +223,7 @@
 		Voice: Zapped
 		DeathTypes: ElectricityDeath
 	Parachutable:
-		ParachuteOffset: 0,0,427
 		KilledOnImpassableTerrain: true
-		ParachuteSequence: parach
-		ParachuteOpenSequence: open
-		ParachuteIdleSequence: idle
-		ShadowSequence: parach-shadow
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
 		WaterCorpseSequence: small_splash
@@ -230,6 +231,15 @@
 		Types: Infantry
 	Voiced:
 		VoiceSet: GenericVoice
+	WithParachute:
+		UpgradeTypes: parachute
+		UpgradeMinEnabledLevel: 1
+		ShadowImage: parach-shadow
+		ShadowSequence: idle
+		Image: parach
+		Sequence: idle
+		OpeningSequence: open
+		Offset: 0,0,427
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -648,10 +658,15 @@
 		WaterSequence: water
 	Parachutable:
 		KilledOnImpassableTerrain: false
-		ParachuteSequence: parach
-		ParachuteOpenSequence: open
-		ParachuteIdleSequence: idle
 	Passenger:
 	CustomSelectionSize:
 		CustomBounds: 20,20
+	WithParachute:
+		UpgradeTypes: parachute
+		UpgradeMinEnabledLevel: 1
+		Image: parach
+		Sequence: idle
+		OpeningSequence: open
+	UpgradeManager:
+	BodyOrientation:
 

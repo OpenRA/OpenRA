@@ -188,6 +188,8 @@
 		Bounds: 12,18,0,-6
 	TargetableUnit:
 		TargetTypes: Ground
+		UpgradeTypes: parachute
+		UpgradeMaxEnabledLevel: 0
 	RenderSprites:
 	WithInfantryBody:
 	TakeCover:
@@ -225,6 +227,9 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
+	WithParachute:
+		UpgradeTypes: parachute
+		UpgradeMinEnabledLevel: 1
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
