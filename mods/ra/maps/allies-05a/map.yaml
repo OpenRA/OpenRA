@@ -1729,8 +1729,9 @@ Rules:
 		Turreted:
 			ROT: 15
 			InitialFacing: 224
-		RenderBuildingTurreted:
+		RenderSprites:
 			Image: AGUN
+		WithTurretedSpriteBody:
 		Armament:
 			Weapon: MissionColt
 			LocalOffset: 432,150,-30, 432,-150,-30
@@ -1738,6 +1739,7 @@ Rules:
 		AutoTarget:
 		-RenderBuilding:
 		-Selectable:
+		-WithMakeAnimation:
 	E1.Autotarget:
 		Inherits: E1
 		Buildable:

@@ -451,7 +451,8 @@ AGUN:
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 432,150,-30, 432,-150,-30
@@ -465,6 +466,7 @@ AGUN:
 		Amount: -50
 	DetectCloaked:
 		Range: 6
+	-WithMakeAnimation:
 
 DOME:
 	Inherits: ^Building
@@ -610,7 +612,8 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -622,6 +625,7 @@ GUN:
 		Amount: -40
 	DetectCloaked:
 		Range: 7
+	-WithMakeAnimation:
 
 FTUR:
 	Inherits: ^Defense
@@ -686,7 +690,8 @@ SAM:
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: Nike
 		MuzzleSequence: muzzle
@@ -699,6 +704,7 @@ SAM:
 		Amount: -40
 	DetectCloaked:
 		Range: 5
+	-WithMakeAnimation:
 
 ATEK:
 	Inherits: ^Building

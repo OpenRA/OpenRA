@@ -654,7 +654,8 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -667,6 +668,7 @@ GUN:
 		Range: 3
 	Power:
 		Amount: -20
+	-WithMakeAnimation:
 
 SAM:
 	Inherits: ^Defense
@@ -695,7 +697,9 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
+	AutoSelectionSize:
 	Armament:
 		Weapon: SAMMissile
 		MuzzleSequence: muzzle
@@ -705,6 +709,7 @@ SAM:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
+	-WithMakeAnimation:
 
 OBLI:
 	Inherits: ^Defense

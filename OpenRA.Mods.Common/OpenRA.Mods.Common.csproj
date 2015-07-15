@@ -406,8 +406,8 @@
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
-    <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
+    <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />

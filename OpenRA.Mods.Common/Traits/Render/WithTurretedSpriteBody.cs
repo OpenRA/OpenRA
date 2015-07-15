@@ -17,24 +17,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>
+	[Desc("This actor has turret art with facings baked into the sprite.")]
+	public class WithTurretedSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init, this); }
+		public override object Create(ActorInitializer init) { return new WithTurretedSpriteBody(init, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
-				.FirstOrDefault();
+			var t = init.Actor.Traits.WithInterface<TurretedInfo>().FirstOrDefault();
+			var wsb = init.Actor.Traits.WithInterface<WithSpriteBodyInfo>().FirstOrDefault();
 
 			// Show the correct turret facing
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
-			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), wsb.Sequence));
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 	}
 
-	class RenderBuildingTurreted : RenderBuilding
+	public class WithTurretedSpriteBody : WithSpriteBody
 	{
 		readonly Turreted turreted;
 
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			return () => turreted.TurretFacing;
 		}
 
-		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
+		public WithTurretedSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();

@@ -123,6 +123,7 @@ GACTWR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12
+	-WithMakeAnimation:
 
 GAVULC:
 	Inherits: ^BuildingPlug
