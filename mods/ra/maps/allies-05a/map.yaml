@@ -1737,9 +1737,7 @@ Rules:
 			LocalOffset: 432,150,-30, 432,-150,-30
 		AttackTurreted:
 		AutoTarget:
-		-RenderBuilding:
 		-Selectable:
-		-WithMakeAnimation:
 	E1.Autotarget:
 		Inherits: E1
 		Buildable:

@@ -261,7 +261,7 @@ AMMOCRAT:
 		Type: none
 	Health:
 		HP: 1
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 BBOARD01:
@@ -625,7 +625,7 @@ CAARAY:
 		Type: concrete
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 CAARMR:
@@ -639,7 +639,7 @@ CAARMR:
 		Type: concrete
 	Health:
 		HP: 800
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 	ProvidesPrerequisite:
 		Prerequisite: barracks.upgraded
@@ -655,7 +655,7 @@ CABHUT:
 		Dimensions: 1, 1
 	Health:
 		HP: 2000
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 CACRSH01:
@@ -729,7 +729,7 @@ CAHOSP:
 		Type: concrete
 	Health:
 		HP: 800
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 CAPYR01:
@@ -1126,7 +1126,7 @@ GAKODK:
 		Type: heavy
 	Health:
 		HP: 1500
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC1:
@@ -1140,7 +1140,7 @@ GAOLDCC1:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC2:
@@ -1154,7 +1154,7 @@ GAOLDCC2:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC3:
@@ -1168,7 +1168,7 @@ GAOLDCC3:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC4:
@@ -1182,7 +1182,7 @@ GAOLDCC4:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC5:
@@ -1196,7 +1196,7 @@ GAOLDCC5:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GAOLDCC6:
@@ -1210,7 +1210,7 @@ GAOLDCC6:
 		Type: heavy
 	Health:
 		HP: 400
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 GASAND:
@@ -1273,7 +1273,7 @@ GALITE:
 		Cost: 200
 	Tooltip:
 		Name: Light Post
-	RenderBuilding:
+	RenderSprites:
 		Palette: terraindecoration
 	-WithMakeAnimation:
 	-WithDeathAnimation:
@@ -1330,7 +1330,7 @@ NAMNTK:
 		Type: heavy
 	Health:
 		HP: 1500
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 NTPYRA:
@@ -1346,7 +1346,7 @@ NTPYRA:
 		Type: heavy
 	Health:
 		HP: 1500
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
 
 UFO:
@@ -1354,7 +1354,7 @@ UFO:
 	Building:
 		Dimensions: 6, 4
 		Footprint: xxxxxx xxxxxx xxxxxx xxxxxx
-	RenderBuilding:
+	RenderSprites:
 		Palette: terraindecoration
 	Selectable:
 		Bounds: 144, 72, 0, 0

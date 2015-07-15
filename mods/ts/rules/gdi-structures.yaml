@@ -247,7 +247,7 @@ GADEPT:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 98, 68, -6, -6
-	RenderBuilding:
+	RenderSprites:
 		Image: gadept.gdi
 		FactionImages:
 			gdi: gadept.gdi
@@ -348,7 +348,6 @@ GAPLUG:
 	CanPowerDown:
 		IndicatorPalette: mouse
 	DisabledOverlay:
-	RenderBuilding:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:

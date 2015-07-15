@@ -877,6 +877,7 @@ Rules:
 			EndChargeSound: ironrdy1.aud
 			Range: 1
 			Upgrades: invulnerability
+			GrantUpgradeSequence: idle
 		Power:
 			Amount: 0
 	MINVV:
@@ -893,9 +894,10 @@ Rules:
 			Cost: 30
 		Health:
 			HP: 200
-		RenderBuilding:
+		RenderSprites:
 			Image: miner
-			HasMakeAnimation: false
+		WithSpriteBody:
+		AutoSelectionSize:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
@@ -943,6 +945,7 @@ Rules:
 			EndChargeSound: ironrdy1.aud
 			Range: 1
 			Upgrades: invulnerability
+			GrantUpgradeSequence: idle
 
 Sequences:
 	miner:

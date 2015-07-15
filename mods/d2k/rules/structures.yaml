@@ -67,7 +67,7 @@ conyard:
 	ProductionBar:
 	Power:
 		Amount: 20
-	RenderBuilding:
+	RenderSprites:
 		Image: conyard.harkonnen
 		FactionImages:
 			atreides: conyard.atreides
@@ -99,7 +99,7 @@ power:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	RenderBuilding:
+	RenderSprites:
 		Image: power.harkonnen
 		FactionImages:
 			atreides: power.atreides
@@ -160,7 +160,7 @@ barracks:
 		Factions: atreides, ordos
 	Power:
 		Amount: -20
-	RenderBuilding:
+	RenderSprites:
 		Image: barracks.harkonnen
 		FactionImages:
 			atreides: barracks.atreides
@@ -205,7 +205,7 @@ refinery:
 		DeliveryOffset: 2,2
 		DeliveringActor: carryall.reinforce
 		Facing: 160
-	RenderBuilding:
+	RenderSprites:
 		Image: refinery.harkonnen
 		FactionImages:
 			atreides: refinery.atreides
@@ -241,7 +241,6 @@ silo:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
 	RenderSprites:
 		Image: silo.harkonnen
 		FactionImages:
@@ -258,7 +257,6 @@ silo:
 		Amount: -5
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	-WithMakeAnimation:
 
 light:
 	Inherits: ^Building
@@ -283,7 +281,7 @@ light:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	RenderBuilding:
+	RenderSprites:
 		Image: light.harkonnen
 		FactionImages:
 			atreides: light.atreides
@@ -361,7 +359,7 @@ heavy:
 	ProvidesPrerequisite@missiletank:
 		Prerequisite: heavy.missiletank
 		Factions: atreides, harkonnen
-	RenderBuilding:
+	RenderSprites:
 		Image: heavy.harkonnen
 		FactionImages:
 			atreides: heavy.atreides
@@ -407,7 +405,7 @@ radar:
 	DetectCloaked:
 		Range: 6
 	RenderDetectionCircle:
-	RenderBuilding:
+	RenderSprites:
 		Image: radar.harkonnen
 		FactionImages:
 			atreides: radar.atreides
@@ -452,7 +450,7 @@ starport:
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
-	RenderBuilding:
+	RenderSprites:
 		Image: starport.harkonnen
 		FactionImages:
 			atreides: starport.atreides
@@ -642,7 +640,7 @@ repair:
 		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 		Offset: 1,3
-	RenderBuilding:
+	RenderSprites:
 		Image: repair.harkonnen
 		FactionImages:
 			atreides: repair.atreides
@@ -681,7 +679,7 @@ hightech:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	RenderBuilding:
+	RenderSprites:
 		Image: hightech.harkonnen
 		FactionImages:
 			atreides: hightech.atreides
@@ -742,7 +740,7 @@ research:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	RenderBuilding:
+	RenderSprites:
 		Image: research.harkonnen
 		FactionImages:
 			atreides: research.atreides
@@ -779,7 +777,7 @@ palace:
 		Type: Wood
 	RevealsShroud:
 		Range: 8c0
-	RenderBuilding:
+	RenderSprites:
 		Image: palace.harkonnen
 		FactionImages:
 			atreides: palace.atreides
@@ -823,7 +821,7 @@ conyard.atreides:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 		ForceFaction: atreides
-	RenderBuilding:
+	RenderSprites:
 		Image: conyard.atreides
 		-FactionImages:
 
@@ -834,7 +832,7 @@ conyard.harkonnen:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 		ForceFaction: harkonnen
-	RenderBuilding:
+	RenderSprites:
 		Image: conyard.harkonnen
 		-FactionImages:
 
@@ -845,7 +843,7 @@ conyard.ordos:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 		ForceFaction: ordos
-	RenderBuilding:
+	RenderSprites:
 		Image: conyard.ordos
 		-FactionImages:
 

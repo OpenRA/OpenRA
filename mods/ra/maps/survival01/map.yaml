@@ -1273,7 +1273,7 @@ Rules:
 		-ParatroopersPower@paratroopers:
 		-AirstrikePower@parabombs:
 		-SupportPowerChargeBar:
-		RenderBuilding:
+		RenderSprites:
 			Image: AFLD
 	ATEK.mission:
 		Inherits: ATEK
@@ -1285,7 +1285,7 @@ Rules:
 		-TargetableBuilding:
 		-GivesBuildableArea:
 		-Huntable:
-		RenderBuilding:
+		RenderSprites:
 			Image: ATEK
 	GUN:
 		Valued:

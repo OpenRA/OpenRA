@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
-	class WithResourcesInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithResourcesInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "resources";
@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly WithResourcesInfo info;
 		readonly AnimationWithOffset anim;
-		readonly RenderSimple rs;
+		readonly RenderSprites rs;
+		readonly WithSpriteBody wsb;
 
 		PlayerResources playerResources;
 		bool buildComplete;
@@ -34,7 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WithResources(Actor self, WithResourcesInfo info)
 		{
 			this.info = info;
-			rs = self.Trait<RenderSimple>();
+			rs = self.Trait<RenderSprites>();
+			wsb = self.Trait<WithSpriteBody>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
 			var a = new Animation(self.World, rs.GetImage(self));
@@ -55,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (anim.Animation.CurrentSequence != null)
-				anim.Animation.ReplaceAnim(rs.NormalizeSequence(self, info.Sequence));
+				anim.Animation.ReplaceAnim(wsb.NormalizeSequence(self, info.Sequence));
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

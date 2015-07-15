@@ -206,7 +206,6 @@ GAARTY:
 		MuzzleSequence: muzzle
 	BodyOrientation:
 		QuantizedFacings: 32
-	RenderBuilding:
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	WithVoxelBarrel:

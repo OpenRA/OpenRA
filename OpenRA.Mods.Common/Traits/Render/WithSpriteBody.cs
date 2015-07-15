@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Default trait for rendering sprite-based actors.")]
 	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Animation to play when the actor is created.")]
-		[SequenceReference] public readonly string StartSequence = null;
+		[Desc("Animation to play when the actor is created."), SequenceReference]
+		public readonly string StartSequence = null;
 
-		[Desc("Animation to play when the actor is idle.")]
-		[SequenceReference] public readonly string Sequence = "idle";
+		[Desc("Animation to play when the actor is idle."), SequenceReference]
+		public readonly string Sequence = "idle";
 
 		[Desc("Pause animation when actor is disabled.")]
 		public readonly bool PauseAnimationWhenDisabled = false;

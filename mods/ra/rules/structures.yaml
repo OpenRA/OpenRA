@@ -69,8 +69,8 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderBuilding:
-		PauseOnLowPower: yes
+	WithSpriteBody:
+		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 1000
 	Armor:
@@ -401,8 +401,6 @@ TSLA:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
 	WithChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
@@ -411,13 +409,11 @@ TSLA:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadTime: 120
-	-RenderBuilding:
 	Power:
 		Amount: -100
 	DetectCloaked:
 		Range: 8
 	ProvidesPrerequisite@buildingname:
-	-WithMakeAnimation:
 
 AGUN:
 	Inherits: ^Defense
@@ -451,7 +447,7 @@ AGUN:
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
-	RenderSprites:
+	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: ZSU-23
@@ -459,14 +455,12 @@ AGUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
 		Amount: -50
 	DetectCloaked:
 		Range: 6
-	-WithMakeAnimation:
 
 DOME:
 	Inherits: ^Building
@@ -612,7 +606,7 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderSprites:
+	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
@@ -620,12 +614,10 @@ GUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	Power:
 		Amount: -40
 	DetectCloaked:
 		Range: 7
-	-WithMakeAnimation:
 
 FTUR:
 	Inherits: ^Defense
@@ -690,21 +682,19 @@ SAM:
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
-	RenderSprites:
+	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: Nike
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
 		Amount: -40
 	DetectCloaked:
 		Range: 5
-	-WithMakeAnimation:
 
 ATEK:
 	Inherits: ^Building
@@ -988,17 +978,13 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
 	WithSiloAnimation:
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
-	-WithMakeAnimation:
 
 HPAD:
 	Inherits: ^Building

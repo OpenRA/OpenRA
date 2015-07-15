@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Replaces the idle animation of a building.")]
-	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithActiveAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
@@ -31,11 +31,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithActiveAnimation : ITick, INotifyBuildComplete, INotifySold
 	{
 		readonly WithActiveAnimationInfo info;
-		readonly RenderBuilding renderBuilding;
+		readonly WithSpriteBody wsb;
 
 		public WithActiveAnimation(Actor self, WithActiveAnimationInfo info)
 		{
-			renderBuilding = self.Trait<RenderBuilding>();
+			wsb = self.Trait<WithSpriteBody>();
 			this.info = info;
 		}
 
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				if (!(info.PauseOnLowPower && self.IsDisabled()))
-					renderBuilding.PlayCustomAnim(self, info.Sequence);
+					wsb.PlayCustomAnimation(self, info.Sequence);
 				ticks = info.Interval;
 			}
 		}

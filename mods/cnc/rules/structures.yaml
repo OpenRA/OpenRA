@@ -72,7 +72,7 @@ FACT:
 
 FACT.GDI:
 	Inherits: FACT
-	RenderBuilding:
+	RenderSprites:
 		Image: fact
 	Buildable:
 		Queue: Building.GDI, Building.Nod
@@ -84,7 +84,7 @@ FACT.GDI:
 
 FACT.NOD:
 	Inherits: FACT
-	RenderBuilding:
+	RenderSprites:
 		Image: fact
 	Buildable:
 		Queue: Building.GDI, Building.Nod
@@ -218,7 +218,6 @@ SILO:
 		PipCount: 10
 		PipColor: Green
 		Capacity: 2000
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
@@ -226,7 +225,6 @@ SILO:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 49,30
-	-WithMakeAnimation:
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -463,8 +461,8 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderBuilding:
-		PauseOnLowPower: yes
+	WithSpriteBody:
+		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -549,8 +547,8 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderBuilding:
-		PauseOnLowPower: yes
+	WithSpriteBody:
+		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 1200
 	RevealsShroud:
@@ -654,7 +652,7 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderSprites:
+	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
@@ -662,13 +660,11 @@ GUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	-WithDeathAnimation:
 	DetectCloaked:
 		Range: 3
 	Power:
 		Amount: -20
-	-WithMakeAnimation:
 
 SAM:
 	Inherits: ^Defense
@@ -697,7 +693,7 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
-	RenderSprites:
+	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
 	Armament:
@@ -705,11 +701,9 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
-	-WithMakeAnimation:
 
 OBLI:
 	Inherits: ^Defense
@@ -739,8 +733,6 @@ OBLI:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
 	WithChargeAnimation:
 	Armament:
 		Weapon: Laser
@@ -750,13 +742,11 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 40
 		InitialChargeDelay: 50
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 5
 	Power:
 		Amount: -150
-	-WithMakeAnimation:
 
 GTWR:
 	Inherits: ^Defense

@@ -1931,6 +1931,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150828)
+				{
+					// Replaced RenderBuilding with RenderSprites + WithSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuilding"));
+						if (rb != null)
+						{
+							rb.Key = "WithSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuilding"));
+						if (rrb != null)
+							rrb.Key = "-WithSpriteBody";
+
+						if (depth == 2 && node.Key == "PauseOnLowPower" && (parentKey == "WithSpriteBody"
+							|| parentKey == "WithTurretedSpriteBody" || parentKey == "WithWallSpriteBody"))
+							node.Key = "PauseAnimationWhenDisabled";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

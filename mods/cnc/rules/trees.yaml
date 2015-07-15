@@ -7,7 +7,7 @@ SPLIT2:
 
 SPLIT3:
 	Inherits: ^TibTree
-	RenderBuilding:
+	RenderSprites:
 		Image: split2
 	SeedsResource:
 		ResourceType: Tiberium
@@ -16,7 +16,7 @@ SPLIT3:
 
 SPLITBLUE:
 	Inherits: ^TibTree
-	RenderBuilding:
+	RenderSprites:
 		Image: split3
 	SeedsResource:
 		ResourceType: BlueTiberium

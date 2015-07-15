@@ -891,13 +891,13 @@ Rules:
 		Inherits: OILB
 		Health:
 			HP: 6000
-		RenderBuilding:
+		RenderSprites:
 			Image: OILB
 	OILB.Weak:
 		Inherits: OILB
 		Health:
 			HP: 900
-		RenderBuilding:
+		RenderSprites:
 			Image: OILB
 
 Sequences:

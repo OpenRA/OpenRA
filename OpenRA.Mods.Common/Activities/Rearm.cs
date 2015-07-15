@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 					continue;
 
 				// HACK to check if we are on the helipad/airfield/etc.
-				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location).FirstOrDefault(a => a.HasTrait<RenderBuilding>());
+				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location).FirstOrDefault(a => a.HasTrait<Building>());
 
 				if (hostBuilding == null || !hostBuilding.IsInWorld)
 					return NextActivity;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!pool.GiveAmmo())
 					continue;
 
-				hostBuilding.Trait<RenderBuilding>().PlayCustomAnim(hostBuilding, "active");
+				hostBuilding.Trait<WithSpriteBody>().PlayCustomAnimation(hostBuilding, "active");
 
 				var sound = pool.Info.RearmSound;
 				if (sound != null)

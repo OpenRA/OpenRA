@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Building animation to play when ProductionAirdrop is used to deliver units.")]
-	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		public readonly string ActiveSequence = "active";
 
@@ -26,23 +26,23 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class WithDeliveryAnimation : INotifyDelivery
 	{
 		readonly WithDeliveryAnimationInfo info;
-		readonly RenderBuilding building;
+		readonly WithSpriteBody wsb;
 
 		public WithDeliveryAnimation(Actor self, WithDeliveryAnimationInfo info)
 		{
-			building = self.Trait<RenderBuilding>();
+			wsb = self.Trait<WithSpriteBody>();
 
 			this.info = info;
 		}
 
 		public void IncomingDelivery(Actor self)
 		{
-			building.PlayCustomAnimRepeating(self, info.ActiveSequence);
+			wsb.PlayCustomAnimationRepeating(self, info.ActiveSequence);
 		}
 
 		public void Delivered(Actor self)
 		{
-			building.PlayCustomAnimRepeating(self, info.IdleSequence);
+			wsb.PlayCustomAnimationRepeating(self, info.IdleSequence);
 		}
 	}
 }

@@ -105,7 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
 			{
-				self.Trait<RenderBuilding>().CancelCustomAnim(self);
+				var wsb = self.Trait<WithSpriteBody>();
+				wsb.PlayCustomAnimation(self, wsb.Info.Sequence);
 				dockedHarv = null;
 			}
 
