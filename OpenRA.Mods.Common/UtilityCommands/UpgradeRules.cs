@@ -1810,6 +1810,39 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150826)
+				{
+					// Replaced RenderBuildingCharge with RenderSprites + WithSpriteBody + WithChargeAnimation (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "ChargeSequence" };
+						var childKeysExcludeFromRS = new[] { "Sequence", "ChargeSequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingCharge"));
+						if (rb != null)
+						{
+							rb.Key = "WithChargeAnimation";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+							var wsbNodes = rb.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rb.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingCharge"));
+						if (rrb != null)
+							rrb.Key = "-WithChargeAnimation";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
