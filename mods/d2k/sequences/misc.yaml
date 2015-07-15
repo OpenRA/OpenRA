@@ -386,5 +386,5 @@ sandcraters:
 		Offset: -16,-16
 
 parach-shadow:
-	idle:
+	idle: parach-shadow.shp
 		Length: *
