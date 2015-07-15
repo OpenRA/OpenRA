@@ -25,13 +25,13 @@ Metrics:
 	SpawnColor: 255,255,255
 	SpawnContrastColor: 0,0,0
 	SpawnLabelOffset: 0,1
-	RaceSuffix-allies: allies
-	RaceSuffix-england: allies
-	RaceSuffix-france: allies
-	RaceSuffix-germany: allies
-	RaceSuffix-soviet: soviet
-	RaceSuffix-russia: soviet
-	RaceSuffix-ukraine: soviet
+	FactionSuffix-allies: allies
+	FactionSuffix-england: allies
+	FactionSuffix-france: allies
+	FactionSuffix-germany: allies
+	FactionSuffix-soviet: soviet
+	FactionSuffix-russia: soviet
+	FactionSuffix-ukraine: soviet
 	IncompatibleGameColor: 169,169,169
 	CantJoinGameColor: 211,211,211
 	ProtectedGameColor: 255,0,0

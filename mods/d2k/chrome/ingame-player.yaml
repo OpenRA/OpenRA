@@ -149,7 +149,7 @@ Container@PLAYER_WIDGETS:
 					Children:
 						LogicTicker@RADAR_TICKER:
 						Image@INSIGNIA:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							X: 60
 							Y: 75
 							ImageCollection: radar

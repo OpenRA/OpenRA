@@ -17,7 +17,7 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ICON_TEMPLATE:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							X:0-2
 							Y:0-2
 							Width: 62
@@ -26,7 +26,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: sidebar
 							ImageName: background-supportoverlay
 		Image@SIDEBAR_BACKGROUND_TOP:
-			Logic: AddRaceSuffixLogic
+			Logic: AddFactionSuffixLogic
 			X: WINDOW_RIGHT - 250
 			Y: 10
 			Width: 238
@@ -41,7 +41,7 @@ Container@PLAYER_WIDGETS:
 					Y: 7
 					Children:
 						Button@BEACON_BUTTON:
-							Logic: BeaconOrderButtonLogic, AddRaceSuffixLogic
+							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
 							Width: 28
 							Height: 28
 							Background: sidebar-button
@@ -54,7 +54,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: order-icons
 						Button@SELL_BUTTON:
-							Logic: SellOrderButtonLogic, AddRaceSuffixLogic
+							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
 							X: 32
 							Width: 28
 							Height: 28
@@ -68,7 +68,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: order-icons
 						Button@POWER_BUTTON:
-							Logic: PowerdownOrderButtonLogic, AddRaceSuffixLogic
+							Logic: PowerdownOrderButtonLogic, AddFactionSuffixLogic
 							X: 64
 							Width: 28
 							Height: 28
@@ -82,7 +82,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: order-icons
 						Button@REPAIR_BUTTON:
-							Logic: RepairOrderButtonLogic, AddRaceSuffixLogic
+							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
 							X: 96
 							Width: 28
 							Height: 28
@@ -96,7 +96,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: order-icons
 						MenuButton@DEBUG_BUTTON:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Key: escape Shift
 							X: 128
 							Width: 28
@@ -112,7 +112,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 									ImageName: debug
 						MenuButton@DIPLOMACY_BUTTON:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							MenuContainer: INGAME_DIPLOMACY_BG
 							HideIngameUI: false
 							Pause: false
@@ -131,7 +131,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 									ImageName: diplomacy
 						MenuButton@OPTIONS_BUTTON:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Key: escape
 							X: 192
 							Width: 28
@@ -213,14 +213,14 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Image@ROW_TEMPLATE:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Width: 238
 							Height: 47
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-iconrow
 						Image@BOTTOM_CAP:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Width: 238
 							Height: 8
 							ClickThrough: false
@@ -253,7 +253,7 @@ Container@PLAYER_WIDGETS:
 					Height: 240
 					Children:
 						ProductionTypeButton@BUILDING:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Width: 28
 							Height: 28
 							VisualHeight: 0
@@ -268,7 +268,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 31
 							Width: 28
 							Height: 28
@@ -284,7 +284,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 62
 							Width: 28
 							Height: 28
@@ -300,7 +300,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 93
 							Width: 28
 							Height: 28
@@ -316,7 +316,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 124
 							Width: 28
 							Height: 28
@@ -332,7 +332,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						ProductionTypeButton@NAVAL:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 155
 							Width: 28
 							Height: 28
@@ -348,7 +348,7 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: production-icons
 						Button@SCROLL_UP_BUTTON:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 186
 							Width: 28
 							Height: 22
@@ -363,7 +363,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: scrollbar
 									ImageName: up_arrow
 						Button@SCROLL_DOWN_BUTTON:
-							Logic: AddRaceSuffixLogic
+							Logic: AddFactionSuffixLogic
 							Y: 211
 							Width: 28
 							Height: 22
