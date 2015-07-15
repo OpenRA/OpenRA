@@ -81,8 +81,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PlayCustomAnimationRepeating(Actor self, string name)
 		{
-			DefaultAnimation.PlayThen(name,
-				() => PlayCustomAnimationRepeating(self, name));
+			var sequence = NormalizeSequence(self, name);
+			DefaultAnimation.PlayThen(sequence, () => PlayCustomAnimationRepeating(self, sequence));
 		}
 
 		public void PlayCustomAnimationBackwards(Actor self, string name, Action after = null)
