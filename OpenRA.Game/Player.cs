@@ -37,8 +37,8 @@ namespace OpenRA
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 
-		// The country (including Random, etc) that was selected in the lobby
-		public readonly FactionInfo DisplayCountry;
+		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
+		public readonly FactionInfo DisplayFaction;
 
 		public WinState WinState = WinState.Undefined;
 		public bool IsBot;
@@ -96,7 +96,7 @@ namespace OpenRA
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Faction = ChooseCountry(world, client.Race, !pr.LockFaction);
-				DisplayCountry = ChooseDisplayCountry(world, client.Race);
+				DisplayFaction = ChooseDisplayCountry(world, client.Race);
 			}
 			else
 			{
@@ -109,7 +109,7 @@ namespace OpenRA
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
 				Faction = ChooseCountry(world, pr.Faction, false);
-				DisplayCountry = ChooseDisplayCountry(world, pr.Faction);
+				DisplayFaction = ChooseDisplayCountry(world, pr.Faction);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
