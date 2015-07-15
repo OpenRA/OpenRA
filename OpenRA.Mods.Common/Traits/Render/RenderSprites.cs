@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
 			this.info = info;
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.InternalName;
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public string GetImage(Actor self)

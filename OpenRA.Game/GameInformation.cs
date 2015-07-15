@@ -113,12 +113,12 @@ namespace OpenRA
 				Name = runtimePlayer.PlayerName,
 				IsHuman = !runtimePlayer.IsBot,
 				IsBot = runtimePlayer.IsBot,
-				FactionName = runtimePlayer.Country.Name,
-				FactionId = runtimePlayer.Country.InternalName,
+				FactionName = runtimePlayer.Faction.Name,
+				FactionId = runtimePlayer.Faction.InternalName,
 				Color = runtimePlayer.Color,
 				Team = client.Team,
 				SpawnPoint = runtimePlayer.SpawnPoint,
-				IsRandomFaction = runtimePlayer.Country.InternalName != client.Race,
+				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Race,
 				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint
 			};
 

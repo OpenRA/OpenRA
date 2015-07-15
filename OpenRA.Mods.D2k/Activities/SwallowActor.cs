@@ -116,7 +116,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 		void NotifyPlayer(Player player, WPos location)
 		{
-			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Country.InternalName);
+			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
 
 			if (player == player.World.RenderPlayer)
 				radarPings.Add(() => true, location, Color.Red, 50);

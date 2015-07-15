@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				Game.RunAfterDelay(info.NotificationDelay, () =>
 				{
 					if (Game.IsCurrentWorld(player.World))
-						Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Country.InternalName);
+						Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Faction.InternalName);
 				});
 			}
 		}
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Debug("{0} is victorious.", player.PlayerName);
 
 			if (player == player.World.LocalPlayer)
-				Game.RunAfterDelay(info.NotificationDelay, () => Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Country.InternalName));
+				Game.RunAfterDelay(info.NotificationDelay, () => Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Faction.InternalName));
 		}
 
 		public void OnObjectiveAdded(Player player, int id) { }

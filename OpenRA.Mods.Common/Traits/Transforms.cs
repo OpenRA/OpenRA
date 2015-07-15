@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			this.info = info;
 			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.InternalName;
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Faction.InternalName;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var s in info.NoTransformSounds)
 					Sound.PlayToPlayer(self.Owner, s);
 
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Country.InternalName);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Faction.InternalName);
 
 				return;
 			}

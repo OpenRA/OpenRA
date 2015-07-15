@@ -38,13 +38,13 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Play an announcer voice listed in notifications.yaml")]
 		public void PlaySpeechNotification(Player player, string notification)
 		{
-			Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player != null ? player.Country.InternalName : null);
+			Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player != null ? player.Faction.InternalName : null);
 		}
 
 		[Desc("Play a sound listed in notifications.yaml")]
 		public void PlaySoundNotification(Player player, string notification)
 		{
-			Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Country.InternalName : null);
+			Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Faction.InternalName : null);
 		}
 
 		[Desc("Play a sound file")]

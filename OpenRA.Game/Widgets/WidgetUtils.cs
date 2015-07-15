@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 	{
 		public static Sprite GetChromeImage(World world, string name)
 		{
-			return ChromeProvider.GetImage("chrome-" + world.LocalPlayer.Country.InternalName, name);
+			return ChromeProvider.GetImage("chrome-" + world.LocalPlayer.Faction.InternalName, name);
 		}
 
 		public static void DrawRGBA(Sprite s, float2 pos)

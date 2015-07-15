@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var raceList = info.Races;
-			correctRace = raceList.Length == 0 || raceList.Contains(self.Owner.Country.InternalName);
+			correctRace = raceList.Length == 0 || raceList.Contains(self.Owner.Faction.InternalName);
 		}
 
 		public void Selling(Actor self) { }

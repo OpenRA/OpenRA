@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var producer = queue.MostLikelyProducer();
-				var race = producer.Trait != null ? producer.Trait.Race : self.Owner.Country.InternalName;
+				var race = producer.Trait != null ? producer.Trait.Race : self.Owner.Faction.InternalName;
 				var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 				var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (GetNumBuildables(self.Owner) > prevItems)
 					w.Add(new DelayedAction(info.NewOptionsNotificationDelay,
-							() => Sound.PlayNotification(self.World.Map.Rules, order.Player, "Speech", info.NewOptionsNotification, order.Player.Country.InternalName)));
+							() => Sound.PlayNotification(self.World.Map.Rules, order.Player, "Speech", info.NewOptionsNotification, order.Player.Faction.InternalName)));
 			});
 		}
 

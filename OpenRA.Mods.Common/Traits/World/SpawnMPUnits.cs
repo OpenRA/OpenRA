@@ -31,11 +31,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings.StartingUnitsClass;
 			var unitGroup = w.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
-				.Where(g => g.Class == spawnClass && g.Races != null && g.Races.Contains(p.Country.InternalName))
+				.Where(g => g.Class == spawnClass && g.Races != null && g.Races.Contains(p.Faction.InternalName))
 				.RandomOrDefault(w.SharedRandom);
 
 			if (unitGroup == null)
-				throw new InvalidOperationException("No starting units defined for country {0} with class {1}".F(p.Country.InternalName, spawnClass));
+				throw new InvalidOperationException("No starting units defined for country {0} with class {1}".F(p.Faction.InternalName, spawnClass));
 
 			if (unitGroup.BaseActor != null)
 			{
