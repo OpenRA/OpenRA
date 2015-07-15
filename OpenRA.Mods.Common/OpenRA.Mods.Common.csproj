@@ -565,7 +565,7 @@
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\CountryTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />

@@ -14,10 +14,10 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class CountryTooltipLogic
+	public class FactionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CountryTooltipLogic(Widget widget, ButtonWidget button)
+		public FactionTooltipLogic(Widget widget, ButtonWidget button)
 		{
 			var lines = button.GetTooltipText().Replace("\\n", "\n").Split('\n');
 
