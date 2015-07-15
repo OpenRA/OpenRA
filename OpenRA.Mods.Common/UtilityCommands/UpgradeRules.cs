@@ -1841,6 +1841,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rrb != null)
 							rrb.Key = "-WithChargeAnimation";
 					}
+
+					// Replaced RenderBuildingSilo with RenderSprites + WithSpriteBody + WithSiloAnimation (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingSilo"));
+						if (rb != null)
+						{
+							rb.Key = "WithSiloAnimation";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeySequence.Contains(n.Key)).ToList();
+							var wsbNodes = rb.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							if (wsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", new MiniYaml("", wsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rb.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingSilo"));
+						if (rrb != null)
+							rrb.Key = "-WithSiloAnimation";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

@@ -127,11 +127,13 @@ GASILO:
 	RevealsShroud:
 		Range: 4c0
 	-RenderBuilding:
-	RenderBuildingSilo:
+	RenderSprites:
 		Image: gasilo.gdi
 		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
+	WithSpriteBody:
+	WithSiloAnimation:
 	WithIdleOverlay@UNDERLAY:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:
@@ -143,6 +145,7 @@ GASILO:
 		Amount: -10
 	SelectionDecorations:
 		VisualBounds: 80, 48, -5, 0
+	-WithMakeAnimation:
 
 ANYPOWER:
 	AlwaysVisible:

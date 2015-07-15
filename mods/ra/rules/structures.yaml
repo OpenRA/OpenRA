@@ -982,7 +982,9 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingSilo:
+	RenderSprites:
+	WithSpriteBody:
+	WithSiloAnimation:
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
@@ -990,6 +992,7 @@ SILO:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
+	-WithMakeAnimation:
 
 HPAD:
 	Inherits: ^Building

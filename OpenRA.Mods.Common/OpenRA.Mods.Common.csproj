@@ -411,7 +411,6 @@
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
-    <Compile Include="Traits\Render\RenderBuildingSilo.cs" />
     <Compile Include="Traits\Render\RenderBuildingWall.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
     <Compile Include="Traits\Render\RenderRangeCircle.cs" />
@@ -424,6 +423,7 @@
     <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
+    <Compile Include="Traits\Render\WithSiloAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />

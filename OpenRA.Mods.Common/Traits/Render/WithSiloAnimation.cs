@@ -1,0 +1,55 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits
+{
+	[Desc("Render trait for buildings that change the sprite according to the remaining resource storage capacity across all depots.")]
+	class WithSiloAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	{
+		public readonly int Stages = 10;
+
+		public object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
+	}
+
+	class WithSiloAnimation : INotifyBuildComplete, INotifyOwnerChanged
+	{
+		readonly WithSiloAnimationInfo info;
+		readonly WithSpriteBody wsb;
+		PlayerResources playerResources;
+
+		public WithSiloAnimation(ActorInitializer init, WithSiloAnimationInfo info)
+		{
+			this.info = info;
+			wsb = init.Self.Trait<WithSpriteBody>();
+			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
+		}
+
+		public void BuildingComplete(Actor self)
+		{
+			var animation = wsb.NormalizeSequence(self, wsb.Info.Sequence);
+
+			wsb.DefaultAnimation.PlayFetchIndex(animation,
+				() => playerResources.ResourceCapacity != 0
+				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
+					: 0);
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+			OnOwnerChanged(self, oldOwner, newOwner);
+		}
+	}
+}

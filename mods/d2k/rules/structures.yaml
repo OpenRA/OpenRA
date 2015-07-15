@@ -242,11 +242,13 @@ silo:
 	RevealsShroud:
 		Range: 4c0
 	-RenderBuilding:
-	RenderBuildingSilo:
+	RenderSprites:
 		Image: silo.harkonnen
 		FactionImages:
 			atreides: silo.atreides
 			ordos: silo.ordos
+	WithSpriteBody:
+	WithSiloAnimation:
 	StoresResources:
 		PipColor: green
 		PipCount: 5
@@ -256,6 +258,7 @@ silo:
 		Amount: -5
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	-WithMakeAnimation:
 
 light:
 	Inherits: ^Building
