@@ -80,7 +80,7 @@ namespace OpenRA
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}
 
-		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
+		public Player(World world, Session.Client client, PlayerReference pr)
 		{
 			string botType;
 
