@@ -15,14 +15,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
+	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithTurretedSpriteBodyInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;
+
 		public int DefaultFacing = 0;
 
 		[Desc("The percentage of damage that is received while this actor is closed.")]
 		public int ClosedDamageMultiplier = 50;
+
+		[Desc("Sequence to play when opening.")]
+		[SequenceReference] public string OpeningSequence = "opening";
+
+		[Desc("Sequence to play when closing.")]
+		[SequenceReference] public string ClosingSequence = "closing";
+
+		[Desc("Idle sequence to play when closed.")]
+		[SequenceReference] public string ClosedIdleSequence = "closed-idle";
 
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
@@ -32,11 +42,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
 		readonly AttackPopupTurretedInfo info;
-		RenderBuilding rb;
+		readonly WithSpriteBody wsb;
+		readonly Turreted turret;
 
 		int idleTicks = 0;
 		PopupState state = PopupState.Open;
-		Turreted turret;
 		bool skippedMakeAnimation;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
@@ -44,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			this.info = info;
 			turret = turrets.FirstOrDefault();
-			rb = init.Self.Trait<RenderBuilding>();
+			wsb = init.Self.Trait<WithSpriteBody>();
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
@@ -60,10 +70,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (state == PopupState.Closed)
 			{
 				state = PopupState.Transitioning;
-				rb.PlayCustomAnimThen(self, "opening", () =>
+				wsb.PlayCustomAnimation(self, info.OpeningSequence, () =>
 				{
 					state = PopupState.Open;
-					rb.PlayCustomAnimRepeating(self, "idle");
+					wsb.PlayCustomAnimationRepeating(self, wsb.Info.Sequence);
 				});
 				return false;
 			}
@@ -81,10 +91,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			else if (state == PopupState.Rotating && turret.TurretFacing == info.DefaultFacing)
 			{
 				state = PopupState.Transitioning;
-				rb.PlayCustomAnimThen(self, "closing", () =>
+				wsb.PlayCustomAnimation(self, info.ClosingSequence, () =>
 				{
 					state = PopupState.Closed;
-					rb.PlayCustomAnimRepeating(self, "closed-idle");
+					wsb.PlayCustomAnimationRepeating(self, info.ClosedIdleSequence);
 					turret.DesiredFacing = null;
 				});
 			}
@@ -95,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (skippedMakeAnimation)
 			{
 				state = PopupState.Closed;
-				rb.PlayCustomAnimRepeating(self, "closed-idle");
+				wsb.PlayCustomAnimationRepeating(self, info.ClosedIdleSequence);
 				turret.DesiredFacing = null;
 			}
 		}

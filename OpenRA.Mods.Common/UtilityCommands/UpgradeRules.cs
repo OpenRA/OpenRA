@@ -1875,6 +1875,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rrb != null)
 							rrb.Key = "-WithSiloAnimation";
 					}
+
+					// Replaced RenderBuildingTurreted with RenderSprites + WithTurretedSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingTurreted"));
+						if (rb != null)
+						{
+							rb.Key = "WithTurretedSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingTurreted"));
+						if (rrb != null)
+							rrb.Key = "-WithTurretedSpriteBody";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
