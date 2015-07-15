@@ -105,24 +105,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
-			OrderManager orderManager, Dictionary<string, LobbyCountry> countries)
+			OrderManager orderManager, Dictionary<string, LobbyFaction> factions)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Race == race,
 					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
-				var country = countries[race];
-				item.Get<LabelWidget>("LABEL").GetText = () => country.Name;
+				var faction = factions[race];
+				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => race;
-				item.GetTooltipText = () => country.Description;
+				item.GetTooltipText = () => faction.Description;
 				return item;
 			};
 
-			var options = countries.Where(c => c.Value.Selectable).GroupBy(c => c.Value.Side)
-				.ToDictionary(g => g.Key ?? "", g => g.Select(c => c.Key));
+			var options = factions.Where(f => f.Value.Selectable).GroupBy(f => f.Value.Side)
+				.ToDictionary(g => g.Key ?? "", g => g.Select(f => f.Key));
 
 			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
@@ -395,21 +395,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void SetupEditableFactionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager,
-			Dictionary<string, LobbyCountry> countries)
+			Dictionary<string, LobbyFaction> factions)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
 			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowRaceDropDown(dropdown, c, orderManager, countries);
-			var factionDescription = countries[c.Race].Description;
+			dropdown.OnMouseDown = _ => ShowRaceDropDown(dropdown, c, orderManager, factions);
+			var factionDescription = factions[c.Race].Description;
 			dropdown.GetTooltipText = () => factionDescription;
-			SetupFactionWidget(dropdown, s, c, countries);
+			SetupFactionWidget(dropdown, s, c, factions);
 		}
 
 		public static void SetupFactionWidget(Widget parent, Session.Slot s, Session.Client c,
-			Dictionary<string, LobbyCountry> countries)
+			Dictionary<string, LobbyFaction> factions)
 		{
 			var factionName = parent.Get<LabelWidget>("FACTIONNAME");
-			factionName.GetText = () => countries[c.Race].Name;
+			factionName.GetText = () => factions[c.Race].Name;
 			var factionFlag = parent.Get<ImageWidget>("FACTIONFLAG");
 			factionFlag.GetImageName = () => c.Race;
 			factionFlag.GetImageCollection = () => "flags";
