@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Country.InternalName))
+			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
 			var targetable = collector.Info.Traits.GetOrDefault<ITargetableInfo>();

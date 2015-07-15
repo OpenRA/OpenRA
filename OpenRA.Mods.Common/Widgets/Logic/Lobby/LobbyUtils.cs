@@ -456,9 +456,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var flag = template.Get<ImageWidget>("FLAG");
 			flag.GetImageCollection = () => "flags";
 			if (player.World.RenderPlayer != null && player.World.RenderPlayer.Stances[player] != Stance.Ally)
-				flag.GetImageName = () => player.DisplayCountry.InternalName;
+				flag.GetImageName = () => player.DisplayFaction.InternalName;
 			else
-				flag.GetImageName = () => player.Country.InternalName;
+				flag.GetImageName = () => player.Faction.InternalName;
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);

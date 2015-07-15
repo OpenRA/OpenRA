@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (current == null)
 					continue;
 
-				var race = queue.Trait.Actor.Owner.Country.InternalName;
+				var race = queue.Trait.Actor.Owner.Faction.InternalName;
 				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;

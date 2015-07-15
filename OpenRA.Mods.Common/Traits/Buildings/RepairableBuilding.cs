@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length)
 				{
 					Repairers.Add(player);
-					Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Country.InternalName);
+					Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
 
 					self.World.AddFrameEndTask(w =>
 					{

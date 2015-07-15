@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var buildableInfo = info.Traits.Get<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
-			race = buildableInfo.ForceRace ?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Race : producer.Owner.Country.InternalName);
+			race = buildableInfo.ForceRace ?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Race : producer.Owner.Faction.InternalName);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Orders
 					orderType = "PlacePlug";
 					if (!AcceptsPlug(topLeft, plugInfo))
 					{
-						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.InternalName);
+						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
 						yield break;
 					}
 				}
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Orders
 					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
 						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
 					{
-						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Country.InternalName);
+						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
 						yield break;
 					}
 

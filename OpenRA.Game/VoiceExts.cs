@@ -27,7 +27,7 @@ namespace OpenRA
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
 
-				voiced.PlayVoice(self, phrase, self.Owner.Country.InternalName);
+				voiced.PlayVoice(self, phrase, self.Owner.Faction.InternalName);
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace OpenRA
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
 
-				voiced.PlayVoiceLocal(self, phrase, self.Owner.Country.InternalName, volume);
+				voiced.PlayVoiceLocal(self, phrase, self.Owner.Faction.InternalName, volume);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace OpenRA
 					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
 					{
 						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
-							orderSubject.Owner.Country.InternalName))
+							orderSubject.Owner.Faction.InternalName))
 							return;
 					}
 			}

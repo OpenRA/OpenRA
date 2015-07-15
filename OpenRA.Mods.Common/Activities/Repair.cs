@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (health.DamageState == DamageState.Undamaged)
 			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.FinishRepairingNotification, self.Owner.Country.InternalName);
+				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.FinishRepairingNotification, self.Owner.Faction.InternalName);
 				return NextActivity;
 			}
 
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!played)
 				{
 					played = true;
-					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.StartRepairingNotification, self.Owner.Country.InternalName);
+					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.StartRepairingNotification, self.Owner.Faction.InternalName);
 				}
 
 				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))

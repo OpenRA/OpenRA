@@ -31,14 +31,14 @@ namespace OpenRA
 
 		public readonly string PlayerName;
 		public readonly string InternalName;
-		public readonly FactionInfo Country;
+		public readonly FactionInfo Faction;
 		public readonly bool NonCombatant = false;
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
 
-		// The country (including Random, etc) that was selected in the lobby
-		public readonly FactionInfo DisplayCountry;
+		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
+		public readonly FactionInfo DisplayFaction;
 
 		public WinState WinState = WinState.Undefined;
 		public bool IsBot;
@@ -51,42 +51,42 @@ namespace OpenRA
 
 		readonly IFogVisibilityModifier[] fogVisibilities;
 
-		FactionInfo ChooseCountry(World world, string name, bool requireSelectable = true)
+		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
 		{
-			var selectableCountries = world.Map.Rules.Actors["world"].Traits
+			var selectableFactions = world.Map.Rules.Actors["world"].Traits
 				.WithInterface<FactionInfo>().Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
-			var selected = selectableCountries.FirstOrDefault(f => f.InternalName == name)
-				?? selectableCountries.Random(world.SharedRandom);
+			var selected = selectableFactions.FirstOrDefault(f => f.InternalName == name)
+				?? selectableFactions.Random(world.SharedRandom);
 
 			// Don't loop infinite
 			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Any(); i++)
 			{
-				var race = selected.RandomFactionMembers.Random(world.SharedRandom);
-				selected = selectableCountries.FirstOrDefault(f => f.InternalName == race);
+				var faction = selected.RandomFactionMembers.Random(world.SharedRandom);
+				selected = selectableFactions.FirstOrDefault(f => f.InternalName == faction);
 
 				if (selected == null)
-					throw new YamlException("Unknown race: {0}".F(race));
+					throw new YamlException("Unknown faction: {0}".F(faction));
 			}
 
 			return selected;
 		}
 
-		FactionInfo ChooseDisplayCountry(World world, string race)
+		static FactionInfo ChooseDisplayFaction(World world, string factionName)
 		{
-			var countries = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<FactionInfo>().ToArray();
+			var factions = world.Map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().ToArray();
 
-			return countries.FirstOrDefault(f => f.InternalName == race) ?? countries.First();
+			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}
 
-		public Player(World world, Session.Client client, Session.Slot slot, PlayerReference pr)
+		public Player(World world, Session.Client client, PlayerReference pr)
 		{
+			string botType;
+
 			World = world;
 			InternalName = pr.Name;
 			PlayerReference = pr;
-			string botType = null;
 
 			// Real player or host-created bot
 			if (client != null)
@@ -95,8 +95,8 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Country = ChooseCountry(world, client.Race, !pr.LockFaction);
-				DisplayCountry = ChooseDisplayCountry(world, client.Race);
+				Faction = ChooseFaction(world, client.Race, !pr.LockFaction);
+				DisplayFaction = ChooseDisplayFaction(world, client.Race);
 			}
 			else
 			{
@@ -108,22 +108,20 @@ namespace OpenRA
 				Playable = pr.Playable;
 				Spectating = pr.Spectating;
 				botType = pr.Bot;
-				Country = ChooseCountry(world, pr.Faction, false);
-				DisplayCountry = ChooseDisplayCountry(world, pr.Faction);
+				Faction = ChooseFaction(world, pr.Faction, false);
+				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
 			}
 
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
-			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>()
-				.ToArray();
+			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>().ToArray();
 
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
 			{
-				var logic = PlayerActor.TraitsImplementing<IBot>()
-							.FirstOrDefault(b => b.Info.Name == botType);
+				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Name == botType);
 				if (logic == null)
 					Log.Write("debug", "Invalid bot type: {0}", botType);
 				else
@@ -193,7 +191,7 @@ namespace OpenRA
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			Player a, b;
-			if (!left.TryGetClrValue<Player>(out a) || !right.TryGetClrValue<Player>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				return false;
 
 			return a == b;

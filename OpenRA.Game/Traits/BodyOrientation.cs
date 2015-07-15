@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 		{
 			this.info = info;
 			var self = init.Self;
-			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Country.InternalName;
+			var race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Faction.InternalName;
 
 			quantizedFacings = Exts.Lazy(() =>
 			{

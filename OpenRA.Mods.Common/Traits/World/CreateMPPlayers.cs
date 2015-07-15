@@ -26,28 +26,28 @@ namespace OpenRA.Mods.Common.Traits
 			// Create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in players.Where(p => !p.Value.Playable))
 			{
-				var player = new Player(w, null, null, kv.Value);
+				var player = new Player(w, null, kv.Value);
 				w.AddPlayer(player);
 				if (kv.Value.OwnsWorld)
 					w.WorldActor.Owner = player;
 			}
 
-			// Create the players which are bound through slots.
+			// Create the regular playable players.
 			foreach (var kv in w.LobbyInfo.Slots)
 			{
 				var client = w.LobbyInfo.ClientInSlot(kv.Key);
 				if (client == null)
 					continue;
 
-				var player = new Player(w, client, kv.Value, players[kv.Value.PlayerReference]);
+				var player = new Player(w, client, players[kv.Value.PlayerReference]);
 				w.AddPlayer(player);
 
 				if (client.Index == Game.LocalClientId)
 					w.SetLocalPlayer(player.InternalName);
 			}
 
-			// create a player that is allied with everyone for shared observer shroud
-			w.AddPlayer(new Player(w, null, null, new PlayerReference
+			// Create a player that is allied with everyone for shared observer shroud.
+			w.AddPlayer(new Player(w, null, new PlayerReference
 			{
 				Name = "Everyone",
 				NonCombatant = true,

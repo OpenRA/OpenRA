@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.info = info;
 			production = init.Self.Trait<Production>();
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Country.InternalName;
+			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
