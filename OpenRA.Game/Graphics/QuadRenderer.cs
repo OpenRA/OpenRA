@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -16,6 +17,7 @@ namespace OpenRA.Graphics
 	{
 		readonly Renderer renderer;
 		readonly IShader shader;
+		readonly Action renderAction;
 
 		readonly Vertex[] vertices;
 		int nv = 0;
@@ -25,6 +27,7 @@ namespace OpenRA.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 			vertices = new Vertex[renderer.TempBufferSize];
+			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList);
 		}
 
 		public void Flush()
@@ -32,7 +35,7 @@ namespace OpenRA.Graphics
 			if (nv > 0)
 			{
 				renderer.Device.SetBlendMode(BlendMode.Alpha);
-				shader.Render(() => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList));
+				shader.Render(renderAction);
 				renderer.Device.SetBlendMode(BlendMode.None);
 
 				nv = 0;
