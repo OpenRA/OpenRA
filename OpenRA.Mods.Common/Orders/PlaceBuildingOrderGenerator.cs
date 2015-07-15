@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Orders
 				{
 					var td = new TypeDictionary()
 					{
-						new RaceInit(race),
+						new FactionInit(race),
 						new OwnerInit(producer.Owner),
 						new HideBibPreviewInit()
 					};

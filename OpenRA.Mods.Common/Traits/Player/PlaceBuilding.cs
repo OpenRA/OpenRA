@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							new LocationInit(t),
 							new OwnerInit(order.Player),
-							new RaceInit(race)
+							new FactionInit(race)
 						});
 
 						if (playSounds)
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						new LocationInit(order.TargetLocation),
 						new OwnerInit(order.Player),
-						new RaceInit(race),
+						new FactionInit(race),
 					});
 
 					foreach (var s in buildingInfo.BuildSounds)

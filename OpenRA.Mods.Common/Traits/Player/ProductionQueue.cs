@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
 
-			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : self.Owner.Faction.InternalName;
+			Race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 			Enabled = !info.Race.Any() || info.Race.Contains(Race);
 
 			CacheProduceables(playerActor);

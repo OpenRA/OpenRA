@@ -50,7 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 					};
 
 					if (raceVariant != null)
-						td.Add(new RaceInit(raceVariant));
+						td.Add(new FactionInit(raceVariant));
 
 					var newUnit = self.World.CreateActor(producee.Name, td);
 

@@ -103,13 +103,13 @@ namespace OpenRA
 		}
 	}
 
-	// Allows maps / transformations to specify the race variant of an actor.
-	public class RaceInit : IActorInit<string>
+	// Allows maps / transformations to specify the faction variant of an actor.
+	public class FactionInit : IActorInit<string>
 	{
-		[FieldFromYamlKey] public readonly string Race;
+		[FieldFromYamlKey] public readonly string Faction;
 
-		public RaceInit() { }
-		public RaceInit(string race) { Race = race; }
-		public string Value(World world) { return Race; }
+		public FactionInit() { }
+		public FactionInit(string faction) { Faction = faction; }
+		public string Value(World world) { return Faction; }
 	}
 }

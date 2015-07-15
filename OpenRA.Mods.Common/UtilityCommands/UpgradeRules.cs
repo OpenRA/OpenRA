@@ -2172,6 +2172,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						ConvertFloatToIntPercentage(ref node.Value.Value);
 				}
 
+				if (engineVersion < 20150715)
+				{
+					if (node.Key == "Race")
+						node.Key = "Faction";
+				}
+
 				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

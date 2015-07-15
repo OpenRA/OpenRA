@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
-			Race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Faction.InternalName;
+			Race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				};
 
 				if (raceVariant != null)
-					td.Add(new RaceInit(raceVariant));
+					td.Add(new FactionInit(raceVariant));
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 

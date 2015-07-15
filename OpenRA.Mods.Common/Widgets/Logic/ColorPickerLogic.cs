@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var td = new TypeDictionary();
 			td.Add(new HideBibPreviewInit());
 			td.Add(new OwnerInit(world.WorldActor.Owner));
-			td.Add(new RaceInit(world.WorldActor.Owner.PlayerReference.Faction));
+			td.Add(new FactionInit(world.WorldActor.Owner.PlayerReference.Faction));
 
 			if (preview != null)
 				preview.SetPreview(actor, td);
