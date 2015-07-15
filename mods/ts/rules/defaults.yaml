@@ -359,12 +359,10 @@
 	UpgradeOverlay@EMPDISABLE:
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
 		Palette: disabled
 	DisableUpgrade@EMPDISABLE:
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: 255,255,255
@@ -377,11 +375,9 @@
 		ShowToEnemies: true
 		ZOffset: 512
 		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
 		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
 		InitialDelay: 0
 		CloakDelay: 90
 	MustBeDestroyed:
