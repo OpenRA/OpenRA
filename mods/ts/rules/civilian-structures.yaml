@@ -1237,7 +1237,7 @@ GASAND:
 		NodeTypes: sandbags
 	LineBuildNode:
 		Types: sandbags
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: sandbags
 
 GASPOT:

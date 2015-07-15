@@ -103,7 +103,8 @@ GACTWR:
 	LineBuildNode:
 		Types: turret
 	-RenderBuilding:
-	RenderBuildingWall:
+	RenderSprites:
+	WithWallSpriteBody:
 		Type: wall
 	Power@base:
 		Amount: -10

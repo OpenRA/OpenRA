@@ -312,7 +312,9 @@
 	-WithCrumbleOverlay:
 	-WithMakeAnimation:
 	-RenderBuilding:
-	RenderBuildingWall:
+	RenderSprites:
+	WithWallSpriteBody:
+	AutoSelectionSize:
 	LineBuildNode:
 		Types: turret
 	MustBeDestroyed:
