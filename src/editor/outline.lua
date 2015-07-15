@@ -288,7 +288,8 @@ function OutlineFunctions(editor)
     while IndicateAll(editor) do end
   end
 
-  outlineRefresh(editor, true)
+  -- only refresh the functions when none is present
+  if not caches[editor] or #caches[editor].funcs == 0 then outlineRefresh(editor, true) end
   return caches[editor].funcs
 end
 
