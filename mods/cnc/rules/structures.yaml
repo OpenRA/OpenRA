@@ -730,7 +730,9 @@ OBLI:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingCharge:
+	RenderSprites:
+	WithSpriteBody:
+	WithChargeAnimation:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
@@ -745,6 +747,7 @@ OBLI:
 		Range: 5
 	Power:
 		Amount: -150
+	-WithMakeAnimation:
 
 GTWR:
 	Inherits: ^Defense

@@ -401,7 +401,9 @@ TSLA:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingCharge:
+	RenderSprites:
+	WithSpriteBody:
+	WithChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,427
@@ -415,6 +417,7 @@ TSLA:
 	DetectCloaked:
 		Range: 8
 	ProvidesPrerequisite@buildingname:
+	-WithMakeAnimation:
 
 AGUN:
 	Inherits: ^Defense

@@ -406,7 +406,6 @@
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderBuilding.cs" />
-    <Compile Include="Traits\Render\RenderBuildingCharge.cs" />
     <Compile Include="Traits\Render\RenderBuildingTurreted.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
@@ -427,6 +426,7 @@
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
+    <Compile Include="Traits\Render\WithChargeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
