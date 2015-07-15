@@ -12,7 +12,9 @@ MINP:
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
-	RenderSimple:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	Cloak:
 		CloakSound:
 		UncloakSound:
@@ -43,7 +45,9 @@ MINV:
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
-	RenderSimple:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	Cloak:
 		CloakSound:
 		UncloakSound:
