@@ -17,11 +17,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Render trait for actors that change sprites if neighbors with the same trait are present.")]
-	class RenderBuildingWallInfo : RenderBuildingInfo
+	class WithWallSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		public readonly string Type = "wall";
 
-		public override object Create(ActorInitializer init) { return new RenderBuildingWall(init, this); }
+		public override object Create(ActorInitializer init) { return new WithWallSpriteBody(init, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
 					{
-						var rb = init.World.Map.Rules.Actors[n].Traits.GetOrDefault<RenderBuildingWallInfo>();
+						var rb = init.World.Map.Rules.Actors[n].Traits.GetOrDefault<WithWallSpriteBodyInfo>();
 						if (rb != null && rb.Type == Type)
 						{
 							haveNeighbour = true;
@@ -68,33 +68,26 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class RenderBuildingWall : RenderBuilding, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class WithWallSpriteBody : WithSpriteBody, INotifyAddedToWorld, INotifyRemovedFromWorld, ITick
 	{
-		readonly RenderBuildingWallInfo info;
+		readonly WithWallSpriteBodyInfo wallInfo;
 		int adjacent = 0;
 		bool dirty = true;
 
-		public RenderBuildingWall(ActorInitializer init, RenderBuildingWallInfo info)
-			: base(init, info)
+		public WithWallSpriteBody(ActorInitializer init, WithWallSpriteBodyInfo info)
+			: base(init, info, () => 0)
 		{
-			this.info = info;
-		}
-
-		public override void BuildingComplete(Actor self)
-		{
-			DefaultAnimation.PlayFetchIndex(info.Sequence, () => adjacent);
-			UpdateNeighbours(self);
+			wallInfo = info;
+			DefaultAnimation.PlayFetchIndex(NormalizeSequence(init.Self, Info.Sequence), () => adjacent);
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			DefaultAnimation.PlayFetchIndex(NormalizeSequence(DefaultAnimation, e.DamageState, info.Sequence), () => adjacent);
+			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
-
 			if (!dirty)
 				return;
 
@@ -105,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 			adjacent = 0;
 			foreach (var a in adjacentActors)
 			{
-				var rb = a.TraitOrDefault<RenderBuildingWall>();
-				if (rb == null || rb.info.Type != info.Type)
+				var rb = a.TraitOrDefault<WithWallSpriteBody>();
+				if (rb == null || rb.wallInfo.Type != wallInfo.Type)
 					continue;
 
 				var location = self.Location;
@@ -129,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var adjacentActors = CVec.Directions.SelectMany(dir =>
 					self.World.ActorMap.GetUnitsAt(self.Location + dir))
-				.Select(a => a.TraitOrDefault<RenderBuildingWall>())
+				.Select(a => a.TraitOrDefault<WithWallSpriteBody>())
 				.Where(a => a != null);
 
 			foreach (var rb in adjacentActors)
@@ -138,6 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
+			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 			UpdateNeighbours(self);
 		}
 

@@ -1902,6 +1902,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (rrb != null)
 							rrb.Key = "-WithTurretedSpriteBody";
 					}
+
+					// Replaced RenderBuildingWall with RenderSprites + WithWallSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "Type" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingWall"));
+						if (rb != null)
+						{
+							rb.Key = "WithWallSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingWall"));
+						if (rrb != null)
+							rrb.Key = "-WithWallSpriteBody";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

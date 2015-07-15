@@ -1514,7 +1514,7 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: sandbag
 
 FENC:
@@ -1539,7 +1539,7 @@ FENC:
 		NodeTypes: fence
 	LineBuildNode:
 		Types: fence
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: fence
 
 BRIK:
@@ -1569,7 +1569,7 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: concrete
 
 CYCL:
@@ -1584,7 +1584,7 @@ CYCL:
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: chain
 
 BARB:
@@ -1599,7 +1599,7 @@ BARB:
 		NodeTypes: barbwire
 	LineBuildNode:
 		Types: barbwire
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: barbwire
 
 WOOD:
@@ -1614,7 +1614,7 @@ WOOD:
 		NodeTypes: woodfence
 	LineBuildNode:
 		Types: woodfence
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: woodfence
 
 BARRACKS:

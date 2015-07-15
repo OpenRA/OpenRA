@@ -166,7 +166,9 @@
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, Wall, C4
-	RenderBuildingWall:
+	RenderSprites:
+	AutoSelectionSize:
+	WithWallSpriteBody:
 		Type: wall
 	GivesExperience:
 	AutoTargetIgnore:

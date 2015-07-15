@@ -513,7 +513,9 @@ wall:
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, Wall
-	RenderBuildingWall:
+	RenderSprites:
+	WithWallSpriteBody:
+	AutoSelectionSize:
 	AutoTargetIgnore:
 	Sellable:
 		SellSounds: CHUNG.WAV
