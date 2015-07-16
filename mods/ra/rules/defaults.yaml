@@ -524,8 +524,10 @@
 ^Tree:
 	Tooltip:
 		Name: Tree
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -621,8 +623,10 @@
 ^Rock:
 	Tooltip:
 		Name: Rock
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2

@@ -108,6 +108,8 @@ VEINHOLE:
 	AppearsOnRadar:
 	Tooltip:
 		Name: Veinhole
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
+	WithSpriteBody:
+	AutoSelectionSize:
 
