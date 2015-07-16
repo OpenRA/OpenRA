@@ -1030,7 +1030,8 @@ frame:Connect(wx.wxEVT_IDLE,
     PackageEventHandle("onIdle", event)
 
     -- process onidle events if any
-    while #ide.onidle > 0 do table.remove(ide.onidle)() end
+    if #ide.onidle > 0 then table.remove(ide.onidle)() end
+    if #ide.onidle > 0 then event:RequestMore(true) end -- request more if anything left
 
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)
