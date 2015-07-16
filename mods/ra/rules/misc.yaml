@@ -181,7 +181,8 @@ CAMERA:
 	BodyOrientation:
 	DetectCloaked:
 		Range: 10
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 		Image: camera
 
 camera.paradrop:
@@ -390,14 +391,16 @@ mpspawn:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
 
 waypoint:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
 
 ^fact.colorpicker:

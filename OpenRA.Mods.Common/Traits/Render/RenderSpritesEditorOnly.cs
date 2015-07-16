@@ -14,15 +14,15 @@ using OpenRA.Graphics;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Invisible during games.")]
-	class RenderEditorOnlyInfo : RenderSimpleInfo
+	class RenderSpritesEditorOnlyInfo : RenderSpritesInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderEditorOnly(init, this); }
+		public override object Create(ActorInitializer init) { return new RenderSpritesEditorOnly(init, this); }
 	}
 
-	class RenderEditorOnly : RenderSimple
+	class RenderSpritesEditorOnly : RenderSprites
 	{
-		public RenderEditorOnly(ActorInitializer init, RenderEditorOnlyInfo info)
-			: base(init, info, () => 0) { }
+		public RenderSpritesEditorOnly(ActorInitializer init, RenderSpritesEditorOnlyInfo info)
+			: base(init, info) { }
 
 		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr) { return SpriteRenderable.None; }
 	}

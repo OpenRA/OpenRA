@@ -2,14 +2,16 @@ mpspawn:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
 
 waypoint:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
 
 ^mmch.colorpicker:

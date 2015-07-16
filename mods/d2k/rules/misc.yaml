@@ -114,22 +114,22 @@ mpspawn:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
 
 waypoint:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
 
 ^carryall.colorpicker:
 	Inherits: carryall
-	WithFacingSpriteBody:
 	Helicopter:
 		InitialFacing: 104
-	AutoSelectionSize:
 	RenderSprites:
 		Image: carryall
 		Palette: colorpicker
@@ -149,7 +149,8 @@ wormspawner:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
 	WormSpawner:
 

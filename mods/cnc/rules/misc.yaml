@@ -34,7 +34,8 @@ mpspawn:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 		Palette: chrome
 	BodyOrientation:
 
@@ -42,7 +43,8 @@ waypoint:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 		Palette: chrome
 	BodyOrientation:
 
