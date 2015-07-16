@@ -4,8 +4,12 @@ local ide = ide
 ide.outline = {
   imglist = ide:CreateImageList("OUTLINE", "FILE-NORMAL", "VALUE-LCALL",
     "VALUE-GCALL", "VALUE-ACALL", "VALUE-SCALL", "VALUE-MCALL"),
+  settings = {
+    symbols = {},
+  },
 }
 
+local outline = ide.outline
 local image = { FILE = 0, LFUNCTION = 1, GFUNCTION = 2, AFUNCTION = 3,
   SMETHOD = 4, METHOD = 5,
 }
@@ -25,7 +29,7 @@ local function outlineRefresh(editor, force)
   local tokens = editor:GetTokenList()
   local sep = editor.spec.sep
   local varname = "([%w_][%w_"..q(sep:sub(1,1)).."]*)"
-  local funcs = {}
+  local funcs = {updated = TimeGet()}
   local var = {}
   local outcfg = ide.config.outline or {}
   local text
@@ -71,7 +75,7 @@ local function outlineRefresh(editor, force)
     end
   end
 
-  local ctrl = ide.outline.outlineCtrl
+  local ctrl = outline.outlineCtrl
   local cache = caches[editor] or {}
   caches[editor] = cache
 
@@ -172,11 +176,11 @@ local function outlineCreateOutlineWindow()
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
-  ide.outline.outlineCtrl = ctrl
+  outline.outlineCtrl = ctrl
   ide.timers.outline = wx.wxTimer(ctrl)
 
   ctrl:AddRoot("Outline")
-  ctrl:SetImageList(ide.outline.imglist)
+  ctrl:SetImageList(outline.imglist)
   ctrl:SetFont(ide.font.fNormal)
 
   function ctrl:ActivateItem(item_id)
@@ -271,7 +275,7 @@ local function outlineCreateOutlineWindow()
 end
 
 local function eachNode(eachFunc, root)
-  local ctrl = ide.outline.outlineCtrl
+  local ctrl = outline.outlineCtrl
   local item = ctrl:GetFirstChild(root or ctrl:GetRootItem())
   while true do
     if not item:IsOk() then break end
@@ -283,6 +287,8 @@ end
 outlineCreateOutlineWindow()
 
 function OutlineFunctions(editor)
+  if type(editor) == 'string' then return outline.settings.symbols[editor] or {} end
+
   -- force token refresh (as these may be not updated yet)
   if #editor:GetTokenList() == 0 then
     while IndicateAll(editor) do end
@@ -293,14 +299,14 @@ function OutlineFunctions(editor)
   return caches[editor].funcs
 end
 
-ide:AddPackage('core.outline', {
+local package = ide:AddPackage('core.outline', {
     -- remove the editor from the list
     onEditorClose = function(self, editor)
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       caches[editor] = nil -- remove from cache
       if (ide.config.outline or {}).showonefile then return end
-      if fileitem then ide.outline.outlineCtrl:Delete(fileitem) end
+      if fileitem then outline.outlineCtrl:Delete(fileitem) end
     end,
 
     -- handle rename of the file in the current editor
@@ -309,9 +315,14 @@ ide:AddPackage('core.outline', {
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
       local doc = ide:GetDocument(editor)
-      local ctrl = ide.outline.outlineCtrl
+      local ctrl = outline.outlineCtrl
       if doc and fileitem and ctrl:GetItemText(fileitem) ~= doc:GetTabText() then
         ctrl:SetItemText(fileitem, doc:GetTabText())
+      end
+      local path = doc and doc:GetFilePath()
+      if path and cache.funcs then
+        outline.settings.symbols[path] = cache.funcs.updated > editor.updated and cache.funcs or nil
+        outline:SaveSettings()
       end
     end,
 
@@ -324,7 +335,7 @@ ide:AddPackage('core.outline', {
 
       local cache = caches[editor]
       local fileitem = cache and cache.fileitem
-      local ctrl = ide.outline.outlineCtrl
+      local ctrl = outline.outlineCtrl
       local itemname = ide:GetDocument(editor):GetTabText()
 
       -- fix file name if it changed in the editor
@@ -355,3 +366,6 @@ ide:AddPackage('core.outline', {
       end
     end,
   })
+
+function outline:SaveSettings() package:SetSettings(self.settings) end
+MergeSettings(outline.settings, package:GetSettings())

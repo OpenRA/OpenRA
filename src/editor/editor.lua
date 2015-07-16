@@ -668,6 +668,7 @@ function CreateEditor(bare)
   editor.matchon = false
   editor.assignscache = false
   editor.bom = false
+  editor.updated = 0
   editor.jumpstack = {}
   editor.ctrlcache = {}
   editor.tokenlist = {}
@@ -843,6 +844,8 @@ function CreateEditor(bare)
 
   editor:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
+      editor.updated = TimeGet()
+
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false
       end

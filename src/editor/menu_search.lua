@@ -234,12 +234,33 @@ local function navigateTo(default, selected)
         if not functions then
           local funcs, nums = {}, {}
           functions = {pos = {}, src = {}}
-          for _, doc in pairs(#file > 0 and ed and {ide:GetDocument(ed)} or ide:GetDocuments()) do
-            for _, func in ipairs(OutlineFunctions(doc:GetEditor())) do
+
+          local path2doc, paths = {}, {}
+          local currentonly = #file > 0 and ed
+          for _, doc in pairs(currentonly and {ide:GetDocument(ed)} or ide:GetDocuments()) do
+            local path = doc:GetFilePath()
+            if path then
+              path2doc[path] = doc
+              table.insert(paths, path)
+            end
+          end
+
+          local exts = {}
+          for n, ext in pairs(ide:GetKnownExtensions()) do
+            local spec = GetSpec(ext)
+            if spec and spec.marksymbols then table.insert(exts, ext) end
+          end
+
+          local list = (currentonly or not ide.config.commandbar.showallsymbols) and paths
+            or FileSysGetRecursive(projdir, true, table.concat(exts, ";"),
+              {sort = false, folder = false, skipbinary = true})
+          for _, path in pairs(list) do
+            local doc = path2doc[path]
+            for _, func in ipairs(OutlineFunctions(doc and doc:GetEditor() or path)) do
               table.insert(functions, func.name)
               nums[func.name] = (nums[func.name] or 0) + 1
               local num = nums[func.name]
-              functions.src[func.name..num] = doc:GetFilePath()
+              functions.src[func.name..num] = path
               functions.pos[func.name..num] = func.pos
             end
           end
