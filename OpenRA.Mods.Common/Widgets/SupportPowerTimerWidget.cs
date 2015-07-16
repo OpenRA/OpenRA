@@ -32,19 +32,20 @@ namespace OpenRA.Mods.Common.Widgets
 		// Represents one line of text
 		struct Text
 		{
-			public Color Color;
-			public string Team;		// Used only for team label
+			public Color PlayerColor;
 			public string Player;
 			public string Power;
 			public string RemainingTime;
+			public bool Ready;
+			public string Team;		// Used only for team label
 		}
 
 		readonly List<Text> display;
 		readonly bool noPowers;
-		bool alternateColor, needTeamLabel, showPlayer;
+		bool flashing, needTeamLabel, showPlayer;
+		Color timerColor;
 
 		readonly World world;
-		int lastTick;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
@@ -85,11 +86,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Generate texts once in every 10 WorldTicks,
 			// which is 0.4 seconds in game time.
-			if (world.WorldTick - lastTick > 9)
+			if (world.WorldTick % 10 == 0)
 			{
-				lastTick = world.WorldTick;
 				display.Clear();
-				alternateColor = Game.LocalTick % 50 > 25;
 				foreach (var team in playersByTeam)
 				{
 					needTeamLabel = true;
@@ -113,7 +112,8 @@ namespace OpenRA.Mods.Common.Widgets
 						foreach (var power in powers)
 						{
 							var timer = new Text();
-							timer.Color = power.Ready && alternateColor ? Color.White : player.Color.RGB;
+							timer.PlayerColor = player.Color.RGB;
+							timer.Ready = power.Ready;
 							if (showPlayer)
 							{
 								timer.Player = player.PlayerName;
@@ -131,6 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!display.Any())
 				return;
 
+			flashing = Game.LocalTick % 50 < 25;
 			var widgetBounds = new float2(Bounds.Location);
 			var position = new float2(0, 0);
 			foreach (var text in display)
@@ -143,12 +144,13 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				if (text.Player != null)
-					font.DrawTextWithContrast(text.Player, widgetBounds + position, text.Color, Color.Black, 1);
+					font.DrawTextWithContrast(text.Player, widgetBounds + position, text.PlayerColor, Color.Black, 1);
 
+				timerColor = text.Ready && flashing ? Color.White : text.PlayerColor;
 				position.X = powerPos;
-				font.DrawTextWithContrast(text.Power, widgetBounds + position, text.Color, Color.Black, 1);
+				font.DrawTextWithContrast(text.Power, widgetBounds + position, timerColor, Color.Black, 1);
 				position.X = timePos;
-				font.DrawTextWithContrast(text.RemainingTime, widgetBounds + position, text.Color, Color.Black, 1);
+				font.DrawTextWithContrast(text.RemainingTime, widgetBounds + position, timerColor, Color.Black, 1);
 
 				position.X = 0;
 				position.Y += yIncrement;
