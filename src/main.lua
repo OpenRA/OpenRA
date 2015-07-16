@@ -153,6 +153,7 @@ ide = {
     projectautoopen = true,
     autorecoverinactivity = 10, -- seconds
     outlineinactivity = 0.250, -- seconds
+    symbolindexinactivity = 2, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
     bordersize = 2,

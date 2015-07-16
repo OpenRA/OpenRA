@@ -7,6 +7,8 @@ ide.outline = {
   settings = {
     symbols = {},
   },
+  indexqueue = {[0] = {}},
+  indexeditor = nil,
 }
 
 local outline = ide.outline
@@ -74,6 +76,8 @@ local function outlineRefresh(editor, force)
       end
     end
   end
+
+  if force == nil then return funcs end
 
   local ctrl = outline.outlineCtrl
   local cache = caches[editor] or {}
@@ -169,7 +173,45 @@ local function outlineRefresh(editor, force)
   if win and win ~= ide:GetMainFrame():FindFocus() then win:SetFocus() end
 end
 
+local function indexFromQueue()
+  local editor = ide:GetEditor()
+  local inactivity = ide.config.symbolindexinactivity
+  if #outline.indexqueue == 0 then
+    ide:SetStatus("")
+  elseif editor and inactivity and editor.updated > TimeGet()-inactivity then
+    -- reschedule timer for later time
+    if not ide.timers.symbolindex:IsRunning() then
+      ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
+    end
+  else
+    local fname = table.remove(outline.indexqueue, 1)
+    outline.indexqueue[0][fname] = nil
+    -- check if fname is already loaded
+    if not ide:FindDocument(fname) then
+      ide:SetStatus(TR("Indexing '%s' with %d more..."):format(fname, #outline.indexqueue))
+      outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
+      local content, err = FileRead(fname)
+      if content then
+        local editor = outline.indexeditor
+        editor:SetupKeywords(GetFileExt(fname))
+        editor:SetText(content)
+        editor:Colourise(0, -1)
+        editor:ResetTokenList()
+        while IndicateAll(editor) do end
+
+        outline.settings.symbols[fname] = outlineRefresh(editor)
+        outline:SaveSettings()
+      else
+        DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
+      end
+    end
+    ide:DoWhenIdle(indexFromQueue)
+  end
+  return
+end
+
 local function outlineCreateOutlineWindow()
+  local REFRESH, REINDEX = 1, 2
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
@@ -177,7 +219,8 @@ local function outlineCreateOutlineWindow()
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   outline.outlineCtrl = ctrl
-  ide.timers.outline = wx.wxTimer(ctrl)
+  ide.timers.outline = wx.wxTimer(ctrl, REFRESH)
+  ide.timers.symbolindex = wx.wxTimer(ctrl, REINDEX)
 
   ctrl:AddRoot("Outline")
   ctrl:SetImageList(outline.imglist)
@@ -229,7 +272,10 @@ local function outlineCreateOutlineWindow()
     return true
   end
 
-  ctrl:Connect(wx.wxEVT_TIMER, function() outlineRefresh(GetEditor()) end)
+  ctrl:Connect(wx.wxEVT_TIMER, function(event)
+      if event:GetId() == REFRESH then outlineRefresh(GetEditor(), false) end
+      if event:GetId() == REINDEX then ide:DoWhenIdle(indexFromQueue) end
+    end)
   ctrl:Connect(wx.wxEVT_LEFT_DOWN, activateByPosition)
   ctrl:Connect(wx.wxEVT_LEFT_DCLICK, activateByPosition)
   ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)
@@ -287,8 +333,16 @@ end
 outlineCreateOutlineWindow()
 
 function OutlineFunctions(editor)
-  if type(editor) == 'string' then return outline.settings.symbols[editor] or {} end
-
+  if type(editor) == 'string' then
+    local path = editor
+    local symbols = outline.settings.symbols[path]
+      -- queue path to process when appropriate
+    if not symbols and not outline.indexqueue[0][path] then
+      outline.indexqueue[0][path] = true
+      table.insert(outline.indexqueue, 1, path)
+    end
+    return symbols or {}
+  end
   -- force token refresh (as these may be not updated yet)
   if #editor:GetTokenList() == 0 then
     while IndicateAll(editor) do end
@@ -348,6 +402,10 @@ local package = ide:AddPackage('core.outline', {
       -- regenerate it manually
       if not cache and ide.config.outlineinactivity then
         ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+      end
+
+      if ide.config.symbolindexinactivity and not ide.timers.symbolindex:IsRunning() then
+        ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
       end
 
       eachNode(function(ctrl, item)
