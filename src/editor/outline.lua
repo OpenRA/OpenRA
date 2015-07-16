@@ -176,9 +176,8 @@ end
 local function indexFromQueue()
   local editor = ide:GetEditor()
   local inactivity = ide.config.symbolindexinactivity
-  if #outline.indexqueue == 0 then
-    ide:SetStatus("")
-  elseif editor and inactivity and editor.updated > TimeGet()-inactivity then
+  if #outline.indexqueue == 0 then return end
+  if editor and inactivity and editor.updated > TimeGet()-inactivity then
     -- reschedule timer for later time
     if not ide.timers.symbolindex:IsRunning() then
       ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
@@ -188,7 +187,7 @@ local function indexFromQueue()
     outline.indexqueue[0][fname] = nil
     -- check if fname is already loaded
     if not ide:FindDocument(fname) then
-      ide:SetStatus(TR("Indexing '%s' with %d more..."):format(fname, #outline.indexqueue))
+      ide:PushStatus(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
       outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
       local content, err = FileRead(fname)
       if content then
@@ -204,6 +203,7 @@ local function indexFromQueue()
       else
         DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
       end
+      ide:PopStatus()
     end
     ide:DoWhenIdle(indexFromQueue)
   end
