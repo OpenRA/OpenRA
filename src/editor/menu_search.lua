@@ -152,6 +152,11 @@ local function navigateTo(default, selected)
 
         -- jump to symbol; tabindex has the position of the symbol
         if text and text:find(special.SYMBOL) and tabindex then
+          local doc = ide:GetDocument(ed)
+          if pindex and doc:GetTabIndex() == pindex then
+            -- reload the file in the preview to refresh its symbols in the outline
+            LoadFile(doc:GetFilePath(), preview or nil)
+          end
           ed:GotoPos(tabindex-1)
           ed:EnsureVisibleEnforcePolicy(ed:LineFromPosition(tabindex-1))
           ed:SetFocus() -- in case the focus is on some other panel
