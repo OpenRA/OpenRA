@@ -121,6 +121,7 @@ local function navigateTo(default, selected)
 
   local nb = ide:GetEditorNotebook()
   local selection = nb:GetSelection()
+  local maxitems = ide.config.commandbar.maxitems
   local files, preview, origline, functions, methods
 
   local function markLine(ed, toline)
@@ -268,7 +269,7 @@ local function navigateTo(default, selected)
         local nums = {}
         if #symbol > 0 then
           local topscore
-          for _, item in ipairs(CommandBarScoreItems(functions, symbol, 100)) do
+          for _, item in ipairs(CommandBarScoreItems(functions, symbol, maxitems)) do
             local func, score = unpack(item)
             topscore = topscore or score
             nums[func] = (nums[func] or 0) + 1
@@ -280,6 +281,7 @@ local function navigateTo(default, selected)
           end
         else
           for n, name in ipairs(functions) do
+            if n > maxitems then break end
             nums[name] = (nums[name] or 0) + 1
             local num = nums[name]
             lines[n] = {name, functions.src[name..num], functions.pos[name..num]}
@@ -305,7 +307,7 @@ local function navigateTo(default, selected)
         local method = text:match(special.METHOD..'(.*)')
         if #method > 0 then
           local topscore
-          for _, item in ipairs(CommandBarScoreItems(methods, method, 100)) do
+          for _, item in ipairs(CommandBarScoreItems(methods, method, maxitems)) do
             local method, score = unpack(item)
             topscore = topscore or score
             if score > topscore / 4 and score > 1 then
@@ -321,7 +323,7 @@ local function navigateTo(default, selected)
         files = files or FileSysGetRecursive(projdir, true, "*",
           {sort = false, path = false, folder = false, skipbinary = true})
         local topscore
-        for _, item in ipairs(CommandBarScoreItems(files, text, 100)) do
+        for _, item in ipairs(CommandBarScoreItems(files, text, maxitems)) do
           local file, score = unpack(item)
           topscore = topscore or score
           if score > topscore / 4 and score > 1 then
