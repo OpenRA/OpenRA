@@ -114,6 +114,11 @@ local markername = "commandbar.background"
 local mac = ide.osname == 'Macintosh'
 local win = ide.osname == 'Windows'
 local special = {SYMBOL = '@', LINE = ':', METHOD = ';'}
+local tabsep = "\0"
+local function name2index(name)
+  local p = name:find(tabsep)
+  return p and tonumber(name:sub(p + #tabsep)) or nil
+end
 local function navigateTo(default, selected)
   local styles = ide.config.styles
   local marker = ide:AddMarker(markername,
@@ -153,14 +158,19 @@ local function navigateTo(default, selected)
 
         -- jump to symbol; tabindex has the position of the symbol
         if text and text:find(special.SYMBOL) and tabindex then
-          local doc = ide:GetDocument(ed)
-          if pindex and doc:GetTabIndex() == pindex then
-            -- reload the file in the preview to refresh its symbols in the outline
-            LoadFile(doc:GetFilePath(), preview or nil)
+          local index = name2index(sline)
+          local editor = index and nb:GetPage(index):DynamicCast("wxStyledTextCtrl")
+          if not editor then
+            local doc = ide:FindDocument(sline)
+            -- reload the file (including the preview to refresh its symbols in the outline)
+            editor = LoadFile(sline, (not doc or doc:GetTabIndex() == pindex) and preview or nil)
           end
-          ed:GotoPos(tabindex-1)
-          ed:EnsureVisibleEnforcePolicy(ed:LineFromPosition(tabindex-1))
-          ed:SetFocus() -- in case the focus is on some other panel
+          if editor then
+            if pindex and pindex ~= ide:GetDocument(editor):GetTabIndex() then ClosePage(pindex) end
+            editor:SetFocus() -- in case the focus is on some other panel
+            editor:GotoPos(tabindex-1)
+            editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(tabindex-1))
+          end
         -- insert selected method
         elseif text and text:find('^%s*'..special.METHOD) then
           if ed then -- clean up text and insert at the current location
@@ -233,36 +243,37 @@ local function navigateTo(default, selected)
       if text and text:find(special.SYMBOL) then
         local file, symbol = text:match('^(.*)'..special.SYMBOL..'(.*)')
         if not functions then
-          local funcs, nums = {}, {}
+          local nums, paths = {}, {}
           functions = {pos = {}, src = {}}
 
-          local path2doc, paths = {}, {}
-          local currentonly = #file > 0 and ed
-          for _, doc in pairs(currentonly and {ide:GetDocument(ed)} or ide:GetDocuments()) do
-            local path = doc:GetFilePath()
-            if path then
-              path2doc[path] = doc
-              table.insert(paths, path)
-            end
-          end
-
-          local exts = {}
-          for n, ext in pairs(ide:GetKnownExtensions()) do
-            local spec = GetSpec(ext)
-            if spec and spec.marksymbols then table.insert(exts, ext) end
-          end
-
-          local list = (currentonly or not ide.config.commandbar.showallsymbols) and paths
-            or FileSysGetRecursive(projdir, true, table.concat(exts, ";"),
-              {sort = false, folder = false, skipbinary = true})
-          for _, path in pairs(list) do
-            local doc = path2doc[path]
-            for _, func in ipairs(OutlineFunctions(doc and doc:GetEditor() or path)) do
+          local function populateSymbols(path, symbols)
+            for _, func in ipairs(symbols) do
               table.insert(functions, func.name)
               nums[func.name] = (nums[func.name] or 0) + 1
               local num = nums[func.name]
               functions.src[func.name..num] = path
               functions.pos[func.name..num] = func.pos
+            end
+          end
+
+          local currentonly = #file > 0 and ed
+          for _, doc in pairs(currentonly and {ide:GetDocument(ed)} or ide:GetDocuments()) do
+            local path = doc:GetFilePath()
+            if path then paths[path] = true end
+            populateSymbols(path or doc:GetFileName()..tabsep..doc:GetTabIndex(), OutlineFunctions(doc:GetEditor()))
+          end
+
+          -- now add all other files
+          if not currentonly and ide.config.commandbar.showallsymbols then
+            local exts = {}
+            for _, ext in pairs(ide:GetKnownExtensions()) do
+              local spec = GetSpec(ext)
+              if spec and spec.marksymbols then table.insert(exts, ext) end
+            end
+
+            for _, path in pairs(FileSysGetRecursive(projdir, true, table.concat(exts, ";"),
+              {sort = false, folder = false, skipbinary = true})) do
+              if not paths[path] then populateSymbols(path, OutlineFunctions(path)) end
             end
           end
         end
@@ -352,8 +363,7 @@ local function navigateTo(default, selected)
       local _, file, tabindex = unpack(t)
       local pos
       if text and text:find(special.SYMBOL) then
-        pos = tabindex
-        tabindex = nil
+        pos, tabindex = tabindex, name2index(file)
       elseif text and text:find(special.METHOD) then
         return
       end
