@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (order.ExtraData == 0 && order.TargetActor == null)
 				return false;
 
-			ActorInfo ai;
+			IEnumerable<string> targetTypes;
 
 			if (order.ExtraData != 0)
 			{
@@ -74,13 +74,13 @@ namespace OpenRA.Mods.RA.Traits
 				if (frozen == null)
 					return false;
 
-				ai = frozen.Info;
+				targetTypes = frozen.TargetTypes;
 			}
 			else
-				ai = order.TargetActor.Info;
+				targetTypes = order.TargetActor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled)
+					.SelectMany(t => t.TargetTypes);
 
-			return ai.Traits.WithInterface<ITargetableInfo>()
-				.SelectMany(t => t.GetTargetTypes()).Intersect(Info.Types).Any();
+			return targetTypes.Intersect(Info.Types).Any();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

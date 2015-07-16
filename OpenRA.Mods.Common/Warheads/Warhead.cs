@@ -75,8 +75,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			var targetable = victim.Info.Traits.WithInterface<ITargetableInfo>();
-			if (!IsValidTarget(targetable.SelectMany(t => t.GetTargetTypes())))
+			if (!IsValidTarget(victim.TargetTypes))
 				return false;
 
 			return true;

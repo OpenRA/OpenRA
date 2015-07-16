@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Intersect(targetTypes).Any());
+			return target.TargetTypes.Intersect(targetTypes).Any();
 		}
 	}
 }
