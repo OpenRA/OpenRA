@@ -1974,6 +1974,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						else if (node.Key == "-TargetableUnit" || node.Key == "-TargetableBuilding")
 							node.Key = "-Targetable";
 					}
+					else if (depth == 0)
+					{
+						// Split TargetableSubmarine into two Targetable traits
+						var targetableSubmarine = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetableSubmarine");
+						if (targetableSubmarine != null)
+						{
+							node.Value.Nodes.RemoveAll(n => n.Key == "-Targetable");
+							targetableSubmarine.Key = "Targetable";
+							targetableSubmarine.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "underwater"));
+							targetableSubmarine.Value.Nodes.Add(new MiniYamlNode("UpgradeMaxEnabledLevel", "0"));
+							var cloakedTargetTypes = targetableSubmarine.Value.Nodes.FirstOrDefault(n => n.Key == "CloakedTargetTypes");
+							if (cloakedTargetTypes != null)
+							{
+								targetableSubmarine.Value.Nodes.Remove(cloakedTargetTypes);
+								cloakedTargetTypes.Key = "TargetTypes";
+							}
+							else
+								cloakedTargetTypes = new MiniYamlNode("TargetTypes", "");
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@UNDERWATER", "", new List<MiniYamlNode> {
+								cloakedTargetTypes,
+								new MiniYamlNode("UpgradeTypes", "underwater"),
+								new MiniYamlNode("UpgradeMinEnabledLevel", "1")
+							}));
+						}
+
+						// Add `WhileCloakedUpgrades: underwater` to Cloak trait if `CloakTypes: Underwater`
+						var cloak = node.Value.Nodes.FirstOrDefault(n => (n.Key == "Cloak" || n.Key.StartsWith("Cloak@"))
+							&& n.Value.Nodes.Any(p => p.Key == "CloakTypes" && p.Value.Value == "Underwater"));
+						if (cloak != null)
+							cloak.Value.Nodes.Add(new MiniYamlNode("WhileCloakedUpgrades", "underwater"));
+
+						// Remove split traits if TargetableSubmarine was removed
+						var untargetableSubmarine = node.Value.Nodes.FirstOrDefault(n => n.Key == "-TargetableSubmarine");
+						if (untargetableSubmarine != null)
+						{
+							untargetableSubmarine.Key = "-Targetable";
+							node.Value.Nodes.Add(new MiniYamlNode("-Targetable@UNDERWATER", ""));
+						}
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

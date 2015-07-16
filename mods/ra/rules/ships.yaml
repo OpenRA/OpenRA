@@ -19,16 +19,21 @@ SS:
 		Speed: 71
 	RevealsShroud:
 		Range: 6c0
-	-Targetable:
-	TargetableSubmarine:
+	Targetable:
 		TargetTypes: Ground, Water, Repair
-		CloakedTargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
@@ -68,16 +73,21 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	-Targetable:
-	TargetableSubmarine:
+	Targetable:
 		TargetTypes: Ground, Water, Repair
-		CloakedTargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 100
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
 	Armament:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0
