@@ -88,6 +88,7 @@ TRAN.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 149
+		AirborneUpgrades: airborne
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 	WithRotor@SECONDARY:
@@ -119,6 +120,7 @@ BADR.Husk:
 	Plane:
 		ROT: 5
 		Speed: 149
+		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
 		Interval: 2
@@ -141,6 +143,7 @@ MIG.Husk:
 	Plane:
 		ROT: 5
 		Speed: 186
+		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
@@ -160,6 +163,7 @@ YAK.Husk:
 	Plane:
 		ROT: 5
 		Speed: 149
+		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
@@ -177,6 +181,7 @@ HELI.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 149
+		AirborneUpgrades: airborne
 	WithRotor:
 		Offset: 0,0,85
 	SmokeTrailWhenDamaged:
@@ -195,6 +200,7 @@ HIND.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 112
+		AirborneUpgrades: airborne
 	WithRotor:
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
@@ -210,6 +216,7 @@ U2.Husk:
 	Plane:
 		ROT: 7
 		Speed: 373
+		AirborneUpgrades: airborne
 	Contrail@1:
 		Offset: -725,683,0
 	Contrail@2:

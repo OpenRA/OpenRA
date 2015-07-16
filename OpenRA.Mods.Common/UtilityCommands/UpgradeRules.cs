@@ -2012,6 +2012,42 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							untargetableSubmarine.Key = "-Targetable";
 							node.Value.Nodes.Add(new MiniYamlNode("-Targetable@UNDERWATER", ""));
 						}
+
+						// Split TargetableAircraft into two Targetable traits
+						var targetableAircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetableAircraft");
+						if (targetableAircraft != null)
+						{
+							node.Value.Nodes.RemoveAll(n => n.Key == "-Targetable");
+							targetableAircraft.Key = "Targetable@AIRBORNE";
+							targetableAircraft.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "airborne"));
+							targetableAircraft.Value.Nodes.Add(new MiniYamlNode("UpgradeMinEnabledLevel", "1"));
+							var groundTargetTypes = targetableAircraft.Value.Nodes.FirstOrDefault(n => n.Key == "GroundedTargetTypes");
+							if (groundTargetTypes != null)
+							{
+								targetableAircraft.Value.Nodes.Remove(groundTargetTypes);
+								groundTargetTypes.Key = "TargetTypes";
+							}
+							else
+								groundTargetTypes = new MiniYamlNode("TargetTypes", "");
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@GROUND", "", new List<MiniYamlNode> {
+								groundTargetTypes,
+								new MiniYamlNode("UpgradeTypes", "airborne"),
+								new MiniYamlNode("UpgradeMaxEnabledLevel", "0")
+							}));
+						}
+
+						// Add `AirborneUpgrades: airborne` to Plane and Helicopter
+						var aircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "Plane" || n.Key == "Helicopter");
+						if (aircraft != null)
+							aircraft.Value.Nodes.Add(new MiniYamlNode("AirborneUpgrades", "airborne"));
+
+						// Remove split traits if TargetableAircraft was removed
+						var untargetableAircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "-TargetableAircraft");
+						if (untargetableAircraft != null)
+						{
+							untargetableAircraft.Key = "-TargetableUnit@GROUND";
+							node.Value.Nodes.Add(new MiniYamlNode("-TargetableUnit@AIRBORNE", ""));
+						}
 					}
 				}
 

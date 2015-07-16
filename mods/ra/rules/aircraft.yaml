@@ -12,6 +12,7 @@ BADR:
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
+		AirborneUpgrades: airborne
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -49,6 +50,7 @@ BADR.Bomber:
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
+		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 7
 	-Selectable:
@@ -106,6 +108,7 @@ MIG:
 		RearmBuildings: afld
 		RepulsionSpeed: 40
 		MaximumPitch: 56
+		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -167,6 +170,7 @@ YAK:
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
+		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -215,6 +219,7 @@ TRAN:
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
+		AirborneUpgrades: airborne
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
@@ -261,6 +266,7 @@ HELI:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
+		AirborneUpgrades: airborne
 	AutoTarget:
 		InitialStance: HoldFire
 	WithRotor:
@@ -312,6 +318,7 @@ HIND:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
+		AirborneUpgrades: airborne
 	AutoTarget:
 		InitialStance: HoldFire
 	WithRotor:
@@ -341,10 +348,11 @@ U2:
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56
+		AirborneUpgrades: airborne
 	AttackBomber:
 	-Selectable:
 	-Voiced:
-	-TargetableAircraft:
+	-Targetable@AIRBORNE:
 	-GainsExperience:
 	Contrail@1:
 		Offset: -725,683,0

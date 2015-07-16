@@ -1668,8 +1668,8 @@ Rules:
 			Range: 4c0
 		Tooltip:
 			ShowOwnerRow: false
-		TargetableAircraft:
-			GroundedTargetTypes: Ground
+		Targetable@GROUND:
+			TargetTypes: Ground
 	TRAN.IN:
 		Inherits: TRAN
 		RenderSprites:

@@ -453,9 +453,14 @@
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: yes
-	TargetableAircraft:
+	Targetable@GROUND:
+		TargetTypes: Ground
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
@@ -484,6 +489,7 @@
 		LandWhenIdle: no
 		CruiseAltitude: 2048
 		Voice: Move
+		AirborneUpgrades: airborne
 
 ^Plane:
 	Inherits: ^Aircraft
@@ -493,6 +499,7 @@
 		LandWhenIdle: no
 		CruiseAltitude: 2560
 		Voice: Move
+		AirborneUpgrades: airborne
 	ReturnOnIdle:
 
 ^Viceroid:

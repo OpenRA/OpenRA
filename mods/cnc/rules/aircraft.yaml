@@ -16,6 +16,7 @@ TRAN:
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
+		AirborneUpgrades: airborne
 	Health:
 		HP: 90
 	Armor:
@@ -56,6 +57,7 @@ HELI:
 		RearmBuildings: hpad
 		ROT: 4
 		Speed: 186
+		AirborneUpgrades: airborne
 	Health:
 		HP: 125
 	Armor:
@@ -107,6 +109,7 @@ ORCA:
 		RearmBuildings: hpad
 		ROT: 4
 		Speed: 186
+		AirborneUpgrades: airborne
 	Health:
 		HP: 90
 	Armor:
@@ -152,6 +155,7 @@ C17:
 		ROT: 5
 		Speed: 326
 		Repulsable: False
+		AirborneUpgrades: airborne
 	Health:
 		HP: 25
 	Armor:
@@ -188,6 +192,7 @@ A10:
 		ROT: 4
 		Speed: 373
 		Repulsable: False
+		AirborneUpgrades: airborne
 	Health:
 		HP: 150
 	Armor:
@@ -219,6 +224,7 @@ TRAN.Husk:
 	Helicopter:
 		ROT: 5
 		Speed: 140
+		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 8c0
 		Type: CenterPosition
@@ -236,6 +242,7 @@ HELI.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 186
+		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
@@ -251,6 +258,7 @@ ORCA.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 186
+		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition

@@ -10,6 +10,7 @@ DPOD:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		AirborneUpgrades: airborne
 	Health:
 		HP: 60
 	Armor:
@@ -47,6 +48,7 @@ DSHP:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
+		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -78,6 +80,7 @@ ORCA:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
+		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -117,6 +120,7 @@ ORCAB:
 		MaximumPitch: 120
 		ROT: 3
 		Speed: 96
+		AirborneUpgrades: airborne
 	Health:
 		HP: 260
 	Armor:
@@ -159,6 +163,7 @@ ORCATRAN:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
+		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -193,6 +198,7 @@ TRNSPORT:
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
+		AirborneUpgrades: airborne
 	Health:
 		HP: 175
 	Armor:
@@ -224,6 +230,7 @@ SCRIN:
 		MaximumPitch: 90
 		ROT: 3
 		Speed: 168
+		AirborneUpgrades: airborne
 	Health:
 		HP: 280
 	Armor:
@@ -262,6 +269,7 @@ APACHE:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
+		AirborneUpgrades: airborne
 	Health:
 		HP: 225
 	Armor:

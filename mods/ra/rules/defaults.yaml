@@ -339,9 +339,14 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	TargetableAircraft:
+	Targetable@GROUND:
+		TargetTypes: Ground, Repair, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground, Repair, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	HiddenUnderFog:
 		Type: CenterPosition
 	AttackMove:

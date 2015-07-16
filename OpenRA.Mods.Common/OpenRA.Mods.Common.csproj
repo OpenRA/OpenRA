@@ -256,7 +256,6 @@
     <Compile Include="Traits\Air\Helicopter.cs" />
     <Compile Include="Traits\Air\Plane.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
-    <Compile Include="Traits\Air\TargetableAircraft.cs" />
     <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\Armor.cs" />

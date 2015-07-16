@@ -20,6 +20,7 @@ carryall.reinforce:
 		Repulsable: False
 		LandAltitude: 100
 		LandWhenIdle: False
+		AirborneUpgrades: airborne
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:
@@ -53,6 +54,7 @@ carryall.infantry:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
+		AirborneUpgrades: airborne
 	Cargo:
 		MaxWeight: 5
 		Types: Infantry
@@ -77,6 +79,7 @@ frigate:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
+		AirborneUpgrades: airborne
 	Health:
 		HP: 500
 	-AppearsOnRadar:
@@ -116,14 +119,20 @@ orni:
 		Speed: 280
 		RepairBuildings: repair
 		RearmBuildings:
+		AirborneUpgrades: airborne
 	SpawnActorOnDeath:
 		Actor: orni.husk
 	SelectionDecorations:
 	Selectable:
 		Bounds: 32,32
-	TargetableAircraft:
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	Voiced:
 		VoiceSet: GenericVoice
 
@@ -142,6 +151,7 @@ orni.bomber:
 		RepairBuildings: repair
 		RearmBuildings:
 		Repulsable: False
+		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -161,6 +171,7 @@ orni.husk:
 		Speed: 280
 		RepairBuildings:
 		RearmBuildings:
+		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: orni
 
@@ -173,6 +184,7 @@ orni.bomber.husk:
 		Speed: 350
 		RepairBuildings:
 		RearmBuildings:
+		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: orni
 
@@ -185,6 +197,7 @@ carryall.husk:
 		Speed: 210
 		RepairBuildings:
 		RearmBuildings:
+		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: carryall
 
@@ -197,6 +210,7 @@ carryall.infantry.husk:
 		Speed: 280
 		RepairBuildings:
 		RearmBuildings:
+		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: carryall
 

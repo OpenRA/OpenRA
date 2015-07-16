@@ -116,9 +116,14 @@
 	Inherits@2: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
-	TargetableAircraft:
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
@@ -126,6 +131,7 @@
 		RepairBuildings: hpad
 		RearmBuildings:
 		LandWhenIdle: false
+		AirborneUpgrades: airborne
 	HiddenUnderFog:
 		Type: CenterPosition
 	ActorLostNotification:
