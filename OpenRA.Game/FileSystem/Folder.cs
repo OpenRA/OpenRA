@@ -13,7 +13,7 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public class Folder : IFolder
+	public sealed class Folder : IFolder
 	{
 		readonly string path;
 		readonly int priority;
@@ -78,5 +78,7 @@ namespace OpenRA.FileSystem
 				using (var writer = new BinaryWriter(dataStream))
 					writer.Write(file.Value);
 		}
+
+		public void Dispose() { }
 	}
 }

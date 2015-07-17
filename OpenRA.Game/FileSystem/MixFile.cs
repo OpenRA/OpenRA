@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class MixFile : IFolder, IDisposable
+	public sealed class MixFile : IFolder
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
@@ -37,9 +37,17 @@ namespace OpenRA.FileSystem
 				File.Delete(filename);
 
 			s = File.Create(filename);
-			index = new Dictionary<uint, PackageEntry>();
-			contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
-			Write(contents);
+			try
+			{
+				index = new Dictionary<uint, PackageEntry>();
+				contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
+				Write(contents);
+			}
+			catch
+			{
+				Dispose();
+				throw;
+			}
 		}
 
 		public MixFile(string filename, PackageHashType type, int priority)
@@ -47,29 +55,36 @@ namespace OpenRA.FileSystem
 			this.filename = filename;
 			this.priority = priority;
 			this.type = type;
+
 			s = GlobalFileSystem.Open(filename);
-
-			// Detect format type
-			s.Seek(0, SeekOrigin.Begin);
-			var isCncMix = s.ReadUInt16() != 0;
-
-			// The C&C mix format doesn't contain any flags or encryption
-			var isEncrypted = false;
-			if (!isCncMix)
-				isEncrypted = (s.ReadUInt16() & 0x2) != 0;
-
-			List<PackageEntry> entries;
-			if (isEncrypted)
+			try
 			{
-				long unused;
-				entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
-			}
-			else
-				entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
+				// Detect format type
+				var isCncMix = s.ReadUInt16() != 0;
 
-			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
-				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
-				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+				// The C&C mix format doesn't contain any flags or encryption
+				var isEncrypted = false;
+				if (!isCncMix)
+					isEncrypted = (s.ReadUInt16() & 0x2) != 0;
+
+				List<PackageEntry> entries;
+				if (isEncrypted)
+				{
+					long unused;
+					entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
+				}
+				else
+					entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
+
+				index = entries.ToDictionaryWithConflictLog(x => x.Hash,
+					"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
+					null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+			}
+			catch (Exception)
+			{
+				Dispose();
+				throw;
+			}
 		}
 
 		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
@@ -269,8 +284,7 @@ namespace OpenRA.FileSystem
 
 		public void Dispose()
 		{
-			if (s != null)
-				s.Dispose();
+			s.Dispose();
 		}
 	}
 }

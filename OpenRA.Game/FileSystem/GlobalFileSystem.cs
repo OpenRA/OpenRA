@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public interface IFolder
+	public interface IFolder : IDisposable
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
@@ -127,6 +127,9 @@ namespace OpenRA.FileSystem
 
 		public static void UnmountAll()
 		{
+			foreach (var folder in MountedFolders)
+				folder.Dispose();
+
 			MountedFolders.Clear();
 			FolderPaths.Clear();
 			classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
@@ -135,6 +138,9 @@ namespace OpenRA.FileSystem
 
 		public static bool Unmount(IFolder mount)
 		{
+			if (MountedFolders.Contains(mount))
+				mount.Dispose();
+
 			return MountedFolders.RemoveAll(f => f == mount) > 0;
 		}
 
