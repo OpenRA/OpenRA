@@ -95,7 +95,6 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Height: 20
 					Visible: false
 				Image@STATUS_IMAGE:
-					Visible: false
 					X: 537
 					Y: 4
 					Width: 20
