@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (string.IsNullOrEmpty(id))
 				{
 					var builder = new StringBuilder();
-					builder.Append(this.Graph.Actor.ActorID);
+					builder.Append(Graph.Actor.ActorID);
 					while (!startPoints.Empty)
 					{
 						var startpoint = startPoints.Pop();
