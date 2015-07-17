@@ -7,6 +7,7 @@ ide.outline = {
   settings = {
     symbols = {},
   },
+  needsaving = false,
   indexqueue = {[0] = {}},
   indexeditor = nil,
   indexpurged = false, -- flag that the index has been purged from old records; once per session
@@ -24,6 +25,18 @@ local function setData(ctrl, item, value)
     local data = wx.wxLuaTreeItemData()
     data:SetData(value)
     ctrl:SetItemData(item, data)
+  end
+end
+
+local function resetOutlineTimer()
+  if ide.config.outlineinactivity then
+    ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
+  end
+end
+
+local function resetIndexTimer()
+  if ide.config.symbolindexinactivity and not ide.timers.symbolindex:IsRunning() then
+    ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
   end
 end
 
@@ -175,14 +188,16 @@ local function outlineRefresh(editor, force)
 end
 
 local function indexFromQueue()
+  if #outline.indexqueue == 0 then
+    outline:SaveSettings()
+    return
+  end
+
   local editor = ide:GetEditor()
   local inactivity = ide.config.symbolindexinactivity
-  if #outline.indexqueue == 0 then return end
   if editor and inactivity and editor.updated > TimeGet()-inactivity then
     -- reschedule timer for later time
-    if not ide.timers.symbolindex:IsRunning() then
-      ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
-    end
+    resetIndexTimer()
   else
     local fname = table.remove(outline.indexqueue, 1)
     outline.indexqueue[0][fname] = nil
@@ -376,6 +391,7 @@ local package = ide:AddPackage('core.outline', {
       local path = doc and doc:GetFilePath()
       if path and cache.funcs then
         outline:UpdateSymbols(path, cache.funcs.updated > editor.updated and cache.funcs or nil)
+        resetIndexTimer()
       end
     end,
 
@@ -399,13 +415,8 @@ local package = ide:AddPackage('core.outline', {
       -- if the editor is not in the cache, which may happen if the user
       -- quickly switches between tabs that don't have outline generated,
       -- regenerate it manually
-      if not cache and ide.config.outlineinactivity then
-        ide.timers.outline:Start(ide.config.outlineinactivity*1000, wx.wxTIMER_ONE_SHOT)
-      end
-
-      if ide.config.symbolindexinactivity and not ide.timers.symbolindex:IsRunning() then
-        ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
-      end
+      if not cache then resetOutlineTimer() end
+      resetIndexTimer()
 
       eachNode(function(ctrl, item)
           local found = fileitem and item:GetValue() == fileitem:GetValue()
@@ -436,8 +447,15 @@ function outline:UpdateSymbols(fname, symb)
     end
     self.indexpurged = true
   end
-  self:SaveSettings()
+
+  self.needsaving = true
 end
 
-function outline:SaveSettings() package:SetSettings(self.settings) end
+function outline:SaveSettings()
+  if self.needsaving then
+    package:SetSettings(self.settings)
+    self.needsaving = false
+  end
+end
+
 MergeSettings(outline.settings, package:GetSettings())
