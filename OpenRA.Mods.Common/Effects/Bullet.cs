@@ -28,14 +28,20 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
+		[Desc("Image to display.")]
 		public readonly string Image = null;
 
-		[SequenceReference("Image")]
+		[Desc("Loop this sequence of Image while this projectile is moving."), SequenceReference("Image")]
 		public readonly string Sequence = "idle";
 
+		[Desc("The palette used to draw this projectile.")]
 		public readonly string Palette = "effect";
 
+		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
+
+		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;
@@ -112,7 +118,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, GetEffectiveFacing);
-				anim.PlayRepeating("idle");
+				anim.PlayRepeating(info.Sequence);
 			}
 
 			if (info.ContrailLength > 0)
@@ -176,7 +182,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (info.Shadow)
 				{
 					var shadowPos = pos - new WVec(0, 0, pos.Z);
-					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+					foreach (var r in anim.Render(shadowPos, wr.Palette(info.ShadowPalette)))
 						yield return r;
 				}
 
