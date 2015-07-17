@@ -9,6 +9,7 @@ ide.outline = {
   },
   indexqueue = {[0] = {}},
   indexeditor = nil,
+  indexpurged = false, -- flag that the index has been purged from old records; once per session
 }
 
 local outline = ide.outline
@@ -198,8 +199,7 @@ local function indexFromQueue()
         editor:ResetTokenList()
         while IndicateAll(editor) do end
 
-        outline.settings.symbols[fname] = outlineRefresh(editor)
-        outline:SaveSettings()
+        outline:UpdateSymbols(fname, outlineRefresh(editor))
       else
         DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
       end
@@ -375,8 +375,7 @@ local package = ide:AddPackage('core.outline', {
       end
       local path = doc and doc:GetFilePath()
       if path and cache.funcs then
-        outline.settings.symbols[path] = cache.funcs.updated > editor.updated and cache.funcs or nil
-        outline:SaveSettings()
+        outline:UpdateSymbols(path, cache.funcs.updated > editor.updated and cache.funcs or nil)
       end
     end,
 
@@ -424,6 +423,21 @@ local package = ide:AddPackage('core.outline', {
       end
     end,
   })
+
+function outline:UpdateSymbols(fname, symb)
+  local symbols = self.settings.symbols
+  symbols[fname] = symb
+
+  -- purge outdated records
+  local threshold = TimeGet() - 60*60*24*7 -- cache for 7 weeks
+  if not self.indexpurged then
+    for k, v in pairs(symbols) do
+      if v.updated < threshold then symbols[k] = nil end
+    end
+    self.indexpurged = true
+  end
+  self:SaveSettings()
+end
 
 function outline:SaveSettings() package:SetSettings(self.settings) end
 MergeSettings(outline.settings, package:GetSettings())
