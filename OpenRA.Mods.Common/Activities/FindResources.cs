@@ -86,6 +86,9 @@ namespace OpenRA.Mods.Common.Activities
 						if (!harvInfo.Resources.Contains(resType.Info.Name))
 							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
 
+						if (resLayer.GetApparentResourceDensity(loc) == 0)
+							return EstimateDistance(loc, searchFromLoc) + Constants.CellCost;
+
 						if (territory != null)
 						{
 							// Another harvester has claimed this resource:

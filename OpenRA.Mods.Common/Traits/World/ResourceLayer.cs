@@ -272,6 +272,22 @@ namespace OpenRA.Mods.Common.Traits
 		public ResourceType GetResource(CPos cell) { return Content[cell].Type; }
 		public ResourceType GetRenderedResource(CPos cell) { return RenderContent[cell].Type; }
 		public int GetResourceDensity(CPos cell) { return Content[cell].Density; }
+
+		public int GetApparentResourceDensity(CPos cell)
+		{
+			var content = Content[cell];
+
+			var type = content.Type;
+			if (type == null)
+				return 0;
+
+			var info = type.Info;
+			if (content.Density < info.MinDensityToHarvest)
+				return 0;
+
+			return content.Density;
+		}
+
 		public int GetMaxResourceDensity(CPos cell)
 		{
 			if (Content[cell].Type == null)
