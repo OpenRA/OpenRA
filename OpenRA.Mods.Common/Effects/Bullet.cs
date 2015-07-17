@@ -24,22 +24,40 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
+
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Image to display.")]
 		public readonly string Image = null;
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+
+		[Desc("Loop this sequence of Image while this projectile is moving."), SequenceReference("Image")]
+		public readonly string Sequence = "idle";
+
+		[Desc("The palette used to draw this projectile.")]
 		public readonly string Palette = "effect";
+
+		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
+
+		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
+		public readonly string ShadowPalette = "shadow";
+
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;
+
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
+
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
+
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
+
 		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
+
 		public readonly string TrailPalette = "effect";
 		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
@@ -100,7 +118,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, GetEffectiveFacing);
-				anim.PlayRepeating("idle");
+				anim.PlayRepeating(info.Sequence);
 			}
 
 			if (info.ContrailLength > 0)
@@ -164,7 +182,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (info.Shadow)
 				{
 					var shadowPos = pos - new WVec(0, 0, pos.Z);
-					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+					foreach (var r in anim.Render(shadowPos, wr.Palette(info.ShadowPalette)))
 						yield return r;
 				}
 
