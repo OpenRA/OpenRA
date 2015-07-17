@@ -1,5 +1,6 @@
 #Tiberian Sun
 intro: Intro
+	Hidden: true
 approach: Approach
 defense: The Defense
 duskhour: Dusk Hour
@@ -14,12 +15,14 @@ nodcrush: Nod Crush
 pharotek: Pharotek
 redsky: Red Sky
 score: Score
+	Hidden: true
 scout: Scouting
 storm: Storm
 timebomb: Timebomb
 valves1b: Valves
 whatlurk: What Lurks
 maps: Map Selection
+	Hidden: true
 #Firestorm
 dmachine: Deploy Machines
 elusive: Elusive
