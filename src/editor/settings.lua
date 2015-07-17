@@ -276,7 +276,7 @@ function SettingsSavePackage(package, values)
   settings:DeleteGroup(packagename)
   settings:SetPath(packagename)
   for k,v in pairs(values or {}) do
-    settings:Write(k, mdb.line(v, {comment = false, nocode = true}))
+    settings:Write(k, mdb.line(v, {comment = false, nocode = true, sortkeys = false}))
   end
   settings:SetPath(path)
 end
