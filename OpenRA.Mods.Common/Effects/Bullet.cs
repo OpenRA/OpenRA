@@ -24,22 +24,34 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
+
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
 		public readonly string Image = null;
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+
+		[SequenceReference("Image")]
+		public readonly string Sequence = "idle";
+
 		public readonly string Palette = "effect";
+
 		public readonly bool Shadow = false;
+
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;
+
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
+
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
+
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
+
 		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
+
 		public readonly string TrailPalette = "effect";
 		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
