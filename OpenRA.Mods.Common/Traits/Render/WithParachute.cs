@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("ShadowImage")] public readonly string ShadowSequence = null;
 
 		[Desc("Palette used to render the paradropped unit's shadow.")]
-		public readonly string ShadowPalette = "player";
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Shadow position relative to the paradropped unit's intended landing position.")]
 		public readonly WVec ShadowOffset = new WVec(0, 128, 0);
