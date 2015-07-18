@@ -123,12 +123,9 @@ Rules:
 		WormManager:
 			Minimum: 1
 			Maximum: 1
-		LuaScript:
-			Scripts: shellmap.lua
 		MusicPlaylist:
 			StartingMusic: options
 			LoopStartingMusic: True
-		GlobalLightingPaletteEffect:
 	rockettower:
 		Power:
 			Amount: 100
