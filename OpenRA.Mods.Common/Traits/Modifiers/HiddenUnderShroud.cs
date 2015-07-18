@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var stance = self.Owner.Stances[byPlayer];
-			return Info.AlwaysVisibleStances.HasFlag(stance) || IsVisibleInner(self, byPlayer);
+			return Info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

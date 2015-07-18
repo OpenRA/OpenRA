@@ -21,6 +21,10 @@ namespace OpenRA.Graphics
 		public static readonly Func<IRenderable, int> RenderableScreenZPositionComparisonKey =
 			r => ZPosition(r.Pos, r.ZOffset);
 
+		const int RangeCircleSegments = 32;
+		static readonly int[][] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
+		static readonly int[][] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
+
 		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
@@ -197,10 +201,10 @@ namespace OpenRA.Graphics
 		public void DrawRangeCircle(WPos pos, WDist range, Color c)
 		{
 			var offset = new WVec(range.Length, 0, 0);
-			for (var i = 0; i < 32; i++)
+			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var pa = pos + offset.Rotate(WRot.FromFacing(8 * i));
-				var pb = pos + offset.Rotate(WRot.FromFacing(8 * i + 6));
+				var pa = pos + offset.Rotate(RangeCircleStartRotations[i]);
+				var pb = pos + offset.Rotate(RangeCircleEndRotations[i]);
 				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c);
 			}
 		}
@@ -240,17 +244,28 @@ namespace OpenRA.Graphics
 		}
 
 		// For scaling vectors to pixel sizes in the voxel renderer
-		public float[] ScreenVector(WVec vec)
+		public void ScreenVectorComponents(WVec vec, out float x, out float y, out float z)
 		{
 			var ts = Game.ModData.Manifest.TileSize;
-			return new float[] { ts.Width * vec.X / 1024f, ts.Height * vec.Y / 1024f, ts.Height * vec.Z / 1024f, 1 };
+			x = ts.Width * vec.X / 1024f;
+			y = ts.Height * vec.Y / 1024f;
+			z = ts.Height * vec.Z / 1024f;
+		}
+
+		// For scaling vectors to pixel sizes in the voxel renderer
+		public float[] ScreenVector(WVec vec)
+		{
+			float x, y, z;
+			ScreenVectorComponents(vec, out x, out y, out z);
+			return new[] { x, y, z, 1f };
 		}
 
 		public int2 ScreenPxOffset(WVec vec)
 		{
 			// Round to nearest pixel
-			var px = ScreenVector(vec);
-			return new int2((int)Math.Round(px[0]), (int)Math.Round(px[1] - px[2]));
+			float x, y, z;
+			ScreenVectorComponents(vec, out x, out y, out z);
+			return new int2((int)Math.Round(x), (int)Math.Round(y - z));
 		}
 
 		public float ScreenZPosition(WPos pos, int offset)
