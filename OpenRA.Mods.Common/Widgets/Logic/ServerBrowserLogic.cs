@@ -24,6 +24,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
+		readonly Color incompatibleProtectedGameColor;
+		readonly Color protectedGameColor;
+		readonly Color incompatibleWaitingGameColor;
+		readonly Color waitingGameColor;
+		readonly Color incompatibleGameStartedColor;
+		readonly Color gameStartedColor;
+		readonly Color incompatibleGameColor;
+		readonly Color cantJoinGameColor;
+
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
 		ScrollItemWidget headerTemplate;
@@ -56,6 +65,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			panel = widget;
 			this.onStart = onStart;
+
+			incompatibleGameColor = ChromeMetrics.Get<Color>("IncompatibleGameColor");
+			cantJoinGameColor = ChromeMetrics.Get<Color>("CantJoinGameColor");
+			protectedGameColor = ChromeMetrics.Get<Color>("ProtectedGameColor");
+			incompatibleProtectedGameColor = ChromeMetrics.Get<Color>("IncompatibleProtectedGameColor");
+			waitingGameColor = ChromeMetrics.Get<Color>("WaitingGameColor");
+			incompatibleWaitingGameColor = ChromeMetrics.Get<Color>("IncompatibleWaitingGameColor");
+			gameStartedColor = ChromeMetrics.Get<Color>("GameStartedColor");
+			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
 			serverList = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
@@ -217,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (title != null)
 					{
 						title.GetText = () => game.Name;
-						title.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : title.TextColor;
+						title.GetColor = () => !compatible ? incompatibleGameColor : !canJoin ? cantJoinGameColor : title.TextColor;
 					}
 
 					var maptitle = item.GetOrNull<LabelWidget>("MAP");
@@ -232,7 +250,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
 							+ (game.Spectators > 0 ? "  ({0} Spectator{1})".F(game.Spectators, game.Spectators > 1 ? "s" : "") : "");
-						players.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : players.TextColor;
+						players.GetColor = () => !compatible ? incompatibleGameColor : !canJoin ? cantJoinGameColor : players.TextColor;
 					}
 
 					var state = item.GetOrNull<LabelWidget>("STATE");
@@ -246,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (ip != null)
 					{
 						ip.GetText = () => game.Address;
-						ip.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : ip.TextColor;
+						ip.GetColor = () => !compatible ? incompatibleGameColor : !canJoin ? cantJoinGameColor : ip.TextColor;
 					}
 
 					var location = item.GetOrNull<LabelWidget>("LOCATION");
@@ -254,7 +272,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var cachedServerLocation = GeoIP.LookupCountry(game.Address.Split(':')[0]);
 						location.GetText = () => cachedServerLocation;
-						location.GetColor = () => !compatible ? Color.DarkGray : !canJoin ? Color.LightGray : location.TextColor;
+						location.GetColor = () => !compatible ? incompatibleGameColor : !canJoin ? cantJoinGameColor : location.TextColor;
 					}
 
 					rows.Add(item);
@@ -362,16 +380,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return "Unknown server state";
 		}
 
-		static Color GetStateColor(GameServer game, LabelWidget label, bool darkened)
+		Color GetStateColor(GameServer game, LabelWidget label, bool darkened)
 		{
 			if (game.Protected && game.State == (int)ServerState.WaitingPlayers)
-				return darkened ? Color.DarkRed : Color.Red;
+				return darkened ? incompatibleProtectedGameColor : protectedGameColor;
 
 			if (game.State == (int)ServerState.WaitingPlayers)
-				return darkened ? Color.LimeGreen : Color.Lime;
+				return darkened ? incompatibleWaitingGameColor : waitingGameColor;
 
 			if (game.State == (int)ServerState.GameStarted)
-				return darkened ? Color.Chocolate : Color.Orange;
+				return darkened ? incompatibleGameStartedColor : gameStartedColor;
 
 			return label.TextColor;
 		}

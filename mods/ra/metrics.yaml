@@ -32,3 +32,11 @@ Metrics:
 	RaceSuffix-soviet: soviet
 	RaceSuffix-russia: soviet
 	RaceSuffix-ukraine: soviet
+	IncompatibleGameColor: 169,169,169
+	CantJoinGameColor: 211,211,211
+	ProtectedGameColor: 255,0,0
+	IncompatibleProtectedGameColor: 178,34,34
+	WaitingGameColor: 0,255,0
+	IncompatibleWaitingGameColor: 50,205,50
+	GameStartedColor: 255,165,0
+	IncompatibleGameStartedColor: 210,105,30
