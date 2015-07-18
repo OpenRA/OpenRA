@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Animation to play when the actor is idle.")]
 		[SequenceReference] public readonly string Sequence = "idle";
 
+		[Desc("Pause animation when actor is disabled.")]
+		public readonly bool PauseAnimationWhenDisabled = false;
+
 		public override object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -36,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithSpriteBody : UpgradableTrait<WithSpriteBodyInfo>, ISpriteBody, INotifyDamageStateChanged
+	public class WithSpriteBody : UpgradableTrait<WithSpriteBodyInfo>, ISpriteBody, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		public readonly Animation DefaultAnimation;
 
@@ -61,6 +64,16 @@ namespace OpenRA.Mods.Common.Traits
 		public string NormalizeSequence(Actor self, string sequence)
 		{
 			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
+		}
+
+		// TODO: Get rid of INotifyBuildComplete in favor of using the upgrade system
+		public virtual void BuildingComplete(Actor self)
+		{
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+
+			if (Info.PauseAnimationWhenDisabled)
+				DefaultAnimation.Paused = () =>
+					self.IsDisabled() && DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, Info.Sequence);
 		}
 
 		public void PlayCustomAnimation(Actor self, string name, Action after = null)
