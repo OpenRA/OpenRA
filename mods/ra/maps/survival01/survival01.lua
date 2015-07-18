@@ -28,7 +28,6 @@ else --Difficulty == "Hard"
 	LongBowReinforcements = { "heli" }
 end
 
-AlliedArtilleryParadrops = { "arty", "arty", "arty" }
 AlliedAirReinforcementsWaypoints =
 {
 	{ AirReinforcementsEntry1.Location, AirReinforcementsEntry2.Location },
@@ -279,21 +278,20 @@ TimerExpired = function()
 	end
 end
 
-DropAlliedArtillery = function(table)
-	local plane = Actor.Create("badr", true, { Owner = allies, Location = table[1] })
-	Utils.Do(AlliedArtilleryParadrops, function(type)
-		local unit = Actor.Create(type, false, { Owner = allies })
-		plane.LoadPassenger(unit)
-	end)
-	plane.Paradrop(table[2])
+DropAlliedArtillery = function(facing, dropzone)
+	local proxy = Actor.Create("powerproxy.allied", true, { Owner = allies })
+	proxy.SendParatroopers(dropzone, false, facing)
+	proxy.Destroy()
 end
 
 SendLongBowReinforcements = function()
 	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
 	Reinforcements.Reinforce(allies, LongBowReinforcements, AlliedAirReinforcementsWaypoints[1])
 	Reinforcements.Reinforce(allies, LongBowReinforcements, AlliedAirReinforcementsWaypoints[2])
+
 	if ParadropArtillery then
-		DropAlliedArtillery({ Utils.Random(AlliedAirReinforcementsWaypoints)[1], Alliesbase.Location })
+		local facing = Utils.RandomInteger(Facing.NorthWest, Facing.SouthWest)
+		DropAlliedArtillery(facing, Alliesbase.CenterPosition)
 	end
 end
 

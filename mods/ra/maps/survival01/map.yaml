@@ -1252,6 +1252,10 @@ Rules:
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E2,E2
+	powerproxy.allied:
+		Inherits: powerproxy.paratroopers
+		ParatroopersPower:
+			DropItems: ARTY,ARTY,ARTY
 	CAMERA.sam:
 		Inherits: CAMERA
 		RevealsShroud:
@@ -1261,12 +1265,6 @@ Rules:
 		RevealsShroud:
 			Range: 1000
 	ARTY:
-		Parachutable:
-			KilledOnImpassableTerrain: false
-		WithParachute:
-			UpgradeTypes: parachute
-			UpgradeMinEnabledLevel: 1
-			Image: parach
 		UpgradeManager:
 		BodyOrientation:
 	AFLD.mission:
