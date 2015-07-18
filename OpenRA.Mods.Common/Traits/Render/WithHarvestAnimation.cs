@@ -52,19 +52,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!IsModifying && !string.IsNullOrEmpty(wsb.Info.Sequence) && wsb.DefaultAnimation.HasSequence(NormalizeHarvesterSequence(self, wsb.Info.Sequence)))
-			{
-				if (wsb.DefaultAnimation.CurrentSequence.Name != NormalizeHarvesterSequence(self, wsb.Info.Sequence))
-					wsb.DefaultAnimation.ReplaceAnim(NormalizeHarvesterSequence(self, wsb.Info.Sequence));
-			}
+			var baseSequence = wsb.NormalizeSequence(self, wsb.Info.Sequence);
+			var sequence = NormalizeHarvesterSequence(self, baseSequence);
+			if (!IsModifying && wsb.DefaultAnimation.HasSequence(sequence) && wsb.DefaultAnimation.CurrentSequence.Name != sequence)
+				wsb.DefaultAnimation.ReplaceAnim(sequence);
 		}
 
 		public void Harvested(Actor self, ResourceType resource)
 		{
-			if (!IsModifying && !string.IsNullOrEmpty(Info.HarvestSequence) && wsb.DefaultAnimation.HasSequence(NormalizeHarvesterSequence(self, Info.HarvestSequence)))
+			var baseSequence = wsb.NormalizeSequence(self, Info.HarvestSequence);
+			var sequence = NormalizeHarvesterSequence(self, baseSequence);
+			if (!IsModifying && wsb.DefaultAnimation.HasSequence(sequence))
 			{
 				IsModifying = true;
-				wsb.PlayCustomAnimation(self, NormalizeHarvesterSequence(self, Info.HarvestSequence), () => IsModifying = false);
+				wsb.PlayCustomAnimation(self, sequence, () => IsModifying = false);
 			}
 		}
 
