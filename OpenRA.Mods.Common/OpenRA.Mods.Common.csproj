@@ -427,6 +427,7 @@
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
+    <Compile Include="Traits\Render\WithSpriteMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
