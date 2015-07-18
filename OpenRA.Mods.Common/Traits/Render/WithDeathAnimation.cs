@@ -82,8 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 				var warhead = e.Warhead as DamageWarhead;
 				var damageType = warhead.DamageTypes.Intersect(Info.DeathTypes.Keys).FirstOrDefault();
 				if (damageType == null)
-					throw new Exception("Actor type `{0}` does not define a death animation for weapon with damage types `{1}`!"
-						.F(self.Info.Name, string.Join(", ", warhead.DamageTypes)));
+					return;
 
 				sequence += Info.DeathTypes[damageType];
 			}
