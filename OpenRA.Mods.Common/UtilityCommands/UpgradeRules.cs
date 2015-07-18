@@ -1432,7 +1432,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							addTrait("Firepower", null, "110, 115, 120, 130");
 							addTrait("Damage", null, "91, 87, 83, 65");
 							addTrait("Speed", null, "110, 115, 120, 150");
-							addTrait("Reload", "ReloadTime", "95, 90, 85, 75");
+							addTrait("Reload", "ReloadDelay", "95, 90, 85, 75");
 							addTrait("Inaccuracy", null, "90, 80, 70, 50");
 
 							// Remove GainsStatUpgrades
