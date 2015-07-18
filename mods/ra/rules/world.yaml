@@ -7,6 +7,7 @@
 		VictoryMusic: score
 		DefeatMusic: map
 	TerrainGeometryOverlay:
+	MapCoordinatesOverlay:
 	LoadWidgetAtGameStart:
 	ShroudRenderer:
 		FogVariants: shroud

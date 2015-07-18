@@ -370,3 +370,13 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+		Button@COORDINATES_BUTTON:
+			X: 485
+			Width: 160
+			Height: 25
+			Text: Coordinates
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Show map coordinates
+			TooltipContainer: TOOLTIP_CONTAINER
+			Font: Bold
+			Key: f2

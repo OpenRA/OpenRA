@@ -61,6 +61,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					selectedLabel = selectedZoom.ToString();
 				};
 			}
+
+			var coordinatesButton = widget.GetOrNull<ButtonWidget>("COORDINATES_BUTTON");
+			var mapCoordinatesTrait = world.WorldActor.Trait<MapCoordinatesOverlay>();
+
+			if (coordinatesButton != null && mapCoordinatesTrait != null)
+			{
+				coordinatesButton.OnClick = () => mapCoordinatesTrait.Enabled ^= true;
+				coordinatesButton.IsHighlighted = () => mapCoordinatesTrait.Enabled;
+			}
 		}
 	}
 }
