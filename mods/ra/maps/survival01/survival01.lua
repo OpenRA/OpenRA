@@ -185,7 +185,11 @@ SendSovietParadrops = function(table)
 	local units = powerproxy.SendParatroopers(table[2].CenterPosition, false, table[1])
 
 	Utils.Do(units, function(unit)
-		Trigger.OnIdle(unit, unit.Hunt)
+		Trigger.OnIdle(unit, function(a)
+			if a.IsInWorld then
+				a.Hunt()
+			end
+		end)
 	end)
 end
 

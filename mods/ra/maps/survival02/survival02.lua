@@ -35,7 +35,13 @@ ParaWaves =
 	{ AttackTicks * 3, { "SovietSquad", SovietParaDrop1 } }
 }
 
-IdleHunt = function(unit) Trigger.OnIdle(unit, unit.Hunt) end
+IdleHunt = function(unit)
+	Trigger.OnIdle(unit, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
 
 GuardHarvester = function(unit, harvester)
 	if not unit.IsDead then
