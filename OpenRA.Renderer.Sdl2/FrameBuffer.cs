@@ -47,7 +47,7 @@ namespace OpenRA.Renderer.Sdl2
 			GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, depth);
 			ErrorHandler.CheckGlError();
 
-			GL.Ext.RenderbufferStorage(RenderbufferTarget.RenderbufferExt, (RenderbufferStorage)All.DepthComponent, size.Width, size.Height);
+			GL.Ext.RenderbufferStorage(RenderbufferTarget.RenderbufferExt, RenderbufferStorage.DepthComponent, size.Width, size.Height);
 			ErrorHandler.CheckGlError();
 
 			GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.DepthAttachmentExt, RenderbufferTarget.RenderbufferExt, depth);
