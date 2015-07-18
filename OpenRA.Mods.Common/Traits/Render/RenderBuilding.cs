@@ -17,21 +17,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Render trait for stationary objects that can be placed from the build palette.")]
-	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
+	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>
 	{
 		public readonly bool PauseOnLowPower = false;
 
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this); }
-
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
-		{
-			if (!ai.Traits.Get<BuildingInfo>().RequiresBaseProvider)
-				yield break;
-
-			foreach (var a in w.ActorsWithTrait<BaseProvider>())
-				foreach (var r in a.Trait.RenderAfterWorld(wr))
-					yield return r;
-		}
 	}
 
 	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, INotifyBuildComplete
