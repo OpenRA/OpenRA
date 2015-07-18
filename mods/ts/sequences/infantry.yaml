@@ -37,6 +37,8 @@ e1:
 		ShadowStart: 441
 	die3: infdie
 		Length: *
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -104,6 +106,8 @@ e2:
 		Length: 15
 		ShadowStart: 441
 	die3: infdie
+		Length: *
+	die4: s_bang34
 		Length: *
 	die-crushed:
 		Start: 159
@@ -173,6 +177,9 @@ e3:
 		Length: 15
 		ShadowStart: 441
 	die3: infdie
+		Length: *
+		Tick: 80
+	die4: s_bang34
 		Length: *
 		Tick: 80
 	die-crushed:
@@ -315,6 +322,8 @@ medic:
 		Start: 149
 		Length: 15
 		ShadowStart: 455
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -379,6 +388,8 @@ engineer:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -439,6 +450,8 @@ umagon:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -509,6 +522,8 @@ ghost:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -577,6 +592,8 @@ jumpjet:
 		Start: 445
 		Length: 6
 		ShadowStart: 896
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 450
 		ShadowStart: 901
@@ -646,6 +663,8 @@ mhijack:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -716,6 +735,8 @@ chamspy:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -782,6 +803,8 @@ cyc2:
 		ShadowStart: 505
 	die3: infexpl
 		Length: *
+	die4: s_bang34
+		Length: *
 	shoot:
 		Start: 212
 		Length: 6
@@ -837,6 +860,12 @@ cyborg:
 		Start: 149
 		Length: 15
 		ShadowStart: 519
+	die3:
+		Start: 307
+		Length: 14
+		ShadowStart: 677
+	die4: s_bang34
+		Length: *
 	shoot:
 		Start: 164
 		Length: 6
@@ -851,10 +880,6 @@ cyborg:
 		Start: 292
 		Length: 14
 		ShadowStart: 662
-	die3:
-		Start: 307
-		Length: 14
-		ShadowStart: 677
 	die6: electro
 		Length: *
 	icon: cybiicon
@@ -896,11 +921,12 @@ mutant:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
-		Tick: 80
 	die3: # TODO: copy-paste of die2
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -972,6 +998,8 @@ mwmn:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1043,6 +1071,8 @@ mutant3:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1114,6 +1144,8 @@ tratos:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1185,6 +1217,8 @@ oxanna:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1255,6 +1289,8 @@ slav:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1322,6 +1358,8 @@ doggie:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 105
 		Length: 4
@@ -1396,6 +1434,8 @@ civ1:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1456,6 +1496,8 @@ civ2:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1511,6 +1553,8 @@ civ3:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
+	die4: s_bang34
+		Length: *
 	die-crushed:
 		Start: 159
 		Length: 5

@@ -231,13 +231,13 @@
 		DeathTypes:
 			BulletDeath: 1
 			SmallExplosionDeath: 2
-			ExplosionDeath: 3
+			HeadshotDeath: 3 #not used by any warhead; TODO: check what should use this type and add it!
 			FireDeath: 5
 	WithDeathAnimation@explosion:
 		DeathSequencePalette: effect
 		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
-			InfantryExplodeDeath: 4 #not used by any warhead; TODO: check what should use this type and add it!
+			ExplosionDeath: 4
 	WithDeathAnimation@energy:
 		DeathSequencePalette: ra
 		DeathPaletteIsPlayerPalette: False
