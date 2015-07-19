@@ -126,7 +126,8 @@ Rules:
 		LuaScript:
 			Scripts: shellmap.lua
 		MusicPlaylist:
-			StartingMusic: waitgame
+			StartingMusic: options
+			LoopStartingMusic: True
 		GlobalLightingPaletteEffect:
 	rockettower:
 		Power:
