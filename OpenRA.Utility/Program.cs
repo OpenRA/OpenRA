@@ -28,7 +28,6 @@ namespace OpenRA.Utility
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Log.AddChannel("perf", null);
-			Log.AddChannel("debug", null);
 
 			var modName = args[0];
 			if (!ModMetadata.AllMods.Keys.Contains(modName))
