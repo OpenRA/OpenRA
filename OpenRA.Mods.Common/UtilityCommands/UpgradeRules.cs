@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 2 && parentKey.StartsWith("DeathSounds") && node.Key == "InfDeaths")
 						node.Key = "DeathTypes";
 
-					if (depth == 2 && parentKey == "SpawnsViceroid" && node.Key == "InfDeath")
+					if (depth == 2 && parentKey == "SpawnViceroid" && node.Key == "InfDeath")
 						node.Key = "DeathType";
 
 					if (depth == 2 && parentKey == "Explodes" && node.Key == "InfDeath")
@@ -1409,7 +1409,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
 
 									if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null ||
-									    !string.IsNullOrEmpty(modifier.Value.Value))
+										!string.IsNullOrEmpty(modifier.Value.Value))
 									{
 										var yaml = new MiniYaml(null);
 										if (modifier == null)
@@ -1685,6 +1685,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (depth == 2 && parentKey == "WithBuildingExplosion" && node.Key == "Sequence")
 						node.Key = "Sequences";
+				}
+
+				// SpawnViceroid was replaced by LeavesHusk
+				if (engineVersion < 20150719)
+				{
+					if (node.Key == "SpawnViceroid")
+					{
+						node.Key = "LeavesHusk";
+
+						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "ViceroidActor");
+						if (actor != null)
+							actor.Key = "HuskActor";
+						// The default value of ViceroidActor was "vice"
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("HuskActor", "vice"));
+
+						var probability = node.Value.Nodes.FirstOrDefault(n => n.Key == "Probability");
+						// The default value of Probability was 10
+						if (probability == null)
+							node.Value.Nodes.Add(new MiniYamlNode("Probability", "10"));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
