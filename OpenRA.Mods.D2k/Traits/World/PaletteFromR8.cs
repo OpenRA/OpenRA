@@ -19,14 +19,17 @@ namespace OpenRA.Mods.D2k.Traits
 {
 	class PaletteFromR8Info : ITraitInfo
 	{
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteDefinition]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
+
 		[FieldLoader.Require]
 		[Desc("Filename to load")]
 		public readonly string Filename = null;
+
 		[Desc("Palette byte offset")]
 		public readonly long Offset = 0;
+
 		public readonly bool AllowModifiers = true;
 		public readonly bool InvertColor = false;
 

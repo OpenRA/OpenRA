@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Custom palette name")]
-		public readonly string Palette = null;
+		[PaletteReference] public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

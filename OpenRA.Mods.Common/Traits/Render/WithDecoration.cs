@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Sequence = null;
 
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		public readonly string Palette = "chrome";
+		[PaletteReference] public readonly string Palette = "chrome";
 
 		[Desc("Point in the actor's bounding box used as reference for offsetting the decoration image." +
 			"Possible values are any combination of Top, VCenter, Bottom and Left, HCenter, Right separated by a comma.")]

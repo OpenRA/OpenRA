@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class VoxelNormalsPaletteInfo : ITraitInfo
 	{
+		[PaletteDefinition]
 		public readonly string Name = "normals";
 
 		[Desc("Can be TiberianSun or RedAlert2")]

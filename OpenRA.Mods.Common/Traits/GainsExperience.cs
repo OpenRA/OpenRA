@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<int, string[]> Upgrades = null;
 
 		[Desc("Palette for the level up sprite.")]
-		public readonly string LevelUpPalette = "effect";
+		[PaletteReference] public readonly string LevelUpPalette = "effect";
 
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;

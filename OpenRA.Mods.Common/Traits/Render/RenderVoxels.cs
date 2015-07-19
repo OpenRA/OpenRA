@@ -28,12 +28,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Image = null;
 
 		[Desc("Custom palette name")]
-		public readonly string Palette = null;
+		[PaletteReference] public readonly string Palette = null;
 
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		public readonly string PlayerPalette = "player";
-		public readonly string NormalsPalette = "normals";
-		public readonly string ShadowPalette = "shadow";
+		[PaletteReference] public readonly string PlayerPalette = "player";
+		[PaletteReference] public readonly string NormalsPalette = "normals";
+		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
 		[Desc("Change the image size.")]
 		public readonly float Scale = 10;

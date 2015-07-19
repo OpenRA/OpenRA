@@ -19,11 +19,11 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Create a palette by applying a scale and offset to the colors in another palette.")]
 	class PaletteFromScaledPaletteInfo : ITraitInfo
 	{
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteDefinition]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteReference]
 		[Desc("The name of the palette to base off.")]
 		public readonly string BasePalette = null;
 

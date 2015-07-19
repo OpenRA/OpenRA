@@ -16,15 +16,20 @@ namespace OpenRA.Traits
 	public class FixedColorPaletteInfo : ITraitInfo
 	{
 		[Desc("The name of the palette to base off.")]
-		public readonly string Base = "terrain";
+		[PaletteReference] public readonly string Base = "terrain";
+
 		[Desc("The name of the resulting palette")]
-		public readonly string Name = "resources";
+		[PaletteDefinition] public readonly string Name = "resources";
+
 		[Desc("Remap these indices to pre-defined colors.")]
 		public readonly int[] RemapIndex = { };
+
 		[Desc("The fixed color to remap.")]
 		public readonly HSLColor Color;
+
 		[Desc("Luminosity range to span.")]
 		public readonly float Ramp = 0.05f;
+
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 

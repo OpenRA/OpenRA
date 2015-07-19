@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Create a palette by applying alpha transparency to another palette.")]
 	class PaletteFromPaletteWithAlphaInfo : ITraitInfo
 	{
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteDefinition]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteReference]
 		[Desc("The name of the palette to base off.")]
 		public readonly string BasePalette = null;
 

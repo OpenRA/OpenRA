@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly string Image = null;
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		public readonly bool Shadow = false;
 
@@ -59,7 +59,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
-		public readonly string TrailPalette = "effect";
+		[PaletteReference] public readonly string TrailPalette = "effect";
+
 		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;

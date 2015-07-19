@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference] public readonly string Sequence = "active";
 
 		[Desc("Custom palette name")]
-		public readonly string Palette = null;
+		[PaletteReference] public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

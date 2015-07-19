@@ -43,4 +43,11 @@ namespace OpenRA.Traits
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class UpgradeUsedReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class PaletteDefinitionAttribute : Attribute { }
+
+	// TODO: differentiate player palettes
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class PaletteReferenceAttribute : Attribute { }
 }

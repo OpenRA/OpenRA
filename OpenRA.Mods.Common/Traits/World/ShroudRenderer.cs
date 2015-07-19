@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] ShroudVariants = new[] { "shroud" };
 		public readonly string[] FogVariants = new[] { "fog" };
 
-		public readonly string ShroudPalette = "shroud";
-		public readonly string FogPalette = "fog";
+		[PaletteReference] public readonly string ShroudPalette = "shroud";
+		[PaletteReference] public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 			"corners clockwise from TL; upper four are edges clockwise from top")]

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo
 	{
-		public readonly string Palette = "chrome";
+		[PaletteReference] public readonly string Palette = "chrome";
 
 		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.",
 		"The first two values define the bounds' size, the optional third and fourth",

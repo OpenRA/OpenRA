@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, string> RaceImages = null;
 
 		[Desc("Custom palette name")]
-		public readonly string Palette = null;
+		[PaletteReference] public readonly string Palette = null;
 
 		[Desc("Custom PlayerColorPalette: BaseName")]
 		public readonly string PlayerPalette = "player";

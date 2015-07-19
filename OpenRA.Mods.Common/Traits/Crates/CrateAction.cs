@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Effect = null;
 
 		[Desc("Palette to draw the animation in.")]
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Audio clip to play when the crate is collected.")]
 		public readonly string Notification = null;

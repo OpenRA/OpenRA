@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Sequence of impact animation to use.")]
 		[SequenceReference("HitAnim")] public readonly string HitAnimSequence = "idle";
 
-		public readonly string HitAnimPalette = "effect";
+		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
 		public IEffect Create(ProjectileArgs args)
 		{

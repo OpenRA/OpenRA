@@ -35,13 +35,13 @@ namespace OpenRA.Mods.Common.Effects
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 
 		[Desc("The palette used to draw this projectile.")]
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
 		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
-		public readonly string ShadowPalette = "shadow";
+		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;

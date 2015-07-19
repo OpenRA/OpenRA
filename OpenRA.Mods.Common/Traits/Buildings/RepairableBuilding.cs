@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "repair";
 
 		[Desc("Overrides the IndicatorPalettePrefix.")]
-		public readonly string IndicatorPalette = "";
+		[PaletteReference] public readonly string IndicatorPalette = "";
 
 		[Desc("Suffixed by the interal repairing player name.")]
 		public readonly string IndicatorPalettePrefix = "player";

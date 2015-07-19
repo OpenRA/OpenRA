@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool DisplayTimer = false;
 
 		[Desc("Palette used for the icon.")]
-		public readonly string IconPalette = "chrome";
+		[PaletteReference] public readonly string IconPalette = "chrome";
 
 		[Desc("Beacons are only supported on the Airstrike and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
 		public readonly string BeaconPalettePrefix = "player";
 		public readonly string BeaconPoster = null;
-		public readonly string BeaconPosterPalette = "chrome";
+		[PaletteReference] public readonly string BeaconPosterPalette = "chrome";
 
 		public readonly bool DisplayRadarPing = false;
 

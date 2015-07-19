@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		public object Create(ActorInitializer init) { return new WithHarvestOverlay(init.Self, this); }
 	}

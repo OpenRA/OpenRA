@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
-		public readonly string Palette = "cloak";
+		[PaletteReference] public readonly string Palette = "cloak";
 
 		public readonly string[] CloakTypes = { "Cloak" };
 

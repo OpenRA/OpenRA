@@ -17,13 +17,17 @@ namespace OpenRA.Traits
 	public class PlayerColorPaletteInfo : ITraitInfo
 	{
 		[Desc("The name of the palette to base off.")]
-		public readonly string BasePalette = null;
+		[PaletteReference] public readonly string BasePalette = null;
+
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "player";
+
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = { };
+
 		[Desc("Luminosity range to span.")]
 		public readonly float Ramp = 0.05f;
+
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 

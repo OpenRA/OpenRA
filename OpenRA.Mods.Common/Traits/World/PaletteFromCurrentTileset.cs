@@ -18,11 +18,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Loads the palette specified in the tileset definition")]
 	class PaletteFromCurrentTilesetInfo : ITraitInfo
 	{
-		[FieldLoader.Require]
+		[FieldLoader.Require, PaletteDefinition]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
+
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
 		public readonly int[] ShadowIndex = { };
+
 		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.World, this); }

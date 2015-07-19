@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LeavesTrailsInfo : ITraitInfo
 	{
 		public readonly string Image = null;
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Only do so when the terrain types match with the previous cell.")]
 		public readonly string[] TerrainTypes = { };

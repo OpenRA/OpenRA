@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Clones the aircraft sprite with another palette below it.")]
 	class WithShadowInfo : ITraitInfo
 	{
-		public readonly string Palette = "shadow";
+		[PaletteReference] public readonly string Palette = "shadow";
 
 		public object Create(ActorInitializer init) { return new WithShadow(this); }
 	}

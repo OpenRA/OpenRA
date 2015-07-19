@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlaceBuildingInfo : ITraitInfo
 	{
 		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = "terrain";
 
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
