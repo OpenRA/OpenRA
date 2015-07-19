@@ -154,6 +154,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
+			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
