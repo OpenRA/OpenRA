@@ -453,7 +453,9 @@ end
 
 function outline:SaveSettings()
   if self.needsaving then
+    ide:PushStatus(TR("Updating symbol index..."))
     package:SetSettings(self.settings)
+    ide:PopStatus()
     self.needsaving = false
   end
 end
