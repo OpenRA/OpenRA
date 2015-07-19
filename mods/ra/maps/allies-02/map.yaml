@@ -33,32 +33,26 @@ Options:
 	StartingCash: 5700
 	ConfigurableStartingUnits: False
 	ShortGame: False
+	Difficulties: Easy, Normal, Hard, Real tough guy
 
 Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
 		ColorRamp: 3,255,127
-		Allies: Ukraine
 		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
 		NonCombatant: True
 		Faction: allies
 		ColorRamp: 115,115,143
-		Allies: Greece, France
-		Enemies: USSR, Ukraine
+		Allies: Greece
+		Enemies: USSR
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: allies
-	PlayerReference@Ukraine:
-		Name: Ukraine
-		Faction: soviet
-		ColorRamp: 3,255,127
-		Allies: USSR
-		Enemies: Greece, France
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -71,7 +65,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: France
-		Enemies: USSR, Ukraine
+		Enemies: USSR
 
 Actors:
 	EntryPoint: t06
@@ -255,16 +249,9 @@ Actors:
 	Actor60: powr
 		Location: 57,62
 		Owner: USSR
-	Actor61: barr
-		Location: 56,66
-		Owner: USSR
 	Actor62: powr
 		Location: 59,62
 		Owner: USSR
-	Actor63: kenn
-		Location: 58,68
-		Owner: USSR
-		Health: 99
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
@@ -395,7 +382,7 @@ Actors:
 		SubCell: 0
 	Actor103: e1
 		Location: 77,74
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 128
 		SubCell: 2
 	Actor104: e1
@@ -408,11 +395,6 @@ Actors:
 		Owner: USSR
 		Facing: 160
 		SubCell: 3
-	Actor106: e1
-		Location: 50,72
-		Owner: USSR
-		Facing: 160
-		SubCell: 4
 	Actor107: e1
 		Location: 73,60
 		Owner: USSR
@@ -428,31 +410,6 @@ Actors:
 		Owner: USSR
 		Facing: 64
 		SubCell: 0
-	Actor110: e1
-		Location: 49,58
-		Owner: USSR
-		Facing: 192
-		SubCell: 0
-	Actor111: e1
-		Location: 51,58
-		Owner: USSR
-		Facing: 32
-		SubCell: 1
-	Actor112: e1
-		Location: 60,78
-		Owner: USSR
-		Facing: 192
-		SubCell: 4
-	Actor113: e2
-		Location: 62,79
-		Owner: USSR
-		Facing: 160
-		SubCell: 4
-	Actor114: e1
-		Location: 57,82
-		Owner: USSR
-		Facing: 160
-		SubCell: 1
 	Actor115: e1
 		Location: 60,64
 		Owner: USSR
@@ -460,11 +417,6 @@ Actors:
 		SubCell: 3
 	Actor116: e2
 		Location: 68,45
-		Owner: USSR
-		Facing: 96
-		SubCell: 0
-	Actor117: e1
-		Location: 48,72
 		Owner: USSR
 		Facing: 96
 		SubCell: 0
@@ -505,58 +457,19 @@ Actors:
 		SubCell: 1
 	Actor125: dog
 		Location: 78,75
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 160
 		SubCell: 1
 	Actor126: e1
 		Location: 71,61
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 160
 		SubCell: 0
 	Actor127: dog
 		Location: 70,61
-		Owner: Ukraine
+		Owner: USSR
 		Facing: 96
 		SubCell: 4
-	Actor128: e1
-		Location: 50,46
-		Owner: Ukraine
-		Facing: 32
-		SubCell: 1
-	Actor129: e1
-		Location: 49,47
-		Owner: Ukraine
-		Facing: 64
-		SubCell: 0
-	Actor130: e2
-		Location: 49,49
-		Owner: Ukraine
-		Facing: 160
-		SubCell: 1
-	Actor131: e2
-		Location: 47,46
-		Owner: Ukraine
-		Facing: 96
-		SubCell: 3
-	Actor132: e2
-		Location: 48,63
-		Owner: Ukraine
-		SubCell: 1
-	Actor133: e1
-		Location: 49,63
-		Owner: Ukraine
-		Facing: 96
-		SubCell: 2
-	Actor134: e1
-		Location: 74,81
-		Owner: Ukraine
-		Facing: 64
-		SubCell: 3
-	Actor135: e2
-		Location: 75,83
-		Owner: Ukraine
-		Facing: 96
-		SubCell: 0
 	Actor136: e2
 		Location: 69,66
 		Owner: USSR
@@ -668,6 +581,13 @@ Actors:
 	Actor170: fenc
 		Location: 50,51
 		Owner: USSR
+	SovietKennel: kenn
+		Location: 58,68
+		Owner: USSR
+		Health: 99
+	SovietBarracks: barr
+		Location: 56,66
+		Owner: USSR
 	SovietWarfactory: weap
 		Location: 60,66
 		Owner: USSR
@@ -676,6 +596,80 @@ Actors:
 		Owner: USSR
 		Health: 50
 		Facing: 160
+	PathGuard1: e1
+		Location: 50,72
+		Owner: USSR
+		Facing: 160
+		SubCell: 4
+	PathGuard2: e1
+		Location: 49,58
+		Owner: USSR
+		Facing: 192
+		SubCell: 0
+	PathGuard3: e1
+		Location: 51,58
+		Owner: USSR
+		Facing: 32
+		SubCell: 1
+	PathGuard4: e1
+		Location: 60,78
+		Owner: USSR
+		Facing: 192
+		SubCell: 4
+	PathGuard5: e2
+		Location: 62,79
+		Owner: USSR
+		Facing: 160
+		SubCell: 4
+	PathGuard6: e1
+		Location: 48,72
+		Owner: USSR
+		Facing: 96
+		SubCell: 0
+	PathGuard7: e1
+		Location: 50,46
+		Owner: USSR
+		Facing: 32
+		SubCell: 1
+	PathGuard8: e1
+		Location: 49,47
+		Owner: USSR
+		Facing: 64
+		SubCell: 0
+	PathGuard9: e2
+		Location: 49,49
+		Owner: USSR
+		Facing: 160
+		SubCell: 1
+	PathGuard10: e2
+		Location: 47,46
+		Owner: USSR
+		Facing: 96
+		SubCell: 3
+	PathGuard11: e2
+		Location: 48,63
+		Owner: USSR
+		SubCell: 1
+	PathGuard12: e1
+		Location: 49,63
+		Owner: USSR
+		Facing: 96
+		SubCell: 2
+	PathGuard13: e1
+		Location: 74,81
+		Owner: USSR
+		Facing: 64
+		SubCell: 3
+	PathGuard14: e2
+		Location: 75,83
+		Owner: USSR
+		Facing: 96
+		SubCell: 0
+	PathGuard15: e1
+		Location: 57,82
+		Owner: USSR
+		Facing: 160
+		SubCell: 1
 	TruckEntryPoint: waypoint
 		Location: 49,44
 		Owner: Neutral
@@ -748,6 +742,9 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+	HARV:
+		Buildable:
+			Prerequisites: weap
 	APWR:
 		Buildable:
 			Prerequisites: ~disabled
@@ -803,9 +800,6 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	E7:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
 	FACF:
