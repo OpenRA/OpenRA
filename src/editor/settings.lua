@@ -268,16 +268,17 @@ function SettingsRestorePackage(package)
   return outtab
 end
 
-function SettingsSavePackage(package, values)
+function SettingsSavePackage(package, values, opts)
   local packagename = "/package/"..package
   local path = settings:GetPath()
   local mdb = require('mobdebug')
 
+  local options = {comment = false, nocode = true, sortkeys = false, compact = true}
+  for k,v in pairs(opts or {}) do options[k] = v end
+
   settings:DeleteGroup(packagename)
   settings:SetPath(packagename)
-  for k,v in pairs(values or {}) do
-    settings:Write(k, mdb.line(v, {comment = false, nocode = true, sortkeys = false, compact = true}))
-  end
+  for k,v in pairs(values or {}) do settings:Write(k, mdb.line(v, options)) end
   settings:SetPath(path)
 end
 
