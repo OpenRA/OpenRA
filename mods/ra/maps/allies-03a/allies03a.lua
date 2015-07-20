@@ -16,7 +16,13 @@ else
 	ChangeStance = true
 end
 
-IdleHunt = function(actor) Trigger.OnIdle(actor, actor.Hunt) end
+IdleHunt = function(actor)
+	Trigger.OnIdle(actor, function(a)
+		if a.IsInWorld then
+			a.Hunt()
+		end
+	end)
+end
 
 ProduceUnits = function(factory, count)
 	if ussr.IsProducing("e1") then

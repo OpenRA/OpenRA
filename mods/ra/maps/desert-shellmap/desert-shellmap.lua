@@ -36,9 +36,17 @@ ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Par
 BindActorTriggers = function(a)
 	if a.HasProperty("Hunt") then
 		if a.Owner == allies then
-			Trigger.OnIdle(a, a.Hunt)
+			Trigger.OnIdle(a, function(a)
+				if a.IsInWorld then
+					a.Hunt()
+				end
+			end)
 		else
-			Trigger.OnIdle(a, function(a) a.AttackMove(AlliedTechnologyCenter.Location) end)
+			Trigger.OnIdle(a, function(a)
+				if a.IsInWorld then
+					a.AttackMove(AlliedTechnologyCenter.Location)
+				end
+			end)
 		end
 	end
 

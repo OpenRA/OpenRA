@@ -60,7 +60,11 @@ ParadropSovietUnits = function()
 	local units = powerproxy.SendParatroopers(MCVDeployLocation.CenterPosition, false, 256 - 53)
 
 	Utils.Do(units, function(a)
-		Trigger.OnIdle(a, a.Hunt)
+		Trigger.OnIdle(a, function(actor)
+			if actor.IsInWorld then
+				actor.Hunt()
+			end
+		end)
 	end)
 
 	powerproxy.Destroy()
