@@ -22,14 +22,20 @@ namespace OpenRA.Mods.Common.Effects
 	class LaserZapInfo : IProjectileInfo
 	{
 		public readonly int BeamWidth = 2;
+
 		public readonly int BeamDuration = 10;
+
 		public readonly bool UsePlayerColor = false;
+
 		[Desc("Laser color in (A,)R,G,B.")]
 		public readonly Color Color = Color.Red;
+
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
+
 		[Desc("Sequence of impact animation to use.")]
-		public readonly string HitAnimSequence = "idle";
+		[SequenceReference("HitAnim")] public readonly string HitAnimSequence = "idle";
+
 		public readonly string HitAnimPalette = "effect";
 
 		public IEffect Create(ProjectileArgs args)

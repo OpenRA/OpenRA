@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Image to display.")]
 		public readonly string Image = null;
 
-		[Desc("Loop this sequence of Image while this projectile is moving."), SequenceReference("Image")]
-		public readonly string Sequence = "idle";
+		[Desc("Loop this sequence of Image while this projectile is moving.")]
+		[SequenceReference("Image")] public readonly string Sequence = "idle";
 
 		[Desc("The palette used to draw this projectile.")]
 		public readonly string Palette = "effect";
