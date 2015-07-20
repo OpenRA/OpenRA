@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new Exception("No modifiers in " + modifierType + " for " + actorType);
 			this.info = info;
 			IsTraitDisabled = info.UpgradeTypes.Length > 0 && info.BaseLevel > 0;
+			level = IsTraitDisabled ? 0 : info.BaseLevel;
 		}
 
 		public bool AcceptsUpgradeLevel(Actor self, string type, int level)
