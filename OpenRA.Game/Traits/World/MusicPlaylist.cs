@@ -48,6 +48,8 @@ namespace OpenRA.Traits
 		public readonly bool IsMusicInstalled;
 		public readonly bool IsMusicAvailable;
 
+		public bool AmbientMusic;
+
 		MusicInfo currentSong;
 		bool repeat;
 
@@ -72,6 +74,7 @@ namespace OpenRA.Traits
 			{
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
 				repeat = info.LoopStartingMusic;
+				AmbientMusic = true;
 			}
 			else
 			{
@@ -111,6 +114,7 @@ namespace OpenRA.Traits
 				{
 					currentSong = world.Map.Rules.Music[info.VictoryMusic];
 					repeat = info.LoopVictoryMusic;
+					AmbientMusic = true;
 				}
 			}
 			else
@@ -123,6 +127,7 @@ namespace OpenRA.Traits
 				{
 					currentSong = world.Map.Rules.Music[info.DefeatMusic];
 					repeat = info.LoopDefeatMusic;
+					AmbientMusic = true;
 				}
 			}
 
@@ -137,8 +142,11 @@ namespace OpenRA.Traits
 
 			Sound.PlayMusicThen(currentSong, () =>
 			{
-				if (!repeat)
-					currentSong = GetNextSong();
+					if (!repeat)
+					{
+						currentSong = GetNextSong();
+						AmbientMusic = false;
+					}
 
 				Play();
 			});
@@ -157,6 +165,7 @@ namespace OpenRA.Traits
 				if (!repeat)
 					currentSong = GetNextSong();
 
+				AmbientMusic = false;
 				Play();
 			});
 		}
