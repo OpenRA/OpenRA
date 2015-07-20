@@ -64,6 +64,9 @@ namespace OpenRA.Traits
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				yield break;
 
+			if (!(force || Game.Settings.Game.DrawTargetLine))
+				yield break;
+
 			if (targets == null || targets.Count == 0)
 				yield break;
 

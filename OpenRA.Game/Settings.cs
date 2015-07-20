@@ -140,6 +140,7 @@ namespace OpenRA
 		public bool UseClassicMouseStyle = false;
 		public bool AlwaysShowStatusBars = false;
 		public bool TeamHealthColors = false;
+		public bool DrawTargetLine = true;
 
 		public bool AllowDownloading = true;
 		public string MapRepository = "http://resource.openra.net/map/";
