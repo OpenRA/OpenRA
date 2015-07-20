@@ -1449,7 +1449,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (trait != null)
 						{
 							trait.Key = "DamageMultiplier@INVULNERABILITY_UPGRADE";
-							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+							trait.Value.Nodes.Add(new MiniYamlNode("Modifier", "0"));
 
 							// Use UpgradeMinEnabledLevel as BaseLevel; otherwise, 1
 							var min = trait.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
@@ -1474,7 +1474,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						foreach (var t in node.Value.Nodes.Where(n => n.Key.StartsWith("InvulnerabilityUpgrade@")))
 						{
 							t.Key = "DamageMultiplier@" + t.Key.Substring("InvulnerabilityUpgrade@".Length);
-							t.Value.Nodes.Add(new MiniYamlNode("Modifier", "0, 0"));
+							t.Value.Nodes.Add(new MiniYamlNode("Modifier", "0"));
 
 							// Use UpgradeMinEnabledLevel as BaseLevel; otherwise, 1
 							var min = t.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
