@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : ITraitInfo
+	class DisguiseInfo : IEffectiveOwnerInfo
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 

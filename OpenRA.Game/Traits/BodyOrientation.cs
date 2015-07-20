@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Traits
 {
-	public class BodyOrientationInfo : ITraitInfo, IBodyOrientationInfo
+	public class BodyOrientationInfo : IBodyOrientationInfo
 	{
 		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait")]
 		public readonly int QuantizedFacings = -1;

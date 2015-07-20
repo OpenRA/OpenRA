@@ -22,6 +22,13 @@ namespace OpenRA
 			: base("Multiple occurances of singleton trait "
 				+ info.Name.Substring(0, info.Name.Length - 4)
 				+ " when there only can be one.") { }
+
+		public MultipleOfSingletonTraitException(Type iface, string actor, Type first, Type next)
+			: base("Multiple occurances of singleton trait interface "
+				+ iface.Name.Substring(0, iface.Name.Length - 4) + " including "
+				+ first.Name.Substring(0, first.Name.Length - 4) + " & "
+				+ next.Name.Substring(0, next.Name.Length - 4)
+				+ " when there can be no more than one.") { }
 	}
 
 	/// <summary>
@@ -133,24 +140,37 @@ namespace OpenRA
 				return constructOrderCache;
 
 			List<ITraitInfo> traitInfos = new List<ITraitInfo>(Traits.WithInterface<ITraitInfo>());
-			HashSet<Type> singletons = new HashSet<Type>(); // Track singletons added
+			Dictionary<Type, Type> singletons = new Dictionary<Type, Type>(); // Track singletons added
 
 			// Note explicit singletons and throw if there are multiple of the same type.
 			foreach (var ti in traitInfos)
-				if (!(ti is IImplicitSingletonTraitInfo))
-					continue;
-				else if (singletons.Contains(ti.GetType()))
-					throw new MultipleOfSingletonTraitException(ti.GetType(), Name);
-				else
-					singletons.Add(ti.GetType());
+				if (ti is ISingletonTraitInfo)
+				{
+					if (singletons.ContainsKey(ti.GetType()))
+						throw new MultipleOfSingletonTraitException(ti.GetType(), Name);
+					else
+					{
+						var type = ti.GetType();
+						singletons.Add(type, type);
+						foreach (var i in ti.GetType().GetInterfaces().Where(s =>
+							s != typeof(ISingletonTraitInfo) && s != typeof(IImplicitSingletonTraitInfo)
+							&& typeof(ISingletonTraitInfo).IsAssignableFrom(s)))
+						{
+							if (singletons.ContainsKey(i))
+								throw new MultipleOfSingletonTraitException(i, Name, type, singletons[i]);
+							else
+								singletons.Add(i, type);
+						}
+					}
+				}
 
 			// Add implicit singletons recursively
 			Queue<ITraitInfo> queue = new Queue<ITraitInfo>(traitInfos);
 			while (queue.Any())
 				foreach (var t in SingletonsFor(queue.Dequeue()))
-					if (!singletons.Contains(t))
+					if (!singletons.ContainsKey(t))
 					{
-						singletons.Add(t);
+						singletons.Add(t, t);
 						ITraitInfo s = (ITraitInfo)t.GetConstructor(NoTypes).Invoke(NoObjects);
 						Traits.Add(s);
 						traitInfos.Add(s);

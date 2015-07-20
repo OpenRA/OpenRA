@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
+	public class HealthInfo : ISingletonTraitInfo, UsesInit<HealthInit>
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
