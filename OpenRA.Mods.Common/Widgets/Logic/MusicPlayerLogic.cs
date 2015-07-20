@@ -41,12 +41,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;
-			playButton.IsVisible = () => !Sound.MusicPlaying;
+			playButton.IsVisible = () => { return !Sound.MusicPlaying && currentSong != null; };
 
 			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = Sound.PauseMusic;
 			pauseButton.IsDisabled = noMusic;
-			pauseButton.IsVisible = () => Sound.MusicPlaying;
+			pauseButton.IsVisible = () => { return Sound.MusicPlaying && currentSong != null; };
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = () => { musicPlaylist.Stop(); };
@@ -94,10 +94,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				songWatcher.OnTick = () =>
 				{
-					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic)
-						return;
-
-					currentSong = Sound.CurrentMusic;
+					if (!musicPlaylist.CurrentSong().Hidden && currentSong != musicPlaylist.CurrentSong())
+						currentSong = musicPlaylist.CurrentSong();
 				};
 			}
 

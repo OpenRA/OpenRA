@@ -17,6 +17,8 @@ namespace OpenRA.GameRules
 	{
 		public readonly string Filename = null;
 		public readonly string Title = null;
+		[Desc("Hide the song from the playlist UI.", "Hidden songs are still available to traits or Lua commands.")]
+		public readonly bool Hidden;
 		public int Length { get; private set; } // seconds
 		public bool Exists { get; private set; }
 
@@ -26,6 +28,8 @@ namespace OpenRA.GameRules
 
 			var nd = value.ToDictionary();
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
+			if (nd.ContainsKey("Hidden"))
+				bool.TryParse(nd["Hidden"].Value, out Hidden);
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
 			if (!GlobalFileSystem.Exists(Filename))
 				return;
