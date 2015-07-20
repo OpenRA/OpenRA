@@ -41,6 +41,7 @@ namespace OpenRA.Traits
 		readonly MusicInfo[] random;
 		readonly MusicInfo[] playlist;
 
+		public readonly bool IsMusicInstalled;
 		public readonly bool IsMusicAvailable;
 		public bool CurrentSongIsBackground { get; private set; }
 
@@ -52,12 +53,16 @@ namespace OpenRA.Traits
 			this.info = info;
 			this.world = world;
 
-			IsMusicAvailable = world.Map.Rules.InstalledMusic.Any();
-
-			playlist = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
-
-			if (!IsMusicAvailable)
+			IsMusicInstalled = world.Map.Rules.InstalledMusic.Any();
+			if (!IsMusicInstalled)
 				return;
+
+			playlist = world.Map.Rules.InstalledMusic
+				.Where(a => !a.Value.Hidden)
+				.Select(a => a.Value)
+				.ToArray();
+
+			IsMusicAvailable = playlist.Any();
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 
@@ -100,9 +105,6 @@ namespace OpenRA.Traits
 
 		public void GameOver(World world)
 		{
-			if (!IsMusicAvailable)
-				return;
-
 			if (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Won)
 			{
 				if (SongExists(info.VictoryMusic))
@@ -125,7 +127,7 @@ namespace OpenRA.Traits
 
 		void Play()
 		{
-			if (!SongExists(currentSong) || !IsMusicAvailable)
+			if (!SongExists(currentSong))
 				return;
 
 			Sound.PlayMusicThen(currentSong, () =>
@@ -139,7 +141,7 @@ namespace OpenRA.Traits
 
 		public void Play(MusicInfo music)
 		{
-			if (music == null || !IsMusicAvailable)
+			if (music == null)
 				return;
 
 			currentSong = music;
@@ -150,7 +152,7 @@ namespace OpenRA.Traits
 
 		public void Play(MusicInfo music, Action onComplete)
 		{
-			if (music == null || !IsMusicAvailable)
+			if (music == null)
 				return;
 
 			currentSong = music;
