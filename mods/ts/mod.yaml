@@ -201,6 +201,8 @@ ContentInstaller:
 		.: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
+	InstallShieldCABFilePackageIds: 332:CRC32
+	InstallShieldCABFileIds: 323, 364
 
 ServerTraits:
 	LobbyCommands

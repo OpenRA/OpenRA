@@ -152,6 +152,8 @@ ContentInstaller:
 		.: INSTALL/REDALERT.MIX
 	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
+	InstallShieldCABFilePackageIds: 105
+	InstallShieldCABFileIds: 116
 
 ServerTraits:
 	LobbyCommands
