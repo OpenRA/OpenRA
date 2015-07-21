@@ -28,8 +28,11 @@ namespace OpenRA.Mods.Common.AI
 
 		int waitTicks;
 		Actor[] playerBuildings;
+		bool waterAvailable;
+		bool checkedWater;
 		int failCount;
 		int failRetryTicks;
+		int cachedBases;
 
 		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
 		{
@@ -51,6 +54,25 @@ namespace OpenRA.Mods.Common.AI
 			// Only update once per second or so
 			if (--waitTicks > 0)
 				return;
+
+			if (!checkedWater)
+			{
+				waterAvailable = ai.EnoughWaterToBuildNaval();
+				checkedWater = true;
+			}
+
+			if (!waterAvailable)
+			{
+				var currentBases = world.ActorsWithTrait<BaseBuilding>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				if (currentBases > cachedBases)
+				{
+					cachedBases = currentBases;
+					checkedWater = false;
+				}
+			}
 
 			playerBuildings = world.ActorsWithTrait<Building>()
 				.Where(a => a.Actor.Owner == player)
@@ -181,7 +203,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
-			// Make sure that we can can spend as fast as we are earning
+			// Make sure that we can spend as fast as we are earning
 			if (ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
 			{
 				var production = GetProducibleBuilding("Production", buildableThings);
@@ -192,6 +214,24 @@ namespace OpenRA.Mods.Common.AI
 				}
 
 				if (power != null && production != null && !HasSufficientPowerForActor(production))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
+				}
+			}
+
+			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
+			if (waterAvailable && ai.CloseEnoughToWater()
+				&& ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
+			{
+				var navalproduction = GetProducibleBuilding("NavalProduction", buildableThings);
+				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
+				{
+					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
+					return navalproduction;
+				}
+
+				if (power != null && navalproduction != null && !HasSufficientPowerForActor(navalproduction))
 				{
 					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
@@ -230,6 +270,14 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				if (ai.Info.BuildingLimits.ContainsKey(name) && ai.Info.BuildingLimits[name] <= count)
+					continue;
+
+				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
+				// and any structure providing buildable area close enough to that water.
+				// TODO: Extend this check to cover any naval structure, not just production.
+				if (ai.Info.BuildingCommonNames.ContainsKey("NavalProduction")
+					&& ai.Info.BuildingCommonNames["NavalProduction"].Contains(name)
+					&& (!waterAvailable || !ai.CloseEnoughToWater()))
 					continue;
 
 				// Will this put us into low power?

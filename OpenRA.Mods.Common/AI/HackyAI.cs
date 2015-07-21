@@ -92,6 +92,11 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
 
+		[Desc("Radius in cells around each building with ProvideBuildableArea",
+		"to check for a 3x3 area of water where naval structures can be built.",
+		"Should match maximum adjacency of naval structures.")]
+		public readonly int CheckForWaterRadius = 8;
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
@@ -255,6 +260,58 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
 				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
+		}
+
+		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
+		public bool EnoughWaterToBuildNaval()
+		{
+			var baseBuildings = World.Actors.Where(
+				a => a.Owner == Player
+					&& a.HasTrait<BaseBuilding>()
+					&& !a.HasTrait<Mobile>());
+
+			foreach (var b in baseBuildings)
+			{
+				// TODO: Unhardcode terrain type
+				var playerWorld = Player.World;
+				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
+					.Where(c => playerWorld.Map.Contains(c)
+						&& playerWorld.Map.GetTerrainInfo(c).Type == "Water"
+						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
+							.All(a => playerWorld.Map.GetTerrainInfo(a).Type == "Water"))
+					.Count();
+
+				if (countWaterCells > 0)
+					return true;
+			}
+
+			return false;
+		}
+
+		// Check whether we have at least one building providing buildable area close enough to water to build naval structures
+		public bool CloseEnoughToWater()
+		{
+			var areaProviders = World.Actors.Where(
+				a => a.Owner == Player
+					&& a.HasTrait<GivesBuildableArea>()
+					&& !a.HasTrait<Mobile>());
+
+			foreach (var a in areaProviders)
+			{
+				// TODO: Unhardcode terrain type
+				var playerWorld = Player.World;
+				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
+					.Where(c => playerWorld.Map.Contains(c)
+						&& playerWorld.Map.GetTerrainInfo(c).Type == "Water"
+						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
+							.All(b => playerWorld.Map.GetTerrainInfo(b).Type == "Water"))
+					.Count();
+
+				if (adjacentWater > 0)
+					return true;
+			}
+
+			return false;
 		}
 
 		public void QueueOrder(Order order)
