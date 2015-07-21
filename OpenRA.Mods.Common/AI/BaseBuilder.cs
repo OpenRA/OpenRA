@@ -130,22 +130,27 @@ namespace OpenRA.Mods.Common.AI
 			return available.RandomOrDefault(ai.Random);
 		}
 
+		bool HasSufficientPowerForActor(ActorInfo actorInfo)
+		{
+			return (actorInfo.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1)
+				.Sum(p => p.Amount) + playerPower.ExcessPower) >= ai.Info.MinimumExcessPower;
+		}
+
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
 
+			// This gets used quite a bit, so let's cache it here
+			var power = GetProducibleBuilding("Power", buildableThings,
+				a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
+
 			// First priority is to get out of a low power situation
 			if (playerPower.ExcessPower < ai.Info.MinimumExcessPower)
 			{
-				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
 				if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount) > 0)
 				{
-					// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
-					if (playerPower.PowerOutageRemainingTicks <= 0)
-					{
-						HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
-						return power;
-					}
+					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -153,10 +158,16 @@ namespace OpenRA.Mods.Common.AI
 			if (!ai.HasAdequateProc() || !ai.HasMinimumProc())
 			{
 				var refinery = GetProducibleBuilding("Refinery", buildableThings);
-				if (refinery != null)
+				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
 					return refinery;
+				}
+
+				if (power != null && refinery != null && !HasSufficientPowerForActor(refinery))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -164,10 +175,16 @@ namespace OpenRA.Mods.Common.AI
 			if (ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
 			{
 				var production = GetProducibleBuilding("Production", buildableThings);
-				if (production != null)
+				if (production != null && HasSufficientPowerForActor(production))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
 					return production;
+				}
+
+				if (power != null && production != null && !HasSufficientPowerForActor(production))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -175,10 +192,16 @@ namespace OpenRA.Mods.Common.AI
 			if (playerResources.AlertSilo)
 			{
 				var silo = GetProducibleBuilding("Silo", buildableThings);
-				if (silo != null)
+				if (silo != null && HasSufficientPowerForActor(silo))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
 					return silo;
+				}
+
+				if (power != null && silo != null && !HasSufficientPowerForActor(silo))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -200,23 +223,18 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				// Will this put us into low power?
-				var actor = world.Map.Rules.Actors[frac.Key];
-				var pis = actor.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
-				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
+				var actor = world.Map.Rules.Actors[name];
+				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || !HasSufficientPowerForActor(actor))
 				{
 					// Try building a power plant instead
-					var power = GetProducibleBuilding("Power",
-						buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount));
 					if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount) > 0)
 					{
-						// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
 						if (playerPower.PowerOutageRemainingTicks > 0)
-							HackyAI.BotDebug("AI: {0} is suffering from a power outage; not going to build {1}", queue.Actor.Owner, power.Name);
+							HackyAI.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
 						else
-						{
 							HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
-							return power;
-						}
+
+						return power;
 					}
 				}
 
