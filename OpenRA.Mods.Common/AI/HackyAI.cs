@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
 
+		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
+		public readonly int MinOrderQuotientPerTick = 5;
+
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
@@ -58,8 +61,12 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("How long to wait (in ticks) between structure production checks ticks when actively building things.")]
 		public readonly int StructureProductionActiveDelay = 10;
 
-		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
-		public readonly int MinOrderQuotientPerTick = 5;
+		[Desc("How long to wait (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
+		public readonly int StructureProductionResumeDelay = 1500;
+
+		[Desc("After how many failed attempts to place a structure should AI give up and wait",
+		"for StructureProductionResumeDelay before retrying.")]
+		public readonly int MaximumFailedPlacementAttempts = 3;
 
 		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
 		public readonly int MinimumDefenseRadius = 5;

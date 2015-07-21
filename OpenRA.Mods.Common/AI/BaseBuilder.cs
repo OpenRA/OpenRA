@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.AI
 
 		int waitTicks;
 		Actor[] playerBuildings;
+		int failCount;
+		int failRetryTicks;
 
 		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
 		{
@@ -37,10 +39,15 @@ namespace OpenRA.Mods.Common.AI
 			playerPower = pm;
 			playerResources = pr;
 			this.category = category;
+			failRetryTicks = ai.Info.StructureProductionResumeDelay;
 		}
 
 		public void Tick()
 		{
+			// If failed to place something N consecutive times, wait M ticks until resuming building production
+			if (failCount >= ai.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
+				failCount = 0;
+
 			// Only update once per second or so
 			if (--waitTicks > 0)
 				return;
@@ -63,7 +70,7 @@ namespace OpenRA.Mods.Common.AI
 			var currentBuilding = queue.CurrentItem();
 
 			// Waiting to build something
-			if (currentBuilding == null)
+			if (currentBuilding == null && failCount < ai.Info.MaximumFailedPlacementAttempts)
 			{
 				var item = ChooseBuildingToBuild(queue);
 				if (item == null)
@@ -77,6 +84,7 @@ namespace OpenRA.Mods.Common.AI
 				// Production is complete
 				// Choose the placement logic
 				// HACK: HACK HACK HACK
+				// TODO: Derive this from BuildingCommonNames instead
 				var type = BuildingType.Building;
 				if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<AttackBaseInfo>())
 					type = BuildingType.Defense;
@@ -88,9 +96,11 @@ namespace OpenRA.Mods.Common.AI
 				{
 					HackyAI.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
 					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+					failCount += failCount;
 				}
 				else
 				{
+					failCount = 0;
 					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
 					{
 						TargetLocation = location.Value,
