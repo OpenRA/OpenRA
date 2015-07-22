@@ -700,7 +700,7 @@ function CreateEditor(bare)
   editor:SetTabWidth(tonumber(edcfg.tabwidth) or 2)
   editor:SetIndent(tonumber(edcfg.tabwidth) or 2)
   editor:SetUseTabs(edcfg.usetabs and true or false)
-  editor:SetIndentationGuides(edcfg.indentguide and true or false)
+  editor:SetIndentationGuides(tonumber(edcfg.indentguide) or (edcfg.indentguide and true or false))
   editor:SetViewWhiteSpace(edcfg.whitespace and true or false)
 
   if (edcfg.usewrap) then
