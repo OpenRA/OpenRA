@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -113,7 +114,15 @@ namespace OpenRA.Mods.D2k.Traits
 			locked = false;
 
 			if (afterLandActivity != null)
-				self.QueueActivity(false, afterLandActivity);
+			{
+				// HACK: Harvesters need special treatment to avoid getting stuck on resource fields,
+				// so if a Harvester's afterLandActivity is not DeliverResources, queue a new FindResources activity
+				var findResources = self.HasTrait<Harvester>() && !(afterLandActivity is DeliverResources);
+				if (findResources)
+					self.QueueActivity(new FindResources(self));
+				else
+					self.QueueActivity(false, afterLandActivity);
+			}
 		}
 
 		public bool Reserve(Actor carrier)
@@ -148,7 +157,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (locked || !WantsTransport)
 				return false;
 
-			// Last change to change our mind...
+			// Last chance to change our mind...
 			var destPos = self.World.Map.CenterOfCell(Destination);
 			if ((self.CenterPosition - destPos).LengthSquared < info.MinDistance.LengthSquared)
 			{
