@@ -319,7 +319,8 @@ function CommandBarScoreItems(t, pattern, limit)
   -- anchor for 1-2 symbol patterns to speed up search
   local needanchor = prefilter and prefilter * 4 <= #t and plen <= 2
   local filter = prefilter and prefilter <= #t
-    and pattern:gsub("[^%w_]+",""):lower():gsub(".", "%1.*"):gsub("%.%*$","")
+    -- expand `abc` into `a.*b.*c`, but limit the prefix to avoid penalty for `s.*s.*s.*....`
+    and pattern:gsub("[^%w_]+",""):sub(1,4):lower():gsub(".", "%1.*"):gsub("%.%*$","")
     or nil
   for _, v in ipairs(t) do
     if #v >= plen then
