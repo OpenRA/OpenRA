@@ -135,12 +135,15 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			// Is the actor disabled?
 			if (moveDisablers.Any(d => d.MoveDisabled(self)))
 				return this;
 
+			// Is the actor at its destination?
 			if (destination == mobile.ToCell)
 				return NextActivity;
 
+			// If no path calculated, do it now
 			if (path == null)
 			{
 				if (mobile.TicksBeforePathing > 0)
@@ -153,6 +156,7 @@ namespace OpenRA.Mods.Common.Activities
 				SanityCheckPath();
 			}
 
+			// No more paths. We've arrived at destination.
 			if (path.Count == 0)
 			{
 				destination = mobile.ToCell;
@@ -165,6 +169,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextCell == null)
 				return this;
 
+			// Check if a turn is required. If so,
+			// then precede a Turn activity and then continue with the move
 			var firstFacing = map.FacingBetween(mobile.FromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
@@ -209,6 +215,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		Pair<CPos, SubCell>? NextCellToProcess(Actor self)
 		{
+			// The only way that this conditional is true is if we come from a
+			// MoveFirstHalf activity
 			if (path.Count == 0)
 				return null;
 
@@ -296,6 +304,8 @@ namespace OpenRA.Mods.Common.Activities
 			return Target.None;
 		}
 
+		// NOTE: This class is uncancellable until it completes its intended move...
+		// If we could solve this, we could enable path smoothing.
 		abstract class MovePart : Activity
 		{
 			protected readonly Move Move;
@@ -335,6 +345,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
+
 				UpdateVisuals(self, mobile);
 
 				return ret;
@@ -355,7 +366,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			void UpdateVisuals(Actor self, Mobile mobile)
 			{
-				// avoid division through zero
+				// Avoid division through zero
 				if (MoveFractionTotal != 0)
 					mobile.SetVisualPosition(self, WPos.Lerp(from, to, moveFraction, MoveFractionTotal));
 				else
@@ -375,6 +386,9 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
+		/// <summary>
+		/// Performs the movement from a world position of a cell to another
+		/// </summary>
 		class MoveFirstHalf : MovePart
 		{
 			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
@@ -391,11 +405,15 @@ namespace OpenRA.Mods.Common.Activities
 				var fromSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.ToSubCell);
 
+				// This piece of code tries to emulate a "smooth" rotation
+				// if the next point in the path will require rotation.
 				var nextCell = parent.NextCellToProcess(self);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
 					{
+						// This is planning another move between 2 cells. This responsibility
+						// should be left to another class (maybe Move itself?)
 						var nextSubcellOffset = self.World.Map.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
 							Move,
@@ -413,6 +431,8 @@ namespace OpenRA.Mods.Common.Activities
 					parent.path.Add(nextCell.Value.First);
 				}
 
+				// Start the second half of cell move, that, once completed,
+				// will notify any finishMove events
 				var ret2 = new MoveSecondHalf(
 					Move,
 					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
@@ -421,12 +441,20 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
 
+				// Raises an "event" telling subscribed units that this one is entering
+				// TODO: Maybe replace this by a real event in the future?
 				mobile.EnteringCell(self);
+
+				// Set the unit as if it arrived to its destination
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				return ret2;
 			}
 		}
 
+		/// <summary>
+		/// This class does the second part of a movement. As part of that, it notifies
+		/// any possible crush in the cell once movement is terminated.
+		/// </summary>
 		class MoveSecondHalf : MovePart
 		{
 			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
