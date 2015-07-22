@@ -72,7 +72,7 @@ namespace OpenRA
 						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
 
-						var targetActorId = flags.HasField(OrderFields.TargetActor) ? r.ReadUInt32() : 0xffffffff;
+						var targetActorId = flags.HasField(OrderFields.TargetActor) ? r.ReadUInt32() : uint.MaxValue;
 						var targetLocation = (CPos)(flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero);
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
@@ -104,28 +104,20 @@ namespace OpenRA
 
 		static uint UIntFromActor(Actor a)
 		{
-			if (a == null) return 0xffffffff;
+			if (a == null) return uint.MaxValue;
 			return a.ActorID;
 		}
 
 		static bool TryGetActorFromUInt(World world, uint aID, out Actor ret)
 		{
-			if (aID == 0xFFFFFFFF)
+			if (aID == uint.MaxValue)
 			{
 				ret = null;
 				return true;
 			}
-			else
-			{
-				foreach (var a in world.Actors.Where(x => x.ActorID == aID))
-				{
-					ret = a;
-					return true;
-				}
 
-				ret = null;
-				return false;
-			}
+			ret = world.GetActorById(aID);
+			return ret != null;
 		}
 
 		// Named constructors for Orders.

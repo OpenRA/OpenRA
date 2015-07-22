@@ -26,15 +26,8 @@ namespace OpenRA
 
 	public sealed class World : IDisposable
 	{
-		class ActorIDComparer : IComparer<Actor>
-		{
-			public static readonly ActorIDComparer Instance = new ActorIDComparer();
-			ActorIDComparer() { }
-			public int Compare(Actor x, Actor y) { return x.ActorID.CompareTo(y.ActorID); }
-		}
-
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
-		readonly SortedSet<Actor> actors = new SortedSet<Actor>(ActorIDComparer.Instance);
+		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
@@ -225,7 +218,7 @@ namespace OpenRA
 		public void Add(Actor a)
 		{
 			a.IsInWorld = true;
-			actors.Add(a);
+			actors.Add(a.ActorID, a);
 			ActorAdded(a);
 
 			foreach (var t in a.TraitsImplementing<INotifyAddedToWorld>())
@@ -235,7 +228,7 @@ namespace OpenRA
 		public void Remove(Actor a)
 		{
 			a.IsInWorld = false;
-			actors.Remove(a);
+			actors.Remove(a.ActorID);
 			ActorRemoved(a);
 
 			foreach (var t in a.TraitsImplementing<INotifyRemovedFromWorld>())
@@ -283,7 +276,7 @@ namespace OpenRA
 							ni.Trait.TickIdle(ni.Actor);
 
 				using (new PerfSample("tick_activities"))
-					foreach (var a in actors)
+					foreach (var a in actors.Values)
 						a.Tick();
 
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
@@ -301,8 +294,16 @@ namespace OpenRA
 			ActorsWithTrait<ITickRender>().DoTimed(x => x.Trait.TickRender(wr, x.Actor), "Render");
 		}
 
-		public IEnumerable<Actor> Actors { get { return actors; } }
+		public IEnumerable<Actor> Actors { get { return actors.Values; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+
+		public Actor GetActorById(uint actorId)
+		{
+			Actor a;
+			if (actors.TryGetValue(actorId, out a))
+				return a;
+			return null;
+		}
 
 		uint nextAID = 0;
 		internal uint NextAID()
@@ -367,7 +368,7 @@ namespace OpenRA
 			Sound.StopVideo();
 
 			// Dispose newer actors first, and the world actor last
-			foreach (var a in actors.Reverse())
+			foreach (var a in actors.Values.Reverse())
 				a.Dispose();
 
 			// Actor disposals are done in a FrameEndTask
