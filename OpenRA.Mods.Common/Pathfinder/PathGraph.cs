@@ -73,8 +73,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly MobileInfo mobileInfo;
 		CellLayer<CellInfo> cellInfo;
 
-		public const int InvalidNode = int.MaxValue;
-
 		public PathGraph(CellLayer<CellInfo> cellInfo, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
 		{
 			this.cellInfo = cellInfo;
@@ -127,11 +125,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			int movementCost;
 			if (mobileInfo.CanEnterCell(
-				World as World,
-				Actor as Actor,
+				World,
+				Actor,
 				destNode,
 				out movementCost,
-				IgnoredActor as Actor,
+				IgnoredActor,
 				checkConditions) && !(CustomBlock != null && CustomBlock(destNode)))
 			{
 				return CalculateCellCost(destNode, direction, movementCost);

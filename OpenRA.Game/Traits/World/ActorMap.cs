@@ -212,35 +212,36 @@ namespace OpenRA.Traits
 					yield return i.Actor;
 		}
 
-		public bool HasFreeSubCell(CPos a, bool checkTransient = true)
+		public bool HasFreeSubCell(CPos cell, bool checkTransient = true)
 		{
-			return FreeSubCell(a, SubCell.Any, checkTransient) != SubCell.Invalid;
+			return FreeSubCell(cell, SubCell.Any, checkTransient) != SubCell.Invalid;
 		}
 
-		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
+		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
 		{
-			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkTransient))
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(cell, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
-			if (!AnyUnitsAt(a))
+			if (!AnyUnitsAt(cell))
 				return map.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkTransient))
+				if (i != (int)preferredSubCell && !AnyUnitsAt(cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
+
 			return SubCell.Invalid;
 		}
 
-		public SubCell FreeSubCell(CPos a, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
+		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(a, preferredSubCell, checkIfBlocker))
+			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(cell, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
-			if (!AnyUnitsAt(a))
+			if (!AnyUnitsAt(cell))
 				return map.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyUnitsAt(a, (SubCell)i, checkIfBlocker))
+				if (i != (int)preferredSubCell && !AnyUnitsAt(cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 			return SubCell.Invalid;
 		}
@@ -325,7 +326,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		void RemoveInfluenceInner(ref InfluenceNode influenceNode, Actor toRemove)
+		static void RemoveInfluenceInner(ref InfluenceNode influenceNode, Actor toRemove)
 		{
 			if (influenceNode == null)
 				return;

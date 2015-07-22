@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			// This assumes that the SubCell does not change during the path traversal
 			var tilesInRange = world.Map.FindTilesInCircle(targetCell, range.Length / 1024 + 1)
 				.Where(t => (world.Map.CenterOfCell(t) - target).LengthSquared <= range.LengthSquared
-							&& mi.CanEnterCell(self.World as World, self as Actor, t));
+							&& mi.CanEnterCell(self.World, self, t));
 
 			// See if there is any cell within range that does not involve a cross-domain request
 			// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win

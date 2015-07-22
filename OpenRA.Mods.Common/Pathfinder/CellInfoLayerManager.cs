@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				{
 					defaultCellInfoLayer =
 						CellLayer<CellInfo>.CreateInstance(
-							mpos => new CellInfo(int.MaxValue, int.MaxValue, mpos.ToCPos(map as Map), CellStatus.Unvisited),
+							mpos => new CellInfo(int.MaxValue, int.MaxValue, mpos.ToCPos(map), CellStatus.Unvisited),
 							new Size(map.MapSize.X, map.MapSize.Y),
 							map.TileShape);
 				}
