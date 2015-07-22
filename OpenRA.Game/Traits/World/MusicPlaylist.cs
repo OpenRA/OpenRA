@@ -45,7 +45,10 @@ namespace OpenRA.Traits
 		readonly MusicInfo[] random;
 		readonly MusicInfo[] playlist;
 
+		public readonly bool IsMusicInstalled;
 		public readonly bool IsMusicAvailable;
+
+		public bool AmbientMusic;
 
 		MusicInfo currentSong;
 		bool repeat;
@@ -54,12 +57,14 @@ namespace OpenRA.Traits
 		{
 			this.info = info;
 
-			IsMusicAvailable = world.Map.Rules.InstalledMusic.Any();
+			IsMusicInstalled = world.Map.Rules.InstalledMusic.Any();
 
-			playlist = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
-
-			if (!IsMusicAvailable)
+			if (!IsMusicInstalled)
 				return;
+
+			playlist = world.Map.Rules.InstalledMusic.Where(a => !a.Value.Hidden).Select(a => a.Value).ToArray();
+
+			IsMusicAvailable = playlist.Any();
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 
@@ -69,9 +74,13 @@ namespace OpenRA.Traits
 			{
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
 				repeat = info.LoopStartingMusic;
+				AmbientMusic = true;
 			}
 			else
 			{
+				if (!IsMusicAvailable)
+					return;
+
 				currentSong = Game.Settings.Sound.Shuffle ? random.First() : playlist.First();
 				repeat = Game.Settings.Sound.Repeat;
 			}
@@ -92,7 +101,7 @@ namespace OpenRA.Traits
 
 		public void GameOver(World world)
 		{
-			if (!IsMusicAvailable)
+			if (!IsMusicInstalled)
 				return;
 
 			var playedSong = currentSong;
@@ -105,6 +114,7 @@ namespace OpenRA.Traits
 				{
 					currentSong = world.Map.Rules.Music[info.VictoryMusic];
 					repeat = info.LoopVictoryMusic;
+					AmbientMusic = true;
 				}
 			}
 			else
@@ -117,6 +127,7 @@ namespace OpenRA.Traits
 				{
 					currentSong = world.Map.Rules.Music[info.DefeatMusic];
 					repeat = info.LoopDefeatMusic;
+					AmbientMusic = true;
 				}
 			}
 
@@ -126,13 +137,16 @@ namespace OpenRA.Traits
 
 		void Play()
 		{
-			if (currentSong == null || !IsMusicAvailable)
+			if (currentSong == null || !IsMusicInstalled)
 				return;
 
 			Sound.PlayMusicThen(currentSong, () =>
 			{
-				if (!repeat)
-					currentSong = GetNextSong();
+					if (!repeat)
+					{
+						currentSong = GetNextSong();
+						AmbientMusic = false;
+					}
 
 				Play();
 			});
@@ -140,7 +154,7 @@ namespace OpenRA.Traits
 
 		public void Play(MusicInfo music)
 		{
-			if (music == null || !IsMusicAvailable)
+			if (music == null || !IsMusicInstalled)
 				return;
 
 			currentSong = music;
@@ -151,6 +165,7 @@ namespace OpenRA.Traits
 				if (!repeat)
 					currentSong = GetNextSong();
 
+				AmbientMusic = false;
 				Play();
 			});
 		}
