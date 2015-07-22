@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.AI
 					return false;
 
 				HackyAI.BotDebug("AI: {0} is starting production of {1}".F(player, item.Name));
-				world.IssueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
+				ai.QueueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
 			}
 			else if (currentBuilding.Done)
 			{
@@ -87,11 +87,11 @@ namespace OpenRA.Mods.Common.AI
 				if (location == null)
 				{
 					HackyAI.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
-					world.IssueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 				}
 				else
 				{
-					world.IssueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
+					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
 					{
 						TargetLocation = location.Value,
 						TargetString = currentBuilding.Item,

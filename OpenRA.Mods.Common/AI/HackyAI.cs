@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("How long to wait (in ticks) between structure production checks ticks when actively building things.")]
 		public readonly int StructureProductionActiveDelay = 10;
 
+		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
+		public readonly int MinOrderQuotientPerTick = 5;
+
 		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
 		public readonly int MinimumDefenseRadius = 5;
 
@@ -189,7 +192,7 @@ namespace OpenRA.Mods.Common.AI
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		public const int FeedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
+		public const int FeedbackTime = 30; // ticks; = a bit over 1s. must be >= netlag.
 
 		public readonly World World;
 		public Map Map { get { return World.Map; } }
@@ -199,6 +202,8 @@ namespace OpenRA.Mods.Common.AI
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
+
+		readonly Queue<Order> orders = new Queue<Order>();
 
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
@@ -243,6 +248,11 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
 				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
+		}
+
+		public void QueueOrder(Order order)
+		{
+			orders.Enqueue(order);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -449,6 +459,10 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var b in builders)
 				b.Tick();
+
+			var ordersToIssueThisTick = Math.Min((orders.Count + Info.MinOrderQuotientPerTick - 1) / Info.MinOrderQuotientPerTick, orders.Count);
+			for (var i = 0; i < ordersToIssueThisTick; i++)
+				World.IssueOrder(orders.Dequeue());
 		}
 
 		internal Actor ChooseEnemyTarget()
@@ -592,7 +606,7 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				World.IssueOrder(new Order("Harvest", a, false));
+				QueueOrder(new Order("Harvest", a, false));
 			}
 		}
 
@@ -606,7 +620,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var a in newUnits)
 			{
 				if (a.HasTrait<Harvester>())
-					World.IssueOrder(new Order("Harvest", a, false));
+					QueueOrder(new Order("Harvest", a, false));
 				else
 					unitsHangingAroundTheBase.Add(a);
 
@@ -702,7 +716,7 @@ namespace OpenRA.Mods.Common.AI
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
 
 			foreach (var a in buildings)
-				World.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
+				QueueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
 		}
 
 		// Won't work for shipyards...
@@ -734,7 +748,7 @@ namespace OpenRA.Mods.Common.AI
 				// Don't transform the mcv if it is a fact
 				// HACK: This needs to query against MCVs directly
 				if (mcv.HasTrait<Mobile>())
-					World.IssueOrder(new Order("DeployTransform", mcv, false));
+					QueueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
@@ -759,8 +773,8 @@ namespace OpenRA.Mods.Common.AI
 				if (desiredLocation == null)
 					continue;
 
-				World.IssueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
-				World.IssueOrder(new Order("DeployTransform", mcv, true));
+				QueueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
+				QueueOrder(new Order("DeployTransform", mcv, true));
 			}
 		}
 
@@ -814,7 +828,7 @@ namespace OpenRA.Mods.Common.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
 					waitingPowers[sp] += 10;
-					World.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					QueueOrder(new Order(sp.Info.OrderName, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -923,7 +937,7 @@ namespace OpenRA.Mods.Common.AI
 				ChooseUnitToBuild(queue);
 
 			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
-				World.IssueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
+				QueueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
 		}
 
 		void BuildUnit(string category, string name)
@@ -933,7 +947,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			if (Map.Rules.Actors[name] != null)
-				World.IssueOrder(Order.StartProduction(queue.Actor, name, 1));
+				QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -952,7 +966,7 @@ namespace OpenRA.Mods.Common.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
+					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
 				}
 			}
 
