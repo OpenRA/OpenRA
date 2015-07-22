@@ -315,16 +315,24 @@ function CommandBarScoreItems(t, pattern, limit)
   local r, plen = {}, #pattern
   local maxp = 0
   local num = 0
-  local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter <= #t
+  local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter
+  -- anchor for 1-2 symbol patterns to speed up search
+  local needanchor = prefilter and prefilter * 4 <= #t and plen <= 2
+  local filter = prefilter and prefilter <= #t
     and pattern:gsub("[^%w_]+",""):lower():gsub(".", "%1.*"):gsub("%.%*$","")
     or nil
   for _, v in ipairs(t) do
-    if #v >= plen and (not prefilter or v:lower():find(prefilter)) then
-      local p = score(pattern, v)
-      maxp = math.max(p, maxp)
-      if p > 1 and p > maxp / 4 then
-        num = num + 1
-        r[num] = {v, p}
+    if #v >= plen then
+      local match = filter and v:lower():find(filter)
+      -- check if the current name needs to be prefiltered or anchored (for better performance);
+      -- if it needs to be anchored, then anchor it at the beginning of the string or the word
+      if not filter or (match and (not needanchor or match == 1 or v:find("^[%p%s]", match-1))) then
+        local p = score(pattern, v)
+        maxp = math.max(p, maxp)
+        if p > 1 and p > maxp / 4 then
+          num = num + 1
+          r[num] = {v, p}
+        end
       end
     end
   end
