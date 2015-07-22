@@ -195,10 +195,24 @@ namespace OpenRA.Mods.Common.AI
 		public Map Map { get { return World.Map; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
+		int rushTicks;
+		int assignRolesTicks;
+		int attackForceTicks;
+		int minAttackForceDelayTicks;
+
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
 			World = init.World;
+
+			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
+			var smallFractionOfRushInterval = Info.RushInterval / 20;
+			rushTicks = World.SharedRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
+
+			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+			assignRolesTicks = World.SharedRandom.Next(0, Info.AssignRolesInterval);
+			attackForceTicks = World.SharedRandom.Next(0, Info.AttackForceInterval);
+			minAttackForceDelayTicks = World.SharedRandom.Next(0, Info.MinimumAttackForceDelay);
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -519,11 +533,6 @@ namespace OpenRA.Mods.Common.AI
 			squads.Add(ret);
 			return ret;
 		}
-
-		int assignRolesTicks = 0;
-		int rushTicks = 0;
-		int attackForceTicks = 0;
-		int minAttackForceDelayTicks = 0;
 
 		void AssignRolesToIdleUnits(Actor self)
 		{
