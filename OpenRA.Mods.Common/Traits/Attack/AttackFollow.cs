@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -33,9 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 			IsAttacking = Target.IsValidFor(self);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new AttackActivity(self, newTarget, allowMove);
+			return new AttackActivity(self, newTarget, allowMove, forceAttack);
 		}
 
 		public override void ResolveOrder(Actor self, Order order)
@@ -56,8 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 			readonly AttackFollow attack;
 			readonly IMove move;
 			readonly Target target;
+			readonly bool forceAttack;
 
-			public AttackActivity(Actor self, Target target, bool allowMove)
+			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
@@ -68,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 					move = null;
 
 				this.target = target;
+				this.forceAttack = forceAttack;
 			}
 
 			public override Activity Tick(Actor self)
@@ -78,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.IsDisabled())
 					return this;
 
-				var weapon = attack.ChooseArmamentForTarget(target);
+				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 				if (weapon != null)
 				{
 					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<IMoveInfo>())

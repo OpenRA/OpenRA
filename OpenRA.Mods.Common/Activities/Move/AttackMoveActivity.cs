@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (autoTarget != null && --scanTicks <= 0)
 			{
-				autoTarget.ScanAndAttack(self);
+				autoTarget.ScanAndAttack(self, true);
 				scanTicks = ScanInterval;
 			}
 

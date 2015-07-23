@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
@@ -19,6 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[Desc("Leap speed (in units/tick).")]
 		public readonly WDist Speed = new WDist(426);
+
 		public readonly WAngle Angle = WAngle.FromDegrees(20);
 
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
@@ -34,12 +37,12 @@ namespace OpenRA.Mods.RA.Traits
 			this.info = info;
 		}
 
-		public override void DoAttack(Actor self, Target target)
+		public override void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
 		{
 			if (target.Type != TargetType.Actor || !CanAttack(self, target))
 				return;
 
-			var a = ChooseArmamentForTarget(target);
+			var a = ChooseArmamentsForTarget(target, true).FirstOrDefault();
 			if (a == null)
 				return;
 

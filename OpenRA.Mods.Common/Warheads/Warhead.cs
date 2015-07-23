@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
 		/// <summary>Checks if the warhead is valid against (can do something to) the actor.</summary>
-		public bool IsValidAgainst(Actor victim, Actor firedBy)
+		public virtual bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			if (!AffectsParent && victim == firedBy)
 				return false;

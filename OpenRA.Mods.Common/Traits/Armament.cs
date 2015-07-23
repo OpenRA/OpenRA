@@ -65,6 +65,17 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WDist ModifiedRange { get; private set; }
 
+		public readonly Stance TargetStances = Stance.Enemy;
+		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
+
+		// TODO: instead of having multiple Armaments and unique AttackBase,
+		// an actor should be able to have multiple AttackBases with
+		// a single corresponding Armament each
+		public readonly string Cursor = "attack";
+
+		// TODO: same as above
+		public readonly string OutsideRangeCursor = "attackoutsiderange";
+
 		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)

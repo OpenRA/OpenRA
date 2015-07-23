@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
@@ -19,20 +20,24 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
+
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
 
 		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything.")]
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
+
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
 
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MinimumScanTimeInterval = 3;
+
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 8;
 
 		public readonly bool TargetWhenIdle = true;
+
 		public readonly bool TargetWhenDamaged = true;
 
 		public object Create(ActorInitializer init) { return new AutoTarget(init.Self, this); }
@@ -110,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var allowMovement = info.AllowMovement && Stance != UnitStance.Defend;
 			if (at == null || !at.IsReachableTarget(at.Target, allowMovement))
-				ScanAndAttack(self);
+				ScanAndAttack(self, allowMovement);
 		}
 
 		public void Tick(Actor self)
@@ -119,21 +124,24 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Actor ScanForTarget(Actor self, Actor currentTarget)
+		public Actor ScanForTarget(Actor self, Actor currentTarget, bool allowMove)
 		{
 			if (nextScanTime <= 0)
 			{
 				var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
 				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
-					return ChooseTarget(self, range);
+				{
+					nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
+					return ChooseTarget(self, range, allowMove);
+				}
 			}
 
 			return currentTarget;
 		}
 
-		public void ScanAndAttack(Actor self)
+		public void ScanAndAttack(Actor self, bool allowMove)
 		{
-			var targetActor = ScanForTarget(self, null);
+			var targetActor = ScanForTarget(self, null, allowMove);
 			if (targetActor != null)
 				Attack(self, targetActor);
 		}
@@ -146,18 +154,37 @@ namespace OpenRA.Mods.Common.Traits
 			attack.AttackTarget(target, false, info.AllowMovement && Stance != UnitStance.Defend);
 		}
 
-		Actor ChooseTarget(Actor self, WDist range)
+		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
 		{
-			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
-			return inRange
-				.Where(a =>
-					a.AppearsHostileTo(self) &&
-					!a.Info.HasTraitInfo<AutoTargetIgnoreInfo>() &&
-					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
-					self.Owner.CanTargetActor(a))
-				.ClosestTo(self);
+			// Armaments are enumerated in attack.Armaments in construct order
+			// When autotargeting, first choose targets according to the used armament construct order
+			// And then according to distance from actor
+			// This enables preferential treatment of certain armaments
+			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
+			var actrarms = inRange
+
+				// Select only the first compatible armament for each actor: if this actor is selected
+				// it will be thanks to the first armament anyways, since that is the first selection
+				// criterion
+				.Select(a => new KeyValuePair<Armament, Actor>(
+					attack.ChooseArmamentsForTarget(Target.FromActor(a), false)
+						.Where(arm => allowMove || arm.MaxRange().Length > (a.CenterPosition - self.CenterPosition).Length)
+						.FirstOrDefault(), a))
+
+				.Where(kv => kv.Key != null && kv.Value.TraitOrDefault<AutoTargetIgnore>() == null)
+				.GroupBy(kv => kv.Key, kv => kv.Value)
+				.ToDictionary(kv => kv.Key, kv => kv.ClosestTo(self));
+
+			foreach (var arm in attack.Armaments)
+			{
+				Actor actor;
+				if (actrarms.TryGetValue(arm, out actor))
+					return actor;
+			}
+
+			return null;
 		}
 	}
 

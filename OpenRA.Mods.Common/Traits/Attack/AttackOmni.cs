@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
 			return new SetTarget(this, newTarget);
 		}

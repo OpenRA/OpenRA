@@ -23,8 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
 
-		public readonly string Cursor = "attack";
-		public readonly string OutsideRangeCursor = "attackoutsiderange";
+		public readonly string Cursor = null;
+
+		public readonly string OutsideRangeCursor = null;
 
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
@@ -39,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
+		readonly string attackOrderName = "Attack";
+		readonly string forceAttackOrderName = "ForceAttack";
+
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
@@ -88,12 +92,12 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public virtual void DoAttack(Actor self, Target target)
+		public virtual void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
 		{
-			if (!CanAttack(self, target))
+			if (armaments == null && !CanAttack(self, target))
 				return;
 
-			foreach (var a in Armaments)
+			foreach (var a in armaments ?? Armaments)
 				a.CheckFire(self, facing.Value, target);
 		}
 
@@ -109,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield break;
 
 				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
-				yield return new AttackOrderTargeter(this, "Attack", 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, 6, negativeDamage);
 			}
 		}
 
@@ -120,11 +124,11 @@ namespace OpenRA.Mods.Common.Traits
 				switch (target.Type)
 				{
 					case TargetType.Actor:
-						return new Order("Attack", self, queued) { TargetActor = target.Actor };
+						return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 					case TargetType.FrozenActor:
-						return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
+						return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
 					case TargetType.Terrain:
-						return new Order("Attack", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+						return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
 				}
 			}
 
@@ -133,23 +137,46 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack")
+			var forceAttack = order.OrderString == forceAttackOrderName;
+			if (forceAttack || order.OrderString == attackOrderName)
 			{
 				var target = self.ResolveFrozenActorOrder(order, Color.Red);
 				if (!target.IsValidFor(self))
 					return;
 
 				self.SetTargetLine(target, Color.Red);
-				AttackTarget(target, order.Queued, true);
+				AttackTarget(target, order.Queued, true, forceAttack);
 			}
+		}
+
+		static Target TargetFromOrder(Actor self, Order order)
+		{
+			// Not targeting a frozen actor
+			if (order.ExtraData == 0)
+				return Target.FromOrder(self.World, order);
+
+			// Targeted an actor under the fog
+			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			if (frozenLayer == null)
+				return Target.Invalid;
+
+			var frozen = frozenLayer.FromID(order.ExtraData);
+			if (frozen == null)
+				return Target.Invalid;
+
+			// Target is still alive - resolve the real order
+			if (frozen.Actor != null && frozen.Actor.IsInWorld)
+				return Target.FromActor(frozen.Actor);
+
+			return Target.Invalid;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Attack" ? Info.Voice : null;
+			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
+		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
 
 		public bool HasAnyValidWeapons(Target t)
 		{
@@ -183,9 +210,30 @@ namespace OpenRA.Mods.Common.Traits
 				.Append(WDist.Zero).Max();
 		}
 
-		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World, self)); }
+		// Enumerates all armaments, that this actor possesses, that can be used against Target t
+		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack, bool onlyEnabled = true)
+		{
+			// If force-fire is not used, and the target requires force-firing or the target is
+			// terrain or invalid, no armaments can be used
+			if (!forceAttack && (t.RequiresForceFire || t.Type == TargetType.Terrain || t.Type == TargetType.Invalid))
+				return Enumerable.Empty<Armament>();
 
-		public void AttackTarget(Target target, bool queued, bool allowMove)
+			// Get target's owner; in case of terrain or invalid target there will be no problems
+			// with owner == null since forceFire will have to be true in this part of the method
+			// (short-circuiting in the logical expression below)
+			var owner = null as Player;
+			if (t.Type == TargetType.FrozenActor)
+				owner = t.FrozenActor.Owner;
+			else if (t.Type == TargetType.Actor)
+				owner = t.Actor.Owner;
+
+			return Armaments.Where(a => (!a.IsTraitDisabled || !onlyEnabled) &&
+				a.Weapon.IsValidAgainst(t, self.World, self) &&
+				(owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances)
+					.HasStance(self.Owner.Stances[owner])));
+		}
+
+		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
 		{
 			if (self.IsDisabled() || IsTraitDisabled)
 				return;
@@ -196,7 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			self.QueueActivity(GetAttackActivity(self, target, allowMove));
+			self.QueueActivity(GetAttackActivity(self, target, allowMove, forceAttack));
 		}
 
 		public bool IsReachableTarget(Target target, bool allowMove)
@@ -207,15 +255,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AttackOrderTargeter : IOrderTargeter
 		{
-			readonly bool negativeDamage;
 			readonly AttackBase ab;
 
-			public AttackOrderTargeter(AttackBase ab, string order, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, int priority, bool negativeDamage)
 			{
 				this.ab = ab;
-				this.OrderID = order;
+				this.OrderID = ab.attackOrderName;
 				this.OrderPriority = priority;
-				this.negativeDamage = negativeDamage;
 			}
 
 			public string OrderID { get; private set; }
@@ -226,30 +272,23 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				var a = ab.ChooseArmamentForTarget(target);
-				cursor = a != null && !target.IsInRange(self.CenterPosition, a.MaxRange())
-					? ab.Info.OutsideRangeCursor
-					: ab.Info.Cursor;
-
-				if (target.Type == TargetType.Actor && target.Actor == self)
-					return false;
-
-				if (!ab.HasAnyValidWeapons(target))
-					return false;
-
-				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
-					return true;
-
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				if (target.RequiresForceFire)
+				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
+				var a = ab.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
+				if (a == null)
 					return false;
 
-				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
+					: ab.Info.Cursor ?? a.Info.Cursor;
 
-				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
-				return self.Owner.Stances[owner] == targetableRelationship;
+				if (!forceAttack)
+					return true;
+
+				OrderID = ab.forceAttackOrderName;
+				return true;
 			}
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
@@ -259,24 +298,21 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				cursor = ab.Info.Cursor;
-
-				if (negativeDamage)
+				// Targeting the terrain is only possible with force-attack modifier
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) || !modifiers.HasModifier(TargetModifiers.ForceAttack))
 					return false;
 
-				if (!ab.HasAnyValidWeapons(Target.FromCell(self.World, location)))
+				var target = Target.FromCell(self.World, location);
+				var a = ab.ChooseArmamentsForTarget(target, true).FirstOrDefault();
+				if (a == null)
 					return false;
 
-				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
-				{
-					var targetRange = (self.World.Map.CenterOfCell(location) - self.CenterPosition).HorizontalLengthSquared;
-					if (targetRange > ab.GetMaximumRange().LengthSquared)
-						cursor = ab.Info.OutsideRangeCursor;
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
+					: ab.Info.Cursor ?? a.Info.Cursor;
 
-					return true;
-				}
-
-				return false;
+				OrderID = ab.forceAttackOrderName;
+				return true;
 			}
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)

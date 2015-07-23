@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			AttackPlaneInfo = info;
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
 			return new FlyAttack(self, newTarget);
 		}
