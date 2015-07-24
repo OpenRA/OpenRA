@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Mods.Common.Scripting;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -29,12 +30,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+				var objectives = world.LocalPlayer.PlayerActor.TraitOrDefault<MissionObjectives>();
 
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
 					if (world.LocalPlayer.WinState != WinState.Undefined)
-						Game.RunAfterTick(() =>
+						Game.RunAfterDelay(objectives != null ? objectives.Info.GameOverDelay : 0, () =>
 						{
 							world.LocalPlayer.Spectating = true;
 							playerRoot.RemoveChildren();

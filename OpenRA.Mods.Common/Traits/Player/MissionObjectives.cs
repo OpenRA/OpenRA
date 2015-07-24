@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class MissionObjectives : INotifyObjectivesUpdated, ISync, IResolveOrder
 	{
-		readonly MissionObjectivesInfo info;
+		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
 		public ReadOnlyList<MissionObjective> Objectives;
 
@@ -64,9 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 		// The player's WinState is only updated when his allies have all completed their objective as well.
 		public WinState WinStateCooperative { get; private set; }
 
-		public MissionObjectives(World world, MissionObjectivesInfo moInfo)
+		public MissionObjectives(World world, MissionObjectivesInfo info)
 		{
-			info = moInfo;
+			Info = info;
 			Objectives = new ReadOnlyList<MissionObjective>(objectives);
 		}
 
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var gameOver = players.All(p => p.WinState != WinState.Undefined || !p.HasObjectives);
 			if (gameOver)
-				Game.RunAfterDelay(info.GameOverDelay, () =>
+				Game.RunAfterDelay(Info.GameOverDelay, () =>
 				{
 					player.World.EndGame();
 					player.World.SetPauseState(true);
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
 
-			if (info.Cooperative)
+			if (Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Won;
 				var allies = players.Where(p => p.IsAlliedWith(player));
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 						p.World.OnPlayerWinStateChanged(p);
 					}
 
-					if (info.EarlyGameOver)
+					if (Info.EarlyGameOver)
 						foreach (var p in enemies)
 							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 				}
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 				player.WinState = WinState.Won;
 				player.World.OnPlayerWinStateChanged(player);
 
-				if (info.EarlyGameOver)
+				if (Info.EarlyGameOver)
 					foreach (var p in enemies)
 						p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 			}
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
 
-			if (info.Cooperative)
+			if (Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Lost;
 				var allies = players.Where(p => p.IsAlliedWith(player));
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 						p.World.OnPlayerWinStateChanged(p);
 					}
 
-					if (info.EarlyGameOver)
+					if (Info.EarlyGameOver)
 						foreach (var p in enemies)
 							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 				}
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 				player.WinState = WinState.Lost;
 				player.World.OnPlayerWinStateChanged(player);
 
-				if (info.EarlyGameOver)
+				if (Info.EarlyGameOver)
 					foreach (var p in enemies)
 					{
 						p.WinState = WinState.Won;
