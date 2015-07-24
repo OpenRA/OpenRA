@@ -68,8 +68,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			info = moInfo;
 			Objectives = new ReadOnlyList<MissionObjective>(objectives);
-
-			world.ObserveAfterWinOrLose = !info.EarlyGameOver;
 		}
 
 		public int Add(Player player, string description, ObjectiveType type = ObjectiveType.Primary, bool inhibitAnnouncement = false)

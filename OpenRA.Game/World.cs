@@ -66,11 +66,10 @@ namespace OpenRA
 			}
 		}
 
-		public bool ObserveAfterWinOrLose;
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined) ? null : renderPlayer; }
+			get { return renderPlayer == null || renderPlayer.WinState != WinState.Undefined ? null : renderPlayer; }
 			set { renderPlayer = value; }
 		}
 

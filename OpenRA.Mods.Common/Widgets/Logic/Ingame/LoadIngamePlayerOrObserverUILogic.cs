@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
-					if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
+					if (world.LocalPlayer.WinState != WinState.Undefined)
 						Game.RunAfterTick(() =>
 						{
 							world.LocalPlayer.Spectating = true;
