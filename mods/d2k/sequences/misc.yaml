@@ -49,6 +49,10 @@ explosion:
 		Start: 3687
 		Length: 6
 		Tick: 120
+	devastator: DATA.R8
+		Start: 3694
+		Length: 18
+		Tick: 120
 	deviator: DATA.R8
 		Start: 3512
 		Length: 23
