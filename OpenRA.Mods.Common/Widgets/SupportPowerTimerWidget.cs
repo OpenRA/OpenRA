@@ -94,6 +94,9 @@ namespace OpenRA.Mods.Common.Widgets
 					needTeamLabel = true;
 					foreach (var player in team.Value)
 					{
+						if (!player.IsAlliedWith(world.RenderPlayer) || player == world.RenderPlayer)
+							continue;
+
 						var powers = spManagers[player].Powers.Values
 							.Where(i => i.Instances.Any() && i.Info.DisplayTimer && !i.Disabled).ToArray();
 
