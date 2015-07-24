@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BagFile : IFolder, IDisposable
+	public sealed class BagFile : IFolder
 	{
 		static readonly uint[] Nothing = { };
 
@@ -37,20 +37,16 @@ namespace OpenRA.FileSystem
 			// For example: audio.bag requires the audio.idx file
 			var indexFilename = Path.ChangeExtension(filename, ".idx");
 
-			s = GlobalFileSystem.Open(filename);
-
 			// Build the index and dispose the stream, it is no longer needed after this
 			List<IdxEntry> entries;
 			using (var indexStream = GlobalFileSystem.Open(indexFilename))
-			{
-				var reader = new IdxReader(indexStream);
-
-				entries = reader.Entries;
-			}
+				entries = new IdxReader(indexStream).Entries;
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 				"{0} (bag format)".F(filename),
 				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+
+			s = GlobalFileSystem.Open(filename);
 		}
 
 		public int Priority { get { return 1000 + bagFilePriority; } }
@@ -185,8 +181,7 @@ namespace OpenRA.FileSystem
 
 		public void Dispose()
 		{
-			if (s != null)
-				s.Dispose();
+			s.Dispose();
 		}
 	}
 }

@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public class InstallShieldPackage : IFolder
+	public sealed class InstallShieldPackage : IFolder
 	{
 		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
 		readonly List<string> filenames;
@@ -28,38 +28,47 @@ namespace OpenRA.FileSystem
 		{
 			this.filename = filename;
 			this.priority = priority;
+
 			filenames = new List<string>();
+
 			s = GlobalFileSystem.Open(filename);
+			try
+			{
+				// Parse package header
+				var reader = new BinaryReader(s);
+				var signature = reader.ReadUInt32();
+				if (signature != 0x8C655D13)
+					throw new InvalidDataException("Not an Installshield package");
 
-			// Parse package header
-			var reader = new BinaryReader(s);
-			var signature = reader.ReadUInt32();
-			if (signature != 0x8C655D13)
-				throw new InvalidDataException("Not an Installshield package");
+				reader.ReadBytes(8);
+				/*var FileCount = */reader.ReadUInt16();
+				reader.ReadBytes(4);
+				/*var ArchiveSize = */reader.ReadUInt32();
+				reader.ReadBytes(19);
+				var tocAddress = reader.ReadInt32();
+				reader.ReadBytes(4);
+				var dirCount = reader.ReadUInt16();
 
-			reader.ReadBytes(8);
-			/*var FileCount = */reader.ReadUInt16();
-			reader.ReadBytes(4);
-			/*var ArchiveSize = */reader.ReadUInt32();
-			reader.ReadBytes(19);
-			var tocAddress = reader.ReadInt32();
-			reader.ReadBytes(4);
-			var dirCount = reader.ReadUInt16();
+				// Parse the directory list
+				s.Seek(tocAddress, SeekOrigin.Begin);
+				var tocReader = new BinaryReader(s);
 
-			// Parse the directory list
-			s.Seek(tocAddress, SeekOrigin.Begin);
-			var tocReader = new BinaryReader(s);
+				var fileCountInDirs = new List<uint>();
 
-			var fileCountInDirs = new List<uint>();
+				// Parse directories
+				for (var i = 0; i < dirCount; i++)
+					fileCountInDirs.Add(ParseDirectory(tocReader));
 
-			// Parse directories
-			for (var i = 0; i < dirCount; i++)
-				fileCountInDirs.Add(ParseDirectory(tocReader));
-
-			// Parse files
-			foreach (var fileCount in fileCountInDirs)
-				for (var i = 0; i < fileCount; i++)
-					ParseFile(reader);
+				// Parse files
+				foreach (var fileCount in fileCountInDirs)
+					for (var i = 0; i < fileCount; i++)
+						ParseFile(reader);
+			}
+			catch
+			{
+				Dispose();
+				throw;
+			}
 		}
 
 		static uint ParseDirectory(BinaryReader reader)
@@ -139,6 +148,11 @@ namespace OpenRA.FileSystem
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			throw new NotImplementedException("Cannot save InstallShieldPackages.");
+		}
+
+		public void Dispose()
+		{
+			s.Dispose();
 		}
 	}
 }

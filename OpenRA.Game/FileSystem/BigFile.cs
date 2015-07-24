@@ -15,37 +15,45 @@ using System.Linq;
 
 namespace OpenRA.FileSystem
 {
-	public class BigFile : IFolder
+	public sealed class BigFile : IFolder
 	{
 		public string Name { get; private set; }
 		public int Priority { get; private set; }
 		readonly Dictionary<string, Entry> entries = new Dictionary<string, Entry>();
+		readonly Stream s;
 
 		public BigFile(string filename, int priority)
 		{
 			Name = filename;
 			Priority = priority;
 
-			var s = GlobalFileSystem.Open(filename);
-
-			if (s.ReadASCII(4) != "BIGF")
-				throw new InvalidDataException("Header is not BIGF");
-
-			// Total archive size.
-			s.ReadUInt32();
-
-			var entryCount = s.ReadUInt32();
-			if (BitConverter.IsLittleEndian)
-				entryCount = int2.Swap(entryCount);
-
-			// First entry offset? This is apparently bogus for EA's .big files
-			// and we don't have to try seeking there since the entries typically start next in EA's .big files.
-			s.ReadUInt32();
-
-			for (var i = 0; i < entryCount; i++)
+			s = GlobalFileSystem.Open(filename);
+			try
 			{
-				var entry = new Entry(s);
-				entries.Add(entry.Path, entry);
+				if (s.ReadASCII(4) != "BIGF")
+					throw new InvalidDataException("Header is not BIGF");
+
+				// Total archive size.
+				s.ReadUInt32();
+
+				var entryCount = s.ReadUInt32();
+				if (BitConverter.IsLittleEndian)
+					entryCount = int2.Swap(entryCount);
+
+				// First entry offset? This is apparently bogus for EA's .big files
+				// and we don't have to try seeking there since the entries typically start next in EA's .big files.
+				s.ReadUInt32();
+
+				for (var i = 0; i < entryCount; i++)
+				{
+					var entry = new Entry(s);
+					entries.Add(entry.Path, entry);
+				}
+			}
+			catch
+			{
+				Dispose();
+				throw;
 			}
 		}
 
@@ -106,6 +114,11 @@ namespace OpenRA.FileSystem
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			throw new NotImplementedException();
+		}
+
+		public void Dispose()
+		{
+			s.Dispose();
 		}
 	}
 }

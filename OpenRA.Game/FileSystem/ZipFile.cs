@@ -17,11 +17,11 @@ using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class ZipFile : IFolder, IDisposable
+	public sealed class ZipFile : IFolder
 	{
-		string filename;
+		readonly string filename;
+		readonly int priority;
 		SZipFile pkg;
-		int priority;
 
 		static ZipFile()
 		{

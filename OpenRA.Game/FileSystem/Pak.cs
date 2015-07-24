@@ -21,34 +21,42 @@ namespace OpenRA.FileSystem
 		public string Filename;
 	}
 
-	public class PakFile : IFolder
+	public sealed class PakFile : IFolder
 	{
-		string filename;
-		int priority;
-		Dictionary<string, Entry> index;
-		Stream stream;
+		readonly string filename;
+		readonly int priority;
+		readonly Dictionary<string, Entry> index;
+		readonly Stream stream;
 
 		public PakFile(string filename, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
 			index = new Dictionary<string, Entry>();
+
 			stream = GlobalFileSystem.Open(filename);
-
-			index = new Dictionary<string, Entry>();
-			var offset = stream.ReadUInt32();
-			while (offset != 0)
+			try
 			{
-				var file = stream.ReadASCIIZ();
-				var next = stream.ReadUInt32();
-				var length = (next == 0 ? (uint)stream.Length : next) - offset;
+				index = new Dictionary<string, Entry>();
+				var offset = stream.ReadUInt32();
+				while (offset != 0)
+				{
+					var file = stream.ReadASCIIZ();
+					var next = stream.ReadUInt32();
+					var length = (next == 0 ? (uint)stream.Length : next) - offset;
 
-				// Ignore duplicate files
-				if (index.ContainsKey(file))
-					continue;
+					// Ignore duplicate files
+					if (index.ContainsKey(file))
+						continue;
 
-				index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
-				offset = next;
+					index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
+					offset = next;
+				}
+			}
+			catch
+			{
+				Dispose();
+				throw;
 			}
 		}
 
@@ -92,5 +100,10 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 1000 + priority; } }
 		public string Name { get { return filename; } }
+
+		public void Dispose()
+		{
+			stream.Dispose();
+		}
 	}
 }
