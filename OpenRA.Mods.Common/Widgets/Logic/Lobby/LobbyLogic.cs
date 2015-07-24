@@ -523,9 +523,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-
 			chatTextField.TakeKeyboardFocus();
-
 			chatTextField.OnEnterKey = () =>
 			{
 				if (chatTextField.Text.Length == 0)
@@ -538,6 +536,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatTextField.Text = "";
 				return true;
 			};
+
 			chatTextField.OnTabKey = () =>
 			{
 				var previousText = chatTextField.Text;
@@ -549,6 +548,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 					return true;
 			};
+
+			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
 
 			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
