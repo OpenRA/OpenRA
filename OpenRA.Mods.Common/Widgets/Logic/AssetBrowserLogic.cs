@@ -108,9 +108,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => Game.Settings.Player.Color.RGB;
 			}
 
+			Action closeAssetBrowser = () =>
+			{
+				if (isVideoLoaded)
+					player.Stop();
+				Ui.CloseWindow();
+				onExit();
+			};
+
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
+			filenameInput.TakeKeyboardFocus();
 			filenameInput.OnTextEdited = () => ApplyFilter(filenameInput.Text);
-			filenameInput.OnEscKey = filenameInput.YieldKeyboardFocus;
+			filenameInput.OnEscKey = () =>
+			{
+				if (filenameInput.Text.Length == 0)
+					closeAssetBrowser();
+				else
+				{
+					filenameInput.Text = "";
+					filenameInput.OnTextEdited();
+				}
+
+				return true;
+			};
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
@@ -218,13 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
 			if (closeButton != null)
-				closeButton.OnClick = () =>
-				{
-					if (isVideoLoaded)
-						player.Stop();
-					Ui.CloseWindow();
-					onExit();
-				};
+				closeButton.OnClick = closeAssetBrowser;
 		}
 
 		void SelectNextFrame()
