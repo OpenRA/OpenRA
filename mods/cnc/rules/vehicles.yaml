@@ -153,6 +153,10 @@ ARTY:
 		InitialStance: Defend
 	LeavesHusk:
 		HuskActor: ARTY.Husk
+	Explodes:
+		Weapon: ArtilleryShell
+		EmptyWeapon: UnitExplode
+		LoadedChance: 75
 
 FTNK:
 	Inherits: ^Tank

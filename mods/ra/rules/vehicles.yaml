@@ -226,8 +226,9 @@ ARTY:
 	AttackFrontal:
 	WithMuzzleFlash:
 	Explodes:
-		Weapon: UnitExplode
-		Chance: 75
+		Weapon: ArtilleryExplode
+		EmptyWeapon: UnitExplodeSmall
+		LoadedChance: 75
 	AutoTarget:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded

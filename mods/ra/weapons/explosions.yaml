@@ -197,6 +197,25 @@ UnitExplodeSmall:
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
+ArtilleryExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 150
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: kaboom22.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
