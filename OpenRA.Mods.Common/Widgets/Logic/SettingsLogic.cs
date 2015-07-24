@@ -191,14 +191,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+			var escPressed = false;
 			frameLimitTextfield.OnLoseFocus = () =>
 			{
+				if (escPressed)
+				{
+					escPressed = false;
+					return;
+				}
+
 				int fps;
 				Exts.TryParseIntegerInvariant(frameLimitTextfield.Text, out fps);
 				ds.MaxFramerate = fps.Clamp(1, 1000);
 				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
 			};
+
 			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
+			frameLimitTextfield.OnEscKey = () =>
+			{
+				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+				escPressed = true;
+				frameLimitTextfield.YieldKeyboardFocus();
+				return true;
+			};
+
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
 
 			// Player profile
@@ -207,11 +223,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
 			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
-			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
 			nameTextfield.OnLoseFocus = () =>
 			{
-				nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
-				ps.Name = nameTextfield.Text;
+				if (escPressed)
+				{
+					escPressed = false;
+					return;
+				}
+
+				nameTextfield.Text = nameTextfield.Text.Trim();
+				if (nameTextfield.Text.Length == 0)
+					nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+				else
+				{
+					nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
+					ps.Name = nameTextfield.Text;
+				}
+			};
+
+			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
+			nameTextfield.OnEscKey = () =>
+			{
+				nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+				escPressed = true;
+				nameTextfield.YieldKeyboardFocus();
+				return true;
 			};
 
 			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
@@ -477,16 +513,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
-			return () =>
-			{
-				// Remove focus from the selected hotkey widget
-				// This is a bit of a hack, but works
-				if (Ui.KeyboardFocusWidget != null && panel.GetOrNull(Ui.KeyboardFocusWidget.Id) != null)
-				{
-					Ui.KeyboardFocusWidget.YieldKeyboardFocus();
-					Ui.KeyboardFocusWidget = null;
-				}
-			};
+			return () => { };
 		}
 
 		Action ResetInputPanel(Widget panel)
