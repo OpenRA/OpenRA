@@ -14,14 +14,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ITraitInfo
 	{
-		[WeaponReference]
+		[WeaponReference, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
-		[WeaponReference]
+
+		[WeaponReference, Desc("Weapon to use for explosion if no ammo/payload is loaded.")]
 		public readonly string EmptyWeapon = "UnitExplode";
 
+		[Desc("Chance that the explosion will use Weapon if the actor has ammo/payload.")]
+		public readonly int LoadedChance = 100;
+
+		[Desc("Chance that this actor will explode at all.")]
 		public readonly int Chance = 100;
+
+		[Desc("DeathType(s) to apply upon explosion.")]
 		public readonly string[] DeathType = null;
 
 		public object Create(ActorInitializer init) { return new Explodes(this); }
@@ -60,7 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 		string ChooseWeaponForExplosion(Actor self)
 		{
 			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
-			return shouldExplode ? info.Weapon : info.EmptyWeapon;
+			var useFullExplosion = self.World.SharedRandom.Next(100) <= info.LoadedChance;
+			return (shouldExplode && useFullExplosion) ? info.Weapon : info.EmptyWeapon;
 		}
 	}
 }
