@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				td.Add(new TurretFacingInit(92));
 				td.Add(new HideBibPreviewInit());
 				td.Add(new OwnerInit(selectedOwner.Name));
-				td.Add(new RaceInit(selectedOwner.Faction));
+				td.Add(new FactionInit(selectedOwner.Faction));
 
 				try
 				{

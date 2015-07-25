@@ -190,7 +190,7 @@ Background@CLIENT_TOOLTIP:
 			Font: TinyBold
 
 Background@FACTION_DESCRIPTION_TOOLTIP:
-	Logic: CountryTooltipLogic
+	Logic: FactionTooltipLogic
 	Background: panel-black
 	Children:
 		Label@HEADER:

@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 					init.Add(new SkipMakeAnimsInit());
 
 				if (Race != null)
-					init.Add(new RaceInit(Race));
+					init.Add(new FactionInit(Race));
 
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)

@@ -198,7 +198,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 			VAlign: Top
 
 Background@FACTION_DESCRIPTION_TOOLTIP:
-	Logic: CountryTooltipLogic
+	Logic: FactionTooltipLogic
 	Background: dialog4
 	Children:
 		Label@HEADER:

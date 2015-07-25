@@ -108,7 +108,7 @@ order-icons-gdi: chrome.png
 	diplomacy-disabled: 327,481,30,31
 	diplomacy-active: 296,481,30,31
 
-# make this paragraph AddRaceSuffixLogic compatible
+# make this paragraph AddFactionSuffixLogic compatible
 sidebar-bits-gdi: chrome.png
 	production-tooltip-time: 416,208,16,16
 	production-tooltip-power: 480,160,16,16
@@ -230,7 +230,7 @@ order-icons-nod: chrome.png
 	diplomacy-disabled: 839,481,30,31
 	diplomacy-active: 808,481,30,31
 
-# make this paragraph AddRaceSuffixLogic compatible
+# make this paragraph AddFactionSuffixLogic compatible
 sidebar-bits-nod: chrome.png
 	production-tooltip-time: 928,208,16,16
 	production-tooltip-power: 992,160,16,16
@@ -249,7 +249,7 @@ cash-icons-nod: chrome.png
 # GENERIC
 # ----------------------------------------------------------------------
 	
-# make this paragraph AddRaceSuffixLogic compatible
+# make this paragraph AddFactionSuffixLogic compatible
 sidebar-bits: chrome.png
 	production-tooltip-time: 416,208,16,16
 	production-tooltip-power: 480,160,16,16

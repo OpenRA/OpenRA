@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.info = info;
 
-			race = init.Contains<RaceInit>() ? init.Get<RaceInit, string>() : init.Self.Owner.Faction.InternalName;
+			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 					new LocationInit(self.Location),
 					new CenterPositionInit(self.CenterPosition),
 					new OwnerInit(self.Owner),
-					new RaceInit(race),
+					new FactionInit(race),
 					new SkipMakeAnimsInit()
 				};
 

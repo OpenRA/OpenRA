@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
-			var race = init.Get<RaceInit, string>();
+			var race = init.Get<FactionInit, string>();
 			var ownerName = init.Get<OwnerInit>().PlayerName;
 			var sequenceProvider = init.World.Map.SequenceProvider;
 			var image = Image ?? init.Actor.Name;
