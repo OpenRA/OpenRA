@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.AI
 		int failCount;
 		int failRetryTicks;
 		int cachedBases;
+		int cachedBuildings;
 
 		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
 		{
@@ -49,7 +50,23 @@ namespace OpenRA.Mods.Common.AI
 		{
 			// If failed to place something N consecutive times, wait M ticks until resuming building production
 			if (failCount >= ai.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
-				failCount = 0;
+			{
+				var currentBuildings = world.ActorsWithTrait<Building>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				var baseProviders = world.ActorsWithTrait<BaseBuilding>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				// Only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
+				// or b) number of BaseProviders (construction yard or similar) has increased since then.
+				// Otherwise reset failRetryTicks instead to wait again.
+				if (currentBuildings < cachedBuildings || baseProviders > cachedBases)
+					failCount = 0;
+				else
+					failRetryTicks = ai.Info.StructureProductionResumeDelay;
+			}
 
 			// Only update once per second or so
 			if (--waitTicks > 0)
@@ -119,6 +136,18 @@ namespace OpenRA.Mods.Common.AI
 					HackyAI.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
 					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 					failCount += failCount;
+
+					// If we just reached the maximum fail count, cache the number of current structures
+					if (failCount == ai.Info.MaximumFailedPlacementAttempts)
+					{
+						cachedBuildings = world.ActorsWithTrait<Building>()
+							.Where(a => a.Actor.Owner == player)
+							.Count();
+
+						cachedBases = world.ActorsWithTrait<BaseBuilding>()
+							.Where(a => a.Actor.Owner == player)
+							.Count();
+					}
 				}
 				else
 				{
