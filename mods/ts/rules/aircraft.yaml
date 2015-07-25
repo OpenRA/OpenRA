@@ -45,6 +45,8 @@ DSHP:
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -155,6 +157,8 @@ ORCATRAN:
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -186,6 +190,9 @@ TRNSPORT:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
+		AltitudeVelocity: 64
 	Health:
 		HP: 175
 	Armor:

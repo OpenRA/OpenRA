@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast the helicopter ascends or descends.")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
+		public readonly string TakeoffSound = null;
+		public readonly string LandingSound = null;
+
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
