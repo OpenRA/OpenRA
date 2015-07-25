@@ -140,6 +140,5 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Text: Disconnect
 			Font: Bold
-			Key: escape
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
