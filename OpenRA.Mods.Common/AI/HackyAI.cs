@@ -55,11 +55,14 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
-		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
+		[Desc("Minimum delay (in ticks) between structure production checks when there is no active production.")]
 		public readonly int StructureProductionInactiveDelay = 125;
 
-		[Desc("How long to wait (in ticks) between structure production checks ticks when actively building things.")]
+		[Desc("Minimum delay (in ticks) between structure production checks when actively building things.")]
 		public readonly int StructureProductionActiveDelay = 10;
+
+		[Desc("A random delay (in ticks) of up to this is added to production delays.")]
+		public readonly int StructureProductionRandomBonusDelay = 10;
 
 		[Desc("How long to wait (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
 		public readonly int StructureProductionResumeDelay = 1500;
