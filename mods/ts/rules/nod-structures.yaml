@@ -277,6 +277,35 @@ NATECH:
 	SelectionDecorations:
 		VisualBounds: 86, 58, 0, -4
 
+NATMPL:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 200
+		Prerequisites: natech, ~structures.nod
+	ProvidesPrerequisite@buildingname:
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Temple of Nod
+		Description: Provides access to advanced Nod technologies.
+	Building:
+		Adjacent: 3
+		Footprint: xxxx xxxx xxxx
+		Dimensions: 4,3
+	Selectable:
+		Bounds: 134, 120, 12, -12
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+	Power:
+		Amount: -200
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
 NASTLH:
 	Inherits: ^Building
 	Valued:
