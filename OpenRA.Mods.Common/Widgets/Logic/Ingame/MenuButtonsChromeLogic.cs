@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var stats = widget.GetOrNull<MenuButtonWidget>("OBSERVER_STATS_BUTTON");
 			if (stats != null)
 			{
-				stats.IsDisabled = () => disableSystemButtons;
+				stats.IsDisabled = () => disableSystemButtons || world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 				stats.OnClick = () => OpenMenuPanel(stats);
 			}
 		}

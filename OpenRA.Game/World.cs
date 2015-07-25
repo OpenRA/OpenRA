@@ -69,7 +69,7 @@ namespace OpenRA
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || renderPlayer.WinState != WinState.Undefined ? null : renderPlayer; }
+			get { return renderPlayer == null || (renderPlayer.WinState != WinState.Undefined && !Map.Visibility.HasFlag(MapVisibility.MissionSelector)) ? null : renderPlayer; }
 			set { renderPlayer = value; }
 		}
 
