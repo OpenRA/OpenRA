@@ -1637,6 +1637,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150720)
+				{
+					// Rename RenderEditorOnly to RenderSpritesEditorOnly
+					if (depth == 0)
+					{
+						var reo = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderEditorOnly"));
+						if (reo != null)
+						{
+							reo.Key = "RenderSpritesEditorOnly";
+
+							var wsbNodes = reo.Value.Nodes.Where(n => n.Key == "Sequence").ToList();
+
+							if (wsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", new MiniYaml("", wsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", ""));
+
+							reo.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rreo = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderEditorOnly"));
+						if (rreo != null)
+							rreo.Key = "-RenderSpritesEditorOnly";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

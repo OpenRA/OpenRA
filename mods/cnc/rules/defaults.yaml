@@ -516,8 +516,10 @@
 		Name: Field (Destroyed)
 		GenericVisibility: None
 	BodyOrientation:
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -555,8 +557,10 @@
 ^Tree:
 	Tooltip:
 		Name: Tree
-	RenderBuilding:
+	RenderSprites:
 		Palette: staticterrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -592,8 +596,10 @@
 ^Rock:
 	Tooltip:
 		Name: Rock
-	RenderBuilding:
+	RenderSprites:
 		Palette: staticterrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2

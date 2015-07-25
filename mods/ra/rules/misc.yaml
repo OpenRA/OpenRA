@@ -181,7 +181,8 @@ CAMERA:
 	BodyOrientation:
 	DetectCloaked:
 		Range: 10
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 		Image: camera
 
 camera.paradrop:
@@ -234,8 +235,10 @@ MINE:
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ore Mine
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -250,8 +253,10 @@ GMINE:
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Gem Mine
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -267,8 +272,10 @@ RAILMINE:
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Abandoned Mine
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -284,7 +291,9 @@ QUEE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
 	EditorTilesetFilter:
@@ -297,8 +306,10 @@ LAR1:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
 	EditorTilesetFilter:
@@ -311,8 +322,10 @@ LAR2:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
 	EditorTilesetFilter:
@@ -378,14 +391,16 @@ mpspawn:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
 
 waypoint:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
 
 ^fact.colorpicker:

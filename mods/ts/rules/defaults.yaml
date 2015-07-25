@@ -528,8 +528,10 @@
 
 ^Tree:
 	HiddenUnderShroud:
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -540,8 +542,10 @@
 
 ^Rock:
 	HiddenUnderShroud:
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
