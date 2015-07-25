@@ -49,7 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnCrush(Actor crusher)
 		{
 			Sound.Play(info.CrushSound, crusher.CenterPosition);
-			var wda = self.TraitOrDefault<WithDeathAnimation>();
+			var wda = self.TraitsImplementing<WithDeathAnimation>()
+				.FirstOrDefault(s => s.Info.CrushedSequence != null);
 			if (wda != null)
 			{
 				var palette = wda.Info.CrushedSequencePalette;

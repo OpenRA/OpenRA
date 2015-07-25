@@ -227,13 +227,21 @@
 		TargetTypes: Ground, Infantry
 	RenderSprites:
 	WithInfantryBody:
-	WithDeathAnimation:
+	WithDeathAnimation@normal:
 		DeathTypes:
 			BulletDeath: 1
 			SmallExplosionDeath: 2
-			ExplosionDeath: 3
-			InfantryExplodeDeath: 4 #not used by any warhead; TODO: check what should use this type and add it!
+			HeadshotDeath: 3 #not used by any warhead; TODO: check what should use this type and add it!
 			FireDeath: 5
+	WithDeathAnimation@explosion:
+		DeathSequencePalette: effect
+		DeathPaletteIsPlayerPalette: False
+		DeathTypes:
+			ExplosionDeath: 4
+	WithDeathAnimation@energy:
+		DeathSequencePalette: ra
+		DeathPaletteIsPlayerPalette: False
+		DeathTypes:
 			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
