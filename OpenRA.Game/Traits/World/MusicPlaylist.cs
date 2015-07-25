@@ -97,7 +97,7 @@ namespace OpenRA.Traits
 
 			var playedSong = currentSong;
 
-			if (world.LocalPlayer.WinState == WinState.Won)
+			if (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Won)
 			{
 				if (!string.IsNullOrEmpty(info.VictoryMusic)
 				&& world.Map.Rules.Music.ContainsKey(info.VictoryMusic)
