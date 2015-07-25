@@ -134,6 +134,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				map.RequiresMod = Game.ModData.Manifest.Mod.Id;
 
+				// Create the map directory if required
+				Directory.CreateDirectory(Platform.ResolvePath(directoryDropdown.Text));
+
 				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
 
 				// Invalidate the old map metadata
