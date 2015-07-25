@@ -52,12 +52,12 @@ namespace OpenRA
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
-		bool gameOver;
+		public bool IsGameOver { get; private set; }
 		public void EndGame()
 		{
-			if (!gameOver)
+			if (!IsGameOver)
 			{
-				gameOver = true;
+				IsGameOver = true;
 
 				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
 					t.GameOver(this);
@@ -66,11 +66,10 @@ namespace OpenRA
 			}
 		}
 
-		public bool ObserveAfterWinOrLose;
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined) ? null : renderPlayer; }
+			get { return renderPlayer == null || renderPlayer.WinState != WinState.Undefined ? null : renderPlayer; }
 			set { renderPlayer = value; }
 		}
 

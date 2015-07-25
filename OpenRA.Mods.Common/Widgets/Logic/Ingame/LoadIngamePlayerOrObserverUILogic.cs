@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Scripting;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -28,12 +30,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+				var objectives = world.LocalPlayer.PlayerActor.TraitOrDefault<MissionObjectives>();
 
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
-					if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
-						Game.RunAfterTick(() =>
+					if (world.LocalPlayer.WinState != WinState.Undefined)
+						Game.RunAfterDelay(objectives != null ? objectives.Info.GameOverDelay : 0, () =>
 						{
 							world.LocalPlayer.Spectating = true;
 							playerRoot.RemoveChildren();
@@ -46,9 +49,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			world.GameOver += () =>
 			{
-				worldRoot.RemoveChildren();
+				Ui.CloseWindow();
 				menuRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
+
+				if (world.LocalPlayer != null)
+				{
+					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+					var video = world.LocalPlayer.WinState == WinState.Won ? world.Map.Videos.GameWon : world.Map.Videos.GameLost;
+
+					if (!string.IsNullOrEmpty(video) && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+						Media.PlayFMVFullscreen(world, video, () => { });
+				}
+
+				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
+				if (optionsButton != null)
+					optionsButton.OnClick();
 			};
 		}
 	}

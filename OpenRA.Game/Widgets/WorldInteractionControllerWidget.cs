@@ -232,13 +232,13 @@ namespace OpenRA.Widgets
 
 				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
 					World.SetPauseState(!World.Paused);
-				else if (key == Game.Settings.Keys.SelectAllUnitsKey)
+				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority();
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey)
+				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && !World.IsGameOver)
 				{
 					// Get all the selected actors' selection classes
 					var selectedClasses = World.Selection.Actors

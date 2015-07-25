@@ -106,6 +106,9 @@ namespace OpenRA.Orders
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
+			if (self.World.IsGameOver)
+				return null;
+
 			if (self.Disposed || !target.IsValidFor(self))
 				return null;
 
