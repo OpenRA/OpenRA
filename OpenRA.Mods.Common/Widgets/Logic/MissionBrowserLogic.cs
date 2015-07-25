@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 			Game.LobbyInfoChanged += lobbyReady;
 
-			om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(selectedMapPreview.Uid), "", false);
+			om = Game.JoinServer(IPAddress.Loopback.ToString(), Game.CreateLocalServer(selectedMapPreview.Uid), "");
 		}
 
 		class DropDownOption
