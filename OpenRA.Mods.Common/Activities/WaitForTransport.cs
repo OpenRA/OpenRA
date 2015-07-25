@@ -45,7 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (transportable != null)
 				transportable.WantsTransport = false;
 
-			inner.Cancel(self);
+			if (inner != null)
+				inner.Cancel(self);
 		}
 	}
 }
