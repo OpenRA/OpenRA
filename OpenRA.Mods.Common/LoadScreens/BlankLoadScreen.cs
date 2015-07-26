@@ -20,19 +20,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 {
 	public class BlankLoadScreen : ILoadScreen
 	{
-		public class LaunchArgs
-		{
-			[Desc("Connect to the following server given as IP:PORT on startup.")]
-			public string Connect;
-
-			[Desc("Connect to the unified resource identifier openra://IP:PORT on startup.")]
-			public string URI;
-
-			[Desc("Automatically start playing the given replay file.")]
-			public string Replay;
-		}
-
-		public LaunchArgs Launch = new LaunchArgs();
+		public LaunchArguments Launch;
 
 		public virtual void Init(Manifest m, Dictionary<string, string> info) { }
 
@@ -48,10 +36,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void StartGame(Arguments args)
 		{
-			foreach (var f in Launch.GetType().GetFields())
-				if (args.Contains("Launch" + "." + f.Name))
-					FieldLoader.LoadField(Launch, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
-
+			Launch = new LaunchArguments(args);
 			Ui.ResetAll();
 			Game.Settings.Save();
 
@@ -80,14 +65,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Join a server directly
-			var connect = string.Empty;
-
-			if (!string.IsNullOrEmpty(Launch.Connect))
-				connect = Launch.Connect;
-
-			if (!string.IsNullOrEmpty(Launch.URI))
-				connect = Launch.URI.Replace("openra://", "").TrimEnd('/');
-
+			var connect = Launch.GetConnectAddress();
 			if (!string.IsNullOrEmpty(connect))
 			{
 				var parts = connect.Split(':');

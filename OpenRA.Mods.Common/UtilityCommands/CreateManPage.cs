@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH OPTIONS");
 
 			var sections = Game.Settings.Sections;
-			sections.Add("Launch", new OpenRA.Mods.Common.LoadScreens.BlankLoadScreen.LaunchArgs());
+			sections.Add("Launch", new LaunchArguments(new Arguments(new string[0])));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
 				var fields = section.Value.GetType().GetFields();

@@ -164,6 +164,7 @@
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Support\Arguments.cs" />
+    <Compile Include="Support\LaunchArguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
     <Compile Include="Sync.cs" />
