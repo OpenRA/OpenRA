@@ -46,9 +46,9 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly SandwormInfo Info;
 
 		readonly WormManager manager;
-		readonly Lazy<Mobile> mobile;
-		readonly Lazy<WithSpriteBody> withSpriteBody;
-		readonly Lazy<AttackBase> attackTrait;
+		readonly Mobile mobile;
+		readonly WithSpriteBody withSpriteBody;
+		readonly AttackBase attackTrait;
 
 		public bool IsMovingTowardTarget { get; private set; }
 
@@ -60,16 +60,16 @@ namespace OpenRA.Mods.D2k.Traits
 			: base(self, info)
 		{
 			Info = info;
-			mobile = Exts.Lazy(self.Trait<Mobile>);
-			withSpriteBody = Exts.Lazy(self.Trait<WithSpriteBody>);
-			attackTrait = Exts.Lazy(self.Trait<AttackBase>);
+			mobile = self.Trait<Mobile>();
+			withSpriteBody = self.Trait<WithSpriteBody>();
+			attackTrait = self.Trait<AttackBase>();
 			manager = self.World.WorldActor.Trait<WormManager>();
 		}
 
 		public override void OnBecomingIdle(Actor self)
 		{
-			if (withSpriteBody.Value.DefaultAnimation.CurrentSequence.Name != Info.IdleSequence)
-				withSpriteBody.Value.DefaultAnimation.PlayRepeating(Info.IdleSequence);
+			if (withSpriteBody.DefaultAnimation.CurrentSequence.Name != Info.IdleSequence)
+				withSpriteBody.DefaultAnimation.PlayRepeating(Info.IdleSequence);
 
 			base.OnBecomingIdle(self);
 		}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (IsMovingTowardTarget)
 				return;
 
-			self.QueueActivity(mobile.Value.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WDist.FromCells(1)));
+			self.QueueActivity(mobile.MoveWithinRange(Target.FromCell(self.World, targetCell, SubCell.Any), WDist.FromCells(1)));
 		}
 
 		public void Tick(Actor self)
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (target != null)
 			{
 				self.CancelActivity();
-				attackTrait.Value.ResolveOrder(self, new Order("Attack", target, true) { TargetActor = target });
+				attackTrait.ResolveOrder(self, new Order("Attack", target, true) { TargetActor = target });
 				return;
 			}
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.D2k.Traits
 				if (!a.HasTrait<AttractsWorms>())
 					return false;
 
-				return mobile.Value.CanEnterCell(a.Location, null, false);
+				return mobile.CanEnterCell(a.Location, null, false);
 			};
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius)
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			var moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
 
-			while (!self.World.Map.Contains(moveTo) || !mobile.Value.CanEnterCell(moveTo, null, false))
+			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, false))
 			{
 				noiseDirection /= 2;
 				moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 			}
 
-			self.QueueActivity(false, mobile.Value.MoveTo(moveTo, 3));
+			self.QueueActivity(false, mobile.MoveTo(moveTo, 3));
 			IsMovingTowardTarget = true;
 		}
 
