@@ -55,21 +55,26 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
-		[Desc("Minimum delay (in ticks) between structure production checks when there is no active production.")]
+		[Desc("Delay (in ticks) between structure production checks when there is no active production.",
+		"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
 
-		[Desc("Minimum delay (in ticks) between structure production checks when actively building things.")]
+		[Desc("Delay (in ticks) between structure production checks when actively building things.",
+		"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionActiveDelay = 10;
 
-		[Desc("A random delay (in ticks) of up to this is added to production delays.")]
+		[Desc("A random delay (in ticks) of up to this is added to active/inactive production delays.")]
 		public readonly int StructureProductionRandomBonusDelay = 10;
 
-		[Desc("How long to wait (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
+		[Desc("Delay (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
 		public readonly int StructureProductionResumeDelay = 1500;
 
 		[Desc("After how many failed attempts to place a structure should AI give up and wait",
 		"for StructureProductionResumeDelay before retrying.")]
 		public readonly int MaximumFailedPlacementAttempts = 3;
+
+		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
+		public readonly int CheckForNewBasesDelay = 1500;
 
 		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
 		public readonly int MinimumDefenseRadius = 5;
@@ -268,20 +273,20 @@ namespace OpenRA.Mods.Common.AI
 		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
 		public bool EnoughWaterToBuildNaval()
 		{
-			var baseBuildings = World.Actors.Where(
+			var baseProviders = World.Actors.Where(
 				a => a.Owner == Player
-					&& a.HasTrait<BaseBuilding>()
+					&& a.HasTrait<BaseProvider>()
 					&& !a.HasTrait<Mobile>());
 
-			foreach (var b in baseBuildings)
+			foreach (var b in baseProviders)
 			{
 				// TODO: Unhardcode terrain type
 				var playerWorld = Player.World;
 				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
 					.Where(c => playerWorld.Map.Contains(c)
-						&& playerWorld.Map.GetTerrainInfo(c).Type == "Water"
+						&& playerWorld.Map.GetTerrainInfo(c).IsWater
 						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(a => playerWorld.Map.GetTerrainInfo(a).Type == "Water"))
+							.All(a => playerWorld.Map.GetTerrainInfo(a).IsWater))
 					.Count();
 
 				if (countWaterCells > 0)
@@ -305,9 +310,9 @@ namespace OpenRA.Mods.Common.AI
 				var playerWorld = Player.World;
 				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
 					.Where(c => playerWorld.Map.Contains(c)
-						&& playerWorld.Map.GetTerrainInfo(c).Type == "Water"
+						&& playerWorld.Map.GetTerrainInfo(c).IsWater
 						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(b => playerWorld.Map.GetTerrainInfo(b).Type == "Water"))
+							.All(b => playerWorld.Map.GetTerrainInfo(b).IsWater))
 					.Count();
 
 				if (adjacentWater > 0)

@@ -28,12 +28,20 @@ namespace OpenRA.Mods.Common.AI
 
 		int waitTicks;
 		Actor[] playerBuildings;
-		bool waterAvailable;
-		bool checkedWater;
 		int failCount;
 		int failRetryTicks;
+		int checkForBasesTicks;
 		int cachedBases;
 		int cachedBuildings;
+
+		enum Water
+		{
+			NotChecked,
+			EnoughWater,
+			NotEnoughWater
+		}
+
+		Water waterState = Water.NotChecked;
 
 		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
 		{
@@ -55,7 +63,7 @@ namespace OpenRA.Mods.Common.AI
 					.Where(a => a.Actor.Owner == player)
 					.Count();
 
-				var baseProviders = world.ActorsWithTrait<BaseBuilding>()
+				var baseProviders = world.ActorsWithTrait<BaseProvider>()
 					.Where(a => a.Actor.Owner == player)
 					.Count();
 
@@ -68,28 +76,33 @@ namespace OpenRA.Mods.Common.AI
 					failRetryTicks = ai.Info.StructureProductionResumeDelay;
 			}
 
-			// Only update once per second or so
-			if (--waitTicks > 0)
-				return;
-
-			if (!checkedWater)
+			if (waterState == Water.NotChecked)
 			{
-				waterAvailable = ai.EnoughWaterToBuildNaval();
-				checkedWater = true;
+				if (ai.EnoughWaterToBuildNaval())
+					waterState = Water.EnoughWater;
+				else
+				{
+					waterState = Water.NotEnoughWater;
+					checkForBasesTicks = ai.Info.CheckForNewBasesDelay;
+				}
 			}
 
-			if (!waterAvailable)
+			if (waterState == Water.NotEnoughWater && --checkForBasesTicks <= 0)
 			{
-				var currentBases = world.ActorsWithTrait<BaseBuilding>()
+				var currentBases = world.ActorsWithTrait<BaseProvider>()
 					.Where(a => a.Actor.Owner == player)
 					.Count();
 
 				if (currentBases > cachedBases)
 				{
 					cachedBases = currentBases;
-					checkedWater = false;
+					waterState = Water.NotChecked;
 				}
 			}
+
+			// Only update once per second or so
+			if (--waitTicks > 0)
+				return;
 
 			playerBuildings = world.ActorsWithTrait<Building>()
 				.Where(a => a.Actor.Owner == player)
@@ -148,7 +161,7 @@ namespace OpenRA.Mods.Common.AI
 							.Where(a => a.Actor.Owner == player)
 							.Count();
 
-						cachedBases = world.ActorsWithTrait<BaseBuilding>()
+						cachedBases = world.ActorsWithTrait<BaseProvider>()
 							.Where(a => a.Actor.Owner == player)
 							.Count();
 					}
@@ -254,8 +267,9 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
-			if (waterAvailable && ai.CloseEnoughToWater()
-				&& ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
+			if (waterState == Water.EnoughWater && ai.Info.NewProductionCashThreshold > 0
+				&& playerResources.Resources > ai.Info.NewProductionCashThreshold
+				&& ai.CloseEnoughToWater())
 			{
 				var navalproduction = GetProducibleBuilding("NavalProduction", buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
@@ -310,7 +324,7 @@ namespace OpenRA.Mods.Common.AI
 				// TODO: Extend this check to cover any naval structure, not just production.
 				if (ai.Info.BuildingCommonNames.ContainsKey("NavalProduction")
 					&& ai.Info.BuildingCommonNames["NavalProduction"].Contains(name)
-					&& (!waterAvailable || !ai.CloseEnoughToWater()))
+					&& (waterState == Water.NotEnoughWater || !ai.CloseEnoughToWater()))
 					continue;
 
 				// Will this put us into low power?
