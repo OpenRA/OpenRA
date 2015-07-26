@@ -1281,12 +1281,16 @@ Rules:
 		Targetable:
 			UpgradeTypes: jail
 			UpgradeMaxEnabledLevel: 0
+		Targetable@PRISONER:
+			TargetTypes: Prisoner
 		RenderSprites:
 			Image: E6
 	MEDI:
 		Targetable:
 			UpgradeTypes: jail
 			UpgradeMaxEnabledLevel: 0
+		Targetable@PRISONER:
+			TargetTypes: Prisoner
 	E7.noautotarget:
 		Inherits: E7
 		AutoTarget:
@@ -1426,6 +1430,9 @@ Weapons:
 	FireballLauncher:
 		Projectile:
 			High: True
+	BarrelExplode:
+		Warhead@1Dam:
+			ValidTargets: Ground, Prisoner
 
 Voices:
 
