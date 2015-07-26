@@ -497,12 +497,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
-			if (enableShroud != null)
+			var exploredMap = optionsBin.GetOrNull<CheckboxWidget>("EXPLORED_MAP_CHECKBOX");
+			if (exploredMap != null)
 			{
-				enableShroud.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Shroud;
-				enableShroud.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Shroud.HasValue || configurationDisabled();
-				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
+				exploredMap.IsChecked = () => !orderManager.LobbyInfo.GlobalSettings.Shroud;
+				exploredMap.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.Shroud.HasValue || configurationDisabled();
+				exploredMap.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
 			}
 

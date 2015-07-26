@@ -109,10 +109,10 @@ Background@LOBBY_OPTIONS_BIN:
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
-				Checkbox@SHROUD_CHECKBOX:
+				Checkbox@EXPLORED_MAP_CHECKBOX:
 					Width: 140
 					Height: 20
-					Text: Shroud
+					Text: Explored map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
 					Width: 140

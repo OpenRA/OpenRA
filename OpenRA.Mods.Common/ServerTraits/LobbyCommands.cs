@@ -440,8 +440,8 @@ namespace OpenRA.Mods.Common.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Shroud."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "enabled" : "disabled"));
+						server.SendMessage("{0} {1} Explored map."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "disabled" : "enabled"));
 
 						return true;
 					}
