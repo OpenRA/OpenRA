@@ -999,11 +999,16 @@ namespace OpenRA
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
-			// TODO: Account for terrain height
-			var x = rand.Next(Bounds.Left, Bounds.Right);
-			var y = rand.Next(Bounds.Top, Bounds.Bottom);
+			MPos[] cells;
+			do
+			{
+				var u = rand.Next(Bounds.Left, Bounds.Right);
+				var v = rand.Next(Bounds.Top, Bounds.Bottom);
 
-			return new MPos(x, y).ToCPos(this);
+				cells = Unproject(new PPos(u, v));
+			} while (!cells.Any());
+
+			return cells.Random(rand).ToCPos(TileShape);
 		}
 
 		public CPos ChooseClosestEdgeCell(CPos pos)
