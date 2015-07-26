@@ -1027,14 +1027,18 @@ namespace OpenRA
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
-			// TODO: Account for terrain height
-			var isX = rand.Next(2) == 0;
-			var edge = rand.Next(2) == 0;
+			MPos[] cells;
+			do
+			{
+				var isU = rand.Next(2) == 0;
+				var edge = rand.Next(2) == 0;
+				var u = isU ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
+				var v = !isU ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
 
-			var x = isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
-			var y = !isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
+				cells = Unproject(new PPos(u, v));
+			} while (!cells.Any());
 
-			return new MPos(x, y).ToCPos(this);
+			return cells.Random(rand).ToCPos(TileShape);
 		}
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)
