@@ -665,8 +665,8 @@ nasam:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-napuls:
-	Defaults:
+napuls.gdi:
+	Defaults: ntpuls
 		Offset: 0, -24
 		UseTilesetCode: true
 	idle:
@@ -678,12 +678,34 @@ napuls:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	turret: ntpuls_a
+	turret:_a
 		Facings: 32
-	make: ntpulsmk
+	make:mk
 		Length: 20
 		ShadowStart: 20
-	icon: empicon
+	icon: sidec01.mix:empicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+napuls.nod:
+	Defaults: ntpuls
+		Offset: 0, -24
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	turret:_a
+		Facings: 32
+	make:mk
+		Length: 20
+		ShadowStart: 20
+	icon: sidec02.mix:empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -871,16 +893,17 @@ nahpad:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-proc: # TODO: unused narefn_a
-	Defaults:
+# TODO: unused narefn_a
+proc.gdi:
+	Defaults: ntrefn
 		Offset: -12, -42
 		UseTilesetCode: true
-	idle: ntrefn
+	idle:
 		ShadowStart: 3
-	damaged-idle: ntrefn
+	damaged-idle:
 		Start: 1
 		ShadowStart: 4
-	dead: ntrefn
+	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
@@ -900,12 +923,46 @@ proc: # TODO: unused narefn_a
 	damaged-bib: ntrefnbb
 		Start: 1
 		ZOffset: -1024
-	icon: reficon
+	icon: sidec01.mix:reficon
 		Offset: 0, 0
 		UseTilesetCode: false
 
-gasilo:
-	Defaults:
+# TODO: unused narefn_a
+proc.nod:
+	Defaults: ntrefn
+		Offset: -12, -42
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	make: ntrefnmk
+		Length: 20
+		ShadowStart: 20
+	flame: ntrefn_b
+		Length: *
+	idle-redlights: ntrefn_c
+		Length: 16
+		Tick: 120
+	damaged-idle-redlights: ntrefn_c
+		Length: 16
+		Tick: 120
+	bib: ntrefnbb
+		ZOffset: -1024
+	damaged-bib: ntrefnbb
+		Start: 1
+		ZOffset: -1024
+	icon: sidec02.mix:reficon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+gasilo.gdi:
+	Defaults: gtsilo
 		Offset: 0, -24
 		UseTilesetCode: true
 	idle: gtsilo_a
@@ -935,7 +992,42 @@ gasilo:
 	make: gtsilomk
 		Length: 18
 		ShadowStart: 20
-	icon: siloicon
+	icon: sidec01.mix:siloicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+gasilo.nod:
+	Defaults: gtsilo
+		Offset: 0, -24
+		UseTilesetCode: true
+	idle: gtsilo_a
+		Length: 4
+	damaged-idle: gtsilo_a
+		Start: 4
+		Length: 4
+	idle-underlay:
+		ShadowStart: 3
+		ZOffset: -512
+	damaged-idle-underlay:
+		Start: 1
+		ShadowStart: 4
+		ZOffset: -512
+	dead:
+		Start: 2
+		ShadowStart: 5
+		ZOffset: -512
+		Tick: 400
+	idle-lights: gtsilo_b
+		Length: 16
+		Tick: 120
+	damaged-idle-lights: gtsilo_b
+		Start: 16
+		Length: 16
+		Tick: 120
+	make: gtsilomk
+		Length: 18
+		ShadowStart: 20
+	icon: sidec02.mix:siloicon
 		Offset: 0, 0
 		UseTilesetCode: false
 

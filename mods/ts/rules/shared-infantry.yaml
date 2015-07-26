@@ -28,6 +28,11 @@ E1:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	RenderSprites:
+		Image: e1.gdi
+		RaceImages:
+			gdi: e1.gdi
+			nod: e1.nod
 
 ENGINEER:
 	Inherits: ^Soldier
@@ -54,4 +59,9 @@ ENGINEER:
 		CaptureTypes: building
 	-AutoTarget:
 	-GainsExperience:
+	RenderSprites:
+		Image: engineer.gdi
+		RaceImages:
+			gdi: engineer.gdi
+			nod: engineer.nod
 

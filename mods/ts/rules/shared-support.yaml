@@ -79,4 +79,9 @@ NAPULS:
 		Amount: -150
 	SelectionDecorations:
 		VisualBounds: 78, 54, 0, -12
+	RenderBuilding:
+		Image: napuls.gdi
+		RaceImages:
+			gdi: napuls.gdi
+			nod: napuls.nod
 

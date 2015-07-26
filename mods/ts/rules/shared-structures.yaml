@@ -97,6 +97,11 @@ PROC:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 134, 122, 0, -18
+	RenderBuilding:
+		Image: proc.gdi
+		RaceImages:
+			gdi: proc.gdi
+			nod: proc.nod
 
 GASILO:
 	Inherits: ^Building
@@ -123,6 +128,10 @@ GASILO:
 		Range: 4c0
 	-RenderBuilding:
 	RenderBuildingSilo:
+		Image: gasilo.gdi
+		RaceImages:
+			gdi: gasilo.gdi
+			nod: gasilo.nod
 	WithIdleOverlay@UNDERLAY:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:
