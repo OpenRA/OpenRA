@@ -158,13 +158,12 @@ NASAM:
 		VisualBounds: 40, 36, -3, -8
 
 GATICK:
-	Inherits: ^Building
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
 	Valued:
 		Cost: 800
-	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Tick Tank
-	-GivesBuildableArea:
 	Health:
 		HP: 350
 	Armor:
@@ -197,6 +196,10 @@ GATICK:
 	AutoTarget:
 	RenderRangeCircle:
 	DrawLineToTarget:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
 	RenderBuilding:
 	RenderVoxels:
 	WithVoxelBarrel:
@@ -209,16 +212,24 @@ GATICK:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleFlash:
-	-WithDeathAnimation:
+	GivesBounty:
+	WithMakeAnimation:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	TargetableBuilding:
+		TargetTypes: Ground
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
 
 GAARTY:
-	Inherits: ^Building
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
 	Valued:
 		Cost: 975
-	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Artillery
-	-GivesBuildableArea:
 	Health:
 		HP: 300
 	Armor:
@@ -255,7 +266,20 @@ GAARTY:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleFlash:
-	-WithDeathAnimation:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+	GivesBounty:
+	WithMakeAnimation:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	TargetableBuilding:
+		TargetTypes: Ground
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
 
 NAMISL:
 	Inherits: ^Building
