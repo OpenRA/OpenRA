@@ -114,6 +114,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	Parachutable:
+		FallRate: 26
 		KilledOnImpassableTerrain: true
 		GroundCorpseSequence:
 		GroundCorpsePalette:
@@ -227,6 +228,7 @@
 		Voice: Zapped
 		DeathTypes: ElectricityDeath
 	Parachutable:
+		FallRate: 26
 		KilledOnImpassableTerrain: true
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
@@ -665,6 +667,7 @@
 		LandSequence: land
 		WaterSequence: water
 	Parachutable:
+		FallRate: 26
 		KilledOnImpassableTerrain: false
 	Passenger:
 	CustomSelectionSize:
