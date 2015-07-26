@@ -6,8 +6,6 @@ SRCDIR="$3"
 OUTPUTDIR="$4"
 
 if [ -x /usr/bin/makensis ]; then
-    pushd "$SRCDIR" >/dev/null
-    popd >/dev/null
     echo "Building Windows setup.exe"
     makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" OpenRA.nsi
     if [ $? -eq 0 ]; then
