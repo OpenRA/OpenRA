@@ -180,6 +180,10 @@ namespace OpenRA
 				MapUid = Map.Uid,
 				MapTitle = Map.Title
 			};
+
+			if (!LobbyInfo.GlobalSettings.Shroud)
+				foreach (var player in Players)
+					player.Shroud.ExploreAll(this);
 		}
 
 		public void LoadComplete(WorldRenderer wr)
