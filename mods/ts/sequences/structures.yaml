@@ -400,6 +400,33 @@ natech:
 		Offset: 0, 0
 		UseTilesetCode: false
 
+natmpl:
+	Defaults:
+		Offset: 0, -24
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	idle-lights: nttmpl_a
+		Length: 16
+		Tick: 120
+	damaged-idle-lights: nttmpl_a
+		Start: 16
+		Length: 16
+		Tick: 120
+	make: nttmplmk
+		Length: 17
+		ShadowStart: 17
+	icon: tmplicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
 garadr:
 	Defaults:
 		Offset: 0, -24

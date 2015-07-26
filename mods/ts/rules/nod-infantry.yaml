@@ -70,7 +70,7 @@ CYC2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: ~nahand, natech
+		Prerequisites: ~nahand, natmpl
 		BuildLimit: 1
 	Selectable:
 		Bounds: 16,32,-1,-12
@@ -98,7 +98,7 @@ MHIJACK:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~nahand, natech # natech must be natmpl
+		Prerequisites: ~nahand, natmpl
 	Valued:
 		Cost: 1850
 	Tooltip:
