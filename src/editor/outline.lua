@@ -454,7 +454,7 @@ end
 function outline:SaveSettings()
   if self.needsaving then
     ide:PushStatus(TR("Updating symbol index..."))
-    package:SetSettings(self.settings)
+    package:SetSettings(self.settings, {keyignore = {depth = true, image = true}})
     ide:PopStatus()
     self.needsaving = false
   end
