@@ -156,7 +156,7 @@ namespace OpenRA
 				if (index >= actors.Count || actors[index].ActorID != actor)
 					return default(T);
 				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
-					throw new InvalidOperationException("Actor has multiple traits of type `{0}`".F(typeof(T)));
+					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
 				else return traits[index];
 			}
 
