@@ -21,7 +21,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override Activity InnerTick(Actor self, AttackBase attack)
 		{
-			if (!Target.IsValidFor(self) || !self.Owner.IsAlliedWith(Target.Actor.Owner))
+			if (!Target.IsValidFor(self))
+				return NextActivity;
+
+			var disguise = Target.Actor.EffectiveOwner;
+			var targetOwner = disguise != null && disguise.Disguised && !Target.Actor.Owner.IsAlliedWith(self.Owner) ?
+				disguise.Owner : Target.Actor.Owner;
+			if (!self.Owner.IsAlliedWith(targetOwner))
 				return NextActivity;
 
 			if (Target.Type == TargetType.Actor && Target.Actor.GetDamageState() == DamageState.Undamaged)
