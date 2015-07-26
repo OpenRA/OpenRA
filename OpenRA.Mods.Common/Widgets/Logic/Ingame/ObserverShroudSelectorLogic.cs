@@ -19,9 +19,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ObserverShroudSelectorLogic
 	{
+		readonly CameraOption combined, disableShroud;
+		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
+		readonly bool limitViews;
+
 		CameraOption selected;
-		CameraOption combined, disableShroud;
-		IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 
 		class CameraOption
 		{
@@ -56,9 +58,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ObserverShroudSelectorLogic(Widget widget, World world)
 		{
+			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
+
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 
-			teams = world.Players.Where(p => !p.NonCombatant)
+			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
 				.OrderBy(g => g.Key);
@@ -72,7 +76,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			combined = new CameraOption(this, world, "All Players", world.Players.First(p => p.InternalName == "Everyone"));
 			disableShroud = new CameraOption(this, world, "Disable Shroud", null);
-			groups.Add("Other", new List<CameraOption>() { combined, disableShroud });
+			if (!limitViews)
+				groups.Add("Other", new List<CameraOption>() { combined, disableShroud });
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
 			shroudSelector.OnMouseDown = _ =>
@@ -121,7 +126,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var keyhandler = shroudSelector.Get<LogicKeyListenerWidget>("SHROUD_KEYHANDLER");
 			keyhandler.OnKeyPress = HandleKeyPress;
 
-			selected = disableShroud;
+			selected = limitViews ? groups.First().Value.First() : disableShroud;
+			selected.OnClick();
 		}
 
 		public bool HandleKeyPress(KeyInput e)
@@ -129,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (e.Event == KeyInputEvent.Down)
 			{
 				var h = Hotkey.FromKeyInput(e);
-				if (h == Game.Settings.Keys.ObserverCombinedView)
+				if (h == Game.Settings.Keys.ObserverCombinedView && !limitViews)
 				{
 					selected = combined;
 					selected.OnClick();
@@ -137,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (h == Game.Settings.Keys.ObserverWorldView)
+				if (h == Game.Settings.Keys.ObserverWorldView && !limitViews)
 				{
 					selected = disableShroud;
 					selected.OnClick();
