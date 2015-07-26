@@ -4,12 +4,20 @@
 language: csharp
 mono: 3.12.0
 
-# Don't use the container based infrastructure
-sudo: true
+# http://docs.travis-ci.com/user/migrating-from-legacy
+sudo: false
 
 cache:
   directories:
   - thirdparty/download
+
+addons:
+  apt:
+    packages:
+    - nsis
+    - nsis-common
+    - dpkg
+    - markdown
 
 # Environment variables
 env:
@@ -20,7 +28,6 @@ env:
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
 script:
- - sudo apt-get remove nuget # https://github.com/travis-ci/travis-ci/issues/3940
  - travis_retry make all-dependencies
  - make all
  - make check
@@ -50,7 +57,6 @@ notifications:
     skip_join: true
 
 before_deploy:
- - sudo apt-get install nsis nsis-common dpkg markdown
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging

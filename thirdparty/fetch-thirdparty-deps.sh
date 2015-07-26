@@ -13,7 +13,8 @@ download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
 cd "${download_dir}"
 
-if which nuget >/dev/null 2>&1; then
+# https://github.com/travis-ci/travis-ci/issues/3940
+if [ ! $TRAVIS ] && which nuget >/dev/null 2>&1; then
 	get()
 	{
 		nuget install $1 -Version $2 -ExcludeVersion
