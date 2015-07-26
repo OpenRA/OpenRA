@@ -87,7 +87,7 @@ namespace OpenRA
 
 		public MapCoordsRegion MapCoords
 		{
-			get { return new MapCoordsRegion(this); }
+			get { return new MapCoordsRegion(mapTopLeft, mapBottomRight); }
 		}
 
 		public CellRegionEnumerator GetEnumerator()
@@ -150,76 +150,6 @@ namespace OpenRA
 			public CPos Current { get { return current; } }
 			object IEnumerator.Current { get { return Current; } }
 			public void Dispose() { }
-		}
-
-		public struct MapCoordsRegion : IEnumerable<MPos>
-		{
-			public struct MapCoordsEnumerator : IEnumerator<MPos>
-			{
-				readonly CellRegion r;
-				MPos current;
-
-				public MapCoordsEnumerator(CellRegion region)
-					: this()
-				{
-					r = region;
-					Reset();
-				}
-
-				public bool MoveNext()
-				{
-					var u = current.U + 1;
-					var v = current.V;
-
-					// Check for column overflow
-					if (u > r.mapBottomRight.U)
-					{
-						v += 1;
-						u = r.mapTopLeft.U;
-
-						// Check for row overflow
-						if (v > r.mapBottomRight.V)
-							return false;
-					}
-
-					current = new MPos(u, v);
-					return true;
-				}
-
-				public void Reset()
-				{
-					current = new MPos(r.mapTopLeft.U - 1, r.mapTopLeft.V);
-				}
-
-				public MPos Current { get { return current; } }
-				object IEnumerator.Current { get { return Current; } }
-				public void Dispose() { }
-			}
-
-			readonly CellRegion r;
-
-			public MapCoordsRegion(CellRegion region)
-			{
-				r = region;
-			}
-
-			public MapCoordsEnumerator GetEnumerator()
-			{
-				return new MapCoordsEnumerator(r);
-			}
-
-			IEnumerator<MPos> IEnumerable<MPos>.GetEnumerator()
-			{
-				return GetEnumerator();
-			}
-
-			IEnumerator IEnumerable.GetEnumerator()
-			{
-				return GetEnumerator();
-			}
-
-			public MPos TopLeft { get { return r.mapTopLeft; } }
-			public MPos BottomRight { get { return r.mapBottomRight; } }
 		}
 	}
 }
