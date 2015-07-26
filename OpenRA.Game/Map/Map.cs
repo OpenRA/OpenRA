@@ -1043,12 +1043,9 @@ namespace OpenRA
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)
 		{
-			// TODO: Account for terrain height
-			// Project into the screen plane and then compare against ProjectedWorldBounds.
-			var tl = CenterOfCell(((MPos)ProjectedCellBounds.TopLeft).ToCPos(this)) - new WVec(512, 512, 0);
-			var br = CenterOfCell(((MPos)ProjectedCellBounds.BottomRight).ToCPos(this)) + new WVec(511, 511, 0);
-			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
-			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
+			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
+			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? ProjectedTopLeft.X : ProjectedBottomRight.X) - projectedPos.X) / dir.X;
+			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? ProjectedTopLeft.Y : ProjectedBottomRight.Y) - projectedPos.Y) / dir.Y;
 			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
