@@ -18,7 +18,6 @@
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
-!include "nsProcess.nsh"
 
 Name "OpenRA"
 OutFile "OpenRA.Setup.exe"
@@ -236,17 +235,7 @@ FunctionEnd
 !insertmacro Clean "un."
 
 Section "Uninstall"
-	${nsProcess::FindProcess} "OpenRA.Game.exe" $R0
-	IntCmp $R0 0 gameRunning
-	${nsProcess::FindProcess} "OpenRA.exe" $R0
-	IntCmp $R0 0 gameRunning
-	${nsProcess::Unload}
 	Call un.Clean
-	Goto end
-	gameRunning:
-		MessageBox MB_OK|MB_ICONEXCLAMATION "OpenRA is running. Please close it first" /SD IDOK
-		abort
-	end:
 SectionEnd
 
 ;***************************
