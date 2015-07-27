@@ -259,21 +259,21 @@ Player:
 		BuildingFractions:
 			proc: 30%
 			powr: 1%
-			apwr: 30%
+			apwr: 20%
 			tent: 1%
 			barr: 1%
 			weap: 3%
 			hpad: 2%
 			spen: 1%
 			syrd: 1%
-			pbox: 7%
-			gun: 7%
+			pbox: 10%
+			gun: 10%
 			ftur: 10%
-			tsla: 5%
+			tsla: 7%
 			fix: 0.1%
 			dome: 10%
 			agun: 5%
-			sam: 1%
+			sam: 5%
 			atek: 1%
 			stek: 1%
 			mslo: 1%
