@@ -377,16 +377,12 @@ Patriot:
 		RateOfTurn: 20
 		Speed: 341
 		RangeLimit: 30
-		Angle: 88
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
 		ValidTargets: Air
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
 			Heavy: 75
-		Damage: 32
+		Damage: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

@@ -477,9 +477,15 @@ MLRS:
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
+	AmmoPool:
+		Ammo: 2
+		PipCount: 0
+		SelfReloads: true
+		ReloadCount: 1
+		SelfReloadTicks: 100
 	AttackTurreted:
-	WithTurret:
-		AimSequence: aim
+	WithReloadingTurret:
+		AmmoPoolName: primary
 	AutoTarget:
 		InitialStance: Defend
 	RenderRangeCircle:

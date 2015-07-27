@@ -215,10 +215,13 @@ mlrs:
 	turret:
 		Start: 32
 		Facings: 32
-	aim:
+	turret2:
 		Start: 32
 		Facings: 32
-	empty-aim:
+	turret1:
+		Start: 64
+		Facings: 32
+	turret0:
 		Start: 96
 		Facings: 32
 	icon: mlrsicnh.tem
