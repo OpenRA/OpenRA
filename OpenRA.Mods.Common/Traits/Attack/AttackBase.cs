@@ -246,8 +246,17 @@ namespace OpenRA.Mods.Common.Traits
 
 				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
 
-				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
-				return self.Owner.Stances[owner] == targetableRelationship;
+				Player targetOwner;
+				if (target.Type == TargetType.FrozenActor)
+					targetOwner = target.FrozenActor.Owner;
+				else
+				{
+					var disguise = target.Actor.EffectiveOwner;
+					targetOwner = disguise != null && disguise.Disguised && !target.Actor.Owner.IsAlliedWith(self.Owner) ?
+						disguise.Owner : target.Actor.Owner;
+				}
+
+				return self.Owner.Stances[targetOwner] == targetableRelationship;
 			}
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
