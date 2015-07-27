@@ -8,7 +8,9 @@
  */
 #endregion
 
-namespace OpenRA.Traits
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to define weapon efficiency modifiers with different percentages per Type.")]
 	public class ArmorInfo : TraitInfo<Armor>
