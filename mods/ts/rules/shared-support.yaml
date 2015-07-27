@@ -1,11 +1,10 @@
 GADPSA:
-	Inherits: ^Building
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
 	Valued:
 		Cost: 950
-	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed Sensor Array
-	-GivesBuildableArea:
 	Health:
 		HP: 600
 	Armor:
@@ -17,10 +16,27 @@ GADPSA:
 		Facing: 159
 		TransformSounds: place2.aud
 		NoTransformSounds:
+		Voice: Move
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
-	-WithDeathAnimation:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+	RenderBuilding:
+	Voiced:
+		VoiceSet: Vehicle
+	GivesBounty:
+	WithMakeAnimation:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	TargetableBuilding:
+		TargetTypes: Ground
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
 
 NAPULS:
 	Inherits: ^Building
