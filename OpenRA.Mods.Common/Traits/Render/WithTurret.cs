@@ -58,20 +58,19 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithTurret : UpgradableTrait<WithTurretInfo>, ITick, INotifyDamageStateChanged
 	{
+		public readonly Animation DefaultAnimation;
+		protected readonly AttackBase Attack;
 		readonly RenderSprites rs;
 		readonly IBodyOrientation body;
-		readonly AttackBase ab;
 		readonly Turreted t;
 		readonly Armament[] arms;
-		public readonly Animation DefaultAnimation;
 
 		public WithTurret(Actor self, WithTurretInfo info)
 			: base(info)
 		{
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<IBodyOrientation>();
-
-			ab = self.TraitOrDefault<AttackBase>();
+			Attack = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
@@ -109,12 +108,12 @@ namespace OpenRA.Mods.Common.Traits
 				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
 		}
 
-		public void Tick(Actor self)
+		public virtual void Tick(Actor self)
 		{
 			if (Info.AimSequence == null)
 				return;
 
-			var sequence = ab.IsAttacking ? Info.AimSequence : Info.Sequence;
+			var sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
 			DefaultAnimation.ReplaceAnim(sequence);
 		}
 

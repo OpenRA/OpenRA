@@ -84,6 +84,7 @@
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
+    <Compile Include="Traits\Render\WithReloadingTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SpawnViceroid.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
