@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer) || self.World.FogObscures(self))
+			if (self.World.FogObscures(self))
 				yield break;
 
 			if (Info.RenderSelectionBox)
@@ -79,6 +79,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.RenderSelectionBars)
 				yield return new SelectionBarsRenderable(self);
+
+			if (!self.Owner.IsAlliedWith(wr.World.RenderPlayer))
+				yield break;
 
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
 				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);

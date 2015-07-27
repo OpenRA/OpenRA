@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 	public class Chronoshiftable : ITick, ISync, ISelectionBar
 	{
 		readonly ChronoshiftableInfo info;
+		readonly Actor self;
 		Actor chronosphere;
 		bool killCargo;
 		int duration;
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)
 		{
 			this.info = info;
+			self = init.Self;
 
 			if (init.Contains<ChronoshiftReturnInit>())
 				ReturnTicks = init.Get<ChronoshiftReturnInit, int>();
@@ -96,7 +98,8 @@ namespace OpenRA.Mods.RA.Traits
 		// Show the remaining time as a bar
 		public float GetValue()
 		{
-			if (ReturnTicks == 0) // otherwise an empty bar is rendered all the time
+			// otherwise an empty bar is rendered all the time
+			if (ReturnTicks == 0 || !self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0f;
 
 			return (float)ReturnTicks / duration;
