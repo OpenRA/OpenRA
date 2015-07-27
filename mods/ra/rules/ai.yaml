@@ -75,13 +75,13 @@ Player:
 				Types: Structure
 				Attractiveness: 1
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense, Water
-				Attractiveness: -10
+				Types: Water
+				Attractiveness: -5
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
@@ -199,13 +199,13 @@ Player:
 				Types: Structure
 				Attractiveness: 1
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense, Water
-				Attractiveness: -10
+				Types: Water
+				Attractiveness: -5
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
@@ -322,13 +322,13 @@ Player:
 				Types: Structure
 				Attractiveness: 1
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense, Water
-				Attractiveness: -10
+				Types: Water
+				Attractiveness: -5
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
@@ -423,13 +423,13 @@ Player:
 				Types: Structure
 				Attractiveness: 1
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 			Consideration@2:
 				Against: Enemy
-				Types: Vehicle, Tank, Infantry, Defense, Water
-				Attractiveness: -10
+				Types: Water
+				Attractiveness: -5
 				TargetMetric: None
-				CheckRadius: 10c0
+				CheckRadius: 8c0
 		SupportPowerDecision@parabombs:
 			OrderName: UkraineParabombs
 			MinimumAttractiveness: 1
