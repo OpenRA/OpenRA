@@ -27,14 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 	class BridgeLayer : IWorldLoaded
 	{
 		readonly BridgeLayerInfo info;
-		readonly World world;
 		Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
 		CellLayer<Bridge> bridges;
 
 		public BridgeLayer(Actor self, BridgeLayerInfo info)
 		{
 			this.info = info;
-			this.world = self.World;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -81,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
+			var mapTiles = w.Map.MapTiles.Value;
 
 			// For each subtile in the template
 			for (byte ind = 0; ind < template.Size.X * template.Size.Y; ind++)
@@ -89,8 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
 
 				// This isn't the bridge you're looking for
-				if (!w.Map.Contains(subtile) || w.Map.MapTiles.Value[subtile].Type != tile ||
-					w.Map.MapTiles.Value[subtile].Index != ind)
+				if (!mapTiles.Contains(subtile) || mapTiles[subtile].Type != tile || mapTiles[subtile].Index != ind)
 					continue;
 
 				subTiles.Add(subtile, ind);
@@ -103,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Used to check for neighbouring bridges
 		public Bridge GetBridge(CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			if (!bridges.Contains(cell))
 				return null;
 
 			return bridges[cell];
