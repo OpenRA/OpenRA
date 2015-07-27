@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var loc = RandomBuildingLocation(squad);
 			foreach (var a in squad.Units)
-				squad.World.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
+				squad.Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = loc });
 		}
 
 		protected static CPos RandomBuildingLocation(Squad squad)

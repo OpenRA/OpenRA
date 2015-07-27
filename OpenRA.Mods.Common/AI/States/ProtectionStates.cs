@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.AI
 			else
 			{
 				foreach (var a in owner.Units)
-					owner.World.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
+					owner.Bot.QueueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
 			}
 		}
 

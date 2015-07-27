@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.AI
 					{
 						if (IsRearm(a))
 							continue;
-						owner.World.IssueOrder(new Order("ReturnToBase", a, false));
+						owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 						continue;
 					}
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 
 				if (owner.TargetActor.HasTrait<ITargetable>() && CanAttackTarget(a, owner.TargetActor))
-					owner.World.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
+					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
 			}
 		}
 
@@ -247,11 +247,11 @@ namespace OpenRA.Mods.Common.AI
 					if (IsRearm(a))
 						continue;
 
-					owner.World.IssueOrder(new Order("ReturnToBase", a, false));
+					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 					continue;
 				}
 
-				owner.World.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
+				owner.Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
 			}
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState(), true);
