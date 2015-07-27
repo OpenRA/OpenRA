@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a decorative animation on units and buildings.")]
 	public class WithIdleOverlayInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
+		[Desc("Animation to play when the actor is created.")]
+		[SequenceReference] public readonly string StartSequence = null;
+
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "idle-overlay";
 
@@ -67,7 +70,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
-			overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence));
+			if (info.StartSequence != null)
+				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
+					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence)));
+			else
+				overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence));
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),

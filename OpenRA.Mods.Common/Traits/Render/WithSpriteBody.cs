@@ -57,11 +57,11 @@ namespace OpenRA.Mods.Common.Traits
 			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 
-			if (Info.StartSequence != null)
-				PlayCustomAnimation(init.Self, Info.StartSequence,
-					() => DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, Info.Sequence)));
+			if (info.StartSequence != null)
+				PlayCustomAnimation(init.Self, info.StartSequence,
+					() => PlayCustomAnimationRepeating(init.Self, info.Sequence));
 			else
-				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, Info.Sequence));
+				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)

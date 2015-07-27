@@ -667,10 +667,12 @@ v19.husk:
 	fire-start: flmspt
 		Length: *
 		Offset: 7,-15
+		ZOffset: 1
 	fire-loop: flmspt
 		Start: 50
 		Length: *
 		Offset: 7,-15
+		ZOffset: 1
 
 v20:
 	Defaults:
