@@ -56,11 +56,11 @@ namespace OpenRA.Mods.Common.AI
 		public readonly int MinimumExcessPower = 0;
 
 		[Desc("Delay (in ticks) between structure production checks when there is no active production.",
-		"A StructureProductionRandomBonusDelay is added to this.")]
+			"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
 
 		[Desc("Delay (in ticks) between structure production checks when actively building things.",
-		"A StructureProductionRandomBonusDelay is added to this.")]
+			"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionActiveDelay = 10;
 
 		[Desc("A random delay (in ticks) of up to this is added to active/inactive production delays.")]
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.AI
 		public readonly int StructureProductionResumeDelay = 1500;
 
 		[Desc("After how many failed attempts to place a structure should AI give up and wait",
-		"for StructureProductionResumeDelay before retrying.")]
+			"for StructureProductionResumeDelay before retrying.")]
 		public readonly int MaximumFailedPlacementAttempts = 3;
 
 		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
@@ -101,8 +101,8 @@ namespace OpenRA.Mods.Common.AI
 		public readonly int MaxBaseRadius = 20;
 
 		[Desc("Radius in cells around each building with ProvideBuildableArea",
-		"to check for a 3x3 area of water where naval structures can be built.",
-		"Should match maximum adjacency of naval structures.")]
+			"to check for a 3x3 area of water where naval structures can be built.",
+			"Should match maximum adjacency of naval structures.")]
 		public readonly int CheckForWaterRadius = 8;
 
 		[Desc("Production queues AI uses for producing units.")]
@@ -281,6 +281,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var b in baseProviders)
 			{
 				// TODO: Unhardcode terrain type
+				// TODO2: Properly check building foundation rather than 3x3 area
 				var playerWorld = Player.World;
 				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
 					.Where(c => playerWorld.Map.Contains(c)
@@ -307,6 +308,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var a in areaProviders)
 			{
 				// TODO: Unhardcode terrain type
+				// TODO2: Properly check building foundation rather than 3x3 area
 				var playerWorld = Player.World;
 				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
 					.Where(c => playerWorld.Map.Contains(c)
