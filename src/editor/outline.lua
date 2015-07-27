@@ -347,15 +347,20 @@ end
 
 outlineCreateOutlineWindow()
 
+local function queuePath(path)
+  -- only queue if symbols inactivity is set, so files will be indexed
+  if ide.config.symbolindexinactivity and not outline.indexqueue[0][path] then
+    outline.indexqueue[0][path] = true
+    table.insert(outline.indexqueue, 1, path)
+  end
+end
+
 function OutlineFunctions(editor)
   if type(editor) == 'string' then
     local path = editor
     local symbols = outline.settings.symbols[path]
-      -- queue path to process when appropriate
-    if not symbols and not outline.indexqueue[0][path] then
-      outline.indexqueue[0][path] = true
-      table.insert(outline.indexqueue, 1, path)
-    end
+    -- queue path to process when appropriate
+    if not symbols then queuePath(path) end
     return symbols or {}
   end
   -- force token refresh (as these may be not updated yet)
