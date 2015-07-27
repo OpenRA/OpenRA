@@ -231,7 +231,7 @@
 		DeathTypes:
 			BulletDeath: 1
 			SmallExplosionDeath: 2
-			HeadshotDeath: 3 #not used by any warhead; TODO: check what should use this type and add it!
+			HeadshotDeath: 3
 			FireDeath: 5
 	WithDeathAnimation@explosion:
 		DeathSequencePalette: effect
