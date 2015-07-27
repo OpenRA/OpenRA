@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsPassable(CPos p1, CPos p2)
 		{
-			if (!map.Contains(p1) || !map.Contains(p2))
+			if (!domains.Contains(p1) || !domains.Contains(p2))
 				return false;
 
 			if (domains[p1] == domains[p2])
