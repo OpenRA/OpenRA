@@ -652,14 +652,9 @@ Rules:
 			ShowOwnerRow: false
 		Demolishable:
 	^Building:
-		Capturable:
-			CaptureThreshold: 0.25
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
-	^TechBuilding:
-		Capturable:
-			Type: ~disabled
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
@@ -679,6 +674,9 @@ Rules:
 	^Crate:
 		Tooltip:
 			ShowOwnerRow: false
+	AFLD:
+		ParatroopersPower@paratroopers:
+			DropItems: E1,E1,E1,E2,E2
 	TSLA:
 		Buildable:
 			Prerequisites: ~disabled
@@ -731,6 +729,9 @@ Rules:
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E1,E1
+	AGUN:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 
