@@ -43,7 +43,7 @@ function M.warnings_from_string(src, file)
     LI.eval_comments, LI.infer_values = ec, iv
   end
 
-  local globinit = {}
+  local globinit = {arg = true} -- skip `arg` global variable
   local spec = GetSpec(wx.wxFileName(file):GetExt())
   for k in pairs(spec and GetApi(spec.apitype or "none").ac.childs or {}) do
     globinit[k] = true
