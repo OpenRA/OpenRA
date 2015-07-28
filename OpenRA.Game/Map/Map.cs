@@ -739,10 +739,10 @@ namespace OpenRA
 
 		public bool Contains(MPos uv)
 		{
-			// TODO: Checking against the bounds excludes valid parts of the map if MaxTerrainHeight > 0.
-			// Unfortunatley, doing this properly leads to memory corruption issues in the (unsafe) radar
-			// rendering code.
-			return Bounds.Contains(uv.U, uv.V) && ProjectedCellsCovering(uv).All(containsTest);
+			// The first check ensures that the cell is within the valid map region, avoiding
+			// potential crashes in deeper code.  All CellLayers have the same geometry, and
+			// CustomTerrain is convenient (cellProjection may be null and others are Lazy).
+			return CustomTerrain.Contains(uv) && ProjectedCellsCovering(uv).All(containsTest);
 		}
 
 		public bool Contains(PPos puv)
