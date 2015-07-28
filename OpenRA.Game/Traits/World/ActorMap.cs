@@ -194,7 +194,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
-			if (!map.Contains(a))
+			if (!influence.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
@@ -204,7 +204,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
-			if (!map.Contains(a))
+			if (!influence.Contains(a))
 				yield break;
 
 			for (var i = influence[a]; i != null; i = i.Next)
@@ -249,7 +249,7 @@ namespace OpenRA.Traits
 		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
-			if (!map.Contains(a))
+			if (!influence.Contains(a))
 				return false;
 
 			return influence[a] != null;
@@ -258,7 +258,7 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
-			if (!map.Contains(a))
+			if (!influence.Contains(a))
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
@@ -281,7 +281,7 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
-			if (!map.Contains(a))
+			if (!influence.Contains(a))
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
@@ -296,7 +296,7 @@ namespace OpenRA.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				if (!map.Contains(c.First))
+				if (!influence.Contains(c.First))
 					continue;
 
 				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
@@ -312,7 +312,7 @@ namespace OpenRA.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				if (!map.Contains(c.First))
+				if (!influence.Contains(c.First))
 					continue;
 
 				var temp = influence[c.First];
@@ -381,7 +381,7 @@ namespace OpenRA.Traits
 
 			foreach (var c in cells)
 			{
-				if (!map.Contains(c))
+				if (!influence.Contains(c))
 					continue;
 
 				if (!cellTriggerInfluence.ContainsKey(c))
