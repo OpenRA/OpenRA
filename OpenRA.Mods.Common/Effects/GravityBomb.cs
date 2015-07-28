@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
 
-	public class GravityBomb : IEffect
+	public class GravityBomb : IEffect, ISync
 	{
 		readonly GravityBombInfo info;
 		readonly Animation anim;
