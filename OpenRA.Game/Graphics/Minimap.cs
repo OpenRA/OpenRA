@@ -22,8 +22,12 @@ namespace OpenRA.Graphics
 		{
 			var isDiamond = map.TileShape == TileShape.Diamond;
 			var b = map.Bounds;
+
+			// Fudge the heightmap offset by adding as much extra as we need / can.
+			// This tries to correct for our incorrect assumption that MPos == PPos
+			var heightOffset = Math.Min(map.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
 			var width = b.Width;
-			var height = b.Height;
+			var height = b.Height + heightOffset;
 
 			var bitmapWidth = width;
 			if (isDiamond)
@@ -59,7 +63,8 @@ namespace OpenRA.Graphics
 							if (x + dx > 0)
 								colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
 
-							colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
+							if (2 * x + dx < stride)
+								colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
 						}
 						else
 							colors[y * stride + x] = leftColor.ToArgb();
@@ -78,8 +83,12 @@ namespace OpenRA.Graphics
 			var terrain = new Bitmap(terrainBitmap);
 			var isDiamond = map.TileShape == TileShape.Diamond;
 			var b = map.Bounds;
+
+			// Fudge the heightmap offset by adding as much extra as we need / can
+			// This tries to correct for our incorrect assumption that MPos == PPos
+			var heightOffset = Math.Min(map.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
 			var width = b.Width;
-			var height = b.Height;
+			var height = b.Height + heightOffset;
 
 			var resources = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
 				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
@@ -111,7 +120,8 @@ namespace OpenRA.Graphics
 							if (x + dx > 0)
 								colors[y * stride + 2 * x + dx - 1] = color;
 
-							colors[y * stride + 2 * x + dx] = color;
+							if (2 * x + dx < stride)
+								colors[y * stride + 2 * x + dx] = color;
 						}
 						else
 							colors[y * stride + x] = color;
