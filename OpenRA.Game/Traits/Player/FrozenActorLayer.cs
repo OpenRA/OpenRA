@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 
 	public class FrozenActor
 	{
-		public readonly MPos[] Footprint;
+		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		readonly Actor actor;
@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 		public bool NeedRenderables;
 		public bool IsRendering { get; private set; }
 
-		public FrozenActor(Actor self, MPos[] footprint, Shroud shroud)
+		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud)
 		{
 			actor = self;
 			this.shroud = shroud;

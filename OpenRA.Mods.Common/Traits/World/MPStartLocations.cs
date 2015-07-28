@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 			var map = world.Map;
 			foreach (var p in Start.Keys)
 			{
-				var cells = Shroud.CellsInRange(map, Start[p], info.InitialExploreRange);
+				var cells = Shroud.ProjectedCellsInRange(map, Start[p], info.InitialExploreRange);
 				foreach (var q in world.Players)
 					if (p.IsAlliedWith(q))
-						q.Shroud.Explore(world, cells);
+						q.Shroud.ExploreProjectedCells(world, cells);
 			}
 
 			// Set viewport

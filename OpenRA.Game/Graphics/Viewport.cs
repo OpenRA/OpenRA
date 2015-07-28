@@ -48,10 +48,10 @@ namespace OpenRA.Graphics
 		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
 		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
 		int2 viewportSize;
-		CellRegion cells;
+		ProjectedCellRegion cells;
 		bool cellsDirty = true;
 
-		CellRegion allCells;
+		ProjectedCellRegion allCells;
 		bool allCellsDirty = true;
 
 		float zoom = 1f;
@@ -93,15 +93,27 @@ namespace OpenRA.Graphics
 		{
 			worldRenderer = wr;
 
-			var cells = wr.World.Type == WorldType.Editor ?
-				map.AllCells : map.CellsInsideBounds;
-
 			// Calculate map bounds in world-px
-			var tl = wr.ScreenPxPosition(map.CenterOfCell(cells.TopLeft) - new WVec(512, 512, 0));
-			var br = wr.ScreenPxPosition(map.CenterOfCell(cells.BottomRight) + new WVec(511, 511, 0));
-			mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
+			if (wr.World.Type == WorldType.Editor)
+			{
+				// The full map is visible in the editor
+				var ts = Game.ModData.Manifest.TileSize;
+				var width = map.MapSize.X * ts.Width;
+				var height = map.MapSize.Y * ts.Height;
+				if (wr.World.Map.TileShape == TileShape.Diamond)
+					height /= 2;
 
-			CenterLocation = (tl + br) / 2;
+				mapBounds = new Rectangle(0, 0, width, height);
+				CenterLocation = new int2(width / 2, height / 2);
+			}
+			else
+			{
+				var tl = wr.ScreenPxPosition(map.ProjectedTopLeft);
+				var br = wr.ScreenPxPosition(map.ProjectedBottomRight);
+				mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
+				CenterLocation = (tl + br) / 2;
+			}
+
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			tileSize = Game.ModData.Manifest.TileSize;
 		}
@@ -209,8 +221,8 @@ namespace OpenRA.Graphics
 			// Visible rectangle in world coordinates (expanded to the corners of the cells)
 			var bounds = insideBounds ? VisibleCellsInsideBounds : AllVisibleCells;
 			var map = worldRenderer.World.Map;
-			var ctl = map.CenterOfCell(bounds.TopLeft) - new WVec(512, 512, 0);
-			var cbr = map.CenterOfCell(bounds.BottomRight) + new WVec(512, 512, 0);
+			var ctl = map.CenterOfCell(((MPos)bounds.TopLeft).ToCPos(map)) - new WVec(512, 512, 0);
+			var cbr = map.CenterOfCell(((MPos)bounds.BottomRight).ToCPos(map)) + new WVec(512, 512, 0);
 
 			// Convert to screen coordinates
 			var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
@@ -221,22 +233,21 @@ namespace OpenRA.Graphics
 				br.X + tileSize.Width, br.Y + tileSize.Height);
 		}
 
-		CellRegion CalculateVisibleCells(bool insideBounds)
+		ProjectedCellRegion CalculateVisibleCells(bool insideBounds)
 		{
 			var map = worldRenderer.World.Map;
 
-			// Calculate the viewport corners in "projected wpos" (at ground level), and
-			// this to an equivalent projected cell for the two corners
-			var tl = map.CellContaining(worldRenderer.ProjectedPosition(TopLeft)).ToMPos(map);
-			var br = map.CellContaining(worldRenderer.ProjectedPosition(BottomRight)).ToMPos(map);
+			// Calculate the projected cell position at the corners of the visible area
+			var tl = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(TopLeft)).ToMPos(map);
+			var br = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(BottomRight)).ToMPos(map);
 
 			// Diamond tile shapes don't have straight edges, and so we need
 			// an additional cell margin to include the cells that are half
 			// visible on each edge.
 			if (map.TileShape == TileShape.Diamond)
 			{
-				tl = new MPos(tl.U - 1, tl.V - 1);
-				br = new MPos(br.U + 1, br.V + 1);
+				tl = new PPos(tl.U - 1, tl.V - 1);
+				br = new PPos(br.U + 1, br.V + 1);
 			}
 
 			// Clamp to the visible map bounds, if requested
@@ -246,21 +257,10 @@ namespace OpenRA.Graphics
 				br = map.Clamp(br);
 			}
 
-			// Cells can be pushed up from below if they have non-zero height.
-			// Each height step is equivalent to 512 WDist units, which is
-			// one MPos step for diamond cells, but only half a MPos step
-			// for classic cells. Doh!
-			var heightOffset = map.TileShape == TileShape.Diamond ? map.MaximumTerrainHeight : map.MaximumTerrainHeight / 2;
-			br = new MPos(br.U, br.V + heightOffset);
-
-			// Finally, make sure that this region doesn't extend outside the map area.
-			tl = map.MapHeight.Value.Clamp(tl);
-			br = map.MapHeight.Value.Clamp(br);
-
-			return new CellRegion(map.TileShape, tl.ToCPos(map), br.ToCPos(map));
+			return new ProjectedCellRegion(map, tl, br);
 		}
 
-		public CellRegion VisibleCellsInsideBounds
+		public ProjectedCellRegion VisibleCellsInsideBounds
 		{
 			get
 			{
@@ -274,7 +274,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public CellRegion AllVisibleCells
+		public ProjectedCellRegion AllVisibleCells
 		{
 			get
 			{

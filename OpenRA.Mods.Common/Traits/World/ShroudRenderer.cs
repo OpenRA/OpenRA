@@ -91,11 +91,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly CellLayer<TileInfo> tileInfos;
 		readonly Sprite[] fogSprites, shroudSprites;
-		readonly HashSet<CPos> cellsDirty = new HashSet<CPos>();
-		readonly HashSet<CPos> cellsAndNeighborsDirty = new HashSet<CPos>();
+		readonly HashSet<PPos> cellsDirty = new HashSet<PPos>();
+		readonly HashSet<PPos> cellsAndNeighborsDirty = new HashSet<PPos>();
 
 		Shroud currentShroud;
-		Func<MPos, bool> visibleUnderShroud, visibleUnderFog;
+		Func<PPos, bool> visibleUnderShroud, visibleUnderFog;
 		TerrainSpriteLayer shroudLayer, fogLayer;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
@@ -158,20 +158,22 @@ namespace OpenRA.Mods.Common.Traits
 			// This includes the region outside the visible area to cover any sprites peeking outside the map
 			foreach (var uv in w.Map.AllCells.MapCoords)
 			{
-				var screen = wr.ScreenPosition(w.Map.CenterOfCell(uv.ToCPos(map)));
+				var pos = w.Map.CenterOfCell(uv.ToCPos(map));
+				var screen = wr.ScreenPosition(pos - new WVec(0, 0, pos.Z));
 				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tileInfos[uv] = new TileInfo(screen, variant);
 			}
 
-			DirtyCells(map.AllCells);
+			// Dirty the whole projected space
+			DirtyCells(map.AllCells.MapCoords.Select(uv => (PPos)uv));
 
 			// All tiles are visible in the editor
 			if (w.Type == WorldType.Editor)
 				visibleUnderShroud = _ => true;
 			else
-				visibleUnderShroud = map.Contains;
+				visibleUnderShroud = puv => map.Contains(puv);
 
-			visibleUnderFog = map.Contains;
+			visibleUnderFog = puv => map.Contains(puv);
 
 			var shroudSheet = shroudSprites[0].Sheet;
 			if (shroudSprites.Any(s => s.Sheet != shroudSheet))
@@ -193,25 +195,25 @@ namespace OpenRA.Mods.Common.Traits
 			fogLayer = new TerrainSpriteLayer(w, wr, fogSheet, fogBlend, wr.Palette(info.FogPalette), false);
 		}
 
-		Edges GetEdges(MPos uv, Func<MPos, bool> isVisible)
+		Edges GetEdges(PPos puv, Func<PPos, bool> isVisible)
 		{
-			if (!isVisible(uv))
+			if (!isVisible(puv))
 				return notVisibleEdges;
 
-			var cell = uv.ToCPos(map);
+			var cell = ((MPos)puv).ToCPos(map);
 
 			// If a side is shrouded then we also count the corners.
 			var edge = Edges.None;
-			if (!isVisible((cell + new CVec(0, -1)).ToMPos(map))) edge |= Edges.Top;
-			if (!isVisible((cell + new CVec(1, 0)).ToMPos(map))) edge |= Edges.Right;
-			if (!isVisible((cell + new CVec(0, 1)).ToMPos(map))) edge |= Edges.Bottom;
-			if (!isVisible((cell + new CVec(-1, 0)).ToMPos(map))) edge |= Edges.Left;
+			if (!isVisible((PPos)(cell + new CVec(0, -1)).ToMPos(map))) edge |= Edges.Top;
+			if (!isVisible((PPos)(cell + new CVec(1, 0)).ToMPos(map))) edge |= Edges.Right;
+			if (!isVisible((PPos)(cell + new CVec(0, 1)).ToMPos(map))) edge |= Edges.Bottom;
+			if (!isVisible((PPos)(cell + new CVec(-1, 0)).ToMPos(map))) edge |= Edges.Left;
 
 			var ucorner = edge & Edges.AllCorners;
-			if (!isVisible((cell + new CVec(-1, -1)).ToMPos(map))) edge |= Edges.TopLeft;
-			if (!isVisible((cell + new CVec(1, -1)).ToMPos(map))) edge |= Edges.TopRight;
-			if (!isVisible((cell + new CVec(1, 1)).ToMPos(map))) edge |= Edges.BottomRight;
-			if (!isVisible((cell + new CVec(-1, 1)).ToMPos(map))) edge |= Edges.BottomLeft;
+			if (!isVisible((PPos)(cell + new CVec(-1, -1)).ToMPos(map))) edge |= Edges.TopLeft;
+			if (!isVisible((PPos)(cell + new CVec(1, -1)).ToMPos(map))) edge |= Edges.TopRight;
+			if (!isVisible((PPos)(cell + new CVec(1, 1)).ToMPos(map))) edge |= Edges.BottomRight;
+			if (!isVisible((PPos)(cell + new CVec(-1, 1)).ToMPos(map))) edge |= Edges.BottomLeft;
 
 			// RA provides a set of frames for tiles with shrouded
 			// corners but unshrouded edges. We want to detect this
@@ -222,7 +224,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.UseExtendedIndex ? edge ^ ucorner : edge & Edges.AllCorners;
 		}
 
-		void DirtyCells(IEnumerable<CPos> cells)
+		void DirtyCells(IEnumerable<PPos> cells)
 		{
 			cellsDirty.UnionWith(cells);
 		}
@@ -244,36 +246,37 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					visibleUnderShroud = map.Contains;
-					visibleUnderFog = map.Contains;
+					visibleUnderShroud = puv => map.Contains(puv);
+					visibleUnderFog = puv => map.Contains(puv);
 				}
 
 				currentShroud = shroud;
-				DirtyCells(map.CellsInsideBounds);
+				DirtyCells(map.ProjectedCellBounds);
 			}
 
 			// We need to update newly dirtied areas of the shroud.
 			// Expand the dirty area to cover the neighboring cells, since shroud is affected by neighboring cells.
-			foreach (var cell in cellsDirty)
+			foreach (var uv in cellsDirty)
 			{
-				cellsAndNeighborsDirty.Add(cell);
+				cellsAndNeighborsDirty.Add(uv);
+				var cell = ((MPos)uv).ToCPos(map);
 				foreach (var direction in CVec.Directions)
-					cellsAndNeighborsDirty.Add(cell + direction);
+					cellsAndNeighborsDirty.Add((PPos)(cell + direction).ToMPos(map));
 			}
 
-			foreach (var cell in cellsAndNeighborsDirty)
+			foreach (var puv in cellsAndNeighborsDirty)
 			{
-				var uv = cell.ToMPos(map.TileShape);
+				var uv = (MPos)puv;
 				if (!tileInfos.Contains(uv))
 					continue;
 
 				var tileInfo = tileInfos[uv];
-				var shroudSprite = GetSprite(shroudSprites, GetEdges(uv, visibleUnderShroud), tileInfo.Variant);
+				var shroudSprite = GetSprite(shroudSprites, GetEdges(puv, visibleUnderShroud), tileInfo.Variant);
 				var shroudPos = tileInfo.ScreenPosition;
 				if (shroudSprite != null)
 					shroudPos += shroudSprite.Offset - 0.5f * shroudSprite.Size;
 
-				var fogSprite = GetSprite(fogSprites, GetEdges(uv, visibleUnderFog), tileInfo.Variant);
+				var fogSprite = GetSprite(fogSprites, GetEdges(puv, visibleUnderFog), tileInfo.Variant);
 				var fogPos = tileInfo.ScreenPosition;
 				if (fogSprite != null)
 					fogPos += fogSprite.Offset - 0.5f * fogSprite.Size;

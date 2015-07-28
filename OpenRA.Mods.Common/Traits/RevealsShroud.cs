@@ -27,14 +27,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RevealsShroud : ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		static readonly CPos[] NoCells = { };
+		static readonly PPos[] NoCells = { };
 
 		readonly RevealsShroudInfo info;
 		readonly bool lobbyShroudFogDisabled;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 
-		protected Action<Player, CPos[]> addCellsToPlayerShroud;
+		protected Action<Player, PPos[]> addCellsToPlayerShroud;
 		protected Action<Player> removeCellsFromPlayerShroud;
 		protected Func<bool> isDisabled;
 
@@ -43,12 +43,12 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
 
-			addCellsToPlayerShroud = (p, c) => p.Shroud.AddVisibility(self, c);
+			addCellsToPlayerShroud = (p, uv) => p.Shroud.AddProjectedVisibility(self, uv);
 			removeCellsFromPlayerShroud = p => p.Shroud.RemoveVisibility(self);
 			isDisabled = () => false;
 		}
 
-		CPos[] Cells(Actor self)
+		PPos[] ProjectedCells(Actor self)
 		{
 			var map = self.World.Map;
 			var range = Range;
@@ -57,10 +57,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.Type == VisibilityType.Footprint)
 				return self.OccupiesSpace.OccupiedCells()
-					.SelectMany(kv => Shroud.CellsInRange(map, kv.First, range))
-						.Distinct().ToArray();
+					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range))
+					.Distinct().ToArray();
 
-			return Shroud.CellsInRange(map, self.CenterPosition, range)
+			return Shroud.ProjectedCellsInRange(map, self.CenterPosition, range)
 				.ToArray();
 		}
 
@@ -69,15 +69,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (lobbyShroudFogDisabled || !self.IsInWorld)
 				return;
 
-			var location = self.Location;
+			var centerPosition = self.CenterPosition;
+			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
+			var projectedLocation = self.World.Map.CellContaining(projectedPos);
 			var disabled = isDisabled();
-			if (cachedLocation == location && cachedDisabled == disabled)
+
+			if (cachedLocation == projectedLocation && cachedDisabled == disabled)
 				return;
 
-			cachedLocation = location;
+			cachedLocation = projectedLocation;
 			cachedDisabled = disabled;
 
-			var cells = Cells(self);
+			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
 			{
 				removeCellsFromPlayerShroud(p);
@@ -87,10 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			cachedLocation = self.Location;
+			var centerPosition = self.CenterPosition;
+			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
+			cachedLocation = self.World.Map.CellContaining(projectedPos);
 			cachedDisabled = isDisabled();
-
-			var cells = Cells(self);
+			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
 				addCellsToPlayerShroud(p, cells);
 		}

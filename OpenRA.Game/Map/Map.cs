@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -245,6 +246,8 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
 
 		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
+		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
+		[FieldLoader.Ignore] CellLayer<List<MPos>> inverseCellProjection;
 
 		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
@@ -252,8 +255,10 @@ namespace OpenRA
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
 		public WVec[][] CellCorners { get; private set; }
-		[FieldLoader.Ignore] public CellRegion CellsInsideBounds;
+		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
+
+		readonly Func<PPos, bool> containsTest;
 
 		void AssertExists(string filename)
 		{
@@ -268,6 +273,8 @@ namespace OpenRA
 		/// </summary>
 		public Map(TileSet tileset, int width, int height)
 		{
+			containsTest = Contains;
+
 			var size = new Size(width, height);
 			var tileShape = Game.ModData.Manifest.TileShape;
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
@@ -307,6 +314,8 @@ namespace OpenRA
 		/// <summary>Initializes a map loaded from disk.</summary>
 		public Map(string path)
 		{
+			containsTest = Contains;
+
 			Path = path;
 			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
 
@@ -409,8 +418,8 @@ namespace OpenRA
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
 			AllCells = new CellRegion(TileShape, tl, br);
 
-			var btl = new MPos(Bounds.Left, Bounds.Top);
-			var bbr = new MPos(Bounds.Right - 1, Bounds.Bottom - 1);
+			var btl = new PPos(Bounds.Left, Bounds.Top);
+			var bbr = new PPos(Bounds.Right - 1, Bounds.Bottom - 1);
 			SetBounds(btl, bbr);
 
 			CustomTerrain = new CellLayer<byte>(this);
@@ -428,6 +437,80 @@ namespace OpenRA
 				rightDelta + new WVec(0, 0, 512 * ramp[2]),
 				bottomDelta + new WVec(0, 0, 512 * ramp[3])
 			}).ToArray();
+
+			if (MaximumTerrainHeight != 0)
+			{
+				cellProjection = new CellLayer<PPos[]>(this);
+				inverseCellProjection = new CellLayer<List<MPos>>(this);
+
+				// Initialize collections
+				foreach (var cell in AllCells)
+				{
+					var uv = cell.ToMPos(TileShape);
+					cellProjection[uv] = new PPos[0];
+					inverseCellProjection[uv] = new List<MPos>();
+				}
+
+				// Initialize projections
+				foreach (var cell in AllCells)
+					UpdateProjection(cell);
+			}
+		}
+
+		void UpdateProjection(CPos cell)
+		{
+			if (MaximumTerrainHeight == 0)
+				return;
+
+			var uv = cell.ToMPos(TileShape);
+
+			// Remove old reverse projection
+			foreach (var puv in cellProjection[uv])
+				inverseCellProjection[(MPos)puv].Remove(uv);
+
+			var projected = ProjectCellInner(uv);
+			cellProjection[uv] = projected;
+
+			foreach (var puv in projected)
+				inverseCellProjection[(MPos)puv].Add(uv);
+		}
+
+		PPos[] ProjectCellInner(MPos uv)
+		{
+			var mapHeight = MapHeight.Value;
+			if (!mapHeight.Contains(uv))
+				return NoProjectedCells;
+
+			var height = mapHeight[uv];
+			if (height == 0)
+				return new[] { (PPos)uv };
+
+			// Odd-height ramps get bumped up a level to the next even height layer
+			if ((height & 1) == 1)
+			{
+				var ti = cachedTileSet.Value.GetTileInfo(MapTiles.Value[uv]);
+				if (ti != null && ti.RampType != 0)
+					height += 1;
+			}
+
+			var candidates = new List<PPos>();
+
+			// Odd-height level tiles are equally covered by four projected tiles
+			if ((height & 1) == 1)
+			{
+				if ((uv.V & 1) == 1)
+					candidates.Add(new PPos(uv.U + 1, uv.V - height));
+				else
+					candidates.Add(new PPos(uv.U - 1, uv.V - height));
+
+				candidates.Add(new PPos(uv.U, uv.V - height));
+				candidates.Add(new PPos(uv.U, uv.V - height + 1));
+				candidates.Add(new PPos(uv.U, uv.V - height - 1));
+			}
+			else
+				candidates.Add(new PPos(uv.U, uv.V - height));
+
+			return candidates.Where(c => mapHeight.Contains((MPos)c)).ToArray();
 		}
 
 		public Ruleset PreloadRules()
@@ -534,6 +617,8 @@ namespace OpenRA
 				}
 			}
 
+			tiles.CellEntryChanged += UpdateProjection;
+
 			return tiles;
 		}
 
@@ -551,6 +636,8 @@ namespace OpenRA
 							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, MaximumTerrainHeight);
 				}
 			}
+
+			tiles.CellEntryChanged += UpdateProjection;
 
 			return tiles;
 		}
@@ -652,7 +739,15 @@ namespace OpenRA
 
 		public bool Contains(MPos uv)
 		{
-			return Bounds.Contains(uv.U, uv.V);
+			// TODO: Checking against the bounds excludes valid parts of the map if MaxTerrainHeight > 0.
+			// Unfortunatley, doing this properly leads to memory corruption issues in the (unsafe) radar
+			// rendering code.
+			return Bounds.Contains(uv.U, uv.V) && ProjectedCellsCovering(uv).All(containsTest);
+		}
+
+		public bool Contains(PPos puv)
+		{
+			return Bounds.Contains(puv.U, puv.V);
 		}
 
 		public WPos CenterOfCell(CPos cell)
@@ -695,6 +790,39 @@ namespace OpenRA
 			return new CPos(u, v);
 		}
 
+		public PPos ProjectedCellCovering(WPos pos)
+		{
+			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
+			return (PPos)CellContaining(projectedPos).ToMPos(TileShape);
+		}
+
+		static readonly PPos[] NoProjectedCells = { };
+		public PPos[] ProjectedCellsCovering(MPos uv)
+		{
+			// Shortcut for mods that don't use heightmaps
+			if (MaximumTerrainHeight == 0)
+				return new[] { (PPos)uv };
+
+			if (!cellProjection.Contains(uv))
+				return NoProjectedCells;
+
+			return cellProjection[uv];
+		}
+
+		public MPos[] Unproject(PPos puv)
+		{
+			var uv = (MPos)puv;
+
+			// Shortcut for mods that don't use heightmaps
+			if (MaximumTerrainHeight == 0)
+				return new[] { uv };
+
+			if (!inverseCellProjection.Contains(uv))
+				return new MPos[0];
+
+			return inverseCellProjection[uv].ToArray();
+		}
+
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
 		{
 			return Traits.Util.GetFacing(CenterOfCell(towards) - CenterOfCell(cell), fallbackfacing);
@@ -717,12 +845,11 @@ namespace OpenRA
 			AllCells = new CellRegion(TileShape, tl, br);
 		}
 
-		public void SetBounds(MPos tl, MPos br)
+		public void SetBounds(PPos tl, PPos br)
 		{
 			// The tl and br coordinates are inclusive, but the Rectangle
 			// is exclusive.  Pad the right and bottom edges to match.
 			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
-			CellsInsideBounds = new CellRegion(TileShape, tl.ToCPos(this), br.ToCPos(this));
 
 			// Directly calculate the projected map corners in world units avoiding unnecessary
 			// conversions.  This abuses the definition that the width of the cell is always
@@ -738,6 +865,8 @@ namespace OpenRA
 
 			ProjectedTopLeft = new WPos(tl.U * 1024, wtop, 0);
 			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
+
+			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
 		}
 
 		string ComputeHash()
@@ -799,18 +928,28 @@ namespace OpenRA
 
 		public CPos Clamp(CPos cell)
 		{
-			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
-			return cell.ToMPos(this).Clamp(bounds).ToCPos(this);
+			return Clamp(cell.ToMPos(this)).ToCPos(this);
 		}
 
 		public MPos Clamp(MPos uv)
 		{
+			// Already in bounds, so don't need to do anything.
+			if (Contains(uv))
+				return uv;
+
+			// TODO: Account for terrain height
+			return (MPos)Clamp((PPos)uv);
+		}
+
+		public PPos Clamp(PPos puv)
+		{
 			var bounds = new Rectangle(Bounds.X, Bounds.Y, Bounds.Width - 1, Bounds.Height - 1);
-			return uv.Clamp(bounds);
+			return puv.Clamp(bounds);
 		}
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
+			// TODO: Account for terrain height
 			var x = rand.Next(Bounds.Left, Bounds.Right);
 			var y = rand.Next(Bounds.Top, Bounds.Bottom);
 
@@ -819,6 +958,7 @@ namespace OpenRA
 
 		public CPos ChooseClosestEdgeCell(CPos pos)
 		{
+			// TODO: Account for terrain height
 			var mpos = pos.ToMPos(this);
 
 			var horizontalBound = ((mpos.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
@@ -832,6 +972,7 @@ namespace OpenRA
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
+			// TODO: Account for terrain height
 			var isX = rand.Next(2) == 0;
 			var edge = rand.Next(2) == 0;
 
@@ -843,8 +984,10 @@ namespace OpenRA
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)
 		{
-			var tl = CenterOfCell(CellsInsideBounds.TopLeft) - new WVec(512, 512, 0);
-			var br = CenterOfCell(CellsInsideBounds.BottomRight) + new WVec(511, 511, 0);
+			// TODO: Account for terrain height
+			// Project into the screen plane and then compare against ProjectedWorldBounds.
+			var tl = CenterOfCell(((MPos)ProjectedCellBounds.TopLeft).ToCPos(this)) - new WVec(512, 512, 0);
+			var br = CenterOfCell(((MPos)ProjectedCellBounds.BottomRight).ToCPos(this)) + new WVec(511, 511, 0);
 			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
 			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
 			return new WDist(Math.Min(x, y) * dir.Length);

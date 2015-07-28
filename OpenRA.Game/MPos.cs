@@ -61,4 +61,34 @@ namespace OpenRA
 			return new CPos(x, y);
 		}
 	}
+
+	/// <summary>
+	/// Projected map position
+	/// </summary>
+	public struct PPos : IEquatable<PPos>
+	{
+		public readonly int U, V;
+
+		public PPos(int u, int v) { U = u; V = v; }
+		public static readonly PPos Zero = new PPos(0, 0);
+
+		public static bool operator ==(PPos me, PPos other) { return me.U == other.U && me.V == other.V; }
+		public static bool operator !=(PPos me, PPos other) { return !(me == other); }
+
+		public static explicit operator MPos(PPos puv) { return new MPos(puv.U, puv.V); }
+		public static explicit operator PPos(MPos uv) { return new PPos(uv.U, uv.V); }
+
+		public PPos Clamp(Rectangle r)
+		{
+			return new PPos(Math.Min(r.Right, Math.Max(U, r.Left)),
+				Math.Min(r.Bottom, Math.Max(V, r.Top)));
+		}
+
+		public override int GetHashCode() { return U.GetHashCode() ^ V.GetHashCode(); }
+
+		public bool Equals(PPos other) { return other == this; }
+		public override bool Equals(object obj) { return obj is PPos && Equals((PPos)obj); }
+
+		public override string ToString() { return U + "," + V; }
+	}
 }

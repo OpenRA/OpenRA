@@ -64,8 +64,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var tileset = modRules.TileSets[tilesetDropDown.Text];
 				var map = new Map(tileset, width + 2, height + maxTerrainHeight + 2);
 
-				var tl = new MPos(1, 1);
-				var br = new MPos(width, height + maxTerrainHeight);
+				var tl = new PPos(1, 1);
+				var br = new PPos(width, height + maxTerrainHeight);
 				map.SetBounds(tl, br);
 
 				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();

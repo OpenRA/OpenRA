@@ -315,8 +315,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				Author = "Westwood Studios"
 			};
 
-			var tl = new MPos(MapCordonWidth, MapCordonWidth);
-			var br = new MPos(MapCordonWidth + mapSize.Width - 1, MapCordonWidth + mapSize.Height - 1);
+			var tl = new PPos(MapCordonWidth, MapCordonWidth);
+			var br = new PPos(MapCordonWidth + mapSize.Width - 1, MapCordonWidth + mapSize.Height - 1);
 			map.SetBounds(tl, br);
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
