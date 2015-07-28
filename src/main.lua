@@ -97,6 +97,7 @@ ide = {
     commandbar = {
       prefilter = 250, -- number of records after which to apply filtering
       maxitems = 30, -- max number of items to show
+      width = 0.35, -- <1 -- size in proportion to the app frame width; >1 -- size in pixels
       showallsymbols = true,
     },
     staticanalyzer = {

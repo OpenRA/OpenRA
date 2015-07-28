@@ -3,12 +3,16 @@
 
 local maxlines = 8
 local row_height = 46
-local row_width = 450
 
 function CommandBarShow(params)
   local onDone, onUpdate, onItem, onSelection, defaultText, selectedText =
     params.onDone, params.onUpdate, params.onItem, params.onSelection,
     params.defaultText, params.selectedText
+  local row_width = ide.config.commandbar.width or 0
+  if row_width < 1 then
+    row_width = math.max(450, math.floor(row_width * ide:GetMainFrame():GetClientSize():GetWidth()))
+  end
+
   local lines = {}
   local linesnow = #lines
   local linenow = 0
