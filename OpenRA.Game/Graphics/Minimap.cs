@@ -20,14 +20,19 @@ namespace OpenRA.Graphics
 	{
 		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{
+			var isDiamond = map.TileShape == TileShape.Diamond;
 			var b = map.Bounds;
 			var width = b.Width;
 			var height = b.Height;
 
-			if (!actualSize)
-				width = height = Exts.NextPowerOf2(Math.Max(b.Width, b.Height));
+			var bitmapWidth = width;
+			if (isDiamond)
+				bitmapWidth = 2 * bitmapWidth - 1;
 
-			var terrain = new Bitmap(width, height);
+			if (!actualSize)
+				bitmapWidth = height = Exts.NextPowerOf2(Math.Max(bitmapWidth, height));
+
+			var terrain = new Bitmap(bitmapWidth, height);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -38,16 +43,26 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
-				for (var y = 0; y < b.Height; y++)
+				for (var y = 0; y < height; y++)
 				{
-					for (var x = 0; x < b.Width; x++)
+					for (var x = 0; x < width; x++)
 					{
-						var mapX = x + b.Left;
-						var mapY = y + b.Top;
-						var type = tileset.GetTileInfo(mapTiles[new MPos(mapX, mapY)]);
-						var color = type != null ? type.LeftColor : Color.Black;
+						var uv = new MPos(x + b.Left, y + b.Top);
+						var type = tileset.GetTileInfo(mapTiles[uv]);
+						var leftColor = type != null ? type.LeftColor : Color.Black;
 
-						colors[y * stride + x] = color.ToArgb();
+						if (isDiamond)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							var rightColor = type != null ? type.RightColor : Color.Black;
+							if (x + dx > 0)
+								colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
+
+							colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
+						}
+						else
+							colors[y * stride + x] = leftColor.ToArgb();
 					}
 				}
 			}
@@ -61,7 +76,13 @@ namespace OpenRA.Graphics
 		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			var terrain = new Bitmap(terrainBitmap);
+			var isDiamond = map.TileShape == TileShape.Diamond;
 			var b = map.Bounds;
+			var width = b.Width;
+			var height = b.Height;
+
+			var resources = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
+				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -70,23 +91,30 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
-				for (var y = 0; y < b.Height; y++)
+				for (var y = 0; y < height; y++)
 				{
-					for (var x = 0; x < b.Width; x++)
+					for (var x = 0; x < width; x++)
 					{
-						var mapX = x + b.Left;
-						var mapY = y + b.Top;
-						if (map.MapResources.Value[new MPos(mapX, mapY)].Type == 0)
+						var uv = new MPos(x + b.Left, y + b.Top);
+						if (map.MapResources.Value[uv].Type == 0)
 							continue;
 
-						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
-							.Where(t => t.ResourceType == map.MapResources.Value[new MPos(mapX, mapY)].Type)
-								.Select(t => t.TerrainType).FirstOrDefault();
-
-						if (res == null)
+						string res;
+						if (!resources.TryGetValue(map.MapResources.Value[uv].Type, out res))
 							continue;
 
-						colors[y * stride + x] = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
+						var color = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
+						if (isDiamond)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (x + dx > 0)
+								colors[y * stride + 2 * x + dx - 1] = color;
+
+							colors[y * stride + 2 * x + dx] = color;
+						}
+						else
+							colors[y * stride + x] = color;
 					}
 				}
 			}
