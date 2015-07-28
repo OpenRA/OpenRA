@@ -49,17 +49,32 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
 
+		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
+		public readonly int MinOrderQuotientPerTick = 5;
+
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
-		[Desc("How long to wait (in ticks) between structure production checks when there is no active production.")]
+		[Desc("Delay (in ticks) between structure production checks when there is no active production.",
+			"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
 
-		[Desc("How long to wait (in ticks) between structure production checks ticks when actively building things.")]
+		[Desc("Delay (in ticks) between structure production checks when actively building things.",
+			"A StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionActiveDelay = 10;
 
-		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
-		public readonly int MinOrderQuotientPerTick = 5;
+		[Desc("A random delay (in ticks) of up to this is added to active/inactive production delays.")]
+		public readonly int StructureProductionRandomBonusDelay = 10;
+
+		[Desc("Delay (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
+		public readonly int StructureProductionResumeDelay = 1500;
+
+		[Desc("After how many failed attempts to place a structure should AI give up and wait",
+			"for StructureProductionResumeDelay before retrying.")]
+		public readonly int MaximumFailedPlacementAttempts = 3;
+
+		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
+		public readonly int CheckForNewBasesDelay = 1500;
 
 		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
 		public readonly int MinimumDefenseRadius = 5;
@@ -84,6 +99,11 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
+
+		[Desc("Radius in cells around each building with ProvideBuildableArea",
+			"to check for a 3x3 area of water where naval structures can be built.",
+			"Should match maximum adjacency of naval structures.")]
+		public readonly int CheckForWaterRadius = 8;
 
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
@@ -248,6 +268,60 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
 				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
+		}
+
+		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
+		public bool EnoughWaterToBuildNaval()
+		{
+			var baseProviders = World.Actors.Where(
+				a => a.Owner == Player
+					&& a.HasTrait<BaseProvider>()
+					&& !a.HasTrait<Mobile>());
+
+			foreach (var b in baseProviders)
+			{
+				// TODO: Unhardcode terrain type
+				// TODO2: Properly check building foundation rather than 3x3 area
+				var playerWorld = Player.World;
+				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
+					.Where(c => playerWorld.Map.Contains(c)
+						&& playerWorld.Map.GetTerrainInfo(c).IsWater
+						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
+							.All(a => playerWorld.Map.GetTerrainInfo(a).IsWater))
+					.Count();
+
+				if (countWaterCells > 0)
+					return true;
+			}
+
+			return false;
+		}
+
+		// Check whether we have at least one building providing buildable area close enough to water to build naval structures
+		public bool CloseEnoughToWater()
+		{
+			var areaProviders = World.Actors.Where(
+				a => a.Owner == Player
+					&& a.HasTrait<GivesBuildableArea>()
+					&& !a.HasTrait<Mobile>());
+
+			foreach (var a in areaProviders)
+			{
+				// TODO: Unhardcode terrain type
+				// TODO2: Properly check building foundation rather than 3x3 area
+				var playerWorld = Player.World;
+				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
+					.Where(c => playerWorld.Map.Contains(c)
+						&& playerWorld.Map.GetTerrainInfo(c).IsWater
+						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
+							.All(b => playerWorld.Map.GetTerrainInfo(b).IsWater))
+					.Count();
+
+				if (adjacentWater > 0)
+					return true;
+			}
+
+			return false;
 		}
 
 		public void QueueOrder(Order order)

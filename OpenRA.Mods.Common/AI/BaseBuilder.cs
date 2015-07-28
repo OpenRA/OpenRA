@@ -28,6 +28,20 @@ namespace OpenRA.Mods.Common.AI
 
 		int waitTicks;
 		Actor[] playerBuildings;
+		int failCount;
+		int failRetryTicks;
+		int checkForBasesTicks;
+		int cachedBases;
+		int cachedBuildings;
+
+		enum Water
+		{
+			NotChecked,
+			EnoughWater,
+			NotEnoughWater
+		}
+
+		Water waterState = Water.NotChecked;
 
 		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
 		{
@@ -37,10 +51,55 @@ namespace OpenRA.Mods.Common.AI
 			playerPower = pm;
 			playerResources = pr;
 			this.category = category;
+			failRetryTicks = ai.Info.StructureProductionResumeDelay;
 		}
 
 		public void Tick()
 		{
+			// If failed to place something N consecutive times, wait M ticks until resuming building production
+			if (failCount >= ai.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
+			{
+				var currentBuildings = world.ActorsWithTrait<Building>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				var baseProviders = world.ActorsWithTrait<BaseProvider>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				// Only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
+				// or b) number of BaseProviders (construction yard or similar) has increased since then.
+				// Otherwise reset failRetryTicks instead to wait again.
+				if (currentBuildings < cachedBuildings || baseProviders > cachedBases)
+					failCount = 0;
+				else
+					failRetryTicks = ai.Info.StructureProductionResumeDelay;
+			}
+
+			if (waterState == Water.NotChecked)
+			{
+				if (ai.EnoughWaterToBuildNaval())
+					waterState = Water.EnoughWater;
+				else
+				{
+					waterState = Water.NotEnoughWater;
+					checkForBasesTicks = ai.Info.CheckForNewBasesDelay;
+				}
+			}
+
+			if (waterState == Water.NotEnoughWater && --checkForBasesTicks <= 0)
+			{
+				var currentBases = world.ActorsWithTrait<BaseProvider>()
+					.Where(a => a.Actor.Owner == player)
+					.Count();
+
+				if (currentBases > cachedBases)
+				{
+					cachedBases = currentBases;
+					waterState = Water.NotChecked;
+				}
+			}
+
 			// Only update once per second or so
 			if (--waitTicks > 0)
 				return;
@@ -55,7 +114,11 @@ namespace OpenRA.Mods.Common.AI
 				if (TickQueue(queue))
 					active = true;
 
-			waitTicks = active ? ai.Info.StructureProductionActiveDelay : ai.Info.StructureProductionInactiveDelay;
+			// Add a random factor so not every AI produces at the same tick early in the game.
+			// Minimum should not be negative as delays in HackyAI could be zero.
+			var randomFactor = world.SharedRandom.Next(0, ai.Info.StructureProductionRandomBonusDelay);
+			waitTicks = active ? ai.Info.StructureProductionActiveDelay + randomFactor
+				: ai.Info.StructureProductionInactiveDelay + randomFactor;
 		}
 
 		bool TickQueue(ProductionQueue queue)
@@ -63,7 +126,7 @@ namespace OpenRA.Mods.Common.AI
 			var currentBuilding = queue.CurrentItem();
 
 			// Waiting to build something
-			if (currentBuilding == null)
+			if (currentBuilding == null && failCount < ai.Info.MaximumFailedPlacementAttempts)
 			{
 				var item = ChooseBuildingToBuild(queue);
 				if (item == null)
@@ -77,6 +140,7 @@ namespace OpenRA.Mods.Common.AI
 				// Production is complete
 				// Choose the placement logic
 				// HACK: HACK HACK HACK
+				// TODO: Derive this from BuildingCommonNames instead
 				var type = BuildingType.Building;
 				if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<AttackBaseInfo>())
 					type = BuildingType.Defense;
@@ -88,9 +152,23 @@ namespace OpenRA.Mods.Common.AI
 				{
 					HackyAI.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
 					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+					failCount += failCount;
+
+					// If we just reached the maximum fail count, cache the number of current structures
+					if (failCount == ai.Info.MaximumFailedPlacementAttempts)
+					{
+						cachedBuildings = world.ActorsWithTrait<Building>()
+							.Where(a => a.Actor.Owner == player)
+							.Count();
+
+						cachedBases = world.ActorsWithTrait<BaseProvider>()
+							.Where(a => a.Actor.Owner == player)
+							.Count();
+					}
 				}
 				else
 				{
+					failCount = 0;
 					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
 					{
 						TargetLocation = location.Value,
@@ -130,22 +208,27 @@ namespace OpenRA.Mods.Common.AI
 			return available.RandomOrDefault(ai.Random);
 		}
 
+		bool HasSufficientPowerForActor(ActorInfo actorInfo)
+		{
+			return (actorInfo.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1)
+				.Sum(p => p.Amount) + playerPower.ExcessPower) >= ai.Info.MinimumExcessPower;
+		}
+
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
 
+			// This gets used quite a bit, so let's cache it here
+			var power = GetProducibleBuilding("Power", buildableThings,
+				a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
+
 			// First priority is to get out of a low power situation
 			if (playerPower.ExcessPower < ai.Info.MinimumExcessPower)
 			{
-				var power = GetProducibleBuilding("Power", buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
 				if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount) > 0)
 				{
-					// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
-					if (playerPower.PowerOutageRemainingTicks <= 0)
-					{
-						HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
-						return power;
-					}
+					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -153,21 +236,52 @@ namespace OpenRA.Mods.Common.AI
 			if (!ai.HasAdequateProc() || !ai.HasMinimumProc())
 			{
 				var refinery = GetProducibleBuilding("Refinery", buildableThings);
-				if (refinery != null)
+				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
 					return refinery;
 				}
+
+				if (power != null && refinery != null && !HasSufficientPowerForActor(refinery))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
+				}
 			}
 
-			// Make sure that we can can spend as fast as we are earning
+			// Make sure that we can spend as fast as we are earning
 			if (ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
 			{
 				var production = GetProducibleBuilding("Production", buildableThings);
-				if (production != null)
+				if (production != null && HasSufficientPowerForActor(production))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
 					return production;
+				}
+
+				if (power != null && production != null && !HasSufficientPowerForActor(production))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
+				}
+			}
+
+			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
+			if (waterState == Water.EnoughWater && ai.Info.NewProductionCashThreshold > 0
+				&& playerResources.Resources > ai.Info.NewProductionCashThreshold
+				&& ai.CloseEnoughToWater())
+			{
+				var navalproduction = GetProducibleBuilding("NavalProduction", buildableThings);
+				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
+				{
+					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
+					return navalproduction;
+				}
+
+				if (power != null && navalproduction != null && !HasSufficientPowerForActor(navalproduction))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -175,10 +289,16 @@ namespace OpenRA.Mods.Common.AI
 			if (playerResources.AlertSilo)
 			{
 				var silo = GetProducibleBuilding("Silo", buildableThings);
-				if (silo != null)
+				if (silo != null && HasSufficientPowerForActor(silo))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
 					return silo;
+				}
+
+				if (power != null && silo != null && !HasSufficientPowerForActor(silo))
+				{
+					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
 				}
 			}
 
@@ -199,24 +319,27 @@ namespace OpenRA.Mods.Common.AI
 				if (ai.Info.BuildingLimits.ContainsKey(name) && ai.Info.BuildingLimits[name] <= count)
 					continue;
 
+				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
+				// and any structure providing buildable area close enough to that water.
+				// TODO: Extend this check to cover any naval structure, not just production.
+				if (ai.Info.BuildingCommonNames.ContainsKey("NavalProduction")
+					&& ai.Info.BuildingCommonNames["NavalProduction"].Contains(name)
+					&& (waterState == Water.NotEnoughWater || !ai.CloseEnoughToWater()))
+					continue;
+
 				// Will this put us into low power?
-				var actor = world.Map.Rules.Actors[frac.Key];
-				var pis = actor.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1);
-				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || playerPower.ExcessPower < pis.Sum(pi => pi.Amount))
+				var actor = world.Map.Rules.Actors[name];
+				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || !HasSufficientPowerForActor(actor))
 				{
 					// Try building a power plant instead
-					var power = GetProducibleBuilding("Power",
-						buildableThings, a => a.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount));
 					if (power != null && power.Traits.WithInterface<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(pi => pi.Amount) > 0)
 					{
-						// TODO: Handle the case when of when we actually do need a power plant because we don't have enough but are also suffering from a power outage
 						if (playerPower.PowerOutageRemainingTicks > 0)
-							HackyAI.BotDebug("AI: {0} is suffering from a power outage; not going to build {1}", queue.Actor.Owner, power.Name);
+							HackyAI.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
 						else
-						{
 							HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
-							return power;
-						}
+
+						return power;
 					}
 				}
 

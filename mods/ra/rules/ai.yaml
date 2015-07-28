@@ -8,7 +8,8 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Production: barr,tent,weap,afld,hpad
+			NavalProduction: spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -115,7 +116,8 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Production: barr,tent,weap,afld,hpad
+			NavalProduction: spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -239,7 +241,8 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Production: barr,tent,weap,afld,hpad
+			NavalProduction: spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
@@ -361,7 +364,8 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad,spen,syrd
+			Production: barr,tent,weap,afld,hpad
+			NavalProduction: spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
