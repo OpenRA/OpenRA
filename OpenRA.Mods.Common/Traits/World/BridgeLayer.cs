@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 	class BridgeLayer : IWorldLoaded
 	{
 		readonly BridgeLayerInfo info;
-		Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
+		readonly Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
+
 		CellLayer<Bridge> bridges;
 
 		public BridgeLayer(Actor self, BridgeLayerInfo info)
@@ -47,10 +48,9 @@ namespace OpenRA.Mods.Common.Traits
 					bridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
 			}
 
-			// Loop through the map looking for templates to overlay
-			foreach (var cell in w.Map.AllCells)
-				if (bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type))
-					ConvertBridgeToActor(w, cell);
+			// Take all templates to overlay from the map
+			foreach (var cell in w.Map.AllCells.Where(cell => bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type)))
+				ConvertBridgeToActor(w, cell);
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
 			foreach (var b in w.Actors.SelectMany(a => a.TraitsImplementing<Bridge>()))

@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class BuildingInfluence
 	{
-		CellLayer<Actor> influence;
-		Map map;
+		readonly Map map;
+		readonly CellLayer<Actor> influence;
 
 		public BuildingInfluence(World world)
 		{
@@ -54,10 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor GetBuildingAt(CPos cell)
 		{
-			if (!influence.Contains(cell))
-				return null;
-
-			return influence[cell];
+			return influence.Contains(cell) ? influence[cell] : null;
 		}
 	}
 }

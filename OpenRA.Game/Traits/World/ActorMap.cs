@@ -42,18 +42,16 @@ namespace OpenRA.Traits
 
 		class CellTrigger
 		{
-			public readonly int Id;
 			public readonly CPos[] Footprint;
 			public bool Dirty;
 
-			Action<Actor> onActorEntered;
-			Action<Actor> onActorExited;
+			readonly Action<Actor> onActorEntered;
+			readonly Action<Actor> onActorExited;
 
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public CellTrigger(int id, CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
-				Id = id;
 				Footprint = footprint;
 
 				this.onActorEntered = onActorEntered;
@@ -63,13 +61,13 @@ namespace OpenRA.Traits
 				Dirty = true;
 			}
 
-			public void Tick(ActorMap am)
+			public void Tick(ActorMap actorMap)
 			{
 				if (!Dirty)
 					return;
 
 				var oldActors = currentActors;
-				currentActors = Footprint.SelectMany(c => am.GetUnitsAt(c)).ToList();
+				currentActors = Footprint.SelectMany(actorMap.GetUnitsAt).ToList();
 
 				var entered = currentActors.Except(oldActors);
 				var exited = oldActors.Except(currentActors);
@@ -88,24 +86,20 @@ namespace OpenRA.Traits
 
 		class ProximityTrigger : IDisposable
 		{
-			public readonly int Id;
-			public WPos Position { get; private set; }
-			public WDist Range { get; private set; }
-
 			public WPos TopLeft { get; private set; }
 			public WPos BottomRight { get; private set; }
 
 			public bool Dirty;
 
-			Action<Actor> onActorEntered;
-			Action<Actor> onActorExited;
+			readonly Action<Actor> onActorEntered;
+			readonly Action<Actor> onActorExited;
 
+			WPos position;
+			WDist range;
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public ProximityTrigger(int id, WPos pos, WDist range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public ProximityTrigger(WPos pos, WDist range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
-				Id = id;
-
 				this.onActorEntered = onActorEntered;
 				this.onActorExited = onActorExited;
 
@@ -114,8 +108,8 @@ namespace OpenRA.Traits
 
 			public void Update(WPos newPos, WDist newRange)
 			{
-				Position = newPos;
-				Range = newRange;
+				position = newPos;
+				range = newRange;
 
 				var offset = new WVec(newRange, newRange, WDist.Zero);
 				TopLeft = newPos - offset;
@@ -130,9 +124,9 @@ namespace OpenRA.Traits
 					return;
 
 				var oldActors = currentActors;
-				var delta = new WVec(Range, Range, WDist.Zero);
-				currentActors = am.ActorsInBox(Position - delta, Position + delta)
-					.Where(a => (a.CenterPosition - Position).HorizontalLengthSquared < Range.LengthSquared)
+				var delta = new WVec(range, range, WDist.Zero);
+				currentActors = am.ActorsInBox(position - delta, position + delta)
+					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared)
 					.ToList();
 
 				var entered = currentActors.Except(oldActors);
@@ -376,7 +370,7 @@ namespace OpenRA.Traits
 		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)
 		{
 			var id = nextTriggerId++;
-			var t = new CellTrigger(id, cells, onEntry, onExit);
+			var t = new CellTrigger(cells, onEntry, onExit);
 			cellTriggers.Add(id, t);
 
 			foreach (var c in cells)
@@ -411,7 +405,7 @@ namespace OpenRA.Traits
 		public int AddProximityTrigger(WPos pos, WDist range, Action<Actor> onEntry, Action<Actor> onExit)
 		{
 			var id = nextTriggerId++;
-			var t = new ProximityTrigger(id, pos, range, onEntry, onExit);
+			var t = new ProximityTrigger(pos, range, onEntry, onExit);
 			proximityTriggers.Add(id, t);
 
 			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
