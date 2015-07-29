@@ -39,6 +39,12 @@ namespace OpenRA.Mods.Common
 		public readonly string MusicPackageMirrorList = null;
 		public readonly int ShippedSoundtracks = 0;
 
+		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files </summary>
+		public readonly int[] InstallShieldCABFileIds = { };
+
+		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD </summary>
+		public readonly string[] InstallShieldCABFilePackageIds = { };
+
 		public static Dictionary<string, string[]> LoadFilesToExtract(MiniYaml yaml)
 		{
 			var md = yaml.ToDictionary();
