@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.AI
 				HackyAI.BotDebug("AI: {0} is starting production of {1}".F(player, item.Name));
 				ai.QueueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
 			}
-			else if (currentBuilding.Done)
+			else if (currentBuilding != null && currentBuilding.Done)
 			{
 				// Production is complete
 				// Choose the placement logic
