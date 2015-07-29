@@ -1011,18 +1011,55 @@ namespace OpenRA
 			return cells.Random(rand).ToCPos(TileShape);
 		}
 
-		public CPos ChooseClosestEdgeCell(CPos pos)
+		public CPos ChooseClosestEdgeCell(CPos cell)
 		{
-			// TODO: Account for terrain height
-			var mpos = pos.ToMPos(this);
+			return ChooseClosestEdgeCell(cell.ToMPos(TileShape)).ToCPos(TileShape);
+		}
 
-			var horizontalBound = ((mpos.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
-			var verticalBound = ((mpos.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
+		public MPos ChooseClosestEdgeCell(MPos uv)
+		{
+			var allProjected = ProjectedCellsCovering(uv);
 
-			var distX = Math.Abs(horizontalBound - mpos.U);
-			var distY = Math.Abs(verticalBound - mpos.V);
+			PPos edge;
+			if (allProjected.Any())
+			{
+				var puv = allProjected.First();
+				var horizontalBound = ((puv.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
+				var verticalBound = ((puv.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
 
-			return distX < distY ? new MPos(horizontalBound, mpos.V).ToCPos(this) : new MPos(mpos.U, verticalBound).ToCPos(this);
+				var du = Math.Abs(horizontalBound - puv.U);
+				var dv = Math.Abs(verticalBound - puv.V);
+
+				edge = du < dv ? new PPos(horizontalBound, puv.V) : new PPos(puv.U, verticalBound);
+			}
+			else
+				edge = new PPos(Bounds.Left, Bounds.Top);
+
+			var unProjected = Unproject(edge);
+			if (!unProjected.Any())
+			{
+				// Adjust V until we find a cell that works
+				for (var x = 2; x <= 2 * MaximumTerrainHeight; x++)
+				{
+					var dv = ((x & 1) == 1 ? 1 : -1) * x / 2;
+					var test = new PPos(edge.U, edge.V + dv);
+					if (!Contains(test))
+						continue;
+
+					unProjected = Unproject(test);
+					if (unProjected.Any())
+						break;
+				}
+
+				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
+				if (!unProjected.Any())
+				{
+					Log.Write("debug", "Failed to find closest edge for map cell {0}", uv);
+					return uv;
+				}
+			}
+
+			return edge.V == Bounds.Bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V);
 		}
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
