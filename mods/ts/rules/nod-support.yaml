@@ -218,7 +218,7 @@ GATICK:
 		Palette: pips
 	Selectable:
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Repair
 	Guardable:
 	HiddenUnderFog:
 	ActorLostNotification:
@@ -276,7 +276,7 @@ GAARTY:
 		Palette: pips
 	Selectable:
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Repair
 	Guardable:
 	HiddenUnderFog:
 	ActorLostNotification:

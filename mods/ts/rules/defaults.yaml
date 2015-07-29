@@ -340,7 +340,7 @@
 	Voiced:
 		VoiceSet: Vehicle
 	TargetableUnit:
-		TargetTypes: Ground, Vehicle
+		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
 		RepairBuildings: gadept
 		Voice: Move

@@ -33,7 +33,7 @@ GADPSA:
 		Palette: pips
 	Selectable:
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Repair
 	Guardable:
 	HiddenUnderFog:
 	ActorLostNotification:
