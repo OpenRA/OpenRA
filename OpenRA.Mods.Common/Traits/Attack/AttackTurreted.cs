@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}
 
-	public class AttackTurreted : AttackFollow, ITick, ISync
+	public class AttackTurreted : AttackFollow
 	{
 		protected Turreted[] turrets;
 

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, ITick, INotifyOwnerChanged, ISync
+	public class AttackFollow : AttackBase, ITick, INotifyOwnerChanged
 	{
 		public Target Target { get; protected set; }
 

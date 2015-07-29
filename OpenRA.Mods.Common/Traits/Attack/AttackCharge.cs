@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackCharge(init.Self, this); }
 	}
 
-	class AttackCharge : AttackOmni, ITick, INotifyAttack, ISync
+	class AttackCharge : AttackOmni, ITick, INotifyAttack
 	{
 		readonly AttackChargeInfo info;
 
