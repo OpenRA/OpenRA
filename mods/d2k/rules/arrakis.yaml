@@ -1,20 +1,25 @@
 spicebloom:
 	HiddenUnderShroud:
-	RenderBuilding:
-	Building:
-		Footprint: x
-		Dimensions: 1,1
+	RenderSprites:
 	AppearsOnRadar:
+		UseLocation: yes
 	Tooltip:
 		Name: Spice Bloom
-	SeedsResource:
-		ResourceType: Spice
-		Interval: 75
-	WithActiveAnimation:
+	Spicebloom:
+		Weapon: SpiceExplosion
 	RadarColorFromTerrain:
 		Terrain: Spice
-	BodyOrientation:
-	WithMakeAnimation:
+	Immobile:
+	Crushable:
+		CrushClasses: crate
+	Health:
+		HP: 1
+		Radius: 512
+	TargetableUnit:
+		TargetTypes: Ground
+		RequiresForceFire: yes
+	Armor:
+		Type: None
 
 sandworm:
 	Tooltip:

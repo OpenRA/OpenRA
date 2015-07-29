@@ -717,8 +717,15 @@ Shrapnel:
 		ImpactSound: EXPLLG5.WAV
 
 SpiceExplosion:
+	Report: EXPLMD1.WAV
+	Projectile: Bullet
+		Speed: 50, 75
+		High: true
+		Angle: 91, 264
+		Trail: large_trail
+		Image: large_trail
 	Warhead@1Dam: SpreadDamage
-		Spread: 9
+		Spread: 256
 		Damage: 10
 		Versus:
 			None: 90
