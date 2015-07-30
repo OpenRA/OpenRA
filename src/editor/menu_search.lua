@@ -257,10 +257,11 @@ local function navigateTo(default, selected)
           end
 
           local currentonly = #file > 0 and ed
+          local outline = ide:GetOutline()
           for _, doc in pairs(currentonly and {ide:GetDocument(ed)} or ide:GetDocuments()) do
-            local path = doc:GetFilePath()
+            local path, editor = doc:GetFilePath(), doc:GetEditor()
             if path then paths[path] = true end
-            populateSymbols(path or doc:GetFileName()..tabsep..doc:GetTabIndex(), OutlineFunctions(doc:GetEditor()))
+            populateSymbols(path or doc:GetFileName()..tabsep..doc:GetTabIndex(), outline:GetEditorSymbols(editor))
           end
 
           -- now add all other files
@@ -273,7 +274,7 @@ local function navigateTo(default, selected)
 
             for _, path in pairs(FileSysGetRecursive(projdir, true, table.concat(exts, ";"),
               {sort = false, folder = false, skipbinary = true})) do
-              if not paths[path] then populateSymbols(path, OutlineFunctions(path)) end
+              if not paths[path] then populateSymbols(path, outline:GetFileSymbols(path)) end
             end
           end
         end

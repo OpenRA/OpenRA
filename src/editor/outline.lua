@@ -347,32 +347,6 @@ end
 
 outlineCreateOutlineWindow()
 
-local function queuePath(path)
-  -- only queue if symbols inactivity is set, so files will be indexed
-  if ide.config.symbolindexinactivity and not outline.indexqueue[0][path] then
-    outline.indexqueue[0][path] = true
-    table.insert(outline.indexqueue, 1, path)
-  end
-end
-
-function OutlineFunctions(editor)
-  if type(editor) == 'string' then
-    local path = editor
-    local symbols = outline.settings.symbols[path]
-    -- queue path to process when appropriate
-    if not symbols then queuePath(path) end
-    return symbols or {}
-  end
-  -- force token refresh (as these may be not updated yet)
-  if #editor:GetTokenList() == 0 then
-    while IndicateAll(editor) do end
-  end
-
-  -- only refresh the functions when none is present
-  if not caches[editor] or #caches[editor].funcs == 0 then outlineRefresh(editor, true) end
-  return caches[editor].funcs
-end
-
 local package = ide:AddPackage('core.outline', {
     -- remove the editor from the list
     onEditorClose = function(self, editor)
@@ -439,6 +413,32 @@ local package = ide:AddPackage('core.outline', {
       end
     end,
   })
+
+local function queuePath(path)
+  -- only queue if symbols inactivity is set, so files will be indexed
+  if ide.config.symbolindexinactivity and not outline.indexqueue[0][path] then
+    outline.indexqueue[0][path] = true
+    table.insert(outline.indexqueue, 1, path)
+  end
+end
+
+function outline:GetFileSymbols(path)
+  local symbols = self.settings.symbols[path]
+  -- queue path to process when appropriate
+  if not symbols then queuePath(path) end
+  return symbols or {}
+end
+
+function outline:GetEditorSymbols(editor)
+  -- force token refresh (as these may be not updated yet)
+  if #editor:GetTokenList() == 0 then
+    while IndicateAll(editor) do end
+  end
+
+  -- only refresh the functions when none is present
+  if not caches[editor] or #caches[editor].funcs == 0 then outlineRefresh(editor, true) end
+  return caches[editor].funcs
+end
 
 function outline:UpdateSymbols(fname, symb)
   local symbols = self.settings.symbols
