@@ -218,6 +218,7 @@ local function indexFromQueue()
       DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
     end
     ide:PopStatus()
+    if #outline.indexqueue == 0 then ide:SetStatus(TR("Indexing completed.")) end
     ide:DoWhenIdle(indexFromQueue)
   end
   return
