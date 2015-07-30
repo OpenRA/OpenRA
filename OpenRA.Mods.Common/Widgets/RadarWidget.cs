@@ -65,21 +65,13 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			var width = world.Map.Bounds.Width;
-			var height = world.Map.Bounds.Height;
-			var rb = RenderBounds;
-			previewScale = Math.Min(rb.Width * 1f / width, rb.Height * 1f / height);
-			previewOrigin = new int2((int)((rb.Width - previewScale * width) / 2), (int)((rb.Height - previewScale * height) / 2));
-			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * width), (int)(previewScale * height));
-
 			// The four layers are stored in a 2x2 grid within a single texture
-			radarSheet = new Sheet(new Size(2 * width, 2 * height).NextPowerOf2());
+			var s = world.Map.MapSize;
+			radarSheet = new Sheet(new Size(2 * s.X, 2 * s.Y).NextPowerOf2());
 			radarSheet.CreateBuffer();
 			radarData = radarSheet.GetData();
 
-			terrainSprite = new Sprite(radarSheet, new Rectangle(0, 0, width, height), TextureChannel.Alpha);
-			shroudSprite = new Sprite(radarSheet, new Rectangle(width, 0, width, height), TextureChannel.Alpha);
-			actorSprite = new Sprite(radarSheet, new Rectangle(0, height, width, height), TextureChannel.Alpha);
+			MapBoundsChanged();
 
 			// Set initial terrain data
 			foreach (var cell in world.Map.AllCells)
@@ -89,13 +81,26 @@ namespace OpenRA.Mods.Common.Widgets
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 		}
 
+		void MapBoundsChanged()
+		{
+			var b = world.Map.Bounds;
+			var rb = RenderBounds;
+			previewScale = Math.Min(rb.Width * 1f / b.Width, rb.Height * 1f / b.Height);
+			previewOrigin = new int2((int)((rb.Width - previewScale * b.Width) / 2), (int)((rb.Height - previewScale * b.Height) / 2));
+			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * b.Width), (int)(previewScale * b.Height));
+
+			var s = world.Map.MapSize;
+			terrainSprite = new Sprite(radarSheet, b, TextureChannel.Alpha);
+			shroudSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(s.X, 0), b.Size), TextureChannel.Alpha);
+			actorSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(0, s.Y), b.Size), TextureChannel.Alpha);
+		}
+
 		void UpdateTerrainCell(CPos cell)
 		{
-			if (!world.Map.Contains(cell))
-				return;
-
-			var stride = radarSheet.Size.Width;
 			var uv = cell.ToMPos(world.Map);
+
+			if (!world.Map.CustomTerrain.Contains(uv))
+				return;
 
 			var custom = world.Map.CustomTerrain[uv];
 			Color color;
@@ -107,27 +112,22 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				color = world.TileSet[custom].Color;
 
-			var dx = terrainSprite.Bounds.Left - world.Map.Bounds.Left;
-			var dy = terrainSprite.Bounds.Top - world.Map.Bounds.Top;
+			var stride = radarSheet.Size.Width;
 
 			unsafe
 			{
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(uv.V + dy) * stride + uv.U + dx] = color.ToArgb();
+					colors[uv.V * stride + uv.U] = color.ToArgb();
 				}
 			}
 		}
 
 		void UpdateShroudCell(PPos projectedCell)
 		{
-			if (!world.Map.Bounds.Contains(projectedCell.U, projectedCell.V))
-				return;
-
 			var stride = radarSheet.Size.Width;
-			var dx = shroudSprite.Bounds.Left - world.Map.Bounds.Left;
-			var dy = shroudSprite.Bounds.Top - world.Map.Bounds.Top;
+			var dx = world.Map.MapSize.X;
 
 			var color = 0;
 			var rp = world.RenderPlayer;
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[(projectedCell.V + dy) * stride + projectedCell.U + dx] = color;
+					colors[projectedCell.V * stride + projectedCell.U + dx] = color;
 				}
 			}
 		}
@@ -304,8 +304,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// The actor layer is updated every tick
 				var stride = radarSheet.Size.Width;
-				var dx = actorSprite.Bounds.Left - world.Map.Bounds.Left;
-				var dy = actorSprite.Bounds.Top - world.Map.Bounds.Top;
+				var dy = world.Map.MapSize.Y;
 
 				Array.Clear(radarData, 4 * (actorSprite.Bounds.Top * stride + actorSprite.Bounds.Left), 4 * actorSprite.Bounds.Height * stride);
 
@@ -325,7 +324,7 @@ namespace OpenRA.Mods.Common.Widgets
 								var uv = cell.First.ToMPos(world.Map);
 
 								if (world.Map.Bounds.Contains(uv.U, uv.V))
-									colors[(uv.V + dy) * stride + uv.U + dx] = cell.Second.ToArgb();
+									colors[(uv.V + dy) * stride + uv.U] = cell.Second.ToArgb();
 							}
 						}
 					}

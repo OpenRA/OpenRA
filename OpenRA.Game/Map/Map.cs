@@ -739,10 +739,10 @@ namespace OpenRA
 
 		public bool Contains(MPos uv)
 		{
-			// TODO: Checking against the bounds excludes valid parts of the map if MaxTerrainHeight > 0.
-			// Unfortunatley, doing this properly leads to memory corruption issues in the (unsafe) radar
-			// rendering code.
-			return Bounds.Contains(uv.U, uv.V) && ProjectedCellsCovering(uv).All(containsTest);
+			// The first check ensures that the cell is within the valid map region, avoiding
+			// potential crashes in deeper code.  All CellLayers have the same geometry, and
+			// CustomTerrain is convenient (cellProjection may be null and others are Lazy).
+			return CustomTerrain.Contains(uv) && ProjectedCellsCovering(uv).All(containsTest);
 		}
 
 		public bool Contains(PPos puv)
@@ -933,12 +933,62 @@ namespace OpenRA
 
 		public MPos Clamp(MPos uv)
 		{
+			if (MaximumTerrainHeight == 0)
+				return (MPos)Clamp((PPos)uv);
+
 			// Already in bounds, so don't need to do anything.
-			if (Contains(uv))
+			if (ProjectedCellsCovering(uv).Any(containsTest))
 				return uv;
 
-			// TODO: Account for terrain height
-			return (MPos)Clamp((PPos)uv);
+			// Clamping map coordinates is trickier than it might first look!
+			// This needs to handle three nasty cases:
+			//  * The requested cell is well outside the map region
+			//  * The requested cell is near the top edge inside the map but outside the projected layer
+			//  * The clamped projected cell lands on a cliff face with no associated map cell
+			//
+			// Handling these cases properly requires abuse of our knowledge of the projection transform.
+			//
+			// The U coordinate doesn't change significantly in the projection, so clamp this
+			// straight away and ensure the point is somewhere inside the map
+			uv = cellProjection.Clamp(new MPos(uv.U.Clamp(Bounds.Left, Bounds.Right), uv.V));
+
+			// Project this guessed cell and take the first available cell
+			// If it is projected outside the layer, then make another guess.
+			var allProjected = ProjectedCellsCovering(uv);
+			var projected = allProjected.Any() ? allProjected.First()
+				: new PPos(uv.U, uv.V.Clamp(Bounds.Top, Bounds.Bottom));
+
+			// Clamp the projected cell to the map area
+			projected = Clamp(projected);
+
+			// Project the cell back into map coordinates.
+			// This may fail if the projected cell covered a cliff or another feature
+			// where there is a large change in terrain height.
+			var unProjected = Unproject(projected);
+			if (!unProjected.Any())
+			{
+				// Adjust V until we find a cell that works
+				for (var x = 2; x <= 2 * MaximumTerrainHeight; x++)
+				{
+					var dv = ((x & 1) == 1 ? 1 : -1) * x / 2;
+					var test = new PPos(projected.U, projected.V + dv);
+					if (!Contains(test))
+						continue;
+
+					unProjected = Unproject(test);
+					if (unProjected.Any())
+						break;
+				}
+
+				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
+				if (!unProjected.Any())
+				{
+					Log.Write("debug", "Failed to clamp map cell {0} to map bounds", uv);
+					return uv;
+				}
+			}
+
+			return projected.V == Bounds.Bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V);
 		}
 
 		public PPos Clamp(PPos puv)

@@ -98,7 +98,21 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			lr.LineWidth = 1;
+			// Clamped cell
+			var clamped = map.Clamp(mouseCell);
+			{
+				var pos = map.CenterOfCell(clamped.ToCPos(map));
+				var tile = map.MapTiles.Value[clamped];
+				var ti = tileSet.GetTileInfo(tile);
+				var ramp = ti != null ? (int)ti.RampType : 0;
+
+				var screen = map.CellCorners[ramp].Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
+				for (var i = 0; i < 4; i++)
+				{
+					var j = (i + 1) % 4;
+					lr.DrawLine(screen[i], screen[j], Color.White);
+				}
+			}
 		}
 	}
 }
