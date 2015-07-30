@@ -264,18 +264,12 @@ local function navigateTo(default, selected)
             populateSymbols(path or doc:GetFileName()..tabsep..doc:GetTabIndex(), outline:GetEditorSymbols(editor))
           end
 
-          -- now add all other files
+          -- now add all other files in the project
           if not currentonly and ide.config.commandbar.showallsymbols then
-            local exts = {}
-            for _, ext in pairs(ide:GetKnownExtensions()) do
-              local spec = GetSpec(ext)
-              if spec and spec.marksymbols then table.insert(exts, ext) end
-            end
-
-            for _, path in pairs(FileSysGetRecursive(projdir, true, table.concat(exts, ";"),
-              {sort = false, folder = false, skipbinary = true})) do
-              if not paths[path] then populateSymbols(path, outline:GetFileSymbols(path)) end
-            end
+            outline:RefreshSymbols(projdir, function(path)
+                local symbols = outline:GetFileSymbols(path)
+                if not paths[path] and symbols then populateSymbols(path, symbols) end
+              end)
           end
         end
         local nums = {}

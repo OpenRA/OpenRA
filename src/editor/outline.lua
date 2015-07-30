@@ -202,24 +202,22 @@ local function indexFromQueue()
     local fname = table.remove(outline.indexqueue, 1)
     outline.indexqueue[0][fname] = nil
     -- check if fname is already loaded
-    if not ide:FindDocument(fname) then
-      ide:PushStatus(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
-      outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
-      local content, err = FileRead(fname)
-      if content then
-        local editor = outline.indexeditor
-        editor:SetupKeywords(GetFileExt(fname))
-        editor:SetText(content)
-        editor:Colourise(0, -1)
-        editor:ResetTokenList()
-        while IndicateAll(editor) do end
+    ide:PushStatus(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
+    outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
+    local content, err = FileRead(fname)
+    if content then
+      local editor = outline.indexeditor
+      editor:SetupKeywords(GetFileExt(fname))
+      editor:SetText(content)
+      editor:Colourise(0, -1)
+      editor:ResetTokenList()
+      while IndicateAll(editor) do end
 
-        outline:UpdateSymbols(fname, outlineRefresh(editor))
-      else
-        DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
-      end
-      ide:PopStatus()
+      outline:UpdateSymbols(fname, outlineRefresh(editor))
+    else
+      DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
     end
+    ide:PopStatus()
     ide:DoWhenIdle(indexFromQueue)
   end
   return
@@ -426,7 +424,7 @@ function outline:GetFileSymbols(path)
   local symbols = self.settings.symbols[path]
   -- queue path to process when appropriate
   if not symbols then queuePath(path) end
-  return symbols or {}
+  return symbols
 end
 
 function outline:GetEditorSymbols(editor)
@@ -438,6 +436,22 @@ function outline:GetEditorSymbols(editor)
   -- only refresh the functions when none is present
   if not caches[editor] or #caches[editor].funcs == 0 then outlineRefresh(editor, true) end
   return caches[editor].funcs
+end
+
+function outline:RefreshSymbols(path, callback)
+  local exts = {}
+  for _, ext in pairs(ide:GetKnownExtensions()) do
+    local spec = GetSpec(ext)
+    if spec and spec.marksymbols then table.insert(exts, ext) end
+  end
+
+  local opts = {sort = false, folder = false, skipbinary = true, yield = true}
+  local nextfile = coroutine.wrap(function() FileSysGetRecursive(path, true, table.concat(exts, ";"), opts) end)
+  while true do
+    local file = nextfile()
+    if not file then break end
+    (callback or queuePath)(file)
+  end
 end
 
 function outline:UpdateSymbols(fname, symb)
