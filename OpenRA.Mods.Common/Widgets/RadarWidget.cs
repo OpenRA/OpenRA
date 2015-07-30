@@ -83,7 +83,31 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void MapBoundsChanged()
 		{
-			var b = world.Map.Bounds;
+			var map = world.Map;
+
+			// The minimap is drawn in cell space, so we need to
+			// unproject the bounds to find the extent of the map.
+			var projectedLeft = map.Bounds.Left;
+			var projectedRight = map.Bounds.Right;
+			var projectedTop = map.Bounds.Top;
+			var projectedBottom = map.Bounds.Bottom;
+			var top = int.MaxValue;
+			var bottom = int.MinValue;
+
+			for (var x = projectedLeft; x < projectedRight; x++)
+			{
+				var allTop = map.Unproject(new PPos(x, projectedTop));
+				var allBottom = map.Unproject(new PPos(x, projectedBottom));
+				if (allTop.Any())
+					top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
+
+				if (allBottom.Any())
+					bottom = Math.Max(bottom, allBottom.MinBy(uv => uv.V).V);
+			}
+
+			// Map bounds in cell space
+			var b = Rectangle.FromLTRB(projectedLeft, top, projectedRight, bottom);
+
 			var rb = RenderBounds;
 			previewScale = Math.Min(rb.Width * 1f / b.Width, rb.Height * 1f / b.Height);
 			previewOrigin = new int2((int)((rb.Width - previewScale * b.Width) / 2), (int)((rb.Height - previewScale * b.Height) / 2));
