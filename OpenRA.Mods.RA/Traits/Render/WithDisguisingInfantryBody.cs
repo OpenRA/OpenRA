@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class WithDisguisingInfantryBodyInfo : WithInfantryBodyInfo, Requires<DisguiseInfo>
+	class WithDisguisingInfantryBodyInfo : WithInfantryBodyInfo, Requires<DisguiseInfo>, InitializeAfter<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new WithDisguisingInfantryBody(init, this); }
 	}

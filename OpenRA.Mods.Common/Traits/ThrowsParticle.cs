@@ -13,7 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IBodyOrientationInfo>
+	class ThrowsParticleInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string Anim = null;

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : UpgradableTraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : UpgradableTraitInfo, Requires<HealthInfo>, InitializeAfter<HealthInfo>
 	{
 		public readonly int RepairPercent = 20;
 		public readonly int RepairInterval = 24;

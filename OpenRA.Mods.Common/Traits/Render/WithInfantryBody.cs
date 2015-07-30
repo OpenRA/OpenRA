@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class WithInfantryBodyInfo : UpgradableTraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo,
-		Requires<IMoveInfo>, Requires<RenderSpritesInfo>
+		Requires<IMoveInfo>, Requires<RenderSpritesInfo>, InitializeAfter<IMoveInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;

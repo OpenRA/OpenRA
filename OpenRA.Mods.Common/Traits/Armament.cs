@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>, InitializeAfter<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 

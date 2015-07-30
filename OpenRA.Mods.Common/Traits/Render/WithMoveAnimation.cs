@@ -13,7 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>
+	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>,
+		InitializeAfter<WithSpriteBodyInfo>, InitializeAfter<IMoveInfo>
 	{
 		[Desc("Displayed while moving.")]
 		[SequenceReference] public readonly string MoveSequence = "move";

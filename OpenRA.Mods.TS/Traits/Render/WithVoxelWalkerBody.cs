@@ -16,7 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo,
+		Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IMoveInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TargetableBuildingInfo : ITraitInfo, ITargetableInfo, Requires<BuildingInfo>
+	public class TargetableBuildingInfo : ITraitInfo, ITargetableInfo, Requires<BuildingInfo>, InitializeAfter<BuildingInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string[] TargetTypes = { };

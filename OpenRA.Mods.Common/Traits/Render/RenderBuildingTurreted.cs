@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>
+	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>, InitializeAfter<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init, this); }
 

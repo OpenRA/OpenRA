@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Building animation to play when ProductionAirdrop is used to deliver units.")]
-	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>, InitializeAfter<RenderBuildingInfo>
 	{
 		public readonly string ActiveSequence = "active";
 

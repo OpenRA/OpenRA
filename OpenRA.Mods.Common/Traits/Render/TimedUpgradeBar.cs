@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the remaining time for an upgrade.")]
-	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Upgrade that this bar corresponds to")]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.Self, this); }
 	}
 
-	class TimedUpgradeBar : ISelectionBar, INotifyCreated
+	class TimedUpgradeBar : ISelectionBar
 	{
 		readonly TimedUpgradeBarInfo info;
 		readonly Actor self;
@@ -37,10 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-		}
-
-		public void Created(Actor self)
-		{
 			self.Trait<UpgradeManager>().RegisterWatcher(info.Upgrade, Update);
 		}
 

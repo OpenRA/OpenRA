@@ -14,13 +14,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used together with AttackMedic: to make the healer do it's job automatically to nearby units.")]
-	class AutoHealInfo : TraitInfo<AutoHeal>, Requires<AttackBaseInfo> { }
+	class AutoHealInfo : ITraitInfo, Requires<AttackBaseInfo>, InitializeAfter<AttackBaseInfo>
+	{
+		public object Create(ActorInitializer init) { return new AutoHeal(init.Self); }
+	}
 
 	class AutoHeal : INotifyIdle
 	{
+		readonly AttackBase attack;
+
+		public AutoHeal(Actor self) { attack = self.Trait<AttackBase>(); }
+
 		public void TickIdle(Actor self)
 		{
-			var attack = self.Trait<AttackBase>();
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, attack.GetMaximumRange());
 
 			var target = inRange

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Cargo can fire their weapons out of fire ports.")]
-	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
+	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Fire port offsets in local coordinates.")]

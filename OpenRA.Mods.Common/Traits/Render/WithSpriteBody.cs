@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
 	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo,
-		Requires<RenderSpritesInfo>
+		Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created.")]
 		[SequenceReference] public readonly string StartSequence = null;

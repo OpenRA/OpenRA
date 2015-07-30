@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
-	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>, Requires<UpgradeManagerInfo>
+	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>, Requires<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
 	{
 		[FieldLoader.LoadUsing("LoadUpgrades", true)]
 		[Desc("Upgrades to grant at each level.",

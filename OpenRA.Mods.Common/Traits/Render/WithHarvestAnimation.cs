@@ -13,7 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithHarvestAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
+	public class WithHarvestAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>,
+		InitializeAfter<WithSpriteBodyInfo>, InitializeAfter<HarvesterInfo>
 	{
 		[Desc("Prefix added to idle and harvest sequences depending on fullness of harvester.")]
 		[SequenceReference(null, true)] public readonly string[] PrefixByFullness = { "" };

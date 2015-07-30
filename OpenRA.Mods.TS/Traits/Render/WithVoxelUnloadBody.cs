@@ -18,7 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo,
+		Requires<RenderVoxelsInfo>, Requires<IBodyOrientationInfo>, InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";

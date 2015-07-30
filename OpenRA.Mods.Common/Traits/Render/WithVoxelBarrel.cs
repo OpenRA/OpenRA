@@ -16,7 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
+	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,
+		Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>,
+		InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IBodyOrientationInfo>, InitializeAfter<ArmamentInfo>, InitializeAfter<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "barrel";
