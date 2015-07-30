@@ -17,7 +17,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will remain visible (but not updated visually) under fog, once discovered.")]
-	public class FrozenUnderFogInfo : ITraitInfo, IDefaultVisibilityInfo, Requires<BuildingInfo>, InitializeAfter<BuildingInfo>
+	public class FrozenUnderFogInfo : ITraitInfo, IDefaultVisibilityInfo, Requires<BuildingInfo>,
+		InitializeAfter<ITooltipInfo>, InitializeAfter<HealthInfo>
 	{
 		public readonly bool StartsRevealed = false;
 
@@ -35,8 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool startsRevealed;
 		readonly PPos[] footprint;
 
-		readonly Lazy<IToolTip> tooltip;
-		readonly Lazy<Health> health;
+		readonly IToolTip tooltip;
+		readonly Health health;
 
 		readonly Dictionary<Player, bool> visible;
 		readonly Dictionary<Player, FrozenActor> frozen;
@@ -53,8 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
-			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
-			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
+			tooltip = init.Self.TraitsImplementing<IToolTip>().FirstOrDefault();
+			health = init.Self.TraitOrDefault<Health>();
 
 			frozen = new Dictionary<Player, FrozenActor>();
 			visible = init.World.Players.ToDictionary(p => p, p => false);
@@ -99,16 +100,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				frozenActor.Owner = self.Owner;
 
-				if (health.Value != null)
+				if (health != null)
 				{
-					frozenActor.HP = health.Value.HP;
-					frozenActor.DamageState = health.Value.DamageState;
+					frozenActor.HP = health.HP;
+					frozenActor.DamageState = health.DamageState;
 				}
 
-				if (tooltip.Value != null)
+				if (tooltip != null)
 				{
-					frozenActor.TooltipInfo = tooltip.Value.TooltipInfo;
-					frozenActor.TooltipOwner = tooltip.Value.Owner;
+					frozenActor.TooltipInfo = tooltip.TooltipInfo;
+					frozenActor.TooltipOwner = tooltip.Owner;
 				}
 			}
 
