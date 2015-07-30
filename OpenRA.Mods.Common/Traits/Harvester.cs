@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
+	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>, InitializeAfter<MobileInfo>
 	{
 		public readonly string[] DeliveryBuildings = { };
 

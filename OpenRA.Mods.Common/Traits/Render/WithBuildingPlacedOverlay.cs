@@ -14,7 +14,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Rendered when the actor constructed a building.")]
-	public class WithBuildingPlacedOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithBuildingPlacedOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "crane-overlay";
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			buildComplete = !self.Info.Traits.Contains<BuildingInfo>(); // always render instantly for units
 
 			overlay = new Animation(self.World, rs.GetImage(self));
 

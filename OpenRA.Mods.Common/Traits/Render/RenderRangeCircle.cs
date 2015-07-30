@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>, InitializeAfter<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 

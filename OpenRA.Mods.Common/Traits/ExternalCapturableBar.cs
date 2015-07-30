@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualize the remaining CaptureCompleteTime from ExternalCapturable: trait.")]
-	class ExternalCapturableBarInfo : ITraitInfo, Requires<ExternalCapturableInfo>
+	class ExternalCapturableBarInfo : ITraitInfo, Requires<ExternalCapturableInfo>, InitializeAfter<ExternalCapturableInfo>
 	{
 		public object Create(ActorInitializer init) { return new ExternalCapturableBar(init.Self); }
 	}

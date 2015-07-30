@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can transport Passenger actors.")]
-	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>
+	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>, InitializeAfter<IFacingInfo>
 	{
 		[Desc("The maximum sum of Passenger.Weight that this actor can support.")]
 		public readonly int MaxWeight = 0;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Stack<Actor> cargo = new Stack<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
-		readonly Lazy<IFacing> facing;
+		readonly IFacing facing;
 		readonly bool checkTerrainType;
 
 		int totalWeight = 0;
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 
-			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
+			facing = self.TraitOrDefault<IFacing>();
 		}
 
 		public void Created(Actor self)
@@ -242,16 +242,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SetPassengerFacing(Actor passenger)
 		{
-			if (facing.Value == null)
+			if (facing == null)
 				return;
 
 			var passengerFacing = passenger.TraitOrDefault<IFacing>();
 			if (passengerFacing != null)
-				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
+				passengerFacing.Facing = facing.Facing + Info.PassengerFacing;
 
 			var passengerTurreted = passenger.TraitOrDefault<Turreted>();
 			if (passengerTurreted != null)
-				passengerTurreted.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
+				passengerTurreted.TurretFacing = facing.Facing + Info.PassengerFacing;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)

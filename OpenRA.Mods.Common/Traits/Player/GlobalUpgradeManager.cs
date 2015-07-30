@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class GlobalUpgradeManagerInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class GlobalUpgradeManagerInfo : ITraitInfo, Requires<TechTreeInfo>, InitializeAfter<TechTreeInfo>
 	{
 		public object Create(ActorInitializer init) { return new GlobalUpgradeManager(init); }
 	}

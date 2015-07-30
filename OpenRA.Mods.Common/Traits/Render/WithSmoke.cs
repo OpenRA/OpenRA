@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
-	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		public readonly string Sequence = "smoke_m";
 

@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will remain visible (but not updated visually) under fog, once discovered.")]
-	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo
+	public class FrozenUnderFogInfo : ITraitInfo, IDefaultVisibilityInfo, Requires<BuildingInfo>, InitializeAfter<BuildingInfo>
 	{
 		public readonly bool StartsRevealed = false;
 

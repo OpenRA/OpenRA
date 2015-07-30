@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
+	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>, InitializeAfter<RenderBuildingInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;

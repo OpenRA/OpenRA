@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants upgrades to the actor this is attached to when prerequisites are available.")]
-	public class GlobalUpgradableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class GlobalUpgradableInfo : ITraitInfo, Requires<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
 	{
 		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("List of upgrades to apply.")]

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("You get money for playing this actor.")]
-	class GivesBountyInfo : TraitInfo<GivesBounty>
+	class GivesBountyInfo : TraitInfo<GivesBounty>, InitializeAfter<GainsExperienceInfo>
 	{
 		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
 		public readonly int Percentage = 10;

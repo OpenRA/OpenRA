@@ -13,7 +13,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Changes the animation when the actor constructed a building.")]
-	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<RenderSimpleInfo>, InitializeAfter<RenderSimpleInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "build";
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			renderSimple = self.Trait<RenderSimple>();
-			buildComplete = !self.HasTrait<Building>();
+			buildComplete = !self.Info.Traits.Contains<BuildingInfo>();
 		}
 
 		public void BuildingComplete(Actor self)

@@ -150,7 +150,7 @@ namespace OpenRA.Traits
 		Player Owner { get; }
 	}
 
-	public interface ITooltipInfo
+	public interface ITooltipInfo : ITraitInfo
 	{
 		string TooltipForPlayerStance(Stance stance);
 		bool IsOwnerRowVisible { get; }
@@ -226,6 +226,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
+	public interface IPositionableInfo : ITraitInfo { }
 	public interface IPositionable : IOccupySpace
 	{
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
@@ -275,6 +276,11 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
+	/// <summary>This trait must come after trait T because T is used in the constructor</summary>
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	public interface InitializeAfter<T> where T : class, ITraitInfo { }
+
+	/// <summary>Use if trait T is required.</summary>
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]

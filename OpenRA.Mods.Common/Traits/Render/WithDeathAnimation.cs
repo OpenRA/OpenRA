@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has a death animation.")]
-	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		[Desc("Sequence prefix to play when this actor is killed by a warhead.")]
 		[SequenceReference(null, true)] public readonly string DeathSequence = "die";

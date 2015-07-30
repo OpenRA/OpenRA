@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Overrides the default ToolTip when this actor is disguised (aids in deceiving enemy players).")]
-	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
+	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>, InitializeAfter<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.Self, this); }
 	}

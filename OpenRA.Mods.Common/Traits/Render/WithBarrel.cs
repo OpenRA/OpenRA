@@ -17,7 +17,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
-	class WithBarrelInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	class WithBarrelInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<IBodyOrientationInfo>, InitializeAfter<ArmamentInfo>, InitializeAfter<TurretedInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "barrel";

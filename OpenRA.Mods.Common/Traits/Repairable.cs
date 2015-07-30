@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, InitializeAfter<HealthInfo>, InitializeAfter<AmmoPoolInfo>
 	{
 		public readonly string[] RepairBuildings = { "fix" };
 

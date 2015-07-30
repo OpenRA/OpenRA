@@ -18,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>,
+		InitializeAfter<BuildingInfluenceInfo>
 	{
 		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
-	class WithResourcesInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithResourcesInfo : ITraitInfo, Requires<RenderSimpleInfo>, InitializeAfter<RenderSimpleInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "resources";

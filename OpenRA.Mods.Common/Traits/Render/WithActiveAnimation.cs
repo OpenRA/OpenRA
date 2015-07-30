@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Replaces the idle animation of a building.")]
-	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithActiveAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>, InitializeAfter<RenderBuildingInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
