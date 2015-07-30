@@ -266,10 +266,13 @@ local function navigateTo(default, selected)
 
           -- now add all other files in the project
           if not currentonly and ide.config.commandbar.showallsymbols then
+            local n = 0
             outline:RefreshSymbols(projdir, function(path)
                 local symbols = outline:GetFileSymbols(path)
                 if not paths[path] and symbols then populateSymbols(path, symbols) end
+                if not symbols then n = n + 1 end
               end)
+            if n > 0 then ide:SetStatus(TR("Queued %d files to index."):format(n)) end
           end
         end
         local nums = {}
