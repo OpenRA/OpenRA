@@ -17,7 +17,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays fireports, muzzle offsets, and hit areas in developer mode.")]
-	public class CombatDebugOverlayInfo : ITraitInfo
+	public class CombatDebugOverlayInfo : ITraitInfo, InitializeAfter<AttackBaseInfo>, InitializeAfter<IBodyOrientationInfo>,
+		InitializeAfter<HealthInfo>
 	{
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
@@ -26,15 +27,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly DeveloperMode devMode;
 
-		readonly HealthInfo health;
-		Lazy<AttackBase> attack;
-		Lazy<IBodyOrientation> coords;
+		readonly Health health;
+		readonly AttackBase attack;
+		readonly IBodyOrientation coords;
 
 		public CombatDebugOverlay(Actor self)
 		{
-			health = self.Info.TraitInfoOrDefault<HealthInfo>();
-			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
-			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			health = self.TraitOrDefault<Health>();
+			attack = self.TraitOrDefault<AttackBase>();
+			coords = attack is AttackGarrisoned ? self.Trait<IBodyOrientation>() : null;
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
@@ -46,25 +47,25 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (health != null)
-				wr.DrawRangeCircle(self.CenterPosition, health.Radius, Color.Red);
+				wr.DrawRangeCircle(self.CenterPosition, health.Info.Radius, Color.Red);
 
 			// No armaments to draw
-			if (attack.Value == null)
+			if (attack == null)
 				return;
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;
 
 			// Fire ports on garrisonable structures
-			var garrison = attack.Value as AttackGarrisoned;
+			var garrison = attack as AttackGarrisoned;
 			if (garrison != null)
 			{
-				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
+				var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
 				foreach (var p in garrison.Ports)
 				{
-					var pos = self.CenterPosition + coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
-					var da = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw + p.Cone)).Rotate(bodyOrientation));
-					var db = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw - p.Cone)).Rotate(bodyOrientation));
+					var pos = self.CenterPosition + coords.LocalToWorld(p.Offset.Rotate(bodyOrientation));
+					var da = coords.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw + p.Cone)).Rotate(bodyOrientation));
+					var db = coords.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw - p.Cone)).Rotate(bodyOrientation));
 
 					var o = wr.ScreenPosition(pos);
 					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
@@ -76,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			foreach (var a in attack.Value.Armaments)
+			foreach (var a in attack.Armaments)
 			{
 				foreach (var b in a.Barrels)
 				{
@@ -96,7 +97,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage == 0)
 				return;
 
-			var health = self.TraitOrDefault<Health>();
 			if (health == null)
 				return;
 

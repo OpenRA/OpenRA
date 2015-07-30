@@ -69,20 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly List<TimedUpgrade> timedUpgrades = new List<TimedUpgrade>();
-		readonly Lazy<Dictionary<string, UpgradeState>> upgrades;
+		readonly Dictionary<string, UpgradeState> upgrades;
 		readonly Dictionary<IUpgradable, int> levels = new Dictionary<IUpgradable, int>();
 
 		public UpgradeManager(ActorInitializer init)
 		{
-			upgrades = Exts.Lazy(() =>
-			{
-				var ret = new Dictionary<string, UpgradeState>();
-				foreach (var up in init.Self.Traits<IUpgradable>())
-					foreach (var t in up.UpgradeTypes)
-						ret.GetOrAdd(t).Traits.Add(up);
-
-				return ret;
-			});
+			upgrades = new Dictionary<string, UpgradeState>();
+			foreach (var up in init.Self.Traits<IUpgradable>())
+				foreach (var t in up.UpgradeTypes)
+					upgrades.GetOrAdd(t).Traits.Add(up);
 		}
 
 		/// <summary>Upgrade level increments are limited to one per source, i.e., if a single source
@@ -142,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void GrantUpgrade(Actor self, string upgrade, object source)
 		{
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			// Track the upgrade source so that the upgrade can be removed without conflicts
@@ -154,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void RevokeUpgrade(Actor self, string upgrade, object source)
 		{
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			if (!s.Sources.Remove(source))
@@ -166,14 +161,14 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Returns true if the actor uses the given upgrade. Does not check the actual level of the upgrade.</summary>
 		public bool AcknowledgesUpgrade(Actor self, string upgrade)
 		{
-			return upgrades.Value.ContainsKey(upgrade);
+			return upgrades.ContainsKey(upgrade);
 		}
 
 		/// <summary>Returns true only if the actor can accept another level of the upgrade.</summary>
 		public bool AcceptsUpgrade(Actor self, string upgrade)
 		{
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return false;
 
 			return s.Traits.Any(up => up.AcceptsUpgradeLevel(self, upgrade, GetOverallLevel(up) + 1));
@@ -182,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void RegisterWatcher(string upgrade, Action<int, int> action)
 		{
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			s.Watchers.Add(action);
@@ -203,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				u.Sources.RemoveWhere(source => source.Remaining <= 0);
 
-				foreach (var a in upgrades.Value[u.Upgrade].Watchers)
+				foreach (var a in upgrades[u.Upgrade].Watchers)
 					a(u.Duration, u.Remaining);
 			}
 

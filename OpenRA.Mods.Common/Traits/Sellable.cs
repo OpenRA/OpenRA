@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be sold")]
-	public class SellableInfo : UpgradableTraitInfo
+	public class SellableInfo : UpgradableTraitInfo, InitializeAfter<HealthInfo>
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Sellable : UpgradableTrait<SellableInfo>, IResolveOrder, IProvideTooltipInfo
 	{
 		readonly Actor self;
-		readonly Lazy<Health> health;
+		readonly Health health;
 		readonly SellableInfo info;
 
 		public Sellable(Actor self, SellableInfo info)
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
+			health = self.TraitOrDefault<Health>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -81,10 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				var sellValue = self.GetSellValue() * info.RefundPercent / 100;
-				if (health.Value != null)
+				if (health != null)
 				{
-					sellValue *= health.Value.HP;
-					sellValue /= health.Value.MaxHP;
+					sellValue *= health.HP;
+					sellValue /= health.MaxHP;
 				}
 
 				return "Refund: $" + sellValue;
