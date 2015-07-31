@@ -411,6 +411,24 @@ local package = ide:AddPackage('core.outline', {
         ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
       end
     end,
+
+    onMenuFiletree = function(self, menu, tree, event)
+      local item_id = event:GetItem()
+      local name = tree:GetItemFullName(item_id)
+      local symboldirmenu = wx.wxMenu {
+        {ID_SYMBOLDIRREFRESH, TR("Refresh"), TR("Refresh indexed symbols from files in the selected directory")},
+      }
+      local _, _, projdirpos = ide:FindMenuItem(ID_PROJECTDIR, menu)
+      assert(projdirpos, "Can't find ProjectDirectory menu item")
+      menu:Insert(projdirpos+1, wx.wxMenuItem(menu, ID_SYMBOLDIRINDEX,
+        TR("Symbol Index"), "", wx.wxITEM_NORMAL, symboldirmenu))
+      menu:Enable(ID_SYMBOLDIRINDEX, tree:IsDirectory(item_id))
+
+      tree:Connect(ID_SYMBOLDIRREFRESH, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          outline:RefreshSymbols(name)
+          resetIndexTimer()
+        end)
+    end,
   })
 
 local function queuePath(path)
