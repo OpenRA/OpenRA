@@ -141,16 +141,16 @@ SPEN:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@soviet:
-		Race: soviet, russia, ukraine
+		Factions: soviet, russia, ukraine
 		Prerequisite: ships.soviet
 	ProvidesPrerequisite@sovietvanilla:
-		Race: soviet
+		Factions: soviet
 		Prerequisite: ships.sovietvanilla
 	ProvidesPrerequisite@russia:
-		Race: russia
+		Factions: russia
 		Prerequisite: ships.russia
 	ProvidesPrerequisite@ukraine:
-		Race: ukraine
+		Factions: ukraine
 		Prerequisite: ships.ukraine
 	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
@@ -222,19 +222,19 @@ SYRD:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Factions: allies, england, france, germany
 		Prerequisite: ships.allies
 	ProvidesPrerequisite@alliesvanilla:
-		Race: allies
+		Factions: allies
 		Prerequisite: ships.alliesvanilla
 	ProvidesPrerequisite@england:
-		Race: england
+		Factions: england
 		Prerequisite: ships.england
 	ProvidesPrerequisite@france:
-		Race: france
+		Factions: france
 		Prerequisite: ships.france
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: ships.germany
 	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
@@ -330,7 +330,7 @@ PDOX:
 	Bib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: pdox.germany
 	ProvidesPrerequisite@germanstructure:
 		RequiresPrerequisites: structures.germany
@@ -797,31 +797,31 @@ WEAP:
 	Production:
 		Produces: Vehicle
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Factions: allies, england, france, germany
 		Prerequisite: vehicles.allies
 	ProvidesPrerequisite@alliesvanilla:
-		Race: allies
+		Factions: allies
 		Prerequisite: vehicles.alliesvanilla
 	ProvidesPrerequisite@england:
-		Race: england
+		Factions: england
 		Prerequisite: vehicles.england
 	ProvidesPrerequisite@france:
-		Race: france
+		Factions: france
 		Prerequisite: vehicles.france
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: vehicles.germany
 	ProvidesPrerequisite@soviet:
-		Race: soviet, russia, ukraine
+		Factions: soviet, russia, ukraine
 		Prerequisite: vehicles.soviet
 	ProvidesPrerequisite@sovietvanilla:
-		Race: soviet
+		Factions: soviet
 		Prerequisite: vehicles.sovietvanilla
 	ProvidesPrerequisite@russia:
-		Race: russia
+		Factions: russia
 		Prerequisite: vehicles.russia
 	ProvidesPrerequisite@ukraine:
-		Race: ukraine
+		Factions: ukraine
 		Prerequisite: vehicles.ukraine
 	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
@@ -870,31 +870,31 @@ FACT:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Factions: allies, england, france, germany
 		Prerequisite: structures.allies
 	ProvidesPrerequisite@alliesvanilla:
-		Race: allies
+		Factions: allies
 		Prerequisite: structures.alliesvanilla
 	ProvidesPrerequisite@england:
-		Race: england
+		Factions: england
 		Prerequisite: structures.england
 	ProvidesPrerequisite@france:
-		Race: france
+		Factions: france
 		Prerequisite: structures.france
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: structures.germany
 	ProvidesPrerequisite@soviet:
-		Race: soviet, russia, ukraine
+		Factions: soviet, russia, ukraine
 		Prerequisite: structures.soviet
 	ProvidesPrerequisite@sovietvanilla:
-		Race: soviet
+		Factions: soviet
 		Prerequisite: structures.sovietvanilla
 	ProvidesPrerequisite@russia:
-		Race: russia
+		Factions: russia
 		Prerequisite: structures.russia
 	ProvidesPrerequisite@ukraine:
-		Race: ukraine
+		Factions: ukraine
 		Prerequisite: structures.ukraine
 	Health:
 		HP: 1500
@@ -1053,19 +1053,19 @@ HPAD:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Factions: allies, england, france, germany
 		Prerequisite: aircraft.allies
 	ProvidesPrerequisite@alliesvanilla:
-		Race: allies
+		Factions: allies
 		Prerequisite: aircraft.alliesvanilla
 	ProvidesPrerequisite@england:
-		Race: england
+		Factions: england
 		Prerequisite: aircraft.england
 	ProvidesPrerequisite@france:
-		Race: france
+		Factions: france
 		Prerequisite: aircraft.france
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: aircraft.germany
 	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies
@@ -1118,16 +1118,16 @@ AFLD:
 		Produces: Aircraft, Plane
 	Reservable:
 	ProvidesPrerequisite@soviet:
-		Race: soviet, russia, ukraine
+		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
 	ProvidesPrerequisite@sovietvanilla:
-		Race: soviet
+		Factions: soviet
 		Prerequisite: aircraft.sovietvanilla
 	ProvidesPrerequisite@russia:
-		Race: russia
+		Factions: russia
 		Prerequisite: aircraft.russia
 	ProvidesPrerequisite@ukraine:
-		Race: ukraine
+		Factions: ukraine
 		Prerequisite: aircraft.ukraine
 	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
@@ -1337,16 +1337,16 @@ BARR:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	ProvidesPrerequisite@soviet:
-		Race: soviet, russia, ukraine
+		Factions: soviet, russia, ukraine
 		Prerequisite: infantry.soviet
 	ProvidesPrerequisite@sovietvanilla:
-		Race: soviet
+		Factions: soviet
 		Prerequisite: infantry.sovietvanilla
 	ProvidesPrerequisite@russia:
-		Race: russia
+		Factions: russia
 		Prerequisite: infantry.russia
 	ProvidesPrerequisite@ukraine:
-		Race: ukraine
+		Factions: ukraine
 		Prerequisite: infantry.ukraine
 	ProvidesPrerequisite@sovietstructure:
 		RequiresPrerequisites: structures.soviet
@@ -1438,19 +1438,19 @@ TENT:
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
 	ProvidesPrerequisite@allies:
-		Race: allies, england, france, germany
+		Factions: allies, england, france, germany
 		Prerequisite: infantry.allies
 	ProvidesPrerequisite@alliesvanilla:
-		Race: allies
+		Factions: allies
 		Prerequisite: infantry.alliesvanilla
 	ProvidesPrerequisite@england:
-		Race: england
+		Factions: england
 		Prerequisite: infantry.england
 	ProvidesPrerequisite@france:
-		Race: france
+		Factions: france
 		Prerequisite: infantry.france
 	ProvidesPrerequisite@germany:
-		Race: germany
+		Factions: germany
 		Prerequisite: infantry.germany
 	ProvidesPrerequisite@alliedstructure:
 		RequiresPrerequisites: structures.allies

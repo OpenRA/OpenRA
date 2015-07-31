@@ -44,10 +44,10 @@ GACNST:
 	Selectable:
 		Bounds: 144, 60, 0, -6
 	ProvidesPrerequisite@gdi:
-		Race: gdi
+		Factions: gdi
 		Prerequisite: structures.gdi
 	ProvidesPrerequisite@nod:
-		Race: nod
+		Factions: nod
 		Prerequisite: structures.nod
 	SelectionDecorations:
 		VisualBounds: 144, 80, 0, -12
