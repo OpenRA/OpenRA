@@ -764,7 +764,7 @@ namespace OpenRA
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
 			var z = MapHeight.Value.Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
-			return new WPos(512 * (cell.X - cell.Y), 512 * (cell.X + cell.Y + 1), z);
+			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), z);
 		}
 
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
@@ -783,10 +783,13 @@ namespace OpenRA
 			// Convert from world position to diamond cell position:
 			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
 			// (b) Rotate axes by -pi/4
-			// (c) Add (512, 512) to move back to the center of the cell
-			// (d) Divide by 1024 to find final cell coords
+			// (c) Divide through by sqrt(2) to bring us to an equivalent world pos aligned with u,v axes
+			// (d) Apply an offset so that the integer division by 1024 rounds in the right direction:
+			//      (i) u is always positive, so add 512 (which then partially cancels the -1024 term from the rotation)
+			//     (ii) v can be negative, so we need to be careful about rounding directions.  We add 512 *away from 0* (negative if y > x).
+			// (e) Divide by 1024 to bring into cell coords.
 			var u = (pos.Y + pos.X - 512) / 1024;
-			var v = (pos.Y - pos.X - 512) / 1024;
+			var v = (pos.Y - pos.X + (pos.Y > pos.X ? 512 : -512)) / 1024;
 			return new CPos(u, v);
 		}
 
