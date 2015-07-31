@@ -198,11 +198,13 @@ namespace OpenRA.Mods.Common.Orders
 			}
 
 			var pal = wr.Palette(placeBuildingInfo.Palette);
+			var topLeftPos = world.Map.CenterOfCell(topLeft);
 			foreach (var c in cells)
 			{
 				var tile = c.Value ? buildOk : buildBlocked;
-				yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c.Key),
-					WVec.Zero, -511, pal, 1f, true);
+				var pos = world.Map.CenterOfCell(c.Key);
+				yield return new SpriteRenderable(tile, pos, new WVec(0, 0, topLeftPos.Z - pos.Z),
+					-511, pal, 1f, true);
 			}
 		}
 
