@@ -41,6 +41,8 @@ CSC         = dmcs
 CSFLAGS     = -nologo -warn:4 -codepage:utf8 -unsafe -warnaserror
 DEFINE      = TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/Mono.Nat.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/MaxMind.GeoIP2.dll thirdparty/download/Eluant.dll thirdparty/download/SmarIrc4net.dll
+NUNIT_LIBS_PATH :=
+NUNIT_LIBS  := $(NUNIT_LIBS_PATH)nunit.framework.dll
 
 DEBUG = true
 ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
@@ -129,6 +131,16 @@ mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dl
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
 
+# NUnit testing
+test_dll_SRCS := $(shell find OpenRA.Test/ -iname '*.cs')
+test_dll_TARGET = OpenRA.Test.dll
+test_dll_KIND = library
+test_dll_DEPS = $(game_TARGET)
+test_dll_FLAGS = -warn:1
+test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(NUNIT_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+PROGRAMS += test_dll
+test_dll: $(test_dll_TARGET)
+
 ##### Official Mods #####
 
 STD_MOD_LIBS	= $(game_TARGET)
@@ -210,6 +222,14 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
+
+NUNIT_CONSOLE := $(shell which nunit2-console 2>/dev/null || which nunit3-console 2>/dev/null || which nunit-console 2>/dev/null)
+nunit: test_dll
+	@echo
+	@echo "Checking unit tests..."
+	@if [ "$(NUNIT_CONSOLE)" = "" ] ;then echo 'nunit[2|3]-console not found! Is NUnit installed?'>&2; exit 1; fi
+	@if $(NUNIT_CONSOLE) --help | head -n 1 | grep -E "NUnit version (1|2\.[0-5])";then echo 'NUnit version >= 2.6 required'>&2; exit 1; fi
+	@$(NUNIT_CONSOLE) $(test_dll_TARGET)
 
 test: utility mods
 	@echo
@@ -438,32 +458,38 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(mandir)/man6/openra.6"
 
 help:
-	@echo to compile, run:
-	@echo \ \ make [DEBUG=false]
+	@echo 'to compile, run:'
+	@echo '  make [DEBUG=false]'
 	@echo
-	@echo to compile with development tools, run:
-	@echo \ \ make all [DEBUG=false]
+	@echo 'to compile with development tools, run:'
+	@echo '  make all [DEBUG=false]'
 	@echo
-	@echo to check the official mods for erroneous yaml files, run:
-	@echo \ \ make test
+	@echo 'to check unit tests (requires NUnit version >= 2.6), run:'
+	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
+	@echo '     Use NUNIT_CONSOLE if nunit[2|3]-console is not in bin search paths'
+	@echo '     Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /'
+	@echo '     Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)'
 	@echo
-	@echo to generate documentation aimed at modders, run:
-	@echo \ \ make docs
+	@echo 'to check the official mods for erroneous yaml files, run:'
+	@echo '  make test'
 	@echo
-	@echo to install, run:
-	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install
+	@echo 'to generate documentation aimed at modders, run:'
+	@echo '  make docs'
 	@echo
-	@echo to install with development tools, run:
-	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
+	@echo 'to install, run:'
+	@echo '  make [prefix=/foo] [bindir=/bar/bin] install'
 	@echo
-	@echo to install Linux startup scripts, desktop files and icons
-	@echo \ \ make install-linux-shortcuts [DEBUG=false]
+	@echo 'to install with development tools, run:'
+	@echo '  make [prefix=/foo] [bindir=/bar/bin] install-all'
 	@echo
-	@echo to uninstall, run:
-	@echo \ \ make uninstall
+	@echo 'to install Linux startup scripts, desktop files and icons'
+	@echo '  make install-linux-shortcuts [DEBUG=false]'
 	@echo
-	@echo to start the game, run:
-	@echo \ \ openra
+	@echo 'to uninstall, run:'
+	@echo '  make uninstall'
+	@echo
+	@echo 'to start the game, run:'
+	@echo '  openra'
 
 
 
@@ -474,4 +500,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: core tools package all mods clean distclean dependencies version $(PROGRAMS)
+.PHONY: core tools package all mods clean distclean dependencies version $(PROGRAMS) nunit
