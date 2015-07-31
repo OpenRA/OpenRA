@@ -999,47 +999,90 @@ namespace OpenRA
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
-			// TODO: Account for terrain height
-			var x = rand.Next(Bounds.Left, Bounds.Right);
-			var y = rand.Next(Bounds.Top, Bounds.Bottom);
+			MPos[] cells;
+			do
+			{
+				var u = rand.Next(Bounds.Left, Bounds.Right);
+				var v = rand.Next(Bounds.Top, Bounds.Bottom);
 
-			return new MPos(x, y).ToCPos(this);
+				cells = Unproject(new PPos(u, v));
+			} while (!cells.Any());
+
+			return cells.Random(rand).ToCPos(TileShape);
 		}
 
-		public CPos ChooseClosestEdgeCell(CPos pos)
+		public CPos ChooseClosestEdgeCell(CPos cell)
 		{
-			// TODO: Account for terrain height
-			var mpos = pos.ToMPos(this);
+			return ChooseClosestEdgeCell(cell.ToMPos(TileShape)).ToCPos(TileShape);
+		}
 
-			var horizontalBound = ((mpos.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
-			var verticalBound = ((mpos.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
+		public MPos ChooseClosestEdgeCell(MPos uv)
+		{
+			var allProjected = ProjectedCellsCovering(uv);
 
-			var distX = Math.Abs(horizontalBound - mpos.U);
-			var distY = Math.Abs(verticalBound - mpos.V);
+			PPos edge;
+			if (allProjected.Any())
+			{
+				var puv = allProjected.First();
+				var horizontalBound = ((puv.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
+				var verticalBound = ((puv.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
 
-			return distX < distY ? new MPos(horizontalBound, mpos.V).ToCPos(this) : new MPos(mpos.U, verticalBound).ToCPos(this);
+				var du = Math.Abs(horizontalBound - puv.U);
+				var dv = Math.Abs(verticalBound - puv.V);
+
+				edge = du < dv ? new PPos(horizontalBound, puv.V) : new PPos(puv.U, verticalBound);
+			}
+			else
+				edge = new PPos(Bounds.Left, Bounds.Top);
+
+			var unProjected = Unproject(edge);
+			if (!unProjected.Any())
+			{
+				// Adjust V until we find a cell that works
+				for (var x = 2; x <= 2 * MaximumTerrainHeight; x++)
+				{
+					var dv = ((x & 1) == 1 ? 1 : -1) * x / 2;
+					var test = new PPos(edge.U, edge.V + dv);
+					if (!Contains(test))
+						continue;
+
+					unProjected = Unproject(test);
+					if (unProjected.Any())
+						break;
+				}
+
+				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
+				if (!unProjected.Any())
+				{
+					Log.Write("debug", "Failed to find closest edge for map cell {0}", uv);
+					return uv;
+				}
+			}
+
+			return edge.V == Bounds.Bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V);
 		}
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
-			// TODO: Account for terrain height
-			var isX = rand.Next(2) == 0;
-			var edge = rand.Next(2) == 0;
+			MPos[] cells;
+			do
+			{
+				var isU = rand.Next(2) == 0;
+				var edge = rand.Next(2) == 0;
+				var u = isU ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
+				var v = !isU ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
 
-			var x = isX ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
-			var y = !isX ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
+				cells = Unproject(new PPos(u, v));
+			} while (!cells.Any());
 
-			return new MPos(x, y).ToCPos(this);
+			return cells.Random(rand).ToCPos(TileShape);
 		}
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)
 		{
-			// TODO: Account for terrain height
-			// Project into the screen plane and then compare against ProjectedWorldBounds.
-			var tl = CenterOfCell(((MPos)ProjectedCellBounds.TopLeft).ToCPos(this)) - new WVec(512, 512, 0);
-			var br = CenterOfCell(((MPos)ProjectedCellBounds.BottomRight).ToCPos(this)) + new WVec(511, 511, 0);
-			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? tl.X : br.X) - pos.X) / dir.X;
-			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? tl.Y : br.Y) - pos.Y) / dir.Y;
+			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
+			var x = dir.X == 0 ? int.MaxValue : ((dir.X < 0 ? ProjectedTopLeft.X : ProjectedBottomRight.X) - projectedPos.X) / dir.X;
+			var y = dir.Y == 0 ? int.MaxValue : ((dir.Y < 0 ? ProjectedTopLeft.Y : ProjectedBottomRight.Y) - projectedPos.Y) / dir.Y;
 			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
