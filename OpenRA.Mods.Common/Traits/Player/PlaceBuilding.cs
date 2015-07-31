@@ -62,12 +62,12 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var producer = queue.MostLikelyProducer();
-				var race = producer.Trait != null ? producer.Trait.Race : self.Owner.Faction.InternalName;
+				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
 				var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 				var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
 				if (buildableInfo != null && buildableInfo.ForceRace != null)
-					race = buildableInfo.ForceRace;
+					faction = buildableInfo.ForceRace;
 
 				if (os == "LineBuild")
 				{
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							new LocationInit(t),
 							new OwnerInit(order.Player),
-							new FactionInit(race)
+							new FactionInit(faction)
 						});
 
 						if (playSounds)
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						new LocationInit(order.TargetLocation),
 						new OwnerInit(order.Player),
-						new FactionInit(race),
+						new FactionInit(faction),
 					});
 
 					foreach (var s in buildingInfo.BuildSounds)

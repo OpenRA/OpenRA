@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
-			var race = producer.Trait.Race;
+			var faction = producer.Trait.Faction;
 
 			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
 
 				var rsi = item.Traits.Get<RenderSpritesInfo>();
-				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, race));
+				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, faction));
 				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 
 				var bi = item.Traits.Get<BuildableInfo>();
