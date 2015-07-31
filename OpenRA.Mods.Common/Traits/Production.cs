@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 			var target = Target.FromCell(self.World, exitLocation);
 
 			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceRace != null)
-				factionVariant = bi.ForceRace;
+			if (bi != null && bi.ForceFaction != null)
+				factionVariant = bi.ForceFaction;
 
 			self.World.AddFrameEndTask(w =>
 			{

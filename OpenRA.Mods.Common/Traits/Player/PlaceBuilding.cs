@@ -66,8 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 				var buildingInfo = unit.Traits.Get<BuildingInfo>();
 
 				var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
-				if (buildableInfo != null && buildableInfo.ForceRace != null)
-					faction = buildableInfo.ForceRace;
+				if (buildableInfo != null && buildableInfo.ForceFaction != null)
+					faction = buildableInfo.ForceFaction;
 
 				if (os == "LineBuild")
 				{

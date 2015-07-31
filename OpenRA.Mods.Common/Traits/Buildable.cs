@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable production when there are more than this many of this actor on the battlefield. Set to 0 to disable.")]
 		public readonly int BuildLimit = 0;
 
-		[Desc("Force a specific race variant, overriding the race of the producing actor.")]
-		public readonly string ForceRace = null;
+		[Desc("Force a specific faction variant, overriding the faction of the producing actor.")]
+		public readonly string ForceFaction = null;
 
 		[Desc("Palette used for the production icon.")]
 		public readonly string IconPalette = "chrome";

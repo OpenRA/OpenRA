@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var buildableInfo = info.Traits.Get<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
-			faction = buildableInfo.ForceRace
+			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : producer.Owner.Faction.InternalName);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
