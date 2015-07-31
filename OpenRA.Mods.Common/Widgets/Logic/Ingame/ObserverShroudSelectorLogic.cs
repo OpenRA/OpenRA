@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public readonly Player Player;
 			public readonly string Label;
 			public readonly Color Color;
-			public readonly string Race;
+			public readonly string Faction;
 			public readonly Func<bool> IsSelected;
 			public readonly Action OnClick;
 
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Player = p;
 				Label = p.PlayerName;
 				Color = p.Color.RGB;
-				Race = p.Faction.InternalName;
+				Faction = p.Faction.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;
 				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };
 			}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Player = p;
 				Label = label;
 				Color = Color.White;
-				Race = null;
+				Faction = null;
 				IsSelected = () => w.RenderPlayer == p;
 				OnClick = () => { w.RenderPlayer = p; logic.selected = this; };
 			}
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-					var showFlag = option.Race != null;
+					var showFlag = option.Faction != null;
 
 					var label = item.Get<LabelWidget>("LABEL");
 					label.IsVisible = () => showFlag;
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var flag = item.Get<ImageWidget>("FLAG");
 					flag.IsVisible = () => showFlag;
 					flag.GetImageCollection = () => "flags";
-					flag.GetImageName = () => option.Race;
+					flag.GetImageName = () => option.Faction;
 
 					var labelAlt = item.Get<LabelWidget>("NOFLAG_LABEL");
 					labelAlt.IsVisible = () => !showFlag;
@@ -109,17 +109,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");
-			shroudLabel.IsVisible = () => selected.Race != null;
+			shroudLabel.IsVisible = () => selected.Faction != null;
 			shroudLabel.GetText = () => selected.Label;
 			shroudLabel.GetColor = () => selected.Color;
 
 			var shroudFlag = shroudSelector.Get<ImageWidget>("FLAG");
-			shroudFlag.IsVisible = () => selected.Race != null;
+			shroudFlag.IsVisible = () => selected.Faction != null;
 			shroudFlag.GetImageCollection = () => "flags";
-			shroudFlag.GetImageName = () => selected.Race;
+			shroudFlag.GetImageName = () => selected.Faction;
 
 			var shroudLabelAlt = shroudSelector.Get<LabelWidget>("NOFLAG_LABEL");
-			shroudLabelAlt.IsVisible = () => selected.Race == null;
+			shroudLabelAlt.IsVisible = () => selected.Faction == null;
 			shroudLabelAlt.GetText = () => selected.Label;
 			shroudLabelAlt.GetColor = () => selected.Color;
 
