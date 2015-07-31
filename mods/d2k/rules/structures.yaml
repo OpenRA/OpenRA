@@ -846,7 +846,7 @@ conyard.atreides:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: atreides
+		ForceFaction: atreides
 	RenderBuilding:
 		Image: conyard.atreides
 		-RaceImages:
@@ -857,7 +857,7 @@ conyard.harkonnen:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: harkonnen
+		ForceFaction: harkonnen
 	RenderBuilding:
 		Image: conyard.harkonnen
 		-RaceImages:
@@ -868,7 +868,7 @@ conyard.ordos:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: ordos
+		ForceFaction: ordos
 	RenderBuilding:
 		Image: conyard.ordos
 		-RaceImages:
