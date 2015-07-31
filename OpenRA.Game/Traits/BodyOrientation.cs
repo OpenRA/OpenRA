@@ -20,8 +20,15 @@ namespace OpenRA.Traits
 		[Desc("Camera pitch for rotation calculations")]
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 
+		[Desc("Fudge the coordinate system angles like the early games.")]
+		public readonly bool UseClassicPerspectiveFudge = true;
+
 		public WVec LocalToWorld(WVec vec)
 		{
+			// Rotate by 90 degrees
+			if (!UseClassicPerspectiveFudge)
+				return new WVec(vec.Y, -vec.X, vec.Z);
+
 			// RA's 2d perspective doesn't correspond to an orthonormal 3D
 			// coordinate system, so fudge the y axis to make things look good
 			return new WVec(vec.Y, -CameraPitch.Sin() * vec.X / 1024, vec.Z);

@@ -4,6 +4,7 @@
 	CombatDebugOverlay:
 	GivesExperience:
 	BodyOrientation:
+		UseClassicPerspectiveFudge: False
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
@@ -172,6 +173,7 @@
 		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
 	BodyOrientation:
+		UseClassicPerspectiveFudge: False
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
@@ -519,6 +521,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	BodyOrientation:
+		UseClassicPerspectiveFudge: False
 	FrozenUnderFog:
 		StartsRevealed: true
 	SeedsResource:
@@ -537,6 +540,7 @@
 		Dimensions: 1, 1
 	AppearsOnRadar:
 	BodyOrientation:
+		UseClassicPerspectiveFudge: False
 	Tooltip:
 		Name: Tree
 
@@ -551,6 +555,7 @@
 		Dimensions: 1, 1
 	AppearsOnRadar:
 	BodyOrientation:
+		UseClassicPerspectiveFudge: False
 	Tooltip:
 		Name: Rock
 
