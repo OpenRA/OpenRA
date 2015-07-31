@@ -6,6 +6,11 @@
 # to compile with development tools, run:
 #   make all [DEBUG=false]
 #
+# to check unit tests (requires NUnit version >= 2.6), run:
+#  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]
+#      Use NUNIT_CONSOLE if nunit[2|3]-console was not downloaded by `make dependencies` nor is it not in bin search paths
+#      Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /
+#      Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)
 # to check the official mods for erroneous yaml files, run:
 #   make test
 #
@@ -223,12 +228,21 @@ check: utility mods
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 
-NUNIT_CONSOLE := $(shell which nunit2-console 2>/dev/null || which nunit3-console 2>/dev/null || which nunit-console 2>/dev/null)
+NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit-console.exe && echo mono thirdparty/download/nunit-console.exe || \
+	which nunit2-console 2>/dev/null || which nunit3-console 2>/dev/null || which nunit-console 2>/dev/null)
 nunit: test_dll
 	@echo
 	@echo "Checking unit tests..."
-	@if [ "$(NUNIT_CONSOLE)" = "" ] ;then echo 'nunit[2|3]-console not found! Is NUnit installed?'>&2; exit 1; fi
-	@if $(NUNIT_CONSOLE) --help | head -n 1 | grep -E "NUnit version (1|2\.[0-5])";then echo 'NUnit version >= 2.6 required'>&2; exit 1; fi
+	@if [ "$(NUNIT_CONSOLE)" = "" ] ; then \
+		echo 'nunit[2|3]-console not found!'; \
+		echo 'Was "make dependencies" called or is NUnit installed?'>&2; \
+		echo 'see "make help"'; \
+		exit 1; \
+	fi
+	@if $(NUNIT_CONSOLE) --help | head -n 1 | grep -E "NUnit version (1|2\.[0-5])";then \
+		echo 'NUnit version >= 2.6 required'>&2; \
+		exit 1; \
+	fi
 	@$(NUNIT_CONSOLE) $(test_dll_TARGET)
 
 test: utility mods
@@ -466,7 +480,7 @@ help:
 	@echo
 	@echo 'to check unit tests (requires NUnit version >= 2.6), run:'
 	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
-	@echo '     Use NUNIT_CONSOLE if nunit[2|3]-console is not in bin search paths'
+	@echo '     Use NUNIT_CONSOLE if nunit[2|3]-console was not downloaded by `make dependencies` nor is it not in bin search paths'
 	@echo '     Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /'
 	@echo '     Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)'
 	@echo
