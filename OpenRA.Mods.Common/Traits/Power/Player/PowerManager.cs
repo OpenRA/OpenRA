@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
+	public class PowerManagerInfo : IImplicitSingletonTraitInfo, Requires<DeveloperModeInfo>, InitializeAfter<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
 		public readonly string SpeechNotification = "LowPower";

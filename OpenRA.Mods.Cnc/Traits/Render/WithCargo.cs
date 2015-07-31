@@ -18,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Renders the cargo loaded into the unit.")]
-	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
+	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<CargoInfo>, InitializeAfter<IFacingInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body in (forward, right, up) triples. The default offset should be in the middle of the list.")]
 		public readonly WVec[] LocalOffset = { WVec.Zero };

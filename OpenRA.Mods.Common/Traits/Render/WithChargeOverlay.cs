@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Rendered together with AttackCharge.")]
-	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";

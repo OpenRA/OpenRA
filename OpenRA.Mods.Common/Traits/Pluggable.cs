@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PluggableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class PluggableInfo : ITraitInfo, RequiresSingleton<UpgradeManagerInfo>, InitializeAfter<UpgradeManagerInfo>
 	{
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;

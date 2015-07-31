@@ -28,11 +28,12 @@ namespace OpenRA.Test
 		class MockTrait : ITraitInfo { public object Create(ActorInitializer init) { return null; } }
 		class MockInherit : MockTrait { }
 		class MockA : MockInherit, IMock { }
-		class MockB : MockTrait, Requires<MockA>, Requires<IMock>, Requires<MockInherit> { }
-		class MockC : MockTrait, Requires<MockB> { }
-		class MockD : MockTrait, Requires<MockE> { }
-		class MockE : MockTrait, Requires<MockF> { }
-		class MockF : MockTrait, Requires<MockD> { }
+		class MockB : MockTrait, Requires<MockA>, Requires<IMock>, Requires<MockInherit>,
+			InitializeAfter<MockA>, InitializeAfter<IMock>, InitializeAfter<MockInherit> { }
+		class MockC : MockTrait, Requires<MockB>, InitializeAfter<MockB> { }
+		class MockD : MockTrait, Requires<MockE>, InitializeAfter<MockE> { }
+		class MockE : MockTrait, Requires<MockF>, InitializeAfter<MockF> { }
+		class MockF : MockTrait, Requires<MockD>, InitializeAfter<MockD> { }
 
 		[SetUp]
 		public void SetUp()
@@ -70,7 +71,6 @@ namespace OpenRA.Test
 			{
 				Assert.That(e.Message, Is.StringContaining("MockA"));
 				Assert.That(e.Message, Is.StringContaining("MockB"));
-				Assert.That(e.Message, Is.StringContaining("MockC"));
 				Assert.That(e.Message, Is.StringContaining("MockInherit"), "Should recognize base classes");
 				Assert.That(e.Message, Is.StringContaining("IMock"), "Should recognize interfaces");
 			}

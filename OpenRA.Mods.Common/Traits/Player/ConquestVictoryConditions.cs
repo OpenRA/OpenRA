@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ConquestVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
+	public class ConquestVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>, InitializeAfter<MissionObjectivesInfo>
 	{
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public readonly int NotificationDelay = 1500;

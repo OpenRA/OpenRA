@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class NukePowerInfo : SupportPowerInfo, Requires<IBodyOrientationInfo>
+	class NukePowerInfo : SupportPowerInfo, Requires<IBodyOrientationInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[WeaponReference]
 		public readonly string MissileWeapon = "";

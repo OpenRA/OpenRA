@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be targeted.")]
-	public class TargetableUnitInfo : UpgradableTraitInfo, ITargetableInfo
+	public class TargetableUnitInfo : UpgradableTraitInfo, ITargetableInfo, InitializeAfter<CloakInfo>
 	{
 		[Desc("Target type. Used for filtering (in)valid targets.")]
 		public readonly string[] TargetTypes = { };

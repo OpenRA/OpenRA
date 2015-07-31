@@ -16,11 +16,29 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public class MultipleOfSingletonTraitException : YamlException
+	{
+		public MultipleOfSingletonTraitException(Type info, string actor)
+			: base("Multiple occurances of singleton trait "
+				+ info.Name.Substring(0, info.Name.Length - 4)
+				+ " when there only can be one.") { }
+
+		public MultipleOfSingletonTraitException(Type iface, string actor, Type first, Type next)
+			: base("Multiple occurances of singleton trait interface "
+				+ iface.Name.Substring(0, iface.Name.Length - 4) + " including "
+				+ first.Name.Substring(0, first.Name.Length - 4) + " & "
+				+ next.Name.Substring(0, next.Name.Length - 4)
+				+ " when there can be no more than one.") { }
+	}
+
 	/// <summary>
 	/// A unit/building inside the game. Every rules starts with one and adds trait to it.
 	/// </summary>
 	public class ActorInfo
 	{
+		static readonly Type[] NoTypes = new Type[] { };
+		static readonly object[] NoObjects = new object[] { };
+
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
 		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
@@ -121,37 +139,85 @@ namespace OpenRA
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = Traits.WithInterface<ITraitInfo>().Select(i => new
+			List<ITraitInfo> traitInfos = new List<ITraitInfo>(Traits.WithInterface<ITraitInfo>());
+			Dictionary<Type, Type> singletons = new Dictionary<Type, Type>(); // Track singletons added
+
+			// Note explicit singletons and throw if there are multiple of the same type.
+			foreach (var ti in traitInfos)
+				if (ti is ISingletonTraitInfo)
+				{
+					if (singletons.ContainsKey(ti.GetType()))
+						throw new MultipleOfSingletonTraitException(ti.GetType(), Name);
+					else
+					{
+						var type = ti.GetType();
+						singletons.Add(type, type);
+						foreach (var i in ti.GetType().GetInterfaces().Where(s =>
+							s != typeof(ISingletonTraitInfo) && s != typeof(IImplicitSingletonTraitInfo)
+							&& typeof(ISingletonTraitInfo).IsAssignableFrom(s)))
+						{
+							if (singletons.ContainsKey(i))
+								throw new MultipleOfSingletonTraitException(i, Name, type, singletons[i]);
+							else
+								singletons.Add(i, type);
+						}
+					}
+				}
+
+			// Add implicit singletons recursively
+			Queue<ITraitInfo> queue = new Queue<ITraitInfo>(traitInfos);
+			while (queue.Any())
+				foreach (var t in SingletonsFor(queue.Dequeue()))
+					if (!singletons.ContainsKey(t))
+					{
+						singletons.Add(t, t);
+						ITraitInfo s = (ITraitInfo)t.GetConstructor(NoTypes).Invoke(NoObjects);
+						Traits.Add(s);
+						traitInfos.Add(s);
+						queue.Enqueue(s);
+					}
+
+			var source = traitInfos.Select(i => new
 			{
 				Trait = i,
 				Type = i.GetType(),
-				Dependencies = PrerequisitesOf(i).ToList()
+				Predecessors = PredecessorsOf(i).ToList(),
+				Requisites = RequisitesOf(i).ToList()
 			}).ToList();
 
-			var resolved = source.Where(s => !s.Dependencies.Any()).ToList();
+			var resolved = source.Where(s => !s.Predecessors.Any()).ToList();
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type))));
+			var more = unresolved.Where(u => u.Predecessors.All(d => !unresolved.Any(r => testResolve(d, r.Type))));
 
 			// Re-evaluate the vars above until sorted
 			while (more.Any())
 				resolved.AddRange(more);
 
-			if (unresolved.Any())
+			var missing = source.SelectMany(u => u.Requisites.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
+			if (missing.Any() || unresolved.Any())
 			{
 				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\r\n";
-				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
 
-				exceptionString += "Missing:\r\n";
-				foreach (var m in missing)
-					exceptionString += m + " \r\n";
-
-				exceptionString += "Unresolved:\r\n";
-				foreach (var u in unresolved)
+				if (missing.Any())
 				{
-					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
-					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					exceptionString += "Missing:\r\n";
+					foreach (var m in missing)
+					{
+						var users = source.Where(s => s.Requisites.Any(r => testResolve(r, m))).Select(s => s.Type);
+						exceptionString += m + ": { " + string.Join(", ", users) + " }\r\n";
+					}
+				}
+
+				if (unresolved.Any())
+				{
+					exceptionString += "Unresolved:\r\n";
+					foreach (var u in unresolved)
+					{
+						var deps = u.Predecessors.Where(d => !resolved.Exists(r => r.Type == d));
+						exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					}
 				}
 
 				throw new Exception(exceptionString);
@@ -161,12 +227,30 @@ namespace OpenRA
 			return constructOrderCache;
 		}
 
-		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		static IEnumerable<Type> PredecessorsOf(ITraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(InitializeAfter<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
+		static IEnumerable<Type> RequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
 				.GetInterfaces()
 				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
+		static IEnumerable<Type> SingletonsFor(ITraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(RequiresSingleton<>))
 				.Select(t => t.GetGenericArguments()[0]);
 		}
 

@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
-	public interface ISelectionDecorationsInfo
+	public interface ISelectionDecorationsInfo : ISingletonTraitInfo
 	{
 		int[] SelectionBoxBounds { get; }
 	}
@@ -138,6 +138,7 @@ namespace OpenRA.Traits
 	public interface IStoreResources { int Capacity { get; } }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 
+	public interface IEffectiveOwnerInfo : ISingletonTraitInfo { }
 	public interface IEffectiveOwner
 	{
 		bool Disguised { get; }
@@ -150,7 +151,7 @@ namespace OpenRA.Traits
 		Player Owner { get; }
 	}
 
-	public interface ITooltipInfo
+	public interface ITooltipInfo : ITraitInfo
 	{
 		string TooltipForPlayerStance(Stance stance);
 		bool IsOwnerRowVisible { get; }
@@ -172,14 +173,14 @@ namespace OpenRA.Traits
 		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
-	public interface IDefaultVisibilityInfo { }
+	public interface IDefaultVisibilityInfo : ISingletonTraitInfo { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
-	public interface IOccupySpaceInfo : ITraitInfo
+	public interface IOccupySpaceInfo : ISingletonTraitInfo
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
 		bool SharesCell { get; }
@@ -226,6 +227,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
+	public interface IPositionableInfo : ITraitInfo { }
 	public interface IPositionable : IOccupySpace
 	{
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
@@ -237,7 +239,7 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMoveInfo : ITraitInfo { }
+	public interface IMoveInfo : ISingletonTraitInfo { }
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
@@ -262,7 +264,7 @@ namespace OpenRA.Traits
 		int Facing { get; set; }
 	}
 
-	public interface IFacingInfo : ITraitInfo { int GetInitialFacing(); }
+	public interface IFacingInfo : ISingletonTraitInfo { int GetInitialFacing(); }
 
 	public interface ICrushable
 	{
@@ -273,10 +275,25 @@ namespace OpenRA.Traits
 
 	public interface ITraitInfo { object Create(ActorInitializer init); }
 
+	/// <summary>This trait should only exist once per actor.</summary>
+	public interface ISingletonTraitInfo : ITraitInfo { }
+
+	/// <summary>This trait should only exist once per actor and is included implicitly.</summary>
+	public interface IImplicitSingletonTraitInfo : ISingletonTraitInfo { }
+
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
+	/// <summary>This trait must come after trait T because T is used in the constructor</summary>
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	public interface InitializeAfter<T> where T : class, ITraitInfo { }
+
+	/// <summary>Use if trait T is required.</summary>
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
+
+	/// <summary>This trait requires implicit singleton trait, which may be added automatically.</summary>
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	public interface RequiresSingleton<T> where T : class, IImplicitSingletonTraitInfo { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> where T : IActorInit { }
 
@@ -316,15 +333,15 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 	}
 
-	public interface IBodyOrientationInfo : ITraitInfo
+	public interface IBodyOrientationInfo : ISingletonTraitInfo
 	{
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(WRot orientation, int facings);
 	}
 
-	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
+	public interface IQuantizeBodyOrientationInfo : ISingletonTraitInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
 
-	public interface ITargetableInfo
+	public interface ITargetableInfo : ISingletonTraitInfo
 	{
 		string[] GetTargetTypes();
 	}

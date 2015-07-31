@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyParachuteLanded { void OnLanded(); }
 	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
-	public interface ICruiseAltitudeInfo { WDist GetCruiseAltitude(); }
+	public interface ICruiseAltitudeInfo : ISingletonTraitInfo { WDist GetCruiseAltitude(); }
 
 	public interface IUpgradable
 	{
@@ -86,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
+	public interface IAcceptResourcesInfo : ISingletonTraitInfo { }
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);

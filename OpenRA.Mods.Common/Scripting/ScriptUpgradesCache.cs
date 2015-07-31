@@ -13,7 +13,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[Desc("Allows granting upgrades to actors from Lua scripts.")]
-	public class ScriptUpgradesCacheInfo : ITraitInfo
+	public class ScriptUpgradesCacheInfo : IImplicitSingletonTraitInfo
 	{
 		[UpgradeGrantedReference]
 		[Desc("Upgrades that can be granted from the scripts.")]

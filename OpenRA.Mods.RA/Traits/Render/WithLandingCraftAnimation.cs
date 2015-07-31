@@ -14,7 +14,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
+	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>,
+		InitializeAfter<IMoveInfo>, InitializeAfter<WithSpriteBodyInfo>, InitializeAfter<CargoInfo>
 	{
 		public readonly string[] OpenTerrainTypes = { "Clear" };
 		[SequenceReference] public readonly string OpenSequence = "open";
