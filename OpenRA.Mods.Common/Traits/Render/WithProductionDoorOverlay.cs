@@ -12,10 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Play an animation when a unit exits or blocks the exit after production finished.")]
 	class WithProductionDoorOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>, Requires<BuildingInfo>
