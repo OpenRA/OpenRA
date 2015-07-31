@@ -182,10 +182,10 @@ HMEC:
 	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
-		LocalOffset: -128,-384,980, -128,384,980
+		LocalOffset: -172,-260,854, -172,260,854
 	Armament@RAILGUN:
 		Weapon: MechRailgun
-		LocalOffset: 640,-384,980, 640,384,980
+		LocalOffset: 260,-220,728, 260,220,728
 	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
