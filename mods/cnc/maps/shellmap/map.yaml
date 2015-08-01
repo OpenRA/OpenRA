@@ -995,8 +995,7 @@ Rules:
 		LuaScript:
 			Scripts: shellmap.lua
 		MusicPlaylist:
-			StartingMusic: map1
-			LoopStartingMusic: True
+			BackgroundMusic: map1
 	LST:
 		Mobile:
 			Speed: 42
