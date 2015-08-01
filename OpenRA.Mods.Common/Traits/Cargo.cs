@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanLoad(Actor self, Actor a)
 		{
-			return (reserves.Contains(a) || HasSpace(GetWeight(a))) && self.CenterPosition.Z == 0;
+			return (reserves.Contains(a) || HasSpace(GetWeight(a))) && self.IsAtGroundLevel();
 		}
 
 		internal bool ReserveSpace(Actor a)

@@ -189,11 +189,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
-			// Crate can only be crushed if it is not in the air or underground
-			if (CenterPosition.Z != 0)
-				return false;
-
-			return crushClasses.Contains(info.CrushClass);
+			// Crate can only be crushed if it is not in the air.
+			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);
 		}
 
 		public void AddedToWorld(Actor self)

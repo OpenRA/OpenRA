@@ -775,6 +775,13 @@ namespace OpenRA
 			return CenterOfCell(cell);
 		}
 
+		public WDist DistanceAboveTerrain(WPos pos)
+		{
+			var cell = CellContaining(pos);
+			var delta = pos - CenterOfCell(cell);
+			return new WDist(delta.Z);
+		}
+
 		public CPos CellContaining(WPos pos)
 		{
 			if (TileShape == TileShape.Rectangle)

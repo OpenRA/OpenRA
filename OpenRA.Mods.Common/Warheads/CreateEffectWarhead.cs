@@ -39,8 +39,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public static ImpactType GetImpactType(World world, CPos cell, WPos pos)
 		{
-			var isAir = pos.Z > 0;
-			var isWater = pos.Z <= 0 && world.Map.GetTerrainInfo(cell).IsWater;
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			var isAir = dat.Length > 0;
+			var isWater = dat.Length <= 0 && world.Map.GetTerrainInfo(cell).IsWater;
 			var isDirectHit = GetDirectHit(world, cell, pos);
 
 			if (isAir && !isDirectHit)
