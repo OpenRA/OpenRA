@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 	class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
-		IBodyOrientation body;
+		readonly IBodyOrientation body;
 
 		public NukePower(Actor self, NukePowerInfo info)
 			: base(self, info)
