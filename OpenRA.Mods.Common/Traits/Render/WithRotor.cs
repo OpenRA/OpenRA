@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithRotor : ITick
 	{
-		WithRotorInfo info;
-		Animation rotorAnim;
-		IMove movement;
+		readonly WithRotorInfo info;
+		readonly Animation rotorAnim;
+		readonly IMove movement;
 
 		public WithRotor(Actor self, WithRotorInfo info)
 		{
