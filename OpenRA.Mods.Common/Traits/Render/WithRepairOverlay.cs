@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithRepairOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyRepair
 	{
-		Animation overlay;
+		readonly Animation overlay;
 		bool buildComplete;
 
 		public WithRepairOverlay(Actor self, WithRepairOverlayInfo info)
