@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	class SmokeTrailWhenDamaged : ITick
 	{
-		IBodyOrientation body;
-		SmokeTrailWhenDamagedInfo info;
+		readonly SmokeTrailWhenDamagedInfo info;
+		readonly IBodyOrientation body;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
