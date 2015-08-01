@@ -23,6 +23,9 @@ namespace OpenRA
 
 		public LaunchArguments(Arguments args)
 		{
+			if (args == null)
+				return;
+
 			foreach (var f in this.GetType().GetFields())
 				if (args.Contains("Launch" + "." + f.Name))
 					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
