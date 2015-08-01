@@ -95,7 +95,6 @@
 	CaptureNotification:
 	Sellable:
 		SellSounds: cashturn.aud
-	GivesBounty:
 	WithMakeAnimation:
 	ThrowsShrapnel:
 		Weapons: LargeDebris
@@ -251,7 +250,6 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
 	Crushable:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
@@ -355,7 +353,6 @@
 		Type: Vehicle
 		CaptureThreshold: 1
 		CancelActivity: True
-	GivesBounty:
 	Guard:
 		Voice: Move
 	Guardable:
