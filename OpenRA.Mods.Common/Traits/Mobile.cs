@@ -565,7 +565,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void FinishedMoving(Actor self)
 		{
 			// Only make actor crush if it is on the ground
-			if (self.CenterPosition.Z != 0)
+			if (!self.IsAtGroundLevel())
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
