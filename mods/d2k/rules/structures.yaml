@@ -16,6 +16,7 @@
 		RemoveInstead: true
 	Buildable:
 		Queue: Building
+		Prerequisites: construction_yard
 		BuildPaletteOrder: 10
 
 concretea:
@@ -25,6 +26,8 @@ concretea:
 		Dimensions: 2,2
 	Valued:
 		Cost: 20
+	CustomBuildTimeValue:
+		Value: 54
 
 concreteb:
 	Inherits: ^concrete
@@ -33,10 +36,12 @@ concreteb:
 		Dimensions: 3,3
 	Valued:
 		Cost: 50
+	CustomBuildTimeValue:
+		Value: 81
 	Buildable:
-		Prerequisites: upgrade.conyard
+		Prerequisites: construction_yard, upgrade.conyard
 
-conyard:
+construction_yard:
 	Inherits: ^Building
 	Building:
 		Footprint: xxx xxx
@@ -49,21 +54,21 @@ conyard:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 1000
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: cy
 	RevealsShroud:
-		Range: 10c0
+		Range: 4c768
 	Production:
-		Produces: Building, Upgrade
-		MoveIntoWorld: false
-	Exit:
+		Produces: Building
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2000
+	EmitInfantryOnSell:
+		ActorTypes: light_inf, light_inf, engineer
 	BaseBuilding:
 	ProductionBar:
 	Power:
@@ -77,29 +82,33 @@ conyard:
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
+	ProvidesPrerequisite@buildingname:
 
-power:
+wind_trap:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
+		Prerequisites: construction_yard
 		BuildPaletteOrder: 10
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
+	CustomBuildTimeValue:
+		Value: 180
 	Tooltip:
-		Name: Windtrap
+		Name: Wind Trap
 		Description: Provides power for other structures
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
-		Range: 4c0
+		Range: 3c768
 	RenderBuilding:
 		Image: power.harkonnen
 		RaceImages:
@@ -108,20 +117,22 @@ power:
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
-		Amount: 100
+		Amount: 200
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
 
 barracks:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: power
+		Prerequisites: construction_yard, wind_trap
 		Queue: Building
 		BuildPaletteOrder: 40
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
+	CustomBuildTimeValue:
+		Value: 231
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -130,13 +141,13 @@ barracks:
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 800
+		HP: 3200
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
-		Range: 5c0
+		Range: 3c768
 	RallyPoint:
-		Offset: 1,3
+		Offset: 1,2
 	Exit@1:
 		SpawnOffset: 352,576,0
 		ExitCell: 0,2
@@ -156,11 +167,8 @@ barracks:
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: barracks.harkonnen
 		Factions: harkonnen
-	ProvidesPrerequisite@medics:
-		Prerequisite: barracks.medics
-		Factions: atreides, ordos
 	Power:
-		Amount: -20
+		Amount: -30
 	RenderBuilding:
 		Image: barracks.harkonnen
 		RaceImages:
@@ -171,13 +179,15 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: power
+		Prerequisites: construction_yard, wind_trap
 		Queue: Building
 		BuildPaletteOrder: 20
 	Selectable:
 		Bounds: 96,64
 	Valued:
 		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 540
 	Tooltip:
 		Name: Spice Refinery
 		Description: Harvesters unload Spice here for processing
@@ -186,11 +196,11 @@ refinery:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 900
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
-		Range: 6c0
+		Range: 4c768
 	Refinery:
 		DockAngle: 160
 		DockOffset: 2,1
@@ -215,7 +225,7 @@ refinery:
 		Sequence: smoke
 		Palette: effectAdditive
 	Power:
-		Amount: -30
+		Amount: -75
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	ProvidesPrerequisite@buildingname:
@@ -223,13 +233,15 @@ refinery:
 silo:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: refinery
+		Prerequisites: construction_yard, refinery
 		Queue: Building
 		BuildPaletteOrder: 30
 	Selectable:
 		Bounds: 32,32
 	Valued:
-		Cost: 150
+		Cost: 120
+	CustomBuildTimeValue:
+		Value: 135
 	Tooltip:
 		Name: Silo
 		Description: Stores excess harvested Spice
@@ -237,11 +249,11 @@ silo:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 1500
 	Armor:
-		Type: Wood
+		Type: wall
 	RevealsShroud:
-		Range: 4c0
+		Range: 2c768
 	-RenderBuilding:
 	RenderBuildingSilo:
 		Image: silo.harkonnen
@@ -254,20 +266,22 @@ silo:
 		Capacity: 2000
 	-EmitInfantryOnSell:
 	Power:
-		Amount: -5
+		Amount: -15
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
-light:
+light_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: refinery
+		Prerequisites: construction_yard, refinery
 		Queue: Building
 		BuildPaletteOrder: 70
 	Selectable:
 		Bounds: 96,64
 	Valued:
 		Cost: 500
+	CustomBuildTimeValue:
+		Value: 277
 	Tooltip:
 		Name: Light Factory
 		Description: Produces light vehicles
@@ -276,11 +290,11 @@ light:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 750
+		HP: 3300
 	Armor:
-		Type: Wood
+		Type: light
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderBuilding:
 		Image: light.harkonnen
 		RaceImages:
@@ -313,18 +327,20 @@ light:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -20
+		Amount: -125
 
-heavy:
+heavy_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: refinery
+		Prerequisites: construction_yard, refinery
 		Queue: Building
 		BuildPaletteOrder: 100
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 2000
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 648
 	Tooltip:
 		Name: Heavy Factory
 		Description: Produces heavy vehicles
@@ -333,11 +349,11 @@ heavy:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RallyPoint:
 		Offset: 0,3
 	Exit@1:
@@ -370,24 +386,26 @@ heavy:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -30
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
 
-radar:
+outpost:
 	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: barracks, ~techlevel.medium
+		Prerequisites: construction_yard, barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 50
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 700
+		Cost: 750
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
@@ -396,49 +414,48 @@ radar:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: light
 	RevealsShroud:
-		Range: 10c0
+		Range: 4c768
 	ProvidesRadar:
-	DetectCloaked:
-		Range: 6
-	RenderDetectionCircle:
 	RenderBuilding:
-		Image: radar.harkonnen
+		Image: outpost.harkonnen
 		RaceImages:
-			atreides: radar.atreides
-			ordos: radar.ordos
+			atreides: outpost.atreides
+			ordos: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
 	Power:
-		Amount: -40
+		Amount: -125
 	ProvidesPrerequisite@buildingname:
 
 starport:
 	Inherits: ^Building
-	Valued:
-		Cost: 2000
 	Tooltip:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: heavy, radar, ~techlevel.high
+		Prerequisites: construction_yard, heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
+	Selectable:
+		Bounds: 96,64
+	Valued:
+		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 540
 	Building:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
-	Selectable:
-		Bounds: 96,64
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
-		Range: 7c0
+		Range: 4c768
 	RallyPoint:
 		Offset: 1,3
 	Exit@1:
@@ -455,7 +472,7 @@ starport:
 		RaceImages:
 			atreides: starport.atreides
 			ordos: starport.ordos
-			corrino: starport.corrino
+			corrino: starport.smuggler
 	WithDeliveryOverlay:
 		Palette: starportlights
 	ProductionBar:
@@ -473,20 +490,22 @@ starport:
 		Prerequisite: starport.harkonnen
 		Factions: harkonnen
 	Power:
-		Amount: -40
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 
 wall:
 	HiddenUnderShroud:
 	Buildable:
 		Queue: Building
-		Prerequisites: barracks
+		Prerequisites: construction_yard, wind_trap
 		BuildPaletteOrder: 60
 	SoundOnDamageTransition:
 		DamagedSounds:
 		DestroyedSounds: EXPLSML4.WAV
 	Valued:
-		Cost: 100
+		Cost: 20
+	CustomBuildTimeValue:
+		Value: 54
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -498,38 +517,37 @@ wall:
 		Adjacent: 7
 		TerrainTypes: Rock, Concrete
 	Health:
-		HP: 300
+		HP: 2000
 	Armor:
-		Type: Concrete
+		Type: none
+	RevealsShroud:
+		Range: 2c768
 	Crushable:
 		CrushClasses: Concretewall
 	BlocksProjectiles:
 	LineBuild:
-		Range: 8
+		Range: 5
 		NodeTypes: wall, turret
 	LineBuildNode:
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground
 	RenderBuildingWall:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
 	BodyOrientation:
-	ThrowsShrapnel:
-		Weapons: shrapnel
-		Pieces: 3, 7
-		Range: 2c0, 5c0
 
-guntower:
+medium_gun_turret:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: barracks
+		Prerequisites: construction_yard, barracks
 		BuildPaletteOrder: 90
 	Valued:
-		Cost: 650
+		Cost: 550
+	CustomBuildTimeValue:
+		Value: 231
 	Tooltip:
 		Name: Gun Turret
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -543,11 +561,11 @@ guntower:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 2700
 	Armor:
-		Type: Concrete
+		Type: heavy
 	RevealsShroud:
-		Range: 8c0
+		Range: 2c768
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingWall:
@@ -559,33 +577,32 @@ guntower:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
-		Weapon: TurretGun
+		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	AutoTarget:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	-WithCrumbleOverlay:
+	-AutoTargetIgnore:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
 	Power:
-		Amount: -20
+		Amount: -50
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
-rockettower:
+large_gun_turret:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: radar, upgrade.conyard, ~techlevel.medium
+		Prerequisites: construction_yard, outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
-		Cost: 850
+		Cost: 750
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Rocket Turret
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
@@ -599,11 +616,11 @@ rockettower:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: concrete
 	RevealsShroud:
-		Range: 10c0
+		Range: 2c768
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingWall:
@@ -612,37 +629,37 @@ rockettower:
 	WithTurret:
 	Armament:
 		Weapon: TowerMissile
-		LocalOffset: 256,384,768, 256,-384,768
+		LocalOffset: 256,0,768
 	AttackTurreted:
 	Turreted:
 		ROT: 8
 		InitialFacing: 128
 	AutoTarget:
+	-AutoTargetIgnore:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 6
-	-WithCrumbleOverlay:
+	WithCrumbleOverlay:
 	-WithMakeAnimation:
 	LineBuildNode:
 		Types: turret
 	Power:
-		Amount: -30
+		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
-repair:
+repair_pad:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: heavy, upgrade.heavy, ~techlevel.medium
+		Prerequisites: construction_yard, heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
-		Cost: 500
+		Cost: 800
+	CustomBuildTimeValue:
+		Value: 324
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
@@ -650,11 +667,11 @@ repair:
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
-		HP: 500
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: building
 	RevealsShroud:
-		Range: 5c0
+		Range: 4c768
 	Selectable:
 		Bounds: 96,64
 	SelectionDecorations:
@@ -667,26 +684,28 @@ repair:
 	RallyPoint:
 		Offset: 1,3
 	RenderBuilding:
-		Image: repair.harkonnen
+		Image: repair_pad.harkonnen
 		RaceImages:
-			atreides: repair.atreides
-			ordos: repair.ordos
+			atreides: repair_pad.atreides
+			ordos: repair_pad.ordos
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
-		Amount: -10
+		Amount: -50
 	ProvidesPrerequisite@buildingname:
 
-hightech:
+high_tech_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: construction_yard, outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 750
+		Cost: 1150
+	CustomBuildTimeValue:
+		Value: 405
 	Tooltip:
 		Name: High Tech Factory
 		Description: Unlocks advanced technology
@@ -700,11 +719,11 @@ hightech:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderBuilding:
 		Image: hightech.harkonnen
 		RaceImages:
@@ -721,51 +740,42 @@ hightech:
 		ChargeTime: 180
 		SquadSize: 3
 		LongDesc: Ornithopters hit the target with parabombs
-		UnitType: orni.bomber
+		UnitType: ornithopter
 		SelectTargetSound:
 		DisplayBeacon: True
 		CameraActor: camera
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	Power:
-		Amount: -40
+		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
 
-research:
+research_centre:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: radar, heavy, upgrade.heavy, ~techlevel.high
+		Prerequisites: construction_yard, outpost, heavy_factory, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
 		Bounds: 96,64,0,16
 	Valued:
-		Cost: 1500
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Ix Lab
-		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-	ParatroopersPower:
-		Icon: paratroopers
-		Prerequisites: ~techlevel.superweapons
-		UnitType: carryall.infantry
-		FlareTime: 0
-		ChargeTime: 180
-		Description: Paratroopers
-		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
-		SelectTargetSound:
-		FlareType:
+		Description: Unlocks experimental tanks
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1000
+		HP: 2500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderBuilding:
 		Image: research.harkonnen
 		RaceImages:
@@ -774,7 +784,7 @@ research:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
-		Amount: -40
+		Amount: -175
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,80
@@ -782,13 +792,15 @@ research:
 palace:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: research, ~techlevel.high
+		Prerequisites: construction_yard, research_centre, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 2000
+		Cost: 1600
+	CustomBuildTimeValue:
+		Value: 810
 	Tooltip:
 		Name: Palace
 		Description: Unlocks elite infantry
@@ -798,22 +810,19 @@ palace:
 	Bib:
 		HasMinibib: True
 	Health:
-		HP: 2000
+		HP: 4000
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
-		Range: 8c0
+		Range: 4c768
 	RenderBuilding:
 		Image: palace.harkonnen
 		RaceImages:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 4
 	Power:
-		Amount: -50
+		Amount: -200
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Factions: harkonnen
@@ -823,7 +832,7 @@ palace:
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeTime: 300
 		Description: Death Hand
-		LongDesc: Launches a nuclear missile at a target location
+		LongDesc: Launches an atomic missile at a target location
 		BeginChargeSound: HI_PREP.AUD
 		EndChargeSound: HI_DHRDY.AUD
 		SelectTargetSound:
@@ -841,7 +850,7 @@ palace:
 	ProvidesPrerequisite@buildingname:
 
 conyard.atreides:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -852,7 +861,7 @@ conyard.atreides:
 		-RaceImages:
 
 conyard.harkonnen:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -863,7 +872,7 @@ conyard.harkonnen:
 		-RaceImages:
 
 conyard.ordos:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000

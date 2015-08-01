@@ -1,7 +1,7 @@
 mcv.starport:
 	Inherits: mcv
 	Buildable:
-		Prerequisites: repair
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 2500
@@ -11,6 +11,7 @@ mcv.starport:
 harvester.starport:
 	Inherits: harvester
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1500
@@ -20,6 +21,7 @@ harvester.starport:
 trike.starport:
 	Inherits: trike
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 315
@@ -29,64 +31,68 @@ trike.starport:
 quad.starport:
 	Inherits: quad
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 500
 	RenderSprites:
 		Image: quad
 
-siegetank.starport:
-	Inherits: siegetank
+siege_tank.starport:
+	Inherits: siege_tank
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1075
 	RenderSprites:
-		Image: siegetank
+		Image: siege_tank
 
-missiletank.starport:
-	Inherits: missiletank
+missile_tank.starport:
+	Inherits: missile_tank
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1250
 	RenderSprites:
-		Image: missiletank
+		Image: missile_tank
 
-combata.starport:
-	Inherits: combata
+combat_tank_a.starport:
+	Inherits: combat_tank_a
 	Buildable:
 		Prerequisites: ~starport.atreides
 		Queue: Starport
 	Valued:
 		Cost: 875
 	RenderSprites:
-		Image: combata
+		Image: combat_tank_a
 
-combath.starport:
-	Inherits: combath
+combat_tank_h.starport:
+	Inherits: combat_tank_h
 	Buildable:
 		Prerequisites: ~starport.harkonnen
 		Queue: Starport
 	Valued:
 		Cost: 875
 	RenderSprites:
-		Image: combath
+		Image: combat_tank_h
 
-combato.starport:
-	Inherits: combato
+combat_tank_o.starport:
+	Inherits: combat_tank_o
 	Buildable:
 		Prerequisites: ~starport.ordos
 		Queue: Starport
 	Valued:
 		Cost: 875
 	RenderSprites:
-		Image: combato
+		Image: combat_tank_o
 
 carryall.starport:
 	Inherits: carryall
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
 	Valued:
 		Cost: 1500
-	Buildable:
-		Queue: Starport
 

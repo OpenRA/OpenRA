@@ -10,7 +10,7 @@ carryall:
 		Offset: -30,-24
 
 
-orni:
+ornithopter:
 	idle: DATA.R8
 		Start: 1955
 		Facings: -32

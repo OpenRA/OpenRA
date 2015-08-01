@@ -49,18 +49,18 @@
 		UpgradeMaxAcceptedLevel: 4
 
 ^Vehicle:
-	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
+	Inherits: ^ExistsInWorld
+##	Inherits@2: ^GainsExperience
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Sand: 90
+			Sand: 100
 			Rock: 100
-			Transition: 95
+			Transition: 100
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
@@ -73,9 +73,9 @@
 	DrawLineToTarget:
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
+##	GivesBounty:
 	Repairable:
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 	Guard:
 		Voice: Guard
 	Guardable:
@@ -97,20 +97,12 @@
 	Inherits: ^Vehicle
 	Mobile:
 		Crushes: crate, infantry
-		TerrainSpeeds:
-			Sand: 85
-			Rock: 100
-			Transition: 92
-			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 70
 
 ^Husk:
 	Health:
-		HP: 75
+		HP: 125
 	Armor:
-		Type: Light
+		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
@@ -131,13 +123,16 @@
 	TargetableUnit:
 		TargetTypes: Ground
 		RequiresForceFire: yes
-	Capturable:
-		Type: husk
-		AllowAllies: yes
-		CaptureThreshold: 1.0
-	TransformOnCapture:
-		ForceHealthPercentage: 25
+#	Capturable:
+#		Type: husk
+#		AllowAllies: yes
+#		CaptureThreshold: 1.0
+#	TransformOnCapture:
+#		ForceHealthPercentage: 25
 	DisabledOverlay:
+	Explodes:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -145,47 +140,33 @@
 	FallsToEarth:
 		Spins: False
 		Moves: True
-		Explosion: UnitExplodeScale
-
-^TowerHusk:
-	Health:
-		HP: 125
-	Armor:
-		Type: Concrete
-	Husk:
-	AppearsOnRadar:
-	HiddenUnderFog:
-	Burns:
-		Interval: 2
-	Tooltip:
-		Name: Destroyed Tower
-	BodyOrientation:
-	ScriptTriggers:
+		Explosion: UnitExplodeLarge
 
 ^Infantry:
-	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
+	Inherits: ^ExistsInWorld
+##	Inherits@2: ^GainsExperience
 	Health:
 		Radius: 96
 	Armor:
-		Type: None
+		Type: none
 	RevealsShroud:
-		Range: 6c0
+		Range: 3c768
 	Mobile:
+		ROT: 7
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Sand: 80
+			Sand: 100
 			Rock: 100
-			Transition: 90
+			Transition: 100
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
-			Rough: 70
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 100
+			Rough: 100
 	SelectionDecorations:
 	Selectable:
-		Bounds: 12,18,0,-6
+		Bounds: 12,20,0,-4
 	TargetableUnit:
 		TargetTypes: Ground
 		UpgradeTypes: parachute
@@ -204,6 +185,7 @@
 			BulletDeath: 4
 		CrushedSequence: die-crushed
 	AutoTarget:
+		AllowMovement: false
 	AttackMove:
 	DrawLineToTarget:
 	Passenger:
@@ -211,7 +193,7 @@
 		PipType: Green
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
+##	GivesBounty:
 	Crushable:
 		CrushSound: CRUSH1.WAV
 	Guard:
@@ -237,7 +219,7 @@
 	Inherits@1: ^ExistsInWorld
 	AppearsOnRadar:
 		UseLocation: yes
-	HiddenUnderFog:
+	HiddenUnderShroud:
 		Type: CenterPosition
 		AlwaysVisibleStances: None
 	ActorLostNotification:
@@ -255,6 +237,8 @@
 	SelectionDecorations:
 	Selectable:
 		Priority: 2
+	RevealsShroud:
+		VisibilityType: CenterPosition
 	TargetableBuilding:
 		TargetTypes: Ground, C4, Structure
 	Building:
@@ -264,8 +248,8 @@
 		BuildSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	Capturable:
+		CaptureThreshold: 1.0
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
@@ -273,7 +257,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
+		ActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:
@@ -283,15 +267,16 @@
 	ShakeOnDeath:
 	Sellable:
 		SellSounds: BUILD1.WAV
-	GivesBounty:
+##	GivesBounty:
+	AutoTargetIgnore:
 	Guardable:
 		Range: 3
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:
-		Weapons: shrapnel
-		Pieces: 3, 7
-		Range: 2c0, 5c0
+		Weapons: debris, debris2, debris3, debris4
+		Pieces: 3, 5
+		Range: 1c0, 3c0
 	WithMakeAnimation:
 
