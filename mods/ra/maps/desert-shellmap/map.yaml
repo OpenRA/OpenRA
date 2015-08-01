@@ -1255,6 +1255,8 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		MusicPlaylist:
+			BackgroundMusic: intro
 		ResourceType@ore:
 			ValuePerUnit: 0
 		LuaScript:
