@@ -216,7 +216,6 @@
     <Compile Include="Scripting\Global\CameraGlobal.cs" />
     <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
     <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
-    <Compile Include="Scripting\Global\EffectGlobal.cs" />
     <Compile Include="Scripting\Global\FacingGlobal.cs" />
     <Compile Include="Scripting\Global\HSLColorGlobal.cs" />
     <Compile Include="Scripting\Global\MapGlobal.cs" />
@@ -703,6 +702,7 @@
     <Compile Include="Lint\CheckRevealFootprint.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
+    <Compile Include="Scripting\Global\LightingGlobal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
