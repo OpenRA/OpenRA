@@ -75,15 +75,18 @@ e1:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	# stand -> prone transition
 	liedown:
 		Start: 128
@@ -98,6 +101,7 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 257
 		Length: 15
@@ -187,19 +191,23 @@ e2:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 240
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	prone-throw:
 		Start: 288
 		Length: 12
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 384
 		Length: 16
@@ -280,19 +288,23 @@ e3:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	prone-shoot:
 		Start: 192
 		Length: 10
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 274
 		Length: 12
@@ -373,19 +385,23 @@ e4:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 384
 		Length: 16
@@ -490,19 +506,23 @@ e5:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 384
 		Length: 16
@@ -603,15 +623,18 @@ e6:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 82
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	idle1:
 		Start: 114
 		Length: 6
@@ -692,19 +715,23 @@ rmbo:
 		Start: 112
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-stand2:
 		Start: 112
 		Stride: 4
 		Facings: 8
+		Offset: 0, -2
 	prone-run:
 		Start: 112
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -2
 	prone-shoot:
 		Start: 160
 		Length: 4
 		Facings: 8
+		Offset: 0, -2
 	idle1:
 		Start: 192
 		Length: 16

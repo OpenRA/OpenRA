@@ -20,15 +20,18 @@ e1:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	standup-0:
 		Start: 176
 		Length: 2
@@ -37,6 +40,7 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Offset: 0, -3
 	idle1:
 		Start: 256
 		Length: 16
@@ -101,15 +105,18 @@ sniper:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	standup:
 		Start: 240
 		Length: 2
@@ -118,6 +125,7 @@ sniper:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Offset: 0, -3
 	idle1:
 		Start: 384
 		Length: 14
@@ -217,19 +225,23 @@ e3:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Offset: 0, -3
 	prone-shoot:
 		Start: 192
 		Length: 10
 		Facings: 8
+		Offset: 0, -3
 	icon: e3icon
 
 e6:
@@ -284,15 +296,18 @@ e6:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 82
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	icon: e6icon
 
 medi:
@@ -352,11 +367,13 @@ medi:
 		Start: 130
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	icon: mediicon
 		
 mech:
@@ -416,11 +433,13 @@ mech:
 		Start: 130
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	icon: mechicon
 
 e2:
@@ -476,22 +495,26 @@ e2:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	prone-stand:
-		Start: 144
+		Start: 240
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
-		Start: 144
+		Start: 240
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 240
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Offset: 0, -3
 	prone-throw:
 		Start: 288
 		Length: 12
 		Facings: 8
+		Offset: 0, -3
 	icon: e2icon
 
 dog:
@@ -596,19 +619,23 @@ spy:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Offset: 0, -3
 	prone-shoot:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Offset: 0, -3
 	icon: spyicon
 
 thf:
@@ -652,11 +679,13 @@ thf:
 		Start: 72
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 72
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Offset: 0, -3
 	icon: thficon
 
 hijacker:
@@ -700,11 +729,13 @@ hijacker:
 		Start: 72
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run: thf
 		Start: 72
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Offset: 0, -3
 	icon: hijackericon
 
 e7:
@@ -760,15 +791,18 @@ e7:
 		Start: 128
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 128
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Offset: 0, -3
 	prone-shoot:
 		Start: 176
 		Length: 7
 		Facings: 8
+		Offset: 0, -3
 	garrison-muzzle: minigun
 		Length: 3
 		Stride: 6
@@ -831,19 +865,23 @@ e4:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Offset: 0, -3
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Offset: 0, -3
 	icon: e4icon
 
 gnrl:
@@ -862,10 +900,12 @@ gnrl:
 		Start: 88
 		Stride: 2
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 104
 		Length: 4
 		Facings: 8
+		Offset: 0, -3
 	standup-0:
 		Start: 136
 		Length: 2
@@ -874,6 +914,7 @@ gnrl:
 		Start: 152
 		Length: 4
 		Facings: 8
+		Offset: 0, -3
 	idle1:
 		Start: 184
 		Length: 26
@@ -930,15 +971,18 @@ shok:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Offset: 0, -3
 	standup:
 		Start: 240
 		Length: 2
@@ -947,6 +991,7 @@ shok:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Offset: 0, -3
 	idle1:
 		Start: 384
 		Length: 14

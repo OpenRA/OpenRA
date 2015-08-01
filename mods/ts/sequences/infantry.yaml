@@ -22,11 +22,13 @@ e1:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -55,6 +57,7 @@ e1:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -92,11 +95,13 @@ e2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -126,6 +131,7 @@ e2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -163,11 +169,13 @@ e3:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -198,6 +206,7 @@ e3:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -230,6 +239,7 @@ weedguy:
 		Start: 56
 		Facings: 8
 		ShadowStart: 258
+		Offset: 0, -4
 	standup-0:
 		Start: 112
 		Length: 2
@@ -240,11 +250,13 @@ weedguy:
 		Length: 6
 		Facings: 8
 		ShadowStart: 288
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 288
+		Offset: 0, -4
 	idle1:
 		Start: 128
 		Length: 8
@@ -305,11 +317,13 @@ medic:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -371,11 +385,13 @@ engineer:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -433,11 +449,13 @@ umagon:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -468,6 +486,7 @@ umagon:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -505,11 +524,13 @@ ghost:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -540,6 +561,7 @@ ghost:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -577,6 +599,7 @@ jumpjet:
 		Length: 6
 		Facings: 8
 		ShadowStart: 537
+		Offset: 0, -4
 	prone-stand:
 		Facings: 8
 		ShadowStart: 451
@@ -646,11 +669,13 @@ mhijack:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -681,6 +706,7 @@ mhijack:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -718,11 +744,13 @@ chamspy:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -753,6 +781,7 @@ chamspy:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -908,11 +937,13 @@ mutant:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -943,6 +974,7 @@ mutant:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -980,11 +1012,13 @@ mwmn:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -1016,6 +1050,7 @@ mwmn:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -1053,11 +1088,13 @@ mutant3:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -1089,6 +1126,7 @@ mutant3:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -1126,11 +1164,13 @@ tratos:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -1162,6 +1202,7 @@ tratos:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -1199,11 +1240,13 @@ oxanna:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -1235,6 +1278,7 @@ oxanna:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2
@@ -1271,11 +1315,13 @@ slav:
 		Length: 6
 		Facings: 8
 		ShadowStart: 378
+		Offset: 0, -4
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
+		Offset: 0, -4
 	die1:
 		Start: 134
 		Length: 15
@@ -1307,6 +1353,7 @@ slav:
 		Length: 6
 		Facings: 8
 		ShadowStart: 504
+		Offset: 0, -4
 	standup-0:
 		Start: 260
 		Length: 2

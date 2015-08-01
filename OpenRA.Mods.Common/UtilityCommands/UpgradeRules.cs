@@ -1663,6 +1663,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactored TakeCover, removed ProneOffset
+				if (engineVersion < 20150801)
+				{
+					if (depth == 1)
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "ProneOffset");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

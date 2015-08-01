@@ -18,12 +18,14 @@ rifle:
 		Start: 310
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 310
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 110
+		Offset: 0, -3
 	standup-0: DATA.R8
 		Start: 302
 		Facings: -8
@@ -34,6 +36,7 @@ rifle:
 		Length: 6
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	die1: DATA.R8
 		Frames: 382, 389, 396, 403, 410, 417, 424, 431, 438, 439, 440, 441
 		Length: 12
@@ -79,12 +82,14 @@ bazooka:
 		Start: 562
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 570
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	standup-0: DATA.R8
 		Start: 554
 		Facings: -8
@@ -94,6 +99,7 @@ bazooka:
 		Length: 6
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	die1: DATA.R8
 		Frames: 634, 641, 648, 655, 662, 669, 676, 683, 690, 691, 692, 693
 		Length: 12
@@ -139,12 +145,14 @@ engineer:
 		Start: 1270
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 1278
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	die1: DATA.R8
 		Frames: 1342, 1349, 1356, 1363, 1370, 1377, 1384, 1391, 1398, 1399, 1400, 1401
 		Length: 12
@@ -190,12 +198,14 @@ medic: # actually thumper
 		Start: 1470
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 1478
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	heal: DATA.R8
 		Start: 1458
 		Length: 5
@@ -261,12 +271,14 @@ fremen:
 		Start: 798
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 806
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	standup-0: DATA.R8
 		Start: 790
 		Facings: -8
@@ -277,6 +289,7 @@ fremen:
 		Length: 6
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	die1: DATA.R8
 		Frames: 870, 877, 884, 891, 898, 905, 912, 919, 926, 933, 940, 947
 		Length: 12
@@ -317,12 +330,14 @@ saboteur:
 		Start: 2253
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 2261
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	standup-0: DATA.R8
 		Start: 2245
 		Facings: -8
@@ -373,12 +388,14 @@ sardaukar:
 		Start: 1034
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	prone-run: DATA.R8
 		Start: 1042
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
+		Offset: 0, -3
 	standup-0: DATA.R8
 		Start: 1026
 		Facings: -8
@@ -389,6 +406,7 @@ sardaukar:
 		Length: 6
 		Facings: -8
 		Transpose: true
+		Offset: 0, -3
 	die1: DATA.R8
 		Frames: 1106, 1113, 1120, 1127, 1134, 1141, 1148, 1155, 1162, 1163, 1164, 1165
 		Length: 12
@@ -453,16 +471,19 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 		Start: 104
 		Length: 4
 		Facings: 8
+		Offset: 0, -3
 	prone-run: grenadier.shp
 		Start: 104
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Offset: 0, -3
 	prone-throw: grenadier.shp
 		Start: 136
 		Length: 5
 		Facings: 8
 		Tick: 120
+		Offset: 0, -3
 	icon: grenadiericon.shp # 4281 in 1.06 DATA.R8
 		Offset: 0,0
 
