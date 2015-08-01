@@ -23,24 +23,55 @@ namespace OpenRA
 
 	public class ServerSettings
 	{
+		[Desc("Sets the server name.")]
 		public string Name = "OpenRA Game";
+
+		[Desc("Sets the internal port.")]
 		public int ListenPort = 1234;
+
+		[Desc("Sets the port advertised to the master server.")]
 		public int ExternalPort = 1234;
+
+		[Desc("Reports the game to the master server list.")]
 		public bool AdvertiseOnline = true;
+
+		[Desc("Locks the game with a password.")]
 		public string Password = "";
+
 		public string MasterServer = "http://master.openra.net/";
-		public bool DiscoverNatDevices = false; // Allow users to disable NAT discovery if problems occur
-		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
+
+		[Desc("Allow users to enable NAT discovery for external IP detection and automatic port forwarding.")]
+		public bool DiscoverNatDevices = false;
+
+		[Desc("Set this to false to disable UPnP even if compatible devices are found.")]
+		public bool AllowPortForward = true;
+
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
-		public int NatDiscoveryTimeout = 1000; // ms to search for UPnP enabled NATs
-		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
+
+		[Desc("Time in miliseconds to search for UPnP enabled NAT devices.")]
+		public int NatDiscoveryTimeout = 1000;
+
+		[Desc("Print very detailed logs for debugging issues with routers.")]
+		public bool VerboseNatDiscovery = false;
+
+		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
 		public string Map = null;
+
+		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
 		public string[] Ban = { };
+
+		[Desc("Value in miliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
 		public int TimeOut = 0;
+
+		[Desc("Run in headless mode with an empty renderer and without sound output.")]
 		public bool Dedicated = false;
+
+		[Desc("Automatically restart when a game ends. Disable this when something else already takes care about it.")]
 		public bool DedicatedLoop = true;
+
+		[Desc("Disallow AI bots.")]
 		public bool LockBots = false;
-		public bool AllowVersionMismatch = false;
+
 		public string TimestampFormat = "HH:mm";
 
 		public ServerSettings() { }
@@ -64,7 +95,6 @@ namespace OpenRA
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
 			LockBots = other.LockBots;
-			AllowVersionMismatch = other.AllowVersionMismatch;
 		}
 	}
 
@@ -124,6 +154,7 @@ namespace OpenRA
 
 	public class GameSettings
 	{
+		[Desc("Load a specific mod on startup. Shipped ones include: ra, cnc and d2k")]
 		public string Mod = "modchooser";
 		public string PreviousMod = "ra";
 

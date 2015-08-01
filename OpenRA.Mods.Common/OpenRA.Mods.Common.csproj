@@ -529,6 +529,7 @@
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
+    <Compile Include="UtilityCommands\CreateManPage.cs" />
     <Compile Include="UtilityCommands\ExportCharacterSeparatedRules.cs" />
     <Compile Include="UtilityCommands\Extensions.cs" />
     <Compile Include="UtilityCommands\ExtractFilesCommand.cs" />

@@ -58,6 +58,7 @@ endif
 prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
+mandir ?= $(datarootdir)/man/
 bindir ?= $(prefix)/bin
 libdir ?= $(prefix)/lib
 gameinstalldir ?= $(libdir)/openra
@@ -320,6 +321,9 @@ docs: utility mods version
 	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
 	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
 
+man-page: utility mods
+	@mono --debug OpenRA.Utility.exe all --man-page > openra.6
+
 install: install-core
 
 install-all: install-core install-tools
@@ -389,6 +393,10 @@ install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
 	@$(INSTALL_DATA) packaging/linux/openra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
 
+install-man-page: man-page
+	@$(INSTALL_DIR) "$(DESTDIR)$(mandir)/man6/"
+	@$(INSTALL_DATA) openra.6 "$(DESTDIR)$(mandir)/man6/"
+
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
@@ -419,6 +427,7 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra.appdata.xml"
+	@-$(RM_F) "$(DESTDIR)$(mandir)/man6/openra.6"
 
 help:
 	@echo to compile, run:

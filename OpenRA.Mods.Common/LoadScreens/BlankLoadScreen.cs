@@ -20,6 +20,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 {
 	public class BlankLoadScreen : ILoadScreen
 	{
+		public LaunchArguments Launch;
+
 		public virtual void Init(Manifest m, Dictionary<string, string> info) { }
 
 		public virtual void Display()
@@ -34,6 +36,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void StartGame(Arguments args)
 		{
+			Launch = new LaunchArguments(args);
 			Ui.ResetAll();
 			Game.Settings.Save();
 
@@ -62,23 +65,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Join a server directly
-			var connect = string.Empty;
-			if (args != null)
-			{
-				if (args.Contains("Launch.Connect"))
-					connect = args.GetValue("Launch.Connect", null);
-
-				if (args.Contains("Launch.URI"))
-				{
-					connect = args.GetValue("Launch.URI", null);
-					if (connect != null)
-					{
-						connect = connect.Replace("openra://", "");
-						connect = connect.TrimEnd('/');
-					}
-				}
-			}
-
+			var connect = Launch.GetConnectAddress();
 			if (!string.IsNullOrEmpty(connect))
 			{
 				var parts = connect.Split(':');
@@ -94,12 +81,11 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Load a replay directly
-			var replayFilename = args != null ? args.GetValue("Launch.Replay", null) : null;
-			if (!string.IsNullOrEmpty(replayFilename))
+			if (!string.IsNullOrEmpty(Launch.Replay))
 			{
-				var replayMeta = ReplayMetadata.Read(replayFilename);
+				var replayMeta = ReplayMetadata.Read(Launch.Replay);
 				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.LoadShellMap))
-					Game.JoinReplay(replayFilename);
+					Game.JoinReplay(Launch.Replay);
 
 				if (replayMeta != null)
 				{
