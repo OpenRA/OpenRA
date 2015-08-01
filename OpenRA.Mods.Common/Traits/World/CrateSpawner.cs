@@ -58,10 +58,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CrateSpawner : ITick
 	{
+		readonly CrateSpawnerInfo info;
+		readonly Actor self;
 		int crates = 0;
 		int ticks = 0;
-		CrateSpawnerInfo info;
-		Actor self;
 
 		public CrateSpawner(CrateSpawnerInfo info, Actor self)
 		{
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
-						new CenterPositionInit(startEdge + new WVec(0, 0, altitude)),
+						new CenterPositionInit(startEdge),
 						new OwnerInit(self.Owner),
 						new FacingInit(dropFacing),
 					});
