@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

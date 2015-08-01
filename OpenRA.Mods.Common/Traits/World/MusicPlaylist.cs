@@ -11,8 +11,9 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Trait for music handling. Attach this to the world actor.")]
 	public class MusicPlaylistInfo : ITraitInfo
