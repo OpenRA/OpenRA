@@ -56,8 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	class RenderRangeCircle : IPostRenderSelection
 	{
-		Actor self;
-		AttackBase attack;
+		readonly Actor self;
+		readonly AttackBase attack;
 
 		public RenderRangeCircle(Actor self)
 		{
