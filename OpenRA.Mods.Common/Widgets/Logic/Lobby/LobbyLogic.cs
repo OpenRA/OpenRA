@@ -560,7 +560,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 				{
 					{ "onExit", DoNothing },
-					{ "world", orderManager.World }
+					{ "world", worldRenderer.World }
 				});
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
