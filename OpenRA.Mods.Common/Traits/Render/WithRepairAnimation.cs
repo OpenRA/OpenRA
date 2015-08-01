@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithRepairAnimation : INotifyRepair
 	{
-		WithRepairAnimationInfo info;
+		readonly WithRepairAnimationInfo info;
 
 		public WithRepairAnimation(Actor self, WithRepairAnimationInfo info)
 		{
