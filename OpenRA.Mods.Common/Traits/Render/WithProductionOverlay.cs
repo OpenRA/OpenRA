@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithProductionOverlay : INotifyDamageStateChanged, ITick, INotifyBuildComplete, INotifySold
 	{
-		Animation overlay;
+		readonly Animation overlay;
 		ProductionQueue queue;
 		bool buildComplete;
 
