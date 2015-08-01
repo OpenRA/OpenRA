@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete
 	{
-		WithBuildingPlacedAnimationInfo info;
-		RenderSimple renderSimple;
+		readonly WithBuildingPlacedAnimationInfo info;
+		readonly RenderSimple renderSimple;
 		bool buildComplete;
 
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
