@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class RenderBuildingTurreted : RenderBuilding
 	{
-		Turreted t;
+		readonly Turreted turreted;
 
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
@@ -48,14 +48,14 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
-			t = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
-			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
+			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			base.DamageStateChanged(self, e);
-			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 	}
 }
