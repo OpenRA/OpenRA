@@ -61,10 +61,11 @@ namespace OpenRA.Traits
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 
+			// Always start with a random song
+			currentSong = random.FirstOrDefault();
+
 			if (SongExists(info.StartingMusic))
-			{
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
-			}
 			else if (SongExists(info.BackgroundMusic))
 			{
 				currentSong = currentBackgroundSong = world.Map.Rules.Music[info.BackgroundMusic];
