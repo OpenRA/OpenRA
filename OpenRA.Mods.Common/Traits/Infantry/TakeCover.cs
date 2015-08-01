@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Make the unit go prone when under attack, in an attempt to reduce damage.")]
-	public class TakeCoverInfo : TurretedInfo
+	public class TakeCoverInfo : UpgradableTraitInfo
 	{
 		[Desc("How long (in ticks) the actor remains prone.")]
 		public readonly int ProneTime = 100;
@@ -32,8 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
 
-		public readonly WVec ProneOffset = new WVec(85, 0, -171);
-
 		[SequenceReference(null, true)] public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
@@ -48,39 +46,30 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	public class TakeCover : UpgradableTrait<TakeCoverInfo>, ITick, ISync, INotifyDamage, IDamageModifier, ISpeedModifier, IRenderInfantrySequenceModifier
 	{
-		readonly TakeCoverInfo info;
 		[Sync] int remainingProneTime = 0;
 		bool IsProne { get { return remainingProneTime > 0; } }
 
 		public bool IsModifyingSequence { get { return IsProne; } }
-		public string SequencePrefix { get { return info.ProneSequencePrefix; } }
+		public string SequencePrefix { get { return Info.ProneSequencePrefix; } }
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
-			: base(init, info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			var warhead = e.Warhead as DamageWarhead;
-			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Any(x => info.DamageTriggers.Contains(x)))
+			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Any(x => Info.DamageTriggers.Contains(x)))
 				return;
 
-			if (!IsProne)
-				localOffset = info.ProneOffset;
-
-			remainingProneTime = info.ProneTime;
+			remainingProneTime = Info.ProneTime;
 		}
 
-		public override void Tick(Actor self)
+		public void Tick(Actor self)
 		{
-			base.Tick(self);
-
-			if (IsProne && --remainingProneTime == 0)
-				localOffset = WVec.Zero;
+			if (remainingProneTime > 0)
+				--remainingProneTime;
 		}
 
 		public int GetDamageModifier(Actor attacker, IWarhead warhead)
@@ -92,13 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (damageWh == null)
 				return 100;
 
-			var modifierPercentages = info.DamageModifiers.Where(x => damageWh.DamageTypes.Contains(x.Key)).Select(x => x.Value);
+			var modifierPercentages = Info.DamageModifiers.Where(x => damageWh.DamageTypes.Contains(x.Key)).Select(x => x.Value);
 			return Util.ApplyPercentageModifiers(100, modifierPercentages);
 		}
 
 		public int GetSpeedModifier()
 		{
-			return IsProne ? info.SpeedModifier : 100;
+			return IsProne ? Info.SpeedModifier : 100;
 		}
 	}
 }
