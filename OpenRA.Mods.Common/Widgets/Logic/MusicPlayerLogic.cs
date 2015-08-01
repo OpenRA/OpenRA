@@ -125,16 +125,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var music = musicPlaylist.AvailablePlaylist();
 			currentSong = musicPlaylist.CurrentSong();
-			if (currentSong == null && music.Any())
-				currentSong = musicPlaylist.GetNextSong();
 
 			musicList.RemoveChildren();
 			foreach (var s in music)
 			{
 				var song = s;
-				if (currentSong == null)
-					currentSong = song;
-
 				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); }, () => { });
 				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
 				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
