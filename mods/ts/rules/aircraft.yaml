@@ -144,6 +144,11 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Prerequisites: ~disabled
+	RenderSprites:
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
