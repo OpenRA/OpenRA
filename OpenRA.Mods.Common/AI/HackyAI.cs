@@ -230,15 +230,6 @@ namespace OpenRA.Mods.Common.AI
 			Info = info;
 			World = init.World;
 
-			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
-			var smallFractionOfRushInterval = Info.RushInterval / 20;
-			rushTicks = World.SharedRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
-
-			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
-			assignRolesTicks = World.SharedRandom.Next(0, Info.AssignRolesInterval);
-			attackForceTicks = World.SharedRandom.Next(0, Info.AttackForceInterval);
-			minAttackForceDelayTicks = World.SharedRandom.Next(0, Info.MinimumAttackForceDelay);
-
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
@@ -264,6 +255,15 @@ namespace OpenRA.Mods.Common.AI
 				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
 
 			Random = new MersenneTwister((int)p.PlayerActor.ActorID);
+
+			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
+			var smallFractionOfRushInterval = Info.RushInterval / 20;
+			rushTicks = Random.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
+
+			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+			assignRolesTicks = Random.Next(0, Info.AssignRolesInterval);
+			attackForceTicks = Random.Next(0, Info.AttackForceInterval);
+			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
 
 			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
