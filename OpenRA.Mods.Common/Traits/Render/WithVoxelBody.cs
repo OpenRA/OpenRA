@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithVoxelBody : IAutoSelectionSize
 	{
-		int2 size;
+		readonly int2 size;
 
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
 		{
