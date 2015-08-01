@@ -48,11 +48,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithVoxelBarrel
 	{
-		WithVoxelBarrelInfo info;
-		Actor self;
-		Armament armament;
-		Turreted turreted;
-		IBodyOrientation body;
+		readonly WithVoxelBarrelInfo info;
+		readonly Actor self;
+		readonly Armament armament;
+		readonly Turreted turreted;
+		readonly IBodyOrientation body;
 
 		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
 		{

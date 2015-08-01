@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class RenderDetectionCircle : IPostRenderSelection
 	{
-		Actor self;
+		readonly Actor self;
 
 		public RenderDetectionCircle(Actor self) { this.self = self; }
 

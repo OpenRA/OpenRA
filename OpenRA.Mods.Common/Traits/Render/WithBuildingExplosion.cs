@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	class WithBuildingExplosion : INotifyKilled
 	{
-		WithBuildingExplosionInfo info;
-		BuildingInfo buildingInfo;
+		readonly WithBuildingExplosionInfo info;
+		readonly BuildingInfo buildingInfo;
 
 		public WithBuildingExplosion(Actor self, WithBuildingExplosionInfo info)
 		{

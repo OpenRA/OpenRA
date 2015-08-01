@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithIdleOverlay : UpgradableTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
-		Animation overlay;
+		readonly Animation overlay;
 		bool buildComplete;
 
 		public WithIdleOverlay(Actor self, WithIdleOverlayInfo info)

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithBuildingPlacedOverlay : INotifyBuildComplete, INotifySold, INotifyDamageStateChanged, INotifyBuildingPlaced, INotifyTransform
 	{
-		Animation overlay;
+		readonly Animation overlay;
 		bool buildComplete;
 
 		public WithBuildingPlacedOverlay(Actor self, WithBuildingPlacedOverlayInfo info)

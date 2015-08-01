@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	class WithHarvestOverlay : INotifyHarvesterAction
 	{
-		WithHarvestOverlayInfo info;
-		Animation anim;
+		readonly WithHarvestOverlayInfo info;
+		readonly Animation anim;
 		bool visible;
 
 		public WithHarvestOverlay(Actor self, WithHarvestOverlayInfo info)

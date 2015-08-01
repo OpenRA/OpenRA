@@ -36,9 +36,11 @@ namespace OpenRA.Mods.Common.Effects
 
 	class Contrail : ITick, IRender
 	{
-		ContrailInfo info;
+		readonly ContrailInfo info;
+		readonly IBodyOrientation body;
+
+		// This is a mutable struct, so it can't be readonly.
 		ContrailRenderable trail;
-		IBodyOrientation body;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{

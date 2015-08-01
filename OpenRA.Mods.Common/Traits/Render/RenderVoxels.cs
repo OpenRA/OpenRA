@@ -73,11 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class RenderVoxels : IRender, INotifyOwnerChanged
 	{
 		readonly List<VoxelAnimation> components = new List<VoxelAnimation>();
-		Actor self;
-		RenderVoxelsInfo info;
-		IBodyOrientation body;
-		WRot camera;
-		WRot lightSource;
+		readonly Actor self;
+		readonly RenderVoxelsInfo info;
+		readonly IBodyOrientation body;
+		readonly WRot camera;
+		readonly WRot lightSource;
 
 		public RenderVoxels(Actor self, RenderVoxelsInfo info)
 		{

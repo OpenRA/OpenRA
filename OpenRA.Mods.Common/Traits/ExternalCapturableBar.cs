@@ -21,20 +21,20 @@ namespace OpenRA.Mods.Common.Traits
 
 	class ExternalCapturableBar : ISelectionBar
 	{
-		ExternalCapturable cap;
+		readonly ExternalCapturable capturable;
 
 		public ExternalCapturableBar(Actor self)
 		{
-			this.cap = self.Trait<ExternalCapturable>();
+			capturable = self.Trait<ExternalCapturable>();
 		}
 
 		public float GetValue()
 		{
 			// only show when building is being captured
-			if (!cap.CaptureInProgress)
+			if (!capturable.CaptureInProgress)
 				return 0f;
 
-			return (float)cap.CaptureProgressTime / (cap.Info.CaptureCompleteTime * 25);
+			return (float)capturable.CaptureProgressTime / (capturable.Info.CaptureCompleteTime * 25);
 		}
 
 		public Color GetColor() { return Color.Orange; }
