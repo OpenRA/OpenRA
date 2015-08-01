@@ -58,11 +58,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithTurret : UpgradableTrait<WithTurretInfo>, ITick, INotifyDamageStateChanged
 	{
-		RenderSprites rs;
-		IBodyOrientation body;
-		AttackBase ab;
-		Turreted t;
-		Armament[] arms;
+		readonly RenderSprites rs;
+		readonly IBodyOrientation body;
+		readonly AttackBase ab;
+		readonly Turreted t;
+		readonly Armament[] arms;
 		public readonly Animation DefaultAnimation;
 
 		public WithTurret(Actor self, WithTurretInfo info)
