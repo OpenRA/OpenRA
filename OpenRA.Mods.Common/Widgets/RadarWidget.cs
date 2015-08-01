@@ -427,7 +427,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var dy = (int)(previewScale * (uv.V - world.Map.Bounds.Top));
 
 			// Odd rows are shifted right by 1px
-			if ((uv.V & 1) == 1)
+			if (isDiamond && (uv.V & 1) == 1)
 				dx += 1;
 
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
@@ -435,10 +435,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		CPos MinimapPixelToCell(int2 p)
 		{
-			var viewOrigin = new float2(mapRect.X, mapRect.Y);
-			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
-			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
-			return new MPos((int)fcell.X / 2, (int)fcell.Y).ToCPos(world.Map);
+			var u = (int)((p.X - mapRect.X) / (previewScale * cellWidth)) + world.Map.Bounds.Left;
+			var v = (int)((p.Y - mapRect.Y) / previewScale) + world.Map.Bounds.Top;
+			return new MPos(u, v).ToCPos(world.Map);
 		}
 	}
 }
