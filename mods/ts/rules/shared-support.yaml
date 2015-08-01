@@ -27,7 +27,6 @@ GADPSA:
 	RenderBuilding:
 	Voiced:
 		VoiceSet: Vehicle
-	GivesBounty:
 	WithMakeAnimation:
 	SelectionDecorations:
 		Palette: pips

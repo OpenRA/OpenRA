@@ -212,7 +212,6 @@ GATICK:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleFlash:
-	GivesBounty:
 	WithMakeAnimation:
 	SelectionDecorations:
 		Palette: pips
@@ -270,7 +269,6 @@ GAARTY:
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Clear, Road, DirtRoad, Rough
-	GivesBounty:
 	WithMakeAnimation:
 	SelectionDecorations:
 		Palette: pips
