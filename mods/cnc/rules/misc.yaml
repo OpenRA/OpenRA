@@ -20,11 +20,6 @@ CRATE:
 		SelectionShares: 5
 		Effect: cloak
 		Upgrades: cloak
-	DuplicateUnitCrateAction:
-		SelectionShares: 10
-		MaxAmount: 5
-		MinAmount: 1
-		MaxDuplicateValue: 1250
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
