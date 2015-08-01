@@ -146,6 +146,8 @@ ID_SHOWLOCATION     = NewID()
 ID_REFRESH          = NewID()
 ID_SYMBOLDIRREFRESH = NewID()
 ID_SYMBOLDIRINDEX   = NewID()
+ID_SYMBOLDIRDISABLE = NewID()
+ID_SYMBOLDIRENABLE  = NewID()
 -- outline menu
 ID_OUTLINESORT      = NewID()
 -- search toolbar

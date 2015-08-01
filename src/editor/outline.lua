@@ -6,6 +6,7 @@ ide.outline = {
     "VALUE-GCALL", "VALUE-ACALL", "VALUE-SCALL", "VALUE-MCALL"),
   settings = {
     symbols = {},
+    ignoredirs = {},
   },
   needsaving = false,
   indexqueue = {[0] = {}},
@@ -346,6 +347,57 @@ end
 
 outlineCreateOutlineWindow()
 
+local pathsep = GetPathSeparator()
+local function isInSubDir(name, path)
+  return #name > #path and path..pathsep == name:sub(1, #path+#pathsep)
+end
+
+local function isIgnoredInIndex(name)
+  local ignoredirs = outline.settings.ignoredirs
+  if ignoredirs[name] then return true end
+
+  -- check through ignored dirs to see if any of them match the file
+  for path in pairs(ignoredirs) do
+    if isInSubDir(name, path) then return true end
+  end
+
+  return false
+end
+
+local function purgeIndex(path)
+  local symbols = outline.settings.symbols
+  for name in pairs(symbols) do
+    if isInSubDir(name, path) then outline:UpdateSymbols(name, nil) end
+  end
+end
+
+local function purgeQueue(path)
+  local curqueue = outline.indexqueue
+  local newqueue = {[0] = {}}
+  for _, name in ipairs(curqueue) do
+    if not isInSubDir(name, path) then
+      table.insert(newqueue, name)
+      newqueue[0][name] = true
+    end
+  end
+  outline.indexqueue = newqueue
+end
+
+local function disableIndex(path)
+  outline.settings.ignoredirs[path] = true
+  outline:SaveSettings(true)
+
+  -- purge the path from the index and the (current) queue
+  purgeIndex(path)
+  purgeQueue(path)
+end
+
+local function enableIndex(path)
+  outline.settings.ignoredirs[path] = nil
+  outline:SaveSettings(true)
+  outline:RefreshSymbols(path)
+end
+
 local package = ide:AddPackage('core.outline', {
     -- remove the editor from the list
     onEditorClose = function(self, editor)
@@ -385,7 +437,7 @@ local package = ide:AddPackage('core.outline', {
       local ctrl = outline.outlineCtrl
       local itemname = ide:GetDocument(editor):GetTabText()
 
-      -- fix file name if it changed in the editor
+      -- update file name if it changed in the editor
       if fileitem and ctrl:GetItemText(fileitem) ~= itemname then
         ctrl:SetItemText(fileitem, itemname)
       end
@@ -416,18 +468,45 @@ local package = ide:AddPackage('core.outline', {
       local item_id = event:GetItem()
       local name = tree:GetItemFullName(item_id)
       local symboldirmenu = wx.wxMenu {
-        {ID_SYMBOLDIRREFRESH, TR("Refresh"), TR("Refresh indexed symbols from files in the selected directory")},
+        {ID_SYMBOLDIRREFRESH, TR("Refresh Index"), TR("Refresh indexed symbols from files in the selected directory")},
+        {ID_SYMBOLDIRDISABLE, TR("Disable Indexing For '%s'"):format(name), TR("Ignore and don't index symbols from files in the selected directory")},
       }
       local _, _, projdirpos = ide:FindMenuItem(ID_PROJECTDIR, menu)
-      assert(projdirpos, "Can't find ProjectDirectory menu item")
-      menu:Insert(projdirpos+1, wx.wxMenuItem(menu, ID_SYMBOLDIRINDEX,
-        TR("Symbol Index"), "", wx.wxITEM_NORMAL, symboldirmenu))
-      menu:Enable(ID_SYMBOLDIRINDEX, tree:IsDirectory(item_id))
+      if projdirpos then
+        local ignored = isIgnoredInIndex(name)
+        local enabledirmenu = wx.wxMenu()
+        local paths = {}
+        for path in pairs(outline.settings.ignoredirs) do table.insert(paths, path) end
+        table.sort(paths)
+        for i, path in ipairs(paths) do
+          local id = ID("file.enablesymboldir."..i)
+          enabledirmenu:Append(id, path, "")
+          tree:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function() enableIndex(path) end)
+        end
 
-      tree:Connect(ID_SYMBOLDIRREFRESH, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-          outline:RefreshSymbols(name)
-          resetIndexTimer()
-        end)
+        symboldirmenu:Append(wx.wxMenuItem(symboldirmenu, ID_SYMBOLDIRENABLE,
+          TR("Enable Indexing"), "", wx.wxITEM_NORMAL, enabledirmenu))
+        menu:Insert(projdirpos+1, wx.wxMenuItem(menu, ID_SYMBOLDIRINDEX,
+          TR("Symbol Index"), "", wx.wxITEM_NORMAL, symboldirmenu))
+
+        -- disable "enable" if it's empty
+        menu:Enable(ID_SYMBOLDIRENABLE, #paths > 0)
+        -- disable "refresh" and "disable" if the directory is ignored
+        -- or if any of the directories above it are ignored
+        menu:Enable(ID_SYMBOLDIRREFRESH, tree:IsDirectory(item_id) and not ignored)
+        menu:Enable(ID_SYMBOLDIRDISABLE, tree:IsDirectory(item_id) and not ignored)
+
+        tree:Connect(ID_SYMBOLDIRREFRESH, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+            -- purge files in this directory as some might have been removed;
+            -- files will be purged based on time, but this is a good time to clean.
+            purgeIndex(name)
+            outline:RefreshSymbols(name)
+            resetIndexTimer()
+          end)
+        tree:Connect(ID_SYMBOLDIRDISABLE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+            disableIndex(name)
+          end)
+       end
     end,
   })
 
@@ -458,6 +537,8 @@ function outline:GetEditorSymbols(editor)
 end
 
 function outline:RefreshSymbols(path, callback)
+  if isIgnoredInIndex(path) then return end
+
   local exts = {}
   for _, ext in pairs(ide:GetKnownExtensions()) do
     local spec = GetSpec(ext)
@@ -469,7 +550,7 @@ function outline:RefreshSymbols(path, callback)
   while true do
     local file = nextfile()
     if not file then break end
-    (callback or queuePath)(file)
+    if not isIgnoredInIndex(file) then (callback or queuePath)(file) end
   end
 end
 
@@ -489,9 +570,9 @@ function outline:UpdateSymbols(fname, symb)
   self.needsaving = true
 end
 
-function outline:SaveSettings()
-  if self.needsaving then
-    ide:PushStatus(TR("Updating symbol index..."))
+function outline:SaveSettings(force)
+  if self.needsaving or force then
+    ide:PushStatus(TR("Updating symbol index and settings..."))
     package:SetSettings(self.settings, {keyignore = {depth = true, image = true}})
     ide:PopStatus()
     self.needsaving = false
