@@ -33,6 +33,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
+		readonly bool isDiamond;
+		readonly int cellWidth;
+		readonly int previewWidth;
+		readonly int previewHeight;
 
 		readonly HashSet<PPos> dirtyShroudCells = new HashSet<PPos>();
 
@@ -59,6 +63,13 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
+
+			isDiamond = world.Map.TileShape == TileShape.Diamond;
+			cellWidth = isDiamond ? 2 : 1;
+			previewWidth = world.Map.MapSize.X;
+			previewHeight = world.Map.MapSize.Y;
+			if (isDiamond)
+				previewWidth = 2 * previewWidth - 1;
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -66,8 +77,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			// The four layers are stored in a 2x2 grid within a single texture
-			var s = world.Map.MapSize;
-			radarSheet = new Sheet(new Size(2 * s.X, 2 * s.Y).NextPowerOf2());
+			radarSheet = new Sheet(new Size(2 * previewWidth, 2 * previewHeight).NextPowerOf2());
 			radarSheet.CreateBuffer();
 			radarData = radarSheet.GetData();
 
@@ -83,16 +93,39 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void MapBoundsChanged()
 		{
-			var b = world.Map.Bounds;
+			var map = world.Map;
+
+			// The minimap is drawn in cell space, so we need to
+			// unproject the bounds to find the extent of the map.
+			var projectedLeft = map.Bounds.Left;
+			var projectedRight = map.Bounds.Right;
+			var projectedTop = map.Bounds.Top;
+			var projectedBottom = map.Bounds.Bottom;
+			var top = int.MaxValue;
+			var bottom = int.MinValue;
+			var left = map.Bounds.Left * cellWidth;
+			var right = map.Bounds.Right * cellWidth;
+
+			for (var x = projectedLeft; x < projectedRight; x++)
+			{
+				var allTop = map.Unproject(new PPos(x, projectedTop));
+				var allBottom = map.Unproject(new PPos(x, projectedBottom));
+				if (allTop.Any())
+					top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
+
+				if (allBottom.Any())
+					bottom = Math.Max(bottom, allBottom.MinBy(uv => uv.V).V);
+			}
+
+			var b = Rectangle.FromLTRB(left, top, right, bottom);
 			var rb = RenderBounds;
 			previewScale = Math.Min(rb.Width * 1f / b.Width, rb.Height * 1f / b.Height);
 			previewOrigin = new int2((int)((rb.Width - previewScale * b.Width) / 2), (int)((rb.Height - previewScale * b.Height) / 2));
 			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * b.Width), (int)(previewScale * b.Height));
 
-			var s = world.Map.MapSize;
 			terrainSprite = new Sprite(radarSheet, b, TextureChannel.Alpha);
-			shroudSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(s.X, 0), b.Size), TextureChannel.Alpha);
-			actorSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(0, s.Y), b.Size), TextureChannel.Alpha);
+			shroudSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(previewWidth, 0), b.Size), TextureChannel.Alpha);
+			actorSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(0, previewHeight), b.Size), TextureChannel.Alpha);
 		}
 
 		void UpdateTerrainCell(CPos cell)
@@ -103,14 +136,15 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var custom = world.Map.CustomTerrain[uv];
-			Color color;
+			int leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
 				var type = world.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
-				color = type != null ? type.LeftColor : Color.Black;
+				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
+				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
 			}
 			else
-				color = world.TileSet[custom].Color;
+				leftColor = rightColor = world.TileSet[custom].Color.ToArgb();
 
 			var stride = radarSheet.Size.Width;
 
@@ -119,32 +153,55 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[uv.V * stride + uv.U] = color.ToArgb();
+					if (isDiamond)
+					{
+						// Odd rows are shifted right by 1px
+						var dx = uv.V & 1;
+						if (uv.U + dx > 0)
+							colors[uv.V * stride + 2 * uv.U + dx - 1] = leftColor;
+
+						if (2 * uv.U + dx < stride)
+							colors[uv.V * stride + 2 * uv.U + dx] = rightColor;
+					}
+					else
+						colors[uv.V * stride + uv.U] = leftColor;
 				}
 			}
 		}
 
-		void UpdateShroudCell(PPos projectedCell)
+		void UpdateShroudCell(PPos puv)
 		{
-			var stride = radarSheet.Size.Width;
-			var dx = world.Map.MapSize.X;
-
 			var color = 0;
 			var rp = world.RenderPlayer;
 			if (rp != null)
 			{
-				if (!rp.Shroud.IsExplored(projectedCell))
+				if (!rp.Shroud.IsExplored(puv))
 					color = Color.Black.ToArgb();
-				else if (!rp.Shroud.IsVisible(projectedCell))
+				else if (!rp.Shroud.IsVisible(puv))
 					color = Color.FromArgb(128, Color.Black).ToArgb();
 			}
 
+			var stride = radarSheet.Size.Width;
 			unsafe
 			{
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					colors[projectedCell.V * stride + projectedCell.U + dx] = color;
+					foreach (var uv in world.Map.Unproject(puv))
+					{
+						if (isDiamond)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (uv.U + dx > 0)
+								colors[uv.V * stride + 2 * uv.U + dx - 1 + previewWidth] = color;
+
+							if (2 * uv.U + dx < stride)
+								colors[uv.V * stride + 2 * uv.U + dx + previewWidth] = color;
+						}
+						else
+							colors[uv.V * stride + uv.U + previewWidth] = color;
+					}
 				}
 			}
 		}
@@ -304,9 +361,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// The actor layer is updated every tick
 				var stride = radarSheet.Size.Width;
-				var dy = world.Map.MapSize.Y;
-
-				Array.Clear(radarData, 4 * (actorSprite.Bounds.Top * stride + actorSprite.Bounds.Left), 4 * actorSprite.Bounds.Height * stride);
+				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
 
 				unsafe
 				{
@@ -321,10 +376,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 							{
-								var uv = cell.First.ToMPos(world.Map);
+								var uv = cell.First.ToMPos(world.Map.TileShape);
+								var color = cell.Second.ToArgb();
+								if (isDiamond)
+								{
+									// Odd rows are shifted right by 1px
+									var dx = uv.V & 1;
+									if (uv.U + dx > 0)
+										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
 
-								if (world.Map.Bounds.Contains(uv.U, uv.V))
-									colors[(uv.V + dy) * stride + uv.U] = cell.Second.ToArgb();
+									if (2 * uv.U + dx < stride)
+										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
+								}
+								else
+									colors[(uv.V + previewHeight) * stride + uv.U] = color;
 							}
 						}
 					}
@@ -358,8 +423,14 @@ namespace OpenRA.Mods.Common.Widgets
 		int2 CellToMinimapPixel(CPos p)
 		{
 			var uv = p.ToMPos(world.Map);
-			var mapOffset = new float2(uv.U - world.Map.Bounds.Left, uv.V - world.Map.Bounds.Top);
-			return new int2(mapRect.X, mapRect.Y) + (previewScale * mapOffset).ToInt2();
+			var dx = (int)(previewScale * cellWidth * (uv.U - world.Map.Bounds.Left));
+			var dy = (int)(previewScale * (uv.V - world.Map.Bounds.Top));
+
+			// Odd rows are shifted right by 1px
+			if ((uv.V & 1) == 1)
+				dx += 1;
+
+			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
 		CPos MinimapPixelToCell(int2 p)
@@ -367,7 +438,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var viewOrigin = new float2(mapRect.X, mapRect.Y);
 			var mapOrigin = new float2(world.Map.Bounds.Left, world.Map.Bounds.Top);
 			var fcell = mapOrigin + (1f / previewScale) * (p - viewOrigin);
-			return new MPos((int)fcell.X, (int)fcell.Y).ToCPos(world.Map);
+			return new MPos((int)fcell.X / 2, (int)fcell.Y).ToCPos(world.Map);
 		}
 	}
 }
