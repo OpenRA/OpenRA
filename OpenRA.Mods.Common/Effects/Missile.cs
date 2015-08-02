@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			var cell = world.Map.CellContaining(pos);
 
-			var shouldExplode = (pos.Z < 0) // Hit the ground
+			var shouldExplode = (world.Map.DistanceAboveTerrain(pos).Length < 0) // Hit the ground
 				|| (dist.LengthSquared < info.CloseEnough.LengthSquared) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksProjectiles>())) // Hit a wall or other blocking obstacle
