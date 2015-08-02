@@ -476,11 +476,11 @@ e2:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	prone-stand:
-		Start: 144
+		Start: 240
 		Stride: 4
 		Facings: 8
 	prone-stand2:
-		Start: 144
+		Start: 240
 		Stride: 4
 		Facings: 8
 	prone-run:
