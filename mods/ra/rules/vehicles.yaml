@@ -25,7 +25,6 @@ V2RL:
 	AutoTarget:
 	Explodes:
 		Weapon: SCUD
-		EmptyWeapon: UnitExplodeSmall
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
@@ -64,9 +63,6 @@ V2RL:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 1TNK.Husk
 	ProducibleWithLevel:
@@ -104,9 +100,6 @@ V2RL:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 2TNK.Husk
 	SelectionDecorations:
@@ -146,9 +139,6 @@ V2RL:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 3TNK.Husk
 	SelectionDecorations:
@@ -197,9 +187,6 @@ V2RL:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 		HuskActor: 4TNK.Husk
 	SelfHealing:
@@ -239,8 +226,9 @@ ARTY:
 	AttackFrontal:
 	WithMuzzleFlash:
 	Explodes:
-		Weapon: UnitExplode
-		Chance: 75
+		Weapon: ArtilleryExplode
+		EmptyWeapon: UnitExplodeSmall
+		LoadedChance: 75
 	AutoTarget:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -289,7 +277,6 @@ HARV:
 		FullnessThreshold: 50
 	Explodes:
 		Weapon: OreExplosion
-		EmptyWeapon: UnitExplodeSmall
 
 MCV:
 	Inherits: ^Vehicle
@@ -328,9 +315,6 @@ MCV:
 	BaseBuilding:
 	LeavesHusk:
 		HuskActor: MCV.Husk
-	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 
 JEEP:
 	Inherits: ^Vehicle
