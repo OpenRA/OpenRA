@@ -9,8 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Support;
@@ -53,11 +51,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	class MovementClassDomainIndex
 	{
-		Map map;
-
-		uint movementClass;
-		CellLayer<int> domains;
-		Dictionary<int, HashSet<int>> transientConnections;
+		readonly Map map;
+		readonly uint movementClass;
+		readonly CellLayer<int> domains;
+		readonly Dictionary<int, HashSet<int>> transientConnections;
 
 		public MovementClassDomainIndex(World world, uint movementClass)
 		{
@@ -168,8 +165,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void BuildDomains(World world)
 		{
-			var map = world.Map;
-
 			var domain = 1;
 
 			var visited = new CellLayer<bool>(map);
