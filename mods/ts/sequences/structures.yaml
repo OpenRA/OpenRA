@@ -678,9 +678,9 @@ napuls.gdi:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	turret:_a
+	turret: ntpuls_a
 		Facings: 32
-	make:mk
+	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
 	icon: sidec01.mix:empicon
@@ -700,9 +700,9 @@ napuls.nod:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	turret:_a
+	turret: ntpuls_a
 		Facings: 32
-	make:mk
+	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
 	icon: sidec02.mix:empicon
