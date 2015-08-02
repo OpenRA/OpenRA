@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
+
+		[Desc("Minimum altitude where this aircraft is considered airborne")]
+		public readonly int MinAirborneAltitude = 1;
 		public readonly string[] LandableTerrainTypes = { };
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
@@ -229,7 +232,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.World.ScreenMap.Update(self);
 				self.World.ActorMap.UpdatePosition(self, this);
-				IsAirborne = self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0;
+				IsAirborne = self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= info.MinAirborneAltitude;
 			}
 		}
 
@@ -246,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 			self.World.ScreenMap.Add(self);
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0)
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= info.MinAirborneAltitude)
 				IsAirborne = true;
 		}
 
