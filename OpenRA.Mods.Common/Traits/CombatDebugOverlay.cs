@@ -26,15 +26,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly DeveloperMode devMode;
 
+		readonly HealthInfo health;
 		Lazy<AttackBase> attack;
 		Lazy<IBodyOrientation> coords;
-		Lazy<Health> health;
 
 		public CombatDebugOverlay(Actor self)
 		{
+			health = self.Info.Traits.GetOrDefault<HealthInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
-			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
-			if (health.Value != null)
-				wr.DrawRangeCircle(self.CenterPosition, health.Value.Info.Radius, Color.Red);
+			if (health != null)
+				wr.DrawRangeCircle(self.CenterPosition, health.Radius, Color.Red);
 
 			// No armaments to draw
 			if (attack.Value == null)
