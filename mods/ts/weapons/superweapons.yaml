@@ -30,6 +30,7 @@ MultiCluster:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge

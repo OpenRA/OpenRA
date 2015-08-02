@@ -18,6 +18,7 @@ Minigun:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 M1Carbine:
@@ -40,6 +41,7 @@ M1Carbine:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Vulcan:
@@ -62,6 +64,7 @@ Vulcan:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Vulcan2:
@@ -86,6 +89,7 @@ Vulcan2:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Vulcan3:
@@ -109,6 +113,7 @@ Vulcan3:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 VulcanTower:
@@ -131,6 +136,7 @@ VulcanTower:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 JumpCannon:
@@ -154,6 +160,7 @@ JumpCannon:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 AssaultCannon:
@@ -176,6 +183,7 @@ AssaultCannon:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 RaiderCannon:
@@ -200,6 +208,7 @@ RaiderCannon:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 HarpyClaw:
@@ -224,6 +233,7 @@ HarpyClaw:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piffs
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Pistola:
@@ -246,6 +256,7 @@ Pistola:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: water_piff
+		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Sniper:

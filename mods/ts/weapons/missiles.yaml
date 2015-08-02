@@ -31,6 +31,7 @@ Bazooka:
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
@@ -74,6 +75,7 @@ HoverMissile:
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
@@ -116,6 +118,7 @@ MammothTusk:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 
@@ -154,6 +157,7 @@ BikeMissile:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
@@ -193,6 +197,7 @@ Dragon:
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
@@ -236,6 +241,7 @@ Hellfire:
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect

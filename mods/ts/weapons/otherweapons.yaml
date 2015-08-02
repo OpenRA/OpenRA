@@ -42,6 +42,7 @@ FiendShard:
 		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 
