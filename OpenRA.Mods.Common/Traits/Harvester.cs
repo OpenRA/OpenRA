@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
-		readonly HarvesterInfo info;
+		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
@@ -92,20 +92,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
-			this.info = info;
+			Info = info;
 			mobile = self.Trait<Mobile>();
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
 		public void Created(Actor self)
 		{
-			if (info.SearchOnCreation)
+			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
 		}
 
 		public void BuildingComplete(Actor self)
 		{
-			if (info.SearchOnCreation)
+			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
 		}
 
@@ -151,8 +151,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsAcceptableProcType(Actor proc)
 		{
-			return info.DeliveryBuildings.Count == 0 ||
-				info.DeliveryBuildings.Contains(proc.Info.Name);
+			return Info.DeliveryBuildings.Count == 0 ||
+				Info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
 		public Actor ClosestProc(Actor self, Actor ignore)
@@ -192,9 +192,9 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public bool IsFull { get { return contents.Values.Sum() == info.Capacity; } }
+		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-		public int Fullness { get { return contents.Values.Sum() * 100 / info.Capacity; } }
+		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
 
 		public void AcceptResource(ResourceType type)
 		{
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc + info.UnblockCell);
+					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
-				currentUnloadTicks = info.UnloadTicksPerBale;
+				currentUnloadTicks = Info.UnloadTicksPerBale;
 			}
 
 			return contents.Count == 0;
@@ -318,10 +318,10 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
-				return info.HarvestVoice;
+				return Info.HarvestVoice;
 
 			if (order.OrderString == "Deliver" && !IsEmpty)
-				return info.DeliverVoice;
+				return Info.DeliverVoice;
 
 			return null;
 		}
@@ -421,7 +421,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * info.Capacity / info.PipCount;
+			var n = i * Info.Capacity / Info.PipCount;
 
 			foreach (var rt in contents)
 				if (n < rt.Value)
@@ -434,7 +434,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = info.PipCount;
+			var numPips = Info.PipCount;
 
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetSpeedModifier()
 		{
-			return 100 - (100 - info.FullyLoadedSpeed) * contents.Values.Sum() / info.Capacity;
+			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter

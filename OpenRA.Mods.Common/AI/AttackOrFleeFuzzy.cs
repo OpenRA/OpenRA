@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
-			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Trait<Mobile>().Info.Speed);
+			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.Traits.Get<MobileInfo>().Speed);
 		}
 
 		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,

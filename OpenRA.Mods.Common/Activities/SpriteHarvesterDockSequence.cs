@@ -16,13 +16,13 @@ namespace OpenRA.Mods.Common.Activities
 	public class SpriteHarvesterDockSequence : HarvesterDockSequence
 	{
 		readonly WithSpriteBody wsb;
-		readonly WithDockingAnimation wda;
+		readonly WithDockingAnimationInfo wda;
 
 		public SpriteHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			wsb = self.Trait<WithSpriteBody>();
-			wda = self.Trait<WithDockingAnimation>();
+			wda = self.Info.Traits.Get<WithDockingAnimationInfo>();
 		}
 
 		public override Activity OnStateDock(Actor self)
@@ -30,14 +30,14 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
 
-			wsb.PlayCustomAnimation(self, wda.Info.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.Info.DockLoopSequence));
+			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
 			dockingState = State.Loop;
 			return this;
 		}
 
 		public override Activity OnStateUndock(Actor self)
 		{
-			wsb.PlayCustomAnimationBackwards(self, wda.Info.DockSequence,
+			wsb.PlayCustomAnimationBackwards(self, wda.DockSequence,
 				() =>
 				{
 					dockingState = State.Complete;

@@ -31,22 +31,22 @@ namespace OpenRA.Mods.Common.Traits
 
 			world.ActorAdded += a =>
 			{
-				var b = a.TraitOrDefault<Building>();
+				var b = a.Info.Traits.GetOrDefault<BuildingInfo>();
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
+				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b, a.Location))
 					if (influence.Contains(u) && influence[u] == null)
 						influence[u] = a;
 			};
 
 			world.ActorRemoved += a =>
 			{
-				var b = a.TraitOrDefault<Building>();
+				var b = a.Info.Traits.GetOrDefault<BuildingInfo>();
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b.Info, a.Location))
+				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b, a.Location))
 					if (influence.Contains(u) && influence[u] == a)
 						influence[u] = null;
 			};

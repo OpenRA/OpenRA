@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class Bridge : IRender, INotifyDamageStateChanged
 	{
-		readonly Building building;
+		readonly BuildingInfo building;
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly BridgeHut[] huts = new BridgeHut[2]; // Huts before this / first & after this / last
 		readonly Health health;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			type = self.Info.Name;
 			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
-			building = self.Trait<Building>();
+			building = self.Info.Traits.Get<BuildingInfo>();
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IRenderable[] TemplateRenderables(WorldRenderer wr, PaletteReference palette, ushort template)
 		{
-			var offset = FootprintUtils.CenterOffset(self.World, building.Info).Y + 1024;
+			var offset = FootprintUtils.CenterOffset(self.World, building).Y + 1024;
 
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
