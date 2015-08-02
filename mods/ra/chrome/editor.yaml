@@ -241,6 +241,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 35
 							Width: PARENT_RIGHT-20
 							Height: PARENT_BOTTOM-45
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@TILEPREVIEW_TEMPLATE:
@@ -266,6 +267,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 10
 							Width: PARENT_RIGHT-20
 							Height: PARENT_BOTTOM-20
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@LAYERPREVIEW_TEMPLATE:
@@ -298,6 +300,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 35
 							Width: PARENT_RIGHT-20
 							Height: PARENT_BOTTOM-45
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@ACTORPREVIEW_TEMPLATE:

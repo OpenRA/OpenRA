@@ -264,6 +264,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 24
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 24
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@TILEPREVIEW_TEMPLATE:
@@ -289,6 +290,7 @@ Container@EDITOR_WORLD_ROOT:
 						ScrollPanel@LAYERTEMPLATE_LIST:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@LAYERPREVIEW_TEMPLATE:
@@ -320,6 +322,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 24
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 24
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@ACTORPREVIEW_TEMPLATE:

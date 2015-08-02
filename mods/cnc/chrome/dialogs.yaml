@@ -250,6 +250,7 @@ ScrollPanel@NEWS_PANEL:
 	Width: 400
 	Height: 265
 	Background: panel-black
+	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:

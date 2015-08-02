@@ -98,6 +98,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 ScrollPanel@NEWS_PANEL:
 	Width: 370
 	Height: 265
+	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:

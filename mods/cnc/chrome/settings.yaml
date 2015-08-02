@@ -396,6 +396,7 @@ Container@SETTINGS_PANEL:
 							X: 15
 							Y: 155
 							Width: 560
+							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Height: 190
 							Children:

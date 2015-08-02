@@ -21,6 +21,7 @@ Container@MISSION_OBJECTIVES:
 			Y: 50
 			Width: 482
 			Height: 310
+			TopBottomSpacing: 15
 			ItemSpacing: 15
 			Children:
 				Container@OBJECTIVE_TEMPLATE:

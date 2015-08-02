@@ -3,6 +3,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 	Y: 30
 	Width: 556
 	Height: 219
+	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Children:
 		Container@TEMPLATE_EDITABLE_PLAYER:

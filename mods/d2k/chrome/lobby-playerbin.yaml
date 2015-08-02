@@ -1,6 +1,7 @@
 ScrollPanel@LOBBY_PLAYER_BIN:
 	X: 20
 	Y: 67
+	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Width: 593
 	Height: 235
