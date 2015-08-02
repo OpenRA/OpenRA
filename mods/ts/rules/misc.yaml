@@ -38,8 +38,6 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	ProximityCaptor:
-		Types: Camera
 	BodyOrientation:
 	DetectCloaked:
 		Range: 10
