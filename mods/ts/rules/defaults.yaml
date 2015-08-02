@@ -536,6 +536,8 @@
 		Footprint: x
 		Dimensions: 1, 1
 	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
 	Tooltip:
@@ -551,6 +553,8 @@
 		Footprint: x
 		Dimensions: 1, 1
 	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Rock
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
 	Tooltip:
