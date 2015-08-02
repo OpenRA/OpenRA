@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(World world)
 		{
-			if (subjects.All(s => s.IsDead || !s.Info.Traits.Contains<GuardInfo>()))
+			if (subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
 				world.CancelInputMode();
 		}
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && !a.IsDead &&
 					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
-					a.Info.Traits.Contains<GuardableInfo>());
+					a.Info.HasTraitInfo<GuardableInfo>());
 		}
 	}
 }

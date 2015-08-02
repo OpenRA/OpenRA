@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				var underCursor = world.ScreenMap.ActorsAt(mi)
 					.Where(a => !world.FogObscures(a))
-					.MaxByOrDefault(a => a.Info.Traits.Contains<SelectableInfo>()
+					.MaxByOrDefault(a => a.Info.HasTraitInfo<SelectableInfo>()
 						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue);
 
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)

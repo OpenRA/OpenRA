@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			// HACK: This would otherwise break targeting frozen actors
 			// The problem is that Shroud.IsTargetable returns false (as it should) for
 			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.Traits.Contains<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
+			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
 				return NextActivity;
 
 			// Try to move within range

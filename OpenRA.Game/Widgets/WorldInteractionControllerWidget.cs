@@ -89,7 +89,7 @@ namespace OpenRA.Widgets
 					{
 						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
 						{
-							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.Info.Traits.Contains<SelectableInfo>() &&
+							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.Info.HasTraitInfo<SelectableInfo>() &&
 								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))).Any() && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
 								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
 							{
@@ -301,7 +301,7 @@ namespace OpenRA.Widgets
 				a = b;
 
 			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x => x.Info.Traits.Contains<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
+				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority();
 		}
 

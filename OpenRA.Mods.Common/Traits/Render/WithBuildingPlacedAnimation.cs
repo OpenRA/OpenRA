@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			wsb = self.Trait<WithSpriteBody>();
-			buildComplete = !self.Info.Traits.Contains<BuildingInfo>();
+			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
 
 		public void BuildingComplete(Actor self)

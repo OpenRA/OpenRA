@@ -116,10 +116,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var initDict = newActorReference.InitDict;
 
-				if (Actor.Traits.Contains<IFacingInfo>())
+				if (Actor.HasTraitInfo<IFacingInfo>())
 					initDict.Add(new FacingInit(facing));
 
-				if (Actor.Traits.Contains<TurretedInfo>())
+				if (Actor.HasTraitInfo<TurretedInfo>())
 					initDict.Add(new TurretFacingInit(facing));
 
 				editorLayer.Add(newActorReference);

@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public bool IsTargetValid
 		{
-			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.Info.Traits.Contains<HuskInfo>(); }
+			get { return Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.Info.HasTraitInfo<HuskInfo>(); }
 		}
 
 		public bool IsTargetVisible

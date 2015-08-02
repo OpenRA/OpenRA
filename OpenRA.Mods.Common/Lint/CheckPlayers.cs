@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
 					emitError("Invalid faction {0} chosen for player {1}.".F(player.Faction, player.Name));
 
-			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
+			if (worldActor.HasTraitInfo<MPStartLocationsInfo>())
 			{
 				var multiPlayers = players.Count(p => p.Value.Playable);
 				var spawns = map.ActorDefinitions.Where(a => a.Value.Value == "mpspawn");

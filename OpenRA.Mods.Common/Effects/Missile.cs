@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Effects
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < info.CloseEnough.LengthSquared) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.Traits.Contains<IBlocksProjectilesInfo>())) // Hit a wall or other blocking obstacle
+				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 

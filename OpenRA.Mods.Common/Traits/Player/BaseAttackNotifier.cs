@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			// only track last hit against our base
-			if (!self.Info.Traits.Contains<BuildingInfo>())
+			if (!self.Info.HasTraitInfo<BuildingInfo>())
 				return;
 
 			if (e.Attacker == null)

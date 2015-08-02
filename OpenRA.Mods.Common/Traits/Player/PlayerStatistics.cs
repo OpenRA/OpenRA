@@ -107,18 +107,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
 			var defenderStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
-			if (self.Info.Traits.Contains<BuildingInfo>())
+			if (self.Info.HasTraitInfo<BuildingInfo>())
 			{
 				attackerStats.BuildingsKilled++;
 				defenderStats.BuildingsDead++;
 			}
-			else if (self.Info.Traits.Contains<IPositionableInfo>())
+			else if (self.Info.HasTraitInfo<IPositionableInfo>())
 			{
 				attackerStats.UnitsKilled++;
 				defenderStats.UnitsDead++;
 			}
 
-			if (self.Info.Traits.Contains<ValuedInfo>())
+			if (self.Info.HasTraitInfo<ValuedInfo>())
 			{
 				var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
 				attackerStats.KillsCost += cost;

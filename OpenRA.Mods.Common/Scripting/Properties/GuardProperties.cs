@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Guard the target actor.")]
 		public void Guard(Actor targetActor)
 		{
-			if (targetActor.Info.Traits.Contains<GuardableInfo>())
+			if (targetActor.Info.HasTraitInfo<GuardableInfo>())
 				guard.GuardTarget(Self, Target.FromActor(targetActor));
 		}
 	}

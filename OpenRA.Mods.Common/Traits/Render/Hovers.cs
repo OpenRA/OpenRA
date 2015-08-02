@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Hovers(HoversInfo info, Actor self)
 		{
 			this.info = info;
-			aircraft = self.Info.Traits.Contains<AircraftInfo>();
+			aircraft = self.Info.HasTraitInfo<AircraftInfo>();
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

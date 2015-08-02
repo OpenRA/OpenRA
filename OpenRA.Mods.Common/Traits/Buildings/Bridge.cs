@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in footprint.Keys)
 				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
-					if (a.Info.Traits.Contains<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
+					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
 						a.Kill(self);
 		}
 

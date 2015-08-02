@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 				firstTick = false;
 
 				// TODO: Aircraft husks don't properly unreserve.
-				if (self.Info.Traits.Contains<FallsToEarthInfo>())
+				if (self.Info.HasTraitInfo<FallsToEarthInfo>())
 					return;
 
 				ReserveSpawnBuilding();
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
-				.Where(a => !a.IsDead && a.Info.Traits.Contains<AircraftInfo>() && a.Info.Traits.Get<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
+				.Where(a => !a.IsDead && a.Info.HasTraitInfo<AircraftInfo>() && a.Info.Traits.Get<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
 				.Select(GetRepulsionForce)
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 		}
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
-				.FirstOrDefault(a => a.Info.Traits.Contains<ReservableInfo>());
+				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
 		}
 
 		protected void ReserveSpawnBuilding()

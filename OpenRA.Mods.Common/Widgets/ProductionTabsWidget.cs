@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets
 		// Is added to world.ActorAdded by the SidebarLogic handler
 		public void ActorChanged(Actor a)
 		{
-			if (a.Info.Traits.Contains<ProductionQueueInfo>())
+			if (a.Info.HasTraitInfo<ProductionQueueInfo>())
 			{
 				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
 					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld && p.Trait.Enabled)

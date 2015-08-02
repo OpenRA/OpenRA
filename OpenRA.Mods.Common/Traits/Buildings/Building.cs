@@ -87,12 +87,12 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
-							&& a.Info.Traits.Contains<GivesBuildableAreaInfo>());
+							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
-					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.Traits.Contains<GivesBuildableAreaInfo>()
+					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.HasTraitInfo<GivesBuildableAreaInfo>()
 						&& (buildingAtPos.Owner == p || (allyBuildRadius && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			if (SkipMakeAnimation || !self.Info.Traits.Contains<WithMakeAnimationInfo>())
+			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
 				NotifyBuildingComplete(self);
 		}
 

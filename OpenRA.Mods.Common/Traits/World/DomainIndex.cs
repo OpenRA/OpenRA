@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
 			var movementClasses =
-				world.Map.Rules.Actors.Where(ai => ai.Value.Traits.Contains<MobileInfo>())
+				world.Map.Rules.Actors.Where(ai => ai.Value.HasTraitInfo<MobileInfo>())
 				.Select(ai => (uint)ai.Value.Traits.Get<MobileInfo>().GetMovementClass(world.TileSet)).Distinct();
 
 			foreach (var mc in movementClasses)

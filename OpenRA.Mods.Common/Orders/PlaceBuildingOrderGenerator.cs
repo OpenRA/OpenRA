@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (world.Map.Rules.Actors[building].Traits.Contains<LineBuildInfo>())
+					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>())
 						orderType = "LineBuild";
 				}
 
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				cells.Add(topLeft, AcceptsPlug(topLeft, plugInfo));
 			}
-			else if (rules.Actors[building].Traits.Contains<LineBuildInfo>())
+			else if (rules.Actors[building].HasTraitInfo<LineBuildInfo>())
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)

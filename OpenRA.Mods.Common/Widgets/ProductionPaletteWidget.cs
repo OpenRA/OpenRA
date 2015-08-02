@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var actor = World.Map.Rules.Actors[icon.Name];
 
-			if (item != null && item.Done && actor.Traits.Contains<BuildingInfo>())
+			if (item != null && item.Done && actor.HasTraitInfo<BuildingInfo>())
 			{
 				World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name);
 				return true;

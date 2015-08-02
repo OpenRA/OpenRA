@@ -665,7 +665,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var cellInfo = notStupidCells
 					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
-						.Where(a => a.IsIdle && a.Info.Traits.Contains<MobileInfo>()),
+						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
 

@@ -117,7 +117,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				// HACK: Harvesters need special treatment to avoid getting stuck on resource fields,
 				// so if a Harvester's afterLandActivity is not DeliverResources, queue a new FindResources activity
-				var findResources = self.Info.Traits.Contains<HarvesterInfo>() && !(afterLandActivity is DeliverResources);
+				var findResources = self.Info.HasTraitInfo<HarvesterInfo>() && !(afterLandActivity is DeliverResources);
 				if (findResources)
 					self.QueueActivity(new FindResources(self));
 				else

@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyCharging { void Charging(Actor self, Target target); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyParachuteLanded { void OnLanded(); }
-	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
-	public interface ICruiseAltitudeInfo { WDist GetCruiseAltitude(); }
+	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
+	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
 	public interface IUpgradable
 	{

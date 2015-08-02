@@ -167,8 +167,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var randomBaseBuilding = World.Actors.Where(
 				a => a.Owner == Player
-					&& a.Info.Traits.Contains<BaseBuildingInfo>()
-					&& !a.Info.Traits.Contains<MobileInfo>())
+					&& a.Info.HasTraitInfo<BaseBuildingInfo>()
+					&& !a.Info.HasTraitInfo<MobileInfo>())
 				.RandomOrDefault(Random);
 
 			return randomBaseBuilding != null ? randomBaseBuilding.Location : initialBaseCenter;
@@ -233,8 +233,8 @@ namespace OpenRA.Mods.Common.AI
 
 			isEnemyUnit = unit =>
 				Player.Stances[unit.Owner] == Stance.Enemy
-					&& !unit.Info.Traits.Contains<HuskInfo>()
-					&& unit.Info.Traits.Contains<ITargetableInfo>();
+					&& !unit.Info.HasTraitInfo<HuskInfo>()
+					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -281,8 +281,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var baseProviders = World.Actors.Where(
 				a => a.Owner == Player
-					&& a.Info.Traits.Contains<BaseProviderInfo>()
-					&& !a.Info.Traits.Contains<MobileInfo>());
+					&& a.Info.HasTraitInfo<BaseProviderInfo>()
+					&& !a.Info.HasTraitInfo<MobileInfo>());
 
 			foreach (var b in baseProviders)
 			{
@@ -308,8 +308,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var areaProviders = World.Actors.Where(
 				a => a.Owner == Player
-					&& a.Info.Traits.Contains<GivesBuildableAreaInfo>()
-					&& !a.Info.Traits.Contains<MobileInfo>());
+					&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>()
+					&& !a.Info.HasTraitInfo<MobileInfo>());
 
 			foreach (var a in areaProviders)
 			{
@@ -489,7 +489,7 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingType.Defense:
 
 					// Build near the closest enemy structure
-					var closestEnemy = World.Actors.Where(a => !a.Disposed && a.Info.Traits.Contains<BuildingInfo>() && Player.Stances[a.Owner] == Stance.Enemy)
+					var closestEnemy = World.Actors.Where(a => !a.Disposed && a.Info.HasTraitInfo<BuildingInfo>() && Player.Stances[a.Owner] == Stance.Enemy)
 						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
@@ -565,7 +565,7 @@ namespace OpenRA.Mods.Common.AI
 
 			// Pick something worth attacking owned by that player
 			var target = World.Actors
-				.Where(a => a.Owner == enemy && a.Info.Traits.Contains<IOccupySpaceInfo>())
+				.Where(a => a.Owner == enemy && a.Info.HasTraitInfo<IOccupySpaceInfo>())
 				.ClosestTo(World.Map.CenterOfCell(GetRandomBaseCenter()));
 
 			if (target == null)
@@ -597,7 +597,7 @@ namespace OpenRA.Mods.Common.AI
 		List<Actor> FindEnemyConstructionYards()
 		{
 			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead
-				&& a.Info.Traits.Contains<BaseBuildingInfo>() && !a.Info.Traits.Contains<MobileInfo>()).ToList();
+				&& a.Info.HasTraitInfo<BaseBuildingInfo>() && !a.Info.HasTraitInfo<MobileInfo>()).ToList();
 		}
 
 		void CleanSquads()
@@ -707,18 +707,18 @@ namespace OpenRA.Mods.Common.AI
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == Player && !a.Actor.Info.Traits.Contains<BaseBuildingInfo>()
+				.Where(a => a.Actor.Owner == Player && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>()
 					&& !activeUnits.Contains(a.Actor))
 				.Select(a => a.Actor);
 
 			foreach (var a in newUnits)
 			{
-				if (a.Info.Traits.Contains<HarvesterInfo>())
+				if (a.Info.HasTraitInfo<HarvesterInfo>())
 					QueueOrder(new Order("Harvest", a, false));
 				else
 					unitsHangingAroundTheBase.Add(a);
 
-				if (a.Info.Traits.Contains<AircraftInfo>() && a.Info.Traits.Contains<AttackBaseInfo>())
+				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
 				{
 					var air = GetSquadOfType(SquadType.Air);
 					if (air == null)
@@ -742,7 +742,7 @@ namespace OpenRA.Mods.Common.AI
 				var attackForce = RegisterNewSquad(SquadType.Assault);
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (!a.Info.Traits.Contains<AircraftInfo>())
+					if (!a.Info.HasTraitInfo<AircraftInfo>())
 						attackForce.Units.Add(a);
 
 				unitsHangingAroundTheBase.Clear();
@@ -753,7 +753,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var allEnemyBaseBuilder = FindEnemyConstructionYards();
 			var ownUnits = activeUnits
-				.Where(unit => unit.Info.Traits.Contains<AttackBaseInfo>() && !unit.Info.Traits.Contains<AircraftInfo>() && unit.IsIdle).ToList();
+				.Where(unit => unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && unit.IsIdle).ToList();
 
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
 				return;
@@ -761,7 +761,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var b in allEnemyBaseBuilder)
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.Traits.Contains<AttackBaseInfo>()).ToList();
+					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
 				if (rushFuzzy.CanAttack(ownUnits, enemies))
 				{
@@ -790,8 +790,8 @@ namespace OpenRA.Mods.Common.AI
 			if (!protectSq.IsValid)
 			{
 				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit => unit.Owner == Player && !unit.Info.Traits.Contains<BuildingInfo>()
-						&& unit.Info.Traits.Contains<AttackBaseInfo>());
+					.Where(unit => unit.Owner == Player && !unit.Info.HasTraitInfo<BuildingInfo>()
+						&& unit.Info.HasTraitInfo<AttackBaseInfo>());
 
 				foreach (var a in ownUnits)
 					protectSq.Units.Add(a);
@@ -832,7 +832,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			// Find and deploy our mcv
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == Player && a.Info.Traits.Contains<BaseBuildingInfo>());
+				.FirstOrDefault(a => a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>());
 
 			if (mcv != null)
 			{
@@ -841,7 +841,7 @@ namespace OpenRA.Mods.Common.AI
 
 				// Don't transform the mcv if it is a fact
 				// HACK: This needs to query against MCVs directly
-				if (mcv.Info.Traits.Contains<MobileInfo>())
+				if (mcv.Info.HasTraitInfo<MobileInfo>())
 					QueueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
@@ -854,7 +854,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			// HACK: This needs to query against MCVs directly
 			var mcvs = self.World.Actors
-				.Where(a => a.Owner == Player && a.Info.Traits.Contains<BaseBuildingInfo>() && a.Info.Traits.Contains<MobileInfo>());
+				.Where(a => a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>() && a.Info.HasTraitInfo<MobileInfo>());
 			if (!mcvs.Any())
 				return;
 
@@ -1014,7 +1014,7 @@ namespace OpenRA.Mods.Common.AI
 
 			// No construction yards - Build a new MCV
 			if (!HasAdequateFact() && !self.World.Actors.Any(a =>
-					a.Owner == Player && a.Info.Traits.Contains<BaseBuildingInfo>() && a.Info.Traits.Contains<MobileInfo>()))
+					a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>() && a.Info.HasTraitInfo<MobileInfo>()))
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
 
 			foreach (var q in Info.UnitQueues)
@@ -1073,14 +1073,14 @@ namespace OpenRA.Mods.Common.AI
 			if (e.Attacker.Disposed)
 				return;
 
-			if (!e.Attacker.Info.Traits.Contains<ITargetableInfo>())
+			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
 
 			if (e.Damage > 0)
 				aggro[e.Attacker.Owner].Aggro += e.Damage;
 
 			// Protected harvesters or building
-			if ((self.Info.Traits.Contains<HarvesterInfo>() || self.Info.Traits.Contains<BuildingInfo>()) &&
+			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) &&
 				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;

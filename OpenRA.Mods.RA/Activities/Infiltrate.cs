@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.Dispose();
 
-			if (target.Info.Traits.Contains<BuildingInfo>())
+			if (target.Info.HasTraitInfo<BuildingInfo>())
 				Sound.PlayToPlayer(self.Owner, "bldginf1.aud");
 		}
 	}

@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			return self.World.Map.Rules.Actors.Values
 				.Where(x =>
 					x.Name[0] != '^' &&
-					x.Traits.Contains<BuildableInfo>() &&
+					x.HasTraitInfo<BuildableInfo>() &&
 					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
 		}
 
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (!bi.Queue.Contains(Info.Type))
 							return; /* Not built by this queue */
 
-						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+						var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 						var time = GetBuildTime(order.TargetString);
 
 						if (BuildableItems().All(b => b.Name != order.TargetString))
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 							var hasPlayedSound = false;
 							BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
 							{
-								var isBuilding = unit.Traits.Contains<BuildingInfo>();
+								var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 
 								if (isBuilding && !hasPlayedSound)
 									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
@@ -314,7 +314,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual int GetBuildTime(string unitString)
 		{
 			var unit = self.World.Map.Rules.Actors[unitString];
-			if (unit == null || !unit.Traits.Contains<BuildableInfo>())
+			if (unit == null || !unit.HasTraitInfo<BuildableInfo>())
 				return 0;
 
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ActorChanged(Actor a)
 		{
 			var bi = a.Info.Traits.GetOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.Info.Traits.Contains<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
+			if (a.Owner == player && (a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
 				Update();
 		}
 

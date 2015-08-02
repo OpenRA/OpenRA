@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
-				.Where(a => !world.FogObscures(a) && a.Info.Traits.Contains<ITooltipInfo>())
+				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITooltipInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null)
