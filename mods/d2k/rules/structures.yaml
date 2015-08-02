@@ -149,16 +149,16 @@ barracks:
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
-		Race: atreides
+		Factions: atreides
 	ProvidesPrerequisite@ordos:
 		Prerequisite: barracks.ordos
-		Race: ordos
+		Factions: ordos
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: barracks.harkonnen
-		Race: harkonnen
+		Factions: harkonnen
 	ProvidesPrerequisite@medics:
 		Prerequisite: barracks.medics
-		Race: atreides, ordos
+		Factions: atreides, ordos
 	Power:
 		Amount: -20
 	RenderBuilding:
@@ -297,16 +297,16 @@ light:
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
-		Race: atreides
+		Factions: atreides
 	ProvidesPrerequisite@ordos:
 		Prerequisite: light.ordos
-		Race: ordos
+		Factions: ordos
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: light.harkonnen
-		Race: harkonnen
+		Factions: harkonnen
 	ProvidesPrerequisite@trikes:
 		Prerequisite: light.regulartrikes
-		Race: atreides, harkonnen
+		Factions: atreides, harkonnen
 	ProvidesPrerequisite@buildingname:
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
@@ -349,16 +349,16 @@ heavy:
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
-		Race: atreides
+		Factions: atreides
 	ProvidesPrerequisite@ordos:
 		Prerequisite: heavy.ordos
-		Race: ordos
+		Factions: ordos
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: heavy.harkonnen
-		Race: harkonnen
+		Factions: harkonnen
 	ProvidesPrerequisite@missiletank:
 		Prerequisite: heavy.missiletank
-		Race: atreides, harkonnen
+		Factions: atreides, harkonnen
 	RenderBuilding:
 		Image: heavy.harkonnen
 		RaceImages:
@@ -465,13 +465,13 @@ starport:
 	DisabledOverlay:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
-		Race: atreides
+		Factions: atreides
 	ProvidesPrerequisite@ordos:
 		Prerequisite: starport.ordos
-		Race: ordos
+		Factions: ordos
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: starport.harkonnen
-		Race: harkonnen
+		Factions: harkonnen
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -712,7 +712,7 @@ hightech:
 			ordos: hightech.ordos
 	ProvidesPrerequisite@upgrade:
 		Prerequisite: hightech.atreides
-		Race: atreides
+		Factions: atreides
 	ProvidesPrerequisite@buildingname:
 	AirstrikePower:
 		Icon: ornistrike
@@ -816,7 +816,7 @@ palace:
 		Amount: -50
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
-		Race: harkonnen
+		Factions: harkonnen
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand
@@ -846,7 +846,7 @@ conyard.atreides:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: atreides
+		ForceFaction: atreides
 	RenderBuilding:
 		Image: conyard.atreides
 		-RaceImages:
@@ -857,7 +857,7 @@ conyard.harkonnen:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: harkonnen
+		ForceFaction: harkonnen
 	RenderBuilding:
 		Image: conyard.harkonnen
 		-RaceImages:
@@ -868,7 +868,7 @@ conyard.ordos:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: ordos
+		ForceFaction: ordos
 	RenderBuilding:
 		Image: conyard.ordos
 		-RaceImages:

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly BuildingInfo buildingInfo;
 		readonly PlaceBuildingInfo placeBuildingInfo;
 		readonly BuildingInfluence buildingInfluence;
-		readonly string race;
+		readonly string faction;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
 		IActorPreview[] preview;
@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Common.Orders
 
 			var buildableInfo = info.Traits.Get<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
-			race = buildableInfo.ForceRace ?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Race : producer.Owner.Faction.InternalName);
+			faction = buildableInfo.ForceFaction
+				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : producer.Owner.Faction.InternalName);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
@@ -170,7 +171,7 @@ namespace OpenRA.Mods.Common.Orders
 				{
 					var td = new TypeDictionary()
 					{
-						new FactionInit(race),
+						new FactionInit(faction),
 						new OwnerInit(producer.Owner),
 						new HideBibPreviewInit()
 					};

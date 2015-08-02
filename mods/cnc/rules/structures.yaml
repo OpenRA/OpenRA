@@ -78,7 +78,7 @@ FACT.GDI:
 		Queue: Building.GDI, Building.Nod
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: gdi
+		ForceFaction: gdi
 	Tooltip:
 		Name: Construction Yard (GDI)
 
@@ -90,7 +90,7 @@ FACT.NOD:
 		Queue: Building.GDI, Building.Nod
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		ForceRace: nod
+		ForceFaction: nod
 	Tooltip:
 		Name: Construction Yard (Nod)
 

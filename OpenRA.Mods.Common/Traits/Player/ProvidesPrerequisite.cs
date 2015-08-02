@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] RequiresPrerequisites = { };
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly string[] Race = { };
+		public readonly string[] Factions = { };
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(prerequisite))
 				prerequisite = init.Self.Info.Name;
 
-			var race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			var faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 
-			Update(init.Self.Owner, race);
+			Update(init.Self.Owner, faction);
 		}
 
 		public IEnumerable<string> ProvidesPrerequisites
@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 				Update(newOwner, newOwner.Faction.InternalName);
 		}
 
-		void Update(Player owner, string race)
+		void Update(Player owner, string faction)
 		{
 			enabled = true;
 
-			if (info.Race.Any())
-				enabled = info.Race.Contains(race);
+			if (info.Factions.Any())
+				enabled = info.Factions.Contains(faction);
 
 			if (info.RequiresPrerequisites.Any() && enabled)
 				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);

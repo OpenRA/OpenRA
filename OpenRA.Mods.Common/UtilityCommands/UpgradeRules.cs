@@ -1663,6 +1663,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150731)
+				{
+					if (node.Key.StartsWith("ProvidesPrerequisite"))
+					{
+						var raceNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "Race");
+						if (raceNode != null)
+							raceNode.Key = "Factions";
+					}
+
+					if (node.Key.StartsWith("Buildable"))
+					{
+						var raceNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ForceRace");
+						if (raceNode != null)
+							raceNode.Key = "ForceFaction";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

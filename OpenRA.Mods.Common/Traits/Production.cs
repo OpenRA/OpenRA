@@ -33,16 +33,16 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<RallyPoint> rp;
 
 		public ProductionInfo Info;
-		public string Race { get; private set; }
+		public string Faction { get; private set; }
 
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
-			Race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string raceVariant)
+		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
 		{
 			var exit = self.Location + exitinfo.ExitCell;
 			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 			var target = Target.FromCell(self.World, exitLocation);
 
 			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceRace != null)
-				raceVariant = bi.ForceRace;
+			if (bi != null && bi.ForceFaction != null)
+				factionVariant = bi.ForceFaction;
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 					new FacingInit(initialFacing)
 				};
 
-				if (raceVariant != null)
-					td.Add(new FactionInit(raceVariant));
+				if (factionVariant != null)
+					td.Add(new FactionInit(factionVariant));
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public virtual bool Produce(Actor self, ActorInfo producee, string raceVariant)
+		public virtual bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
 			if (Reservable.IsReserved(self))
 				return false;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (exit != null)
 			{
-				DoProduction(self, producee, exit, raceVariant);
+				DoProduction(self, producee, exit, factionVariant);
 				return true;
 			}
 
