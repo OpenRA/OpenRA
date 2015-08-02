@@ -15,8 +15,10 @@ namespace OpenRA.GameRules
 {
 	public class MusicInfo
 	{
-		public readonly string Filename = null;
-		public readonly string Title = null;
+		public readonly string Filename;
+		public readonly string Title;
+		public readonly bool Hidden;
+
 		public int Length { get; private set; } // seconds
 		public bool Exists { get; private set; }
 
@@ -25,17 +27,23 @@ namespace OpenRA.GameRules
 			Title = value.Value;
 
 			var nd = value.ToDictionary();
+			if (nd.ContainsKey("Hidden"))
+				bool.TryParse(nd["Hidden"].Value, out Hidden);
+
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
+
 			if (!GlobalFileSystem.Exists(Filename))
 				return;
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
+			{
 				if (Filename.ToLowerInvariant().EndsWith("wav"))
 					Length = (int)WavLoader.WaveLength(s);
 				else
 					Length = (int)AudLoader.SoundLength(s);
+			}
 		}
 
 		public void Reload()
@@ -45,10 +53,12 @@ namespace OpenRA.GameRules
 
 			Exists = true;
 			using (var s = GlobalFileSystem.Open(Filename))
+			{
 				if (Filename.ToLowerInvariant().EndsWith("wav"))
 					Length = (int)WavLoader.WaveLength(s);
 				else
 					Length = (int)AudLoader.SoundLength(s);
+			}
 		}
 	}
 }

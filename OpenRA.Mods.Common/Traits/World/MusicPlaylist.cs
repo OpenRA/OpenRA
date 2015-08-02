@@ -11,8 +11,9 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Trait for music handling. Attach this to the world actor.")]
 	public class MusicPlaylistInfo : ITraitInfo
@@ -20,20 +21,15 @@ namespace OpenRA.Traits
 		[Desc("Music to play when the map starts.", "Plays the first song on the playlist when undefined.")]
 		public readonly string StartingMusic = null;
 
-		[Desc("Should the starting music loop?")]
-		public readonly bool LoopStartingMusic = false;
-
 		[Desc("Music to play when the game has been won.")]
 		public readonly string VictoryMusic = null;
-
-		[Desc("Should the victory music loop?")]
-		public readonly bool LoopVictoryMusic = false;
 
 		[Desc("Music to play when the game has been lost.")]
 		public readonly string DefeatMusic = null;
 
-		[Desc("Should the defeat music loop?")]
-		public readonly bool LoopDefeatMusic = false;
+		[Desc("This track is played when no other music is playing.",
+			"It cannot be paused, but can be overridden by selecting a new track.")]
+		public readonly string BackgroundMusic = null;
 
 		public object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
 	}
@@ -41,42 +37,63 @@ namespace OpenRA.Traits
 	public class MusicPlaylist : INotifyActorDisposing, IGameOver
 	{
 		readonly MusicPlaylistInfo info;
+		readonly World world;
 
 		readonly MusicInfo[] random;
 		readonly MusicInfo[] playlist;
 
+		public readonly bool IsMusicInstalled;
 		public readonly bool IsMusicAvailable;
+		public bool CurrentSongIsBackground { get; private set; }
 
 		MusicInfo currentSong;
-		bool repeat;
+		MusicInfo currentBackgroundSong;
 
 		public MusicPlaylist(World world, MusicPlaylistInfo info)
 		{
 			this.info = info;
+			this.world = world;
 
-			IsMusicAvailable = world.Map.Rules.InstalledMusic.Any();
-
-			playlist = world.Map.Rules.InstalledMusic.Select(a => a.Value).ToArray();
-
-			if (!IsMusicAvailable)
+			IsMusicInstalled = world.Map.Rules.InstalledMusic.Any();
+			if (!IsMusicInstalled)
 				return;
 
-			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
+			playlist = world.Map.Rules.InstalledMusic
+				.Where(a => !a.Value.Hidden)
+				.Select(a => a.Value)
+				.ToArray();
 
-			if (!string.IsNullOrEmpty(info.StartingMusic)
-				&& world.Map.Rules.Music.ContainsKey(info.StartingMusic)
-				&& world.Map.Rules.Music[info.StartingMusic].Exists)
-			{
+			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
+			IsMusicAvailable = playlist.Any();
+
+			if (SongExists(info.StartingMusic))
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
-				repeat = info.LoopStartingMusic;
+			else if (SongExists(info.BackgroundMusic))
+			{
+				currentSong = currentBackgroundSong = world.Map.Rules.Music[info.BackgroundMusic];
+				CurrentSongIsBackground = true;
 			}
 			else
 			{
-				currentSong = Game.Settings.Sound.Shuffle ? random.First() : playlist.First();
-				repeat = Game.Settings.Sound.Repeat;
+				// Start playback with a random song, but only if the player has installed more music
+				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
+				if (playlist.Length > installData.ShippedSoundtracks)
+					currentSong = random.FirstOrDefault();
 			}
 
 			Play();
+		}
+
+		bool SongExists(string song)
+		{
+			return !string.IsNullOrEmpty(song)
+				&& world.Map.Rules.Music.ContainsKey(song)
+				&& world.Map.Rules.Music[song].Exists;
+		}
+
+		bool SongExists(MusicInfo song)
+		{
+			return song != null && song.Exists;
 		}
 
 		public MusicInfo CurrentSong()
@@ -92,46 +109,34 @@ namespace OpenRA.Traits
 
 		public void GameOver(World world)
 		{
-			if (!IsMusicAvailable)
-				return;
-
-			var playedSong = currentSong;
-
 			if (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Won)
 			{
-				if (!string.IsNullOrEmpty(info.VictoryMusic)
-				&& world.Map.Rules.Music.ContainsKey(info.VictoryMusic)
-				&& world.Map.Rules.Music[info.VictoryMusic].Exists)
+				if (SongExists(info.VictoryMusic))
 				{
-					currentSong = world.Map.Rules.Music[info.VictoryMusic];
-					repeat = info.LoopVictoryMusic;
+					currentBackgroundSong = world.Map.Rules.Music[info.VictoryMusic];
+					Stop();
 				}
 			}
 			else
 			{
 				// Most RTS treats observers losing the game,
 				// no need for a special handling involving them here.
-				if (!string.IsNullOrEmpty(info.DefeatMusic)
-				&& world.Map.Rules.Music.ContainsKey(info.DefeatMusic)
-				&& world.Map.Rules.Music[info.DefeatMusic].Exists)
+				if (SongExists(info.DefeatMusic))
 				{
-					currentSong = world.Map.Rules.Music[info.DefeatMusic];
-					repeat = info.LoopDefeatMusic;
+					currentBackgroundSong = world.Map.Rules.Music[info.DefeatMusic];
+					Stop();
 				}
 			}
-
-			if (playedSong != currentSong)
-				Play();
 		}
 
 		void Play()
 		{
-			if (currentSong == null || !IsMusicAvailable)
+			if (!SongExists(currentSong))
 				return;
 
 			Sound.PlayMusicThen(currentSong, () =>
 			{
-				if (!repeat)
+				if (!CurrentSongIsBackground && !Game.Settings.Sound.Repeat)
 					currentSong = GetNextSong();
 
 				Play();
@@ -140,27 +145,22 @@ namespace OpenRA.Traits
 
 		public void Play(MusicInfo music)
 		{
-			if (music == null || !IsMusicAvailable)
+			if (music == null)
 				return;
 
 			currentSong = music;
-			repeat = Game.Settings.Sound.Repeat;
+			CurrentSongIsBackground = false;
 
-			Sound.PlayMusicThen(music, () =>
-			{
-				if (!repeat)
-					currentSong = GetNextSong();
-
-				Play();
-			});
+			Play();
 		}
 
 		public void Play(MusicInfo music, Action onComplete)
 		{
-			if (music == null || !IsMusicAvailable)
+			if (music == null)
 				return;
 
 			currentSong = music;
+			CurrentSongIsBackground = false;
 			Sound.PlayMusicThen(music, onComplete);
 		}
 
@@ -181,22 +181,34 @@ namespace OpenRA.Traits
 
 			var songs = Game.Settings.Sound.Shuffle ? random : playlist;
 
-			return reverse ? songs.SkipWhile(m => m != currentSong)
-				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault() :
-				songs.Reverse().SkipWhile(m => m != currentSong)
-				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault();
+			var next = reverse ? songs.Reverse().SkipWhile(m => m != currentSong)
+				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault() :
+				songs.SkipWhile(m => m != currentSong)
+				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
+
+			if (SongExists(next))
+				return next;
+
+			return null;
 		}
 
 		public void Stop()
 		{
 			currentSong = null;
 			Sound.StopMusic();
+
+			if (currentBackgroundSong != null)
+			{
+				currentSong = currentBackgroundSong;
+				CurrentSongIsBackground = true;
+				Play();
+			}
 		}
 
 		public void Disposing(Actor self)
 		{
 			if (currentSong != null)
-				Stop();
+				Sound.StopMusic();
 		}
 	}
 }

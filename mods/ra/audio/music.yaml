@@ -1,9 +1,12 @@
 intro: Intro
+	Hidden: true
 map: Map
+	Hidden: true
 score: Militant Force
+	Hidden: true
 await_r: Await
 bigf226m: Bigfoot
-credits: End Credits
+credits: Reload Fire
 crus226m: Crush
 dense_r: Dense
 fac1226m: Face to the Enemy 1

@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			BuildMusicTable();
 
-			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable;
-			panel.Get("NO_MUSIC_LABEL").IsVisible = noMusic;
+			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable || musicPlaylist.CurrentSongIsBackground || currentSong == null;
+			panel.Get("NO_MUSIC_LABEL").IsVisible = () => !musicPlaylist.IsMusicAvailable;
 
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
@@ -63,14 +63,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var shuffleCheckbox = panel.Get<CheckboxWidget>("SHUFFLE");
 			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;
 			shuffleCheckbox.OnClick = () => Game.Settings.Sound.Shuffle ^= true;
+			shuffleCheckbox.IsDisabled = () => musicPlaylist.CurrentSongIsBackground;
 
 			var repeatCheckbox = panel.Get<CheckboxWidget>("REPEAT");
 			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
 			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
+			repeatCheckbox.IsDisabled = () => musicPlaylist.CurrentSongIsBackground;
 
-			panel.Get<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
-				"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
-					currentSong.Length / 60, currentSong.Length % 60);
+			panel.Get<LabelWidget>("TIME_LABEL").GetText = () =>
+			{
+				if (currentSong == null || musicPlaylist.CurrentSongIsBackground)
+					return "";
+
+				var minutes = (int)Sound.MusicSeekPosition / 60;
+				var seconds = (int)Sound.MusicSeekPosition % 60;
+				var totalMinutes = currentSong.Length / 60;
+				var totalSeconds = currentSong.Length % 60;
+
+				return "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F(minutes, seconds, totalMinutes, totalSeconds);
+			};
 
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Sound.MusicVolume = x;
@@ -94,7 +105,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				songWatcher.OnTick = () =>
 				{
-					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic)
+					if (musicPlaylist.CurrentSongIsBackground && currentSong != null)
+						currentSong = null;
+
+					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)
 						return;
 
 					currentSong = Sound.CurrentMusic;
@@ -111,23 +125,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var music = musicPlaylist.AvailablePlaylist();
 			currentSong = musicPlaylist.CurrentSong();
-			if (currentSong == null && music.Any())
-				currentSong = musicPlaylist.GetNextSong();
 
 			musicList.RemoveChildren();
 			foreach (var s in music)
 			{
 				var song = s;
-				if (currentSong == null)
-					currentSong = song;
-
 				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); }, () => { });
 				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
 				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
 				musicList.AddChild(item);
 			}
 
-			if (currentSong != null)
+			if (currentSong != null && !musicPlaylist.CurrentSongIsBackground)
 				musicList.ScrollToItem(currentSong.Filename);
 		}
 

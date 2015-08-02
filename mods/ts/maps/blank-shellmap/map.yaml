@@ -41,8 +41,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		MusicPlaylist:
-			StartingMusic: intro
-			LoopStartingMusic: True
+			BackgroundMusic: intro
 
 Sequences:
 

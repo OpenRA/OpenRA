@@ -17,6 +17,7 @@ LANDSAND: Land of Sand
 	Extension: AUD
 OPTIONS: Options
 	Extension: AUD
+	Hidden: true
 PLOTTING: Plotting
 	Extension: AUD
 RISEHARK: Rise of Harkonnen
@@ -25,6 +26,7 @@ ROBOTIX: Robotix
 	Extension: AUD
 SCORE: Score
 	Extension: AUD
+	Hidden: true
 SOLDAPPR: The Soldiers Approach
 	Extension: AUD
 SPICESCT: Spice Scouting

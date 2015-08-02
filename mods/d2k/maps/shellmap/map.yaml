@@ -124,8 +124,7 @@ Rules:
 			Minimum: 1
 			Maximum: 1
 		MusicPlaylist:
-			StartingMusic: options
-			LoopStartingMusic: True
+			BackgroundMusic: options
 	rockettower:
 		Power:
 			Amount: 100

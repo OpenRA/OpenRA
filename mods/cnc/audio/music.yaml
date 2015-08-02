@@ -24,6 +24,7 @@ fwp: Fight Win Prevail
 fist226m: Iron Fist
 warfare: Warfare (Full Stop)
 win1: Great Shot!
+	Hidden: true
 win2: Great Shot! (Voiced)
 	Filename: win2
 	Extension: var
@@ -41,6 +42,7 @@ justdoit2: Just Do it Up (Voiced)
 	Filename: justdoit
 	Extension: var
 map1: Map Theme
+	Hidden: true
 march: March to Doom
 nomercy: No Mercy
 nomercy2: No Mercy (Voiced)
@@ -58,5 +60,9 @@ target: Target (Mechanical Man)
 j1: Untamed Land
 valkyrie: Ride of the Valkyries
 voic226m: Voice Rhythm
+outtakes: Outtakes
+	Hidden: true
 nod_map1: Nod Map Theme
+	Hidden: true
 nod_win1: Nod Win Theme
+	Hidden: true
