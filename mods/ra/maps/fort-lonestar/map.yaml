@@ -506,8 +506,8 @@ Rules:
 			Green: 0.85
 			Blue: 1.5
 			Ambient: 0.35
-		AmbientSound:
-			SoundFile: rain.aud
+		MusicPlaylist:
+			BackgroundMusic: rain
 		FlashPaletteEffect@LIGHTNINGSTRIKE:
 			Type: LightningStrike
 		LuaScript:
