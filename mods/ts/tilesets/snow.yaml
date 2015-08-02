@@ -55,6 +55,10 @@ Terrain:
 		Type: Veins
 		Color: 226, 103, 0
 		TargetTypes: Ground
+	TerrainType@Tree:
+		Type: Tree
+		TargetTypes: Ground
+		Color: 255,28,32,36
 
 # Automatically generated. DO NOT EDIT!
 Templates:
