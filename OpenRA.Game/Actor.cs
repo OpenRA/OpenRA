@@ -226,11 +226,6 @@ namespace OpenRA
 			return World.TraitDict.WithInterface<T>(this);
 		}
 
-		public bool HasTrait<T>()
-		{
-			return World.TraitDict.Contains<T>(this);
-		}
-
 		public void AddTrait(object trait)
 		{
 			World.TraitDict.AddTrait(this, trait);

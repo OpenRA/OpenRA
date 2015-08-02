@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			buildComplete = !self.Info.Traits.Contains<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),

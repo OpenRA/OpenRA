@@ -144,13 +144,13 @@ namespace OpenRA.Traits
 		Player Owner { get; }
 	}
 
-	public interface IToolTip
+	public interface ITooltip
 	{
 		ITooltipInfo TooltipInfo { get; }
 		Player Owner { get; }
 	}
 
-	public interface ITooltipInfo
+	public interface ITooltipInfo : ITraitInfo
 	{
 		string TooltipForPlayerStance(Stance stance);
 		bool IsOwnerRowVisible { get; }
@@ -226,6 +226,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
+	public interface IPositionableInfo : ITraitInfo { }
 	public interface IPositionable : IOccupySpace
 	{
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
@@ -296,6 +297,7 @@ namespace OpenRA.Traits
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
+	public interface IBlocksProjectilesInfo : ITraitInfo { }
 	public interface IBlocksProjectiles { }
 	public interface IRenderInfantrySequenceModifier
 	{
@@ -309,7 +311,7 @@ namespace OpenRA.Traits
 
 	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
 
-	public interface ITargetableInfo
+	public interface ITargetableInfo : ITraitInfo
 	{
 		HashSet<string> GetTargetTypes();
 	}

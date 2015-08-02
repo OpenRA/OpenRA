@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (IsTraitDisabled)
 				return false;
-			if (cloak == null || (!viewer.IsDead && viewer.HasTrait<IgnoresCloak>()))
+			if (cloak == null || (!viewer.IsDead && viewer.Info.Traits.Contains<IgnoresCloakInfo>()))
 				return true;
 
 			return cloak.IsVisible(self, viewer.Owner);

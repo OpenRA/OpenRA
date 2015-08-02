@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				return target.HasTrait<AcceptsSupplies>();
+				return target.Info.Traits.Contains<AcceptsSuppliesInfo>();
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)

@@ -20,7 +20,7 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.Traits.Contains<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			Target target;
@@ -58,12 +58,12 @@ namespace OpenRA.Orders
 		{
 			var useSelect = false;
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.Traits.Contains<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 			{
-				if (underCursor.HasTrait<Selectable>())
+				if (underCursor.Info.Traits.Contains<SelectableInfo>())
 					useSelect = true;
 			}
 

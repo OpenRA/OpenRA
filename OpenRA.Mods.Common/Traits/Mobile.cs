@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
+		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -664,7 +665,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var cellInfo = notStupidCells
 					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
-						.Where(a => a.IsIdle && a.HasTrait<Mobile>()),
+						.Where(a => a.IsIdle && a.Info.Traits.Contains<MobileInfo>()),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
 

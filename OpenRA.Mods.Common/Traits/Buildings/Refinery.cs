@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 0;

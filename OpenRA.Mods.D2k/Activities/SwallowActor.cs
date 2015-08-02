@@ -79,7 +79,7 @@ namespace OpenRA.Mods.D2k.Activities
 						actor1.Dispose();
 
 						// Harvester insurance
-						if (!actor1.HasTrait<Harvester>())
+						if (!actor1.Info.Traits.Contains<HarvesterInfo>())
 							return;
 
 						var insurance = actor1.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();

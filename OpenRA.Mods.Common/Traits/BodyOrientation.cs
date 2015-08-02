@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				// If a sprite actor has neither custom QuantizedFacings nor a trait implementing IQuantizeBodyOrientationInfo, throw
 				if (qboi == null)
 				{
-					if (self.HasTrait<ISpriteBody>())
+					if (self.Info.Traits.Contains<ISpriteBodyInfo>())
 						throw new InvalidOperationException("Actor '" + self.Info.Name + "' has a sprite body but no facing quantization."
 							+ " Either add the QuantizeFacingsFromSequence trait or set custom QuantizedFacings on BodyOrientation.");
 					else

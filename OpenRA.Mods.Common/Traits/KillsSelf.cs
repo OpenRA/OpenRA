@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead)
 				return;
 
-			if (Info.RemoveInstead || !self.HasTrait<Health>())
+			if (Info.RemoveInstead || !self.Info.Traits.Contains<HealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self);

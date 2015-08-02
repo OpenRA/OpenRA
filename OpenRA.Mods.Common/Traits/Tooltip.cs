@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsOwnerRowVisible { get { return ShowOwnerRow; } }
 	}
 
-	public class Tooltip : IToolTip
+	public class Tooltip : ITooltip
 	{
 		readonly Actor self;
 		readonly TooltipInfo info;

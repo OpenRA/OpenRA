@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool startsRevealed;
 		readonly PPos[] footprint;
 
-		readonly Lazy<IToolTip> tooltip;
+		readonly Lazy<ITooltip> tooltip;
 		readonly Lazy<Health> health;
 
 		readonly Dictionary<Player, bool> visible;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
-			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<ITooltip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 
 			frozen = new Dictionary<Player, FrozenActor>();

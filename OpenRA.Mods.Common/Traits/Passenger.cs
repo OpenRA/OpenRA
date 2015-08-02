@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum AlternateTransportsMode { None, Force, Default, Always }
 
-	public class EnterTransportTargeter : EnterAlliedActorTargeter<Cargo>
+	public class EnterTransportTargeter : EnterAlliedActorTargeter<CargoInfo>
 	{
 		readonly AlternateTransportsMode mode;
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class EnterTransportsTargeter : EnterAlliedActorTargeter<Cargo>
+	public class EnterTransportsTargeter : EnterAlliedActorTargeter<CargoInfo>
 	{
 		readonly AlternateTransportsMode mode;
 
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			Func<Actor, bool> canTarget = IsCorrectCargoType;
 			Func<Actor, bool> useEnterCursor = CanEnter;
-			Orders = new EnterAlliedActorTargeter<Cargo>[]
+			Orders = new EnterAlliedActorTargeter<CargoInfo>[]
 			{
 				new EnterTransportTargeter("EnterTransport", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode),
 				new EnterTransportsTargeter("EnterTransports", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode)

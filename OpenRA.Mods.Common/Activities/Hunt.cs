@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			var attack = self.Trait<AttackBase>();
 			targets = self.World.Actors.Where(a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
-				&& a.HasTrait<Huntable>() && IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
+				&& a.Info.Traits.Contains<HuntableInfo>() && IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
 		}
 
 		bool IsTargetable(Actor self, Actor viewer)

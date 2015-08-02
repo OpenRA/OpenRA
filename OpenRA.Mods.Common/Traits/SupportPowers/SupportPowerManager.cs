@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ActorRemoved(Actor a)
 		{
-			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.Info.Traits.Contains<SupportPowerInfo>())
 				return;
 
 			foreach (var t in a.TraitsImplementing<SupportPower>())
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
-			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.Info.Traits.Contains<SupportPowerInfo>())
 				return NoInstances;
 
 			return a.TraitsImplementing<SupportPower>()
