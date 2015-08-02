@@ -319,7 +319,7 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml m
 
 docs: utility mods version
 	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
-	@mono --debug OpenRA.Utility.exe ra --lua-docs > Lua-API.md
+	@mono --debug OpenRA.Utility.exe all --lua-docs > Lua-API.md
 
 man-page: utility mods
 	@mono --debug OpenRA.Utility.exe all --man-page > openra.6
