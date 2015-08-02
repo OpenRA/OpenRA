@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
-				.Where(a => !a.IsDead && a.Info.Traits.Contains<AircraftInfo>() && a.Info.Traits.Get<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
+				.Where(a => !a.IsDead && a.Info.TraitInfosAny<AircraftInfo>() && a.Info.Traits.Get<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
 				.Select(GetRepulsionForce)
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 		}
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
-				.FirstOrDefault(a => a.Info.Traits.Contains<ReservableInfo>());
+				.FirstOrDefault(a => a.Info.TraitInfosAny<ReservableInfo>());
 		}
 
 		protected void ReserveSpawnBuilding()

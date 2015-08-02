@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			renderSimple = self.Trait<RenderSimple>();
-			buildComplete = !self.Info.Traits.Contains<BuildingInfo>();
+			buildComplete = !self.Info.TraitInfosAny<BuildingInfo>();
 		}
 
 		public void BuildingComplete(Actor self)

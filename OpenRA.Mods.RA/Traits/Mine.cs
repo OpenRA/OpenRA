@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void OnCrush(Actor crusher)
 		{
-			if (crusher.Info.Traits.Contains<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
+			if (crusher.Info.TraitInfosAny<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
