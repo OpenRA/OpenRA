@@ -107,7 +107,7 @@ elseif ($command -eq "version")
 	
 	if ($version -ne $null)
 	{
-		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modchooser/mod.yaml")
+		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modchooser/mod.yaml", "mods/all/mod.yaml")
 		foreach ($mod in $mods)
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
