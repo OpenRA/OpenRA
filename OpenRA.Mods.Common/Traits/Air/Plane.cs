@@ -83,25 +83,22 @@ namespace OpenRA.Mods.Common.Traits
 				if (!explored && !Info.MoveIntoShroud)
 					return;
 
-				UnReserve();
+				if (!order.Queued)
+					UnReserve();
 
 				var target = Target.FromCell(self.World, cell);
 				self.SetTargetLine(target, Color.Green);
-				self.CancelActivity();
-				self.QueueActivity(new Fly(self, target));
-				self.QueueActivity(new FlyCircle(self));
+				self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 			}
 			else if (order.OrderString == "Enter")
 			{
 				if (Reservable.IsReserved(order.TargetActor)) return;
 
-				UnReserve();
+				if (!order.Queued)
+					UnReserve();
 
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
-
-				self.CancelActivity();
-				self.QueueActivity(new ReturnToBase(self, order.TargetActor));
-				self.QueueActivity(new ResupplyAircraft(self));
+				self.QueueActivity(order.Queued, Util.SequenceActivities(new ReturnToBase(self, order.TargetActor), new ResupplyAircraft(self)));
 			}
 			else if (order.OrderString == "Stop")
 			{

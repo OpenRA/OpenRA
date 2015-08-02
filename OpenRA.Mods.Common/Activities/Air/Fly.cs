@@ -84,4 +84,26 @@ namespace OpenRA.Mods.Common.Activities
 			yield return target;
 		}
 	}
+
+	public class FlyAndContinueWithCirclesWhenIdle : Fly
+	{
+		public FlyAndContinueWithCirclesWhenIdle(Actor self, Target t)
+			: base(self, t) { }
+
+		public FlyAndContinueWithCirclesWhenIdle(Actor self, Target t, WDist minRange, WDist maxRange)
+			: base(self, t, minRange, maxRange) { }
+
+		public override Activity Tick(Actor self)
+		{
+			var activity = base.Tick(self);
+
+			if (activity == null && !IsCanceled)
+			{
+				self.QueueActivity(new FlyCircle(self));
+				activity = NextActivity;
+			}
+
+			return activity;
+		}
+	}
 }

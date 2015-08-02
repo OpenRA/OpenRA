@@ -49,12 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (Reservation != null)
-			{
-				Reservation.Dispose();
-				Reservation = null;
-			}
-
 			if (order.OrderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
@@ -64,46 +58,45 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var target = Target.FromCell(self.World, cell);
-
 				self.SetTargetLine(target, Color.Green);
-				self.CancelActivity();
-				self.QueueActivity(new HeliFly(self, target));
 
-				if (Info.LandWhenIdle)
-				{
-					if (Info.TurnToLand)
-						self.QueueActivity(new Turn(self, Info.InitialFacing));
+				if (!order.Queued)
+					UnReserve();
 
-					self.QueueActivity(new HeliLand(self, true));
-				}
+				self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
 			}
-
-			if (order.OrderString == "Enter")
+			else if (order.OrderString == "Enter")
 			{
-				if (Reservable.IsReserved(order.TargetActor))
+				Action enter = () =>
 				{
-					self.CancelActivity();
-					self.QueueActivity(new HeliReturn(self));
-				}
-				else
-				{
-					var res = order.TargetActor.TraitOrDefault<Reservable>();
-					if (res != null)
-						Reservation = res.Reserve(order.TargetActor, self, this);
+					if (Reservable.IsReserved(order.TargetActor))
+						self.QueueActivity(order.Queued, new HeliReturn(self));
+					else
+					{
+						var res = order.TargetActor.TraitOrDefault<Reservable>();
+						if (res != null)
+							Reservation = res.Reserve(order.TargetActor, self, this);
 
-					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-					var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
+						var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+						var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
+						self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
-					self.CancelActivity();
-					self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
-					self.QueueActivity(new Turn(self, Info.InitialFacing));
-					self.QueueActivity(new HeliLand(self, false));
-					self.QueueActivity(new ResupplyAircraft(self));
-					self.QueueActivity(new TakeOff(self));
-				}
+						self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
+						self.QueueActivity(new Turn(self, Info.InitialFacing));
+						self.QueueActivity(new HeliLand(self, false));
+						self.QueueActivity(new ResupplyAircraft(self));
+						self.QueueActivity(new TakeOff(self));
+					}
+				};
+
+				self.QueueActivity(order.Queued, new CallFunc(enter));
+
+				if (!order.Queued)
+					UnReserve();
 			}
+			else
+				UnReserve();
 
 			if (order.OrderString == "ReturnToBase")
 			{
