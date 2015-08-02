@@ -15,6 +15,6 @@ namespace OpenRA.Mods.Common.Traits
 {
 	// TODO: Add functionality like a customizable Height that is compared to projectile altitude
 	[Desc("This actor blocks bullets and missiles with 'Blockable' property.")]
-	public class BlocksProjectilesInfo : TraitInfo<BlocksProjectiles> { }
+	public class BlocksProjectilesInfo : TraitInfo<BlocksProjectiles>, IBlocksProjectilesInfo { }
 	public class BlocksProjectiles : IBlocksProjectiles { }
 }

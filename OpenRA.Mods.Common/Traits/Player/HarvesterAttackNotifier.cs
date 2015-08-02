@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// only track last hit against our base
-			if (!self.HasTrait<Harvester>())
+			// only track last hit against our harvesters
+			if (!self.Info.Traits.Contains<HarvesterInfo>())
 				return;
 
 			// don't track self-damage

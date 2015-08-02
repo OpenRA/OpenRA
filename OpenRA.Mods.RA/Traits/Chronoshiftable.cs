@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Traits
 		public virtual bool CanChronoshiftTo(Actor self, CPos targetLocation)
 		{
 			// TODO: Allow enemy units to be chronoshifted into bad terrain to kill them
-			return self.HasTrait<IPositionable>() && self.Trait<IPositionable>().CanEnterCell(targetLocation);
+			return self.Info.Traits.Contains<IPositionableInfo>() && self.Trait<IPositionable>().CanEnterCell(targetLocation);
 		}
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)

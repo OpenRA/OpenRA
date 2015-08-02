@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
 			return HasAnyValidWeapons(target)
-				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.HasTrait<IMove>()));
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.Traits.Contains<IMoveInfo>()));
 		}
 
 		class AttackOrderTargeter : IOrderTargeter

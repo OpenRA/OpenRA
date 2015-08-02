@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter
+	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!target.HasTrait<T>() || !canTarget(target))
+			if (!target.Info.Traits.Contains<T>() || !canTarget(target))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";

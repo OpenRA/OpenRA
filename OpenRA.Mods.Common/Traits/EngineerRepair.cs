@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.HasTrait<EngineerRepairable>())
+				if (!target.Info.Traits.Contains<EngineerRepairableInfo>())
 					return false;
 
 				if (self.Owner.Stances[target.Owner] != Stance.Ally)
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.Info.Traits.Contains<EngineerRepairable>())
+				if (!target.Info.Traits.Contains<EngineerRepairableInfo>())
 					return false;
 
 				if (self.Owner.Stances[target.Owner] != Stance.Ally)

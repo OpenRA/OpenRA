@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Effects
 				contrail.Update(pos);
 
 			if (ticks++ >= length || (info.Blockable && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.HasTrait<IBlocksProjectiles>())))
+				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.Info.Traits.Contains<IBlocksProjectilesInfo>())))
 				Explode(world);
 		}
 

@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Undocked();
 	}
 
+	public interface ITechTreePrerequisiteInfo : ITraitInfo { }
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites { get; }
@@ -86,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
+	public interface IAcceptResourcesInfo : ITraitInfo { }
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
