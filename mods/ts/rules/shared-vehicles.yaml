@@ -32,6 +32,11 @@ MCV:
 		Voice: Move
 	SelectionDecorations:
 		VisualBounds: 42,42
+	RenderSprites:
+		Image: mcv.gdi
+		RaceImages:
+			gdi: mcv.gdi
+			nod: mcv.nod
 
 HARV:
 	Inherits: ^VoxelTank
@@ -87,6 +92,11 @@ HARV:
 		Palette: effect
 	SelectionDecorations:
 		VisualBounds: 36,36
+	RenderSprites:
+		Image: harv.gdi
+		RaceImages:
+			gdi: harv.gdi
+			nod: harv.nod
 
 LPST:
 	Inherits: ^VoxelVehicle
@@ -114,6 +124,11 @@ LPST:
 		TransformSounds:
 		NoTransformSounds:
 		Voice: Move
+	RenderSprites:
+		Image: lpst.gdi
+		RaceImages:
+			gdi: lpst.gdi
+			nod: lpst.nod
 
 GGHUNT:
 	Inherits: ^Vehicle

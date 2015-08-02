@@ -45,9 +45,8 @@ Packages:
 	sno.mix:CRC32
 	snow.mix:CRC32
 	sounds.mix:CRC32
-# TODO: differentiate between:
 	speech01.mix:CRC32 # EVA
-#	speech02.mix:CRC32 # Cabal
+	speech02.mix:CRC32 # Cabal
 	tem.mix:CRC32
 	temperat.mix:CRC32
 # Firestorm

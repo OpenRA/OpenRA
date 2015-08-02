@@ -443,10 +443,6 @@ dbris9sm:
 	idle:
 		Length:*
 
-dbris10sm:
-	idle:
-		Length:*
-
 dbris1lg:
 	idle:
 		Length:*
@@ -480,9 +476,5 @@ dbris8lg:
 		Length:*
 
 dbris9lg:
-	idle:
-		Length:*
-
-dbris10lg:
 	idle:
 		Length:*

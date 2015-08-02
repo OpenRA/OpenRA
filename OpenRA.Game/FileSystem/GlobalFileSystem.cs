@@ -185,10 +185,23 @@ namespace OpenRA.FileSystem
 			return s;
 		}
 
-		public static bool TryOpen(string filename, out Stream s)
+		public static bool TryOpen(string name, out Stream s)
 		{
-			// Check the cache for a quick lookup
-			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1)
+			var filename = name;
+			var foldername = string.Empty;
+
+			// Used for faction specific packages; rule out false positive on Windows C:\ drive notation
+			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitFolder)
+			{
+				var divide = name.Split(':');
+				foldername = divide.First();
+				filename = divide.Last();
+			}
+
+			// Check the cache for a quick lookup if the folder name is unknown
+			// TODO: This disables caching for explicit folder requests
+			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1 && !explicitFolder)
 			{
 				s = GetFromCache(PackageHashType.Classic, filename);
 				if (s != null)
@@ -200,9 +213,11 @@ namespace OpenRA.FileSystem
 			}
 
 			// Ask each package individually
-			var folder = MountedFolders
-				.Where(x => x.Exists(filename))
-				.MaxByOrDefault(x => x.Priority);
+			IFolder folder;
+			if (explicitFolder && !string.IsNullOrEmpty(foldername))
+				folder = MountedFolders.Where(x => x.Name == foldername).MaxByOrDefault(x => x.Priority);
+			else
+				folder = MountedFolders.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
 
 			if (folder != null)
 			{
@@ -214,7 +229,19 @@ namespace OpenRA.FileSystem
 			return false;
 		}
 
-		public static bool Exists(string filename) { return MountedFolders.Any(f => f.Exists(filename)); }
+		public static bool Exists(string name)
+		{
+			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitFolder)
+			{
+				var divide = name.Split(':');
+				var foldername = divide.First();
+				var filename = divide.Last();
+				return MountedFolders.Where(n => n.Name == foldername).Any(f => f.Exists(filename));
+			}
+			else
+				return MountedFolders.Any(f => f.Exists(name));
+		}
 
 		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 

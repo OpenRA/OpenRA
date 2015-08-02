@@ -1,13 +1,21 @@
-mcv:
-	icon: mcvicon
+mcv.gdi:
+	icon: sidec01.mix:mcvicon
+
+mcv.nod:
+	icon: sidec02.mix:mcvicon
 
 apc:
 	icon: apcicon
 
-harv:
-	icon: harvicon
+harv.gdi:
 	harvest: harvestr
 		Length: *
+	icon: sidec01.mix:harvicon
+
+harv.nod:
+	harvest: harvestr
+		Length: *
+	icon: sidec02.mix:harvicon
 
 hvr:
 	icon: hovricon
@@ -16,8 +24,11 @@ hvr:
 	muzzle: gunfire
 		Length: *
 
-lpst:
-	icon: lpsticon
+lpst.gdi:
+	icon: sidec01.mix:lpsticon
+
+lpst.nod:
+	icon: sidec02.mix:lpsticon
 
 repair:
 	icon: rboticon
