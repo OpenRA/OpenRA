@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
+    <Compile Include="OpenRA.Game\CoordinateTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
     <Compile Include="OpenRA.Game\PlatformTest.cs" />
   </ItemGroup>
