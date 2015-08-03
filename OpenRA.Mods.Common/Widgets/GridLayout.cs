@@ -24,14 +24,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (widget.Children.Count == 0)
 			{
-				widget.ContentHeight = widget.ItemSpacing;
-				pos = new int2(widget.ItemSpacing, widget.ItemSpacing);
+				widget.ContentHeight = 2 * widget.TopBottomSpacing;
+				pos = new int2(widget.ItemSpacing, widget.TopBottomSpacing);
 			}
 
-			if (pos.X + widget.ItemSpacing + w.Bounds.Width > widget.Bounds.Width - widget.ScrollbarWidth)
+			if (pos.X + w.Bounds.Width + widget.ItemSpacing > widget.Bounds.Width - widget.ScrollbarWidth)
 			{
 				/* start a new row */
-				pos = new int2(widget.ItemSpacing, widget.ContentHeight);
+				pos = new int2(widget.ItemSpacing, widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing);
 			}
 
 			w.Bounds.X += pos.X;
@@ -39,11 +39,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			pos = pos.WithX(pos.X + w.Bounds.Width + widget.ItemSpacing);
 
-			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + widget.ItemSpacing + w.Bounds.Height);
+			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + w.Bounds.Height + widget.TopBottomSpacing);
 		}
 
-		public void AdjustChildren()
-		{
-		}
+		public void AdjustChildren() { }
 	}
 }

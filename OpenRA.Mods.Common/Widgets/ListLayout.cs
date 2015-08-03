@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Widgets
 					widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
 			}
 
-			// The loop above appended an extra widget.ItemSpacing after the last item. Replace it with proper bottom spacing.
+			// The loop above appended an extra widget.ItemSpacing after the last item.
+			// Replace it with proper bottom spacing.
 			widget.ContentHeight += widget.TopBottomSpacing - widget.ItemSpacing;
 		}
 	}
