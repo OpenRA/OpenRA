@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Scripting
 			: base(context, self)
 		{
 			move = self.Trait<IMove>();
-			attackBase = self.Trait<AttackBase>();
+			attackBase = self.TraitOrDefault<AttackBase>();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -86,7 +86,10 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!targetActor.HasTrait<FrozenUnderFog>() && !Self.Owner.CanTargetActor(targetActor))
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
-			attackBase.AttackTarget(target, true, allowMove);
+			if (attackBase == null)
+				Log.Write("lua", "{0} does not have an Attack* trait. Ignoring order to attack {1}.".F(Self, targetActor));
+			else
+				attackBase.AttackTarget(target, true, allowMove);
 		}
 	}
 }
