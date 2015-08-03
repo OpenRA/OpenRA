@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (string.IsNullOrWhiteSpace(text))
 				return text;
 
-			if (lastCompleted == text)
+			if (lastCompleted == text && candidates.Any())
 			{
 				lastCompleted = prefix + candidates[++currentCandidateIndex % candidates.Count] + suffix;
 				return lastCompleted;
