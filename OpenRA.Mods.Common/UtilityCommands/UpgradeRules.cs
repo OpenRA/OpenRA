@@ -1680,6 +1680,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// WithBuildingExplosion received support for sequence randomization
+				if (engineVersion < 20150803)
+				{
+					if (depth == 2 && parentKey == "WithBuildingExplosion" && node.Key == "Sequence")
+						node.Key = "Sequences";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

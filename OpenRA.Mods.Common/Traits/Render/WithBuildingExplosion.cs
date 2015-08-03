@@ -18,11 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Display explosions over the building footprint when it is destroyed.")]
 	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>
 	{
-		[Desc("Group where Sequence is looked up.")]
+		[Desc("Group where Sequences are looked up.")]
 		public readonly string SequenceCollection = "explosion";
 
-		[Desc("Explosion sequence name to use")]
-		[SequenceReference("SequenceCollection")] public readonly string Sequence = "building";
+		[Desc("Explosion sequence names to use")]
+		[SequenceReference("SequenceCollection")] public readonly string[] Sequences = { "building" };
 
 		[Desc("Delay the explosions by this many ticks.")]
 		public readonly int Delay = 0;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		void SpawnExplosions(World world, IEnumerable<CPos> cells)
 		{
 			foreach (var c in cells)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(c), info.Sequence, info.Palette)));
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(c), info.Sequences.Random(w.SharedRandom), info.Palette)));
 		}
 	}
 }

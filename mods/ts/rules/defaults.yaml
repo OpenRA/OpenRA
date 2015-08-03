@@ -64,6 +64,7 @@
 		DestroyedSounds: crmble2.aud
 	RenderBuilding:
 	WithBuildingExplosion:
+		Sequences: building, large_bang, large_brnl, verylarge_clsn, large_tumu
 	EngineerRepairable:
 	ShakeOnDeath:
 	AcceptsSupplies:
