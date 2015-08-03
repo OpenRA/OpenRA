@@ -214,17 +214,8 @@ namespace OpenRA.Mods.Common.Widgets
 			get { return targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
 		}
 
-		public void ScrollToItem(string itemKey, bool smooth = false)
+		void ScrollToItem(Widget item, bool smooth = false)
 		{
-			var item = Children.FirstOrDefault(c =>
-			{
-				var si = c as ScrollItemWidget;
-				return si != null && si.ItemKey == itemKey;
-			});
-
-			if (item == null)
-				return;
-
 			// Scroll the item to be visible
 			float? newOffset = null;
 			if (item.Bounds.Top + currentListOffset < 0)
@@ -235,6 +226,30 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (newOffset.HasValue)
 				SetListOffset(newOffset.Value, smooth);
+		}
+
+		public void ScrollToItem(string itemKey, bool smooth = false)
+		{
+			var item = Children.FirstOrDefault(c =>
+			{
+				var si = c as ScrollItemWidget;
+				return si != null && si.ItemKey == itemKey;
+			});
+
+			if (item != null)
+				ScrollToItem(item, smooth);
+		}
+
+		public void ScrollToSelectedItem()
+		{
+			var item = Children.FirstOrDefault(c =>
+			{
+				var si = c as ScrollItemWidget;
+				return si != null && si.IsSelected();
+			});
+
+			if (item != null)
+				ScrollToItem(item);
 		}
 
 		public override void Tick()
