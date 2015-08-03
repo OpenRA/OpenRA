@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
-			var c = captor.Info.Traits.GetOrDefault<CapturesInfo>();
+			var c = captor.Info.TraitInfoOrDefault<CapturesInfo>();
 			if (c == null)
 				return false;
 

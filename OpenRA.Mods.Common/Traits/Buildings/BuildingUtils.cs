@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
 		{
-			var lbi = world.Map.Rules.Actors[name].Traits.Get<LineBuildInfo>();
+			var lbi = world.Map.Rules.Actors[name].TraitInfo<LineBuildInfo>();
 			var topLeft = location;	// 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, bi))
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Cell contains an actor. Is it the type we want?
 					if (world.ActorsWithTrait<LineBuildNode>().Any(a =>
 					(a.Actor.Location == cell &&
-						a.Actor.Info.Traits.Get<LineBuildNodeInfo>()
+						a.Actor.Info.TraitInfo<LineBuildNodeInfo>()
 						.Types.Overlaps(lbi.NodeTypes))))
 						dirs[d] = i; // Cell contains actor of correct type
 					else

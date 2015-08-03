@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (producer.Owner != self.Owner || producer.Info.HasTraitInfo<ClonesProducedUnitsInfo>())
 				return;
 
-			var ci = produced.Info.Traits.GetOrDefault<CloneableInfo>();
+			var ci = produced.Info.TraitInfoOrDefault<CloneableInfo>();
 			if (ci == null || !info.CloneableTypes.Overlaps(ci.Types))
 				return;
 

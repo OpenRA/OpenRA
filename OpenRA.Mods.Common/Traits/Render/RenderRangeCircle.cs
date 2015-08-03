@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
-					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
+					if (a.Actor.Info.TraitInfo<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 						foreach (var r in a.Trait.RenderAfterWorld(wr))
 							yield return r;
 		}

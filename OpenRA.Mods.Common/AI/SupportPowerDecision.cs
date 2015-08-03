@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.AI
 					switch (TargetMetric)
 					{
 						case DecisionMetric.Value:
-							var valueInfo = a.Info.Traits.GetOrDefault<ValuedInfo>();
+							var valueInfo = a.Info.TraitInfoOrDefault<ValuedInfo>();
 							return (valueInfo != null) ? valueInfo.Cost * Attractiveness : 0;
 
 						case DecisionMetric.Health:

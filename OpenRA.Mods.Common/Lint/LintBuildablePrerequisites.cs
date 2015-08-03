@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 			// TODO: this check is case insensitive while the real check in-game is not
 			foreach (var i in rules.Actors)
 			{
-				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
+				var bi = i.Value.TraitInfoOrDefault<BuildableInfo>();
 				if (bi != null)
 					foreach (var prereq in bi.Prerequisites)
 						if (!prereq.StartsWith("~disabled"))

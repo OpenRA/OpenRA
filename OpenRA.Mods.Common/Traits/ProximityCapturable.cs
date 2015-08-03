@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanBeCapturedBy(Actor a)
 		{
-			var pc = a.Info.Traits.GetOrDefault<ProximityCaptorInfo>();
+			var pc = a.Info.TraitInfoOrDefault<ProximityCaptorInfo>();
 			return pc != null && pc.Types.Overlaps(Info.CaptorTypes);
 		}
 

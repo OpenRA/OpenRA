@@ -47,17 +47,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var faction = init.Get<FactionInit, string>();
 			var ownerName = init.Get<OwnerInit>().PlayerName;
 			var sequenceProvider = init.World.Map.SequenceProvider;
 			var image = Image ?? init.Actor.Name;
 			var facings = body.QuantizedFacings == -1 ?
-				init.Actor.Traits.Get<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, faction) :
+				init.Actor.TraitInfo<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, faction) :
 				body.QuantizedFacings;
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
-			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 			var orientation = WRot.FromFacing(facing);
 			var components = init.Actor.Traits.WithInterface<IRenderActorPreviewVoxelsInfo>()

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			world.ActorAdded += a =>
 			{
-				var b = a.Info.Traits.GetOrDefault<BuildingInfo>();
+				var b = a.Info.TraitInfoOrDefault<BuildingInfo>();
 				if (b == null)
 					return;
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			world.ActorRemoved += a =>
 			{
-				var b = a.Info.Traits.GetOrDefault<BuildingInfo>();
+				var b = a.Info.TraitInfoOrDefault<BuildingInfo>();
 				if (b == null)
 					return;
 

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
-			var buildingInfo = actor.Traits.GetOrDefault<BuildingInfo>();
+			var buildingInfo = actor.TraitInfoOrDefault<BuildingInfo>();
 			if (buildingInfo != null)
 			{
 				locationOffset = -FootprintUtils.AdjustForBuildingSize(buildingInfo);
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 			td.Add(new FactionInit(owner.Faction));
 			preview.SetPreview(actor, td);
 
-			var ios = actor.Traits.GetOrDefault<IOccupySpaceInfo>();
+			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
 			if (ios != null)
 				footprint = ios.OccupiedCells(actor, CPos.Zero)
 					.Select(c => c.Key - CPos.Zero)
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 				cell += locationOffset;
 				newActorReference.Add(new LocationInit(cell));
 
-				var ios = Actor.Traits.GetOrDefault<IOccupySpaceInfo>();
+				var ios = Actor.TraitInfoOrDefault<IOccupySpaceInfo>();
 				if (ios != null && ios.SharesCell)
 				{
 					var subcell = editorLayer.FreeSubCellAt(cell);

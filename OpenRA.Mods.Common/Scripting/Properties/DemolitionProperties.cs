@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public DemolitionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			info = Self.Info.Traits.Get<C4DemolitionInfo>();
+			info = Self.Info.TraitInfo<C4DemolitionInfo>();
 		}
 
 		[ScriptActorPropertyActivity]

@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.Info.HasTraitInfo<ValuedInfo>())
 			{
-				var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
+				var cost = self.Info.TraitInfo<ValuedInfo>().Cost;
 				attackerStats.KillsCost += cost;
 				defenderStats.DeathsCost += cost;
 			}

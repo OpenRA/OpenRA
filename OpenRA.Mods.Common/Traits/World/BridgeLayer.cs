@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Build a list of templates that should be overlayed with bridges
 			foreach (var bridge in info.Bridges)
 			{
-				var bi = w.Map.Rules.Actors[bridge].Traits.Get<BridgeInfo>();
+				var bi = w.Map.Rules.Actors[bridge].TraitInfo<BridgeInfo>();
 				foreach (var template in bi.Templates)
 					bridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
 			}

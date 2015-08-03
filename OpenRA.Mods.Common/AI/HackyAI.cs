@@ -433,7 +433,7 @@ namespace OpenRA.Mods.Common.AI
 		// For mods like RA (number of building must match the number of aircraft)
 		bool HasAdequateAirUnitReloadBuildings(ActorInfo actorInfo)
 		{
-			var aircraftInfo = actorInfo.Traits.GetOrDefault<AircraftInfo>();
+			var aircraftInfo = actorInfo.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo == null)
 				return true;
 
@@ -453,7 +453,7 @@ namespace OpenRA.Mods.Common.AI
 		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
-			var bi = Map.Rules.Actors[actorType].Traits.GetOrDefault<BuildingInfo>();
+			var bi = Map.Rules.Actors[actorType].TraitInfoOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
@@ -657,8 +657,8 @@ namespace OpenRA.Mods.Common.AI
 
 		CPos FindNextResource(Actor self)
 		{
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			var mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			var passable = (uint)mobileInfo.GetMovementClass(World.TileSet);
 
 			var path = pathfinder.FindPath(
@@ -807,7 +807,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
 				.Where(rp => rp.Actor.Owner == Player &&
-					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.Traits.GetOrDefault<BuildingInfo>())).ToArray();
+					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>())).ToArray();
 
 			foreach (var a in buildings)
 				QueueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
@@ -817,7 +817,7 @@ namespace OpenRA.Mods.Common.AI
 		CPos ChooseRallyLocationNear(Actor producer)
 		{
 			var possibleRallyPoints = Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
-				.Where(c => IsRallyPointValid(c, producer.Info.Traits.GetOrDefault<BuildingInfo>()));
+				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()));
 
 			if (!possibleRallyPoints.Any())
 			{
@@ -863,7 +863,7 @@ namespace OpenRA.Mods.Common.AI
 				if (mcv.IsMoving())
 					continue;
 
-				var factType = mcv.Info.Traits.Get<TransformsInfo>().IntoActor;
+				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
 				var desiredLocation = ChooseBuildLocation(factType, false, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;

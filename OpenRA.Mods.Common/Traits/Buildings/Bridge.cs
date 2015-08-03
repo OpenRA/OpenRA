@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			type = self.Info.Name;
 			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
-			building = self.Info.Traits.Get<BuildingInfo>();
+			building = self.Info.TraitInfo<BuildingInfo>();
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }

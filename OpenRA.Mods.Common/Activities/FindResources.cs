@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Activities
 		public FindResources(Actor self)
 		{
 			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
-			mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();

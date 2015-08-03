@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (actor.First == null)
 				return true;
 
-			var ati = actor.First.Info.Traits.GetOrDefault<AutoTargetInfo>();
+			var ati = actor.First.Info.TraitInfoOrDefault<AutoTargetInfo>();
 			if (ati == null || !ati.EnableStances)
 				return false;
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var facilities = world.ActorsWithTrait<Production>()
 				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>())
-				.OrderBy(f => f.Actor.Info.Traits.Get<ProductionInfo>().Produces.First())
+				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.Select(b => b.Actor)
 				.ToList();
 

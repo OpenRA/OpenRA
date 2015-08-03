@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
 			var facing = 0;
-			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			if (ifacing != null)
 				facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing();
 

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Sell(Actor self)
 		{
 			health = self.TraitOrDefault<Health>();
-			sellableInfo = self.Info.Traits.Get<SellableInfo>();
+			sellableInfo = self.Info.TraitInfo<SellableInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 

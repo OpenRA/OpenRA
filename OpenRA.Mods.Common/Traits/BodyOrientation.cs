@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (info.QuantizedFacings >= 0)
 					return info.QuantizedFacings;
 
-				var qboi = self.Info.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
+				var qboi = self.Info.TraitInfoOrDefault<IQuantizeBodyOrientationInfo>();
 
 				// If a sprite actor has neither custom QuantizedFacings nor a trait implementing IQuantizeBodyOrientationInfo, throw
 				if (qboi == null)

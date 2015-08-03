@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.TraitInfo<MobileInfo>();
 			using (var search = PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
 				.WithCustomCost(loc =>
 				{
@@ -469,7 +469,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
-				var info = self.Info.Traits.Get<HarvesterInfo>();
+				var info = self.Info.TraitInfo<HarvesterInfo>();
 
 				if (res == null || !info.Resources.Contains(res.Info.Name))
 					return false;

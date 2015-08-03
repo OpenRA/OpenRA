@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
 					cursor = "enter-blocked";
@@ -109,14 +109,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
+				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
 					cursor = "enter-blocked";
 					return false;
 				}
 
-				var health = target.Info.Traits.GetOrDefault<HealthInfo>();
+				var health = target.Info.TraitInfoOrDefault<HealthInfo>();
 				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant

@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in AllBuildables(Info.Type))
 			{
-				var bi = a.Traits.Get<BuildableInfo>();
+				var bi = a.TraitInfo<BuildableInfo>();
 
 				produceable.Add(a, new ProductionState());
 				ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(x =>
 					x.Name[0] != '^' &&
 					x.HasTraitInfo<BuildableInfo>() &&
-					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
+					x.TraitInfo<BuildableInfo>().Queue.Contains(category));
 		}
 
 		public void PrerequisitesAvailable(string key)
@@ -250,11 +250,11 @@ namespace OpenRA.Mods.Common.Traits
 				case "StartProduction":
 					{
 						var unit = self.World.Map.Rules.Actors[order.TargetString];
-						var bi = unit.Traits.Get<BuildableInfo>();
+						var bi = unit.TraitInfo<BuildableInfo>();
 						if (!bi.Queue.Contains(Info.Type))
 							return; /* Not built by this queue */
 
-						var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+						var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
 						var time = GetBuildTime(order.TargetString);
 
 						if (BuildableItems().All(b => b.Name != order.TargetString))

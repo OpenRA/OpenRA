@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
-	public interface ISelectionDecorationsInfo
+	public interface ISelectionDecorationsInfo : ITraitInfo
 	{
 		int[] SelectionBoxBounds { get; }
 	}

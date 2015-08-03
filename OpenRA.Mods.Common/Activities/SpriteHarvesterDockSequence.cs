@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			wsb = self.Trait<WithSpriteBody>();
-			wda = self.Info.Traits.Get<WithDockingAnimationInfo>();
+			wda = self.Info.TraitInfo<WithDockingAnimationInfo>();
 		}
 
 		public override Activity OnStateDock(Actor self)

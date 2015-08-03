@@ -18,7 +18,7 @@ namespace OpenRA.Traits
 	{
 		public static int SelectionPriority(this ActorInfo a)
 		{
-			var selectableInfo = a.Traits.GetOrDefault<SelectableInfo>();
+			var selectableInfo = a.TraitInfoOrDefault<SelectableInfo>();
 			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
 		}
 
@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 
 		public static int SelectionPriority(this Actor a)
 		{
-			var basePriority = a.Info.Traits.Get<SelectableInfo>().Priority;
+			var basePriority = a.Info.TraitInfo<SelectableInfo>().Priority;
 			var lp = a.World.LocalPlayer;
 
 			if (a.Owner == lp || lp == null)

@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
-			var buildingTraits = rules.Actors[name].Traits;
-			if (buildingTraits.Contains<BibInfo>() && !buildingTraits.Get<BibInfo>().HasMinibib)
+			var bibInfo = rules.Actors[name].TraitInfoOrDefault<BibInfo>();
+			if (bibInfo != null && !bibInfo.HasMinibib)
 			{
 				dim += new CVec(0, 1);
 				footprint = footprint.Concat(new char[dim.X]);
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static IEnumerable<CPos> Tiles(Actor a)
 		{
-			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location);
+			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.TraitInfo<BuildingInfo>(), a.Location);
 		}
 
 		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)

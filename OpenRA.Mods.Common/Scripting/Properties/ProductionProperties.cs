@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Scripting
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
 			var ri = Self.World.Map.Rules.Actors[actorType];
-			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
 				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Scripting
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
 			var ri = Player.World.Map.Rules.Actors[actorType];
-			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
 				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));

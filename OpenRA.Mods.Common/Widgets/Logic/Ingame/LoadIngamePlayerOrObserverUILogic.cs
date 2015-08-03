@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
-				var objectives = world.LocalPlayer.PlayerActor.Info.Traits.GetOrDefault<MissionObjectivesInfo>();
+				var objectives = world.LocalPlayer.PlayerActor.Info.TraitInfoOrDefault<MissionObjectivesInfo>();
 
 				sidebarTicker.OnTick = () =>
 				{

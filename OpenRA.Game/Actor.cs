@@ -103,7 +103,7 @@ namespace OpenRA
 
 			bounds = Exts.Lazy(() =>
 			{
-				var si = Info.Traits.GetOrDefault<SelectableInfo>();
+				var si = Info.TraitInfoOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
 					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 
@@ -116,7 +116,7 @@ namespace OpenRA
 
 			visualBounds = Exts.Lazy(() =>
 			{
-				var sd = Info.Traits.GetOrDefault<ISelectionDecorationsInfo>();
+				var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
 				if (sd == null || sd.SelectionBoxBounds == null)
 					return bounds.Value;
 

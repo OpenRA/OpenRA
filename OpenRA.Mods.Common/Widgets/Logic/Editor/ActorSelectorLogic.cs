@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!actor.HasTraitInfo<IRenderActorPreviewInfo>())
 					continue;
 
-				var filter = actor.Traits.GetOrDefault<EditorTilesetFilterInfo>();
+				var filter = actor.TraitInfoOrDefault<EditorTilesetFilterInfo>();
 				if (filter != null)
 				{
 					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.TileSet.Id))
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
 
-					var tooltip = actor.Traits.GetOrDefault<TooltipInfo>();
+					var tooltip = actor.TraitInfoOrDefault<TooltipInfo>();
 					item.GetTooltipText = () => tooltip == null ? actor.Name : tooltip.Name + " (" + actor.Name + ")";
 
 					panel.AddChild(item);

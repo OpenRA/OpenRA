@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName)
 		{
-			var mi = self.World.Map.Rules.Actors[unitName].Traits.Get<MobileInfo>();
+			var mi = self.World.Map.Rules.Actors[unitName].TraitInfo<MobileInfo>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)

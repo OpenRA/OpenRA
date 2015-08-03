@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Attacker == null || e.Attacker.Disposed || (!info.FriendlyFire && e.Attacker.Owner.Stances[self.Owner] == Stance.Ally))
 				return;
 
-			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 
 			// Default experience is 100 times our value
 			var exp = info.Experience >= 0

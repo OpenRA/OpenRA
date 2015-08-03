@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
+			var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return;
 

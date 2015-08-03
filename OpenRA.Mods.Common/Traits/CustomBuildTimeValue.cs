@@ -26,11 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static int GetBuildTime(this ActorInfo a)
 		{
-			var csv = a.Traits.GetOrDefault<CustomBuildTimeValueInfo>();
+			var csv = a.TraitInfoOrDefault<CustomBuildTimeValueInfo>();
 			if (csv != null)
 				return csv.Value;
 
-			var cost = a.HasTraitInfo<ValuedInfo>() ? a.Traits.Get<ValuedInfo>().Cost : 0;
+			var cost = a.HasTraitInfo<ValuedInfo>() ? a.TraitInfo<ValuedInfo>().Cost : 0;
 			var time = cost
 							* (25 * 60) /* frames per min */
 							/ 1000;

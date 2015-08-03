@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Restrict duplicate count to a maximum value
 			if (info.MaxDuplicateValue > 0)
 			{
-				var vi = collector.Info.Traits.GetOrDefault<ValuedInfo>();
+				var vi = collector.Info.TraitInfoOrDefault<ValuedInfo>();
 				if (vi != null && vi.Cost > 0)
 					duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.Cost);
 			}
