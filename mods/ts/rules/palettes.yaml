@@ -24,7 +24,6 @@
 		Name: chrome
 		Filename: cameo.pal
 		AllowModifiers: false
-		ShadowIndex: 242
 	PaletteFromFile@pips:
 		Name: pips
 		Filename: palette.pal
