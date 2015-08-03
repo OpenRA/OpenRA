@@ -94,7 +94,7 @@ namespace OpenRA.Platforms.Default
 			GL.EnableClientState(ArrayCap.TextureCoordArray);
 			ErrorHandler.CheckGlError();
 
-			SDL.SDL_SetModState(0);
+			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
 		}
 
@@ -114,10 +114,10 @@ namespace OpenRA.Platforms.Default
 		{
 			var c = cursor as SDL2HardwareCursor;
 			if (c == null)
-				SDL.SDL_ShowCursor(0);
+				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_FALSE);
 			else
 			{
-				SDL.SDL_ShowCursor(1);
+				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
 			}
 		}
