@@ -391,7 +391,7 @@ namespace OpenRA
 
 			Bitmap bitmap;
 			using (new PerfTimer("Renderer.TakeScreenshot"))
-				bitmap = Renderer.TakeScreenshot();
+				bitmap = Renderer.Device.TakeScreenshot();
 
 			ThreadPool.QueueUserWorkItem(_ =>
 			{
