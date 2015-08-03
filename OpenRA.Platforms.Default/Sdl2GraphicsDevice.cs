@@ -76,6 +76,7 @@ namespace OpenRA.Platforms.Default
 
 			context = SDL.SDL_GL_CreateContext(window);
 			SDL.SDL_GL_MakeCurrent(window, context);
+			GraphicsContext.CurrentContext = context;
 
 			GL.LoadAll();
 			ErrorHandler.CheckGlVersion();
