@@ -292,6 +292,8 @@
 		IdleSequences: idle1,idle2
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
+		CrushedSequencePalette: player
+		CrushedPaletteIsPlayerPalette: true
 
 ^Cyborg:
 	Inherits: ^Infantry
@@ -315,6 +317,8 @@
 	ScaredyCat:
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
+		CrushedSequencePalette: player
+		CrushedPaletteIsPlayerPalette: true
 
 ^Vehicle:
 	Inherits@1: ^GainsExperience
