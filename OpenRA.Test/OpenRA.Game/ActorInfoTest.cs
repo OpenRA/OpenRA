@@ -63,7 +63,7 @@ namespace OpenRA.Test
 
 			try
 			{
-				var i = actorInfo.TraitsInConstructOrder();
+				actorInfo.TraitsInConstructOrder();
 				throw new Exception("Exception not thrown!");
 			}
 			catch (Exception e)
@@ -85,7 +85,7 @@ namespace OpenRA.Test
 
 			try
 			{
-				var i = actorInfo.TraitsInConstructOrder();
+				actorInfo.TraitsInConstructOrder();
 				throw new Exception("Exception not thrown!");
 			}
 			catch (Exception e)
