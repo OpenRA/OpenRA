@@ -1270,12 +1270,14 @@ local function debuggerCreateWatchWindow()
       -- store the item to be used in edit/delete actions
       item = watchCtrl:HitTest(watchCtrl:ScreenToClient(wx.wxGetMousePosition()))
       local editlabel = watchCtrl:IsWatch(item) and TR("&Edit Watch") or TR("&Edit Value")
-      watchCtrl:PopupMenu(wx.wxMenu {
+      local menu = wx.wxMenu {
         { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
         { ID_EDITWATCH, editlabel..KSC(ID_EDITWATCH) },
         { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) },
         { ID_COPYWATCHVALUE, TR("&Copy Value")..KSC(ID_COPYWATCHVALUE) },
-      })
+      }
+      PackageEventHandle("onMenuWatch", menu, watchCtrl, event)
+      watchCtrl:PopupMenu(menu)
       item = nil
     end)
 
