@@ -238,7 +238,10 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Surrender")
+			{
 				ForceDefeat(self.Owner);
+				self.Owner.Spectating = true;
+			}
 		}
 	}
 

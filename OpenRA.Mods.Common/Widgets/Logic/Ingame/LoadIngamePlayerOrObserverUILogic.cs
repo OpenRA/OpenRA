@@ -38,7 +38,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (world.LocalPlayer.WinState != WinState.Undefined)
 						Game.RunAfterDelay(objectives != null ? objectives.Info.GameOverDelay : 0, () =>
 						{
-							world.LocalPlayer.Spectating = true;
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});
