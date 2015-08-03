@@ -17,6 +17,8 @@
 		Filename: depth.pal
 	PaletteFromCurrentTileset:
 		Name: terrain
+	PaletteFromCurrentTileset@decoration:
+		Name: terraindecoration
 		ShadowIndex: 1
 	PaletteFromFile@chrome:
 		Name: chrome

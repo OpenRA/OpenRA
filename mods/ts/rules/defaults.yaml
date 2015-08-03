@@ -114,7 +114,7 @@
 	Tooltip:
 		Description: Civilian Building
 	RenderBuilding:
-		Palette: terrain
+		Palette: terraindecoration
 
 ^CivBillboard:
 	Inherits: ^CivBuilding
@@ -136,7 +136,7 @@
 		Lifetime: 180
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium, Veins
 	RenderSprites:
-		Palette: terrain
+		Palette: terraindecoration
 	WithCrateBody:
 		Images: crate
 	CustomSelectionSize:
@@ -533,7 +533,7 @@
 ^Tree:
 	HiddenUnderShroud:
 	RenderSprites:
-		Palette: terrain
+		Palette: terraindecoration
 	WithSpriteBody:
 	AutoSelectionSize:
 	Building:
@@ -550,7 +550,7 @@
 ^Rock:
 	HiddenUnderShroud:
 	RenderSprites:
-		Palette: terrain
+		Palette: terraindecoration
 	WithSpriteBody:
 	AutoSelectionSize:
 	Building:

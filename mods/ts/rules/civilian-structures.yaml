@@ -1274,7 +1274,7 @@ GALITE:
 	Tooltip:
 		Name: Light Post
 	RenderBuilding:
-		Palette: terrain
+		Palette: terraindecoration
 	-WithMakeAnimation:
 	-WithDeathAnimation:
 	Health:
@@ -1354,7 +1354,7 @@ UFO:
 		Dimensions: 6, 4
 		Footprint: xxxxxx xxxxxx xxxxxx xxxxxx
 	RenderBuilding:
-		Palette: terrain
+		Palette: terraindecoration
 	Selectable:
 		Bounds: 144, 72, 0, 0
 	Tooltip:
