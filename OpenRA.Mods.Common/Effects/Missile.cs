@@ -227,11 +227,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				yield return contrail;
 
-			if (!args.SourceActor.World.FogObscures(pos))
+			var world = args.SourceActor.World;
+			if (!world.FogObscures(pos))
 			{
 				if (info.Shadow)
 				{
-					var shadowPos = new WPos(pos.X, pos.Y, 0);
+					var dat = world.Map.DistanceAboveTerrain(pos);
+					var shadowPos = new WPos(pos.X, pos.Y, dat.Length);
 					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
 						yield return r;
 				}
