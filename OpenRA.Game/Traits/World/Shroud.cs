@@ -282,7 +282,7 @@ namespace OpenRA.Traits
 			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
-		bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
+		public bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
 
 		/// <summary>
 		/// Returns a fast exploration lookup that skips the usual validation.
@@ -329,7 +329,7 @@ namespace OpenRA.Traits
 			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
 		}
 
-		bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
+		public bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
 
 		/// <summary>
 		/// Returns a fast visibility lookup that skips the usual validation.

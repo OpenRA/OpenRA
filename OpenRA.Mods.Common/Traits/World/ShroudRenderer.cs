@@ -237,18 +237,18 @@ namespace OpenRA.Mods.Common.Traits
 					currentShroud.CellsChanged -= DirtyCells;
 
 				if (shroud != null)
-				{
 					shroud.CellsChanged += DirtyCells;
 
-					// Needs the anonymous function to ensure the correct overload is chosen
-					visibleUnderShroud = uv => currentShroud.IsExplored(uv);
-					visibleUnderFog = uv => currentShroud.IsVisible(uv);
-				}
+				// Needs the anonymous function to ensure the correct overload is chosen
+				if (shroud != null && shroud.ShroudEnabled)
+					visibleUnderShroud = puv => currentShroud.IsExplored(puv);
 				else
-				{
 					visibleUnderShroud = puv => map.Contains(puv);
+
+				if (shroud != null && shroud.FogEnabled)
+					visibleUnderFog = puv => currentShroud.IsVisible(puv);
+				else
 					visibleUnderFog = puv => map.Contains(puv);
-				}
 
 				currentShroud = shroud;
 				DirtyCells(map.ProjectedCellBounds);
