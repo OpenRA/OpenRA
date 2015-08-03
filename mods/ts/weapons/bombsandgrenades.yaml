@@ -24,6 +24,7 @@ Grenade:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
@@ -55,6 +56,7 @@ Bomb:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
@@ -87,6 +89,7 @@ RPGTower:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
+		ExplosionPalette: player
 		ImpactSound: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
