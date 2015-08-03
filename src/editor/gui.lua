@@ -419,8 +419,7 @@ local function createBottomNotebook(frame)
 
   errorlog:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
-      errorlog:PopupMenu(
-        wx.wxMenu {
+      local menu = wx.wxMenu {
           { ID_UNDO, TR("&Undo") },
           { ID_REDO, TR("&Redo") },
           { },
@@ -431,7 +430,8 @@ local function createBottomNotebook(frame)
           { },
           { ID_CLEAROUTPUT, TR("C&lear Output Window") },
         }
-      )
+      PackageEventHandle("onMenuOutput", menu, errorlog, event)
+      errorlog:PopupMenu(menu)
     end)
 
   errorlog:Connect(ID_CLEAROUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
