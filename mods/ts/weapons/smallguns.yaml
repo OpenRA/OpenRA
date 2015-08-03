@@ -1,7 +1,7 @@
 Minigun:
 	ReloadDelay: 21
 	Range: 4c0
-	Report: INFGUN3.AUD
+	Report: INFGUN3.AUD, GOSTGUN1.AUD, SLVKGUN1.AUD
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
