@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			pos = self.TraitOrDefault<IPositionable>();
 
 			// Parachutable trait is a prerequisite for running this activity
-			para = self.Info.Traits.Get<ParachutableInfo>();
+			para = self.Info.TraitInfo<ParachutableInfo>();
 			fallVector = new WVec(0, 0, para.FallRate);
 			this.dropPosition = dropPosition;
 		}

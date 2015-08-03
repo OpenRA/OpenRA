@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var armorList = new List<string>();
 			foreach (var actorInfo in rules.Actors.Values)
 			{
-				var armor = actorInfo.Traits.GetOrDefault<ArmorInfo>();
+				var armor = actorInfo.TraitInfoOrDefault<ArmorInfo>();
 				if (armor != null)
 					if (!armorList.Contains(armor.Type))
 						armorList.Add(armor.Type);
@@ -49,21 +49,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (actorInfo.Name.StartsWith("^"))
 					continue;
 
-				var buildable = actorInfo.Traits.GetOrDefault<BuildableInfo>();
+				var buildable = actorInfo.TraitInfoOrDefault<BuildableInfo>();
 				if (buildable == null)
 					continue;
 
 				var row = table.NewRow();
-				var tooltip = actorInfo.Traits.GetOrDefault<TooltipInfo>();
+				var tooltip = actorInfo.TraitInfoOrDefault<TooltipInfo>();
 				row["Name"] = tooltip != null ? tooltip.Name : actorInfo.Name;
 
-				var value = actorInfo.Traits.GetOrDefault<ValuedInfo>();
+				var value = actorInfo.TraitInfoOrDefault<ValuedInfo>();
 				row["Cost"] = value != null ? value.Cost : 0;
 
-				var health = actorInfo.Traits.GetOrDefault<HealthInfo>();
+				var health = actorInfo.TraitInfoOrDefault<HealthInfo>();
 				row["HitPoints"] = health != null ? health.HP : 0;
 
-				var armor = actorInfo.Traits.GetOrDefault<ArmorInfo>();
+				var armor = actorInfo.TraitInfoOrDefault<ArmorInfo>();
 				row["Armor"] = armor != null ? armor.Type : "";
 
 				var armaments = actorInfo.Traits.WithInterface<ArmamentInfo>();

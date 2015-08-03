@@ -39,11 +39,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var bodyFacing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 			var turretFacing = init.Contains<TurretFacingInit>() ? init.Get<TurretFacingInit, int>() : t.InitialFacing;
 

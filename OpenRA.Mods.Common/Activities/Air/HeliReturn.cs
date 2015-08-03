@@ -22,13 +22,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public HeliReturn(Actor self)
 		{
-			aircraftInfo = self.Info.Traits.Get<AircraftInfo>();
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 			heli = self.Trait<Helicopter>();
 		}
 
 		public static Actor ChooseHelipad(Actor self)
 		{
-			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
+			var rearmBuildings = self.Info.TraitInfo<HelicopterInfo>().RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
 				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
 		}

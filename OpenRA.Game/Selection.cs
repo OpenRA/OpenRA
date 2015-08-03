@@ -75,7 +75,7 @@ namespace OpenRA
 				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
 					continue;
 
-				var selectable = actor.Info.Traits.GetOrDefault<SelectableInfo>();
+				var selectable = actor.Info.TraitInfoOrDefault<SelectableInfo>();
 				if (selectable == null || !actor.HasVoice(selectable.Voice))
 					continue;
 

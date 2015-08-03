@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			capturable = target.Actor.Trait<ExternalCapturable>();
-			capturesInfo = self.Info.Traits.Get<ExternalCapturesInfo>();
+			capturesInfo = self.Info.TraitInfo<ExternalCapturesInfo>();
 			mobile = self.Trait<Mobile>();
 		}
 

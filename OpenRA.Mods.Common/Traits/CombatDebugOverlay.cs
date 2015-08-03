@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CombatDebugOverlay(Actor self)
 		{
-			health = self.Info.Traits.GetOrDefault<HealthInfo>();
+			health = self.Info.TraitInfoOrDefault<HealthInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 

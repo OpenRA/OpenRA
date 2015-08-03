@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
-	public interface ISelectionDecorationsInfo
+	public interface ISelectionDecorationsInfo : ITraitInfo
 	{
 		int[] SelectionBoxBounds { get; }
 	}
@@ -324,7 +324,7 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(WRot orientation, int facings);
 	}
 
-	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
+	public interface IQuantizeBodyOrientationInfo : ITraitInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
 
 	public interface ITargetableInfo : ITraitInfo
 	{

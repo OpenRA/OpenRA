@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			var collector = landedOn.FirstOrDefault(a =>
 			{
 				// Mobile is (currently) the only trait that supports crushing
-				var mi = a.Info.Traits.GetOrDefault<MobileInfo>();
+				var mi = a.Info.TraitInfoOrDefault<MobileInfo>();
 				if (mi == null)
 					return false;
 

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				var localModifiers = damageModifiers;
-				var healthInfo = victim.Info.Traits.GetOrDefault<HealthInfo>();
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo != null)
 				{
 					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);

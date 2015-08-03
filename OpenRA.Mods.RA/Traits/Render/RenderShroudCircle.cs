@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			yield return new RangeCircleRenderable(
 				centerPosition,
-				ai.Traits.Get<CreatesShroudInfo>().Range,
+				ai.TraitInfo<CreatesShroudInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				self.Info.Traits.Get<CreatesShroudInfo>().Range,
+				self.Info.TraitInfo<CreatesShroudInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));

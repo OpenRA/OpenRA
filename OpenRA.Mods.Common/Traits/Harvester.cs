@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.TraitInfo<MobileInfo>();
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
 					.WithCustomCost(loc =>
@@ -404,8 +404,8 @@ namespace OpenRA.Mods.Common.Traits
 		static CPos? FindNextResourceForBot(Actor self)
 		{
 			// NOTE: This is only used for the AI to find the next available resource to harvest.
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			var mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
@@ -499,7 +499,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
-				var info = self.Info.Traits.Get<HarvesterInfo>();
+				var info = self.Info.TraitInfo<HarvesterInfo>();
 
 				if (res == null || !info.Resources.Contains(res.Info.Name))
 					return false;

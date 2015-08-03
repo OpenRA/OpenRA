@@ -143,7 +143,7 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
+			var targetable = victim.Info.TraitInfoOrDefault<ITargetableInfo>();
 			if (targetable == null || !IsValidTarget(targetable.GetTargetTypes()))
 				return false;
 

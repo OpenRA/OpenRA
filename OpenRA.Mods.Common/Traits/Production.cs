@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocation = CPos.Zero;
 			var target = Target.Invalid;
 
-			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
+			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
 			if (bi != null && bi.ForceFaction != null)
 				factionVariant = bi.ForceFaction;
 
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
 		{
-			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
+			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
 			self.NotifyBlocker(self.Location + s.ExitCell);
 

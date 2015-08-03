@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.SetTargetLine(target, Color.Yellow);
 
-			var range = WDist.FromCells(target.Actor.Info.Traits.Get<GuardableInfo>().Range);
+			var range = WDist.FromCells(target.Actor.Info.TraitInfo<GuardableInfo>().Range);
 			self.QueueActivity(false, new AttackMoveActivity(self, self.Trait<IMove>().MoveFollow(self, target, WDist.Zero, range)));
 		}
 

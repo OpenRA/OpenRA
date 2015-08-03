@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsCorrectCargoType(Actor target)
 		{
-			var ci = target.Info.Traits.Get<CargoInfo>();
+			var ci = target.Info.TraitInfo<CargoInfo>();
 			return ci.Types.Contains(Info.CargoType);
 		}
 

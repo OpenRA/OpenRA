@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			var anim = new Animation(init.World, image, () => facing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));

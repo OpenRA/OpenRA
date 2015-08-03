@@ -26,15 +26,15 @@ namespace OpenRA.Mods.Common.Scripting
 		public CaptureProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			normalInfo = Self.Info.Traits.GetOrDefault<CapturesInfo>();
-			externalInfo = Self.Info.Traits.GetOrDefault<ExternalCapturesInfo>();
+			normalInfo = Self.Info.TraitInfoOrDefault<CapturesInfo>();
+			externalInfo = Self.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
 		}
 
 		[Desc("Captures the target actor.")]
 		public void Capture(Actor target)
 		{
-			var normalCapturable = target.Info.Traits.GetOrDefault<CapturableInfo>();
-			var externalCapturable = target.Info.Traits.GetOrDefault<ExternalCapturableInfo>();
+			var normalCapturable = target.Info.TraitInfoOrDefault<CapturableInfo>();
+			var externalCapturable = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
 			if (normalInfo != null && normalCapturable != null && normalInfo.CaptureTypes.Contains(normalCapturable.Type))
 				Self.QueueActivity(new CaptureActor(Self, target));

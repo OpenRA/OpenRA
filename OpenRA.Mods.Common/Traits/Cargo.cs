@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			helicopter = self.TraitOrDefault<Helicopter>();
 		}
 
-		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
+		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var c in cargo)
 			{
-				var pi = c.Info.Traits.Get<PassengerInfo>();
+				var pi = c.Info.TraitInfo<PassengerInfo>();
 				if (n < pi.Weight)
 					return pi.PipType;
 				else

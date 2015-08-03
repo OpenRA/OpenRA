@@ -63,9 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				var producer = queue.MostLikelyProducer();
 				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
-				var buildingInfo = unit.Traits.Get<BuildingInfo>();
+				var buildingInfo = unit.TraitInfo<BuildingInfo>();
 
-				var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
+				var buildableInfo = unit.TraitInfoOrDefault<BuildableInfo>();
 				if (buildableInfo != null && buildableInfo.ForceFaction != null)
 					faction = buildableInfo.ForceFaction;
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (host == null)
 						return;
 
-					var plugInfo = unit.Traits.GetOrDefault<PlugInfo>();
+					var plugInfo = unit.TraitInfoOrDefault<PlugInfo>();
 					if (plugInfo == null)
 						return;
 

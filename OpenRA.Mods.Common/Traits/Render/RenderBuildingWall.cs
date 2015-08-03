@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
 					{
-						var rb = init.World.Map.Rules.Actors[n].Traits.GetOrDefault<RenderBuildingWallInfo>();
+						var rb = init.World.Map.Rules.Actors[n].TraitInfoOrDefault<RenderBuildingWallInfo>();
 						if (rb != null && rb.Type == Type)
 						{
 							haveNeighbour = true;

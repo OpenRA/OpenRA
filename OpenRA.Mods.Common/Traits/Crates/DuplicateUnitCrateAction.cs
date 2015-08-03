@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
-			var targetable = collector.Info.Traits.GetOrDefault<ITargetableInfo>();
+			var targetable = collector.Info.TraitInfoOrDefault<ITargetableInfo>();
 			if (targetable == null || !info.ValidTargets.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Restrict duplicate count to a maximum value
 			if (info.MaxDuplicateValue > 0)
 			{
-				var vi = collector.Info.Traits.GetOrDefault<ValuedInfo>();
+				var vi = collector.Info.TraitInfoOrDefault<ValuedInfo>();
 				if (vi != null && vi.Cost > 0)
 					duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.Cost);
 			}

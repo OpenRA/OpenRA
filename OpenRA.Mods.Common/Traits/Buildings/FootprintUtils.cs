@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static IEnumerable<CPos> Tiles(Actor a)
 		{
-			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.Traits.Get<BuildingInfo>(), a.Location);
+			return Tiles(a.World.Map.Rules, a.Info.Name, a.Info.TraitInfo<BuildingInfo>(), a.Location);
 		}
 
 		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)
