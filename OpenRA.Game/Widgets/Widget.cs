@@ -131,6 +131,13 @@ namespace OpenRA.Widgets
 			while (WindowList.Count > 0)
 				CloseWindow();
 		}
+
+		public static void ResetTooltips()
+		{
+			// Issue a no-op mouse move to force any tooltips to be recalculated
+			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None, 0,
+				Viewport.LastMousePos, Modifiers.None, 0));
+		}
 	}
 
 	public abstract class Widget
