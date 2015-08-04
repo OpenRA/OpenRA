@@ -246,6 +246,8 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
 
 		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
+
+		[FieldLoader.Ignore] bool initializedCellProjection;
 		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
 		[FieldLoader.Ignore] CellLayer<List<MPos>> inverseCellProjection;
 
@@ -437,6 +439,14 @@ namespace OpenRA
 				rightDelta + new WVec(0, 0, 512 * ramp[2]),
 				bottomDelta + new WVec(0, 0, 512 * ramp[3])
 			}).ToArray();
+		}
+
+		void InitializeCellProjection()
+		{
+			if (initializedCellProjection)
+				return;
+
+			initializedCellProjection = true;
 
 			if (MaximumTerrainHeight != 0)
 			{
@@ -461,6 +471,9 @@ namespace OpenRA
 		{
 			if (MaximumTerrainHeight == 0)
 				return;
+
+			if (!initializedCellProjection)
+				InitializeCellProjection();
 
 			var uv = cell.ToMPos(TileShape);
 
@@ -813,6 +826,9 @@ namespace OpenRA
 			if (MaximumTerrainHeight == 0)
 				return new[] { (PPos)uv };
 
+			if (!initializedCellProjection)
+				InitializeCellProjection();
+
 			if (!cellProjection.Contains(uv))
 				return NoProjectedCells;
 
@@ -826,6 +842,9 @@ namespace OpenRA
 			// Shortcut for mods that don't use heightmaps
 			if (MaximumTerrainHeight == 0)
 				return new[] { uv };
+
+			if (!initializedCellProjection)
+				InitializeCellProjection();
 
 			if (!inverseCellProjection.Contains(uv))
 				return new MPos[0];
