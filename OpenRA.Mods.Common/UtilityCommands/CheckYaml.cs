@@ -49,21 +49,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
-				IEnumerable<Map> maps;
+				var maps = new List<Map>();
 				if (args.Length < 2)
 				{
+					maps.Add(null);
 					Game.ModData.MapCache.LoadMaps();
-					maps = Game.ModData.MapCache
+					maps.AddRange(Game.ModData.MapCache
 						.Where(m => m.Status == MapStatus.Available)
-						.Select(m => m.Map);
+						.Select(m => m.Map));
 				}
 				else
-					maps = new[] { new Map(args[1]) };
+					maps.Add(new Map(args[1]));
 
 				foreach (var testMap in maps)
 				{
-					Console.WriteLine("Testing map: {0}".F(testMap.Title));
-					testMap.PreloadRules();
+					if (testMap != null)
+					{
+						Console.WriteLine("Testing map: {0}".F(testMap.Title));
+						testMap.PreloadRules();
+					}
+					else
+					{
+						Console.WriteLine("Testing mod: {0}".F(Game.ModData.Manifest.Mod.Title));
+					}
 
 					foreach (var customPassType in Game.ModData.ObjectCreator
 						.GetTypesImplementing<ILintPass>())

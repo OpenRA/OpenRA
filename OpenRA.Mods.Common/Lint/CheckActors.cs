@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map == null)
+				return;
+
 			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
 			foreach (var actor in actorTypes)
 				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))

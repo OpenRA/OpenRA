@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Reflection;
 using OpenRA.Traits;
 
@@ -20,24 +21,29 @@ namespace OpenRA.Mods.Common.Lint
 
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
 			this.emitError = emitError;
 
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
-					CheckTrait(actorInfo.Value, traitInfo, map);
+					CheckTrait(actorInfo.Value, traitInfo, rules);
 		}
 
-		void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo, Map map)
+		void CheckTrait(ActorInfo actorInfo, ITraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
 			foreach (var field in actualType.GetFields())
 			{
 				if (field.HasAttribute<ActorReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, map.Rules.Actors, "actor");
+					CheckReference(actorInfo, traitInfo, field, rules.Actors, "actor");
 				if (field.HasAttribute<WeaponReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, map.Rules.Weapons, "weapon");
+					CheckReference(actorInfo, traitInfo, field, rules.Weapons, "weapon");
 				if (field.HasAttribute<VoiceSetReferenceAttribute>())
-					CheckReference(actorInfo, traitInfo, field, map.Rules.Voices, "voice");
+					CheckReference(actorInfo, traitInfo, field, rules.Voices, "voice");
 			}
 		}
 

@@ -19,7 +19,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors)
+			if (map != null && !map.RuleDefinitions.Any() && !map.VoiceDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
 				{
@@ -32,16 +37,16 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(voiceSet))
 								continue;
 
-							CheckVoices(actorInfo.Value, emitError, map, voiceSet);
+							CheckVoices(actorInfo.Value, emitError, rules, voiceSet);
 						}
 					}
 				}
 			}
 		}
 
-		void CheckVoices(ActorInfo actorInfo, Action<string> emitError, Map map, string voiceSet)
+		void CheckVoices(ActorInfo actorInfo, Action<string> emitError, Ruleset rules, string voiceSet)
 		{
-			var soundInfo = map.Rules.Voices[voiceSet.ToLowerInvariant()];
+			var soundInfo = rules.Voices[voiceSet.ToLowerInvariant()];
 
 			foreach (var traitInfo in actorInfo.Traits.WithInterface<ITraitInfo>())
 			{
