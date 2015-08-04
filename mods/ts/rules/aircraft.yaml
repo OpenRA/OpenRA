@@ -45,6 +45,8 @@ DSHP:
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -144,12 +146,19 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Prerequisites: ~disabled
+	RenderSprites:
 	Helicopter:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -181,6 +190,9 @@ TRNSPORT:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
+		AltitudeVelocity: 64
 	Health:
 		HP: 175
 	Armor:

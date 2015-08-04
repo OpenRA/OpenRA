@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
+		bool playedSound;
 
 		public HeliFly(Actor self, Target t)
 		{
@@ -52,6 +53,12 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
+
+			if (!playedSound && helicopter.Info.TakeoffSound != null && self.IsAtGroundLevel())
+			{
+				Sound.Play(helicopter.Info.TakeoffSound);
+				playedSound = true;
+			}
 
 			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
