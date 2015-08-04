@@ -86,35 +86,6 @@ namespace OpenRA.Mods.Common.Traits
 			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
-			foreach (var cell in w.Map.AllCells)
-			{
-				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
-					continue;
-
-				if (!AllowResourceAt(t, cell))
-					continue;
-
-				Content[cell] = CreateResourceCell(t, cell);
-			}
-
-			// Set initial density based on the number of neighboring resources
-			foreach (var cell in w.Map.AllCells)
-			{
-				var type = Content[cell].Type;
-				if (type != null)
-				{
-					// Adjacent includes the current cell, so is always >= 1
-					var adjacent = GetAdjacentCellsWith(type, cell);
-					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
-					var temp = Content[cell];
-					temp.Density = Math.Max(density, 1);
-
-					Content[cell] = temp;
-					dirty.Add(cell);
-				}
-			}
-
 			// Build the sprite layer dictionary for rendering resources
 			// All resources that have the same palette must also share a sheet and blend mode
 			foreach (var r in resources)
@@ -134,6 +105,37 @@ namespace OpenRA.Mods.Common.Traits
 				if (r.Value.Variants.Any(kv => kv.Value.Any(s => s.BlendMode != blendMode)))
 					throw new InvalidDataException("Resource sprites specify different blend modes. "
 						+ "Try using different palettes for resource types that use different blend modes.");
+			}
+
+			foreach (var cell in w.Map.AllCells)
+			{
+				ResourceType t;
+				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
+					continue;
+
+				if (!AllowResourceAt(t, cell))
+					continue;
+
+				Content[cell] = CreateResourceCell(t, cell);
+			}
+
+			foreach (var cell in w.Map.AllCells)
+			{
+				var type = Content[cell].Type;
+				if (type != null)
+				{
+					// Set initial density based on the number of neighboring resources
+					// Adjacent includes the current cell, so is always >= 1
+					var adjacent = GetAdjacentCellsWith(type, cell);
+					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
+					var temp = Content[cell];
+					temp.Density = Math.Max(density, 1);
+
+					// Initialize the RenderContent with the initial map state
+					// because the shroud may not be enabled.
+					RenderContent[cell] = Content[cell] = temp;
+					UpdateRenderedSprite(cell);
+				}
 			}
 		}
 
