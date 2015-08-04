@@ -177,11 +177,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim == null || ticks >= length)
 				yield break;
 
-			if (!args.SourceActor.World.FogObscures(pos))
+			var world = args.SourceActor.World;
+			if (!world.FogObscures(pos))
 			{
 				if (info.Shadow)
 				{
-					var shadowPos = pos - new WVec(0, 0, pos.Z);
+					var dat = world.Map.DistanceAboveTerrain(pos);
+					var shadowPos = pos - new WVec(0, 0, dat.Length);
 					foreach (var r in anim.Render(shadowPos, wr.Palette(info.ShadowPalette)))
 						yield return r;
 				}
