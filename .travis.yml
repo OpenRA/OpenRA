@@ -1,8 +1,7 @@
 # Travis-CI Build for OpenRA
 # see travis-ci.org for details
 
-language: csharp
-mono: 4.0.0
+language: c
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
 sudo: false
@@ -13,8 +12,18 @@ cache:
 
 addons:
   apt:
+    sources:
+    - mono-4.0
     packages:
     - lua5.1
+    - mono-mcs
+    - libmono-system-windows-forms4.0-cil
+    - libmono-system-core4.0-cil
+    - libmono-system-drawing4.0-cil
+    - libmono-system-data4.0-cil
+    - libmono-system-numerics4.0-cil
+    - libmono-system-runtime-serialization4.0-cil
+    - libmono-system-xml-linq4.0-cil
     - nsis
     - nsis-common
     - dpkg
