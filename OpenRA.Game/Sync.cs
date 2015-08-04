@@ -20,22 +20,20 @@ namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class SyncAttribute : Attribute { }
-	public interface ISync { } // marker interface
+
+	// Marker interface
+	public interface ISync { }
 
 	public static class Sync
 	{
-		static readonly ConcurrentCache<Type, DynamicMethod> HashMethods =
-			new ConcurrentCache<Type, DynamicMethod>(GenerateHashFunc);
-		static readonly ConcurrentCache<Type, Func<object, int>> HashFunctions =
-			new ConcurrentCache<Type, Func<object, int>>(
-				type => (Func<object, int>)HashMethods[type].CreateDelegate(typeof(Func<object, int>)));
+		static Cache<Type, Func<object, int>> hashFuncCache = new Cache<Type, Func<object, int>>(t => GenerateHashFunc(t));
 
 		public static int CalculateSyncHash(object obj)
 		{
-			return HashFunctions[obj.GetType()](obj);
+			return hashFuncCache[obj.GetType()](obj);
 		}
 
-		static readonly Dictionary<Type, MethodInfo> SpecializedHashMethods = new Dictionary<Type, MethodInfo>
+		static Dictionary<Type, MethodInfo> hashFunctions = new Dictionary<Type, MethodInfo>()
 		{
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
@@ -53,8 +51,8 @@ namespace OpenRA
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
-			if (SpecializedHashMethods.ContainsKey(type))
-				il.EmitCall(OpCodes.Call, SpecializedHashMethods[type], null);
+			if (hashFunctions.ContainsKey(type))
+				il.EmitCall(OpCodes.Call, hashFunctions[type], null);
 			else if (type == typeof(bool))
 			{
 				var l = il.DefineLabel();
@@ -72,9 +70,9 @@ namespace OpenRA
 			il.Emit(OpCodes.Xor);
 		}
 
-		static DynamicMethod GenerateHashFunc(Type t)
+		public static Func<object, int> GenerateHashFunc(Type t)
 		{
-			var d = new DynamicMethod("Hash_{0}".F(t.Name), typeof(int), new Type[] { typeof(object) }, t);
+			var d = new DynamicMethod("hash_{0}".F(t.Name), typeof(int), new Type[] { typeof(object) }, t);
 			var il = d.GetILGenerator();
 			var this_ = il.DeclareLocal(t).LocalIndex;
 			il.Emit(OpCodes.Ldarg_0);
@@ -82,17 +80,13 @@ namespace OpenRA
 			il.Emit(OpCodes.Stloc, this_);
 			il.Emit(OpCodes.Ldc_I4_0);
 
-			var neededSync = false;
-
-			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
+			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 			foreach (var field in t.GetFields(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
 				il.Emit(OpCodes.Ldfld, field);
 
 				EmitSyncOpcodes(field.FieldType, il);
-				neededSync = true;
 			}
 
 			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
@@ -101,23 +95,10 @@ namespace OpenRA
 				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
 
 				EmitSyncOpcodes(prop.PropertyType, il);
-				neededSync = true;
-			}
-
-			if (t.BaseType != null)
-			{
-				var baseHashFunc = HashMethods[t.BaseType];
-				if (baseHashFunc != null)
-				{
-					il.Emit(OpCodes.Ldloc, this_);
-					il.EmitCall(OpCodes.Call, baseHashFunc, null);
-					il.Emit(OpCodes.Xor);
-					neededSync = true;
-				}
 			}
 
 			il.Emit(OpCodes.Ret);
-			return neededSync ? d : null;
+			return (Func<object, int>)d.CreateDelegate(typeof(Func<object, int>));
 		}
 
 		public static int HashInt2(int2 i2)

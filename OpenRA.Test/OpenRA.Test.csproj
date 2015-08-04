@@ -49,7 +49,6 @@
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
     <Compile Include="OpenRA.Game\PlatformTest.cs" />
-    <Compile Include="OpenRA.Game\SyncTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
