@@ -96,15 +96,15 @@ namespace OpenRA
 			return InnerGet<T>().GetOrDefault(actor.ActorID);
 		}
 
-		public IEnumerable<T> WithInterface<T>(Actor actor)
+		public IEnumerable<T> Where<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return InnerGet<T>().GetMultiple(actor.ActorID);
+			return InnerGet<T>().WhereActor(actor.ActorID);
 		}
 
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
-			return InnerGet<T>().All();
+			return InnerGet<T>().ActorsWithTrait();
 		}
 
 		public void RemoveActor(Actor a)
@@ -154,7 +154,7 @@ namespace OpenRA
 				else return traits[index];
 			}
 
-			public IEnumerable<T> GetMultiple(uint actor)
+			public IEnumerable<T> WhereActor(uint actor)
 			{
 				++Queries;
 				return new MultipleEnumerable(this, actor);
@@ -190,7 +190,7 @@ namespace OpenRA
 				public void Dispose() { }
 			}
 
-			public IEnumerable<TraitPair<T>> All()
+			public IEnumerable<TraitPair<T>> ActorsWithTrait()
 			{
 				++Queries;
 				return new AllEnumerable(this);

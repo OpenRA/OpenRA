@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.AI
 			if (targetable == null)
 				return false;
 
-			var arms = a.TraitsImplementing<Armament>();
+			var arms = a.Traits<Armament>();
 			foreach (var arm in arms)
 				if (arm.Weapon.IsValidTarget(targetable.TargetTypes))
 					return true;

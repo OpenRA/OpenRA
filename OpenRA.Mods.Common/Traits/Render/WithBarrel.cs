@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			body = self.Trait<IBodyOrientation>();
-			armament = self.TraitsImplementing<Armament>()
+			armament = self.Traits<Armament>()
 				.First(a => a.Info.Name == Info.Armament);
-			turreted = self.TraitsImplementing<Turreted>()
+			turreted = self.Traits<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
 			rs = self.Trait<RenderSprites>();

@@ -69,12 +69,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var production = self.TraitOrDefault<Production>();
 
-				var perBuildingQueues = self.TraitsImplementing<ProductionQueue>();
+				var perBuildingQueues = self.Traits<ProductionQueue>();
 				queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 
 				if (queue == null)
 				{
-					var perPlayerQueues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
+					var perPlayerQueues = self.Owner.PlayerActor.Traits<ProductionQueue>();
 					queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 				}
 

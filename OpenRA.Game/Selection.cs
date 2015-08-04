@@ -22,9 +22,9 @@ namespace OpenRA
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
-			foreach (var sel in a.TraitsImplementing<INotifySelected>())
+			foreach (var sel in a.Traits<INotifySelected>())
 				sel.Selected(a);
-			foreach (var ns in w.WorldActor.TraitsImplementing<INotifySelection>())
+			foreach (var ns in w.WorldActor.Traits<INotifySelection>())
 				ns.SelectionChanged();
 		}
 
@@ -58,10 +58,10 @@ namespace OpenRA
 			}
 
 			foreach (var a in newSelection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
+				foreach (var sel in a.Traits<INotifySelected>())
 					sel.Selected(a);
 
-			foreach (var ns in world.WorldActor.TraitsImplementing<INotifySelection>())
+			foreach (var ns in world.WorldActor.Traits<INotifySelection>())
 				ns.SelectionChanged();
 
 			if (world.IsGameOver)

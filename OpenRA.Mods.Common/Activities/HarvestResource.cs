@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			harv.AcceptResource(resource);
 
-			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
+			foreach (var t in self.Traits<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
 			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);

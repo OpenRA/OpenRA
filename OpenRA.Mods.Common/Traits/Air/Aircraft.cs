@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var modifiers = self.TraitsImplementing<ISpeedModifier>()
+				var modifiers = self.Traits<ISpeedModifier>()
 					.Select(m => m.GetSpeedModifier());
 				return Util.ApplyPercentageModifiers(info.Speed, modifiers);
 			}

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			armaments = self.TraitsImplementing<Armament>().ToArray();
+			armaments = self.Traits<Armament>().ToArray();
 
 			foreach (var arm in armaments)
 			{
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var b in arm.Barrels)
 				{
 					var barrel = b;
-					var turreted = self.TraitsImplementing<Turreted>()
+					var turreted = self.Traits<Turreted>()
 						.FirstOrDefault(t => t.Name == arm.Info.Turret);
 
 					// Workaround for broken ternary operators in certain versions of mono (3.10 and

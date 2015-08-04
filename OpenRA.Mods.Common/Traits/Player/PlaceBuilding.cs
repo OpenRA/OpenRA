@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
-				var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
+				var queue = order.TargetActor.Traits<ProductionQueue>()
 					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
 
 				if (queue == null)
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 						return;
 
 					var location = host.Location;
-					var pluggable = host.TraitsImplementing<Pluggable>()
+					var pluggable = host.Traits<Pluggable>()
 						.FirstOrDefault(p => location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
 
 					if (pluggable == null)
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (producer.Actor != null)
-					foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+					foreach (var nbp in producer.Actor.Traits<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(producer.Actor);
 
 				queue.FinishProduction();

@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 				else
 				{
 					AsSprite = target.Trait<RenderSprites>().GetImage(target);
-					var tooltip = target.TraitsImplementing<ITooltip>().FirstOrDefault();
+					var tooltip = target.Traits<ITooltip>().FirstOrDefault();
 					AsPlayer = tooltip.Owner;
 					AsTooltipInfo = tooltip.TooltipInfo;
 				}
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void HandleDisguise(Player oldEffectiveOwner, bool oldDisguiseSetting)
 		{
-			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
+			foreach (var t in self.Traits<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
 			if (Disguised != oldDisguiseSetting && um.Value != null)

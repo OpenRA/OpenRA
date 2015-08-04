@@ -114,7 +114,7 @@ namespace OpenRA.Orders
 
 			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 			{
-				foreach (var o in self.TraitsImplementing<IIssueOrder>()
+				foreach (var o in self.Traits<IIssueOrder>()
 					.SelectMany(trait => trait.Orders
 						.Select(x => new { Trait = trait, Order = x }))
 					.OrderByDescending(x => x.Order.OrderPriority))

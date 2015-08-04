@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
 			armaments.AddRange(
-				passenger.TraitsImplementing<Armament>()
+				passenger.Traits<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)));
 		}
 
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
 
-				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
+				foreach (var npa in self.Traits<INotifyAttack>())
 					npa.Attacking(self, target, a, barrel);
 			}
 		}

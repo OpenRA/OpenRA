@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 
 				foreach (var n in notify)
 					n.MovingToResources(self, closestHarvestablePosition.Value, next);

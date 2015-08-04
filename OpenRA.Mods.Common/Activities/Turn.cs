@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Turn(Actor self, int desiredFacing)
 		{
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
+			moveDisablers = self.Traits<IDisableMove>().ToArray();
 			this.desiredFacing = desiredFacing;
 		}
 

@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.AI
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBaseInfo>, a =>
 			{
 				var sumOfDamage = 0;
-				var arms = a.TraitsImplementing<Armament>();
+				var arms = a.Traits<Armament>();
 				foreach (var arm in arms)
 				{
 					var warhead = arm.Weapon.Warheads.OfType<DamageWarhead>().FirstOrDefault();

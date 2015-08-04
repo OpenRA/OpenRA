@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.AI
 				if (unit != null && unit.Info.TraitInfosAny<AttackBaseInfo>() && !unit.Info.Traits.Contains<AircraftInfo>()
 					&& !unit.IsDisabled())
 				{
-					var arms = unit.TraitsImplementing<Armament>();
+					var arms = unit.Traits<Armament>();
 					foreach (var a in arms)
 					{
 						if (a.Weapon.IsValidTarget(AirTargetTypes))
@@ -106,19 +106,19 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool FullAmmo(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.FullAmmo());
 		}
 
 		protected static bool HasAmmo(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.HasAmmo());
 		}
 
 		protected static bool ReloadsAutomatically(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.Info.SelfReloads);
 		}
 

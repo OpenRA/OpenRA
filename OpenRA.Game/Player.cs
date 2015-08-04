@@ -115,13 +115,13 @@ namespace OpenRA
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
-			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>().ToArray();
+			fogVisibilities = PlayerActor.Traits<IFogVisibilityModifier>().ToArray();
 
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
 			{
-				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Name == botType);
+				var logic = PlayerActor.Traits<IBot>().FirstOrDefault(b => b.Info.Name == botType);
 				if (logic == null)
 					Log.Write("debug", "Invalid bot type: {0}", botType);
 				else
@@ -154,7 +154,7 @@ namespace OpenRA
 
 		public bool CanViewActor(Actor a)
 		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+			if (a.Traits<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
@@ -165,7 +165,7 @@ namespace OpenRA
 			if (HasFogVisibility)
 				return true;
 
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+			if (a.Traits<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);

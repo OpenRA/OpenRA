@@ -86,9 +86,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			// We can't resolve these until runtime
-			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			turret = Exts.Lazy(() => self.Traits<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
-			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
+			ammoPool = Exts.Lazy(() => self.Traits<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
@@ -166,10 +166,10 @@ namespace OpenRA.Mods.Common.Traits
 				Weapon = Weapon,
 				Facing = legacyFacing,
 
-				DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
+				DamageModifiers = self.Traits<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier()).ToArray(),
 
-				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+				InaccuracyModifiers = self.Traits<IInaccuracyModifier>()
 					.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
 				Source = muzzlePosition,
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			});
 
-			foreach (var na in self.TraitsImplementing<INotifyAttack>())
+			foreach (var na in self.Traits<INotifyAttack>())
 				na.Attacking(self, target, this, barrel);
 
 			Recoil = Info.Recoil;
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 				FireDelay = Weapon.BurstDelay;
 			else
 			{
-				var modifiers = self.TraitsImplementing<IReloadModifier>()
+				var modifiers = self.Traits<IReloadModifier>()
 					.Select(m => m.GetReloadModifier());
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;

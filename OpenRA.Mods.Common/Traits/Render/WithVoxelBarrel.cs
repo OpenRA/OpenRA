@@ -59,9 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			body = self.Trait<IBodyOrientation>();
-			armament = self.TraitsImplementing<Armament>()
+			armament = self.Traits<Armament>()
 				.First(a => a.Info.Name == info.Armament);
-			turreted = self.TraitsImplementing<Turreted>()
+			turreted = self.Traits<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();

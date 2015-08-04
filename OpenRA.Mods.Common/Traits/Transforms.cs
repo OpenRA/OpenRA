@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Info.TraitInfosAny<HelicopterInfo>())
 				self.QueueActivity(new HeliLand(self, true));
 
-			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+			foreach (var nt in self.Traits<INotifyTransform>())
 				nt.BeforeTransform(self);
 
 			var transform = new Transform(self, info.IntoActor)

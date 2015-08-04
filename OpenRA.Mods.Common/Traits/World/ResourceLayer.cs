@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
+			var resources = w.WorldActor.Traits<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
 			// Build the sprite layer dictionary for rendering resources

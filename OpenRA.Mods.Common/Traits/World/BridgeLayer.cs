@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				ConvertBridgeToActor(w, cell);
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
-			foreach (var b in w.Actors.SelectMany(a => a.TraitsImplementing<Bridge>()))
+			foreach (var b in w.Actors.SelectMany(a => a.Traits<Bridge>()))
 				b.LinkNeighbouringBridges(w, this);
 		}
 

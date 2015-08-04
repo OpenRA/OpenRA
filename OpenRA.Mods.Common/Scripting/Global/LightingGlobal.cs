@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public LightingGlobal(ScriptContext context)
 			: base(context)
 		{
-			flashPaletteEffects = context.World.WorldActor.TraitsImplementing<FlashPaletteEffect>();
+			flashPaletteEffects = context.World.WorldActor.Traits<FlashPaletteEffect>();
 			lighting = context.World.WorldActor.TraitOrDefault<GlobalLightingPaletteEffect>();
 			hasLighting = lighting != null;
 		}

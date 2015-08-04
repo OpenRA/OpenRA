@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CancelActivity)
 			{
 				var stop = new Order("Stop", self, false);
-				foreach (var t in self.TraitsImplementing<IResolveOrder>())
+				foreach (var t in self.Traits<IResolveOrder>())
 					t.ResolveOrder(self, stop);
 			}
 		}

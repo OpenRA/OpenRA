@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public AirstrikeProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			ap = self.TraitsImplementing<AirstrikePower>().First();
+			ap = self.Traits<AirstrikePower>().First();
 		}
 
 		[Desc("Activate the actor's Airstrike Power.")]

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
 
-			foreach (var condition in self.TraitsImplementing<IPreventsEjectOnDeath>())
+			foreach (var condition in self.Traits<IPreventsEjectOnDeath>())
 				if (condition.PreventsEjectOnDeath(self))
 					return;
 

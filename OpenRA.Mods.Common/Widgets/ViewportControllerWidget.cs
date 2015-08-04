@@ -111,8 +111,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (underCursor != null)
 			{
-				ActorTooltip = underCursor.TraitsImplementing<ITooltip>().First();
-				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+				ActorTooltip = underCursor.Traits<ITooltip>().First();
+				ActorTooltipExtra = underCursor.Traits<IProvideTooltipInfo>().ToArray();
 				TooltipType = WorldTooltipType.Actor;
 				return;
 			}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				FrozenActorTooltip = frozen;
 				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+					ActorTooltipExtra = frozen.Actor.Traits<IProvideTooltipInfo>().ToArray();
 				TooltipType = WorldTooltipType.FrozenActor;
 			}
 		}

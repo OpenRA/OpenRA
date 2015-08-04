@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Scripting
 		public ParatroopersProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			pp = self.TraitsImplementing<ParatroopersPower>().First();
+			pp = self.Traits<ParatroopersPower>().First();
 		}
 
 		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units.")]

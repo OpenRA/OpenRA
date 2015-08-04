@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 
 		void DrawExtraBars(WorldRenderer wr, float2 start, float2 end)
 		{
-			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
+			foreach (var extraBar in actor.Traits<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();
 				if (value != 0)

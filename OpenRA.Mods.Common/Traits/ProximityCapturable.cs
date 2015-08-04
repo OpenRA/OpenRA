@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					w.Add(new FlashTarget(self));
 
-				foreach (var t in self.TraitsImplementing<INotifyCapture>())
+				foreach (var t in self.Traits<INotifyCapture>())
 					t.OnCapture(self, captor, previousOwner, self.Owner);
 			});
 		}

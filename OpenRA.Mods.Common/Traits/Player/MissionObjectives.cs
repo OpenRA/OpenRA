@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			objectives.Insert(newID, new MissionObjective(type, description));
 
 			ObjectiveAdded(player, inhibitAnnouncement);
-			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
+			foreach (var inou in player.PlayerActor.Traits<INotifyObjectivesUpdated>())
 				inou.OnObjectiveAdded(player, newID);
 
 			return newID;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State != ObjectiveState.Incomplete)
 				return;
 
-			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
+			var inous = player.PlayerActor.Traits<INotifyObjectivesUpdated>();
 
 			objectives[objectiveID].State = ObjectiveState.Completed;
 			foreach (var inou in inous)
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Failed)
 				return;
 
-			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
+			var inous = player.PlayerActor.Traits<INotifyObjectivesUpdated>();
 
 			objectives[objectiveID].State = ObjectiveState.Failed;
 			foreach (var inou in inous)

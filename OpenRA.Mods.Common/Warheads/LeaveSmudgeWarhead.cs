@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Warheads
 		{
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(target.CenterPosition);
-			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
+			var smudgeLayers = world.WorldActor.Traits<SmudgeLayer>().ToDictionary(x => x.Info.Type);
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
 			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);

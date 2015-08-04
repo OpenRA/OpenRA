@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			attackPlane = self.TraitOrDefault<AttackPlane>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.Traits<AmmoPool>().ToArray();
 			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
 		}
 

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var u in para.ParachuteUpgrade)
 					um.RevokeUpgrade(self, u, this);
 
-			foreach (var npl in self.TraitsImplementing<INotifyParachuteLanded>())
+			foreach (var npl in self.Traits<INotifyParachuteLanded>())
 				npl.OnLanded();
 
 			return NextActivity;

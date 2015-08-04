@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
-			resourceType = self.World.WorldActor.TraitsImplementing<ResourceType>()
+			resourceType = self.World.WorldActor.Traits<ResourceType>()
 				.FirstOrDefault(t => t.Info.Name == info.ResourceType);
 
 			if (resourceType == null)

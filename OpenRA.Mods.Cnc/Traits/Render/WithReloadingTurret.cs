@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public WithReloadingTurret(Actor self, WithReloadingTurretInfo info)
 			: base(self, info)
 		{
-			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(a => a.Info.Name == info.AmmoPoolName);
+			ammoPool = self.Traits<AmmoPool>().FirstOrDefault(a => a.Info.Name == info.AmmoPoolName);
 			if (ammoPool == null)
 				throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a valid ammo pool for its reloading turret.");
 

@@ -116,7 +116,7 @@ namespace OpenRA.Mods.D2k.Traits
 			};
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius)
-				.Where(isValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
+				.Where(isValidTarget).SelectMany(a => a.Traits<AttractsWorms>());
 
 			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
 

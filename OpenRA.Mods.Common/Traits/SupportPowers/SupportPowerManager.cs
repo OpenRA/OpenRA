@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner)
 				return;
 
-			foreach (var t in a.TraitsImplementing<SupportPower>())
+			foreach (var t in a.Traits<SupportPower>())
 			{
 				var key = MakeKey(t);
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner || !a.Info.TraitInfosAny<SupportPowerInfo>())
 				return;
 
-			foreach (var t in a.TraitsImplementing<SupportPower>())
+			foreach (var t in a.Traits<SupportPower>())
 			{
 				var key = MakeKey(t);
 				Powers[key].Instances.Remove(t);
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner || !a.Info.TraitInfosAny<SupportPowerInfo>())
 				return NoInstances;
 
-			return a.TraitsImplementing<SupportPower>()
+			return a.Traits<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
 

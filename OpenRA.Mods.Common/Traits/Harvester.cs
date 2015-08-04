@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (territory != null)
 						territory.ClaimResource(self, moveTo);
 
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					var notify = self.Traits<INotifyHarvesterAction>();
 					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
@@ -355,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(next);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToResources(self, loc.Value, next);
 
@@ -386,13 +386,13 @@ namespace OpenRA.Mods.Common.Traits
 				var next = new DeliverResources(self);
 				self.QueueActivity(next);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToRefinery(self, order.TargetLocation, next);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovementCancelled(self);
 

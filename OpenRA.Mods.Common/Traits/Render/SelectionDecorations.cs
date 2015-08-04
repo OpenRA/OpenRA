@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
 		{
-			var pipSources = self.TraitsImplementing<IPips>();
+			var pipSources = self.Traits<IPips>();
 			if (!pipSources.Any())
 				yield break;
 
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pal = wr.Palette(Info.Palette);
 			var tagxyOffset = new int2(0, 6);
 
-			foreach (var tags in self.TraitsImplementing<ITags>())
+			foreach (var tags in self.Traits<ITags>())
 			{
 				foreach (var tag in tags.GetTags())
 				{

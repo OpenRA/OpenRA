@@ -355,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
 		public virtual TraitPair<Production> MostLikelyProducer()
 		{
-			var trait = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
+			var trait = self.Traits<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
 			return new TraitPair<Production> { Actor = self, Trait = trait };
 		}
 
@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
+			var sp = self.Traits<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
 			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
 			{
 				FinishProduction();

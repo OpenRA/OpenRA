@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Assume a single exit point for simplicity
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
 
-			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
+			foreach (var tower in self.Traits<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
 			var info = (ProductionAirdropInfo)Info;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (!self.IsInWorld || self.IsDead)
 						return;
 
-					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
+					foreach (var cargo in self.Traits<INotifyDelivery>())
 						cargo.Delivered(self);
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, raceVariant));

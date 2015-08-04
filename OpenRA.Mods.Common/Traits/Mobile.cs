@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return false;
-					var crushables = a.TraitsImplementing<ICrushable>();
+					var crushables = a.Traits<ICrushable>();
 					if (!crushables.Any())
 						return false;
 					foreach (var crushable in crushables)
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return true;
-					var crushables = a.TraitsImplementing<ICrushable>();
+					var crushables = a.Traits<ICrushable>();
 					if (!crushables.Any())
 						return true;
 					foreach (var crushable in crushables)
@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray());
+			speedModifiers = Exts.Lazy(() => self.Traits<ISpeedModifier>().ToArray());
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -558,7 +558,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.Traits<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.WarnCrush(self);
 		}
@@ -570,7 +570,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.Traits<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
 		}

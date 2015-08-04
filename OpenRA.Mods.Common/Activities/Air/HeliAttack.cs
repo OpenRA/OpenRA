@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			Target = target;
 			helicopter = self.Trait<Helicopter>();
 			attackHeli = self.Trait<AttackHeli>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.Traits<AmmoPool>().ToArray();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 		}
 

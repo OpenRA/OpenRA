@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (collected)
 				return;
 
-			var crateActions = self.TraitsImplementing<CrateAction>();
+			var crateActions = self.Traits<CrateAction>();
 
 			self.Dispose();
 			collected = true;

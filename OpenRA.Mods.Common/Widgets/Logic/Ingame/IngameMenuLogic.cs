@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				leaving = true;
 
-				var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+				var iop = world.WorldActor.Traits<IObjectivesPanel>().FirstOrDefault();
 				var exitDelay = iop != null ? iop.ExitDelay : 0;
 				if (mpe != null)
 				{

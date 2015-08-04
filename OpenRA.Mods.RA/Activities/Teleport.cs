@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (teleporter == self && pc != null && !pc.CanTeleport)
 				return NextActivity;
 
-			foreach (var condition in self.TraitsImplementing<IPreventsTeleport>())
+			foreach (var condition in self.Traits<IPreventsTeleport>())
 				if (condition.PreventsTeleport(self))
 					return NextActivity;
 

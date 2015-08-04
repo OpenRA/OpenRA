@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common
 		{
 			foreach (var blocker in blockers)
 			{
-				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
+				foreach (var moveBlocked in blocker.Traits<INotifyBlockingMove>())
 					moveBlocked.OnNotifyBlockingMove(blocker, self);
 			}
 		}

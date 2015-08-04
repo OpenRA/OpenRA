@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 			BuildComplete = true;
 			Locked = false;
 
-			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
+			foreach (var notify in self.Traits<INotifyBuildComplete>())
 				notify.BuildingComplete(self);
 		}
 

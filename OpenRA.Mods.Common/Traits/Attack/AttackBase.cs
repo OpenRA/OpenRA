@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 
-			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
+			var armaments = Exts.Lazy(() => self.Traits<Armament>()
 				.Where(a => info.Armaments.Contains(a.Info.Name)).ToArray());
 
 			getArmaments = () => armaments.Value;

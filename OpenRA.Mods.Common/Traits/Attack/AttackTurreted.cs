@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackTurreted(Actor self, AttackTurretedInfo info)
 			: base(self, info)
 		{
-			turrets = self.TraitsImplementing<Turreted>().ToArray();
+			turrets = self.Traits<Turreted>().ToArray();
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

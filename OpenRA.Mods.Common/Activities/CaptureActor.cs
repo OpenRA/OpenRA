@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					actor.ChangeOwner(self.Owner);
 
-					foreach (var t in actor.TraitsImplementing<INotifyCapture>())
+					foreach (var t in actor.Traits<INotifyCapture>())
 						t.OnCapture(actor, self, oldOwner, self.Owner);
 
 					if (building != null && building.Locked)

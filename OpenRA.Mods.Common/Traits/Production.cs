@@ -101,14 +101,14 @@ namespace OpenRA.Mods.Common.Traits
 				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
 				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					foreach (var t in self.Traits<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
 					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+				foreach (var t in newUnit.Traits<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);
 			});
 		}

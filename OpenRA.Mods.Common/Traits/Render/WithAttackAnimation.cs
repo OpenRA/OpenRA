@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
-			armament = init.Self.TraitsImplementing<Armament>()
+			armament = init.Self.Traits<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
 			wsb = init.Self.Trait<WithSpriteBody>();
 		}

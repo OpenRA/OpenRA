@@ -60,7 +60,7 @@ namespace OpenRA.Graphics
 
 		public void UpdatePalettesForPlayer(string internalName, HSLColor color, bool replaceExisting)
 		{
-			foreach (var pal in World.WorldActor.TraitsImplementing<ILoadsPlayerPalettes>())
+			foreach (var pal in World.WorldActor.Traits<ILoadsPlayerPalettes>())
 				pal.LoadPlayerPalettes(this, internalName, color, replaceExisting);
 		}
 
@@ -162,7 +162,7 @@ namespace OpenRA.Graphics
 			Game.Renderer.DisableScissor();
 
 			var overlayRenderables = World.Selection.Actors.Where(a => !a.Disposed)
-				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
+				.SelectMany(a => a.Traits<IPostRenderSelection>())
 				.SelectMany(t => t.RenderAfterWorld(this));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
@@ -225,7 +225,7 @@ namespace OpenRA.Graphics
 
 		public void RefreshPalette()
 		{
-			palette.ApplyModifiers(World.WorldActor.TraitsImplementing<IPaletteModifier>());
+			palette.ApplyModifiers(World.WorldActor.Traits<IPaletteModifier>());
 			Game.Renderer.SetPalette(palette);
 		}
 

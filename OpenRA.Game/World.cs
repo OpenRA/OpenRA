@@ -58,7 +58,7 @@ namespace OpenRA
 			{
 				IsGameOver = true;
 
-				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
+				foreach (var t in WorldActor.Traits<IGameOver>())
 					t.GameOver(this);
 
 				GameOver();
@@ -161,7 +161,7 @@ namespace OpenRA
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 
 			// Add players
-			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
+			foreach (var cmp in WorldActor.Traits<ICreatePlayers>())
 				cmp.CreatePlayers(this);
 
 			// Set defaults for any unset stances
@@ -188,7 +188,7 @@ namespace OpenRA
 			using (new Support.PerfTimer("ScreenMap.WorldLoaded"))
 				ScreenMap.WorldLoaded(this, wr);
 
-			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
+			foreach (var wlh in WorldActor.Traits<IWorldLoaded>())
 			{
 				// These have already been initialized
 				if (wlh == ScreenMap)
@@ -215,7 +215,7 @@ namespace OpenRA
 		public Actor CreateActor(bool addToWorld, string name, TypeDictionary initDict)
 		{
 			var a = new Actor(this, name, initDict);
-			foreach (var t in a.TraitsImplementing<INotifyCreated>())
+			foreach (var t in a.Traits<INotifyCreated>())
 				t.Created(a);
 			if (addToWorld)
 				Add(a);
@@ -228,7 +228,7 @@ namespace OpenRA
 			actors.Add(a);
 			ActorAdded(a);
 
-			foreach (var t in a.TraitsImplementing<INotifyAddedToWorld>())
+			foreach (var t in a.Traits<INotifyAddedToWorld>())
 				t.AddedToWorld(a);
 		}
 
@@ -238,7 +238,7 @@ namespace OpenRA
 			actors.Remove(a);
 			ActorRemoved(a);
 
-			foreach (var t in a.TraitsImplementing<INotifyRemovedFromWorld>())
+			foreach (var t in a.Traits<INotifyRemovedFromWorld>())
 				t.RemovedFromWorld(a);
 		}
 

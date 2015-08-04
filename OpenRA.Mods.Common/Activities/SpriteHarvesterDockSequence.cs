@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity OnStateDock(Actor self)
 		{
-			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
+			foreach (var trait in self.Traits<INotifyHarvesterAction>())
 				trait.Docked();
 
 			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 				() =>
 				{
 					dockingState = State.Complete;
-					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
+					foreach (var trait in self.Traits<INotifyHarvesterAction>())
 						trait.Undocked();
 				});
 			dockingState = State.Wait;

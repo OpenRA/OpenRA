@@ -91,16 +91,16 @@ namespace OpenRA.Traits
 				Warhead = null,
 			};
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-				.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+			foreach (var nd in self.Traits<INotifyDamage>()
+				.Concat(self.Owner.PlayerActor.Traits<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
+			foreach (var nd in self.Traits<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
 
 			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead)
-				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
-					.Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+				foreach (var nd in repairer.Traits<INotifyAppliedDamage>()
+					.Concat(repairer.Owner.PlayerActor.Traits<INotifyAppliedDamage>()))
 					nd.AppliedDamage(repairer, self, ai);
 		}
 
@@ -115,8 +115,8 @@ namespace OpenRA.Traits
 			// Apply any damage modifiers
 			if (!ignoreModifiers && damage > 0)
 			{
-				var modifiers = self.TraitsImplementing<IDamageModifier>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+				var modifiers = self.Traits<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.Traits<IDamageModifier>())
 					.Select(t => t.GetDamageModifier(attacker, warhead));
 
 				damage = Util.ApplyPercentageModifiers(damage, modifiers);
@@ -133,23 +133,23 @@ namespace OpenRA.Traits
 				Warhead = warhead,
 			};
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-					 .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+			foreach (var nd in self.Traits<INotifyDamage>()
+					 .Concat(self.Owner.PlayerActor.Traits<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
 			if (DamageState != oldState)
-				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
+				foreach (var nd in self.Traits<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
 
 			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead)
-				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
-					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+				foreach (var nd in attacker.Traits<INotifyAppliedDamage>()
+					 .Concat(attacker.Owner.PlayerActor.Traits<INotifyAppliedDamage>()))
 					nd.AppliedDamage(attacker, self, ai);
 
 			if (hp == 0)
 			{
-				foreach (var nd in self.TraitsImplementing<INotifyKilled>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
+				foreach (var nd in self.Traits<INotifyKilled>()
+						.Concat(self.Owner.PlayerActor.Traits<INotifyKilled>()))
 					nd.Killed(self, ai);
 
 				if (RemoveOnDeath)

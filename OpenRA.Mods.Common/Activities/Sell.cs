@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			var refund = (cost * sellableInfo.RefundPercent * (health == null ? 1 : health.HP)) / (100 * (health == null ? 1 : health.MaxHP));
 			playerResources.GiveCash(refund);
 
-			foreach (var ns in self.TraitsImplementing<INotifySold>())
+			foreach (var ns in self.Traits<INotifySold>())
 				ns.Sold(self);
 
 			if (refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))

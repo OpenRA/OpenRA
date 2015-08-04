@@ -41,14 +41,14 @@ namespace OpenRA.Mods.Common.Traits
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
-			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
+			var turreted = self.Traits<Turreted>().FirstOrDefault();
 			return () => turreted.TurretFacing;
 		}
 
 		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
-			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
+			turreted = init.Self.Traits<Turreted>().FirstOrDefault();
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 

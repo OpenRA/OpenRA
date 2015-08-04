@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 
 						target.Actor.ChangeOwner(self.Owner);
 
-						foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
+						foreach (var t in target.Actor.Traits<INotifyCapture>())
 							t.OnCapture(target.Actor, self, oldOwner, self.Owner);
 
 						capturable.EndCapture();

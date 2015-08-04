@@ -103,7 +103,7 @@ namespace OpenRA
 			{
 				var si = Info.TraitInfoOrDefault<SelectableInfo>();
 				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+					Traits<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 
 				var offset = -size / 2;
 				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
@@ -127,18 +127,18 @@ namespace OpenRA
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
 
-			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
-			renders = TraitsImplementing<IRender>().ToArray();
-			disables = TraitsImplementing<IDisable>().ToArray();
+			renderModifiers = Traits<IRenderModifier>().ToArray();
+			renders = Traits<IRender>().ToArray();
+			disables = Traits<IDisable>().ToArray();
 		}
 
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
-			currentActivity = Traits.Util.RunActivity(this, currentActivity);
+			currentActivity = OpenRA.Traits.Util.RunActivity(this, currentActivity);
 
 			if (!wasIdle && IsIdle)
-				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
+				foreach (var n in Traits<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
 		}
 
@@ -217,9 +217,9 @@ namespace OpenRA
 			return World.TraitDict.GetOrDefault<T>(this);
 		}
 
-		public IEnumerable<T> TraitsImplementing<T>()
+		public IEnumerable<T> Traits<T>()
 		{
-			return World.TraitDict.WithInterface<T>(this);
+			return World.TraitDict.Where<T>(this);
 		}
 
 		public void AddTrait(object trait)
@@ -237,7 +237,7 @@ namespace OpenRA
 				if (IsInWorld)
 					World.Remove(this);
 
-				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+				foreach (var t in Traits<INotifyActorDisposing>())
 					t.Disposing(this);
 
 				World.TraitDict.RemoveActor(this);
@@ -269,7 +269,7 @@ namespace OpenRA
 				if (wasInWorld)
 					w.Add(this);
 
-				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
+				foreach (var t in this.Traits<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
 		}

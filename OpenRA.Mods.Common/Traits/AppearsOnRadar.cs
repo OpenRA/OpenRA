@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
 		{
-			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
+			var mod = self.Traits<IRadarColorModifier>().FirstOrDefault();
 			var color = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
 
 			if (info.UseLocation)
