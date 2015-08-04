@@ -25,7 +25,7 @@ twin: Twin Cannon
 vector1a: Vector
 work226m: Workmen
 
-#Counterstrike tracks
+# Counterstrike tracks
 2nd_hand: The Second Hand
 backstab: Backstab
 shut_it: Shut It
@@ -35,7 +35,7 @@ twinmix1: Twin Cannon Remix
 vr2: Voice Rhythm 2
 araziod: Arazoid
 
-#Aftermath tracks
+# Aftermath tracks
 bog: Bog
 gloom: Gloom
 rpt: Running through Pipes (Mech Man 2)
@@ -44,3 +44,7 @@ float_v2: Floating
 grndwire: Ground Wire
 search: The Search
 wastelnd: Wasteland
+
+# Special effects
+rain: Rain (ambient)
+	Hidden: true
