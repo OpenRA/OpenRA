@@ -193,7 +193,7 @@ namespace OpenRA.Traits
 			foreach (var puv in cells)
 			{
 				var uv = (MPos)puv;
-				if (!explored[uv])
+				if (map.Contains(puv) && !explored[uv])
 				{
 					explored[uv] = true;
 					changed.Add(puv);
