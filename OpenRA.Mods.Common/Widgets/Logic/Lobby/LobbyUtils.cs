@@ -104,19 +104,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, spawnPoints, setupItem);
 		}
 
-		public static void ShowRaceDropDown(DropDownButtonWidget dropdown, Session.Client client,
+		public static void ShowFactionDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, Dictionary<string, LobbyFaction> factions)
 		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (race, itemTemplate) =>
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (factionId, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => client.Faction == race,
-					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
-				var faction = factions[race];
+					() => client.Faction == factionId,
+					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, factionId))));
+				var faction = factions[factionId];
 				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
-				flag.GetImageName = () => race;
+				flag.GetImageName = () => factionId;
 				item.GetTooltipText = () => faction.Description;
 				return item;
 			};
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
 			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
-			dropdown.OnMouseDown = _ => ShowRaceDropDown(dropdown, c, orderManager, factions);
+			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 			var factionDescription = factions[c.Faction].Description;
 			dropdown.GetTooltipText = () => factionDescription;
 			SetupFactionWidget(dropdown, s, c, factions);
