@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Create player palettes by applying alpha transparency to another player palette.")]
 	class PaletteFromPlayerPaletteWithAlphaInfo : ITraitInfo
