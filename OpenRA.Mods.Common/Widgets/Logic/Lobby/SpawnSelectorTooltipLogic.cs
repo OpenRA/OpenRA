@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 				{
 					labelText = occupant.PlayerName;
-					playerCountry = occupant.Country;
+					playerCountry = occupant.Faction;
 					playerTeam = occupant.Team;
 					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
