@@ -218,14 +218,13 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     -- go last to first as selection positions we captured may be affected
     -- by text changes
     for line = eline, sline, -1 do
-      local pos = sel and (sline == eline or rect)
-        and ssel-editor:PositionFromLine(sline)+1 or 1
+      local pos = sel and (sline == eline or rect) and ssel-editor:PositionFromLine(sline)+1 or 1
       local text = editor:GetLine(line)
+      local validline = (line == sline or line < eline or esel-editor:PositionFromLine(line) > 0)
       local _, cpos = text:find("^%s*"..qlc, pos)
-      if not comment and cpos then
+      if not comment and cpos and validline then
         editor:DeleteRange(cpos-#lc+editor:PositionFromLine(line), #lc)
-      elseif comment and text:find("%S")
-      and (line == sline or line < eline or esel-editor:PositionFromLine(line) > 0) then
+      elseif comment and text:find("%S") and validline then
         editor:SetTargetStart(pos+editor:PositionFromLine(line)-1)
         editor:SetTargetEnd(editor:GetTargetStart())
         editor:ReplaceTarget(lc)
