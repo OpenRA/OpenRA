@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] SouthOffset = null;
 
 		[Desc("The name of the weapon to use when demolishing the bridge")]
-		public readonly string DemolishWeapon = "Demolish";
+		[WeaponReference] public readonly string DemolishWeapon = "Demolish";
 
 		public object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 
