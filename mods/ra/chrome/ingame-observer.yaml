@@ -89,6 +89,7 @@ Container@OBSERVER_WIDGETS:
 					Font: Bold
 					VisualHeight: 0
 					Background: sidebar-button-observershroud
+					SeparatorImage: observer-separator
 					Children:
 						LogicKeyListener@SHROUD_KEYHANDLER:
 						Image@FLAG:
