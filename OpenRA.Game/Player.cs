@@ -121,7 +121,7 @@ namespace OpenRA
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
 			{
-				var logic = PlayerActor.Traits<IBot>().FirstOrDefault(b => b.Info.Name == botType);
+				var logic = PlayerActor.FirstTraitOrDefault<IBot>(b => b.Info.Name == botType);
 				if (logic == null)
 					Log.Write("debug", "Invalid bot type: {0}", botType);
 				else
@@ -154,7 +154,7 @@ namespace OpenRA
 
 		public bool CanViewActor(Actor a)
 		{
-			if (a.Traits<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+			if (a.FirstTraitOrDefault<IVisibilityModifier>(t => !t.IsVisible(a, this)) != null)
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
@@ -165,7 +165,7 @@ namespace OpenRA
 			if (HasFogVisibility)
 				return true;
 
-			if (a.Traits<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
+			if (a.FirstTraitOrDefault<IVisibilityModifier>(t => !t.IsVisible(a, this)) != null)
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);

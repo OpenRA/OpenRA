@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Orders
 				return false;
 
 			var location = host.Location;
-			return host.Traits<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
+			return host.FirstTraitOrDefault<Pluggable>(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type)) != null;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }

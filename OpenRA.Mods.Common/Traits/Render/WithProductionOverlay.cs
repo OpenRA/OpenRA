@@ -67,16 +67,13 @@ namespace OpenRA.Mods.Common.Traits
 			// search for the queue here once so we don't rely on order of trait initialization
 			if (queue == null)
 			{
-				var production = self.TraitOrDefault<Production>();
+				var production = self.Trait<Production>();
 
-				var perBuildingQueues = self.Traits<ProductionQueue>();
-				queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
+				queue = self.FirstTraitOrDefault<ProductionQueue>(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 
 				if (queue == null)
-				{
-					var perPlayerQueues = self.Owner.PlayerActor.Traits<ProductionQueue>();
-					queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
-				}
+					queue = self.Owner.PlayerActor.FirstTraitOrDefault<ProductionQueue>(q =>
+						q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 
 				if (queue == null)
 					throw new InvalidOperationException("Can't find production queues.");

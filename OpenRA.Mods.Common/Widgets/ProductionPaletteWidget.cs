@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buildableItems = CurrentQueue.BuildableItems();
 
-			var pio = currentQueue.Actor.Owner.PlayerActor.Traits<IProductionIconOverlay>().FirstOrDefault();
+			var pio = currentQueue.Actor.Owner.PlayerActor.FirstTraitOrDefault<IProductionIconOverlay>();
 			var pioOffset = pio != null ? pio.Offset(IconSize) : new float2(0, 0);
 
 			// Icons

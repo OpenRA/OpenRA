@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			return target.Traits<ITargetable>().Any(t => t.TargetTypes.Intersect(targetTypes).Any());
+			return target.FirstTraitOrDefault<ITargetable>(t => t.TargetTypes.Intersect(targetTypes).Any()) != null;
 		}
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)

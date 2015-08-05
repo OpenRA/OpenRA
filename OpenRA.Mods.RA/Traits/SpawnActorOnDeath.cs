@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				// TODO: This will only take the first turret if there are multiple
 				// This isn't a problem with the current units, but may be a problem for mods
-				var turreted = self.Traits<Turreted>().FirstOrDefault();
+				var turreted = self.FirstTraitOrDefault<Turreted>();
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 

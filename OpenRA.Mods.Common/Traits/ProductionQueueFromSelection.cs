@@ -57,8 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 					.SelectMany(a => a.Traits<Production>())
 					.SelectMany(t => t.Info.Produces);
 
-				queue = world.LocalPlayer.PlayerActor.Traits<ProductionQueue>()
-					.FirstOrDefault(q => q.Enabled && types.Contains(q.Info.Type));
+				queue = world.LocalPlayer.PlayerActor.FirstTraitOrDefault<ProductionQueue>(q => q.Enabled && types.Contains(q.Info.Type));
 			}
 
 			if (queue == null)

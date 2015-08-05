@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Objectives/Stats tab
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
-			var iop = world.WorldActor.Traits<IObjectivesPanel>().FirstOrDefault();
+			var iop = world.WorldActor.FirstTraitOrDefault<IObjectivesPanel>();
 			var hasObjectives = hasError || (lp != null && iop != null && iop.PanelName != null);
 
 			if (hasObjectives)

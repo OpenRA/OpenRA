@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (underCursor != null)
 			{
-				ActorTooltip = underCursor.Traits<ITooltip>().First();
+				ActorTooltip = underCursor.FirstTrait<ITooltip>();
 				ActorTooltipExtra = underCursor.Traits<IProvideTooltipInfo>().ToArray();
 				TooltipType = WorldTooltipType.Actor;
 				return;

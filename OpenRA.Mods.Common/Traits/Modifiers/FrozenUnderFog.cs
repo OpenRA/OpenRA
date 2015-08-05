@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
-			tooltip = Exts.Lazy(() => init.Self.Traits<ITooltip>().FirstOrDefault());
+			tooltip = Exts.Lazy(() => init.Self.FirstTraitOrDefault<ITooltip>());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 
 			frozen = new Dictionary<Player, FrozenActor>();

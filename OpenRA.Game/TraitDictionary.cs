@@ -84,16 +84,52 @@ namespace OpenRA
 				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 		}
 
-		public T Get<T>(Actor actor)
+		public T Single<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
-			return InnerGet<T>().Get(actor.ActorID);
+			return InnerGet<T>().Single(actor.ActorID);
 		}
 
-		public T GetOrDefault<T>(Actor actor)
+		public T Single<T>(Actor actor, Func<T, bool> predicate)
 		{
 			CheckDestroyed(actor);
-			return InnerGet<T>().GetOrDefault(actor.ActorID);
+			return InnerGet<T>().Single(actor.ActorID, predicate);
+		}
+
+		public T SingleOrDefault<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().SingleOrDefault(actor.ActorID);
+		}
+
+		public T SingleOrDefault<T>(Actor actor, Func<T, bool> predicate)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().SingleOrDefault(actor.ActorID, predicate);
+		}
+
+		public T First<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().First(actor.ActorID);
+		}
+
+		public T First<T>(Actor actor, Func<T, bool> predicate)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().First(actor.ActorID, predicate);
+		}
+
+		public T FirstOrDefault<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().FirstOrDefault(actor.ActorID);
+		}
+
+		public T FirstOrDefault<T>(Actor actor, Func<T, bool> predicate)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().FirstOrDefault(actor.ActorID, predicate);
 		}
 
 		public IEnumerable<T> Where<T>(Actor actor)
@@ -135,15 +171,74 @@ namespace OpenRA
 				traits.Insert(insertIndex, (T)trait);
 			}
 
-			public T Get(uint actor)
+			public T First(uint actor)
 			{
-				var result = GetOrDefault(actor);
-				if (result == null)
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				if (index >= actors.Count || actors[index].ActorID != actor)
 					throw new InvalidOperationException("Actor does not have trait of type `{0}`".F(typeof(T)));
-				return result;
+				return traits[index];
 			}
 
-			public T GetOrDefault(uint actor)
+			public T First(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				if (index >= actors.Count || actors[index].ActorID != actor)
+					throw new InvalidOperationException("Actor does not have trait of type `{0}`".F(typeof(T)));
+				do
+					if (predicate(traits[index]))
+						return traits[index];
+				while (++index < actors.Count && actors[index].ActorID == actor);
+				throw new InvalidOperationException("Actor does not have matching trait of type `{0}`".F(typeof(T)));
+			}
+
+			public T FirstOrDefault(uint actor)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				if (index >= actors.Count || actors[index].ActorID != actor)
+					return default(T);
+				return traits[index];
+			}
+
+			public T FirstOrDefault(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				for (; index < actors.Count && actors[index].ActorID == actor; index++)
+					if (predicate(traits[index]))
+						return traits[index];
+				return default(T);
+			}
+
+			public T Single(uint actor)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				if (index >= actors.Count || actors[index].ActorID != actor)
+					throw new InvalidOperationException("Actor does not have trait of type `{0}`".F(typeof(T)));
+				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
+					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
+				return traits[index];
+			}
+
+			public T Single(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				for (; index < actors.Count && actors[index].ActorID == actor; index++)
+					if (predicate(traits[index]))
+						break;
+				if (index >= actors.Count)
+					throw new InvalidOperationException("Actor does not have matching trait of type `{0}`".F(typeof(T)));
+				for (var i = index + 1; i < actors.Count && actors[i].ActorID == actor; i++)
+					if (predicate(traits[i]))
+						throw new InvalidOperationException("Actor {0} has multiple matching traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
+				return traits[index];
+			}
+
+			public T SingleOrDefault(uint actor)
 			{
 				++Queries;
 				var index = actors.BinarySearchMany(actor);
@@ -151,7 +246,22 @@ namespace OpenRA
 					return default(T);
 				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
 					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
-				else return traits[index];
+				return traits[index];
+			}
+
+			public T SingleOrDefault(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				for (; index < actors.Count && actors[index].ActorID == actor; index++)
+					if (predicate(traits[index]))
+						break;
+				if (index >= actors.Count)
+					return default(T);
+				for (var i = index + 1; i < actors.Count && actors[i].ActorID == actor; i++)
+					if (predicate(traits[i]))
+						throw new InvalidOperationException("Actor {0} has multiple matching traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
+				return traits[index];
 			}
 
 			public IEnumerable<T> WhereActor(uint actor)

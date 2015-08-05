@@ -45,14 +45,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Per-actor queue
 			// Note: this includes disabled queues, as each bar must bind to exactly one queue.
-			queue = self.Traits<ProductionQueue>()
-				.FirstOrDefault(q => type == null || type == q.Info.Type);
+			queue = self.FirstTraitOrDefault<ProductionQueue>(q => type == null || type == q.Info.Type);
 
 			if (queue == null)
 			{
 				// No queues available - check for classic production queues
-				queue = self.Owner.PlayerActor.Traits<ProductionQueue>()
-					.FirstOrDefault(q => type == null || type == q.Info.Type);
+				queue = self.Owner.PlayerActor.FirstTraitOrDefault<ProductionQueue>(q => type == null || type == q.Info.Type);
 			}
 
 			if (queue == null)

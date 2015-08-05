@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			body = self.Trait<IBodyOrientation>();
-			turreted = self.Traits<Turreted>()
-				.First(tt => tt.Name == info.Turret);
+			turreted = self.FirstTrait<Turreted>(tt => tt.Name == info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),

@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 				else
 				{
 					AsSprite = target.Trait<RenderSprites>().GetImage(target);
-					var tooltip = target.Traits<ITooltip>().FirstOrDefault();
+					var tooltip = target.FirstTraitOrDefault<ITooltip>();
 					AsPlayer = tooltip.Owner;
 					AsTooltipInfo = tooltip.TooltipInfo;
 				}

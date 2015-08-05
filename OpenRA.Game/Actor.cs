@@ -101,9 +101,15 @@ namespace OpenRA
 
 			bounds = Exts.Lazy(() =>
 			{
+				int2 size;
 				var si = Info.TraitInfoOrDefault<SelectableInfo>();
-				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-					Traits<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+				if (si != null && si.Bounds != null)
+					size = new int2(si.Bounds[0], si.Bounds[1]);
+				else
+				{
+					var i = FirstTraitOrDefault<IAutoSelectionSize>();
+					size = i != null ? i.SelectionSize(this) : new int2();
+				}
 
 				var offset = -size / 2;
 				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
@@ -209,12 +215,42 @@ namespace OpenRA
 
 		public T Trait<T>()
 		{
-			return World.TraitDict.Get<T>(this);
+			return World.TraitDict.Single<T>(this);
+		}
+
+		public T Trait<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.Single<T>(this, predicate);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.TraitDict.GetOrDefault<T>(this);
+			return World.TraitDict.SingleOrDefault<T>(this);
+		}
+
+		public T TraitOrDefault<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.SingleOrDefault<T>(this, predicate);
+		}
+
+		public T FirstTrait<T>()
+		{
+			return World.TraitDict.First<T>(this);
+		}
+
+		public T FirstTrait<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.First<T>(this, predicate);
+		}
+
+		public T FirstTraitOrDefault<T>()
+		{
+			return World.TraitDict.FirstOrDefault<T>(this);
+		}
+
+		public T FirstTraitOrDefault<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.FirstOrDefault<T>(this, predicate);
 		}
 
 		public IEnumerable<T> Traits<T>()

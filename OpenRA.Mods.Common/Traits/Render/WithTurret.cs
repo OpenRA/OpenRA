@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<IBodyOrientation>();
 			Attack = self.TraitOrDefault<AttackBase>();
-			t = self.Traits<Turreted>()
-				.First(tt => tt.Name == info.Turret);
+			t = self.FirstTrait<Turreted>(tt => tt.Name == info.Turret);
 			arms = self.Traits<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
 

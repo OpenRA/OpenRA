@@ -86,9 +86,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			// We can't resolve these until runtime
-			turret = Exts.Lazy(() => self.Traits<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			turret = Exts.Lazy(() => self.FirstTraitOrDefault<Turreted>(t => t.Name == info.Turret));
 			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
-			ammoPool = Exts.Lazy(() => self.Traits<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
+			ammoPool = Exts.Lazy(() => self.FirstTraitOrDefault<AmmoPool>(la => la.Info.Name == info.AmmoPoolName));
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
