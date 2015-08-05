@@ -1390,7 +1390,7 @@ KENN:
 	Bib:
 		HasMinibib: True
 	RallyPoint:
-		RallyPoint: 0,2
+		Offset: 0,2
 	Exit:
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1

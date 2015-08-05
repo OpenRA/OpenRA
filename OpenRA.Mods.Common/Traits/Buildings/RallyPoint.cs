@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used to waypoint units after production or repair is finished.")]
 	public class RallyPointInfo : ITraitInfo
 	{
-		public readonly CVec RallyPoint = new CVec(1, 3);
 		public readonly string IndicatorPalettePrefix = "player";
+		public readonly CVec Offset = new CVec(1, 3);
 
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}

@@ -87,7 +87,7 @@ GAPILE:
 	RevealsShroud:
 		Range: 5c0
 	RallyPoint:
-		RallyPoint: 2,3
+		Offset: 2,3
 	Exit@1:
 		SpawnOffset: -256,1024,0
 		ExitCell: 2,2
@@ -130,7 +130,7 @@ GAWEAP:
 	RevealsShroud:
 		Range: 4c0
 	RallyPoint:
-		RallyPoint: 6,1
+		Offset: 6,1
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 4,1

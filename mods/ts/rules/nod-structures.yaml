@@ -100,7 +100,7 @@ NAHAND:
 		SpawnOffset: 384,768,0
 		ExitCell: 3,2
 	RallyPoint:
-		RallyPoint: 3,3
+		Offset: 3,3
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -138,7 +138,7 @@ NAWEAP:
 	RevealsShroud:
 		Range: 4c0
 	RallyPoint:
-		RallyPoint: 6,1
+		Offset: 6,1
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 4,1
