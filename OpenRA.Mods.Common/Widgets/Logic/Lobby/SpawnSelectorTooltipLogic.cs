@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var cachedWidth = 0;
 			var labelText = "";
-			string playerCountry = null;
+			string playerFaction = null;
 			var playerTeam = -1;
 
 			tooltipContainer.BeforeRender = () =>
@@ -44,20 +44,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (occupant == null)
 				{
 					labelText = "Available spawn";
-					playerCountry = null;
+					playerFaction = null;
 					playerTeam = 0;
 					widget.Bounds.Height = singleHeight;
 				}
 				else
 				{
 					labelText = occupant.PlayerName;
-					playerCountry = occupant.Faction;
+					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
 					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
 
-				label.Bounds.X = playerCountry != null ? flag.Bounds.Right + labelMargin : labelMargin;
+				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
 
 				var textWidth = ownerFont.Measure(labelText).X;
 				if (textWidth != cachedWidth)
@@ -71,9 +71,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			label.GetText = () => labelText;
-			flag.IsVisible = () => playerCountry != null;
+			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
-			flag.GetImageName = () => playerCountry;
+			flag.GetImageName = () => playerFaction;
 			team.GetText = () => "Team {0}".F(playerTeam);
 			team.IsVisible = () => playerTeam > 0;
 		}
