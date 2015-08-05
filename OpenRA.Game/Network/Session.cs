@@ -151,7 +151,7 @@ namespace OpenRA.Network
 			public bool Closed;	// Host has explicitly closed this slot.
 
 			public bool AllowBots;
-			public bool LockRace;
+			public bool LockFaction;
 			public bool LockColor;
 			public bool LockTeam;
 			public bool LockSpawn;

@@ -749,7 +749,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 
 						// Map has disabled race changes
-						if (server.LobbyInfo.Slots[targetClient.Slot].LockRace)
+						if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 							return true;
 
 						targetClient.Faction = parts[1];
@@ -900,7 +900,7 @@ namespace OpenRA.Mods.Common.Server
 				PlayerReference = pr.Name,
 				Closed = false,
 				AllowBots = pr.AllowBots,
-				LockRace = pr.LockFaction,
+				LockFaction = pr.LockFaction,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
 				LockSpawn = pr.LockSpawn,

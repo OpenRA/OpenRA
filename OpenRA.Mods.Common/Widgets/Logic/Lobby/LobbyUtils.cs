@@ -398,7 +398,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Dictionary<string, LobbyFaction> factions)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
-			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
+			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 			var factionDescription = factions[c.Faction].Description;
 			dropdown.GetTooltipText = () => factionDescription;
