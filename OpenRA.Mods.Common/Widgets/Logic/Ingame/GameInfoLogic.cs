@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Traits;
@@ -38,10 +37,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
-				objectivesTabButton.GetText = () => "Objectives";
+				objectivesTabButton.GetText = () => hasError ? "Script Error" : "Objectives";
 				objectivesTabButton.IsVisible = () => lp != null && numTabs > 1;
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
-				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
+				objectivesTabButton.IsHighlighted = () =>
+				{
+					if (hasError)
+						return Game.LocalTick % 20 < 10;
+
+					return activePanel == IngameInfoPanel.Objectives;
+				};
 
 				var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
 				var objectivesPanel = widget.Get<ContainerWidget>("OBJECTIVES_PANEL");

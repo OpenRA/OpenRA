@@ -10,6 +10,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Font: Bold
 			Align:Center
 			Text: The map script has encountered a fatal error
+			TextColor: 255,0,0
 		Label@DESCB:
 			X: 15
 			Y: 45
