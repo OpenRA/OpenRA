@@ -79,10 +79,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// Update mouseover
 				if (oldListOffset != currentListOffset)
-				{
-					var mi = new MouseInput(MouseInputEvent.Move, MouseButton.None, 0, Viewport.LastMousePos, Modifiers.None, 0);
-					Ui.HandleInput(mi);
-				}
+					Ui.ResetTooltips();
 			}
 		}
 
@@ -266,9 +263,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				currentListOffset += offsetDiff * SmoothScrollSpeed.Clamp(0.1f, 1.0f);
 
-				// Update mouseover
-				var mi = new MouseInput(MouseInputEvent.Move, MouseButton.None, 0, Viewport.LastMousePos, Modifiers.None, 0);
-				Ui.HandleInput(mi);
+				Ui.ResetTooltips();
 			}
 			else
 				SetListOffset(targetListOffset, false);

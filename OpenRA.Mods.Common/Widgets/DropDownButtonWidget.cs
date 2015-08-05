@@ -67,6 +67,8 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.RemoveChild(fullscreenMask);
 			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
+
+			Ui.ResetTooltips();
 		}
 
 		public void AttachPanel(Widget p) { AttachPanel(p, null); }
