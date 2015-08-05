@@ -17,16 +17,11 @@ allyrepair:
 		Length: *
 		Tick: 160
 
-# TODO: fix/replace them, just placeholders
 rallypoint:
-	flag: smokland
-		Start: 40
-		Length: 50
-		Offset: 5,-3
-		BlendMode: Additive
-	circles: ring
-		Length: 12
-		BlendMode: Additive
+	flag: mouse
+		Start: 221
+		Length: 8
+	circles: null
 
 beacon:
 	arrow: mouse

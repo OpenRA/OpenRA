@@ -101,6 +101,8 @@ NAHAND:
 		ExitCell: 3,2
 	RallyPoint:
 		Offset: 3,3
+		Palette: mouse
+		IsPlayerPalette: false
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -139,6 +141,8 @@ NAWEAP:
 		Range: 4c0
 	RallyPoint:
 		Offset: 6,1
+		Palette: mouse
+		IsPlayerPalette: false
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 4,1
@@ -181,6 +185,8 @@ NAHPAD:
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	RallyPoint:
+		Palette: mouse
+		IsPlayerPalette: false
 	Production:
 		Produces: Air
 	PrimaryBuilding:
