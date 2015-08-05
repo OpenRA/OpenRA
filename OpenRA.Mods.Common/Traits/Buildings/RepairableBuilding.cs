@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorImage = "allyrepair";
-		public readonly string IndicatorSequence = "repair";
+		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "repair";
 
 		[Desc("Overrides the IndicatorPalettePrefix.")]
 		public readonly string IndicatorPalette = "";
