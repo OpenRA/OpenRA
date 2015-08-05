@@ -95,8 +95,8 @@ namespace OpenRA
 				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
-				Faction = ChooseFaction(world, client.Race, !pr.LockFaction);
-				DisplayFaction = ChooseDisplayFaction(world, client.Race);
+				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
+				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
 			}
 			else
 			{

@@ -102,13 +102,13 @@ namespace OpenRA.Network
 			public int Index;
 			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
 			public HSLColor Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
-			public string Race;
+			public string Faction;
 			public int SpawnPoint;
 			public string Name;
 			public string IpAddress;
 			public ClientState State = ClientState.Invalid;
 			public int Team;
-			public string Slot;	// slot ID, or null for observer
+			public string Slot;	// Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
@@ -118,7 +118,7 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("Client@{0}".F(this.Index), FieldSaver.Save(this));
+				return new MiniYamlNode("Client@{0}".F(Index), FieldSaver.Save(this));
 			}
 		}
 
@@ -141,14 +141,14 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("ClientPing@{0}".F(this.Index), FieldSaver.Save(this));
+				return new MiniYamlNode("ClientPing@{0}".F(Index), FieldSaver.Save(this));
 			}
 		}
 
 		public class Slot
 		{
-			public string PlayerReference;	// playerReference to bind against.
-			public bool Closed;	// host has explicitly closed this slot.
+			public string PlayerReference;	// PlayerReference to bind against.
+			public bool Closed;	// Host has explicitly closed this slot.
 
 			public bool AllowBots;
 			public bool LockRace;
@@ -164,7 +164,7 @@ namespace OpenRA.Network
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("Slot@{0}".F(this.PlayerReference), FieldSaver.Save(this));
+				return new MiniYamlNode("Slot@{0}".F(PlayerReference), FieldSaver.Save(this));
 			}
 		}
 

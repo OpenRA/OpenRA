@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 			ClientIndex = client.Index;
 			PlayerName = client.Name;
 			Team = client.Team;
-			Faction = client.Race;
+			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
 		}
 
