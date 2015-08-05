@@ -137,8 +137,8 @@ namespace OpenRA
 		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
 		public bool IsAlliedWith(Player p)
 		{
-			// Observers are considered as allies
-			return p == null || Stances[p] == Stance.Ally || p.Spectating;
+			// Observers are considered allies to active combatants
+			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
 		}
 
 		public void SetStance(Player target, Stance s)
