@@ -112,6 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.HasTrait<IFacing>())
 				self.QueueActivity(new Turn(self, info.Facing));
 
+			if (self.HasTrait<Helicopter>())
+				self.QueueActivity(new HeliLand(self, true));
+
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);
 
