@@ -133,3 +133,8 @@ CRAT0A:
 CRAT0B:
 	Inherits: ^Box
 
+DRUM01:
+	Inherits: ^Drum
+
+DRUM02:
+	Inherits: ^Drum

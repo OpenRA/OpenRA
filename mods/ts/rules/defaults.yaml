@@ -581,3 +581,8 @@
 	Inherits: ^Decoration
 	Tooltip:
 		Name: Box
+
+^Drum:
+	Inherits: ^Decoration
+	Tooltip:
+		Name: Drum
