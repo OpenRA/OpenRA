@@ -201,6 +201,7 @@
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
+    <Compile Include="Orders\AircraftMoveOrderTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="Pathfinder\CellInfo.cs" />
     <Compile Include="PlayerExtensions.cs" />
