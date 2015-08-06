@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		Actor dest;
 		WPos w1, w2, w3;
 
-		public ReturnToBase(Actor self, Actor dest)
+		public ReturnToBase(Actor self, Actor dest = null)
 		{
 			this.dest = dest;
 			plane = self.Trait<Plane>();
