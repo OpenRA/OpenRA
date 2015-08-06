@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class DropDownButtonWidget : ButtonWidget
 	{
+		public readonly string SeparatorCollection = "dropdown";
+		public readonly string SeparatorImage = "separator";
+
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			WidgetUtils.DrawRGBA(image, stateOffset + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - image.Bounds.Height) / 2));
 
-			var separator = ChromeProvider.GetImage("dropdown", "separator");
+			var separator = ChromeProvider.GetImage(SeparatorCollection, SeparatorImage);
 			WidgetUtils.DrawRGBA(separator, new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (rb.Height - separator.Bounds.Height) / 2));
 		}
 
