@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Fly : Activity
 	{
-		readonly Plane plane;
+		readonly Aircraft plane;
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
 
 		public Fly(Actor self, Target t)
 		{
-			plane = self.Trait<Plane>();
+			plane = self.Trait<Aircraft>();
 			target = t;
 		}
 
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WDist desiredAltitude)
+		public static void FlyToward(Actor self, Aircraft plane, int desiredFacing, WDist desiredAltitude)
 		{
 			desiredAltitude = new WDist(plane.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(plane.CenterPosition);
 

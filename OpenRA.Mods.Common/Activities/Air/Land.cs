@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 	public class Land : Activity
 	{
 		readonly Target target;
-		readonly Plane plane;
+		readonly Aircraft plane;
 
 		public Land(Actor self, Target t)
 		{
 			target = t;
-			plane = self.Trait<Plane>();
+			plane = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)

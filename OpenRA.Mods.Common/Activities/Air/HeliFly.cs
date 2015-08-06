@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliFly : Activity
 	{
-		readonly Helicopter helicopter;
+		readonly Aircraft helicopter;
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public HeliFly(Actor self, Target t)
 		{
-			helicopter = self.Trait<Helicopter>();
+			helicopter = self.Trait<Aircraft>();
 			target = t;
 		}
 
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WDist targetAltitude)
+		public static bool AdjustAltitude(Actor self, Aircraft helicopter, WDist targetAltitude)
 		{
 			targetAltitude = new WDist(helicopter.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(helicopter.CenterPosition);
 
@@ -105,9 +105,9 @@ namespace OpenRA.Mods.Common.Activities
 
 	public class HeliFlyAndLandWhenIdle : HeliFly
 	{
-		private readonly HelicopterInfo info;
+		private readonly AircraftInfo info;
 
-		public HeliFlyAndLandWhenIdle(Actor self, Target t, HelicopterInfo info)
+		public HeliFlyAndLandWhenIdle(Actor self, Target t, AircraftInfo info)
 			: base(self, t)
 		{
 			this.info = info;

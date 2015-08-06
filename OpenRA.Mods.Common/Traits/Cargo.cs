@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int totalWeight = 0;
 		int reservedWeight = 0;
-		Helicopter helicopter;
+		Aircraft aircraft;
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			helicopter = self.TraitOrDefault<Helicopter>();
+			aircraft = self.TraitOrDefault<Aircraft>();
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				Unloading = true;
 				self.CancelActivity();
-				if (helicopter != null)
+				if (aircraft != null)
 					self.QueueActivity(new HeliLand(self, true));
 				self.QueueActivity(new UnloadCargo(self, true));
 			}
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 			}
 
-			return !IsEmpty(self) && (helicopter == null || helicopter.CanLand(self.Location))
+			return !IsEmpty(self) && (aircraft == null || aircraft.CanLand(self.Location))
 				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
 		}
 

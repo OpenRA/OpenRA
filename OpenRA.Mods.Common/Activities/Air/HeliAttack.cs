@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -19,7 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliAttack : Activity
 	{
-		readonly Helicopter helicopter;
+		readonly Aircraft helicopter;
 		readonly AttackHeli attackHeli;
 		readonly AmmoPool[] ammoPools;
 		readonly bool attackOnlyVisibleTargets;
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliAttack(Actor self, Target target, bool attackOnlyVisibleTargets = true)
 		{
 			Target = target;
-			helicopter = self.Trait<Helicopter>();
+			helicopter = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;

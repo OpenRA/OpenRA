@@ -17,11 +17,11 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliReturn : Activity
 	{
-		readonly Helicopter heli;
+		readonly Aircraft heli;
 
 		public HeliReturn(Actor self)
 		{
-			heli = self.Trait<Helicopter>();
+			heli = self.Trait<Aircraft>();
 		}
 
 		public Actor ChooseHelipad(Actor self)

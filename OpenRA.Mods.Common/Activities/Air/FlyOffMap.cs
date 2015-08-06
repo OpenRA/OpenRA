@@ -10,17 +10,16 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyOffMap : Activity
 	{
-		readonly Plane plane;
+		readonly Aircraft plane;
 
 		public FlyOffMap(Actor self)
 		{
-			plane = self.Trait<Plane>();
+			plane = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)

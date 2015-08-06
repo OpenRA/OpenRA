@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (randomize)
 				dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<PlaneInfo>().CruiseAltitude.Length;
+			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromFacing(dropFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
 			target = target + new WVec(0, 0, altitude);

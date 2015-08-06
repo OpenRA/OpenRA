@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -18,11 +16,11 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliFlyCircle : Activity
 	{
-		readonly Helicopter helicopter;
+		readonly Aircraft helicopter;
 
 		public HeliFlyCircle(Actor self)
 		{
-			helicopter = self.Trait<Helicopter>();
+			helicopter = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
