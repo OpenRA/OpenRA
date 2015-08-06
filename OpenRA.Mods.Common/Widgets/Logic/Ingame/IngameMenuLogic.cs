@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -34,6 +35,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var hideMenu = false;
 			menu.Get("MENU_BUTTONS").IsVisible = () => !hideMenu;
+
+			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
@@ -102,13 +106,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER");
 			surrenderButton.IsVisible = () => world.Type == WorldType.Regular;
-			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
+			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined) || hasError;
 			surrenderButton.OnClick = () =>
 			{
 				hideMenu = true;
 				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, showMenu);
 			};
-			surrenderButton.IsDisabled = () => world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined;
 
 			var saveMapButton = menu.Get<ButtonWidget>("SAVE_MAP");
 			saveMapButton.IsVisible = () => world.Type == WorldType.Editor;
