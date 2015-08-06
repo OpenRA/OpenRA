@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				objectivesTabButton.GetText = () => "Objectives";
-				objectivesTabButton.IsVisible = () => lp != null && numTabs > 1;
+				objectivesTabButton.IsVisible = () => lp != null && numTabs > 1 && !hasError;
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
 				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				mapTabButton.Text = "Briefing";
-				mapTabButton.IsVisible = () => numTabs > 1;
+				mapTabButton.IsVisible = () => numTabs > 1 && !hasError;
 				mapTabButton.OnClick = () => activePanel = IngameInfoPanel.Map;
 				mapTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Map;
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				numTabs++;
 				var debugTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				debugTabButton.Text = "Debug";
-				debugTabButton.IsVisible = () => lp != null && world.LobbyInfo.GlobalSettings.AllowCheats && numTabs > 1;
+				debugTabButton.IsVisible = () => lp != null && world.LobbyInfo.GlobalSettings.AllowCheats && numTabs > 1 && !hasError;
 				debugTabButton.IsDisabled = () => world.IsGameOver;
 				debugTabButton.OnClick = () => activePanel = IngameInfoPanel.Debug;
 				debugTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Debug;
