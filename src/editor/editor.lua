@@ -844,12 +844,14 @@ function CreateEditor(bare)
 
   editor:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
-      editor.updated = TimeGet()
-
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false
       end
       local evtype = event:GetModificationType()
+      if bit.band(evtype, wxstc.wxSTC_MOD_CHANGEMARKER) == 0 then
+        -- this event is being called on OSX too frequently, so skip these notifications
+        editor.updated = TimeGet()
+      end
       local pos = event:GetPosition()
       local firstLine = editor:LineFromPosition(pos)
       local inserted = bit.band(evtype, wxstc.wxSTC_MOD_INSERTTEXT) ~= 0
