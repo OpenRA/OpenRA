@@ -543,33 +543,6 @@ function CreateAutoCompList(editor,key,pos)
     rest = rest:gsub("[^%w_]","")
   end
 
-  local last = key:match("([%w_]+)%s*$")
-
-  -- build dynamic word list
-  -- only if api search couldnt descend
-  -- ie we couldnt find matching sub items
-  local dw = ""
-  if (last and #last >= (ide.config.acandtip.startat or 2)) then
-    last = last:lower()
-    if dynamicwords[last] then
-      local list = dynamicwords[last]
-      table.sort(list,function(a,b)
-          local ma,mb = a:sub(1,#last)==last, b:sub(1,#last)==last
-          if (ma and mb) or (not ma and not mb) then return a<b end
-          return ma
-        end)
-      -- ignore if word == last and sole user
-      for i,v in ipairs(list) do
-        if (v:lower() == last and dywordentries[v] == 1) then
-          table.remove(list,i)
-          break
-        end
-      end
-
-      dw = table.concat(list," ")
-    end
-  end
-
   -- list from api
   local apilist = getAutoCompApiList(tab.childs or tab,rest,method)
 
@@ -616,7 +589,18 @@ function CreateAutoCompList(editor,key,pos)
     end
   end
 
-  local compstr = ""
+  -- include dynamic words
+  local last = key:match("([%w_]+)%s*$")
+  if (last and #last >= (ide.config.acandtip.startat or 2)) then
+    last = last:lower()
+    for i,v in ipairs(dynamicwords[last] or {}) do
+      -- ignore if word == last and sole user
+      if (v:lower() == last and dywordentries[v] == 1) then break end
+      table.insert(apilist, v)
+    end
+  end
+
+  local li
   if apilist then
     if (#rest > 0) then
       local strategy = ide.config.acandtip.strategy
@@ -661,11 +645,7 @@ function CreateAutoCompList(editor,key,pos)
       else prev = apilist[i] end
     end
 
-    compstr = table.concat(apilist," ")
+    li = table.concat(apilist," ")
   end
-
-  -- concat final, list complete first
-  local li = compstr .. (#compstr > 0 and #dw > 0 and " " or "") .. dw
-
-  return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li) or nil
+  return li and #li > 1024 and li:sub(1,1024).."..." or li
 end
