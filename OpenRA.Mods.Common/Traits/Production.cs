@@ -35,39 +35,50 @@ namespace OpenRA.Mods.Common.Traits
 		public ProductionInfo Info;
 		public string Faction { get; private set; }
 
+		readonly bool occupiesSpace;
+
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
+			occupiesSpace = init.Self.Info.Traits.WithInterface<IOccupySpaceInfo>().Any();
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
 		{
-			var exit = self.Location + exitinfo.ExitCell;
-			var spawn = self.CenterPosition + exitinfo.SpawnOffset;
-			var to = self.World.Map.CenterOfCell(exit);
-
-			var fi = producee.Traits.GetOrDefault<IFacingInfo>();
-			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
-
-			var exitLocation = rp.Value != null ? rp.Value.Location : exit;
-			var target = Target.FromCell(self.World, exitLocation);
+			var exit = CPos.Zero;
+			var exitLocation = CPos.Zero;
+			var target = Target.Invalid;
 
 			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
 			if (bi != null && bi.ForceFaction != null)
 				factionVariant = bi.ForceFaction;
 
+			var td = new TypeDictionary
+			{
+				new OwnerInit(self.Owner),
+			};
+
+			if (occupiesSpace)
+			{
+				exit = self.Location + exitinfo.ExitCell;
+				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
+				var to = self.World.Map.CenterOfCell(exit);
+
+				var fi = producee.Traits.GetOrDefault<IFacingInfo>();
+				var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
+
+				exitLocation = rp.Value != null ? rp.Value.Location : exit;
+				target = Target.FromCell(self.World, exitLocation);
+
+				td.Add(new LocationInit(exit));
+				td.Add(new CenterPositionInit(spawn));
+				td.Add(new FacingInit(initialFacing));
+			}
+
 			self.World.AddFrameEndTask(w =>
 			{
-				var td = new TypeDictionary
-				{
-					new OwnerInit(self.Owner),
-					new LocationInit(exit),
-					new CenterPositionInit(spawn),
-					new FacingInit(initialFacing)
-				};
-
 				if (factionVariant != null)
 					td.Add(new FactionInit(factionVariant));
 
@@ -107,7 +118,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (Reservable.IsReserved(self))
 				return false;
 
-			// pick a spawn/exit point pair
+			if (!occupiesSpace)
+			{
+				DoProduction(self, producee, null, factionVariant);
+				return true;
+			}
+
+			// Pick a spawn/exit point pair
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
