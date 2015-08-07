@@ -592,7 +592,13 @@ local function treeSetConnectorsAndIcons(tree)
 
       PackageEventHandle("onMenuFiletree", menu, tree, event)
 
+      -- stopping/restarting garbage collection is generally not needed,
+      -- but on Linux not stopping is causing crashes (wxwidgets 2.9.5 and 3.1.0)
+      -- when symbol indexing is done while popup menu is open (with gc methods in the trace).
+      -- this only happens when EVT_IDLE is called when popup menu is open.
+      collectgarbage("stop")
       tree:PopupMenu(menu)
+      collectgarbage("restart")
     end)
 
   tree:Connect(wx.wxEVT_RIGHT_DOWN,
