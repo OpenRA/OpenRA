@@ -345,6 +345,11 @@ namespace OpenRA
 			return TraitDict.ActorsWithTrait<T>();
 		}
 
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>(Func<Actor, T, bool> predicate)
+		{
+			return TraitDict.ActorsWithTrait<T>(predicate);
+		}
+
 		public void OnPlayerWinStateChanged(Player player)
 		{
 			var pi = gameInfo.GetPlayer(player);

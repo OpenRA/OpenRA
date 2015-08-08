@@ -76,9 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override TraitPair<Production> MostLikelyProducer()
 		{
-			return self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(Info.Type))
+			return self.World.ActorsWithTrait<Production>((a, p) => a.Owner == self.Owner
+					&& p.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID)
 				.FirstOrDefault();
@@ -93,9 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
 			var type = bi == null || developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
 
-			var producers = self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(type))
+			var producers = self.World.ActorsWithTrait<Production>((a, p) =>
+						a.Owner == self.Owner && p.Info.Produces.Contains(type))
 					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 					.ThenByDescending(x => x.Actor.ActorID);
 

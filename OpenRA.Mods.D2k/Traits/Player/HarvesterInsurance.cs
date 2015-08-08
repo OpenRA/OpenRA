@@ -31,11 +31,11 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void TryActivate()
 		{
-			var harvesters = self.World.ActorsWithTrait<Harvester>().Where(x => x.Actor.Owner == self.Owner);
+			var harvesters = self.World.ActorsWithTrait<Harvester>((a, _) => a.Owner == self.Owner);
 			if (harvesters.Any())
 				return;
 
-			var refineries = self.World.ActorsWithTrait<Refinery>().Where(x => x.Actor.Owner == self.Owner);
+			var refineries = self.World.ActorsWithTrait<Refinery>((a, _) => a.Owner == self.Owner);
 			if (!refineries.Any())
 				return;
 

@@ -138,9 +138,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdatePowerOutageActors()
 		{
-			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>()
-				.Select(tp => tp.Actor)
-				.Where(a => !a.IsDead && a.IsInWorld && a.Owner == self.Owner);
+			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>((a, t) => !a.IsDead && a.IsInWorld && a.Owner == self.Owner)
+				.Select(tp => tp.Actor);
 
 			foreach (var a in actors)
 				UpdateActor(a);

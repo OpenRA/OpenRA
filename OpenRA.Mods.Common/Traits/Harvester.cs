@@ -104,8 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (proc == null) return;
 			if (proc.Disposed) return;
 
-			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == proc)
+			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>((a, h) => h.LinkedProc == proc)
 				.Select(a => Target.FromActor(a.Actor))
 				.ToList();
 

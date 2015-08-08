@@ -78,8 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
 		{
-			return self.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == self);
+			return self.World.ActorsWithTrait<Harvester>((a, h) => h.LinkedProc == self);
 		}
 
 		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }

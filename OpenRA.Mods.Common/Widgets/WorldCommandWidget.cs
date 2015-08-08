@@ -187,17 +187,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool CycleBases()
 		{
-			var bases = world.ActorsWithTrait<BaseBuilding>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer)
+			var bases = world.ActorsWithTrait<BaseBuilding>((a, b) => a.Owner == world.LocalPlayer)
 				.Select(b => b.Actor)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
 			if (!bases.Any())
 			{
-				var building = world.ActorsWithTrait<Building>()
+				var building = world.ActorsWithTrait<Building>((a, b) => a.Owner == world.LocalPlayer && a.Info.TraitInfosAny<SelectableInfo>())
 					.Select(b => b.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.Info.TraitInfosAny<SelectableInfo>());
+					.FirstOrDefault();
 
 				// No buildings left
 				if (building == null)
@@ -222,8 +221,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool CycleProductionBuildings()
 		{
-			var facilities = world.ActorsWithTrait<Production>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.Info.TraitInfosAny<BaseBuildingInfo>())
+			var facilities = world.ActorsWithTrait<Production>((a, p) => a.Owner == world.LocalPlayer && !a.Info.TraitInfosAny<BaseBuildingInfo>())
 				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.Select(b => b.Actor)
 				.ToList();

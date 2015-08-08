@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
 		public Actor[] GetGroundAttackers()
 		{
-			return Player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
-				.Where(a => a.Owner == Player && !a.IsDead && a.IsInWorld && a.Info.TraitInfosAny<MobileInfo>())
-				.ToArray();
+			return Player.World.ActorsWithTrait<AttackBase>((a, t) =>
+					a.Owner == Player && !a.IsDead && a.IsInWorld && a.Info.TraitInfosAny<MobileInfo>())
+				.Select(a => a.Actor).ToArray();
 		}
 
 		[Desc("Returns all living actors of the specified type of this player")]

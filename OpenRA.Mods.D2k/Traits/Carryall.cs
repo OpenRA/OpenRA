@@ -85,10 +85,8 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			// Get all carryables who want transport
-			var carryables = self.World.ActorsWithTrait<Carryable>()
-				.Where(p =>
+			var carryables = self.World.ActorsWithTrait<Carryable>((actor, trait) =>
 				{
-					var actor = p.Actor;
 					if (actor == null)
 						return false;
 
@@ -98,7 +96,6 @@ namespace OpenRA.Mods.D2k.Traits
 					if (actor.IsDead)
 						return false;
 
-					var trait = p.Trait;
 					if (trait.Reserved)
 						return false;
 

@@ -153,8 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (p != p.World.LocalPlayer)
 				return 0;
 
-			return p.World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p)
+			return p.World.ActorsWithTrait<ProductionQueue>((a, q) => a.Owner == p)
 				.SelectMany(a => a.Trait.BuildableItems()).Distinct().Count();
 		}
 	}

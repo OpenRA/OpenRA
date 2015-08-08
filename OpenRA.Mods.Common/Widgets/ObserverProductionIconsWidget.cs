@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (player == null)
 				return;
 
-			var queues = world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player)
+			var queues = world.ActorsWithTrait<ProductionQueue>((a, q) => a.Owner == player)
 				.Select((a, i) => new { a.Trait, i });
 
 			foreach (var queue in queues)

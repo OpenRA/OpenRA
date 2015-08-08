@@ -346,8 +346,7 @@ namespace OpenRA.Mods.Common.AI
 				return null;
 
 			var myUnits = Player.World
-				.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == Player)
+				.ActorsWithTrait<IPositionable>((a, p) => a.Owner == Player)
 				.Select(a => a.Actor.Info.Name).ToList();
 
 			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
@@ -361,14 +360,12 @@ namespace OpenRA.Mods.Common.AI
 
 		int CountBuilding(string frac, Player owner)
 		{
-			return World.ActorsWithTrait<Building>()
-				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac);
+			return World.ActorsWithTrait<Building>((a, b) => a.Owner == owner && a.Info.Name == frac).Count();
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
-			return World.ActorsWithTrait<IPositionable>()
-				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit);
+			return World.ActorsWithTrait<IPositionable>((a, p) => a.Owner == owner && a.Info.Name == unit).Count();
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -376,8 +373,8 @@ namespace OpenRA.Mods.Common.AI
 			if (!Info.BuildingCommonNames.ContainsKey(commonName))
 				return null;
 
-			return World.ActorsWithTrait<Building>()
-				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
+			return World.ActorsWithTrait<Building>((a, b) => a.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Info.Name))
+				.Count();
 		}
 
 		public ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
@@ -686,9 +683,8 @@ namespace OpenRA.Mods.Common.AI
 
 		void FindNewUnits(Actor self)
 		{
-			var newUnits = self.World.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == Player && !a.Actor.Info.TraitInfosAny<BaseBuildingInfo>()
-					&& !activeUnits.Contains(a.Actor))
+			var newUnits = self.World.ActorsWithTrait<IPositionable>((a, p) =>
+				a.Owner == Player && !a.Info.TraitInfosAny<BaseBuildingInfo>() && !activeUnits.Contains(a))
 				.Select(a => a.Actor);
 
 			foreach (var a in newUnits)
@@ -785,9 +781,9 @@ namespace OpenRA.Mods.Common.AI
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
-			var buildings = self.World.ActorsWithTrait<RallyPoint>()
-				.Where(rp => rp.Actor.Owner == Player &&
-					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>())).ToArray();
+			var buildings = self.World.ActorsWithTrait<RallyPoint>((a, rp) => a.Owner == Player &&
+				!IsRallyPointValid(rp.Location, a.Info.TraitInfoOrDefault<BuildingInfo>()))
+				.ToArray();
 
 			foreach (var a in buildings)
 				QueueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
@@ -981,8 +977,7 @@ namespace OpenRA.Mods.Common.AI
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
-			return World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == Player && a.Trait.Info.Type == category && a.Trait.Enabled)
+			return World.ActorsWithTrait<ProductionQueue>((a, q) => a.Owner == Player && q.Info.Type == category && q.Enabled)
 				.Select(a => a.Trait);
 		}
 

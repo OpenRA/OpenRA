@@ -167,6 +167,11 @@ namespace OpenRA
 			return InnerGet<T>().ActorsWithTrait();
 		}
 
+		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>(Func<Actor, T, bool> predicate)
+		{
+			return InnerGet<T>().ActorsWithTrait(predicate);
+		}
+
 		public void RemoveActor(Actor a)
 		{
 			foreach (var t in traits)
@@ -408,31 +413,60 @@ namespace OpenRA
 				return new AllEnumerable(this);
 			}
 
+			public IEnumerable<TraitPair<T>> ActorsWithTrait(Func<Actor, T, bool> predicate)
+			{
+				++Queries;
+				return new AllWhereEnumerable(this, predicate);
+			}
+
 			class AllEnumerable : IEnumerable<TraitPair<T>>
 			{
-				readonly TraitContainer<T> container;
-				public AllEnumerable(TraitContainer<T> container) { this.container = container; }
-				public IEnumerator<TraitPair<T>> GetEnumerator() { return new AllEnumerator(container); }
+				protected readonly TraitContainer<T> Container;
+				public AllEnumerable(TraitContainer<T> container) { Container = container; }
+				public virtual IEnumerator<TraitPair<T>> GetEnumerator() { return new AllEnumerator(Container); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			class AllWhereEnumerable : AllEnumerable
+			{
+				readonly Func<Actor, T, bool> predicate;
+				public AllWhereEnumerable(TraitContainer<T> container, Func<Actor, T, bool> predicate)
+					: base(container) { this.predicate = predicate; }
+				public override IEnumerator<TraitPair<T>> GetEnumerator() { return new AllWhereEnumerator(Container, predicate); }
 			}
 
 			class AllEnumerator : IEnumerator<TraitPair<T>>
 			{
-				readonly List<Actor> actors;
-				readonly List<T> traits;
-				int index;
+				protected readonly List<Actor> Actors;
+				protected readonly List<T> Traits;
+				protected int index;
 				public AllEnumerator(TraitContainer<T> container)
 				{
-					actors = container.actors;
-					traits = container.traits;
+					Actors = container.actors;
+					Traits = container.traits;
 					Reset();
 				}
 
 				public void Reset() { index = -1; }
-				public bool MoveNext() { return ++index < actors.Count; }
-				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }
+				public virtual bool MoveNext() { return ++index < Actors.Count; }
+				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = Actors[index], Trait = Traits[index] }; } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
+			}
+
+			class AllWhereEnumerator : AllEnumerator
+			{
+				readonly Func<Actor, T, bool> predicate;
+				public AllWhereEnumerator(TraitContainer<T> container, Func<Actor, T, bool> predicate)
+					: base(container) { this.predicate = predicate; }
+
+				public override bool MoveNext()
+				{
+					while (++index < Actors.Count)
+						if (predicate(Actors[index], Traits[index]))
+							return true;
+					return false;
+				}
 			}
 
 			public void RemoveActor(uint actor)

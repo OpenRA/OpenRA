@@ -59,13 +59,8 @@ namespace OpenRA.Mods.Common.AI
 			// If failed to place something N consecutive times, wait M ticks until resuming building production
 			if (failCount >= ai.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
 			{
-				var currentBuildings = world.ActorsWithTrait<Building>()
-					.Where(a => a.Actor.Owner == player)
-					.Count();
-
-				var baseProviders = world.ActorsWithTrait<BaseProvider>()
-					.Where(a => a.Actor.Owner == player)
-					.Count();
+				var currentBuildings = world.ActorsWithTrait<Building>((a, b) => a.Owner == player).Count();
+				var baseProviders = world.ActorsWithTrait<BaseProvider>((a, b) => a.Owner == player).Count();
 
 				// Only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
 				// or b) number of BaseProviders (construction yard or similar) has increased since then.
@@ -89,9 +84,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (waterState == Water.NotEnoughWater && --checkForBasesTicks <= 0)
 			{
-				var currentBases = world.ActorsWithTrait<BaseProvider>()
-					.Where(a => a.Actor.Owner == player)
-					.Count();
+				var currentBases = world.ActorsWithTrait<BaseProvider>((a, b) => a.Owner == player).Count();
 
 				if (currentBases > cachedBases)
 				{
@@ -104,8 +97,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--waitTicks > 0)
 				return;
 
-			playerBuildings = world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == player)
+			playerBuildings = world.ActorsWithTrait<Building>((a, b) => a.Owner == player)
 				.Select(a => a.Actor)
 				.ToArray();
 
@@ -157,13 +149,8 @@ namespace OpenRA.Mods.Common.AI
 					// If we just reached the maximum fail count, cache the number of current structures
 					if (failCount == ai.Info.MaximumFailedPlacementAttempts)
 					{
-						cachedBuildings = world.ActorsWithTrait<Building>()
-							.Where(a => a.Actor.Owner == player)
-							.Count();
-
-						cachedBases = world.ActorsWithTrait<BaseProvider>()
-							.Where(a => a.Actor.Owner == player)
-							.Count();
+						cachedBuildings = world.ActorsWithTrait<Building>((a, b) => a.Owner == player).Count();
+						cachedBases = world.ActorsWithTrait<BaseProvider>((a, b) => a.Owner == player).Count();
 					}
 				}
 				else
