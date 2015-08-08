@@ -704,6 +704,9 @@ QTNK:
 		ChargeSound: MADCHRG2.AUD
 		DetonationSound: MADEXPLO.AUD
 		DetonationWeapon: MADTankDetonate
+	WithChargeAnimation:
+		ChargeSequence: piston
+		Repeating: true
 	-EjectOnDeath:
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair
