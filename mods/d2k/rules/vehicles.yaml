@@ -20,7 +20,7 @@ mcv:
 		Type: light
 	Mobile:
 		Speed: 31
-		Crushes: crate, infantry
+		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
 		Range: 8c0
 	MustBeDestroyed:
@@ -73,7 +73,7 @@ harvester:
 		Type: harvester
 	Mobile:
 		Speed: 43
-		Crushes: crate, infantry
+		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
 		Range: 4c0
 	Explodes:
@@ -184,7 +184,6 @@ siege_tank:
 	Mobile:
 		Speed: 43
 		ROT: 3
-		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -304,7 +303,6 @@ devastator:
 	Mobile:
 		ROT: 3
 		Speed: 31
-		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7c0
 	Armament:
@@ -440,7 +438,6 @@ deviator:
 	Mobile:
 		Speed: 75
 		ROT: 5
-		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -499,7 +496,6 @@ combat_tank_o:
 	Mobile:
 		Speed: 85
 		ROT: 5
-		Crushes: crate, infantry
 	Health:
 		HP: 1800
 	SpawnActorOnDeath:

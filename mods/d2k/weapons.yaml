@@ -829,6 +829,13 @@ SardDeath:
 		ImpactSound: EXPLSML2.WAV
 
 SpiceExplosion:
+	Report: EXPLMD1.WAV
+	Projectile: Bullet
+		Speed: 50, 75
+		High: true
+		Angle: 91, 264
+		Trail: large_trail
+		Image: null
 	Warhead@1Dam: SpreadDamage
 		Spread: 480
 		Falloff: 100, 100, 100, 95, 60, 25, 0

@@ -1,20 +1,29 @@
 spicebloom:
-	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
-	WithSpriteBody:
-	Building:
-		Footprint: x
-		Dimensions: 1,1
+	BodyOrientation:
+		QuantizedFacings: 1
+	AutoSelectionSize:
+	RenderSprites:
 	AppearsOnRadar:
+		UseLocation: yes
 	Tooltip:
 		Name: Spice Bloom
-	SeedsResource:
-		ResourceType: Spice
-		Interval: 75
-	WithActiveAnimation:
+	SpiceBloom:
+		Weapon: SpiceExplosion
+	Crushable:
+		CrushClasses: spicebloom
+		CrushedByFriendlies: true
 	RadarColorFromTerrain:
 		Terrain: Spice
-	WithMakeAnimation:
+	Immobile:
+	Health:
+		HP: 1
+		Radius: 512
+	Targetable:
+		TargetTypes: Ground
+		RequiresForceFire: yes
+	Armor:
+		Type: None
 
 sandworm:
 	Inherits@1: ^SpriteActor
