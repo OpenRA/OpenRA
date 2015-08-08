@@ -72,8 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			body = self.Trait<IBodyOrientation>();
 			Attack = self.TraitOrDefault<AttackBase>();
 			t = self.FirstTrait<Turreted>(tt => tt.Name == info.Turret);
-			arms = self.Traits<Armament>()
-				.Where(w => w.Info.Turret == info.Turret).ToArray();
+			arms = self.TraitsWhere<Armament>(w => w.Info.Turret == info.Turret).ToArray();
 
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));

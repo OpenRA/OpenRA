@@ -558,7 +558,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.Traits<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.TraitsWhere<ICrushable>(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.WarnCrush(self);
 		}
@@ -570,7 +570,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.Traits<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.TraitsWhere<ICrushable>(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
 		}

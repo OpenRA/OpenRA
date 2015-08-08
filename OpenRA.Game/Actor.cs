@@ -263,6 +263,11 @@ namespace OpenRA
 			return World.TraitDict.Where<T>(this);
 		}
 
+		public IEnumerable<T> TraitsWhere<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.Where<T>(this, predicate);
+		}
+
 		public void AddTrait(object trait)
 		{
 			World.TraitDict.AddTrait(this, trait);

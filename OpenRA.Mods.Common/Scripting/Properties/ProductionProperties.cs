@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ProductionQueueProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			queues = self.Traits<ProductionQueue>().Where(q => q.Enabled).ToArray();
+			queues = self.TraitsWhere<ProductionQueue>(q => q.Enabled).ToArray();
 			triggers = TriggerGlobal.GetScriptTriggers(self);
 		}
 
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Scripting
 			productionHandlers = new Dictionary<string, Action<Actor, Actor>>();
 
 			queues = new Dictionary<string, ClassicProductionQueue>();
-			foreach (var q in player.PlayerActor.Traits<ClassicProductionQueue>().Where(q => q.Enabled))
+			foreach (var q in player.PlayerActor.TraitsWhere<ClassicProductionQueue>(q => q.Enabled))
 				queues.Add(q.Info.Type, q);
 
 			Action<Actor, Actor> globalProductionHandler = (factory, unit) =>

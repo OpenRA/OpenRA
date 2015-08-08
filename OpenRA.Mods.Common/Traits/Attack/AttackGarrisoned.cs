@@ -97,9 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			paxFacing.Add(passenger, passenger.Trait<IFacing>());
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
-			armaments.AddRange(
-				passenger.Traits<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name)));
+			armaments.AddRange(passenger.TraitsWhere<Armament>(a => info.Armaments.Contains(a.Info.Name)));
 		}
 
 		public void PassengerExited(Actor self, Actor passenger)

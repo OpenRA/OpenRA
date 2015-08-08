@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			var range = self.Traits<DetectCloaked>()
-				.Where(a => !a.IsTraitDisabled)
+			var range = self.TraitsWhere<DetectCloaked>(a => !a.IsTraitDisabled)
 				.Select(a => WDist.FromCells(a.Info.Range))
 				.Append(WDist.Zero).Max();
 

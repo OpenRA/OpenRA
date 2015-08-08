@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Rearm(Actor self)
 		{
-			ammoPools = self.Traits<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
+			ammoPools = self.TraitsWhere<AmmoPool>(p => !p.Info.SelfReloads).ToArray();
 
 			if (ammoPools == null)
 				return;
