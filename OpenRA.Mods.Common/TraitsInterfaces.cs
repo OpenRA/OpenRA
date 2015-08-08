@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
@@ -125,5 +126,23 @@ namespace OpenRA.Mods.Common.Traits
 		bool WantsTransport { get; set; }
 		void MovementCancelled(Actor self);
 		void RequestTransport(CPos destination, Activity afterLandActivity);
+	}
+
+	public interface IProvidesRangesInfo : ITraitInfo
+	{
+		bool ProvidesRanges(string type, string variant, ActorInfo ai, World w);
+		IEnumerable<IRanged> GetRanges(string type, string variant, ActorInfo ai, World w);
+	}
+
+	public interface IProvidesRanges
+	{
+		// return true if implementer may provide type during its lifetime
+		bool ProvidesRanges(string type, string variant);
+		IEnumerable<IRanged> GetRanges(string type, string variant);
+	}
+
+	public static class ProvidesRanges
+	{
+		public static readonly IEnumerable<IRanged> NoRanges = Enumerable.Empty<IRanged>();
 	}
 }
