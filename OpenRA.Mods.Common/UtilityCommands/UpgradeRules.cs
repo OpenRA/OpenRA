@@ -2084,6 +2084,31 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150910 && depth == 1)
+				{
+					if (node.Key == "RenderRangeCircle")
+					{
+						node.Key = "WithRangeCircle@ATTACK";
+						var fallbackRange = node.Value.Nodes.FirstOrDefault(n => n.Key == "FallbackRange");
+						if (fallbackRange != null)
+							node.Value.Nodes.Remove(fallbackRange);
+						var rangeCircleType = node.Value.Nodes.FirstOrDefault(n => n.Key == "RangeCircleType");
+						if (rangeCircleType != null)
+						{
+							rangeCircleType.Key = "Name";
+							rangeCircleType.Value.Value = "attack@" + rangeCircleType.Value.Value;
+						}
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("Name", "attack"));
+						node.Value.Nodes.Add(new MiniYamlNode("Type", "attacks"));
+						node.Value.Nodes.Add(new MiniYamlNode("Color", "128,255,255,0")); // Yellow
+						if (fallbackRange != null)
+							node.Value.Nodes.Add(new MiniYamlNode("Range", fallbackRange.Value.Value));
+					}
+					else if (node.Key == "-RenderRangeCircle")
+						node.Key = "-WithRangeCircle@ATTACK";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

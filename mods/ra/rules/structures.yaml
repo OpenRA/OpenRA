@@ -455,8 +455,8 @@ AGUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderRangeCircle:
-		RangeCircleType: aa
+	WithRangeCircle@ATTACK:
+		Name: attack@aa
 	Power:
 		Amount: -50
 	DetectCloaked:
@@ -533,8 +533,10 @@ PBOX:
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 86, 86, 86, 86, 86, 86
-	RenderRangeCircle:
-		FallbackRange: 6c0
+	WithRangeCircle@ATTACK_GARRISON:
+		OwnPlacementOnly: true
+		Color: 128,255,255,0 # Yellow
+		Range: 6c0
 	Power:
 		Amount: -15
 	DetectCloaked:
@@ -574,8 +576,10 @@ HBOX:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 6
-	RenderRangeCircle:
-		FallbackRange: 6c0
+	WithRangeCircle@ATTACK_GARRISON:
+		OwnPlacementOnly: true
+		Color: 128,255,255,0 # Yellow
+		Range: 6c0
 	AttackGarrisoned:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
@@ -692,8 +696,8 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderRangeCircle:
-		RangeCircleType: aa
+	WithRangeCircle@ATTACK:
+		Name: attack@aa
 	Power:
 		Amount: -40
 	DetectCloaked:

@@ -450,7 +450,10 @@
 	-GivesBuildableArea:
 	-AcceptsSupplies:
 	DrawLineToTarget:
-	RenderRangeCircle:
+	WithRangeCircle@ATTACK:
+		Name: attack
+		Type: attacks
+		Color: 128,255,255,0 # Yellow
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld

@@ -614,14 +614,14 @@
 ^WithGroundAttackRangeCircle:
 	WithRangeCircle@ATTACK_GROUND:
 		Name: attack
-		Type: targets
+		Type: attacks
 		Variant: Ground
 		Color: 128,255,255,0 # Yellow
 
 ^WithAirAttackRangeCircle:
 	WithRangeCircle@ATTACK_AIR:
 		Name: attack@aa
-		Type: targets
+		Type: attacks
 		Variant: Air
 		Color: 128,0,0,255 # Blue
 
