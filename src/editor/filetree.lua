@@ -597,7 +597,15 @@ local function treeSetConnectorsAndIcons(tree)
       -- when symbol indexing is done while popup menu is open (with gc methods in the trace).
       -- this only happens when EVT_IDLE is called when popup menu is open.
       collectgarbage("stop")
+
+      -- stopping UI updates is generally not needed as well,
+      -- but it's causing a crash on OSX (wxwidgets 2.9.5 and 3.1.0)
+      -- when symbol indexing is done while popup menu is open, so it's disabled
+      local interval = wx.wxUpdateUIEvent.GetUpdateInterval()
+      wx.wxUpdateUIEvent.SetUpdateInterval(-1) -- don't update
+
       tree:PopupMenu(menu)
+      wx.wxUpdateUIEvent.SetUpdateInterval(interval)
       collectgarbage("restart")
     end)
 
