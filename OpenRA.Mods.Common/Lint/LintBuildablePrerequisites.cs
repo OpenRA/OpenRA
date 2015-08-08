@@ -19,20 +19,25 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
 			// ProvidesPrerequisite allows arbitrary prereq definitions
-			var customPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
+			var customPrereqs = rules.Actors.SelectMany(a => a.Value.Traits
 				.WithInterface<ProvidesPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
 
 			// ProvidesTechPrerequisite allows arbitrary prereq definitions
 			// (but only one group at a time during gameplay)
-			var techPrereqs = map.Rules.Actors.SelectMany(a => a.Value.Traits
+			var techPrereqs = rules.Actors.SelectMany(a => a.Value.Traits
 				.WithInterface<ProvidesTechPrerequisiteInfo>())
 				.SelectMany(p => p.Prerequisites);
 
 			var providedPrereqs = customPrereqs.Concat(techPrereqs);
 
 			// TODO: this check is case insensitive while the real check in-game is not
-			foreach (var i in map.Rules.Actors)
+			foreach (var i in rules.Actors)
 			{
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)

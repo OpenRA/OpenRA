@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map == null)
+				return;
+
 			if (map.Bounds.Left == 0 || map.Bounds.Top == 0
 				|| map.Bounds.Right == map.MapSize.X || map.Bounds.Bottom == map.MapSize.Y)
 				emitError("This map does not define a valid cordon.\n"

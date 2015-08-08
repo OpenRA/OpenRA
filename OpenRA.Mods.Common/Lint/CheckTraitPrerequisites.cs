@@ -18,7 +18,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors.Where(a => !a.Key.StartsWith("^")))
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
+			foreach (var actorInfo in rules.Actors.Where(a => !a.Key.StartsWith("^")))
 				try
 				{
 					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();

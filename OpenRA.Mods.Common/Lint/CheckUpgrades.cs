@@ -20,15 +20,20 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			CheckUpgradesValidity(emitError, map);
-			CheckUpgradesUsage(emitError, emitWarning, map);
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
+			CheckUpgradesValidity(emitError, rules);
+			CheckUpgradesUsage(emitError, emitWarning, rules);
 		}
 
-		private static void CheckUpgradesValidity(Action<string> emitError, Map map)
+		static void CheckUpgradesValidity(Action<string> emitError, Ruleset rules)
 		{
-			var upgradesGranted = GetAllGrantedUpgrades(emitError, map).ToHashSet();
+			var upgradesGranted = GetAllGrantedUpgrades(emitError, rules).ToHashSet();
 
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var trait in actorInfo.Value.Traits)
 				{
@@ -43,12 +48,12 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		private static void CheckUpgradesUsage(Action<string> emitError, Action<string> emitWarning, Map map)
+		static void CheckUpgradesUsage(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			var upgradesUsed = GetAllUsedUpgrades(emitError, map).ToHashSet();
+			var upgradesUsed = GetAllUsedUpgrades(emitError, rules).ToHashSet();
 
 			// Check all upgrades granted by traits.
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var trait in actorInfo.Value.Traits)
 				{
@@ -63,7 +68,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 
 			// Check all upgrades granted by warheads.
-			foreach (var weapon in map.Rules.Weapons)
+			foreach (var weapon in rules.Weapons)
 			{
 				foreach (var warhead in weapon.Value.Warheads)
 				{
@@ -78,10 +83,10 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		static IEnumerable<string> GetAllGrantedUpgrades(Action<string> emitError, Map map)
+		static IEnumerable<string> GetAllGrantedUpgrades(Action<string> emitError, Ruleset rules)
 		{
 			// Get all upgrades granted by traits.
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var trait in actorInfo.Value.Traits)
 				{
@@ -96,7 +101,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 
 			// Get all upgrades granted by warheads.
-			foreach (var weapon in map.Rules.Weapons)
+			foreach (var weapon in rules.Weapons)
 			{
 				foreach (var warhead in weapon.Value.Warheads)
 				{
@@ -111,23 +116,23 @@ namespace OpenRA.Mods.Common.Lint
 			}
 
 			// TODO: HACK because GainsExperience grants upgrades differently to most other sources.
-			var gainsExperience = map.Rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<GainsExperienceInfo>()
+			var gainsExperience = rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<GainsExperienceInfo>()
 				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
 
 			foreach (var upgrade in gainsExperience)
 				yield return upgrade;
 
 			// TODO: HACK because Pluggable grants upgrades differently to most other sources.
-			var pluggable = map.Rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<PluggableInfo>()
+			var pluggable = rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<PluggableInfo>()
 				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
 
 			foreach (var upgrade in pluggable)
 				yield return upgrade;
 		}
 
-		static IEnumerable<string> GetAllUsedUpgrades(Action<string> emitError, Map map)
+		static IEnumerable<string> GetAllUsedUpgrades(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var trait in actorInfo.Value.Traits)
 				{
@@ -143,7 +148,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			// TODO: HACK because GainsExperience and GainsStatUpgrades do not play by the rules...
 			// We assume everything GainsExperience grants is used by GainsStatUpgrade
-			var gainsExperience = map.Rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<GainsExperienceInfo>()
+			var gainsExperience = rules.Actors.SelectMany(x => x.Value.Traits.WithInterface<GainsExperienceInfo>()
 				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
 
 			foreach (var upgrade in gainsExperience)

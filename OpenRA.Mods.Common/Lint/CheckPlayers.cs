@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map == null)
+				return;
+
 			var players = new MapPlayers(map.PlayerDefinitions).Players;
 
 			var playerNames = players.Values.Select(p => p.Name).ToHashSet();

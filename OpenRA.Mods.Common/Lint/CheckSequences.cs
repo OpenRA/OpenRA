@@ -26,23 +26,32 @@ namespace OpenRA.Mods.Common.Lint
 
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
+			if (map != null && !map.SequenceDefinitions.Any())
+				return;
+
 			this.emitWarning = emitWarning;
 
-			sequenceDefinitions = MiniYaml.MergeLiberal(map.SequenceDefinitions,
+			var sequenceSource = map != null ? map.SequenceDefinitions : new List<MiniYamlNode>();
+			sequenceDefinitions = MiniYaml.MergeLiberal(sequenceSource,
 				Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal));
 
-			var races = map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+			var races = rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
 
-			foreach (var actorInfo in map.Rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSpritesInfo>())
 				{
 					foreach (var race in races)
 					{
-						var image = renderInfo.GetImage(actorInfo.Value, map.Rules.Sequences[map.Tileset], race);
-						if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
-							emitWarning("Sprite image {0} from actor {1} on tileset {2} using race {3} has no sequence definition."
+						foreach (var sequenceProvider in sequenceProviders)
+						{
+							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, race);
+							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
+								emitWarning("Sprite image {0} from actor {1} on tileset {2} using race {3} has no sequence definition."
 								.F(image, actorInfo.Value.Name, map.Tileset, race));
+						}
 					}
 				}
 
@@ -82,8 +91,11 @@ namespace OpenRA.Mods.Common.Lint
 									}
 									else
 									{
-										var image = renderInfo.GetImage(actorInfo.Value, map.SequenceProvider, race);
-										CheckDefintions(image, sequenceReference, actorInfo, sequence, race, field, traitInfo);
+										foreach (var sequenceProvider in sequenceProviders)
+										{
+											var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, race);
+											CheckDefintions(image, sequenceReference, actorInfo, sequence, race, field, traitInfo);
+										}
 									}
 								}
 							}
@@ -91,7 +103,7 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 
-				foreach (var weaponInfo in map.Rules.Weapons)
+				foreach (var weaponInfo in rules.Weapons)
 				{
 					var projectileInfo = weaponInfo.Value.Projectile;
 					if (projectileInfo == null)

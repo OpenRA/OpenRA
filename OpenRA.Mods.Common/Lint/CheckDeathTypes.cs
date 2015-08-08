@@ -20,7 +20,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors)
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
+			foreach (var actorInfo in rules.Actors)
 			{
 				var animations = actorInfo.Value.Traits.WithInterface<WithDeathAnimationInfo>().ToList();
 				if (!animations.Any())
@@ -34,7 +39,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (!targetable.Any())
 					continue;
 
-				foreach (var weaponInfo in map.Rules.Weapons)
+				foreach (var weaponInfo in rules.Weapons)
 				{
 					var warheads = weaponInfo.Value.Warheads.OfType<DamageWarhead>().Where(dw => dw.Damage > 0);
 

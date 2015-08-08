@@ -20,7 +20,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			foreach (var actorInfo in map.Rules.Actors)
+			if (map != null && !map.RuleDefinitions.Any())
+				return;
+
+			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+
+			foreach (var actorInfo in rules.Actors)
 			{
 				if (actorInfo.Key.StartsWith("^"))
 					continue;
