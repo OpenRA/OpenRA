@@ -1688,23 +1688,41 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// SpawnViceroid was replaced by LeavesHusk
-				if (engineVersion < 20150719)
+				if (engineVersion < 20150809)
 				{
 					if (node.Key == "SpawnViceroid")
 					{
 						node.Key = "LeavesHusk";
 
+						// The default value of ViceroidActor was vice
 						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "ViceroidActor");
 						if (actor != null)
 							actor.Key = "HuskActor";
-						// The default value of ViceroidActor was "vice"
 						else
 							node.Value.Nodes.Add(new MiniYamlNode("HuskActor", "vice"));
 
-						var probability = node.Value.Nodes.FirstOrDefault(n => n.Key == "Probability");
 						// The default value of Probability was 10
+						var probability = node.Value.Nodes.FirstOrDefault(n => n.Key == "Probability");
 						if (probability == null)
 							node.Value.Nodes.Add(new MiniYamlNode("Probability", "10"));
+
+						// The default value of Owner was Creeps
+						var owner = node.Value.Nodes.FirstOrDefault(n => n.Key == "Owner");
+						if (owner != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("OwnerType", "InternalName"));
+							owner.Key = "InternalOwner";
+						}
+						else
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("OwnerType", "InternalName"));
+							node.Value.Nodes.Add(new MiniYamlNode("InternalOwner", "Creeps"));
+						}
+
+						// The default value of DeathType was TiberiumDeath
+						var deathType = node.Value.Nodes.FirstOrDefault(n => n.Key == "DeathType");
+						if (deathType == null)
+							node.Value.Nodes.Add(new MiniYamlNode("DeathType", "TiberiumDeath"));
 					}
 				}
 

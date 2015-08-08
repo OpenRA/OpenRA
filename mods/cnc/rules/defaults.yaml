@@ -190,8 +190,12 @@
 	HiddenUnderFog:
 	PoisonedByTiberium:
 	ActorLostNotification:
-	SpawnViceroid:
+	LeavesHusk:
 		Probability: 10
+		HuskActor: vice
+		OwnerType: InternalName
+		InternalOwner: Creeps
+		DeathType: TiberiumDeath
 	Crushable:
 		WarnProbability: 67
 		CrushSound: squish2.aud

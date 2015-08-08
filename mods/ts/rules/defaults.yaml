@@ -256,8 +256,11 @@
 	Crushable:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
-	SpawnViceroid:
-		ViceroidActor: vissml
+	LeavesHusk:
+		HuskActor: vissml
+		Probability: 10
+		OwnerType: InternalName
+		InternalOwner: Creeps
 		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
 	Guard:
 		Voice: Move
