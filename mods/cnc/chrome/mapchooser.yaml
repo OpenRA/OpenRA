@@ -57,9 +57,9 @@ Container@MAPCHOOSER_PANEL:
 					Text: Custom Maps
 				Container@SYSTEM_MAPS_TAB:
 					X: 15
-					Y: 45
+					Y: 44
 					Width: PARENT_RIGHT - 30
-					Height: 440
+					Height: 441
 					Children:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
@@ -67,9 +67,9 @@ Container@MAPCHOOSER_PANEL:
 							Children:
 				Container@USER_MAPS_TAB:
 					X: 15
-					Y: 45
+					Y: 44
 					Width: PARENT_RIGHT - 30
-					Height: 440
+					Height: 441
 					Children:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
