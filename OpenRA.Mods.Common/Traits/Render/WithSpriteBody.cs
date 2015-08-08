@@ -95,6 +95,11 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
+		public void CancelCustomAnimation(Actor self)
+		{
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+		}
+
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (DefaultAnimation.CurrentSequence != null)
