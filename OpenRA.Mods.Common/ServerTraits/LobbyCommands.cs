@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Server
 								Name = botType,
 								Bot = botType,
 								Slot = parts[0],
-								Race = "Random",
+								Faction = "Random",
 								SpawnPoint = 0,
 								Team = 0,
 								State = Session.ClientState.NotReady,
@@ -749,10 +749,10 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 
 						// Map has disabled race changes
-						if (server.LobbyInfo.Slots[targetClient.Slot].LockRace)
+						if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 							return true;
 
-						targetClient.Race = parts[1];
+						targetClient.Faction = parts[1];
 						server.SyncLobbyClients();
 						return true;
 					}
@@ -900,7 +900,7 @@ namespace OpenRA.Mods.Common.Server
 				PlayerReference = pr.Name,
 				Closed = false,
 				AllowBots = pr.AllowBots,
-				LockRace = pr.LockFaction,
+				LockFaction = pr.LockFaction,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
 				LockSpawn = pr.LockSpawn,

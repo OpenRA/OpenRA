@@ -55,14 +55,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly TransformsInfo info;
 		readonly BuildingInfo buildingInfo;
-		readonly string race;
+		readonly string faction;
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
 		{
 			self = init.Self;
 			this.info = info;
 			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
-			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 				Facing = info.Facing,
 				Sounds = info.TransformSounds,
 				Notification = info.TransformNotification,
-				Race = race
+				Faction = faction
 			};
 
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();

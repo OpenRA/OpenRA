@@ -37,7 +37,7 @@ namespace OpenRA
 		public IEnumerable<Player> HumanPlayers { get { return Players.Where(p => p.IsHuman); } }
 		public bool IsSinglePlayer { get { return HumanPlayers.Count() == 1; } }
 
-		Dictionary<OpenRA.Player, Player> playersByRuntime;
+		readonly Dictionary<OpenRA.Player, Player> playersByRuntime;
 
 		public GameInformation()
 		{
@@ -79,9 +79,10 @@ namespace OpenRA
 
 		public string Serialize()
 		{
-			var nodes = new List<MiniYamlNode>();
-
-			nodes.Add(new MiniYamlNode("Root", FieldSaver.Save(this)));
+			var nodes = new List<MiniYamlNode>
+			{
+				new MiniYamlNode("Root", FieldSaver.Save(this))
+			};
 
 			for (var i = 0; i < Players.Count; i++)
 				nodes.Add(new MiniYamlNode("Player@{0}".F(i), FieldSaver.Save(Players[i])));
@@ -118,7 +119,7 @@ namespace OpenRA
 				Color = runtimePlayer.Color,
 				Team = client.Team,
 				SpawnPoint = runtimePlayer.SpawnPoint,
-				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Race,
+				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Faction,
 				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint
 			};
 

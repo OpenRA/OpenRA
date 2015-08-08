@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		public string Notification = null;
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
-		public string Race = null;
+		public string Faction = null;
 
 		public Transform(Actor self, string toActor)
 		{
@@ -64,8 +64,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (SkipMakeAnims)
 					init.Add(new SkipMakeAnimsInit());
 
-				if (Race != null)
-					init.Add(new FactionInit(Race));
+				if (Faction != null)
+					init.Add(new FactionInit(Faction));
 
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int ClientIndex;
 		public readonly string PlayerName;
 		public readonly int Team;
-		public readonly string Country;
+		public readonly string Faction;
 		public readonly int SpawnPoint;
 
 		public SpawnOccupant(Session.Client client)
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 			ClientIndex = client.Index;
 			PlayerName = client.Name;
 			Team = client.Team;
-			Country = client.Race;
+			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
 		}
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 			ClientIndex = player.ClientIndex;
 			PlayerName = player.Name;
 			Team = player.Team;
-			Country = player.FactionId;
+			Faction = player.FactionId;
 			SpawnPoint = player.SpawnPoint;
 		}
 	}
