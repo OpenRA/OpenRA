@@ -400,3 +400,6 @@ sandcraters:
 		Length: 16
 		Offset: -16,-16
 
+null:
+	idle: DATA.R8
+		Start: 3304
