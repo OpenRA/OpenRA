@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (info.Shadow)
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
-					var shadowPos = new WPos(pos.X, pos.Y, dat.Length);
+					var shadowPos = pos - new WVec(0, 0, dat.Length);
 					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
 						yield return r;
 				}
