@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string ChooseWeaponForExplosion(Actor self)
 		{
-			var shouldExplode = self.FirstTraitOrDefault<IExplodeModifier>(a => !a.ShouldExplode(self)) == null;
+			var shouldExplode = !self.TraitsAny<IExplodeModifier>(a => !a.ShouldExplode(self));
 			var useFullExplosion = self.World.SharedRandom.Next(100) <= info.LoadedChance;
 			return (shouldExplode && useFullExplosion) ? info.Weapon : info.EmptyWeapon;
 		}

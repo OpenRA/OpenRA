@@ -154,7 +154,7 @@ namespace OpenRA
 
 		public bool CanViewActor(Actor a)
 		{
-			if (a.FirstTraitOrDefault<IVisibilityModifier>(t => !t.IsVisible(a, this)) != null)
+			if (a.TraitsAny<IVisibilityModifier>(t => !t.IsVisible(a, this)))
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
@@ -165,7 +165,7 @@ namespace OpenRA
 			if (HasFogVisibility)
 				return true;
 
-			if (a.FirstTraitOrDefault<IVisibilityModifier>(t => !t.IsVisible(a, this)) != null)
+			if (a.TraitsAny<IVisibilityModifier>(t => !t.IsVisible(a, this)))
 				return false;
 
 			return a.Trait<IDefaultVisibility>().IsVisible(a, this);

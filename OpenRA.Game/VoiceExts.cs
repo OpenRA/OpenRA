@@ -47,7 +47,7 @@ namespace OpenRA
 
 		public static bool HasVoice(this Actor self, string voice)
 		{
-			return self.FirstTraitOrDefault<IVoiced>(x => x.HasVoice(self, voice)) != null;
+			return self.TraitsAny<IVoiced>(x => x.HasVoice(self, voice));
 		}
 
 		public static void PlayVoiceForOrders(this World w, Order[] orders)

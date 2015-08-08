@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var underCursor = world.ScreenMap.ActorsAt(mi)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.FirstTraitOrDefault<T>(Exts.IsTraitEnabled) != null);
+					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsAny<T>(Exts.IsTraitEnabled));
 
 				if (underCursor == null)
 					yield break;

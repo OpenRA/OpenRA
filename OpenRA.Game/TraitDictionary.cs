@@ -132,6 +132,12 @@ namespace OpenRA
 			return InnerGet<T>().FirstOrDefault(actor.ActorID, predicate);
 		}
 
+		public bool Any<T>(Actor actor, Func<T, bool> predicate)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().Any(actor.ActorID, predicate);
+		}
+
 		public IEnumerable<T> Where<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
@@ -262,6 +268,16 @@ namespace OpenRA
 					if (predicate(traits[i]))
 						throw new InvalidOperationException("Actor {0} has multiple matching traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
 				return traits[index];
+			}
+
+			public bool Any(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var index = actors.BinarySearchMany(actor);
+				for (; index < actors.Count && actors[index].ActorID == actor; index++)
+					if (predicate(traits[index]))
+						return true;
+				return false;
 			}
 
 			public IEnumerable<T> WhereActor(uint actor)

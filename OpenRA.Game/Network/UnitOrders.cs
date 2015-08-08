@@ -29,8 +29,7 @@ namespace OpenRA.Network
 		{
 			if (world != null)
 			{
-				if (!world.WorldActor.Traits<IValidateOrder>().All(vo =>
-					vo.OrderValidation(orderManager, world, clientId, order)))
+				if (world.WorldActor.TraitsAny<IValidateOrder>(vo => !vo.OrderValidation(orderManager, world, clientId, order)))
 					return;
 			}
 
