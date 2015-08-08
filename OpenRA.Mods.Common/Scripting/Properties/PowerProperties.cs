@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ActorPowerProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			power = self.Traits<PowerTrait>().ToArray();
+			power = self.TraitsToArray<PowerTrait>();
 		}
 
 		[Desc("Returns the power drained/provided by this actor.")]

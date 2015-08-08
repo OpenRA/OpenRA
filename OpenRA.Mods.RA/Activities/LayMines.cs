@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			minelayer = self.TraitOrDefault<Minelayer>();
 			info = self.Info.TraitInfo<MinelayerInfo>();
-			ammoPools = self.Traits<AmmoPool>().ToArray();
+			ammoPools = self.TraitsToArray<AmmoPool>();
 			movement = self.Trait<IMove>();
 			rearmBuildings = info.RearmBuildings;
 		}

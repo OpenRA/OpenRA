@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, target)
 		{
 			this.target = target;
-			demolishables = target.Traits<IDemolishable>().ToArray();
+			demolishables = target.TraitsToArray<IDemolishable>();
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;

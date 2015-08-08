@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = Exts.Lazy(() => self.Traits<ISpeedModifier>().ToArray());
+			speedModifiers = Exts.Lazy(self.TraitsToArray<ISpeedModifier>);
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())

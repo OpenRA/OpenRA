@@ -115,7 +115,7 @@ namespace OpenRA
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
-			fogVisibilities = PlayerActor.Traits<IFogVisibilityModifier>().ToArray();
+			fogVisibilities = PlayerActor.TraitsToArray<IFogVisibilityModifier>();
 
 			// Enable the bot logic on the host
 			IsBot = botType != null;

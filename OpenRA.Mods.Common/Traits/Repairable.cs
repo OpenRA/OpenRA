@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			ammoPools = self.Traits<AmmoPool>().ToArray();
+			ammoPools = self.TraitsToArray<AmmoPool>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

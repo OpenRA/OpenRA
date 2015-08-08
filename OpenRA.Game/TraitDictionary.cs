@@ -138,6 +138,18 @@ namespace OpenRA
 			return InnerGet<T>().Any(actor.ActorID, predicate);
 		}
 
+		public T[] ToArray<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().ToArray(actor.ActorID);
+		}
+
+		public T[] ToArray<T>(Actor actor, Func<T, bool> predicate)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().ToArray(actor.ActorID, predicate);
+		}
+
 		public IEnumerable<T> Where<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
@@ -274,6 +286,45 @@ namespace OpenRA
 					if (predicate(traits[i]))
 						throw new InvalidOperationException("Actor {0} has multiple matching traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
 				return traits[index];
+			}
+
+			public T[] ToArray(uint actor)
+			{
+				++Queries;
+				var start = actors.BinarySearchMany(actor);
+				if (start >= actors.Count || actors[start].ActorID != actor)
+					return new T[0];
+				var end = start;
+				while (end < actors.Count && actors[end].ActorID == actor)
+					end++;
+				var result = new T[end - start];
+				for (var i = start; i < end; i++)
+					result[i - start] = traits[i];
+				return result;
+			}
+
+			public T[] ToArray(uint actor, Func<T, bool> predicate)
+			{
+				++Queries;
+				var start = actors.BinarySearchMany(actor);
+				for (; start < actors.Count && actors[start].ActorID == actor; start++)
+					if (predicate(traits[start]))
+						break;
+				if (start >= actors.Count)
+					return new T[0];
+				var end = start;
+				while (end < actors.Count && actors[end].ActorID == actor)
+					end++;
+				var tmp = new T[end - start];
+				tmp[0] = traits[start];
+				var count = 1;
+				for (var i = start + 1; i < actors.Count && actors[i].ActorID == actor; i++)
+					if (predicate(traits[i]))
+						tmp[count++] = traits[i];
+				var result = new T[count];
+				for (var i = 0; i < count; i++)
+					result[i] = tmp[i];
+				return result;
 			}
 
 			public bool Any(uint actor, Func<T, bool> predicate)

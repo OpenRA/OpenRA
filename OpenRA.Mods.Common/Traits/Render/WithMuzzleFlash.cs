@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			armaments = self.Traits<Armament>().ToArray();
+			armaments = self.TraitsToArray<Armament>();
 
 			foreach (var arm in armaments)
 			{

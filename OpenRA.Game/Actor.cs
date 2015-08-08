@@ -258,6 +258,16 @@ namespace OpenRA
 			return World.TraitDict.Any<T>(this, predicate);
 		}
 
+		public T[] TraitsToArray<T>()
+		{
+			return World.TraitDict.ToArray<T>(this);
+		}
+
+		public T[] TraitsToArray<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.ToArray<T>(this, predicate);
+		}
+
 		public IEnumerable<T> Traits<T>()
 		{
 			return World.TraitDict.Where<T>(this);
