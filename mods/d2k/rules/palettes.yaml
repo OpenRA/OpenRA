@@ -26,12 +26,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
 	PaletteFromRGBA@highlight:
 		Name: highlight
 		R: 255
@@ -87,4 +81,8 @@
 		Premultiply: false
 	PlayerHighlightPalette:
 	FlashPaletteEffect:
+	PaletteFromPlayerPaletteWithAlpha@cloak:
+		BaseName: cloak
+		BasePalette: player
+		Alpha: 0.55
 

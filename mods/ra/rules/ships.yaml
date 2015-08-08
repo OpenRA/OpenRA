@@ -34,6 +34,7 @@ SS:
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 		WhileCloakedUpgrades: underwater
+		Palette: submerged
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
@@ -88,6 +89,7 @@ MSUB:
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 		WhileCloakedUpgrades: underwater
+		Palette: submerged
 	Armament:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0

@@ -740,6 +740,7 @@ STNK:
 		CloakDelay: 250
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
+		IsPlayerPalette: true
 	DetectCloaked:
 		Range: 6
 	-MustBeDestroyed:

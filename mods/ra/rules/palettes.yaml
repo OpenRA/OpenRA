@@ -26,8 +26,8 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
+	PaletteFromRGBA@submerged:
+		Name: submerged
 		R: 0
 		G: 0
 		B: 0
@@ -65,6 +65,10 @@
 	PlayerColorPalette:
 		BasePalette: player
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+	PaletteFromPlayerPaletteWithAlpha@cloak:
+		BaseName: cloak
+		BasePalette: player
+		Alpha: 0.55
 	PlayerHighlightPalette:
 	MenuPaletteEffect:
 	RotationPaletteEffect@defaultwater:
