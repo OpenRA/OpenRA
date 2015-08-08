@@ -26,8 +26,8 @@ fi
 
 if [ ! -f freetype6.dll ]; then
 	echo "Fetching FreeType2 from NuGet"
-	get SharpFont.Dependencies 2.5.5.1
-	cp ./SharpFont.Dependencies/bin/msvc10/x86/freetype6.dll .
+	get SharpFont.Dependencies 2.6.0
+	cp ./SharpFont.Dependencies/bin/msvc9/x86/freetype6.dll .
 	rm -rf SharpFont.Dependencies
 fi
 

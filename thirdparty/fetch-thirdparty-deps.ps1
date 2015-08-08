@@ -95,8 +95,8 @@ if (!(Test-Path "windows/lua51.dll"))
 if (!(Test-Path "windows/freetype6.dll"))
 {
 	echo "Fetching FreeType2 from NuGet."
-	./nuget.exe install SharpFont.Dependencies -Version 2.5.5.1 -ExcludeVersion
-	cp SharpFont.Dependencies/bin/msvc10/x86/freetype6.dll ./windows/freetype6.dll
+	./nuget.exe install SharpFont.Dependencies -Version 2.6.0 -ExcludeVersion
+	cp SharpFont.Dependencies/bin/msvc9/x86/freetype6.dll ./windows/freetype6.dll
 	rmdir SharpFont.Dependencies -Recurse
 }
 

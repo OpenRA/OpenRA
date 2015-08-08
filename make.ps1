@@ -125,13 +125,6 @@ elseif ($command -eq "dependencies")
 	cp download/windows/*.dll ..
 	cd ..
 	echo "Dependencies copied."
-	
-	$dep = "Microsoft Visual C++ 201"
-	$results = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | select DisplayName | Where-Object {$_.DisplayName -like $("$dep*")}
-	if (!($results -is [array]) -and !$results.DisplayName)
-	{
-		Write-Host "Warning! Freetype6.dll requires Microsoft Visual C++ 2010 x86 Redistributable!" -Foreground "Red"
-	}
 }
 elseif ($command -eq "test")
 {
