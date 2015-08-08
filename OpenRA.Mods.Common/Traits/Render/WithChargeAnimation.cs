@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence to use for charge animation.")]
 		[SequenceReference] public readonly string ChargeSequence = "active";
 
+		[Desc("Should the animation repeat after it has finished?")]
+		public readonly bool Repeating = false;
+
 		public object Create(ActorInitializer init) { return new WithChargeAnimation(init, this); }
 	}
 
@@ -34,7 +37,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Charging(Actor self, Target target)
 		{
-			wsb.PlayCustomAnimation(self, info.ChargeSequence);
+			if (info.Repeating)
+				wsb.PlayCustomAnimationRepeating(self, info.ChargeSequence);
+			else
+				wsb.PlayCustomAnimation(self, info.ChargeSequence);
+		}
+
+		public void FinishedCharging(Actor self)
+		{
+			wsb.CancelCustomAnimation(self);
 		}
 	}
 }

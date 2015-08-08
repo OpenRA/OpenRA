@@ -130,6 +130,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (attack.charges == 0)
 					return NextActivity;
 
+				foreach (var notify in self.TraitsImplementing<INotifyCharging>())
+					notify.FinishedCharging(self);
+
 				attack.DoAttack(self, target);
 
 				return Util.SequenceActivities(new Wait(attack.info.ChargeDelay), this);
