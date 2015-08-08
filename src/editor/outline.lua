@@ -35,9 +35,9 @@ local function resetOutlineTimer()
   end
 end
 
-local function resetIndexTimer()
+local function resetIndexTimer(interval)
   if ide.config.symbolindexinactivity and not ide.timers.symbolindex:IsRunning() then
-    ide.timers.symbolindex:Start(ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
+    ide.timers.symbolindex:Start(interval or ide.config.symbolindexinactivity*1000, wx.wxTIMER_ONE_SHOT)
   end
 end
 
@@ -501,7 +501,7 @@ local package = ide:AddPackage('core.outline', {
             -- files will be purged based on time, but this is a good time to clean.
             purgeIndex(name)
             outline:RefreshSymbols(name)
-            resetIndexTimer()
+            resetIndexTimer(1) -- start after 1ms
           end)
         tree:Connect(ID_SYMBOLDIRDISABLE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
             disableIndex(name)
