@@ -47,16 +47,9 @@ namespace OpenRA.Mods.Common.Warheads
 		/// <summary>Applies the warhead's effect against the target.</summary>
 		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 
-		// TODO: This can be removed after the legacy and redundant 0% = not targetable
-		// assumption has been removed from the yaml definitions
-		public virtual bool CanTargetActor(ActorInfo victim, Actor firedBy) { return false; }
-
 		/// <summary>Checks if the warhead is valid against (can do something to) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			if (!CanTargetActor(victim.Info, firedBy))
-				return false;
-
 			if (!AffectsParent && victim == firedBy)
 				return false;
 
@@ -75,9 +68,6 @@ namespace OpenRA.Mods.Common.Warheads
 		/// <summary>Checks if the warhead is valid against (can do something to) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			if (!CanTargetActor(victim.Info, firedBy))
-				return false;
-
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
 			var stance = firedBy.Owner.Stances[victim.Owner];
 			if (!ValidStances.HasStance(stance))

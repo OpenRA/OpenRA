@@ -47,17 +47,6 @@ namespace OpenRA.Mods.Common.Warheads
 			return 100;
 		}
 
-		// TODO: This can be removed after the legacy and redundant 0% = not targetable
-		// assumption has been removed from the yaml definitions
-		public override bool CanTargetActor(ActorInfo victim, Actor firedBy)
-		{
-			var health = victim.Traits.GetOrDefault<HealthInfo>();
-			if (health == null)
-				return false;
-
-			return DamageVersus(victim) > 0;
-		}
-
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits that damage a single actor, rather than a position
