@@ -631,8 +631,8 @@ DTRK:
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
-	DemoTruck:
 	-DamageMultiplier@IRONCURTAIN:
+	Detonates:
 	KillsSelf:
 		UpgradeTypes: invulnerability
 		UpgradeMinEnabledLevel: 1
@@ -698,6 +698,12 @@ QTNK:
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
 	MadTank:
+	Detonates:
+		ChargeDelay: 96
+		DetonationDelay: 42
+		ChargeSound: MADCHRG2.AUD
+		DetonationSound: MADEXPLO.AUD
+		DetonationWeapon: MADTankDetonate
 	-EjectOnDeath:
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair
