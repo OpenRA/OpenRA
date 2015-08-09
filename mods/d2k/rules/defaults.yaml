@@ -72,7 +72,7 @@
 	Selectable:
 		Bounds: 32,32
 	Targetable:
-		TargetTypes: Ground, Vehicle, C4
+		TargetTypes: Ground, Vehicle, C4, WormFood
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -189,7 +189,7 @@
 	Selectable:
 		Bounds: 12,18,0,-6
 	Targetable:
-		TargetTypes: Ground, Infantry
+		TargetTypes: Ground, Infantry, WormFood
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
 	QuantizeFacingsFromSequence:
