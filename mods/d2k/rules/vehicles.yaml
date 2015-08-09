@@ -303,6 +303,7 @@ devastator:
 	Mobile:
 		ROT: 3
 		Speed: 31
+		Crushes: crate, infantry, spicebloom, wall
 	RevealsShroud:
 		Range: 7c0
 	Armament:
