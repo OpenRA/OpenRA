@@ -393,7 +393,6 @@ TSLA:
 		VisualBounds: 24,36,0,4
 	CanPowerDown:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -410,11 +409,7 @@ TSLA:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadTime: 120
-	AutoTarget:
 	-RenderBuilding:
-	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 	Power:
 		Amount: -100
 	DetectCloaked:
@@ -442,7 +437,6 @@ AGUN:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -461,12 +455,9 @@ AGUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	-AcceptsSupplies:
-	DrawLineToTarget:
 	Power:
 		Amount: -50
 	DetectCloaked:
@@ -517,7 +508,6 @@ PBOX:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
-	-GivesBuildableArea:
 	Valued:
 		Cost: 400
 	Health:
@@ -528,7 +518,6 @@ PBOX:
 		Range: 6c0
 	Bib:
 		HasMinibib: Yes
-	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
 	BodyOrientation:
@@ -539,7 +528,6 @@ PBOX:
 		PipCount: 1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
-	DrawLineToTarget:
 	AttackGarrisoned:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
@@ -547,7 +535,6 @@ PBOX:
 		PortCones: 86, 86, 86, 86, 86, 86
 	RenderRangeCircle:
 		FallbackRange: 6c0
-	AutoTarget:
 	Power:
 		Amount: -15
 	DetectCloaked:
@@ -563,7 +550,6 @@ HBOX:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
-	-GivesBuildableArea:
 	Valued:
 		Cost: 600
 	Health:
@@ -575,7 +561,6 @@ HBOX:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
-	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
 	BodyOrientation:
@@ -586,12 +571,10 @@ HBOX:
 		PipCount: 1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
-	DrawLineToTarget:
 	DetectCloaked:
 		Range: 6
 	RenderRangeCircle:
 		FallbackRange: 6c0
-	AutoTarget:
 	AttackGarrisoned:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
@@ -613,7 +596,6 @@ GUN:
 		Name: Turret
 		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Building:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -632,11 +614,7 @@ GUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	AutoTarget:
 	-RenderBuilding:
-	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 	Power:
 		Amount: -40
 	DetectCloaked:
@@ -654,7 +632,6 @@ FTUR:
 		Name: Flame Tower
 		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -672,10 +649,6 @@ FTUR:
 	AttackTurreted:
 	BodyOrientation:
 		QuantizedFacings: 8
-	AutoTarget:
-	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 	Power:
 		Amount: -20
 	DetectCloaked:
@@ -699,7 +672,6 @@ SAM:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -717,12 +689,9 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	-AcceptsSupplies:
-	DrawLineToTarget:
 	Power:
 		Amount: -40
 	DetectCloaked:

@@ -429,6 +429,11 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	AutoTarget:
+	-GivesBuildableArea:
+	-AcceptsSupplies:
+	DrawLineToTarget:
+	RenderRangeCircle:
 
 ^Wall:
 	AppearsOnRadar:
