@@ -226,7 +226,7 @@ namespace OpenRA.Renderer.Sdl2
 
 		public void Clear()
 		{
-			GL.ClearColor(0, 0, 0, 0);
+			GL.ClearColor(0, 0, 0, 1);
 			ErrorHandler.CheckGlError();
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			ErrorHandler.CheckGlError();
