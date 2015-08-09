@@ -19,10 +19,10 @@
 		Modifier: 110, 130
 	DamageMultiplier@EXPERIENCE:
 		UpgradeTypes: damage
-		Modifier: 83, 66
+		Modifier: 90, 75
 	SpeedMultiplier@EXPERIENCE:
 		UpgradeTypes: speed
-		Modifier: 120, 150
+		Modifier: 120, 140
 	ReloadDelayMultiplier@EXPERIENCE:
 		UpgradeTypes: reload
 		Modifier: 90, 75
