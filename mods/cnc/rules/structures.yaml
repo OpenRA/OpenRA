@@ -626,7 +626,7 @@ TMPL:
 	ProvidesPrerequisite@buildingname:
 
 GUN:
-	Inherits: ^BaseBuilding
+	Inherits: ^Defense
 	Valued:
 		Cost: 600
 	CustomBuildTimeValue:
@@ -639,7 +639,6 @@ GUN:
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
 	Building:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -658,20 +657,15 @@ GUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	AutoTarget:
 	-RenderBuilding:
 	-WithDeathAnimation:
-	RenderRangeCircle:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
 	Power:
 		Amount: -20
-	MustBeDestroyed:
-		RequiredForShortGame: false
 
 SAM:
-	Inherits: ^BaseBuilding
+	Inherits: ^Defense
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -688,7 +682,6 @@ SAM:
 		Dimensions: 2,1
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
@@ -704,16 +697,13 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
-	AutoTarget:
 	-RenderBuilding:
-	RenderRangeCircle:
+	-RenderDetectionCircle:
 	Power:
 		Amount: -20
-	MustBeDestroyed:
-		RequiredForShortGame: false
 
 OBLI:
-	Inherits: ^BaseBuilding
+	Inherits: ^Defense
 	Valued:
 		Cost: 1500
 	CustomBuildTimeValue:
@@ -732,7 +722,6 @@ OBLI:
 		Bounds: 24,24,0,12
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 600
 	Armor:
@@ -750,20 +739,15 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 40
 		InitialChargeDelay: 50
-	AutoTarget:
 	-RenderBuilding:
-	RenderRangeCircle:
 	-EmitInfantryOnSell:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 	Power:
 		Amount: -150
-	MustBeDestroyed:
-		RequiredForShortGame: false
 
 GTWR:
-	Inherits: ^BaseBuilding
+	Inherits: ^Defense
 	Valued:
 		Cost: 600
 	CustomBuildTimeValue:
@@ -776,7 +760,6 @@ GTWR:
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
 	Building:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	RevealsShroud:
@@ -790,21 +773,16 @@ GTWR:
 	AttackTurreted:
 	BodyOrientation:
 		QuantizedFacings: 8
-	AutoTarget:
 	DetectCloaked:
 		Range: 3
-	RenderDetectionCircle:
-	RenderRangeCircle:
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
 	Power:
 		Amount: -10
-	MustBeDestroyed:
-		RequiredForShortGame: false
 
 ATWR:
-	Inherits: ^BaseBuilding
+	Inherits: ^Defense
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:
@@ -823,7 +801,6 @@ ATWR:
 		Bounds: 24,24,0,12
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 600
 	Armor:
@@ -844,17 +821,12 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
-	AutoTarget:
 	BodyOrientation:
 		QuantizedFacings: 8
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
-	RenderRangeCircle:
 	Power:
 		Amount: -40
-	MustBeDestroyed:
-		RequiredForShortGame: false
 
 SBAG:
 	Inherits: ^Wall
