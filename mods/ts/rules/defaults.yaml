@@ -256,7 +256,7 @@
 	Crushable:
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: vissml
 		Probability: 10
 		OwnerType: InternalName

@@ -1684,7 +1684,7 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		WithFacingSpriteBody:
-		-LeavesHusk:
+		-SpawnActorOnDeath:
 		-EjectOnDeath:
 		AutoSelectionSize:
 		RenderSprites:

@@ -817,7 +817,7 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		-LeavesHusk:
+		-SpawnActorOnDeath:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

@@ -6,7 +6,7 @@ V19:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Oil Derrick
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V19.Husk
 
 V19.Husk:
@@ -37,7 +37,7 @@ HOSP:
 		HP: 1000
 	Tooltip:
 		Name: Hospital
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: HOSP.Husk
 	Bib:
 		HasMinibib: Yes
@@ -74,7 +74,7 @@ BIO:
 	ProductionBar:
 	RallyPoint:
 		RallyPoint: -1,-1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
 

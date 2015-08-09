@@ -190,7 +190,7 @@
 	HiddenUnderFog:
 	PoisonedByTiberium:
 	ActorLostNotification:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		Probability: 10
 		HuskActor: vice
 		OwnerType: InternalName

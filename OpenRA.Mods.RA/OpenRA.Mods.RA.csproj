@@ -110,7 +110,7 @@
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
-    <Compile Include="Traits\LeavesHusk.cs" />
+    <Compile Include="Traits\SpawnActorOnDeath.cs" />
     <Compile Include="Traits\TargetableSubmarine.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />

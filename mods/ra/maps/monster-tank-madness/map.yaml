@@ -2212,7 +2212,7 @@ Rules:
 		Explodes:
 			Weapon: MiniNuke
 			EmptyWeapon: MiniNuke
-		LeavesHusk:
+		SpawnActorOnDeath:
 			HuskActor: 5TNK.Husk
 		SelfHealing:
 			Step: 1

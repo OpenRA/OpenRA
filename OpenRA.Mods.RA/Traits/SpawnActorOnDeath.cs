@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 	public enum OwnerType { Victim, Killer, InternalName }
 
 	[Desc("Spawn another actor immediately upon death.")]
-	public class LeavesHuskInfo : ITraitInfo
+	public class SpawnActorOnDeathInfo : ITraitInfo
 	{
 		[ActorReference, FieldLoader.Require]
 		[Desc("Actor to spawn on death.")]
@@ -42,15 +42,15 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Skips the husk actor's make animations if true.")]
 		public readonly bool SkipMakeAnimations = true;
 
-		public object Create(ActorInitializer init) { return new LeavesHusk(init, this); }
+		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
-	public class LeavesHusk : INotifyKilled
+	public class SpawnActorOnDeath : INotifyKilled
 	{
-		readonly LeavesHuskInfo info;
+		readonly SpawnActorOnDeathInfo info;
 		readonly string race;
 
-		public LeavesHusk(ActorInitializer init, LeavesHuskInfo info)
+		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
 			this.info = info;
 

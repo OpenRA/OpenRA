@@ -29,7 +29,7 @@ MCV:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: MCV.Husk
 	-GainsExperience:
 	-Cloak:
@@ -67,7 +67,7 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: HARV.Husk
 	-GainsExperience:
 	WithHarvestAnimation:
@@ -120,7 +120,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: APC.Husk
 
 ARTY:
@@ -151,7 +151,7 @@ ARTY:
 	WithMuzzleFlash:
 	AutoTarget:
 		InitialStance: Defend
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: ARTY.Husk
 	Explodes:
 		Weapon: ArtilleryShell
@@ -190,7 +190,7 @@ FTNK:
 	Explodes:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: FTNK.Husk
 
 BGGY:
@@ -224,7 +224,7 @@ BGGY:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: BGGY.Husk
 
 BIKE:
@@ -260,7 +260,7 @@ BIKE:
 		LocalYaw: 100, -100
 	AttackFrontal:
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: BIKE.Husk
 
 JEEP:
@@ -294,7 +294,7 @@ JEEP:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: JEEP.Husk
 
 LTNK:
@@ -329,7 +329,7 @@ LTNK:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: LTNK.Husk
 
 MTNK:
@@ -363,7 +363,7 @@ MTNK:
 	WithMuzzleFlash:
 	WithTurret:
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: MTNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
@@ -413,7 +413,7 @@ HTNK:
 		Ticks: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: HTNK.Husk
 	SelectionDecorations:
 		VisualBounds: 34,34,0,-3
@@ -451,7 +451,7 @@ MSAM:
 	WithTurret:
 		AimSequence: aim
 	AutoTarget:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: MSAM.Husk
 
 MLRS:
@@ -493,7 +493,7 @@ MLRS:
 	AutoTarget:
 		InitialStance: Defend
 	RenderRangeCircle:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: MLRS.Husk
 
 STNK:
@@ -530,7 +530,7 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 	TargetableUnit:
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: STNK.Husk
 	-MustBeDestroyed:
 

@@ -619,7 +619,7 @@ Rules:
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	V01:
-		LeavesHusk:
+		SpawnActorOnDeath:
 			HuskActor: healcrate
 	HEALCRATE:
 		Tooltip:

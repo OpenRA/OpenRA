@@ -1687,12 +1687,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Sequences";
 				}
 
-				// SpawnViceroid was replaced by LeavesHusk
+				// SpawnViceroid was replaced by SpawnActorOnDeath
+				// And LeavesHusk was renamed to SpawnActorOnDeath
 				if (engineVersion < 20150809)
 				{
 					if (node.Key == "SpawnViceroid")
 					{
-						node.Key = "LeavesHusk";
+						node.Key = "SpawnActorOnDeath";
 
 						// The default value of ViceroidActor was vice
 						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "ViceroidActor");
@@ -1724,6 +1725,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (deathType == null)
 							node.Value.Nodes.Add(new MiniYamlNode("DeathType", "TiberiumDeath"));
 					}
+
+					if (node.Key == "LeavesHusk")
+						node.Key = "SpawnActorOnDeath";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
