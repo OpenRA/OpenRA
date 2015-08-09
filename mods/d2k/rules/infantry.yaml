@@ -72,37 +72,6 @@ bazooka:
 	AttractsWorms:
 		Intensity: 180
 
-medic:
-	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 60
-		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Medic
-		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
-	Health:
-		HP: 60
-	Mobile:
-		Speed: 42
-	AutoHeal:
-	Armament:
-		Weapon: Heal
-	AttackMedic:
-		Cursor: ability
-		OutsideRangeCursor: ability
-	WithInfantryBody:
-		AttackSequence: heal
-	Passenger:
-		PipType: Blue
-	-AutoTarget:
-	AttractsWorms:
-		Intensity: 180
-	Voiced:
-		VoiceSet: EngineerVoice
-
 thumper:
 	Inherits: ^Infantry
 	Buildable:
