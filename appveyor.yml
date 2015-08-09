@@ -27,9 +27,9 @@ after_build:
     {
         cov-build.exe --dir cov-int make all
         nuget.exe install PublishCoverity -ExcludeVersion
-        PublishCoverity\PublishCoverity.exe compress -o coverity.zip -i cov-int
+        PublishCoverity\tools\PublishCoverity.exe compress -o coverity.zip -i cov-int
         $version = Get-Date -format s
-        PublishCoverity\PublishCoverity.exe publish `
+        PublishCoverity\tools\PublishCoverity.exe publish `
           -t "$env:CoverityProjectToken" `
           -e "$env:CoverityNotificationEmail" `
           -r "$env:APPVEYOR_REPO_NAME" `
