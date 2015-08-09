@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 2 && parentKey.StartsWith("DeathSounds") && node.Key == "InfDeaths")
 						node.Key = "DeathTypes";
 
-					if (depth == 2 && parentKey == "SpawnsViceroid" && node.Key == "InfDeath")
+					if (depth == 2 && parentKey == "SpawnViceroid" && node.Key == "InfDeath")
 						node.Key = "DeathType";
 
 					if (depth == 2 && parentKey == "Explodes" && node.Key == "InfDeath")
@@ -1409,7 +1409,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									var modifier = trait.Value.Nodes.FirstOrDefault(n => n.Key == type + "Modifier");
 
 									if (upgradeTypes == null || !string.IsNullOrEmpty(upgradeTypes.Value.Value) || modifier == null ||
-									    !string.IsNullOrEmpty(modifier.Value.Value))
+										!string.IsNullOrEmpty(modifier.Value.Value))
 									{
 										var yaml = new MiniYaml(null);
 										if (modifier == null)
@@ -1685,6 +1685,49 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (depth == 2 && parentKey == "WithBuildingExplosion" && node.Key == "Sequence")
 						node.Key = "Sequences";
+				}
+
+				// SpawnViceroid was replaced by SpawnActorOnDeath
+				// And LeavesHusk was renamed to SpawnActorOnDeath
+				if (engineVersion < 20150809)
+				{
+					if (node.Key == "SpawnViceroid")
+					{
+						node.Key = "SpawnActorOnDeath";
+
+						// The default value of ViceroidActor was vice
+						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "ViceroidActor");
+						if (actor != null)
+							actor.Key = "HuskActor";
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("HuskActor", "vice"));
+
+						// The default value of Probability was 10
+						var probability = node.Value.Nodes.FirstOrDefault(n => n.Key == "Probability");
+						if (probability == null)
+							node.Value.Nodes.Add(new MiniYamlNode("Probability", "10"));
+
+						// The default value of Owner was Creeps
+						var owner = node.Value.Nodes.FirstOrDefault(n => n.Key == "Owner");
+						if (owner != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("OwnerType", "InternalName"));
+							owner.Key = "InternalOwner";
+						}
+						else
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("OwnerType", "InternalName"));
+							node.Value.Nodes.Add(new MiniYamlNode("InternalOwner", "Creeps"));
+						}
+
+						// The default value of DeathType was TiberiumDeath
+						var deathType = node.Value.Nodes.FirstOrDefault(n => n.Key == "DeathType");
+						if (deathType == null)
+							node.Value.Nodes.Add(new MiniYamlNode("DeathType", "TiberiumDeath"));
+					}
+
+					if (node.Key == "LeavesHusk")
+						node.Key = "SpawnActorOnDeath";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

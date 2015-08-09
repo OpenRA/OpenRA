@@ -3,7 +3,7 @@ V20:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V20.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -21,7 +21,7 @@ V21:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V21.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -39,7 +39,7 @@ V22:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V22.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -54,7 +54,7 @@ V22.Husk:
 
 V23:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V23.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -69,7 +69,7 @@ V24:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V24.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -89,7 +89,7 @@ V25:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V25.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -109,7 +109,7 @@ V26:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V26.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -124,7 +124,7 @@ V26.Husk:
 
 V27:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V27.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -136,7 +136,7 @@ V27.Husk:
 
 V28:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V28.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -148,7 +148,7 @@ V28.Husk:
 
 V29:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V29.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -163,7 +163,7 @@ V30:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V30.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -181,7 +181,7 @@ V31:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V31.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -199,7 +199,7 @@ V32:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V32.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -217,7 +217,7 @@ V33:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V33.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -232,7 +232,7 @@ V33.Husk:
 
 V34:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V34.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -244,7 +244,7 @@ V34.Husk:
 
 V35:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V35.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -256,7 +256,7 @@ V35.Husk:
 
 V36:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V36.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
@@ -268,7 +268,7 @@ V36.Husk:
 
 V37:
 	Inherits: ^CivBuilding
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V37.Husk
 	Building:
 		Footprint: __xx_ ___xx

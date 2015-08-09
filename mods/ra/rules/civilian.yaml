@@ -222,7 +222,7 @@ V19:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Oil Pump
-	LeavesHusk:
+	SpawnActorOnDeath:
 		HuskActor: V19.Husk
 	AutoTargetIgnore:
 

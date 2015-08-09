@@ -86,7 +86,6 @@
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithReloadingTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
-    <Compile Include="Traits\SpawnViceroid.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />

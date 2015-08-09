@@ -10,26 +10,47 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
+	public enum OwnerType { Victim, Killer, InternalName }
+
 	[Desc("Spawn another actor immediately upon death.")]
-	public class LeavesHuskInfo : ITraitInfo
+	public class SpawnActorOnDeathInfo : ITraitInfo
 	{
 		[ActorReference, FieldLoader.Require]
+		[Desc("Actor to spawn on death.")]
 		public readonly string HuskActor = null;
 
-		public object Create(ActorInitializer init) { return new LeavesHusk(init, this); }
+		[Desc("Probability the husk actor spawns.")]
+		public readonly int Probability = 100;
+
+		[Desc("Owner of the husk actor. Allowed keywords:" +
+			"'Victim', 'Killer' and 'InternalName'.")]
+		public readonly OwnerType OwnerType = OwnerType.Victim;
+
+		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
+		public readonly string InternalOwner = null;
+
+		[Desc("DeathType that triggers the husk actor spawn." +
+			"Leave empty to spawn a husk actor ignoring the DeathTypes.")]
+		public readonly string DeathType = null;
+
+		[Desc("Skips the husk actor's make animations if true.")]
+		public readonly bool SkipMakeAnimations = true;
+
+		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
-	public class LeavesHusk : INotifyKilled
+	public class SpawnActorOnDeath : INotifyKilled
 	{
-		readonly LeavesHuskInfo info;
+		readonly SpawnActorOnDeathInfo info;
 		readonly string race;
 
-		public LeavesHusk(ActorInitializer init, LeavesHuskInfo info)
+		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
 			this.info = info;
 
@@ -41,6 +62,13 @@ namespace OpenRA.Mods.RA.Traits
 			if (!self.IsInWorld)
 				return;
 
+			if (self.World.SharedRandom.Next(100) > info.Probability)
+				return;
+
+			var warhead = e.Warhead as DamageWarhead;
+			if (info.DeathType != null && warhead != null && !warhead.DamageTypes.Contains(info.DeathType))
+				return;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var td = new TypeDictionary
@@ -48,10 +76,18 @@ namespace OpenRA.Mods.RA.Traits
 					new ParentActorInit(self),
 					new LocationInit(self.Location),
 					new CenterPositionInit(self.CenterPosition),
-					new OwnerInit(self.Owner),
-					new FactionInit(race),
-					new SkipMakeAnimsInit()
+					new FactionInit(race)
 				};
+
+				if (info.OwnerType == OwnerType.Victim)
+					td.Add(new OwnerInit(self.Owner));
+				else if (info.OwnerType == OwnerType.Killer)
+					td.Add(new OwnerInit(e.Attacker.Owner));
+				else
+					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == info.InternalOwner)));
+
+				if (info.SkipMakeAnimations)
+					td.Add(new SkipMakeAnimsInit());
 
 				// Allows the husk to drag to its final position
 				var mobile = self.TraitOrDefault<Mobile>();
@@ -71,7 +107,8 @@ namespace OpenRA.Mods.RA.Traits
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
-				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>(); // TODO: untie this and move to Mods.Common
+				// TODO: untie this and move to Mods.Common
+				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
 				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
 				{
 					td.Add(new ChronoshiftOriginInit(chronoshiftable.Origin));
