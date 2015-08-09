@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wsb.PlayCustomAnimation(self, info.AttackSequence);
+				wsb.PlayCustomAnimation(self, info.AttackSequence, () => wsb.CancelCustomAnimation(self));
 		}
 
 		public void Tick(Actor self)
