@@ -57,6 +57,8 @@ Sniper:
 	ReloadDelay: 100
 	Range: 8c512
 	Report: FREMODD1.WAV
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Structure, Wall
 	Projectile: Bullet
 		Speed: 1c896
 		ContrailLength: 6
@@ -66,19 +68,14 @@ Sniper:
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 60
-		Versus:
-			None: 100
-			Wood: 0
-			Light: 1
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
 Vulcan:
 	ReloadDelay: 30
 	Range: 5c768
 	Report: VULCAN.AUD
-	ValidTargets: Ground
+	InvalidTargets: Structure
 	Projectile: Bullet
 		Speed: 1c256
 		ContrailLength: 3
@@ -88,12 +85,10 @@ Vulcan:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
-		ValidTargets: Ground
+		InvalidTargets: Structure
 		Versus:
-			Wood: 0
 			Light: 60
 			Heavy: 10
-			Concrete: 0
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -103,7 +98,7 @@ Slung:
 	Delay: 5
 	Range: 5c512
 	Report: BAZOOK2.WAV
-	ValidTargets: Ground
+	InvalidTargets: Infantry
 	Projectile: Bullet
 		Speed: 320
 		Blockable: false
@@ -114,9 +109,8 @@ Slung:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 30
-		ValidTargets: Ground
+		InvalidTargets: Infantry
 		Versus:
-			None: 0
 			Wood: 75
 			Light: 40
 			Heavy: 90
@@ -372,8 +366,8 @@ DevBullet:
 NerveGasMissile:
 	ReloadDelay: 120
 	Range: 8c0
-	Burst: 1
 	Report: MISSLE1.WAV
+	InvalidTargets: Infantry, Structure
 	Projectile: Bullet
 		Speed: 384
 		Blockable: false
@@ -388,10 +382,7 @@ NerveGasMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 10
-		Versus:
-			None: 0
-			Wood: 0
-			Concrete: 0
+		InvalidTargets: Infantry, Structure
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -476,26 +467,22 @@ Heal:
 	ReloadDelay: 160
 	Range: 4c0
 	Report:
+	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: -50
-		Versus:
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 
 WormJaw:
 	ReloadDelay: 10
 	Range: 3c0
+	InvalidTargets: Structure
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 100
-		Versus:
-			Wood: 0
-			Concrete: 0
+		InvalidTargets: Structure
 
 ParaBomb:
 	ReloadDelay: 10
