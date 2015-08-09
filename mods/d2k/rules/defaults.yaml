@@ -295,3 +295,20 @@
 		Range: 2c0, 5c0
 	WithMakeAnimation:
 
+^Defense:
+	Inherits: ^Building
+	WithTurret:
+	AttackTurreted:
+	AutoTarget:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	-GivesBuildableArea:
+	-WithCrumbleOverlay:
+	-WithMakeAnimation:
+	-RenderBuilding:
+	RenderBuildingWall:
+	LineBuildNode:
+		Types: turret
+	MustBeDestroyed:
+		RequiredForShortGame: false
+
