@@ -43,8 +43,6 @@ namespace OpenRA.Network
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 
-		public readonly int SyncHeaderSize = 9;
-
 		List<Order> localOrders = new List<Order>();
 
 		List<ChatLine> chatCache = new List<ChatLine>();
@@ -55,12 +53,8 @@ namespace OpenRA.Network
 
 		static void OutOfSync(int frame)
 		{
+			syncReport.DumpSyncReport(frame);
 			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
-		}
-
-		static void OutOfSync(int frame, string blame)
-		{
-			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n Compare syncreport.log with other players.".F(frame, blame));
 		}
 
 		public void StartGame()
@@ -145,39 +139,14 @@ namespace OpenRA.Network
 			if (syncForFrame.TryGetValue(frame, out existingSync))
 			{
 				if (packet.Length != existingSync.Length)
-				{
-					syncReport.DumpSyncReport(frame);
 					OutOfSync(frame);
-				}
 				else
-				{
 					for (var i = 0; i < packet.Length; i++)
-					{
 						if (packet[i] != existingSync[i])
-						{
-							syncReport.DumpSyncReport(frame);
-
-							if (i < SyncHeaderSize)
-								OutOfSync(frame, "Tick");
-							else
-								OutOfSync(frame, (i - SyncHeaderSize) / 4);
-						}
-					}
-				}
+							OutOfSync(frame);
 			}
 			else
 				syncForFrame.Add(frame, packet);
-		}
-
-		void OutOfSync(int frame, int index)
-		{
-			var orders = frameData.OrdersForFrame(World, frame);
-
-			// Invalid index
-			if (index >= orders.Count())
-				OutOfSync(frame);
-
-			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}\n Compare syncreport.log with other players.".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
 
 		public bool IsReadyForNextFrame
@@ -204,17 +173,10 @@ namespace OpenRA.Network
 			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
 
-			var sync = new List<int>();
-			sync.Add(World.SyncHash());
-
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
-			{
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-				sync.Add(World.SyncHash());
-			}
 
-			var ss = sync.SerializeSync();
-			Connection.SendSync(NetFrameNumber, ss);
+			Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 
 			syncReport.UpdateSyncReport();
 

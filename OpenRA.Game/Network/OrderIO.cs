@@ -35,14 +35,13 @@ namespace OpenRA.Network
 			return ret;
 		}
 
-		public static byte[] SerializeSync(this List<int> sync)
+		public static byte[] SerializeSync(int sync)
 		{
 			var ms = new MemoryStream();
 			using (var writer = new BinaryWriter(ms))
 			{
 				writer.Write((byte)0x65);
-				foreach (var s in sync)
-					writer.Write(s);
+				writer.Write(sync);
 			}
 
 			return ms.ToArray();
