@@ -186,27 +186,19 @@ DogJaw:
 		Spread: 213
 		Damage: 100
 		ValidTargets: Infantry
-		Versus:
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
 		DamageTypes: DefaultDeath
 
 Heal:
 	ReloadDelay: 80
 	Range: 4c0
 	Report: HEAL2.AUD
+	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		Versus:
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 
 Repair:
 	ReloadDelay: 80
@@ -219,12 +211,6 @@ Repair:
 		Spread: 213
 		Damage: -20
 		ValidTargets: Repair
-		Versus:
-			None: 0
-			Wood: 0
-			Light: 100
-			Heavy: 100
-			Concrete: 0
 
 Crush:
 	Warhead@1Dam: SpreadDamage
@@ -273,22 +259,18 @@ Mandible:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 MADTankThump:
-	InvalidTargets: MADTank
+	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 1
-		InvalidTargets: MADTank
-		Versus:
-			None: 0
+		InvalidTargets: MADTank, Infantry
 
 MADTankDetonate:
-	InvalidTargets: MADTank
+	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 19
-		InvalidTargets: MADTank
-		Versus:
-			None: 0
+		InvalidTargets: MADTank, Infantry
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 		Size: 7,6

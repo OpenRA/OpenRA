@@ -208,10 +208,8 @@ Nike:
 		ValidTargets: Air
 		Versus:
 			None: 90
-			Wood: 0
 			Light: 90
 			Heavy: 50
-			Concrete: 0
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

@@ -2,17 +2,14 @@ Colt45:
 	ReloadDelay: 5
 	Range: 7c0
 	Report: GUN5.AUD
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 50
-		Versus:
-			None: 100
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
@@ -282,16 +279,14 @@ SilencedPPK:
 	ReloadDelay: 80
 	Range: 2c512
 	Report: silppk.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 150
-		Versus:
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -333,16 +328,13 @@ Sniper:
 	Report: GUN5.AUD
 	ReloadDelay: 70
 	Range: 10c0
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 140
-		Versus:
-			None: 100
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
