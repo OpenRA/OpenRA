@@ -1,6 +1,7 @@
 Sniper:
 	Report: RAMGUN2.AUD
-	ValidTargets: Infantry
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
 	ReloadDelay: 40
 	Range: 6c0
 	Projectile: Bullet
