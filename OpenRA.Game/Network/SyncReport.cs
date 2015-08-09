@@ -95,7 +95,7 @@ namespace OpenRA.Network
 			}
 		}
 
-		internal void DumpSyncReport(int frame)
+		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
 		{
 			foreach (var r in syncReports)
 			{
@@ -127,6 +127,10 @@ namespace OpenRA.Network
 							if (nvp.Second[i] != null)
 								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
 					}
+
+					Log.Write("sync", "Orders Issued:");
+					foreach (var o in orders)
+						Log.Write("sync", "\t {0}", o.ToString());
 
 					return;
 				}

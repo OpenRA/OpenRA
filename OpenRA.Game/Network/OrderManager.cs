@@ -51,9 +51,9 @@ namespace OpenRA.Network
 
 		bool disposed;
 
-		static void OutOfSync(int frame)
+		void OutOfSync(int frame)
 		{
-			syncReport.DumpSyncReport(frame);
+			syncReport.DumpSyncReport(frame, frameData.OrdersForFrame(World, frame));
 			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
 		}
 
