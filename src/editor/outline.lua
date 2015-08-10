@@ -418,7 +418,7 @@ local package = ide:AddPackage('core.outline', {
         ctrl:SetItemText(fileitem, doc:GetTabText())
       end
       local path = doc and doc:GetFilePath()
-      if path and cache.funcs then
+      if path and cache and cache.funcs then
         outline:UpdateSymbols(path, cache.funcs.updated > editor.updated and cache.funcs or nil)
         resetIndexTimer()
       end
