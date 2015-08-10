@@ -157,19 +157,21 @@ local function navigateTo(default, selected)
         local fline, sline, tabindex = unpack(t or {})
 
         -- jump to symbol; tabindex has the position of the symbol
-        if text and text:find(special.SYMBOL) and tabindex then
-          local index = name2index(sline)
-          local editor = index and nb:GetPage(index):DynamicCast("wxStyledTextCtrl")
-          if not editor then
-            local doc = ide:FindDocument(sline)
-            -- reload the file (including the preview to refresh its symbols in the outline)
-            editor = LoadFile(sline, (not doc or doc:GetTabIndex() == pindex) and preview or nil)
-          end
-          if editor then
-            if pindex and pindex ~= ide:GetDocument(editor):GetTabIndex() then ClosePage(pindex) end
-            editor:SetFocus() -- in case the focus is on some other panel
-            editor:GotoPos(tabindex-1)
-            editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(tabindex-1))
+        if text and text:find(special.SYMBOL) then
+          if sline and tabindex then
+            local index = name2index(sline)
+            local editor = index and nb:GetPage(index):DynamicCast("wxStyledTextCtrl")
+            if not editor then
+              local doc = ide:FindDocument(sline)
+              -- reload the file (including the preview to refresh its symbols in the outline)
+              editor = LoadFile(sline, (not doc or doc:GetTabIndex() == pindex) and preview or nil)
+            end
+            if editor then
+              if pindex and pindex ~= ide:GetDocument(editor):GetTabIndex() then ClosePage(pindex) end
+              editor:SetFocus() -- in case the focus is on some other panel
+              editor:GotoPos(tabindex-1)
+              editor:EnsureVisibleEnforcePolicy(editor:LineFromPosition(tabindex-1))
+            end
           end
         -- insert selected method
         elseif text and text:find('^%s*'..special.METHOD) then
