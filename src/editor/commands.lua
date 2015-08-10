@@ -69,7 +69,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:Freeze()
   editor:SetupKeywords(GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
-  editor:Allocate(filesize)
+  if filesize then editor:Allocate(filesize) end
   editor:SetText("")
   editor.bom = string.char(0xEF,0xBB,0xBF)
 
@@ -118,8 +118,10 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
           end
         end
       end
-      ide:PopStatus()
-      ide:PushStatus(TR("%s%% loaded..."):format(math.floor(100*editor:GetLength()/filesize)))
+      if filesize then
+        ide:PopStatus()
+        ide:PushStatus(TR("%s%% loaded..."):format(math.floor(100*editor:GetLength()/filesize)))
+      end
     end)
   ide:PopStatus()
 
