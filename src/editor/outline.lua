@@ -544,7 +544,10 @@ function outline:RefreshSymbols(path, callback)
     if spec and spec.marksymbols then table.insert(exts, ext) end
   end
 
-  local opts = {sort = false, folder = false, skipbinary = true, yield = true}
+  local opts = {sort = false, folder = false, skipbinary = true, yield = true,
+    -- skip those directories that are on the "ignore" list
+    ondirectory = function(name) return outline.settings.ignoredirs[name] == nil end
+  }
   local nextfile = coroutine.wrap(function() FileSysGetRecursive(path, true, table.concat(exts, ";"), opts) end)
   while true do
     local file = nextfile()
