@@ -20,22 +20,22 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Actor building;
 		readonly RallyPoint rp;
-		readonly string palettePrefix;
+		readonly string paletteName;
 		readonly Animation flag;
 		readonly Animation circles;
 
-		public RallyPointIndicator(Actor building, string palettePrefix)
+		public RallyPointIndicator(Actor building, string paletteName)
 		{
 			this.building = building;
-			this.palettePrefix = palettePrefix;
+			this.paletteName = paletteName;
 
 			rp = building.Trait<RallyPoint>();
 
-			flag = new Animation(building.World, "rallypoint");
-			circles = new Animation(building.World, "rallypoint");
+			flag = new Animation(building.World, rp.Info.Image);
+			flag.PlayRepeating(rp.Info.FlagSequence);
 
-			flag.PlayRepeating("flag");
-			circles.Play("circles");
+			circles = new Animation(building.World, rp.Info.Image);
+			circles.Play(rp.Info.CirclesSequence);
 		}
 
 		CPos cachedLocation;
@@ -43,10 +43,11 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			flag.Tick();
 			circles.Tick();
+
 			if (cachedLocation != rp.Location)
 			{
 				cachedLocation = rp.Location;
-				circles.Play("circles");
+				circles.Play(rp.Info.CirclesSequence);
 			}
 
 			if (!building.IsInWorld || building.IsDead)
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Effects
 				return SpriteRenderable.None;
 
 			var pos = wr.World.Map.CenterOfCell(cachedLocation);
-			var palette = wr.Palette(palettePrefix + building.Owner.InternalName);
+			var palette = wr.Palette(paletteName);
 			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
 		}
 	}

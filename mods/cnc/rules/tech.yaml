@@ -73,7 +73,7 @@ BIO:
 		LowPowerSlowdown: 3
 	ProductionBar:
 	RallyPoint:
-		RallyPoint: -1,-1
+		Offset: -1,-1
 	SpawnActorOnDeath:
 		HuskActor: BIO.Husk
 	ProvidesPrerequisite@buildingname:

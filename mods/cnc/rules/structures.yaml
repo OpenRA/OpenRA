@@ -329,7 +329,7 @@ AFLD:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	RallyPoint:
-		RallyPoint: 4,2
+		Offset: 4,2
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
@@ -374,7 +374,7 @@ WEAP:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
-		RallyPoint: 0,3
+		Offset: 0,3
 	Exit@1:
 		SpawnOffset: -341,-341,0
 		ExitCell: 0,2

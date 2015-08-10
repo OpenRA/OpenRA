@@ -17,8 +17,17 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used to waypoint units after production or repair is finished.")]
 	public class RallyPointInfo : ITraitInfo
 	{
-		public readonly CVec RallyPoint = new CVec(1, 3);
-		public readonly string IndicatorPalettePrefix = "player";
+		public readonly string Image = "rallypoint";
+		[SequenceReference("Image")] public readonly string FlagSequence = "flag";
+		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
+
+		[Desc("Custom indicator palette name")]
+		public readonly string Palette = "player";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = true;
+
+		public readonly CVec Offset = new CVec(1, 3);
 
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
@@ -26,11 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
 	{
 		[Sync] public CPos Location;
+		public RallyPointInfo Info;
 
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
-			Location = self.Location + info.RallyPoint;
-			self.World.AddFrameEndTask(w => w.Add(new RallyPointIndicator(self, info.IndicatorPalettePrefix)));
+			Info = info;
+			Location = self.Location + info.Offset;
+			var palette = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
+			self.World.AddFrameEndTask(w => w.Add(new RallyPointIndicator(self, palette)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

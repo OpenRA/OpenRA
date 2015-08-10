@@ -1730,6 +1730,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "SpawnActorOnDeath";
 				}
 
+				if (engineVersion < 20150810)
+				{
+					if (depth == 2 && parentKey == "RallyPoint" && node.Key == "RallyPoint")
+						node.Key = "Offset";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
