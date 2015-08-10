@@ -203,7 +203,7 @@ local function indexFromQueue()
     local fname = table.remove(outline.indexqueue, 1)
     outline.indexqueue[0][fname] = nil
     -- check if fname is already loaded
-    ide:PushStatus(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
+    ide:SetStatusFor(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
     outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
     local content, err = FileRead(fname)
     if content then
@@ -218,8 +218,7 @@ local function indexFromQueue()
     else
       DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
     end
-    ide:PopStatus()
-    if #outline.indexqueue == 0 then ide:SetStatus(TR("Indexing completed.")) end
+    if #outline.indexqueue == 0 then ide:SetStatusFor(TR("Indexing completed.")) end
     ide:DoWhenIdle(indexFromQueue)
   end
   return

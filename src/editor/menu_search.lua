@@ -272,7 +272,7 @@ local function navigateTo(default, selected)
                 if not paths[path] and symbols then populateSymbols(path, symbols) end
                 if not symbols then n = n + 1 end
               end)
-            if n > 0 then ide:SetStatus(TR("Queued %d files to index."):format(n)) end
+            if n > 0 then ide:SetStatusFor(TR("Queued %d files to index."):format(n)) end
           end
         end
         local nums = {}
