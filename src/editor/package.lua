@@ -157,6 +157,7 @@ function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
 function ide:GetConsole() return self.frame.bottomnotebook.shellbox end
 function ide:GetEditorNotebook() return self.frame.notebook end
 function ide:GetOutputNotebook() return self.frame.bottomnotebook end
+function ide:GetOutline() return self.outline end
 function ide:GetProjectNotebook() return self.frame.projnotebook end
 function ide:GetProject() return FileTreeGetDir() end
 function ide:GetProjectStartFile()
@@ -169,6 +170,22 @@ function ide:GetProjectTree() return self.filetree.projtreeCtrl end
 function ide:GetOutlineTree() return self.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
+
+local statusreset
+function ide:SetStatusFor(text, interval, field)
+  field = field or 0
+  interval = interval or 2
+  local statusbar = self:GetStatusBar()
+  if not ide.timers.status then
+    ide.timers.status = wx.wxTimer(statusbar)
+    statusbar:Connect(wx.wxEVT_TIMER, function(event) if statusreset then statusreset() end end)
+  end
+  statusreset = function()
+    if statusbar:GetStatusText(field) == text then statusbar:SetStatusText("", field) end
+  end
+  ide.timers.status:Start(interval*1000, wx.wxTIMER_ONE_SHOT)
+  statusbar:SetStatusText(text, field)
+end
 function ide:SetStatus(text, field) self:GetStatusBar():SetStatusText(text, field or 0) end
 function ide:GetStatus(field) return self:GetStatusBar():GetStatusText(field or 0) end
 function ide:PushStatus(text, field) self:GetStatusBar():PushStatusText(text, field or 0) end

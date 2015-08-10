@@ -33,7 +33,7 @@ ide.proto.Plugin = {__index = {
   GetFileName = function(self) return self.fname end,
   GetConfig = function(self) return ide.config[self.fname] or {} end,
   GetSettings = function(self) return SettingsRestorePackage(self.fname) end,
-  SetSettings = function(self, settings) SettingsSavePackage(self.fname, settings) end,
+  SetSettings = function(self, settings, opts) SettingsSavePackage(self.fname, settings, opts) end,
 }}
 
 ide.proto.Interpreter = {__index = {

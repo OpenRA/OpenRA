@@ -148,6 +148,7 @@ function FileSysGetRecursive(path, recursive, spec, opts)
   local optsort = (opts or {}).sort ~= false
   local optpath = (opts or {}).path ~= false
   local optskipbinary = (opts or {}).skipbinary
+  local optondirectory = (opts or {}).ondirectory
 
   local function spec2list(spec, list)
     -- return empty list if no spec is provided
@@ -225,10 +226,11 @@ function FileSysGetRecursive(path, recursive, spec, opts)
         report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
       end
 
+      if recursive and ismatch(fname..sep, nil, exmasks)
+      and (not optondirectory or optondirectory(fname) ~= false)
       -- check if this name already appears in the path earlier;
       -- Skip the processing if it does as it could lead to infinite
       -- recursion with circular references created by symlinks.
-      if recursive and ismatch(fname..sep, nil, exmasks)
       and select(2, fname:gsub(EscapeMagic(file..sep),'')) <= 2 then
         table.insert(queue, fname)
       end

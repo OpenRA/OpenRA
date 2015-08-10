@@ -3,12 +3,16 @@
 
 local maxlines = 8
 local row_height = 46
-local row_width = 450
 
 function CommandBarShow(params)
   local onDone, onUpdate, onItem, onSelection, defaultText, selectedText =
     params.onDone, params.onUpdate, params.onItem, params.onSelection,
     params.defaultText, params.selectedText
+  local row_width = ide.config.commandbar.width or 0
+  if row_width < 1 then
+    row_width = math.max(450, math.floor(row_width * ide:GetMainFrame():GetClientSize():GetWidth()))
+  end
+
   local lines = {}
   local linesnow = #lines
   local linenow = 0
@@ -315,16 +319,25 @@ function CommandBarScoreItems(t, pattern, limit)
   local r, plen = {}, #pattern
   local maxp = 0
   local num = 0
-  local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter <= #t
-    and pattern:gsub("[^%w_]+",""):lower():gsub(".", "%1.*"):gsub("%.%*$","")
+  local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter
+  -- anchor for 1-2 symbol patterns to speed up search
+  local needanchor = prefilter and prefilter * 4 <= #t and plen <= 2
+  local filter = prefilter and prefilter <= #t
+    -- expand `abc` into `a.*b.*c`, but limit the prefix to avoid penalty for `s.*s.*s.*....`
+    and pattern:gsub("[^%w_]+",""):sub(1,4):lower():gsub(".", "%1.*"):gsub("%.%*$","")
     or nil
   for _, v in ipairs(t) do
-    if #v >= plen and (not prefilter or v:lower():find(prefilter)) then
-      local p = score(pattern, v)
-      maxp = math.max(p, maxp)
-      if p > 1 and p > maxp / 4 then
-        num = num + 1
-        r[num] = {v, p}
+    if #v >= plen then
+      local match = filter and v:lower():find(filter)
+      -- check if the current name needs to be prefiltered or anchored (for better performance);
+      -- if it needs to be anchored, then anchor it at the beginning of the string or the word
+      if not filter or (match and (not needanchor or match == 1 or v:find("^[%p%s]", match-1))) then
+        local p = score(pattern, v)
+        maxp = math.max(p, maxp)
+        if p > 1 and p > maxp / 4 then
+          num = num + 1
+          r[num] = {v, p}
+        end
       end
     end
   end

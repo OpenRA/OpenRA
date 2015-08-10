@@ -96,6 +96,9 @@ ide = {
     },
     commandbar = {
       prefilter = 250, -- number of records after which to apply filtering
+      maxitems = 30, -- max number of items to show
+      width = 0.35, -- <1 -- size in proportion to the app frame width; >1 -- size in pixels
+      showallsymbols = true,
     },
     staticanalyzer = {
       infervalue = false, -- off by default as it's a slower mode
@@ -151,6 +154,7 @@ ide = {
     projectautoopen = true,
     autorecoverinactivity = 10, -- seconds
     outlineinactivity = 0.250, -- seconds
+    symbolindexinactivity = 2, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
     bordersize = 2,
