@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 				/* create a group */
 				var actors = order.TargetString.Split(',')
 					.Select(id => uint.Parse(id, NumberStyles.Any, NumberFormatInfo.InvariantInfo))
-					.Select(id => self.World.Actors.FirstOrDefault(a => a.ActorID == id))
+					.Select(id => self.World.GetActorById(id))
 						.Where(a => a != null);
 
 				new Group(actors);
