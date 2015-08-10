@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
-			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
+			var turreted = self.FirstTraitOrDefault<Turreted>();
 			return () => turreted.TurretFacing;
 		}
 
@@ -56,8 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			rs = init.Self.Trait<RenderSprites>();
 			facing = init.Self.Trait<IFacing>();
 			var name = rs.GetImage(init.Self);
-			turret = init.Self.TraitsImplementing<Turreted>()
-				.First(t => t.Name == info.Turret);
+			turret = init.Self.FirstTrait<Turreted>(t => t.Name == info.Turret);
 			turret.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 
 			wake = new Animation(init.World, name);

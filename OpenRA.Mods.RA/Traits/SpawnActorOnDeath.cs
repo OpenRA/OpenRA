@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				// TODO: This will only take the first turret if there are multiple
 				// This isn't a problem with the current units, but may be a problem for mods
-				var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
+				var turreted = self.FirstTraitOrDefault<Turreted>();
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA.Traits
 					td.Add(new ChronoshiftReturnInit(chronoshiftable.ReturnTicks));
 				}
 
-				var huskActor = self.TraitsImplementing<IHuskModifier>()
+				var huskActor = self.Traits<IHuskModifier>()
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 

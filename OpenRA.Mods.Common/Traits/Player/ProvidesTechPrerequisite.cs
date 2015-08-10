@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ProvidesTechPrerequisiteInfo : ITraitInfo
+	public class ProvidesTechPrerequisiteInfo : ITechTreePrerequisiteInfo
 	{
 		public readonly string Name;
 		public readonly string[] Prerequisites = { };

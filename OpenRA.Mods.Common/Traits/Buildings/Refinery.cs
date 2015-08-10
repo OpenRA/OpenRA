@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : ITraitInfo
+	public class RefineryInfo : IAcceptResourcesInfo
 	{
 		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 0;
@@ -78,8 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
 		{
-			return self.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == self);
+			return self.World.ActorsWithTrait<Harvester>((a, h) => h.LinkedProc == self);
 		}
 
 		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }

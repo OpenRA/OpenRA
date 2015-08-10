@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
-			var c = captor.TraitOrDefault<Captures>();
+			var c = captor.Info.TraitInfoOrDefault<CapturesInfo>();
 			if (c == null)
 				return false;
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (playerRelationship == Stance.Neutral && !AllowNeutral)
 				return false;
 
-			if (!c.Info.CaptureTypes.Contains(Type))
+			if (!c.CaptureTypes.Contains(Type))
 				return false;
 
 			return true;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CancelActivity)
 			{
 				var stop = new Order("Stop", self, false);
-				foreach (var t in self.TraitsImplementing<IResolveOrder>())
+				foreach (var t in self.Traits<IResolveOrder>())
 					t.ResolveOrder(self, stop);
 			}
 		}

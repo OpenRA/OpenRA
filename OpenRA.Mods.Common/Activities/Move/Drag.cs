@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			positionable = self.Trait<IPositionable>();
 			movement = self.TraitOrDefault<IMove>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
+			moveDisablers = self.TraitsToArray<IDisableMove>();
 			this.start = start;
 			this.end = end;
 			this.length = length;

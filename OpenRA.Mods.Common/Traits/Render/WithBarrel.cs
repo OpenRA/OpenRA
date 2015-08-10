@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
 				.First(a => a.Name == Armament);
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
@@ -66,10 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			body = self.Trait<IBodyOrientation>();
-			armament = self.TraitsImplementing<Armament>()
-				.First(a => a.Info.Name == Info.Armament);
-			turreted = self.TraitsImplementing<Turreted>()
-				.First(tt => tt.Name == armament.Info.Turret);
+			armament = self.FirstTrait<Armament>(a => a.Info.Name == Info.Armament);
+			turreted = self.FirstTrait<Turreted>(tt => tt.Name == armament.Info.Turret);
 
 			rs = self.Trait<RenderSprites>();
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);

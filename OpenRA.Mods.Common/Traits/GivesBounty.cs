@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		static int GetMultiplier(Actor self)
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
-			var info = self.Info.Traits.Get<GivesBountyInfo>();
+			var info = self.Info.TraitInfo<GivesBountyInfo>();
 			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var info = self.Info.Traits.Get<GivesBountyInfo>();
+			var info = self.Info.TraitInfo<GivesBountyInfo>();
 
 			if (e.Attacker == null || e.Attacker.Disposed) return;
 

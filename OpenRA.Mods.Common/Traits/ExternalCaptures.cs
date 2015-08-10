@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (frozen == null)
 					return false;
 
-				var ci = frozen.Info.Traits.GetOrDefault<ExternalCapturableInfo>();
+				var ci = frozen.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
 			}
 
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			var c = target.Info.Traits.GetOrDefault<ExternalCapturableInfo>();
+			var c = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
 			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
 			cursor = canTargetActor ? "ability" : "move-blocked";

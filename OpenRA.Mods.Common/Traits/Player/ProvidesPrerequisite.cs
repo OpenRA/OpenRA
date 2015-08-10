@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class ProvidesPrerequisiteInfo : ITraitInfo
+	public class ProvidesPrerequisiteInfo : ITechTreePrerequisiteInfo
 	{
 		[Desc("The prerequisite type that this provides. If left empty it defaults to the actor's name.")]
 		public readonly string Prerequisite = null;

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			var anim = new Animation(init.World, image, () => 0);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
-			var bi = init.Actor.Traits.Get<BuildingInfo>();
+			var bi = init.Actor.TraitInfo<BuildingInfo>();
 			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512; // Additional 512 units move from center -> top of cell
 			yield return new SpriteActorPreview(anim, WVec.Zero, offset, p, rs.Scale);
 		}
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			door.PlayFetchDirection(RenderSprites.NormalizeSequence(door, self.GetDamageState(), info.Sequence),
 				() => desiredFrame - door.CurrentFrame);
 
-			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
+			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 
 			var offset = FootprintUtils.CenterOffset(self.World, buildingInfo).Y + 512;
 			renderSprites.Add(new AnimationWithOffset(door, null, () => !buildComplete, offset));

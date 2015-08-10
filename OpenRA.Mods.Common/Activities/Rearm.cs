@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Rearm(Actor self)
 		{
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
+			ammoPools = self.TraitsToArray<AmmoPool>(p => !p.Info.SelfReloads);
 
 			if (ammoPools == null)
 				return;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 					continue;
 
 				// HACK to check if we are on the helipad/airfield/etc.
-				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location).FirstOrDefault(a => a.HasTrait<RenderBuilding>());
+				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location).FirstOrDefault(a => a.Info.TraitInfosAny<RenderBuildingInfo>());
 
 				if (hostBuilding == null || !hostBuilding.IsInWorld)
 					return NextActivity;

@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			helicopter = self.TraitOrDefault<Helicopter>();
 		}
 
-		static int GetWeight(Actor a) { return a.Info.Traits.Get<PassengerInfo>().Weight; }
+		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			SetPassengerFacing(a);
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
+			foreach (var npe in self.Traits<INotifyPassengerExited>())
 				npe.PassengerExited(self, a);
 
 			var p = a.Trait<Passenger>();
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var c in cargo)
 			{
-				var pi = c.Info.Traits.Get<PassengerInfo>();
+				var pi = c.Info.TraitInfo<PassengerInfo>();
 				if (n < pi.Weight)
 					return pi.PipType;
 				else
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Common.Traits
 				reserves.Remove(a);
 			}
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+			foreach (var npe in self.Traits<INotifyPassengerEntered>())
 				npe.PassengerEntered(self, a);
 
 			var p = a.Trait<Passenger>();
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					c.Trait<Passenger>().Transport = self;
 
-					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					foreach (var npe in self.Traits<INotifyPassengerEntered>())
 						npe.PassengerEntered(self, c);
 				}
 

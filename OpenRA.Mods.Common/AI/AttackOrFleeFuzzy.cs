@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.AI
 			var sumOfHp = 0;
 			foreach (var a in actors)
 			{
-				if (a.HasTrait<Health>())
+				if (a.Info.TraitInfosAny<HealthInfo>())
 				{
 					sumOfMaxHp += a.Trait<Health>().MaxHP;
 					sumOfHp += a.Trait<Health>().HP;
@@ -191,10 +191,10 @@ namespace OpenRA.Mods.Common.AI
 
 		protected float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
-			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, a =>
+			return RelativeValue(own, enemy, 100, SumOfValues<AttackBaseInfo>, a =>
 			{
 				var sumOfDamage = 0;
-				var arms = a.TraitsImplementing<Armament>();
+				var arms = a.Traits<Armament>();
 				foreach (var arm in arms)
 				{
 					var warhead = arm.Weapon.Warheads.OfType<DamageWarhead>().FirstOrDefault();
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
-			return RelativeValue(own, enemy, 100, Average<Mobile>, (Actor a) => a.Trait<Mobile>().Info.Speed);
+			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.TraitInfo<MobileInfo>().Speed);
 		}
 
 		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
@@ -224,23 +224,23 @@ namespace OpenRA.Mods.Common.AI
 			return relative.Clamp(0.0f, 999.0f);
 		}
 
-		protected float SumOfValues<Trait>(IEnumerable<Actor> actors, Func<Actor, int> getValue)
+		protected float SumOfValues<TraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TraitInfo : ITraitInfo
 		{
 			var sum = 0;
 			foreach (var a in actors)
-				if (a.HasTrait<Trait>())
+				if (a.Info.TraitInfosAny<TraitInfo>())
 					sum += getValue(a);
 
 			return sum;
 		}
 
-		protected float Average<Trait>(IEnumerable<Actor> actors, Func<Actor, int> getValue)
+		protected float Average<TraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TraitInfo : ITraitInfo
 		{
 			var sum = 0;
 			var countActors = 0;
 			foreach (var a in actors)
 			{
-				if (a.HasTrait<Trait>())
+				if (a.Info.TraitInfosAny<TraitInfo>())
 				{
 					sum += getValue(a);
 					countActors++;

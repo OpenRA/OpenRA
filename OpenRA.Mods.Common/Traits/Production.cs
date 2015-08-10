@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocation = CPos.Zero;
 			var target = Target.Invalid;
 
-			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
+			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
 			if (bi != null && bi.ForceFaction != null)
 				factionVariant = bi.ForceFaction;
 
@@ -101,14 +101,14 @@ namespace OpenRA.Mods.Common.Traits
 				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
 				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					foreach (var t in self.Traits<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
 					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+				foreach (var t in newUnit.Traits<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);
 			});
 		}
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
 		{
-			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
+			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
 			self.NotifyBlocker(self.Location + s.ExitCell);
 

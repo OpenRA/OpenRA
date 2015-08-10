@@ -98,14 +98,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					w.Add(new FlashTarget(self));
 
-				foreach (var t in self.TraitsImplementing<INotifyCapture>())
+				foreach (var t in self.Traits<INotifyCapture>())
 					t.OnCapture(self, captor, previousOwner, self.Owner);
 			});
 		}
 
 		bool CanBeCapturedBy(Actor a)
 		{
-			var pc = a.TraitOrDefault<ProximityCaptor>();
+			var pc = a.Info.TraitInfoOrDefault<ProximityCaptorInfo>();
 			return pc != null && pc.HasAny(Info.CaptorTypes);
 		}
 

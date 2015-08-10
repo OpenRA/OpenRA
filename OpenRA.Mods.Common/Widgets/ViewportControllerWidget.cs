@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public WorldTooltipType TooltipType { get; private set; }
-		public IToolTip ActorTooltip { get; private set; }
+		public ITooltip ActorTooltip { get; private set; }
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 
@@ -106,13 +106,13 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
-				.Where(a => !world.FogObscures(a) && a.HasTrait<IToolTip>())
+				.Where(a => !world.FogObscures(a) && a.Info.TraitInfosAny<ITooltipInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null)
 			{
-				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
-				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+				ActorTooltip = underCursor.FirstTrait<ITooltip>();
+				ActorTooltipExtra = underCursor.TraitsToArray<IProvideTooltipInfo>();
 				TooltipType = WorldTooltipType.Actor;
 				return;
 			}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				FrozenActorTooltip = frozen;
 				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+					ActorTooltipExtra = frozen.Actor.TraitsToArray<IProvideTooltipInfo>();
 				TooltipType = WorldTooltipType.FrozenActor;
 			}
 		}

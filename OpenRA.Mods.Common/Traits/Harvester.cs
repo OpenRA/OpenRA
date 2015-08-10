@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
 		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
-		readonly HarvesterInfo info;
+		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
@@ -82,20 +82,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
-			this.info = info;
+			Info = info;
 			mobile = self.Trait<Mobile>();
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
 		public void Created(Actor self)
 		{
-			if (info.SearchOnCreation)
+			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
 		}
 
 		public void BuildingComplete(Actor self)
 		{
-			if (info.SearchOnCreation)
+			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
 		}
 
@@ -104,8 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (proc == null) return;
 			if (proc.Disposed) return;
 
-			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == proc)
+			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>((a, h) => h.LinkedProc == proc)
 				.Select(a => Target.FromActor(a.Actor))
 				.ToList();
 
@@ -141,8 +140,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsAcceptableProcType(Actor proc)
 		{
-			return info.DeliveryBuildings.Length == 0 ||
-				info.DeliveryBuildings.Contains(proc.Info.Name);
+			return Info.DeliveryBuildings.Length == 0 ||
+				Info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
 		public Actor ClosestProc(Actor self, Actor ignore)
@@ -155,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.TraitInfo<MobileInfo>();
 			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
 				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
 					.WithCustomCost(loc =>
@@ -179,9 +178,9 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public bool IsFull { get { return contents.Values.Sum() == info.Capacity; } }
+		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
-		public int Fullness { get { return contents.Values.Sum() * 100 / info.Capacity; } }
+		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
 
 		public void AcceptResource(ResourceType type)
 		{
@@ -199,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Location == deliveryLoc)
 				{
 					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc + info.UnblockCell);
+					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
@@ -208,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (territory != null)
 						territory.ClaimResource(self, moveTo);
 
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					var notify = self.Traits<INotifyHarvesterAction>();
 					var next = new FindResources(self);
 					foreach (var n in notify)
 						n.MovingToResources(self, moveTo, next);
@@ -274,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
-				currentUnloadTicks = info.UnloadTicksPerBale;
+				currentUnloadTicks = Info.UnloadTicksPerBale;
 			}
 
 			return contents.Count == 0;
@@ -284,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResources>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
 					proc => !IsEmpty && proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
@@ -305,10 +304,10 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
-				return info.HarvestVoice;
+				return Info.HarvestVoice;
 
 			if (order.OrderString == "Deliver" && !IsEmpty)
-				return info.DeliverVoice;
+				return Info.DeliverVoice;
 
 			return null;
 		}
@@ -355,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(next);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToResources(self, loc.Value, next);
 
@@ -386,13 +385,13 @@ namespace OpenRA.Mods.Common.Traits
 				var next = new DeliverResources(self);
 				self.QueueActivity(next);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToRefinery(self, order.TargetLocation, next);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovementCancelled(self);
 
@@ -404,8 +403,8 @@ namespace OpenRA.Mods.Common.Traits
 		static CPos? FindNextResourceForBot(Actor self)
 		{
 			// NOTE: This is only used for the AI to find the next available resource to harvest.
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			var mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
@@ -451,7 +450,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * info.Capacity / info.PipCount;
+			var n = i * Info.Capacity / Info.PipCount;
 
 			foreach (var rt in contents)
 				if (n < rt.Value)
@@ -464,7 +463,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = info.PipCount;
+			var numPips = Info.PipCount;
 
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
@@ -474,7 +473,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetSpeedModifier()
 		{
-			return 100 - (100 - info.FullyLoadedSpeed) * contents.Values.Sum() / info.Capacity;
+			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter
@@ -499,7 +498,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
-				var info = self.Info.Traits.Get<HarvesterInfo>();
+				var info = self.Info.TraitInfo<HarvesterInfo>();
 
 				if (res == null || !info.Resources.Contains(res.Info.Name))
 					return false;

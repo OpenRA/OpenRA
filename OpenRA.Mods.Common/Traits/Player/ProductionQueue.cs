@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in AllBuildables(Info.Type))
 			{
-				var bi = a.Traits.Get<BuildableInfo>();
+				var bi = a.TraitInfo<BuildableInfo>();
 
 				produceable.Add(a, new ProductionState());
 				ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(x =>
 					x.Name[0] != '^' &&
 					x.Traits.Contains<BuildableInfo>() &&
-					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
+					x.TraitInfo<BuildableInfo>().Queue.Contains(category));
 		}
 
 		public void PrerequisitesAvailable(string key)
@@ -246,11 +246,11 @@ namespace OpenRA.Mods.Common.Traits
 				case "StartProduction":
 					{
 						var unit = self.World.Map.Rules.Actors[order.TargetString];
-						var bi = unit.Traits.Get<BuildableInfo>();
+						var bi = unit.TraitInfo<BuildableInfo>();
 						if (!bi.Queue.Contains(Info.Type))
 							return; /* Not built by this queue */
 
-						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+						var cost = unit.Traits.Contains<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
 						var time = GetBuildTime(order.TargetString);
 
 						if (BuildableItems().All(b => b.Name != order.TargetString))
@@ -355,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
 		public virtual TraitPair<Production> MostLikelyProducer()
 		{
-			var trait = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
+			var trait = self.FirstTraitOrDefault<Production>(p => p.Info.Produces.Contains(Info.Type));
 			return new TraitPair<Production> { Actor = self, Trait = trait };
 		}
 
@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
+			var sp = self.FirstTraitOrDefault<Production>(p => p.Info.Produces.Contains(Info.Type));
 			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
 			{
 				FinishProduction();

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			int old;
 			powerDrain.TryGetValue(a, out old); // old is 0 if a is not in powerDrain
-			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Aggregate(0, (v, p) => v + p.GetEnabledPower());
+			var amount = a.TraitsWhere<Power>(t => !t.IsTraitDisabled).Aggregate(0, (v, p) => v + p.GetEnabledPower());
 			powerDrain[a] = amount;
 			if (amount == old || devMode.UnlimitedPower)
 				return;
@@ -138,9 +138,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdatePowerOutageActors()
 		{
-			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>()
-				.Select(tp => tp.Actor)
-				.Where(a => !a.IsDead && a.IsInWorld && a.Owner == self.Owner);
+			var actors = self.World.ActorsWithTrait<AffectedByPowerOutage>((a, t) => !a.IsDead && a.IsInWorld && a.Owner == self.Owner)
+				.Select(tp => tp.Actor);
 
 			foreach (var a in actors)
 				UpdateActor(a);

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var jamsMissiles = ai.Traits.GetOrDefault<JamsMissilesInfo>();
+			var jamsMissiles = ai.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
 				yield return new RangeCircleRenderable(
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Traits
 					Color.FromArgb(96, Color.Black));
 			}
 
-			var jamsRadar = ai.Traits.GetOrDefault<JamsRadarInfo>();
+			var jamsRadar = ai.TraitInfoOrDefault<JamsRadarInfo>();
 			if (jamsRadar != null)
 			{
 				yield return new RangeCircleRenderable(
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			var jamsMissiles = self.Info.Traits.GetOrDefault<JamsMissilesInfo>();
+			var jamsMissiles = self.Info.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
 				yield return new RangeCircleRenderable(
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Traits
 					Color.FromArgb(96, Color.Black));
 			}
 
-			var jamsRadar = self.Info.Traits.GetOrDefault<JamsRadarInfo>();
+			var jamsRadar = self.Info.TraitInfoOrDefault<JamsRadarInfo>();
 			if (jamsRadar != null)
 			{
 				yield return new RangeCircleRenderable(

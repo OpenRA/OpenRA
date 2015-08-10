@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Warheads
 		{
 			foreach (var unit in world.ActorMap.GetUnitsAt(cell))
 			{
-				var healthInfo = unit.Info.Traits.GetOrDefault<HealthInfo>();
+				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
 

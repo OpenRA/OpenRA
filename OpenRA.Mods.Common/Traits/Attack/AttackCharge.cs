@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (attack.charges == 0)
 					return this;
 
-				foreach (var notify in self.TraitsImplementing<INotifyCharging>())
+				foreach (var notify in self.Traits<INotifyCharging>())
 					notify.Charging(self, target);
 
 				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))

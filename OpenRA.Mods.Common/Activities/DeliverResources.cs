@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove movement;
 		readonly Harvester harv;
-		readonly HarvesterInfo harvInfo;
 
 		bool isDocking;
 		int chosenTicks;
@@ -30,7 +29,6 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -57,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-				return Util.SequenceActivities(new Wait(harvInfo.SearchForDeliveryBuildingDelay), this);
+				return Util.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
@@ -65,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				var notify = self.Traits<INotifyHarvesterAction>();
 				var next = new DeliverResources(self);
 				foreach (var n in notify)
 					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, next);

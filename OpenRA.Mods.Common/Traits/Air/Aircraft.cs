@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, ICruiseAltitudeInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
+	public class AircraftInfo : IPositionableInfo, IFacingInfo, IOccupySpaceInfo, ICruiseAltitudeInfo, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
 		public readonly WDist IdealSeparation = new WDist(1706);
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WVec.Zero;
 
 			return self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
-				.Where(a => !a.IsDead && a.HasTrait<Aircraft>() && a.Info.Traits.Get<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
+				.Where(a => !a.IsDead && a.Info.TraitInfosAny<AircraftInfo>() && a.Info.TraitInfo<AircraftInfo>().CruiseAltitude == info.CruiseAltitude)
 				.Select(GetRepulsionForce)
 				.Aggregate(WVec.Zero, (a, b) => a + b);
 		}
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetUnitsAt(self.Location)
-				.FirstOrDefault(a => a.HasTrait<Reservable>());
+				.FirstOrDefault(a => a.Info.TraitInfosAny<ReservableInfo>());
 		}
 
 		protected void ReserveSpawnBuilding()
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var modifiers = self.TraitsImplementing<ISpeedModifier>()
+				var modifiers = self.Traits<ISpeedModifier>()
 					.Select(m => m.GetSpeedModifier());
 				return Util.ApplyPercentageModifiers(info.Speed, modifiers);
 			}
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("Enter", 5,
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
 					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
 
 				yield return new AircraftMoveOrderTargeter(info);

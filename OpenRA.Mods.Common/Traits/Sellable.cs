@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var s in info.SellSounds)
 				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 
-			foreach (var ns in self.TraitsImplementing<INotifySold>())
+			foreach (var ns in self.Traits<INotifySold>())
 				ns.Selling(self);
 
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();

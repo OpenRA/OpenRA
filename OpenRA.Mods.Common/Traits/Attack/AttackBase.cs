@@ -54,8 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 
-			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name)).ToArray());
+			var armaments = Exts.Lazy(() => self.TraitsToArray<Armament>(a => info.Armaments.Contains(a.Info.Name)));
 
 			getArmaments = () => armaments.Value;
 
@@ -200,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
 			return HasAnyValidWeapons(target)
-				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.HasTrait<IMove>()));
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.TraitInfosAny<IMoveInfo>()));
 		}
 
 		class AttackOrderTargeter : IOrderTargeter

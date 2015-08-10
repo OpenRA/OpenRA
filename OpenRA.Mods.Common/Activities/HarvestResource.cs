@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HarvestResource(Actor self)
 		{
 			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			facing = self.Trait<IFacing>();
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			harv.AcceptResource(resource);
 
-			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
+			foreach (var t in self.Traits<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
 			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);

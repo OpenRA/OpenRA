@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			if (!ai.Traits.Get<BuildingInfo>().RequiresBaseProvider)
+			if (!ai.TraitInfo<BuildingInfo>().RequiresBaseProvider)
 				yield break;
 
 			foreach (var a in w.ActorsWithTrait<BaseProvider>())

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class CrateInfo : ITraitInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
+	class CrateInfo : IPositionableInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Length of time (in seconds) until the crate gets removed automatically. " +
 			"A value of zero disables auto-removal.")]
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (collected)
 				return;
 
-			var crateActions = self.TraitsImplementing<CrateAction>();
+			var crateActions = self.Traits<CrateAction>();
 
 			self.Dispose();
 			collected = true;
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			var collector = landedOn.FirstOrDefault(a =>
 			{
 				// Mobile is (currently) the only trait that supports crushing
-				var mi = a.Info.Traits.GetOrDefault<MobileInfo>();
+				var mi = a.Info.TraitInfoOrDefault<MobileInfo>();
 				if (mi == null)
 					return false;
 

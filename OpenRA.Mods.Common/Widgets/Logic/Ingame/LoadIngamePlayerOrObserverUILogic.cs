@@ -30,13 +30,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
-				var objectives = world.LocalPlayer.PlayerActor.TraitOrDefault<MissionObjectives>();
+				var objectives = world.LocalPlayer.PlayerActor.Info.TraitInfoOrDefault<MissionObjectivesInfo>();
 
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
 					if (world.LocalPlayer.WinState != WinState.Undefined)
-						Game.RunAfterDelay(objectives != null ? objectives.Info.GameOverDelay : 0, () =>
+						Game.RunAfterDelay(objectives != null ? objectives.GameOverDelay : 0, () =>
 						{
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());

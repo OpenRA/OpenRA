@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.AI
 		protected static CPos RandomBuildingLocation(Squad squad)
 		{
 			var location = squad.Bot.GetRandomBaseCenter();
-			var buildings = squad.World.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == squad.Bot.Player).Select(a => a.Actor).ToList();
+			var buildings = squad.World.ActorsWithTrait<Building>((a, b) => a.Owner == squad.Bot.Player)
+				.Select(a => a.Actor).ToList();
 			if (buildings.Count > 0)
 				location = buildings.Random(squad.Random).Location;
 			return location;
@@ -60,14 +60,14 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool CanAttackTarget(Actor a, Actor target)
 		{
-			if (!a.HasTrait<AttackBase>())
+			if (!a.Info.TraitInfosAny<AttackBaseInfo>())
 				return false;
 
 			var targetable = target.TraitOrDefault<ITargetable>();
 			if (targetable == null)
 				return false;
 
-			var arms = a.TraitsImplementing<Armament>();
+			var arms = a.Traits<Armament>();
 			foreach (var arm in arms)
 				if (arm.Weapon.IsValidTarget(targetable.TargetTypes))
 					return true;
@@ -82,11 +82,11 @@ namespace OpenRA.Mods.Common.AI
 
 			var u = squad.Units.Random(squad.Random);
 			var units = squad.World.FindActorsInCircle(u.CenterPosition, WDist.FromCells(DangerRadius)).ToList();
-			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.HasTrait<Building>());
+			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.Info.TraitInfosAny<BuildingInfo>());
 			if (ownBaseBuildingAround.Any())
 				return false;
 
-			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>());
+			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.TraitInfosAny<AttackBaseInfo>());
 			if (!enemyAroundUnit.Any())
 				return false;
 

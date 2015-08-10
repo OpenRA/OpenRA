@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
-			resources = world.WorldActor.TraitsImplementing<ResourceType>()
+			resources = world.WorldActor.Traits<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 		}
 

@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (self.IsDead)
 					return;
 
-				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				foreach (var nt in self.Traits<INotifyTransform>())
 					nt.OnTransform(self);
 
 				var selected = w.Selection.Contains(self);
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 					init.Add(new RuntimeCargoInit(cargo.Passengers.ToArray()));
 
 				var a = w.CreateActor(ToActor, init);
-				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				foreach (var nt in self.Traits<INotifyTransform>())
 					nt.AfterTransform(a);
 
 				if (selected)

@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ProductionQueueProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			queues = self.TraitsImplementing<ProductionQueue>().Where(q => q.Enabled).ToArray();
+			queues = self.TraitsWhere<ProductionQueue>(q => q.Enabled).ToArray();
 			triggers = TriggerGlobal.GetScriptTriggers(self);
 		}
 
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Scripting
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
 			var ri = Self.World.Map.Rules.Actors[actorType];
-			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
 				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Scripting
 			productionHandlers = new Dictionary<string, Action<Actor, Actor>>();
 
 			queues = new Dictionary<string, ClassicProductionQueue>();
-			foreach (var q in player.PlayerActor.TraitsImplementing<ClassicProductionQueue>().Where(q => q.Enabled))
+			foreach (var q in player.PlayerActor.TraitsWhere<ClassicProductionQueue>(q => q.Enabled))
 				queues.Add(q.Info.Type, q);
 
 			Action<Actor, Actor> globalProductionHandler = (factory, unit) =>
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Scripting
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
 			var ri = Player.World.Map.Rules.Actors[actorType];
-			var bi = ri.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 
 			if (bi == null)
 				throw new LuaException("Actor of type {0} cannot be produced".F(actorType));

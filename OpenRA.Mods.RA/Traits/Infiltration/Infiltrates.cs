@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Traits
 			else
 				ai = order.TargetActor.Info;
 
-			var i = ai.Traits.GetOrDefault<ITargetableInfo>();
+			var i = ai.TraitInfoOrDefault<ITargetableInfo>();
 			return i != null && i.GetTargetTypes().Intersect(info.Types).Any();
 		}
 
