@@ -72,7 +72,7 @@ namespace OpenRA
 		[Desc("Disallow AI bots.")]
 		public bool LockBots = false;
 
-		public string TimestampFormat = "HH:mm";
+		public string TimestampFormat = "s";
 
 		public ServerSettings() { }
 
