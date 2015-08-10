@@ -17,13 +17,13 @@
 			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
-		Modifier: 110, 115, 120, 130
+		Modifier: 105, 110, 120, 130
 	DamageMultiplier@EXPERIENCE:
 		UpgradeTypes: damage
-		Modifier: 91, 87, 83, 65
+		Modifier: 95, 90, 85, 75
 	SpeedMultiplier@EXPERIENCE:
 		UpgradeTypes: speed
-		Modifier: 110, 115, 120, 150
+		Modifier: 105, 110, 120, 140
 	ReloadDelayMultiplier@EXPERIENCE:
 		UpgradeTypes: reload
 		Modifier: 95, 90, 85, 75
