@@ -342,7 +342,13 @@ function CommandBarScoreItems(t, pattern, limit)
     end
   end
   table.sort(r, function(a, b) return a[2] > b[2] end)
-  if limit then r[limit] = nil end -- limit the list to be displayed
+  -- limit the list to be displayed
+  -- `r[limit+1] = nil` is not desired as the resulting table may be sorted incorrectly
+  if tonumber(limit) and limit < #r then
+    local tmp = r
+    r = {}
+    for i = 1, limit do r[i] = tmp[i] end
+  end
   return r
 end
 
