@@ -18,7 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
 	public class WithTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
-		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
+		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<TurretedInfo>, InitializeAfter<IBodyOrientationInfo>,
+		InitializeAfter<AttackBaseInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "turret";
@@ -39,11 +41,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var bodyFacing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 			var turretFacing = init.Contains<TurretFacingInit>() ? init.Get<TurretFacingInit, int>() : t.InitialFacing;
 
@@ -71,10 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<IBodyOrientation>();
 			Attack = self.TraitOrDefault<AttackBase>();
-			t = self.TraitsImplementing<Turreted>()
-				.First(tt => tt.Name == info.Turret);
-			arms = self.TraitsImplementing<Armament>()
-				.Where(w => w.Info.Turret == info.Turret).ToArray();
+			t = self.FirstTrait<Turreted>(tt => tt.Name == info.Turret);
+			arms = self.TraitsToArray<Armament>(w => w.Info.Turret == info.Turret);
 
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));

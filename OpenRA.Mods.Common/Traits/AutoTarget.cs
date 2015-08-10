@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>
+	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>, InitializeAfter<AttackBaseInfo>, InitializeAfter<AttackFollowInfo>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 			return inRange
 				.Where(a =>
 					a.AppearsHostileTo(self) &&
-					!a.HasTrait<AutoTargetIgnore>() &&
+					!a.Info.TraitInfosAny<AutoTargetIgnoreInfo>() &&
 					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
 					self.Owner.CanTargetActor(a))
 				.ClosestTo(self);

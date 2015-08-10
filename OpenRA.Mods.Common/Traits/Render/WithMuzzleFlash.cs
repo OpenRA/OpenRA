@@ -17,7 +17,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders the MuzzleSequence from the Armament trait.")]
-	class WithMuzzleFlashInfo : UpgradableTraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
+	class WithMuzzleFlashInfo : UpgradableTraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<IFacingInfo>, InitializeAfter<ArmamentInfo>
 	{
 		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
 		public readonly bool IgnoreOffset = false;
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			armaments = self.TraitsImplementing<Armament>().ToArray();
+			armaments = self.TraitsToArray<Armament>();
 
 			foreach (var arm in armaments)
 			{
@@ -51,8 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var b in arm.Barrels)
 				{
 					var barrel = b;
-					var turreted = self.TraitsImplementing<Turreted>()
-						.FirstOrDefault(t => t.Name == arm.Info.Turret);
+					var turreted = self.FirstTraitOrDefault<Turreted>(t => t.Name == arm.Info.Turret);
 
 					// Workaround for broken ternary operators in certain versions of mono (3.10 and
 					// certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319

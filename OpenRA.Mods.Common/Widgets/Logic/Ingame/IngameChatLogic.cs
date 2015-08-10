@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.orderManager = orderManager;
 			this.modRules = modRules;
 
-			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
+			chatTraits = world.WorldActor.TraitsToArray<INotifyChat>();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));

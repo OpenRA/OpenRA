@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor has a visual turret used to attack.")]
-	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>
+	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>, InitializeAfter<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackTurreted(Actor self, AttackTurretedInfo info)
 			: base(self, info)
 		{
-			turrets = self.TraitsImplementing<Turreted>().ToArray();
+			turrets = self.TraitsToArray<Turreted>();
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

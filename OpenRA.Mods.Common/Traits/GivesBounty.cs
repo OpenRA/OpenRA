@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("You get money for playing this actor.")]
-	class GivesBountyInfo : TraitInfo<GivesBounty>
+	class GivesBountyInfo : TraitInfo<GivesBounty>, InitializeAfter<GainsExperienceInfo>
 	{
 		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
 		public readonly int Percentage = 10;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		static int GetMultiplier(Actor self)
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
-			var info = self.Info.Traits.Get<GivesBountyInfo>();
+			var info = self.Info.TraitInfo<GivesBountyInfo>();
 			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var info = self.Info.Traits.Get<GivesBountyInfo>();
+			var info = self.Info.TraitInfo<GivesBountyInfo>();
 
 			if (e.Attacker == null || e.Attacker.Disposed) return;
 

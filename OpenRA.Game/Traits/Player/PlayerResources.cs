@@ -134,8 +134,7 @@ namespace OpenRA.Traits
 			if (nextCashTickTime > 0)
 				nextCashTickTime--;
 
-			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>()
-				.Where(a => a.Actor.Owner == owner)
+			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>((a, t) => a.Owner == owner)
 				.Sum(a => a.Trait.Capacity);
 
 			if (Resources > ResourceCapacity)

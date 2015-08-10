@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
+	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>, InitializeAfter<IMoveInfo>
 	{
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 		public readonly int CloseEnough = 4;	/* cells */
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("RepairNear", 5,
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("RepairNear", 5,
 					target => CanRepairAt(target), _ => ShouldRepair());
 			}
 		}

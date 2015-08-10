@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Cargo can fire their weapons out of fire ports.")]
-	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
+	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<IBodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Fire port offsets in local coordinates.")]
@@ -48,8 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly FirePort[] Ports;
 
-		AttackGarrisonedInfo info;
-		Lazy<IBodyOrientation> coords;
+		readonly AttackGarrisonedInfo info;
+		readonly IBodyOrientation coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;
 		Dictionary<Actor, IFacing> paxFacing;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(self, info)
 		{
 			this.info = info;
-			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			coords = self.Trait<IBodyOrientation>();
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();
 			paxFacing = new Dictionary<Actor, IFacing>();
@@ -97,9 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			paxFacing.Add(passenger, passenger.Trait<IFacing>());
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
-			armaments.AddRange(
-				passenger.TraitsImplementing<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name)));
+			armaments.AddRange(passenger.TraitsWhere<Armament>(a => info.Armaments.Contains(a.Info.Name)));
 		}
 
 		public void PassengerExited(Actor self, Actor passenger)
@@ -129,8 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		WVec PortOffset(Actor self, FirePort p)
 		{
-			var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
-			return coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
+			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
+			return coords.LocalToWorld(p.Offset.Rotate(bodyOrientation));
 		}
 
 		public override void DoAttack(Actor self, Target target)
@@ -171,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
 				}
 
-				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
+				foreach (var npa in self.Traits<INotifyAttack>())
 					npa.Attacking(self, target, a, barrel);
 			}
 		}

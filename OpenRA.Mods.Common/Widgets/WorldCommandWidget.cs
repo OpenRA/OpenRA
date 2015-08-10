@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (actor.First == null)
 				return true;
 
-			var ati = actor.First.Info.Traits.GetOrDefault<AutoTargetInfo>();
+			var ati = actor.First.Info.TraitInfoOrDefault<AutoTargetInfo>();
 			if (ati == null || !ati.EnableStances)
 				return false;
 
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformGuard()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.HasTrait<Guard>());
+				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.Info.TraitInfosAny<GuardInfo>());
 
 			if (actors.Any())
 				world.OrderGenerator = new GuardOrderGenerator(actors);
@@ -187,17 +187,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool CycleBases()
 		{
-			var bases = world.ActorsWithTrait<BaseBuilding>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer)
+			var bases = world.ActorsWithTrait<BaseBuilding>((a, b) => a.Owner == world.LocalPlayer)
 				.Select(b => b.Actor)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
 			if (!bases.Any())
 			{
-				var building = world.ActorsWithTrait<Building>()
+				var building = world.ActorsWithTrait<Building>((a, b) => a.Owner == world.LocalPlayer && a.Info.TraitInfosAny<SelectableInfo>())
 					.Select(b => b.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasTrait<Selectable>());
+					.FirstOrDefault();
 
 				// No buildings left
 				if (building == null)
@@ -222,9 +221,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool CycleProductionBuildings()
 		{
-			var facilities = world.ActorsWithTrait<Production>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.HasTrait<BaseBuilding>())
-				.OrderBy(f => f.Actor.Info.Traits.Get<ProductionInfo>().Produces.First())
+			var facilities = world.ActorsWithTrait<Production>((a, p) => a.Owner == world.LocalPlayer && !a.Info.TraitInfosAny<BaseBuildingInfo>())
+				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.Select(b => b.Actor)
 				.ToList();
 

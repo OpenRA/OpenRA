@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]
-	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<RenderSpritesInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "production-overlay";
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			buildComplete = !self.Info.TraitInfosAny<BuildingInfo>(); // always render instantly for units
 
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
@@ -67,16 +68,13 @@ namespace OpenRA.Mods.Common.Traits
 			// search for the queue here once so we don't rely on order of trait initialization
 			if (queue == null)
 			{
-				var production = self.TraitOrDefault<Production>();
+				var production = self.Trait<Production>();
 
-				var perBuildingQueues = self.TraitsImplementing<ProductionQueue>();
-				queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
+				queue = self.FirstTraitOrDefault<ProductionQueue>(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 
 				if (queue == null)
-				{
-					var perPlayerQueues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
-					queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
-				}
+					queue = self.Owner.PlayerActor.FirstTraitOrDefault<ProductionQueue>(q =>
+						q.Enabled && production.Info.Produces.Contains(q.Info.Type));
 
 				if (queue == null)
 					throw new InvalidOperationException("Can't find production queues.");

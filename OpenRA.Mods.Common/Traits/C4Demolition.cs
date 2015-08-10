@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				return target.TraitsImplementing<IDemolishable>().Any(i => i.IsValidTarget(target, self));
+				return target.TraitsAny<IDemolishable>(i => i.IsValidTarget(target, self));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)

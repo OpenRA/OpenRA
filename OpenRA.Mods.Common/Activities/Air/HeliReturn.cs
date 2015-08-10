@@ -19,18 +19,16 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly AircraftInfo aircraftInfo;
 		readonly Helicopter heli;
-		readonly HelicopterInfo heliInfo;
 
 		public HeliReturn(Actor self)
 		{
-			aircraftInfo = self.Info.Traits.Get<AircraftInfo>();
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 			heli = self.Trait<Helicopter>();
-			heliInfo = self.Info.Traits.Get<HelicopterInfo>();
 		}
 
 		public static Actor ChooseHelipad(Actor self)
 		{
-			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
+			var rearmBuildings = self.Info.TraitInfo<HelicopterInfo>().RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
 				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
 		}
@@ -45,9 +43,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (dest == null)
 			{
-				var rearmBuildings = heliInfo.RearmBuildings;
-				var nearestHpad = self.World.ActorsWithTrait<Reservable>()
-									.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
+				var rearmBuildings = heli.Info.RearmBuildings;
+				var nearestHpad = self.World.ActorsWithTrait<Reservable>((a, r) => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
 									.Select(a => a.Actor)
 									.ClosestTo(self);
 

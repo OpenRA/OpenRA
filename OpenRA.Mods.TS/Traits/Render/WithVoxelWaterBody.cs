@@ -18,7 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class WithVoxelWaterBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelWaterBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo,
+		Requires<RenderVoxelsInfo>, Requires<IBodyOrientationInfo>, InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		public readonly string WaterSequence = "water";
 		public readonly string LandSequence = "idle";
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.TS.Traits
 				sequence = onWater ? WaterSequence : LandSequence;
 			}
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, sequence);
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation, facings) },
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.TS.Traits
 				() => 0));
 
 			// Selection size
-			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
+			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
 			var s = (int)(rvi.Scale * landVoxel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 

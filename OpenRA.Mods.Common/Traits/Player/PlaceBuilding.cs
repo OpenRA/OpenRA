@@ -55,17 +55,17 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
-				var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
+				var queue = order.TargetActor.FirstTraitOrDefault<ProductionQueue>(q =>
+					q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
 
 				if (queue == null)
 					return;
 
 				var producer = queue.MostLikelyProducer();
 				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
-				var buildingInfo = unit.Traits.Get<BuildingInfo>();
+				var buildingInfo = unit.TraitInfo<BuildingInfo>();
 
-				var buildableInfo = unit.Traits.GetOrDefault<BuildableInfo>();
+				var buildableInfo = unit.TraitInfoOrDefault<BuildableInfo>();
 				if (buildableInfo != null && buildableInfo.ForceFaction != null)
 					faction = buildableInfo.ForceFaction;
 
@@ -94,13 +94,13 @@ namespace OpenRA.Mods.Common.Traits
 					if (host == null)
 						return;
 
-					var plugInfo = unit.Traits.GetOrDefault<PlugInfo>();
+					var plugInfo = unit.TraitInfoOrDefault<PlugInfo>();
 					if (plugInfo == null)
 						return;
 
 					var location = host.Location;
-					var pluggable = host.TraitsImplementing<Pluggable>()
-						.FirstOrDefault(p => location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
+					var pluggable = host.FirstTraitOrDefault<Pluggable>(p =>
+						location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
 
 					if (pluggable == null)
 						return;
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (producer.Actor != null)
-					foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+					foreach (var nbp in producer.Actor.Traits<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(producer.Actor);
 
 				queue.FinishProduction();
@@ -153,8 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (p != p.World.LocalPlayer)
 				return 0;
 
-			return p.World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p)
+			return p.World.ActorsWithTrait<ProductionQueue>((a, q) => a.Owner == p)
 				.SelectMany(a => a.Trait.BuildableItems()).Distinct().Count();
 		}
 	}

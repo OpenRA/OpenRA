@@ -22,7 +22,7 @@ namespace OpenRA
 			if (phrase == null)
 				return;
 
-			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			foreach (var voiced in self.Traits<IVoiced>())
 			{
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
@@ -36,7 +36,7 @@ namespace OpenRA
 			if (phrase == null)
 				return;
 
-			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			foreach (var voiced in self.Traits<IVoiced>())
 			{
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
@@ -47,7 +47,7 @@ namespace OpenRA
 
 		public static bool HasVoice(this Actor self, string voice)
 		{
-			return self.TraitsImplementing<IVoiced>().Any(x => x.HasVoice(self, voice));
+			return self.TraitsAny<IVoiced>(x => x.HasVoice(self, voice));
 		}
 
 		public static void PlayVoiceForOrders(this World w, Order[] orders)
@@ -62,8 +62,8 @@ namespace OpenRA
 				if (orderSubject.Disposed)
 					continue;
 
-				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
-					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
+				foreach (var voice in orderSubject.Traits<IVoiced>())
+					foreach (var v in orderSubject.Traits<IOrderVoice>())
 					{
 						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
 							orderSubject.Owner.Faction.InternalName))

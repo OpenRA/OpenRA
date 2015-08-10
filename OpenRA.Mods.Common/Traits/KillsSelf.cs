@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class KillsSelfInfo : UpgradableTraitInfo
+	class KillsSelfInfo : UpgradableTraitInfo, InitializeAfter<HealthInfo>
 	{
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead)
 				return;
 
-			if (Info.RemoveInstead || !self.HasTrait<Health>())
+			if (Info.RemoveInstead || !self.Info.TraitInfosAny<HealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self);

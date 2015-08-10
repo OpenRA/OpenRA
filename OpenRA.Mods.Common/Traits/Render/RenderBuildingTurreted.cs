@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>
+	class RenderBuildingTurretedInfo : RenderBuildingInfo, Requires<TurretedInfo>, InitializeAfter<TurretedInfo>
 	{
 		public override object Create(ActorInitializer init) { return new RenderBuildingTurreted(init, this); }
 
@@ -41,14 +41,14 @@ namespace OpenRA.Mods.Common.Traits
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
-			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
+			var turreted = self.FirstTraitOrDefault<Turreted>();
 			return () => turreted.TurretFacing;
 		}
 
 		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
-			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
+			turreted = init.Self.FirstTraitOrDefault<Turreted>();
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 

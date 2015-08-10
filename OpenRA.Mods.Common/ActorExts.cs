@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common
 			if (self.IsDead)
 				return false;
 
-			if (!self.HasTrait<IOccupySpace>())
+			if (!self.Info.TraitInfosAny<IOccupySpaceInfo>())
 				return false;
 
 			if (!self.IsInWorld)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common
 			if (stance == Stance.Ally)
 				return true;
 
-			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.TraitInfosAny<IgnoresDisguiseInfo>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
 
 			return stance == Stance.Ally;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common
 			if (stance == Stance.Ally)
 				return false;		/* otherwise, we'll hate friendly disguised spies */
 
-			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.HasTrait<IgnoresDisguise>())
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.TraitInfosAny<IgnoresDisguiseInfo>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Enemy;
 
 			return stance == Stance.Enemy;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common
 		{
 			foreach (var blocker in blockers)
 			{
-				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
+				foreach (var moveBlocked in blocker.Traits<INotifyBlockingMove>())
 					moveBlocked.OnNotifyBlockingMove(blocker, self);
 			}
 		}

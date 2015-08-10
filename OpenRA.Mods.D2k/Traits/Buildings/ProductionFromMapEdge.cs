@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var pos = self.World.Map.CenterOfCell(location);
 
 			// If aircraft, spawn at cruise altitude
-			var aircraftInfo = producee.Traits.GetOrDefault<AircraftInfo>();
+			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
@@ -61,14 +61,14 @@ namespace OpenRA.Mods.D2k.Traits
 					newUnit.SetTargetLine(Target.FromCell(self.World, self.Location), Color.Green, false);
 
 					if (!self.IsDead)
-						foreach (var t in self.TraitsImplementing<INotifyProduction>())
+						foreach (var t in self.Traits<INotifyProduction>())
 							t.UnitProduced(self, newUnit, self.Location);
 
 					var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 					foreach (var notify in notifyOthers)
 						notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-					foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+					foreach (var t in newUnit.Traits<INotifyBuildComplete>())
 						t.BuildingComplete(newUnit);
 				});
 

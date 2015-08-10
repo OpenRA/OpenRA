@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (player == null)
 				return;
 
-			var queues = world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player)
+			var queues = world.ActorsWithTrait<ProductionQueue>((a, q) => a.Owner == player)
 				.Select((a, i) => new { a.Trait, i });
 
 			foreach (var queue in queues)
@@ -72,14 +71,14 @@ namespace OpenRA.Mods.Common.Widgets
 				if (actor == null)
 					continue;
 
-				var rsi = actor.Traits.Get<RenderSpritesInfo>();
+				var rsi = actor.TraitInfo<RenderSpritesInfo>();
 				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, race));
-				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
-				var bi = actor.Traits.Get<BuildableInfo>();
+				icon.Play(actor.TraitInfo<TooltipInfo>().Icon);
+				var bi = actor.TraitInfo<BuildableInfo>();
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
-				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().FirstOrDefault();
+				var pio = queue.Trait.Actor.Owner.PlayerActor.FirstTraitOrDefault<IProductionIconOverlay>();
 				if (pio != null && pio.IsOverlayActive(actor))
 					WidgetUtils.DrawSHPCentered(pio.Sprite(), location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
 						worldRenderer.Palette(pio.Palette()), 0.5f * pio.Scale());

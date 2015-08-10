@@ -32,8 +32,8 @@ namespace OpenRA.Mods.RA.Activities
 		public LayMines(Actor self)
 		{
 			minelayer = self.TraitOrDefault<Minelayer>();
-			info = self.Info.Traits.Get<MinelayerInfo>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			info = self.Info.TraitInfo<MinelayerInfo>();
+			ammoPools = self.TraitsToArray<AmmoPool>();
 			movement = self.Trait<IMove>();
 			rearmBuildings = info.RearmBuildings;
 		}

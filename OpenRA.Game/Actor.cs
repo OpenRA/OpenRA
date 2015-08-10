@@ -101,9 +101,15 @@ namespace OpenRA
 
 			bounds = Exts.Lazy(() =>
 			{
-				var si = Info.Traits.GetOrDefault<SelectableInfo>();
-				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+				int2 size;
+				var si = Info.TraitInfoOrDefault<SelectableInfo>();
+				if (si != null && si.Bounds != null)
+					size = new int2(si.Bounds[0], si.Bounds[1]);
+				else
+				{
+					var i = FirstTraitOrDefault<IAutoSelectionSize>();
+					size = i != null ? i.SelectionSize(this) : new int2();
+				}
 
 				var offset = -size / 2;
 				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
@@ -114,7 +120,7 @@ namespace OpenRA
 
 			visualBounds = Exts.Lazy(() =>
 			{
-				var sd = Info.Traits.GetOrDefault<ISelectionDecorationsInfo>();
+				var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
 				if (sd == null || sd.SelectionBoxBounds == null)
 					return bounds.Value;
 
@@ -127,18 +133,18 @@ namespace OpenRA
 				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 			});
 
-			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
-			renders = TraitsImplementing<IRender>().ToArray();
-			disables = TraitsImplementing<IDisable>().ToArray();
+			renderModifiers = Traits<IRenderModifier>().ToArray();
+			renders = Traits<IRender>().ToArray();
+			disables = Traits<IDisable>().ToArray();
 		}
 
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
-			currentActivity = Traits.Util.RunActivity(this, currentActivity);
+			currentActivity = OpenRA.Traits.Util.RunActivity(this, currentActivity);
 
 			if (!wasIdle && IsIdle)
-				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
+				foreach (var n in Traits<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
 		}
 
@@ -209,22 +215,67 @@ namespace OpenRA
 
 		public T Trait<T>()
 		{
-			return World.TraitDict.Get<T>(this);
+			return World.TraitDict.Single<T>(this);
+		}
+
+		public T Trait<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.Single<T>(this, predicate);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.TraitDict.GetOrDefault<T>(this);
+			return World.TraitDict.SingleOrDefault<T>(this);
 		}
 
-		public IEnumerable<T> TraitsImplementing<T>()
+		public T TraitOrDefault<T>(Func<T, bool> predicate)
 		{
-			return World.TraitDict.WithInterface<T>(this);
+			return World.TraitDict.SingleOrDefault<T>(this, predicate);
 		}
 
-		public bool HasTrait<T>()
+		public T FirstTrait<T>()
 		{
-			return World.TraitDict.Contains<T>(this);
+			return World.TraitDict.First<T>(this);
+		}
+
+		public T FirstTrait<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.First<T>(this, predicate);
+		}
+
+		public T FirstTraitOrDefault<T>()
+		{
+			return World.TraitDict.FirstOrDefault<T>(this);
+		}
+
+		public T FirstTraitOrDefault<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.FirstOrDefault<T>(this, predicate);
+		}
+
+		public bool TraitsAny<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.Any<T>(this, predicate);
+		}
+
+		public T[] TraitsToArray<T>()
+		{
+			return World.TraitDict.ToArray<T>(this);
+		}
+
+		public T[] TraitsToArray<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.ToArray<T>(this, predicate);
+		}
+
+		public IEnumerable<T> Traits<T>()
+		{
+			return World.TraitDict.Where<T>(this);
+		}
+
+		public IEnumerable<T> TraitsWhere<T>(Func<T, bool> predicate)
+		{
+			return World.TraitDict.Where<T>(this, predicate);
 		}
 
 		public void AddTrait(object trait)
@@ -242,7 +293,7 @@ namespace OpenRA
 				if (IsInWorld)
 					World.Remove(this);
 
-				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+				foreach (var t in Traits<INotifyActorDisposing>())
 					t.Disposing(this);
 
 				World.TraitDict.RemoveActor(this);
@@ -274,7 +325,7 @@ namespace OpenRA
 				if (wasInWorld)
 					w.Add(this);
 
-				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
+				foreach (var t in this.Traits<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
 		}

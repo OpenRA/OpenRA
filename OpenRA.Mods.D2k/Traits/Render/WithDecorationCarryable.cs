@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Displays a sprite when the carryable actor is waiting for pickup.")]
-	public class WithDecorationCarryableInfo : WithDecorationInfo, Requires<CarryableInfo>
+	public class WithDecorationCarryableInfo : WithDecorationInfo, Requires<CarryableInfo>, InitializeAfter<CarryableInfo>
 	{
 		public override object Create(ActorInitializer init) { return new WithDecorationCarryable(init.Self, this); }
 	}

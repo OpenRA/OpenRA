@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries.")]
-	public class CarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	public class CarryallInfo : ITraitInfo
 	{
 		[Desc("Set to false when the carryall should not automatically get new jobs.")]
 		public readonly bool Automatic = true;
@@ -50,7 +50,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 			IsBusy = false;
 			IsCarrying = false;
-			carryHeight = self.Trait<Helicopter>().Info.LandAltitude;
+			var helicopter = self.Info.TraitInfoOrDefault<HelicopterInfo>();
+			carryHeight = helicopter != null ? helicopter.LandAltitude : WDist.Zero;
 		}
 
 		public void OnBecomingIdle(Actor self)
@@ -84,10 +85,8 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			// Get all carryables who want transport
-			var carryables = self.World.ActorsWithTrait<Carryable>()
-				.Where(p =>
+			var carryables = self.World.ActorsWithTrait<Carryable>((actor, trait) =>
 				{
-					var actor = p.Actor;
 					if (actor == null)
 						return false;
 
@@ -97,7 +96,6 @@ namespace OpenRA.Mods.D2k.Traits
 					if (actor.IsDead)
 						return false;
 
-					var trait = p.Trait;
 					if (trait.Reserved)
 						return false;
 

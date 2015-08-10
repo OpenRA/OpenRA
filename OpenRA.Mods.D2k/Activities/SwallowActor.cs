@@ -79,7 +79,7 @@ namespace OpenRA.Mods.D2k.Activities
 						actor1.Dispose();
 
 						// Harvester insurance
-						if (!actor1.HasTrait<Harvester>())
+						if (!actor1.Info.TraitInfosAny<HarvesterInfo>())
 							return;
 
 						var insurance = actor1.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.D2k.Activities
 			var affectedPlayers = lunch.Select(x => x.Owner).Distinct().ToList();
 
 			PlayAttack(worm, attackPosition, affectedPlayers);
-			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
+			foreach (var notify in worm.Traits<INotifyAttack>())
 				notify.Attacking(worm, target, null, null);
 
 			return true;

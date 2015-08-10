@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
-	public interface ISelectionDecorationsInfo
+	public interface ISelectionDecorationsInfo : ITraitInfo
 	{
 		int[] SelectionBoxBounds { get; }
 	}
@@ -144,13 +144,13 @@ namespace OpenRA.Traits
 		Player Owner { get; }
 	}
 
-	public interface IToolTip
+	public interface ITooltip
 	{
 		ITooltipInfo TooltipInfo { get; }
 		Player Owner { get; }
 	}
 
-	public interface ITooltipInfo
+	public interface ITooltipInfo : ITraitInfo
 	{
 		string TooltipForPlayerStance(Stance stance);
 		bool IsOwnerRowVisible { get; }
@@ -226,6 +226,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
+	public interface IPositionableInfo : ITraitInfo { }
 	public interface IPositionable : IOccupySpace
 	{
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
@@ -275,6 +276,11 @@ namespace OpenRA.Traits
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
+	/// <summary>This trait must come after trait T because T is used in the constructor</summary>
+	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	public interface InitializeAfter<T> where T : class, ITraitInfo { }
+
+	/// <summary>Use if trait T is required.</summary>
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
@@ -296,6 +302,7 @@ namespace OpenRA.Traits
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
+	public interface IBlocksProjectilesInfo : ITraitInfo { }
 	public interface IBlocksProjectiles { }
 	public interface IRenderInfantrySequenceModifier
 	{
@@ -322,9 +329,9 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(WRot orientation, int facings);
 	}
 
-	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
+	public interface IQuantizeBodyOrientationInfo : ITraitInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
 
-	public interface ITargetableInfo
+	public interface ITargetableInfo : ITraitInfo
 	{
 		string[] GetTargetTypes();
 	}

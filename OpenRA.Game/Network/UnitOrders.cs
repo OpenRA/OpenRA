@@ -29,8 +29,7 @@ namespace OpenRA.Network
 		{
 			if (world != null)
 			{
-				if (!world.WorldActor.TraitsImplementing<IValidateOrder>().All(vo =>
-					vo.OrderValidation(orderManager, world, clientId, order)))
+				if (world.WorldActor.TraitsAny<IValidateOrder>(vo => !vo.OrderValidation(orderManager, world, clientId, order)))
 					return;
 			}
 
@@ -301,7 +300,7 @@ namespace OpenRA.Network
 						{
 							var self = order.Subject;
 							if (!self.IsDead)
-								foreach (var t in self.TraitsImplementing<IResolveOrder>())
+								foreach (var t in self.Traits<IResolveOrder>())
 									t.ResolveOrder(self, order);
 						}
 

@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Common.Traits
 						Weapon = wep,
 						Facing = self.World.SharedRandom.Next(-1, 255),
 
-						DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
+						DamageModifiers = self.Traits<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier()).ToArray(),
 
-						InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+						InaccuracyModifiers = self.Traits<IInaccuracyModifier>()
 							.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
 						Source = self.CenterPosition,

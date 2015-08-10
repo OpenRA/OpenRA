@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 					return Util.SequenceActivities(new Turn(self, DockAngle), this);
 				case State.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+						foreach (var nd in Refinery.Traits<INotifyDocking>())
 							nd.Docked(Refinery, self);
 					return OnStateDock(self);
 				case State.Loop:
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 					return OnStateUndock(self);
 				case State.Complete:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+						foreach (var nd in Refinery.Traits<INotifyDocking>())
 							nd.Undocked(Refinery, self);
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(self, null);

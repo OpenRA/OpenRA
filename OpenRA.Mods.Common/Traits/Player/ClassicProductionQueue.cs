@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor (not a building!) to define a new shared build queue.",
 		"Will only work together with the Production: trait on the actor that actually does the production.",
 		"You will also want to add PrimaryBuildings: to let the user choose where new units should exit.")]
-	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>
+	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>,
+		InitializeAfter<PlayerResourcesInfo>, InitializeAfter<PowerManagerInfo>
 	{
 		[Desc("If you build more actors of the same type,", "the same queue will get its build time lowered for every actor produced there.")]
 		public readonly bool SpeedUp = false;
@@ -76,9 +77,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override TraitPair<Production> MostLikelyProducer()
 		{
-			return self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(Info.Type))
+			return self.World.ActorsWithTrait<Production>((a, p) => a.Owner == self.Owner
+					&& p.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID)
 				.FirstOrDefault();
@@ -88,14 +88,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Find a production structure to build this actor
 			var ai = self.World.Map.Rules.Actors[name];
-			var bi = ai.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
 
 			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
 			var type = bi == null || developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
 
-			var producers = self.World.ActorsWithTrait<Production>()
-				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(type))
+			var producers = self.World.ActorsWithTrait<Production>((a, p) =>
+						a.Owner == self.Owner && p.Info.Produces.Contains(type))
 					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 					.ThenByDescending(x => x.Actor.ActorID);
 
@@ -120,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override int GetBuildTime(string unitString)
 		{
 			var ai = self.World.Map.Rules.Actors[unitString];
-			var bi = ai.Traits.GetOrDefault<BuildableInfo>();
+			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
 			if (bi == null)
 				return 0;
 

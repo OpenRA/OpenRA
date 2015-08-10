@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, InitializeAfter<HealthInfo>, InitializeAfter<AmmoPoolInfo>
 	{
 		public readonly string[] RepairBuildings = { "fix" };
 
@@ -38,14 +38,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.TraitsToArray<AmmoPool>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
@@ -127,10 +127,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor FindRepairBuilding(Actor self)
 		{
-			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
-				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner == self.Owner &&
-					info.RepairBuildings.Contains(a.Actor.Info.Name))
+			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>((a, r) =>
+					!a.IsDead && a.IsInWorld && a.Owner == self.Owner
+					&& info.RepairBuildings.Contains(a.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.

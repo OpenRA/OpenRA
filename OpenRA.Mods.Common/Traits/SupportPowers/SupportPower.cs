@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.DisplayRadarPing && manager.RadarPings != null)
 			{
-				ping = manager.RadarPings.Value.Add(
+				ping = manager.RadarPings.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
 					self.World.Map.CenterOfCell(order.TargetLocation),
 					order.Player.Color.RGB,

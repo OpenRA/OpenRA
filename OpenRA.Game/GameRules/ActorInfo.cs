@@ -125,33 +125,50 @@ namespace OpenRA
 			{
 				Trait = i,
 				Type = i.GetType(),
-				Dependencies = PrerequisitesOf(i).ToList()
+				Predecessors = PredecessorsOf(i).ToList(),
+				Requisites = RequisitesOf(i).ToList()
 			}).ToList();
 
-			var resolved = source.Where(s => !s.Dependencies.Any()).ToList();
-			var unresolved = source.Except(resolved);
+			var resolved = source.Where(s => !s.Predecessors.Any()).ToList();
+			var unresolved = source.Except(resolved).ToList();
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type))));
 
-			// Re-evaluate the vars above until sorted
-			while (more.Any())
-				resolved.AddRange(more);
+			// When referenced, evaluates to those in unresolved with all present predecessors in resolved
+			var enumeratedResolvables = unresolved.Where(u => u.Predecessors.All(d => !unresolved.Any(r => testResolve(d, r.Type))));
+			var resolvables = enumeratedResolvables.ToList();
 
-			if (unresolved.Any())
+			while (resolvables.Any())
+			{
+				unresolved.RemoveAll(resolvables.Contains);
+				resolved.AddRange(resolvables);
+				resolvables.Clear();
+				resolvables.AddRange(enumeratedResolvables);
+			}
+
+			var missing = source.SelectMany(u => u.Requisites.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
+			if (missing.Any() || unresolved.Any())
 			{
 				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\r\n";
-				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
 
-				exceptionString += "Missing:\r\n";
-				foreach (var m in missing)
-					exceptionString += m + " \r\n";
-
-				exceptionString += "Unresolved:\r\n";
-				foreach (var u in unresolved)
+				if (missing.Any())
 				{
-					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
-					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					exceptionString += "Missing:\r\n";
+					foreach (var m in missing)
+					{
+						var users = source.Where(s => s.Requisites.Any(r => testResolve(r, m))).Select(s => s.Type);
+						exceptionString += m + ": { " + string.Join(", ", users) + " }\r\n";
+					}
+				}
+
+				if (unresolved.Any())
+				{
+					exceptionString += "Unresolved:\r\n";
+					foreach (var u in unresolved)
+					{
+						var deps = u.Predecessors.Where(d => !resolved.Exists(r => r.Type == d));
+						exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					}
 				}
 
 				throw new Exception(exceptionString);
@@ -161,7 +178,16 @@ namespace OpenRA
 			return constructOrderCache;
 		}
 
-		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		static IEnumerable<Type> PredecessorsOf(ITraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(InitializeAfter<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
+		static IEnumerable<Type> RequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
@@ -183,5 +209,9 @@ namespace OpenRA
 				i => Pair.New(
 					i.Name.Replace("Init", ""), i));
 		}
+
+		public bool TraitInfosAny<T>() where T : ITraitInfo { return Traits.Contains<T>(); }
+		public T TraitInfo<T>() where T : ITraitInfo { return Traits.Get<T>(); }
+		public T TraitInfoOrDefault<T>() where T : ITraitInfo { return Traits.GetOrDefault<T>(); }
 	}
 }

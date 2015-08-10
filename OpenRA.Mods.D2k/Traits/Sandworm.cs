@@ -15,7 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<WithSpriteBodyInfo>, Requires<AttackBaseInfo>
+	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<WithSpriteBodyInfo>, Requires<AttackBaseInfo>,
+		InitializeAfter<MobileInfo>, InitializeAfter<WithSpriteBodyInfo>, InitializeAfter<AttackBaseInfo>
 	{
 		[Desc("Time between rescanning for targets (in ticks).")]
 		public readonly int TargetRescanInterval = 32;
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.D2k.Traits
 			targetCountdown = Info.TargetRescanInterval;
 
 			// If close enough, we don't care about other actors.
-			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.HasTrait<AttractsWorms>());
+			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.Info.TraitInfosAny<AttractsWormsInfo>());
 			if (target != null)
 			{
 				self.CancelActivity();
@@ -109,14 +110,14 @@ namespace OpenRA.Mods.D2k.Traits
 
 			Func<Actor, bool> isValidTarget = a =>
 			{
-				if (!a.HasTrait<AttractsWorms>())
+				if (!a.Info.TraitInfosAny<AttractsWormsInfo>())
 					return false;
 
 				return mobile.CanEnterCell(a.Location, null, false);
 			};
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius)
-				.Where(isValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
+				.Where(isValidTarget).SelectMany(a => a.Traits<AttractsWorms>());
 
 			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
 

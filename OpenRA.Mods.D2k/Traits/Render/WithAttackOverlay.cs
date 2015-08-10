@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Rendered together with an attack.")]
-	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Sequence name to use")]

@@ -17,7 +17,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>, Requires<TechTreeInfo>
+	public class SupportPowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>, Requires<TechTreeInfo>,
+		InitializeAfter<DeveloperModeInfo>, InitializeAfter<TechTreeInfo>
 	{
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
@@ -29,14 +30,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
-		public readonly Lazy<RadarPings> RadarPings;
+		public readonly RadarPings RadarPings;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
 			Self = init.Self;
 			DevMode = Self.Trait<DeveloperMode>();
 			TechTree = Self.Trait<TechTree>();
-			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
+			RadarPings = init.World.WorldActor.TraitOrDefault<RadarPings>();
 
 			init.World.ActorAdded += ActorAdded;
 			init.World.ActorRemoved += ActorRemoved;
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Owner != Self.Owner)
 				return;
 
-			foreach (var t in a.TraitsImplementing<SupportPower>())
+			foreach (var t in a.Traits<SupportPower>())
 			{
 				var key = MakeKey(t);
 
@@ -78,10 +79,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ActorRemoved(Actor a)
 		{
-			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.Info.TraitInfosAny<SupportPowerInfo>())
 				return;
 
-			foreach (var t in a.TraitsImplementing<SupportPower>())
+			foreach (var t in a.Traits<SupportPower>())
 			{
 				var key = MakeKey(t);
 				Powers[key].Instances.Remove(t);
@@ -119,10 +120,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
-			if (a.Owner != Self.Owner || !a.HasTrait<SupportPower>())
+			if (a.Owner != Self.Owner || !a.Info.TraitInfosAny<SupportPowerInfo>())
 				return NoInstances;
 
-			return a.TraitsImplementing<SupportPower>()
+			return a.Traits<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
 

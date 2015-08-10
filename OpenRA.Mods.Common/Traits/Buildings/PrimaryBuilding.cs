@@ -66,15 +66,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: THIS IS SHIT
 			// Cancel existing primaries
-			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
+			foreach (var p in self.Info.TraitInfo<ProductionInfo>().Produces)
 			{
 				var productionType = p;		// benign closure hazard
 				foreach (var b in self.World
-					.ActorsWithTrait<PrimaryBuilding>()
-					.Where(a =>
-						a.Actor.Owner == self.Owner &&
-						a.Trait.IsPrimary &&
-						a.Actor.Info.Traits.Get<ProductionInfo>().Produces.Contains(productionType)))
+					.ActorsWithTrait<PrimaryBuilding>((a, t) =>
+						a.Owner == self.Owner && t.IsPrimary
+						&& a.Info.TraitInfo<ProductionInfo>().Produces.Contains(productionType)))
 					b.Trait.SetPrimaryProducer(b.Actor, false);
 			}
 

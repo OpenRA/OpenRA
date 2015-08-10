@@ -16,7 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
+	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,
+		Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>,
+		InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IBodyOrientationInfo>, InitializeAfter<ArmamentInfo>, InitializeAfter<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "barrel";
@@ -29,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
 				.First(a => a.Name == Armament);
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
@@ -59,10 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			body = self.Trait<IBodyOrientation>();
-			armament = self.TraitsImplementing<Armament>()
-				.First(a => a.Info.Name == info.Armament);
-			turreted = self.TraitsImplementing<Turreted>()
-				.First(tt => tt.Name == armament.Info.Turret);
+			armament = self.FirstTrait<Armament>(a => a.Info.Name == info.Armament);
+			turreted = self.FirstTrait<Turreted>(tt => tt.Name == armament.Info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),

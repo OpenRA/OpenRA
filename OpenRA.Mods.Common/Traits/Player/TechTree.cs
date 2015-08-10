@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ActorChanged(Actor a)
 		{
-			var bi = a.Info.Traits.GetOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.HasTrait<ITechTreePrerequisite>() || (bi != null && bi.BuildLimit > 0)))
+			var bi = a.Info.TraitInfoOrDefault<BuildableInfo>();
+			if (a.Owner == player && (a.Info.TraitInfosAny<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
 				Update();
 		}
 
@@ -76,8 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 				return ret;
 
 			// Add all actors that provide prerequisites
-			var prerequisites = player.World.ActorsWithTrait<ITechTreePrerequisite>()
-				.Where(a => a.Actor.Owner == player && a.Actor.IsInWorld && !a.Actor.IsDead);
+			var prerequisites = player.World.ActorsWithTrait<ITechTreePrerequisite>((a, t) =>
+				a.Owner == player && a.IsInWorld && !a.IsDead);
 
 			foreach (var b in prerequisites)
 			{
@@ -92,13 +92,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add buildables that have a build limit set and are not already in the list
-			player.World.ActorsWithTrait<Buildable>()
-				  .Where(a =>
-					  a.Actor.Owner == player &&
-					  a.Actor.IsInWorld &&
-					  !a.Actor.IsDead &&
-					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0)
+			player.World.ActorsWithTrait<Buildable>((a, b) =>
+					  a.Owner == player &&
+					  a.IsInWorld &&
+					  !a.IsDead &&
+					  !ret.ContainsKey(a.Info.Name) &&
+					  a.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
 				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;

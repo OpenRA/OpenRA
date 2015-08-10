@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CrateActionInfo : ITraitInfo
+	public class CrateActionInfo : ITraitInfo, Requires<CrateInfo>
 	{
 		[Desc("Chance of getting this crate, assuming the collector is compatible.")]
 		public readonly int SelectionShares = 10;

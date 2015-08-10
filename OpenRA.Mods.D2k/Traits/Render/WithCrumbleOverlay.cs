@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Rendered together with the \"make\" animation.")]
-	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithCrumbleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, InitializeAfter<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "crumble-overlay";

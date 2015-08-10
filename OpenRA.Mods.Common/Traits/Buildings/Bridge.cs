@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class BridgeInfo : ITraitInfo, Requires<HealthInfo>, Requires<BuildingInfo>
+	class BridgeInfo : ITraitInfo, Requires<HealthInfo>, Requires<BuildingInfo>, InitializeAfter<HealthInfo>, InitializeAfter<BuildingInfo>
 	{
 		public readonly bool Long = false;
 
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in footprint.Keys)
 				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
-					if (a.HasTrait<IPositionable>() && !a.Trait<IPositionable>().CanEnterCell(c))
+					if (a.Info.TraitInfosAny<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
 						a.Kill(self);
 		}
 

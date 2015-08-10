@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
+		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -204,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return false;
-					var crushables = a.TraitsImplementing<ICrushable>();
+					var crushables = a.Traits<ICrushable>();
 					if (!crushables.Any())
 						return false;
 					foreach (var crushable in crushables)
@@ -247,7 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
 					if (needsCellExclusively)
 						return true;
-					var crushables = a.TraitsImplementing<ICrushable>();
+					var crushables = a.Traits<ICrushable>();
 					if (!crushables.Any())
 						return true;
 					foreach (var crushable in crushables)
@@ -327,7 +328,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray());
+			speedModifiers = Exts.Lazy(self.TraitsToArray<ISpeedModifier>);
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -557,7 +558,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.TraitsWhere<ICrushable>(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.WarnCrush(self);
 		}
@@ -569,7 +570,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
+				.SelectMany(a => a.TraitsWhere<ICrushable>(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
 		}
@@ -641,7 +642,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var cellInfo = notStupidCells
 					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
-						.Where(a => a.IsIdle && a.HasTrait<Mobile>()),
+						.Where(a => a.IsIdle && a.Info.TraitInfosAny<MobileInfo>()),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
 

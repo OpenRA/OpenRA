@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor. When attached, enables all actors possessing the LevelupWhenCreated ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",
 		"The icon change occurs when LevelupWhenCreated.Prerequisites are met.")]
-	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class VeteranProductionIconOverlayInfo : ITraitInfo, Requires<TechTreeInfo>, InitializeAfter<TechTreeInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Image used for the overlay.")]
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in self.World.Map.Rules.Actors.Values)
 			{
-				var uwc = a.Traits.GetOrDefault<ProducibleWithLevelInfo>();
+				var uwc = a.TraitInfoOrDefault<ProducibleWithLevelInfo>();
 				if (uwc != null)
 					ttc.Add(MakeKey(a.Name), uwc.Prerequisites, 0, this);
 			}

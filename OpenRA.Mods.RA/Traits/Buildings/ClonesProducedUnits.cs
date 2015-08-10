@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Creates a free duplicate of produced units.")]
-	public class ClonesProducedUnitsInfo : ITraitInfo, Requires<ProductionInfo>, Requires<ExitInfo>
+	public class ClonesProducedUnitsInfo : ITraitInfo, Requires<ProductionInfo>, Requires<ExitInfo>, InitializeAfter<ProductionInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
@@ -40,10 +40,10 @@ namespace OpenRA.Mods.RA.Traits
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
 		{
 			// No recursive cloning!
-			if (producer.Owner != self.Owner || producer.HasTrait<ClonesProducedUnits>())
+			if (producer.Owner != self.Owner || producer.Info.TraitInfosAny<ClonesProducedUnitsInfo>())
 				return;
 
-			var ci = produced.Info.Traits.GetOrDefault<CloneableInfo>();
+			var ci = produced.Info.TraitInfoOrDefault<CloneableInfo>();
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 

@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			Tileset = self.World.TileSet;
 
 			Tiles = new CellLayer<CellContents>(Map);
-			Resources = self.TraitsImplementing<ResourceType>()
+			Resources = self.Traits<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
 			Map.MapResources.Value.CellEntryChanged += UpdateCell;

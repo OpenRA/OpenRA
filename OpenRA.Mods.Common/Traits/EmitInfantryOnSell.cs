@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!correctRace)
 				return;
 
-			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();
-			var valued = self.Info.Traits.GetOrDefault<ValuedInfo>();
+			var csv = self.Info.TraitInfoOrDefault<CustomSellValueInfo>();
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 
 			var health = self.TraitOrDefault<Health>();
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			dudesValue /= 100;
 
 			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
-			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].Traits.Get<ValuedInfo>().Cost }).ToList();
+			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{

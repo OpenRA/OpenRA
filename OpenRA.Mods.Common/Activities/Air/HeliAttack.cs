@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				target = value;
 				if (target.Type == TargetType.Actor)
-					canHideUnderFog = target.Actor.HasTrait<HiddenUnderFog>();
+					canHideUnderFog = target.Actor.Info.TraitInfosAny<HiddenUnderFogInfo>();
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			Target = target;
 			helicopter = self.Trait<Helicopter>();
 			attackHeli = self.Trait<AttackHeli>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.TraitsToArray<AmmoPool>();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 		}
 

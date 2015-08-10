@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be targeted.")]
-	public class TargetableUnitInfo : UpgradableTraitInfo, ITargetableInfo
+	public class TargetableUnitInfo : UpgradableTraitInfo, ITargetableInfo, InitializeAfter<CloakInfo>
 	{
 		[Desc("Target type. Used for filtering (in)valid targets.")]
 		public readonly string[] TargetTypes = { };
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (IsTraitDisabled)
 				return false;
-			if (cloak == null || (!viewer.IsDead && viewer.HasTrait<IgnoresCloak>()))
+			if (cloak == null || (!viewer.IsDead && viewer.Info.TraitInfosAny<IgnoresCloakInfo>()))
 				return true;
 
 			return cloak.IsVisible(self, viewer.Owner);

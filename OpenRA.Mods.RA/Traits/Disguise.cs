@@ -19,12 +19,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	[Desc("Overrides the default ToolTip when this actor is disguised (aids in deceiving enemy players).")]
-	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
+	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>, InitializeAfter<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.Self, this); }
 	}
 
-	class DisguiseToolTip : IToolTip
+	class DisguiseToolTip : ITooltip
 	{
 		readonly Actor self;
 		readonly Disguise disguise;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 				else
 				{
 					AsSprite = target.Trait<RenderSprites>().GetImage(target);
-					var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
+					var tooltip = target.FirstTraitOrDefault<ITooltip>();
 					AsPlayer = tooltip.Owner;
 					AsTooltipInfo = tooltip.TooltipInfo;
 				}
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA.Traits
 			var oldDisguiseSetting = Disguised;
 			var oldEffectiveOwner = AsPlayer;
 
-			var renderSprites = actorInfo.Traits.GetOrDefault<RenderSpritesInfo>();
+			var renderSprites = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
 			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Faction.InternalName);
 			AsPlayer = newOwner;
 			AsTooltipInfo = actorInfo.Traits.WithInterface<TooltipInfo>().FirstOrDefault();
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void HandleDisguise(Player oldEffectiveOwner, bool oldDisguiseSetting)
 		{
-			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
+			foreach (var t in self.Traits<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
 			if (Disguised != oldDisguiseSetting && um.Value != null)

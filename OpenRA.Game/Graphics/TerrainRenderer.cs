@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
 			terrain.Draw(viewport);
-			foreach (var r in wr.World.WorldActor.TraitsImplementing<IRenderOverlay>())
+			foreach (var r in wr.World.WorldActor.Traits<IRenderOverlay>())
 				r.Render(wr);
 		}
 

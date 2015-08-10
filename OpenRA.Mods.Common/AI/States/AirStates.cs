@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Common.AI
 			var missileUnitsCount = 0;
 			foreach (var unit in units)
 			{
-				if (unit != null && unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>()
+				if (unit != null && unit.Info.TraitInfosAny<AttackBaseInfo>() && !unit.Info.Traits.Contains<AircraftInfo>()
 					&& !unit.IsDisabled())
 				{
-					var arms = unit.TraitsImplementing<Armament>();
+					var arms = unit.Traits<Armament>();
 					foreach (var a in arms)
 					{
 						if (a.Weapon.IsValidTarget(AirTargetTypes))
@@ -106,19 +106,19 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool FullAmmo(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.FullAmmo());
 		}
 
 		protected static bool HasAmmo(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.HasAmmo());
 		}
 
 		protected static bool ReloadsAutomatically(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
+			var ammoPools = a.Traits<AmmoPool>();
 			return ammoPools.All(x => x.Info.SelfReloads);
 		}
 
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 				}
 
-				if (owner.TargetActor.HasTrait<ITargetable>() && CanAttackTarget(a, owner.TargetActor))
+				if (owner.TargetActor.Info.TraitInfosAny<ITargetableInfo>() && CanAttackTarget(a, owner.TargetActor))
 					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
 			}
 		}

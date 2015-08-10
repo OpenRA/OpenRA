@@ -16,7 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithVoxelTurretInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
+	public class WithVoxelTurretInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,
+		Requires<RenderVoxelsInfo>, Requires<IBodyOrientationInfo>, Requires<TurretedInfo>,
+		InitializeAfter<RenderVoxelsInfo>, InitializeAfter<IBodyOrientationInfo>, InitializeAfter<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -28,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
@@ -52,8 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			body = self.Trait<IBodyOrientation>();
-			turreted = self.TraitsImplementing<Turreted>()
-				.First(tt => tt.Name == info.Turret);
+			turreted = self.FirstTrait<Turreted>(tt => tt.Name == info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),

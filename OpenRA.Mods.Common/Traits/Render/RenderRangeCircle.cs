@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>, InitializeAfter<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
-					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
+					if (a.Actor.Info.TraitInfo<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 						foreach (var r in a.Trait.RenderAfterWorld(wr))
 							yield return r;
 		}

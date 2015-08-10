@@ -18,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
-	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>
+	public class ResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>, Requires<BuildingInfluenceInfo>,
+		InitializeAfter<BuildingInfluenceInfo>
 	{
 		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}
@@ -83,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var resources = w.WorldActor.TraitsImplementing<ResourceType>()
+			var resources = w.WorldActor.Traits<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
 			// Build the sprite layer dictionary for rendering resources

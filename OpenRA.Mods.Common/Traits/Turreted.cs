@@ -13,7 +13,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<IBodyOrientationInfo>
+	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<IBodyOrientationInfo>,
+		InitializeAfter<IBodyOrientationInfo>, InitializeAfter<IFacingInfo>
 	{
 		public readonly string Turret = "primary";
 		[Desc("Rate of Turning")]
@@ -32,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class Turreted : ITick, ISync, INotifyCreated
 	{
 		readonly TurretedInfo info;
+		readonly IFacing facing;
+		readonly IBodyOrientation body;
 		AttackTurreted attack;
-		IFacing facing;
-		IBodyOrientation body;
 
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int TurretFacing = 0;
@@ -62,13 +63,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing);
+			facing = init.Self.TraitOrDefault<IFacing>();
+			body = init.Self.Trait<IBodyOrientation>();
 		}
 
 		public void Created(Actor self)
 		{
 			attack = self.TraitOrDefault<AttackTurreted>();
-			facing = self.TraitOrDefault<IFacing>();
-			body = self.Trait<IBodyOrientation>();
 		}
 
 		public virtual void Tick(Actor self)

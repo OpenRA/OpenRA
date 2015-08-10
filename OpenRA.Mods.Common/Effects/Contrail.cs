@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Effects
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
-	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>, InitializeAfter<IBodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;

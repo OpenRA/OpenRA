@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public int DamageVersus(ActorInfo victim)
 		{
-			var armor = victim.Traits.GetOrDefault<ArmorInfo>();
+			var armor = victim.TraitInfoOrDefault<ArmorInfo>();
 			if (armor != null && armor.Type != null)
 			{
 				int versus;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Warheads
 		// assumption has been removed from the yaml definitions
 		public override bool CanTargetActor(ActorInfo victim, Actor firedBy)
 		{
-			var health = victim.Traits.GetOrDefault<HealthInfo>();
+			var health = victim.TraitInfoOrDefault<HealthInfo>();
 			if (health == null)
 				return false;
 

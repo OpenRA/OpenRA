@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, target)
 		{
 			this.target = target;
-			demolishables = target.TraitsImplementing<IDemolishable>().ToArray();
+			demolishables = target.TraitsToArray<IDemolishable>();
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Activities
 					if (target.IsDead)
 						return;
 
-					var modifiers = target.TraitsImplementing<IDamageModifier>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					var modifiers = target.Traits<IDamageModifier>()
+						.Concat(self.Owner.PlayerActor.Traits<IDamageModifier>())
 						.Select(t => t.GetDamageModifier(self, null));
 
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)

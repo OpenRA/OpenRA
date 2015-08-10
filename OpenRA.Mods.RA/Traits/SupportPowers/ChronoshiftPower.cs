@@ -64,8 +64,8 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var t in tiles)
 				units.UnionWith(Self.World.ActorMap.GetUnitsAt(t));
 
-			return units.Where(a => a.HasTrait<Chronoshiftable>() &&
-				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));
+			return units.Where(a => a.Info.TraitInfosAny<ChronoshiftableInfo>() &&
+				!a.TraitsAny<IPreventsTeleport>(condition => condition.PreventsTeleport(a)));
 		}
 
 		public bool SimilarTerrain(CPos xy, CPos sourceLocation)

@@ -36,12 +36,12 @@ namespace OpenRA.Mods.RA.Activities
 			if (cloak != null && cloak.Info.UncloakOnInfiltrate)
 				cloak.Uncloak();
 
-			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
+			foreach (var t in target.Traits<INotifyInfiltrated>())
 				t.Infiltrated(target, self);
 
 			self.Dispose();
 
-			if (target.HasTrait<Building>())
+			if (target.Info.TraitInfosAny<BuildingInfo>())
 				Sound.PlayToPlayer(self.Owner, "bldginf1.aud");
 		}
 	}

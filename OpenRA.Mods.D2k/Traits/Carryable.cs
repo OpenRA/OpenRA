@@ -71,8 +71,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			// Inform all idle carriers
-			var carriers = self.World.ActorsWithTrait<Carryall>()
-				.Where(c => !c.Trait.IsBusy && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
+			var carriers = self.World.ActorsWithTrait<Carryall>((a, c) => !c.IsBusy && !a.IsDead && a.Owner == self.Owner && a.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Is any carrier able to transport the actor?
@@ -100,8 +99,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public Actor GetClosestIdleCarrier()
 		{
 			// Find carriers
-			var carriers = self.World.ActorsWithTrait<Carryall>()
-				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.IsBusy && p.Actor.IsInWorld)
+			var carriers = self.World.ActorsWithTrait<Carryall>((a, c) => a.Owner == self.Owner && !c.IsBusy && a.IsInWorld)
 				.Select(h => h.Actor);
 
 			return carriers.ClosestTo(self);
@@ -117,7 +115,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				// HACK: Harvesters need special treatment to avoid getting stuck on resource fields,
 				// so if a Harvester's afterLandActivity is not DeliverResources, queue a new FindResources activity
-				var findResources = self.HasTrait<Harvester>() && !(afterLandActivity is DeliverResources);
+				var findResources = self.Info.TraitInfosAny<HarvesterInfo>() && !(afterLandActivity is DeliverResources);
 				if (findResources)
 					self.QueueActivity(new FindResources(self));
 				else
