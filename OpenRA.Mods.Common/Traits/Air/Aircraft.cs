@@ -194,6 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemovedFromWorld(Actor self)
 		{
+			UnReserve();
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
