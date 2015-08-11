@@ -43,8 +43,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				firstTick = false;
-				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
-					ReserveSpawnBuilding();
+				if (self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
+					return;
+
+				ReserveSpawnBuilding();
 
 				var host = GetActorBelow();
 				if (host == null)
@@ -93,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
-				if (Reservable.IsReserved(order.TargetActor)) return;
+				if (Reservable.IsReserved(order.TargetActor))
+					return;
 
 				UnReserve();
 
@@ -111,7 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "ReturnToBase")
 			{
 				var airfield = ReturnToBase.ChooseAirfield(self, true);
-				if (airfield == null) return;
+				if (airfield == null)
+					return;
 
 				UnReserve();
 				self.CancelActivity();
