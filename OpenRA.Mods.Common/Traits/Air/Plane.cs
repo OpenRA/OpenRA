@@ -95,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
-				if (Reservable.IsReserved(order.TargetActor)) return;
+				if (Reservable.IsReserved(order.TargetActor))
+					return;
 
 				UnReserve();
 
@@ -113,7 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "ReturnToBase")
 			{
 				var airfield = ReturnToBase.ChooseAirfield(self, true);
-				if (airfield == null) return;
+				if (airfield == null)
+					return;
 
 				UnReserve();
 				self.CancelActivity();
