@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			self.CancelActivity();
+			if (NextActivity == null)
+				self.CancelActivity();
 
 			var reservation = aircraft.Reservation;
 			if (reservation != null)
@@ -43,7 +44,10 @@ namespace OpenRA.Mods.Common.Activities
 			var destination = rp != null ? rp.Location :
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
-			return new AttackMoveActivity(self, move.MoveTo(destination, 1));
+			if (NextActivity == null)
+				return new AttackMoveActivity(self, move.MoveTo(destination, 1));
+			else
+				return NextActivity;
 		}
 	}
 }
