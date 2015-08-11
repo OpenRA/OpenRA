@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Group queues from separate buildings together into the same tab.")]
 		public readonly string Group = null;
 
-		[Desc("Only enable this queue for certain factions")]
-		public readonly string[] Race = { };
+		[Desc("Only enable this queue for certain factions.")]
+		public readonly string[] Factions = { };
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			developerMode = playerActor.Trait<DeveloperMode>();
 
 			Race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
-			Enabled = !info.Race.Any() || info.Race.Contains(Race);
+			Enabled = !info.Factions.Any() || info.Factions.Contains(Race);
 
 			CacheProduceables(playerActor);
 		}
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Sticky)
 			{
 				Race = self.Owner.Faction.InternalName;
-				Enabled = !Info.Race.Any() || Info.Race.Contains(Race);
+				Enabled = !Info.Factions.Any() || Info.Factions.Contains(Race);
 			}
 
 			// Regenerate the produceables and tech tree state

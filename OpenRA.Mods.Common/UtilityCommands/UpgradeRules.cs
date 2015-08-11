@@ -1736,6 +1736,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Offset";
 				}
 
+				if (engineVersion < 20150811)
+				{
+					if (node.Key.StartsWith("ProductionQueue"))
+					{
+						var race = node.Value.Nodes.FirstOrDefault(x => x.Key == "Race");
+						if (race != null)
+							race.Key = "Factions";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
