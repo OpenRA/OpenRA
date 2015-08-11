@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Be sure to use lowercase. Default value is \"e1\".")]
 		public readonly string[] ActorTypes = { "e1" };
 
-		[Desc("Spawns actors only if the selling player's race is in this list." +
-			"Leave empty to allow all races by default.")]
-		public readonly string[] Races = { };
+		[Desc("Spawns actors only if the selling player's faction is in this list." +
+			"Leave empty to allow all factions by default.")]
+		public readonly string[] Factions = { };
 
 		public object Create(ActorInitializer init) { return new EmitInfantryOnSell(init.Self, this); }
 	}
@@ -34,20 +34,20 @@ namespace OpenRA.Mods.Common.Traits
 	public class EmitInfantryOnSell : INotifySold
 	{
 		readonly EmitInfantryOnSellInfo info;
-		readonly bool correctRace = false;
+		readonly bool correctFaction;
 
 		public EmitInfantryOnSell(Actor self, EmitInfantryOnSellInfo info)
 		{
 			this.info = info;
-			var raceList = info.Races;
-			correctRace = raceList.Length == 0 || raceList.Contains(self.Owner.Faction.InternalName);
+			var factionsList = info.Factions;
+			correctFaction = factionsList.Length == 0 || factionsList.Contains(self.Owner.Faction.InternalName);
 		}
 
 		public void Selling(Actor self) { }
 
 		void Emit(Actor self)
 		{
-			if (!correctRace)
+			if (!correctFaction)
 				return;
 
 			var csv = self.Info.Traits.GetOrDefault<CustomSellValueInfo>();

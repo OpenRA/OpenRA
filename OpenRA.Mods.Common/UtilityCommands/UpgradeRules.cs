@@ -1744,6 +1744,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (race != null)
 							race.Key = "Factions";
 					}
+
+					if (node.Key.StartsWith("EmitInfantryOnSell"))
+					{
+						var race = node.Value.Nodes.FirstOrDefault(x => x.Key == "Races");
+						if (race != null)
+							race.Key = "Factions";
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
