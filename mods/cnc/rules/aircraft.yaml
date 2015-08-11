@@ -46,7 +46,7 @@ TRAN:
 HELI:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		Cost: 1100
 	Tooltip:
 		Name: Apache Longbow
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
@@ -98,7 +98,7 @@ HELI:
 ORCA:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		Cost: 1100
 	Tooltip:
 		Name: Orca
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry

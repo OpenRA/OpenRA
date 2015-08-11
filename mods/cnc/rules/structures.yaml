@@ -470,7 +470,7 @@ FIX:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
-		HP: 400
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -480,7 +480,7 @@ FIX:
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
-		Amount: -30
+		Amount: -10
 
 EYE:
 	Inherits: ^BaseBuilding
@@ -621,9 +621,9 @@ GUN:
 SAM:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 750
+		Cost: 650
 	CustomBuildTimeValue:
-		Value: 2160
+		Value: 2000
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.

@@ -166,7 +166,7 @@
 	SpawnViceroid:
 		Probability: 10
 	Crushable:
-		WarnProbability: 67
+		WarnProbability: 75
 		CrushSound: squish2.aud
 	CombatDebugOverlay:
 	Guard:
@@ -182,7 +182,7 @@
 	Huntable:
 	LuaScriptEvents:
 	DetectCloaked:
-		Range: 1
+		Range: 3
 	ScriptTriggers:
 	DeathSounds@NORMAL:
 		DeathTypes: 1, 2, 3, 4

@@ -446,6 +446,9 @@ VICE:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AttackWander:
+		WanderMoveRadius: 1
+		MinMoveDelayInTicks: 2000
+		MaxMoveDelayInTicks: 3000
 	RenderUnit:
 	WithMuzzleFlash:
 		SplitFacings: true
