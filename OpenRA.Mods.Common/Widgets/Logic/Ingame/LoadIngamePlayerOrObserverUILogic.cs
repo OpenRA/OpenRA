@@ -16,6 +16,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadIngamePlayerOrObserverUILogic
 	{
+		bool loadingObserverWidgets = false;
+
 		[ObjectCreator.UseCtor]
 		public LoadIngamePlayerOrObserverUILogic(Widget widget, World world)
 		{
@@ -35,12 +37,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
-					if (world.LocalPlayer.WinState != WinState.Undefined)
+					if (world.LocalPlayer.WinState != WinState.Undefined && !loadingObserverWidgets)
+					{
+						loadingObserverWidgets = true;
 						Game.RunAfterDelay(objectives != null ? objectives.Info.GameOverDelay : 0, () =>
 						{
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});
+					}
 				};
 			}
 
