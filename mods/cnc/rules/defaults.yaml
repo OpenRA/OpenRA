@@ -196,6 +196,7 @@
 		OwnerType: InternalName
 		InternalOwner: Creeps
 		DeathType: TiberiumDeath
+		RequiresLobbyCreeps: true
 	Crushable:
 		WarnProbability: 67
 		CrushSound: squish2.aud

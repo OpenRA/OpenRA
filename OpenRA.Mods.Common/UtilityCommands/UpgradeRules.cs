@@ -1724,6 +1724,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var deathType = node.Value.Nodes.FirstOrDefault(n => n.Key == "DeathType");
 						if (deathType == null)
 							node.Value.Nodes.Add(new MiniYamlNode("DeathType", "TiberiumDeath"));
+
+						node.Value.Nodes.Add(new MiniYamlNode("RequiresLobbyCreeps", "true"));
 					}
 
 					if (node.Key == "LeavesHusk")

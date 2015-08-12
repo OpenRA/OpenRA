@@ -262,6 +262,7 @@
 		OwnerType: InternalName
 		InternalOwner: Creeps
 		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
+		RequiresLobbyCreeps: true
 	Guard:
 		Voice: Move
 	Guardable:
