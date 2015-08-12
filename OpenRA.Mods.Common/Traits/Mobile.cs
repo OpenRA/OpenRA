@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
+		#region Properties
+
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
@@ -61,6 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference] public readonly string Voice = "Action";
+
+		#endregion
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -136,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int CalculateTilesetMovementClass(TileSet tileset)
 		{
-			/* collect our ability to cross *all* terraintypes, in a bitvector */
+			// collect our ability to cross *all* terraintypes, in a bitvector
 			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
 		}
 
@@ -304,11 +308,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
+
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
 		readonly Lazy<ISpeedModifier[]> speedModifiers;
 		public readonly MobileInfo Info;
+
 		public bool IsMoving { get; set; }
 
 		int facing;
@@ -659,6 +665,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (moveTo.HasValue)
 			{
+				// Isn't it supposed that the actor didn't have any activity?
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, 0));
