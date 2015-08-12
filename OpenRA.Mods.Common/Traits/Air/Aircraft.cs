@@ -563,8 +563,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Stop")
 			{
-				UnReserve();
 				self.CancelActivity();
+				if (GetActorBelow() != null)
+				{
+					self.QueueActivity(new ResupplyAircraft(self));
+					return;
+				}
+
+				UnReserve();
 
 				// TODO: Implement INotifyBecomingIdle instead
 				if (!IsPlane && Info.LandWhenIdle)
