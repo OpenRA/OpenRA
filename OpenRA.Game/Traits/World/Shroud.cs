@@ -270,7 +270,11 @@ namespace OpenRA.Traits
 			if (!map.Contains(uv))
 				return false;
 
-			return map.ProjectedCellsCovering(uv).Any(isExploredTest);
+			foreach (var puv in map.ProjectedCellsCovering(uv))
+				if (IsExplored(puv))
+					return true;
+
+			return false;
 		}
 
 		public bool IsExplored(PPos puv)
@@ -316,7 +320,11 @@ namespace OpenRA.Traits
 			if (!visibleCount.Contains(uv))
 				return false;
 
-			return map.ProjectedCellsCovering(uv).Any(isVisibleTest);
+			foreach (var puv in map.ProjectedCellsCovering(uv))
+				if (IsVisible(puv))
+					return true;
+
+			return false;
 		}
 
 		// In internal shroud coords

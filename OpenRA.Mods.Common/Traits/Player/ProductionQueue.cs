@@ -68,14 +68,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ProductionQueueInfo Info;
 		readonly Actor self;
 
+		// A list of things we could possibly build
+		readonly Dictionary<ActorInfo, ProductionState> produceable = new Dictionary<ActorInfo, ProductionState>();
+		readonly List<ProductionItem> queue = new List<ProductionItem>();
+		readonly IEnumerable<ActorInfo> allProduceables;
+		readonly IEnumerable<ActorInfo> buildableProduceables;
+
 		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
 		protected DeveloperMode developerMode;
-
-		// A list of things we could possibly build
-		Dictionary<ActorInfo, ProductionState> produceable;
-		List<ProductionItem> queue = new List<ProductionItem>();
 
 		public Actor Actor { get { return self; } }
 
@@ -101,6 +103,8 @@ namespace OpenRA.Mods.Common.Traits
 			Enabled = !info.Factions.Any() || info.Factions.Contains(Faction);
 
 			CacheProduceables(playerActor);
+			allProduceables = produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
+			buildableProduceables = produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
 		}
 
 		void ClearQueue()
@@ -143,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CacheProduceables(Actor playerActor)
 		{
-			produceable = new Dictionary<ActorInfo, ProductionState>();
+			produceable.Clear();
 			if (!Enabled)
 				return;
 
@@ -200,9 +204,9 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
 			if (self.World.AllowDevCommands && developerMode.AllTech)
-				return produceable.Select(a => a.Key);
+				return produceable.Keys;
 
-			return produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
+			return allProduceables;
 		}
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
@@ -210,9 +214,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
 			if (self.World.AllowDevCommands && developerMode.AllTech)
-				return produceable.Select(a => a.Key);
+				return produceable.Keys;
 
-			return produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
+			return buildableProduceables;
 		}
 
 		public bool CanBuild(ActorInfo actor)

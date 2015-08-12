@@ -189,6 +189,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public Player Player { get; private set; }
 
+		readonly Func<Actor, bool> isEnemyUnit;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -229,6 +230,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Info = info;
 			World = init.World;
+			isEnemyUnit = unit =>
+				Player.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>();
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -580,20 +583,12 @@ namespace OpenRA.Mods.Common.AI
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			var allEnemyUnits = World.Actors
-				.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
-					unit.HasTrait<ITargetable>());
-
-			return allEnemyUnits.ClosestTo(pos);
+			return World.Actors.Where(isEnemyUnit).ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			var enemyUnits = World.FindActorsInCircle(pos, radius)
-				.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy &&
-					!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>());
-
-			return enemyUnits.ClosestTo(pos);
+			return World.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
 		}
 
 		List<Actor> FindEnemyConstructionYards()

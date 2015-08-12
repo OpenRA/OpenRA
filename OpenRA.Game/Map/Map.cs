@@ -260,8 +260,6 @@ namespace OpenRA
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
 
-		readonly Func<PPos, bool> containsTest;
-
 		void AssertExists(string filename)
 		{
 			using (var s = Container.GetContent(filename))
@@ -275,8 +273,6 @@ namespace OpenRA
 		/// </summary>
 		public Map(TileSet tileset, int width, int height)
 		{
-			containsTest = Contains;
-
 			var size = new Size(width, height);
 			var tileShape = Game.ModData.Manifest.TileShape;
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
@@ -316,8 +312,6 @@ namespace OpenRA
 		/// <summary>Initializes a map loaded from disk.</summary>
 		public Map(string path)
 		{
-			containsTest = Contains;
-
 			Path = path;
 			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
 
@@ -448,34 +442,40 @@ namespace OpenRA
 
 			initializedCellProjection = true;
 
-			if (MaximumTerrainHeight != 0)
+			cellProjection = new CellLayer<PPos[]>(this);
+			inverseCellProjection = new CellLayer<List<MPos>>(this);
+
+			// Initialize collections
+			foreach (var cell in AllCells)
 			{
-				cellProjection = new CellLayer<PPos[]>(this);
-				inverseCellProjection = new CellLayer<List<MPos>>(this);
-
-				// Initialize collections
-				foreach (var cell in AllCells)
-				{
-					var uv = cell.ToMPos(TileShape);
-					cellProjection[uv] = new PPos[0];
-					inverseCellProjection[uv] = new List<MPos>();
-				}
-
-				// Initialize projections
-				foreach (var cell in AllCells)
-					UpdateProjection(cell);
+				var uv = cell.ToMPos(TileShape);
+				cellProjection[uv] = new PPos[0];
+				inverseCellProjection[uv] = new List<MPos>();
 			}
+
+			// Initialize projections
+			foreach (var cell in AllCells)
+				UpdateProjection(cell);
 		}
 
 		void UpdateProjection(CPos cell)
 		{
+			MPos uv;
+
 			if (MaximumTerrainHeight == 0)
+			{
+				uv = cell.ToMPos(TileShape);
+				cellProjection[cell] = new[] { (PPos)uv };
+				var inverse = inverseCellProjection[uv];
+				inverse.Clear();
+				inverse.Add(uv);
 				return;
+			}
 
 			if (!initializedCellProjection)
 				InitializeCellProjection();
 
-			var uv = cell.ToMPos(TileShape);
+			uv = cell.ToMPos(TileShape);
 
 			// Remove old reverse projection
 			foreach (var puv in cellProjection[uv])
@@ -630,7 +630,8 @@ namespace OpenRA
 				}
 			}
 
-			tiles.CellEntryChanged += UpdateProjection;
+			if (MaximumTerrainHeight > 0)
+				tiles.CellEntryChanged += UpdateProjection;
 
 			return tiles;
 		}
@@ -650,7 +651,8 @@ namespace OpenRA
 				}
 			}
 
-			tiles.CellEntryChanged += UpdateProjection;
+			if (MaximumTerrainHeight > 0)
+				tiles.CellEntryChanged += UpdateProjection;
 
 			return tiles;
 		}
@@ -755,7 +757,15 @@ namespace OpenRA
 			// The first check ensures that the cell is within the valid map region, avoiding
 			// potential crashes in deeper code.  All CellLayers have the same geometry, and
 			// CustomTerrain is convenient (cellProjection may be null and others are Lazy).
-			return CustomTerrain.Contains(uv) && ProjectedCellsCovering(uv).All(containsTest);
+			return CustomTerrain.Contains(uv) && ContainsAllProjectedCellsCovering(uv);
+		}
+
+		bool ContainsAllProjectedCellsCovering(MPos uv)
+		{
+			foreach (var puv in ProjectedCellsCovering(uv))
+				if (!Contains(puv))
+					return false;
+			return true;
 		}
 
 		public bool Contains(PPos puv)
@@ -822,10 +832,6 @@ namespace OpenRA
 		static readonly PPos[] NoProjectedCells = { };
 		public PPos[] ProjectedCellsCovering(MPos uv)
 		{
-			// Shortcut for mods that don't use heightmaps
-			if (MaximumTerrainHeight == 0)
-				return new[] { (PPos)uv };
-
 			if (!initializedCellProjection)
 				InitializeCellProjection();
 
@@ -835,21 +841,17 @@ namespace OpenRA
 			return cellProjection[uv];
 		}
 
-		public MPos[] Unproject(PPos puv)
+		public List<MPos> Unproject(PPos puv)
 		{
 			var uv = (MPos)puv;
-
-			// Shortcut for mods that don't use heightmaps
-			if (MaximumTerrainHeight == 0)
-				return new[] { uv };
 
 			if (!initializedCellProjection)
 				InitializeCellProjection();
 
 			if (!inverseCellProjection.Contains(uv))
-				return new MPos[0];
+				return new List<MPos>();
 
-			return inverseCellProjection[uv].ToArray();
+			return inverseCellProjection[uv];
 		}
 
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
@@ -966,7 +968,7 @@ namespace OpenRA
 				return (MPos)Clamp((PPos)uv);
 
 			// Already in bounds, so don't need to do anything.
-			if (ProjectedCellsCovering(uv).Any(containsTest))
+			if (ContainsAllProjectedCellsCovering(uv))
 				return uv;
 
 			// Clamping map coordinates is trickier than it might first look!
@@ -1028,7 +1030,7 @@ namespace OpenRA
 
 		public CPos ChooseRandomCell(MersenneTwister rand)
 		{
-			MPos[] cells;
+			List<MPos> cells;
 			do
 			{
 				var u = rand.Next(Bounds.Left, Bounds.Right);
@@ -1093,7 +1095,7 @@ namespace OpenRA
 
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
-			MPos[] cells;
+			List<MPos> cells;
 			do
 			{
 				var isU = rand.Next(2) == 0;
