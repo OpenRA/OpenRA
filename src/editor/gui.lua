@@ -296,6 +296,7 @@ local function addDND(notebook)
         if winid == ide:GetOutput():GetId()
         or winid == ide:GetConsole():GetId()
         or winid == ide:GetProjectTree():GetId()
+        or ide.findReplace:IsPreview(win) -- search results preview
         then return end
 
         local mgr = ide.frame.uimgr
