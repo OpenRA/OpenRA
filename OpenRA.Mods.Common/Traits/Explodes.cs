@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("DeathType(s) to apply upon explosion.")]
 		public readonly string[] DeathType = null;
 
+		[Desc("Explosion counts as suicide attack.")]
+		public readonly bool IsSuicide = false;
+
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
 
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
+			weapon.Impact(Target.FromPos(self.CenterPosition), info.IsSuicide ? self : e.Attacker, Enumerable.Empty<int>());
 		}
 
 		string ChooseWeaponForExplosion(Actor self)

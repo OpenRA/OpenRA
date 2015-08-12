@@ -629,6 +629,7 @@ DTRK:
 	RevealsShroud:
 		Range: 3c0
 	Explodes:
+		IsSuicide: true
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 	DemoTruck:
