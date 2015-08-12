@@ -212,7 +212,7 @@ TRAN:
 	RevealsShroud:
 		Range: 12c0
 		Type: CenterPosition
-	Helicopter:
+	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
@@ -220,6 +220,7 @@ TRAN:
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
 		AirborneUpgrades: airborne
+		CanHover: True
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
@@ -260,13 +261,14 @@ HELI:
 		LocalOffset: 0,213,-85
 	AttackHeli:
 		FacingTolerance: 20
-	Helicopter:
+	Aircraft:
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
 		AirborneUpgrades: airborne
+		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
 	WithRotor:
@@ -312,13 +314,14 @@ HIND:
 		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
-	Helicopter:
+	Aircraft:
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
 		AirborneUpgrades: airborne
+		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
 	WithRotor:

@@ -9,7 +9,7 @@ carryall.reinforce:
 		HP: 4800
 	Armor:
 		Type: light
-	Helicopter:
+	Aircraft:
 		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
@@ -21,6 +21,7 @@ carryall.reinforce:
 		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
+		CanHover: True
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		UpgradeTypes: airborne
@@ -66,7 +67,6 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
-	Targetable:
 		TargetTypes: Air
 	AttackBomber:
 	Armament:
@@ -81,6 +81,7 @@ ornithopter:
 		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False
+		CanHover: True
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -105,11 +106,12 @@ carryall.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Carryall
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 112
 		RepairBuildings:
 		RearmBuildings:
+		CanHover: True
 	RenderSprites:
 		Image: carryall
 

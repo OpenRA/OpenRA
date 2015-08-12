@@ -2181,6 +2181,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (depth == 1 && node.Key == "Plane")
 						node.Key = "Aircraft";
+
+					if (depth == 1 && node.Key == "Helicopter")
+					{
+						node.Key = "Aircraft";
+						node.Value.Nodes.Add(new MiniYamlNode("CanHover", "True"));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
