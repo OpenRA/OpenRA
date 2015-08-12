@@ -42,6 +42,9 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Skips the husk actor's make animations if true.")]
 		public readonly bool SkipMakeAnimations = true;
 
+		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
+		public readonly bool RequiresLobbyCreeps = false;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
@@ -59,6 +62,9 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (info.RequiresLobbyCreeps && !self.World.LobbyInfo.GlobalSettings.Creeps)
+				return;
+
 			if (!self.IsInWorld)
 				return;
 
