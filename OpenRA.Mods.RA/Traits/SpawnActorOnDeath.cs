@@ -25,21 +25,21 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Actor to spawn on death.")]
 		public readonly string HuskActor = null;
 
-		[Desc("Probability the husk actor spawns.")]
+		[Desc("Probability the actor spawns.")]
 		public readonly int Probability = 100;
 
-		[Desc("Owner of the husk actor. Allowed keywords:" +
+		[Desc("Owner of the spawned actor. Allowed keywords:" +
 			"'Victim', 'Killer' and 'InternalName'.")]
 		public readonly OwnerType OwnerType = OwnerType.Victim;
 
 		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
 		public readonly string InternalOwner = null;
 
-		[Desc("DeathType that triggers the husk actor spawn." +
-			"Leave empty to spawn a husk actor ignoring the DeathTypes.")]
+		[Desc("DeathType that triggers the actor spawn." +
+			"Leave empty to spawn an actor ignoring the DeathTypes.")]
 		public readonly string DeathType = null;
 
-		[Desc("Skips the husk actor's make animations if true.")]
+		[Desc("Skips the spawned actor's make animations if true.")]
 		public readonly bool SkipMakeAnimations = true;
 
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
