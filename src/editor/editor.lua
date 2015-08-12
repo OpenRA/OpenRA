@@ -234,19 +234,10 @@ function EditorAutoComplete(editor)
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor, lt, pos)
 
-  -- remove any suggestions that match the word the cursor is on
-  -- for example, if typing 'foo' in front of 'bar', 'foobar' is not offered
-  local right = linetx:sub(localpos+1,#linetx):match("^([%a_]+[%w_]*)")
-  if userList and right then
-    -- remove all spaces that may be left if "foo" removed from "foo foo"
-    userList = (userList:gsub("%f[%w_]"..lt..right.."%f[^%w_]","")
-      :gsub("^ +",""):gsub(" +$",""):gsub("  +"," "))
-  end
-
-  -- don't show the list if it only suggests what's already typed;
   -- don't show if what's typed so far matches one of the options
-  if userList and #userList > 0 and not lt:find(userList.."$")
-  and not userList:find("%f[%w_]"..lt..(right or "").."%f[^%w_]") then
+  local right = linetx:sub(localpos+1,#linetx):match("^([%a_]+[%w_]*)")
+  local left = lt:match("[%w_]*$") -- extract one word on the left (without separators)
+  if userList and #userList > 0 and not userList:find("%f[%w_]"..left..(right or "").."%f[^%w_]") then
     editor:UserListShow(1, userList)
   elseif editor:AutoCompActive() then
     editor:AutoCompCancel()
