@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Server
 				server.SendOrderTo(conn, "Message", "Allow Cheats: {0}".F(server.LobbyInfo.GlobalSettings.AllowCheats));
 
 			if (server.LobbyInfo.GlobalSettings.Shroud != defaults.Shroud)
-				server.SendOrderTo(conn, "Message", "Shroud: {0}".F(server.LobbyInfo.GlobalSettings.Shroud));
+				server.SendOrderTo(conn, "Message", "Explored map: {0}".F(!server.LobbyInfo.GlobalSettings.Shroud));
 
 			if (server.LobbyInfo.GlobalSettings.Fog != defaults.Fog)
 				server.SendOrderTo(conn, "Message", "Fog of war: {0}".F(server.LobbyInfo.GlobalSettings.Fog));

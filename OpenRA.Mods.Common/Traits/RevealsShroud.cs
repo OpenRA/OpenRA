@@ -30,7 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly PPos[] NoCells = { };
 
 		readonly RevealsShroudInfo info;
-		readonly bool lobbyShroudFogDisabled;
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedDisabled;
 
@@ -41,7 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 		public RevealsShroud(Actor self, RevealsShroudInfo info)
 		{
 			this.info = info;
-			lobbyShroudFogDisabled = !self.World.LobbyInfo.GlobalSettings.Shroud && !self.World.LobbyInfo.GlobalSettings.Fog;
 
 			addCellsToPlayerShroud = (p, uv) => p.Shroud.AddProjectedVisibility(self, uv);
 			removeCellsFromPlayerShroud = p => p.Shroud.RemoveVisibility(self);
@@ -66,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (lobbyShroudFogDisabled || !self.IsInWorld)
+			if (!self.IsInWorld)
 				return;
 
 			var centerPosition = self.CenterPosition;

@@ -282,7 +282,7 @@ namespace OpenRA.Traits
 			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
 
-		public bool ShroudEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Shroud; } }
+		public bool ShroudEnabled { get { return !Disabled; } }
 
 		/// <summary>
 		/// Returns a fast exploration lookup that skips the usual validation.
