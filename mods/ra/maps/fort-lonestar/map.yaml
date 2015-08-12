@@ -719,7 +719,7 @@ Rules:
 			HP: 60
 		Armor:
 			Type: Light
-		Plane:
+		Aircraft:
 			ROT: 5
 			Speed: 280
 		AmmoPool:

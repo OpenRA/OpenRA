@@ -151,7 +151,7 @@ C17:
 		Description: Drops vehicle reinforcements on Airstrips
 	Valued:
 		Cost: 2000
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 326
 		Repulsable: False
@@ -188,7 +188,7 @@ A10:
 		Description: Used to deliver air strikes.
 	Valued:
 		Cost: 2000
-	Plane:
+	Aircraft:
 		ROT: 4
 		Speed: 373
 		Repulsable: False

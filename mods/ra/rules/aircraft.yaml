@@ -6,7 +6,7 @@ BADR:
 		HP: 300
 	Armor:
 		Type: Light
-	Plane:
+	Aircraft:
 		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
@@ -44,7 +44,7 @@ BADR.Bomber:
 		HP: 300
 	Armor:
 		Type: Light
-	Plane:
+	Aircraft:
 		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
@@ -100,7 +100,7 @@ MIG:
 		LocalYaw: -40, 24
 	AttackPlane:
 		FacingTolerance: 20
-	Plane:
+	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		ROT: 4
@@ -162,7 +162,7 @@ YAK:
 		MuzzleSequence: muzzle
 	AttackPlane:
 		FacingTolerance: 20
-	Plane:
+	Aircraft:
 		CruiseAltitude: 2560
 		RearmBuildings: afld
 		InitialFacing: 192
@@ -342,7 +342,7 @@ U2:
 		HP: 2000
 	Armor:
 		Type: Heavy
-	Plane:
+	Aircraft:
 		CruiseAltitude: 2560
 		ROT: 7
 		Speed: 373

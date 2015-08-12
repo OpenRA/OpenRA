@@ -492,7 +492,7 @@
 
 ^Plane:
 	Inherits: ^Aircraft
-	Plane:
+	Aircraft:
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no

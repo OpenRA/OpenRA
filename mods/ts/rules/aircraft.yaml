@@ -115,7 +115,7 @@ ORCAB:
 		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
-	Plane:
+	Aircraft:
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		ROT: 3
@@ -226,7 +226,7 @@ SCRIN:
 		Bounds: 30,24
 	Voiced:
 		VoiceSet: Scrin
-	Plane:
+	Aircraft:
 		MaximumPitch: 90
 		ROT: 3
 		Speed: 168

@@ -117,7 +117,7 @@ BADR.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
 		Name: Badger
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 149
 		AirborneUpgrades: airborne
@@ -140,7 +140,7 @@ MIG.Husk:
 		Offset: -598,-683,0
 	Contrail@2:
 		Offset: -598,683,0
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 186
 		AirborneUpgrades: airborne
@@ -160,7 +160,7 @@ YAK.Husk:
 		Name: Yak Attack Plane
 	Contrail:
 		Offset: -853,0,0
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 149
 		AirborneUpgrades: airborne
@@ -213,7 +213,7 @@ HIND.Husk:
 
 U2.Husk:
 	Inherits: ^PlaneHusk
-	Plane:
+	Aircraft:
 		ROT: 7
 		Speed: 373
 		AirborneUpgrades: airborne

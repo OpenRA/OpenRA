@@ -51,7 +51,7 @@ frigate:
 	Tooltip:
 		Name: Frigate
 		Description: Supply spacecraft
-	Plane:
+	Aircraft:
 		ROT: 1
 		Speed: 126
 		RepairBuildings: repair_pad
@@ -75,7 +75,7 @@ ornithopter:
 		HP: 900
 	Armor:
 		Type: light
-	Plane:
+	Aircraft:
 		ROT: 2
 		Speed: 189
 		RepairBuildings:
@@ -93,7 +93,7 @@ ornithopter.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 189
 		RepairBuildings:
