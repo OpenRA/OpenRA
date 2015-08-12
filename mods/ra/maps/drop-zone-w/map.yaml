@@ -230,8 +230,6 @@ Rules:
 			HP: 1000
 		Mobile:
 			Speed: 170
-		RevealsShroud:
-			Range: 50c0
 		Armament@PRIMARY:
 			Weapon: M60mg
 		Armament@SECONDARY:
