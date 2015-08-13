@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Group queues from separate buildings together into the same tab.")]
 		public readonly string Group = null;
 
-		[Desc("Only enable this queue for certain factions")]
-		public readonly string[] Race = { };
+		[Desc("Only enable this queue for certain factions.")]
+		public readonly string[] Factions = { };
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public bool CurrentDone { get { return QueueLength != 0 && queue[0].Done; } }
 		[Sync] public bool Enabled { get; private set; }
 
-		public string Race { get; private set; }
+		public string Faction { get; private set; }
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
@@ -97,8 +97,8 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
 
-			Race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
-			Enabled = !info.Race.Any() || info.Race.Contains(Race);
+			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			Enabled = !info.Factions.Any() || info.Factions.Contains(Faction);
 
 			CacheProduceables(playerActor);
 		}
@@ -123,8 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!Info.Sticky)
 			{
-				Race = self.Owner.Faction.InternalName;
-				Enabled = !Info.Race.Any() || Info.Race.Contains(Race);
+				Faction = self.Owner.Faction.InternalName;
+				Enabled = !Info.Factions.Any() || Info.Factions.Contains(Faction);
 			}
 
 			// Regenerate the produceables and tech tree state
@@ -371,7 +371,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Race))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Faction))
 			{
 				FinishProduction();
 				return true;

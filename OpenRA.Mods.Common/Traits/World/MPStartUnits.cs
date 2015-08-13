@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Exposed via the UI to the player.")]
 		public readonly string ClassName = "Unlabeled";
 
-		[Desc("Only available when selecting this faction.", "Leave empty for no restrictions.")]
-		public readonly string[] Races = { };
+		[Desc("Only available when selecting one of these factions.", "Leave empty for no restrictions.")]
+		public readonly string[] Factions = { };
 
 		[Desc("The mobile construction vehicle.")]
 		public readonly string BaseActor = null;

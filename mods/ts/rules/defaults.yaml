@@ -88,10 +88,10 @@
 		UseDeathTypeSuffix: false
 	EmitInfantryOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
-		Races: gdi
+		Factions: gdi
 	EmitInfantryOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
-		Races: nod
+		Factions: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CaptureNotification:

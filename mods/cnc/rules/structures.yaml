@@ -23,7 +23,7 @@ FACT:
 		Facing: 108
 	ProductionQueue@GDIBuilding:
 		Type: Building.GDI
-		Race: gdi
+		Factions: gdi
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 2
@@ -31,7 +31,7 @@ FACT:
 		ReadyAudio: ConstructionComplete
 	ProductionQueue@NodBuilding:
 		Type: Building.Nod
-		Race: nod
+		Factions: nod
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 2
@@ -39,7 +39,7 @@ FACT:
 		ReadyAudio: ConstructionComplete
 	ProductionQueue@GDIDefense:
 		Type: Defence.GDI
-		Race: gdi
+		Factions: gdi
 		Group: Defence
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -47,7 +47,7 @@ FACT:
 		ReadyAudio: ConstructionComplete
 	ProductionQueue@NodDefense:
 		Type: Defence.Nod
-		Race: nod
+		Factions: nod
 		Group: Defence
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
@@ -420,13 +420,13 @@ HPAD:
 	RallyPoint:
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
-		Race: gdi
+		Factions: gdi
 		Group: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
-		Race: nod
+		Factions: nod
 		Group: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
