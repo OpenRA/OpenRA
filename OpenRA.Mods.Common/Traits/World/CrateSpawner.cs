@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Average time (seconds) between crate spawn")]
 		public readonly int SpawnInterval = 180;
 
+		[Desc("Delay (in seconds) before the first crate spawns.")]
+		public readonly int InitialSpawnDelay = 300;
+
 		[Desc("Which terrain types can we drop on?")]
 		public readonly HashSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" };
 
@@ -68,6 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			this.self = self;
+
+			ticks = info.InitialSpawnDelay * 25;
 		}
 
 		public void Tick(Actor self)
