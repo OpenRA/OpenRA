@@ -30,7 +30,7 @@ MCV:
 		RequiredForShortGame: true
 	BaseBuilding:
 	SpawnActorOnDeath:
-		HuskActor: MCV.Husk
+		Actor: MCV.Husk
 	-GainsExperience:
 	-Cloak:
 	SelectionDecorations:
@@ -68,7 +68,7 @@ HARV:
 	RevealsShroud:
 		Range: 4c0
 	SpawnActorOnDeath:
-		HuskActor: HARV.Husk
+		Actor: HARV.Husk
 	-GainsExperience:
 	WithHarvestAnimation:
 	WithDockingAnimation:
@@ -121,7 +121,7 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 	SpawnActorOnDeath:
-		HuskActor: APC.Husk
+		Actor: APC.Husk
 
 ARTY:
 	Inherits: ^Tank
@@ -152,7 +152,7 @@ ARTY:
 	AutoTarget:
 		InitialStance: Defend
 	SpawnActorOnDeath:
-		HuskActor: ARTY.Husk
+		Actor: ARTY.Husk
 	Explodes:
 		Weapon: ArtilleryShell
 		EmptyWeapon: UnitExplode
@@ -191,7 +191,7 @@ FTNK:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
-		HuskActor: FTNK.Husk
+		Actor: FTNK.Husk
 
 BGGY:
 	Inherits: ^Vehicle
@@ -225,7 +225,7 @@ BGGY:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: BGGY.Husk
+		Actor: BGGY.Husk
 
 BIKE:
 	Inherits: ^Vehicle
@@ -261,7 +261,7 @@ BIKE:
 	AttackFrontal:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: BIKE.Husk
+		Actor: BIKE.Husk
 
 JEEP:
 	Inherits: ^Vehicle
@@ -295,7 +295,7 @@ JEEP:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: JEEP.Husk
+		Actor: JEEP.Husk
 
 LTNK:
 	Inherits: ^Tank
@@ -330,7 +330,7 @@ LTNK:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: LTNK.Husk
+		Actor: LTNK.Husk
 
 MTNK:
 	Inherits: ^Tank
@@ -364,7 +364,7 @@ MTNK:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: MTNK.Husk
+		Actor: MTNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
 
@@ -414,7 +414,7 @@ HTNK:
 		HealIfBelow: 50%
 		DamageCooldown: 200
 	SpawnActorOnDeath:
-		HuskActor: HTNK.Husk
+		Actor: HTNK.Husk
 	SelectionDecorations:
 		VisualBounds: 34,34,0,-3
 
@@ -452,7 +452,7 @@ MSAM:
 		AimSequence: aim
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: MSAM.Husk
+		Actor: MSAM.Husk
 
 MLRS:
 	Inherits: ^Tank
@@ -494,7 +494,7 @@ MLRS:
 		InitialStance: Defend
 	RenderRangeCircle:
 	SpawnActorOnDeath:
-		HuskActor: MLRS.Husk
+		Actor: MLRS.Husk
 
 STNK:
 	Inherits: ^Vehicle
@@ -531,7 +531,7 @@ STNK:
 		InitialStance: HoldFire
 	TargetableUnit:
 	SpawnActorOnDeath:
-		HuskActor: STNK.Husk
+		Actor: STNK.Husk
 	-MustBeDestroyed:
 
 MHQ:

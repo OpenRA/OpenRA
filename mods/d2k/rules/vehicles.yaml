@@ -34,7 +34,7 @@ mcv:
 		TransformSounds: BUILD1.WAV
 		NoTransformNotification: CannotDeploy
 	SpawnActorOnDeath:
-		HuskActor: mcv.husk
+		Actor: mcv.husk
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
@@ -76,7 +76,7 @@ harvester:
 		Weapon: SpiceExplosion
 		EmptyWeapon: UnitExplodeScale
 	SpawnActorOnDeath:
-		HuskActor: Harvester.Husk
+		Actor: Harvester.Husk
 	WithHarvestOverlay:
 		Palette: effect50alpha
 	WithDockingAnimation:
@@ -194,7 +194,7 @@ siegetank:
 	Selectable:
 		Class: siegetank
 	SpawnActorOnDeath:
-		HuskActor: siegetank.husk
+		Actor: siegetank.husk
 	AttractsWorms:
 		Intensity: 600
 	RenderSprites:
@@ -233,7 +233,7 @@ missiletank:
 	Selectable:
 		Class: missiletank
 	SpawnActorOnDeath:
-		HuskActor: missiletank.husk
+		Actor: missiletank.husk
 	AttractsWorms:
 		Intensity: 600
 
@@ -266,7 +266,7 @@ sonictank:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	SpawnActorOnDeath:
-		HuskActor: sonictank.husk
+		Actor: sonictank.husk
 	AttractsWorms:
 		Intensity: 600
 
@@ -303,7 +303,7 @@ devast:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
 	SpawnActorOnDeath:
-		HuskActor: devast.husk
+		Actor: devast.husk
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
@@ -391,7 +391,7 @@ deviatortank:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	SpawnActorOnDeath:
-		HuskActor: deviatortank.husk
+		Actor: deviatortank.husk
 	AttractsWorms:
 		Intensity: 600
 
@@ -443,7 +443,7 @@ combata:
 	Armament:
 		Weapon: 90mma
 	SpawnActorOnDeath:
-		HuskActor: combata.husk
+		Actor: combata.husk
 
 combath:
 	Inherits: ^combat
@@ -459,7 +459,7 @@ combath:
 	Health:
 		HP: 440
 	SpawnActorOnDeath:
-		HuskActor: combath.husk
+		Actor: combath.husk
 
 combato:
 	Inherits: ^combat
@@ -472,5 +472,5 @@ combato:
 		ROT: 8
 		Crushes: crate, infantry
 	SpawnActorOnDeath:
-		HuskActor: combato.husk
+		Actor: combato.husk
 

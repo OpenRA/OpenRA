@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[ActorReference, FieldLoader.Require]
 		[Desc("Actor to spawn on death.")]
-		public readonly string HuskActor = null;
+		public readonly string Actor = null;
 
 		[Desc("Probability the actor spawns.")]
 		public readonly int Probability = 100;
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Traits
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				w.CreateActor(huskActor ?? info.HuskActor, td);
+				w.CreateActor(huskActor ?? info.Actor, td);
 			});
 		}
 	}

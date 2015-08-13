@@ -223,7 +223,7 @@ V19:
 	Tooltip:
 		Name: Oil Pump
 	SpawnActorOnDeath:
-		HuskActor: V19.Husk
+		Actor: V19.Husk
 	AutoTargetIgnore:
 
 V19.Husk:

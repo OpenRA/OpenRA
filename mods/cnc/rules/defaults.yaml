@@ -192,7 +192,7 @@
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
-		HuskActor: vice
+		Actor: vice
 		OwnerType: InternalName
 		InternalOwner: Creeps
 		DeathType: TiberiumDeath
