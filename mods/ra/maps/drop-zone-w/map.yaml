@@ -202,6 +202,7 @@ Rules:
 			SpawnInterval: 5
 			WaterChance: 1
 			CrateActors: unitcrate
+			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
 	UNITCRATE:
