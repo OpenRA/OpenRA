@@ -19,13 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class CrateSpawnerInfo : ITraitInfo
 	{
-		[Desc("Minimum number of crates")]
+		[Desc("Minimum number of crates.")]
 		public readonly int Minimum = 1;
 
-		[Desc("Maximum number of crates")]
+		[Desc("Maximum number of crates.")]
 		public readonly int Maximum = 255;
 
-		[Desc("Average time (seconds) between crate spawn")]
+		[Desc("Average time (seconds) between crate spawn.")]
 		public readonly int SpawnInterval = 180;
 
 		[Desc("Delay (in seconds) before the first crate spawns.")]
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which terrain types count as water?")]
 		public readonly HashSet<string> ValidWater = new HashSet<string> { "Water" };
 
-		[Desc("Chance of generating a water crate instead of a land crate")]
+		[Desc("Chance of generating a water crate instead of a land crate.")]
 		public readonly float WaterChance = .2f;
 
 		[ActorReference]
@@ -94,9 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SpawnCrate(Actor self)
 		{
-			var threshold = 100;
 			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
-			var pp = ChooseDropCell(self, inWater, threshold);
+			var pp = ChooseDropCell(self, inWater, 100);
 
 			if (pp == null)
 				return;
