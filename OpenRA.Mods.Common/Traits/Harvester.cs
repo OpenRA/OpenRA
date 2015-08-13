@@ -165,23 +165,24 @@ namespace OpenRA.Mods.Common.Traits
 				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
+			List<CPos> path;
 			var mi = self.Info.Traits.Get<MobileInfo>();
-			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
-				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
-					.WithCustomCost(loc =>
-					{
-						if (!refs.ContainsKey(loc))
-							return 0;
+			using (var search = PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
+				.WithCustomCost(loc =>
+				{
+					if (!refs.ContainsKey(loc))
+						return 0;
 
-						var occupancy = refs[loc].Occupancy;
+					var occupancy = refs[loc].Occupancy;
 
-						// 4 harvesters clogs up the refinery's delivery location:
-						if (occupancy >= 3)
-							return Constants.InvalidNode;
+					// 4 harvesters clogs up the refinery's delivery location:
+					if (occupancy >= 3)
+						return Constants.InvalidNode;
 
-						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-						return occupancy * 12;
-					}));
+					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
+					return occupancy * 12;
+				}))
+				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 
 			if (path.Count != 0)
 				return refs[path.Last()].Actor;
