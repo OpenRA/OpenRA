@@ -1022,6 +1022,7 @@ function PaneFloatToggle(window)
   uimgr:Update()
 end
 
+local cma, cman = 0, 1
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
     local debugger = ide.debugger
@@ -1034,6 +1035,14 @@ frame:Connect(wx.wxEVT_IDLE,
     -- process onidle events if any
     if #ide.onidle > 0 then table.remove(ide.onidle)() end
     if #ide.onidle > 0 then event:RequestMore(true) end -- request more if anything left
+
+    if ide.config.showmemoryusage then
+      local mem = collectgarbage("count")
+      local alpha = math.max(tonumber(ide.config.showmemoryusage) or 0, 1/cman)
+      cman = cman + 1
+      cma = alpha * mem + (1-alpha) * cma
+      ide:SetStatus(("cur: %sKb; avg: %sKb"):format(math.floor(mem), math.floor(cma)))
+    end
 
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)
