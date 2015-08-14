@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
-			occupiesSpace = init.Self.Info.Traits.WithInterface<IOccupySpaceInfo>().Any();
+			occupiesSpace = init.Self.Info.Traits.Contains<IOccupySpaceInfo>();
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
