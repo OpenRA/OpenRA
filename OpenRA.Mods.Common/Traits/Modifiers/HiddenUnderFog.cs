@@ -28,6 +28,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool IsVisibleInner(Actor self, Player byPlayer)
 		{
+			// If fog is disabled visibility is determined by shroud
+			if (!byPlayer.Shroud.FogEnabled)
+				return base.IsVisibleInner(self, byPlayer);
+
 			if (Info.Type == VisibilityType.Footprint)
 				return self.OccupiesSpace.OccupiedCells()
 					.Any(o => byPlayer.Shroud.IsVisible(o.First));

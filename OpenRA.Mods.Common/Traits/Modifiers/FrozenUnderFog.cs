@@ -60,13 +60,23 @@ namespace OpenRA.Mods.Common.Traits
 			visible = init.World.Players.ToDictionary(p => p, p => false);
 		}
 
+		bool IsVisibleInner(Actor self, Player byPlayer)
+		{
+			// If fog is disabled visibility is determined by shroud
+			if (!byPlayer.Shroud.FogEnabled)
+				return self.OccupiesSpace.OccupiedCells()
+					.Any(o => byPlayer.Shroud.IsExplored(o.First));
+
+			return visible[byPlayer];
+		}
+
 		public bool IsVisible(Actor self, Player byPlayer)
 		{
 			if (byPlayer == null)
 				return true;
 
 			var stance = self.Owner.Stances[byPlayer];
-			return info.AlwaysVisibleStances.HasStance(stance) || visible[byPlayer];
+			return info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
 		}
 
 		public void Tick(Actor self)
