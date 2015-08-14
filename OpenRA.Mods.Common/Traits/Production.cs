@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Lazy<RallyPoint> rp;
 
-		public ProductionInfo Info;
+		public readonly ProductionInfo Info;
 		public string Faction { get; private set; }
 
 		readonly bool occupiesSpace;
