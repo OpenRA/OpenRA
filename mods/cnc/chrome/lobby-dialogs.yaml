@@ -114,7 +114,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 230
 					Height: 20
 					Font: Regular
-					Text: Explored map
+					Text: Explored Map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
 					Width: 230
