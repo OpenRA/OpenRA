@@ -56,7 +56,6 @@ conyard:
 		Range: 10c0
 	Production:
 		Produces: Building, Upgrade
-		MoveIntoWorld: false
 	Exit:
 	Valued:
 		Cost: 2000
