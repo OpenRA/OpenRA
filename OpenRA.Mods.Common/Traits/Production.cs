@@ -118,17 +118,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (Reservable.IsReserved(self))
 				return false;
 
-			if (!occupiesSpace)
-			{
-				DoProduction(self, producee, null, factionVariant);
-				return true;
-			}
-
 			// Pick a spawn/exit point pair
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
-			if (exit != null)
+			if (exit != null || !occupiesSpace)
 			{
 				DoProduction(self, producee, exit, factionVariant);
 				return true;
