@@ -32,9 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			if (collector.Owner == collector.World.LocalPlayer)
-				collector.Owner.Shroud.ResetExploration();
-
+			collector.Owner.Shroud.ResetExploration();
 			base.Activate(collector);
 		}
 	}
