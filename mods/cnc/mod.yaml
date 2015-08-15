@@ -151,7 +151,7 @@ ContentInstaller:
 		.: speech.mix, tempicnh.mix, transit.mix
 	CopyFilesFromCD:
 		.: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
-	ShippedSoundtracks: 2
+	ShippedSoundtracks: 4
 	MusicPackageMirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
 	InstallShieldCABFileIds: 66, 45, 42, 65, 68, 67, 71, 47, 49, 60, 75, 73, 53
 
