@@ -22,7 +22,11 @@ namespace OpenRA
 	{
 		public static void WriteToFile(this MiniYamlNodes y, string filename)
 		{
-			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+			try
+			{
+				File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+			}
+			catch (UnauthorizedAccessException) { /* Location is readonly or hidden */ }
 		}
 
 		public static string WriteToString(this MiniYamlNodes y)

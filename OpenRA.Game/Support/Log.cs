@@ -58,7 +58,7 @@ namespace OpenRA
 
 					return;
 				}
-				catch (IOException) { }
+				catch (Exception) { }
 		}
 
 		public static void Write(string channel, string format, params object[] args)
