@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Reveals the entire map.")]
@@ -31,18 +29,15 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		bool ShouldReveal(Player collectingPlayer)
-		{
-			if (info.IncludeAllies)
-				return collectingPlayer.World.LocalPlayer != null &&
-					collectingPlayer.Stances[collectingPlayer.World.LocalPlayer] == Stance.Ally;
-
-			return collectingPlayer == collectingPlayer.World.LocalPlayer;
-		}
-
 		public override void Activate(Actor collector)
 		{
-			if (ShouldReveal(collector.Owner))
+			if (info.IncludeAllies)
+			{
+				foreach (var player in collector.World.Players)
+					if (collector.Owner.IsAlliedWith(player))
+						player.Shroud.ExploreAll(player.World);
+			}
+			else
 				collector.Owner.Shroud.ExploreAll(collector.World);
 
 			base.Activate(collector);
