@@ -382,10 +382,8 @@ rank:
 	rank:
 		Length: *
 
-cameo-chevron:
-	idle:
-		Length: *
-		BlendMode: Additive
+iconchevrons:
+	veteran:
 
 atomic:
 	up: atomicup
