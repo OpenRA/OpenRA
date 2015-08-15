@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Effect = "ionsfx";
 		public readonly string EffectPalette = "effect";
 
-		[Desc("Which weapon to fire")]
+		[Desc("Which weapon to fire"), WeaponReference]
 		public readonly string Weapon = "IonCannon";
 
 		[Desc("Apply the weapon impact this many ticks into the effect")]
