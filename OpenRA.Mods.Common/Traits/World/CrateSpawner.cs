@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> ValidWater = new HashSet<string> { "Water" };
 
 		[Desc("Chance of generating a water crate instead of a land crate.")]
-		public readonly float WaterChance = .2f;
+		public readonly int WaterChance = 20;
 
 		[ActorReference]
 		[Desc("Crate actors to drop")]
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SpawnCrate(Actor self)
 		{
-			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
+			var inWater = self.World.SharedRandom.Next(100) < info.WaterChance;
 			var pp = ChooseDropCell(self, inWater, 100);
 
 			if (pp == null)
