@@ -196,7 +196,7 @@ ChainGun.Yak:
 		Speed: 1c682
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
+		Spread: 298
 		Damage: 40
 		Versus:
 			Wood: 50
