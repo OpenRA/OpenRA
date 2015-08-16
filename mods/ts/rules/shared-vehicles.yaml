@@ -34,7 +34,7 @@ MCV:
 		VisualBounds: 42,42
 	RenderSprites:
 		Image: mcv.gdi
-		RaceImages:
+		FactionImages:
 			gdi: mcv.gdi
 			nod: mcv.nod
 
@@ -94,7 +94,7 @@ HARV:
 		VisualBounds: 36,36
 	RenderSprites:
 		Image: harv.gdi
-		RaceImages:
+		FactionImages:
 			gdi: harv.gdi
 			nod: harv.nod
 
@@ -126,7 +126,7 @@ LPST:
 		Voice: Move
 	RenderSprites:
 		Image: lpst.gdi
-		RaceImages:
+		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
 

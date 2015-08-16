@@ -167,7 +167,7 @@ upgrade.conyard:
 		Cost: 1000
 	RenderSprites:
 		Image: conyard.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: conyard.atreides
 			ordos: conyard.ordos
 			corrino: conyard.corrino
@@ -187,7 +187,7 @@ upgrade.barracks:
 		Cost: 500
 	RenderSprites:
 		Image: barracks.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
 	ProvidesPrerequisite@upgradename:
@@ -206,7 +206,7 @@ upgrade.light:
 		Cost: 400
 	RenderSprites:
 		Image: light.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: light.atreides
 			ordos: light.ordos
 	ProvidesPrerequisite@upgradename:
@@ -225,7 +225,7 @@ upgrade.heavy:
 		Cost: 800
 	RenderSprites:
 		Image: heavy.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: heavy.atreides
 			ordos: heavy.ordos
 			corrino: heavy.corrino

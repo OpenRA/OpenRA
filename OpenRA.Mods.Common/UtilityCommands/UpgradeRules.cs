@@ -1768,6 +1768,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150816)
+				{
+					// Rename RenderSprites.RaceImages
+					if (depth == 2 && node.Key == "RaceImages")
+						node.Key = "FactionImages";
+					if (depth == 2 && node.Key == "-RaceImages")
+						node.Key = "-FactionImages";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

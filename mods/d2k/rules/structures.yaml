@@ -70,7 +70,7 @@ conyard:
 		Amount: 20
 	RenderBuilding:
 		Image: conyard.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: conyard.atreides
 			ordos: conyard.ordos
 			corrino: conyard.corrino
@@ -102,7 +102,7 @@ power:
 		Range: 4c0
 	RenderBuilding:
 		Image: power.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: power.atreides
 			ordos: power.ordos
 	WithIdleOverlay@ZAPS:
@@ -163,7 +163,7 @@ barracks:
 		Amount: -20
 	RenderBuilding:
 		Image: barracks.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
 	ProvidesPrerequisite@buildingname:
@@ -208,7 +208,7 @@ refinery:
 		Facing: 160
 	RenderBuilding:
 		Image: refinery.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: refinery.atreides
 			ordos: refinery.ordos
 	WithDockingOverlay@SMOKE:
@@ -245,7 +245,7 @@ silo:
 	-RenderBuilding:
 	RenderBuildingSilo:
 		Image: silo.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: silo.atreides
 			ordos: silo.ordos
 	StoresResources:
@@ -283,7 +283,7 @@ light:
 		Range: 4c0
 	RenderBuilding:
 		Image: light.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: light.atreides
 			ordos: light.ordos
 	RallyPoint:
@@ -361,7 +361,7 @@ heavy:
 		Factions: atreides, harkonnen
 	RenderBuilding:
 		Image: heavy.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: heavy.atreides
 			ordos: heavy.ordos
 			corrino: heavy.corrino
@@ -407,7 +407,7 @@ radar:
 	RenderDetectionCircle:
 	RenderBuilding:
 		Image: radar.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: radar.atreides
 			ordos: radar.ordos
 	WithIdleOverlay@DISH:
@@ -452,7 +452,7 @@ starport:
 		ActorType: frigate
 	RenderBuilding:
 		Image: starport.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: starport.atreides
 			ordos: starport.ordos
 			corrino: starport.corrino
@@ -668,7 +668,7 @@ repair:
 		Offset: 1,3
 	RenderBuilding:
 		Image: repair.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: repair.atreides
 			ordos: repair.ordos
 	WithRepairOverlay:
@@ -707,7 +707,7 @@ hightech:
 		Range: 4c0
 	RenderBuilding:
 		Image: hightech.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: hightech.atreides
 			ordos: hightech.ordos
 	ProvidesPrerequisite@upgrade:
@@ -768,7 +768,7 @@ research:
 		Range: 4c0
 	RenderBuilding:
 		Image: research.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: research.atreides
 			ordos: research.ordos
 	WithIdleOverlay@LIGHTS:
@@ -805,7 +805,7 @@ palace:
 		Range: 8c0
 	RenderBuilding:
 		Image: palace.harkonnen
-		RaceImages:
+		FactionImages:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
@@ -849,7 +849,7 @@ conyard.atreides:
 		ForceFaction: atreides
 	RenderBuilding:
 		Image: conyard.atreides
-		-RaceImages:
+		-FactionImages:
 
 conyard.harkonnen:
 	Inherits: conyard
@@ -860,7 +860,7 @@ conyard.harkonnen:
 		ForceFaction: harkonnen
 	RenderBuilding:
 		Image: conyard.harkonnen
-		-RaceImages:
+		-FactionImages:
 
 conyard.ordos:
 	Inherits: conyard
@@ -871,5 +871,5 @@ conyard.ordos:
 		ForceFaction: ordos
 	RenderBuilding:
 		Image: conyard.ordos
-		-RaceImages:
+		-FactionImages:
 

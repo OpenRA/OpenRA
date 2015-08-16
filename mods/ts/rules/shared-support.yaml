@@ -81,7 +81,7 @@ NAPULS:
 		VisualBounds: 78, 54, 0, -12
 	RenderBuilding:
 		Image: napuls.gdi
-		RaceImages:
+		FactionImages:
 			gdi: napuls.gdi
 			nod: napuls.nod
 
