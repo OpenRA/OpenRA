@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		readonly string race;
+		readonly string faction;
 		readonly RenderSpritesInfo info;
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
 			this.info = info;
-			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public string GetImage(Actor self)
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, race);
+			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, faction);
 		}
 
 		public void UpdatePalette()
