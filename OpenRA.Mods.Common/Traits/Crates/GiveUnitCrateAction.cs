@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference, FieldLoader.Require]
 		public readonly string[] Units = { };
 
-		[Desc("Races that are allowed to trigger this action")]
-		public readonly string[] ValidRaces = { };
+		[Desc("Factions that are allowed to trigger this action.")]
+		public readonly string[] ValidFactions = { };
 
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Faction.InternalName))
+			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
 			foreach (string unit in info.Units)

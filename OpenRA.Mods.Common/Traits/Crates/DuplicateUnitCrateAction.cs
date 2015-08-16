@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The list of unit target types we are allowed to duplicate.")]
 		public readonly string[] ValidTargets = { "Ground", "Water" };
 
-		[Desc("Which races this crate action can occur for.")]
-		public readonly string[] ValidRaces = { };
+		[Desc("Which factions this crate action can occur for.")]
+		public readonly string[] ValidFactions = { };
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanGiveTo(Actor collector)
 		{
-			if (info.ValidRaces.Any() && !info.ValidRaces.Contains(collector.Owner.Faction.InternalName))
+			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
 			var targetable = collector.Info.Traits.GetOrDefault<ITargetableInfo>();
