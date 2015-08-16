@@ -94,51 +94,51 @@ CRATE:
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
 		Units: jeep
-		ValidRaces: allies, england, france, germany
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
 		Units: arty
-		ValidRaces: allies, england, france, germany
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
 		Units: v2rl
-		ValidRaces: soviet, russia, ukraine
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
 		Units: 1tnk
-		ValidRaces: allies, england, france, germany
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
-		ValidRaces: allies, england, france, germany
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
 		Units: 3tnk
-		ValidRaces: soviet, russia, ukraine
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Units: 4tnk
-		ValidRaces: soviet, russia, ukraine
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.unrestricted, fix, techcenter
 	GiveUnitCrateAction@squadlight:
 		SelectionShares: 7
 		Units: e1,e1,e1,e3,e3
-		ValidRaces: allies, england, france, germany, soviet, russia, ukraine
+		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
 	GiveUnitCrateAction@squadheavyallies:
 		SelectionShares: 7
 		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
-		ValidRaces: allies, england, france, germany
+		ValidFactions: allies, england, france, germany
 		TimeDelay: 4500
 	GiveUnitCrateAction@squadheavysoviet:
 		SelectionShares: 7
 		Units: e1,e1,e4,e4,e3,e3,e3
-		ValidRaces: soviet, russia, ukraine
+		ValidFactions: soviet, russia, ukraine
 		TimeDelay: 4500
 	GrantUpgradeCrateAction@invuln:
 		SelectionShares: 5

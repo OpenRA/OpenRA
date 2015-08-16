@@ -35,7 +35,7 @@ crate:
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
 		Units: raider
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
@@ -44,17 +44,17 @@ crate:
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
 		Units: combata
-		ValidRaces: atreides
+		ValidFactions: atreides
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
 		Units: combath
-		ValidRaces: harkonnen
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
 		Units: combato
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
@@ -67,37 +67,37 @@ crate:
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
 		Units: stealthraider
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.medium, Hitech
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
 		Units: fremen,fremen
-		ValidRaces: atreides
+		ValidFactions: atreides
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Sardaukar:
 		SelectionShares: 8
 		Units: sardaukar,sardaukar
-		ValidRaces: harkonnen
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Saboteur:
 		SelectionShares: 3
 		Units: saboteur,saboteur
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
 		Units: sonictank
-		ValidRaces: atreides
+		ValidFactions: atreides
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
 		Units: devast
-		ValidRaces: harkonnen
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
 		Units: deviatortank
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.high, Research
 	GiveMcvCrateAction:
 		SelectionShares: 0

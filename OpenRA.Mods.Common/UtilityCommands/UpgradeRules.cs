@@ -1775,6 +1775,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "FactionImages";
 					if (depth == 2 && node.Key == "-RaceImages")
 						node.Key = "-FactionImages";
+
+					// Rename *CrateAction.ValidRaces
+					if (depth == 2 && node.Key == "ValidRaces"
+					    && (parentKey == "DuplicateUnitCrateAction" || parentKey == "GiveUnitCrateAction"))
+						node.Key = "ValidFactions";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
