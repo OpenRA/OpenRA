@@ -2158,6 +2158,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150926)
+				{
+					if (node.Key == "CrateSpawner")
+					{
+						var interval = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpawnInterval");
+						if (interval != null)
+						{
+							var value = Exts.ParseIntegerInvariant(interval.Value.Value);
+							interval.Value.Value = (value * 25).ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

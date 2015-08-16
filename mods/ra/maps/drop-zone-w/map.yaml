@@ -199,7 +199,7 @@ Rules:
 	World:
 		CrateSpawner:
 			Maximum: 3
-			SpawnInterval: 5
+			SpawnInterval: 125
 			WaterChance: 1
 			CrateActors: unitcrate
 			InitialSpawnDelay: 0

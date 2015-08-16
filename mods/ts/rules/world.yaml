@@ -157,7 +157,7 @@ World:
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
-		SpawnInterval: 120
+		SpawnInterval: 3000
 		WaterChance: 0
 		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
 	PathFinder:

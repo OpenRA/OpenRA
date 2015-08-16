@@ -62,7 +62,7 @@ World:
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2
-		SpawnInterval: 60
+		SpawnInterval: 1500
 		WaterChance: 0
 		ValidGround: Sand, Dune, Rock
 	DomainIndex:

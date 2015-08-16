@@ -189,7 +189,7 @@ Rules:
 	World:
 		CrateSpawner:
 			Maximum: 3
-			SpawnInterval: 5
+			SpawnInterval: 125
 			CrateActors: unitcrate
 			InitialSpawnDelay: 0
 		-SpawnMPUnits:
