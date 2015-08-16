@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var value = float.Parse(input, CultureInfo.InvariantCulture);
 
-			if (value < 1)
+			if (value <= 1)
 				value = (int)Math.Round(value * 100, 0);
 			else
 				value = (int)Math.Round(value, 0);
