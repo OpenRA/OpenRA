@@ -106,7 +106,7 @@ World:
 		Minimum: 1
 		Maximum: 3
 		SpawnInterval: 3000
-		WaterChance: .2
+		WaterChance: 20
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch

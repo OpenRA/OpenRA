@@ -2168,6 +2168,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var value = Exts.ParseIntegerInvariant(interval.Value.Value);
 							interval.Value.Value = (value * 25).ToString();
 						}
+
+						var chance = node.Value.Nodes.FirstOrDefault(n => n.Key == "WaterChance");
+						if (chance != null)
+							ConvertFloatToIntPercentage(ref chance.Value.Value);
 					}
 				}
 
