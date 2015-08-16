@@ -67,7 +67,6 @@ Player:
 	EnemyWatcher:
 	VeteranProductionIconOverlay:
 		Offset: 2, 2
-		Image: cameo-chevron
-		Sequence: idle
-		Palette: cameo-chevron
+		Image: iconchevrons
+		Sequence: veteran
 
