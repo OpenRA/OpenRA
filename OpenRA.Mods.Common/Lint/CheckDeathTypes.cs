@@ -16,15 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckDeathTypes : ILintPass
+	class CheckDeathTypes : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			if (map != null && !map.RuleDefinitions.Any())
-				return;
-
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-
 			foreach (var actorInfo in rules.Actors)
 			{
 				var animations = actorInfo.Value.Traits.WithInterface<WithDeathAnimationInfo>().ToList();
