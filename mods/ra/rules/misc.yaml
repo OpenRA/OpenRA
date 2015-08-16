@@ -204,9 +204,6 @@ SONAR:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	ProximityCaptor:
 		Types: Sonar
 	BodyOrientation:
