@@ -383,3 +383,10 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+		Label@COORDINATE_LABEL:
+			X: 10
+			Width: 50
+			Height: 25
+			Align: Left
+			Font: Bold
+			Contrast: true
