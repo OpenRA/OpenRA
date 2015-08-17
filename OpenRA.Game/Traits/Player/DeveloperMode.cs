@@ -13,8 +13,8 @@ namespace OpenRA.Traits
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo
 	{
-		public int Cash = 20000;
-		public int ResourceGrowth = 100;
+		public int Cash = Game.Settings.Cheats.Cash;
+		public int ResourceGrowth = Game.Settings.Cheats.ResourceGrowth;
 		public bool FastBuild;
 		public bool FastCharge;
 		public bool DisableShroud;
@@ -104,7 +104,12 @@ namespace OpenRA.Traits
 						FastBuild ^= true;
 						break;
 					}
-
+				case "DevFragileAlliances":
+					if (self.World.LobbyInfo.GlobalSettings.FragileAlliances)
+						self.World.LobbyInfo.GlobalSettings.FragileAlliances = false;
+					else
+						self.World.LobbyInfo.GlobalSettings.FragileAlliances = true;
+					break;
 				case "DevGiveCash":
 					{
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
@@ -131,7 +136,12 @@ namespace OpenRA.Traits
 							self.World.RenderPlayer = DisableShroud ? null : self.Owner;
 						break;
 					}
-
+				case "DevDisableCheats":
+					{
+						self.World.LobbyInfo.GlobalSettings.AllowCheats = false;
+						Game.Debug("Cheats are now disabled.");
+						return;
+					}
 				case "DevPathDebug":
 					{
 						PathDebug ^= true;
@@ -166,7 +176,8 @@ namespace OpenRA.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
+			if (Game.Settings.Cheats.ReportCheatUsed)
+				Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace OpenRA
 		[Desc("Locks the game with a password.")]
 		public string Password = "";
 
+		[Desc("The Address of the OpenRA masterserver.")]
 		public string MasterServer = "http://master.openra.net/";
 
 		[Desc("Allow users to enable NAT discovery for external IP detection and automatic port forwarding.")]
@@ -118,7 +119,11 @@ namespace OpenRA
 		public bool HardwareCursors = true;
 		public bool PixelDouble = false;
 		public bool CursorDouble = false;
+
+		[Desc("Enables the frame limiter.")]
 		public bool CapFramerate = true;
+
+		[Desc("Max frames per second. Default is 60.")]
 		public int MaxFramerate = 60;
 
 		public int BatchSize = 8192;
@@ -132,8 +137,13 @@ namespace OpenRA
 
 	public class SoundSettings
 	{
+		[Desc("Default Volume of sound effects. To disable sound effects set 0.0f here.")]
 		public float SoundVolume = 0.5f;
+
+		[Desc("Default Volume of music. To disable Music set 0.0f here.")]
 		public float MusicVolume = 0.5f;
+
+		[Desc("Default Volume of videos. To disable sound in Videos set 0.0f here.")]
 		public float VideoVolume = 0.5f;
 
 		public bool Shuffle = false;
@@ -142,42 +152,83 @@ namespace OpenRA
 		public string Engine = "AL";
 		public string Device = null;
 
+		[Desc("Play sound when cash is ticking.")]
 		public bool CashTicks = true;
 	}
 
 	public class PlayerSettings
 	{
+		[Desc("Default name of the player when no name is choosen.")]
 		public string Name = "Newbie";
+
+		[Desc("Default palyer color of the player when no color is choosen.")]
 		public HSLColor Color = new HSLColor(75, 255, 180);
+
+		[Desc("Default server is localhost and port is 1234.")]
 		public string LastServer = "localhost:1234";
 	}
 
+	public class DevelopermodeSettings
+	{
+		[Desc("The amount of Cash what we get when using the /givecash commands.")]
+		public readonly int Cash = 20000;
+
+		[Desc("Increase world ressources by this value.")]
+		public readonly int ResourceGrowth = 100;
+
+		[Desc("Send a Message when using Cheat Commands.")]
+		public readonly bool ReportCheatUsed = true;
+    }
+
 	public class GameSettings
 	{
-		[Desc("Load a specific mod on startup. Shipped ones include: ra, cnc and d2k")]
+		[Desc("Load a specific mod on startup. Shipped ones include: ra, cnc and d2k.")]
 		public string Mod = "modchooser";
 		public string PreviousMod = "ra";
 
+		[Desc("Show a bot controlled skirmish game as background on the shell.")]
 		public bool ShowShellmap = true;
 
+		[Desc("Scroll the Viewport by moving the cursor to the edges.")]
 		public bool ViewportEdgeScroll = true;
+
+		[Desc("Lock Cursor inside the game window.")]
 		public bool LockMouseWindow = false;
 		public MouseScrollType MouseScroll = MouseScrollType.Standard;
 		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
+
+		[Desc("Speed when scrolling by moving the cursor to the edges of the viewport.")]
 		public float ViewportEdgeScrollStep = 10f;
+
+		[Desc("Speed when scrolling normaly.")]
 		public float UIScrollSpeed = 50f;
+
 		public int SelectionDeadzone = 24;
 
+		[Desc("Use classic mouse style.")]
 		public bool UseClassicMouseStyle = false;
+
+		[Desc("Always show status bars.")]
 		public bool AlwaysShowStatusBars = false;
+
+		[Desc("Show health bars of allys.")]
 		public bool TeamHealthColors = false;
+
+		[Desc("Draw target lines when ordering a unit to an location.")]
 		public bool DrawTargetLine = true;
 
+		[Desc("Allow map download when using in dedicated server mode.")]
 		public bool AllowDownloading = true;
+
+		[Desc("The location where maps get downloaded.")]
 		public string MapRepository = "http://resource.openra.net/map/";
 
+		[Desc("Fetch community news.")]
 		public bool FetchNews = true;
+
+		[Desc("Use this url to fetch the community news.")]
 		public string NewsUrl = "http://www.openra.net/gamenews";
+
 		public DateTime NewsFetchedDate;
 	}
 
@@ -295,6 +346,7 @@ namespace OpenRA
 		public PlayerSettings Player = new PlayerSettings();
 		public GameSettings Game = new GameSettings();
 		public SoundSettings Sound = new SoundSettings();
+		public DevelopermodeSettings Cheats = new DevelopermodeSettings();
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
