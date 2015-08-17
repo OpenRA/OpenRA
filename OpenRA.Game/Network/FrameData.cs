@@ -19,6 +19,11 @@ namespace OpenRA.Network
 		{
 			public int Client;
 			public Order Order;
+
+			public override string ToString()
+			{
+				return "ClientId: {0} {1}".F(Client, Order);
+			}
 		}
 
 		readonly Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();

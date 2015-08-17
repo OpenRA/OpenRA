@@ -15,9 +15,9 @@ namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
 	{
-		public readonly string[] Variants = { };
-		public readonly string Palette = "terrain";
 		public readonly string Sequence = "resources";
+		[SequenceReference("Sequence")] public readonly string[] Variants = { };
+		public readonly string Palette = "terrain";
 		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;

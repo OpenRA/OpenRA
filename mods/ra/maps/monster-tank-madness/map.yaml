@@ -2213,7 +2213,7 @@ Rules:
 			Weapon: MiniNuke
 			EmptyWeapon: MiniNuke
 		SpawnActorOnDeath:
-			HuskActor: 5TNK.Husk
+			Actor: 5TNK.Husk
 		SelfHealing:
 			Step: 1
 			Ticks: 1

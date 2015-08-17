@@ -34,7 +34,7 @@ TRAN:
 		MaxWeight: 10
 		PipCount: 10
 	SpawnActorOnDeath:
-		HuskActor: TRAN.Husk
+		Actor: TRAN.Husk
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -84,7 +84,7 @@ HELI:
 		Offset: 0,0,85
 	WithMuzzleFlash:
 	SpawnActorOnDeath:
-		HuskActor: HELI.Husk
+		Actor: HELI.Husk
 	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
@@ -129,7 +129,7 @@ ORCA:
 		ReloadCount: 2
 		SelfReloadTicks: 100
 	SpawnActorOnDeath:
-		HuskActor: ORCA.Husk
+		Actor: ORCA.Husk
 	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode

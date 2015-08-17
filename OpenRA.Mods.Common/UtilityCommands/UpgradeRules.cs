@@ -1698,9 +1698,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						// The default value of ViceroidActor was vice
 						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "ViceroidActor");
 						if (actor != null)
-							actor.Key = "HuskActor";
+							actor.Key = "Actor";
 						else
-							node.Value.Nodes.Add(new MiniYamlNode("HuskActor", "vice"));
+							node.Value.Nodes.Add(new MiniYamlNode("Actor", "vice"));
 
 						// The default value of Probability was 10
 						var probability = node.Value.Nodes.FirstOrDefault(n => n.Key == "Probability");
@@ -1724,10 +1724,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var deathType = node.Value.Nodes.FirstOrDefault(n => n.Key == "DeathType");
 						if (deathType == null)
 							node.Value.Nodes.Add(new MiniYamlNode("DeathType", "TiberiumDeath"));
+
+						node.Value.Nodes.Add(new MiniYamlNode("RequiresLobbyCreeps", "true"));
 					}
 
 					if (node.Key == "LeavesHusk")
+					{
 						node.Key = "SpawnActorOnDeath";
+
+						var actor = node.Value.Nodes.FirstOrDefault(n => n.Key == "HuskActor");
+						if (actor != null)
+							actor.Key = "Actor";
+					}
 				}
 
 				if (engineVersion < 20150810)
