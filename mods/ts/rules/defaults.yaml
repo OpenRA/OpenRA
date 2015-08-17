@@ -135,7 +135,7 @@
 		Name: Crate
 	Crate:
 		Lifetime: 180
-		TerrainTypes: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium, Veins
+		TerrainTypes: Clear, Rough, Sand, Road, DirtRoad, Tiberium, BlueTiberium, Veins, Green, Pavement
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
@@ -151,7 +151,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		Adjacent: 7
-		TerrainTypes: Clear, Road
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
