@@ -164,7 +164,7 @@ grenadier:
 		IdleSequences: idle
 	Explodes:
 		Weapon: UnitExplodeSmall
-		Chance: 100
+		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
 		Intensity: 180
 
