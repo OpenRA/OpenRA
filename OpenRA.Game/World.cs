@@ -79,7 +79,7 @@ namespace OpenRA
 
 		public bool AllowDevCommands
 		{
-			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }
+			get { return LobbyInfo.GlobalSettings.AllowCheats; }
 		}
 
 		public void SetLocalPlayer(string pr)

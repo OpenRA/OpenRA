@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Commands
 				help.RegisterHelp(name, helpText);
 			};
 
+			register("fragilealliances", "toggles Diplomancy.");
+			register("disablecheats", "toggles cheat mode.");
 			register("disableshroud", "toggles shroud and minimap.");
 			register("givecash", "gives the default or specified amount of money.");
 			register("givecashall", "gives the default or specified amount of money to all players and ai.");
@@ -85,7 +87,8 @@ namespace OpenRA.Mods.Common.Commands
 					}
 
 					break;
-
+				case "fragilealliances": IssueDevCommand(world, "DevFragileAlliances"); break;
+				case "disablecheats": IssueDevCommand(world, "DevDisableCheats"); break;
 				case "disableshroud": IssueDevCommand(world, "DevShroudDisable"); break;
 				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
 				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
