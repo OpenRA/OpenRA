@@ -247,6 +247,11 @@ GADEPT:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 98, 68, -6, -6
+	RenderBuilding:
+		Image: gadept.gdi
+		RaceImages:
+			gdi: gadept.gdi
+			nod: gadept.nod
 
 GARADR:
 	Inherits: ^Building
