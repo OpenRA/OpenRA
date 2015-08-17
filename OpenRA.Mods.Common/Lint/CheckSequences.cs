@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, race);
 							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
-								emitWarning("Sprite image {0} from actor {1} on tileset {2} using race {3} has no sequence definition."
-								.F(image, actorInfo.Value.Name, map.Tileset, race));
+								emitWarning("Sprite image {0} from actor {1} using race {2} has no sequence definition."
+									.F(image, actorInfo.Value.Name, race));
 						}
 					}
 				}
