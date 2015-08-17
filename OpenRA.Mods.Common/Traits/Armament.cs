@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string MuzzleSequence = null;
 
 		[Desc("Palette to render Muzzle flash sequence in")]
-		public readonly string MuzzlePalette = "effect";
+		[PaletteReference] public readonly string MuzzlePalette = "effect";
 
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;

@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class ShroudRendererInfo : ITraitInfo
 	{
 		public readonly string Sequence = "shroud";
-		public readonly string[] ShroudVariants = new[] { "shroud" };
-		public readonly string[] FogVariants = new[] { "fog" };
+		[SequenceReference("Sequence")] public readonly string[] ShroudVariants = new[] { "shroud" };
+		[SequenceReference("Sequence")] public readonly string[] FogVariants = new[] { "fog" };
 
-		public readonly string ShroudPalette = "shroud";
-		public readonly string FogPalette = "fog";
+		[PaletteReference] public readonly string ShroudPalette = "shroud";
+		[PaletteReference] public readonly string FogPalette = "fog";
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 			"corners clockwise from TL; upper four are edges clockwise from top")]
@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool UseExtendedIndex = false;
 
 		[Desc("Override for source art that doesn't define a fully shrouded tile")]
-		public readonly string OverrideFullShroud = null;
+		[SequenceReference("Sequence")] public readonly string OverrideFullShroud = null;
 		public readonly int OverrideShroudIndex = 15;
 
 		[Desc("Override for source art that doesn't define a fully fogged tile")]
-		public readonly string OverrideFullFog = null;
+		[SequenceReference("Sequence")] public readonly string OverrideFullFog = null;
 		public readonly int OverrideFogIndex = 15;
 
 		public readonly BlendMode ShroudBlend = BlendMode.Alpha;

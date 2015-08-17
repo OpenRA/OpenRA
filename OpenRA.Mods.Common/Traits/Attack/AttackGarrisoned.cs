@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Fire port yaw cone angle.")]
 		public readonly WAngle[] PortCones = null;
 
-		public readonly string MuzzlePalette = "effect";
+		[PaletteReference] public readonly string MuzzlePalette = "effect";
 
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
 	}

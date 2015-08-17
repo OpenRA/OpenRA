@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string SmokeType = "smoke_m";
 		[SequenceReference("SmokeType")] public readonly string SmokeSequence = "idle";
 
-		public readonly string SmokePalette = "effect";
+		[PaletteReference] public readonly string SmokePalette = "effect";
 
-		public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = "terrain";
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}

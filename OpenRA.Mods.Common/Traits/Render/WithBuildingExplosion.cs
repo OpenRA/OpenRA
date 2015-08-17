@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Delay = 0;
 
 		[Desc("Custom palette name")]
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		public object Create(ActorInitializer init) { return new WithBuildingExplosion(init.Self, this); }
 	}

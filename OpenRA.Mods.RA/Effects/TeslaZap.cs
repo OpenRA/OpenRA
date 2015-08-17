@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Effects
 		[SequenceReference("Image")] public readonly string BrightSequence = "bright";
 		[SequenceReference("Image")] public readonly string DimSequence = "dim";
 
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;

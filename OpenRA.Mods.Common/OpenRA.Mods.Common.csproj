@@ -178,6 +178,7 @@
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
+    <Compile Include="Lint\CheckPalettes.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
     <Compile Include="Lint\CheckActors.cs" />
     <Compile Include="Lint\CheckMapCordon.cs" />

@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	class ShroudPaletteInfo : ITraitInfo
 	{
 		[Desc("Internal palette name")]
+		[FieldLoader.Require, PaletteDefinition]
 		public readonly string Name = "shroud";
 
 		[Desc("Palette type")]

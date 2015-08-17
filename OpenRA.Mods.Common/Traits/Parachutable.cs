@@ -24,11 +24,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string GroundImpactSound = null;
 		[SequenceReference("CorpseSequenceCollection")] public readonly string GroundCorpseSequence = "corpse";
-		public readonly string GroundCorpsePalette = "effect";
+		[PaletteReference] public readonly string GroundCorpsePalette = "effect";
 
 		public readonly string WaterImpactSound = null;
 		[SequenceReference("CorpseSequenceCollection")] public readonly string WaterCorpseSequence = null;
-		public readonly string WaterCorpsePalette = "effect";
+		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
 
 		public readonly int FallRate = 13;
 

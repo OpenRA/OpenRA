@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
 		[SequenceReference("Image")] public readonly string OpenSequence = null;
 
-		public readonly string Palette = "effect";
+		[PaletteReference] public readonly string Palette = "effect";
 
 		public readonly bool Shadow = false;
 

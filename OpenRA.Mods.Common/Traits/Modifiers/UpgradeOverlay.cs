@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class UpgradeOverlayInfo : UpgradableTraitInfo
 	{
 		[Desc("Palette to use when rendering the overlay")]
-		public readonly string Palette = "invuln";
+		[PaletteReference] public readonly string Palette = "invuln";
 
 		public override object Create(ActorInitializer init) { return new UpgradeOverlay(this); }
 	}

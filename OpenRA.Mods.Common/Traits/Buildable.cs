@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ForceFaction = null;
 
 		[Desc("Palette used for the production icon.")]
-		public readonly string IconPalette = "chrome";
+		[PaletteReference] public readonly string IconPalette = "chrome";
 
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
