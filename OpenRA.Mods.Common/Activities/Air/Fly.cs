@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WDist desiredAltitude)
 		{
+			desiredAltitude = new WDist(plane.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(plane.CenterPosition);
+
 			var move = plane.FlyStep(plane.Facing);
 			var altitude = plane.CenterPosition.Z;
 
@@ -71,7 +73,8 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredFacing = Util.GetFacing(d, plane.Facing);
 
 			// Don't turn until we've reached the cruise altitude
-			if (plane.CenterPosition.Z < plane.Info.CruiseAltitude.Length)
+			var targetAltitude = plane.CenterPosition.Z + plane.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(plane.CenterPosition).Length;
+			if (plane.CenterPosition.Z < targetAltitude)
 				desiredFacing = plane.Facing;
 
 			FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);

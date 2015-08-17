@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WDist targetAltitude)
 		{
+			targetAltitude = new WDist(helicopter.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(helicopter.CenterPosition);
+
 			var altitude = helicopter.CenterPosition.Z;
 			if (altitude == targetAltitude.Length)
 				return false;
@@ -85,7 +87,8 @@ namespace OpenRA.Mods.Common.Activities
 			// The next move would overshoot, so just set the final position
 			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				helicopter.SetPosition(self, pos + new WVec(0, 0, helicopter.Info.CruiseAltitude.Length - pos.Z));
+				var targetAltitude = helicopter.CenterPosition.Z + helicopter.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(helicopter.CenterPosition).Length;
+				helicopter.SetPosition(self, pos + new WVec(0, 0, targetAltitude - pos.Z));
 				return NextActivity;
 			}
 
