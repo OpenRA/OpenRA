@@ -61,6 +61,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					selectedLabel = selectedZoom.ToString();
 				};
 			}
+
+			var coordinateLabel = widget.GetOrNull<LabelWidget>("COORDINATE_LABEL");
+			if (coordinateLabel != null)
+				coordinateLabel.GetText = () => worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos).ToString();
 		}
 	}
 }

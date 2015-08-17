@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var tooltip = Info.Traits.GetOrDefault<TooltipInfo>();
-			Tooltip = tooltip == null ? Info.Name + " - " + ID : tooltip.Name + " (" + Info.Name + ") - " + ID;
+			Tooltip = tooltip == null ? ID + ": " + Info.Name : ID + ": " + tooltip.Name + " (" + Info.Name + ")";
 
 			GeneratePreviews();
 
