@@ -620,7 +620,7 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 	V01:
 		SpawnActorOnDeath:
-			HuskActor: healcrate
+			Actor: healcrate
 	HEALCRATE:
 		Tooltip:
 			GenericStancePrefix: false

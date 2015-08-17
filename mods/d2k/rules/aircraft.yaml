@@ -21,7 +21,7 @@ carryall.reinforce:
 		LandAltitude: 100
 		LandWhenIdle: False
 	SpawnActorOnDeath:
-		HuskActor: carryall.husk
+		Actor: carryall.husk
 	Carryall:
 		Automatic: False
 	RenderSprites:
@@ -59,7 +59,7 @@ carryall.infantry:
 	Tooltip:
 		Name: Carryall
 	SpawnActorOnDeath:
-		HuskActor: carryall.infantry.husk
+		Actor: carryall.infantry.husk
 	RejectsOrders:
 	RenderSprites:
 		Image: carryall
@@ -117,7 +117,7 @@ orni:
 		RepairBuildings: repair
 		RearmBuildings:
 	SpawnActorOnDeath:
-		HuskActor: orni.husk
+		Actor: orni.husk
 	SelectionDecorations:
 	Selectable:
 		Bounds: 32,32
@@ -147,7 +147,7 @@ orni.bomber:
 	Tooltip:
 		Name: Ornithopter
 	SpawnActorOnDeath:
-		HuskActor: orni.bomber.husk
+		Actor: orni.bomber.husk
 	RejectsOrders:
 	RenderSprites:
 		Image: orni

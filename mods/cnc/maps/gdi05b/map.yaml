@@ -662,7 +662,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		-SpawnActorOnDeath:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

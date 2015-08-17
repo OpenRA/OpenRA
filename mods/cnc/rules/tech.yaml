@@ -7,7 +7,7 @@ V19:
 	Tooltip:
 		Name: Oil Derrick
 	SpawnActorOnDeath:
-		HuskActor: V19.Husk
+		Actor: V19.Husk
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
@@ -38,7 +38,7 @@ HOSP:
 	Tooltip:
 		Name: Hospital
 	SpawnActorOnDeath:
-		HuskActor: HOSP.Husk
+		Actor: HOSP.Husk
 	Bib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@buildingname:
@@ -75,7 +75,7 @@ BIO:
 	RallyPoint:
 		Offset: -1,-1
 	SpawnActorOnDeath:
-		HuskActor: BIO.Husk
+		Actor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
 
 BIO.Husk:

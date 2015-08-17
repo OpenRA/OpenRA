@@ -64,7 +64,7 @@ V2RL:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: 1TNK.Husk
+		Actor: 1TNK.Husk
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -101,7 +101,7 @@ V2RL:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: 2TNK.Husk
+		Actor: 2TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
 	ProducibleWithLevel:
@@ -140,7 +140,7 @@ V2RL:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: 3TNK.Husk
+		Actor: 3TNK.Husk
 	SelectionDecorations:
 		VisualBounds: 28,28
 	ProducibleWithLevel:
@@ -188,7 +188,7 @@ V2RL:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
-		HuskActor: 4TNK.Husk
+		Actor: 4TNK.Husk
 	SelfHealing:
 		Step: 1
 		Ticks: 3
@@ -271,9 +271,9 @@ HARV:
 	GpsDot:
 		String: Harvester
 	SpawnActorOnDeath:
-		HuskActor: HARV.EmptyHusk
+		Actor: HARV.EmptyHusk
 	HarvesterHuskModifier:
-		FullHuskActor: HARV.FullHusk
+		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
 	Explodes:
 		Weapon: OreExplosion
@@ -314,7 +314,7 @@ MCV:
 		RequiredForShortGame: true
 	BaseBuilding:
 	SpawnActorOnDeath:
-		HuskActor: MCV.Husk
+		Actor: MCV.Husk
 
 JEEP:
 	Inherits: ^Vehicle
@@ -479,7 +479,7 @@ TRUK:
 	SupplyTruck:
 		Payload: 500
 	SpawnActorOnDeath:
-		HuskActor: moneycrate
+		Actor: moneycrate
 
 MGG:
 	Inherits: ^Vehicle
@@ -507,7 +507,7 @@ MGG:
 		Range: 6c0
 	RenderShroudCircle:
 	SpawnActorOnDeath:
-		HuskActor: MGG.Husk
+		Actor: MGG.Husk
 
 MRJ:
 	Inherits: ^Vehicle
