@@ -73,5 +73,6 @@
 	CloakPaletteEffect:
 	FlashPaletteEffect:
 	WaterPaletteRotation:
-		ExcludePalettes: effect
+		ExcludePalettes: effect, chrome
+		RotationBase: 32
 
