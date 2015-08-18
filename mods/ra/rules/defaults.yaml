@@ -542,6 +542,11 @@
 		HP: 500
 	Armor:
 		Type: Wood
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	TargetableBuilding:
+		TargetTypes: Ground
 	AutoTargetIgnore:
 	BodyOrientation:
 	FrozenUnderFog:
