@@ -569,3 +569,29 @@
 	Tooltip:
 		Name: Rock
 
+^Decoration:
+	HiddenUnderShroud:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+
+^Box:
+	Inherits: ^Decoration
+	Tooltip:
+		Name: Box
+
+^Drum:
+	Inherits: ^Decoration
+	Tooltip:
+		Name: Drum
+
+^Palette:
+	Inherits: ^Decoration
+	Tooltip:
+		Name: Palette
