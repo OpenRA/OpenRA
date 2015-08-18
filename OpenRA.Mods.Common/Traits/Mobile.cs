@@ -194,13 +194,15 @@ namespace OpenRA.Mods.Common.Traits
 		// Determines whether the actor is blocked by other Actors
 		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check)
 		{
+			if (!check.HasCellCondition(CellConditions.TransientActors))
+				return true;
+
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			if (check.HasCellCondition(CellConditions.TransientActors))
-				foreach (var otherActor in world.ActorMap.GetUnitsAt(cell))
-					if (IsBlockedBy(self, otherActor, ignoreActor, check))
-						return false;
+			foreach (var otherActor in world.ActorMap.GetUnitsAt(cell))
+				if (IsBlockedBy(self, otherActor, ignoreActor, check))
+					return false;
 
 			return true;
 		}
