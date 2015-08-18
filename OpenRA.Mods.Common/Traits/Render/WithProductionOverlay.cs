@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]
-	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "production-overlay";
@@ -34,9 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WithProductionOverlay(init.Self, this); }
 	}
 
-	public class WithProductionOverlay : INotifyDamageStateChanged, ITick, INotifyBuildComplete, INotifySold
+	public class WithProductionOverlay : INotifyDamageStateChanged, INotifyCreated, INotifyBuildComplete, INotifySold, INotifyOwnerChanged
 	{
 		readonly Animation overlay;
+		readonly ProductionInfo production;
 		ProductionQueue queue;
 		bool buildComplete;
 
@@ -50,7 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			buildComplete = !self.Info.Traits.Contains<BuildingInfo>(); // always render instantly for units
+			production = self.Info.Traits.Get<ProductionInfo>();
 
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
@@ -62,30 +64,36 @@ namespace OpenRA.Mods.Common.Traits
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		public void Tick(Actor self)
+		void SelectQueue(Actor self)
 		{
-			// search for the queue here once so we don't rely on order of trait initialization
+			var perBuildingQueues = self.TraitsImplementing<ProductionQueue>();
+			queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Produces.Contains(q.Info.Type));
+
 			if (queue == null)
 			{
-				var production = self.TraitOrDefault<Production>();
-
-				var perBuildingQueues = self.TraitsImplementing<ProductionQueue>();
-				queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
-
-				if (queue == null)
-				{
-					var perPlayerQueues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
-					queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Info.Produces.Contains(q.Info.Type));
-				}
-
-				if (queue == null)
-					throw new InvalidOperationException("Can't find production queues.");
+				var perPlayerQueues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
+				queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Produces.Contains(q.Info.Type));
 			}
+
+			if (queue == null)
+				throw new InvalidOperationException("Can't find production queues.");
+		}
+
+		public void Created(Actor self)
+		{
+			if (buildComplete)
+				SelectQueue(self);
 		}
 
 		public void BuildingComplete(Actor self)
 		{
 			buildComplete = true;
+			SelectQueue(self);
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			self.World.AddFrameEndTask(w => SelectQueue(self));
 		}
 
 		public void Sold(Actor self) { }
