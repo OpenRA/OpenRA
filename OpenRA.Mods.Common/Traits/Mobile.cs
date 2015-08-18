@@ -618,9 +618,8 @@ namespace OpenRA.Mods.Common.Traits
 					var p = ToCell + new CVec(i, j);
 					if (CanEnterCell(p))
 						availCells.Add(p);
-					else
-						if (p != nudger.Location && p != ToCell)
-							notStupidCells.Add(p);
+					else if (p != nudger.Location && p != ToCell)
+						notStupidCells.Add(p);
 				}
 
 			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
