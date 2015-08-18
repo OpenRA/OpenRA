@@ -2051,6 +2051,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// WaterPaletteRotation renamed to RotationPaletteEffect
+				if (engineVersion < 20150903)
+				{
+					if (depth == 1 && node.Key == "WaterPaletteRotation")
+						node.Key = "RotationPaletteEffect";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

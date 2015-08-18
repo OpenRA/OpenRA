@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Palette effect used for sprinkle \"animations\".")]
-	class WaterPaletteRotationInfo : ITraitInfo
+	class RotationPaletteEffectInfo : ITraitInfo
 	{
 		[Desc("Defines which palettes should be excluded from this effect.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
@@ -33,22 +33,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Step towards next color index per tick.")]
 		public readonly float RotationStep = .25f;
 
-		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.World, this); }
+		public object Create(ActorInitializer init) { return new RotationPaletteEffect(init.World, this); }
 	}
 
-	class WaterPaletteRotation : ITick, IPaletteModifier
+	class RotationPaletteEffect : ITick, IPaletteModifier
 	{
-		readonly WaterPaletteRotationInfo info;
+		readonly RotationPaletteEffectInfo info;
 		readonly World world;
 		float t = 0;
 		uint[] temp;
 
-		public WaterPaletteRotation(World world, WaterPaletteRotationInfo info)
+		public RotationPaletteEffect(World world, RotationPaletteEffectInfo info)
 		{
 			this.world = world;
 			this.info = info;
 
-			temp = new uint[info.RotationRange]; /* allocating this on the fly actually hurts our profile */
+			// Allocating this on the fly actually hurts our profile
+			temp = new uint[info.RotationRange];
 		}
 
 		public void Tick(Actor self)

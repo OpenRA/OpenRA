@@ -72,7 +72,7 @@
 		MenuEffect: Desaturated
 	CloakPaletteEffect:
 	FlashPaletteEffect:
-	WaterPaletteRotation:
+	RotationPaletteEffect@water:
 		ExcludePalettes: effect, chrome
 		RotationBase: 32
 
