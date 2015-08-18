@@ -29,6 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 		All = TransientActors | BlockedByMovers
 	}
 
+	public static class CellConditionsExts
+	{
+		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
+		{
+			return (c & cellCondition) == cellCondition;
+		}
+	}
+
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
@@ -189,9 +197,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			if (check.HasFlag(CellConditions.TransientActors))
+			if (check.HasCellCondition(CellConditions.TransientActors))
 			{
-				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
+				var canIgnoreMovingAllies = self != null && !check.HasCellCondition(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
 				foreach (var a in world.ActorMap.GetUnitsAt(cell))
 				{
@@ -230,9 +238,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return SubCell.Invalid;
 
-			if (check.HasFlag(CellConditions.TransientActors))
+			if (check.HasCellCondition(CellConditions.TransientActors))
 			{
-				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
+				var canIgnoreMovingAllies = self != null && !check.HasCellCondition(CellConditions.BlockedByMovers);
 				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
 
 				Func<Actor, bool> checkTransient = a =>
