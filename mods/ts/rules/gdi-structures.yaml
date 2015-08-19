@@ -249,7 +249,7 @@ GADEPT:
 		VisualBounds: 98, 68, -6, -6
 	RenderBuilding:
 		Image: gadept.gdi
-		RaceImages:
+		FactionImages:
 			gdi: gadept.gdi
 			nod: gadept.nod
 

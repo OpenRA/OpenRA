@@ -51,13 +51,13 @@ namespace OpenRA.Mods.RA.Traits
 	public class SpawnActorOnDeath : INotifyKilled
 	{
 		readonly SpawnActorOnDeathInfo info;
-		readonly string race;
+		readonly string faction;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
 			this.info = info;
 
-			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Traits
 					new ParentActorInit(self),
 					new LocationInit(self.Location),
 					new CenterPositionInit(self.CenterPosition),
-					new FactionInit(race)
+					new FactionInit(faction)
 				};
 
 				if (info.OwnerType == OwnerType.Victim)

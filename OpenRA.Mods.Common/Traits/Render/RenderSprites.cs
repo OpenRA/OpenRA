@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The sequence name that defines the actor sprites. Defaults to the actor name.")]
 		public readonly string Image = null;
 
-		[FieldLoader.LoadUsing("LoadRaceImages")]
-		[Desc("A dictionary of race-specific image overrides.")]
-		public readonly Dictionary<string, string> RaceImages = null;
+		[FieldLoader.LoadUsing("LoadFactionImages")]
+		[Desc("A dictionary of faction-specific image overrides.")]
+		public readonly Dictionary<string, string> FactionImages = null;
 
 		[Desc("Custom palette name")]
 		[PaletteReference] public readonly string Palette = null;
@@ -42,11 +42,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
 
-		protected static object LoadRaceImages(MiniYaml y)
+		protected static object LoadFactionImages(MiniYaml y)
 		{
 			MiniYaml images;
 
-			if (!y.ToDictionary().TryGetValue("RaceImages", out images))
+			if (!y.ToDictionary().TryGetValue("FactionImages", out images))
 				return null;
 
 			return images.Nodes.ToDictionary(kv => kv.Key, kv => kv.Value.Value);
@@ -82,10 +82,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string race)
 		{
-			if (RaceImages != null && !string.IsNullOrEmpty(race))
+			if (FactionImages != null && !string.IsNullOrEmpty(race))
 			{
 				string raceImage = null;
-				if (RaceImages.TryGetValue(race, out raceImage) && sequenceProvider.HasSequence(raceImage))
+				if (FactionImages.TryGetValue(race, out raceImage) && sequenceProvider.HasSequence(raceImage))
 					return raceImage;
 			}
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		readonly string race;
+		readonly string faction;
 		readonly RenderSpritesInfo info;
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
 			this.info = info;
-			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public string GetImage(Actor self)
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, race);
+			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, faction);
 		}
 
 		public void UpdatePalette()

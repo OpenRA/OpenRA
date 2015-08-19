@@ -99,7 +99,7 @@ PROC:
 		VisualBounds: 134, 122, 0, -18
 	RenderBuilding:
 		Image: proc.gdi
-		RaceImages:
+		FactionImages:
 			gdi: proc.gdi
 			nod: proc.nod
 
@@ -129,7 +129,7 @@ GASILO:
 	-RenderBuilding:
 	RenderBuildingSilo:
 		Image: gasilo.gdi
-		RaceImages:
+		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
 	WithIdleOverlay@UNDERLAY:

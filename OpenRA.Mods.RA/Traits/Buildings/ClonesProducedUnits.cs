@@ -28,13 +28,13 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		readonly ClonesProducedUnitsInfo info;
 		readonly Production production;
-		readonly string race;
+		readonly string faction;
 
 		public ClonesProducedUnits(ActorInitializer init, ClonesProducedUnitsInfo info)
 		{
 			this.info = info;
 			production = init.Self.Trait<Production>();
-			race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
 				return;
 
-			production.Produce(self, produced.Info, race);
+			production.Produce(self, produced.Info, faction);
 		}
 	}
 }

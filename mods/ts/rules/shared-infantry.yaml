@@ -30,7 +30,7 @@ E1:
 		Prerequisites: barracks.upgraded
 	RenderSprites:
 		Image: e1.gdi
-		RaceImages:
+		FactionImages:
 			gdi: e1.gdi
 			nod: e1.nod
 
@@ -61,7 +61,7 @@ ENGINEER:
 	-GainsExperience:
 	RenderSprites:
 		Image: engineer.gdi
-		RaceImages:
+		FactionImages:
 			gdi: engineer.gdi
 			nod: engineer.nod
 
