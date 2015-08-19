@@ -292,6 +292,8 @@ namespace OpenRA
 			{
 				var ret = new CellLayer<TerrainTile>(tileShape, size);
 				ret.Clear(tileRef);
+				if (MaximumTerrainHeight > 0)
+					ret.CellEntryChanged += UpdateProjection;
 				return ret;
 			});
 
@@ -299,6 +301,8 @@ namespace OpenRA
 			{
 				var ret = new CellLayer<byte>(tileShape, size);
 				ret.Clear(0);
+				if (MaximumTerrainHeight > 0)
+					ret.CellEntryChanged += UpdateProjection;
 				return ret;
 			});
 
