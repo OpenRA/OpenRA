@@ -74,7 +74,7 @@ namespace OpenRA
 		public readonly bool PickAny;
 		public readonly string Category;
 
-		TerrainTileInfo[] tileInfo;
+		readonly TerrainTileInfo[] tileInfo;
 
 		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
 		{
@@ -177,7 +177,7 @@ namespace OpenRA
 		public readonly bool IgnoreTileSpriteOffsets;
 
 		[FieldLoader.Ignore]
-		public readonly Dictionary<ushort, TerrainTemplateInfo> Templates = new Dictionary<ushort, TerrainTemplateInfo>();
+		public readonly IReadOnlyDictionary<ushort, TerrainTemplateInfo> Templates;
 
 		[FieldLoader.Ignore]
 		public readonly TerrainTypeInfo[] TerrainInfo;
@@ -217,7 +217,7 @@ namespace OpenRA
 
 			// Templates
 			Templates = yaml["Templates"].ToDictionary().Values
-				.Select(y => new TerrainTemplateInfo(this, y)).ToDictionary(t => t.Id);
+				.Select(y => new TerrainTemplateInfo(this, y)).ToDictionary(t => t.Id).AsReadOnly();
 		}
 
 		public TileSet(string name, string id, string palette, TerrainTypeInfo[] terrainInfo)

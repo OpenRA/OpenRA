@@ -246,6 +246,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
 
 		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
+		[FieldLoader.Ignore] CellLayer<short> cachedTerrainIndexes;
 
 		[FieldLoader.Ignore] bool initializedCellProjection;
 		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
@@ -951,9 +952,32 @@ namespace OpenRA
 
 		public byte GetTerrainIndex(CPos cell)
 		{
+			const short InvalidCachedTerrainIndex = -1;
+
+			// Lazily initialize a cache for terrain indexes.
+			if (cachedTerrainIndexes == null)
+			{
+				cachedTerrainIndexes = new CellLayer<short>(this);
+				cachedTerrainIndexes.Clear(InvalidCachedTerrainIndex);
+
+				// Invalidate the entry for a cell if anything could cause the terrain index to change.
+				Action<CPos> invalidateTerrainIndex = c => cachedTerrainIndexes[c] = InvalidCachedTerrainIndex;
+				CustomTerrain.CellEntryChanged += invalidateTerrainIndex;
+				MapTiles.Value.CellEntryChanged += invalidateTerrainIndex;
+			}
+
 			var uv = cell.ToMPos(this);
-			var custom = CustomTerrain[uv];
-			return custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[uv]);
+			var terrainIndex = cachedTerrainIndexes[uv];
+
+			// Cache terrain indexes per cell on demand.
+			if (terrainIndex == InvalidCachedTerrainIndex)
+			{
+				var custom = CustomTerrain[uv];
+				terrainIndex = cachedTerrainIndexes[uv] =
+					custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[uv]);
+			}
+
+			return (byte)terrainIndex;
 		}
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
