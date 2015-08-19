@@ -83,7 +83,7 @@ APC:
 		Cost: 600
 	Tooltip:
 		Name: APC
-		Description: Armed infantry transport. \nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
+		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
@@ -129,7 +129,7 @@ ARTY:
 		Cost: 600
 	Tooltip:
 		Name: Artillery
-		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles & Buildings
+		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
@@ -164,7 +164,7 @@ FTNK:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tank
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings & Vehicles\n  Weak vs Tanks
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
@@ -199,7 +199,7 @@ BGGY:
 		Cost: 300
 	Tooltip:
 		Name: Nod Buggy
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
@@ -233,7 +233,7 @@ BIKE:
 		Cost: 500
 	Tooltip:
 		Name: Recon Bike
-		Description: Fast scout vehicle, armed with \nrockets. \nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
+		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
@@ -269,7 +269,7 @@ JEEP:
 		Cost: 400
 	Tooltip:
 		Name: Hum-Vee
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
@@ -374,7 +374,7 @@ HTNK:
 		Cost: 1500
 	Tooltip:
 		Name: Mammoth Tank
-		Description: Heavily armored GDI Tank. \nCan attack Aircraft.\n  Strong vs Everything
+		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye, ~techlevel.high
@@ -460,7 +460,7 @@ MLRS:
 		Cost: 600
 	Tooltip:
 		Name: Mobile S.A.M.
-		Description: Powerful anti-air unit. \nCannot attack Ground units.
+		Description: Powerful anti-air unit.\nCannot attack Ground units.
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: anyhq, ~techlevel.medium
@@ -502,7 +502,7 @@ STNK:
 		Cost: 900
 	Tooltip:
 		Name: Stealth Tank
-		Description: Long-range missile tank that can cloak. \nCan attack Aircraft. \nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
+		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl, ~techlevel.high
