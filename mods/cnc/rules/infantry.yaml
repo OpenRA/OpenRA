@@ -136,7 +136,7 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Description: Damages and captures enemy structures.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 30
 		Queue: Infantry.GDI, Infantry.Nod
@@ -203,7 +203,7 @@ PVICE:
 		Queue: Biolab
 		BuildPaletteOrder: 40
 	Tooltip:
-		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	ActorLostNotification:
 
 STEG:

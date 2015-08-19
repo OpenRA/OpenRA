@@ -125,7 +125,7 @@ NUK2:
 		Cost: 800
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides more power, cheaper than the \nstandard Power Plant
+		Description: Provides more power, cheaper than the\nstandard Power Plant
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Buildable:
@@ -444,7 +444,7 @@ HQ:
 		Cost: 1000
 	Tooltip:
 		Name: Communications Center
-		Description: Provides radar & Air Strike support power. \nUnlocks higher-tech units & buildings.  \nRequires power to operate.
+		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -530,7 +530,7 @@ EYE:
 		Cost: 1800
 	Tooltip:
 		Name: Advanced Communications Center
-		Description: Provides radar & Orbital Ion Cannon support power. \nUnlocks Mammoth Tank & Commando.  \nRequires power to operate.
+		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -581,7 +581,7 @@ TMPL:
 		Cost: 2000
 	Tooltip:
 		Name: Temple of Nod
-		Description: Provides Nuclear Strike support power. \nUnlocks Stealth Tank, Chem. Warrior & Obelisk of Light.  \nRequires power to operate.
+		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
@@ -607,7 +607,7 @@ TMPL:
 		Cursor: nuke
 		ChargeTime: 300
 		Description: Nuclear Strike
-		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
+		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		BeginChargeSound:
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
@@ -720,7 +720,7 @@ OBLI:
 		Value: 3120
 	Tooltip:
 		Name: Obelisk of Light
-		Description: Advanced base defense. \nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
+		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
@@ -864,7 +864,7 @@ SBAG:
 		Value: 0
 	Tooltip:
 		Name: Sandbag Barrier
-		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
@@ -889,7 +889,7 @@ CYCL:
 		Value: 0
 	Tooltip:
 		Name: Chain Link Barrier
-		Description: Stops infantry & light vehicles. \nCan be crushed by tanks.
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
@@ -914,7 +914,7 @@ BRIK:
 		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
-		Description: Stop units.
+		Description: Stops infantry and most tanks.
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction

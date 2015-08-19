@@ -47,7 +47,7 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
@@ -181,7 +181,7 @@ A10:
 	Inherits: ^Plane
 	Tooltip:
 		Name: A10 Bomber
-		Description: Used to deliver Napalm strikes.
+		Description: Used to deliver air strikes.
 	Valued:
 		Cost: 2000
 	Plane:
