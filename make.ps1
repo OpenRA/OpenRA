@@ -35,6 +35,7 @@ if ($args.Length -eq 0)
 	echo "                  'dependencies' commands to restore removed files."
 	echo "  test            Tests the default mods for errors."
 	echo "  check           Checks .cs files for StyleCop violations."
+	echo "  check-scripts   Checks .lua files for syntax errors."
 	echo "  docs            Generates the trait and Lua API documentation."
 	echo ""
 	$command = (Read-Host "Enter command").Split(' ', 2)
@@ -176,6 +177,18 @@ elseif ($command -eq "check")
 	{
 		UtilityNotFound
 	}
+}
+elseif ($command -eq "check-scripts")
+{
+	foreach ($script in ls "mods/*/maps/*/*.lua")
+	{
+		luac -p $script
+	}
+	foreach ($script in ls "lua/*.lua")
+	{
+		luac -p $script
+	}
+	echo "Check successfull!"
 }
 elseif ($command -eq "docs")
 {
