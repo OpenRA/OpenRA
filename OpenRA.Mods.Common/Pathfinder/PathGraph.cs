@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		readonly CellConditions checkConditions;
 		readonly MobileInfo mobileInfo;
+		readonly MobileInfo.WorldMovementInfo worldMovementInfo;
 		CellLayer<CellInfo> cellInfo;
 
 		public PathGraph(CellLayer<CellInfo> cellInfo, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
@@ -78,6 +79,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.cellInfo = cellInfo;
 			World = world;
 			this.mobileInfo = mobileInfo;
+			worldMovementInfo = mobileInfo.GetWorldMovementInfo(world);
 			Actor = actor;
 			LaneBias = 1;
 			checkConditions = checkForBlocked ? CellConditions.TransientActors : CellConditions.None;
@@ -123,17 +125,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			int movementCost;
-			if (mobileInfo.CanEnterCell(
-				World,
-				Actor,
-				destNode,
-				out movementCost,
-				IgnoredActor,
-				checkConditions) && !(CustomBlock != null && CustomBlock(destNode)))
-			{
+			var movementCost = mobileInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoredActor, checkConditions);
+			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
-			}
 
 			return Constants.InvalidNode;
 		}

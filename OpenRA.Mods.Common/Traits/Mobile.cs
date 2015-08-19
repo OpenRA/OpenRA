@@ -125,6 +125,17 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public struct WorldMovementInfo
+		{
+			internal readonly World World;
+			internal readonly TerrainInfo[] TerrainInfos;
+			internal WorldMovementInfo(World world, MobileInfo info)
+			{
+				World = world;
+				TerrainInfos = info.TilesetTerrainInfo[world.TileSet];
+			}
+		}
+
 		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
 		public readonly Cache<TileSet, int> TilesetMovementClass;
 
@@ -136,14 +147,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.TileSet], cell);
+		}
+
+		int MovementCostForCell(Map map, TerrainInfo[] terrainInfos, CPos cell)
+		{
+			if (!map.Contains(cell))
 				return int.MaxValue;
 
-			var index = world.Map.GetTerrainIndex(cell);
+			var index = map.GetTerrainIndex(cell);
 			if (index == byte.MaxValue)
 				return int.MaxValue;
 
-			return TilesetTerrainInfo[world.TileSet][index].Cost;
+			return terrainInfos[index].Cost;
 		}
 
 		public int CalculateTilesetMovementClass(TileSet tileset)
@@ -236,12 +252,17 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, out int movementCost, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public WorldMovementInfo GetWorldMovementInfo(World world)
 		{
-			if ((movementCost = MovementCostForCell(world, cell)) == int.MaxValue)
-				return false;
+			return new WorldMovementInfo(world, this);
+		}
 
-			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		{
+			var cost = MovementCostForCell(worldMovementInfo.World.Map, worldMovementInfo.TerrainInfos, cell);
+			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
+				return int.MaxValue;
+			return cost;
 		}
 
 		public SubCell GetAvailableSubCell(
