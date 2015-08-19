@@ -309,10 +309,10 @@ Templates:
 		Size: 2,2
 		Category: Sand-Cliff
 		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
-			3: Rough
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
 	Template@23:
 		Id: 23
 		Images: BLOXBASE.R8
@@ -320,10 +320,10 @@ Templates:
 		Size: 2,2
 		Category: Sand-Cliff
 		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
-			3: Rough
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
 	Template@24:
 		Id: 24
 		Images: BLOXBASE.R8
@@ -364,10 +364,10 @@ Templates:
 		Size: 2,2
 		Category: Sand-Cliff
 		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
-			3: Rough
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
 	Template@28:
 		Id: 28
 		Images: BLOXBASE.R8
@@ -375,10 +375,10 @@ Templates:
 		Size: 2,2
 		Category: Rock-Detail
 		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
-			3: Rough
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
 	Template@29:
 		Id: 29
 		Images: BLOXBASE.R8

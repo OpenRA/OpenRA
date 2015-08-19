@@ -296,9 +296,6 @@ doubleblastbullet:
 		BlendMode: Additive
 
 icon:
-	paratroopers: DATA.R8
-		Start: 4029
-		Offset: -30,-24
 	ornistrike: DATA.R8
 		Start: 4031
 		Offset: -30,-24
