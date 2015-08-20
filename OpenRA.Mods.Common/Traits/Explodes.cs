@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ITraitInfo
 	{
-		[WeaponReference, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
+		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
 
 		[WeaponReference, Desc("Weapon to use for explosion if no ammo/payload is loaded.")]
@@ -54,8 +55,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var weaponName = ChooseWeaponForExplosion(self);
-			if (weaponName == null)
+			if (string.IsNullOrEmpty(weaponName))
 				return;
+
+			if (!e.Attacker.World.Map.Rules.Weapons.ContainsKey(weaponName.ToLowerInvariant()))
+				throw new InvalidOperationException("Actor " + self.Info.Name
+					+ ": Could not find weapon '" + weaponName.ToLowerInvariant() + "', check for typos.");
 
 			var weapon = e.Attacker.World.Map.Rules.Weapons[weaponName.ToLowerInvariant()];
 			if (weapon.Report != null && weapon.Report.Any())
