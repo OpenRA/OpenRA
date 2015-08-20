@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -186,15 +187,42 @@ namespace OpenRA.Traits
 			actorShouldBeRemoved = removeActorPosition.Contains;
 		}
 
+		sealed class UnitsAtEnumerator : IEnumerator<Actor>
+		{
+			InfluenceNode node;
+			public UnitsAtEnumerator(InfluenceNode node) { this.node = node; }
+			public void Reset() { throw new NotSupportedException(); }
+			public Actor Current { get; private set; }
+			object IEnumerator.Current { get { return Current; } }
+			public void Dispose() { }
+			public bool MoveNext()
+			{
+				while (node != null)
+				{
+					Current = node.Actor;
+					node = node.Next;
+					if (!Current.Disposed)
+						return true;
+				}
+
+				return false;
+			}
+		}
+
+		sealed class UnitsAtEnumerable : IEnumerable<Actor>
+		{
+			readonly InfluenceNode node;
+			public UnitsAtEnumerable(InfluenceNode node) { this.node = node; }
+			public IEnumerator<Actor> GetEnumerator() { return new UnitsAtEnumerator(node); }
+			IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+		}
+
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
-				yield break;
-
-			for (var i = influence[uv]; i != null; i = i.Next)
-				if (!i.Actor.Disposed)
-					yield return i.Actor;
+				return Enumerable.Empty<Actor>();
+			return new UnitsAtEnumerable(influence[uv]);
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
