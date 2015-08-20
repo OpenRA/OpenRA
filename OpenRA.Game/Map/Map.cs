@@ -767,6 +767,9 @@ namespace OpenRA
 
 		bool ContainsAllProjectedCellsCovering(MPos uv)
 		{
+			if (MaximumTerrainHeight == 0)
+				return Contains((PPos)uv);
+
 			foreach (var puv in ProjectedCellsCovering(uv))
 				if (!Contains(puv))
 					return false;
