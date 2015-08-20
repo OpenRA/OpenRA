@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Gets all the Connections for a given node in the graph
 		/// </summary>
-		IEnumerable<GraphConnection> GetConnections(CPos position);
+		List<GraphConnection> GetConnections(CPos position);
 
 		/// <summary>
 		/// Retrieves an object given a node in the graph
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
 		};
 
-		public IEnumerable<GraphConnection> GetConnections(CPos position)
+		public List<GraphConnection> GetConnections(CPos position)
 		{
 			var previousPos = cellInfo[position].PreviousPos;
 
@@ -108,14 +108,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var dy = position.Y - previousPos.Y;
 			var index = dy * 3 + dx + 4;
 
-			var validNeighbors = new LinkedList<GraphConnection>();
 			var directions = DirectedNeighbors[index];
+			var validNeighbors = new List<GraphConnection>(directions.Length);
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var neighbor = position + directions[i];
 				var movementCost = GetCostToNode(neighbor, directions[i]);
 				if (movementCost != Constants.InvalidNode)
-					validNeighbors.AddLast(new GraphConnection(neighbor, movementCost));
+					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
 			return validNeighbors;
