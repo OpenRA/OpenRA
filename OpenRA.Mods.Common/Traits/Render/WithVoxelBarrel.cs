@@ -16,19 +16,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithVoxelBarrelInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
+	public class WithVoxelBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "barrel";
+
 		[Desc("Armament to use for recoil")]
 		public readonly string Armament = "primary";
+
 		[Desc("Visual offset")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public object Create(ActorInitializer init) { return new WithVoxelBarrel(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelBarrel(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
+
 			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
 			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
 				.First(a => a.Name == Armament);
@@ -46,33 +51,32 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithVoxelBarrel
+	public class WithVoxelBarrel : UpgradableTrait<WithVoxelBarrelInfo>
 	{
-		readonly WithVoxelBarrelInfo info;
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
 		readonly IBodyOrientation body;
 
 		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
+			: base(info)
 		{
 			this.self = self;
-			this.info = info;
 			body = self.Trait<IBodyOrientation>();
 			armament = self.TraitsImplementing<Armament>()
-				.First(a => a.Info.Name == info.Armament);
+				.First(a => a.Info.Name == Info.Armament);
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
-			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, info.Sequence),
+			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
-				() => false, () => 0));
+				() => IsTraitDisabled, () => 0));
 		}
 
 		WVec BarrelOffset()
 		{
-			var localOffset = info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
+			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 			var turretOffset = turreted != null ? turreted.Position(self) : WVec.Zero;
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 
