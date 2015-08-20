@@ -4,30 +4,11 @@
 language: c
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
-sudo: false
+sudo: true
 
 cache:
   directories:
   - thirdparty/download
-
-addons:
-  apt:
-    sources:
-    - mono-4.0
-    packages:
-    - lua5.1
-    - mono-mcs
-    - libmono-system-windows-forms4.0-cil
-    - libmono-system-core4.0-cil
-    - libmono-system-drawing4.0-cil
-    - libmono-system-data4.0-cil
-    - libmono-system-numerics4.0-cil
-    - libmono-system-runtime-serialization4.0-cil
-    - libmono-system-xml-linq4.0-cil
-    - nsis
-    - nsis-common
-    - dpkg
-    - markdown
 
 # Environment variables
 env:
@@ -38,6 +19,11 @@ env:
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
 script:
+ - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+ - echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+ - echo "deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
+ - sudo apt-get update
+ - sudo apt-get install mono-dmcs cli-common-dev nsis nsis-common dpkg markdown
  - travis_retry make all-dependencies
  - make all
  - make check
