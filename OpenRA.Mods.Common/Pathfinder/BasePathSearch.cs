@@ -24,11 +24,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 		IGraph<CellInfo> Graph { get; }
 
 		/// <summary>
-		/// The open queue where nodes that are worth to consider are stored by their estimator
-		/// </summary>
-		IPriorityQueue<CPos> OpenQueue { get; }
-
-		/// <summary>
 		/// Stores the analyzed nodes by the expand function
 		/// </summary>
 		IEnumerable<Pair<CPos, int>> Considered { get; }
@@ -62,6 +57,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <returns>Whether the location is a target</returns>
 		bool IsTarget(CPos location);
 
+		bool CanExpand { get; }
 		CPos Expand();
 	}
 
@@ -69,7 +65,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		public IGraph<CellInfo> Graph { get; set; }
 
-		public IPriorityQueue<CPos> OpenQueue { get; protected set; }
+		protected IPriorityQueue<CPos> OpenQueue { get; private set; }
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
 
@@ -84,7 +80,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// points considered and their Heuristics to reach
 		// the target. It pretty match identifies, in conjunction of the Actor,
 		// a deterministic set of calculations
-		protected IPriorityQueue<CPos> startPoints;
+		protected readonly IPriorityQueue<CPos> startPoints;
 
 		protected BasePathSearch(IGraph<CellInfo> graph)
 		{
@@ -165,6 +161,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return isGoal(location);
 		}
 
+		public bool CanExpand { get { return !OpenQueue.Empty; } }
 		public abstract CPos Expand();
 	}
 }
