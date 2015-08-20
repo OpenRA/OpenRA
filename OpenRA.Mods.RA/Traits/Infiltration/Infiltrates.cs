@@ -24,21 +24,24 @@ namespace OpenRA.Mods.RA.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("What diplomatic stances can be infiltrated by this actor.")]
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
 	class Infiltrates : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly InfiltratesInfo info;
+		public readonly InfiltratesInfo Info;
 
 		public Infiltrates(InfiltratesInfo info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new TargetTypeOrderTargeter(info.Types, "Infiltrate", 7, "enter", true, false); }
+			get { yield return new InfiltrationOrderTargeter(Info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -77,13 +80,13 @@ namespace OpenRA.Mods.RA.Traits
 				ai = order.TargetActor.Info;
 
 			var i = ai.Traits.GetOrDefault<ITargetableInfo>();
-			return i != null && i.GetTargetTypes().Intersect(info.Types).Any();
+			return i != null && i.GetTargetTypes().Intersect(Info.Types).Any();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Infiltrate" && IsValidOrder(self, order)
-				? info.Voice : null;
+				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -100,6 +103,37 @@ namespace OpenRA.Mods.RA.Traits
 
 			self.SetTargetLine(target, Color.Red);
 			self.QueueActivity(new Infiltrate(self, target.Actor));
+		}
+	}
+
+	class InfiltrationOrderTargeter : UnitOrderTargeter
+	{
+		readonly InfiltratesInfo info;
+
+		public InfiltrationOrderTargeter(InfiltratesInfo info)
+			: base("Infiltrate", 7, "enter", true, false)
+		{
+			this.info = info;
+		}
+
+		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		{
+			var stance = self.Owner.Stances[target.Owner];
+
+			if (!info.ValidStances.HasStance(stance))
+				return false;
+
+			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Intersect(info.Types).Any());
+		}
+
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			var stance = self.Owner.Stances[target.Owner];
+
+			if (!info.ValidStances.HasStance(stance))
+				return false;
+
+			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Intersect(info.Types).Any());
 		}
 	}
 }
