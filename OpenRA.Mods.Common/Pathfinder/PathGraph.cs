@@ -47,13 +47,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 	public struct GraphConnection
 	{
-		public readonly CPos Source;
 		public readonly CPos Destination;
 		public readonly int Cost;
 
-		public GraphConnection(CPos source, CPos destination, int cost)
+		public GraphConnection(CPos destination, int cost)
 		{
-			Source = source;
 			Destination = destination;
 			Cost = cost;
 		}
@@ -117,7 +115,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var neighbor = position + directions[i];
 				var movementCost = GetCostToNode(neighbor, directions[i]);
 				if (movementCost != Constants.InvalidNode)
-					validNeighbors.AddLast(new GraphConnection(position, neighbor, movementCost));
+					validNeighbors.AddLast(new GraphConnection(neighbor, movementCost));
 			}
 
 			return validNeighbors;
