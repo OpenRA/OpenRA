@@ -188,20 +188,22 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
-			if (!influence.Contains(a))
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
 				yield break;
 
-			for (var i = influence[a]; i != null; i = i.Next)
+			for (var i = influence[uv]; i != null; i = i.Next)
 				if (!i.Actor.Disposed)
 					yield return i.Actor;
 		}
 
 		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
-			if (!influence.Contains(a))
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
 				yield break;
 
-			for (var i = influence[a]; i != null; i = i.Next)
+			for (var i = influence[uv]; i != null; i = i.Next)
 				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
@@ -243,20 +245,22 @@ namespace OpenRA.Traits
 		// NOTE: always includes transients with influence
 		public bool AnyUnitsAt(CPos a)
 		{
-			if (!influence.Contains(a))
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
 				return false;
 
-			return influence[a] != null;
+			return influence[uv] != null;
 		}
 
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
-			if (!influence.Contains(a))
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = influence[a]; i != null; i = i.Next)
+			for (var i = influence[uv]; i != null; i = i.Next)
 			{
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
@@ -275,11 +279,12 @@ namespace OpenRA.Traits
 		// NOTE: can not check aircraft
 		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
-			if (!influence.Contains(a))
+			var uv = a.ToMPos(map);
+			if (!influence.Contains(uv))
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = influence[a]; i != null; i = i.Next)
+			for (var i = influence[uv]; i != null; i = i.Next)
 				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Disposed && withCondition(i.Actor))
 					return true;
 
@@ -290,10 +295,11 @@ namespace OpenRA.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				if (!influence.Contains(c.First))
+				var uv = c.First.ToMPos(map);
+				if (!influence.Contains(uv))
 					continue;
 
-				influence[c.First] = new InfluenceNode { Next = influence[c.First], SubCell = c.Second, Actor = self };
+				influence[uv] = new InfluenceNode { Next = influence[uv], SubCell = c.Second, Actor = self };
 
 				List<CellTrigger> triggers;
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
@@ -306,12 +312,13 @@ namespace OpenRA.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				if (!influence.Contains(c.First))
+				var uv = c.First.ToMPos(map);
+				if (!influence.Contains(uv))
 					continue;
 
-				var temp = influence[c.First];
+				var temp = influence[uv];
 				RemoveInfluenceInner(ref temp, self);
-				influence[c.First] = temp;
+				influence[uv] = temp;
 
 				List<CellTrigger> triggers;
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
