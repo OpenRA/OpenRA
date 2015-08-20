@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Support;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -23,11 +21,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 
-			var shroudCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_SHROUD");
-			if (shroudCheckbox != null)
+			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");
+			if (visibilityCheckbox != null)
 			{
-				shroudCheckbox.IsChecked = () => devTrait.DisableShroud;
-				shroudCheckbox.OnClick = () => Order(world, "DevShroudDisable");
+				visibilityCheckbox.IsChecked = () => devTrait.DisableShroud;
+				visibilityCheckbox.OnClick = () => Order(world, "DevVisibility");
 			}
 
 			var pathCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_UNIT_PATHS");

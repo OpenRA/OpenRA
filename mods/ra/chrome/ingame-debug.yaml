@@ -45,13 +45,13 @@ Container@DEBUG_PANEL:
 			Height: 20
 			Font: Regular
 			Text: Instant Charge Time
-		Checkbox@DISABLE_SHROUD:
+		Checkbox@DISABLE_VISIBILITY_CHECKS:
 			X: 290
 			Y: 105
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Disable Shroud & Fog
+			Text: Disable visibility checks
 		Button@GIVE_CASH:
 			X: 90
 			Y: 150

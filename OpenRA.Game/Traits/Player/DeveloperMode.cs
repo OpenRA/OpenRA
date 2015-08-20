@@ -123,7 +123,7 @@ namespace OpenRA.Traits
 						break;
 					}
 
-				case "DevShroudDisable":
+				case "DevVisibility":
 					{
 						DisableShroud ^= true;
 						self.Owner.Shroud.Disabled = DisableShroud;
