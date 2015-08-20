@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		public IGraph<CellInfo> Graph { get; set; }
 
-		protected IPriorityQueue<CPos> OpenQueue { get; private set; }
+		protected IPriorityQueue<GraphConnection> OpenQueue { get; private set; }
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
 
@@ -80,13 +80,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// points considered and their Heuristics to reach
 		// the target. It pretty match identifies, in conjunction of the Actor,
 		// a deterministic set of calculations
-		protected readonly IPriorityQueue<CPos> startPoints;
+		protected readonly IPriorityQueue<GraphConnection> StartPoints;
 
 		protected BasePathSearch(IGraph<CellInfo> graph)
 		{
 			Graph = graph;
-			OpenQueue = new PriorityQueue<CPos>(new PositionComparer(Graph));
-			startPoints = new PriorityQueue<CPos>(new PositionComparer(Graph));
+			OpenQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			StartPoints = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			Debug = false;
 			MaxCost = 0;
 		}
