@@ -242,11 +242,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the other actor in our way cannot be crushed, we are blocked.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			if (!crushables.Any())
-				return true;
+			var lacksCrushability = true;
 			foreach (var crushable in crushables)
+			{
+				lacksCrushability = false;
 				if (!crushable.CrushableBy(Crushes, self.Owner))
 					return true;
+			}
+
+			// If there are no crushable traits at all, this means the other actor cannot be crushed - we are blocked.
+			if (lacksCrushability)
+				return true;
 
 			// We are not blocked by the other actor.
 			return false;
