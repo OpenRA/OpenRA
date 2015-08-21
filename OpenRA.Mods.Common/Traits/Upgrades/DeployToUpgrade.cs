@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
@@ -36,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference, Desc("Animation to play for deploying/undeploying.")]
 		public readonly string DeployAnimation = null;
 
+		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
+		public readonly int Facing = -1;
+
 		public object Create(ActorInitializer init) { return new DeployToUpgrade(init.Self, this); }
 	}
 
@@ -45,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeployToUpgradeInfo info;
 		readonly UpgradeManager manager;
 		readonly bool checkTerrainType;
+		readonly bool canTurn;
 		readonly Lazy<ISpriteBody> body;
 
 		bool isUpgraded;
@@ -55,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Length > 0;
+			canTurn = self.Info.Traits.WithInterface<IFacingInfo>().Any();
 			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
 		}
 
@@ -100,6 +106,10 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				self.CancelActivity();
+
+				// Turn
+				if (info.Facing != -1 && canTurn)
+					self.QueueActivity(new Turn(self, info.Facing));
 
 				// Grant the upgrade
 				self.QueueActivity(new CallFunc(GrantUpgrades));
