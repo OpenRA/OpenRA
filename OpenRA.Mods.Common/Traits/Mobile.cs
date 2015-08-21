@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
-		readonly Lazy<ISpeedModifier[]> speedModifiers;
+		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
@@ -351,7 +351,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray());
+			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -608,7 +608,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (terrainSpeed == 0)
 				return 0;
 
-			var modifiers = speedModifiers.Value.Select(x => x.GetSpeedModifier()).Append(terrainSpeed);
+			var modifiers = speedModifiers.Value.Append(terrainSpeed);
 
 			return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
 		}
