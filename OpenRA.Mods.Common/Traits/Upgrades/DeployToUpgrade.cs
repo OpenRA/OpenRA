@@ -40,6 +40,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
 		public readonly int Facing = -1;
 
+		[Desc("Sound to play when deploying.")]
+		public readonly string DeploySound = null;
+
+		[Desc("Sound to play when undeploying.")]
+		public readonly string UndeploySound = null;
+
 		public object Create(ActorInitializer init) { return new DeployToUpgrade(init.Self, this); }
 	}
 
@@ -91,6 +97,9 @@ namespace OpenRA.Mods.Common.Traits
 				// Play undeploy animation and after that revoke the upgrades
 				self.QueueActivity(new CallFunc(() =>
 				{
+					if (!string.IsNullOrEmpty(info.UndeploySound))
+						Sound.Play(info.UndeploySound, self.CenterPosition);
+
 					if (string.IsNullOrEmpty(info.DeployAnimation))
 					{
 						RevokeUpgrades();
@@ -114,9 +123,12 @@ namespace OpenRA.Mods.Common.Traits
 				// Grant the upgrade
 				self.QueueActivity(new CallFunc(GrantUpgrades));
 
-				// Play deploy animation
+				// Play deploy sound and animation
 				self.QueueActivity(new CallFunc(() =>
 				{
+					if (!string.IsNullOrEmpty(info.DeploySound))
+						Sound.Play(info.DeploySound, self.CenterPosition);
+
 					if (string.IsNullOrEmpty(info.DeployAnimation))
 						return;
 
