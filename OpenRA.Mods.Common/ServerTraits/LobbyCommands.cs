@@ -738,7 +738,7 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "race",
+				{ "faction",
 					s =>
 					{
 						var parts = s.Split(' ');

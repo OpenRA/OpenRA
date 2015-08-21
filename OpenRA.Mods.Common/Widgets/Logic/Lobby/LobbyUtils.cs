@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Faction == factionId,
-					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, factionId))));
+					() => orderManager.IssueOrder(Order.Command("faction {0} {1}".F(client.Index, factionId))));
 				var faction = factions[factionId];
 				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
 				var flag = item.Get<ImageWidget>("FLAG");
