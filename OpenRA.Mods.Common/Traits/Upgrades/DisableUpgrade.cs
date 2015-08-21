@@ -8,13 +8,11 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Disable the actor when this trait is enabled by an upgrade.")]
 	public class DisableUpgradeInfo : UpgradableTraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new DisableUpgrade(this); }
@@ -25,7 +23,6 @@ namespace OpenRA.Mods.Common.Traits
 		public DisableUpgrade(DisableUpgradeInfo info)
 			: base(info) { }
 
-		// Disable the actor when this trait is enabled.
 		public bool Disabled { get { return !IsTraitDisabled; } }
 		public bool MoveDisabled(Actor self) { return !IsTraitDisabled; }
 	}
