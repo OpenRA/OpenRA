@@ -142,6 +142,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (IsCanceled)
+				return NextActivity;
+
 			if (moveDisablers.Any(d => d.MoveDisabled(self)))
 				return this;
 

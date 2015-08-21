@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (isUpgraded)
 			{
 				// Play undeploy animation and after that revoke the upgrades
-				self.QueueActivity(new CallFunc(() =>
+				self.QueueActivity(false, new CallFunc(() =>
 				{
 					if (!string.IsNullOrEmpty(info.UndeploySound))
 						Sound.Play(info.UndeploySound, self.CenterPosition);
