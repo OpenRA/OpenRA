@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common
 
 				foreach (var file in directory.Value)
 				{
-					var dest = Path.Combine(destPath, targetDir, file);
+					var dest = Path.Combine(destPath, targetDir, file.ToLowerInvariant());
 					if (File.Exists(dest))
 					{
 						if (overwrite)
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common
 					}
 
 					var destFile = Path.GetFileName(file);
-					var dest = Path.Combine(destPath, targetDir, destFile);
+					var dest = Path.Combine(destPath, targetDir, destFile.ToLowerInvariant());
 					if (File.Exists(dest) && !overwrite)
 					{
 						Log.Write("debug", "Skipping {0}".F(dest));
