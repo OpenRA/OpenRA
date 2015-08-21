@@ -18,11 +18,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
-		public object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
@@ -35,11 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithVoxelBody : IAutoSelectionSize
+	public class WithVoxelBody : UpgradableTrait<WithVoxelBodyInfo>, IAutoSelectionSize
 	{
 		readonly int2 size;
 
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
+			: base(info)
 		{
 			var body = self.Trait<IBodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
 			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => false, () => 0));
+				() => IsTraitDisabled, () => 0));
 
 			// Selection size
 			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
