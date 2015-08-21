@@ -18,8 +18,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	public interface IPathSearch
 	{
-		string Id { get; }
-
 		/// <summary>
 		/// The Graph used by the A*
 		/// </summary>
@@ -71,36 +69,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		public IGraph<CellInfo> Graph { get; set; }
 
-		// The Id of a Pathsearch is computed by its properties.
-		// So two PathSearch instances with the same parameters will
-		// Compute the same Id. This is used for caching purposes.
-		public string Id
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(id))
-				{
-					var builder = new StringBuilder();
-					builder.Append(Graph.Actor.ActorID);
-					while (!startPoints.Empty)
-					{
-						var startpoint = startPoints.Pop();
-						builder.Append(startpoint.X);
-						builder.Append(startpoint.Y);
-						builder.Append(Graph[startpoint].EstimatedTotal);
-					}
-
-					builder.Append(Graph.InReverse);
-					if (Graph.IgnoredActor != null) builder.Append(Graph.IgnoredActor.ActorID);
-					builder.Append(Graph.LaneBias);
-
-					id = builder.ToString();
-				}
-
-				return id;
-			}
-		}
-
 		public IPriorityQueue<CPos> OpenQueue { get; protected set; }
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
@@ -108,7 +76,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
-		string id;
 		protected Func<CPos, int> heuristic;
 		protected Func<CPos, bool> isGoal;
 
