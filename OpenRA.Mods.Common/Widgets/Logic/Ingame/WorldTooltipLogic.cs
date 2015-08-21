@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var cachedWidth = 0;
 			var labelText = "";
 			var showOwner = false;
-			var flagRace = "";
+			var flagFaction = "";
 			var ownerName = "";
 			var ownerColor = Color.White;
 			var extraText = "";
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (showOwner)
 				{
-					flagRace = o.Faction.InternalName;
+					flagFaction = o.Faction.InternalName;
 					ownerName = o.PlayerName;
 					ownerColor = o.Color.RGB;
 					widget.Bounds.Height = doubleHeight;
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			label.GetText = () => labelText;
 			flag.IsVisible = () => showOwner;
 			flag.GetImageCollection = () => "flags";
-			flag.GetImageName = () => flagRace;
+			flag.GetImageName = () => flagFaction;
 			owner.IsVisible = () => showOwner;
 			owner.GetText = () => ownerName;
 			owner.GetColor = () => ownerColor;

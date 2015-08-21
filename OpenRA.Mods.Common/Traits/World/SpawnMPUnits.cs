@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 				.RandomOrDefault(w.SharedRandom);
 
 			if (unitGroup == null)
-				throw new InvalidOperationException("No starting units defined for country {0} with class {1}".F(p.Faction.InternalName, spawnClass));
+				throw new InvalidOperationException("No starting units defined for faction {0} with class {1}".F(p.Faction.InternalName, spawnClass));
 
 			if (unitGroup.BaseActor != null)
 			{

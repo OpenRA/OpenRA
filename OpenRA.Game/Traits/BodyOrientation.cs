@@ -61,7 +61,7 @@ namespace OpenRA.Traits
 		{
 			this.info = info;
 			var self = init.Self;
-			var race = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			var faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 
 			quantizedFacings = Exts.Lazy(() =>
 			{
@@ -73,7 +73,7 @@ namespace OpenRA.Traits
 				if (qboi == null)
 					throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
 
-				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.SequenceProvider, race);
+				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.SequenceProvider, faction);
 			});
 		}
 

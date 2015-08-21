@@ -147,10 +147,10 @@ namespace OpenRA
 			public bool IsHuman;
 			public bool IsBot;
 
-			// The faction name (aka Country)
+			// The faction's display name.
 			public string FactionName;
 
-			// The faction id (aka Country, aka Race)
+			// The faction ID, a.k.a. the faction's internal name.
 			public string FactionId;
 			public HSLColor Color;
 

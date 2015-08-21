@@ -67,13 +67,13 @@ namespace OpenRA.Mods.Common.Widgets
 				if (current == null)
 					continue;
 
-				var race = queue.Trait.Actor.Owner.Faction.InternalName;
+				var faction = queue.Trait.Actor.Owner.Faction.InternalName;
 				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;
 
 				var rsi = actor.Traits.Get<RenderSpritesInfo>();
-				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, race));
+				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, faction));
 				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
 				var bi = actor.Traits.Get<BuildableInfo>();
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);

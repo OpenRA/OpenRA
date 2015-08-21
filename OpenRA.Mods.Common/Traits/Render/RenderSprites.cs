@@ -57,9 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var sequenceProvider = init.World.Map.SequenceProvider;
-			var race = init.Get<FactionInit, string>();
+			var faction = init.Get<FactionInit, string>();
 			var ownerName = init.Get<OwnerInit>().PlayerName;
-			var image = GetImage(init.Actor, sequenceProvider, race);
+			var image = GetImage(init.Actor, sequenceProvider, faction);
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var facings = 0;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (facings == -1)
 				{
 					var qbo = init.Actor.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
-					facings = qbo != null ? qbo.QuantizedBodyFacings(init.Actor, sequenceProvider, race) : 1;
+					facings = qbo != null ? qbo.QuantizedBodyFacings(init.Actor, sequenceProvider, faction) : 1;
 				}
 			}
 
@@ -80,13 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 					yield return preview;
 		}
 
-		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string race)
+		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string faction)
 		{
-			if (FactionImages != null && !string.IsNullOrEmpty(race))
+			if (FactionImages != null && !string.IsNullOrEmpty(faction))
 			{
-				string raceImage = null;
-				if (FactionImages.TryGetValue(race, out raceImage) && sequenceProvider.HasSequence(raceImage))
-					return raceImage;
+				string factionImage = null;
+				if (FactionImages.TryGetValue(faction, out factionImage) && sequenceProvider.HasSequence(factionImage))
+					return factionImage;
 			}
 
 			return (Image ?? actor.Name).ToLowerInvariant();

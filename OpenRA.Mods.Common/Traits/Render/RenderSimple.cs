@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
-		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
+		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction)
 		{
-			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, race), Sequence).Facings;
+			return sequenceProvider.GetSequence(GetImage(ai, sequenceProvider, faction), Sequence).Facings;
 		}
 	}
 

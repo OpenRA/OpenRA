@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (captor.World.LocalPlayer != captor.Owner)
 				return;
 
-			var race = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
-			Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, race);
+			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
+			Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, faction);
 		}
 	}
 }

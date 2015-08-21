@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
 
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race) { return 1; }
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction) { return 1; }
 	}
 
 	class WithCrateBody : INotifyParachuteLanded

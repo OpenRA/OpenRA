@@ -28,7 +28,7 @@ namespace OpenRA
 
 		public MapPlayers(Ruleset rules, int playerCount)
 		{
-			var firstRace = rules.Actors["world"].Traits
+			var firstFaction = rules.Actors["world"].Traits
 				.WithInterface<FactionInfo>().First(f => f.Selectable).InternalName;
 
 			Players = new Dictionary<string, PlayerReference>
@@ -37,7 +37,7 @@ namespace OpenRA
 					"Neutral", new PlayerReference
 					{
 						Name = "Neutral",
-						Faction = firstRace,
+						Faction = firstFaction,
 						OwnsWorld = true,
 						NonCombatant = true
 					}
@@ -46,7 +46,7 @@ namespace OpenRA
 					"Creeps", new PlayerReference
 					{
 						Name = "Creeps",
-						Faction = firstRace,
+						Faction = firstFaction,
 						NonCombatant = true,
 						Enemies = Exts.MakeArray(playerCount, i => "Multi{0}".F(i))
 					}

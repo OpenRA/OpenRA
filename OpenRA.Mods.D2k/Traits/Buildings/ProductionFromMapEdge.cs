@@ -27,7 +27,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info) { }
 
-		public override bool Produce(Actor self, ActorInfo producee, string raceVariant)
+		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
 			var location = self.World.Map.ChooseClosestEdgeCell(self.Location);
 			var pos = self.World.Map.CenterOfCell(location);
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.D2k.Traits
 						new FacingInit(initialFacing)
 					};
 
-					if (raceVariant != null)
-						td.Add(new FactionInit(raceVariant));
+					if (factionVariant != null)
+						td.Add(new FactionInit(factionVariant));
 
 					var newUnit = self.World.CreateActor(producee.Name, td);
 

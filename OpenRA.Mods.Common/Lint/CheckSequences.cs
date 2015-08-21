@@ -36,21 +36,21 @@ namespace OpenRA.Mods.Common.Lint
 				Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal));
 
 			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-			var races = rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var factions = rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
 			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
 
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSpritesInfo>())
 				{
-					foreach (var race in races)
+					foreach (var faction in factions)
 					{
 						foreach (var sequenceProvider in sequenceProviders)
 						{
-							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, race);
+							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
 							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
-								emitWarning("Sprite image {0} from actor {1} using race {2} has no sequence definition."
-									.F(image, actorInfo.Value.Name, race));
+								emitWarning("Sprite image {0} from actor {1} using faction {2} has no sequence definition."
+									.F(image, actorInfo.Value.Name, faction));
 						}
 					}
 				}
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Lint
 								if (renderInfo == null)
 									continue;
 
-								foreach (var race in races)
+								foreach (var faction in factions)
 								{
 									var sequenceReference = field.GetCustomAttributes<SequenceReferenceAttribute>(true).FirstOrDefault();
 									if (sequenceReference != null && !string.IsNullOrEmpty(sequenceReference.ImageReference))
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Lint
 												if (!string.IsNullOrEmpty(imageOverride) && sequenceDefinitions.All(s => s.Key != imageOverride.ToLowerInvariant()))
 													emitWarning("Custom sprite image {0} from actor {1} has no sequence definition.".F(imageOverride, actorInfo.Value.Name));
 												else
-													CheckDefintions(imageOverride, sequenceReference, actorInfo, sequence, race, field, traitInfo);
+													CheckDefintions(imageOverride, sequenceReference, actorInfo, sequence, faction, field, traitInfo);
 											}
 										}
 									}
@@ -93,8 +93,8 @@ namespace OpenRA.Mods.Common.Lint
 									{
 										foreach (var sequenceProvider in sequenceProviders)
 										{
-											var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, race);
-											CheckDefintions(image, sequenceReference, actorInfo, sequence, race, field, traitInfo);
+											var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
+											CheckDefintions(image, sequenceReference, actorInfo, sequence, faction, field, traitInfo);
 										}
 									}
 								}
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckDefintions(string image, SequenceReferenceAttribute sequenceReference,
-			KeyValuePair<string, ActorInfo> actorInfo, string sequence, string race, FieldInfo field, ITraitInfo traitInfo)
+			KeyValuePair<string, ActorInfo> actorInfo, string sequence, string faction, FieldInfo field, ITraitInfo traitInfo)
 		{
 			var definitions = sequenceDefinitions.FirstOrDefault(n => n.Key == image.ToLowerInvariant());
 			if (definitions != null)
@@ -157,12 +157,12 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					if (!definitions.Value.Nodes.Any(n => n.Key.StartsWith(sequence)))
 						emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence prefix {3} from field {4} of {5}"
-							.F(image, actorInfo.Value.Name, race, sequence, field.Name, traitInfo));
+							.F(image, actorInfo.Value.Name, faction, sequence, field.Name, traitInfo));
 				}
 				else if (definitions.Value.Nodes.All(n => n.Key != sequence))
 				{
 					emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence {3} from field {4} of {5}"
-						.F(image, actorInfo.Value.Name, race, sequence, field.Name, traitInfo));
+						.F(image, actorInfo.Value.Name, faction, sequence, field.Name, traitInfo));
 				}
 			}
 		}
