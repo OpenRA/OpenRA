@@ -328,7 +328,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					X: 190
 					Y: 0
 
-ScrollPanel@RACE_DROPDOWN_TEMPLATE:
+ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:

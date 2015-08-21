@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var options = factions.Where(f => f.Value.Selectable).GroupBy(f => f.Value.Side)
 				.ToDictionary(g => g.Key ?? "", g => g.Select(f => f.Key));
 
-			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
