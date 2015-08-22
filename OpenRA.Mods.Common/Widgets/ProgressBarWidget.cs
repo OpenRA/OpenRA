@@ -18,17 +18,35 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public int Percentage = 0;
 		public bool Indeterminate = false;
+		public int Maximum = 100;
 
 		public Func<int> GetPercentage;
+		public Func<int> GetMaximumPercentage;
 		public Func<bool> IsIndeterminate;
 
 		// Indeterminant bar properties
 		float offset = 0f;
 		float tickStep = 0.04f;
 
+		public int CalculateOnePercentofMaximum(int maxValue)
+		{
+			if (maxValue > 0)
+				Maximum = maxValue;
+
+			return maxValue / GetMaximumPercentage();
+		}
+
 		public ProgressBarWidget()
 		{
-			GetPercentage = () => Percentage;
+			GetMaximumPercentage = () => Maximum;
+			GetPercentage = () =>
+			{
+				if (Percentage < Maximum)
+					return Percentage;
+				else
+					return GetMaximumPercentage();
+			};
+
 			IsIndeterminate = () => Indeterminate;
 		}
 
@@ -36,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			Percentage = other.Percentage;
+			Maximum = other.Maximum;
+			GetMaximumPercentage = other.GetMaximumPercentage;
 			GetPercentage = other.GetPercentage;
 			IsIndeterminate = other.IsIndeterminate;
 		}
@@ -44,11 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var rb = RenderBounds;
 			var percentage = GetPercentage();
+			var maximum = GetMaximumPercentage();
+
 			WidgetUtils.DrawPanel("progressbar-bg", rb);
 
 			var barRect = wasIndeterminate ?
 				new Rectangle(rb.X + 2 + (int)(0.75 * offset * (rb.Width - 4)), rb.Y + 2, (rb.Width - 4) / 4, rb.Height - 4) :
-				new Rectangle(rb.X + 2, rb.Y + 2, percentage * (rb.Width - 4) / 100, rb.Height - 4);
+				new Rectangle(rb.X + 2, rb.Y + 2, percentage * (rb.Width - 4) / maximum, rb.Height - 4);
 
 			if (barRect.Width > 0)
 				WidgetUtils.DrawPanel("progressbar-thumb", barRect);
