@@ -48,20 +48,20 @@ SmallDebris:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:
-	Projectile: Bullet
+	Projectile: Shrapnel
 		Speed: 50, 125
-		Blockable: false
 		Angle: 91, 264
-		Inaccuracy: 416
-		Image: dbris1sm # TODO: add some variation
+		Image: dbrissm
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true
 
 LargeDebris:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:
-	Projectile: Bullet
+	Projectile: Shrapnel
 		Speed: 50, 125
-		Blockable: false
 		Angle: 91, 264
-		Inaccuracy: 416
-		Image: dbris1lg # TODO: add some variation
+		Image: dbrislg
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true

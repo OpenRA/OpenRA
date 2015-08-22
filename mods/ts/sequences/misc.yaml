@@ -402,76 +402,48 @@ srock05:
 		UseTilesetExtension: true
 		Offset: 0, -12
 
-dbris1sm:
-	idle:
+dbrissm:
+	1: dbris1sm
+		Length:*
+	2: dbris2sm
+		Length:*
+	3: dbris3sm
+		Length:*
+	4: dbris4sm
+		Length:*
+	5: dbris5sm
+		Length:*
+	6: dbris6sm
+		Length:*
+	7: dbris7sm
+		Length:*
+	8: dbris8sm
+		Length:*
+	9: dbris9sm
+		Length:*
+	10: dbrs10sm
 		Length:*
 
-dbris2sm:
-	idle:
+dbrislg:
+	1: dbris1lg
 		Length:*
-
-dbris3sm:
-	idle:
+	2: dbris2lg
 		Length:*
-
-dbris4sm:
-	idle:
+	3: dbris3lg
 		Length:*
-
-dbris5sm:
-	idle:
+	4: dbris4lg
 		Length:*
-
-dbris6sm:
-	idle:
+	5: dbris5lg
 		Length:*
-
-dbris7sm:
-	idle:
+	6: dbris6lg
 		Length:*
-
-dbris8sm:
-	idle:
+	7: dbris7lg
 		Length:*
-
-dbris9sm:
-	idle:
+	8: dbris8lg
 		Length:*
-
-dbris1lg:
-	idle:
+	9: dbris9lg
 		Length:*
-
-dbris2lg:
-	idle:
-		Length:*
-
-dbris3lg:
-	idle:
-		Length:*
-
-dbris4lg:
-	idle:
-		Length:*
-
-dbris5lg:
-	idle:
-		Length:*
-
-dbris6lg:
-	idle:
-		Length:*
-
-dbris7lg:
-	idle:
-		Length:*
-
-dbris8lg:
-	idle:
-		Length:*
-
-dbris9lg:
-	idle:
+	10: dbrs10lg
 		Length:*
 
 crat01:
@@ -512,3 +484,4 @@ palet03:
 
 palet04:
 	idle:
+
