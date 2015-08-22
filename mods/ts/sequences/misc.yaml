@@ -67,6 +67,10 @@ clock:
 	idle: gclock2
 		Length: *
 
+darken:
+	idle: gclock2
+		Length: 1
+
 pips:
 	medic: 
 		Start: 6
