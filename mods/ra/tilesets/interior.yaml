@@ -10,6 +10,10 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 255,0,0,0
+	TerrainType@ClearNoSmudges:
+		Type: ClearNoSmudges
+		TargetTypes: Ground
+		Color: 255,0,0,0
 	TerrainType@Gems:
 		Type: Gems
 		TargetTypes: Ground
@@ -37,22 +41,22 @@ Templates:
 		PickAny: True
 		Category: Floor
 		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
-			4: Clear
-			5: Clear
-			6: Clear
-			7: Clear
-			8: Clear
-			9: Clear
-			10: Clear
-			11: Clear
-			12: Clear
-			13: Clear
-			14: Clear
-			15: Clear
+			0: ClearNoSmudges
+			1: ClearNoSmudges
+			2: ClearNoSmudges
+			3: ClearNoSmudges
+			4: ClearNoSmudges
+			5: ClearNoSmudges
+			6: ClearNoSmudges
+			7: ClearNoSmudges
+			8: ClearNoSmudges
+			9: ClearNoSmudges
+			10: ClearNoSmudges
+			11: ClearNoSmudges
+			12: ClearNoSmudges
+			13: ClearNoSmudges
+			14: ClearNoSmudges
+			15: ClearNoSmudges
 	Template@65535:
 		Id: 65535
 		Images: clear1.int
@@ -60,22 +64,22 @@ Templates:
 		PickAny: True
 		Category: Floor
 		Tiles:
-			0: Clear
-			1: Clear
-			2: Clear
-			3: Clear
-			4: Clear
-			5: Clear
-			6: Clear
-			7: Clear
-			8: Clear
-			9: Clear
-			10: Clear
-			11: Clear
-			12: Clear
-			13: Clear
-			14: Clear
-			15: Clear
+			0: ClearNoSmudges
+			1: ClearNoSmudges
+			2: ClearNoSmudges
+			3: ClearNoSmudges
+			4: ClearNoSmudges
+			5: ClearNoSmudges
+			6: ClearNoSmudges
+			7: ClearNoSmudges
+			8: ClearNoSmudges
+			9: ClearNoSmudges
+			10: ClearNoSmudges
+			11: ClearNoSmudges
+			12: ClearNoSmudges
+			13: ClearNoSmudges
+			14: ClearNoSmudges
+			15: ClearNoSmudges
 	Template@329:
 		Id: 329
 		Images: wall0001.int
