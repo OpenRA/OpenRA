@@ -400,6 +400,7 @@
 	Guardable:
 		Range: 3
 	FrozenUnderFog:
+	GpsRemoveFrozenActor:
 	Tooltip:
 		GenericName: Structure
 	Demolishable:
@@ -461,6 +462,7 @@
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:
+	GpsRemoveFrozenActor:
 	ScriptTriggers:
 
 ^TechBuilding:

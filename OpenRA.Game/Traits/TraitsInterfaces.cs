@@ -369,4 +369,9 @@ namespace OpenRA.Traits
 		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
 		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 	}
+
+	public interface IRemoveFrozenActor
+	{
+		bool RemoveActor(Actor self, Player owner);
+	}
 }
