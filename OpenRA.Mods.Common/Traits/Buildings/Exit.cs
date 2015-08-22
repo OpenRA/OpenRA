@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
-	public class ExitInfo : TraitInfo<Exit>
+	public class ExitInfo : TraitInfo<Exit>, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Offset at which that the exiting actor is spawned relative to the center of the producing actor.")]
 		public readonly WVec SpawnOffset = WVec.Zero;

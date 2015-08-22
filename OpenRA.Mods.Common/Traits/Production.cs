@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Lazy<RallyPoint> rp;
 
-		public ProductionInfo Info;
+		public readonly ProductionInfo Info;
 		public string Faction { get; private set; }
 
 		readonly bool occupiesSpace;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
-			occupiesSpace = init.Self.Info.Traits.WithInterface<IOccupySpaceInfo>().Any();
+			occupiesSpace = init.Self.Info.Traits.Contains<IOccupySpaceInfo>();
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
@@ -118,17 +118,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (Reservable.IsReserved(self))
 				return false;
 
-			if (!occupiesSpace)
-			{
-				DoProduction(self, producee, null, factionVariant);
-				return true;
-			}
-
 			// Pick a spawn/exit point pair
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
-			if (exit != null)
+			if (exit != null || !occupiesSpace)
 			{
 				DoProduction(self, producee, exit, factionVariant);
 				return true;
