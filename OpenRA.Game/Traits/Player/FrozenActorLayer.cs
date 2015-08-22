@@ -27,6 +27,7 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
+		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
@@ -46,6 +47,7 @@ namespace OpenRA.Traits
 		{
 			actor = self;
 			this.shroud = shroud;
+			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
@@ -127,6 +129,16 @@ namespace OpenRA.Traits
 
 		public bool HasRenderables { get { return renderables.Any(); } }
 
+		public bool ShouldBeRemoved(Player owner)
+		{
+			// We use a loop here for performance reasons
+			foreach (var rfa in removeFrozenActors)
+				if (rfa.RemoveActor(actor, owner))
+					return true;
+
+			return false;
+		}
+
 		public override string ToString()
 		{
 			return "{0} {1}{2}".F(Info.Name, ID, IsValid ? "" : " (invalid)");
@@ -140,7 +152,7 @@ namespace OpenRA.Traits
 
 		readonly World world;
 		readonly Player owner;
-		Dictionary<uint, FrozenActor> frozen;
+		readonly Dictionary<uint, FrozenActor> frozen;
 
 		public FrozenActorLayer(Actor self)
 		{
@@ -169,7 +181,9 @@ namespace OpenRA.Traits
 				var frozenActor = kvp.Value;
 				frozenActor.Tick();
 
-				if (frozenActor.Visible)
+				if (frozenActor.ShouldBeRemoved(owner))
+					remove.Add(kvp.Key);
+				else if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
 					remove.Add(kvp.Key);
