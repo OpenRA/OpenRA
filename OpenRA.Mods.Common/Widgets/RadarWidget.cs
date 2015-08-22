@@ -376,6 +376,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
 							{
+								if (!world.Map.Contains(cell.First))
+									continue;
+
 								var uv = cell.First.ToMPos(world.Map.TileShape);
 								var color = cell.Second.ToArgb();
 								if (isDiamond)
