@@ -258,6 +258,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 					Y: 70
 					Width: PARENT_RIGHT-30
 					Height: PARENT_BOTTOM-35-50
+					TopBottomSpacing: 5
 					ItemSpacing: 5
 					Children:
 						ScrollItem@TEAM_TEMPLATE:

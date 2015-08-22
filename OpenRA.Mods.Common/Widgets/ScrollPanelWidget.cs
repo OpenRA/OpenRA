@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
-		public int ItemSpacing = 2;
+		public int TopBottomSpacing = 2;
+		public int ItemSpacing = 0;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Background = "scrollpanel-bg";
 		public string Button = "scrollpanel-button";

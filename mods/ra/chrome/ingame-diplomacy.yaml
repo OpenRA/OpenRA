@@ -44,6 +44,7 @@ Background@INGAME_DIPLOMACY_BG:
 			Y: 67
 			Width: PARENT_RIGHT-40
 			Height: PARENT_BOTTOM-87-35
+			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:
