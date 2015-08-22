@@ -18,11 +18,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Palette effect used for sprinkle \"animations\".")]
 	class RotationPaletteEffectInfo : ITraitInfo
 	{
+		[Desc("Defines to which palettes this effect should be applied to.",
+			"If none specified, it applies to all palettes not explicitly excluded.")]
+		public readonly HashSet<string> Palettes = new HashSet<string>();
+
+		[Desc("Defines for which tileset IDs this effect should be loaded.",
+			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
+		public readonly string[] Tilesets = null;
+
 		[Desc("Defines which palettes should be excluded from this effect.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
 
 		[Desc("Don't apply the effect for these tileset IDs.")]
-		public readonly string[] ExcludeTilesets = { };
+		public readonly string[] ExcludeTilesets = null;
 
 		[Desc("Palette index of first RotationRange color.")]
 		public readonly int RotationBase = 0x60;
@@ -65,7 +73,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var kvp in palettes)
 			{
-				if (info.ExcludePalettes.Contains(kvp.Key) || info.ExcludeTilesets.Contains(world.TileSet.Id))
+				if ((info.Palettes.Count > 0 && !info.Palettes.Any(kvp.Key.StartsWith))
+					|| (info.Tilesets != null && !info.Tilesets.Contains(world.TileSet.Id))
+					|| (info.ExcludePalettes.Count > 0 && info.ExcludePalettes.Any(kvp.Key.StartsWith))
+					|| (info.ExcludeTilesets != null && info.ExcludeTilesets.Contains(world.TileSet.Id)))
 					continue;
 
 				var palette = kvp.Value;

@@ -68,14 +68,13 @@
 	PlayerHighlightPalette:
 	MenuPaletteEffect:
 	RotationPaletteEffect@defaultwater:
-		ExcludePalettes: chrome
+		Palettes: terrain
 		ExcludeTilesets: DESERT
 	RotationPaletteEffect@actorswater:
-		ExcludePalettes: chrome, terrain
-		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+		Palettes: player, effect
 	RotationPaletteEffect@desertwater:
-		ExcludePalettes: chrome, effect, player
-		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+		Palettes: terrain
+		Tilesets: DESERT
 		RotationBase: 32
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect
