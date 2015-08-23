@@ -55,6 +55,12 @@ namespace OpenRA
 				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
 			}
 
+			if (Game.OrderManager != null && Game.OrderManager.World != null && Game.OrderManager.World.Map != null)
+			{
+				var map = Game.OrderManager.World.Map;
+				Log.Write("exception", "on map {0} ({1} by {2}).", map.Uid, map.Title, map.Author);
+			}
+
 			Log.Write("exception", "Operating System: {0} ({1})", Platform.CurrentPlatform, Environment.OSVersion);
 			Log.Write("exception", "Runtime Version: {0}", Platform.RuntimeVersion);
 			var rpt = BuildExceptionReport(e).ToString();
