@@ -83,8 +83,8 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Game.exe.config"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
-	File "${SRCDIR}\OpenRA.Renderer.Sdl2.dll"
+	File "${SRCDIR}\OpenRA.Platforms.Null.dll"
+	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
@@ -188,8 +188,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
-	Delete $INSTDIR\OpenRA.Renderer.Null.dll
-	Delete $INSTDIR\OpenRA.Renderer.Sdl2.dll
+	Delete $INSTDIR\OpenRA.Platforms.Null.dll
+	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Mono.Nat.dll

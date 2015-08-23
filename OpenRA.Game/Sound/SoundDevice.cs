@@ -8,10 +8,13 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
-	interface ISoundEngine
+	public interface ISoundEngine
 	{
+		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
 		float Volume { get; set; }
@@ -41,7 +44,7 @@ namespace OpenRA
 		}
 	}
 
-	interface ISoundSource { }
+	public interface ISoundSource { }
 
 	public interface ISound
 	{

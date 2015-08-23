@@ -79,7 +79,7 @@ INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
-CORE = rsdl2 rnull game utility
+CORE = pdefault pnull game utility
 TOOLS = gamemonitor
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -100,25 +100,25 @@ endif
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SDL2-CS.dll thirdparty/download/SharpFont.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
 game: $(game_TARGET)
 
-# Renderer dlls
-rsdl2_SRCS := $(shell find OpenRA.Renderer.Sdl2/ -iname '*.cs')
-rsdl2_TARGET = OpenRA.Renderer.Sdl2.dll
-rsdl2_KIND = library
-rsdl2_DEPS = $(game_TARGET)
-rsdl2_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(rsdl2_DEPS)
+# Platform dlls
+pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
+pdefault_TARGET = OpenRA.Platforms.Default.dll
+pdefault_KIND = library
+pdefault_DEPS = $(game_TARGET)
+pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(pdefault_DEPS)
 
-rnull_SRCS := $(shell find OpenRA.Renderer.Null/ -iname '*.cs')
-rnull_TARGET = OpenRA.Renderer.Null.dll
-rnull_KIND = library
-rnull_DEPS = $(game_TARGET)
-rnull_LIBS = $(COMMON_LIBS) $(rnull_DEPS)
-PROGRAMS += rsdl2 rnull
-renderers: $(rsdl2_TARGET) $(rnull_TARGET)
+pnull_SRCS := $(shell find OpenRA.Platforms.Null/ -iname '*.cs')
+pnull_TARGET = OpenRA.Platforms.Null.dll
+pnull_KIND = library
+pnull_DEPS = $(game_TARGET)
+pnull_LIBS = $(COMMON_LIBS) $(pnull_DEPS)
+PROGRAMS += pdefault pnull
+platforms: $(pdefault_TARGET) $(pnull_TARGET)
 
 # Mods Common
 mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
@@ -181,8 +181,11 @@ check: utility mods
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
 	@echo
-	@echo "Checking for code style violations in OpenRA.Renderer.Null..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Null
+	@echo "Checking for code style violations in OpenRA.Platforms.Default..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Default
+	@echo
+	@echo "Checking for code style violations in OpenRA.Platforms.Null..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Null
 	@echo
 	@echo "Checking for code style violations in OpenRA.GameMonitor..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
@@ -201,9 +204,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.TS..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
-	@echo
-	@echo "Checking for code style violations in OpenRA.Renderer.Sdl2..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Renderer.Sdl2
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
@@ -275,7 +275,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: core
 
-core: game renderers mods utility
+core: game platforms mods utility
 
 tools: gamemonitor
 

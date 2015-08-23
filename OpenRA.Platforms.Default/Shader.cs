@@ -15,7 +15,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenTK.Graphics.OpenGL;
 
-namespace OpenRA.Renderer.Sdl2
+namespace OpenRA.Platforms.Default
 {
 	public class Shader : IShader
 	{

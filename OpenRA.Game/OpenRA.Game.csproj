@@ -84,10 +84,6 @@
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\download\SDL2-CS.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Activity.cs" />
@@ -120,7 +116,6 @@
     <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
-    <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
@@ -228,8 +223,6 @@
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />
-    <Compile Include="Sound\OpenAlSound.cs" />
-    <Compile Include="Sound\NullSound.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
@@ -249,6 +242,8 @@
     <Compile Include="Graphics\TerrainSpriteLayer.cs" />
     <Compile Include="Map\ProjectedCellRegion.cs" />
     <Compile Include="Map\MapCoordsRegion.cs" />
+    <Compile Include="Renderer.cs" />
+    <Compile Include="Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -298,7 +293,6 @@
     <Compile Include="Support\PerfTimer.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="MiniYaml.cs" />
-    <Compile Include="Platform.cs" />
     <Compile Include="StreamExts.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapCache.cs" />

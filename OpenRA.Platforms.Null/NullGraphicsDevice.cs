@@ -10,21 +10,10 @@
 
 using System;
 using System.Drawing;
-using OpenRA;
 using OpenRA.Graphics;
 
-[assembly: Renderer(typeof(OpenRA.Renderer.Null.DeviceFactory))]
-
-namespace OpenRA.Renderer.Null
+namespace OpenRA.Platforms.Null
 {
-	public class DeviceFactory : IDeviceFactory
-	{
-		public IGraphicsDevice Create(Size size, WindowMode windowMode)
-		{
-			return new NullGraphicsDevice(size, windowMode);
-		}
-	}
-
 	public sealed class NullGraphicsDevice : IGraphicsDevice
 	{
 		public Size WindowSize { get; internal set; }

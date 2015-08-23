@@ -11,13 +11,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenTK;
-using OpenTK.Audio.OpenAL;
 
 namespace OpenRA
 {
@@ -29,6 +28,17 @@ namespace OpenRA
 		static ISound music;
 		static ISound video;
 		static MusicInfo currentMusic;
+
+		static ISoundEngine CreateDevice(Assembly platformDll)
+		{
+			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
+			{
+				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
+				return factory.CreateSound();
+			}
+
+			throw new InvalidOperationException("Platform DLL is missing PlatformAttribute to tell us what type to use!");
+		}
 
 		static ISoundSource LoadSound(string filename)
 		{
@@ -56,26 +66,12 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 		}
 
-		static ISoundEngine CreateEngine(string engine)
+		public static void Initialize(SoundSettings soundSettings, ServerSettings serverSettings)
 		{
-			engine = Game.Settings.Server.Dedicated ? "Null" : engine;
-			switch (engine)
-			{
-				case "AL": return new OpenAlSoundEngine();
-				case "Null": return new NullSoundEngine();
+			var engineName = serverSettings.Dedicated ? "Null" : soundSettings.Engine;
+			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
+			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
 
-				default:
-					throw new InvalidOperationException("Unsupported sound engine: {0}".F(engine));
-			}
-		}
-
-		public static void Create(string engine)
-		{
-			soundEngine = CreateEngine(engine);
-		}
-
-		public static void Initialize()
-		{
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
 			currentMusic = null;
@@ -86,14 +82,11 @@ namespace OpenRA
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("AL", null, "Default Output"),
+				new SoundDevice("Default", null, "Default Output"),
 				new SoundDevice("Null", null, "Output Disabled")
 			};
 
-			var devices = OpenAlSoundEngine.AvailableDevices()
-				.Select(d => new SoundDevice("AL", d, d));
-
-			return defaultDevices.Concat(devices).ToArray();
+			return defaultDevices.Concat(soundEngine.AvailableDevices()).ToArray();
 		}
 
 		public static void SetListenerPosition(WPos position)
