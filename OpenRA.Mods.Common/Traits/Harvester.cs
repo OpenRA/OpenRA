@@ -353,12 +353,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					// A bot order gives us a CPos.Zero TargetLocation, so find some good resources for him:
-					loc = FindNextResourceForBot(self);
-
-					// No more resources? Oh well.
-					if (!loc.HasValue)
-						return;
+					// A bot order gives us a CPos.Zero TargetLocation.
+					loc = self.Location;
 				}
 
 				var next = new FindResources(self);
@@ -409,45 +405,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Turn off idle smarts to obey the stop/move:
 				idleSmart = false;
 			}
-		}
-
-		static CPos? FindNextResourceForBot(Actor self)
-		{
-			// NOTE: This is only used for the AI to find the next available resource to harvest.
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
-			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-
-			// Find any harvestable resources:
-			var path = self.World.WorldActor.Trait<IPathFinder>().FindPath(
-				PathSearch.Search(self.World, mobileInfo, self, true,
-					loc =>
-					{
-						var resType = resLayer.GetResource(loc);
-						if (resType == null)
-							return false;
-
-						// Can the harvester collect this kind of resource?
-						if (!harvInfo.Resources.Contains(resType.Info.Name))
-							return false;
-
-						if (territory != null)
-						{
-							// Another harvester has claimed this resource:
-							ResourceClaim claim;
-							if (territory.IsClaimedByAnyoneElse(self, loc, out claim))
-								return false;
-						}
-
-						return true;
-					})
-					.FromPoint(self.Location));
-
-			if (path.Count == 0)
-				return null;
-
-			return path[0];
 		}
 
 		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)
