@@ -190,6 +190,11 @@ namespace OpenRA
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
+		public Hotkey MapScrollUp = new Hotkey(Keycode.UP, Modifiers.None);
+		public Hotkey MapScrollDown = new Hotkey(Keycode.DOWN, Modifiers.None);
+		public Hotkey MapScrollLeft = new Hotkey(Keycode.LEFT, Modifiers.None);
+		public Hotkey MapScrollRight = new Hotkey(Keycode.RIGHT, Modifiers.None);
+
 		public Hotkey PauseKey = new Hotkey(Keycode.PAUSE, Modifiers.None);
 		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
 		public Hotkey SellKey = new Hotkey(Keycode.Z, Modifiers.None);

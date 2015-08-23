@@ -222,12 +222,31 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			switch (e.Key)
+			var key = Hotkey.FromKeyInput(e);
+			var ks = Game.Settings.Keys;
+
+			if (key == ks.MapScrollUp)
 			{
-				case Keycode.UP: keyboardDirections = keyboardDirections.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down); return true;
-				case Keycode.DOWN: keyboardDirections = keyboardDirections.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down); return true;
-				case Keycode.LEFT: keyboardDirections = keyboardDirections.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down); return true;
-				case Keycode.RIGHT: keyboardDirections = keyboardDirections.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down); return true;
+				keyboardDirections = keyboardDirections.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down);
+				return true;
+			}
+
+			if (key == ks.MapScrollDown)
+			{
+				keyboardDirections = keyboardDirections.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down);
+				return true;
+			}
+
+			if (key == ks.MapScrollLeft)
+			{
+				keyboardDirections = keyboardDirections.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down);
+				return true;
+			}
+
+			if (key == ks.MapScrollRight)
+			{
+				keyboardDirections = keyboardDirections.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down);
+				return true;
 			}
 
 			return false;
