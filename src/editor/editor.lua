@@ -1397,6 +1397,7 @@ function CreateEditor(bare)
         { ID_QUICKADDWATCH, TR("Add Watch Expression") },
         { ID_QUICKEVAL, TR("Evaluate In Console") },
         { ID_ADDTOSCRATCHPAD, TR("Add To Scratchpad") },
+        { ID_RUNTO, TR("Run To Cursor") },
       }
 
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
@@ -1421,6 +1422,13 @@ function CreateEditor(bare)
 
       editor:PopupMenu(menu)
       editor:SetMouseDwellTime(dwelltime) -- restore dwelling
+    end)
+
+  editor:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function()
+      if pos ~= wxstc.wxSTC_INVALID_POSITION then
+        ide:GetDebugger().runto(editor, editor:LineFromPosition(pos))
+      end
     end)
 
   editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
