@@ -25,6 +25,7 @@ MINP:
 	TargetableUnit:
 		TargetTypes: Ground
 	BodyOrientation:
+		QuantizedFacings: 1
 	Immobile:
 		OccupiesSpace: true
 
@@ -55,6 +56,7 @@ MINV:
 	TargetableUnit:
 		TargetTypes: Ground
 	BodyOrientation:
+		QuantizedFacings: 1
 	Immobile:
 		OccupiesSpace: true
 
@@ -179,6 +181,7 @@ CAMERA:
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
+		QuantizedFacings: 1
 	DetectCloaked:
 		Range: 10
 	WithSpriteBody:
@@ -227,6 +230,7 @@ FLARE:
 		Name: Flare
 		ShowOwnerRow: false
 	BodyOrientation:
+		QuantizedFacings: 1
 
 MINE:
 	HiddenUnderShroud:
@@ -244,6 +248,7 @@ MINE:
 		Terrain: Ore
 	AutoTargetIgnore:
 	BodyOrientation:
+		QuantizedFacings: 1
 	SeedsResource:
 
 GMINE:
@@ -262,6 +267,7 @@ GMINE:
 		Terrain: Gems
 	AutoTargetIgnore:
 	BodyOrientation:
+		QuantizedFacings: 1
 	SeedsResource:
 		ResourceType: Gems
 
@@ -278,6 +284,7 @@ RAILMINE:
 		Dimensions: 2,1
 	AutoTargetIgnore:
 	BodyOrientation:
+		QuantizedFacings: 1
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
@@ -293,6 +300,7 @@ QUEE:
 	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
+		QuantizedFacings: 1
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 
@@ -309,6 +317,7 @@ LAR1:
 	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
+		QuantizedFacings: 1
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 
@@ -325,6 +334,7 @@ LAR2:
 	AutoSelectionSize:
 	AppearsOnRadar:
 	BodyOrientation:
+		QuantizedFacings: 1
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 
@@ -391,6 +401,7 @@ mpspawn:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
 	AlwaysVisible:
@@ -399,6 +410,7 @@ waypoint:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 ^fact.colorpicker:
 	Inherits: FACT
