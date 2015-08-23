@@ -275,7 +275,7 @@ namespace OpenRA
 			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
-			Sound.Initialize(Settings.Sound, Settings.Server);
+			Sound.Initialize(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
 			ModData.InitializeLoaders();

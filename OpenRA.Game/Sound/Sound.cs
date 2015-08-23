@@ -66,9 +66,8 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 		}
 
-		public static void Initialize(SoundSettings soundSettings, ServerSettings serverSettings)
+		public static void Initialize(string engineName)
 		{
-			var engineName = serverSettings.Dedicated ? "Null" : soundSettings.Engine;
 			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
 			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
 
