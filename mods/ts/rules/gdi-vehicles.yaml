@@ -106,6 +106,8 @@ SMECH:
 		Weapon: AssaultCannon
 	Voiced:
 		VoiceSet: Mech
+	QuantizeFacingsFromSequence:
+		Sequence: stand
 	WithFacingSpriteBody:
 		Sequence: stand
 	WithAttackAnimation:
@@ -136,6 +138,8 @@ MMCH:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+	BodyOrientation:
+		QuantizedFacings: 32
 	WithInfantryBody:
 	Turreted:
 		ROT: 5

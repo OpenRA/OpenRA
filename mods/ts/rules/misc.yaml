@@ -5,6 +5,7 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
 	AlwaysVisible:
@@ -13,6 +14,7 @@ waypoint:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 ^mmch.colorpicker:
 	Inherits: MMCH
