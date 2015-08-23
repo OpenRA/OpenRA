@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HarvesterInfo info;
 		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		bool idleSmart = true;
 
 		[Sync] public Actor OwnerLinkedProc = null;
 		[Sync] public Actor LastLinkedProc = null;
@@ -77,8 +78,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
-		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
-		bool idleSmart = true;
+		[Sync]
+		public int ContentValue
+		{
+			get
+			{
+				var value = 0;
+				foreach (var c in contents)
+					value += c.Key.ValuePerUnit * c.Value;
+				return value;
+			}
+		}
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{

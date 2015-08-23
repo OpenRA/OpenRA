@@ -40,7 +40,17 @@ namespace OpenRA.Mods.Common.Traits
 	public class RepairableBuilding : UpgradableTrait<RepairableBuildingInfo>, ITick
 	{
 		[Sync]
-		public int RepairersHash { get { return Repairers.Aggregate(0, (code, player) => code ^ Sync.HashPlayer(player)); } }
+		public int RepairersHash
+		{
+			get
+			{
+				var hash = 0;
+				foreach (var player in Repairers)
+					hash ^= Sync.HashPlayer(player);
+				return hash;
+			}
+		}
+
 		public readonly List<Player> Repairers = new List<Player>();
 
 		readonly Health health;
@@ -94,7 +104,9 @@ namespace OpenRA.Mods.Common.Traits
 				Repairers.RemoveAll(isNotActiveAlly);
 
 				// If after the previous operation there's no repairers left, stop
-				if (!Repairers.Any()) return;
+				if (Repairers.Count == 0)
+					return;
+
 				var buildingValue = self.GetSellValue();
 
 				// The cost is the same regardless of the amount of people repairing
