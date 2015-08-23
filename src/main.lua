@@ -34,6 +34,8 @@ package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.
 
 require("wx")
 require("bit")
+require("mobdebug")
+if jit and jit.on then jit.on() end -- turn jit "on" as "mobdebug" may turn it off for LuaJIT
 
 dofile "src/util.lua"
 
