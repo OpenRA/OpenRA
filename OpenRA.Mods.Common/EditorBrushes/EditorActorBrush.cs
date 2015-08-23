@@ -107,11 +107,28 @@ namespace OpenRA.Mods.Common.Widgets
 				newActorReference.Add(new LocationInit(cell));
 
 				var ios = Actor.Traits.GetOrDefault<IOccupySpaceInfo>();
-				if (ios != null && ios.SharesCell)
+				if (ios != null)
 				{
-					var subcell = editorLayer.FreeSubCellAt(cell);
-					if (subcell != SubCell.Invalid)
-						newActorReference.Add(new SubCellInit(subcell));
+					if (ios.SharesCell)
+					{
+						var subcell = editorLayer.FreeSubCellAt(cell);
+						if (subcell == SubCell.Invalid)
+							return true;
+						else
+							newActorReference.Add(new SubCellInit(subcell));
+					}
+					else
+					{
+						foreach (var occupied in ios.OccupiedCells(Actor, cell).Keys)
+						{
+							foreach (var preview in editorLayer.PreviewsAt(occupied))
+							{
+								var iosp = preview.Info.Traits.GetOrDefault<IOccupySpaceInfo>();
+								if (iosp.OccupiedCells(preview.Info, occupied).Keys.Any())
+									return true;
+							}
+						}
+					}
 				}
 
 				var initDict = newActorReference.InitDict;
