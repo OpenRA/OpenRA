@@ -79,6 +79,7 @@
 	Guard:
 		Voice: Guard
 	Guardable:
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	Demolishable:
 	TemporaryOwnerManager:
@@ -118,6 +119,7 @@
 	BodyOrientation:
 	AutoTargetIgnore:
 	ScriptTriggers:
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
@@ -191,6 +193,8 @@
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
 	RenderSprites:
+	QuantizeFacingsFromSequence:
+		Sequence: stand
 	WithInfantryBody:
 	TakeCover:
 		DamageModifiers:
@@ -245,6 +249,7 @@
 	DrawLineToTarget:
 	Voiced:
 		VoiceSet: GenericVoice
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
@@ -269,6 +274,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
+	QuantizeFacingsFromSequence:
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
