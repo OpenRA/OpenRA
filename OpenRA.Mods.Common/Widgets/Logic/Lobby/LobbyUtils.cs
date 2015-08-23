@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Faction == factionId,
-					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, factionId))));
+					() => orderManager.IssueOrder(Order.Command("faction {0} {1}".F(client.Index, factionId))));
 				var faction = factions[factionId];
 				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
 				var flag = item.Get<ImageWidget>("FLAG");
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var options = factions.Where(f => f.Value.Selectable).GroupBy(f => f.Value.Side)
 				.ToDictionary(g => g.Key ?? "", g => g.Select(f => f.Key));
 
-			dropdown.ShowDropDown("RACE_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,

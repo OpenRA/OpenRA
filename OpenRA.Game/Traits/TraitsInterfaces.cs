@@ -322,7 +322,7 @@ namespace OpenRA.Traits
 		WRot QuantizeOrientation(WRot orientation, int facings);
 	}
 
-	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race); }
+	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction); }
 
 	public interface ITargetableInfo
 	{

@@ -450,48 +450,48 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void LoadPlayer(IniFile file, string section, bool isRA)
 		{
 			string c;
-			string race;
+			string faction;
 			switch (section)
 			{
 				case "Spain":
 					c = "gold";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "England":
 					c = "green";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Ukraine":
 					c = "orange";
-					race = "soviet";
+					faction = "soviet";
 					break;
 				case "Germany":
 					c = "black";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "France":
 					c = "teal";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Turkey":
 					c = "salmon";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Greece":
 				case "GoodGuy":
 					c = isRA ? "blue" : "gold";
-					race = isRA ? "allies" : "gdi";
+					faction = isRA ? "allies" : "gdi";
 					break;
 				case "USSR":
 				case "BadGuy":
 					c = "red";
-					race = isRA ? "soviet" : "nod";
+					faction = isRA ? "soviet" : "nod";
 					break;
 				case "Special":
 				case "Neutral":
 				default:
 					c = "neutral";
-					race = isRA ? "allies" : "gdi";
+					faction = isRA ? "allies" : "gdi";
 					break;
 			}
 
@@ -500,7 +500,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
-				Faction = race,
+				Faction = faction,
 				Color = namedColorMapping[c]
 			};
 

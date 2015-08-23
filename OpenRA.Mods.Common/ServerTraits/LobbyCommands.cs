@@ -738,7 +738,7 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "race",
+				{ "faction",
 					s =>
 					{
 						var parts = s.Split(' ');
@@ -748,7 +748,7 @@ namespace OpenRA.Mods.Common.Server
 						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
-						// Map has disabled race changes
+						// Map has disabled faction changes
 						if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 							return true;
 

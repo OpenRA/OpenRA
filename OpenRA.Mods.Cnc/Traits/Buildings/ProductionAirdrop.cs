@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
 			: base(init, info) { }
 
-		public override bool Produce(Actor self, ActorInfo producee, string raceVariant)
+		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
 			var owner = self.Owner;
 
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, raceVariant));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, factionVariant));
 					Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
 

@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public MusicInfo[] AvailablePlaylist()
 		{
-			// TO-DO: add filter options for Race-specific music
+			// TODO: add filter options for faction-specific music
 			return playlist;
 		}
 

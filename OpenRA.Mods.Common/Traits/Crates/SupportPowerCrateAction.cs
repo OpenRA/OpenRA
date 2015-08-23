@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		// The free unit crate requires same race and the actor needs to be mobile.
+		// The free unit crate requires same faction and the actor needs to be mobile.
 		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{

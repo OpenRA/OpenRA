@@ -36,7 +36,7 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					Text: Player
 					Font: Bold
-				Label@RACE:
+				Label@FACTION:
 					X: 150
 					Width: 80
 					Height: 25

@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.Lint
 
 			var worldActor = map.Rules.Actors["world"];
 
-			var races = worldActor.Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToHashSet();
+			var factions = worldActor.Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Values)
-				if (!string.IsNullOrWhiteSpace(player.Faction) && !races.Contains(player.Faction))
-					emitError("Invalid race {0} chosen for player {1}.".F(player.Faction, player.Name));
+				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
+					emitError("Invalid faction {0} chosen for player {1}.".F(player.Faction, player.Name));
 
 			if (worldActor.Traits.Contains<MPStartLocationsInfo>())
 			{
