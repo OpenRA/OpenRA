@@ -24,13 +24,13 @@ namespace OpenRA
 		public string MapUid;
 		public string MapTitle;
 
+		/// <summary>Game start timestamp (when the recoding started).</summary>
 		public DateTime StartTimeUtc;
 
-		// Game end timestamp (when the recoding stopped).
+		/// <summary>Game end timestamp (when the recoding stopped).</summary>
 		public DateTime EndTimeUtc;
 
-		// Gets the game's duration, from the time the game started until the
-		// replay recording stopped.
+		/// <summary>Gets the game's duration, from the time the game started until the replay recording stopped.</summary>
 		public TimeSpan Duration { get { return EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero; } }
 		public IList<Player> Players { get; private set; }
 		public MapPreview MapPreview { get { return Game.ModData.MapCache[MapUid]; } }
@@ -90,7 +90,7 @@ namespace OpenRA
 			return nodes.WriteToString();
 		}
 
-		// Adds the player information at start-up.
+		/// <summary>Adds the player information at start-up.</summary>
 		public void AddPlayer(OpenRA.Player runtimePlayer, Session lobbyInfo)
 		{
 			if (runtimePlayer == null)
@@ -127,7 +127,7 @@ namespace OpenRA
 			Players.Add(player);
 		}
 
-		// Gets the player information for the specified runtime player instance.
+		/// <summary>Gets the player information for the specified runtime player instance.</summary>
 		public Player GetPlayer(OpenRA.Player runtimePlayer)
 		{
 			Player player;
@@ -139,38 +139,43 @@ namespace OpenRA
 
 		public class Player
 		{
-			// Start-up information
+			#region Start-up information
+
 			public int ClientIndex;
 
-			// The player name, not guaranteed to be unique.
+			/// <summary>The player name, not guaranteed to be unique.</summary>
 			public string Name;
 			public bool IsHuman;
 			public bool IsBot;
 
-			// The faction's display name.
+			/// <summary>The faction's display name.</summary>
 			public string FactionName;
 
-			// The faction ID, a.k.a. the faction's internal name.
+			/// <summary>The faction ID, a.k.a. the faction's internal name.</summary>
 			public string FactionId;
 			public HSLColor Color;
 
-			// The team id on start-up, or 0 if the player is not part of the team.
+			/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
 			public int Team;
 			public int SpawnPoint;
 
-			// True if the faction was chosen at random; otherwise, false
+			/// <summary>True if the faction was chosen at random; otherwise, false.</summary>
 			public bool IsRandomFaction;
 
-			// True if the spawn point was chosen at random; otherwise, false.</summary>
+			/// <summary>True if the spawn point was chosen at random; otherwise, false.</summary>
 			public bool IsRandomSpawnPoint;
 
-			// Information gathered at a later stage
+			#endregion
 
-			// The game outcome for this player
+			#region
+
+			/// <summary>The game outcome for this player.</summary>
 			public WinState Outcome;
 
-			// The time when this player won or lost the game
+			/// <summary>The time when this player won or lost the game.</summary>
 			public DateTime OutcomeTimestampUtc;
+
+			#endregion
 		}
 	}
 }
