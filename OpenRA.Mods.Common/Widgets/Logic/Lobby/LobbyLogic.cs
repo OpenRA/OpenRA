@@ -297,15 +297,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
 				startGameButton.OnClick = () =>
 				{
-					Func<KeyValuePair<string, Session.Slot>, bool> notReady = sl =>
-					{
-						var cl = orderManager.LobbyInfo.ClientInSlot(sl.Key);
-
-						// Bots and admins don't count
-						return cl != null && !cl.IsAdmin && cl.Bot == null && !cl.IsReady;
-					};
-
-					if (orderManager.LobbyInfo.Slots.Any(notReady))
+					// Bots and admins don't count
+					if (orderManager.LobbyInfo.Clients.Any(c => c.Slot != null && !c.IsAdmin && c.Bot == null && !c.IsReady))
 						panel = PanelType.ForceStart;
 					else
 						startGame();

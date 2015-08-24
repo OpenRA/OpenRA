@@ -259,7 +259,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					MaxLength: 16
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55+55
+					Width: 315
 					Height: 25
 					X: 210
 					Y: 0
@@ -309,7 +309,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@SPECTATOR:
 					Text: Spectator
-					Width: 315-55+55
+					Width: 315
 					Height: 25
 					X: 210
 					Y: 0
