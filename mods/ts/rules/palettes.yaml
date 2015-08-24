@@ -24,6 +24,10 @@
 		Name: chrome
 		Filename: cameo.pal
 		AllowModifiers: false
+	PaletteFromFile@chromewithshadow:
+		Name: chromewithshadow
+		Filename: cameo.pal
+		AllowModifiers: false
 		ShadowIndex: 242
 	PaletteFromFile@pips:
 		Name: pips
@@ -37,6 +41,14 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal
+	PaletteFromFile@sidebar:
+		Name: sidebar
+		Filename: sidec02.mix:sidebar.pal
+	PaletteFromPaletteWithAlpha@clock:
+		Name: iconclock
+		BasePalette: sidebar
+		Alpha: 0.5
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: unittem.pal

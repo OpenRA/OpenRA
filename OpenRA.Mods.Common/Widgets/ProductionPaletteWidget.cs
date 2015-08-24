@@ -27,6 +27,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Hotkey Hotkey;
 		public Sprite Sprite;
 		public PaletteReference Palette;
+		public PaletteReference IconClockPalette;
+		public PaletteReference IconDarkenPalette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
 	}
@@ -45,6 +47,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string DisabledTabClick = null;
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
+
+		public readonly string ClockAnimation = "clock";
+		public readonly string ClockSequence = "idle";
+		public readonly string ClockPalette = "chrome";
+
+		public readonly string NotBuildableAnimation = "clock";
+		public readonly string NotBuildableSequence = "idle";
+		public readonly string NotBuildablePalette = "chrome";
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
@@ -89,9 +99,9 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			cantBuild = new Animation(world, "clock");
-			cantBuild.PlayFetchIndex("idle", () => 0);
-			clock = new Animation(world, "clock");
+			cantBuild = new Animation(world, NotBuildableAnimation);
+			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
+			clock = new Animation(world, ClockAnimation);
 		}
 
 		public void ScrollDown()
@@ -322,6 +332,8 @@ namespace OpenRA.Mods.Common.Widgets
 					Hotkey = ks.GetProductionHotkey(DisplayedIconCount),
 					Sprite = icon.Image,
 					Palette = worldRenderer.Palette(bi.IconPalette),
+					IconClockPalette = worldRenderer.Palette(ClockPalette),
+					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
 				};
@@ -367,15 +379,15 @@ namespace OpenRA.Mods.Common.Widgets
 				if (icon.Queued.Count > 0)
 				{
 					var first = icon.Queued[0];
-					clock.PlayFetchIndex("idle",
+					clock.PlayFetchIndex(ClockSequence,
 						() => (first.TotalTime - first.RemainingTime)
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
 
-					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, icon.Palette);
+					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, icon.IconClockPalette);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, icon.Palette);
+					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, icon.IconDarkenPalette);
 			}
 
 			// Overlays

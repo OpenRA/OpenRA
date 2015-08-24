@@ -30,6 +30,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
 
+		public readonly string ClockAnimation = "clock";
+		public readonly string ClockSequence = "idle";
+		public readonly string ClockPalette = "chrome";
+
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
@@ -57,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			icon = new Animation(world, "icon");
-			clock = new Animation(world, "clock");
+			clock = new Animation(world, ClockAnimation);
 		}
 
 		public class SupportPowerIcon
@@ -66,6 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public float2 Pos;
 			public Sprite Sprite;
 			public PaletteReference Palette;
+			public PaletteReference IconClockPalette;
 			public Hotkey Hotkey;
 		}
 
@@ -91,6 +96,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Pos = new float2(rect.Location),
 					Sprite = icon.Image,
 					Palette = worldRenderer.Palette(p.Info.IconPalette),
+					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					Hotkey = ks.GetSupportPowerHotkey(IconCount)
 				};
 
@@ -145,12 +151,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// Charge progress
 				var sp = p.Power;
-				clock.PlayFetchIndex("idle",
+				clock.PlayFetchIndex(ClockSequence,
 					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
 					* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
 
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, p.Palette);
+				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, p.IconClockPalette);
 			}
 
 			// Overlay
