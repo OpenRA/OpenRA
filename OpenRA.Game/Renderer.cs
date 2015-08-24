@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -51,8 +52,8 @@ namespace OpenRA
 
 			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
 			var rendererPath = Platform.ResolvePath(".", "OpenRA.Platforms." + rendererName + ".dll");
-
-			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
+			var winMode = Debugger.IsAttached ? WindowMode.Windowed : graphicSettings.Mode;
+			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, winMode);
 
 			if (!serverSettings.Dedicated)
 			{
