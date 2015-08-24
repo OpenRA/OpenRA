@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
 		public readonly string InternalOwner = null;
 
-		[Desc("DeathType that triggers the actor spawn." +
+		[Desc("DeathType that triggers the actor spawn. " +
 			"Leave empty to spawn an actor ignoring the DeathTypes.")]
 		public readonly string DeathType = null;
 

@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Scripting
 				.ToArray();
 		}
 
-		[Desc("Returns all living actors of the specified type of this player")]
+		[Desc("Returns all living actors of the specified type of this player.")]
 		public Actor[] GetActorsByType(string type)
 		{
 			var result = new List<Actor>();

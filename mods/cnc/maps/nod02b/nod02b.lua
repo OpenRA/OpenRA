@@ -139,7 +139,7 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if Nod.HasNoRequiredUnits()  then
+	if Nod.HasNoRequiredUnits() then
 		if DateTime.GameTime > 2 then
 			GDI.MarkCompletedObjective(GDIObjective)
 		end

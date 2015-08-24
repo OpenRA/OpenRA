@@ -1,5 +1,5 @@
 InitialForcesA = { "bggy", "e1", "e1", "e1", "e1" }
-InitialForcesB = { "e1", "e1", "bggy", "e1", "e1"  }
+InitialForcesB = { "e1", "e1", "bggy", "e1", "e1" }
 
 RifleInfantryReinforcements = { "e1", "e1" }
 RocketInfantryReinforcements = { "e3", "e3", "e3", "e3", "e3" }

@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var ds = health.DamageState;
 			return (ds == DamageState.Dead && info.DestroyedTemplate > 0) ? info.DestroyedTemplate :
-				   (ds >= DamageState.Heavy && info.DamagedTemplate > 0) ? info.DamagedTemplate : info.Template;
+				(ds >= DamageState.Heavy && info.DamagedTemplate > 0) ? info.DamagedTemplate : info.Template;
 		}
 
 		bool killedUnits = false;

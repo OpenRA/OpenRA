@@ -283,8 +283,8 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		[Desc("Call a function when a ground-based actor enters this cell footprint." +
-			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
+		[Desc("Call a function when a ground-based actor enters this cell footprint. " +
+			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
 		public int OnEnteredFootprint(CPos[] cells, LuaFunction func)
 		{
@@ -309,8 +309,8 @@ namespace OpenRA.Mods.Common.Scripting
 			return triggerId;
 		}
 
-		[Desc("Call a function when a ground-based actor leaves this cell footprint." +
-			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id)." +
+		[Desc("Call a function when a ground-based actor leaves this cell footprint. " +
+			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
 		public int OnExitedFootprint(CPos[] cells, LuaFunction func)
 		{
@@ -341,8 +341,8 @@ namespace OpenRA.Mods.Common.Scripting
 			Context.World.ActorMap.RemoveCellTrigger(id);
 		}
 
-		[Desc("Call a function when an actor enters this range." +
-			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+		[Desc("Call a function when an actor enters this range. " +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
 		public int OnEnteredProximityTrigger(WPos pos, WDist range, LuaFunction func)
 		{
@@ -367,8 +367,8 @@ namespace OpenRA.Mods.Common.Scripting
 			return triggerId;
 		}
 
-		[Desc("Call a function when an actor leaves this range." +
-			"Returns the trigger id for later removal using RemoveProximityTrigger(int id)." +
+		[Desc("Call a function when an actor leaves this range. " +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
 		public int OnExitedProximityTrigger(WPos pos, WDist range, LuaFunction func)
 		{
@@ -393,7 +393,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return triggerId;
 		}
 
-		[Desc("Removes a previously created proximitry trigger.")]
+		[Desc("Removes a previously created proximity trigger.")]
 		public void RemoveProximityTrigger(int id)
 		{
 			Context.World.ActorMap.RemoveProximityTrigger(id);
@@ -407,20 +407,20 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Call a function when this actor is discovered by an enemy or a player with a Neutral stance. " +
-			"The callback function will be called as func(Actor discovered, Player discoverer)")]
+			"The callback function will be called as func(Actor discovered, Player discoverer).")]
 		public void OnDiscovered(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnDiscovered, func, Context);
 		}
 
 		[Desc("Call a function when this player is discovered by an enemy or neutral player. " +
-			"The callback function will be called as func(Player discovered, Player discoverer, Actor discoveredActor)")]
+			"The callback function will be called as func(Player discovered, Player discoverer, Actor discoveredActor).")]
 		public void OnPlayerDiscovered(Player discovered, LuaFunction func)
 		{
 			GetScriptTriggers(discovered.PlayerActor).RegisterCallback(Trigger.OnPlayerDiscovered, func, Context);
 		}
 
-		[Desc("Removes all triggers from this actor." +
+		[Desc("Removes all triggers from this actor. " +
 			"Note that the removal will only take effect at the end of a tick, " +
 			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void ClearAll(Actor a)
@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(a).ClearAll();
 		}
 
-		[Desc("Removes the specified trigger from this actor." +
+		[Desc("Removes the specified trigger from this actor. " +
 			"Note that the removal will only take effect at the end of a tick, " +
 			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void Clear(Actor a, string triggerName)

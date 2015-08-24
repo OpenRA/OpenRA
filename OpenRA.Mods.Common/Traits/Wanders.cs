@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (++ticksIdle % info.TicksToWaitBeforeReducingMoveRadius == 0)
 					effectiveMoveRadius--;
 
-				return CPos.Zero;  // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
+				return CPos.Zero; // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop
 			}
 
 			ticksIdle = 0;

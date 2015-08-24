@@ -11,10 +11,10 @@ GDIReinforcements = { "e2", "e2", "e2", "e2", "e2" }
 GDIReinforcementsWaypoints = { GDIReinforcementsEntry.Location, GDIReinforcementsWP1.Location }
 
 NodHelis = {
-		{ DateTime.Seconds(HeliDelay[1]), { NodHeliEntry.Location, NodHeliLZ1.Location }, { "e1", "e1", "e3" } },
-		{ DateTime.Seconds(HeliDelay[2]), { NodHeliEntry.Location, NodHeliLZ2.Location }, { "e1", "e1", "e1", "e1" } },
-		{ DateTime.Seconds(HeliDelay[3]), { NodHeliEntry.Location, NodHeliLZ3.Location }, { "e1", "e1", "e3" } }
-	   }
+	{ DateTime.Seconds(HeliDelay[1]), { NodHeliEntry.Location, NodHeliLZ1.Location }, { "e1", "e1", "e3" } },
+	{ DateTime.Seconds(HeliDelay[2]), { NodHeliEntry.Location, NodHeliLZ2.Location }, { "e1", "e1", "e1", "e1" } },
+	{ DateTime.Seconds(HeliDelay[3]), { NodHeliEntry.Location, NodHeliLZ3.Location }, { "e1", "e1", "e3" } }
+}
 
 SendHeli = function(heli)
 	units = Reinforcements.ReinforceWithTransport(nod, "tran", heli[3], heli[2], { heli[2][1] })

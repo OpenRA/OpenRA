@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Create a new WDist.")]
 		public WDist New(int r) { return new WDist(r); }
 
-		[Desc("Create a new WDist by cell distance")]
+		[Desc("Create a new WDist by cell distance.")]
 		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
 	}
 

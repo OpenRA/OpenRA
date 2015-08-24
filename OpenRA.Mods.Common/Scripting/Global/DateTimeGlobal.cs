@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Scripting
 			get { return DateTime.Today.Month == 10 && DateTime.Today.Day == 31; }
 		}
 
-		[Desc("Get the current game time (in ticks)")]
+		[Desc("Get the current game time (in ticks).")]
 		public int GameTime
 		{
 			get { return Context.World.WorldTick; }

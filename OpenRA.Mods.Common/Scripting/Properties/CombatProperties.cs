@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Patrol along a set of given waypoints.  The action is repeated by default, " +
+		[Desc("Patrol along a set of given waypoints. The action is repeated by default, " +
 			"and the actor will wait for `wait` ticks at each waypoint.")]
 		public void Patrol(CPos[] waypoints, bool loop = true, int wait = 0)
 		{

@@ -1,6 +1,6 @@
 NodUnits = { "e1", "e1", "bggy", "bike", "e1", "e1", "bike", "bggy", "e1", "e1" }
 Engineers = { "e6", "e6", "e6" }
-FirstAttackWaveUnits  = { "e1", "e1", "e2" }
+FirstAttackWaveUnits = { "e1", "e1", "e2" }
 SecondAttackWaveUnits = { "e1", "e1", "e1" }
 ThirdAttackWaveUnits = { "e1", "e1", "e1", "e2" }
 

@@ -13,7 +13,7 @@ ArmorAttack = { }
 
 InfReinfPath = { NRoadPoint.Location, CrossroadsPoint.Location, ToVillageRoadPoint.Location, VillagePoint.Location }
 Patrol1Path = { ToVillageRoadPoint.Location, ToBridgePoint.Location, InBasePoint.Location }
-Patrol2Path =  { EntranceSouthPoint.Location, ToRadarBridgePoint.Location, IslandPoint.Location, ToRadarBridgePoint.Location }
+Patrol2Path = { EntranceSouthPoint.Location, ToRadarBridgePoint.Location, IslandPoint.Location, ToRadarBridgePoint.Location }
 
 VillageCamArea = { CPos.New(37, 58),CPos.New(37, 59),CPos.New(37, 60),CPos.New(38, 60),CPos.New(39, 60), CPos.New(40, 60), CPos.New(41, 60), CPos.New(35, 57), CPos.New(34, 57), CPos.New(33, 57), CPos.New(32, 57) }
 

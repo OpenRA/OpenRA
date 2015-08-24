@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				"* Global tables provide functions for interacting with the global world state, or performing general helper tasks.\n" +
 				"They exist in the global namespace, and can be called directly using ```<table name>.<function name>```.\n" +
 				"* Individual actors expose a collection of properties and commands that query information or modify their state.\n" +
-				"  * Some commands, marked as <em>queued activity</em>, are asynchronous.  Activities are queued on the actor, and will run in " +
-				"sequence until the queue is empty or the Stop command is called.  Actors that are not performing an activity are Idle " +
-				"(actor.IsIdle will return true).  The properties and commands available on each actor depends on the traits that the actor " +
+				"  * Some commands, marked as <em>queued activity</em>, are asynchronous. Activities are queued on the actor, and will run in " +
+				"sequence until the queue is empty or the Stop command is called. Actors that are not performing an activity are Idle " +
+				"(actor.IsIdle will return true). The properties and commands available on each actor depends on the traits that the actor " +
 				"specifies in its rule definitions.\n" +
 				"* Individual players expose a collection of properties and commands that query information or modify their state.\n" +
 				"The properties and commands available on each actor depends on the traits that the actor specifies in its rule definitions.\n");

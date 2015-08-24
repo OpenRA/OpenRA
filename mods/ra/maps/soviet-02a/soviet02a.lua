@@ -99,7 +99,7 @@ WorldLoaded = function()
 	end)
 
 	-- Four infantry from the small island move towards the USSR command center and attack it after 24 Seconds
-	Trigger.AfterDelay(DateTime.Seconds(24),  function()
+	Trigger.AfterDelay(DateTime.Seconds(24), function()
 		Utils.Do(CmdAtk, function(unit)
 			unit.AttackMove(AttackWaypoint1.Location)
 			Trigger.OnIdle(unit, unit.Hunt)
