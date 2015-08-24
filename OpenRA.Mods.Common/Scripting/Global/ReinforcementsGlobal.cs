@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Send reinforcements consisting of multiple units. Supports ground-based, naval and air units. " +
 			"The first member of the entryPath array will be the units' spawnpoint, " +
-			"while the last one will be their destination.  If actionFunc is given, " +
+			"while the last one will be their destination. If actionFunc is given, " +
 			"it will be executed once a unit has reached its destination. actionFunc " +
 			"will be called as actionFunc(Actor actor)")]
 		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25, LuaFunction actionFunc = null)

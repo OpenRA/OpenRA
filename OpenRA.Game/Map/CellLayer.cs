@@ -155,7 +155,7 @@ namespace OpenRA
 	// Helper functions
 	public static class CellLayer
 	{
-		/// <summary>Create a new layer by resizing another layer.  New cells are filled with defaultValue.</summary>
+		/// <summary>Create a new layer by resizing another layer. New cells are filled with defaultValue.</summary>
 		public static CellLayer<T> Resize<T>(CellLayer<T> layer, Size newSize, T defaultValue)
 		{
 			var result = new CellLayer<T>(layer.Shape, newSize);

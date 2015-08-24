@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class C4DemolitionInfo : ITraitInfo
 	{
-		[Desc("Delay to demolish the target once the C4 is planted." +
+		[Desc("Delay to demolish the target once the C4 is planted. " +
 			"Measured in game ticks. Default is 1.8 seconds.")]
 		public readonly int C4Delay = 45;
 

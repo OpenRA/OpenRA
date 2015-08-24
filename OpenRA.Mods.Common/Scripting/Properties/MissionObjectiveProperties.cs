@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Returns true if this player has lost all units/actors that have" +
+		[Desc("Returns true if this player has lost all units/actors that have " +
 			"the MustBeDestroyed trait (according to the short game option).")]
 		public bool HasNoRequiredUnits()
 		{

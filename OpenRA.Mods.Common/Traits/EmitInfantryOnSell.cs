@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Be sure to use lowercase. Default value is \"e1\".")]
 		public readonly string[] ActorTypes = { "e1" };
 
-		[Desc("Spawns actors only if the selling player's faction is in this list." +
+		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
 		public readonly string[] Factions = { };
 

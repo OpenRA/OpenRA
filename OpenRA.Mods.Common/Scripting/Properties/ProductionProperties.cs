@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Scripting
 			rp = self.Trait<RallyPoint>();
 		}
 
-		[Desc("Query or set a factory's rally point")]
+		[Desc("Query or set a factory's rally point.")]
 		public CPos RallyPoint
 		{
 			get { return rp.Location; }
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Scripting
 			pb = self.Trait<PrimaryBuilding>();
 		}
 
-		[Desc("Query or set the factory's primary building status")]
+		[Desc("Query or set the factory's primary building status.")]
 		public bool IsPrimaryBuilding
 		{
 			get { return pb.IsPrimary; }
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
-		[Desc("Check whether the factory's production queue that builds this type of actor is currently busy." +
+		[Desc("Check whether the factory's production queue that builds this type of actor is currently busy. " +
 			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
@@ -202,9 +202,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
 			"The function will return true if production could be started, false otherwise. " +
 			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
-			"production of all actors has been completed.  The actors array is guaranteed to " +
+			"production of all actors has been completed. The actors array is guaranteed to " +
 			"only contain alive actors. Note: This function will fail to work when called " +
-			"during the first tick")]
+			"during the first tick.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
 			var typeToQueueMap = new Dictionary<string, string>();
@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
-		[Desc("Check whether the production queue that builds this type of actor is currently busy." +
+		[Desc("Check whether the production queue that builds this type of actor is currently busy. " +
 			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{

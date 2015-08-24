@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The upgrades to grant when deploying and revoke when undeploying.")]
 		public readonly string[] Upgrades = { };
 
-		[Desc("The terrain types that this actor can deploy on to receive these upgrades." +
+		[Desc("The terrain types that this actor can deploy on to receive these upgrades. " +
 			"Leave empty to allow any.")]
 		public readonly string[] AllowedTerrainTypes = { };
 
