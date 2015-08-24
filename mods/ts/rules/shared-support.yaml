@@ -1,6 +1,5 @@
 GADPSA:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
+	Inherits: ^DeployedVehicle
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -17,28 +16,16 @@ GADPSA:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
+	-AutoTarget:
+	-DrawLineToTarget:
+	-AttackTurreted:
+	-RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	RenderBuilding:
-	Voiced:
-		VoiceSet: Vehicle
-	WithMakeAnimation:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	TargetableBuilding:
-		TargetTypes: Ground, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
 
 NAPULS:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -55,7 +42,6 @@ NAPULS:
 		Bounds: 78, 54, 0, -12
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 500
 	Armor:
@@ -68,11 +54,6 @@ NAPULS:
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
-	AutoTarget:
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
 	WithTurret:
 		Sequence: turret
 	Power:

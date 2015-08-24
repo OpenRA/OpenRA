@@ -595,3 +595,40 @@
 	Inherits: ^Decoration
 	Tooltip:
 		Name: Palette
+
+^Defense:
+	Inherits: ^Building
+	-GivesBuildableArea:
+	AutoTarget:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	RevealsShroud:
+		Range: 6c0
+	DetectCloaked:
+		Range: 5
+
+^DeployedVehicle:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	Voiced:
+		VoiceSet: Vehicle
+	AttackTurreted:
+		Voice: Attack
+	AutoTarget:
+	RenderRangeCircle:
+	DrawLineToTarget:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+	RenderBuilding:
+	WithMakeAnimation:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	TargetableBuilding:
+		TargetTypes: Ground, Repair
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
+

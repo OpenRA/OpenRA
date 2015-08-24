@@ -693,3 +693,12 @@
 	CustomSelectionSize:
 		CustomBounds: 20,20
 
+^Defense:
+	Inherits: ^BaseBuilding
+	AutoTarget:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	-GivesBuildableArea:
+	MustBeDestroyed:
+		RequiredForShortGame: false
+

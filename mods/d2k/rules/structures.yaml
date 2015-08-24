@@ -522,7 +522,7 @@ wall:
 		Range: 2c0, 5c0
 
 guntower:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
@@ -540,19 +540,14 @@ guntower:
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
 		Type: Concrete
 	RevealsShroud:
 		Range: 8c0
-	RenderRangeCircle:
-	-RenderBuilding:
-	RenderBuildingWall:
 	BodyOrientation:
 		QuantizedFacings: 32
-	WithTurret:
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 6
@@ -561,24 +556,15 @@ guntower:
 		Weapon: TurretGun
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
-	AttackTurreted:
-	AutoTarget:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
-	-WithCrumbleOverlay:
-	-WithMakeAnimation:
-	LineBuildNode:
-		Types: turret
 	Power:
 		Amount: -20
-	MustBeDestroyed:
-		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
 rockettower:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Buildable:
 		Queue: Building
 		Prerequisites: radar, upgrade.conyard, ~techlevel.medium
@@ -596,41 +582,27 @@ rockettower:
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
 		Type: Concrete
 	RevealsShroud:
 		Range: 10c0
-	RenderRangeCircle:
-	-RenderBuilding:
-	RenderBuildingWall:
 	BodyOrientation:
 		QuantizedFacings: 32
-	WithTurret:
 	Armament:
 		Weapon: TowerMissile
 		LocalOffset: 256,384,768, 256,-384,768
-	AttackTurreted:
 	Turreted:
 		ROT: 8
 		InitialFacing: 128
-	AutoTarget:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
-	-WithCrumbleOverlay:
-	-WithMakeAnimation:
-	LineBuildNode:
-		Types: turret
 	Power:
 		Amount: -30
-	MustBeDestroyed:
-		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 

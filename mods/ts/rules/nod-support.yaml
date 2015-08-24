@@ -24,7 +24,7 @@ NAWALL:
 		NodeTypes: wall, turret
 
 NALASR:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -39,15 +39,12 @@ NALASR:
 		Bounds: 40, 30, -8, -6
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
-	RenderRangeCircle:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
 	Turreted:
@@ -59,14 +56,13 @@ NALASR:
 		Weapon: LaserFire2
 	RenderVoxels:
 	WithVoxelTurret:
-	AutoTarget:
 	Power:
 		Amount: -40
 	SelectionDecorations:
 		VisualBounds: 40, 36, -8, -8
 
 NAOBEL:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -83,7 +79,6 @@ NAOBEL:
 		Bounds: 88, 42, 0, -6
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 600
 	Armor:
@@ -101,11 +96,6 @@ NAOBEL:
 		Sequence: active
 		Palette: player
 		IsPlayerPalette: true
-	AutoTarget:
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -114,7 +104,7 @@ NAOBEL:
 		VisualBounds: 88, 72, 0, -12
 
 NASAM:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -129,20 +119,14 @@ NASAM:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 500
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 6c0
 	BodyOrientation:
 		QuantizedFacings: 32
 	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 5
-	AutoTarget:
+		RangeCircleType: aa
 	Turreted:
 		ROT: 10
 		InitialFacing: 50
@@ -158,8 +142,7 @@ NASAM:
 		VisualBounds: 40, 36, -3, -8
 
 GATICK:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
+	Inherits: ^DeployedVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -170,8 +153,6 @@ GATICK:
 		Type: Concrete
 	RevealsShroud:
 		Range: 5c0
-	Voiced:
-		VoiceSet: Vehicle
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -189,18 +170,8 @@ GATICK:
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
-	AttackTurreted:
-		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 32
-	AutoTarget:
-	RenderRangeCircle:
-	DrawLineToTarget:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	RenderBuilding:
 	RenderVoxels:
 	WithVoxelBarrel:
 		LocalOffset: 170,0,0
@@ -212,19 +183,9 @@ GATICK:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleFlash:
-	WithMakeAnimation:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	TargetableBuilding:
-		TargetTypes: Ground, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
 
 GAARTY:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
+	Inherits@1: ^DeployedVehicle
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -235,8 +196,6 @@ GAARTY:
 		Type: Light
 	RevealsShroud:
 		Range: 9c0
-	Voiced:
-		VoiceSet: Vehicle
 	Turreted:
 		ROT: 5
 		InitialFacing: 128
@@ -245,13 +204,8 @@ GAARTY:
 		Weapon: 155mm
 		LocalOffset: 811,0,0
 		MuzzleSequence: muzzle
-	AttackTurreted:
-		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 32
-	AutoTarget:
-	RenderRangeCircle:
-	DrawLineToTarget:
 	RenderBuilding:
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
@@ -265,19 +219,6 @@ GAARTY:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleFlash:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	WithMakeAnimation:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	TargetableBuilding:
-		TargetTypes: Ground, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
 
 NAMISL:
 	Inherits: ^Building

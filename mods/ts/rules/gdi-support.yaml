@@ -24,7 +24,7 @@ GAWALL:
 		NodeTypes: wall, turret
 
 GACTWR:
-	Inherits: ^Building
+	Inherits: ^Defense
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -38,22 +38,15 @@ GACTWR:
 	Selectable:
 		Bounds: 48, 36, 0, -6
 	DisabledOverlay:
-	-GivesBuildableArea:
 	Health:
 		HP: 500
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 6c0
 	BodyOrientation:
 		QuantizedFacings: 32
-	RenderRangeCircle:
-	RenderDetectionCircle:
 	DetectCloaked:
 		UpgradeTypes: tower
 		UpgradeMinEnabledLevel: 1
-		Range: 5
-	AutoTarget:
 	Turreted:
 		ROT: 10
 		InitialFacing: 50
