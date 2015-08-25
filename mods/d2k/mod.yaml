@@ -131,6 +131,7 @@ ContentInstaller:
 	DiskTestFiles: music/ambush.aud, setup/setup.z
 	PackageToExtractFromCD: setup/setup.z
 	OverwriteFiles: False
+	MusicPackageMirrorList: http://www.openra.net/packages/d2k-music-mirrors.txt
 	ExtractFilesFromCD:
 		.: SOUND.RS, DATA.R8, MOUSE.R8
 		Tilesets: BLOXBASE.R8, BLOXBAT.R8, BLOXBGBS.R8, BLOXICE.R8, BLOXTREE.R8, BLOXWAST.R8
