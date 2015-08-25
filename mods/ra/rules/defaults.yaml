@@ -337,7 +337,7 @@
 		Bounds: 24,24
 	TargetableAircraft:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground, Repair
+		GroundedTargetTypes: Ground, Repair, Vehicle
 	HiddenUnderFog:
 		Type: CenterPosition
 	AttackMove:
@@ -455,7 +455,7 @@
 	LineBuildNode:
 		Types: wall
 	TargetableBuilding:
-		TargetTypes: Ground, DetonateAttack
+		TargetTypes: Ground, DetonateAttack, Wall
 	RenderBuildingWall:
 		Palette: effect
 	GivesExperience:
@@ -587,7 +587,7 @@
 		ForceHealthPercentage: 25
 	DisabledOverlay:
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Husk
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:

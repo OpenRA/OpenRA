@@ -509,7 +509,7 @@ wall:
 	LineBuildNode:
 		Types: wall
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Wall
 	RenderBuildingWall:
 	AutoTargetIgnore:
 	Sellable:

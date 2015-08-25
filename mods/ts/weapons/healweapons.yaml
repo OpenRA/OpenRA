@@ -2,16 +2,13 @@ Heal:
 	ReloadDelay: 80
 	Range: 2c849
 	Report: HEALER1.AUD
+	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
-		Versus:
-			Wood: 0
-			Light: 0
-			Heavy: 0
-			Concrete: 0
+		ValidTargets: Infantry
 
 Repair:
 	ReloadDelay: 80

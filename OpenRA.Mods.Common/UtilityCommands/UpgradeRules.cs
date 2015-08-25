@@ -2238,6 +2238,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150809)
+				{
+					// Removed 0% versus armor type = cannot target actor assumptions from warheads
+					if (depth == 3 && parentKey == "Versus" && node.Value.Value == "0")
+					{
+						Console.WriteLine("The '0% versus armor type = cannot target this actor' assumption has been removed.");
+						Console.WriteLine("If you want to reproduce its behavior, use ValidTargets/InvalidTargets in");
+						Console.WriteLine("conjunction with one of the Targetable* actor traits.");
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

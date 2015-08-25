@@ -117,7 +117,7 @@
 		UseLocation: yes
 	TargetableAircraft:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground
+		GroundedTargetTypes: Ground, Vehicle
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
@@ -299,7 +299,7 @@
 	Selectable:
 		Bounds: 24,24
 	TargetableUnit:
-		TargetTypes: Ground, Infantry
+		TargetTypes: Ground
 	HiddenUnderFog:
 	WithInfantryBody:
 		AttackSequence: attack
@@ -639,7 +639,7 @@
 		Interval: 2
 	TargetableUnit:
 		RequiresForceFire: yes
-		TargetTypes: Ground
+		TargetTypes: Ground, Husk
 	Capturable:
 		Type: husk
 		AllowAllies: yes

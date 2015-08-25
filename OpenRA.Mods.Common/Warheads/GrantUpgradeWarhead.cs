@@ -29,10 +29,6 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public readonly WDist Range = WDist.FromCells(1);
 
-		// TODO: This can be removed after the legacy and redundant 0% = not targetable
-		// assumption has been removed from the yaml definitions
-		public override bool CanTargetActor(ActorInfo victim, Actor firedBy) { return true; }
-
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :

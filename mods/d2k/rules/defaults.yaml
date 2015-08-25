@@ -66,7 +66,7 @@
 	Selectable:
 		Bounds: 32,32
 	TargetableUnit:
-		TargetTypes: Ground, C4
+		TargetTypes: Ground, Vehicle, C4
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -129,7 +129,7 @@
 	Burns:
 		Interval: 4
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 		RequiresForceFire: yes
 	Capturable:
 		Type: husk
@@ -187,7 +187,7 @@
 	Selectable:
 		Bounds: 12,18,0,-6
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Infantry
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
 	RenderSprites:
