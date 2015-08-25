@@ -94,6 +94,8 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 37
+		Plugs:
+			0,0: tower.vulcan
 	Actor12: gapile
 		Location: 79,34
 		Owner: Neutral
@@ -114,6 +116,8 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 179
+		Plugs:
+			0,0: tower.vulcan
 	Actor16: garadr
 		Location: 70,30
 		Owner: Neutral
@@ -129,11 +133,15 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 24
+		Plugs:
+			0,0: tower.vulcan
 	Actor19: gactwr
 		Location: 98,54
 		Owner: Neutral
 		Health: 100
 		Facing: 219
+		Plugs:
+			0,0: tower.vulcan
 	Actor20: ammocrat
 		Location: 69,34
 		Owner: Neutral
