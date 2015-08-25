@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		float2 logoPos;
 		Sheet sheet;
 		Sprite stripe, logo;
-		string[] messages;
+		string[] messages = { "Loading..." };
 
 		public override void Init(Manifest m, Dictionary<string, string> info)
 		{
@@ -35,12 +35,17 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (r == null)
 				return;
 
-			messages = info["Text"].Split(',');
-			sheet = new Sheet(Platform.ResolvePath(info["Image"]));
-			logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
-			stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
-			stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
-			logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
+			if (info.ContainsKey("Text"))
+				messages = info["Text"].Split(',');
+
+			if (info.ContainsKey("Image"))
+			{
+				sheet = new Sheet(Platform.ResolvePath(info["Image"]));
+				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
+				stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
+				stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
+				logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
+			}
 		}
 
 		public override void Display()
@@ -60,8 +65,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 			var textSize = r.Fonts["Bold"].Measure(text);
 
 			r.BeginFrame(int2.Zero, 1f);
-			WidgetUtils.FillRectWithSprite(stripeRect, stripe);
-			r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
+
+			if (stripe != null)
+				WidgetUtils.FillRectWithSprite(stripeRect, stripe);
+
+			if (logo != null)
+				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
+
 			r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
 			r.EndFrame(new NullInputHandler());
 		}
