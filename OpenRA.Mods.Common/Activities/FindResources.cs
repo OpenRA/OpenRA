@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer territory;
 		readonly IPathFinder pathFinder;
+		readonly DomainIndex domainIndex;
 
 		CPos? avoidCell;
 
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
+			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 		}
 
 		public FindResources(Actor self, CPos avoidCell)
@@ -142,8 +144,9 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
+			var passable = (uint)mobileInfo.GetMovementClass(self.World.TileSet);
 			var search = PathSearch.Search(self.World, mobileInfo, self, true,
-				loc => IsHarvestable(self, loc))
+				loc => domainIndex.IsPassable(self.Location, loc, passable) && IsHarvestable(self, loc))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
