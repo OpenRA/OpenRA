@@ -91,8 +91,12 @@ namespace OpenRA
 
 			if (t.IsArray && t.GetArrayRank() == 1)
 			{
-				var elems = ((Array)v).OfType<object>();
-				return elems.JoinWith(", ");
+				return ((Array)v).Cast<object>().JoinWith(", ");
+			}
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+			{
+				return ((System.Collections.IEnumerable)v).Cast<object>().JoinWith(", ");
 			}
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))

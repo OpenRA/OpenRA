@@ -429,6 +429,18 @@ namespace OpenRA
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
 			}
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(HashSet<>))
+			{
+				var set = Activator.CreateInstance(fieldType);
+				if (value == null)
+					return set;
+
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var addMethod = fieldType.GetMethod("Add", fieldType.GetGenericArguments());
+				for (var i = 0; i < parts.Length; i++)
+					addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
+				return set;
+			}
 			else if (fieldType == typeof(Size))
 			{
 				if (value != null)
