@@ -565,7 +565,8 @@ guntower:
 		VisualBounds: 32,40,0,-8
 
 rockettower:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
 	Buildable:
 		Queue: Building
 		Prerequisites: radar, upgrade.conyard, ~techlevel.medium

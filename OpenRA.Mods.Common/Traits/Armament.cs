@@ -23,8 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		public WAngle Yaw;
 	}
 
-	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
+	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)",
+		"Provides \"armament\" range type while enabled with Name as variant, "
+		+ "\"weapon\" range type with Weapon as variant"
+		+ "& \"targets\" range type while enabled with ValidTargets of Weapon as variants.")]
+	public class ArmamentInfo : UpgradableTraitInfo, IProvidesRangesInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -62,10 +65,37 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		WeaponInfo weaponInfo = null;
+
 		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
+		public WeaponInfo GetWeaponInfo(World w)
+		{
+			if (weaponInfo == null)
+				weaponInfo = w.Map.Rules.Weapons[Weapon.ToLowerInvariant()];
+			return weaponInfo;
+		}
+
+		public bool ProvidesRanges(string type, string variant, ActorInfo ai, World w)
+		{
+			if (type == "armament")
+				return string.IsNullOrEmpty(variant) || Name == variant;
+			if (type == "weapon")
+				return string.IsNullOrEmpty(variant) || Weapon == variant;
+			if (type == "targets")
+				return string.IsNullOrEmpty(variant) || GetWeaponInfo(w).ValidTargets.Contains(variant);
+
+			return false;
+		}
+
+		public IEnumerable<IRanged> GetRanges(string type, string variant, ActorInfo ai, World w)
+		{
+			return (UpgradeMinEnabledLevel == 0 || type[0] == 'w')
+				? GetWeaponInfo(w).AsRanges // if default enabled or weapon
+				: Traits.ProvidesRanges.NoRanges;
+		}
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier, IProvidesRanges
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
@@ -90,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
 			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
 
-			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
+			Weapon = info.GetWeaponInfo(self.World);
 			Burst = Weapon.Burst;
 
 			var barrels = new List<Barrel>();
@@ -235,5 +265,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Actor Actor { get { return self; } }
+		public bool ProvidesRanges(string type, string variant) { return Info.ProvidesRanges(type, variant, null, null); }
+		public IEnumerable<IRanged> GetRanges(string type, string variant)
+		{
+			return (!IsTraitDisabled || type[0] == 'w') ? Weapon.AsRanges : Traits.ProvidesRanges.NoRanges;
+		}
 	}
 }

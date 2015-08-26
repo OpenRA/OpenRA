@@ -19,7 +19,7 @@ GADPSA:
 	-AutoTarget:
 	-DrawLineToTarget:
 	-AttackTurreted:
-	-RenderRangeCircle:
+	-WithRangeCircle@ATTACK_GROUND:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6

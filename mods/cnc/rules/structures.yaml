@@ -667,7 +667,9 @@ GUN:
 		Amount: -20
 
 SAM:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
+	-WithRangeCircle@ATTACK_GROUND:
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -786,7 +788,8 @@ GTWR:
 		Amount: -10
 
 ATWR:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:

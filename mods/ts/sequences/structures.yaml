@@ -802,12 +802,19 @@ gactwr:
 
 gavulc:
 	icon: twr1icon
+	turret-vulcan: gtctwr_b
+		Facings: 32
 
 garock:
 	icon: twr2icon
+	turret-rocket: gtctwr_c
+		Facings: 32
+		UseTilesetCode: false
 
 gacsam:
 	icon: twr3icon
+	turret-sam: gtctwr_d
+		Facings: 32
 
 gahpad:
 	Defaults:

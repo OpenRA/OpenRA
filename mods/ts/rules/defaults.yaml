@@ -611,11 +611,25 @@
 	Tooltip:
 		Name: Palette
 
+^WithGroundAttackRangeCircle:
+	WithRangeCircle@ATTACK_GROUND:
+		Name: attack
+		Type: targets
+		Variant: Ground
+		Color: 128,255,255,0 # Yellow
+
+^WithAirAttackRangeCircle:
+	WithRangeCircle@ATTACK_AIR:
+		Name: attack@aa
+		Type: targets
+		Variant: Air
+		Color: 128,0,0,255 # Blue
+
 ^Defense:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithGroundAttackRangeCircle
 	-GivesBuildableArea:
 	AutoTarget:
-	RenderRangeCircle:
 	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 6c0
@@ -626,12 +640,12 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
+	Inherits@4: ^WithGroundAttackRangeCircle
 	Voiced:
 		VoiceSet: Vehicle
 	AttackTurreted:
 		Voice: Attack
 	AutoTarget:
-	RenderRangeCircle:
 	DrawLineToTarget:
 	Building:
 		Dimensions: 1,1

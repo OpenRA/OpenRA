@@ -295,12 +295,23 @@
 		Range: 2c0, 5c0
 	WithMakeAnimation:
 
+^WithAirAttackRangeCircle:
+	WithRangeCircle@ATTACK_AIR:
+		Name: attack@aa
+		Type: targets
+		Variant: Air
+		Color: 128,0,0,255 # Blue
+
 ^Defense:
 	Inherits: ^Building
 	WithTurret:
 	AttackTurreted:
 	AutoTarget:
-	RenderRangeCircle:
+	WithRangeCircle@ATTACK_GROUND:
+		Name: attack
+		Type: targets
+		Variant: Ground
+		Color: 128,255,255,0 # Yellow
 	RenderDetectionCircle:
 	-GivesBuildableArea:
 	-WithCrumbleOverlay:
