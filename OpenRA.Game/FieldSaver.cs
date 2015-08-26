@@ -89,7 +89,7 @@ namespace OpenRA
 				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
 			}
 
-			if (t.IsArray)
+			if (t.IsArray && t.GetArrayRank() == 1)
 			{
 				var elems = ((Array)v).OfType<object>();
 				return elems.JoinWith(", ");

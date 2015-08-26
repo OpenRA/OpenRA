@@ -417,7 +417,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(value, fieldType, fieldName);
-			else if (fieldType.IsArray)
+			else if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
 			{
 				if (value == null)
 					return Array.CreateInstance(fieldType.GetElementType(), 0);
