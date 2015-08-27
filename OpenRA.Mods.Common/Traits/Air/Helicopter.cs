@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly HelicopterInfo Info;
 		Actor self;
-		bool firstTick = true;
 		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
 
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
@@ -119,26 +118,6 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(new HeliLand(self, true));
 				}
 			}
-		}
-
-		public void Tick(Actor self)
-		{
-			if (firstTick)
-			{
-				firstTick = false;
-				if (self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
-					return;
-
-				ReserveSpawnBuilding();
-
-				var host = GetActorBelow();
-				if (host == null)
-					return;
-
-				self.QueueActivity(new TakeOff(self));
-			}
-
-			Repulse();
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(self, Target.FromCell(self.World, cell)); }
