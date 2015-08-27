@@ -29,15 +29,24 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly TargetableBuildingInfo info;
 		readonly Building building;
+		protected Cloak cloak;
 
 		public TargetableBuilding(Actor self, TargetableBuildingInfo info)
 		{
 			this.info = info;
 			building = self.Trait<Building>();
+			cloak = self.TraitOrDefault<Cloak>();
+		}
+
+		public bool TargetableBy(Actor self, Actor viewer)
+		{
+			if (cloak == null || (!viewer.IsDead && viewer.HasTrait<IgnoresCloak>()))
+				return true;
+
+			return cloak.IsVisible(self, viewer.Owner);
 		}
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
-		public bool TargetableBy(Actor self, Actor byActor) { return true; }
 
 		public IEnumerable<WPos> TargetablePositions(Actor self)
 		{
