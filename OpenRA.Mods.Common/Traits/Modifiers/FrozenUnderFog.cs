@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 				{
 					frozenActor = frozen[player];
-					isVisible = visible[player] = !frozenActor.Visible;
+					isVisible = visible[player] = !frozenActor.IsVisible;
 				}
 
 				if (isVisible)
