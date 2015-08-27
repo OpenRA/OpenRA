@@ -47,10 +47,10 @@ namespace OpenRA.GameRules
 		public readonly bool Charges = false;
 
 		[Desc("What types of targets are affected.")]
-		public readonly string[] ValidTargets = { "Ground", "Water" };
+		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
-		public readonly string[] InvalidTargets = { };
+		public readonly HashSet<string> InvalidTargets = new HashSet<string>();
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine.")]
 		public readonly int BurstDelay = 5;
@@ -64,14 +64,9 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadWarheads")]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
-		readonly HashSet<string> validTargetSet;
-		readonly HashSet<string> invalidTargetSet;
-
 		public WeaponInfo(string name, MiniYaml content)
 		{
 			FieldLoader.Load(this, content);
-			validTargetSet = new HashSet<string>(ValidTargets);
-			invalidTargetSet = new HashSet<string>(InvalidTargets);
 		}
 
 		static object LoadProjectile(MiniYaml yaml)
@@ -99,7 +94,7 @@ namespace OpenRA.GameRules
 
 		public bool IsValidTarget(IEnumerable<string> targetTypes)
 		{
-			return validTargetSet.Overlaps(targetTypes) && !invalidTargetSet.Overlaps(targetTypes);
+			return ValidTargets.Overlaps(targetTypes) && !InvalidTargets.Overlaps(targetTypes);
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>

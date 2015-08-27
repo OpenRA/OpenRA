@@ -417,7 +417,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(value, fieldType, fieldName);
-			else if (fieldType.IsArray)
+			else if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
 			{
 				if (value == null)
 					return Array.CreateInstance(fieldType.GetElementType(), 0);
@@ -428,6 +428,18 @@ namespace OpenRA
 				for (var i = 0; i < parts.Length; i++)
 					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
 				return ret;
+			}
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(HashSet<>))
+			{
+				var set = Activator.CreateInstance(fieldType);
+				if (value == null)
+					return set;
+
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var addMethod = fieldType.GetMethod("Add", fieldType.GetGenericArguments());
+				for (var i = 0; i < parts.Length; i++)
+					addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
+				return set;
 			}
 			else if (fieldType == typeof(Size))
 			{
