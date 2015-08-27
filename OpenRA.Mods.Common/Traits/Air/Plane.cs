@@ -37,27 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		bool firstTick = true;
-		public void Tick(Actor self)
-		{
-			if (firstTick)
-			{
-				firstTick = false;
-				if (self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
-					return;
-
-				ReserveSpawnBuilding();
-
-				var host = GetActorBelow();
-				if (host == null)
-					return;
-
-				self.QueueActivity(new TakeOff(self));
-			}
-
-			Repulse();
-		}
-
 		public override WVec GetRepulsionForce()
 		{
 			var repulsionForce = base.GetRepulsionForce();
