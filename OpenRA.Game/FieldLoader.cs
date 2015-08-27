@@ -110,13 +110,8 @@ namespace OpenRA
 			if (!md.TryGetValue(yamlName, out yaml))
 				return false;
 
-			if (yaml.Nodes.Count == 0)
-			{
-				ret = GetValue(field.Name, field.FieldType, yaml.Value, field);
-				return true;
-			}
-
-			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(yamlName, field.FieldType));
+			ret = GetValue(field.Name, field.FieldType, yaml, field);
+			return true;
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
