@@ -87,22 +87,23 @@ namespace OpenRA.Mods.Common.Traits
 			VisibilityHash = 0;
 			foreach (var player in self.World.Players)
 			{
-				bool isVisible;
+				bool isCurrentlyVisible;
 				FrozenActor frozenActor;
 				if (!initialized)
 				{
 					frozen[player] = frozenActor = new FrozenActor(self, footprint, player.Shroud);
 					frozen[player].NeedRenderables = frozenActor.NeedRenderables = startsRevealed;
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-					isVisible = visible[player] |= startsRevealed;
+					isCurrentlyVisible = visible[player] |= startsRevealed;
 				}
 				else
 				{
 					frozenActor = frozen[player];
-					isVisible = visible[player] = !frozenActor.IsVisible;
+					isCurrentlyVisible = visible[player] = !frozenActor.IsVisible;
 				}
 
-				if (isVisible)
+				// Sum of the ClientIndexes for all players that can currently see this actor.
+				if (isCurrentlyVisible)
 					VisibilityHash += player.ClientIndex;
 				else
 					continue;
