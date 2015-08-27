@@ -23,21 +23,29 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}
 
-	public class AppearsOnRadar : IRadarSignature
+	public class AppearsOnRadar : IRadarSignature, INotifyCreated
 	{
-		AppearsOnRadarInfo info;
+		readonly AppearsOnRadarInfo info;
+		IRadarColorModifier modifier;
 
-		public AppearsOnRadar(AppearsOnRadarInfo info) { this.info = info; }
+		public AppearsOnRadar(AppearsOnRadarInfo info)
+		{
+			this.info = info;
+		}
+
+		public void Created(Actor self)
+		{
+			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
+		}
 
 		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
 		{
-			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
-			var color = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
+			var color = modifier != null ? modifier.RadarColorOverride(self) : self.Owner.Color.RGB;
 
 			if (info.UseLocation)
 				return new[] { Pair.New(self.Location, color) };
-			else
-				return self.OccupiesSpace.OccupiedCells().Select(c => Pair.New(c.First, color));
+
+			return self.OccupiesSpace.OccupiedCells().Select(c => Pair.New(c.First, color));
 		}
 	}
 }
