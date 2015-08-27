@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
@@ -47,6 +48,9 @@ namespace OpenRA.Traits
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
+		public Color RadarColor;
+		public HashSet<CPos> OccupiedCells;
+
 		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud)
 		{
 			actor = self;
@@ -58,6 +62,10 @@ namespace OpenRA.Traits
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
+
+			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
+			RadarColor = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
+			OccupiedCells = new HashSet<CPos>(footprint.SelectMany(uv => self.World.Map.Unproject(uv).Select(m => m.ToCPos(self.World.Map))));
 
 			UpdateVisibility();
 		}
@@ -142,7 +150,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class FrozenActorLayer : IRender, ITick, ISync
+	public class FrozenActorLayer : IRender, ITick, ISync, IRadarSignature
 	{
 		[Sync] public int VisibilityHash;
 		[Sync] public int FrozenHash;
@@ -207,6 +215,15 @@ namespace OpenRA.Traits
 				return null;
 
 			return ret;
+		}
+
+		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		{
+			// Filter only actors that have been discovered by the player
+			// HasRenderables is only True once the actor enters the viewport, so is not enough for the minimap
+			foreach (var frozenActor in frozen.Values.Where(f => f.NeedRenderables || f.HasRenderables))
+				foreach (var cell in frozenActor.OccupiedCells)
+					yield return Pair.New(cell, frozenActor.RadarColor);
 		}
 	}
 }
