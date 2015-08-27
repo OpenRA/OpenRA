@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -43,6 +42,11 @@ namespace OpenRA.Traits
 		public bool NeedRenderables;
 		public bool IsRendering { get; private set; }
 
+		public uint ID { get { return actor.ActorID; } }
+		public bool IsValid { get { return Owner != null; } }
+		public ActorInfo Info { get { return actor.Info; } }
+		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+
 		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud)
 		{
 			actor = self;
@@ -50,20 +54,13 @@ namespace OpenRA.Traits
 			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
-			Footprint = footprint
-				.Where(m => shroud.Contains(m))
-				.ToArray();
+			Footprint = footprint.Where(shroud.Contains).ToArray();
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
 
 			UpdateVisibility();
 		}
-
-		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null; } }
-		public ActorInfo Info { get { return actor.Info; } }
-		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 
