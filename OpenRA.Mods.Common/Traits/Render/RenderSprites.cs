@@ -29,7 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The sequence name that defines the actor sprites. Defaults to the actor name.")]
 		public readonly string Image = null;
 
-		[FieldLoader.LoadUsing("LoadFactionImages")]
 		[Desc("A dictionary of faction-specific image overrides.")]
 		public readonly Dictionary<string, string> FactionImages = null;
 
@@ -41,16 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
-
-		protected static object LoadFactionImages(MiniYaml y)
-		{
-			MiniYaml images;
-
-			if (!y.ToDictionary().TryGetValue("FactionImages", out images))
-				return null;
-
-			return images.Nodes.ToDictionary(kv => kv.Key, kv => kv.Value.Value);
-		}
 
 		public virtual object Create(ActorInitializer init) { return new RenderSprites(init, this); }
 

@@ -28,7 +28,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
 		public readonly string[] DamageTriggers = null;
 
-		[FieldLoader.LoadUsing("LoadModifiers")]
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
 
@@ -37,15 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(null, true)] public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
-
-		public static object LoadModifiers(MiniYaml yaml)
-		{
-			var md = yaml.ToDictionary();
-
-			return md.ContainsKey("DamageModifiers")
-				? md["DamageModifiers"].ToDictionary(my => FieldLoader.GetValue<int>("(value)", my.Value))
-				: new Dictionary<string, int>();
-		}
 	}
 
 	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier

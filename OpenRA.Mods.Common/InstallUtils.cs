@@ -28,40 +28,19 @@ namespace OpenRA.Mods.Common
 		public readonly string PackageToExtractFromCD = null;
 		public readonly bool OverwriteFiles = true;
 
-		[FieldLoader.LoadUsing("LoadFilesToExtract")]
-		public readonly Dictionary<string, string[]> ExtractFilesFromCD = new Dictionary<string, string[]>();
-
-		[FieldLoader.LoadUsing("LoadFilesToCopy")]
 		public readonly Dictionary<string, string[]> CopyFilesFromCD = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string[]> ExtractFilesFromCD = new Dictionary<string, string[]>();
 
 		public readonly string PackageMirrorList = null;
 
 		public readonly string MusicPackageMirrorList = null;
 		public readonly int ShippedSoundtracks = 0;
 
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files </summary>
+		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files. </summary>
 		public readonly int[] InstallShieldCABFileIds = { };
 
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD </summary>
+		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD. </summary>
 		public readonly string[] InstallShieldCABFilePackageIds = { };
-
-		public static Dictionary<string, string[]> LoadFilesToExtract(MiniYaml yaml)
-		{
-			var md = yaml.ToDictionary();
-
-			return md.ContainsKey("ExtractFilesFromCD")
-				? md["ExtractFilesFromCD"].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
-				: new Dictionary<string, string[]>();
-		}
-
-		public static Dictionary<string, string[]> LoadFilesToCopy(MiniYaml yaml)
-		{
-			var md = yaml.ToDictionary();
-
-			return md.ContainsKey("CopyFilesFromCD")
-				? md["CopyFilesFromCD"].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
-				: new Dictionary<string, string[]>();
-		}
 	}
 
 	public static class InstallUtils
