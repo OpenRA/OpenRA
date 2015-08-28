@@ -653,6 +653,7 @@ function findReplace:RunInFiles(replace)
   self:SetStatus(not completed and TR("Cancelled by the user.")
     or TR("Found %d instance.", self.occurrences):format(self.occurrences))
   if completed and ide.config.search.autohide then self:Hide() end
+  self.oveditor:Destroy()
   self.oveditor = nil
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
 end
@@ -1198,6 +1199,7 @@ local package = ide:AddPackage('core.findreplace', {
               :format(fname, mismatch and "mismatch on line "..mismatch or err))
           end
         end
+        oveditor:Destroy() -- destroy the editor to release its memory
         if report then editor:AppendText("\n"..report) end
         editor:AppendText(("\n\nUpdated %d %s in %d %s.")
           :format(
