@@ -41,7 +41,7 @@ LST:
 	Tooltip:
 		Name: Landing Craft
 	Buildable:
-		Queue: Vehicle
+		Queue: Vehicle.GDI
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Mobile:

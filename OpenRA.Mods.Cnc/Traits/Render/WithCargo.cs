@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
 
-	public class WithCargo : IRenderModifier
+	public class WithCargo : IRenderModifier, ITick
 	{
 		readonly Cargo cargo;
 		readonly IFacing facing;
@@ -45,6 +45,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			body = self.Trait<IBodyOrientation>();
 		}
 
+		public void Tick(Actor self)
+		{
+			if (facing == null)
+				return;
+
+			foreach (var c in cargo.Passengers)
+			{
+				var cargoFacing = c.TraitOrDefault<IFacing>();
+				if (cargoFacing != null)
+					cargoFacing.Facing = facing.Facing;
+			}
+		}
+
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			foreach (var rr in r)
@@ -55,10 +68,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			var i = 0;
 			foreach (var c in cargo.Passengers)
 			{
-				var cargoFacing = c.TraitOrDefault<IFacing>();
-				if (facing != null && cargoFacing != null)
-					cargoFacing.Facing = facing.Facing;
-
 				var cargoPassenger = c.Trait<Passenger>();
 				if (cargoInfo.DisplayTypes.Contains(cargoPassenger.Info.CargoType))
 				{
