@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Image to display.")]
 		public readonly string Image = null;
 
-		[Desc("Loop this sequence of Image while this projectile is moving.")]
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+		[Desc("Loop these sequences of Image while this projectile is moving.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("The palette used to draw this projectile.")]
 		[PaletteReference] public readonly string Palette = "effect";
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, GetEffectiveFacing);
-				anim.PlayRepeating(info.Sequence);
+				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 
 			if (info.ContrailLength > 0)
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.Sequence)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.Sequences.Random(world.SharedRandom))));
 				smokeTicks = info.TrailInterval;
 			}
 

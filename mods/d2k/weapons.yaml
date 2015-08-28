@@ -682,7 +682,7 @@ Shrapnel:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:
-	Projectile: Shrapnel
+	Projectile: Bullet
 		Speed: 50, 125
 		Blockable: false
 		Angle: 91, 264
