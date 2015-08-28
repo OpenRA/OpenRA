@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ITraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -33,8 +33,6 @@ namespace OpenRA.Mods.Common.Traits
 				() => bodyOrientation,
 				() => false, () => 0);
 		}
-
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction) { return 0; }
 	}
 
 	public class WithVoxelBody : IAutoSelectionSize

@@ -23,6 +23,8 @@ BOAT:
 		LocalOffset: 85,-85,0, 85,85,0
 	AttackTurreted:
 	RenderSprites:
+	BodyOrientation:
+		QuantizedFacings: 2
 	WithGunboatBody:
 		Sequence: left # Just a work-around to avoid crash
 	Selectable:
@@ -64,6 +66,7 @@ LST:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	WithRoof:
 	WithCargo:

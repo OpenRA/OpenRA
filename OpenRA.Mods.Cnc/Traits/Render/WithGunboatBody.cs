@@ -27,11 +27,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference] public readonly string WakeRightSequence = "wake-right";
 
 		public override object Create(ActorInitializer init) { return new WithGunboatBody(init, this); }
-
-		public override int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction)
-		{
-			return 2;
-		}
 	}
 
 	class WithGunboatBody : WithSpriteBody, ITick

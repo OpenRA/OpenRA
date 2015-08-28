@@ -1782,6 +1782,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ValidFactions";
 				}
 
+				if (engineVersion < 20150823)
+				{
+					// Introduce QuantizeFacingsFromSequence
+					// This will only do roughly the right thing and probably require the modder to do some manual cleanup
+					if (depth == 0)
+					{
+						var inftraits = node.Value.Nodes.FirstOrDefault(n =>
+							n.Key.StartsWith("WithInfantryBody")
+							|| n.Key.StartsWith("WithDisguisingInfantryBody"));
+						if (inftraits != null)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
+								{
+									new MiniYamlNode("Sequence", "stand"),
+								}));
+						}
+
+						var other = node.Value.Nodes.FirstOrDefault(x =>
+							x.Key.StartsWith("RenderBuilding")
+							|| x.Key.StartsWith("RenderSimple")
+							|| x.Key.StartsWith("WithCrateBody")
+							|| x.Key.StartsWith("WithSpriteBody")
+							|| x.Key.StartsWith("WithFacingSpriteBody"));
+						if (other != null)
+							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", ""));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

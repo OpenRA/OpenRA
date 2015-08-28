@@ -103,6 +103,7 @@ crate:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Units: mcv
+	QuantizeFacingsFromSequence:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
@@ -117,6 +118,7 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
 	AlwaysVisible:
@@ -125,6 +127,7 @@ waypoint:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 ^carryall.colorpicker:
 	Inherits: carryall
@@ -152,6 +155,7 @@ wormspawner:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 	WormSpawner:
 
 upgrade.conyard:

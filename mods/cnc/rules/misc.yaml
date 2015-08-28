@@ -33,6 +33,7 @@ mpspawn:
 	RenderSpritesEditorOnly:
 		Palette: chrome
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
 	AlwaysVisible:
@@ -42,6 +43,7 @@ waypoint:
 	RenderSpritesEditorOnly:
 		Palette: chrome
 	BodyOrientation:
+		QuantizedFacings: 1
 
 ^fact.colorpicker:
 	Inherits: FACT
@@ -86,4 +88,5 @@ FLARE:
 	Tooltip:
 		Name: Flare
 	BodyOrientation:
+		QuantizedFacings: 1
 

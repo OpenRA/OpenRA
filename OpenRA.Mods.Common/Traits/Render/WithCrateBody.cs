@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders crates with both water and land variants.")]
-	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo
+	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in december.")]
 		public readonly string[] XmasImages = { };
@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), IdleSequence));
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
 		}
-
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction) { return 1; }
 	}
 
 	class WithCrateBody : INotifyParachuteLanded

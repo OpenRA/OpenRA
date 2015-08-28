@@ -308,22 +308,6 @@ namespace OpenRA.Traits
 
 	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
 
-	public interface IBodyOrientation
-	{
-		WAngle CameraPitch { get; }
-		int QuantizedFacings { get; }
-		WVec LocalToWorld(WVec vec);
-		WRot QuantizeOrientation(Actor self, WRot orientation);
-	}
-
-	public interface IBodyOrientationInfo : ITraitInfo
-	{
-		WVec LocalToWorld(WVec vec);
-		WRot QuantizeOrientation(WRot orientation, int facings);
-	}
-
-	public interface IQuantizeBodyOrientationInfo { int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction); }
-
 	public interface ITargetableInfo
 	{
 		string[] GetTargetTypes();

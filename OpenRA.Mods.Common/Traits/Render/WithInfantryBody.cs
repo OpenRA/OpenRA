@@ -16,8 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithInfantryBodyInfo : UpgradableTraitInfo, IQuantizeBodyOrientationInfo, IRenderActorPreviewSpritesInfo,
-		Requires<IMoveInfo>, Requires<RenderSpritesInfo>
+	public class WithInfantryBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<IMoveInfo>, Requires<RenderSpritesInfo>
 	{
 		public readonly int MinIdleWaitTicks = 30;
 		public readonly int MaxIdleWaitTicks = 110;
@@ -39,12 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 			var anim = new Animation(init.World, image, () => facing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences.First()));
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
-		}
-
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction)
-		{
-			var rsi = ai.Traits.Get<RenderSpritesInfo>();
-			return sequenceProvider.GetSequence(rsi.GetImage(ai, sequenceProvider, faction), StandSequences.First()).Facings;
 		}
 	}
 

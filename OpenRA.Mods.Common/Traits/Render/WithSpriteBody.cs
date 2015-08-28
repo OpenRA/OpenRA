@@ -17,8 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
-	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, IQuantizeBodyOrientationInfo,
-		Requires<RenderSpritesInfo>
+	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created.")]
 		[SequenceReference] public readonly string StartSequence = null;
@@ -34,11 +33,6 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
-		}
-
-		public virtual int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string faction)
-		{
-			return 1;
 		}
 	}
 

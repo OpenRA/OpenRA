@@ -9,8 +9,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class BodyOrientationInfo : ITraitInfo, IBodyOrientationInfo
 	{
@@ -70,8 +73,12 @@ namespace OpenRA.Traits
 					return info.QuantizedFacings;
 
 				var qboi = self.Info.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
-				if (qboi == null)
-					throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
+				var isb = self.HasTrait<ISpriteBody>();
+
+				// If a sprite actor has neither custom QuantizedFacings nor a trait implementing IQuantizeBodyOrientationInfo, throw
+				if (qboi == null && isb)
+					throw new InvalidOperationException("Actor" + self.Info.Name + "has a sprite body but no facing quantization."
+						+ " Either add the QuantizeFacingsFromSequence trait or set custom QuantizedFacings on BodyOrientation.");
 
 				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.SequenceProvider, faction);
 			});

@@ -74,9 +74,10 @@
 	AttackMove:
 	DrawLineToTarget:
 	WithSmoke:
+	RenderSprites:
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
-	RenderSprites:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -137,6 +138,7 @@
 	Guardable:
 	Tooltip:
 		GenericName: Helicopter
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
@@ -173,6 +175,8 @@
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	RenderSprites:
+	QuantizeFacingsFromSequence:
+		Sequence: stand
 	WithInfantryBody:
 	WithDeathAnimation:
 		DeathTypes:
@@ -301,6 +305,8 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	HiddenUnderFog:
+	QuantizeFacingsFromSequence:
+		Sequence: stand
 	WithInfantryBody:
 		AttackSequence: attack
 	WithDeathAnimation:
@@ -359,7 +365,9 @@
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
-	WithFacingSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 8
+	WithSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
 	WithMuzzleFlash:
@@ -367,8 +375,6 @@
 	Guard:
 		Voice: Move
 	Guardable:
-	BodyOrientation:
-		QuantizedFacings: 8
 	PoisonedByTiberium:
 		Weapon: Heal
 	Voiced:
@@ -383,6 +389,7 @@
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	RenderSprites:
 	AutoSelectionSize:
@@ -424,6 +431,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: crumble.aud
+	QuantizeFacingsFromSequence:
 	RenderBuilding:
 	WithBuildingExplosion:
 		Delay: 1
@@ -480,6 +488,7 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
+	QuantizeFacingsFromSequence:
 	RenderBuilding:
 	Tooltip:
 		Name: Civilian Building (Destroyed)
@@ -521,6 +530,7 @@
 		Name: Field (Destroyed)
 		GenericVisibility: None
 	BodyOrientation:
+		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -548,6 +558,8 @@
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
+	BodyOrientation:
+		QuantizedFacings: 1
 	RenderBuildingWall:
 		Palette: staticterrain
 	GivesExperience:
@@ -555,13 +567,14 @@
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
-	BodyOrientation:
 	FrozenUnderFog:
 	ScriptTriggers:
 
 ^Tree:
 	Tooltip:
 		Name: Tree
+	BodyOrientation:
+		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
@@ -577,7 +590,6 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
-	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -585,6 +597,8 @@
 ^TibTree:
 	Tooltip:
 		Name: Blossom Tree
+	BodyOrientation:
+		QuantizedFacings: 1
 	RenderBuilding:
 		Palette: staticterrain
 	Building:
@@ -593,7 +607,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
-	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
 	WithMakeAnimation:
@@ -601,6 +614,8 @@
 ^Rock:
 	Tooltip:
 		Name: Rock
+	BodyOrientation:
+		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
@@ -611,7 +626,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -627,6 +641,7 @@
 		Type: CenterPosition
 	AutoTargetIgnore:
 	BodyOrientation:
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
@@ -685,6 +700,7 @@
 		GenericName: Crate
 	Crate:
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	QuantizeFacingsFromSequence:
 	RenderSprites:
 		Palette: effect
 		Image: crate

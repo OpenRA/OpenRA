@@ -62,6 +62,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
+	QuantizeFacingsFromSequence:
 	RenderBuilding:
 	WithBuildingExplosion:
 		Sequences: building, large_bang, large_brnl, verylarge_clsn, large_tumu
@@ -227,6 +228,7 @@
 		VoiceSet: Infantry
 	TargetableUnit:
 		TargetTypes: Ground, Infantry
+	QuantizeFacingsFromSequence:
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation@normal:
@@ -419,11 +421,15 @@
 
 ^VoxelVehicle:
 	Inherits: ^Vehicle
+	BodyOrientation:
+		QuantizedFacings: 0
 	RenderVoxels:
 	WithVoxelBody:
 
 ^VoxelTank:
 	Inherits: ^Tank
+	BodyOrientation:
+		QuantizedFacings: 0
 	RenderVoxels:
 	WithVoxelBody:
 
@@ -452,6 +458,7 @@
 		Voice: Move
 	ActorLostNotification:
 	BodyOrientation:
+		QuantizedFacings: 0
 		CameraPitch: 90
 	Guard:
 		Voice: Move
@@ -511,6 +518,8 @@
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Guardable:
+	BodyOrientation:
+		QuantizedFacings: 1
 	RenderSprites:
 	WithSpriteBody:
 	AutoSelectionSize:
@@ -528,6 +537,7 @@
 		Terrain: Tiberium
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	SeedsResource:
@@ -537,6 +547,9 @@
 
 ^Tree:
 	HiddenUnderShroud:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -547,13 +560,14 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
 	Tooltip:
 		Name: Tree
 
 ^Rock:
 	HiddenUnderShroud:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -564,8 +578,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Rock
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
 	Tooltip:
 		Name: Rock
 

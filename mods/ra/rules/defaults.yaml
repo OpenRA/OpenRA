@@ -123,6 +123,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
 	RenderSprites:
@@ -184,6 +185,8 @@
 		TargetTypes: Ground, Infantry, Disguise
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
+	QuantizeFacingsFromSequence:
+		Sequence: stand
 	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
@@ -322,6 +325,7 @@
 		ExcludeTilesets: INTERIOR
 	Voiced:
 		VoiceSet: VehicleVoice
+	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
 	WithFacingSpriteBody:
@@ -359,6 +363,7 @@
 	Tooltip:
 		GenericName: Plane
 	WithShadow:
+	QuantizeFacingsFromSequence:
 	RenderSprites:
 	WithFacingSpriteBody:
 	AutoSelectionSize:
@@ -390,6 +395,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
+	QuantizeFacingsFromSequence:
 	RenderBuilding:
 	WithBuildingExplosion:
 	CaptureNotification:
@@ -466,6 +472,7 @@
 		SellSounds: cashturn.aud
 	Guardable:
 	BodyOrientation:
+		QuantizedFacings: 1
 	FrozenUnderFog:
 	GpsRemoveFrozenActor:
 	ScriptTriggers:
@@ -551,6 +558,7 @@
 		Type: Wood
 	AutoTargetIgnore:
 	BodyOrientation:
+		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -564,6 +572,7 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
+	QuantizeFacingsFromSequence:
 	BodyOrientation:
 	AutoTargetIgnore:
 	ScriptTriggers:
@@ -645,6 +654,7 @@
 	ProximityCaptor:
 		Types: Tree
 	BodyOrientation:
+		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -689,4 +699,5 @@
 		ShadowSequence: idle
 	UpgradeManager:
 	BodyOrientation:
+		QuantizedFacings: 1
 
