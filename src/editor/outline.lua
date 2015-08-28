@@ -10,7 +10,6 @@ ide.outline = {
   },
   needsaving = false,
   indexqueue = {[0] = {}},
-  indexeditor = nil,
   indexpurged = false, -- flag that the index has been purged from old records; once per session
 }
 
@@ -204,10 +203,9 @@ local function indexFromQueue()
     outline.indexqueue[0][fname] = nil
     -- check if fname is already loaded
     ide:SetStatusFor(TR("Indexing %d files: '%s'..."):format(#outline.indexqueue+1, fname))
-    outline.indexeditor = outline.indexeditor or ide:CreateBareEditor()
     local content, err = FileRead(fname)
     if content then
-      local editor = outline.indexeditor
+      local editor = ide:CreateBareEditor()
       editor:SetupKeywords(GetFileExt(fname))
       editor:SetText(content)
       editor:Colourise(0, -1)
@@ -215,6 +213,7 @@ local function indexFromQueue()
       while IndicateAll(editor) do end
 
       outline:UpdateSymbols(fname, outlineRefresh(editor))
+      editor:Destroy()
     else
       DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
     end
