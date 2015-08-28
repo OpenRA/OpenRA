@@ -275,7 +275,7 @@ Weapons:
 			Speed: 546
 			High: true
 			Angle: 62
-			Inaccuracy: 3c341
+			Inaccuracy: 0, 3c341
 			Image: 120MM
 			ContrailLength: 30
 		Warhead: SpreadDamage
@@ -303,7 +303,7 @@ Weapons:
 			Speed: 409
 			High: true
 			Angle: 62
-			Inaccuracy: 2c938
+			Inaccuracy: 0, 2c938
 			Image: MISSILE
 			Trail: smokey
 			ContrailLength: 30

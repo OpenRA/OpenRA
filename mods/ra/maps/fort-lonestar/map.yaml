@@ -778,7 +778,7 @@ Weapons:
 		Projectile: Bullet
 			Speed: 204
 			High: true
-			Inaccuracy: 1c682
+			Inaccuracy: 0, 1c682
 			Image: 120MM
 			ContrailLength: 50
 		Warhead: SpreadDamage
@@ -839,7 +839,7 @@ Weapons:
 		Projectile: Bullet
 			Speed: 426
 			Image: 120MM
-			Inaccuracy: 2c512
+			Inaccuracy: 0, 2c512
 			Trail: smokey
 			ContrailLength: 2
 		Warhead: SpreadDamage
@@ -893,7 +893,7 @@ Weapons:
 			Image: fb3
 			High: true
 			Angle: 30
-			Inaccuracy: 1c682
+			Inaccuracy: 0, 1c682
 			ContrailLength: 2
 		Warhead: SpreadDamage
 			Spread: 426
@@ -946,7 +946,7 @@ Weapons:
 			Shadow: false
 			Proximity: true
 			Trail: smokey
-			Inaccuracy: 426
+			Inaccuracy: 0, 426
 			Image: V2
 			Angle: 216
 		Warhead: SpreadDamage

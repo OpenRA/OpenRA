@@ -100,7 +100,7 @@ Proton:
 		Speed: 341
 		Blockable: false
 		Shadow: true
-		Inaccuracy: 128
+		Inaccuracy: 0, 128
 		Image: TORPEDO
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage

@@ -104,7 +104,7 @@ Slung:
 		Blockable: false
 		Shadow: yes
 		Angle: 88
-		Inaccuracy: 384
+		Inaccuracy: 0, 384
 		Image: MISSILE
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
@@ -210,7 +210,7 @@ TurretGun:
 		Speed: 704
 		Blockable: false
 		Shadow: no
-		Inaccuracy: 288
+		Inaccuracy: 0, 288
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -238,7 +238,7 @@ TowerMissile:
 	Projectile: Bullet
 		Blockable: false
 		Shadow: yes
-		Inaccuracy: 384
+		Inaccuracy: 0, 384
 		Image: MISSILE2
 		Trail: large_trail
 		TrailInterval: 1
@@ -267,7 +267,7 @@ TowerMissile:
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 640
-		Inaccuracy: 384
+		Inaccuracy: 0, 384
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -290,7 +290,7 @@ TowerMissile:
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 704
-		Inaccuracy: 352
+		Inaccuracy: 0, 352
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -341,7 +341,7 @@ DevBullet:
 		Speed: 320
 		Blockable: false
 		Shadow: yes
-		Inaccuracy: 1c416
+		Inaccuracy: 0, 1c416
 		Angle: 90
 		Image: MISSILE2
 		Trail: large_trail
@@ -373,7 +373,7 @@ NerveGasMissile:
 		Blockable: false
 		Shadow: yes
 		Angle: 90
-		Inaccuracy: 1c96
+		Inaccuracy: 0, 1c96
 		Image: MISSILE
 		Trail: deviator_trail
 		TrailPalette: deviatorgas
@@ -405,7 +405,7 @@ NerveGasMissile:
 		Blockable: false
 		Shadow: yes
 		Angle: 62
-		Inaccuracy: 1c256
+		Inaccuracy: 0, 1c256
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
@@ -656,7 +656,7 @@ Grenade:
 		Speed: 204
 		Blockable: false
 		Angle: 62
-		Inaccuracy: 416
+		Inaccuracy: 0, 416
 		Image: BOMBS
 	Warhead@1Dam: SpreadDamage
 		Spread: 192

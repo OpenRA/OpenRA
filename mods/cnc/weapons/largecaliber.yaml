@@ -122,7 +122,7 @@ ArtilleryShell:
 		Speed: 204
 		Blockable: false
 		Angle: 56
-		Inaccuracy: 1c256
+		Inaccuracy: 0, 1c256
 		ContrailLength: 30
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
