@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
 		public readonly int RealignDelay = 40;
 
+		[Desc("Does the turret realign to a random facing while idle?")]
+		public readonly bool RandomRealign = true;
+
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
@@ -32,14 +35,16 @@ namespace OpenRA.Mods.Common.Traits
 	public class Turreted : ITick, ISync, INotifyCreated
 	{
 		readonly TurretedInfo info;
-		AttackTurreted attack;
 		IFacing facing;
 		IBodyOrientation body;
 
+		bool hasMoved;
+
 		[Sync] public int QuantizedFacings = 0;
 		[Sync] public int TurretFacing = 0;
-		public int? DesiredFacing;
+		int? desiredFacing;
 		int realignTick = 0;
+		int randomFacing = 0;
 
 		// For subclasses that want to move the turret relative to the body
 		protected WVec localOffset = WVec.Zero;
@@ -62,48 +67,95 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing);
+
+			if (info.RandomRealign)
+				randomFacing = init.Self.World.SharedRandom.Next(0, 256);
 		}
 
 		public void Created(Actor self)
 		{
-			attack = self.TraitOrDefault<AttackTurreted>();
 			facing = self.TraitOrDefault<IFacing>();
 			body = self.Trait<IBodyOrientation>();
 		}
 
 		public virtual void Tick(Actor self)
 		{
-			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
-			if (attack != null)
+			if (!hasMoved)
 			{
-				if (!attack.IsAttacking)
+				if (info.RealignDelay != -1)
 				{
 					if (realignTick < info.RealignDelay)
 						realignTick++;
-					else if (info.RealignDelay > -1)
-						DesiredFacing = null;
-
-					MoveTurret();
+					else if (info.RandomRealign)
+					{
+						if (Face(self, randomFacing, false))
+						{
+							realignTick = 0;
+							randomFacing = self.World.SharedRandom.Next(0, 256);
+						}
+					}
+					else
+						Face(self, null, false);
 				}
+				MoveTurret();
 			}
-			else
+
+			self.World.AddFrameEndTask(w =>
+				{
+					Realign(self);
+					hasMoved = false;
+				});
+		}
+
+		void Realign(Actor self)
+		{
+			if (!hasMoved)
 			{
-				realignTick = 0;
+				if (info.RealignDelay != -1)
+				{
+					if (realignTick < info.RealignDelay)
+						realignTick++;
+					else if (info.RandomRealign)
+					{
+						if (Face(self, randomFacing, false))
+						{
+							realignTick = 0;
+							randomFacing = self.World.SharedRandom.Next(0, 256);
+						}
+					}
+					else
+						Face(self, null, false);
+				}
 				MoveTurret();
 			}
 		}
 
 		void MoveTurret()
 		{
-			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
+			if (hasMoved)
+				return;
+
+			hasMoved = true;
+			var df = desiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
 			TurretFacing = Util.TickFacing(TurretFacing, df, info.ROT);
+		}
+
+		public bool Face(Actor self, int? facing, bool realign = true)
+		{
+			realignTick = realign ? 0 : realignTick;
+			desiredFacing = facing;
+
+			MoveTurret();
+
+			if (facing == null)
+				return TurretFacing == (facing != null ? this.facing.Facing : TurretFacing);
+
+			return TurretFacing == desiredFacing.Value;
 		}
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			DesiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, TurretFacing);
-			MoveTurret();
-			return TurretFacing == DesiredFacing.Value;
+			return Face(self, Util.GetFacing(target.CenterPosition - self.CenterPosition, TurretFacing));
 		}
 
 		// Turret offset in world-space

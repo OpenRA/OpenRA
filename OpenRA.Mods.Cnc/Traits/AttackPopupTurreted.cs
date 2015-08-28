@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
+	class AttackPopupTurretedInfo : AttackFollowInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier
+	class AttackPopupTurreted : AttackFollow, INotifyBuildComplete, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			: base(init.Self, info)
 		{
 			this.info = info;
-			turret = turrets.FirstOrDefault();
+			turret = init.Self.Trait<Turreted>();
 			rb = init.Self.Trait<RenderBuilding>();
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
@@ -68,6 +68,9 @@ namespace OpenRA.Mods.Cnc.Traits
 				return false;
 			}
 
+			if (state != PopupState.Open)
+				return false;
+
 			return turret.FaceTarget(self, target);
 		}
 
@@ -75,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{
-				turret.DesiredFacing = info.DefaultFacing;
+				turret.Face(self, info.DefaultFacing);
 				state = PopupState.Rotating;
 			}
 			else if (state == PopupState.Rotating && turret.TurretFacing == info.DefaultFacing)
@@ -85,7 +88,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					state = PopupState.Closed;
 					rb.PlayCustomAnimRepeating(self, "closed-idle");
-					turret.DesiredFacing = null;
+					turret.Face(self, null);
 				});
 			}
 		}
@@ -96,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				state = PopupState.Closed;
 				rb.PlayCustomAnimRepeating(self, "closed-idle");
-				turret.DesiredFacing = null;
+				turret.Face(self, null);
 			}
 		}
 
