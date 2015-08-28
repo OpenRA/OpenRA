@@ -114,6 +114,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static string FriendlyTypeName(Type t)
 		{
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+				return "Set of {0}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
