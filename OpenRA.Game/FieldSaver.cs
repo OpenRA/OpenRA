@@ -28,7 +28,18 @@ namespace OpenRA
 
 			foreach (var info in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
 			{
-				if (info.Attribute.FromYamlKey)
+				if (info.Attribute.DictionaryFromYamlKey)
+				{
+					var dict = (System.Collections.IDictionary)info.Field.GetValue(o);
+					foreach (var kvp in dict)
+					{
+						var key = ((System.Collections.DictionaryEntry)kvp).Key;
+						var value = ((System.Collections.DictionaryEntry)kvp).Value;
+
+						nodes.Add(new MiniYamlNode(FormatValue(key, key.GetType()), FormatValue(value, value.GetType())));
+					}
+				}
+				else if (info.Attribute.FromYamlKey)
 					root = FormatValue(o, info.Field);
 				else
 					nodes.Add(new MiniYamlNode(info.YamlName, FormatValue(o, info.Field)));
@@ -97,6 +108,25 @@ namespace OpenRA
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
 			{
 				return ((System.Collections.IEnumerable)v).Cast<object>().JoinWith(", ");
+			}
+
+			// This is only for documentation generation
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			{
+				var result = "";
+				var dict = (System.Collections.IDictionary)v;
+				foreach (var kvp in dict)
+				{
+					var key = ((System.Collections.DictionaryEntry)kvp).Key;
+					var value = ((System.Collections.DictionaryEntry)kvp).Value;
+
+					var formattedKey = FormatValue(key, key.GetType());
+					var formattedValue = FormatValue(value, value.GetType());
+
+					result += "{0}: {1}{2}".F(formattedKey, formattedValue, Environment.NewLine);
+				}
+
+				return result;
 			}
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))

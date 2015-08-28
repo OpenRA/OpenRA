@@ -648,6 +648,7 @@ namespace OpenRA
 			public string YamlName;
 			public string Loader;
 			public bool FromYamlKey;
+			public bool DictionaryFromYamlKey;
 			public bool Required;
 
 			public SerializeAttribute(bool serialize = true, bool required = false)
@@ -707,6 +708,17 @@ namespace OpenRA
 		public FieldFromYamlKeyAttribute()
 		{
 			FromYamlKey = true;
+		}
+	}
+
+	// Special-cases FieldFromYamlKeyAttribute for use with Dictionary<K,V>.
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class DictionaryFromYamlKeyAttribute : FieldLoader.SerializeAttribute
+	{
+		public DictionaryFromYamlKeyAttribute()
+		{
+			FromYamlKey = true;
+			DictionaryFromYamlKey = true;
 		}
 	}
 
