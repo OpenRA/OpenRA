@@ -55,10 +55,12 @@ namespace OpenRA
 			return new MiniYamlNode(field, FormatValue(o, o.GetType().GetField(field)));
 		}
 
-		public static string FormatValue(object v, Type t)
+		public static string FormatValue(object v)
 		{
 			if (v == null)
 				return "";
+
+			var t = v.GetType();
 
 			// Color.ToString() does the wrong thing; force it to format as an array
 			if (t == typeof(Color))
@@ -83,12 +85,12 @@ namespace OpenRA
 
 			if (t.IsArray && t.GetArrayRank() == 1)
 			{
-				return ((Array)v).Cast<object>().JoinWith(", ");
+				return ((Array)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 			}
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
 			{
-				return ((System.Collections.IEnumerable)v).Cast<object>().JoinWith(", ");
+				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 			}
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))
@@ -115,7 +117,7 @@ namespace OpenRA
 
 		public static string FormatValue(object o, FieldInfo f)
 		{
-			return FormatValue(f.GetValue(o), f.FieldType);
+			return FormatValue(f.GetValue(o));
 		}
 	}
 }
