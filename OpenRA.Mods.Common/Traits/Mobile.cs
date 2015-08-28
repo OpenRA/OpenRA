@@ -29,6 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 		All = TransientActors | BlockedByMovers
 	}
 
+	public static class CellConditionsExts
+	{
+		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
+		{
+			return (c & cellCondition) == cellCondition;
+		}
+	}
+
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : IMoveInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
@@ -186,34 +194,46 @@ namespace OpenRA.Mods.Common.Traits
 		// Determines whether the actor is blocked by other Actors
 		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check)
 		{
+			if (!check.HasCellCondition(CellConditions.TransientActors))
+				return true;
+
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			if (check.HasFlag(CellConditions.TransientActors))
-			{
-				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
-				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-				foreach (var a in world.ActorMap.GetUnitsAt(cell))
-				{
-					if (a == ignoreActor)
-						continue;
-
-					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a)) continue;
-
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
-					if (needsCellExclusively)
-						return false;
-					var crushables = a.TraitsImplementing<ICrushable>();
-					if (!crushables.Any())
-						return false;
-					foreach (var crushable in crushables)
-						if (!crushable.CrushableBy(Crushes, self.Owner))
-							return false;
-				}
-			}
+			foreach (var otherActor in world.ActorMap.GetUnitsAt(cell))
+				if (IsBlockedBy(self, otherActor, ignoreActor, check))
+					return false;
 
 			return true;
+		}
+
+		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, CellConditions check)
+		{
+			// We are not blocked by the actor we are ignoring.
+			if (otherActor == ignoreActor)
+				return false;
+
+			// If the check allows: we are not blocked by allied units moving in our direction.
+			if (!check.HasCellCondition(CellConditions.BlockedByMovers) &&
+				self != null &&
+				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
+				IsMovingInMyDirection(self, otherActor))
+				return false;
+
+			// If we cannot crush the other actor in our way, we are blocked.
+			if (self == null || Crushes == null || Crushes.Length == 0)
+				return true;
+
+			// If the other actor in our way cannot be crushed, we are blocked.
+			var crushables = otherActor.TraitsImplementing<ICrushable>();
+			if (!crushables.Any())
+				return true;
+			foreach (var crushable in crushables)
+				if (!crushable.CrushableBy(Crushes, self.Owner))
+					return true;
+
+			// We are not blocked by the other actor.
+			return false;
 		}
 
 		public bool CanEnterCell(World world, Actor self, CPos cell, out int movementCost, Actor ignoreActor = null, CellConditions check = CellConditions.All)
@@ -230,32 +250,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return SubCell.Invalid;
 
-			if (check.HasFlag(CellConditions.TransientActors))
+			if (check.HasCellCondition(CellConditions.TransientActors))
 			{
-				var canIgnoreMovingAllies = self != null && !check.HasFlag(CellConditions.BlockedByMovers);
-				var needsCellExclusively = self == null || Crushes == null || !Crushes.Any();
-
-				Func<Actor, bool> checkTransient = a =>
-				{
-					if (a == ignoreActor)
-						return false;
-
-					// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-					if (canIgnoreMovingAllies && self.Owner.Stances[a.Owner] == Stance.Ally && IsMovingInMyDirection(self, a))
-						return false;
-
-					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them.
-					if (needsCellExclusively)
-						return true;
-					var crushables = a.TraitsImplementing<ICrushable>();
-					if (!crushables.Any())
-						return true;
-					foreach (var crushable in crushables)
-						if (!crushable.CrushableBy(Crushes, self.Owner))
-							return true;
-
-					return false;
-				};
+				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check);
 
 				if (!SharesCell)
 					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
@@ -621,9 +618,8 @@ namespace OpenRA.Mods.Common.Traits
 					var p = ToCell + new CVec(i, j);
 					if (CanEnterCell(p))
 						availCells.Add(p);
-					else
-						if (p != nudger.Location && p != ToCell)
-							notStupidCells.Add(p);
+					else if (p != nudger.Location && p != ToCell)
+						notStupidCells.Add(p);
 				}
 
 			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
