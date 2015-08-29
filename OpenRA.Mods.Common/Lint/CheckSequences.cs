@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckSequences : ILintPass
 	{
-		Action<string> emitWarning;
+		Action<string> emitError;
 
 		List<MiniYamlNode> sequenceDefinitions;
 
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (map != null && !map.SequenceDefinitions.Any())
 				return;
 
-			this.emitWarning = emitWarning;
+			this.emitError = emitError;
 
 			var sequenceSource = map != null ? map.SequenceDefinitions : new List<MiniYamlNode>();
 			sequenceDefinitions = MiniYaml.MergeLiberal(sequenceSource,
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
 							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
-								emitWarning("Sprite image {0} from actor {1} using faction {2} has no sequence definition."
+								emitError("Sprite image {0} from actor {1} using faction {2} has no sequence definition."
 									.F(image, actorInfo.Value.Name, faction));
 						}
 					}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Lint
 											foreach (var imageOverride in LintExts.GetFieldValues(traitInfo, imageField, emitError))
 											{
 												if (!string.IsNullOrEmpty(imageOverride) && sequenceDefinitions.All(s => s.Key != imageOverride.ToLowerInvariant()))
-													emitWarning("Custom sprite image {0} from actor {1} has no sequence definition.".F(imageOverride, actorInfo.Value.Name));
+													emitError("Custom sprite image {0} from actor {1} has no sequence definition.".F(imageOverride, actorInfo.Value.Name));
 												else
 													CheckDefintions(imageOverride, sequenceReference, actorInfo, sequence, faction, field, traitInfo);
 											}
@@ -132,9 +132,9 @@ namespace OpenRA.Mods.Common.Lint
 											{
 												var definitions = sequenceDefinitions.FirstOrDefault(n => n.Key == imageOverride.ToLowerInvariant());
 												if (definitions == null)
-													emitWarning("Can't find sequence definition for projectile image {0} at weapon {1}.".F(imageOverride, weaponInfo.Key));
+													emitError("Can't find sequence definition for projectile image {0} at weapon {1}.".F(imageOverride, weaponInfo.Key));
 												else if (!definitions.Value.Nodes.Any(n => n.Key == sequence))
-													emitWarning("Projectile sprite image {0} from weapon {1} does not define sequence {2} from field {3} of {4}"
+													emitError("Projectile sprite image {0} from weapon {1} does not define sequence {2} from field {3} of {4}"
 														.F(imageOverride, weaponInfo.Key, sequence, field.Name, projectileInfo));
 											}
 										}
@@ -156,12 +156,12 @@ namespace OpenRA.Mods.Common.Lint
 				if (sequenceReference != null && sequenceReference.Prefix)
 				{
 					if (!definitions.Value.Nodes.Any(n => n.Key.StartsWith(sequence)))
-						emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence prefix {3} from field {4} of {5}"
+						emitError("Sprite image {0} from actor {1} of faction {2} does not define sequence prefix {3} from field {4} of {5}"
 							.F(image, actorInfo.Value.Name, faction, sequence, field.Name, traitInfo));
 				}
 				else if (definitions.Value.Nodes.All(n => n.Key != sequence))
 				{
-					emitWarning("Sprite image {0} from actor {1} of faction {2} does not define sequence {3} from field {4} of {5}"
+					emitError("Sprite image {0} from actor {1} of faction {2} does not define sequence {3} from field {4} of {5}"
 						.F(image, actorInfo.Value.Name, faction, sequence, field.Name, traitInfo));
 				}
 			}
