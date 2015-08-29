@@ -91,6 +91,7 @@ ide = {
     },
     outline = {
       showanonymous = '~',
+      showcurrentfunction = true,
       showflat = false,
       showmethodindicator = false,
       showonefile = false,

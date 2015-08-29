@@ -2,6 +2,7 @@
 
 local ide = ide
 ide.outline = {
+  outlineCtrl = nil,
   imglist = ide:CreateImageList("OUTLINE", "FILE-NORMAL", "VALUE-LCALL",
     "VALUE-GCALL", "VALUE-ACALL", "VALUE-SCALL", "VALUE-MCALL"),
   settings = {
@@ -48,11 +49,35 @@ local function outlineRefresh(editor, force)
   local funcs = {updated = TimeGet()}
   local var = {}
   local outcfg = ide.config.outline or {}
+  local scopes = {}
+  local funcnum = 0
+  local SCOPENUM, FUNCNUM = 1, 2
   local text
   for _, token in ipairs(tokens) do
     local op = token[1]
     if op == 'Var' or op == 'Id' then
       var = {name = token.name, fpos = token.fpos, global = token.context[token.name] == nil}
+    elseif outcfg.showcurrentfunction and op == 'Scope' then
+      local fundepth = #scopes
+      if token.name == '(' then -- a function starts a new scope
+        funcnum = funcnum + 1 -- increment function count
+        local nested = fundepth == 0 or scopes[fundepth][SCOPENUM] > 0
+        scopes[fundepth + (nested and 1 or 0)] = {1, funcnum}
+      elseif fundepth > 0 then
+        scopes[fundepth][SCOPENUM] = scopes[fundepth][SCOPENUM] + 1
+      end
+    elseif outcfg.showcurrentfunction and op == 'EndScope' then
+      local fundepth = #scopes
+      if fundepth > 0 and scopes[fundepth][SCOPENUM] > 0 then
+        scopes[fundepth][SCOPENUM] = scopes[fundepth][SCOPENUM] - 1
+        if scopes[fundepth][SCOPENUM] == 0 then
+          local funcnum = scopes[fundepth][FUNCNUM]
+          if funcs[funcnum] then
+            funcs[funcnum].poe = token.fpos + (token.name and #token.name or 0)
+          end
+          table.remove(scopes)
+        end
+      end
     elseif op == 'Function' then
       local depth = token.context['function'] or 1
       local name, pos = token.name, token.fpos
@@ -159,6 +184,7 @@ local function outlineRefresh(editor, force)
   ctrl:DeleteChildren(fileitem)
   ctrl:SetEvtHandlerEnabled(true)
 
+  local edpos = editor:GetCurrentPos()+1
   local stack = {fileitem}
   local resort = {} -- items that need to be re-sorted
   for n, func in ipairs(funcs) do
@@ -166,6 +192,7 @@ local function outlineRefresh(editor, force)
     local parent = stack[depth]
     while not parent do depth = depth - 1; parent = stack[depth] end
     local item = ctrl:AppendItem(parent, func.name, func.image)
+    if edpos >= func.pos and (not func.poe or edpos <= func.poe) then ctrl:SetItemBold(item, true) end
     if outcfg.sort then resort[parent] = true end
     setData(ctrl, item, n)
     func.item = item
@@ -333,12 +360,13 @@ local function outlineCreateOutlineWindow()
   end
 end
 
-local function eachNode(eachFunc, root)
+local function eachNode(eachFunc, root, recursive)
   local ctrl = outline.outlineCtrl
   local item = ctrl:GetFirstChild(root or ctrl:GetRootItem())
   while true do
     if not item:IsOk() then break end
     if eachFunc and eachFunc(ctrl, item) then break end
+    if recursive and ctrl:ItemHasChildren(item) then eachNode(eachFunc, item, recursive) end
     item = ctrl:GetNextSibling(item)
   end
 end
@@ -505,6 +533,31 @@ local package = ide:AddPackage('core.outline', {
             disableIndex(name)
           end)
        end
+    end,
+
+    onEditorPainted = function(self, editor, event)
+      if not ide:IsWindowShown(ide.outline.outlineCtrl) then return end
+
+      local cache = caches[editor]
+      if not cache or not ide.config.outline.showcurrentfunction then return end
+
+      local edpos = editor:GetCurrentPos()+1
+      local edline = editor:LineFromPosition(edpos-1)+1
+      if cache.pos and cache.pos == edpos then return end
+      if cache.line and cache.line == edline then return end
+
+      cache.pos = edpos
+      cache.line = edline
+      -- scan all items recursively starting from the current file
+      eachNode(function(ctrl, item)
+          local func = cache.funcs[ctrl:GetItemData(item):GetData()]
+          local val = edpos >= func.pos and (not func.poe or edpos <= func.poe)
+          if edline == editor:LineFromPosition(func.pos)+1
+          or (func.poe and edline == editor:LineFromPosition(func.poe)+1) then
+            cache.line = nil
+          end
+          ctrl:SetItemBold(item, val)
+        end, cache.fileitem, true)
     end,
   })
 
