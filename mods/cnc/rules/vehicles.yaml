@@ -389,6 +389,7 @@ HTNK:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+	WithTurret:
 	Turreted:
 		ROT: 3
 	Armament@PRIMARY:
@@ -406,7 +407,6 @@ HTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	WithTurret:
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10
