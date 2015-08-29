@@ -210,7 +210,10 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingSilo:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
+	WithSiloAnimation:
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
@@ -223,6 +226,8 @@ SILO:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 49,30
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -650,7 +655,8 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -663,6 +669,8 @@ GUN:
 		Range: 3
 	Power:
 		Amount: -20
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 SAM:
 	Inherits: ^Defense
@@ -691,7 +699,9 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
+	AutoSelectionSize:
 	Armament:
 		Weapon: SAMMissile
 		MuzzleSequence: muzzle
@@ -701,6 +711,8 @@ SAM:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 OBLI:
 	Inherits: ^Defense
@@ -730,7 +742,9 @@ OBLI:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingCharge:
+	RenderSprites:
+	WithSpriteBody:
+	WithChargeAnimation:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
@@ -745,6 +759,8 @@ OBLI:
 		Range: 5
 	Power:
 		Amount: -150
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 GTWR:
 	Inherits: ^Defense
@@ -850,7 +866,7 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: sandbag
 
 CYCL:
@@ -875,7 +891,7 @@ CYCL:
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: chain
 
 BRIK:
@@ -905,7 +921,7 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: concrete
 
 BARRACKS:

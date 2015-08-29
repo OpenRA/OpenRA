@@ -401,7 +401,9 @@ TSLA:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingCharge:
+	RenderSprites:
+	WithSpriteBody:
+	WithChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,427
@@ -415,6 +417,8 @@ TSLA:
 	DetectCloaked:
 		Range: 8
 	ProvidesPrerequisite@buildingname:
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 AGUN:
 	Inherits: ^Defense
@@ -448,7 +452,8 @@ AGUN:
 	Turreted:
 		ROT: 15
 		InitialFacing: 224
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 432,150,-30, 432,-150,-30
@@ -462,6 +467,8 @@ AGUN:
 		Amount: -50
 	DetectCloaked:
 		Range: 6
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 DOME:
 	Inherits: ^Building
@@ -607,7 +614,8 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -619,6 +627,8 @@ GUN:
 		Amount: -40
 	DetectCloaked:
 		Range: 7
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 FTUR:
 	Inherits: ^Defense
@@ -683,7 +693,8 @@ SAM:
 	Turreted:
 		ROT: 30
 		InitialFacing: 0
-	RenderBuildingTurreted:
+	RenderSprites:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: Nike
 		MuzzleSequence: muzzle
@@ -696,6 +707,8 @@ SAM:
 		Amount: -40
 	DetectCloaked:
 		Range: 5
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 ATEK:
 	Inherits: ^Building
@@ -979,7 +992,9 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingSilo:
+	RenderSprites:
+	WithSpriteBody:
+	WithSiloAnimation:
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
@@ -987,6 +1002,8 @@ SILO:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 HPAD:
 	Inherits: ^Building
@@ -1502,7 +1519,7 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: sandbag
 
 FENC:
@@ -1527,7 +1544,7 @@ FENC:
 		NodeTypes: fence
 	LineBuildNode:
 		Types: fence
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: fence
 
 BRIK:
@@ -1557,7 +1574,7 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: concrete
 
 CYCL:
@@ -1572,7 +1589,7 @@ CYCL:
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: chain
 
 BARB:
@@ -1587,7 +1604,7 @@ BARB:
 		NodeTypes: barbwire
 	LineBuildNode:
 		Types: barbwire
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: barbwire
 
 WOOD:
@@ -1602,7 +1619,7 @@ WOOD:
 		NodeTypes: woodfence
 	LineBuildNode:
 		Types: woodfence
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: woodfence
 
 BARRACKS:

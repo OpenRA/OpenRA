@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			if (SkipMakeAnimation || !self.HasTrait<WithMakeAnimation>())
+			if (SkipMakeAnimation || (!self.HasTrait<WithMakeAnimation>() && !self.HasTrait<WithMakeAnimation>()))
 				NotifyBuildingComplete(self);
 		}
 

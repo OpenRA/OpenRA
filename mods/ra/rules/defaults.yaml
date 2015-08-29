@@ -462,8 +462,9 @@
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack, Wall
-	RenderBuildingWall:
+	RenderSprites:
 		Palette: effect
+	WithWallSpriteBody:
 	GivesExperience:
 	AutoTargetIgnore:
 	ProximityCaptor:

@@ -560,8 +560,10 @@
 		Types: wall
 	BodyOrientation:
 		QuantizedFacings: 1
-	RenderBuildingWall:
+	RenderSprites:
 		Palette: staticterrain
+	WithWallSpriteBody:
+	AutoSelectionSize:
 	GivesExperience:
 	AutoTargetIgnore:
 	Sellable:

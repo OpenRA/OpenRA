@@ -103,7 +103,8 @@ GACTWR:
 	LineBuildNode:
 		Types: turret
 	-RenderBuilding:
-	RenderBuildingWall:
+	RenderSprites:
+	WithWallSpriteBody:
 		Type: wall
 	Power@base:
 		Amount: -10
@@ -123,6 +124,8 @@ GACTWR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12
+	-WithMakeAnimation:
+	WithSpriteMakeAnimation:
 
 GAVULC:
 	Inherits: ^BuildingPlug
