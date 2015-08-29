@@ -463,7 +463,8 @@ AGUN:
 		Range: 6
 
 DOME:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -492,7 +493,6 @@ DOME:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
-	RenderDetectionCircle:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:

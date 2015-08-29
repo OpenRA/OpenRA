@@ -441,7 +441,8 @@ HPAD:
 	ProvidesPrerequisite@buildingname:
 
 HQ:
-	Inherits: ^BaseBuilding
+	Inherits@1: ^BaseBuilding
+	Inherits@2: ^WithDetectionCircle
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -469,7 +470,6 @@ HQ:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 	AirstrikePower:
@@ -527,7 +527,8 @@ FIX:
 	ProvidesPrerequisite@buildingname:
 
 EYE:
-	Inherits: ^BaseBuilding
+	Inherits@1: ^BaseBuilding
+	Inherits@2: ^WithDetectionCircle
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -555,7 +556,6 @@ EYE:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 	IonCannonPower:
@@ -670,6 +670,7 @@ SAM:
 	Inherits@1: ^Defense
 	Inherits@2: ^WithAirAttackRangeCircle
 	-WithRangeCircle@ATTACK_GROUND:
+	-WithRangeCircle@DETECTION:
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -703,7 +704,6 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
-	-RenderDetectionCircle:
 	Power:
 		Amount: -20
 

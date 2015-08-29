@@ -1,5 +1,6 @@
 GADPSA:
-	Inherits: ^DeployedVehicle
+	Inherits@1: ^DeployedVehicle
+	Inherits@2: ^WithDetectionCircle
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -20,7 +21,6 @@ GADPSA:
 	-DrawLineToTarget:
 	-AttackTurreted:
 	-WithRangeCircle@ATTACK_GROUND:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
 

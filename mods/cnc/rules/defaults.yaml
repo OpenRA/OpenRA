@@ -714,11 +714,17 @@
 		Variant: Air
 		Color: 128,0,0,255 # Blue
 
+^WithDetectionCircle:
+	WithRangeCircle@DETECTION:
+		Name: detection
+		Type: detection
+		Color: 128,50,205,50 # LimeGreen
+
 ^Defense:
 	Inherits@1: ^BaseBuilding
 	Inherits@2: ^WithGroundAttackRangeCircle
+	Inherits@3: ^WithDetectionCircle
 	AutoTarget:
-	RenderDetectionCircle:
 	-GivesBuildableArea:
 	MustBeDestroyed:
 		RequiredForShortGame: false

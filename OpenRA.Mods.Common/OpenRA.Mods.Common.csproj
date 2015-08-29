@@ -406,7 +406,6 @@
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\WithWallSpriteBody.cs" />
-    <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
     <Compile Include="Traits\Render\RenderVoxels.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />

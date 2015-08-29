@@ -2107,6 +2107,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 					else if (node.Key == "-RenderRangeCircle")
 						node.Key = "-WithRangeCircle@ATTACK";
+					else if (node.Key == "RenderDetectionCircle")
+					{
+						node.Key = "WithRangeCircle@DETECTION";
+						node.Value.Nodes.Add(new MiniYamlNode("Name", "detection"));
+						node.Value.Nodes.Add(new MiniYamlNode("Type", "detection"));
+						node.Value.Nodes.Add(new MiniYamlNode("Color", "128,50,205,50")); // LimeGreen
+					}
+					else if (node.Key == "-RenderDetectionCircle")
+						node.Key = "-WithRangeCircle@DETECTION";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

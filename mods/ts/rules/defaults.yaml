@@ -625,12 +625,21 @@
 		Variant: Air
 		Color: 128,0,0,255 # Blue
 
+^WithDetectionCircle:
+	WithRangeCircle@DETECTION:
+		Name: detection
+		Type: detection
+		Color: 128,50,205,50 # LimeGreen
+
 ^Defense:
 	Inherits@1: ^Building
 	Inherits@2: ^WithGroundAttackRangeCircle
 	-GivesBuildableArea:
 	AutoTarget:
-	RenderDetectionCircle:
+	WithRangeCircle@DETECTION:
+		Name: detection
+		Type: detection
+		Color: 128,50,205,50 # LimeGreen
 	RevealsShroud:
 		Range: 6c0
 	DetectCloaked:

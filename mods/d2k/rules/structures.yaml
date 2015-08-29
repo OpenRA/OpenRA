@@ -376,7 +376,8 @@ heavy:
 		VisualBounds: 96,96
 
 radar:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -404,7 +405,6 @@ radar:
 	ProvidesRadar:
 	DetectCloaked:
 		Range: 6
-	RenderDetectionCircle:
 	RenderSprites:
 		Image: radar.harkonnen
 		FactionImages:
@@ -753,7 +753,8 @@ research:
 		VisualBounds: 96,80
 
 palace:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Prerequisites: research, ~techlevel.high
 		Queue: Building
@@ -782,7 +783,6 @@ palace:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 4
 	Power:

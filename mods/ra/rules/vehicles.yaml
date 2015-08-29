@@ -388,7 +388,8 @@ APC:
 		Prerequisites: vehicles.upgraded
 
 MNLY.AP:
-	Inherits: ^Tank
+	Inherits@1: ^Tank
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -416,14 +417,14 @@ MNLY.AP:
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: APMine
 	RenderSprites:
 		Image: MNLY
 
 MNLY.AT:
-	Inherits: ^Tank
+	Inherits@1: ^Tank
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -451,7 +452,6 @@ MNLY.AT:
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: ATMine
 	RenderSprites:
