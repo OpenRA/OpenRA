@@ -691,6 +691,7 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
 	BodyOrientation:
+		QuantizedFacings: 1
 	ScriptTriggers:
 
 ^Crate:

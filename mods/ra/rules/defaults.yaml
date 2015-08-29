@@ -636,6 +636,7 @@
 		Type: Concrete
 	AutoTargetIgnore:
 	BodyOrientation:
+		QuantizedFacings: 1
 	ScriptTriggers:
 
 ^Rock:
