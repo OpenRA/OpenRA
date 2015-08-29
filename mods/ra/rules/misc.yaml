@@ -200,6 +200,7 @@ camera.paradrop:
 	ProximityCaptor:
 		Types: Camera
 	BodyOrientation:
+		QuantizedFacings: 1
 
 SONAR:
 	AlwaysVisible:
