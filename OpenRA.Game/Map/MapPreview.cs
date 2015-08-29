@@ -210,20 +210,22 @@ namespace OpenRA
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
 				var mapUrl = Game.Settings.Game.MapRepository + Uid;
+				var mapPath = string.Empty;
 				try
 				{
 					var request = WebRequest.Create(mapUrl);
 					request.Method = "HEAD";
-					var res = request.GetResponse();
-
-					// Map not found
-					if (res.Headers["Content-Disposition"] == null)
+					using (var res = request.GetResponse())
 					{
-						Status = MapStatus.DownloadError;
-						return;
-					}
+						// Map not found
+						if (res.Headers["Content-Disposition"] == null)
+						{
+							Status = MapStatus.DownloadError;
+							return;
+						}
 
-					var mapPath = Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+						mapPath = Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+					}
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
 					Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
