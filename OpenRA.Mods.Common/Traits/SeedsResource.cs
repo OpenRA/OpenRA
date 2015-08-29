@@ -17,16 +17,16 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor spread resources around it in a circle.")]
-	class SeedsResourceInfo : ITraitInfo
+	class SeedsResourceInfo : UpgradableTraitInfo
 	{
 		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
 		public readonly int MaxRange = 100;
 
-		public object Create(ActorInitializer init) { return new SeedsResource(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SeedsResource(init.Self, this); }
 	}
 
-	class SeedsResource : ITick, ISeedableResource
+	class SeedsResource : UpgradableTrait<SeedsResourceInfo>, ITick, ISeedableResource
 	{
 		readonly SeedsResourceInfo info;
 
@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ResourceLayer resLayer;
 
 		public SeedsResource(Actor self, SeedsResourceInfo info)
+			: base(info)
 		{
 			this.info = info;
 
@@ -50,6 +51,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (--ticks <= 0)
 			{
 				Seed(self);
