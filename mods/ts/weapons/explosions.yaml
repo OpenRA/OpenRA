@@ -48,7 +48,7 @@ SmallDebris:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:
-	Projectile: Shrapnel
+	Projectile: Bullet
 		Speed: 50, 125
 		Angle: 91, 264
 		Image: dbrissm
@@ -59,7 +59,7 @@ LargeDebris:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:
-	Projectile: Shrapnel
+	Projectile: Bullet
 		Speed: 50, 125
 		Angle: 91, 264
 		Image: dbrislg

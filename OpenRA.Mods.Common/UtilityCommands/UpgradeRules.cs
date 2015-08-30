@@ -2277,6 +2277,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150828)
+				{
+					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Bullet" && node.Key == "Sequence")
+					{
+						node.Key = "Sequences";
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
