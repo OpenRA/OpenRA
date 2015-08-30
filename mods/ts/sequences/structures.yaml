@@ -1163,7 +1163,7 @@ namisl:
 	make: ntmislmk
 		Length: 18
 		ShadowStart: 18
-	active: ntmisl_a
+	active: ntmisl_a # TODO: This is an overlay
 		Length: 10
 		Tick: 80
 	damaged-active: ntmisl_a

@@ -808,6 +808,7 @@ palace:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraActor: camera
+		ActivationSequence:
 	CanPowerDown:
 	DisabledOverlay:
 	RequiresPower:

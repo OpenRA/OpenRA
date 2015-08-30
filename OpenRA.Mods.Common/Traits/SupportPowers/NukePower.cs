@@ -75,8 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				Sound.Play(Info.IncomingSound);
 
-			var wsb = self.Trait<WithSpriteBody>();
-			wsb.PlayCustomAnimation(self, info.ActivationSequence);
+			if (!string.IsNullOrEmpty(info.ActivationSequence))
+			{
+				var wsb = self.Trait<WithSpriteBody>();
+				wsb.PlayCustomAnimation(self, info.ActivationSequence);
+			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon,
