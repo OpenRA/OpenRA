@@ -49,10 +49,10 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				if (disguise.Disguised)
-					return self.Owner == self.World.LocalPlayer ? self.Owner : disguise.AsPlayer;
+				if (!disguise.Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
+					return self.Owner;
 
-				return self.Owner;
+				return disguise.AsPlayer;
 			}
 		}
 	}
@@ -135,8 +135,8 @@ namespace OpenRA.Mods.RA.Traits
 
 			if (target != null)
 			{
-				// Take the image of the target's disguise, if it exist.
-				// E.g., SpyA is disguised as a dog. SpyB then targets SpyA. We should use the dog image.
+				// Take the image of the target's disguise, if it exists.
+				// E.g., SpyA is disguised as a rifle infantry. SpyB then targets SpyA. We should use the rifle infantry image.
 				var targetDisguise = target.TraitOrDefault<Disguise>();
 				if (targetDisguise != null && targetDisguise.Disguised)
 				{
