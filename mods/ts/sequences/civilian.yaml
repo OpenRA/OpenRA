@@ -918,6 +918,9 @@ namntk:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
+	idle-lights: namntk_a
+		Length: 8
+		Tick: 200
 
 ntpyra:
 	Defaults:

@@ -1332,6 +1332,8 @@ NAMNTK:
 		HP: 1500
 	RenderBuilding:
 		Palette: player
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 NTPYRA:
 	Inherits: ^CivBuilding
