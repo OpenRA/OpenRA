@@ -16,11 +16,14 @@ gacnst:
 		ShadowStart: 24
 	crane-overlay: gtcnst_d
 		Length: 20
+		ZOffset: 1023
 	damaged-crane-overlay: gtcnst_d
 		Length: 20
+		ZOffset: 1023
 	critical-crane-overlay: gtcnst_d
 		Start: 20
 		Length: 20
+		ZOffset: 1023
 	idle-top: gtcnst_c
 		Length: 15
 		Tick: 200
@@ -109,10 +112,12 @@ gapile:
 	production-lights: gtpile_a
 		Length: 7
 		Tick: 200
+		ZOffset: 1023
 	damaged-production-lights: gtpile_a
 		Start:7
 		Length: 7
 		Tick: 200
+		ZOffset: 1023
 	idle-light: gtpile_b
 		Length: 7
 		Tick: 200
@@ -273,10 +278,12 @@ nahand:
 	production-light: nthand_a
 		Length: 5
 		Tick: 100
+		ZOffset: 1023
 	damaged-production-light: nthand_a
 		Start: 5
 		Length: 5
 		Tick: 100
+		ZOffset: 1023
 	idle-lights: nthand_b
 		Length: 8
 		Tick: 200
