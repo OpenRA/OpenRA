@@ -489,3 +489,83 @@ palet03:
 palet04:
 	idle:
 
+tracks01:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks02:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks03:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks04:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks05:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks06:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks07:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks08:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks09:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks10:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks11:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks12:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks13:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks14:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks15:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
+tracks16:
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
+
