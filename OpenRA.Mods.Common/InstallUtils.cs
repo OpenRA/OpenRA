@@ -18,31 +18,6 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common
 {
-	public class ContentInstaller : IGlobalModData
-	{
-		public readonly string MenuWidget = null;
-		public readonly string MusicMenuWidget = null;
-		public readonly string BackgroundWidget = null;
-		public readonly HashSet<string> TestFiles = new HashSet<string>();
-		public readonly HashSet<string> DiskTestFiles = new HashSet<string>();
-		public readonly string PackageToExtractFromCD = null;
-		public readonly bool OverwriteFiles = true;
-
-		public readonly Dictionary<string, string[]> CopyFilesFromCD = new Dictionary<string, string[]>();
-		public readonly Dictionary<string, string[]> ExtractFilesFromCD = new Dictionary<string, string[]>();
-
-		public readonly string PackageMirrorList = null;
-
-		public readonly string MusicPackageMirrorList = null;
-		public readonly int ShippedSoundtracks = 0;
-
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files. </summary>
-		public readonly HashSet<int> InstallShieldCABFileIds = new HashSet<int>();
-
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD. </summary>
-		public readonly HashSet<string> InstallShieldCABFilePackageIds = new HashSet<string>();
-	}
-
 	public static class InstallUtils
 	{
 		static IEnumerable<ZipEntry> GetEntries(this ZipInputStream z)

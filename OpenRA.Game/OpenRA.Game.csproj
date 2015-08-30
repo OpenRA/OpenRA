@@ -95,6 +95,7 @@
     <Compile Include="FileFormats\IdxReader.cs" />
     <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="Map\MapPlayers.cs" />
+    <Compile Include="ContentInstaller.cs" />
     <Compile Include="MPos.cs" />
     <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
