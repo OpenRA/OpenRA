@@ -933,6 +933,13 @@ ntpyra:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
+	idle-lights: ntpyra_a
+		Length: 16
+		Tick: 200
+	damaged-idle-lights: ntpyra_a
+		Start: 16
+		Length: 16
+		Tick: 200
 
 ufo:
 	idle: ufo.tem
