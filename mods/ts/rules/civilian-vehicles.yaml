@@ -34,7 +34,7 @@
 	WithVoxelBarrel:
 	WithMuzzleFlash:
 
-TRUCKB:
+^TRUCK:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
 		Cost: 500
@@ -48,6 +48,12 @@ TRUCKB:
 		Speed: 56
 	RevealsShroud:
 		Range: 5c0
+
+TRUCKA:
+	Inherits: ^TRUCK
+
+TRUCKB:
+	Inherits: ^TRUCK
 
 ICBM:
 	Inherits: ^CivilianVoxelVehicle
