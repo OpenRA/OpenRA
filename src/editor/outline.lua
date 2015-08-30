@@ -192,7 +192,10 @@ local function outlineRefresh(editor, force)
     local parent = stack[depth]
     while not parent do depth = depth - 1; parent = stack[depth] end
     local item = ctrl:AppendItem(parent, func.name, func.image)
-    if edpos >= func.pos and (not func.poe or edpos <= func.poe) then ctrl:SetItemBold(item, true) end
+    if ide.config.outline.showcurrentfunction
+    and edpos >= func.pos and (not func.poe or edpos <= func.poe) then
+      ctrl:SetItemBold(item, true)
+    end
     if outcfg.sort then resort[parent] = true end
     setData(ctrl, item, n)
     func.item = item
