@@ -1735,6 +1735,12 @@ Actors:
 	Actor486: tracks04
 		Location: 134,22
 		Owner: Neutral
+	Actor487: tuntop04
+		Owner: Neutral
+		Location: 111,25
+	Actor488: tuntop02
+		Owner: Neutral
+		Location: 111,13
 
 Smudges:
 

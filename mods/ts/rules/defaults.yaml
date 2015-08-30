@@ -694,7 +694,7 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 
-^Railway:
+^TerrainOverlay:
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: False
@@ -704,3 +704,11 @@
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
 		QuantizedFacings: 1
+
+^Railway:
+	Inherits: ^TerrainOverlay
+
+^Tunnel:
+	Inherits: ^TerrainOverlay
+	CustomSelectionSize:
+		CustomBounds: 220,220
