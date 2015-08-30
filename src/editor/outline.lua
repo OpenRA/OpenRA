@@ -258,7 +258,7 @@ local function outlineCreateOutlineWindow()
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
-    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_MULTIPLE
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   outline.outlineCtrl = ctrl
@@ -270,7 +270,6 @@ local function outlineCreateOutlineWindow()
   ctrl:SetFont(ide.font.fNormal)
 
   function ctrl:ActivateItem(item_id)
-    ctrl:SelectItem(item_id, true)
     local data = ctrl:GetItemData(item_id)
     if ctrl:GetItemImage(item_id) == image.FILE then
       -- activate editor tab
@@ -552,6 +551,7 @@ local package = ide:AddPackage('core.outline', {
       cache.pos = edpos
       cache.line = edline
       -- scan all items recursively starting from the current file
+      ide.outline.outlineCtrl:UnselectAll()
       eachNode(function(ctrl, item)
           local func = cache.funcs[ctrl:GetItemData(item):GetData()]
           local val = edpos >= func.pos and (not func.poe or edpos <= func.poe)
@@ -560,6 +560,7 @@ local package = ide:AddPackage('core.outline', {
             cache.line = nil
           end
           ctrl:SetItemBold(item, val)
+          if val then ctrl:SelectItem(item, val) end
         end, cache.fileitem, true)
     end,
   })
