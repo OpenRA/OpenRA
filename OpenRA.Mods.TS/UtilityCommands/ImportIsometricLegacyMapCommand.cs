@@ -75,6 +75,23 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			*/
 			{ 0x1A, "nawall" },
 
+			{ 0x27, "tracks01" },
+			{ 0x28, "tracks02" },
+			{ 0x29, "tracks03" },
+			{ 0x2A, "tracks04" },
+			{ 0x2B, "tracks05" },
+			{ 0x2C, "tracks06" },
+			{ 0x2D, "tracks07" },
+			{ 0x2E, "tracks08" },
+			{ 0x2F, "tracks09" },
+			{ 0x30, "tracks10" },
+			{ 0x31, "tracks11" },
+			{ 0x32, "tracks12" },
+			{ 0x33, "tracks13" },
+			{ 0x34, "tracks14" },
+			{ 0x35, "tracks15" },
+			{ 0x36, "tracks16" },
+
 			{ 0x37, "tracktunnel01" },
 			{ 0x38, "tracktunnel02" },
 			{ 0x39, "tracktunnel03" },
