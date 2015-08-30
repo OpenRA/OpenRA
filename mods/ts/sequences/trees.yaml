@@ -9,6 +9,10 @@ tibtre01:
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
+	active-overlay: treesprd
+		UseTilesetExtension: false
+		Length: *
+		Tick: 160
 
 tibtre02:
 	Defaults:
@@ -21,6 +25,10 @@ tibtre02:
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
+	active-overlay: treesprd
+		UseTilesetExtension: false
+		Length: *
+		Tick: 160
 
 tibtre03:
 	Defaults:
@@ -32,6 +40,10 @@ tibtre03:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
+		Tick: 160
+	active-overlay: treesprd
+		UseTilesetExtension: false
+		Length: *
 		Tick: 160
 
 bigblue:

@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool PauseOnLowPower = false;
 
+		[Desc("Set this to pause the sequence playback periodically. Measured in ticks.")]
+		public readonly int Interval = 0;
+
 		public override object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -57,16 +60,22 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithIdleOverlay : UpgradableTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlay : UpgradableTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform, ITick
 	{
+		readonly WithIdleOverlayInfo info;
 		readonly Animation overlay;
 		bool buildComplete;
+		bool playing;
+		int ticks;
 
 		public WithIdleOverlay(Actor self, WithIdleOverlayInfo info)
 			: base(info)
 		{
+			this.info = info;
+
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
+			playing = info.Interval == 0;
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
@@ -78,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => IsTraitDisabled || !buildComplete,
-				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete,
+				() => IsTraitDisabled || !buildComplete || !playing,
+				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete || !playing,
 				p => WithTurret.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
@@ -107,6 +116,19 @@ namespace OpenRA.Mods.Common.Traits
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
+		}
+
+		public void Tick(Actor self)
+		{
+			if (info.Interval != 0 && --ticks <= 0)
+			{
+				playing = true;
+
+				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence),
+					() => playing = false);
+
+				ticks = info.Interval;
+			}
 		}
 	}
 }

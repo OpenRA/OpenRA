@@ -562,6 +562,9 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithActiveAnimation:
+	WithIdleOverlay:
+		Sequence: active-overlay
+		Interval: 750
 
 ^Tree:
 	Inherits@1: ^SpriteActor

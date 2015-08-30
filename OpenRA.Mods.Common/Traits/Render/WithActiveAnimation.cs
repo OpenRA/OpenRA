@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
 
+		[Desc("Measured in ticks.")]
 		public readonly int Interval = 750;
 
 		public readonly bool PauseOnLowPower = false;
