@@ -630,7 +630,7 @@ end
 function outline:SaveSettings(force)
   if self.needsaving or force then
     ide:PushStatus(TR("Updating symbol index and settings..."))
-    package:SetSettings(self.settings, {keyignore = {depth = true, image = true}})
+    package:SetSettings(self.settings, {keyignore = {depth = true, image = true, poe = true}})
     ide:PopStatus()
     self.needsaving = false
   end
