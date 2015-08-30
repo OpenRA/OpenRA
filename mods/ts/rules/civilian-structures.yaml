@@ -1100,6 +1100,10 @@ CTDAM:
 		Prerequisite: anypower
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@WATER:
+		Sequence: idle-water
 
 CTVEGA:
 	Inherits: ^CivBuilding
