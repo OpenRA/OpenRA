@@ -537,8 +537,9 @@ local package = ide:AddPackage('core.outline', {
        end
     end,
 
-    onEditorPainted = function(self, editor, event)
-      if not ide:IsWindowShown(ide.outline.outlineCtrl) then return end
+    onEditorPainted = function(self, editor)
+      local ctrl = ide.outline.outlineCtrl
+      if not ide:IsWindowShown(ctrl) then return end
 
       local cache = caches[editor]
       if not cache or not ide.config.outline.showcurrentfunction then return end
@@ -550,8 +551,14 @@ local package = ide:AddPackage('core.outline', {
 
       cache.pos = edpos
       cache.line = edline
+
+      local n = 0
+      local MIN, MAX = 1, 2
+      local visible = {[MIN] = math.huge, [MAX] = 0}
+      local needshown = {[MIN] = math.huge, [MAX] = 0}
+
+      ctrl:UnselectAll()
       -- scan all items recursively starting from the current file
-      ide.outline.outlineCtrl:UnselectAll()
       eachNode(function(ctrl, item)
           local func = cache.funcs[ctrl:GetItemData(item):GetData()]
           local val = edpos >= func.pos and (not func.poe or edpos <= func.poe)
@@ -561,7 +568,27 @@ local package = ide:AddPackage('core.outline', {
           end
           ctrl:SetItemBold(item, val)
           if val then ctrl:SelectItem(item, val) end
+
+          if not ide.config.outline.jumptocurrentfunction then return end
+          n = n + 1
+          -- check that this and the items around it are all visible;
+          -- this is to avoid the situation when the current item is only partially visible
+          local isvisible = ctrl:IsVisible(item) and ctrl:GetNextVisible(item):IsOk() and ctrl:GetPrevVisible(item):IsOk()
+          if val and not isvisible then
+            needshown[MIN] = math.min(needshown[MIN], n)
+            needshown[MAX] = math.max(needshown[MAX], n)
+          elseif isvisible then
+            visible[MIN] = math.min(visible[MIN], n)
+            visible[MAX] = math.max(visible[MAX], n)
+          end
         end, cache.fileitem, true)
+
+      if not ide.config.outline.jumptocurrentfunction then return end
+      if needshown[MAX] > visible[MAX] then
+        ctrl:ScrollLines(needshown[MAX]-visible[MAX]) -- scroll forward to the last hidden line
+      elseif needshown[MIN] < visible[MIN] then
+        ctrl:ScrollLines(needshown[MIN]-visible[MIN]) -- scroll backward to the first hidden line
+      end
     end,
   })
 

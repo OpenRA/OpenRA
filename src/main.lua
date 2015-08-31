@@ -90,6 +90,7 @@ ide = {
       mousemove = true,
     },
     outline = {
+      jumptocurrentfunction = true,
       showanonymous = '~',
       showcurrentfunction = true,
       showflat = false,
