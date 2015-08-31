@@ -37,15 +37,11 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public int DamageVersus(Actor victim)
 		{
-			var armor = victim.TraitsImplementing<Armor>().Where(a => !a.IsTraitDisabled && a.Info.Type != null);
-			foreach (var a in armor)
-			{
-				int versus;
-				if (Versus.TryGetValue(a.Info.Type, out versus))
-					return versus;
-			}
+			var armor = victim.TraitsImplementing<Armor>()
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type))
+				.Select(a => Versus[a.Info.Type]);
 
-			return 100;
+			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
