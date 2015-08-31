@@ -107,6 +107,15 @@ car:
 wini:
 	idle:
 
+locomotive:
+	idle: monoeng
+
+traincar:
+	idle: monocar
+
+cargocar:
+	idle:
+
 sonic:
 	idle:
 	turret: sonictur

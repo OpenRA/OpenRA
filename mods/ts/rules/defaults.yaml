@@ -44,6 +44,27 @@
 		UpgradeMinEnabledLevel: 1
 		UpgradeMaxAcceptedLevel: 2
 
+^EmpDisable:
+	UpgradeOverlay@EMPDISABLE:
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+		Palette: disabled
+	DisableUpgrade@EMPDISABLE:
+		UpgradeTypes: empdisable
+		UpgradeMinEnabledLevel: 1
+	TimedUpgradeBar@EMPDISABLE:
+		Upgrade: empdisable
+		Color: 255,255,255
+	WithDecoration@EMPDISABLE:
+		Image: emp
+		Sequence: idle
+		ReferencePoint: HCenter, VCenter
+		Palette: effect
+		UpgradeTypes: empdisable
+		ShowToEnemies: true
+		ZOffset: 512
+		UpgradeMinEnabledLevel: 1
+
 ^BasicBuilding:
 	Inherits: ^ExistsInWorld
 	SelectionDecorations:
@@ -332,6 +353,7 @@
 ^Vehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^EmpDisable
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -376,25 +398,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	UpgradeOverlay@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
-	TimedUpgradeBar@EMPDISABLE:
-		Upgrade: empdisable
-		Color: 255,255,255
-	WithDecoration@EMPDISABLE:
-		Image: emp
-		Sequence: idle
-		ReferencePoint: HCenter, VCenter
-		Palette: effect
-		UpgradeTypes: empdisable
-		ShowToEnemies: true
-		ZOffset: 512
-		UpgradeMinEnabledLevel: 1
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
 		UpgradeMinEnabledLevel: 1
@@ -645,4 +648,50 @@
 	Guardable:
 	HiddenUnderFog:
 	ActorLostNotification:
+
+^Train:
+	Inherits@1: ^EmpDisable
+	Inherits@2: ^ExistsInWorld
+	RenderVoxels:
+	WithVoxelBody:
+	DrawLineToTarget:
+	Mobile:
+		TerrainSpeeds:
+			Rail: 100
+		ROT: 5
+		Voice: Move
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Selectable:
+		Bounds: 40,24
+	SelectionDecorations:
+		Palette: pips
+	Voiced:
+		VoiceSet: Vehicle
+	TargetableUnit:
+		TargetTypes: Ground, Vehicle
+	Passenger:
+		CargoType: Infantry
+		Voice: Move
+	HiddenUnderFog:
+	BodyOrientation:
+		CameraPitch: 90
+		QuantizedFacings: 0
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	Cloak@CLOAKGENERATOR:
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		InitialDelay: 0
+		CloakDelay: 90
+	ThrowsShrapnel:
+		Weapons: SmallDebris
+		Pieces: 3, 7
+		Range: 2c0, 5c0
 
