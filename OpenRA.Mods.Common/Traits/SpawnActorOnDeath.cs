@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public enum OwnerType { Victim, Killer, InternalName }
 
@@ -113,19 +113,14 @@ namespace OpenRA.Mods.RA.Traits
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
-				// TODO: untie this and move to Mods.Common
-				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
-				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
-				{
-					td.Add(new ChronoshiftOriginInit(chronoshiftable.Origin));
-					td.Add(new ChronoshiftReturnInit(chronoshiftable.ReturnTicks));
-				}
-
 				var huskActor = self.TraitsImplementing<IHuskModifier>()
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				w.CreateActor(huskActor ?? info.Actor, td);
+				var newActor = w.CreateActor(huskActor ?? info.Actor, td);
+
+				foreach (var hc in self.TraitsImplementing<IHuskCreated>())
+					hc.HuskCreated(newActor);
 			});
 		}
 	}

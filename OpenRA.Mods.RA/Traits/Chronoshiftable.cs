@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ITick, ISync, ISelectionBar
+	public class Chronoshiftable : ITick, ISync, ISelectionBar, IHuskCreated
 	{
 		readonly ChronoshiftableInfo info;
 		readonly Actor self;
@@ -106,6 +106,17 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		public Color GetColor() { return Color.White; }
+
+		// 'self' is the spawned huskactor
+		public void HuskCreated(Actor self)
+		{
+			var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
+			if (chronoshiftable != null && ReturnTicks > 0)
+			{
+				chronoshiftable.Origin = Origin;
+				chronoshiftable.ReturnTicks = ReturnTicks;
+			}
+		}
 	}
 
 	public class ChronoshiftReturnInit : IActorInit<int>
