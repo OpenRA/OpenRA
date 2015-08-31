@@ -123,7 +123,6 @@ LoadScreen: LogoStripeLoadScreen
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing 'thopters..., Summoning mentats...
 
 ContentInstaller:
-	MenuWidget: INSTALL_PANEL
 	MusicMenuWidget: INSTALL_MUSIC_PANEL
 # TODO: check if DATA.R8 is at 1.03 patch level with 4840 frames
 	TestFiles: BLOXBASE.R8, BLOXBAT.R8, BLOXBGBS.R8, BLOXICE.R8, BLOXTREE.R8, BLOXWAST.R8, DATA.R8, SOUND.RS

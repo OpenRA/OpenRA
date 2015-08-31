@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -25,6 +27,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModMetadata[] allMods;
 		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
 		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
+		readonly Cache<ModMetadata, bool> modInstallStatus;
+		readonly Widget modChooserPanel;
+		readonly ButtonWidget loadButton;
 		readonly SheetBuilder sheetBuilder;
 		ModMetadata selectedMod;
 		string selectedAuthor;
@@ -34,30 +39,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
 		{
-			var panel = widget;
-			var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
+			modChooserPanel = widget;
+			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
 			loadButton.IsDisabled = () => selectedMod.Id == Game.ModData.Manifest.Mod.Id;
 
-			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			modChooserPanel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
-			modList = panel.Get("MOD_LIST");
+			modList = modChooserPanel.Get("MOD_LIST");
 			modTemplate = modList.Get<ButtonWidget>("MOD_TEMPLATE");
 
-			panel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
-			panel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Title;
-			panel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
-			panel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Version;
+			modChooserPanel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
+			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Title;
+			modChooserPanel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
+			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Version;
 
-			var prevMod = panel.Get<ButtonWidget>("PREV_MOD");
+			var prevMod = modChooserPanel.Get<ButtonWidget>("PREV_MOD");
 			prevMod.OnClick = () => { modOffset -= 1; RebuildModList(); };
 			prevMod.IsVisible = () => modOffset > 0;
 
-			var nextMod = panel.Get<ButtonWidget>("NEXT_MOD");
+			var nextMod = modChooserPanel.Get<ButtonWidget>("NEXT_MOD");
 			nextMod.OnClick = () => { modOffset += 1; RebuildModList(); };
 			nextMod.IsVisible = () => modOffset + 5 < allMods.Length;
 
-			panel.Get<RGBASpriteWidget>("MOD_PREVIEW").GetSprite = () =>
+			modChooserPanel.Get<RGBASpriteWidget>("MOD_PREVIEW").GetSprite = () =>
 			{
 				Sprite ret = null;
 				previews.TryGetValue(selectedMod.Id, out ret);
@@ -89,9 +94,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception) { }
 			}
 
+			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
+
 			ModMetadata initialMod = null;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
-			SelectMod(initialMod ?? ModMetadata.AllMods["ra"]);
+			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : ModMetadata.AllMods["ra"]);
 
 			RebuildModList();
 		}
@@ -113,6 +120,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					break;
 
 				var mod = allMods[j];
+
 				var item = modTemplate.Clone() as ButtonWidget;
 				item.Bounds = new Rectangle(outerMargin + i * stride, 0, width, height);
 				item.IsHighlighted = () => selectedMod == mod;
@@ -148,16 +156,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
+
+			loadButton.Text = modInstallStatus[mod] ? "Load Mod" : "Install Assets";
 		}
 
 		void LoadMod(ModMetadata mod)
 		{
+			if (!modInstallStatus[mod])
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "continueLoading", () =>
+						Game.RunAfterTick(() => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments())) }
+				};
+
+				Ui.OpenWindow("INSTALL_PANEL", widgetArgs);
+
+				return;
+			}
+
 			Game.RunAfterTick(() =>
 			{
 				Ui.CloseWindow();
 				sheetBuilder.Dispose();
 				Game.InitializeMod(mod.Id, null);
 			});
+		}
+
+		static bool IsModInstalled(ModMetadata mod)
+		{
+			return mod.Content.TestFiles.All(file => File.Exists(Path.GetFullPath(Platform.ResolvePath(file))));
 		}
 	}
 }

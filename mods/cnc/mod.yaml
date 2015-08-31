@@ -140,8 +140,6 @@ LoadScreen: CncLoadScreen
 
 ContentInstaller:
 	TestFiles: conquer.mix, desert.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
-	BackgroundWidget: INSTALL_BACKGROUND
-	MenuWidget: INSTALL_PANEL
 	MusicMenuWidget: INSTALL_MUSIC_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
