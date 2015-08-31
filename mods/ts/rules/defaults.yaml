@@ -175,6 +175,7 @@
 	UpdatesPlayerStatistics:
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
