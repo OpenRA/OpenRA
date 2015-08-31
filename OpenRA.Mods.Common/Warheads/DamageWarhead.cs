@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly string[] DamageTypes = new string[0];
 
 		[FieldLoader.LoadUsing("LoadVersus")]
-		[Desc("Damage percentage versus each armortype. 0% = can't target.")]
+		[Desc("Damage percentage versus each armortype.")]
 		public readonly Dictionary<string, int> Versus;
 
 		public static object LoadVersus(MiniYaml yaml)
