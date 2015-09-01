@@ -691,7 +691,7 @@
 
 ^Crate:
 	Inherits@1: ^SpriteActor
-	HiddenUnderShroud:
+	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
 		GenericName: Crate
