@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Gets all the Connections for a given node in the graph
 		/// </summary>
-		IEnumerable<GraphConnection> GetConnections(CPos position);
+		List<GraphConnection> GetConnections(CPos position);
 
 		/// <summary>
 		/// Retrieves an object given a node in the graph
@@ -47,13 +47,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 	public struct GraphConnection
 	{
-		public readonly CPos Source;
 		public readonly CPos Destination;
 		public readonly int Cost;
 
-		public GraphConnection(CPos source, CPos destination, int cost)
+		public GraphConnection(CPos destination, int cost)
 		{
-			Source = source;
 			Destination = destination;
 			Cost = cost;
 		}
@@ -71,6 +69,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		readonly CellConditions checkConditions;
 		readonly MobileInfo mobileInfo;
+		readonly MobileInfo.WorldMovementInfo worldMovementInfo;
 		CellLayer<CellInfo> cellInfo;
 
 		public PathGraph(CellLayer<CellInfo> cellInfo, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
@@ -78,6 +77,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.cellInfo = cellInfo;
 			World = world;
 			this.mobileInfo = mobileInfo;
+			worldMovementInfo = mobileInfo.GetWorldMovementInfo(world);
 			Actor = actor;
 			LaneBias = 1;
 			checkConditions = checkForBlocked ? CellConditions.TransientActors : CellConditions.None;
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) },
 		};
 
-		public IEnumerable<GraphConnection> GetConnections(CPos position)
+		public List<GraphConnection> GetConnections(CPos position)
 		{
 			var previousPos = cellInfo[position].PreviousPos;
 
@@ -108,14 +108,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var dy = position.Y - previousPos.Y;
 			var index = dy * 3 + dx + 4;
 
-			var validNeighbors = new LinkedList<GraphConnection>();
 			var directions = DirectedNeighbors[index];
+			var validNeighbors = new List<GraphConnection>(directions.Length);
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var neighbor = position + directions[i];
 				var movementCost = GetCostToNode(neighbor, directions[i]);
 				if (movementCost != Constants.InvalidNode)
-					validNeighbors.AddLast(new GraphConnection(position, neighbor, movementCost));
+					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
 			return validNeighbors;
@@ -123,17 +123,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			int movementCost;
-			if (mobileInfo.CanEnterCell(
-				World,
-				Actor,
-				destNode,
-				out movementCost,
-				IgnoredActor,
-				checkConditions) && !(CustomBlock != null && CustomBlock(destNode)))
-			{
+			var movementCost = mobileInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoredActor, checkConditions);
+			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
-			}
 
 			return Constants.InvalidNode;
 		}

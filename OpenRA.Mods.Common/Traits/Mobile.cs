@@ -125,6 +125,17 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public struct WorldMovementInfo
+		{
+			internal readonly World World;
+			internal readonly TerrainInfo[] TerrainInfos;
+			internal WorldMovementInfo(World world, MobileInfo info)
+			{
+				World = world;
+				TerrainInfos = info.TilesetTerrainInfo[world.TileSet];
+			}
+		}
+
 		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
 		public readonly Cache<TileSet, int> TilesetMovementClass;
 
@@ -136,14 +147,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.TileSet], cell);
+		}
+
+		int MovementCostForCell(Map map, TerrainInfo[] terrainInfos, CPos cell)
+		{
+			if (!map.Contains(cell))
 				return int.MaxValue;
 
-			var index = world.Map.GetTerrainIndex(cell);
+			var index = map.GetTerrainIndex(cell);
 			if (index == byte.MaxValue)
 				return int.MaxValue;
 
-			return TilesetTerrainInfo[world.TileSet][index].Cost;
+			return terrainInfos[index].Cost;
 		}
 
 		public int CalculateTilesetMovementClass(TileSet tileset)
@@ -226,22 +242,33 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the other actor in our way cannot be crushed, we are blocked.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			if (!crushables.Any())
-				return true;
+			var lacksCrushability = true;
 			foreach (var crushable in crushables)
+			{
+				lacksCrushability = false;
 				if (!crushable.CrushableBy(Crushes, self.Owner))
 					return true;
+			}
+
+			// If there are no crushable traits at all, this means the other actor cannot be crushed - we are blocked.
+			if (lacksCrushability)
+				return true;
 
 			// We are not blocked by the other actor.
 			return false;
 		}
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, out int movementCost, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public WorldMovementInfo GetWorldMovementInfo(World world)
 		{
-			if ((movementCost = MovementCostForCell(world, cell)) == int.MaxValue)
-				return false;
+			return new WorldMovementInfo(world, this);
+		}
 
-			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		{
+			var cost = MovementCostForCell(worldMovementInfo.World.Map, worldMovementInfo.TerrainInfos, cell);
+			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
+				return int.MaxValue;
+			return cost;
 		}
 
 		public SubCell GetAvailableSubCell(
@@ -283,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 		internal int TicksBeforePathing = 0;
 
 		readonly Actor self;
-		readonly Lazy<ISpeedModifier[]> speedModifiers;
+		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
@@ -324,7 +351,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 
-			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray());
+			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
 			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
@@ -581,7 +608,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (terrainSpeed == 0)
 				return 0;
 
-			var modifiers = speedModifiers.Value.Select(x => x.GetSpeedModifier()).Append(terrainSpeed);
+			var modifiers = speedModifiers.Value.Append(terrainSpeed);
 
 			return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
 		}
