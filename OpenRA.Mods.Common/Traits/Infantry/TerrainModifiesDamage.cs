@@ -9,7 +9,6 @@
  #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
@@ -17,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TerrainModifiesDamageInfo : ITraitInfo
 	{
-		[FieldLoader.LoadUsing("LoadPercents", true)]
+		[FieldLoader.Require]
 		[Desc("Damage percentage for specific terrain types. 120 = 120%, 80 = 80%, etc.")]
 		public readonly Dictionary<string, int> TerrainModifier = null;
 
@@ -25,13 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ModifyHealing = false;
 
 		public object Create(ActorInitializer init) { return new TerrainModifiesDamage(init.Self, this); }
-
-		static object LoadPercents(MiniYaml y)
-		{
-			return y.ToDictionary()["TerrainModifier"].Nodes.ToDictionary(
-				kv => FieldLoader.GetValue<string>("(key)", kv.Key),
-				kv => FieldLoader.GetValue<int>("(value)", kv.Value.Value));
-		}
 	}
 
 	public class TerrainModifiesDamage : IDamageModifier

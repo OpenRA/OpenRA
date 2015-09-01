@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>, Requires<UpgradeManagerInfo>
 	{
-		[FieldLoader.LoadUsing("LoadUpgrades", true)]
+		[FieldLoader.Require]
 		[Desc("Upgrades to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is a list of the upgrade types to grant")]
@@ -33,15 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SuppressLevelupAnimation = true;
 
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
-
-		static object LoadUpgrades(MiniYaml y)
-		{
-			MiniYaml upgrades = y.ToDictionary()["Upgrades"];
-
-			return upgrades.Nodes.ToDictionary(
-				kv => FieldLoader.GetValue<int>("(key)", kv.Key),
-				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
-		}
 	}
 
 	public class GainsExperience : ISync, IResolveOrder

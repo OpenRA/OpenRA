@@ -16,22 +16,14 @@ namespace OpenRA.GameRules
 {
 	public class SoundInfo
 	{
-		[FieldLoader.Ignore] public readonly Dictionary<string, string[]> Variants;
-		[FieldLoader.Ignore] public readonly Dictionary<string, string[]> Prefixes;
-		[FieldLoader.Ignore] public readonly Dictionary<string, string[]> Voices;
-		[FieldLoader.Ignore] public readonly Dictionary<string, string[]> Notifications;
+		public readonly Dictionary<string, string[]> Variants = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string[]> Prefixes = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string[]> Voices = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string[]> Notifications = new Dictionary<string, string[]>();
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
 		public readonly string[] DisableVariants = { };
 		public readonly string[] DisablePrefixes = { };
-
-		static Dictionary<string, string[]> Load(MiniYaml y, string name)
-		{
-			var nd = y.ToDictionary();
-			return nd.ContainsKey(name)
-				? nd[name].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
-				: new Dictionary<string, string[]>();
-		}
 
 		public readonly Lazy<Dictionary<string, SoundPool>> VoicePools;
 		public readonly Lazy<Dictionary<string, SoundPool>> NotificationsPools;
@@ -39,10 +31,6 @@ namespace OpenRA.GameRules
 		public SoundInfo(MiniYaml y)
 		{
 			FieldLoader.Load(this, y);
-			Variants = Load(y, "Variants");
-			Prefixes = Load(y, "Prefixes");
-			Voices = Load(y, "Voices");
-			Notifications = Load(y, "Notifications");
 
 			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
 			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));

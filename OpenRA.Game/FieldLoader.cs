@@ -110,13 +110,8 @@ namespace OpenRA
 			if (!md.TryGetValue(yamlName, out yaml))
 				return false;
 
-			if (yaml.Nodes.Count == 0)
-			{
-				ret = GetValue(field.Name, field.FieldType, yaml.Value, field);
-				return true;
-			}
-
-			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(yamlName, field.FieldType));
+			ret = GetValue(field.Name, field.FieldType, yaml, field);
+			return true;
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -165,6 +160,12 @@ namespace OpenRA
 
 		public static object GetValue(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
+			return GetValue(fieldName, fieldType, new MiniYaml(value), field);
+		}
+
+		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
+		{
+			var value = yaml.Value;
 			if (value != null) value = value.Trim();
 
 			if (fieldType == typeof(int))
@@ -441,6 +442,21 @@ namespace OpenRA
 					addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
 				return set;
 			}
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			{
+				var dict = Activator.CreateInstance(fieldType);
+				var arguments = fieldType.GetGenericArguments();
+				var addMethod = fieldType.GetMethod("Add", arguments);
+
+				foreach (var node in yaml.Nodes)
+				{
+					var key = GetValue(fieldName, arguments[0], node.Key, field);
+					var val = GetValue(fieldName, arguments[1], node.Value, field);
+					addMethod.Invoke(dict, new[] { key, val });
+				}
+
+				return dict;
+			}
 			else if (fieldType == typeof(Size))
 			{
 				if (value != null)
@@ -588,7 +604,7 @@ namespace OpenRA
 
 				var loader = sa.GetLoader(type);
 				if (loader == null && sa.FromYamlKey)
-					loader = (yaml) => GetValue(yamlName, field.FieldType, yaml.Value, field);
+					loader = yaml => GetValue(yamlName, field.FieldType, yaml, field);
 
 				var fli = new FieldLoadInfo(field, sa, yamlName, loader);
 				ret.Add(fli);
@@ -632,6 +648,7 @@ namespace OpenRA
 			public string YamlName;
 			public string Loader;
 			public bool FromYamlKey;
+			public bool DictionaryFromYamlKey;
 			public bool Required;
 
 			public SerializeAttribute(bool serialize = true, bool required = false)
@@ -691,6 +708,17 @@ namespace OpenRA
 		public FieldFromYamlKeyAttribute()
 		{
 			FromYamlKey = true;
+		}
+	}
+
+	// Special-cases FieldFromYamlKeyAttribute for use with Dictionary<K,V>.
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class DictionaryFromYamlKeyAttribute : FieldLoader.SerializeAttribute
+	{
+		public DictionaryFromYamlKeyAttribute()
+		{
+			FromYamlKey = true;
+			DictionaryFromYamlKey = true;
 		}
 	}
 

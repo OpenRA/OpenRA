@@ -114,45 +114,24 @@ namespace OpenRA.Mods.Common.AI
 		string IBotInfo.Name { get { return this.Name; } }
 
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
-		[FieldLoader.LoadUsing("LoadUnits")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 
 		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
-		[FieldLoader.LoadUsing("LoadBuildings")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
 		[Desc("Tells the AI what unit types fall under the same common name.")]
-		[FieldLoader.LoadUsing("LoadUnitsCommonNames")]
 		public readonly Dictionary<string, string[]> UnitsCommonNames = null;
 
 		[Desc("Tells the AI what building types fall under the same common name.")]
-		[FieldLoader.LoadUsing("LoadBuildingsCommonNames")]
 		public readonly Dictionary<string, string[]> BuildingCommonNames = null;
 
 		[Desc("What buildings should the AI have max limits n.", "What is the limit of the building.")]
-		[FieldLoader.LoadUsing("LoadBuildingLimits")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
 		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing("LoadDecisions")]
 		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
-
-		static object LoadList<T>(MiniYaml y, string field)
-		{
-			var nd = y.ToDictionary();
-			return nd.ContainsKey(field)
-				? nd[field].ToDictionary(my => FieldLoader.GetValue<T>(field, my.Value))
-				: new Dictionary<string, T>();
-		}
-
-		static object LoadUnits(MiniYaml y) { return LoadList<float>(y, "UnitsToBuild"); }
-		static object LoadBuildings(MiniYaml y) { return LoadList<float>(y, "BuildingFractions"); }
-
-		static object LoadUnitsCommonNames(MiniYaml y) { return LoadList<string[]>(y, "UnitsCommonNames"); }
-		static object LoadBuildingsCommonNames(MiniYaml y) { return LoadList<string[]>(y, "BuildingCommonNames"); }
-
-		static object LoadBuildingLimits(MiniYaml y) { return LoadList<int>(y, "BuildingLimits"); }
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
