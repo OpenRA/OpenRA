@@ -156,3 +156,39 @@ WINI:
 		PipCount: 5
 		UnloadVoice: Unload
 
+LOCOMOTIVE:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Train Locomotive
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 2
+		UnloadVoice: Unload
+
+TRAINCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Passenger Car
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		PipCount: 5
+		UnloadVoice: Unload
+
+CARGOCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Cargo Car
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		PipCount: 5
+		UnloadVoice: Unload
+
