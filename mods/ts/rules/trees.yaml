@@ -102,6 +102,7 @@ VEINHOLEDUMMY:
 		Footprint: xx xx
 		Dimensions: 2, 2
 	BodyOrientation:
+		QuantizedFacings: 1
 
 VEINHOLE:
 	Inherits: VEINHOLEDUMMY
