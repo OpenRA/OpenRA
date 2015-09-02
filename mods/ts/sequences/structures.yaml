@@ -1176,7 +1176,7 @@ namisl:
 
 gaplug:
 	Defaults:
-		Offset: 12, -40
+		Offset: 12, -28
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
