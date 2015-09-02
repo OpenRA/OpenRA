@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly string[] DamageTypes = new string[0];
 
 		[FieldLoader.LoadUsing("LoadVersus")]
-		[Desc("Damage percentage versus each armortype. 0% = can't target.")]
+		[Desc("Damage percentage versus each armortype.")]
 		public readonly Dictionary<string, int> Versus;
 
 		public static object LoadVersus(MiniYaml yaml)
@@ -34,17 +35,13 @@ namespace OpenRA.Mods.Common.Warheads
 				: new Dictionary<string, int>();
 		}
 
-		public int DamageVersus(ActorInfo victim)
+		public int DamageVersus(Actor victim)
 		{
-			var armor = victim.Traits.GetOrDefault<ArmorInfo>();
-			if (armor != null && armor.Type != null)
-			{
-				int versus;
-				if (Versus.TryGetValue(armor.Type, out versus))
-					return versus;
-			}
+			var armor = victim.TraitsImplementing<Armor>()
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type))
+				.Select(a => Versus[a.Info.Type]);
 
-			return 100;
+			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
@@ -60,7 +57,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim.Info)));
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
 			victim.InflictDamage(firedBy, damage, this);
 		}
 	}
