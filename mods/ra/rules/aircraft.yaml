@@ -32,7 +32,6 @@ BADR:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
-	-GpsDot:
 	RejectsOrders:
 
 BADR.Bomber:
@@ -70,7 +69,6 @@ BADR.Bomber:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
-	-GpsDot:
 	RejectsOrders:
 	RenderSprites:
 		Image: badr
