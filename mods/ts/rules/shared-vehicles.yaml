@@ -100,35 +100,54 @@ HARV:
 
 LPST:
 	Inherits: ^VoxelVehicle
+	-AppearsOnRadar:
+	-GainsExperience:
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~factory, radar
 	Valued:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Prerequisites: ~factory, radar
 	Health:
 		HP: 600
 	Armor:
-		Type: Light
+		Type: Wood
 	Mobile:
 		Speed: 85
 		ROT: 5
 	RevealsShroud:
-		Range: 10c0
-	Transforms:
-		IntoActor: gadpsa
-		Facing: 159
-		TransformSounds:
-		NoTransformSounds:
-		Voice: Move
+		Range: 7c0
 	RenderSprites:
 		Image: lpst.gdi
 		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
+	DeployToUpgrade:
+		Upgrades: deployed
+		DeployAnimation: make
+		Facing: 160
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	WithVoxelBody:
+		Image: lpst
+		UpgradeTypes: deployed
+		UpgradeMaxEnabledLevel: 0
+	WithSpriteBody@deployed:
+		StartSequence: make
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	DisableUpgrade:
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	DetectCloaked:
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+		Range: 18
+	RenderDetectionCircle:
 
 GGHUNT:
 	Inherits: ^Vehicle

@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
@@ -32,6 +34,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
+		[SequenceReference, Desc("Animation to play for deploying/undeploying.")]
+		public readonly string DeployAnimation = null;
+
+		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
+		public readonly int Facing = -1;
+
+		[Desc("Sound to play when deploying.")]
+		public readonly string DeploySound = null;
+
+		[Desc("Sound to play when undeploying.")]
+		public readonly string UndeploySound = null;
+
 		public object Create(ActorInitializer init) { return new DeployToUpgrade(init.Self, this); }
 	}
 
@@ -41,6 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeployToUpgradeInfo info;
 		readonly UpgradeManager manager;
 		readonly bool checkTerrainType;
+		readonly bool canTurn;
+		readonly Lazy<ISpriteBody> body;
 
 		bool isUpgraded;
 
@@ -50,6 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Length > 0;
+			canTurn = self.Info.Traits.WithInterface<IFacingInfo>().Any();
+			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -75,11 +93,50 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (isUpgraded)
-				foreach (var up in info.Upgrades)
-					manager.RevokeUpgrade(self, up, this);
+			{
+				// Play undeploy animation and after that revoke the upgrades
+				self.QueueActivity(false, new CallFunc(() =>
+				{
+					if (!string.IsNullOrEmpty(info.UndeploySound))
+						Sound.Play(info.UndeploySound, self.CenterPosition);
+
+					if (string.IsNullOrEmpty(info.DeployAnimation))
+					{
+						RevokeUpgrades();
+						return;
+					}
+
+					if (body.Value != null)
+						body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, RevokeUpgrades);
+					else
+						RevokeUpgrades();
+				}));
+			}
 			else
-				foreach (var up in info.Upgrades)
-					manager.GrantUpgrade(self, up, this);
+			{
+				self.CancelActivity();
+
+				// Turn
+				if (info.Facing != -1 && canTurn)
+					self.QueueActivity(new Turn(self, info.Facing));
+
+				// Grant the upgrade
+				self.QueueActivity(new CallFunc(GrantUpgrades));
+
+				// Play deploy sound and animation
+				self.QueueActivity(new CallFunc(() =>
+				{
+					if (!string.IsNullOrEmpty(info.DeploySound))
+						Sound.Play(info.DeploySound, self.CenterPosition);
+
+					if (string.IsNullOrEmpty(info.DeployAnimation))
+						return;
+
+					if (body.Value != null)
+						body.Value.PlayCustomAnimation(self, info.DeployAnimation,
+							() => body.Value.PlayCustomAnimationRepeating(self, "idle"));
+				}));
+			}
 
 			isUpgraded = !isUpgraded;
 		}
@@ -97,6 +154,18 @@ namespace OpenRA.Mods.Common.Traits
 			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[self.Location])].Type;
 
 			return info.AllowedTerrainTypes.Contains(terrainType);
+		}
+
+		void GrantUpgrades()
+		{
+			foreach (var up in info.Upgrades)
+				manager.GrantUpgrade(self, up, this);
+		}
+
+		void RevokeUpgrades()
+		{
+			foreach (var up in info.Upgrades)
+				manager.RevokeUpgrade(self, up, this);
 		}
 	}
 }

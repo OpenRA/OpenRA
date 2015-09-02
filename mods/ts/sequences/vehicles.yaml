@@ -26,9 +26,23 @@ hvr:
 
 lpst.gdi:
 	icon: sidec01.mix:lpsticon
+	idle: gadpsa
+		Offset: 0, -12
+		ShadowStart: 3
+	make: gadpsamk
+		Offset: 0, -12
+		Length: 36
+		ShadowStart: 36
 
 lpst.nod:
 	icon: sidec02.mix:lpsticon
+	idle: gadpsa
+		Offset: 0, -12
+		ShadowStart: 3
+	make: gadpsamk
+		Offset: 0, -12
+		Length: 36
+		ShadowStart: 36
 
 repair:
 	icon: rboticon
