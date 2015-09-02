@@ -254,8 +254,6 @@ HARV:
 		Capacity: 20
 		Resources: Ore,Gems
 		UnloadTicksPerBale: 1
-		SearchFromProcRadius: 24
-		SearchFromOrderRadius: 12
 	Health:
 		HP: 600
 	Armor:

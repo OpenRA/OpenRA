@@ -699,10 +699,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		Harvester:
-			SearchFromProcRadius: 32
-			SearchFromOrderRadius: 20
 	PROC:
 		Buildable:
 			Prerequisites: ~disabled
