@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSequences : ILintPass
+	class CheckSequences : ILintMapPass
 	{
 		Action<string> emitError;
 

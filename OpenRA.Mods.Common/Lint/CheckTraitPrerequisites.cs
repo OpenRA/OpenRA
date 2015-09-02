@@ -14,16 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckTraitPrerequisites : ILintPass
+	public class CheckTraitPrerequisites : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			if (map != null && !map.RuleDefinitions.Any())
-				return;
-
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-
 			foreach (var actorInfo in rules.Actors.Where(a => !a.Key.StartsWith("^")))
+			{
 				try
 				{
 					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();
@@ -34,6 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					emitError("Actor {0} is not constructible; failure: {1}".F(actorInfo.Key, e.Message));
 				}
+			}
 		}
 	}
 }

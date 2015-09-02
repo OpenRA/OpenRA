@@ -16,15 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckUpgrades : ILintPass
+	public class CheckUpgrades : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			if (map != null && !map.RuleDefinitions.Any())
-				return;
-
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-
 			CheckUpgradesValidity(emitError, rules);
 			CheckUpgradesUsage(emitError, emitWarning, rules);
 		}

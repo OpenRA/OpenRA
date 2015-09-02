@@ -15,15 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckVoiceReferences : ILintPass
+	public class CheckVoiceReferences : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			if (map != null && !map.RuleDefinitions.Any() && !map.VoiceDefinitions.Any())
-				return;
-
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())

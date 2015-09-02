@@ -15,15 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class LintBuildablePrerequisites : ILintPass
+	class LintBuildablePrerequisites : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			if (map != null && !map.RuleDefinitions.Any())
-				return;
-
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-
 			// ProvidesPrerequisite allows arbitrary prereq definitions
 			var customPrereqs = rules.Actors.SelectMany(a => a.Value.Traits
 				.WithInterface<ProvidesPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
