@@ -258,7 +258,7 @@ local function outlineCreateOutlineWindow()
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
-    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_MULTIPLE
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   outline.outlineCtrl = ctrl
@@ -557,7 +557,7 @@ local package = ide:AddPackage('core.outline', {
       local visible = {[MIN] = math.huge, [MAX] = 0}
       local needshown = {[MIN] = math.huge, [MAX] = 0}
 
-      ctrl:UnselectAll()
+      ctrl:Unselect()
       -- scan all items recursively starting from the current file
       eachNode(function(ctrl, item)
           local func = cache.funcs[ctrl:GetItemData(item):GetData()]
