@@ -11,13 +11,14 @@
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Scripting;
 
-namespace OpenRA.RA.Common.Scripting
+namespace OpenRA.Mods.RA.Scripting
 {
 	[ScriptPropertyGroup("Ability")]
 	public class InfiltrateProperties : ScriptActorProperties
 	{
 		public InfiltrateProperties(ScriptContext context, Actor self)
-			: base(context, self) { }
+			: base(context, self)
+		{ }
 
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
