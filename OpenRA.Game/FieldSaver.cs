@@ -36,7 +36,7 @@ namespace OpenRA
 						var key = ((System.Collections.DictionaryEntry)kvp).Key;
 						var value = ((System.Collections.DictionaryEntry)kvp).Value;
 
-						nodes.Add(new MiniYamlNode(FormatValue(key, key.GetType()), FormatValue(value, value.GetType())));
+						nodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
 					}
 				}
 				else if (info.Attribute.FromYamlKey)
@@ -114,8 +114,8 @@ namespace OpenRA
 					var key = ((System.Collections.DictionaryEntry)kvp).Key;
 					var value = ((System.Collections.DictionaryEntry)kvp).Value;
 
-					var formattedKey = FormatValue(key, key.GetType());
-					var formattedValue = FormatValue(value, value.GetType());
+					var formattedKey = FormatValue(key);
+					var formattedValue = FormatValue(value);
 
 					result += "{0}: {1}{2}".F(formattedKey, formattedValue, Environment.NewLine);
 				}
