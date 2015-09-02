@@ -801,6 +801,22 @@ city22:
 
 ctdam:
 	idle:
+	damaged-idle:
+		Start: 1
+	idle-lights: ctdam_a
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: ctdam_a
+		Start: 8
+		Length: 8
+		Tick: 200
+	idle-water: ctdam_b
+		Length: 8
+		Tick: 200
+	damaged-idle-water: ctdam_b
+		Start: 8
+		Length: 8
+		Tick: 200
 
 ctvega:
 	Defaults:

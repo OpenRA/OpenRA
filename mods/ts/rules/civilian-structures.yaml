@@ -1085,7 +1085,7 @@ CITY22:
 CTDAM:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Dam
+		Name: Hydroelectric Dam
 		Description: Provides power for other structures
 	Building:
 		Footprint: xx xx xx xx xx
@@ -1100,6 +1100,10 @@ CTDAM:
 		Prerequisite: anypower
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@WATER:
+		Sequence: idle-water
 
 CTVEGA:
 	Inherits: ^CivBuilding
