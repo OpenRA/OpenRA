@@ -720,6 +720,8 @@ OBLI:
 		Dimensions: 1,2
 	Selectable:
 		Bounds: 24,24,0,12
+	SelectionDecorations:
+		VisualBounds: 22,42
 	RequiresPower:
 	DisabledOverlay:
 	Health:
@@ -799,6 +801,8 @@ ATWR:
 		Dimensions: 1,2
 	Selectable:
 		Bounds: 24,24,0,12
+	SelectionDecorations:
+		VisualBounds: 22,40,0,4
 	RequiresPower:
 	DisabledOverlay:
 	Health:

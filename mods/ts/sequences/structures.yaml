@@ -232,7 +232,7 @@ napowr:
 
 naapwr:
 	Defaults:
-		Offset: 12, -30
+		Offset: 12, -40
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -1176,7 +1176,7 @@ namisl:
 
 gaplug:
 	Defaults:
-		Offset: 12, -30
+		Offset: 12, -40
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
