@@ -232,7 +232,7 @@ napowr:
 
 naapwr:
 	Defaults:
-		Offset: 12, -40
+		Offset: 12, -30
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
