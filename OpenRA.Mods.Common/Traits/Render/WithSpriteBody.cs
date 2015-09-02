@@ -59,6 +59,10 @@ namespace OpenRA.Mods.Common.Traits
 					() => PlayCustomAnimationRepeating(init.Self, info.Sequence));
 			else
 				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
+
+			if (info.PauseAnimationWhenDisabled)
+				DefaultAnimation.Paused = () =>
+					init.Self.IsDisabled() && DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)
@@ -70,10 +74,6 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual void BuildingComplete(Actor self)
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
-
-			if (Info.PauseAnimationWhenDisabled)
-				DefaultAnimation.Paused = () =>
-					self.IsDisabled() && DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, Info.Sequence);
 		}
 
 		public void PlayCustomAnimation(Actor self, string name, Action after = null)
