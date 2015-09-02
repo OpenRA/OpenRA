@@ -711,7 +711,7 @@ napuls.nod:
 
 nastlh:
 	Defaults:
-		Offset: -6, -30
+		Offset: -16, -28
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
