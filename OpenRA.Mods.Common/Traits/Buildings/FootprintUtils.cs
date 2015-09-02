@@ -65,7 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 		public static WVec CenterOffset(World w, BuildingInfo buildingInfo)
 		{
 			var dim = buildingInfo.Dimensions;
-			return (w.Map.CenterOfCell(CPos.Zero + new CVec(dim.X, dim.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
+			var off = (w.Map.CenterOfCell(new CPos(dim.X, dim.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
+			return off - new WVec(0, 0, off.Z);
 		}
 	}
 }
