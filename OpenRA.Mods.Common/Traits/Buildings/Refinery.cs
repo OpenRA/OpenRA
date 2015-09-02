@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : ITraitInfo
+	public class RefineryInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 0;
@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
+		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
@@ -69,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
+			wsb = self.Trait<WithSpriteBody>();
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -105,7 +107,6 @@ namespace OpenRA.Mods.Common.Traits
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
 			{
-				var wsb = self.Trait<WithSpriteBody>();
 				wsb.PlayCustomAnimation(self, wsb.Info.Sequence);
 				dockedHarv = null;
 			}
