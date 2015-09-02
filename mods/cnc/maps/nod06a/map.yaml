@@ -710,9 +710,6 @@ Rules:
 	^CivBuildingHusk:
 		Tooltip:
 			ShowOwnerRow: false
-	HARV:
-		Harvester:
-			SearchFromProcRadius: 64
 	FLARE:
 		Tooltip:
 			ShowOwnerRow: false

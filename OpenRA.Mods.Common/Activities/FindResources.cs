@@ -141,16 +141,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
-			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
-			var searchRadiusSquared = searchRadius * searchRadius;
-
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.TileSet);
 			var search = PathSearch.Search(self.World, mobileInfo, self, true,
 				loc => domainIndex.IsPassable(self.Location, loc, passable) && IsHarvestable(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
-						(loc - self.Location).LengthSquared > searchRadiusSquared)
+					if (avoidCell.HasValue && loc == avoidCell.Value)
 						return int.MaxValue;
 
 					return 0;

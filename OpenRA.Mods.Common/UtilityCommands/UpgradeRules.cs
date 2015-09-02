@@ -1965,6 +1965,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150902)
+				{
+					if (depth == 1 && node.Key == "Harvester")
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "SearchFromProcRadius");
+						node.Value.Nodes.RemoveAll(n => n.Key == "SearchFromOrderRadius");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

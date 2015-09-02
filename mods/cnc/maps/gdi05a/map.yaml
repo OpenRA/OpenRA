@@ -858,8 +858,6 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	HARV:
-		Harvester:
-			SearchFromOrderRadius: 24
 		Buildable:
 			Prerequisites: ~disabled
 	LTNK:

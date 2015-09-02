@@ -51,12 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Automatically scan for resources when created.")]
 		public readonly bool SearchOnCreation = true;
 
-		[Desc("Initial search radius (in cells) from the refinery that created us.")]
-		public readonly int SearchFromProcRadius = 24;
-
-		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
-		public readonly int SearchFromOrderRadius = 12;
-
 		[VoiceReference] public readonly string HarvestVoice = "Action";
 		[VoiceReference] public readonly string DeliverVoice = "Action";
 

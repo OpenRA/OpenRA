@@ -689,10 +689,6 @@ Rules:
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E2,E2,E2,E2,E2
-	HARV:
-		Harvester:
-			SearchFromProcRadius: 50
-			SearchFromOrderRadius: 50
 
 Sequences:
 
