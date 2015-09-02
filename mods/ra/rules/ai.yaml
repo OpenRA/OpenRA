@@ -17,6 +17,7 @@ Player:
 			proc: 4
 			barr: 1
 			tent: 1
+			kenn: 1
 			dome: 1
 			weap: 1
 			hpad: 4
@@ -29,6 +30,7 @@ Player:
 			powr: 15%
 			apwr: 20%
 			barr: 1%
+			kenn: 0.5%
 			tent: 1%
 			weap: 1%
 			pbox: 7%
@@ -46,7 +48,9 @@ Player:
 			e2: 20%
 			e3: 10%
 			e4: 2%
+			dog: 2%
 			shok: 2%
+			harv: 10%
 			apc: 30%
 			jeep: 40%
 			arty: 15%
@@ -58,6 +62,9 @@ Player:
 			4tnk: 10%
 			ttnk: 10%
 			stnk: 5%
+		UnitLimits:
+			dog: 4
+			harv: 8
 		SquadSize: 20
 		SupportPowerDecision@spyplane:
 			OrderName: SovietSpyPlane
@@ -140,6 +147,7 @@ Player:
 			apwr: 30%
 			tent: 1%
 			barr: 1%
+			kenn: 0.5%
 			dome: 1%
 			weap: 6%
 			hpad: 4%
@@ -161,6 +169,7 @@ Player:
 			e2: 10%
 			e3: 10%
 			e4: 5%
+			dog: 3%
 			shok: 5%
 			harv: 10%
 			apc: 30%
@@ -183,6 +192,9 @@ Player:
 			dd: 10%
 			ca: 10%
 			pt: 10%
+		UnitLimits:
+			dog: 4
+			harv: 8
 		SquadSize: 40
 		SupportPowerDecision@spyplane:
 			OrderName: SovietSpyPlane
@@ -250,6 +262,7 @@ Player:
 			proc: 4
 			barr: 1
 			tent: 1
+			kenn: 1
 			dome: 1
 			weap: 1
 			spen: 1
@@ -265,6 +278,7 @@ Player:
 			apwr: 20%
 			tent: 1%
 			barr: 1%
+			kenn: 0.5%
 			weap: 3%
 			hpad: 2%
 			spen: 1%
@@ -285,6 +299,7 @@ Player:
 			e2: 10%
 			e3: 10%
 			e4: 8%
+			dog: 4%
 			shok: 8%
 			harv: 10%
 			apc: 30%
@@ -307,6 +322,9 @@ Player:
 			dd: 10%
 			ca: 10%
 			pt: 10%
+		UnitLimits:
+			dog: 4
+			harv: 8
 		SquadSize: 10
 		SupportPowerDecision@spyplane:
 			OrderName: SovietSpyPlane
@@ -409,6 +427,8 @@ Player:
 			dd: 30%
 			ca: 20%
 			pt: 10%
+		UnitLimits:
+			harv: 8
 		SquadSize: 1
 		SupportPowerDecision@spyplane:
 			OrderName: SovietSpyPlane

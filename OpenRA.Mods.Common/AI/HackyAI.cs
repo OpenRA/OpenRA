@@ -116,6 +116,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 
+		[Desc("What units should the AI have a maximum limit to train.")]
+		public readonly Dictionary<string, int> UnitLimits = null;
+
 		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
@@ -125,7 +128,7 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Tells the AI what building types fall under the same common name.")]
 		public readonly Dictionary<string, string[]> BuildingCommonNames = null;
 
-		[Desc("What buildings should the AI have max limits n.", "What is the limit of the building.")]
+		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
 		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
@@ -984,7 +987,11 @@ namespace OpenRA.Mods.Common.AI
 				ChooseRandomUnitToBuild(queue) :
 				ChooseUnitToBuild(queue);
 
-			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
+			if (unit != null
+				&& Info.UnitsToBuild.ContainsKey(unit.Name)
+				&& (!Info.UnitLimits.ContainsKey(unit.Name)
+					|| World.Actors.Count(a => a.Info.Name == unit.Name && a.Owner == Player) < Info.UnitLimits[unit.Name]))
+
 				QueueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
 		}
 

@@ -56,11 +56,14 @@ Player:
 			e3: 30%
 			medic: 2%
 			jumpjet: 15%
+			harv: 10%
 			mmch: 15%
 			smech: 25%
 			bike: 60%
 			bggy: 75%
 			ttnk: 45%
 			stnk: 8%
+		UnitLimits:
+			harv: 8
 		SquadSize: 20
 

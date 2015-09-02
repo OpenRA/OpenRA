@@ -52,7 +52,7 @@ Player:
 			fremen: 0.5%
 			sardaukar: 1.5%
 			saboteur: 0.5%
-			harvester: 0.1%
+			harvester: 1%
 			grenadier: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
@@ -73,6 +73,8 @@ Player:
 			combata: 100%
 			combath: 100%
 			combato: 100%
+		UnitLimits:
+			harvester: 8
 		SquadSize: 8
 		MaxBaseRadius: 40
 		SupportPowerDecision@Airstrike:
@@ -180,7 +182,7 @@ Player:
 			sardaukar: 1%
 			saboteur: 0.5%
 			grenadier: 1%
-			harvester: 0.1%
+			harvester: 1%
 			trike.starport: 7.5%
 			quad.starport: 12.5%
 			siegetank.starport: 5%
@@ -200,6 +202,8 @@ Player:
 			combata: 100%
 			combath: 100%
 			combato: 100%
+		UnitLimits:
+			harvester: 8
 		SquadSize: 6
 		MaxBaseRadius: 40
 		SupportPowerDecision@Airstrike:
@@ -307,7 +311,7 @@ Player:
 			sardaukar: 3%
 			saboteur: 1%
 			grenadier: 2%
-			harvester: 0.1%
+			harvester: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
@@ -327,6 +331,8 @@ Player:
 			combata: 100%
 			combath: 100%
 			combato: 100%
+		UnitLimits:
+			harvester: 8
 		SquadSize: 10
 		MaxBaseRadius: 40
 		SupportPowerDecision@Airstrike:
