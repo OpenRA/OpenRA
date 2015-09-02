@@ -15,7 +15,7 @@ FACF:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Bib:
-	RenderBuilding:
+	RenderSprites:
 		Image: FACT
 	Valued:
 		Cost: 250
@@ -37,7 +37,7 @@ WEAF:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
-	RenderBuilding:
+	RenderSprites:
 		Image: WEAP
 	WithProductionDoorOverlay:
 		Sequence: build-top
@@ -64,7 +64,7 @@ SYRF:
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
-	RenderBuilding:
+	RenderSprites:
 		Image: SYRD
 	Valued:
 		Cost: 100
@@ -91,7 +91,7 @@ SPEF:
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
-	RenderBuilding:
+	RenderSprites:
 		Image: SPEN
 	Valued:
 		Cost: 100
@@ -115,7 +115,7 @@ DOMF:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
-	RenderBuilding:
+	RenderSprites:
 		Image: DOME
 	Valued:
 		Cost: 180
@@ -139,7 +139,7 @@ ATEF:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
-	RenderBuilding:
+	RenderSprites:
 		Image: ATEK
 	Valued:
 		Cost: 150
@@ -163,7 +163,7 @@ PDOF:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	RenderBuilding:
+	RenderSprites:
 		Image: PDOX
 	Bib:
 		HasMinibib: Yes
@@ -189,7 +189,7 @@ MSLF:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
+	RenderSprites:
 		Image: MSLO
 	Valued:
 		Cost: 250

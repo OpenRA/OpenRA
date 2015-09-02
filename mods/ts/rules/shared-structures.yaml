@@ -97,7 +97,7 @@ PROC:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 134, 122, 0, -18
-	RenderBuilding:
+	RenderSprites:
 		Image: proc.gdi
 		FactionImages:
 			gdi: proc.gdi
@@ -126,12 +126,13 @@ GASILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	-RenderBuilding:
-	RenderBuildingSilo:
+	RenderSprites:
 		Image: gasilo.gdi
 		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
+	WithSpriteBody:
+	WithSiloAnimation:
 	WithIdleOverlay@UNDERLAY:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:

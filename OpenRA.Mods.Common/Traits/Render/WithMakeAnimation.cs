@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Replaces the sprite during construction.")]
-	public class WithMakeAnimationInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderBuildingInfo>
+	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "make";
@@ -29,18 +29,18 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithMakeAnimation
 	{
 		readonly WithMakeAnimationInfo info;
-		readonly RenderBuilding renderBuilding;
+		readonly WithSpriteBody wsb;
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
 			this.info = info;
 			var self = init.Self;
-			renderBuilding = self.Trait<RenderBuilding>();
+			wsb = self.Trait<WithSpriteBody>();
 
-			var building = self.Trait<Building>();
-			if (!building.SkipMakeAnimation)
+			var building = self.TraitOrDefault<Building>();
+			if (building != null && !building.SkipMakeAnimation)
 			{
-				renderBuilding.PlayCustomAnimThen(self, info.Sequence, () =>
+				wsb.PlayCustomAnimation(self, info.Sequence, () =>
 				{
 					building.NotifyBuildingComplete(self);
 				});
@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Reverse(Actor self, Activity activity, bool queued = true)
 		{
-			renderBuilding.PlayCustomAnimBackwards(self, info.Sequence, () =>
+			wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 			{
 				// avoids visual glitches as we wait for the actor to get destroyed
-				renderBuilding.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 				self.QueueActivity(queued, activity);
 			});
 		}

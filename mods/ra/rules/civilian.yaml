@@ -232,7 +232,6 @@ V19.Husk:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Husk (Oil Pump)
-	-RenderBuilding:
 	AutoSelectionSize:
 	RenderSprites:
 	BodyOrientation:
@@ -628,7 +627,7 @@ SNOWHUT:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
-	RenderBuilding:
+	RenderSprites:
 		Scale: 0.7
 
 LHUS:

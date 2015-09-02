@@ -72,7 +72,7 @@ FACT:
 
 FACT.GDI:
 	Inherits: FACT
-	RenderBuilding:
+	RenderSprites:
 		Image: fact
 	Buildable:
 		Queue: Building.GDI, Building.Nod
@@ -84,7 +84,7 @@ FACT.GDI:
 
 FACT.NOD:
 	Inherits: FACT
-	RenderBuilding:
+	RenderSprites:
 		Image: fact
 	Buildable:
 		Queue: Building.GDI, Building.Nod
@@ -210,12 +210,14 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingSilo:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
+	WithSiloAnimation:
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
 		Capacity: 2000
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
@@ -459,8 +461,8 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderBuilding:
-		PauseOnLowPower: yes
+	WithSpriteBody:
+		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -545,8 +547,8 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	RenderBuilding:
-		PauseOnLowPower: yes
+	WithSpriteBody:
+		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 1200
 	RevealsShroud:
@@ -650,14 +652,14 @@ GUN:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
+	-WithSpriteBody:
+	WithTurretedSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	-WithDeathAnimation:
 	DetectCloaked:
 		Range: 3
@@ -691,13 +693,14 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
-	RenderBuildingTurreted:
+	-WithSpriteBody:
+	WithTurretedSpriteBody:
+	AutoSelectionSize:
 	Armament:
 		Weapon: SAMMissile
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
-	-RenderBuilding:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
@@ -732,7 +735,7 @@ OBLI:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	RenderBuildingCharge:
+	WithChargeAnimation:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,0,725
@@ -741,7 +744,6 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 40
 		InitialChargeDelay: 50
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 5
@@ -854,7 +856,7 @@ SBAG:
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: sandbag
 
 CYCL:
@@ -879,7 +881,7 @@ CYCL:
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: chain
 
 BRIK:
@@ -909,7 +911,7 @@ BRIK:
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: concrete
 
 BARRACKS:

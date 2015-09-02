@@ -1,6 +1,8 @@
 spicebloom:
 	HiddenUnderShroud:
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1

@@ -25,6 +25,9 @@ GAWALL:
 
 GACTWR:
 	Inherits: ^Defense
+	-WithSpriteBody:
+	WithWallSpriteBody:
+		Type: wall
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -102,9 +105,6 @@ GACTWR:
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
-	-RenderBuilding:
-	RenderBuildingWall:
-		Type: wall
 	Power@base:
 		Amount: -10
 	Power@turrets:

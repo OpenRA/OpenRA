@@ -432,7 +432,9 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: crumble.aud
 	QuantizeFacingsFromSequence:
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	WithBuildingExplosion:
 		Delay: 1
 	CaptureNotification:
@@ -489,7 +491,9 @@
 		Dimensions: 1,1
 		Footprint: x
 	QuantizeFacingsFromSequence:
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	Tooltip:
 		Name: Civilian Building (Destroyed)
 		GenericVisibility: None
@@ -518,8 +522,10 @@
 	-WithBuildingExplosion:
 	-TargetableBuilding:
 	-Demolishable:
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
+	AutoSelectionSize:
 
 ^CivFieldHusk:
 	AppearsOnRadar:
@@ -560,8 +566,10 @@
 		Types: wall
 	BodyOrientation:
 		QuantizedFacings: 1
-	RenderBuildingWall:
+	RenderSprites:
 		Palette: staticterrain
+	WithWallSpriteBody:
+	AutoSelectionSize:
 	GivesExperience:
 	AutoTargetIgnore:
 	Sellable:
@@ -599,8 +607,10 @@
 		Name: Blossom Tree
 	BodyOrientation:
 		QuantizedFacings: 1
-	RenderBuilding:
+	RenderSprites:
 		Palette: staticterrain
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1

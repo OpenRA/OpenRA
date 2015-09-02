@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Replaces the building animation when it repairs a unit.")]
-	public class WithRepairAnimationInfo : ITraitInfo, Requires<RenderBuildingInfo>
+	public class WithRepairAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
@@ -36,9 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Repairing(Actor self, Actor host)
 		{
-			var building = host.TraitOrDefault<RenderBuilding>();
-			if (building != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				building.PlayCustomAnim(host, info.Sequence);
+			var spriteBody = host.TraitOrDefault<WithSpriteBody>();
+			if (spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
+				spriteBody.PlayCustomAnimation(host, info.Sequence);
 		}
 	}
 }

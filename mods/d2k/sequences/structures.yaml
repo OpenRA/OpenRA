@@ -82,11 +82,13 @@ conyard.atreides:
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	damaged-crane-overlay: DATA.R8
 		Start: 4436
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -590,6 +592,7 @@ light.atreides:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -632,6 +635,7 @@ heavy.atreides:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 511
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -665,11 +669,13 @@ conyard.harkonnen:
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	damaged-crane-overlay: DATA.R8
 		Start: 4450
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -983,6 +989,7 @@ light.harkonnen:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1025,6 +1032,7 @@ heavy.harkonnen:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 511
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1058,11 +1066,13 @@ conyard.ordos:
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	damaged-crane-overlay: DATA.R8
 		Start: 4464
 		Length: 14
 		Offset: -48,64
 		Tick: 80
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1368,6 +1378,7 @@ light.ordos:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1023
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1410,6 +1421,7 @@ heavy.ordos:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 511
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6

@@ -275,7 +275,9 @@
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
 	QuantizeFacingsFromSequence:
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
@@ -311,8 +313,10 @@
 	-GivesBuildableArea:
 	-WithCrumbleOverlay:
 	-WithMakeAnimation:
-	-RenderBuilding:
-	RenderBuildingWall:
+	-WithSpriteBody:
+	RenderSprites:
+	WithWallSpriteBody:
+	AutoSelectionSize:
 	LineBuildNode:
 		Types: turret
 	MustBeDestroyed:

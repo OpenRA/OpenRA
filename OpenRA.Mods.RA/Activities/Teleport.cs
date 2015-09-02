@@ -92,9 +92,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (teleporter != null && self != teleporter && !teleporter.Disposed)
 			{
-				var building = teleporter.TraitOrDefault<RenderBuilding>();
+				var building = teleporter.TraitOrDefault<WithSpriteBody>();
 				if (building != null)
-					building.PlayCustomAnim(teleporter, "active");
+					building.PlayCustomAnimation(teleporter, "active");
 			}
 
 			return NextActivity;

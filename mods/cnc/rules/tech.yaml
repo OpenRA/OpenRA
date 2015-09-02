@@ -11,7 +11,6 @@ V19:
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
-	-RenderBuilding:
 	AutoSelectionSize:
 	RenderSprites:
 	BodyOrientation:
@@ -88,7 +87,6 @@ BIO.Husk:
 
 MISS:
 	Inherits: ^CivBuilding
-	RenderBuilding:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2

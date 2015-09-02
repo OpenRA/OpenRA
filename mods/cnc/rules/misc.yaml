@@ -47,7 +47,7 @@ waypoint:
 
 ^fact.colorpicker:
 	Inherits: FACT
-	RenderBuilding:
+	RenderSprites:
 		Image: fact
 		Palette: colorpicker
 

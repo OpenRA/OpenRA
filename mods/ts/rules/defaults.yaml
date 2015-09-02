@@ -84,7 +84,9 @@
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	QuantizeFacingsFromSequence:
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	WithBuildingExplosion:
 		Sequences: building, large_bang, large_brnl, verylarge_clsn, large_tumu
 	EngineerRepairable:
@@ -136,7 +138,7 @@
 		Range: 4c0
 	Tooltip:
 		Description: Civilian Building
-	RenderBuilding:
+	RenderSprites:
 		Palette: terraindecoration
 
 ^CivBillboard:
@@ -187,7 +189,9 @@
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, Wall, C4
-	RenderBuildingWall:
+	RenderSprites:
+	AutoSelectionSize:
+	WithWallSpriteBody:
 		Type: wall
 	GivesExperience:
 	AutoTargetIgnore:
@@ -532,8 +536,10 @@
 ^BlossomTree:
 	Tooltip:
 		Name: Blossom Tree
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
+	WithSpriteBody:
+	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -638,7 +644,9 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Clear, Road, DirtRoad, Rough
-	RenderBuilding:
+	RenderSprites:
+	WithSpriteBody:
+	AutoSelectionSize:
 	WithMakeAnimation:
 	SelectionDecorations:
 		Palette: pips

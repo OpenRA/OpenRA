@@ -2238,7 +2238,7 @@ Rules:
 		Inherits: DOME
 		Buildable:
 			Prerequisites: ~disabled
-		RenderBuilding:
+		RenderSprites:
 			Image: DOME
 		-InfiltrateForExploration:
 		TargetableBuilding:

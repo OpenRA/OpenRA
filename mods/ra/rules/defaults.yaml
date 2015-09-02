@@ -396,7 +396,9 @@
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
 	QuantizeFacingsFromSequence:
-	RenderBuilding:
+	RenderSprites:
+	AutoSelectionSize:
+	WithSpriteBody:
 	WithBuildingExplosion:
 	CaptureNotification:
 	ShakeOnDeath:
@@ -462,8 +464,9 @@
 		Types: wall
 	TargetableBuilding:
 		TargetTypes: Ground, DetonateAttack, Wall
-	RenderBuildingWall:
+	RenderSprites:
 		Palette: effect
+	WithWallSpriteBody:
 	GivesExperience:
 	AutoTargetIgnore:
 	ProximityCaptor:
@@ -520,7 +523,7 @@
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
@@ -664,7 +667,7 @@
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
 	EditorTilesetFilter:
 		RequireTilesets: DESERT

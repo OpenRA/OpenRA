@@ -47,6 +47,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string FlashType = null;
 
+		[SequenceReference]
+		[Desc("Sequence the launching actor should play when activating this power.")]
+		public readonly string ActivationSequence = "active";
+
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 	}
 
@@ -71,8 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				Sound.Play(Info.IncomingSound);
 
-			var rb = self.Trait<RenderSimple>();
-			rb.PlayCustomAnim(self, "active");
+			if (!string.IsNullOrEmpty(info.ActivationSequence))
+			{
+				var wsb = self.Trait<WithSpriteBody>();
+				wsb.PlayCustomAnimation(self, info.ActivationSequence);
+			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon,

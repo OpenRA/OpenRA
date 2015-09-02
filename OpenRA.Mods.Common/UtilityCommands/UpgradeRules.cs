@@ -1810,6 +1810,161 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150826)
+				{
+					// Replaced RenderBuildingCharge with RenderSprites + WithSpriteBody + WithChargeAnimation (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "ChargeSequence" };
+						var childKeysExcludeFromRS = new[] { "Sequence", "ChargeSequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingCharge"));
+						if (rb != null)
+						{
+							rb.Key = "WithChargeAnimation";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+							var wsbNodes = rb.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rb.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingCharge"));
+						if (rrb != null)
+							rrb.Key = "-WithChargeAnimation";
+					}
+
+					// Replaced RenderBuildingSilo with RenderSprites + WithSpriteBody + WithSiloAnimation (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeySequence = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingSilo"));
+						if (rb != null)
+						{
+							rb.Key = "WithSiloAnimation";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeySequence.Contains(n.Key)).ToList();
+							var wsbNodes = rb.Value.Nodes.Where(n => childKeySequence.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							if (wsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", new MiniYaml("", wsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+							rb.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingSilo"));
+						if (rrb != null)
+							rrb.Key = "-WithSiloAnimation";
+					}
+
+					// Replaced RenderBuildingTurreted with RenderSprites + WithTurretedSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingTurreted"));
+						if (rb != null)
+						{
+							rb.Key = "WithTurretedSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingTurreted"));
+						if (rrb != null)
+							rrb.Key = "-WithTurretedSpriteBody";
+					}
+
+					// Replaced RenderBuildingWall with RenderSprites + WithWallSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "Type" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuildingWall"));
+						if (rb != null)
+						{
+							rb.Key = "WithWallSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuildingWall"));
+						if (rrb != null)
+							rrb.Key = "-WithWallSpriteBody";
+					}
+				}
+
+				if (engineVersion < 20150828)
+				{
+					// Replaced RenderBuilding with RenderSprites + WithSpriteBody (+AutoSelectionSize)
+					if (depth == 0)
+					{
+						var childKeysExcludeFromRS = new[] { "Sequence", "PauseOnLowPower" };
+
+						var rb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderBuilding"));
+						if (rb != null)
+						{
+							rb.Key = "WithSpriteBody";
+
+							var rsNodes = rb.Value.Nodes.Where(n => !childKeysExcludeFromRS.Contains(n.Key)).ToList();
+
+							if (rsNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", new MiniYaml("", rsNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("RenderSprites", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+
+							rb.Value.Nodes.RemoveAll(n => rsNodes.Contains(n));
+						}
+
+						var rrb = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderBuilding"));
+						if (rrb != null)
+							rrb.Key = "-WithSpriteBody";
+
+						if (depth == 2 && node.Key == "PauseOnLowPower" && (parentKey == "WithSpriteBody"
+							|| parentKey == "WithTurretedSpriteBody" || parentKey == "WithWallSpriteBody"))
+							node.Key = "PauseAnimationWhenDisabled";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

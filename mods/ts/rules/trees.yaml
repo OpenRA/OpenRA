@@ -11,7 +11,7 @@ BIGBLUE:
 	Inherits: ^BlossomTree
 	Tooltip:
 		Name: Large Blue Tiberium Crystal
-	RenderBuilding:
+	RenderSprites:
 		Palette: bluetiberium
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
