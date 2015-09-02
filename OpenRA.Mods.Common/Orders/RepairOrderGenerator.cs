@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class RepairOrderGenerator : IOrderGenerator
 	{
+		private const string RepairTargetCursor = "repair";
+		private const string RepairTargetBlockedCursor = "repair-blocked";
+
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
@@ -70,8 +73,7 @@ namespace OpenRA.Mods.Common.Orders
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(world, mi).Any()
-				? "repair" : "repair-blocked";
+			return OrderInner(world, mi).Any() ? RepairTargetCursor : RepairTargetBlockedCursor;
 		}
 	}
 }

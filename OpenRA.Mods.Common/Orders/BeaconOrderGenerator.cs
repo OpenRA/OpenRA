@@ -15,6 +15,9 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class BeaconOrderGenerator : IOrderGenerator
 	{
+		private const string PlaceBeaconCursor = "ability";
+		private const string PlaceBeaconBlockedCursor = "generic-blocked";
+
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
@@ -22,13 +25,21 @@ namespace OpenRA.Mods.Common.Orders
 			else if (!world.ShroudObscures(xy))
 			{
 				world.CancelInputMode();
-				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false)
+				{
+					TargetLocation = xy,
+					SuppressVisualFeedback = true
+				};
 			}
 		}
 
 		public virtual void Tick(World world) { }
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return !world.ShroudObscures(xy) ? "ability" : "generic-blocked"; }
+
+		public string GetCursor(World world, CPos xy, MouseInput mi)
+		{
+			return !world.ShroudObscures(xy) ? PlaceBeaconCursor : PlaceBeaconBlockedCursor;
+		}
 	}
 }
