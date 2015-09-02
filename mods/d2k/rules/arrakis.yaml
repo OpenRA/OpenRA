@@ -14,6 +14,7 @@ spicebloom:
 	RadarColorFromTerrain:
 		Terrain: Spice
 	BodyOrientation:
+		QuantizedFacings: 1
 	WithMakeAnimation:
 
 sandworm:
@@ -37,6 +38,7 @@ sandworm:
 	WithAttackOverlay:
 		Sequence: sand
 	BodyOrientation:
+	QuantizeFacingsFromSequence:
 	HiddenUnderFog:
 	AppearsOnRadar:
 		UseLocation: yes

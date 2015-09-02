@@ -147,6 +147,7 @@ camera:
 		Range: 8c0
 		Type: CenterPosition
 	BodyOrientation:
+		QuantizedFacings: 1
 
 wormspawner:
 	AlwaysVisible:
