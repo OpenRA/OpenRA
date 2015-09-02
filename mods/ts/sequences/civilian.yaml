@@ -862,6 +862,23 @@ gakodk:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
+	large-lights: gakodk_a
+		Length: 12
+		Tick: 200
+	damaged-large-lights: gakodk_a
+		Start: 12
+		Length: 12
+		Tick: 200
+	small-light: gakodk_b
+		Length: 22
+		Tick: 200
+	small-lights: gakodk_c
+		Length: 12
+		Tick: 200
+	damaged-small-lights: gakodk_c
+		Start: 12
+		Length: 12
+		Tick: 200
 
 gaspot:
 	Defaults:

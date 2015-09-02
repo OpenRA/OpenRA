@@ -1128,6 +1128,12 @@ GAKODK:
 		HP: 1500
 	RenderBuilding:
 		Palette: player
+	WithIdleOverlay@LARGELIGHTS:
+		Sequence: large-lights
+	WithIdleOverlay@SMALLLIGHT:
+		Sequence: small-light
+	WithIdleOverlay@SMALLLIGHTS:
+		Sequence: small-lights
 
 GAOLDCC1:
 	Inherits: ^CivBuilding
