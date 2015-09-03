@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -16,9 +17,9 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class MineInfo : ITraitInfo
 	{
-		public readonly string[] CrushClasses = { };
+		public readonly HashSet<string> CrushClasses = new HashSet<string>();
 		public readonly bool AvoidFriendly = true;
-		public readonly string[] DetonateClasses = { };
+		public readonly HashSet<string> DetonateClasses = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new Mine(init, this); }
 	}
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
-			if (mobile != null && !info.DetonateClasses.Intersect(mobile.Info.Crushes).Any())
+			if (mobile != null && !info.DetonateClasses.Overlaps(mobile.Info.Crushes))
 				return;
 
 			self.Kill(crusher);
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public bool CrushableBy(string[] crushClasses, Player owner)
 		{
-			return info.CrushClasses.Intersect(crushClasses).Any();
+			return info.CrushClasses.Overlaps(crushClasses);
 		}
 	}
 

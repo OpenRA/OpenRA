@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.UseDeathTypeSuffix)
 			{
 				var warhead = e.Warhead as DamageWarhead;
-				var damageType = warhead.DamageTypes.Intersect(Info.DeathTypes.Keys).FirstOrDefault();
+				var damageType = Info.DeathTypes.Keys.FirstOrDefault(warhead.DamageTypes.Contains);
 				if (damageType == null)
 					return;
 

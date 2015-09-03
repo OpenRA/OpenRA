@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string UncloakSound = null;
 		[PaletteReference] public readonly string Palette = "cloak";
 
-		public readonly string[] CloakTypes = { "Cloak" };
+		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
 		[UpgradeGrantedReference]
 		[Desc("The upgrades to grant to self while cloaked.")]
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => !a.Trait.IsTraitDisabled && a.Actor.Owner.IsAlliedWith(viewer)
-				&& Info.CloakTypes.Intersect(a.Trait.Info.CloakTypes).Any()
+				&& Info.CloakTypes.Overlaps(a.Trait.Info.CloakTypes)
 				&& (self.CenterPosition - a.Actor.CenterPosition).Length <= WDist.FromCells(a.Trait.Info.Range).Length);
 		}
 

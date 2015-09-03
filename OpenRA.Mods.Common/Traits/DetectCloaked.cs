@@ -8,7 +8,7 @@
  */
 #endregion
 
-using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DetectCloakedInfo : UpgradableTraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
-		public readonly string[] CloakTypes = { "Cloak" };
+		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
 		[Desc("Measured in cells.")]
 		public readonly int Range = 5;

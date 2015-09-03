@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxRadius = 4;
 
 		[Desc("The list of unit target types we are allowed to duplicate.")]
-		public readonly string[] ValidTargets = { "Ground", "Water" };
+		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
 		[Desc("Which factions this crate action can occur for.")]
 		public readonly string[] ValidFactions = { };
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var targetable = collector.TraitsImplementing<ITargetable>();
-			if (!info.ValidTargets.Intersect(targetable.SelectMany(t => t.TargetTypes)).Any())
+			if (!info.ValidTargets.Overlaps(targetable.SelectMany(t => t.TargetTypes)))
 				return false;
 
 			var positionable = collector.TraitOrDefault<IPositionable>();

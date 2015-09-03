@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class TargetableInfo : UpgradableTraitInfo, ITargetableInfo
 	{
 		[Desc("Target type. Used for filtering (in)valid targets.")]
-		public readonly string[] TargetTypes = { };
-		public string[] GetTargetTypes() { return TargetTypes; }
+		public readonly HashSet<string> TargetTypes = new HashSet<string>();
+		public HashSet<string> GetTargetTypes() { return TargetTypes; }
 
 		public bool RequiresForceFire = false;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cloak.IsVisible(self, viewer.Owner);
 		}
 
-		public virtual string[] TargetTypes { get { return Info.TargetTypes; } }
+		public virtual HashSet<string> TargetTypes { get { return Info.TargetTypes; } }
 
 		public bool RequiresForceFire { get { return Info.RequiresForceFire; } }
 	}
