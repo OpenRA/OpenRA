@@ -15,9 +15,6 @@ namespace OpenRA
 	// Referenced from ModMetadata, so needs to be in OpenRA.Game :(
 	public class ContentInstaller : IGlobalModData
 	{
-		public readonly string MenuWidget = null;
-		public readonly string MusicMenuWidget = null;
-		public readonly string BackgroundWidget = null;
 		public readonly string[] TestFiles = { };
 		public readonly string[] DiskTestFiles = { };
 		public readonly string PackageToExtractFromCD = null;

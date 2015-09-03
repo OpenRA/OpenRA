@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
@@ -40,27 +41,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Ui.ResetAll();
 			Game.Settings.Save();
 
-			// Check whether the mod content is installed
-			// TODO: The installation code has finally been beaten into shape, so we can
-			// finally move it all into the planned "Manage Content" panel in the modchooser mod.
 			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
-			var installModContent = !installData.TestFiles.All(f => GlobalFileSystem.Exists(f));
-			var installModMusic = args != null && args.Contains("Install.Music");
+			var isModContentInstalled = installData.TestFiles.All(f => GlobalFileSystem.Exists(Path.GetFileName(f)));
 
-			if (installModContent || installModMusic)
+			// Mod assets are missing!
+			if (!isModContentInstalled)
 			{
-				var widgetArgs = new WidgetArgs()
-				{
-					{ "continueLoading", () => Game.RunAfterTick(() =>
-						Game.InitializeMod(Game.Settings.Game.Mod, args)) },
-				};
-
-				if (installData.BackgroundWidget != null)
-					Ui.LoadWidget(installData.BackgroundWidget, Ui.Root, widgetArgs);
-
-				var menu = installModContent ? installData.MenuWidget : installData.MusicMenuWidget;
-				Ui.OpenWindow(menu, widgetArgs);
-
+				Game.InitializeMod("modchooser", new Arguments());
 				return;
 			}
 
