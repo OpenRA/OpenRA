@@ -118,7 +118,8 @@ namespace OpenRA.Mods.Common
 			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetUnitsAt(p)));
 		}
 
-		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo, ResourceClaimLayer territory)
+		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,
+			ResourceClaimLayer territory)
 		{
 			var resType = resLayer.GetResource(pos);
 			if (resType == null)
@@ -137,6 +138,11 @@ namespace OpenRA.Mods.Common
 			}
 
 			return true;
+		}
+
+		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)
+		{
+			return cells.MinByOrDefault(c => (self.Location - c).LengthSquared);
 		}
 	}
 }
