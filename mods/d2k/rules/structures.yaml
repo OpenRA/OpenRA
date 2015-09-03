@@ -477,6 +477,7 @@ starport:
 	ProvidesPrerequisite@buildingname:
 
 wall:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Buildable:
 		Queue: Building
@@ -511,14 +512,11 @@ wall:
 		Types: wall
 	Targetable:
 		TargetTypes: Ground, Wall
-	RenderSprites:
 	WithWallSpriteBody:
-	AutoSelectionSize:
 	AutoTargetIgnore:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
-	BodyOrientation:
 	ThrowsShrapnel:
 		Weapons: shrapnel
 		Pieces: 3, 7

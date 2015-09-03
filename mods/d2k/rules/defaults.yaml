@@ -3,10 +3,15 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
-	BodyOrientation:
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+
+^SpriteActor:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^GainsExperience:
 	GainsExperience:
@@ -51,6 +56,7 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -79,7 +85,6 @@
 	Guard:
 		Voice: Guard
 	Guardable:
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	Demolishable:
 	TemporaryOwnerManager:
@@ -91,8 +96,6 @@
 		Image: pips
 		Sequence: pickup-indicator
 		Offset: -12, -12
-	AutoSelectionSize:
-	RenderSprites:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -108,6 +111,7 @@
 			Dune: 70
 
 ^Husk:
+	Inherits@1: ^SpriteActor
 	Health:
 		HP: 75
 	Armor:
@@ -116,13 +120,9 @@
 		Type: CenterPosition
 	Tooltip:
 		Name: Wreck
-	BodyOrientation:
 	AutoTargetIgnore:
 	ScriptTriggers:
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 
 ^VehicleHusk:
 	Inherits: ^Husk
@@ -161,12 +161,12 @@
 		Interval: 2
 	Tooltip:
 		Name: Destroyed Tower
-	BodyOrientation:
 	ScriptTriggers:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Health:
 		Radius: 96
 	Armor:
@@ -192,7 +192,6 @@
 		TargetTypes: Ground, Infantry
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
-	RenderSprites:
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -239,6 +238,7 @@
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
@@ -249,14 +249,12 @@
 	DrawLineToTarget:
 	Voiced:
 		VoiceSet: GenericVoice
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 	WithShadow:
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	SelectionDecorations:
 	Selectable:
 		Priority: 2
@@ -274,10 +272,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	QuantizeFacingsFromSequence:
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
@@ -314,9 +309,7 @@
 	-WithCrumbleOverlay:
 	-WithMakeAnimation:
 	-WithSpriteBody:
-	RenderSprites:
 	WithWallSpriteBody:
-	AutoSelectionSize:
 	LineBuildNode:
 		Types: turret
 	MustBeDestroyed:
