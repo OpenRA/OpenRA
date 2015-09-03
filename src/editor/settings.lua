@@ -537,8 +537,9 @@ function SettingsRestoreEditorSettings()
   local path = settings:GetPath()
   settings:SetPath(listname)
 
-  ide.config.interpreter = settingsReadSafe(settings,"interpreter",ide.config.interpreter)
-  ProjectSetInterpreter(ide.config.interpreter)
+  local interpreter = settingsReadSafe(settings, "interpreter",
+    ide.config.interpreter or ide.config.default.interpreter)
+  ProjectSetInterpreter(interpreter)
 
   settings:SetPath(path)
 end
