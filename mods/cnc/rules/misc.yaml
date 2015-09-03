@@ -60,7 +60,6 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	BodyOrientation:
 
 CAMERA.small:
 	AlwaysVisible:
@@ -71,7 +70,6 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition
-	BodyOrientation:
 
 FLARE:
 	Immobile:

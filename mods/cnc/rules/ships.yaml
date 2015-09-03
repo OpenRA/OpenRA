@@ -22,7 +22,7 @@ BOAT:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
 	AttackTurreted:
-	RenderSprites:
+	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 2
 	WithGunboatBody:
@@ -66,7 +66,6 @@ LST:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
 	WithRoof:
 	WithCargo:
@@ -77,6 +76,4 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 		PassengerFacing: 0
-	AutoSelectionSize:
-	RenderSprites:
 
