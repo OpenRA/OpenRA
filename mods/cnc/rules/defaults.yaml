@@ -64,7 +64,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Vehicle
 	Repairable:
 	Passenger:
@@ -116,9 +116,14 @@
 	Inherits@2: ^GainsExperience
 	AppearsOnRadar:
 		UseLocation: yes
-	TargetableAircraft:
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
@@ -126,6 +131,7 @@
 		RepairBuildings: hpad
 		RearmBuildings:
 		LandWhenIdle: false
+		AirborneUpgrades: airborne
 	HiddenUnderFog:
 		Type: CenterPosition
 	ActorLostNotification:
@@ -172,7 +178,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 12,17,0,-6
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry
 	RenderSprites:
 	QuantizeFacingsFromSequence:
@@ -302,7 +308,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	HiddenUnderFog:
 	QuantizeFacingsFromSequence:
@@ -346,7 +352,7 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	AutoTarget:
 		ScanRadius: 5
@@ -405,7 +411,7 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Water
 	HiddenUnderFog:
 	ActorLostNotification:
@@ -421,7 +427,7 @@
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Armor:
 		Type: Wood
@@ -520,7 +526,7 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
-	-TargetableBuilding:
+	-Targetable:
 	-Demolishable:
 	RenderSprites:
 		Palette: terrain
@@ -553,7 +559,7 @@
 		BuildSounds: hvydoor1.aud
 		Adjacent: 7
 		TerrainTypes: Clear,Road
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Wall
 	Crushable:
 		CrushClasses: wall
@@ -662,7 +668,7 @@
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	Burns:
 		Interval: 2
-	TargetableUnit:
+	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk
 	Capturable:
@@ -692,7 +698,7 @@
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
-	TargetableBuilding:
+	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	Health:

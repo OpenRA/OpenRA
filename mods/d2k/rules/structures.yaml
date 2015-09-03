@@ -509,7 +509,7 @@ wall:
 		NodeTypes: wall, turret
 	LineBuildNode:
 		Types: wall
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Wall
 	RenderSprites:
 	WithWallSpriteBody:

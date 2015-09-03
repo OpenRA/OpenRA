@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
+
+		[Desc("Minimum altitude where this aircraft is considered airborne")]
+		public readonly int MinAirborneAltitude = 1;
 		public readonly string[] LandableTerrainTypes = { };
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
@@ -46,22 +49,52 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant to self while airborne.")]
+		public readonly string[] AirborneUpgrades = { };
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Aircraft : IFacing, IPositionable, ISync, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing
+	public class Aircraft : IFacing, IPositionable, ISync, IIssueOrder, IOrderVoice, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCreated, INotifyActorDisposing
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		readonly AircraftInfo info;
 		readonly Actor self;
+		UpgradeManager um;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public IDisposable Reservation;
 		public int ROT { get { return info.ROT; } }
+		bool IsAirborne
+		{
+			get
+			{
+				return airborne;
+			}
+
+			set
+			{
+				if (airborne == value)
+					return;
+				airborne = value;
+				if (um != null)
+				{
+					if (airborne)
+						foreach (var u in info.AirborneUpgrades)
+							um.GrantUpgrade(self, u, this);
+					else
+						foreach (var u in info.AirborneUpgrades)
+							um.RevokeUpgrade(self, u, this);
+				}
+			}
+		}
+
+		bool airborne = false;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -76,6 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 		}
+
+		public void Created(Actor self) { um = self.TraitOrDefault<UpgradeManager>(); }
 
 		bool firstTick = true;
 		public virtual void Tick(Actor self)
@@ -197,6 +232,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.World.ScreenMap.Update(self);
 				self.World.ActorMap.UpdatePosition(self, this);
+				IsAirborne = self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= info.MinAirborneAltitude;
 			}
 		}
 
@@ -213,6 +249,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 			self.World.ScreenMap.Add(self);
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= info.MinAirborneAltitude)
+				IsAirborne = true;
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -221,6 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
+			IsAirborne = false;
 		}
 
 		public bool AircraftCanEnter(Actor a)

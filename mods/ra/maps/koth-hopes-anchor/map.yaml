@@ -644,7 +644,7 @@ Rules:
 		DamageMultiplier@INVULNERABLE:
 			Modifier: 0
 		-Selectable:
-		-TargetableBuilding:
+		-Targetable:
 	Player:
 		StrategicVictoryConditions:
 			TicksToHold: 3000

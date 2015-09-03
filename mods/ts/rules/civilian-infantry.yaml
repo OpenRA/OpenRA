@@ -225,7 +225,7 @@ DOGGIE:
 		Speed: 113
 	Voiced:
 		VoiceSet: Fiend
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	Armament:
 		Weapon: FiendShard

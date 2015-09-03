@@ -2241,7 +2241,7 @@ Rules:
 		RenderSprites:
 			Image: DOME
 		-InfiltrateForExploration:
-		TargetableBuilding:
+		Targetable:
 			TargetTypes: Ground, C4, DetonateAttack, MissionObjective
 	SPY:
 		Infiltrates:

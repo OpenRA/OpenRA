@@ -1965,6 +1965,92 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20150902)
+				{
+					if (depth == 1)
+					{
+						if (node.Key == "TargetableUnit" || node.Key == "TargetableBuilding")
+							node.Key = "Targetable";
+						else if (node.Key == "-TargetableUnit" || node.Key == "-TargetableBuilding")
+							node.Key = "-Targetable";
+					}
+					else if (depth == 0)
+					{
+						// Split TargetableSubmarine into two Targetable traits
+						var targetableSubmarine = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetableSubmarine");
+						if (targetableSubmarine != null)
+						{
+							node.Value.Nodes.RemoveAll(n => n.Key == "-Targetable");
+							targetableSubmarine.Key = "Targetable";
+							targetableSubmarine.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "underwater"));
+							targetableSubmarine.Value.Nodes.Add(new MiniYamlNode("UpgradeMaxEnabledLevel", "0"));
+							var cloakedTargetTypes = targetableSubmarine.Value.Nodes.FirstOrDefault(n => n.Key == "CloakedTargetTypes");
+							if (cloakedTargetTypes != null)
+							{
+								targetableSubmarine.Value.Nodes.Remove(cloakedTargetTypes);
+								cloakedTargetTypes.Key = "TargetTypes";
+							}
+							else
+								cloakedTargetTypes = new MiniYamlNode("TargetTypes", "");
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@UNDERWATER", "", new List<MiniYamlNode> {
+								cloakedTargetTypes,
+								new MiniYamlNode("UpgradeTypes", "underwater"),
+								new MiniYamlNode("UpgradeMinEnabledLevel", "1")
+							}));
+						}
+
+						// Add `WhileCloakedUpgrades: underwater` to Cloak trait if `CloakTypes: Underwater`
+						var cloak = node.Value.Nodes.FirstOrDefault(n => (n.Key == "Cloak" || n.Key.StartsWith("Cloak@"))
+							&& n.Value.Nodes.Any(p => p.Key == "CloakTypes" && p.Value.Value == "Underwater"));
+						if (cloak != null)
+							cloak.Value.Nodes.Add(new MiniYamlNode("WhileCloakedUpgrades", "underwater"));
+
+						// Remove split traits if TargetableSubmarine was removed
+						var untargetableSubmarine = node.Value.Nodes.FirstOrDefault(n => n.Key == "-TargetableSubmarine");
+						if (untargetableSubmarine != null)
+						{
+							untargetableSubmarine.Key = "-Targetable";
+							node.Value.Nodes.Add(new MiniYamlNode("-Targetable@UNDERWATER", ""));
+						}
+
+						// Split TargetableAircraft into two Targetable traits
+						var targetableAircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetableAircraft");
+						if (targetableAircraft != null)
+						{
+							node.Value.Nodes.RemoveAll(n => n.Key == "-Targetable");
+							targetableAircraft.Key = "Targetable@AIRBORNE";
+							targetableAircraft.Value.Nodes.Add(new MiniYamlNode("UpgradeTypes", "airborne"));
+							targetableAircraft.Value.Nodes.Add(new MiniYamlNode("UpgradeMinEnabledLevel", "1"));
+							var groundTargetTypes = targetableAircraft.Value.Nodes.FirstOrDefault(n => n.Key == "GroundedTargetTypes");
+							if (groundTargetTypes != null)
+							{
+								targetableAircraft.Value.Nodes.Remove(groundTargetTypes);
+								groundTargetTypes.Key = "TargetTypes";
+							}
+							else
+								groundTargetTypes = new MiniYamlNode("TargetTypes", "");
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@GROUND", "", new List<MiniYamlNode> {
+								groundTargetTypes,
+								new MiniYamlNode("UpgradeTypes", "airborne"),
+								new MiniYamlNode("UpgradeMaxEnabledLevel", "0")
+							}));
+						}
+
+						// Add `AirborneUpgrades: airborne` to Plane and Helicopter
+						var aircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "Plane" || n.Key == "Helicopter");
+						if (aircraft != null)
+							aircraft.Value.Nodes.Add(new MiniYamlNode("AirborneUpgrades", "airborne"));
+
+						// Remove split traits if TargetableAircraft was removed
+						var untargetableAircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "-TargetableAircraft");
+						if (untargetableAircraft != null)
+						{
+							untargetableAircraft.Key = "-TargetableUnit@GROUND";
+							node.Value.Nodes.Add(new MiniYamlNode("-TargetableUnit@AIRBORNE", ""));
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

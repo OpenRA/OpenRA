@@ -27,6 +27,7 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
+		public readonly string[] TargetTypes;
 		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
 		readonly Shroud shroud;
@@ -56,6 +57,7 @@ namespace OpenRA.Traits
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
+			TargetTypes = self.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes).Distinct().ToArray();
 
 			UpdateVisibility();
 		}

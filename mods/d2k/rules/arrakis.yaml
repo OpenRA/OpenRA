@@ -34,7 +34,7 @@ sandworm:
 			Sand: 100
 			Dune: 100
 			Spice: 100
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground
 	WithFacingSpriteBody:
 	WithAttackOverlay:

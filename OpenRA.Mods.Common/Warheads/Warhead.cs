@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -58,8 +59,8 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null || !IsValidTarget(targetable.TargetTypes))
+			var targetable = victim.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
+			if (!IsValidTarget(targetable.SelectMany(t => t.TargetTypes)))
 				return false;
 
 			return true;
@@ -74,8 +75,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
-			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !IsValidTarget(targetable.GetTargetTypes()))
+			if (!IsValidTarget(victim.TargetTypes))
 				return false;
 
 			return true;

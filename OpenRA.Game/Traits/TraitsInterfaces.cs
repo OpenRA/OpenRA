@@ -315,10 +315,15 @@ namespace OpenRA.Traits
 
 	public interface ITargetable
 	{
+		// Check IsTraitEnabled or !IsTraitDisabled first
 		string[] TargetTypes { get; }
-		IEnumerable<WPos> TargetablePositions(Actor self);
 		bool TargetableBy(Actor self, Actor byActor);
 		bool RequiresForceFire { get; }
+	}
+
+	public interface ITargetablePositions
+	{
+		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
 	public interface INotifyStanceChanged

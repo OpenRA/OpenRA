@@ -32,7 +32,7 @@ DOG:
 		Voice: Attack
 	AttackMove:
 		Voice: Move
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
 		AttackSequence: shoot
@@ -587,7 +587,7 @@ Ant:
 		AttackSequence: bite
 	Armament:
 		Weapon: mandible
-	TargetableUnit:
+	Targetable:
 		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false

@@ -511,7 +511,7 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	A10:
-		TargetableUnit:
+		Targetable:
 
 Sequences:
 

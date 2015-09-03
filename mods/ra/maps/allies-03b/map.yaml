@@ -1278,21 +1278,19 @@ Rules:
 		Captures:
 			CaptureTypes: building
 		WithInfantryBody:
-		Cloak@JAIL:
+		Targetable:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
+		Targetable@PRISONER:
+			TargetTypes: Prisoner
 		RenderSprites:
 			Image: E6
 	MEDI:
-		Cloak@JAIL:
+		Targetable:
 			UpgradeTypes: jail
-			UpgradeMinEnabledLevel: 1
-			InitialDelay: 0
-			CloakDelay: 0
-			Palette:
+			UpgradeMaxEnabledLevel: 0
+		Targetable@PRISONER:
+			TargetTypes: Prisoner
 	E7.noautotarget:
 		Inherits: E7
 		AutoTarget:
@@ -1385,7 +1383,7 @@ Rules:
 		-Selectable:
 		-Demolishable:
 		-Huntable:
-		-TargetableUnit:
+		-Targetable:
 		-Armament:
 		-WithMuzzleFlash:
 		Cargo:
@@ -1432,6 +1430,9 @@ Weapons:
 	FireballLauncher:
 		Projectile:
 			High: True
+	BarrelExplode:
+		Warhead@1Dam:
+			ValidTargets: Ground, Prisoner
 
 Voices:
 

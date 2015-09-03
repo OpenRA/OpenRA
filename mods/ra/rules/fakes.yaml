@@ -57,7 +57,7 @@ SYRF:
 		GenericName: Shipyard
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Water
 	Building:
 		Footprint: xxx xxx xxx
@@ -73,7 +73,7 @@ SYRF:
 
 SPEF:
 	Inherits: ^FakeBuilding
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, Water
 	Buildable:
 		BuildPaletteOrder: 910

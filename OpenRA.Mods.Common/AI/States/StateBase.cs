@@ -63,13 +63,13 @@ namespace OpenRA.Mods.Common.AI
 			if (!a.HasTrait<AttackBase>())
 				return false;
 
-			var targetable = target.TraitOrDefault<ITargetable>();
-			if (targetable == null)
+			var targetTypes = target.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes);
+			if (!targetTypes.Any())
 				return false;
 
 			var arms = a.TraitsImplementing<Armament>();
 			foreach (var arm in arms)
-				if (arm.Weapon.IsValidTarget(targetable.TargetTypes))
+				if (arm.Weapon.IsValidTarget(targetTypes))
 					return true;
 
 			return false;
