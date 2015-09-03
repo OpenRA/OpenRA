@@ -114,12 +114,12 @@ V2RL:
 		BuildPaletteOrder: 130
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 	Valued:
-		Cost: 1150
+		Cost: 1050
 	Tooltip:
 		Name: Heavy Tank
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
-		HP: 550
+		HP: 575
 	Armor:
 		Type: Heavy
 	Mobile:

@@ -431,14 +431,22 @@ HIJACKER:
 		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
 		HP: 50
+	Mobile:
+		Speed: 71
 	RevealsShroud:
 		Range: 5c0
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound:
+		UncloakSound:
+		UncloakOnMove: yes
 	Passenger:
 		PipType: Yellow
 	Captures:
@@ -459,12 +467,12 @@ SHOK:
 		BuildPaletteOrder: 130
 		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 100
+		HP: 80
 	Mobile:
 		Voice: Move
 	RevealsShroud:
