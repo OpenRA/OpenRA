@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette, World world)
 		{
 			widget.IsVisible = () => palette.TooltipIcon != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -46,8 +46,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (sp.Info == null)
 					return;		// no instances actually exist (race with destroy)
 
-				time = "{0} / {1}".F(WidgetUtils.FormatTime(sp.RemainingTime),
-									 WidgetUtils.FormatTime(sp.Info.ChargeTime * 25));
+				var remaining = WidgetUtils.FormatTime(sp.RemainingTime, world.Timestep);
+				var total = WidgetUtils.FormatTime(sp.Info.ChargeTime * 25, world.Timestep);
+				time = "{0} / {1}".F(remaining, total);
 
 				if (sp == lastPower)
 					return;

@@ -23,12 +23,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Format = "{0}: {1}";
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
+		readonly World world;
 		readonly IEnumerable<SupportPowerInstance> powers;
 		Pair<string, Color>[] texts;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
 		{
+			this.world = world;
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			texts = powers.Select(p =>
 			{
-				var time = WidgetUtils.FormatTime(p.RemainingTime, false);
+				var time = WidgetUtils.FormatTime(p.RemainingTime, false, world.Timestep);
 				var text = Format.F(p.Info.Description, time);
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].Self.Owner.Color.RGB : Color.White;
 				return Pair.New(text, color);

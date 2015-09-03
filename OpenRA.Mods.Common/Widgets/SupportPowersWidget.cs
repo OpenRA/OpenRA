@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, worldRenderer.World.Timestep)) / 2;
 
 			// Icons
 			foreach (var p in icons.Values)
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets
 						p.Pos + holdOffset,
 						Color.White, Color.Black, 1);
 				else
-					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTime),
+					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTime, worldRenderer.World.Timestep),
 						p.Pos + timeOffset,
 						Color.White, Color.Black, 1);
 			}
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "palette", this } });
+				new WidgetArgs() { { "world", worldRenderer.World }, { "palette", this } });
 		}
 
 		public override void MouseExited()

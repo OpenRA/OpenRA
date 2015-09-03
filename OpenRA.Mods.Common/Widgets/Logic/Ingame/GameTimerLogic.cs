@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (status == null && shouldShowStatus())
 						return statusText();
 
-					return WidgetUtils.FormatTime(world.WorldTick);
+					return WidgetUtils.FormatTime(world.WorldTick, world.Timestep);
 				};
 			}
 

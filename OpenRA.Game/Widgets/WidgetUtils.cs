@@ -158,14 +158,14 @@ namespace OpenRA.Widgets
 				DrawRGBA(cornerBottomRight, new float2(bounds.Right - cornerBottomRight.Size.X, bounds.Bottom - cornerBottomRight.Size.Y));
 		}
 
-		public static string FormatTime(int ticks)
+		public static string FormatTime(int ticks, int timestep)
 		{
-			return FormatTime(ticks, true);
+			return FormatTime(ticks, true, timestep);
 		}
 
-		public static string FormatTime(int ticks, bool leadingMinuteZero)
+		public static string FormatTime(int ticks, bool leadingMinuteZero, int timestep)
 		{
-			var seconds = (int)Math.Ceiling(ticks / 25f);
+			var seconds = (int)Math.Ceiling(ticks * timestep / 1000f);
 			return FormatTimeSeconds(seconds, leadingMinuteZero);
 		}
 
