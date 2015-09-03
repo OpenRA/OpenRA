@@ -89,7 +89,7 @@ ide:GetDocument(editor):Save()
 is(editor:GetText():match("Updated %d"), "Updated 0", "Replace fails on invalid line numbers.")
 
 -- cleanup
-findReplace.panel:Hide()
+findReplace:Hide()
 while editor:CanUndo() do editor:Undo() end
 ide:GetDocument(editor):SetModified(false)
 ClosePage()

@@ -834,6 +834,7 @@ function findReplace:createPanel()
   local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, replaceHintText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
+  self.ac = {[findCtrl:GetId()] = {}, [replaceCtrl:GetId()] = {}}
 
   local findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
   findSizer:Add(findCtrl, 1, wx.wxLEFT + wx.wxRIGHT + wx.wxALIGN_LEFT + wx.wxEXPAND + wx.wxFIXED_MINSIZE, 1)
@@ -883,10 +884,12 @@ function findReplace:createPanel()
     if not ide.config.search.autocomplete then return end
 
     local obj = event:GetEventObject():DynamicCast('wxTextCtrl')
-    local ok, keycode, needac = pcall(
-      function() return obj.lastkeycode, obj.needautocomplete end)
-    obj.needautocomplete = false
-    if not ok or not needac or not keycode then return end
+    local ac = self.ac[obj:GetId()]
+    if not ac then return end
+
+    local keycode, needac = ac.lastkeycode, ac.needautocomplete
+    if needac then ac.needautocomplete = false end
+    if not needac or not keycode then return end
 
     -- if the last key was Delete or Backspace, don't autocomplete
     if keycode == wx.WXK_DELETE or keycode == wx.WXK_BACK then return end
@@ -915,7 +918,7 @@ function findReplace:createPanel()
     end
     -- don't search when used with "infiles", but still trigger autocomplete
     if self.infiles or self:Find() then
-      event:GetEventObject():DynamicCast('wxTextCtrl').needautocomplete = true
+      self.ac[event:GetEventObject():DynamicCast('wxTextCtrl'):GetId()].needautocomplete = true
     end
   end
 
@@ -958,7 +961,7 @@ function findReplace:createPanel()
   local taborder = {findCtrl, replaceCtrl, scope}
   local function charHandle(event)
     local keycode = event:GetKeyCode()
-    event:GetEventObject().lastkeycode = keycode
+    self.ac[event:GetEventObject():DynamicCast('wxTextCtrl'):GetId()].lastkeycode = keycode
     if keycode == wx.WXK_ESCAPE then
       self:Hide(event:ShiftDown())
     elseif keycode == wx.WXK_TAB then
@@ -1004,7 +1007,7 @@ function findReplace:createPanel()
     end)
   replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findReplaceNext)
   replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)
-      event:GetEventObject():DynamicCast('wxTextCtrl').needautocomplete = true
+      self.ac[event:GetEventObject():DynamicCast('wxTextCtrl'):GetId()].needautocomplete = true
     end)
   replaceCtrl:Connect(wx.wxEVT_CHAR, charHandle)
 
