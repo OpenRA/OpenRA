@@ -9,40 +9,44 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PluggableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class PluggableInfo : ITraitInfo, Requires<UpgradeManagerInfo>, UsesInit<PlugsInit>
 	{
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		[FieldLoader.LoadUsing("LoadUpgrades", true)]
-		[Desc("Upgrades to grant for each accepted plug type.")]
+		[FieldLoader.Require, Desc("Upgrades to grant for each accepted plug type.")]
 		public readonly Dictionary<string, string[]> Upgrades = null;
 
-		static object LoadUpgrades(MiniYaml y)
-		{
-			return y.ToDictionary()["Upgrades"].Nodes.ToDictionary(
-				kv => kv.Key,
-				kv => FieldLoader.GetValue<string[]>("(value)", kv.Value.Value));
-		}
-
-		public object Create(ActorInitializer init) { return new Pluggable(init.Self, this); }
+		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable
+	public class Pluggable : INotifyCreated
 	{
 		public readonly PluggableInfo Info;
+
+		readonly string initialPlug;
 		readonly UpgradeManager upgradeManager;
+
 		string active;
 
-		public Pluggable(Actor self, PluggableInfo info)
+		public Pluggable(ActorInitializer init, PluggableInfo info)
 		{
 			Info = info;
-			upgradeManager = self.Trait<UpgradeManager>();
+			upgradeManager = init.Self.Trait<UpgradeManager>();
+
+			var plugInit = init.Contains<PlugsInit>() ? init.Get<PlugsInit, Dictionary<CVec, string>>() : new Dictionary<CVec, string>();
+			if (plugInit.ContainsKey(Info.Offset))
+				initialPlug = plugInit[Info.Offset];
+		}
+
+		public void Created(Actor self)
+		{
+			if (!string.IsNullOrEmpty(initialPlug))
+				EnablePlug(self, initialPlug);
 		}
 
 		public bool AcceptsPlug(Actor self, string type)
@@ -70,5 +74,14 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var u in Info.Upgrades[type])
 				upgradeManager.RevokeUpgrade(self, u, this);
 		}
+	}
+
+	public class PlugsInit : IActorInit<Dictionary<CVec, string>>
+	{
+		[DictionaryFromYamlKey]
+		readonly Dictionary<CVec, string> value = new Dictionary<CVec, string>();
+		public PlugsInit() { }
+		public PlugsInit(Dictionary<CVec, string> init) { value = init; }
+		public Dictionary<CVec, string> Value(World world) { return value; }
 	}
 }
