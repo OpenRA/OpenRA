@@ -40,7 +40,6 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	BodyOrientation:
 	DetectCloaked:
 		Range: 10
 
