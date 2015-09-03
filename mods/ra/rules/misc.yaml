@@ -180,10 +180,10 @@ CAMERA:
 		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
-	BodyOrientation:
-		QuantizedFacings: 1
 	DetectCloaked:
 		Range: 10
+	BodyOrientation:
+		QuantizedFacings: 1
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 		Image: camera
@@ -199,8 +199,6 @@ camera.paradrop:
 		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
-	BodyOrientation:
-		QuantizedFacings: 1
 
 SONAR:
 	AlwaysVisible:
@@ -210,7 +208,6 @@ SONAR:
 		HP: 1000
 	ProximityCaptor:
 		Types: Sonar
-	BodyOrientation:
 	DetectCloaked:
 		Range: 10
 		CloakTypes: Underwater
@@ -225,22 +222,22 @@ FLARE:
 		Image: smokland
 	WithSpriteBody:
 		StartSequence: open
+	BodyOrientation:
+		QuantizedFacings: 1
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false
-	BodyOrientation:
-		QuantizedFacings: 1
 
 MINE:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ore Mine
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -248,18 +245,16 @@ MINE:
 	RadarColorFromTerrain:
 		Terrain: Ore
 	AutoTargetIgnore:
-	BodyOrientation:
-		QuantizedFacings: 1
 	SeedsResource:
 
 GMINE:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Gem Mine
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -267,45 +262,39 @@ GMINE:
 	RadarColorFromTerrain:
 		Terrain: Gems
 	AutoTargetIgnore:
-	BodyOrientation:
-		QuantizedFacings: 1
 	SeedsResource:
 		ResourceType: Gems
 
 RAILMINE:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Abandoned Mine
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
 	AutoTargetIgnore:
-	BodyOrientation:
-		QuantizedFacings: 1
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
 QUEE:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	AppearsOnRadar:
-	BodyOrientation:
-		QuantizedFacings: 1
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 
 LAR1:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva
@@ -315,29 +304,14 @@ LAR1:
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	AppearsOnRadar:
-	BodyOrientation:
-		QuantizedFacings: 1
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
 
 LAR2:
-	HiddenUnderShroud:
+	Inherits@1: LAR1
 	Tooltip:
 		Name: Ant Larvae
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderSprites:
-		Palette: terrain
-	WithSpriteBody:
-	AutoSelectionSize:
-	AppearsOnRadar:
-	BodyOrientation:
-		QuantizedFacings: 1
-	EditorTilesetFilter:
-		RequireTilesets: INTERIOR
 
 powerproxy.parabombs:
 	AlwaysVisible:

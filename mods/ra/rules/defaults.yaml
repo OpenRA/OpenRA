@@ -1,13 +1,16 @@
 ^ExistsInWorld:
 	AppearsOnRadar:
-	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
-	DrawLineToTarget:
 	GivesExperience:
-	BodyOrientation:
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+
+^SpriteActor:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^GainsExperience:
 	GainsExperience:
@@ -63,6 +66,9 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
+	Inherits@4: ^SpriteActor
+	DrawLineToTarget:
+	UpdatesPlayerStatistics:
 	Mobile:
 		Crushes: mine, crate
 		TerrainSpeeds:
@@ -123,10 +129,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 	WithParachute:
 		UpgradeTypes: parachute
 		UpgradeMinEnabledLevel: 1
@@ -159,6 +162,8 @@
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	DrawLineToTarget:
 	Health:
 		Radius: 128
 		HP: 25
@@ -187,7 +192,6 @@
 		UpgradeMaxEnabledLevel: 0
 	QuantizeFacingsFromSequence:
 		Sequence: stand
-	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation:
 		DeathTypes:
@@ -252,6 +256,7 @@
 
 ^Soldier:
 	Inherits: ^Infantry
+	UpdatesPlayerStatistics:
 	MustBeDestroyed:
 	AutoTarget:
 	ProximityCaptor:
@@ -292,6 +297,9 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
+	Inherits@4: ^SpriteActor
+	DrawLineToTarget:
+	UpdatesPlayerStatistics:
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -325,15 +333,15 @@
 		ExcludeTilesets: INTERIOR
 	Voiced:
 		VoiceSet: VehicleVoice
-	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
-	RenderSprites:
 	WithFacingSpriteBody:
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
+	Inherits@4: ^SpriteActor
+	DrawLineToTarget:
+	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
 	SelectionDecorations:
@@ -368,10 +376,7 @@
 	Tooltip:
 		GenericName: Plane
 	WithShadow:
-	QuantizeFacingsFromSequence:
-	RenderSprites:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
@@ -387,6 +392,7 @@
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
+	Inherits@3: ^SpriteActor
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
@@ -400,9 +406,6 @@
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
-	QuantizeFacingsFromSequence:
-	RenderSprites:
-	AutoSelectionSize:
 	WithSpriteBody:
 	WithBuildingExplosion:
 	CaptureNotification:
@@ -420,6 +423,7 @@
 
 ^Building:
 	Inherits: ^BasicBuilding
+	UpdatesPlayerStatistics:
 	GivesBuildableArea:
 	RepairableBuilding:
 	EngineerRepairable:
@@ -449,7 +453,8 @@
 	RenderRangeCircle:
 
 ^Wall:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -472,18 +477,14 @@
 	RenderSprites:
 		Palette: effect
 	WithWallSpriteBody:
-	GivesExperience:
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types: Wall
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
-	BodyOrientation:
-		QuantizedFacings: 1
 	FrozenUnderFog:
 	GpsRemoveFrozenActor:
-	ScriptTriggers:
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -546,12 +547,12 @@
 		ExcludeTilesets: INTERIOR
 
 ^Tree:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Tree
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -565,8 +566,6 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
-	BodyOrientation:
-		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -574,19 +573,16 @@
 		ExcludeTilesets: INTERIOR
 
 ^BasicHusk:
+	Inherits@1: ^SpriteActor
 	Health:
 		HP: 280
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
-	QuantizeFacingsFromSequence:
-	BodyOrientation:
 	AutoTargetIgnore:
 	ScriptTriggers:
-	RenderSprites:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
 
 ^Husk:
 	Inherits: ^BasicHusk
@@ -643,17 +639,15 @@
 	Armor:
 		Type: Concrete
 	AutoTargetIgnore:
-	BodyOrientation:
-		QuantizedFacings: 1
 	ScriptTriggers:
 
 ^Rock:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Rock
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -662,8 +656,6 @@
 		Terrain: Tree
 	ProximityCaptor:
 		Types: Tree
-	BodyOrientation:
-		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -678,6 +670,7 @@
 		RequireTilesets: DESERT
 
 ^Crate:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
@@ -696,8 +689,6 @@
 		FallRate: 26
 		KilledOnImpassableTerrain: false
 	Passenger:
-	CustomSelectionSize:
-		CustomBounds: 20,20
 	WithParachute:
 		UpgradeTypes: parachute
 		UpgradeMinEnabledLevel: 1
@@ -707,6 +698,4 @@
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
 	UpgradeManager:
-	BodyOrientation:
-		QuantizedFacings: 1
 
