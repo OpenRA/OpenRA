@@ -1303,7 +1303,6 @@ Rules:
 			Type: CenterPosition
 		Immobile:
 			OccupiesSpace: false
-		BodyOrientation:
 		UpgradeActorsNear:
 			Upgrades: jail
 			Range: 1c0
