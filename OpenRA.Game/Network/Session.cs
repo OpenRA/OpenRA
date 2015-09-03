@@ -188,6 +188,7 @@ namespace OpenRA.Network
 			public int StartingCash = 5000;
 			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
+			public string GameSpeedType = "default";
 			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;

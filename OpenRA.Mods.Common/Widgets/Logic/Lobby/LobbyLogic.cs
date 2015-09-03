@@ -490,6 +490,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
+			var gameSpeed = optionsBin.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");
+			if (gameSpeed != null)
+			{
+				var speeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+
+				gameSpeed.IsDisabled = () => Map.Status != MapStatus.Available || configurationDisabled();
+				gameSpeed.GetText = () =>
+				{
+					if (Map.Status != MapStatus.Available)
+						return "Not Available";
+
+					GameSpeed speed;
+					if (!speeds.TryGetValue(orderManager.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+						return "Unknown";
+
+					return speed.Name;
+				};
+
+				gameSpeed.OnMouseDown = _ =>
+				{
+					var options = speeds.Select(s => new DropDownOption
+					{
+						Title = s.Value.Name,
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.GameSpeedType == s.Key,
+						OnClick = () => orderManager.IssueOrder(Order.Command("gamespeed {0}".F(s.Key)))
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					gameSpeed.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
+
 			var exploredMap = optionsBin.GetOrNull<CheckboxWidget>("EXPLORED_MAP_CHECKBOX");
 			if (exploredMap != null)
 			{
