@@ -853,8 +853,9 @@ function StoreRestoreProjectTabs(curdir, newdir)
     fastWrap(SetOpenFiles, files, {index = #files + notebook:GetPageCount()})
   end
 
-  if params and params.interpreter then
-    ProjectSetInterpreter(params.interpreter) -- set the interpreter
+  -- either interpreter is chosen for the project or the default value is set
+  if (params and params.interpreter) or (not params and ide.config.interpreter) then
+    ProjectSetInterpreter(params and params.interpreter or ide.config.interpreter)
   end
 
   if ide.osname ~= 'Macintosh' then notebook:Thaw() end

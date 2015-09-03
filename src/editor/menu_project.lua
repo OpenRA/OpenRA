@@ -116,8 +116,8 @@ function ProjectUpdateInterpreters()
   local id = (
     -- interpreter is set and is (still) on the list of known interpreters
     IDget("debug.interpreter."
-      ..(ide.interpreter and ide.interpreters[ide.interpreter.fname]
-         and ide.interpreter.fname or ide.config.interpreter)) or
+      ..(ide.interpreter and ide.interpreters[ide.interpreter.fname] and ide.interpreter.fname
+         or ide.config.interpreter or ide.config.default.interpreter)) or
     -- otherwise use default interpreter
     ID("debug.interpreter."..ide.config.default.interpreter)
   )

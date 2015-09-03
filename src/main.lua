@@ -165,7 +165,6 @@ ide = {
     savebak = false,
     singleinstance = false,
     singleinstanceport = 0xe493,
-    interpreter = "luadeb",
     showmemoryusage = false,
     hidpi = false, -- HiDPI/Retina display support
     hotexit = false,
