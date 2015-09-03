@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Warheads
 	public abstract class Warhead : IWarhead
 	{
 		[Desc("What types of targets are affected.")]
-		public readonly string[] ValidTargets = { "Ground", "Water" };
+		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
-		public readonly string[] InvalidTargets = { };
+		public readonly HashSet<string> InvalidTargets = new HashSet<string>();
 
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
@@ -33,16 +33,9 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Delay = 0;
 		int IWarhead.Delay { get { return Delay; } }
 
-		HashSet<string> validTargetSet;
-		HashSet<string> invalidTargetSet;
-
 		public bool IsValidTarget(IEnumerable<string> targetTypes)
 		{
-			if (validTargetSet == null)
-				validTargetSet = new HashSet<string>(ValidTargets);
-			if (invalidTargetSet == null)
-				invalidTargetSet = new HashSet<string>(InvalidTargets);
-			return validTargetSet.Overlaps(targetTypes) && !invalidTargetSet.Overlaps(targetTypes);
+			return ValidTargets.Overlaps(targetTypes) && !InvalidTargets.Overlaps(targetTypes);
 		}
 
 		/// <summary>Applies the warhead's effect against the target.</summary>
