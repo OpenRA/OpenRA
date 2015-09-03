@@ -77,28 +77,28 @@ namespace OpenRA.Mods.Common.Traits
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 		}
 
-        bool firstTick = true;
-        public virtual void Tick(Actor self)
-        {
-            if (firstTick)
-            {
-                firstTick = false;
+		bool firstTick = true;
+		public virtual void Tick(Actor self)
+		{
+			if (firstTick)
+			{
+				firstTick = false;
 
-                // TODO: Aircraft husks don't properly unreserve.
-                if (self.HasTrait<FallsToEarth>())
-                    return;
+				// TODO: Aircraft husks don't properly unreserve.
+				if (self.HasTrait<FallsToEarth>())
+					return;
 
-                ReserveSpawnBuilding();
+				ReserveSpawnBuilding();
 
-                var host = GetActorBelow();
-                if (host == null)
-                    return;
+				var host = GetActorBelow();
+				if (host == null)
+					return;
 
-                self.QueueActivity(new TakeOff(self));
-            }
+				self.QueueActivity(new TakeOff(self));
+			}
 
-            Repulse();
-        }
+			Repulse();
+		}
 
 		public void Repulse()
 		{
