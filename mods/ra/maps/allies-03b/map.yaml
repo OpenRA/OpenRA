@@ -1325,7 +1325,6 @@ Rules:
 			TerrainSpeeds:
 		RevealsShroud:
 			Range: 4c0
-		BodyOrientation:
 		ScriptTriggers:
 	MONEYCRATE:
 		Tooltip:
@@ -1378,7 +1377,6 @@ Rules:
 			ShowOwnerRow: false
 	JEEP.mission:
 		Inherits: JEEP
-		WithFacingSpriteBody:
 		-Selectable:
 		-Demolishable:
 		-Huntable:
@@ -1389,7 +1387,6 @@ Rules:
 			Types: ~disabled
 		RevealsShroud:
 			Range: 0c0
-		AutoSelectionSize:
 		RenderSprites:
 			Image: JEEP
 	E3:

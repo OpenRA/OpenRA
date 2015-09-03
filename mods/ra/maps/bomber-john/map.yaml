@@ -830,7 +830,6 @@ Rules:
 			ROT: 900
 		RevealsShroud:
 			Range: 40c0
-		WithFacingSpriteBody:
 		MustBeDestroyed:
 			RequiredForShortGame: true
 		Transforms:
@@ -840,7 +839,6 @@ Rules:
 		CashTrickler:
 			Period: 150
 			Amount: 20
-		AutoSelectionSize:
 		RenderSprites:
 			Image: MNLY
 	FTUR:
@@ -881,6 +879,7 @@ Rules:
 		Power:
 			Amount: 0
 	MINVV:
+		Inherits@1: ^SpriteActor
 		HiddenUnderFog:
 		Building:
 			Adjacent: 99
@@ -897,7 +896,6 @@ Rules:
 		RenderSprites:
 			Image: miner
 		WithSpriteBody:
-		AutoSelectionSize:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
@@ -911,7 +909,6 @@ Rules:
 		Explodes:
 			Weapon: CrateNuke
 			EmptyWeapon: CrateNuke
-		BodyOrientation:
 	T17:
 		Health:
 			HP: 999999999
