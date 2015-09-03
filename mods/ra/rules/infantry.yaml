@@ -464,7 +464,7 @@ SHOK:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 100
+		HP: 60
 	Mobile:
 		Voice: Move
 	RevealsShroud:
