@@ -12,9 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
+using Util = OpenRA.Traits.Util;
 
 namespace OpenRA.Mods.Common.Orders
 {
@@ -65,7 +68,11 @@ namespace OpenRA.Mods.Common.Orders
 				world.CancelInputMode();
 
 			var ret = InnerOrder(world, xy, mi).ToArray();
-			if (ret.Length > 0)
+
+			// If there was a successful placement order
+			if (ret.Any(o => o.OrderString == "PlaceBuilding"
+				|| o.OrderString == "LineBuild"
+				|| o.OrderString == "PlacePlug"))
 				world.CancelInputMode();
 
 			return ret;
@@ -96,6 +103,9 @@ namespace OpenRA.Mods.Common.Orders
 					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
 						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
 					{
+						foreach (var order in ClearBlockersOrders(world, topLeft))
+							yield return order;
+
 						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
 						yield break;
 					}
@@ -210,5 +220,28 @@ namespace OpenRA.Mods.Common.Orders
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }
+
+		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
+		{
+			var allTiles = FootprintUtils.Tiles(world.Map.Rules, building, buildingInfo, topLeft).ToArray();
+			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
+				.Where(world.Map.Contains).ToList();
+
+			var blockers = allTiles.SelectMany(world.ActorMap.GetUnitsAt)
+				.Where(a => a.Owner == producer.Owner && a.IsIdle)
+				.Select(a => new TraitPair<Mobile> { Actor = a, Trait = a.TraitOrDefault<Mobile>() });
+
+			foreach (var blocker in blockers.Where(x => x.Trait != null))
+			{
+				var availableCells = neightborTiles.Where(t => blocker.Trait.CanEnterCell(t)).ToList();
+				if (availableCells.Count == 0)
+					continue;
+
+				yield return new Order("Move", blocker.Actor, false)
+				{
+					TargetLocation = blocker.Actor.ClosestCell(availableCells)
+				};
+			}
+		}
 	}
 }
