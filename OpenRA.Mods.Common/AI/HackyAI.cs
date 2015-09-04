@@ -421,7 +421,7 @@ namespace OpenRA.Mods.Common.AI
 			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
-				var countBuildings = CountBuilding(aircraftInfo.RearmBuildings.FirstOrDefault(), Player);
+				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));
 				if (countOwnAir >= countBuildings)
 					return false;
 			}
