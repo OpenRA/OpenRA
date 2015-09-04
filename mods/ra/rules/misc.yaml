@@ -1,68 +1,12 @@
 MINP:
-	HiddenUnderShroud:
-		Type: CenterPosition
-	Mine:
-		CrushClasses: mine
-		DetonateClasses: mine
-		AvoidFriendly: false
+	Inherits: ^Mine
 	Explodes:
 		Weapon: APMine
-	Health:
-		HP: 100
-		NotifyAppliedDamage: false
-	Armor:
-		Type: Light
-	RenderSprites:
-	WithSpriteBody:
-	AutoSelectionSize:
-	Cloak:
-		CloakSound:
-		UncloakSound:
-		Palette:
-		CloakTypes: Mine
-	Tooltip:
-		Name: Mine
-	ProximityCaptor:
-		Types: Mine
-	Targetable:
-		TargetTypes: Ground
-	BodyOrientation:
-		QuantizedFacings: 1
-	Immobile:
-		OccupiesSpace: true
 
 MINV:
-	HiddenUnderShroud:
-		Type: CenterPosition
-	Mine:
-		CrushClasses: mine
-		DetonateClasses: mine
-		AvoidFriendly: false
+	Inherits: ^Mine
 	Explodes:
 		Weapon: ATMine
-	Health:
-		HP: 100
-		NotifyAppliedDamage: false
-	Armor:
-		Type: Light
-	RenderSprites:
-	WithSpriteBody:
-	AutoSelectionSize:
-	Cloak:
-		CloakSound:
-		UncloakSound:
-		Palette:
-		CloakTypes: Mine
-	Tooltip:
-		Name: Mine
-	ProximityCaptor:
-		Types: Mine
-	Targetable:
-		TargetTypes: Ground
-	BodyOrientation:
-		QuantizedFacings: 1
-	Immobile:
-		OccupiesSpace: true
 
 CRATE:
 	Inherits: ^Crate
