@@ -19,6 +19,7 @@ Assemblies:
 
 ChromeLayout:
 	./mods/modchooser/modchooser.yaml
+	./mods/modchooser/install.yaml
 
 Notifications:
 	./mods/modchooser/notifications.yaml
