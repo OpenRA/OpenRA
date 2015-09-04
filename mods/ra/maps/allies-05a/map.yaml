@@ -1634,7 +1634,6 @@ Rules:
 			TerrainSpeeds:
 		RevealsShroud:
 			Range: 4c0
-		BodyOrientation:
 		ScriptTriggers:
 	FTUR:
 		DetectCloaked:
@@ -1686,7 +1685,6 @@ Rules:
 		WithFacingSpriteBody:
 		-SpawnActorOnDeath:
 		-EjectOnDeath:
-		AutoSelectionSize:
 		RenderSprites:
 			Image: TRUK
 	SPY:

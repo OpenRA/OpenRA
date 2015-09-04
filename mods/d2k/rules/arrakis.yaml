@@ -1,8 +1,7 @@
 spicebloom:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -15,11 +14,10 @@ spicebloom:
 	WithActiveAnimation:
 	RadarColorFromTerrain:
 		Terrain: Spice
-	BodyOrientation:
-		QuantizedFacings: 1
 	WithMakeAnimation:
 
 sandworm:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
@@ -39,8 +37,6 @@ sandworm:
 	WithFacingSpriteBody:
 	WithAttackOverlay:
 		Sequence: sand
-	BodyOrientation:
-	QuantizeFacingsFromSequence:
 	HiddenUnderFog:
 	AppearsOnRadar:
 		UseLocation: yes
@@ -55,8 +51,6 @@ sandworm:
 	AnnounceOnSeen:
 		Notification: WormSign
 		PingRadar: True
-	RenderSprites:
-	AutoSelectionSize:
 
 sietch:
 	Inherits: ^Building

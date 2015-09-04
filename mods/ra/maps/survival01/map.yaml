@@ -1264,9 +1264,6 @@ Rules:
 		Inherits: CAMERA
 		RevealsShroud:
 			Range: 1000
-	ARTY:
-		UpgradeManager:
-		BodyOrientation:
 	AFLD.mission:
 		Inherits: AFLD
 		-AirstrikePower@spyplane:

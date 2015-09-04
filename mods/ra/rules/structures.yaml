@@ -519,6 +519,7 @@ PBOX:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 255
+	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
@@ -562,6 +563,7 @@ HBOX:
 		CloakDelay: 60
 	Turreted:
 		ROT: 255
+	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
@@ -646,6 +648,7 @@ FTUR:
 		Weapon: FireballLauncher
 		LocalOffset: 512,0,0
 	AttackTurreted:
+	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
 	Power:

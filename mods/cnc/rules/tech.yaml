@@ -11,10 +11,6 @@ V19:
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
-	AutoSelectionSize:
-	RenderSprites:
-	BodyOrientation:
-		QuantizedFacings: 1
 	WithSpriteBody:
 	WithIdleOverlay:
 		StartSequence: fire-start

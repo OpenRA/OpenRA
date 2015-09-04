@@ -3,11 +3,16 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+
+^SpriteActor:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^GainsExperience:
 	GainsExperience:
@@ -66,7 +71,8 @@
 		UpgradeMinEnabledLevel: 1
 
 ^BasicBuilding:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -83,10 +89,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
-	QuantizeFacingsFromSequence:
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithBuildingExplosion:
 		Sequences: building, large_bang, large_brnl, verylarge_clsn, large_tumu
 	EngineerRepairable:
@@ -168,6 +171,7 @@
 		CustomBounds: 24,24
 
 ^Wall:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	AppearsOnRadar:
 	Building:
@@ -189,8 +193,6 @@
 		Types: wall
 	Targetable:
 		TargetTypes: Ground, Wall, C4
-	RenderSprites:
-	AutoSelectionSize:
 	WithWallSpriteBody:
 		Type: wall
 	GivesExperience:
@@ -198,9 +200,6 @@
 	Sellable:
 		SellSounds: cashturn.aud
 	UpdatesPlayerStatistics:
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
-		QuantizedFacings: 1
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
@@ -222,6 +221,7 @@
 ^Infantry:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^SpriteActor
 	DrawLineToTarget:
 	Health:
 		Radius: 128
@@ -256,7 +256,6 @@
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
 		Sequence: stand
-	RenderSprites:
 	WithInfantryBody:
 	WithDeathAnimation@normal:
 		DeathTypes:
@@ -503,7 +502,8 @@
 	ReturnOnIdle:
 
 ^Viceroid:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	DrawLineToTarget:
 	Health:
 		Radius: 256
@@ -534,28 +534,21 @@
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Guardable:
-	BodyOrientation:
-		QuantizedFacings: 1
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 
 ^BlossomTree:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Blossom Tree
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
-		QuantizedFacings: 1
 	FrozenUnderFog:
 		StartsRevealed: true
 	SeedsResource:
@@ -564,14 +557,11 @@
 	WithActiveAnimation:
 
 ^Tree:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -582,14 +572,11 @@
 		Name: Tree
 
 ^Rock:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -600,16 +587,14 @@
 		Name: Rock
 
 ^Decoration:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	BodyOrientation:
-		UseClassicPerspectiveFudge: False
 
 ^Box:
 	Inherits: ^Decoration
@@ -640,6 +625,7 @@
 ^DeployedVehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^SpriteActor
 	Voiced:
 		VoiceSet: Vehicle
 	AttackTurreted:
@@ -651,9 +637,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Clear, Road, DirtRoad, Rough
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithMakeAnimation:
 	SelectionDecorations:
 		Palette: pips

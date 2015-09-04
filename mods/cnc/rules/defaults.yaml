@@ -3,10 +3,15 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
-	BodyOrientation:
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+
+^SpriteActor:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
 
 ^GainsExperience:
 	GainsExperience:
@@ -51,6 +56,7 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -74,10 +80,7 @@
 	AttackMove:
 	DrawLineToTarget:
 	WithSmoke:
-	RenderSprites:
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -114,6 +117,7 @@
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	AppearsOnRadar:
 		UseLocation: yes
 	Targetable@GROUND:
@@ -144,10 +148,7 @@
 	Guardable:
 	Tooltip:
 		GenericName: Helicopter
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 	WithShadow:
 	Hovers:
 	MustBeDestroyed:
@@ -157,6 +158,7 @@
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Health:
 		Radius: 128
 	Armor:
@@ -180,7 +182,6 @@
 		Bounds: 12,17,0,-6
 	Targetable:
 		TargetTypes: Ground, Infantry
-	RenderSprites:
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -279,7 +280,8 @@
 		AttackSequence: shoot
 
 ^DINO:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	Health:
 		Radius: 128
 		HP: 1000
@@ -311,6 +313,8 @@
 	Targetable:
 		TargetTypes: Ground
 	HiddenUnderFog:
+	RenderSprites:
+		Palette: terrain
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -325,13 +329,12 @@
 		Voice: Attack
 	DrawLineToTarget:
 	DeathSounds:
-	RenderSprites:
-		Palette: terrain
 	Voiced:
 		VoiceSet: DinoVoice
 
 ^Viceroid:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	Health:
 		Radius: 427
 		HP: 300
@@ -374,8 +377,6 @@
 	BodyOrientation:
 		QuantizedFacings: 8
 	WithSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 	WithMuzzleFlash:
 		SplitFacings: true
 	Guard:
@@ -387,7 +388,8 @@
 		VoiceSet: DinoVoice
 
 ^Plane:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
@@ -395,16 +397,14 @@
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	RenderSprites:
-	AutoSelectionSize:
 	FlyAwayOnIdle:
 	RejectsOrders:
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -423,7 +423,8 @@
 		VoiceSet: VehicleVoice
 
 ^Building:
-	Inherits: ^ExistsInWorld
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	SelectionDecorations:
 	Selectable:
 		Priority: 3
@@ -437,10 +438,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: crumble.aud
-	QuantizeFacingsFromSequence:
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithBuildingExplosion:
 		Delay: 1
 	CaptureNotification:
@@ -492,18 +490,15 @@
 		StartsRevealed: true
 
 ^CivBuildingHusk:
+	Inherits@1: ^SpriteActor
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
-	QuantizeFacingsFromSequence:
-	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	Tooltip:
 		Name: Civilian Building (Destroyed)
 		GenericVisibility: None
-	BodyOrientation:
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -530,10 +525,9 @@
 	-Demolishable:
 	RenderSprites:
 		Palette: terrain
-	WithSpriteBody:
-	AutoSelectionSize:
 
 ^CivFieldHusk:
+	Inherits@1: ^SpriteActor
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -541,17 +535,15 @@
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
-	BodyOrientation:
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
 
 ^Wall:
+	Inherits@1: ^SpriteActor
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -570,12 +562,9 @@
 		NodeTypes: wall
 	LineBuildNode:
 		Types: wall
-	BodyOrientation:
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithWallSpriteBody:
-	AutoSelectionSize:
 	GivesExperience:
 	AutoTargetIgnore:
 	Sellable:
@@ -585,14 +574,12 @@
 	ScriptTriggers:
 
 ^Tree:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Tree
-	BodyOrientation:
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -609,14 +596,12 @@
 	ScriptTriggers:
 
 ^TibTree:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Blossom Tree
-	BodyOrientation:
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -628,14 +613,12 @@
 	WithMakeAnimation:
 
 ^Rock:
+	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Rock
-	BodyOrientation:
-		QuantizedFacings: 1
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
-	AutoSelectionSize:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -649,6 +632,7 @@
 		RequireTilesets: DESERT
 
 ^CommonHuskDefaults:
+	Inherits@1: ^SpriteActor
 	Health:
 		HP: 140
 	Armor:
@@ -656,11 +640,7 @@
 	HiddenUnderFog:
 		Type: CenterPosition
 	AutoTargetIgnore:
-	BodyOrientation:
-	QuantizeFacingsFromSequence:
 	WithFacingSpriteBody:
-	AutoSelectionSize:
-	RenderSprites:
 
 ^Husk:
 	Inherits: ^CommonHuskDefaults
@@ -687,6 +667,7 @@
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
+	WithShadow:
 	FallsToEarth:
 		Spins: True
 		Moves: False
@@ -706,25 +687,21 @@
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
-	BodyOrientation:
-		QuantizedFacings: 1
 	ScriptTriggers:
 
 ^Crate:
+	Inherits@1: ^SpriteActor
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Crate
 		GenericName: Crate
 	Crate:
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
-	QuantizeFacingsFromSequence:
 	RenderSprites:
 		Palette: effect
 		Image: crate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	CustomSelectionSize:
-		CustomBounds: 20,20
 
 ^Defense:
 	Inherits: ^BaseBuilding
