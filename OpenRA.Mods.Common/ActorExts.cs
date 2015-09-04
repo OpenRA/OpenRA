@@ -117,5 +117,26 @@ namespace OpenRA.Mods.Common
 		{
 			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetUnitsAt(p)));
 		}
+
+		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo, ResourceClaimLayer territory)
+		{
+			var resType = resLayer.GetResource(pos);
+			if (resType == null)
+				return false;
+
+			// Can the harvester collect this kind of resource?
+			if (!harvInfo.Resources.Contains(resType.Info.Name))
+				return false;
+
+			if (territory != null)
+			{
+				// Another harvester has claimed this resource:
+				ResourceClaim claim;
+				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
+					return false;
+			}
+
+			return true;
+		}
 	}
 }
