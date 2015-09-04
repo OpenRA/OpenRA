@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class InfiltratesInfo : ITraitInfo
 	{
-		public readonly string[] Types = { };
+		public readonly HashSet<string> Types = new HashSet<string>();
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Traits
 				targetTypes = order.TargetActor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled)
 					.SelectMany(t => t.TargetTypes);
 
-			return targetTypes.Intersect(Info.Types).Any();
+			return Info.Types.Overlaps(targetTypes);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
 			if (target.Type != TargetType.Actor
-				|| target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes).Intersect(Info.Types).Any())
+				|| Info.Types.Overlaps(target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes)))
 				return;
 
 			if (!order.Queued)
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Intersect(info.Types).Any());
+			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Overlaps(info.Types));
 		}
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Intersect(info.Types).Any());
+			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => info.Types.Overlaps(t.GetTargetTypes()));
 		}
 	}
 }

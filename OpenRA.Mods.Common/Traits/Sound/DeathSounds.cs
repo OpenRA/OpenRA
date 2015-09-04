@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (warhead == null)
 				return;
 
-			if (info.DeathTypes.Intersect(warhead.DamageTypes).Any())
+			if (warhead.DamageTypes.Overlaps(info.DeathTypes))
 				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}

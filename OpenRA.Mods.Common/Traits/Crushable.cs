@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
 		[Desc("Which crush classes does this actor belong to.")]
-		public readonly string[] CrushClasses = { "infantry" };
+		public readonly HashSet<string> CrushClasses = new HashSet<string> { "infantry" };
 		[Desc("Probability of mobile actors noticing and evading a crush attempt.")]
 		public readonly int WarnProbability = 75;
 		[Desc("Will friendly units just crush me instead of pathing around.")]
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
 				return false;
 
-			return info.CrushClasses.Intersect(crushClasses).Any();
+			return info.CrushClasses.Overlaps(crushClasses);
 		}
 	}
 }

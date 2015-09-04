@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -16,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
 	{
 		[Desc("This actor is of LineBuild 'NodeType'...")]
-		public readonly string[] Types = { "wall" };
+		public readonly HashSet<string> Types = new HashSet<string> { "wall" };
 	}
 
 	public class LineBuildNode { }

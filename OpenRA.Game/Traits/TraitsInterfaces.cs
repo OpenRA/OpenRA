@@ -310,13 +310,13 @@ namespace OpenRA.Traits
 
 	public interface ITargetableInfo
 	{
-		string[] GetTargetTypes();
+		HashSet<string> GetTargetTypes();
 	}
 
 	public interface ITargetable
 	{
 		// Check IsTraitEnabled or !IsTraitDisabled first
-		string[] TargetTypes { get; }
+		HashSet<string> TargetTypes { get; }
 		bool TargetableBy(Actor self, Actor byActor);
 		bool RequiresForceFire { get; }
 	}

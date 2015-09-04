@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						// This warhead cannot affect this actor.
-						if (!warhead.ValidTargets.Intersect(targetable).Any())
+						if (!warhead.ValidTargets.Overlaps(targetable))
 							continue;
 
-						if (!warhead.DamageTypes.Intersect(deathTypes).Any())
+						if (!warhead.DamageTypes.Overlaps(deathTypes))
 							emitError("Actor type `{0}` does not define a death animation for weapon `{1}`!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}

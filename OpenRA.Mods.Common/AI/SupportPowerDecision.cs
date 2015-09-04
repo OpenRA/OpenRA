@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.AI
 			public readonly Stance Against = Stance.Enemy;
 
 			[Desc("What types should the desired targets of this power be?")]
-			public readonly string[] Types = { "Air", "Ground", "Water" };
+			public readonly HashSet<string> Types = new HashSet<string> { "Air", "Ground", "Water" };
 
 			[Desc("How attractive are these types of targets?")]
 			public readonly int Attractiveness = 100;
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.AI
 				if (!targetable.Any(t => t.TargetableBy(a, firedBy.PlayerActor)))
 					return 0;
 
-				if (Types.Intersect(targetable.SelectMany(t => t.TargetTypes)).Any())
+				if (Types.Overlaps(targetable.SelectMany(t => t.TargetTypes)))
 				{
 					switch (TargetMetric)
 					{

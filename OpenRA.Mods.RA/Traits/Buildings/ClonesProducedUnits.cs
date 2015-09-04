@@ -8,6 +8,7 @@
   */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
-		public readonly string[] CloneableTypes = { };
+		public readonly HashSet<string> CloneableTypes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init, this); }
 	}
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			var ci = produced.Info.Traits.GetOrDefault<CloneableInfo>();
-			if (ci == null || !info.CloneableTypes.Intersect(ci.Types).Any())
+			if (ci == null || !info.CloneableTypes.Overlaps(ci.Types))
 				return;
 
 			production.Produce(self, produced.Info, faction);

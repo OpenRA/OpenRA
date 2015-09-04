@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (world.ActorsWithTrait<LineBuildNode>().Any(a =>
 					(a.Actor.Location == cell &&
 						a.Actor.Info.Traits.Get<LineBuildNodeInfo>()
-						.Types.Intersect(lbi.NodeTypes).Any())))
+						.Types.Overlaps(lbi.NodeTypes))))
 						dirs[d] = i; // Cell contains actor of correct type
 					else
 						dirs[d] = -1; // Cell is blocked by another actor type
