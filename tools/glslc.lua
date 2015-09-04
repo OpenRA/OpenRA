@@ -14,6 +14,7 @@ return binpath and {
     local myMenu = wx.wxMenu{
       { ID "glslc.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
       { ID "glslc.compile.separable", "Separable", "when set separable programs are used", wx.wxITEM_CHECK },
+      { ID "glslc.compile.preproc", "Preprocess File", "Pre-process the files only, resolving #inlcudes", wx.wxITEM_CHECK },
       { },
       { ID "glslc.compile.ext", "Compile from .ext\tCtrl-1", "Compile based on file extension" },
       { ID "glslc.compile.all", "Link multiple .ext\tCtrl-2", "Tries to link multiple shaders based on filename" },
@@ -31,6 +32,7 @@ return binpath and {
     local data = {}
     data.customarg = false
     data.separable = false
+    data.preproc   = false
     data.custom = ""
     data.domains = {
       [ID "glslc.compile.vertex"]   = 1,
@@ -312,7 +314,11 @@ return binpath and {
         data.separable = event:IsChecked()
       end)
     
-
+    frame:Connect(ID "glslc.compile.preproc",wx.wxEVT_COMMAND_MENU_SELECTED,
+      function(event)
+        data.preproc = event:IsChecked()
+      end)
+    
     -- Compile
     local function evCompile(event)
       local filename,info = GetEditorFileAndCurInfo()
@@ -346,7 +352,11 @@ return binpath and {
       end
       
       local function getCompileArg(filename,domain)
-        return "-profile "..data.domainprofiles[domain]..' "'..filename:GetFullPath()..'" '
+        local str = ""
+        if (data.preproc) then
+          str = '-P "'..filename:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR).."_"..filename:GetFullName()..'" '
+        end
+        return str.."-profile "..data.domainprofiles[domain]..' "'..filename:GetFullPath()..'" '
       end
 
       
@@ -408,6 +418,7 @@ return binpath and {
 
       local cmdline = binpath.."/glslc.exe "
       cmdline = cmdline..(args and args.." " or "")
+      cmdline = cmdline..(data.preproc   and "-E " or "")
       cmdline = cmdline..(data.separable and "-separable " or "")
       cmdline = cmdline.."-o "..outname.." "
       cmdline = cmdline..compileargs
