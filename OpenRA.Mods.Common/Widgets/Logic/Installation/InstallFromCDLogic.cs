@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromCDLogic
 	{
+		readonly string modId;
 		readonly Widget panel;
 		readonly ProgressBarWidget progressBar;
 		readonly LabelWidget statusLabel;
@@ -28,9 +29,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContentInstaller installData;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromCDLogic(Widget widget, Action continueLoading)
+		public InstallFromCDLogic(Widget widget, Action continueLoading, string modId)
 		{
-			installData = Game.ModData.Manifest.Get<ContentInstaller>();
+			this.modId = modId;
+			installData = ModMetadata.AllMods[modId].Content;
 			this.continueLoading = continueLoading;
 			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
@@ -74,6 +76,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					InstallTFD(Platform.ResolvePath(path, "data1.hdr"));
 			else
 			{
+				var text = "Please insert a {0} install CD and click Retry.".F(ModMetadata.AllMods[modId].Title);
+				insertDiskContainer.Get<LabelWidget>("INFO2").Text = text;
+
 				insertDiskContainer.IsVisible = () => true;
 				installingContainer.IsVisible = () => false;
 			}
@@ -103,13 +108,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var filename = cabExtractor.FileName(index);
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
-						var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, filename.ToLowerInvariant());
+						var dest = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(index, dest);
 						progressBar.Percentage += installPercent;
 					}
 
 					var ArchivesToExtract = installData.InstallShieldCABFilePackageIds.Select(x => x.Split(':'));
-					var destDir = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
+					var destDir = Platform.ResolvePath("^", "Content", modId);
 					var onError = (Action<string>)(s => { });
 					var overwrite = installData.OverwriteFiles;
 
@@ -124,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var filename = cabExtractor.FileName(uint.Parse(archive[0]));
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
-						var destFile = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, filename.ToLowerInvariant());
+						var destFile = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
 						var annotation = archive.Length > 1 ? archive[1] : null;
 						InstallUtils.ExtractFromPackage(source, destFile, annotation, extractFiles, destDir, overwrite, onProgress, onError);
@@ -143,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
+			var dest = Platform.ResolvePath("^", "Content", modId);
 			var copyFiles = installData.CopyFilesFromCD;
 
 			var packageToExtract = installData.PackageToExtractFromCD.Split(':');

@@ -56,7 +56,8 @@ namespace OpenRA.Mods.Common
 
 				foreach (var file in directory.Value)
 				{
-					var dest = Path.Combine(destPath, targetDir, file.ToLowerInvariant());
+					var containingDir = Path.Combine(destPath, targetDir);
+					var dest = Path.Combine(containingDir, file.ToLowerInvariant());
 					if (File.Exists(dest))
 					{
 						if (overwrite)
@@ -67,6 +68,8 @@ namespace OpenRA.Mods.Common
 							continue;
 						}
 					}
+
+					Directory.CreateDirectory(containingDir);
 
 					using (var sourceStream = GlobalFileSystem.Open(file))
 					using (var destStream = File.Create(dest))
@@ -98,12 +101,15 @@ namespace OpenRA.Mods.Common
 					}
 
 					var destFile = Path.GetFileName(file);
-					var dest = Path.Combine(destPath, targetDir, destFile.ToLowerInvariant());
+					var containingDir = Path.Combine(destPath, targetDir);
+					var dest = Path.Combine(containingDir, destFile.ToLowerInvariant());
 					if (File.Exists(dest) && !overwrite)
 					{
 						Log.Write("debug", "Skipping {0}".F(dest));
 						continue;
 					}
+
+					Directory.CreateDirectory(containingDir);
 
 					onProgress("Copying " + destFile);
 					Log.Write("debug", "Copy {0} to {1}".F(sourcePath, dest));

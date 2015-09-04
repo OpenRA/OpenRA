@@ -27,12 +27,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "modId", modId }
 			};
 
-			var modName = ModMetadata.AllMods[modId].Title;
-			var text = panel.Get<LabelWidget>("DESC1").Text;
-			panel.Get<LabelWidget>("DESC1").Text = text.F(modName);
+			var mod = ModMetadata.AllMods[modId];
+			var text = "OpenRA requires the original {0} game content.".F(mod.Title);
+			panel.Get<LabelWidget>("DESC1").Text = text;
 
-			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
-				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", widgetArgs);
+			var downloadButton = panel.Get<ButtonWidget>("DOWNLOAD_BUTTON");
+			downloadButton.OnClick = () => Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", widgetArgs);
+			downloadButton.IsDisabled = () => string.IsNullOrEmpty(mod.Content.PackageMirrorList);
 
 			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", widgetArgs);
