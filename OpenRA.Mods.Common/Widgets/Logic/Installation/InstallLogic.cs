@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -17,16 +16,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InstallLogic : Widget
 	{
 		[ObjectCreator.UseCtor]
-		public InstallLogic(Widget widget, Action continueLoading)
+		public InstallLogic(Widget widget, Action continueLoading, string mirrorListUrl, string modId)
 		{
-			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 			var panel = widget.Get("INSTALL_PANEL");
-			var widgetArgs = new WidgetArgs()
+			var widgetArgs = new WidgetArgs
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
 				{ "continueLoading", continueLoading },
-				{ "mirrorListUrl", installData.PackageMirrorList },
+				{ "mirrorListUrl", mirrorListUrl },
+				{ "modId", modId }
 			};
+
+			var modName = ModMetadata.AllMods[modId].Title;
+			var text = panel.Get<LabelWidget>("DESC1").Text;
+			panel.Get<LabelWidget>("DESC1").Text = text.F(modName);
 
 			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", widgetArgs);

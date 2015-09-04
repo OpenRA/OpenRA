@@ -62,3 +62,59 @@ Container@INSTALL_PANEL:
 			Font: Bold
 			Key: escape
 
+Container@INSTALL_DOWNLOAD_PANEL:
+	Logic: DownloadPackagesLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 500
+	Height: 177
+	Children:
+		Background:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-bg
+		Background@RULE:
+			X: 30
+			Y: 50
+			Width: 440
+			Height:150
+			Background:panel-rule
+		Label@TITLE:
+			X: 0
+			Y: 12
+			Width: PARENT_RIGHT
+			Height: 25
+			Align: Center
+			Font: MediumBold
+		ProgressBar@PROGRESS_BAR:
+			X: 50
+			Y: 64
+			Width: PARENT_RIGHT - 100
+			Height: 16
+			BarMargin: 0, 0
+		Label@STATUS_LABEL:
+			X: 36
+			Y: 85
+			Width: PARENT_RIGHT - 100
+			Height: 25
+			Align: Left
+		Button@RETRY_BUTTON:
+			X: PARENT_RIGHT - 280
+			Y: PARENT_BOTTOM - 52
+			Background:button-highlighted
+			Width: 120
+			Height: 32
+			Visible: false
+			Text: Retry
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - 130
+			Y: PARENT_BOTTOM - 52
+			Background:button-highlighted
+			Width: 110
+			Height: 32
+			Text: Cancel
+			Font: Bold
+			Key: escape
+

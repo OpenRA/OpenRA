@@ -167,7 +167,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var widgetArgs = new WidgetArgs
 				{
 					{ "continueLoading", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments())) }
+						Game.RunAfterTick(() => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments())) },
+					{ "mirrorListUrl", mod.Content.PackageMirrorList },
+					{ "modId", mod.Id }
 				};
 
 				Ui.OpenWindow("INSTALL_PANEL", widgetArgs);

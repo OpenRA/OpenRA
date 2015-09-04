@@ -9,11 +9,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Text;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -21,23 +20,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DownloadPackagesLogic
 	{
+		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 		readonly Widget panel;
+		readonly string modId;
 		readonly string mirrorListUrl;
 		readonly ProgressBarWidget progressBar;
 		readonly LabelWidget statusLabel;
 		readonly Action afterInstall;
 		string mirror;
-		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
 		[ObjectCreator.UseCtor]
-		public DownloadPackagesLogic(Widget widget, Action afterInstall, string mirrorListUrl)
+		public DownloadPackagesLogic(Widget widget, Action afterInstall, string mirrorListUrl, string modId)
 		{
 			this.mirrorListUrl = mirrorListUrl;
 			this.afterInstall = afterInstall;
+			this.modId = modId;
 
 			panel = widget.Get("INSTALL_DOWNLOAD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
+
+			var text = "Downloading {0} assets...".F(ModMetadata.AllMods[modId].Title);
+			panel.Get<LabelWidget>("TITLE").Text = text;
 
 			ShowDownloadDialog();
 		}
@@ -52,9 +56,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 
-			var mirrorsFile = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, "mirrors.txt");
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-			var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
+			var dest = Platform.ResolvePath("^", "Content", modId);
 
 			Action<DownloadProgressChangedEventArgs> onDownloadProgress = i =>
 			{
@@ -100,7 +103,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onError(Download.FormatErrorMessage(i.Error));
 					return;
 				}
-				else if (cancelled)
+
+				if (cancelled)
 				{
 					onError("Download cancelled");
 					return;
@@ -119,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			};
 
-			Action<AsyncCompletedEventArgs, bool> onFetchMirrorsComplete = (i, cancelled) =>
+			Action<DownloadDataCompletedEventArgs, bool> onFetchMirrorsComplete = (i, cancelled) =>
 			{
 				progressBar.Indeterminate = true;
 
@@ -128,21 +132,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onError(Download.FormatErrorMessage(i.Error));
 					return;
 				}
-				else if (cancelled)
+
+				if (cancelled)
 				{
 					onError("Download cancelled");
 					return;
 				}
 
-				var mirrorList = new List<string>();
-				using (var r = new StreamReader(mirrorsFile))
-				{
-					string line;
-					while ((line = r.ReadLine()) != null)
-						if (!string.IsNullOrEmpty(line))
-							mirrorList.Add(line);
-				}
-
+				var data = Encoding.UTF8.GetString(i.Result);
+				var mirrorList = data.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 				mirror = mirrorList.Random(new MersenneTwister());
 
 				// Save the package to a temp file
@@ -152,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			// Get the list of mirrors
-			var updateMirrors = new Download(mirrorListUrl, mirrorsFile, onDownloadProgress, onFetchMirrorsComplete);
+			var updateMirrors = new Download(mirrorListUrl, onDownloadProgress, onFetchMirrorsComplete);
 			cancelButton.OnClick = () => { updateMirrors.Cancel(); Ui.CloseWindow(); };
 			retryButton.OnClick = () => { updateMirrors.Cancel(); ShowDownloadDialog(); };
 		}
