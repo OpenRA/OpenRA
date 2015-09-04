@@ -591,8 +591,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
-	FrozenUnderFog:
-		StartsRevealed: true
+	HiddenUnderShroud:
 	ScriptTriggers:
 
 ^TibTree:
@@ -608,8 +607,7 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
-	FrozenUnderFog:
-		StartsRevealed: true
+	HiddenUnderShroud:
 	WithMakeAnimation:
 
 ^Rock:
@@ -625,8 +623,7 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	FrozenUnderFog:
-		StartsRevealed: true
+	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT

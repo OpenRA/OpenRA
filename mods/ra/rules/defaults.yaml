@@ -566,8 +566,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
-	FrozenUnderFog:
-		StartsRevealed: true
+	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
@@ -656,8 +655,7 @@
 		Terrain: Tree
 	ProximityCaptor:
 		Types: Tree
-	FrozenUnderFog:
-		StartsRevealed: true
+	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
