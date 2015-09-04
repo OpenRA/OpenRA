@@ -184,6 +184,7 @@ frame:Connect(ID_PROJECTDIRFROMFILE, wx.wxEVT_UPDATE_UI,
 
 local function getNameToRun(skipcheck)
   local editor = GetEditor()
+  if not editor then return end
 
   -- test compile it before we run it, if successful then ask to save
   -- only compile if lua api
@@ -196,11 +197,12 @@ local function getNameToRun(skipcheck)
   end
 
   local doc = ide:GetDocument(editor)
-  if not doc:GetFilePath() then doc:SetModified(true) end
+  local name = ide:GetProjectStartFile() or doc:GetFilePath()
+  if not name then doc:SetModified(true) end
   if not SaveIfModified(editor) then return end
   if ide.config.editor.saveallonrun then SaveAll(true) end
 
-  return wx.wxFileName(ide:GetProjectStartFile() or doc:GetFilePath())
+  return wx.wxFileName(name)
 end
 
 function ActivateOutput()
