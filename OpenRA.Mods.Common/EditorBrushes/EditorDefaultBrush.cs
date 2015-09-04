@@ -53,9 +53,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool HandleMouseInput(MouseInput mi)
 		{
-			// Exclusively uses left and right mouse buttons, but nothing else
+			// Exclusively uses mouse wheel and right mouse buttons, but nothing else
 			// Mouse move events are important for tooltips, so we always allow these through
-			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move)
+			if (mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll)
 				return false;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
@@ -88,22 +88,22 @@ namespace OpenRA.Mods.Common.Widgets
 				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
 					mapResources[cell] = new ResourceTile();
 			}
-			else if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
+			else if (mi.Event == MouseInputEvent.Scroll)
 			{
 				if (underCursor != null)
 				{
 					// Test case / demonstration of how to edit an existing actor
 					var facing = underCursor.Init<FacingInit>();
 					if (facing != null)
-						underCursor.ReplaceInit(new FacingInit((facing.Value(world) + 32) % 256));
+						underCursor.ReplaceInit(new FacingInit((facing.Value(world) + mi.ScrollDelta) % 256));
 					else if (underCursor.Info.Traits.WithInterface<UsesInit<FacingInit>>().Any())
-						underCursor.ReplaceInit(new FacingInit(32));
+						underCursor.ReplaceInit(new FacingInit(mi.ScrollDelta));
 
 					var turret = underCursor.Init<TurretFacingInit>();
 					if (turret != null)
-						underCursor.ReplaceInit(new TurretFacingInit((turret.Value(world) + 32) % 256));
+						underCursor.ReplaceInit(new TurretFacingInit((turret.Value(world) + mi.ScrollDelta) % 256));
 					else if (underCursor.Info.Traits.WithInterface<UsesInit<TurretFacingInit>>().Any())
-						underCursor.ReplaceInit(new TurretFacingInit(32));
+						underCursor.ReplaceInit(new TurretFacingInit(mi.ScrollDelta));
 				}
 			}
 
