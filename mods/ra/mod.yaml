@@ -141,7 +141,6 @@ LoadScreen: LogoStripeLoadScreen
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ContentInstaller:
-	MusicMenuWidget: INSTALL_MUSIC_PANEL
 	TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
 	PackageMirrorList: http://www.openra.net/packages/ra-mirrors.txt
 	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX

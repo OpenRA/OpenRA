@@ -140,7 +140,6 @@ LoadScreen: CncLoadScreen
 
 ContentInstaller:
 	TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-	MusicMenuWidget: INSTALL_MUSIC_PANEL
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt

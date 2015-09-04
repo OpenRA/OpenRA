@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
 
-			ModMetadata initialMod = null;
+			ModMetadata initialMod;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
 			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : ModMetadata.AllMods["ra"]);
 
