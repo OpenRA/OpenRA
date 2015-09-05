@@ -307,11 +307,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
 
 			// Update volume immediately
-			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Sound.SoundVolume = x;
-			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Sound.MusicVolume = x;
-			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Sound.VideoVolume = x;
+			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
+			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
+			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
 
-			var devices = Sound.AvailableDevices();
+			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
@@ -339,12 +339,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.Engine = dss.Engine;
 
 				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;
-				Sound.SoundVolume = ss.SoundVolume;
+				Game.Sound.SoundVolume = ss.SoundVolume;
 				panel.Get<SliderWidget>("MUSIC_VOLUME").Value = ss.MusicVolume;
-				Sound.MusicVolume = ss.MusicVolume;
+				Game.Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
-				Sound.VideoVolume = ss.VideoVolume;
-				soundDevice = Sound.AvailableDevices().First();
+				Game.Sound.VideoVolume = ss.VideoVolume;
+				soundDevice = Game.Sound.AvailableDevices().First();
 			};
 		}
 

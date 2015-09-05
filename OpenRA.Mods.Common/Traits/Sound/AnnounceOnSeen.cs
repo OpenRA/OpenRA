@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Audio notification
 			if (discoverer != null && !string.IsNullOrEmpty(Info.Notification))
-				Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Faction.InternalName);
 
 			// Radar notificaion
 			if (Info.PingRadar && radarPings.Value != null)

@@ -73,12 +73,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Charging(Actor self, string key)
 		{
-			Sound.PlayToPlayer(self.Owner, Info.BeginChargeSound);
+			Game.Sound.PlayToPlayer(self.Owner, Info.BeginChargeSound);
 		}
 
 		public virtual void Charged(Actor self, string key)
 		{
-			Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
+			Game.Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
 		}
 
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
 		}
 	}

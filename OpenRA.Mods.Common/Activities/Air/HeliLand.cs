@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!playedSound && helicopter.Info.LandingSound != null && !self.IsAtGroundLevel())
 			{
-				Sound.Play(helicopter.Info.LandingSound);
+				Game.Sound.Play(helicopter.Info.LandingSound);
 				playedSound = true;
 			}
 

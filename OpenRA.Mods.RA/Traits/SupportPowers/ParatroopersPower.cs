@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
-				Sound.Play(notification);
+				Game.Sound.Play(notification);
 
 				Actor distanceTestActor = null;
 

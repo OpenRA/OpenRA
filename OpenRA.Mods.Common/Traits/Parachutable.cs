@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			var terrain = self.World.Map.GetTerrainInfo(self.Location);
 
 			var sound = terrain.IsWater ? info.WaterImpactSound : info.GroundImpactSound;
-			Sound.Play(sound, self.CenterPosition);
+			Game.Sound.Play(sound, self.CenterPosition);
 
 			var sequence = terrain.IsWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = terrain.IsWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;

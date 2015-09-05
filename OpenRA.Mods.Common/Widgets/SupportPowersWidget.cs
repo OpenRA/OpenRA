@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 		protected void ClickIcon(SupportPowerIcon clicked)
 		{
 			if (!clicked.Power.Active)
-				Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
+				Game.Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
 			else
 				clicked.Power.Target();
 		}

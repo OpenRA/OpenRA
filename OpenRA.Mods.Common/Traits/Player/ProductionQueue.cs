@@ -281,13 +281,13 @@ namespace OpenRA.Mods.Common.Traits
 								var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 
 								if (isBuilding && !hasPlayedSound)
-									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+									hasPlayedSound = Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 								else if (!isBuilding)
 								{
 									if (BuildUnit(order.TargetString))
-										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+										Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 									else if (!hasPlayedSound && time > 0)
-										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+										hasPlayedSound = Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
 								}
 							})));
 						}

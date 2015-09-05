@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Effects
 			pos = launchPos;
 			var weaponRules = firedBy.World.Map.Rules.Weapons[weapon.ToLowerInvariant()];
 			if (weaponRules.Report != null && weaponRules.Report.Any())
-				Sound.Play(weaponRules.Report.Random(firedBy.World.SharedRandom), pos);
+				Game.Sound.Play(weaponRules.Report.Random(firedBy.World.SharedRandom), pos);
 
 			if (skipAscent)
 				ticks = turn;

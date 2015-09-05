@@ -261,9 +261,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (leftPressed || rightPressed)
 			{
 				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
-					Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				else
-					Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickDisabledSound", null);
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickDisabledSound", null);
 			}
 
 			// Check production tabs
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;
-				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 			}
 
 			return true;
@@ -286,12 +286,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (hotkey == Game.Settings.Keys.NextProductionTabKey)
 			{
-				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(false);
 			}
 			else if (hotkey == Game.Settings.Keys.PreviousProductionTabKey)
 			{
-				Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(true);
 			}
 

@@ -99,9 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanDeploy() || (building != null && !building.Lock()))
 			{
 				foreach (var s in info.NoTransformSounds)
-					Sound.PlayToPlayer(self.Owner, s);
+					Game.Sound.PlayToPlayer(self.Owner, s);
 
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Faction.InternalName);
 
 				return;
 			}

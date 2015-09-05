@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
 			if (!replayCache)
-				Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+				Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
 	}
 }

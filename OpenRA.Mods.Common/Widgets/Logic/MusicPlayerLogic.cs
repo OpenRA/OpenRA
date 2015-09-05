@@ -41,12 +41,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;
-			playButton.IsVisible = () => !Sound.MusicPlaying;
+			playButton.IsVisible = () => !Game.Sound.MusicPlaying;
 
 			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
-			pauseButton.OnClick = Sound.PauseMusic;
+			pauseButton.OnClick = Game.Sound.PauseMusic;
 			pauseButton.IsDisabled = noMusic;
-			pauseButton.IsVisible = () => Sound.MusicPlaying;
+			pauseButton.IsVisible = () => Game.Sound.MusicPlaying;
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = () => { musicPlaylist.Stop(); };
@@ -75,8 +75,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (currentSong == null || musicPlaylist.CurrentSongIsBackground)
 					return "";
 
-				var minutes = (int)Sound.MusicSeekPosition / 60;
-				var seconds = (int)Sound.MusicSeekPosition % 60;
+				var minutes = (int)Game.Sound.MusicSeekPosition / 60;
+				var seconds = (int)Game.Sound.MusicSeekPosition % 60;
 				var totalMinutes = currentSong.Length / 60;
 				var totalSeconds = currentSong.Length % 60;
 
@@ -84,8 +84,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
-			musicSlider.OnChange += x => Sound.MusicVolume = x;
-			musicSlider.Value = Sound.MusicVolume;
+			musicSlider.OnChange += x => Game.Sound.MusicVolume = x;
+			musicSlider.Value = Game.Sound.MusicVolume;
 
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
@@ -108,10 +108,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (musicPlaylist.CurrentSongIsBackground && currentSong != null)
 						currentSong = null;
 
-					if (Sound.CurrentMusic == null || currentSong == Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)
+					if (Game.Sound.CurrentMusic == null || currentSong == Game.Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)
 						return;
 
-					currentSong = Sound.CurrentMusic;
+					currentSong = Game.Sound.CurrentMusic;
 				};
 			}
 

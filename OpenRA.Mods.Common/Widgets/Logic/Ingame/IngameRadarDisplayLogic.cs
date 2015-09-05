@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 				if (radarEnabled != cachedRadarEnabled)
-					Sound.PlayNotification(world.Map.Rules, null, "Sounds", radarEnabled ? "RadarUp" : "RadarDown", null);
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", radarEnabled ? "RadarUp" : "RadarDown", null);
 				cachedRadarEnabled = radarEnabled;
 			};
 

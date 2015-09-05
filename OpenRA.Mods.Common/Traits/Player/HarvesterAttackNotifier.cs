@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)
 			{
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
 
 				if (radarPings != null)
 					radarPings.Add(() => self.Owner == self.World.LocalPlayer, self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);

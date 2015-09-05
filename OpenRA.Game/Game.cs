@@ -42,6 +42,7 @@ namespace OpenRA
 		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
 
 		public static Renderer Renderer;
+		public static Sound Sound;
 		public static bool HasInputFocus = false;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
@@ -234,7 +235,7 @@ namespace OpenRA
 				}
 			}
 
-			Sound.Create(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
 
 			Console.WriteLine("Available mods:");
 			foreach (var mod in ModMetadata.AllMods)

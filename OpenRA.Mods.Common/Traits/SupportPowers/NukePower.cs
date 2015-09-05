@@ -71,9 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				Sound.Play(Info.LaunchSound);
+				Game.Sound.Play(Info.LaunchSound);
 			else
-				Sound.Play(Info.IncomingSound);
+				Game.Sound.Play(Info.IncomingSound);
 
 			if (!string.IsNullOrEmpty(info.ActivationSequence))
 			{

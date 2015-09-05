@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
+				Game.Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
 
 				w.Add(new SatelliteLaunch(self));
 
