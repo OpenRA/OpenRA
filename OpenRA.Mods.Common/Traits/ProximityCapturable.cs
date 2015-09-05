@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Permanent = false;
 		public readonly int Range = 5;
 		public readonly bool MustBeClear = false;
-		public readonly string[] CaptorTypes = { "Vehicle", "Tank", "Infantry" };
+		public readonly HashSet<string> CaptorTypes = new HashSet<string> { "Vehicle", "Tank", "Infantry" };
 
 		public object Create(ActorInitializer init) { return new ProximityCapturable(init.Self, this); }
 	}

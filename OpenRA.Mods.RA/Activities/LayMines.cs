@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 		readonly MinelayerInfo info;
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
-		readonly string[] rearmBuildings;
+		readonly HashSet<string> rearmBuildings;
 
 		public LayMines(Actor self)
 		{

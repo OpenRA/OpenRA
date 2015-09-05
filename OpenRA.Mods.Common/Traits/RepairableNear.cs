@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
-		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
+		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
 		public readonly int CloseEnough = 4;	/* cells */
 
 		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }

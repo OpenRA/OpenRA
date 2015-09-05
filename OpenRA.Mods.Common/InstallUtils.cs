@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common
 		public readonly string MenuWidget = null;
 		public readonly string MusicMenuWidget = null;
 		public readonly string BackgroundWidget = null;
-		public readonly string[] TestFiles = { };
-		public readonly string[] DiskTestFiles = { };
+		public readonly HashSet<string> TestFiles = new HashSet<string>();
+		public readonly HashSet<string> DiskTestFiles = new HashSet<string>();
 		public readonly string PackageToExtractFromCD = null;
 		public readonly bool OverwriteFiles = true;
 
@@ -37,10 +37,10 @@ namespace OpenRA.Mods.Common
 		public readonly int ShippedSoundtracks = 0;
 
 		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files. </summary>
-		public readonly int[] InstallShieldCABFileIds = { };
+		public readonly HashSet<int> InstallShieldCABFileIds = new HashSet<int>();
 
 		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD. </summary>
-		public readonly string[] InstallShieldCABFilePackageIds = { };
+		public readonly HashSet<string> InstallShieldCABFilePackageIds = new HashSet<string>();
 	}
 
 	public static class InstallUtils

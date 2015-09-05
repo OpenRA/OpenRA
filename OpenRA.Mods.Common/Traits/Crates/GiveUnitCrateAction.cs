@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Units = { };
 
 		[Desc("Factions that are allowed to trigger this action.")]
-		public readonly string[] ValidFactions = { };
+		public readonly HashSet<string> ValidFactions = new HashSet<string>();
 
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;

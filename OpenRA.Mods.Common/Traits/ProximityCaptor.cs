@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProximityCaptorInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
-		public readonly string[] Types = { };
+		public readonly HashSet<string> Types = new HashSet<string>();
 		public object Create(ActorInitializer init) { return new ProximityCaptor(this); }
 	}
 
@@ -27,9 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ProximityCaptor(ProximityCaptorInfo info) { Info = info; }
 
-		public bool HasAny(string[] typesList)
+		public bool HasAny(IEnumerable<string> typesList)
 		{
-			return typesList.Any(flag => Info.Types.Contains(flag));
+			return Info.Types.Overlaps(typesList);
 		}
 	}
 }

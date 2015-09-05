@@ -8,7 +8,7 @@
   */
 #endregion
 
-using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("This unit's cloneable type is:")]
-		public readonly string[] Types = { };
+		public readonly HashSet<string> Types = new HashSet<string>();
 	}
 
 	public class Cloneable { }

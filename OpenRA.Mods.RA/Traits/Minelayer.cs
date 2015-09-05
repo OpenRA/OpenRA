@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 	public class MinelayerInfo : ITraitInfo
 	{
 		[ActorReference] public readonly string Mine = "minv";
-		[ActorReference] public readonly string[] RearmBuildings = { "fix" };
+		[ActorReference] public readonly HashSet<string> RearmBuildings = new HashSet<string> { "fix" };
 
 		public readonly string AmmoPoolName = "primary";
 

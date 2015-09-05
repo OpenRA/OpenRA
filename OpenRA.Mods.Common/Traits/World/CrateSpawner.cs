@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -28,10 +29,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SpawnInterval = 180;
 
 		[Desc("Which terrain types can we drop on?")]
-		public readonly string[] ValidGround = { "Clear", "Rough", "Road", "Ore", "Beach" };
+		public readonly HashSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" };
 
 		[Desc("Which terrain types count as water?")]
-		public readonly string[] ValidWater = { "Water" };
+		public readonly HashSet<string> ValidWater = new HashSet<string> { "Water" };
 
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;

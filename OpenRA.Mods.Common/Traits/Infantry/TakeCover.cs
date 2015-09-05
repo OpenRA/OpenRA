@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
-		public readonly string[] DamageTriggers = null;
+		public readonly HashSet<string> DamageTriggers = new HashSet<string>();
 
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			var warhead = e.Warhead as DamageWarhead;
-			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Any(x => info.DamageTriggers.Contains(x)))
+			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Overlaps(info.DamageTriggers))
 				return;
 
 			if (!IsProne)

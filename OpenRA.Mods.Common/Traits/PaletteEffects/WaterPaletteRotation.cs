@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Palette effect used for sprinkle \"animations\" on terrain tiles.")]
 	class WaterPaletteRotationInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = { };
+		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.World, this); }
 	}

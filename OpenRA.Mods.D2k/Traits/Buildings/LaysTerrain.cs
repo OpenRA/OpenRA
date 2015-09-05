@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		[FieldLoader.Require]
 		[Desc("The terrain types that this template will be placed on")]
-		public readonly string[] TerrainTypes = { };
+		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
 		[Desc("Offset relative to the actor TopLeft. Not used if the template is PickAny")]
 		public readonly CVec Offset = CVec.Zero;

@@ -32,10 +32,10 @@ namespace OpenRA.Mods.Common.AI
 		public readonly int SquadSizeRandomBonus = 30;
 
 		[Desc("Production queues AI uses for buildings.")]
-		public readonly string[] BuildingQueues = { "Building" };
+		public readonly HashSet<string> BuildingQueues = new HashSet<string> { "Building" };
 
 		[Desc("Production queues AI uses for defenses.")]
-		public readonly string[] DefenseQueues = { "Defense" };
+		public readonly HashSet<string> DefenseQueues = new HashSet<string> { "Defense" };
 
 		[Desc("Delay (in ticks) between giving out orders to units.")]
 		public readonly int AssignRolesInterval = 20;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.AI
 		public readonly int CheckForWaterRadius = 8;
 
 		[Desc("Production queues AI uses for producing units.")]
-		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
+		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
 		[Desc("Should the AI repair its buildings if damaged?")]
 		public readonly bool ShouldRepairBuildings = true;

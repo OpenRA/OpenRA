@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		[WeaponReference]
 		public readonly string Weapon = "weathering";
-		public readonly string[] SafeTerrain = { "Concrete" };
+		public readonly HashSet<string> SafeTerrain = new HashSet<string> { "Concrete" };
 		public readonly int DamageThreshold = 50;
 
 		public object Create(ActorInitializer init) { return new DamagedWithoutFoundation(init.Self, this); }

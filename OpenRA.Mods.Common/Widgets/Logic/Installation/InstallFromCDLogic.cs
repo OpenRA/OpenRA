@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (path != null)
 				Install(path);
-			else if ((installData.InstallShieldCABFileIds.Length != 0 || installData.InstallShieldCABFilePackageIds.Length != 0)
+			else if ((installData.InstallShieldCABFileIds.Count != 0 || installData.InstallShieldCABFilePackageIds.Count != 0)
 				&& (path = InstallUtils.GetMountedDisk(IsTFD)) != null)
 					InstallTFD(Platform.ResolvePath(path, "data1.hdr"));
 			else
@@ -91,10 +91,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				using (var cabExtractor = new InstallShieldCABExtractor(source))
 				{
-					var denom = installData.InstallShieldCABFileIds.Length;
+					var denom = installData.InstallShieldCABFileIds.Count;
 					var extractFiles = installData.ExtractFilesFromCD;
 
-					if (installData.InstallShieldCABFilePackageIds.Length > 0)
+					if (installData.InstallShieldCABFilePackageIds.Count > 0)
 						denom += extractFiles.SelectMany(x => x.Value).Count();
 
 					var installPercent = 100 / denom;

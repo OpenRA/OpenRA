@@ -9,21 +9,24 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace OpenRA.Mods.Common.Lint
 {
 	public class LintExts
 	{
-		public static string[] GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
+		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
 		{
 			var type = fieldInfo.FieldType;
 			if (type == typeof(string))
 				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
 			if (type == typeof(string[]))
 				return (string[])fieldInfo.GetValue(ruleInfo);
+			if (type == typeof(HashSet<string>))
+				return (HashSet<string>)fieldInfo.GetValue(ruleInfo);
 
-			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[]"
+			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[], HashSet<string>"
 				.F(ruleInfo.GetType().Name, fieldInfo.Name));
 
 			return new string[] { };

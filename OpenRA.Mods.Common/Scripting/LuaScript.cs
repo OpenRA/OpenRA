@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
@@ -19,7 +21,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[Desc("Part of the new Lua API.")]
 	public class LuaScriptInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
-		public readonly string[] Scripts = { };
+		public readonly HashSet<string> Scripts = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void WorldLoaded(World world, WorldRenderer worldRenderer)
 		{
-			var scripts = info.Scripts ?? new string[0];
+			var scripts = info.Scripts ?? Enumerable.Empty<string>();
 			context = new ScriptContext(world, worldRenderer, scripts);
 			context.WorldLoaded();
 		}

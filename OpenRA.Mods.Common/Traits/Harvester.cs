@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class HarvesterInfo : ITraitInfo, Requires<MobileInfo>
 	{
-		public readonly string[] DeliveryBuildings = { };
+		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
 
 		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
 		public readonly int SearchForDeliveryBuildingDelay = 125;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HarvestFacings = 0;
 
 		[Desc("Which resources it can harvest.")]
-		public readonly string[] Resources = { };
+		public readonly HashSet<string> Resources = new HashSet<string>();
 
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsAcceptableProcType(Actor proc)
 		{
-			return info.DeliveryBuildings.Length == 0 ||
+			return info.DeliveryBuildings.Count == 0 ||
 				info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 

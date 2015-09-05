@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -16,7 +17,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
-		public readonly string[] OpenTerrainTypes = { "Clear" };
+		public readonly HashSet<string> OpenTerrainTypes = new HashSet<string> { "Clear" };
 		[SequenceReference] public readonly string OpenSequence = "open";
 		[SequenceReference] public readonly string CloseSequence = "close";
 		[SequenceReference] public readonly string UnloadSequence = "unload";

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int[] Size = { 0, 0 };
 
 		[Desc("Type of smudge to apply to terrain.")]
-		public readonly string[] SmudgeType = { };
+		public readonly HashSet<string> SmudgeType = new HashSet<string>();
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Warheads
 			// Draw the smudges:
 			foreach (var sc in allCells)
 			{
-				var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => SmudgeType.Contains(t));
+				var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
 				if (smudgeType == null) continue;
 
 				SmudgeLayer smudgeLayer;

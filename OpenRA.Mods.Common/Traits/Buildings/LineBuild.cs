@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Range = 5;
 
 		[Desc("LineBuildNode 'Types' to attach to.")]
-		public readonly string[] NodeTypes = { "wall" };
+		public readonly HashSet<string> NodeTypes = new HashSet<string> { "wall" };
 	}
 
 	public class LineBuild { }

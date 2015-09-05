@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int PipCount = 0;
 
 		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
-		public readonly string[] Types = { };
+		public readonly HashSet<string> Types = new HashSet<string>();
 
 		[Desc("A list of actor types that are initially spawned into this actor.")]
 		public readonly string[] InitialUnits = { };
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool EjectOnSell = true;
 
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
-		public readonly string[] UnloadTerrainTypes = { };
+		public readonly HashSet<string> UnloadTerrainTypes = new HashSet<string>();
 
 		[Desc("Voice to play when ordered to unload the passengers.")]
 		[VoiceReference] public readonly string UnloadVoice = "Action";
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 			Unloading = false;
-			checkTerrainType = info.UnloadTerrainTypes.Length > 0;
+			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
 
 			if (init.Contains<RuntimeCargoInit>())
 			{

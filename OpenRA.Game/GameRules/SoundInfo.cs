@@ -22,8 +22,8 @@ namespace OpenRA.GameRules
 		public readonly Dictionary<string, string[]> Notifications = new Dictionary<string, string[]>();
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
-		public readonly string[] DisableVariants = { };
-		public readonly string[] DisablePrefixes = { };
+		public readonly HashSet<string> DisableVariants = new HashSet<string>();
+		public readonly HashSet<string> DisablePrefixes = new HashSet<string>();
 
 		public readonly Lazy<Dictionary<string, SoundPool>> VoicePools;
 		public readonly Lazy<Dictionary<string, SoundPool>> NotificationsPools;

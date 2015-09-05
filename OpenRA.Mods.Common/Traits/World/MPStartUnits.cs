@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ClassName = "Unlabeled";
 
 		[Desc("Only available when selecting one of these factions.", "Leave empty for no restrictions.")]
-		public readonly string[] Factions = { };
+		public readonly HashSet<string> Factions = new HashSet<string>();
 
 		[Desc("The mobile construction vehicle.")]
 		public readonly string BaseActor = null;

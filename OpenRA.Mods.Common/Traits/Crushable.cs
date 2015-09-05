@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.Kill(crusher);
 		}
 
-		public bool CrushableBy(string[] crushClasses, Player crushOwner)
+		public bool CrushableBy(HashSet<string> crushClasses, Player crushOwner)
 		{
 			// Only make actor crushable if it is on the ground.
 			if (!self.IsAtGroundLevel())

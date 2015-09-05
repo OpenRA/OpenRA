@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[UpgradeUsedReference]
 		[Desc("The upgrade types which can enable or disable this trait.")]
-		public readonly string[] UpgradeTypes = { };
+		public readonly HashSet<string> UpgradeTypes = new HashSet<string>();
 
 		[Desc("The minimum upgrade level at which this trait is enabled.", "Defaults to 0 (enabled by default).")]
 		public readonly int UpgradeMinEnabledLevel = 0;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public UpgradableTrait(InfoType info)
 		{
 			Info = info;
-			IsTraitDisabled = info.UpgradeTypes != null && info.UpgradeTypes.Length > 0 && info.UpgradeMinEnabledLevel > 0;
+			IsTraitDisabled = info.UpgradeTypes != null && info.UpgradeTypes.Count > 0 && info.UpgradeMinEnabledLevel > 0;
 		}
 
 		public bool AcceptsUpgradeLevel(Actor self, string type, int level)

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Prerequisites = { };
 
 		[Desc("Production queue(s) that can produce this.")]
-		public readonly string[] Queue = { };
+		public readonly HashSet<string> Queue = new HashSet<string>();
 
 		[Desc("Override the production structure type (from the Production Produces list) that this unit should be built at.")]
 		public readonly string BuildAtProductionType = null;
