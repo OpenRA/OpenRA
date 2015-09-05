@@ -40,7 +40,7 @@ namespace OpenRA.FileSystem
 			public FileGroup(Stream reader, long offset)
 			{
 				var nameOffset = reader.ReadUInt32();
-				/*   unknown  */ reader.ReadBytes(18);
+				/*  unknown  */ reader.ReadBytes(18);
 				FirstFile = reader.ReadUInt32();
 				LastFile = reader.ReadUInt32();
 
@@ -127,12 +127,12 @@ namespace OpenRA.FileSystem
 			{
 				reader.Seek(commonHeader.CabDescriptorOffset + 12, SeekOrigin.Begin);
 				FileTableOffset = (long)reader.ReadUInt32();
-				/*    unknown  */ reader.ReadUInt32();
+				/*  unknown  */ reader.ReadUInt32();
 				FileTableSize = reader.ReadUInt32();
 
 				FileTableSize2 = reader.ReadUInt32();
 				DirectoryCount = reader.ReadUInt32();
-				/*   unknown  */ reader.ReadBytes(8);
+				/*  unknown  */ reader.ReadBytes(8);
 				FileCount = reader.ReadUInt32();
 
 				FileTableOffset2 = (long)reader.ReadUInt32();
@@ -141,37 +141,37 @@ namespace OpenRA.FileSystem
 
 		struct FileDescriptor
 		{
-			public readonly ushort	Flags;
-			public readonly uint	ExpandedSize;
-			public readonly uint	CompressedSize;
-			public readonly uint	DataOffset;
+			public readonly ushort Flags;
+			public readonly uint ExpandedSize;
+			public readonly uint CompressedSize;
+			public readonly uint DataOffset;
 
-			public readonly byte[]	MD5;
-			public readonly uint	NameOffset;
-			public readonly ushort	DirectoryIndex;
-			public readonly uint	LinkToPrevious;
+			public readonly byte[] MD5;
+			public readonly uint NameOffset;
+			public readonly ushort DirectoryIndex;
+			public readonly uint LinkToPrevious;
 
-			public readonly uint	LinkToNext;
-			public readonly byte	LinkFlags;
-			public readonly ushort	Volume;
-			public readonly string	Filename;
+			public readonly uint LinkToNext;
+			public readonly byte LinkFlags;
+			public readonly ushort Volume;
+			public readonly string Filename;
 
 			public FileDescriptor(Stream reader, long tableOffset)
 			{
 				Flags = reader.ReadUInt16();
 				ExpandedSize = reader.ReadUInt32();
-				/*    unknown   */ reader.ReadUInt32();
+				/*  unknown  */ reader.ReadUInt32();
 				CompressedSize = reader.ReadUInt32();
 
-				/*  unknown */ reader.ReadUInt32();
-				DataOffset   = reader.ReadUInt32();
-				/*  unknown */ reader.ReadUInt32();
-				MD5          = reader.ReadBytes(16);
+				/*  unknown  */	reader.ReadUInt32();
+				DataOffset = reader.ReadUInt32();
+				/*  unknown  */ reader.ReadUInt32();
+				MD5 = reader.ReadBytes(16);
 
-				/*   unknown  */ reader.ReadBytes(16);
-				NameOffset     = reader.ReadUInt32();
+				/*  unknown  */ reader.ReadBytes(16);
+				NameOffset = reader.ReadUInt32();
 				DirectoryIndex = reader.ReadUInt16();
-				/*   unknown  */ reader.ReadBytes(12);
+				/*  unknown  */ reader.ReadBytes(12);
 				LinkToPrevious = reader.ReadUInt32();
 				LinkToNext = reader.ReadUInt32();
 
@@ -305,7 +305,7 @@ namespace OpenRA.FileSystem
 						fileOffset = head.FirstFileOffset;
 					}
 					else
-						throw new Exception("Cannot Resolve Remaining Stream");
+						throw new IOException("Cannot Resolve Remaining Stream");
 				}
 				else
 				{
@@ -352,7 +352,7 @@ namespace OpenRA.FileSystem
 
 			commonHeader = new CommonHeader(hdrFile);
 			cabDescriptor = new CabDescriptor(hdrFile, commonHeader);
-			/*    unknown   */ hdrFile.ReadBytes(14);
+			/*  unknown  */ hdrFile.ReadBytes(14);
 
 			for (var i = 0U; i < MaxFileGroupCount; ++i)
 				fileGroupOffsets.Add(hdrFile.ReadUInt32());
@@ -383,9 +383,10 @@ namespace OpenRA.FileSystem
 				for (var index = fileGroup.FirstFile; index <= fileGroup.LastFile; ++index)
 				{
 					AddFileDescriptorToList(index);
+					var dirSeperator = Path.DirectorySeparatorChar;
 					var fileDescriptor = fileDescriptors[index];
-					var fullFilePath   = "{0}\\{1}\\{2}".F(fileGroup.Name, DirectoryName((uint)fileDescriptor.DirectoryIndex), fileDescriptor.Filename);
-					fileLookup.Add(fullFilePath, index);
+					var fullFilePath = "{0}{3}{1}{3}{2}".F(fileGroup.Name, DirectoryName((uint)fileDescriptor.DirectoryIndex), fileDescriptor.Filename, dirSeperator);
+					fileLookup.Add(fullFilePath.Replace("\\\\", "{0}".F(dirSeperator)).ToLowerInvariant(), index);
 				}
 			}
 		}
@@ -404,9 +405,25 @@ namespace OpenRA.FileSystem
 			return test;
 		}
 
+		public uint GetIndexByFilename(string directory, string filename)
+		{
+			var index = uint.MinValue;
+
+			foreach (var entry in fileLookup.Keys)
+			{
+				if (entry.StartsWith(directory) && entry.EndsWith(filename))
+				{
+					index = fileLookup[entry];
+					break;
+				}
+			}
+
+			return index;
+		}
+
 		public bool Exists(string filename)
 		{
-			return fileLookup.ContainsKey(filename);
+			return fileLookup.ContainsKey(filename.ToLowerInvariant());
 		}
 
 		public uint DirectoryCount()
@@ -461,7 +478,7 @@ namespace OpenRA.FileSystem
 		{
 			var fileDes = fileDescriptors[index];
 			if ((fileDes.Flags & FileInvalid) != 0)
-				throw new Exception("File Invalid");
+				throw new InvalidDataException("File Invalid");
 
 			if ((fileDes.LinkFlags & LinkPrev) != 0)
 				return GetContentById(fileDes.LinkToPrevious);
@@ -475,7 +492,7 @@ namespace OpenRA.FileSystem
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
-				throw new Exception("Did not fully extract Expected = {0}, Got = {1}".F(fileDes.ExpandedSize, output.Length));
+				throw new IOException("Did not fully extract! (Expected = {0}, Got = {1})".F(fileDes.ExpandedSize, output.Length));
 
 			output.Position = 0;
 			return output;
@@ -485,7 +502,7 @@ namespace OpenRA.FileSystem
 		{
 			var fileDes = fileDescriptors[index];
 			if ((fileDes.Flags & FileInvalid) != 0)
-				throw new Exception("File Invalid");
+				throw new InvalidDataException("File Invalid");
 
 			if ((fileDes.LinkFlags & LinkPrev) != 0)
 			{
@@ -500,7 +517,7 @@ namespace OpenRA.FileSystem
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
-				throw new Exception("Did not fully extract Expected = {0}, Got = {1}".F(fileDes.ExpandedSize, output.Length));
+				throw new IOException("Did not fully extract! (Expected = {0}, Got = {1})".F(fileDes.ExpandedSize, output.Length));
 		}
 
 		public Stream GetContent(string fileName)
