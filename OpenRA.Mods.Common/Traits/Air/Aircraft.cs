@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (IsPlane)
 						self.QueueActivity(new ReturnToBase(self));
 					else
-						self.QueueActivity(new HeliReturn(self));
+						self.QueueActivity(new HeliReturnToBase(self));
 				}
 				else
 				{
@@ -588,7 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsPlane)
 					self.QueueActivity(new ReturnToBase(self));
 				else
-					self.QueueActivity(new HeliReturn(self));
+					self.QueueActivity(new HeliReturnToBase(self));
 
 				self.QueueActivity(new ResupplyAircraft(self));
 			}

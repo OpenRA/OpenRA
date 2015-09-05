@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (isPlane)
 				Self.QueueActivity(new ReturnToBase(Self, airfield));
 			else
-				Self.QueueActivity(new HeliReturn(Self));
+				Self.QueueActivity(new HeliReturnToBase(Self));
 		}
 	}
 }
