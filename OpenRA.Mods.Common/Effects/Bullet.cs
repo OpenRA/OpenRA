@@ -16,6 +16,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
@@ -171,7 +172,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			var shouldExplode = height.Length <= 0 // Hit the ground
 				|| ticks++ >= length // Flight length reached/exceeded
-				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())); // Hit a wall or other blocking obstacle
+				|| BlockedByActor(world, pos); // Hit a wall or other blocking obstacle
 
 			if (shouldExplode)
 				Explode(world);
@@ -210,6 +211,12 @@ namespace OpenRA.Mods.Common.Effects
 			world.AddFrameEndTask(w => w.Remove(this));
 
 			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
+		}
+
+		bool BlockedByActor(World world, WPos pos)
+		{
+			return info.Blockable && world.ActorMap.GetUnitsAt(world.Map.CellContaining(pos))
+					.Any(a => a.TraitsImplementing<BlocksProjectiles>().Any(Exts.IsTraitEnabled));
 		}
 	}
 }
