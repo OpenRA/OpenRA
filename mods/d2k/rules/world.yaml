@@ -91,7 +91,7 @@ World:
 		ClassName: Light Support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, grenadier, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@lightharkonnen:
@@ -99,7 +99,7 @@ World:
 		ClassName: Light Support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, bazooka, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@lightordos:
@@ -107,7 +107,7 @@ World:
 		ClassName: Light Support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyatreides:
@@ -115,7 +115,7 @@ World:
 		ClassName: Heavy Support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, grenadier, trike, combata, missiletank
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyharkonnen:
@@ -123,7 +123,7 @@ World:
 		ClassName: Heavy Support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, quad, combath, siegetank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavyordos:
@@ -131,7 +131,7 @@ World:
 		ClassName: Heavy Support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: rifle, rifle, rifle, bazooka, engineer, raider, combato, missiletank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnMPUnits:

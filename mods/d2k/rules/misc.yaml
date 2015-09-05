@@ -43,30 +43,30 @@ crate:
 		Prerequisites: techlevel.medium, Light, Outpost
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
-		Units: combata
+		Units: combat_tank_a
 		ValidFactions: atreides
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
-		Units: combath
+		Units: combat_tank_h
 		ValidFactions: harkonnen
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
-		Units: combato
+		Units: combat_tank_o
 		ValidFactions: ordos
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
-		Units: siegetank
+		Units: siege_tank
 		Prerequisites: techlevel.medium, Heavy, Outpost
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
-		Units: missiletank
+		Units: missile_tank
 		Prerequisites: techlevel.high, Hitech
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
-		Units: stealthraider
+		Units: stealth_raider
 		ValidFactions: ordos
 		Prerequisites: techlevel.medium, Hitech
 	GiveUnitCrateAction@Fremen:
@@ -86,17 +86,17 @@ crate:
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
-		Units: sonictank
+		Units: sonic_tank
 		ValidFactions: atreides
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
-		Units: devast
+		Units: devastator
 		ValidFactions: harkonnen
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
-		Units: deviatortank
+		Units: deviator
 		ValidFactions: ordos
 		Prerequisites: techlevel.high, Research
 	GiveMcvCrateAction:
@@ -203,7 +203,7 @@ upgrade.light:
 		Description: Unlocks additional light units
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: light
+		Prerequisites: light_factory
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
@@ -222,7 +222,7 @@ upgrade.heavy:
 		Description: Unlocks advanced technology and heavy weapons
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: heavy
+		Prerequisites: heavy_factory
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:

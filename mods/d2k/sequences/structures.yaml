@@ -21,7 +21,7 @@ wall:
 		Start: 4063
 		Offset: -30,-24
 
-guntower:
+medium_gun_turret:
 	idle: DATA.R8
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
@@ -44,7 +44,7 @@ guntower:
 		Start: 4069
 		Offset: -30,-24
 
-rockettower:
+large_gun_turret:
 	idle: DATA.R8
 		Frames: 2573, 2576, 2574, 2584, 2577, 2578, 2588, 2581, 2575, 2585, 2579, 2580, 2586, 2582, 2583, 2587
 		Length: 16
@@ -101,7 +101,7 @@ conyard.atreides:
 		Start: 4046
 		Offset: -30,-24
 
-repair.atreides:
+repair_pad.atreides:
 	make: DATA.R8
 		Start: 4370
 		Length: 10
@@ -134,7 +134,7 @@ repair.atreides:
 		Start: 4096
 		Offset: -30,-24
 
-repair.harkonnen:
+repair_pad.harkonnen:
 	make: DATA.R8
 		Start: 4370
 		Length: 10
@@ -167,7 +167,7 @@ repair.harkonnen:
 		Start: 4097
 		Offset: -30,-24
 
-repair.ordos:
+repair_pad.ordos:
 	make: DATA.R8
 		Start: 4370
 		Length: 10
@@ -310,7 +310,7 @@ barracks.atreides:
 		Start: 4059
 		Offset: -30,-24
 
-radar.atreides:
+outpost.atreides:
 	idle: DATA.R8
 		Start: 2521
 		Offset: -48,80
@@ -798,7 +798,7 @@ barracks.harkonnen:
 		Start: 4060
 		Offset: -30,-24
 
-radar.harkonnen:
+outpost.harkonnen:
 	idle: DATA.R8
 		Start: 2681
 		Offset: -48,80
@@ -1195,7 +1195,7 @@ barracks.ordos:
 		Start: 4061
 		Offset: -30,-24
 
-radar.ordos:
+outpost.ordos:
 	idle: DATA.R8
 		Start: 2841
 		Offset: -48,80

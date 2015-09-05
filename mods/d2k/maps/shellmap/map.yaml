@@ -2,7 +2,7 @@ MapFormat: 7
 
 RequiresMod: d2k
 
-Title: Tuck's Sietch
+Title: D2k Shellmap
 
 Description: Static Shellmap
 
@@ -61,7 +61,7 @@ Actors:
 	Actor29: concretea
 		Location: 54,59
 		Owner: Neutral
-	Actor30: power
+	Actor30: wind_trap
 		Location: 54,58
 		Owner: Atreides
 	Actor31: concretea
@@ -70,10 +70,10 @@ Actors:
 	Actor32: silo
 		Location: 54,62
 		Owner: Atreides
-	Actor33: guntower
+	Actor33: medium_gun_turret
 		Location: 54,63
 		Owner: Atreides
-	Actor34: siegetank
+	Actor34: siege_tank
 		Location: 54,56
 		Owner: Atreides
 		Facing: 24
@@ -92,7 +92,7 @@ Actors:
 	Actor39: barracks
 		Location: 48,37
 		Owner: Creeps
-	Actor40: rockettower
+	Actor40: large_gun_turret
 		Location: 46,39
 		Owner: Creeps
 	Actor41: sardaukar
@@ -125,7 +125,7 @@ Rules:
 			Maximum: 1
 		MusicPlaylist:
 			BackgroundMusic: options
-	rockettower:
+	large_gun_turret:
 		Power:
 			Amount: 100
 

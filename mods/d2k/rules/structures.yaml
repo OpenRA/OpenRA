@@ -36,7 +36,7 @@ concreteb:
 	Buildable:
 		Prerequisites: upgrade.conyard
 
-conyard:
+construction_yard:
 	Inherits: ^Building
 	Building:
 		Footprint: xxx xxx
@@ -77,7 +77,7 @@ conyard:
 		Palette: d2k
 	PrimaryBuilding:
 
-power:
+wind_trap:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
@@ -87,7 +87,7 @@ power:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Windtrap
+		Name: Wind Trap
 		Description: Provides power for other structures
 	Building:
 		Footprint: xx xx
@@ -114,7 +114,7 @@ power:
 barracks:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: power
+		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 40
 	Selectable:
@@ -170,7 +170,7 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: power
+		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 20
 	Selectable:
@@ -258,7 +258,7 @@ silo:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
-light:
+light_factory:
 	Inherits: ^Building
 	Buildable:
 		Prerequisites: refinery
@@ -315,7 +315,7 @@ light:
 	Power:
 		Amount: -20
 
-heavy:
+heavy_factory:
 	Inherits: ^Building
 	Buildable:
 		Prerequisites: refinery
@@ -375,7 +375,7 @@ heavy:
 	SelectionDecorations:
 		VisualBounds: 96,96
 
-radar:
+outpost:
 	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
@@ -406,10 +406,10 @@ radar:
 		Range: 6
 	RenderDetectionCircle:
 	RenderSprites:
-		Image: radar.harkonnen
+		Image: outpost.harkonnen
 		FactionImages:
-			atreides: radar.atreides
-			ordos: radar.ordos
+			atreides: outpost.atreides
+			ordos: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
@@ -425,7 +425,7 @@ starport:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: heavy, radar, ~techlevel.high
+		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 	Building:
@@ -522,7 +522,7 @@ wall:
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 
-guntower:
+medium_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
@@ -564,11 +564,11 @@ guntower:
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
-rockettower:
+large_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
-		Prerequisites: radar, upgrade.conyard, ~techlevel.medium
+		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
 		Cost: 850
@@ -607,11 +607,11 @@ rockettower:
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
-repair:
+repair_pad:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: heavy, upgrade.heavy, ~techlevel.medium
+		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
 		Cost: 500
@@ -639,20 +639,20 @@ repair:
 	RallyPoint:
 		Offset: 1,3
 	RenderSprites:
-		Image: repair.harkonnen
+		Image: repair_pad.harkonnen
 		FactionImages:
-			atreides: repair.atreides
-			ordos: repair.ordos
+			atreides: repair_pad.atreides
+			ordos: repair_pad.ordos
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
 
-hightech:
+high_tech_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: radar, ~techlevel.medium
+		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
@@ -693,7 +693,7 @@ hightech:
 		ChargeTime: 180
 		SquadSize: 3
 		LongDesc: Ornithopters hit the target with parabombs
-		UnitType: orni.bomber
+		UnitType: ornithopter.bomber
 		SelectTargetSound:
 		DisplayBeacon: True
 		CameraActor: camera
@@ -704,11 +704,11 @@ hightech:
 	SelectionDecorations:
 		VisualBounds: 96,96
 
-research:
+research_centre:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: radar, heavy, upgrade.heavy, ~techlevel.high
+		Prerequisites: outpost, heavy_factory, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 140
 	Selectable:
 		Bounds: 96,64,0,16
@@ -725,7 +725,7 @@ research:
 		ChargeTime: 180
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		DropItems: light_inf, light_inf, trooper, trooper, engineer, trooper, light_inf, light_inf
 		SelectTargetSound:
 		FlareType:
 	Building:
@@ -754,7 +754,7 @@ research:
 palace:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: research, ~techlevel.high
+		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 150
 	Selectable:
@@ -795,7 +795,7 @@ palace:
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeTime: 300
 		Description: Death Hand
-		LongDesc: Launches a nuclear missile at a target location
+		LongDesc: Launches an atomic missile at a target location
 		BeginChargeSound: HI_PREP.AUD
 		EndChargeSound: HI_DHRDY.AUD
 		SelectTargetSound:
@@ -814,7 +814,7 @@ palace:
 	ProvidesPrerequisite@buildingname:
 
 conyard.atreides:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -825,7 +825,7 @@ conyard.atreides:
 		-FactionImages:
 
 conyard.harkonnen:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -836,7 +836,7 @@ conyard.harkonnen:
 		-FactionImages:
 
 conyard.ordos:
-	Inherits: conyard
+	Inherits: construction_yard
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000

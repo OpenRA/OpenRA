@@ -15,7 +15,7 @@ carryall.reinforce:
 		ROT: 4
 		Speed: 160
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
 		LandAltitude: 100
@@ -51,7 +51,7 @@ carryall.infantry:
 	Plane:
 		ROT: 4
 		Speed: 280
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
 		AirborneUpgrades: airborne
@@ -76,7 +76,7 @@ frigate:
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
 		AirborneUpgrades: airborne
@@ -93,7 +93,7 @@ frigate:
 	FlyAwayOnIdle:
 	RejectsOrders:
 
-orni:
+ornithopter:
 	Inherits: ^Plane
 	Valued:
 		Cost: 1000
@@ -117,11 +117,11 @@ orni:
 		InitialFacing: 20
 		ROT: 6
 		Speed: 280
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 		RearmBuildings:
 		AirborneUpgrades: airborne
 	SpawnActorOnDeath:
-		Actor: orni.husk
+		Actor: ornithopter.husk
 	SelectionDecorations:
 	Selectable:
 		Bounds: 32,32
@@ -136,7 +136,7 @@ orni:
 	Voiced:
 		VoiceSet: GenericVoice
 
-orni.bomber:
+ornithopter.bomber:
 	Inherits: ^Plane
 	AttackBomber:
 	Armament:
@@ -148,7 +148,7 @@ orni.bomber:
 	Plane:
 		ROT: 5
 		Speed: 350
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
 		AirborneUpgrades: airborne
@@ -157,12 +157,12 @@ orni.bomber:
 	Tooltip:
 		Name: Ornithopter
 	SpawnActorOnDeath:
-		Actor: orni.bomber.husk
+		Actor: ornithopter.bomber.husk
 	RejectsOrders:
 	RenderSprites:
-		Image: orni
+		Image: ornithopter
 
-orni.husk:
+ornithopter.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
@@ -173,9 +173,9 @@ orni.husk:
 		RearmBuildings:
 		AirborneUpgrades: airborne
 	RenderSprites:
-		Image: orni
+		Image: ornithopter
 
-orni.bomber.husk:
+ornithopter.bomber.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
@@ -186,7 +186,7 @@ orni.bomber.husk:
 		RearmBuildings:
 		AirborneUpgrades: airborne
 	RenderSprites:
-		Image: orni
+		Image: ornithopter
 
 carryall.husk:
 	Inherits: ^AircraftHusk

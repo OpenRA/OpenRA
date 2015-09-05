@@ -65,7 +65,7 @@ quad:
 		Start: 4018
 		Offset: -30,-24
 
-siegetank:
+siege_tank:
 	idle: DATA.R8
 		Start: 1763
 		Facings: -32
@@ -80,7 +80,7 @@ siegetank:
 		Start: 4026
 		Offset: -30,-24
 
-siegetank.husk:
+siege_tank.husk:
 	idle: DATA.R8
 		Start: 1763
 		Facings: -32
@@ -90,7 +90,7 @@ siegetank.husk:
 		Facings: -32
 		ZOffset: -512
 
-missiletank:
+missile_tank:
 	idle: DATA.R8
 		Start: 1603
 		Facings: -32
@@ -98,13 +98,13 @@ missiletank:
 		Start: 4024
 		Offset: -30,-24
 
-missiletank.husk:
+missile_tank.husk:
 	idle: DATA.R8
 		Start: 1603
 		Facings: -32
 		ZOffset: -512
 
-sonictank:
+sonic_tank:
 	idle: DATA.R8
 		Start: 1827
 		Facings: -32
@@ -112,13 +112,13 @@ sonictank:
 		Start: 4027
 		Offset: -30,-24
 
-sonictank.husk:
+sonic_tank.husk:
 	idle: DATA.R8
 		Start: 1827
 		Facings: -32
 		ZOffset: -512
 
-combata:
+combat_tank_a:
 	idle: DATA.R8
 		Start: 1731
 		Facings: -32
@@ -134,7 +134,7 @@ combata:
 		Start: 4020
 		Offset: -30,-24
 
-combata.husk:
+combat_tank_a.husk:
 	idle: DATA.R8
 		Start: 1731
 		Facings: -32
@@ -144,7 +144,7 @@ combata.husk:
 		Facings: -32
 		ZOffset: -512
 
-combath:
+combat_tank_h:
 	idle: DATA.R8
 		Start: 2051
 		Facings: -32
@@ -160,7 +160,7 @@ combath:
 		Start: 4021
 		Offset: -30,-24
 
-combath.husk:
+combat_tank_h.husk:
 	idle: DATA.R8
 		Start: 2051
 		Facings: -32
@@ -170,7 +170,7 @@ combath.husk:
 		Facings: -32
 		ZOffset: -512
 
-combato:
+combat_tank_o:
 	idle: DATA.R8
 		Start: 2453
 		Facings: -32
@@ -186,7 +186,7 @@ combato:
 		Start: 4022
 		Offset: -30,-24
 
-combato.husk:
+combat_tank_o.husk:
 	idle: DATA.R8
 		Start: 2453
 		Facings: -32
@@ -196,7 +196,7 @@ combato.husk:
 		Facings: -32
 		ZOffset: -512
 
-devast:
+devastator:
 	idle: DATA.R8
 		Start: 2083
 		Facings: -32
@@ -209,7 +209,7 @@ devast:
 		Start: 4028
 		Offset: -30,-24
 
-devast.husk:
+devastator.husk:
 	idle: DATA.R8
 		Start: 2083
 		Facings: -32
@@ -231,7 +231,7 @@ raider:
 		Start: 4017
 		Offset: -30,-24
 
-stealthraider:
+stealth_raider:
 	idle: DATA.R8
 		Start: 2421
 		Facings: -32
@@ -245,7 +245,7 @@ stealthraider:
 		BlendMode: Additive
 	icon: raidersicon.shp # 4282 in 1.06 DATA.R8
 
-deviatortank:
+deviator:
 	idle: DATA.R8
 		Start: 2389
 		Facings: -32
@@ -253,7 +253,7 @@ deviatortank:
 		Start: 4025
 		Offset: -30,-24
 
-deviatortank.husk:
+deviator.husk:
 	idle: DATA.R8
 		Start: 2389
 		Facings: -32

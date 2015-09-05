@@ -61,22 +61,22 @@ Players:
 		Enemies: Atreides
 
 Actors:
-	Actor0: rifle
+	Actor0: light_inf
 		Location: 2,2
 		Owner: Harkonnen
-	Actor1: rifle
+	Actor1: light_inf
 		Location: 21,2
 		Owner: Harkonnen
 	Actor2: wormspawner
 		Location: 4,3
 		Owner: Creeps
-	Actor3: rifle
+	Actor3: light_inf
 		Location: 2,6
 		Owner: Harkonnen
-	Actor4: rifle
+	Actor4: light_inf
 		Location: 11,7
 		Owner: Atreides
-	Actor5: rifle
+	Actor5: light_inf
 		Location: 14,8
 		Owner: Atreides
 	Actor6: trike
@@ -85,22 +85,22 @@ Actors:
 	Actor7: trike
 		Location: 8,9
 		Owner: Atreides
-	Actor9: rifle
+	Actor9: light_inf
 		Location: 14,10
 		Owner: Atreides
 	Actor10: trike
 		Location: 14,12
 		Owner: Atreides
-	Actor11: rifle
+	Actor11: light_inf
 		Location: 7,13
 		Owner: Atreides
-	Actor12: rifle
+	Actor12: light_inf
 		Location: 12,15
 		Owner: Atreides
-	Actor13: rifle
+	Actor13: light_inf
 		Location: 28,20
 		Owner: Harkonnen
-	AtreidesConyard: conyard
+	AtreidesConyard: construction_yard
 		Location: 10,10
 		Owner: Atreides
 	HarkonnenWaypoint1: waypoint
@@ -143,7 +143,7 @@ Rules:
 		WormManager:
 			Minimum: 1
 			Maximum: 1
-	conyard:
+	construction_yard:
 		Production:
 			Produces: Building
 	concreteb:
@@ -152,13 +152,13 @@ Rules:
 	barracks:
 		Buildable:
 			Prerequisites: ~disabled
-	light:
+	light_factory:
 		Buildable:
 			Prerequisites: ~disabled
-	heavy:
+	heavy_factory:
 		Buildable:
 			Prerequisites: ~disabled
-	guntower:
+	medium_gun_turret:
 		Buildable:
 			Prerequisites: ~disabled
 	wall:
