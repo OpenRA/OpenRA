@@ -79,7 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 				var ret = new Dictionary<string, UpgradeState>();
 				foreach (var up in init.Self.TraitsImplementing<IUpgradable>())
 					foreach (var t in up.UpgradeTypes)
-						ret.GetOrAdd(t).Traits.Add(up);
+						if (t != null)
+							ret.GetOrAdd(t).Traits.Add(up);
 
 				return ret;
 			});
@@ -119,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Different upgradeable traits may define (a) different level ranges for the same upgrade type,
 		// and (b) multiple upgrade types for the same trait. The unrestricted level for each trait is
-		// tracked independently so that we can can correctly revoke levels without adding the burden of
+		// tracked independently so that we can correctly revoke levels without adding the burden of
 		// tracking both the overall (unclamped) and effective (clamped) levels on each individual trait.
 		void NotifyUpgradeLevelChanged(IEnumerable<IUpgradable> traits, Actor self, string upgrade, int levelAdjust)
 		{
