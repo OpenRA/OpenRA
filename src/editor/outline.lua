@@ -105,14 +105,14 @@ local function outlineRefresh(editor, force)
       or var.name and name:find('^'..var.name..'['..q(sep)..']') then
         ftype = var.global and image.GFUNCTION or image.LFUNCTION
       end
-      if name or outcfg.showanonymous then
-        funcs[#funcs+1] = {
-          name = (name or outcfg.showanonymous)..params:gsub("%s+", " "),
-          depth = depth,
-          image = ftype,
-          pos = name and pos or token.fpos,
-        }
-      end
+      name = name or outcfg.showanonymous
+      funcs[#funcs+1] = {
+        name = (name or '~')..params:gsub("%s+", " "),
+        skip = (not name) and true or nil,
+        depth = depth,
+        image = ftype,
+        pos = name and pos or token.fpos,
+      }
     end
   end
 
@@ -149,7 +149,7 @@ local function outlineRefresh(editor, force)
         func.item = prevfuncs[n].item -- carry over cached items
         if func.depth ~= prevfuncs[n].depth then
           nochange = false
-        elseif nochange then
+        elseif nochange and prevfuncs[n].item then
           if func.name ~= prevfuncs[n].name then
             ctrl:SetItemText(prevfuncs[n].item, func.name)
             if outcfg.sort then resort[ctrl:GetItemParent(prevfuncs[n].item)] = true end
@@ -191,15 +191,18 @@ local function outlineRefresh(editor, force)
     local depth = outcfg.showflat and 1 or func.depth
     local parent = stack[depth]
     while not parent do depth = depth - 1; parent = stack[depth] end
-    local item = ctrl:AppendItem(parent, func.name, func.image)
-    if ide.config.outline.showcurrentfunction
-    and edpos >= func.pos and (not func.poe or edpos <= func.poe) then
-      ctrl:SetItemBold(item, true)
+    if not func.skip then
+      local item = ctrl:AppendItem(parent, func.name, func.image)
+      if ide.config.outline.showcurrentfunction
+      and edpos >= func.pos and (not func.poe or edpos <= func.poe) then
+        ctrl:SetItemBold(item, true)
+      end
+      if outcfg.sort then resort[parent] = true end
+      setData(ctrl, item, n)
+      func.item = item
+      stack[func.depth+1] = item
     end
-    if outcfg.sort then resort[parent] = true end
-    setData(ctrl, item, n)
-    func.item = item
-    stack[func.depth+1] = item
+    func.skip = nil
   end
   if outcfg.sort then -- resort items for all parents that have been modified
     for item in pairs(resort) do ctrl:SortChildren(item) end
