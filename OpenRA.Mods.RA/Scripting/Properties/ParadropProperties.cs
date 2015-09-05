@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	[ScriptPropertyGroup("Paradrop")]
+	[ScriptPropertyGroup("Transports")]
 	public class ParadropProperties : ScriptActorProperties, Requires<CargoInfo>, Requires<ParaDropInfo>
 	{
 		readonly ParaDrop paradrop;

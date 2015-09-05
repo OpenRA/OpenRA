@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
-	[ScriptPropertyGroup("Guard")]
+	[ScriptPropertyGroup("Combat")]
 	public class GuardProperties : ScriptActorProperties, Requires<GuardInfo>, Requires<IMoveInfo>
 	{
 		Guard guard;

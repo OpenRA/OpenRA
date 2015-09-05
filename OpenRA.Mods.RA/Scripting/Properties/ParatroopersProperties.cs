@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
-	[ScriptPropertyGroup("Paratroopers")]
+	[ScriptPropertyGroup("Support Powers")]
 	public class ParatroopersProperties : ScriptActorProperties, Requires<ParatroopersPowerInfo>
 	{
 		readonly ParatroopersPower pp;
