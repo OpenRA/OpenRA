@@ -504,7 +504,7 @@
     <Compile Include="Pathfinder\CellInfoLayerManager.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
     <Compile Include="Pathfinder\PathGraph.cs" />
-    <Compile Include="Pathfinder\PathFinderCacheDecorator.cs" />
+    <Compile Include="Pathfinder\PathFinderUnitPathCacheDecorator.cs" />
     <Compile Include="Pathfinder\PathCacheStorage.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
     <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />

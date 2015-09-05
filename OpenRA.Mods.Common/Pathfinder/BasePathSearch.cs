@@ -18,17 +18,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	public interface IPathSearch
 	{
-		string Id { get; }
-
 		/// <summary>
 		/// The Graph used by the A*
 		/// </summary>
 		IGraph<CellInfo> Graph { get; }
-
-		/// <summary>
-		/// The open queue where nodes that are worth to consider are stored by their estimator
-		/// </summary>
-		IPriorityQueue<CPos> OpenQueue { get; }
 
 		/// <summary>
 		/// Stores the analyzed nodes by the expand function
@@ -64,6 +57,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <returns>Whether the location is a target</returns>
 		bool IsTarget(CPos location);
 
+		bool CanExpand { get; }
 		CPos Expand();
 	}
 
@@ -71,44 +65,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		public IGraph<CellInfo> Graph { get; set; }
 
-		// The Id of a Pathsearch is computed by its properties.
-		// So two PathSearch instances with the same parameters will
-		// Compute the same Id. This is used for caching purposes.
-		public string Id
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(id))
-				{
-					var builder = new StringBuilder();
-					builder.Append(Graph.Actor.ActorID);
-					while (!startPoints.Empty)
-					{
-						var startpoint = startPoints.Pop();
-						builder.Append(startpoint.X);
-						builder.Append(startpoint.Y);
-						builder.Append(Graph[startpoint].EstimatedTotal);
-					}
-
-					builder.Append(Graph.InReverse);
-					if (Graph.IgnoredActor != null) builder.Append(Graph.IgnoredActor.ActorID);
-					builder.Append(Graph.LaneBias);
-
-					id = builder.ToString();
-				}
-
-				return id;
-			}
-		}
-
-		public IPriorityQueue<CPos> OpenQueue { get; protected set; }
+		protected IPriorityQueue<GraphConnection> OpenQueue { get; private set; }
 
 		public abstract IEnumerable<Pair<CPos, int>> Considered { get; }
 
 		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
-		string id;
 		protected Func<CPos, int> heuristic;
 		protected Func<CPos, bool> isGoal;
 
@@ -117,13 +80,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// points considered and their Heuristics to reach
 		// the target. It pretty match identifies, in conjunction of the Actor,
 		// a deterministic set of calculations
-		protected IPriorityQueue<CPos> startPoints;
+		protected readonly IPriorityQueue<GraphConnection> StartPoints;
 
 		protected BasePathSearch(IGraph<CellInfo> graph)
 		{
 			Graph = graph;
-			OpenQueue = new PriorityQueue<CPos>(new PositionComparer(Graph));
-			startPoints = new PriorityQueue<CPos>(new PositionComparer(Graph));
+			OpenQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			StartPoints = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			Debug = false;
 			MaxCost = 0;
 		}
@@ -198,6 +161,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return isGoal(location);
 		}
 
+		public bool CanExpand { get { return !OpenQueue.Empty; } }
 		public abstract CPos Expand();
 	}
 }

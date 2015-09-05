@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public object Create(ActorInitializer init)
 		{
-			return new PathFinderCacheDecorator(new PathFinder(init.World), new PathCacheStorage(init.World));
+			return new PathFinderUnitPathCacheDecorator(new PathFinder(init.World), new PathCacheStorage(init.World));
 		}
 	}
 
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			List<CPos> path = null;
 
-			while (!search.OpenQueue.Empty)
+			while (search.CanExpand)
 			{
 				var p = search.Expand();
 				if (search.IsTarget(p))
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 				fromDest.Debug = true;
 			}
 
-			while (!fromSrc.OpenQueue.Empty && !fromDest.OpenQueue.Empty)
+			while (fromSrc.CanExpand && fromDest.CanExpand)
 			{
 				// make some progress on the first search
 				var p = fromSrc.Expand();

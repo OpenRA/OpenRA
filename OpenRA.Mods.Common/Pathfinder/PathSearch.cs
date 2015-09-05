@@ -84,9 +84,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		protected override void AddInitialCell(CPos location)
 		{
-			Graph[location] = new CellInfo(0, heuristic(location), location, CellStatus.Open);
-			OpenQueue.Add(location);
-			startPoints.Add(location);
+			var cost = heuristic(location);
+			Graph[location] = new CellInfo(0, cost, location, CellStatus.Open);
+			var connection = new GraphConnection(location, cost);
+			OpenQueue.Add(connection);
+			StartPoints.Add(connection);
 			considered.AddLast(new Pair<CPos, int>(location, 0));
 		}
 
@@ -99,7 +101,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <returns>The most promising node of the iteration</returns>
 		public override CPos Expand()
 		{
-			var currentMinNode = OpenQueue.Pop();
+			var currentMinNode = OpenQueue.Pop().Destination;
 
 			var currentCell = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(currentCell.CostSoFar, currentCell.EstimatedTotal, currentCell.PreviousPos, CellStatus.Closed);
@@ -128,10 +130,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 				else
 					hCost = heuristic(neighborCPos);
 
-				Graph[neighborCPos] = new CellInfo(gCost, gCost + hCost, currentMinNode, CellStatus.Open);
+				var estimatedCost = gCost + hCost;
+				Graph[neighborCPos] = new CellInfo(gCost, estimatedCost, currentMinNode, CellStatus.Open);
 
 				if (neighborCell.Status != CellStatus.Open)
-					OpenQueue.Add(neighborCPos);
+					OpenQueue.Add(new GraphConnection(neighborCPos, estimatedCost));
 
 				if (Debug)
 				{

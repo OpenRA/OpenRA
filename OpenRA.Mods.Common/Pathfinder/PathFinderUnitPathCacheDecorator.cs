@@ -16,14 +16,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	/// <summary>
-	/// A decorator used to cache the pathfinder (Decorator design pattern)
+	/// A decorator used to cache FindUnitPath and FindUnitPathToRange (Decorator design pattern)
 	/// </summary>
-	public class PathFinderCacheDecorator : IPathFinder
+	public class PathFinderUnitPathCacheDecorator : IPathFinder
 	{
 		readonly IPathFinder pathFinder;
 		readonly ICacheStorage<List<CPos>> cacheStorage;
 
-		public PathFinderCacheDecorator(IPathFinder pathFinder, ICacheStorage<List<CPos>> cacheStorage)
+		public PathFinderUnitPathCacheDecorator(IPathFinder pathFinder, ICacheStorage<List<CPos>> cacheStorage)
 		{
 			this.pathFinder = pathFinder;
 			this.cacheStorage = cacheStorage;
@@ -68,37 +68,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public List<CPos> FindPath(IPathSearch search)
 		{
 			using (new PerfSample("Pathfinder"))
-			{
-				var key = "FindPath" + search.Id;
-				var cachedPath = cacheStorage.Retrieve(key);
-
-				if (cachedPath != null)
-					return cachedPath;
-
-				var pb = pathFinder.FindPath(search);
-
-				cacheStorage.Store(key, pb);
-
-				return pb;
-			}
+				return pathFinder.FindPath(search);
 		}
 
 		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
 		{
 			using (new PerfSample("Pathfinder"))
-			{
-				var key = "FindBidiPath" + fromSrc.Id + fromDest.Id;
-				var cachedPath = cacheStorage.Retrieve(key);
-
-				if (cachedPath != null)
-					return cachedPath;
-
-				var pb = pathFinder.FindBidiPath(fromSrc, fromDest);
-
-				cacheStorage.Store(key, pb);
-
-				return pb;
-			}
+				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 	}
 }

@@ -57,22 +57,4 @@ namespace OpenRA.Mods.Common.Pathfinder
 			EstimatedTotal = estimatedTotal;
 		}
 	}
-
-	/// <summary>
-	/// Compares two nodes according to their estimations
-	/// </summary>
-	public class PositionComparer : IComparer<CPos>
-	{
-		readonly IGraph<CellInfo> graph;
-
-		public PositionComparer(IGraph<CellInfo> graph)
-		{
-			this.graph = graph;
-		}
-
-		public int Compare(CPos x, CPos y)
-		{
-			return Math.Sign(graph[x].EstimatedTotal - graph[y].EstimatedTotal);
-		}
-	}
 }
