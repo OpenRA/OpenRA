@@ -234,6 +234,8 @@ namespace OpenRA
 				}
 			}
 
+			Sound.Create(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+
 			Console.WriteLine("Available mods:");
 			foreach (var mod in ModMetadata.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
@@ -275,7 +277,7 @@ namespace OpenRA
 			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
-			Sound.Initialize(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+			Sound.Initialize();
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
 			ModData.InitializeLoaders();
