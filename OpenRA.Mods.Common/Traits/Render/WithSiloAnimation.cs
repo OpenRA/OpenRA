@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-			OnOwnerChanged(self, oldOwner, newOwner);
 		}
 	}
 }
