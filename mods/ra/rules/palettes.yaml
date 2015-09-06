@@ -1,7 +1,8 @@
 ^Palettes:
-	PlayerPaletteFromCurrentTileset:
+	PaletteFromFile@player:
 		Name: player
-		ShadowIndex: 3,4
+		Filename: temperat.pal
+		ShadowIndex: 4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4
@@ -66,8 +67,15 @@
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	PlayerHighlightPalette:
 	MenuPaletteEffect:
-	WaterPaletteRotation:
-		ExcludePalettes: player, effect
+	RotationPaletteEffect@defaultwater:
+		Palettes: terrain
+		ExcludeTilesets: DESERT
+	RotationPaletteEffect@actorswater:
+		Palettes: player, effect
+	RotationPaletteEffect@desertwater:
+		Palettes: terrain
+		Tilesets: DESERT
+		RotationBase: 32
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect
 	ChronoshiftPaletteEffect:
