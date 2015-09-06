@@ -1,6 +1,6 @@
 LMG:
-	ReloadDelay: 20
-	Range: 5c0
+	ReloadDelay: 30
+	Range: 2c512
 	Report: MGUN2.WAV
 	Projectile: Bullet
 		Speed: 1c256
@@ -21,10 +21,9 @@ LMG:
 		Explosion: piffs
 
 Bazooka:
-	ReloadDelay: 50
-	Range: 5c0
-	MinRange: 0c512
-	Report: BAZOOK1.WAV
+	ReloadDelay: 40
+	Range: 3c0
+	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 160
@@ -54,8 +53,8 @@ Bazooka:
 		ImpactSound: EXPLSML1.WAV
 
 Fremen_S:
-	ReloadDelay: 100
-	Range: 8c512
+	ReloadDelay: 40
+	Range: 2c512
 	Report: FREMODD1.WAV
 	ValidTargets: Ground, Infantry
 	InvalidTargets: Vehicle, Structure, Wall
@@ -72,9 +71,9 @@ Fremen_S:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
 M_LMG:
-	ReloadDelay: 30
-	Range: 5c768
-	Report: VULCAN.AUD
+	ReloadDelay: 40
+	Range: 2c512
+	Report: MGUN2.WAV
 	InvalidTargets: Structure
 	Projectile: Bullet
 		Speed: 1c256
@@ -94,9 +93,8 @@ M_LMG:
 		Explosion: piffs
 
 M_HMG:
-	ReloadDelay: 10
-	Range: 5c0
-	MinRange: 1c0
+	ReloadDelay: 40
+	Range: 3c512
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
@@ -114,9 +112,9 @@ M_HMG:
 		Explosion: piffs
 
 Fremen_L:
-	ReloadDelay: 60
+	ReloadDelay: 40
 	Delay: 5
-	Range: 5c512
+	Range: 3c512
 	Report: BAZOOK2.WAV
 	InvalidTargets: Infantry
 	Projectile: Bullet
@@ -141,10 +139,8 @@ Fremen_L:
 		ImpactSound: EXPLLG5.WAV
 
 HMG:
-	ReloadDelay: 30
-	Range: 5c0
-	Burst: 2
-	BurstDelay: 5
+	ReloadDelay: 20
+	Range: 3c0
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
@@ -165,10 +161,8 @@ HMG:
 		Explosion: piffs
 
 HMGo:
-	ReloadDelay: 30
-	Range: 5c0
-	Burst: 2
-	BurstDelay: 5
+	ReloadDelay: 18
+	Range: 3c0
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
@@ -189,10 +183,8 @@ HMGo:
 		Explosion: piffs
 
 Rocket:
-	ReloadDelay: 40
-	Burst: 2
-	BurstDelay: 25
-	Range: 7c0
+	ReloadDelay: 30
+	Range: 3c512
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -224,7 +216,7 @@ Rocket:
 
 110mm_Gun:
 	ReloadDelay: 35
-	Range: 7c0
+	Range: 5c0
 	Report: TURRET1.WAV
 	Projectile: Bullet
 		Speed: 704
@@ -248,13 +240,11 @@ Rocket:
 		ImpactSound: EXPLSML4.WAV
 
 TowerMissile:
-	ReloadDelay: 35
-	Range: 7c768
+	ReloadDelay: 60
+	Range: 5c512
 	MinRange: 1c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
-	Burst: 2
-	BurstDelay: 15
 	Projectile: Bullet
 		Blockable: false
 		Shadow: yes
@@ -283,7 +273,7 @@ TowerMissile:
 
 80mm_A:
 	ReloadDelay: 50
-	Range: 5c768
+	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 640
@@ -305,8 +295,8 @@ TowerMissile:
 		ImpactSound: EXPLSML4.WAV
 
 80mm_H:
-	ReloadDelay: 50
-	Range: 7c0
+	ReloadDelay: 55
+	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 704
@@ -328,8 +318,8 @@ TowerMissile:
 		ImpactSound: EXPLSML4.WAV
 
 80mm_O:
-	ReloadDelay: 50
-	Range: 5c768
+	ReloadDelay: 45
+	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 704
@@ -351,8 +341,8 @@ TowerMissile:
 		ImpactSound: EXPLSML4.WAV
 
 DevBullet:
-	ReloadDelay: 50
-	Range: 5c0
+	ReloadDelay: 75
+	Range: 4c0
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 640
@@ -373,11 +363,8 @@ DevBullet:
 		Explosion: shockwave
 
 227mm:
-	ReloadDelay: 100
-	Range: 10c0
-	MinRange: 4c0
-	Burst: 4
-	BurstDelay: 15
+	ReloadDelay: 115
+	Range: 6c0
 	Report: MISSLE1.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
@@ -407,8 +394,8 @@ DevBullet:
 		ImpactSound: EXPLMD3.WAV
 
 DeviatorMissile:
-	ReloadDelay: 120
-	Range: 8c0
+	ReloadDelay: 160
+	Range: 5c0
 	Report: MISSLE1.WAV
 	InvalidTargets: Infantry, Structure
 	Projectile: Bullet
@@ -439,9 +426,8 @@ DeviatorMissile:
 		Duration: 750
 
 155mm:
-	ReloadDelay: 75
-	Range: 8c0
-	MinRange: 2c0
+	ReloadDelay: 80
+	Range: 5c512
 	Report: MORTAR1.WAV
 	Projectile: Bullet
 		Speed: 256
@@ -468,8 +454,8 @@ DeviatorMissile:
 		ImpactSound: EXPLLG3.WAV
 
 Sound:
-	ReloadDelay: 100
-	Range: 8c512
+	ReloadDelay: 90
+	Range: 5c0
 	Report: SONIC1.WAV
 	Projectile: LaserZap
 		BeamWidth: 2
@@ -500,15 +486,17 @@ Heal:
 
 WormJaw:
 	ReloadDelay: 10
-	Range: 3c0
 	InvalidTargets: Structure
+	Range: 1c512
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 100
 		InvalidTargets: Structure
 
 OrniBomb:
-	ReloadDelay: 2
+	ReloadDelay: 25
+	Burst: 5
+	BurstDelay: 3
 	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
@@ -635,9 +623,8 @@ UnitExplodeLarge:
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
 grenade:
-	ReloadDelay: 60
+	ReloadDelay: 50
 	Range: 4c0
-	Report:
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
@@ -667,7 +654,6 @@ Weathering:
 Shrapnel:
 	ReloadDelay: 60
 	Range: 4c0
-	Report:
 	Projectile: Bullet
 		Speed: 50, 125
 		Blockable: false
