@@ -29,6 +29,12 @@ namespace OpenRA
 		static ISound video;
 		static MusicInfo currentMusic;
 
+		public static void Create(string engineName)
+		{
+			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
+			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
+		}
+
 		static ISoundEngine CreateDevice(Assembly platformDll)
 		{
 			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
@@ -66,11 +72,8 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 		}
 
-		public static void Initialize(string engineName)
+		public static void Initialize()
 		{
-			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
-			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
-
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
 			currentMusic = null;
