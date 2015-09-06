@@ -766,6 +766,52 @@ Weathering:
 	Warhead@1Dam: SpreadDamage
 		Damage: 10
 
+GrenDeath:
+	Warhead@1Dam: SpreadDamage
+		Spread: 280
+		Falloff: 100, 100, 100, 95, 60, 0
+		Damage: 150
+		Versus:
+			none: 125
+			wall: 100
+			building: 100
+			wood: 70
+			light: 30
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: building
+		ImpactSound: EXPLSML4.WAV
+
+SardDeath:
+	Warhead@1Dam: SpreadDamage
+		Spread: 280
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 300
+		Versus:
+			none: 15
+			wall: 75
+			building: 60
+			wood: 65
+			light: 90
+			heavy: 100
+			concrete: 100
+			invulnerable: 0
+			cy: 30
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_napalm
+		ImpactSound: EXPLSML2.WAV
+
 Shrapnel:
 	ReloadDelay: 60
 	Range: 4c0

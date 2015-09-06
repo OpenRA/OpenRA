@@ -164,8 +164,8 @@ grenadier:
 		AttackSequence: throw
 		IdleSequences: idle
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
+		Weapon: GrenDeath
+		EmptyWeapon: GrenDeath
 	AttractsWorms:
 		Intensity: 180
 
@@ -197,6 +197,10 @@ sardaukar:
 		Intensity: 180
 	Voiced:
 		VoiceSet: GenericVoice
+	Explodes:
+		Weapon: SardDeath
+		EmptyWeapon: SardDeath
+		Chance: 100
 
 saboteur:
 	Inherits: ^Infantry
