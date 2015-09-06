@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenRA.Primitives
 {
@@ -17,37 +18,56 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public class ActionQueue
 	{
-		object syncRoot = new object();
-		PriorityQueue<DelayedAction> actions = new PriorityQueue<DelayedAction>();
+		readonly List<DelayedAction> actions = new List<DelayedAction>();
 
-		public void Add(Action a) { Add(a, 0); }
-		public void Add(Action a, int delay)
+		public void Add(Action a, int desiredTime)
 		{
-			lock (syncRoot)
-				actions.Add(new DelayedAction(a, Game.RunTime + delay));
+			if (a == null)
+				throw new ArgumentNullException("a");
+
+			lock (actions)
+			{
+				var action = new DelayedAction(a, desiredTime);
+				var index = Index(action);
+				actions.Insert(index, action);
+			}
 		}
 
-		public void PerformActions()
+		public void PerformActions(int currentTime)
 		{
-			Action a = () => { };
-			lock (syncRoot)
+			DelayedAction[] pendingActions;
+			lock (actions)
 			{
-				var t = Game.RunTime;
-				while (!actions.Empty && actions.Peek().Time <= t)
-				{
-					var da = actions.Pop();
-					a = da.Action + a;
-				}
+				var dummyAction = new DelayedAction(null, currentTime);
+				var index = Index(dummyAction);
+				if (index <= 0)
+					return;
+
+				pendingActions = new DelayedAction[index];
+				actions.CopyTo(0, pendingActions, 0, index);
+				actions.RemoveRange(0, index);
 			}
 
-			a();
+			foreach (var delayedAction in pendingActions)
+				delayedAction.Action();
+		}
+
+		int Index(DelayedAction action)
+		{
+			// Returns the index of the next action with a strictly greater time.
+			var index = actions.BinarySearch(action);
+			if (index < 0)
+				return ~index;
+			while (index < actions.Count && action.CompareTo(actions[index]) >= 0)
+				index++;
+			return index;
 		}
 	}
 
 	struct DelayedAction : IComparable<DelayedAction>
 	{
-		public int Time;
-		public Action Action;
+		public readonly int Time;
+		public readonly Action Action;
 
 		public DelayedAction(Action action, int time)
 		{
@@ -58,6 +78,11 @@ namespace OpenRA.Primitives
 		public int CompareTo(DelayedAction other)
 		{
 			return Time.CompareTo(other.Time);
+		}
+
+		public override string ToString()
+		{
+			return "Time: " + Time + " Action: " + Action;
 		}
 	}
 }
