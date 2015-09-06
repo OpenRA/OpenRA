@@ -190,7 +190,7 @@ sardaukar:
 	Armament@PRIMARY:
 		Weapon: M_LMG
 	Armament@SECONDARY:
-		Weapon: FREMEN_L
+		Weapon: M_HMG
 	AttackFrontal:
 	AttractsWorms:
 		Intensity: 180

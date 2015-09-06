@@ -93,6 +93,26 @@ M_LMG:
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
+M_HMG:
+	ReloadDelay: 10
+	Range: 5c0
+	MinRange: 1c0
+	Report: 20MMGUN1.WAV
+	Projectile: Bullet
+		Speed: 1c256
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 96
+		Damage: 20
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: piffs
+
 Fremen_L:
 	ReloadDelay: 60
 	Delay: 5
@@ -465,26 +485,6 @@ Sound:
 			Light: 80
 			Concrete: 75
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-
-ChainGun:
-	ReloadDelay: 10
-	Range: 5c0
-	MinRange: 1c0
-	Report: 20MMGUN1.WAV
-	Projectile: Bullet
-		Speed: 1c256
-		Blockable: false
-	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 20
-		Versus:
-			Wood: 50
-			Light: 60
-			Heavy: 25
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: piffs
 
 Heal:
 	ReloadDelay: 160
