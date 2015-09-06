@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common
 		public readonly string MusicPackageMirrorList = null;
 		public readonly int ShippedSoundtracks = 0;
 
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific files. </summary>
-		public readonly int[] InstallShieldCABFileIds = { };
+		/// <summary> InstallShield PackageName, used to extract Mod specific files </summary>
+		public readonly string InstallShieldPackageName;
 
-		/// <summary> InstallShield .cab File Ids, used to extract Mod specific archives and extract contents of ExtractFilesFromCD. </summary>
-		public readonly string[] InstallShieldCABFilePackageIds = { };
+		/// <summary> InstallShield Package file list, used to lookup the index of Mod specific files </summary>
+		public readonly string[] ExtractFromInstallShieldPackage = { };
 	}
 
 	public static class InstallUtils

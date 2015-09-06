@@ -190,18 +190,18 @@ LoadScreen: LogoStripeLoadScreen
 ContentInstaller:
 	MenuWidget: INSTALL_PANEL
 	MusicMenuWidget: INSTALL_MUSIC_PANEL
-	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
+	TestFiles: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, speech02.mix, tem.mix, temperat.mix
 	PackageMirrorList: http://www.openra.net/packages/ts-mirrors.txt
 	DiskTestFiles: MULTI.MIX, INSTALL/TIBSUN.MIX
 	CopyFilesFromCD:
 		.: INSTALL/TIBSUN.MIX, SCORES.MIX, MULTI.MIX
 	PackageToExtractFromCD: INSTALL/TIBSUN.MIX:CRC32
 	ExtractFilesFromCD:
-		.: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
+		.: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, speech02.mix, tem.mix, temperat.mix
 	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
-	InstallShieldCABFilePackageIds: 332:CRC32
-	InstallShieldCABFileIds: 323, 364
+	InstallShieldPackageName: Tiberian Sun
+	ExtractFromInstallShieldPackage: tibsun.mix:CRC32, scores.mix
 
 ServerTraits:
 	LobbyCommands

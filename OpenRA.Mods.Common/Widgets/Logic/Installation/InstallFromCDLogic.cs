@@ -52,15 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return installData.DiskTestFiles.All(f => File.Exists(Path.Combine(diskRoot, f)));
 		}
 
-		bool IsTFD(string diskpath)
+		bool IsTheFirstDecadeDisk(string diskpath)
 		{
-			var test = File.Exists(Path.Combine(diskpath, "data1.hdr"));
-			var i = 0;
-
-			while (test && i < 14)
-				test &= File.Exists(Path.Combine(diskpath, "data{0}.cab".F(++i)));
-
-			return test;
+			return File.Exists(Path.Combine(diskpath, "data1.hdr"));
 		}
 
 		void CheckForDisk()
@@ -69,9 +63,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (path != null)
 				Install(path);
-			else if ((installData.InstallShieldCABFileIds.Length != 0 || installData.InstallShieldCABFilePackageIds.Length != 0)
-				&& (path = InstallUtils.GetMountedDisk(IsTFD)) != null)
-					InstallTFD(Platform.ResolvePath(path, "data1.hdr"));
+			else if ((installData.InstallShieldPackageName != null && installData.ExtractFromInstallShieldPackage.Length != 0)
+				&& (path = InstallUtils.GetMountedDisk(IsTheFirstDecadeDisk)) != null)
+				InstallTFD(Platform.ResolvePath(path, "data1.hdr"));
 			else
 			{
 				insertDiskContainer.IsVisible = () => true;
@@ -91,44 +85,74 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				using (var cabExtractor = new InstallShieldCABExtractor(source))
 				{
-					var denom = installData.InstallShieldCABFileIds.Length;
+					var dest = "";
+					var files = installData.ExtractFromInstallShieldPackage.Select(x => x.Split(':'));
 					var extractFiles = installData.ExtractFilesFromCD;
+					var installPercent = 100 / files.Count();
+					var fileindex = (uint)0;
+					var filename = "";
+					var onError = (Action<string>)(s => { });
 
-					if (installData.InstallShieldCABFilePackageIds.Length > 0)
-						denom += extractFiles.SelectMany(x => x.Value).Count();
-
-					var installPercent = 100 / denom;
-
-					foreach (uint index in installData.InstallShieldCABFileIds)
+					foreach (var file in files)
 					{
-						var filename = cabExtractor.FileName(index);
-						statusLabel.GetText = () => "Extracting {0}".F(filename);
-						var dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, filename.ToLowerInvariant());
-						cabExtractor.ExtractFile(index, dest);
+						fileindex = cabExtractor.GetIndexByFilename(installData.InstallShieldPackageName.ToLowerInvariant(), file[0].ToLowerInvariant());
+
+						if (fileindex == uint.MinValue)
+						{
+							onError("File not found: {0}".F(file[0].ToLowerInvariant()));
+							return;
+						}
+
+						filename = cabExtractor.FileName(fileindex);
+						statusLabel.GetText = () => "Extracting: {0}".F(filename.ToLowerInvariant());
+
+						dest = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, filename.ToLowerInvariant());
+						cabExtractor.ExtractFile(fileindex, dest.ToLowerInvariant());
 						progressBar.Percentage += installPercent;
 					}
 
-					var ArchivesToExtract = installData.InstallShieldCABFilePackageIds.Select(x => x.Split(':'));
+					progressBar.Indeterminate = true;
+
+					var archivesToExtract = installData.ExtractFromInstallShieldPackage.Select(x => x.Split(':'));
 					var destDir = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id);
-					var onError = (Action<string>)(s => { });
+
 					var overwrite = installData.OverwriteFiles;
 
 					var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 					{
-						progressBar.Percentage += installPercent;
-
 						statusLabel.GetText = () => s;
 					}));
 
-					foreach (var archive in ArchivesToExtract)
+					foreach (var archive in archivesToExtract)
 					{
-						var filename = cabExtractor.FileName(uint.Parse(archive[0]));
-						statusLabel.GetText = () => "Extracting {0}".F(filename);
+						fileindex = cabExtractor.GetIndexByFilename(installData.InstallShieldPackageName.ToLowerInvariant(), archive[0].ToLowerInvariant());
+
+						if (fileindex == uint.MinValue)
+						{
+							onError("File not found: {0}".F(archive[0].ToLowerInvariant()));
+							return;
+						}
+
+						filename = cabExtractor.FileName(fileindex);
+
 						var destFile = Platform.ResolvePath("^", "Content", Game.ModData.Manifest.Mod.Id, filename.ToLowerInvariant());
-						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
+						cabExtractor.ExtractFile(fileindex, destFile.ToLowerInvariant());
 						var annotation = archive.Length > 1 ? archive[1] : null;
-						InstallUtils.ExtractFromPackage(source, destFile, annotation, extractFiles, destDir, overwrite, onProgress, onError);
-						progressBar.Percentage += installPercent;
+
+						try
+						{
+							InstallUtils.ExtractFromPackage(source, destFile, annotation, extractFiles, destDir, overwrite, onProgress, onError);
+							statusLabel.GetText = () => "Extracting: {0}".F(filename.ToLowerInvariant());
+						}
+						catch (Exception e)
+						{
+							if (!File.Exists(destFile))
+							{
+								onError("Installation failed.\n{0}".F(e.Message));
+								Log.Write("debug", e.ToString());
+								return;
+							}
+						}
 					}
 				}
 
