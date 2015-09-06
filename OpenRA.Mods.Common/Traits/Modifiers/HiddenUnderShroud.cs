@@ -42,8 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual bool IsVisibleInner(Actor self, Player byPlayer)
 		{
 			if (Info.Type == VisibilityType.Footprint)
-				return self.OccupiesSpace.OccupiedCells()
-					.Any(o => byPlayer.Shroud.IsExplored(o.First));
+				return byPlayer.Shroud.AnyExplored(self.OccupiesSpace.OccupiedCells());
 
 			return byPlayer.Shroud.IsExplored(self.CenterPosition);
 		}

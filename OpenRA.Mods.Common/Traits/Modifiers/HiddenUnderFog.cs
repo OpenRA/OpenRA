@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 				return base.IsVisibleInner(self, byPlayer);
 
 			if (Info.Type == VisibilityType.Footprint)
-				return self.OccupiesSpace.OccupiedCells()
-					.Any(o => byPlayer.Shroud.IsVisible(o.First));
+				return byPlayer.Shroud.AnyVisible(self.OccupiesSpace.OccupiedCells());
 
 			return byPlayer.Shroud.IsVisible(self.CenterPosition);
 		}

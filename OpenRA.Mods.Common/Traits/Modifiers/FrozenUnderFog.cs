@@ -70,8 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// If fog is disabled visibility is determined by shroud
 			if (!byPlayer.Shroud.FogEnabled)
-				return self.OccupiesSpace.OccupiedCells()
-					.Any(o => byPlayer.Shroud.IsExplored(o.First));
+				return byPlayer.Shroud.AnyExplored(self.OccupiesSpace.OccupiedCells());
 
 			return initialized && stateByPlayer[byPlayer].IsVisible;
 		}
