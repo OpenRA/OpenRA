@@ -227,3 +227,14 @@ saboteur:
 	Voiced:
 		VoiceSet: SaboteurVoice
 
+nsfremen:
+	Inherits: fremen
+	Tooltip:
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles
+	Buildable:
+		BuildPaletteOrder: 105
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: fremen
+	-Cloak:
+
