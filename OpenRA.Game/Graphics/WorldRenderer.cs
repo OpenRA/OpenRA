@@ -145,7 +145,6 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].Render(this);
 
-			// added for contrails
 			foreach (var a in World.ActorsWithTrait<IPostRender>())
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
 					a.Trait.RenderAfterWorld(this, a.Actor);
