@@ -48,16 +48,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RotationPaletteEffectInfo info;
 		readonly World world;
+		readonly uint[] rotationBuffer;
 		float t = 0;
-		uint[] temp;
 
 		public RotationPaletteEffect(World world, RotationPaletteEffectInfo info)
 		{
 			this.world = world;
 			this.info = info;
 
-			// Allocating this on the fly actually hurts our profile
-			temp = new uint[info.RotationRange];
+			rotationBuffer = new uint[info.RotationRange];
 		}
 
 		public void Tick(Actor self)
@@ -82,10 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 				var palette = kvp.Value;
 
 				for (var i = 0; i < info.RotationRange; i++)
-					temp[(rotate + i) % info.RotationRange] = palette[info.RotationBase + i];
+					rotationBuffer[(rotate + i) % info.RotationRange] = palette[info.RotationBase + i];
 
 				for (var i = 0; i < info.RotationRange; i++)
-					palette[info.RotationBase + i] = temp[i];
+					palette[info.RotationBase + i] = rotationBuffer[i];
 			}
 		}
 	}
