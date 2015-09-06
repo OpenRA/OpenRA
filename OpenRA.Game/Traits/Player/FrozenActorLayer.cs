@@ -83,14 +83,13 @@ namespace OpenRA.Traits
 		void UpdateVisibility()
 		{
 			var wasVisible = Visible;
-			var isVisibleTest = shroud.IsVisibleTest;
 
 			// We are doing the following LINQ manually for performance since this is a hot path.
-			// Visible = !Footprint.Any(isVisibleTest);
+			// Visible = !Footprint.Any(shroud.IsVisible);
 			Visible = true;
-			foreach (var uv in Footprint)
+			foreach (var puv in Footprint)
 			{
-				if (isVisibleTest(uv))
+				if (shroud.IsVisible(puv))
 				{
 					Visible = false;
 					break;
