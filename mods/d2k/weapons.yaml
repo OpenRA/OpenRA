@@ -4,10 +4,6 @@ LMG:
 	Report: MGUN2.WAV
 	Projectile: Bullet
 		Speed: 1c256
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 15
@@ -26,12 +22,11 @@ Bazooka:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 160
-		Arm: 2
-		Inaccuracy: 96
+		Speed: 281
+		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 5
-		Trail: bazooka_trail
+		RateOfTurn: 1
+		Trail: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 		RangeLimit: 35
@@ -59,11 +54,7 @@ Fremen_S:
 	ValidTargets: Ground, Infantry
 	InvalidTargets: Vehicle, Structure, Wall
 	Projectile: Bullet
-		Speed: 1c896
-		ContrailLength: 6
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
+		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 32
 		Damage: 60
@@ -77,10 +68,6 @@ M_LMG:
 	InvalidTargets: Structure
 	Projectile: Bullet
 		Speed: 1c256
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
@@ -98,7 +85,6 @@ M_HMG:
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
-		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 20
@@ -118,12 +104,7 @@ Fremen_L:
 	Report: BAZOOK2.WAV
 	InvalidTargets: Infantry
 	Projectile: Bullet
-		Speed: 320
-		Blockable: false
-		Shadow: yes
-		Angle: 88
-		Inaccuracy: 384
-		Image: MISSILE
+		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 30
@@ -144,10 +125,6 @@ HMG:
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 30
@@ -166,10 +143,6 @@ HMGo:
 	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 1c256
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
 		Damage: 40
@@ -188,14 +161,13 @@ Rocket:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Arm: 0
-		Inaccuracy: 96
+		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 10
+		RateOfTurn: 0
 		Trail: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
-		Speed: 256
+		Speed: 343
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
@@ -219,10 +191,10 @@ Rocket:
 	Range: 5c0
 	Report: TURRET1.WAV
 	Projectile: Bullet
-		Speed: 704
+		Speed: 875
 		Blockable: false
 		Shadow: no
-		Inaccuracy: 288
+		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -245,15 +217,15 @@ TowerMissile:
 	MinRange: 1c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
-	Projectile: Bullet
+	Projectile: Missile
 		Blockable: false
 		Shadow: yes
+		RateOfTurn: 1
 		Inaccuracy: 384
 		Image: MISSILE2
 		Trail: large_trail
 		TrailInterval: 1
-		Speed: 298
-		Angle: 90
+		Speed: 320
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Damage: 50
@@ -276,8 +248,8 @@ TowerMissile:
 	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
-		Speed: 640
-		Inaccuracy: 384
+		Speed: 562
+		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -299,8 +271,8 @@ TowerMissile:
 	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
-		Speed: 704
-		Inaccuracy: 352
+		Speed: 562
+		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -322,8 +294,8 @@ TowerMissile:
 	Range: 4c0
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
-		Speed: 704
-		Inaccuracy: 352
+		Speed: 562
+		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -345,7 +317,8 @@ DevBullet:
 	Range: 4c0
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
-		Speed: 640
+		Speed: 281
+		Blockable: true
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -367,12 +340,12 @@ DevBullet:
 	Range: 6c0
 	Report: MISSLE1.WAV
 	ValidTargets: Ground
-	Projectile: Bullet
-		Speed: 320
+	Projectile: Missile
+		Speed: 281
+		RateOfTurn: 3
 		Blockable: false
 		Shadow: yes
-		Inaccuracy: 1c416
-		Angle: 90
+		Inaccuracy: 96
 		Image: MISSILE2
 		Trail: large_trail
 		TrailInterval: 1
@@ -398,12 +371,12 @@ DeviatorMissile:
 	Range: 5c0
 	Report: MISSLE1.WAV
 	InvalidTargets: Infantry, Structure
-	Projectile: Bullet
-		Speed: 384
+	Projectile: Missile
+		Speed: 281
 		Blockable: false
 		Shadow: yes
-		Angle: 90
-		Inaccuracy: 1c96
+		RateofTurn: 1
+		Inaccuracy: 256
 		Image: MISSILE
 		Trail: deviator_trail
 		TrailPalette: deviatorgas
@@ -430,11 +403,11 @@ DeviatorMissile:
 	Range: 5c512
 	Report: MORTAR1.WAV
 	Projectile: Bullet
-		Speed: 256
+		Speed: 192
 		Blockable: false
 		Shadow: yes
 		Angle: 62
-		Inaccuracy: 1c256
+		Inaccuracy: 768
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
@@ -458,8 +431,7 @@ Sound:
 	Range: 5c0
 	Report: SONIC1.WAV
 	Projectile: LaserZap
-		BeamWidth: 2
-		HitAnim: laserfire
+		BeamWidth: 10
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
@@ -626,11 +598,12 @@ grenade:
 	ReloadDelay: 50
 	Range: 4c0
 	Projectile: Bullet
-		Speed: 204
+		Speed: 256
 		Blockable: false
 		Angle: 62
 		Inaccuracy: 416
 		Image: BOMBS
+		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Damage: 60
