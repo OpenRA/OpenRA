@@ -507,28 +507,6 @@ WormJaw:
 		Damage: 100
 		InvalidTargets: Structure
 
-ParaBomb:
-	ReloadDelay: 10
-	Range: 4c512
-	Report:
-	Projectile: GravityBomb
-		Image: BOMBS
-	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Damage: 50
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Versus:
-			None: 30
-			Wood: 75
-			Light: 75
-			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: EXPLLG3.WAV
-
 OrniBomb:
 	ReloadDelay: 2
 	Range: 3c0
