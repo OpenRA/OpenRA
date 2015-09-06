@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Defines for which tileset IDs this effect should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly string[] Tilesets = null;
+		public readonly HashSet<string> Tilesets = new HashSet<string>();
 
 		[Desc("Defines which palettes should be excluded from this effect.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
 
 		[Desc("Don't apply the effect for these tileset IDs.")]
-		public readonly string[] ExcludeTilesets = null;
+		public readonly HashSet<string> ExcludeTilesets = new HashSet<string>();
 
 		[Desc("Palette index of first RotationRange color.")]
 		public readonly int RotationBase = 0x60;
@@ -47,25 +47,41 @@ namespace OpenRA.Mods.Common.Traits
 	class RotationPaletteEffect : ITick, IPaletteModifier
 	{
 		readonly RotationPaletteEffectInfo info;
-		readonly World world;
 		readonly uint[] rotationBuffer;
+		readonly bool validTileset;
+		readonly string tilesetId;
 		float t = 0;
 
 		public RotationPaletteEffect(World world, RotationPaletteEffectInfo info)
 		{
-			this.world = world;
 			this.info = info;
-
 			rotationBuffer = new uint[info.RotationRange];
+			tilesetId = world.TileSet.Id;
+
+			validTileset = IsValidTileset();
+		}
+
+		bool IsValidTileset()
+		{
+			if (info.Tilesets.Count == 0 && info.ExcludeTilesets.Count == 0)
+				return true;
+
+			return info.Tilesets.Contains(tilesetId) && !info.ExcludeTilesets.Contains(tilesetId);
 		}
 
 		public void Tick(Actor self)
 		{
+			if (!validTileset)
+				return;
+
 			t += info.RotationStep;
 		}
 
 		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
+			if (!validTileset)
+				return;
+
 			var rotate = (int)t % info.RotationRange;
 			if (rotate == 0)
 				return;
@@ -73,9 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kvp in palettes)
 			{
 				if ((info.Palettes.Count > 0 && !info.Palettes.Any(kvp.Key.StartsWith))
-					|| (info.Tilesets != null && !info.Tilesets.Contains(world.TileSet.Id))
-					|| (info.ExcludePalettes.Count > 0 && info.ExcludePalettes.Any(kvp.Key.StartsWith))
-					|| (info.ExcludeTilesets != null && info.ExcludeTilesets.Contains(world.TileSet.Id)))
+					|| (info.ExcludePalettes.Count > 0 && info.ExcludePalettes.Any(kvp.Key.StartsWith)))
 					continue;
 
 				var palette = kvp.Value;
