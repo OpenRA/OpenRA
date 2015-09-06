@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The terrain types that this actor can deploy on to receive these upgrades. " +
 			"Leave empty to allow any.")]
-		public readonly string[] AllowedTerrainTypes = { };
+		public readonly HashSet<string> AllowedTerrainTypes = new HashSet<string>();
 
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
-			checkTerrainType = info.AllowedTerrainTypes.Length > 0;
+			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.Traits.WithInterface<IFacingInfo>().Any();
 			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
 		}

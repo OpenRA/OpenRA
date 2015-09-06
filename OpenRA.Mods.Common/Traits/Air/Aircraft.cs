@@ -29,16 +29,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
-		public readonly string[] RepairBuildings = { "fix" };
+		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 		[ActorReference]
-		public readonly string[] RearmBuildings = { "hpad", "afld" };
+		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "hpad", "afld" };
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne")]
 		public readonly int MinAirborneAltitude = 1;
-		public readonly string[] LandableTerrainTypes = { };
+		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;

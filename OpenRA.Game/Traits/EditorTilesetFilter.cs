@@ -8,12 +8,14 @@
  */
 #endregion
 
+using System.Collections.Generic;
+
 namespace OpenRA.Traits
 {
 	public class EditorTilesetFilterInfo : TraitInfo<EditorTilesetFilter>
 	{
-		public readonly string[] RequireTilesets = null;
-		public readonly string[] ExcludeTilesets = null;
+		public readonly HashSet<string> RequireTilesets = null;
+		public readonly HashSet<string> ExcludeTilesets = null;
 	}
 
 	public class EditorTilesetFilter { }

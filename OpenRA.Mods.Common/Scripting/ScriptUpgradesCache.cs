@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		[UpgradeGrantedReference]
 		[Desc("Upgrades that can be granted from the scripts.")]
-		public readonly string[] Upgrades = { };
+		public readonly HashSet<string> Upgrades = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new ScriptUpgradesCache(this); }
 	}

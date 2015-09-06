@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly WVec[] LocalOffset = { WVec.Zero };
 
 		[Desc("Passenger CargoType to display.")]
-		public readonly string[] DisplayTypes = { };
+		public readonly HashSet<string> DisplayTypes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}

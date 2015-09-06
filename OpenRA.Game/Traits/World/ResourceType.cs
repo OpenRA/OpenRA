@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		public readonly string Name = null;
 		public readonly string TerrainType = "Ore";
 
-		public readonly string[] AllowedTerrainTypes = { };
+		public readonly HashSet<string> AllowedTerrainTypes = new HashSet<string>();
 		public readonly bool AllowUnderActors = false;
 		public readonly bool AllowUnderBuildings = false;
 		public readonly bool AllowOnRamps = false;

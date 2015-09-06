@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
-		public readonly string[] TerrainTypes = { };
+		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]

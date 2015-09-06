@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	public class HuskInfo : IOccupySpaceInfo, IFacingInfo
 	{
-		public readonly string[] AllowedTerrain = { };
+		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new Husk(init, this); }
 

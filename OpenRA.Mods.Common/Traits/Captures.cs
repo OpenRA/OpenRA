@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class CapturesInfo : ITraitInfo
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
-		public readonly string[] CaptureTypes = { "building" };
+		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]

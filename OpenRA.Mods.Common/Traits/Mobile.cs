@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
 
 		[Desc("e.g. crate, wall, infantry")]
-		public readonly string[] Crushes = { };
+		public readonly HashSet<string> Crushes = new HashSet<string>();
 
 		public readonly int WaitAverage = 5;
 
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// If we cannot crush the other actor in our way, we are blocked.
-			if (self == null || Crushes == null || Crushes.Length == 0)
+			if (self == null || Crushes == null || Crushes.Count == 0)
 				return true;
 
 			// If the other actor in our way cannot be crushed, we are blocked.

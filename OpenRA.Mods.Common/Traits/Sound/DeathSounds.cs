@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"If empty, this will be used as the default sound for all death types.")]
-		public readonly string[] DeathTypes = { };
+		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
 		[Desc("Which factions this crate action can occur for.")]
-		public readonly string[] ValidFactions = { };
+		public readonly HashSet<string> ValidFactions = new HashSet<string>();
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;

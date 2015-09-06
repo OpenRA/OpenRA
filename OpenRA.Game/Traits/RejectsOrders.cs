@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.Traits
@@ -16,14 +17,14 @@ namespace OpenRA.Traits
 	public class RejectsOrdersInfo : ITraitInfo
 	{
 		[Desc("Possible values include Attack, AttackMove, Guard, Move.")]
-		public readonly string[] Except = { };
+		public readonly HashSet<string> Except = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new RejectsOrders(this); }
 	}
 
 	public class RejectsOrders
 	{
-		public string[] Except { get { return info.Except; } }
+		public HashSet<string> Except { get { return info.Except; } }
 
 		readonly RejectsOrdersInfo info;
 

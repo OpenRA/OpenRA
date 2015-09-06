@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
 	class LightPaletteRotatorInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = { };
+		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}

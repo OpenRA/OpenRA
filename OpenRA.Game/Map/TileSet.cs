@@ -49,8 +49,8 @@ namespace OpenRA
 		static readonly TerrainTypeInfo Default = new TerrainTypeInfo();
 
 		public readonly string Type;
-		public readonly string[] TargetTypes = { };
-		public readonly string[] AcceptsSmudgeType = { };
+		public readonly HashSet<string> TargetTypes = new HashSet<string>();
+		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
 		public readonly bool IsWater = false; // TODO: Remove this
 		public readonly Color Color;
 		public readonly string CustomCursor;

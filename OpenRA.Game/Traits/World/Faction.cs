@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+
 namespace OpenRA.Traits
 {
 	[Desc("Attach this to the `World` actor.")]
@@ -20,7 +22,7 @@ namespace OpenRA.Traits
 		public readonly string InternalName = null;
 
 		[Desc("Pick a random faction as the player's facton out of this list.")]
-		public readonly string[] RandomFactionMembers = { };
+		public readonly HashSet<string> RandomFactionMembers = new HashSet<string>();
 
 		[Desc("The side that the faction belongs to. For example, England belongs to the 'Allies' side.")]
 		public readonly string Side = null;

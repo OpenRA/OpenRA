@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Only do so when the terrain types match with the previous cell.")]
-		public readonly string[] TerrainTypes = { };
+		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new LeavesTrails(this, init.Self); }
 	}

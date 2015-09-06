@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be sent to a structure for repairs.")]
 	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
 	{
-		public readonly string[] RepairBuildings = { "fix" };
+		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
 		[VoiceReference] public readonly string Voice = "Action";
 

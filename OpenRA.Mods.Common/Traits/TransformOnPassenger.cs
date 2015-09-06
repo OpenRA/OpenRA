@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
@@ -16,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class TransformOnPassengerInfo : ITraitInfo
 	{
-		[ActorReference, FieldLoader.Require] public readonly string[] PassengerTypes = { };
+		[ActorReference, FieldLoader.Require] public readonly HashSet<string> PassengerTypes = new HashSet<string>();
 		[ActorReference] public readonly string OnEnter = null;
 		[ActorReference] public readonly string OnExit = null;
 		public readonly bool SkipMakeAnims = false;

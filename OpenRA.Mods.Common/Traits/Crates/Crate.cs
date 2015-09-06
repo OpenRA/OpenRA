@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Lifetime = 0;
 
 		[Desc("Allowed to land on.")]
-		public readonly string[] TerrainTypes = { };
+		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
 		[Desc("Define actors that can collect crates by setting this into the Crushes field from the Mobile trait.")]
 		public readonly string CrushClass = "crate";
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		public bool CrushableBy(string[] crushClasses, Player owner)
+		public bool CrushableBy(HashSet<string> crushClasses, Player owner)
 		{
 			// Crate can only be crushed if it is not in the air.
 			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);

@@ -268,7 +268,7 @@ namespace OpenRA.Traits
 	{
 		void OnCrush(Actor crusher);
 		void WarnCrush(Actor crusher);
-		bool CrushableBy(string[] crushClasses, Player owner);
+		bool CrushableBy(HashSet<string> crushClasses, Player owner);
 	}
 
 	public interface ITraitInfo { object Create(ActorInitializer init); }

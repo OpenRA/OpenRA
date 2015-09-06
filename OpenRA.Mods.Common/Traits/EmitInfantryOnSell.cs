@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
-		public readonly string[] Factions = { };
+		public readonly HashSet<string> Factions = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new EmitInfantryOnSell(init.Self, this); }
 	}
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var factionsList = info.Factions;
-			correctFaction = factionsList.Length == 0 || factionsList.Contains(self.Owner.Faction.InternalName);
+			correctFaction = factionsList.Count == 0 || factionsList.Contains(self.Owner.Faction.InternalName);
 		}
 
 		public void Selling(Actor self) { }

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Chance = 100;
 
 		[Desc("DeathType(s) to apply upon explosion.")]
-		public readonly string[] DeathType = null;
+		public readonly HashSet<string> DeathType = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new Explodes(this); }
 	}
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var warhead = e.Warhead as DamageWarhead;
-			if (info.DeathType != null && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
+			if (warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
 				return;
 
 			var weaponName = ChooseWeaponForExplosion(self);

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	class PoisonedByTiberiumInfo : UpgradableTraitInfo
 	{
 		[WeaponReference] public readonly string Weapon = "Tiberium";
-		public readonly string[] Resources = { "Tiberium", "BlueTiberium" };
+		public readonly HashSet<string> Resources = new HashSet<string> { "Tiberium", "BlueTiberium" };
 
 		public override object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
 	}

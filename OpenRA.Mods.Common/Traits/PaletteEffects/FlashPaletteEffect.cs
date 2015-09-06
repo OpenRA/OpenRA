@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used for bursted one-colored whole screen effects. Add this to the world actor.")]
 	public class FlashPaletteEffectInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "fog", "shroud" };
+		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud" };
 
 		[Desc("Measured in ticks.")]
 		public readonly int Length = 20;
