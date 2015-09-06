@@ -592,21 +592,6 @@ CrateExplosion:
 		Explosion: building
 		ImpactSound: EXPLSML4.WAV
 
-UnitExplode:
-	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Damage: 50
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: building
-		ImpactSound: EXPLMD1.WAV
-
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
