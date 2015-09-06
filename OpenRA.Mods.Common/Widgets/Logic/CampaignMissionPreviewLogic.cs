@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	class CampaignMissionPreviewLogic
 	{
-		readonly CampaignWorldLogic campaignWorld;
 		readonly MapPreviewWidget campaignPreviewWidget;
 		readonly ButtonWidget campaignPreviewContinueButton, campaignPreviewGraficButton, campaignPreviewBackButton;
 
@@ -27,8 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public CampaignMissionPreviewLogic(CampaignWorldLogic campaignWorld, Widget widget, Action onExit)
 		{
-			this.campaignWorld = campaignWorld;
-
 			// Campaign preview grafic
 			campaignPreviewWidget = widget.Get<MapPreviewWidget>("CAMPAIGN_PREVIEW_GRAFIC");
 			campaignPreviewWidget.Preview = campaignWorld.GetFirstMapPreview;
