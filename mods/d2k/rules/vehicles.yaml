@@ -469,6 +469,8 @@ combato:
 		Prerequisites: ~heavy.ordos
 	Turreted:
 		ROT: 8
+	Armament:
+		Weapon: 80mm_O
 	Mobile:
 		Speed: 96
 		ROT: 8

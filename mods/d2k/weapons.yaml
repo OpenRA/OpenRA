@@ -307,6 +307,29 @@ TowerMissile:
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
 
+80mm_O:
+	ReloadDelay: 50
+	Range: 5c768
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 704
+		Inaccuracy: 352
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 40
+		Versus:
+			None: 50
+			Wood: 50
+			Light: 100
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
+
 DevBullet:
 	ReloadDelay: 50
 	Range: 5c0
