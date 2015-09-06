@@ -79,7 +79,6 @@
 	DrawLineToTarget:
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
 	Repairable:
 		RepairBuildings: repair
 	Guard:
@@ -214,7 +213,6 @@
 		PipType: Green
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
 	Crushable:
 		CrushSound: CRUSH1.WAV
 	Guard:
@@ -286,7 +284,6 @@
 	ShakeOnDeath:
 	Sellable:
 		SellSounds: BUILD1.WAV
-	GivesBounty:
 	Guardable:
 		Range: 3
 	WithCrumbleOverlay:
