@@ -64,8 +64,6 @@ Fremen_S:
 	ReloadDelay: 40
 	Range: 2c512
 	Report: FREMODD1.WAV
-	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Structure, Wall
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
@@ -92,7 +90,7 @@ M_LMG:
 	ReloadDelay: 40
 	Range: 2c512
 	Report: MGUN2.WAV
-	InvalidTargets: Structure
+	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
@@ -145,7 +143,7 @@ Fremen_L:
 	Delay: 5
 	Range: 3c512
 	Report: BAZOOK2.WAV
-	InvalidTargets: Infantry
+	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
@@ -447,7 +445,7 @@ DevBullet:
 	ReloadDelay: 115
 	Range: 6c0
 	Report: MISSLE1.WAV
-	ValidTargets: Ground
+	ValidTargets: Ground, Air
 	Projectile: Missile
 		Speed: 281
 		RateOfTurn: 3
