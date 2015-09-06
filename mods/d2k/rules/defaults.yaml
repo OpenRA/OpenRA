@@ -281,7 +281,7 @@
 	Demolishable:
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:
-		Weapons: shrapnel
+		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 	WithMakeAnimation:
@@ -300,6 +300,10 @@
 	WithWallSpriteBody:
 	LineBuildNode:
 		Types: turret
+	ThrowsShrapnel:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 5
+		Range: 2c0, 5c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
 

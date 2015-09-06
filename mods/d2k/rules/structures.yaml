@@ -257,6 +257,10 @@ silo:
 		Amount: -5
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	ThrowsShrapnel:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 3, 5
+		Range: 2c0, 5c0
 
 light_factory:
 	Inherits: ^Building
@@ -518,7 +522,7 @@ wall:
 		SellSounds: CHUNG.WAV
 	Guardable:
 	ThrowsShrapnel:
-		Weapons: shrapnel
+		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 

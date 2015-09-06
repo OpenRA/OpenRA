@@ -824,35 +824,6 @@ SardDeath:
 		Explosion: small_napalm
 		ImpactSound: EXPLSML2.WAV
 
-Shrapnel:
-	ReloadDelay: 60
-	Range: 4c0
-	Projectile: Bullet
-		Speed: 50, 125
-		Blockable: false
-		Angle: 91, 264
-		Image: shrapnel
-	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Damage: 60
-		Versus:
-			none: 50
-			wall: 50
-			building: 65
-			wood: 100
-			light: 25
-			heavy: 5
-			concrete: 50
-			invulnerable: 0
-			cy: 20
-			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater
-	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLLG5.WAV
-
 SpiceExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 480

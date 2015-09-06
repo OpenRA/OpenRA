@@ -274,7 +274,22 @@ grenade:
 shrapnel:
 	idle: DATA.R8
 		Start: 3290
-		Length: 14
+		Length: 4
+
+shrapnel2:
+	idle: DATA.R8
+		Start: 3294
+		Length: 1
+
+shrapnel3:
+	idle: DATA.R8
+		Start: 3295
+		Length: 8
+
+shrapnel4:
+	idle: DATA.R8
+		Start: 3303
+		Length: 1
 		
 mpspawn:
 	idle: mpspawn.shp
