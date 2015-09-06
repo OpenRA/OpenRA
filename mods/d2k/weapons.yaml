@@ -594,20 +594,6 @@ CrateExplosion:
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Damage: 60
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
-
-UnitExplodeMed:
-	Warhead@1Dam: SpreadDamage
 		Spread: 224
 		Damage: 30
 		Versus:
@@ -619,6 +605,20 @@ UnitExplodeMed:
 	Warhead@2Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
+
+UnitExplodeMed:
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Damage: 60
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
 UnitExplodeLarge:
 	Warhead@1Dam: SpreadDamage
