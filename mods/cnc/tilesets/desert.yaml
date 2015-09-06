@@ -594,9 +594,15 @@ Templates:
 	Template@61:
 		Id: 61
 		Images: br5.des
-		Size: 1,1
+		Size: 3,2
+		Category: Debris
 		Tiles:
-			0: Wall
+			0: Tree
+			1: Tree
+			2: Rock
+			3: Rock
+			4: Tree
+			5: Rock
 	Template@62:
 		Id: 62
 		Images: br6.des
@@ -644,10 +650,13 @@ Templates:
 	Template@66:
 		Id: 66
 		Images: br10.des
-		Size: 2,1
+		Size: 2,2
+		Category: Debris
 		Tiles:
-			0: Wall
-			1: Wall
+			0: Tree
+			1: Tree
+			2: Tree
+			3: Tree
 	Template@67:
 		Id: 67
 		Images: p01.des
@@ -2105,4 +2114,38 @@ Templates:
 			1: River
 			2: River
 			3: River
-
+	Template@217:
+		Id: 217
+		Images: b06.des
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@219:
+		Id: 219
+		Images: p08.des
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@220:
+		Id: 220
+		Images: p09.des
+		Size: 1,2
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@221:
+		Id: 221
+		Images: p10.des
+		Size: 3,2
+		Category: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear

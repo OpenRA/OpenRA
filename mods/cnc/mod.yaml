@@ -9,6 +9,7 @@ Folders:
 	./mods/cnc
 	./mods/cnc/bits
 	./mods/cnc/bits/jungle
+	./mods/cnc/bits/desert
 	./mods/cnc/bits/ss
 	./mods/cnc/uibits
 	~^Content/cnc
