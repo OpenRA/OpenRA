@@ -147,7 +147,7 @@
 	FallsToEarth:
 		Spins: False
 		Moves: True
-		Explosion: UnitExplodeScale
+		Explosion: UnitExplodeLarge
 
 ^TowerHusk:
 	Health:

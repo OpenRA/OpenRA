@@ -53,7 +53,7 @@ Bazooka:
 		Explosion: small_explosion
 		ImpactSound: EXPLSML1.WAV
 
-Sniper:
+Fremen_S:
 	ReloadDelay: 100
 	Range: 8c512
 	Report: FREMODD1.WAV
@@ -71,7 +71,7 @@ Sniper:
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
-Vulcan:
+M_LMG:
 	ReloadDelay: 30
 	Range: 5c768
 	Report: VULCAN.AUD
@@ -93,7 +93,7 @@ Vulcan:
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
-Slung:
+Fremen_L:
 	ReloadDelay: 60
 	Delay: 5
 	Range: 5c512
@@ -168,7 +168,7 @@ HMGo:
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
 
-QuadRockets:
+Rocket:
 	ReloadDelay: 40
 	Burst: 2
 	BurstDelay: 25
@@ -202,7 +202,7 @@ QuadRockets:
 		Explosion: med_explosion
 		ImpactSound: EXPLSML1.WAV
 
-TurretGun:
+110mm_Gun:
 	ReloadDelay: 35
 	Range: 7c0
 	Report: TURRET1.WAV
@@ -261,7 +261,7 @@ TowerMissile:
 		Explosion: small_explosion
 		ImpactSound: EXPLMD1.WAV
 
-90mm:
+80mm_A:
 	ReloadDelay: 50
 	Range: 5c768
 	Report: MEDTANK1.WAV
@@ -284,7 +284,7 @@ TowerMissile:
 		Explosion: small_napalm
 		ImpactSound: EXPLSML4.WAV
 
-90mma:
+80mm_H:
 	ReloadDelay: 50
 	Range: 7c0
 	Report: MEDTANK1.WAV
@@ -363,7 +363,7 @@ DevBullet:
 		Explosion: mini_explosion
 		ImpactSound: EXPLMD3.WAV
 
-NerveGasMissile:
+DeviatorMissile:
 	ReloadDelay: 120
 	Range: 8c0
 	Report: MISSLE1.WAV
@@ -506,7 +506,7 @@ ParaBomb:
 		Explosion: self_destruct
 		ImpactSound: EXPLLG3.WAV
 
-Napalm:
+OrniBomb:
 	ReloadDelay: 2
 	Range: 3c0
 	Projectile: GravityBomb
@@ -620,7 +620,7 @@ UnitExplodeSmall:
 		Explosion: self_destruct
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
-UnitExplodeTiny:
+UnitExplodeMed:
 	Warhead@1Dam: SpreadDamage
 		Spread: 224
 		Damage: 30
@@ -634,7 +634,7 @@ UnitExplodeTiny:
 		Explosion: med_explosion
 		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
 
-UnitExplodeScale:
+UnitExplodeLarge:
 	Warhead@1Dam: SpreadDamage
 		Spread: 416
 		Damage: 90
@@ -648,7 +648,7 @@ UnitExplodeScale:
 		Explosion: building
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
-Grenade:
+grenade:
 	ReloadDelay: 60
 	Range: 4c0
 	Report:

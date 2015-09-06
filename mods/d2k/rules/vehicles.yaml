@@ -25,8 +25,8 @@ mcv:
 		RequiredForShortGame: true
 	BaseBuilding:
 	Explodes:
-		Weapon: UnitExplodeScale
-		EmptyWeapon: UnitExplodeScale
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
 	Transforms:
 		Facing: 16
 		IntoActor: conyard
@@ -73,8 +73,8 @@ harvester:
 	RevealsShroud:
 		Range: 4c0
 	Explodes:
-		Weapon: SpiceExplosion
-		EmptyWeapon: UnitExplodeScale
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: Harvester.Husk
 	WithHarvestOverlay:
@@ -115,8 +115,8 @@ trike:
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeTiny
-		EmptyWeapon: UnitExplodeTiny
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
 		Intensity: 420
 
@@ -141,13 +141,13 @@ quad:
 	RevealsShroud:
 		Range: 8c0
 	Armament:
-		Weapon: QuadRockets
+		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeTiny
-		EmptyWeapon: UnitExplodeTiny
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	Selectable:
 		Class: quad
 	AttractsWorms:
@@ -187,8 +187,8 @@ siegetank:
 	WithMuzzleFlash:
 	WithTurret:
 	Explodes:
-		Weapon: UnitExplodeScale
-		EmptyWeapon: UnitExplodeScale
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 	AutoTarget:
 		InitialStance: Defend
 	Selectable:
@@ -228,8 +228,8 @@ missiletank:
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
-		Weapon: UnitExplodeScale
-		EmptyWeapon: UnitExplodeScale
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 	Selectable:
 		Class: missiletank
 	SpawnActorOnDeath:
@@ -263,8 +263,8 @@ sonictank:
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: sonictank.husk
 	AttractsWorms:
@@ -300,8 +300,8 @@ devast:
 		IgnoreOffset: true
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeScale
-		EmptyWeapon: UnitExplodeScale
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: devast.husk
 	AttractsWorms:
@@ -337,8 +337,8 @@ raider:
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeTiny
-		EmptyWeapon: UnitExplodeTiny
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
 		Intensity: 420
 
@@ -382,14 +382,14 @@ deviatortank:
 	RevealsShroud:
 		Range: 5c0
 	Armament:
-		Weapon: NerveGasMissile
+		Weapon: DeviatorMissile
 		LocalOffset: -299,0,85
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: deviatortank.husk
 	AttractsWorms:
@@ -419,7 +419,7 @@ deviatortank:
 		ROT: 6
 		RealignDelay: 0
 	Armament:
-		Weapon: 90mm
+		Weapon: 80mm_A
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 256,0,0
@@ -429,8 +429,8 @@ deviatortank:
 	WithTurret:
 	AutoTarget:
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 	Selectable:
 		Class: combat
 	AttractsWorms:
@@ -441,7 +441,7 @@ combata:
 	Buildable:
 		Prerequisites: ~heavy.atreides
 	Armament:
-		Weapon: 90mma
+		Weapon: 80mm_A
 	SpawnActorOnDeath:
 		Actor: combata.husk
 
@@ -449,6 +449,8 @@ combath:
 	Inherits: ^combat
 	Buildable:
 		Prerequisites: ~heavy.harkonnen
+	Armament:
+		Weapon: 80mm_H
 	Mobile:
 		Speed: 53
 		ROT: 4

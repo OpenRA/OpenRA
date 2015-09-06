@@ -554,7 +554,7 @@ guntower:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
-		Weapon: TurretGun
+		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
 	DetectCloaked:

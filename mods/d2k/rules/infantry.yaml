@@ -124,9 +124,9 @@ fremen:
 	AutoTarget:
 		ScanRadius: 7
 	Armament@PRIMARY:
-		Weapon: Sniper
+		Weapon: Fremen_S
 	Armament@SECONDARY:
-		Weapon: Slung
+		Weapon: Fremen_L
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
@@ -155,8 +155,8 @@ grenadier:
 	Mobile:
 		Speed: 53
 	Armament:
-		Weapon: Grenade
 		LocalOffset: 0,0,555
+		Weapon: grenade
 		FireDelay: 15
 	AttackFrontal:
 	WithInfantryBody:
@@ -188,9 +188,9 @@ sardaukar:
 	WithInfantryBody:
 		AttackSequence: shoot
 	Armament@PRIMARY:
-		Weapon: Vulcan
+		Weapon: M_LMG
 	Armament@SECONDARY:
-		Weapon: Slung
+		Weapon: FREMEN_L
 	AttackFrontal:
 	AttractsWorms:
 		Intensity: 180
