@@ -35,9 +35,9 @@ Bazooka:
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_twlt
-		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+		Explosion: tiny_twlt
+		ImpactSound: expnew05.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -80,8 +80,8 @@ HoverMissile:
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosion: small_twlt
-		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+		ImpactSound: expnew06.aud
 	Warhead@5: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -113,8 +113,8 @@ MammothTusk:
 			Concrete: 28
 		DamageTypes: Explosion
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_bang
-		ImpactSound: expnew12.aud
+		Explosion: medium_twlt
+		ImpactSound: expnew07.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosion: small_watersplash
@@ -202,8 +202,8 @@ Dragon:
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosion: small_twlt
-		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+		ImpactSound: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -236,7 +236,7 @@ Hellfire:
 			Concrete: 30
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_bang
+		Explosion: small_clsn
 		ImpactSound: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
@@ -246,8 +246,8 @@ Hellfire:
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosion: small_twlt
-		ImpactSound: expnew12.aud
 		ValidImpactTypes: Air, AirHit
+		ImpactSound: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -273,6 +273,6 @@ RedEye2:
 		ValidTargets: Air
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosion: tiny_twlt
+		ImpactSound: expnew05.aud
 
