@@ -108,7 +108,7 @@ orni:
 		Range: 10c0
 		Type: CenterPosition
 	Armament:
-		Weapon: ChainGun
+		Weapon: M_HMG
 		LocalOffset: 85,-213,-85
 	AttackHeli:
 		FacingTolerance: 20
@@ -140,7 +140,7 @@ orni.bomber:
 	Inherits: ^Plane
 	AttackBomber:
 	Armament:
-		Weapon: Napalm
+		Weapon: OrniBomb
 	Health:
 		HP: 100
 	Armor:
