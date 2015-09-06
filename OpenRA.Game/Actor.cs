@@ -71,6 +71,8 @@ namespace OpenRA
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IDisable[] disables;
+		readonly IVisibilityModifier[] visibilityModifiers;
+		readonly IDefaultVisibility defaultVisibility;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -130,6 +132,8 @@ namespace OpenRA
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			disables = TraitsImplementing<IDisable>().ToArray();
+			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
+			defaultVisibility = Trait<IDefaultVisibility>();
 		}
 
 		public void Tick()
@@ -293,6 +297,15 @@ namespace OpenRA
 				if (disable.Disabled)
 					return true;
 			return false;
+		}
+
+		public bool CanBeViewedByPlayer(Player player)
+		{
+			foreach (var visibilityModifier in visibilityModifiers)
+				if (!visibilityModifier.IsVisible(this, player))
+					return false;
+
+			return defaultVisibility.IsVisible(this, player);
 		}
 
 		#region Scripting interface

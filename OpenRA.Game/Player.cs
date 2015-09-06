@@ -154,10 +154,7 @@ namespace OpenRA
 
 		public bool CanViewActor(Actor a)
 		{
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
-				return false;
-
-			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
+			return a.CanBeViewedByPlayer(this);
 		}
 
 		public bool CanTargetActor(Actor a)
@@ -165,10 +162,7 @@ namespace OpenRA
 			if (HasFogVisibility)
 				return true;
 
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, this)))
-				return false;
-
-			return a.Trait<IDefaultVisibility>().IsVisible(a, this);
+			return CanViewActor(a);
 		}
 
 		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility(this)); } }
