@@ -5,13 +5,20 @@ LMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 15
+		Spread: 48
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 125
 		Versus:
-			Wood: 25
-			Light: 40
-			Heavy: 10
-			Concrete: 20
+			none: 100
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -31,15 +38,21 @@ Bazooka:
 		TrailInterval: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 50
+		Spread: 250
+		Falloff: 100, 95, 70, 50, 25, 5, 0
+		Damage: 300
 		ValidTargets: Ground
 		Versus:
-			None: 10
-			Wood: 75
-			Light: 60
-			Heavy: 90
-			Concrete: 40
+			none: 8
+			wall: 75
+			building: 40
+			wood: 45
+			light: 70
+			heavy: 100
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -56,10 +69,24 @@ Fremen_S:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 32
-		Damage: 60
-		ValidTargets: Infantry
+		Spread: 48
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 125
+		Versus:
+			none: 100
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: small_explosion
+		ImpactSound: EXPLSML2.WAV
 
 M_LMG:
 	ReloadDelay: 40
@@ -69,12 +96,21 @@ M_LMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 30
-		InvalidTargets: Structure
+		Spread: 48
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 125
+		ValidTargets: Ground
 		Versus:
-			Light: 60
-			Heavy: 10
+			none: 100
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -86,13 +122,20 @@ M_HMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 20
+		Spread: 48
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 250
 		Versus:
-			Wood: 50
-			Light: 60
-			Heavy: 25
-			Concrete: 25
+			none: 25
+			wall: 100
+			building: 50
+			wood: 65
+			light: 100
+			heavy: 50
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -106,18 +149,24 @@ Fremen_L:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Damage: 30
-		InvalidTargets: Infantry
+		Spread: 64
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 250
+		ValidTargets: Ground
 		Versus:
-			Wood: 75
-			Light: 40
-			Heavy: 90
-			Concrete: 50
+			none: 25
+			wall: 100
+			building: 50
+			wood: 65
+			light: 100
+			heavy: 50
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_explosion
-		ImpactSound: EXPLLG5.WAV
 
 HMG:
 	ReloadDelay: 20
@@ -127,12 +176,19 @@ HMG:
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
-		Damage: 30
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 180
 		Versus:
-			Wood: 15
-			Light: 45
-			Heavy: 20
-			Concrete: 20
+			none: 100
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -145,12 +201,19 @@ HMGo:
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 96
-		Damage: 40
+		Falloff: 100, 100, 65, 30, 0
+		Damage: 180
 		Versus:
-			Wood: 15
-			Light: 45
-			Heavy: 25
-			Concrete: 20
+			none: 100
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piffs
@@ -170,20 +233,27 @@ Rocket:
 		Speed: 343
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 25
+		Spread: 250
+		Falloff: 100, 95, 70, 50, 25, 5, 0
+		Damage: 250
 		ValidTargets: Ground, Air
 		Versus:
-			None: 35
-			Wood: 45
-			Light: 100
-			Heavy: 100
-			Concrete: 35
+			none: 25
+			wall: 100
+			building: 50
+			wood: 65
+			light: 100
+			heavy: 50
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosion: rocket_explosion
+		ExplosionPalette: effect75alpha
 		ImpactSound: EXPLSML1.WAV
 
 110mm_Gun:
@@ -197,13 +267,20 @@ Rocket:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 55
+		Spread: 160
+		Falloff: 100, 100, 85, 50, 0
+		Damage: 290
 		Versus:
-			None: 50
-			Wood: 75
-			Light: 100
-			Concrete: 65
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -227,21 +304,27 @@ TowerMissile:
 		TrailInterval: 1
 		Speed: 320
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
-		Damage: 50
+		Spread: 280
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 480
 		ValidTargets: Ground, Air
 		Versus:
-			None: 50
-			Wood: 45
-			Light: 100
-			Heavy: 50
-			Concrete: 35
+			none: 15
+			wall: 75
+			building: 60
+			wood: 65
+			light: 90
+			heavy: 100
+			concrete: 100
+			invulnerable: 0
+			cy: 30
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: EXPLMD1.WAV
+		Explosion: med_explosion
+		ImpactSound: EXPLSML4.WAV
 
 80mm_A:
 	ReloadDelay: 50
@@ -252,19 +335,25 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 40
+		Spread: 180
+		Falloff: 100, 100, 85, 50, 15, 0
+		Damage: 270
 		Versus:
-			None: 50
-			Wood: 50
-			Light: 100
-			Concrete: 50
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
-		ImpactSound: EXPLSML4.WAV
 
 80mm_H:
 	ReloadDelay: 55
@@ -275,19 +364,25 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 40
+		Spread: 180
+		Falloff: 100, 100, 85, 50, 15, 0
+		Damage: 270
 		Versus:
-			None: 50
-			Wood: 50
-			Light: 100
-			Concrete: 50
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
-		ImpactSound: EXPLSML4.WAV
 
 80mm_O:
 	ReloadDelay: 45
@@ -298,19 +393,25 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 40
+		Spread: 180
+		Falloff: 100, 100, 85, 50, 15, 0
+		Damage: 270
 		Versus:
-			None: 50
-			Wood: 50
-			Light: 100
-			Concrete: 50
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: small_napalm
-		ImpactSound: EXPLSML4.WAV
 
 DevBullet:
 	ReloadDelay: 75
@@ -321,19 +422,26 @@ DevBullet:
 		Blockable: true
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 100
+		Spread: 192
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 650
 		Versus:
-			None: 100
-			Wood: 50
-			Light: 100
-			Heavy: 100
-			Concrete: 80
+			none: 50
+			wall: 100
+			building: 75
+			wood: 60
+			light: 100
+			heavy: 100
+			concrete: 100
+			invulnerable: 0
+			cy: 40
+			harvester: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: shockwave
+		ImpactSound: EXPLMD1.WAV
 
 227mm:
 	ReloadDelay: 115
@@ -350,21 +458,27 @@ DevBullet:
 		Trail: large_trail
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
-		Damage: 60
-		ValidTargets: Ground
+		Spread: 280
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 600
+		ValidTargets: Ground, Air
 		Versus:
-			None: 20
-			Wood: 50
-			Light: 100
-			Heavy: 50
-			Concrete: 80
+			none: 15
+			wall: 75
+			building: 60
+			wood: 65
+			light: 90
+			heavy: 100
+			concrete: 100
+			invulnerable: 0
+			cy: 30
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: mini_explosion
-		ImpactSound: EXPLMD3.WAV
+		Explosion: med_explosion
+		ImpactSound: EXPLSML4.WAV
 
 DeviatorMissile:
 	ReloadDelay: 160
@@ -383,9 +497,21 @@ DeviatorMissile:
 		TrailUsePlayerPalette: true
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Damage: 10
 		InvalidTargets: Infantry, Structure
+		Spread: 280
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 5
+		Versus:
+			none: 20
+			wall: 20
+			building: 20
+			wood: 20
+			light: 20
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 10
+			harvester: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -393,9 +519,9 @@ DeviatorMissile:
 		Explosion: deviator
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
-		ImpactSound: EXPLSML2.WAV
+		ImpactSound: EXPLSML1.WAV
 	Warhead@4OwnerChange: ChangeOwner
-		Range: 1c0
+		Range: 256
 		Duration: 750
 
 155mm:
@@ -411,19 +537,25 @@ DeviatorMissile:
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
-		Damage: 100
+		Spread: 280
+		Falloff: 100, 100, 85, 65, 40, 25, 0
+		Damage: 450
 		Versus:
-			None: 100
-			Wood: 80
-			Light: 75
-			Heavy: 50
-			Concrete: 100
+			none: 125
+			wall: 100
+			building: 100
+			wood: 70
+			light: 30
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
+		Explosion: small_artillery
 		ImpactSound: EXPLLG3.WAV
 
 Sound:
@@ -435,14 +567,24 @@ Sound:
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 32
-		Damage: 150
+		Spread: 96
+		Falloff: 100, 100, 100, 50, 25, 0
+		Damage: 500	#80 D2k but damages through all in path
 		Versus:
-			None: 60
-			Wood: 85
-			Light: 80
-			Concrete: 75
+			none: 100
+			wall: 50
+			building: 60
+			wood: 100
+			light: 100
+			heavy: 60
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
+	Warhead@3Eff: CreateEffect
+		ImpactSound: SONIC3.WAV
+		Delay: 10
 
 Heal:
 	ReloadDelay: 160
@@ -453,7 +595,8 @@ Heal:
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
-		Damage: -50
+		Falloff: 100, 100, 0
+		Damage: -200
 		ValidTargets: Infantry
 
 WormJaw:
@@ -461,9 +604,10 @@ WormJaw:
 	InvalidTargets: Structure
 	Range: 1c512
 	Warhead@1Dam: SpreadDamage
-		Spread: 160
-		Damage: 100
 		InvalidTargets: Structure
+		Spread: 768
+		Falloff: 100, 100, 0
+		Damage: 10000
 
 OrniBomb:
 	ReloadDelay: 25
@@ -473,15 +617,20 @@ OrniBomb:
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead@1Dam: SpreadDamage
-		Spread: 640
-		Damage: 30
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 276
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 400
 		Versus:
-			None: 20
-			Wood: 100
-			Light: 30
-			Heavy: 20
-			Concrete: 70
+			none: 90
+			wall: 50
+			building: 75
+			wood: 60
+			light: 60
+			heavy: 60
+			concrete: 100
+			invulnerable: 0
+			cy: 25
+			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -505,15 +654,20 @@ Demolish:
 
 Atomic:
 	Warhead@1Dam: SpreadDamage
-		Spread: 2c0
-		Damage: 180
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 1c0
+		Falloff: 200, 120, 80, 60, 40, 20, 10, 0
+		Damage: 2700	##225 in vanilla but of course is a cluster bomb instead, so damage spread out
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
-			Heavy: 50
-			Concrete: 50
+			none: 90
+			wall: 50
+			building: 75
+			wood: 60
+			light: 60
+			heavy: 60
+			concrete: 100
+			invulnerable: 0
+			cy: 25
+			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: nuke
@@ -521,15 +675,19 @@ Atomic:
 
 CrateNuke:
 	Warhead@1Dam: SpreadDamage
-		Spread: 1c576
-		Damage: 80
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 320
+		Damage: 500
 		Versus:
-			None: 20
-			Wood: 75
-			Light: 25
-			Heavy: 25
-			Concrete: 50
+			none: 90
+			wall: 50
+			building: 75
+			wood: 60
+			light: 60
+			heavy: 60
+			concrete: 100
+			invulnerable: 0
+			cy: 25
+			harvester: 60
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
@@ -538,60 +696,39 @@ CrateNuke:
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Damage: 40
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 276
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 200
 		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
+		Explosion: artillery
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplodeSmall:
-	Warhead@1Dam: SpreadDamage
-		Spread: 224
-		Damage: 30
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
-
-UnitExplodeMed:
-	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Damage: 60
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: self_destruct
+	Warhead@1Eff: CreateEffect
+		Explosion: building
 		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
+UnitExplodeMed:
+	Warhead@1Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
+
 UnitExplodeLarge:
-	Warhead@1Dam: SpreadDamage
-		Spread: 416
-		Damage: 90
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosion: building
+	Warhead@1Eff: CreateEffect
+		Explosion: artillery
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
 grenade:
@@ -605,13 +742,20 @@ grenade:
 		Image: BOMBS
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Damage: 60
+		Spread: 200
+		Falloff: 100, 100, 100, 95, 60, 0
+		Damage: 150
 		Versus:
-			None: 50
-			Wood: 100
-			Light: 25
-			Heavy: 5
+			none: 125
+			wall: 100
+			building: 100
+			wood: 70
+			light: 30
+			heavy: 20
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
@@ -622,7 +766,7 @@ grenade:
 Weathering:
 	ReloadDelay: 100
 	Warhead@1Dam: SpreadDamage
-		Damage: 5
+		Damage: 10
 
 Shrapnel:
 	ReloadDelay: 60
@@ -636,10 +780,16 @@ Shrapnel:
 		Spread: 192
 		Damage: 60
 		Versus:
-			None: 50
-			Wood: 100
-			Light: 25
-			Heavy: 5
+			none: 50
+			wall: 50
+			building: 65
+			wood: 100
+			light: 25
+			heavy: 5
+			concrete: 50
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
@@ -649,13 +799,20 @@ Shrapnel:
 
 SpiceExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 9
-		Damage: 10
+		Spread: 480
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 75
 		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
