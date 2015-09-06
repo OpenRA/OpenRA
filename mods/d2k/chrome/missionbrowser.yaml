@@ -16,7 +16,7 @@ Background@MISSIONBROWSER_PANEL:
 			X: 20
 			Y: 50
 			Width: 270
-			Height: 542
+			Height: 504
 			Children:
 				ScrollItem@HEADER:
 					BaseName: scrollheader
@@ -39,6 +39,32 @@ Background@MISSIONBROWSER_PANEL:
 							X: 10
 							Width: PARENT_RIGHT-20
 							Height: 25
+		Label@DIFFICULTY_DESC:
+			X: 290 - WIDTH - 125
+			Y: 567
+			Width: 56
+			Height: 25
+			Text: Mission Difficulty:
+			Align: Right
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X: 290 - WIDTH
+			Y: 567
+			Width: 120
+			Height: 25
+			Font: Regular
+		Label@GAMESPEED_DESC:
+			X: 290 - WIDTH - 125
+			Y: 607
+			Width: 120
+			Height: 25
+			Text: Mission Speed:
+			Align: Right
+		DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+			X: 290 - WIDTH
+			Y: 607
+			Width: 120
+			Height: 25
+			Font: Regular
 		Container@MISSION_INFO:
 			X: 300
 			Y: 50
@@ -112,13 +138,6 @@ Background@MISSIONBROWSER_PANEL:
 			Text: Back
 			Font: Bold
 			Key: escape
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X: 20
-			Y: 632 - HEIGHT
-			Width: 270
-			Height: 25
-			Text: Difficulty
-			Font: Bold
 		Background@MISSION_BIN:
 			X: 300
 			Y: 50
