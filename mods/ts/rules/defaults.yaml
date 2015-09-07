@@ -157,7 +157,7 @@
 		RequireTilesets: TEMPERATE
 
 ^Crate:
-	HiddenUnderShroud:
+	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
 	Crate:
