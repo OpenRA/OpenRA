@@ -2130,6 +2130,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 					else if (node.Key == "-RenderShroudCircle")
 						node.Key = "-WithRangeCircle@SHROUD";
+
+					// RenderShroudCircle => WithRangeCircle@JAMS_MISSILES & WithRangeCircle@JAMS_RADAR
+					else if (node.Key == "RenderJammerCircle")
+					{
+						node.Key = "WithRangeCircle@JAMS_MISSILES";
+						node.Value.Nodes.Add(new MiniYamlNode("Name", "jams.missiles"));
+						node.Value.Nodes.Add(new MiniYamlNode("Type", "jams"));
+						node.Value.Nodes.Add(new MiniYamlNode("Variant", "missiles"));
+						node.Value.Nodes.Add(new MiniYamlNode("Color", "128,255,0,0")); // Red
+						var nextIndex = parent.Value.Nodes.FindLastIndex(n => (object)n == (object)node) + 1;
+						parent.Value.Nodes.Insert(nextIndex, new MiniYamlNode("WithRangeCircle@JAMS_RADAR", "", new List<MiniYamlNode>
+							{
+								new MiniYamlNode("Name", "jams.radar"),
+								new MiniYamlNode("Type", "jams"),
+								new MiniYamlNode("Variant", "radar"),
+								new MiniYamlNode("Color", "128,0,0,255") // Blue
+							}));
+					}
+					else if (node.Key == "-RenderJammerCircle")
+					{
+						node.Key = "-WithRangeCircle@JAMS_RADAR";
+						var nextIndex = parent.Value.Nodes.FindLastIndex(n => (object)n == (object)node) + 1;
+						parent.Value.Nodes.Insert(nextIndex, new MiniYamlNode("-WithRangeCircle@JAMS_RADAR", ""));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

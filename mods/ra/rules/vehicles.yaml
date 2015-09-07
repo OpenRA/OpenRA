@@ -536,7 +536,16 @@ MRJ:
 	JamsMissiles:
 		Range: 4
 		AlliedMissiles: False
-	RenderJammerCircle:
+	WithRangeCircle@JAMS_MISSILES:
+		Name: jams.missiles
+		Type: jams
+		Variant: missiles
+		Color: 128,255,0,0 # Red
+	WithRangeCircle@JAMS_RADAR:
+		Name: jams.radar
+		Type: jams
+		Variant: radar
+		Color: 128,0,0,255 # Blue
 	DetectCloaked:
 		Range: 6
 

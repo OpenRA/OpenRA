@@ -105,7 +105,6 @@
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
     <Compile Include="Traits\PortableChrono.cs" />
-    <Compile Include="Traits\Render\RenderJammerCircle.cs" />
     <Compile Include="Traits\Render\WithLandingCraftAnimation.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
