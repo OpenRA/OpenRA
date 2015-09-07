@@ -2086,6 +2086,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (engineVersion < 20150910 && depth == 1)
 				{
+					// RenderRangeCircle
 					if (node.Key == "RenderRangeCircle")
 					{
 						node.Key = "WithRangeCircle@ATTACK";
@@ -2107,6 +2108,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 					else if (node.Key == "-RenderRangeCircle")
 						node.Key = "-WithRangeCircle@ATTACK";
+
+					// RenderDetectionCircle
 					else if (node.Key == "RenderDetectionCircle")
 					{
 						node.Key = "WithRangeCircle@DETECTION";
@@ -2116,6 +2119,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 					else if (node.Key == "-RenderDetectionCircle")
 						node.Key = "-WithRangeCircle@DETECTION";
+
+					// RenderShroudCircle
+					else if (node.Key == "RenderShroudCircle")
+					{
+						node.Key = "WithRangeCircle@SHROUD";
+						node.Value.Nodes.Add(new MiniYamlNode("Name", "shroud"));
+						node.Value.Nodes.Add(new MiniYamlNode("Type", "shroud"));
+						node.Value.Nodes.Add(new MiniYamlNode("Color", "128,0,255,255")); // Cyan
+					}
+					else if (node.Key == "-RenderShroudCircle")
+						node.Key = "-WithRangeCircle@SHROUD";
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

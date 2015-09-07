@@ -49,7 +49,8 @@ MSLO:
 		RequiredForShortGame: false
 
 GAP:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithShroudCircle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -81,7 +82,6 @@ GAP:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
-	RenderShroudCircle:
 	Power:
 		Amount: -60
 	MustBeDestroyed:

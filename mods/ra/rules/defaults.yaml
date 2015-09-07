@@ -447,6 +447,12 @@
 		Color: 128,50,205,50 # LimeGreen
 		ContrastColor: 48,0,0,0
 
+^WithShroudCircle:
+	WithRangeCircle@SHROUD:
+		Name: shroud
+		Type: shroud
+		Color: 128,0,255,255 # Cyan
+
 ^Defense:
 	Inherits@1: ^Building
 	Inherits@2: ^WithDetectionCircle

@@ -482,7 +482,8 @@ TRUK:
 		Actor: moneycrate
 
 MGG:
-	Inherits: ^Vehicle
+	Inherits@1: ^Vehicle
+	Inherits@2: ^WithShroudCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
@@ -505,7 +506,6 @@ MGG:
 		Range: 6c0
 	CreatesShroud:
 		Range: 6c0
-	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
 
