@@ -117,6 +117,7 @@ NUKE:
 	Bib:
 	Power:
 		Amount: 100
+	AffectedByPowerOutage:
 	ScalePowerWithHealth:
 
 NUK2:
@@ -142,6 +143,7 @@ NUK2:
 	Bib:
 	Power:
 		Amount: 200
+	AffectedByPowerOutage:
 	ScalePowerWithHealth:
 
 PROC:
