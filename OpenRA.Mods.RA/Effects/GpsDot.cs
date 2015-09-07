@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (f.HasRenderables || f.NeedRenderables)
 				return false;
 
-			return f.Visible;
+			return f.IsVisible;
 		}
 
 		public void Tick(World world)

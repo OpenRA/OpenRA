@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ISync
+	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ISync, INotifyOwnerChanged
 	{
 		[Sync] public int VisibilityHash;
 
@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<Health> health;
 
 		readonly Dictionary<Player, bool> visible;
+		readonly Dictionary<Player, bool> ownerHasChanged;
 		readonly Dictionary<Player, FrozenActor> frozen;
 
 		bool initialized;
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			frozen = new Dictionary<Player, FrozenActor>();
 			visible = init.World.Players.ToDictionary(p => p, p => false);
+			ownerHasChanged = init.World.Players.ToDictionary(p => p, p => false);
 		}
 
 		bool IsVisibleInner(Actor self, Player byPlayer)
@@ -87,22 +89,23 @@ namespace OpenRA.Mods.Common.Traits
 			VisibilityHash = 0;
 			foreach (var player in self.World.Players)
 			{
-				bool isVisible;
+				bool isCurrentlyVisible;
 				FrozenActor frozenActor;
 				if (!initialized)
 				{
 					frozen[player] = frozenActor = new FrozenActor(self, footprint, player.Shroud);
 					frozen[player].NeedRenderables = frozenActor.NeedRenderables = startsRevealed;
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-					isVisible = visible[player] |= startsRevealed;
+					isCurrentlyVisible = visible[player] |= startsRevealed;
 				}
 				else
 				{
 					frozenActor = frozen[player];
-					isVisible = visible[player] = !frozenActor.Visible;
+					isCurrentlyVisible = visible[player] = !frozenActor.IsVisible;
 				}
 
-				if (isVisible)
+				// Sum of the ClientIndexes for all players that can currently see this actor.
+				if (isCurrentlyVisible)
 					VisibilityHash += player.ClientIndex;
 				else
 					continue;
@@ -120,6 +123,13 @@ namespace OpenRA.Mods.Common.Traits
 					frozenActor.TooltipInfo = tooltip.Value.TooltipInfo;
 					frozenActor.TooltipOwner = tooltip.Value.Owner;
 				}
+
+				if (ownerHasChanged[player])
+				{
+					var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
+					frozenActor.RadarColor = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
+					ownerHasChanged[player] = false;
+				}
 			}
 
 			initialized = true;
@@ -128,6 +138,12 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return IsVisible(self, self.World.RenderPlayer) || (initialized && frozen[self.World.RenderPlayer].IsRendering) ? r : SpriteRenderable.None;
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			foreach (var player in self.World.Players)
+				ownerHasChanged[player] = true;
 		}
 	}
 }

@@ -8,11 +8,11 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
@@ -40,9 +40,21 @@ namespace OpenRA.Traits
 		public int HP;
 		public DamageState DamageState;
 
-		public bool Visible = true;
+		/// <summary>
+		/// Is the frozen preview of the real actor currently visible?
+		/// That means the real actor is currently under fog.
+		/// </summary>
+		public bool IsVisible = true;
 		public bool NeedRenderables;
 		public bool IsRendering { get; private set; }
+
+		public uint ID { get { return actor.ActorID; } }
+		public bool IsValid { get { return Owner != null; } }
+		public ActorInfo Info { get { return actor.Info; } }
+		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+
+		public Color RadarColor;
+		public HashSet<CPos> OccupiedCells;
 
 		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud)
 		{
@@ -51,21 +63,18 @@ namespace OpenRA.Traits
 			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
-			Footprint = footprint
-				.Where(m => shroud.Contains(m))
-				.ToArray();
+			Footprint = footprint.Where(shroud.Contains).ToArray();
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
 			TargetTypes = self.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes).ToHashSet();
 
+			var mod = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
+			RadarColor = mod != null ? mod.RadarColorOverride(self) : self.Owner.Color.RGB;
+			OccupiedCells = new HashSet<CPos>(footprint.SelectMany(uv => self.World.Map.Unproject(uv).Select(m => m.ToCPos(self.World.Map))));
+
 			UpdateVisibility();
 		}
-
-		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null; } }
-		public ActorInfo Info { get { return actor.Info; } }
-		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 
@@ -82,22 +91,22 @@ namespace OpenRA.Traits
 
 		void UpdateVisibility()
 		{
-			var wasVisible = Visible;
+			var wasVisible = IsVisible;
 			var isVisibleTest = shroud.IsVisibleTest;
 
 			// We are doing the following LINQ manually for performance since this is a hot path.
-			// Visible = !Footprint.Any(isVisibleTest);
-			Visible = true;
+			// IsVisible = !Footprint.Any(isVisibleTest);
+			IsVisible = true;
 			foreach (var uv in Footprint)
 			{
 				if (isVisibleTest(uv))
 				{
-					Visible = false;
+					IsVisible = false;
 					break;
 				}
 			}
 
-			if (Visible && !wasVisible)
+			if (IsVisible && !wasVisible)
 				NeedRenderables = true;
 		}
 
@@ -147,7 +156,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class FrozenActorLayer : IRender, ITick, ISync
+	public class FrozenActorLayer : IRender, ITick, ISync, IRadarSignature
 	{
 		[Sync] public int VisibilityHash;
 		[Sync] public int FrozenHash;
@@ -185,7 +194,7 @@ namespace OpenRA.Traits
 
 				if (frozenActor.ShouldBeRemoved(owner))
 					remove.Add(kvp.Key);
-				else if (frozenActor.Visible)
+				else if (frozenActor.IsVisible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
 					remove.Add(kvp.Key);
@@ -201,7 +210,7 @@ namespace OpenRA.Traits
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
-				.Where(f => f.Visible)
+				.Where(f => f.IsVisible)
 				.SelectMany(ff => ff.Render(wr));
 		}
 
@@ -212,6 +221,15 @@ namespace OpenRA.Traits
 				return null;
 
 			return ret;
+		}
+
+		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		{
+			// Filter only actors that have been discovered by the player
+			// HasRenderables is only True once the actor enters the viewport, so is not enough for the minimap
+			foreach (var frozenActor in frozen.Values.Where(f => f.NeedRenderables || f.HasRenderables))
+				foreach (var cell in frozenActor.OccupiedCells)
+					yield return Pair.New(cell, frozenActor.RadarColor);
 		}
 	}
 }
