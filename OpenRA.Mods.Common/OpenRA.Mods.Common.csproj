@@ -695,6 +695,7 @@
     <Compile Include="Traits\Modifiers\HiddenUnderShroud.cs" />
     <Compile Include="Lint\CheckDefaultVisibility.cs" />
     <Compile Include="Traits\Modifiers\AlwaysVisible.cs" />
+    <Compile Include="Traits\AffectsShroud.cs" />
     <Compile Include="Traits\CreatesShroud.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Lint\CheckRevealFootprint.cs" />
