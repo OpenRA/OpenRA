@@ -123,10 +123,10 @@ namespace OpenRA.Mods.Common.AI
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
 		[Desc("Tells the AI what unit types fall under the same common name.")]
-		public readonly Dictionary<string, string[]> UnitsCommonNames = null;
+		public readonly Dictionary<string, HashSet<string>> UnitsCommonNames = null;
 
 		[Desc("Tells the AI what building types fall under the same common name.")]
-		public readonly Dictionary<string, string[]> BuildingCommonNames = null;
+		public readonly Dictionary<string, HashSet<string>> BuildingCommonNames = null;
 
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.AI
 			return GetInfoByCommonName(Info.UnitsCommonNames, commonName, owner);
 		}
 
-		public ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
+		public ActorInfo GetInfoByCommonName(Dictionary<string, HashSet<string>> names, string commonName, Player owner)
 		{
 			if (!names.Any() || !names.ContainsKey(commonName))
 				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));

@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.AI
 
 		ActorInfo GetProducibleBuilding(string commonName, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
 		{
-			string[] actors;
+			HashSet<string> actors;
 			if (!ai.Info.BuildingCommonNames.TryGetValue(commonName, out actors))
 				throw new InvalidOperationException("Can't find {0} in the HackyAI BuildingCommonNames definition.".F(commonName));
 
