@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
 		public readonly int Duration = 0;
 
-		[Desc("Cells")]
+		[Desc("Cells - affects whole cells only")]
 		public readonly int Range = 1;
 		public readonly string GrantUpgradeSound = "ironcur9.aud";
 

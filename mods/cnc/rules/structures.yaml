@@ -64,7 +64,7 @@ FACT:
 		ProductionType: Defence.Nod
 	BaseProvider:
 		Cooldown: 75
-		Range: 14
+		Range: 14c0
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0
@@ -471,7 +471,7 @@ HQ:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	AirstrikePower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
@@ -557,7 +557,7 @@ EYE:
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	IonCannonPower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
@@ -662,7 +662,7 @@ GUN:
 	WithMuzzleFlash:
 	-WithDeathAnimation:
 	DetectCloaked:
-		Range: 3
+		Range: 3c0
 	Power:
 		Amount: -20
 
@@ -746,7 +746,7 @@ OBLI:
 		InitialChargeDelay: 50
 	-EmitInfantryOnSell:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	Power:
 		Amount: -150
 
@@ -778,7 +778,7 @@ GTWR:
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
-		Range: 3
+		Range: 3c0
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
@@ -830,7 +830,7 @@ ATWR:
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	Power:
 		Amount: -40
 

@@ -276,7 +276,7 @@
 	Sellable:
 		SellSounds: BUILD1.WAV
 	Guardable:
-		Range: 3
+		Range: 3c0
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedWithoutFoundation:

@@ -14,7 +14,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class JamsMissilesInfo : ITraitInfo
 	{
-		public readonly int Range = 0;
+		public readonly WDist Range = WDist.Zero;
 		public readonly bool AlliedMissiles = true;
 		public readonly int Chance = 100;
 
@@ -25,8 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly JamsMissilesInfo info;
 
-		// Convert cells to world units
-		public int Range { get { return 1024 * info.Range; } }
+		public WDist Range { get { return info.Range; } }
 		public bool AlliedMissiles { get { return info.AlliedMissiles; } }
 		public int Chance { get { return info.Chance; } }
 

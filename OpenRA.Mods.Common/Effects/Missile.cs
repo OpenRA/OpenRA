@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		bool JammedBy(TraitPair<JamsMissiles> tp)
 		{
-			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range * tp.Trait.Range)
+			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
 				return false;
 
 			if (tp.Actor.Owner.Stances[args.SourceActor.Owner] == Stance.Ally && !tp.Trait.AlliedMissiles)

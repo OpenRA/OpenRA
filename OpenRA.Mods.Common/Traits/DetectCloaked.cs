@@ -18,8 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Specific cloak classifications I can reveal.")]
 		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
-		[Desc("Measured in cells.")]
-		public readonly int Range = 5;
+		public readonly WDist Range = WDist.FromCells(5);
 
 		public override object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}

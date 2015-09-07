@@ -403,7 +403,7 @@ outpost:
 		Range: 10c0
 	ProvidesRadar:
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	RenderDetectionCircle:
 	RenderSprites:
 		Image: outpost.harkonnen
@@ -558,7 +558,7 @@ medium_gun_turret:
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	Power:
 		Amount: -20
 	SelectionDecorations:
@@ -601,7 +601,7 @@ large_gun_turret:
 	CanPowerDown:
 	DisabledOverlay:
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	Power:
 		Amount: -30
 	SelectionDecorations:
@@ -772,7 +772,7 @@ palace:
 			corrino: palace.corrino
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 4
+		Range: 4c0
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@nuke:

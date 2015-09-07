@@ -96,7 +96,7 @@
 	ShakeOnDeath:
 	AcceptsSupplies:
 	Guardable:
-		Range: 3
+		Range: 3c0
 	Demolishable:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
@@ -624,7 +624,7 @@
 	RevealsShroud:
 		Range: 6c0
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 
 ^DeployedVehicle:
 	Inherits@1: ^GainsExperience

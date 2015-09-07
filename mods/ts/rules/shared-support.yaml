@@ -22,7 +22,7 @@ GADPSA:
 	-RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 
 NAPULS:
 	Inherits: ^Defense
