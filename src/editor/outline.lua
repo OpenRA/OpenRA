@@ -107,7 +107,7 @@ local function outlineRefresh(editor, force)
       end
       name = name or outcfg.showanonymous
       funcs[#funcs+1] = {
-        name = (name or '~')..params:gsub("%s+", " "),
+        name = ((name or '~')..params):gsub("%s+", " "),
         skip = (not name) and true or nil,
         depth = depth,
         image = ftype,
