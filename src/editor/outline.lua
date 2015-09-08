@@ -221,10 +221,7 @@ local function outlineRefresh(editor, force)
 end
 
 local function indexFromQueue()
-  if #outline.indexqueue == 0 then
-    outline:SaveSettings()
-    return
-  end
+  if #outline.indexqueue == 0 then return end
 
   local editor = ide:GetEditor()
   local inactivity = ide.config.symbolindexinactivity
@@ -250,7 +247,10 @@ local function indexFromQueue()
     else
       DisplayOutputLn(TR("Can't open '%s': %s"):format(fname, err))
     end
-    if #outline.indexqueue == 0 then ide:SetStatusFor(TR("Indexing completed.")) end
+    if #outline.indexqueue == 0 then
+      outline:SaveSettings()
+      ide:SetStatusFor(TR("Indexing completed."))
+    end
     ide:DoWhenIdle(indexFromQueue)
   end
   return
@@ -452,7 +452,7 @@ local package = ide:AddPackage('core.outline', {
       local path = doc and doc:GetFilePath()
       if path and cache and cache.funcs then
         outline:UpdateSymbols(path, cache.funcs.updated > editor.updated and cache.funcs or nil)
-        resetIndexTimer()
+        outline:SaveSettings()
       end
     end,
 
@@ -647,7 +647,7 @@ function outline:UpdateSymbols(fname, symb)
   symbols[fname] = symb
 
   -- purge outdated records
-  local threshold = TimeGet() - 60*60*24*7 -- cache for 7 weeks
+  local threshold = TimeGet() - 60*60*24*7 -- cache for 7 days
   if not self.indexpurged then
     for k, v in pairs(symbols) do
       if v.updated < threshold then symbols[k] = nil end
