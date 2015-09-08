@@ -41,7 +41,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void StartGame(Arguments args)
 		{
-			Ui.LoadWidget("MODCHOOSER", Ui.Root, new WidgetArgs());
+			Ui.LoadWidget("MODCHOOSER_BACKGROUND", Ui.Root, new WidgetArgs());
+			Ui.OpenWindow("MODCHOOSER_DIALOG");
 		}
 
 		public void Dispose()

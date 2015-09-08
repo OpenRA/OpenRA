@@ -1,8 +1,10 @@
-Background@MODCHOOSER:
-	Logic:ModBrowserLogic
+Background@MODCHOOSER_BACKGROUND:
 	Background: background
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
+	
+Background@MODCHOOSER_DIALOG:
+	Logic:ModBrowserLogic
 	Children:
 		Container:
 			X:(WINDOW_RIGHT - WIDTH)/2
@@ -10,7 +12,7 @@ Background@MODCHOOSER:
 			Width:750
 			Height:550-4-32
 			Children:
-				Background@bg:
+				Background@DIALOG_BACKGROUND:
 					Y:69
 					Width:PARENT_RIGHT
 					Height:PARENT_BOTTOM - 69
@@ -123,16 +125,16 @@ Background@MODCHOOSER:
 							X:PARENT_RIGHT - 53 - WIDTH - 170
 							Y:PARENT_BOTTOM - 25 - HEIGHT
 							Width:140
-							Height:35
+							Height:32
 							Text:Load Mod
 						Button@QUIT_BUTTON:
 							Background:button-highlighted
 							X:PARENT_RIGHT - 53 - WIDTH
 							Y:PARENT_BOTTOM - 25 - HEIGHT
 							Width:140
-							Height:35
+							Height:32
 							Text:Quit
-				Background@header:
+				Background@DIALOG_HEADER:
 					Width:PARENT_RIGHT
 					Height:72
 					Background:panel-header
