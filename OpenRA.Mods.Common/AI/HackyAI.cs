@@ -182,6 +182,7 @@ namespace OpenRA.Mods.Common.AI
 		readonly IPathFinder pathfinder;
 
 		readonly Func<Actor, bool> isEnemyUnit;
+		readonly Predicate<Actor> unitIsDeadOrHasNewOwner;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -235,6 +236,7 @@ namespace OpenRA.Mods.Common.AI
 				Player.Stances[unit.Owner] == Stance.Enemy
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
+			unitIsDeadOrHasNewOwner = a => a.Owner != Player || a.IsDead;
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -604,7 +606,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
-				s.Units.RemoveAll(a => a.IsDead || a.Owner != Player);
+				s.Units.RemoveAll(unitIsDeadOrHasNewOwner);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -623,8 +625,8 @@ namespace OpenRA.Mods.Common.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.IsDead || a.Owner != Player);
-			unitsHangingAroundTheBase.RemoveAll(a => a.IsDead || a.Owner != Player);
+			activeUnits.RemoveAll(unitIsDeadOrHasNewOwner);
+			unitsHangingAroundTheBase.RemoveAll(unitIsDeadOrHasNewOwner);
 
 			if (--rushTicks <= 0)
 			{
@@ -805,12 +807,14 @@ namespace OpenRA.Mods.Common.AI
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
-			var buildings = self.World.ActorsWithTrait<RallyPoint>()
-				.Where(rp => rp.Actor.Owner == Player &&
-					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>())).ToArray();
-
-			foreach (var a in buildings)
-				QueueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = ChooseRallyLocationNear(a.Actor), SuppressVisualFeedback = true });
+			foreach (var rp in self.World.ActorsWithTrait<RallyPoint>())
+				if (rp.Actor.Owner == Player &&
+					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
+					QueueOrder(new Order("SetRallyPoint", rp.Actor, false)
+					{
+						TargetLocation = ChooseRallyLocationNear(rp.Actor),
+						SuppressVisualFeedback = true
+					});
 		}
 
 		// Won't work for shipyards...
@@ -878,10 +882,10 @@ namespace OpenRA.Mods.Common.AI
 			if (supportPowerMngr == null)
 				return;
 
-			var powers = supportPowerMngr.Powers.Where(p => !p.Value.Disabled);
-			foreach (var kv in powers)
+			foreach (var sp in supportPowerMngr.Powers.Values)
 			{
-				var sp = kv.Value;
+				if (sp.Disabled)
+					continue;
 
 				// Add power to dictionary if not in delay dictionary yet
 				if (!waitingPowers.ContainsKey(sp))
