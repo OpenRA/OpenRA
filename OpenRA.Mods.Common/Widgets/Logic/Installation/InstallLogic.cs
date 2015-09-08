@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -16,13 +15,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InstallLogic : Widget
 	{
 		[ObjectCreator.UseCtor]
-		public InstallLogic(Widget widget, Action continueLoading, string mirrorListUrl, string modId)
+		public InstallLogic(Widget widget, string mirrorListUrl, string modId)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var widgetArgs = new WidgetArgs
 			{
-				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
-				{ "continueLoading", continueLoading },
+				{ "afterInstall", () => { Game.InitializeMod(modId, new Arguments()); } },
 				{ "mirrorListUrl", mirrorListUrl },
 				{ "modId", modId }
 			};
@@ -38,14 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", widgetArgs);
 
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
-			{
-				Game.RunAfterTick(() =>
-				{
-					Game.Settings.Game.PreviousMod = Game.ModData.Manifest.Mod.Id;
-					Game.InitializeMod("modchooser", null);
-				});
-			};
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = Ui.CloseWindow;
 		}
 	}
 }

@@ -20,8 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var installMusicContainer = widget.Get("INSTALL_MUSIC_PANEL");
 
-			Action loadDefaultMod = () =>
-				Game.RunAfterTick(() => Game.InitializeMod(modId, null));
+			Action loadDefaultMod = () => Game.RunAfterTick(() => Game.InitializeMod(modId, null));
 
 			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("BACK_BUTTON");
 			if (cancelButton != null)
@@ -34,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs
 					{
-						{ "continueLoading", loadDefaultMod },
+						{ "afterInstall", loadDefaultMod },
 						{ "modId", modId }
 					});
 				};

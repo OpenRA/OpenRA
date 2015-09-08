@@ -23,17 +23,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget panel;
 		readonly ProgressBarWidget progressBar;
 		readonly LabelWidget statusLabel;
-		readonly Action continueLoading;
+		readonly Action afterInstall;
 		readonly ButtonWidget retryButton, backButton;
 		readonly Widget installingContainer, insertDiskContainer;
 		readonly ContentInstaller installData;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromCDLogic(Widget widget, Action continueLoading, string modId)
+		public InstallFromCDLogic(Widget widget, Action afterInstall, string modId)
 		{
 			this.modId = modId;
 			installData = ModMetadata.AllMods[modId].Content;
-			this.continueLoading = continueLoading;
+			this.afterInstall = afterInstall;
 			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				continueLoading();
+				afterInstall();
 			}) { IsBackground = true }.Start();
 		}
 
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						statusLabel.GetText = () => "Game assets have been extracted.";
 						Ui.CloseWindow();
-						continueLoading();
+						afterInstall();
 					});
 				}
 				catch (Exception e)
