@@ -8,7 +8,9 @@ function CMarkSymbols(code, pos, vars)
       if (not s) then
         s,e,pref,cap,parms = str:find("([\r\n]%s*)"..funcdeftmpl, pos)
       end
-      if parms and #parms > 0 and not parms:find(idtmpl) then
+      -- skip strange parameters and things of `else if ()` variety
+      if parms and #parms > 0 and not parms:find(idtmpl)
+      or cap and cap:find("%sif%s*$") then
         pos = s+#pref+#cap+#parms
       else
         break
