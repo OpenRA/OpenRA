@@ -403,6 +403,9 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+	WithRangeCircle@BASE:
+		Name: base
+		OwnPlacementOnly: true
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud

@@ -65,6 +65,16 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
+	WithRangeCircle@BASE_READY:
+		Name: base
+		Type: base
+		Variant: ready
+		Color: 128,255,255,255
+	WithRangeCircle@BASE_BUSY:
+		Name: base
+		Type: base
+		Variant: busy
+		Color: 128,255,0,0
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0

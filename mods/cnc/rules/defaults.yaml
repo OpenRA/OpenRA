@@ -461,6 +461,9 @@
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
 		TerrainTypes: Clear,Road
+	WithRangeCircle@BASE:
+		Name: base
+		OwnPlacementOnly: true
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	RepairableBuilding:
