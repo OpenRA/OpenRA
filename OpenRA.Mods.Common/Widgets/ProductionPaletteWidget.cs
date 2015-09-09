@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (TooltipContainer != null)
 				tooltipContainer.Value.SetTooltip(TooltipTemplate,
-					new WidgetArgs() { { "palette", this } });
+					new WidgetArgs() { { "world", World }, { "palette", this } });
 		}
 
 		public override void MouseExited()
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
 			queuedOffset = new float2(4, 2);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
@@ -400,7 +400,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
 					{
-						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber / 9 % 2 == 0)
+						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
 							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, Color.White, Color.Black, 1);
 						else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
 							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, ReadyTextAltColor, Color.Black, 1);
@@ -410,7 +410,7 @@ namespace OpenRA.Mods.Common.Widgets
 														 icon.Pos + holdOffset,
 														 Color.White, Color.Black, 1);
 					else if (!waiting)
-						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual),
+						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
 														 icon.Pos + timeOffset,
 														 Color.White, Color.Black, 1);
 

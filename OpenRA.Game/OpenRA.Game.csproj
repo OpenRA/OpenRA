@@ -243,6 +243,7 @@
     <Compile Include="Map\MapCoordsRegion.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="GameSpeed.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ProductionTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
+		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette, World world)
 		{
 			var mapRules = palette.World.Map.Rules;
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var lowpower = pm.PowerState != PowerState.Normal;
 				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor.Name)
 					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
-				var timeString = WidgetUtils.FormatTime(time);
+				var timeString = WidgetUtils.FormatTime(time, world.Timestep);
 				timeLabel.GetText = () => timeString;
 				timeLabel.GetColor = () => lowpower ? Color.Red : Color.White;
 

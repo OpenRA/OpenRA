@@ -144,6 +144,7 @@ namespace OpenRA
 			OrderManager = orderManager;
 			orderGenerator = new UnitOrderGenerator();
 			Map = map;
+			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 
 			TileSet = map.Rules.TileSets[Map.Tileset];
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);

@@ -145,6 +145,19 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 20
 					Text: Debug Menu
+				Label@DIFFICULTY_DESC:
+					X: PARENT_RIGHT - WIDTH - 145
+					Y: 70
+					Width: 120
+					Height: 25
+					Text: Mission Difficulty:
+					Align: Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 70
+					Width: 140
+					Height: 25
+					Font: Regular
 				Label@STARTINGCASH_DESC:
 					Y: 110
 					Width: 80
@@ -171,19 +184,6 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 140
 					Height: 25
 					Font: Regular
-				Label@DIFFICULTY_DESC:
-					X: PARENT_RIGHT - WIDTH - 145
-					Y: 150
-					Width: 120
-					Height: 25
-					Text: Mission Difficulty:
-					Align: Right
-				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X: PARENT_RIGHT - WIDTH
-					Y: 150
-					Width: 140
-					Height: 25
-					Font: Regular
 				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
 					X: 85
 					Y: 150
@@ -197,6 +197,19 @@ Background@LOBBY_OPTIONS_BIN:
 					Height: 25
 					Text: Tech Level:
 					Align: Right
+				Label@GAMESPEED_DESC:
+					X: PARENT_RIGHT - WIDTH - 145
+					Y: 150
+					Width: 120
+					Height: 25
+					Text: Game Speed:
+					Align: Right
+				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 150
+					Width: 140
+					Height: 25
+					Font: Regular
 
 Background@FORCE_START_DIALOG:
 	X: 20

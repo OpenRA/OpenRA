@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
 			var startTick = Ui.LastTickTime;
 
-			Func<bool> shouldShowStatus = () => (world.Paused || world.Timestep != Game.Timestep)
+			Func<bool> shouldShowStatus = () => (world.Paused || world.Timestep != world.LobbyInfo.GlobalSettings.Timestep)
 				&& (Ui.LastTickTime - startTick) / 1000 % 2 == 0;
 
 			Func<string> statusText = () =>
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (world.Timestep == 1)
 					return "Max Speed";
 
-				return "{0}% Speed".F(Game.Timestep * 100 / world.Timestep);
+				return "{0}% Speed".F(world.LobbyInfo.GlobalSettings.Timestep * 100 / world.Timestep);
 			};
 
 			if (timer != null)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (status == null && shouldShowStatus())
 						return statusText();
 
-					return WidgetUtils.FormatTime(world.WorldTick);
+					return WidgetUtils.FormatTime(world.WorldTick, world.Timestep);
 				};
 			}
 

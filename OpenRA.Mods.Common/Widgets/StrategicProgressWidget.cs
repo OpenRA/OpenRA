@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var isVictory = pendingWinner == world.LocalPlayer || !WorldUtils.AreMutualAllies(pendingWinner, world.LocalPlayer);
 			var tc = "Strategic {0} in {1}".F(
 				isVictory ? "victory" : "defeat",
-				WidgetUtils.FormatTime(winnerSvc.TicksLeft));
+				WidgetUtils.FormatTime(winnerSvc.TicksLeft, world.Timestep));
 
 			var font = Game.Renderer.Fonts["Bold"];
 

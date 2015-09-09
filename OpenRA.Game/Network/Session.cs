@@ -172,6 +172,7 @@ namespace OpenRA.Network
 		{
 			public string ServerName;
 			public string Map;
+			public int Timestep = 40;
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
 			public bool FragileAlliances = false; // Allow diplomatic stance changes after game start.
@@ -187,6 +188,7 @@ namespace OpenRA.Network
 			public int StartingCash = 5000;
 			public string TechLevel = "none";
 			public string StartingUnitsClass = "none";
+			public string GameSpeedType = "default";
 			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;

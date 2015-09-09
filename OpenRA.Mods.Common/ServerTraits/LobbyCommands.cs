@@ -675,6 +675,34 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "gamespeed",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+
+						GameSpeed speed;
+						if (!gameSpeeds.Speeds.TryGetValue(s, out speed))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid game speed selected.");
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.GameSpeedType = s;
+						server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
+						server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+
+						server.SyncLobbyInfo();
+						server.SendMessage("{0} changed Game Speed to {1}.".F(client.Name, speed.Name));
+
+						return true;
+					}
+				},
 				{ "kick",
 					s =>
 					{

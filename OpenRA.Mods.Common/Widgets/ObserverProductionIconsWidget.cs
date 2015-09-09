@@ -92,18 +92,18 @@ namespace OpenRA.Mods.Common.Widgets
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(current);
+				var text = GetOverlayForItem(current, world.Timestep);
 				tiny.DrawTextWithContrast(text,
 					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
 			}
 		}
 
-		static string GetOverlayForItem(ProductionItem item)
+		static string GetOverlayForItem(ProductionItem item, int timestep)
 		{
 			if (item.Paused) return "ON HOLD";
 			if (item.Done) return "READY";
-			return WidgetUtils.FormatTime(item.RemainingTimeActual);
+			return WidgetUtils.FormatTime(item.RemainingTimeActual, timestep);
 		}
 
 		public override Widget Clone()
