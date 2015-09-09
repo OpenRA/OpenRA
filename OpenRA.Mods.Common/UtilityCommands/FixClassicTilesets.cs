@@ -54,7 +54,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (!GlobalFileSystem.TryOpen(template.Images[0] + ext, out s))
+						if (GlobalFileSystem.TryOpen(template.Images[0] + ext, out s))
+							s.Dispose();
+						else
 							continue;
 
 						// Rewrite the template image (normally readonly) using reflection
@@ -91,8 +93,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 						if (template.TilesCount > 1 && template.Size == single)
 							pickAnyField.SetValue(template, true);
-
-						s.Dispose();
 					}
 				}
 
