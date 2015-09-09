@@ -16,14 +16,17 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Rendered together with AttackCharge.")]
 	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Sequence name to use")]
+		[Desc("Sequence name to use.")]
 		[SequenceReference] public readonly string Sequence = "active";
 
 		[Desc("Custom palette name")]
 		[PaletteReference] public readonly string Palette = null;
 
-		[Desc("Custom palette is a player palette BaseName")]
+		[Desc("Custom palette is a player palette BaseName.")]
 		public readonly bool IsPlayerPalette = false;
+
+		[Desc("Should the animation repeat after it has finished?")]
+		public readonly bool Repeating = false;
 
 		public object Create(ActorInitializer init) { return new WithChargeOverlay(init, this); }
 	}
@@ -51,7 +54,18 @@ namespace OpenRA.Mods.Common.Traits
 		public void Charging(Actor self, Target target)
 		{
 			charging = true;
-			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);
+
+			var normalSeq = RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence);
+
+			if (info.Repeating)
+				overlay.PlayRepeating(info.Sequence);
+			else
+				overlay.PlayThen(normalSeq, () => charging = false);
+		}
+
+		public void FinishedCharging(Actor self)
+		{
+			charging = false;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
@@ -60,6 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public void Sold(Actor self) { }
+
 		public void Selling(Actor self)
 		{
 			charging = false;

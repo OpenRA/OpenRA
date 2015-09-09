@@ -165,7 +165,7 @@ GGHUNT:
 	RevealsShroud:
 		Range: 7c0
 	WithFacingSpriteBody:
-	DemoTruck:
+	Detonates:
 		Voice: Attack
 	Explodes:
 		Weapon: SuicideBomb

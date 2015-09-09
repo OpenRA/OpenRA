@@ -238,7 +238,7 @@ Rules:
 		Explodes:
 			Weapon: CrateNuke
 			EmptyWeapon: CrateNuke
-		DemoTruck:
+		Detonates:
 	SHOK:
 		Health:
 			HP: 800
