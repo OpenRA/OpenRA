@@ -167,8 +167,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			return Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.Weapon.MinRange).Min();
+			var min = Armaments.Where(a => !a.IsTraitDisabled)
+				.Select(a => a.Weapon.MinRange)
+				.Append(WDist.MaxValue).Min();
+			return min != WDist.MaxValue ? min : WDist.Zero;
 		}
 
 		public WDist GetMaximumRange()
