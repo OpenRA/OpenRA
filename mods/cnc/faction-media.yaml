@@ -1,0 +1,12 @@
+Video:
+	Start:
+		choose.vqa
+	Nod:
+		choosenod.vqa
+		nod1pre.vqa
+
+Audio:
+	GDI:
+		gdiselected.wav
+	Nod:
+		brotherhoodofnodselected.wav

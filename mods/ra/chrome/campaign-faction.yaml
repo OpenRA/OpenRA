@@ -1,0 +1,83 @@
+Container@CAMPAIGN_FACTION:
+	Logic: CampaignFactionLogic
+	X: WINDOW_RIGHT/2 - WIDTH/2
+	Y: WINDOW_BOTTOM/2 - HEIGHT/2
+	Width: 500
+	Height: 250
+	Children:
+		VqaPlayer@VIDEO_BG:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		VqaPlayer@VIDEO:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		Label@CAMPAIGN_MENU_TITLE:
+			Y: 0 - 25
+			Width: PARENT_RIGHT
+			Text: Choose your faction
+			Align: Center
+			Contrast: true
+			Font: BigBold
+		Container@CAMPAIGN_MENU_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Container@CAMPAIGN_ALLIES:
+					Width: PARENT_RIGHT / 2
+					Height: PARENT_BOTTOM
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+						Image@Allies_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: 15
+							ImageCollection: choose-logos
+							ImageName: allies
+						Button@Allies:
+							X: PARENT_RIGHT / 2 - WIDTH/2
+							Y: PARENT_BOTTOM - 15 - HEIGHT
+							Width: 160
+							Height: 35
+							Text: Allies
+							Font: Bold
+							Key: a
+				Container@CAMPAIGN_SOVIET:
+					X: PARENT_RIGHT - PARENT_RIGHT / 2
+					Width: PARENT_RIGHT / 2
+					Height: PARENT_BOTTOM
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+						Image@Soviet_LOGO:
+							X: PARENT_RIGHT / 2 - 86
+							Y: 15
+							ImageCollection: choose-logos
+							ImageName: soviet
+						Button@Soviet:
+							X: PARENT_RIGHT / 2 - WIDTH/2
+							Y: PARENT_BOTTOM - 15 - HEIGHT
+							Width: 160
+							Height: 35
+							Text: Soviet
+							Font: Bold
+							Key: s
+				Container@CAMPAIGN_BACK_BUTTONS:
+					X: 0
+					Y: PARENT_BOTTOM
+					Width: PARENT_RIGHT
+					Height: 2 * 15 + 35
+					Children:
+						Background@BG:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Button@BACK_BUTTON:
+									X: PARENT_RIGHT - 15 - WIDTH
+									Y: 15
+									Width: 140
+									Height: 35
+									Text: Back
+									Font: Bold
+									Key: Escape

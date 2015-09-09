@@ -54,14 +54,14 @@ Root2:
 
 		readonly string yamlMixedStyle = @"
 Root1:
-    Child1:
-        Attribute1: Test
-        Attribute2: Test
+	Child1:
+		Attribute1: Test
+		Attribute2: Test
 	Child2:
 		Attribute1: Test
-	    Attribute2: Test
+		Attribute2: Test
 Root2:
-    Child1:
+	Child1:
 		Attribute1: Test
 ";
 

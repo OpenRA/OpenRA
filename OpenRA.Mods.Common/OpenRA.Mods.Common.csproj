@@ -148,6 +148,7 @@
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="CampaignProgress.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
@@ -562,6 +563,12 @@
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignCongratulationLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignFactionLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignMissionBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignMissionPreviewLogic.cs" />
+    <Compile Include="Widgets\Logic\CampaignWorldLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />

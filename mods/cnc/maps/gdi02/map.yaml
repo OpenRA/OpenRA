@@ -6,6 +6,10 @@ Title: Knock out the Refinery
 
 Description: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
 
+CountryDescription: Estonia:\n\n|\n\n|Population:\n|1,607,000\n|Geographic Area:\n|17,413 square miles\n|Capital:\n|Tallinn\n|Government:\n|Republic\n|Gross Domestic Product:\n|Negligible\n|Point of Conflict:\n|Parnu\n|Military Power:\n|Local Militia
+
+NextMission: gdi03
+
 Author: Westwood Studios
 
 Tileset: TEMPERAT

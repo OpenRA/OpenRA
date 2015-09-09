@@ -181,6 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
+				CampaignProgress.SaveProgress(player.Faction.Name);
 				player.WinState = WinState.Won;
 				player.World.OnPlayerWinStateChanged(player);
 

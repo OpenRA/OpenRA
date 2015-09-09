@@ -6,6 +6,8 @@ Title: Soviet 02a: The thin red line
 
 Description: Tomorrow, the attack on Germany begins, but today, we must protect our facility from Allied attacks.\n\nKeep the Command Center intact at all costs, and destroy any Allied fortification you might find.
 
+NextMission: soviet-04a, soviet-04b
+
 Author: Westwood Studios
 
 Tileset: TEMPERAT
