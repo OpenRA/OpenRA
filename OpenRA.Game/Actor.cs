@@ -40,34 +40,38 @@ namespace OpenRA
 		public Group Group;
 		public int Generation;
 
-		Lazy<Rectangle> bounds;
-		Lazy<Rectangle> visualBounds;
-		Lazy<IFacing> facing;
-		Lazy<Health> health;
-		Lazy<IOccupySpace> occupySpace;
-		Lazy<IEffectiveOwner> effectiveOwner;
-
-		public Rectangle Bounds { get { return bounds.Value; } }
-		public Rectangle VisualBounds { get { return visualBounds.Value; } }
-		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
-		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
+		public Rectangle Bounds { get; private set; }
+		public Rectangle VisualBounds { get; private set; }
+		public IEffectiveOwner EffectiveOwner { get; private set; }
+		public IOccupySpace OccupiesSpace
+		{
+			get
+			{
+				if (occupySpace == null)
+					occupySpace = Trait<IOccupySpace>();
+				return occupySpace;
+			}
+		}
 
 		public bool IsIdle { get { return currentActivity == null; } }
-		public bool IsDead { get { return Disposed || (health.Value == null ? false : health.Value.IsDead); } }
+		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
 
-		public CPos Location { get { return occupySpace.Value.TopLeft; } }
-		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
+		public CPos Location { get { return OccupiesSpace.TopLeft; } }
+		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
 
 		public WRot Orientation
 		{
 			get
 			{
 				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
-				var facingValue = facing.Value != null ? facing.Value.Facing : 0;
+				var facingValue = facing != null ? facing.Facing : 0;
 				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
 			}
 		}
 
+		IOccupySpace occupySpace;
+		readonly IFacing facing;
+		readonly Health health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IDisable[] disables;
@@ -83,8 +87,6 @@ namespace OpenRA
 			if (initDict.Contains<OwnerInit>())
 				Owner = init.Get<OwnerInit, Player>();
 
-			occupySpace = Exts.Lazy(() => TraitOrDefault<IOccupySpace>());
-
 			if (name != null)
 			{
 				name = name.ToLowerInvariant();
@@ -97,43 +99,44 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			facing = Exts.Lazy(() => TraitOrDefault<IFacing>());
-			health = Exts.Lazy(() => TraitOrDefault<Health>());
-			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
-
-			bounds = Exts.Lazy(() =>
-			{
-				var si = Info.TraitInfoOrDefault<SelectableInfo>();
-				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
-
-				var offset = -size / 2;
-				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
-					offset += new int2(si.Bounds[2], si.Bounds[3]);
-
-				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-			});
-
-			visualBounds = Exts.Lazy(() =>
-			{
-				var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
-				if (sd == null || sd.SelectionBoxBounds == null)
-					return bounds.Value;
-
-				var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
-
-				var offset = -size / 2;
-				if (sd.SelectionBoxBounds.Length > 2)
-					offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
-
-				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-			});
-
+			Bounds = DetermineBounds();
+			VisualBounds = DetermineVisualBounds();
+			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
+			facing = TraitOrDefault<IFacing>();
+			health = TraitOrDefault<Health>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			disables = TraitsImplementing<IDisable>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
+		}
+
+		Rectangle DetermineBounds()
+		{
+			var si = Info.TraitInfoOrDefault<SelectableInfo>();
+			var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
+				TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+
+			var offset = -size / 2;
+			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
+				offset += new int2(si.Bounds[2], si.Bounds[3]);
+
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+		}
+
+		Rectangle DetermineVisualBounds()
+		{
+			var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
+			if (sd == null || sd.SelectionBoxBounds == null)
+				return Bounds;
+
+			var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
+
+			var offset = -size / 2;
+			if (sd.SelectionBoxBounds.Length > 2)
+				offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
+
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 		}
 
 		public void Tick()
@@ -280,10 +283,10 @@ namespace OpenRA
 
 		public void Kill(Actor attacker)
 		{
-			if (health.Value == null)
+			if (health == null)
 				return;
 
-			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
+			health.InflictDamage(this, attacker, health.MaxHP, null, true);
 		}
 
 		public bool IsDisabled()
