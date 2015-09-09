@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var warhead = e.Warhead as DamageWarhead;
-			if (warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
+			if (info.DeathType.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
 				return;
 
 			var weaponName = ChooseWeaponForExplosion(self);
