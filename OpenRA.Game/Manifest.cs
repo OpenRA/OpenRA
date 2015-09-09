@@ -32,6 +32,8 @@ namespace OpenRA
 	// Describes what is to be loaded in order to run a mod
 	public class Manifest
 	{
+		public static readonly Dictionary<string, Manifest> AllMods = LoadMods();
+
 		public readonly ModMetadata Mod;
 		public readonly string[]
 			Folders, Rules, ServerTraits,
@@ -44,6 +46,7 @@ namespace OpenRA
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
 
+		public readonly Dictionary<string, string> RequiresMods;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
 		public readonly string[] SpriteFormats = { };
@@ -51,7 +54,7 @@ namespace OpenRA
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SpriteFormats" };
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SpriteFormats", "RequiresMods" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -97,6 +100,8 @@ namespace OpenRA
 					var nd = my.ToDictionary();
 					return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
 				});
+
+			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string>();
@@ -173,6 +178,30 @@ namespace OpenRA
 			}
 
 			return module;
+		}
+
+		static Dictionary<string, Manifest> LoadMods()
+		{
+			var basePath = Platform.ResolvePath(".", "mods");
+			var mods = Directory.GetDirectories(basePath)
+				.Select(x => x.Substring(basePath.Length + 1));
+
+			var ret = new Dictionary<string, Manifest>();
+			foreach (var mod in mods)
+			{
+				try
+				{
+					var manifest = new Manifest(mod);
+					ret.Add(mod, manifest);
+				}
+				catch (Exception ex)
+				{
+					Log.Write("debug", "An exception occured while trying to load mod {0}:", mod);
+					Log.Write("debug", ex.ToString());
+				}
+			}
+
+			return ret;
 		}
 	}
 }
