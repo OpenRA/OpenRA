@@ -40,11 +40,6 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
-		static readonly Func<PPos, bool> TruthPredicate = _ => true;
-		readonly Func<PPos, bool> shroudEdgeTest;
-		readonly Func<PPos, bool> isExploredTest;
-		readonly Func<PPos, bool> isVisibleTest;
-
 		public Shroud(Actor self)
 		{
 			this.self = self;
@@ -53,11 +48,6 @@ namespace OpenRA.Traits
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
-
-			shroudEdgeTest = map.Contains;
-
-			isExploredTest = IsExplored;
-			isVisibleTest = IsVisible;
 		}
 
 		void Invalidate(IEnumerable<PPos> changed)
@@ -288,23 +278,6 @@ namespace OpenRA.Traits
 
 		public bool ShroudEnabled { get { return !Disabled; } }
 
-		/// <summary>
-		/// Returns a fast exploration lookup that skips the usual validation.
-		/// The return value should not be cached across ticks, and should not
-		/// be called with cells outside the map bounds.
-		/// </summary>
-		public Func<PPos, bool> IsExploredTest
-		{
-			get
-			{
-				// If shroud isn't enabled, then we can see everything inside the map.
-				if (!ShroudEnabled)
-					return shroudEdgeTest;
-
-				return isExploredTest;
-			}
-		}
-
 		public bool IsVisible(WPos pos)
 		{
 			return IsVisible(map.ProjectedCellCovering(pos));
@@ -338,24 +311,6 @@ namespace OpenRA.Traits
 		}
 
 		public bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
-
-		/// <summary>
-		/// Returns a fast visibility lookup that skips the usual validation.
-		/// The return value should not be cached across ticks, and should not
-		/// be called with cells outside the map bounds.
-		/// </summary>
-		public Func<PPos, bool> IsVisibleTest
-		{
-			get
-			{
-				// If fog isn't enabled, then we can see everything.
-				if (!FogEnabled)
-					return TruthPredicate;
-
-				// If fog is enabled, we can use the fast test that just does the core check.
-				return isVisibleTest;
-			}
-		}
 
 		public bool Contains(PPos uv)
 		{
