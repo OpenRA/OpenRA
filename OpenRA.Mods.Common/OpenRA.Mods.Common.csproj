@@ -404,7 +404,6 @@
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
-    <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\WithWallSpriteBody.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />

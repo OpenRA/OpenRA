@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 			return sequence;
 		}
 
-		// Required by RenderSimple, WithSpriteBody and WithInfantryBody
+		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoSelectionSize(Actor self)
 		{
 			return anims.Where(b => b.IsVisible

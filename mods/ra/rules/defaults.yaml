@@ -697,3 +697,29 @@
 		ShadowSequence: idle
 	UpgradeManager:
 
+^Mine:
+	Inherits: ^SpriteActor
+	WithSpriteBody:
+	HiddenUnderShroud:
+		Type: CenterPosition
+	Mine:
+		CrushClasses: mine
+		DetonateClasses: mine
+		AvoidFriendly: false
+	Health:
+		HP: 100
+		NotifyAppliedDamage: false
+	Armor:
+		Type: Light
+	Cloak:
+		CloakSound:
+		UncloakSound:
+		Palette:
+		CloakTypes: Mine
+	Tooltip:
+		Name: Mine
+	Targetable:
+		TargetTypes: Ground
+	Immobile:
+		OccupiesSpace: true
+

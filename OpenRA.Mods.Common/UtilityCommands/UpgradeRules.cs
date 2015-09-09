@@ -2058,6 +2058,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "RotationPaletteEffect";
 				}
 
+				// Replace RenderSimple with RenderSprites + WithSpriteBody + AutoSelectionSize
+				if (engineVersion < 20150909)
+				{
+					if (depth == 0)
+					{
+						var rs = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderSimple"));
+						if (rs != null)
+						{
+							rs.Key = "RenderSprites";
+
+							var wsbNodes = rs.Value.Nodes.Where(n => n.Key == "Sequence").ToList();
+							if (wsbNodes.Any())
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", new MiniYaml("", wsbNodes)));
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("WithSpriteBody", ""));
+
+							node.Value.Nodes.Add(new MiniYamlNode("AutoSelectionSize", ""));
+							rs.Value.Nodes.RemoveAll(n => wsbNodes.Contains(n));
+						}
+
+						var rrs = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-RenderSimple"));
+						if (rrs != null)
+							rrs.Key = "-WithSpriteBody";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
