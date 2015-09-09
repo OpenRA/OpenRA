@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Background = "button";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
-		public int BaseLine = 0;
+		public int BaseLine = ChromeMetrics.Get<int>("ButtonBaseLine");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("ButtonTextColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("ButtonTextColorDisabled");

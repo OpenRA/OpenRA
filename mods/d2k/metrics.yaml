@@ -7,6 +7,7 @@ Metrics:
 	ButtonTextColorDisabled: 128,128,128
 	ButtonTextContrast: false
 	ButtonTextContrastColor: 0,0,0
+	ButtonBaseLine: 0
 	CheckboxPressedState: false
 	HotkeyFont: Regular
 	HotkeyColor: 255,255,255
