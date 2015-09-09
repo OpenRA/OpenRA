@@ -194,7 +194,7 @@ local function outlineRefresh(editor, force)
     if not func.skip then
       local item = ctrl:AppendItem(parent, func.name, func.image)
       if ide.config.outline.showcurrentfunction
-      and edpos >= func.pos and (not func.poe or edpos <= func.poe) then
+      and edpos >= func.pos and func.poe and edpos <= func.poe then
         ctrl:SetItemBold(item, true)
       end
       if outcfg.sort then resort[parent] = true end
@@ -564,7 +564,7 @@ local package = ide:AddPackage('core.outline', {
       -- scan all items recursively starting from the current file
       eachNode(function(ctrl, item)
           local func = cache.funcs[ctrl:GetItemData(item):GetData()]
-          local val = edpos >= func.pos and (not func.poe or edpos <= func.poe)
+          local val = edpos >= func.pos and func.poe and edpos <= func.poe
           if edline == editor:LineFromPosition(func.pos)+1
           or (func.poe and edline == editor:LineFromPosition(func.poe)+1) then
             cache.line = nil
