@@ -9,7 +9,7 @@ InsertYaks = function()
 		local yak = Actor.Create(yakType, true, { CenterPosition = start, Owner = player, Facing = (Map.CenterOfCell(dest) - start).Facing })
 		yak.Move(dest)
 		yak.ReturnToBase(Airfields[i])
-		i = i + i
+		i = i + 1
 	end)
 end
 
