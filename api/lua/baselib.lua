@@ -243,6 +243,12 @@ return {
         args = "(...)",
         returns = "()",
       },
+      isyieldable = {
+        type = "function",
+        description = "Returns true when the running coroutine can yield. A running coroutine is yieldable if it is not the main thread and it is not inside a non-yieldable C function.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "()",
+        returns = "(boolean)",
+      },
     },
   },
 
@@ -617,6 +623,14 @@ return {
         type = "value",
         description = "The value of pi.",
       },
+      mininteger = {
+        type = "value",
+        description = "An integer with the minimum value for an integer.\nVALUE ADDED IN Lua 5.3.",
+      },
+      maxinteger = {
+        type = "value",
+        description = "An integer with the maximum value for an integer.\nVALUE ADDED IN Lua 5.3.",
+      },
       pow = {
         type = "function",
         description = "Returns x^y.\n(You can also use the expression x^y to compute this value.)",
@@ -670,6 +684,24 @@ return {
         description = "Returns the hyperbolic tangent of x.",
         args = "(x: number)",
         returns = "(number)",
+      },
+      type = {
+        type = "function",
+        description = [[Returns "integer" if x is an integer, "float" if it is a float, or nil if x is not a number.\nFUNCTION ADDED IN Lua 5.3.]],
+        args = "(x: number)",
+        returns = "(string)",
+      },
+      tointeger = {
+        type = "function",
+        description = "If the value x is convertible to an integer, returns that integer. Otherwise, returns nil.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(x: number)",
+        returns = "(number)",
+      },
+      ult = {
+        type = "function",
+        description = "Returns a boolean, true if integer m is below integer n when they are compared as unsigned integers.\nFUNCTION ADDED IN Lua 5.3.",
+        args = "(m: number, n: number)",
+        returns = "(boolean)",
       },
     },
   },
