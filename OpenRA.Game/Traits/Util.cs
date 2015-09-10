@@ -74,6 +74,9 @@ namespace OpenRA.Traits
 
 		public static Activity RunActivity(Actor self, Activity act)
 		{
+			if (act == null)
+				return act;
+
 			// Note - manual iteration here for performance due to high call volume.
 			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
 			var start = Stopwatch.GetTimestamp();
