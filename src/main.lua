@@ -394,15 +394,14 @@ local function loadPackages(filter)
   end
 
   -- check dependencies and assign file names to each package
+  local report = DisplayOutputLn or print
   local unload = {}
   for fname, package in pairs(ide.packages) do
     if type(package.dependencies) == 'table'
     and package.dependencies.osname
     and not package.dependencies.osname:find(ide.osname, 1, true) then
-      (DisplayOutputLn or print)(
-        ("Package '%s' not loaded: requires %s platform, but you are running %s.")
-          :format(fname, package.dependencies.osname, ide.osname)
-      )
+      report(("Package '%s' not loaded: requires %s platform, but you are running %s.")
+        :format(fname, package.dependencies.osname, ide.osname))
       table.insert(unload, fname)
     end
 
@@ -411,10 +410,8 @@ local function loadPackages(filter)
       or -1
     local isversion = tonumber(ide.VERSION)
     if isversion and needsversion > isversion then
-      (DisplayOutputLn or print)(
-        ("Package '%s' not loaded: requires version %s, but you are running version %s.")
-          :format(fname, needsversion, ide.VERSION)
-      )
+      report(("Package '%s' not loaded: requires version %s, but you are running version %s.")
+        :format(fname, needsversion, ide.VERSION))
       table.insert(unload, fname)
     end
     package.fname = fname
