@@ -254,13 +254,18 @@ function SettingsRestorePackage(package)
   local path = settings:GetPath()
   settings:SetPath(packagename)
   local outtab = {}
+  local report = DisplayOutputLn or print
   local ismore, key, index = settings:GetFirstEntry("", 0)
   while (ismore) do
     local couldread, value = settings:Read(key, "")
     if couldread then
       local ok, res = LoadSafe("return "..value)
       if ok then outtab[key] = res
-      else outtab[key] = nil end
+      else
+        outtab[key] = nil
+        report(("Couldn't load and ignored '%s' settings for package '%s': %s")
+          :format(key, package, res))
+      end
     end
     ismore, key, index = settings:GetNextEntry(index)
   end
