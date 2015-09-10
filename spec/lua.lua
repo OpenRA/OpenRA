@@ -261,6 +261,7 @@ return {
     [[bit32.arshift bit32.band bit32.bnot bit32.bor bit32.btest bit32.bxor bit32.extract
       bit32.lrotate bit32.lshift bit32.replace bit32.rrotate bit32.rshift
       coroutine.create coroutine.resume coroutine.running coroutine.status coroutine.wrap coroutine.yield
+      coroutine.isyieldable
       debug.debug debug.getfenv debug.gethook debug.getinfo debug.getlocal
       debug.getmetatable debug.getregistry debug.getupvalue debug.getuservalue debug.setfenv
       debug.sethook debug.setlocal debug.setmetatable debug.setupvalue debug.setuservalue
@@ -270,6 +271,7 @@ return {
       math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos math.cosh math.deg math.exp
       math.floor math.fmod math.frexp math.ldexp math.log math.log10 math.max math.min math.modf
       math.pow math.rad math.random math.randomseed math.sin math.sinh math.sqrt math.tan math.tanh
+      math.type math.tointeger math.maxinteger math.mininteger math.ult
       os.clock os.date os.difftime os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname
       package.loadlib package.searchpath package.seeall package.config
       package.cpath package.loaded package.loaders package.path package.preload package.searchers
