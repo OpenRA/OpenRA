@@ -254,7 +254,8 @@ GADEPT:
 			nod: gadept.nod
 
 GARADR:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -282,7 +283,6 @@ GARADR:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
-	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
 	WithIdleOverlay@DISH:

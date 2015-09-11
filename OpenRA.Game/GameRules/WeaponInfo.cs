@@ -30,7 +30,7 @@ namespace OpenRA.GameRules
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
 
-	public sealed class WeaponInfo
+	public sealed class WeaponInfo : IRanged
 	{
 		[Desc("The maximum range the weapon can fire.")]
 		public readonly WDist Range = WDist.Zero;
@@ -64,10 +64,16 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadWarheads")]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
+		[FieldLoader.Ignore] public readonly IEnumerable<IRanged> AsRanges;
+
 		public WeaponInfo(string name, MiniYaml content)
 		{
 			FieldLoader.Load(this, content);
+			AsRanges = new IRanged[] { this };
 		}
+
+		public WDist GetMinimumRange(ActorInfo ai, World w) { return MinRange; }
+		public WDist GetMaximumRange(ActorInfo ai, World w) { return Range; }
 
 		static object LoadProjectile(MiniYaml yaml)
 		{

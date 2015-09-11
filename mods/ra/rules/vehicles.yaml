@@ -388,7 +388,8 @@ APC:
 		Prerequisites: vehicles.upgraded
 
 MNLY.AP:
-	Inherits: ^Tank
+	Inherits@1: ^Tank
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -416,14 +417,14 @@ MNLY.AP:
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: APMine
 	RenderSprites:
 		Image: MNLY
 
 MNLY.AT:
-	Inherits: ^Tank
+	Inherits@1: ^Tank
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -451,7 +452,6 @@ MNLY.AT:
 	DetectCloaked:
 		Range: 5
 		CloakTypes: Mine
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: ATMine
 	RenderSprites:
@@ -482,7 +482,8 @@ TRUK:
 		Actor: moneycrate
 
 MGG:
-	Inherits: ^Vehicle
+	Inherits@1: ^Vehicle
+	Inherits@2: ^WithShroudCircle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
@@ -505,7 +506,6 @@ MGG:
 		Range: 6c0
 	CreatesShroud:
 		Range: 6c0
-	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
 
@@ -536,7 +536,16 @@ MRJ:
 	JamsMissiles:
 		Range: 4
 		AlliedMissiles: False
-	RenderJammerCircle:
+	WithRangeCircle@JAMS_MISSILES:
+		Name: jams.missiles
+		Type: jams
+		Variant: missiles
+		Color: 128,255,0,0 # Red
+	WithRangeCircle@JAMS_RADAR:
+		Name: jams.radar
+		Type: jams
+		Variant: radar
+		Color: 128,0,0,255 # Blue
 	DetectCloaked:
 		Range: 6
 

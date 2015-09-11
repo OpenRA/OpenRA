@@ -209,7 +209,8 @@ NAHPAD:
 		VisualBounds: 78, 54, 0, -8
 
 NARADR:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -237,7 +238,6 @@ NARADR:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
-	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
 	WithIdleOverlay@DISH:

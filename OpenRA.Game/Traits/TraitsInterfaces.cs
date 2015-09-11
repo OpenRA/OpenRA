@@ -366,4 +366,11 @@ namespace OpenRA.Traits
 	{
 		bool RemoveActor(Actor self, Player owner);
 	}
+
+	/// Pass ActorInfo & World for and only for default/info implementations
+	public interface IRanged
+	{
+		WDist GetMinimumRange(ActorInfo ai = null, World w = null);
+		WDist GetMaximumRange(ActorInfo ai = null, World w = null);
+	}
 }

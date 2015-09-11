@@ -403,6 +403,9 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+	WithRangeCircle@BASE:
+		Name: base
+		OwnPlacementOnly: true
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
@@ -440,8 +443,22 @@
 	Sellable:
 		SellSounds: cashturn.aud
 
+^WithDetectionCircle:
+	WithRangeCircle@DETECTION:
+		Name: detection
+		Type: detection
+		Color: 128,50,205,50 # LimeGreen
+		ContrastColor: 48,0,0,0
+
+^WithShroudCircle:
+	WithRangeCircle@SHROUD:
+		Name: shroud
+		Type: shroud
+		Color: 128,0,255,255 # Cyan
+
 ^Defense:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
@@ -450,7 +467,10 @@
 	-GivesBuildableArea:
 	-AcceptsSupplies:
 	DrawLineToTarget:
-	RenderRangeCircle:
+	WithRangeCircle@ATTACK:
+		Name: attack
+		Type: attacks
+		Color: 128,255,255,0 # Yellow
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld

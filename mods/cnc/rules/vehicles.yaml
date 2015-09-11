@@ -454,7 +454,8 @@ MSAM:
 		Actor: MSAM.Husk
 
 MLRS:
-	Inherits: ^Tank
+	Inherits@1: ^Tank
+	Inherits@2: ^WithAirAttackRangeCircle
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -491,7 +492,6 @@ MLRS:
 		AmmoPoolName: primary
 	AutoTarget:
 		InitialStance: Defend
-	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
 

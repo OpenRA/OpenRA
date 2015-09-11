@@ -99,7 +99,8 @@ HARV:
 			nod: harv.nod
 
 LPST:
-	Inherits: ^VoxelVehicle
+	Inherits@1: ^VoxelVehicle
+	Inherits@2: ^WithDetectionCircle
 	-AppearsOnRadar:
 	-GainsExperience:
 	Buildable:
@@ -147,7 +148,6 @@ LPST:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
 		Range: 18
-	RenderDetectionCircle:
 
 GGHUNT:
 	Inherits: ^Vehicle

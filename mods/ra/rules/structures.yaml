@@ -49,7 +49,8 @@ MSLO:
 		RequiredForShortGame: false
 
 GAP:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithShroudCircle
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -81,7 +82,6 @@ GAP:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
-	RenderShroudCircle:
 	Power:
 		Amount: -60
 	MustBeDestroyed:
@@ -455,15 +455,16 @@ AGUN:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderRangeCircle:
-		RangeCircleType: aa
+	WithRangeCircle@ATTACK:
+		Name: attack@aa
 	Power:
 		Amount: -50
 	DetectCloaked:
 		Range: 6
 
 DOME:
-	Inherits: ^Building
+	Inherits@1: ^Building
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -492,7 +493,6 @@ DOME:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10
-	RenderDetectionCircle:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -533,8 +533,10 @@ PBOX:
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 86, 86, 86, 86, 86, 86
-	RenderRangeCircle:
-		FallbackRange: 6c0
+	WithRangeCircle@ATTACK_GARRISON:
+		OwnPlacementOnly: true
+		Color: 128,255,255,0 # Yellow
+		Range: 6c0
 	Power:
 		Amount: -15
 	DetectCloaked:
@@ -574,8 +576,10 @@ HBOX:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 6
-	RenderRangeCircle:
-		FallbackRange: 6c0
+	WithRangeCircle@ATTACK_GARRISON:
+		OwnPlacementOnly: true
+		Color: 128,255,255,0 # Yellow
+		Range: 6c0
 	AttackGarrisoned:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
@@ -692,8 +696,8 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderRangeCircle:
-		RangeCircleType: aa
+	WithRangeCircle@ATTACK:
+		Name: attack@aa
 	Power:
 		Amount: -40
 	DetectCloaked:
@@ -895,6 +899,16 @@ FACT:
 		Color: 138,138,138
 	BaseProvider:
 		Range: 16
+	WithRangeCircle@BASE_READY:
+		Name: base
+		Type: base
+		Variant: ready
+		Color: 128,255,255,255
+	WithRangeCircle@BASE_BUSY:
+		Name: base
+		Type: base
+		Variant: busy
+		Color: 128,255,0,0
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0

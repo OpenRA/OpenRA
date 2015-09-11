@@ -65,6 +65,16 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14
+	WithRangeCircle@BASE_READY:
+		Name: base
+		Type: base
+		Variant: ready
+		Color: 128,255,255,255
+	WithRangeCircle@BASE_BUSY:
+		Name: base
+		Type: base
+		Variant: busy
+		Color: 128,255,0,0
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0
@@ -441,7 +451,8 @@ HPAD:
 	ProvidesPrerequisite@buildingname:
 
 HQ:
-	Inherits: ^BaseBuilding
+	Inherits@1: ^BaseBuilding
+	Inherits@2: ^WithDetectionCircle
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -469,7 +480,6 @@ HQ:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 	AirstrikePower:
@@ -527,7 +537,8 @@ FIX:
 	ProvidesPrerequisite@buildingname:
 
 EYE:
-	Inherits: ^BaseBuilding
+	Inherits@1: ^BaseBuilding
+	Inherits@2: ^WithDetectionCircle
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -555,7 +566,6 @@ EYE:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 	IonCannonPower:
@@ -667,7 +677,10 @@ GUN:
 		Amount: -20
 
 SAM:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
+	-WithRangeCircle@ATTACK_GROUND:
+	-WithRangeCircle@DETECTION:
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
@@ -701,7 +714,6 @@ SAM:
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleFlash:
-	-RenderDetectionCircle:
 	Power:
 		Amount: -20
 
@@ -786,7 +798,8 @@ GTWR:
 		Amount: -10
 
 ATWR:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
 	Valued:
 		Cost: 1000
 	CustomBuildTimeValue:

@@ -16,17 +16,28 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Limits the zone where buildings can be constructed to a radius around this actor.")]
-	public class BaseProviderInfo : ITraitInfo
+	[Desc("Limits the zone where buildings can be constructed to a radius around this actor.",
+		"Provides \"base\" range type.")]
+	public class BaseProviderInfo : ITraitInfo, IRanged, IProvidesRangesInfo
 	{
+		[FieldLoader.Ignore] public readonly IEnumerable<IRanged> AsRanges;
+
 		public readonly int Range = 10;
 		public readonly int Cooldown = 0;
 		public readonly int InitialDelay = 0;
 
+		public BaseProviderInfo() { AsRanges = new IRanged[] { this }; }
 		public object Create(ActorInitializer init) { return new BaseProvider(init.Self, this); }
+		public WDist GetMaximumRange(ActorInfo ai, World w) { return WDist.FromCells(Range); }
+		public WDist GetMinimumRange(ActorInfo ai, World w) { return WDist.Zero; }
+		public IEnumerable<IRanged> GetRanges(string type, string variant, ActorInfo ai, World w) { return AsRanges; }
+		public bool ProvidesRanges(string type, string variant, ActorInfo ai, World w)
+		{
+			return type == "base" && (string.IsNullOrEmpty(variant) || variant == "ready");
+		}
 	}
 
-	public class BaseProvider : ITick, IPostRenderSelection, ISelectionBar
+	public class BaseProvider : ITick, IProvidesRanges, ISelectionBar
 	{
 		public readonly BaseProviderInfo Info;
 		DeveloperMode devMode;
@@ -64,18 +75,19 @@ namespace OpenRA.Mods.Common.Traits
 			return self.Owner == self.World.RenderPlayer || (allyBuildRadius && self.Owner.IsAlliedWith(self.World.RenderPlayer));
 		}
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		public bool ProvidesRanges(string type, string variant)
 		{
-			// Visible to player and allies
-			if (!ValidRenderPlayer())
-				yield break;
+			return type == "base" && (string.IsNullOrEmpty(variant) || variant == "ready" || variant == "busy");
+		}
 
-			yield return new RangeCircleRenderable(
-				self.CenterPosition,
-				WDist.FromCells(Info.Range),
-				0,
-				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
-				Color.FromArgb(96, Color.Black));
+		public IEnumerable<IRanged> GetRanges(string type, string variant)
+		{
+			// Only visible to allies if "Ally build radius" is set
+			if (self.Owner != self.World.RenderPlayer && !self.World.LobbyInfo.GlobalSettings.AllyBuildRadius)
+				return Traits.ProvidesRanges.NoRanges;
+
+			// Provide range only if no variant or variant matches state (both are ready or busy)
+			return (string.IsNullOrEmpty(variant) || (variant[0] == 'r') == Ready()) ? Info.AsRanges : Traits.ProvidesRanges.NoRanges;
 		}
 
 		// Selection bar

@@ -461,6 +461,9 @@
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
 		TerrainTypes: Clear,Road
+	WithRangeCircle@BASE:
+		Name: base
+		OwnPlacementOnly: true
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	RepairableBuilding:
@@ -700,11 +703,31 @@
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
 
+^WithGroundAttackRangeCircle:
+	WithRangeCircle@ATTACK_GROUND:
+		Name: attack
+		Type: attacks
+		Variant: Ground
+		Color: 128,255,255,0 # Yellow
+
+^WithAirAttackRangeCircle:
+	WithRangeCircle@ATTACK_AIR:
+		Name: attack@aa
+		Type: attacks
+		Variant: Air
+		Color: 128,0,0,255 # Blue
+
+^WithDetectionCircle:
+	WithRangeCircle@DETECTION:
+		Name: detection
+		Type: detection
+		Color: 128,50,205,50 # LimeGreen
+
 ^Defense:
-	Inherits: ^BaseBuilding
+	Inherits@1: ^BaseBuilding
+	Inherits@2: ^WithGroundAttackRangeCircle
+	Inherits@3: ^WithDetectionCircle
 	AutoTarget:
-	RenderRangeCircle:
-	RenderDetectionCircle:
 	-GivesBuildableArea:
 	MustBeDestroyed:
 		RequiredForShortGame: false

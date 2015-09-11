@@ -23,8 +23,85 @@ GAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+^GACTWR:
+	BodyOrientation:
+		QuantizedFacings: 32
+	Turreted:
+		ROT: 10
+		InitialFacing: 50
+	AttackTurreted:
+		UpgradeTypes: tower
+		UpgradeMinEnabledLevel: 1
+	
+
+^GACTWR@VULC:
+	WithTurret@VULC:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-vulcan
+	Armament@VULCPRIMARY:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Weapon: VulcanTower
+		LocalOffset: 768,85,512
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@VULCSECONDARY:
+		UpgradeTypes: tower.vulcan
+		UpgradeMinEnabledLevel: 1
+		Name: secondary
+		Weapon: VulcanTower
+		LocalOffset: 768,-85,512
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	WithRangeCircle@VULC:
+		Type: weapon
+		Variant: VulcanTower
+		Color: 128,255,255,0
+		OwnPlacementOnly: true
+
+^GACTWR@ROCKET:
+	WithTurret@ROCKET:
+		UpgradeTypes: tower.rocket
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-rocket
+	Armament@ROCKET:
+		UpgradeTypes: tower.rocket
+		UpgradeMinEnabledLevel: 1
+		Weapon: RPGTower
+		LocalOffset: 512,-128,512
+	WithRangeCircle@ROCKET:
+		Type: weapon
+		Variant: RPGTower
+		Color: 128,128,128,0
+		OwnPlacementOnly: true
+
+^GACTWR@SAM:
+	WithTurret@SAM:
+		UpgradeTypes: tower.sam
+		UpgradeMinEnabledLevel: 1
+		Recoils: no
+		Sequence: turret-sam
+	Armament@SAM:
+		UpgradeTypes: tower.sam
+		UpgradeMinEnabledLevel: 1
+		Weapon: RedEye2
+		LocalOffset: 512,0,512
+	WithRangeCircle@SAM:
+		Type: weapon
+		Variant: RedEye2
+		Color: 128,0,0,255
+		OwnPlacementOnly: true
+
 GACTWR:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
+	Inherits@3: ^GACTWR
+	Inherits@4: ^GACTWR@VULC
+	Inherits@5: ^GACTWR@ROCKET
+	Inherits@6: ^GACTWR@SAM
 	-WithSpriteBody:
 	WithWallSpriteBody:
 		Type: wall
@@ -45,59 +122,11 @@ GACTWR:
 		HP: 500
 	Armor:
 		Type: Light
-	BodyOrientation:
-		QuantizedFacings: 32
 	DetectCloaked:
-		UpgradeTypes: tower
-		UpgradeMinEnabledLevel: 1
-	Turreted:
-		ROT: 10
-		InitialFacing: 50
-	AttackTurreted:
 		UpgradeTypes: tower
 		UpgradeMinEnabledLevel: 1
 	CanPowerDown:
 		IndicatorPalette: mouse
-	WithTurret@VULC:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
-		Recoils: no
-		Sequence: turret-vulcan
-	WithTurret@ROCKET:
-		UpgradeTypes: tower.rocket
-		UpgradeMinEnabledLevel: 1
-		Recoils: no
-		Sequence: turret-rocket
-	WithTurret@SAM:
-		UpgradeTypes: tower.sam
-		UpgradeMinEnabledLevel: 1
-		Recoils: no
-		Sequence: turret-sam
-	Armament@VULCPRIMARY:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
-		Weapon: VulcanTower
-		LocalOffset: 768,85,512
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
-	Armament@VULCSECONDARY:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
-		Name: secondary
-		Weapon: VulcanTower
-		LocalOffset: 768,-85,512
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
-	Armament@ROCKET:
-		UpgradeTypes: tower.rocket
-		UpgradeMinEnabledLevel: 1
-		Weapon: RPGTower
-		LocalOffset: 512,-128,512
-	Armament@SAM:
-		UpgradeTypes: tower.sam
-		UpgradeMinEnabledLevel: 1
-		Weapon: RedEye2
-		LocalOffset: 512,0,512
 	WithMuzzleFlash:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
@@ -125,7 +154,10 @@ GACTWR:
 		VisualBounds: 48, 48, 0, -12
 
 GAVULC:
-	Inherits: ^BuildingPlug
+	Inherits@1: ^BuildingPlug
+	Inherits@2: ^WithGroundAttackRangeCircle
+	Inherits@3: ^GACTWR
+	Inherits@4: ^GACTWR@VULC
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -141,7 +173,10 @@ GAVULC:
 		Amount: -20
 
 GAROCK:
-	Inherits: ^BuildingPlug
+	Inherits@1: ^BuildingPlug
+	Inherits@2: ^WithGroundAttackRangeCircle
+	Inherits@3: ^GACTWR
+	Inherits@4: ^GACTWR@ROCKET
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -157,7 +192,10 @@ GAROCK:
 		Amount: -20
 
 GACSAM:
-	Inherits: ^BuildingPlug
+	Inherits@1: ^BuildingPlug
+	Inherits@2: ^WithAirAttackRangeCircle
+	Inherits@3: ^GACTWR
+	Inherits@4: ^GACTWR@SAM
 	Valued:
 		Cost: 300
 	Tooltip:

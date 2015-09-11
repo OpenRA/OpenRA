@@ -104,7 +104,9 @@ NAOBEL:
 		VisualBounds: 88, 72, 0, -12
 
 NASAM:
-	Inherits: ^Defense
+	Inherits@1: ^Defense
+	Inherits@2: ^WithAirAttackRangeCircle
+	-WithRangeCircle@ATTACK_GROUND:
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -125,8 +127,6 @@ NASAM:
 		Type: Light
 	BodyOrientation:
 		QuantizedFacings: 32
-	RenderRangeCircle:
-		RangeCircleType: aa
 	Turreted:
 		ROT: 10
 		InitialFacing: 50

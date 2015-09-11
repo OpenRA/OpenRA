@@ -18,7 +18,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AttackBaseInfo : UpgradableTraitInfo, ITraitInfo
+	[Desc("Provides \"attack-armament\" range type that provides ranges by armaments with variant being the armament name "
+		+ " and \"attacks\" range type that provides ranges by armaments with variant being the valid target type.")]
+	public abstract class AttackBaseInfo : UpgradableTraitInfo, IProvidesRangesInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
@@ -35,9 +37,53 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public override abstract object Create(ActorInitializer init);
+		public bool ProvidesRanges(string type, string variant, ActorInfo ai, World w)
+		{
+			string type2;
+			if (type == "attack-armament")
+				type2 = "armament";
+			else if (type == "attacks")
+				type2 = "targets";
+			else
+				return false;
+			if (string.IsNullOrEmpty(variant))
+				return true;
+			foreach (var a in ai.Traits.WithInterface<ArmamentInfo>())
+				if (Armaments.Contains(a.Name) && a.ProvidesRanges(type2, variant, ai, w))
+					return true;
+			return false;
+		}
+
+		public IEnumerable<IRanged> GetRanges(string type, string variant, ActorInfo ai, World w)
+		{
+			if (UpgradeMinEnabledLevel != 0)
+				yield break;
+
+			if (string.IsNullOrEmpty(variant))
+			{
+				foreach (var a in ai.Traits.WithInterface<ArmamentInfo>())
+					if (a.UpgradeMinEnabledLevel == 0 && Armaments.Contains(a.Name))
+						yield return a.GetWeaponInfo(w);
+				yield break;
+			}
+
+			if (type.Length == "attack-armament".Length)
+			{
+				if (Armaments.Contains(variant))
+					foreach (var a in ai.Traits.WithInterface<ArmamentInfo>())
+						if (a.UpgradeMinEnabledLevel == 0 && variant == a.Name)
+							yield return a.GetWeaponInfo(w);
+				yield break;
+			}
+
+			// type == attacks
+			foreach (var a in ai.Traits.WithInterface<ArmamentInfo>())
+				if (a.UpgradeMinEnabledLevel == 0 && Armaments.Contains(a.Name) && a.GetWeaponInfo(w).ValidTargets.Contains(variant))
+					yield return a.GetWeaponInfo(w);
+		}
 	}
 
-	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync, IProvidesRanges
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
@@ -201,6 +247,47 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return HasAnyValidWeapons(target)
 				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.HasTrait<IMove>()));
+		}
+
+		public bool ProvidesRanges(string type, string variant)
+		{
+			string type2;
+			if (type == "attack-armament")
+				type2 = "armament";
+			else if (type == "attacks")
+				type2 = "targets";
+			else
+				return false;
+			if (string.IsNullOrEmpty(variant))
+				return true;
+			foreach (var a in Armaments)
+				if (a.ProvidesRanges(type2, variant))
+					return true;
+			return false;
+		}
+
+		public IEnumerable<IRanged> GetRanges(string type, string variant)
+		{
+			if (IsTraitDisabled)
+				yield break;
+			if (string.IsNullOrEmpty(variant))
+			{
+				foreach (var a in Armaments)
+					if (!a.IsTraitDisabled)
+						yield return a.Weapon;
+			}
+			else if (type.Length == "attack-armament".Length)
+			{
+				foreach (var a in Armaments)
+					if (!a.IsTraitDisabled && a.Info.Name == variant)
+						yield return a.Weapon;
+			}
+			else
+			{
+				foreach (var a in Armaments)
+					if (!a.IsTraitDisabled && a.Weapon.ValidTargets.Contains(variant))
+						yield return a.Weapon;
+			}
 		}
 
 		class AttackOrderTargeter : IOrderTargeter

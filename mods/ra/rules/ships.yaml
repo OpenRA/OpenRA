@@ -1,5 +1,6 @@
 SS:
-	Inherits: ^Ship
+	Inherits@1: ^Ship
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -46,14 +47,14 @@ SS:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 
 MSUB:
-	Inherits: ^Ship
+	Inherits@1: ^Ship
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -100,14 +101,14 @@ MSUB:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
-	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 
 DD:
-	Inherits: ^Ship
+	Inherits@1: ^Ship
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -150,7 +151,6 @@ DD:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
-	RenderDetectionCircle:
 
 CA:
 	Inherits: ^Ship
@@ -238,7 +238,8 @@ LST:
 	-Chronoshiftable:
 
 PT:
-	Inherits: ^Ship
+	Inherits@1: ^Ship
+	Inherits@2: ^WithDetectionCircle
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -278,5 +279,4 @@ PT:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4
-	RenderDetectionCircle:
 
