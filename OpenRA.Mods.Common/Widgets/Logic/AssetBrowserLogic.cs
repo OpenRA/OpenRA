@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class AssetBrowserLogic
 	{
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa" };
+		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa", ".icn" };
 
 		readonly World world;
 
