@@ -112,13 +112,16 @@ Background@MISSIONBROWSER_PANEL:
 			Text: Back
 			Font: Bold
 			Key: escape
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X: 20
-			Y: 427 - HEIGHT
-			Width: 270
+		Label@DIFFICULTY_LABEL:
+			X: 25
+			Y: 426 - HEIGHT
 			Height: 25
-			Text: Difficulty
-			Font: Bold
+			Text: Difficulty:
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X: 88
+			Y: 427 - HEIGHT
+			Width: 202
+			Height: 25
 		Background@MISSION_BIN:
 			X: 20
 			Y: 50

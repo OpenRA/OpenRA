@@ -74,12 +74,16 @@ Container@MISSIONBROWSER_PANEL:
 									Width: PARENT_RIGHT - 32
 									VAlign: Top
 									Font: Small
-				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X: 15
-					Y: 337
-					Width: 239
+				Label@DIFFICULTY_LABEL:
+					X: 20
+					Y: 336
 					Height: 25
-					Text: Difficulty
+					Text: Difficulty:
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: 83
+					Y: 337
+					Width: 171
+					Height: 25
 					Font: Regular
 		Button@BACK_BUTTON:
 			Y: 376
