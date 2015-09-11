@@ -109,34 +109,13 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		bool IsHarvestable(Actor self, CPos pos)
-		{
-			var resType = resLayer.GetResource(pos);
-			if (resType == null)
-				return false;
-
-			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Name))
-				return false;
-
-			if (territory != null)
-			{
-				// Another harvester has claimed this resource:
-				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
-					return false;
-			}
-
-			return true;
-		}
-
 		/// <summary>
 		/// Finds the closest harvestable pos between the current position of the harvester
 		/// and the last order location
 		/// </summary>
 		CPos? ClosestHarvestablePos(Actor self)
 		{
-			if (IsHarvestable(self, self.Location))
+			if (self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
 				return self.Location;
 
 			// Determine where to search from and how far to search:
@@ -146,7 +125,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.TileSet);
 			var search = PathSearch.Search(self.World, mobileInfo, self, true,
-				loc => domainIndex.IsPassable(self.Location, loc, passable) && IsHarvestable(self, loc))
+				loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||

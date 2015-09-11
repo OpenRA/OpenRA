@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -105,6 +106,9 @@ namespace OpenRA.Mods.Common.AI
 			"Should match maximum adjacency of naval structures.")]
 		public readonly int CheckForWaterRadius = 8;
 
+		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
+		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
@@ -171,6 +175,11 @@ namespace OpenRA.Mods.Common.AI
 
 		public Player Player { get; private set; }
 
+		readonly DomainIndex domainIndex;
+		readonly ResourceLayer resLayer;
+		readonly ResourceClaimLayer territory;
+		readonly IPathFinder pathfinder;
+
 		readonly Func<Actor, bool> isEnemyUnit;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
@@ -212,6 +221,12 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Info = info;
 			World = init.World;
+
+			domainIndex = World.WorldActor.Trait<DomainIndex>();
+			resLayer = World.WorldActor.Trait<ResourceLayer>();
+			territory = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			pathfinder = World.WorldActor.Trait<IPathFinder>();
+
 			isEnemyUnit = unit =>
 				Player.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>();
 
@@ -634,6 +649,26 @@ namespace OpenRA.Mods.Common.AI
 			FindAndDeployBackupMcv(self);
 		}
 
+		CPos FindNextResource(Actor self)
+		{
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var passable = (uint)mobileInfo.GetMovementClass(World.TileSet);
+
+			var path = pathfinder.FindPath(
+				PathSearch.Search(World, mobileInfo, self, true,
+					loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
+						.Where(u => !u.IsDead && self.Owner.Stances[u.Owner] == Stance.Enemy)
+						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
+					.FromPoint(self.Location));
+
+			if (path.Count == 0)
+				return CPos.Zero;
+
+			return path[0];
+		}
+
 		void GiveOrdersToIdleHarvesters()
 		{
 			// Find idle harvesters and give them orders:
@@ -657,7 +692,9 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				QueueOrder(new Order("Harvest", a, false));
+				var newSafeResourcePatch = FindNextResource(a);
+				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(a, newSafeResourcePatch));
+				QueueOrder(new Order("Harvest", a, false) { TargetLocation = newSafeResourcePatch });
 			}
 		}
 
