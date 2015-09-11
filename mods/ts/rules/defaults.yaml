@@ -694,3 +694,13 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 
+^Railway:
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: False
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1

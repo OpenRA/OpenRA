@@ -1318,143 +1318,422 @@ Actors:
 	Actor347: waypoint
 		Location: 75,36
 		Owner: Neutral
-	Actor348: nawall
-		Location: 37,9
+	Actor348: tracks04
+		Location: 23,22
 		Owner: Neutral
-	Actor349: nawall
-		Location: 37,10
+	Actor349: tracks04
+		Location: 22,22
 		Owner: Neutral
 	Actor350: nawall
-		Location: 37,11
+		Location: 37,9
 		Owner: Neutral
 	Actor351: nawall
-		Location: 37,12
+		Location: 37,10
 		Owner: Neutral
-	Actor352: nawall
-		Location: 37,13
+	Actor352: tracks04
+		Location: 25,22
 		Owner: Neutral
-	Actor353: nawall
-		Location: 37,14
+	Actor353: tracks04
+		Location: 24,22
 		Owner: Neutral
 	Actor354: nawall
-		Location: 37,15
+		Location: 37,11
 		Owner: Neutral
 	Actor355: nawall
-		Location: 37,16
+		Location: 37,12
 		Owner: Neutral
-	Actor356: nawall
-		Location: 37,17
+	Actor356: tracks04
+		Location: 27,22
 		Owner: Neutral
-	Actor357: nawall
-		Location: 37,18
+	Actor357: tracks04
+		Location: 26,22
 		Owner: Neutral
 	Actor358: nawall
-		Location: 37,19
+		Location: 37,13
 		Owner: Neutral
 	Actor359: nawall
-		Location: 37,20
+		Location: 37,14
 		Owner: Neutral
-	Actor360: nawall
-		Location: 37,24
+	Actor360: tracks04
+		Location: 29,22
 		Owner: Neutral
-	Actor361: nawall
-		Location: 37,25
+	Actor361: tracks04
+		Location: 28,22
 		Owner: Neutral
 	Actor362: nawall
-		Location: 37,26
+		Location: 37,15
 		Owner: Neutral
 	Actor363: nawall
-		Location: 37,27
+		Location: 37,16
 		Owner: Neutral
-	Actor364: nawall
-		Location: 37,28
+	Actor364: tracks04
+		Location: 31,22
 		Owner: Neutral
-	Actor365: nawall
-		Location: 37,29
+	Actor365: tracks04
+		Location: 30,22
 		Owner: Neutral
 	Actor366: nawall
-		Location: 37,30
+		Location: 37,17
 		Owner: Neutral
 	Actor367: nawall
-		Location: 36,31
+		Location: 37,18
 		Owner: Neutral
-	Actor368: nawall
-		Location: 35,31
+	Actor368: tracks04
+		Location: 33,22
 		Owner: Neutral
-	Actor369: nawall
-		Location: 43,26
+	Actor369: tracks04
+		Location: 32,22
 		Owner: Neutral
 	Actor370: nawall
-		Location: 37,31
+		Location: 37,19
 		Owner: Neutral
 	Actor371: nawall
-		Location: 45,26
+		Location: 37,20
 		Owner: Neutral
-	Actor372: nawall
-		Location: 44,26
+	Actor372: tracks04
+		Location: 35,22
 		Owner: Neutral
-	Actor373: nawall
-		Location: 46,26
+	Actor373: tracks04
+		Location: 34,22
 		Owner: Neutral
-	Actor374: nawall
-		Location: 51,26
+	Actor374: tracks04
+		Location: 37,22
 		Owner: Neutral
-	Actor375: nawall
-		Location: 50,26
+	Actor375: tracks04
+		Location: 36,22
 		Owner: Neutral
-	Actor376: nawall
-		Location: 53,26
+	Actor376: tracks04
+		Location: 39,22
 		Owner: Neutral
-	Actor377: nawall
-		Location: 52,26
+	Actor377: tracks04
+		Location: 38,22
 		Owner: Neutral
 	Actor378: nawall
-		Location: 54,26
+		Location: 37,24
 		Owner: Neutral
-	Actor379: nawall
-		Location: 54,27
+	Actor379: tracks04
+		Location: 41,22
 		Owner: Neutral
-	Actor380: nawall
-		Location: 54,28
+	Actor380: tracks04
+		Location: 40,22
 		Owner: Neutral
 	Actor381: nawall
-		Location: 54,29
+		Location: 37,25
 		Owner: Neutral
 	Actor382: nawall
-		Location: 54,30
+		Location: 37,26
 		Owner: Neutral
 	Actor383: nawall
-		Location: 54,31
+		Location: 37,27
 		Owner: Neutral
 	Actor384: nawall
-		Location: 54,32
+		Location: 37,28
 		Owner: Neutral
 	Actor385: nawall
-		Location: 54,36
+		Location: 37,29
 		Owner: Neutral
 	Actor386: nawall
-		Location: 54,37
+		Location: 37,30
 		Owner: Neutral
 	Actor387: nawall
-		Location: 54,38
+		Location: 36,31
 		Owner: Neutral
 	Actor388: nawall
-		Location: 54,39
+		Location: 35,31
 		Owner: Neutral
 	Actor389: nawall
-		Location: 50,43
+		Location: 43,26
 		Owner: Neutral
 	Actor390: nawall
-		Location: 54,40
+		Location: 37,31
 		Owner: Neutral
 	Actor391: nawall
-		Location: 54,41
+		Location: 45,26
 		Owner: Neutral
 	Actor392: nawall
-		Location: 54,42
+		Location: 44,26
 		Owner: Neutral
 	Actor393: nawall
+		Location: 46,26
+		Owner: Neutral
+	Actor394: nawall
+		Location: 51,26
+		Owner: Neutral
+	Actor395: nawall
+		Location: 50,26
+		Owner: Neutral
+	Actor396: nawall
+		Location: 53,26
+		Owner: Neutral
+	Actor397: nawall
+		Location: 52,26
+		Owner: Neutral
+	Actor398: tracks04
+		Location: 59,22
+		Owner: Neutral
+	Actor399: tracks04
+		Location: 58,22
+		Owner: Neutral
+	Actor400: nawall
+		Location: 54,26
+		Owner: Neutral
+	Actor401: nawall
+		Location: 54,27
+		Owner: Neutral
+	Actor402: tracks04
+		Location: 61,22
+		Owner: Neutral
+	Actor403: nawall
+		Location: 54,28
+		Owner: Neutral
+	Actor404: nawall
+		Location: 54,29
+		Owner: Neutral
+	Actor405: tracks04
+		Location: 63,22
+		Owner: Neutral
+	Actor406: tracks04
+		Location: 62,22
+		Owner: Neutral
+	Actor407: nawall
+		Location: 54,30
+		Owner: Neutral
+	Actor408: nawall
+		Location: 54,31
+		Owner: Neutral
+	Actor409: tracks04
+		Location: 65,22
+		Owner: Neutral
+	Actor410: tracks04
+		Location: 64,22
+		Owner: Neutral
+	Actor411: nawall
+		Location: 54,32
+		Owner: Neutral
+	Actor412: tracks04
+		Location: 67,22
+		Owner: Neutral
+	Actor413: tracks04
+		Location: 66,22
+		Owner: Neutral
+	Actor414: tracks04
+		Location: 68,22
+		Owner: Neutral
+	Actor415: nawall
+		Location: 54,36
+		Owner: Neutral
+	Actor416: nawall
+		Location: 54,37
+		Owner: Neutral
+	Actor417: tracks04
+		Location: 71,22
+		Owner: Neutral
+	Actor418: tracks04
+		Location: 70,22
+		Owner: Neutral
+	Actor419: nawall
+		Location: 54,38
+		Owner: Neutral
+	Actor420: nawall
+		Location: 54,39
+		Owner: Neutral
+	Actor421: nawall
+		Location: 50,43
+		Owner: Neutral
+	Actor422: tracks04
+		Location: 73,22
+		Owner: Neutral
+	Actor423: tracks04
+		Location: 72,22
+		Owner: Neutral
+	Actor424: nawall
+		Location: 54,40
+		Owner: Neutral
+	Actor425: nawall
+		Location: 54,41
+		Owner: Neutral
+	Actor426: tracks04
+		Location: 75,22
+		Owner: Neutral
+	Actor427: tracks04
+		Location: 74,22
+		Owner: Neutral
+	Actor428: nawall
+		Location: 54,42
+		Owner: Neutral
+	Actor429: nawall
 		Location: 54,43
+		Owner: Neutral
+	Actor430: tracks04
+		Location: 77,22
+		Owner: Neutral
+	Actor431: tracks04
+		Location: 76,22
+		Owner: Neutral
+	Actor432: tracks04
+		Location: 79,22
+		Owner: Neutral
+	Actor433: tracks04
+		Location: 78,22
+		Owner: Neutral
+	Actor434: tracks04
+		Location: 81,22
+		Owner: Neutral
+	Actor435: tracks04
+		Location: 80,22
+		Owner: Neutral
+	Actor436: tracks04
+		Location: 83,22
+		Owner: Neutral
+	Actor437: tracks04
+		Location: 82,22
+		Owner: Neutral
+	Actor438: tracks04
+		Location: 85,22
+		Owner: Neutral
+	Actor439: tracks04
+		Location: 84,22
+		Owner: Neutral
+	Actor440: tracks04
+		Location: 87,22
+		Owner: Neutral
+	Actor441: tracks04
+		Location: 86,22
+		Owner: Neutral
+	Actor442: tracks04
+		Location: 89,22
+		Owner: Neutral
+	Actor443: tracks04
+		Location: 88,22
+		Owner: Neutral
+	Actor444: tracks04
+		Location: 91,22
+		Owner: Neutral
+	Actor445: tracks04
+		Location: 90,22
+		Owner: Neutral
+	Actor446: tracks04
+		Location: 93,22
+		Owner: Neutral
+	Actor447: tracks04
+		Location: 92,22
+		Owner: Neutral
+	Actor448: tracks04
+		Location: 95,22
+		Owner: Neutral
+	Actor449: tracks04
+		Location: 94,22
+		Owner: Neutral
+	Actor450: tracks04
+		Location: 97,22
+		Owner: Neutral
+	Actor451: tracks04
+		Location: 96,22
+		Owner: Neutral
+	Actor452: tracks04
+		Location: 99,22
+		Owner: Neutral
+	Actor453: tracks04
+		Location: 98,22
+		Owner: Neutral
+	Actor454: tracks04
+		Location: 101,22
+		Owner: Neutral
+	Actor455: tracks04
+		Location: 100,22
+		Owner: Neutral
+	Actor456: tracks04
+		Location: 103,22
+		Owner: Neutral
+	Actor457: tracks04
+		Location: 102,22
+		Owner: Neutral
+	Actor458: tracks04
+		Location: 105,22
+		Owner: Neutral
+	Actor459: tracks04
+		Location: 104,22
+		Owner: Neutral
+	Actor460: tracks04
+		Location: 107,22
+		Owner: Neutral
+	Actor461: tracks04
+		Location: 106,22
+		Owner: Neutral
+	Actor462: tracks04
+		Location: 109,22
+		Owner: Neutral
+	Actor463: tracks04
+		Location: 108,22
+		Owner: Neutral
+	Actor464: tracks04
+		Location: 110,22
+		Owner: Neutral
+	Actor465: tracks04
+		Location: 113,22
+		Owner: Neutral
+	Actor466: tracks04
+		Location: 112,22
+		Owner: Neutral
+	Actor467: tracks04
+		Location: 115,22
+		Owner: Neutral
+	Actor468: tracks04
+		Location: 114,22
+		Owner: Neutral
+	Actor469: tracks04
+		Location: 116,22
+		Owner: Neutral
+	Actor470: tracks04
+		Location: 119,22
+		Owner: Neutral
+	Actor471: tracks04
+		Location: 118,22
+		Owner: Neutral
+	Actor472: tracks04
+		Location: 121,22
+		Owner: Neutral
+	Actor473: tracks04
+		Location: 120,22
+		Owner: Neutral
+	Actor474: tracks04
+		Location: 123,22
+		Owner: Neutral
+	Actor475: tracks04
+		Location: 122,22
+		Owner: Neutral
+	Actor476: tracks04
+		Location: 125,22
+		Owner: Neutral
+	Actor477: tracks04
+		Location: 124,22
+		Owner: Neutral
+	Actor478: tracks04
+		Location: 127,22
+		Owner: Neutral
+	Actor479: tracks04
+		Location: 126,22
+		Owner: Neutral
+	Actor480: tracks04
+		Location: 129,22
+		Owner: Neutral
+	Actor481: tracks04
+		Location: 128,22
+		Owner: Neutral
+	Actor482: tracks04
+		Location: 131,22
+		Owner: Neutral
+	Actor483: tracks04
+		Location: 130,22
+		Owner: Neutral
+	Actor484: tracks04
+		Location: 133,22
+		Owner: Neutral
+	Actor485: tracks04
+		Location: 132,22
+		Owner: Neutral
+	Actor486: tracks04
+		Location: 134,22
 		Owner: Neutral
 
 Smudges:
