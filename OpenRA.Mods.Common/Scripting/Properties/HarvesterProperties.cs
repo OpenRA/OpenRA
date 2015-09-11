@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
-	[ScriptPropertyGroup("Harvester")]
+	[ScriptPropertyGroup("Movement")]
 	public class HarvesterProperties : ScriptActorProperties, Requires<HarvesterInfo>
 	{
 		readonly Harvester harvester;

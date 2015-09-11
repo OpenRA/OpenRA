@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
-	[ScriptPropertyGroup("Transform")]
+	[ScriptPropertyGroup("General")]
 	public class TransformProperties : ScriptActorProperties, Requires<TransformsInfo>
 	{
 		readonly Transforms transforms;
