@@ -31,6 +31,7 @@ unhidewindow = { -- allow unhiding of GUI windows
   ConsoleWindowClass = 2,
   -- ignore the following windows when "showing all"
   IME = 0,
+  wxDisplayHiddenWindow = 0,
   ['MSCTFIME UI'] = 0,
   -- GLUT/opengl/SDL applications (for example, moai or love2d)
   GLUT = 1, FREEGLUT = 1, SDL_app = 1,
