@@ -222,6 +222,9 @@ namespace OpenRA.Mods.Common.AI
 			Info = info;
 			World = init.World;
 
+			if (World.Type == WorldType.Editor)
+				return;
+
 			domainIndex = World.WorldActor.Trait<DomainIndex>();
 			resLayer = World.WorldActor.Trait<ResourceLayer>();
 			territory = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
