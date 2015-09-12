@@ -126,10 +126,11 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
-		[Desc("Tells the AI what unit types fall under the same common name.")]
+		[Desc("Tells the AI what unit types fall under the same common name. Only supported entry is Mcv.")]
 		public readonly Dictionary<string, HashSet<string>> UnitsCommonNames = null;
 
-		[Desc("Tells the AI what building types fall under the same common name.")]
+		[Desc("Tells the AI what building types fall under the same common name.",
+			"Possible keys are ConstructionYard, Power, Refinery, Silo , Barracks, Production, VehiclesFactory, NavalProduction.")]
 		public readonly Dictionary<string, HashSet<string>> BuildingCommonNames = null;
 
 		[Desc("What buildings should the AI have a maximum limit to build.")]
