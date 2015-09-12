@@ -81,6 +81,7 @@
     <Compile Include="Player\PlaceSimpleBeacon.cs" />
     <Compile Include="Effects\AnimatedBeacon.cs" />
     <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
+    <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
