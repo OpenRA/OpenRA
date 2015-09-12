@@ -25,7 +25,8 @@ ide.proto.Document = {__index = {
     return ide:GetEditorNotebook():GetPageText(self.index):gsub("^"..q(modpref), "")
   end,
   SetActive = function(self) SetEditorSelection(self.index) end,
-  Save = function(self) return SaveFile(self.editor, self.filePath) end
+  Save = function(self) return SaveFile(self.editor, self.filePath) end,
+  Close = function(self) return ClosePage(self.index) end,
 }}
 
 ide.proto.Plugin = {__index = {
