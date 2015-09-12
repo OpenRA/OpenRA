@@ -180,15 +180,23 @@ elseif ($command -eq "check")
 }
 elseif ($command -eq "check-scripts")
 {
-	foreach ($script in ls "mods/*/maps/*/*.lua")
+	if ((Get-Command "luac.exe" -ErrorAction SilentlyContinue) -ne $null)
 	{
-		luac -p $script
+		echo "Testing Lua scripts..."
+		foreach ($script in ls "mods/*/maps/*/*.lua")
+		{
+			luac -p $script
+		}
+		foreach ($script in ls "lua/*.lua")
+		{
+			luac -p $script
+		}
+		echo "Check completed!"
 	}
-	foreach ($script in ls "lua/*.lua")
+	else
 	{
-		luac -p $script
+		echo "luac.exe could not be found. Please install Lua."
 	}
-	echo "Check successfull!"
 }
 elseif ($command -eq "docs")
 {
