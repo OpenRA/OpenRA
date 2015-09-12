@@ -137,6 +137,7 @@ namespace OpenRA.Mods.Common.Widgets
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Detonate", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployToUpgrade", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("DeployThumper", a, false));
 			return true;
 		}
 

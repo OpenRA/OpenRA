@@ -501,7 +501,7 @@ Heal:
 WormJaw:
 	ReloadDelay: 10
 	Range: 3c0
-	InvalidTargets: Structure
+	ValidTargets: WormFood
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 100

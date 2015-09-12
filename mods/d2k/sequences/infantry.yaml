@@ -170,10 +170,16 @@ engineer:
 		Start: 4013
 		Offset: -30,-24
 
-medic: # actually thumper
+thumper:
+	idle: DATA.R8
+		Start: 1458
+		Length: 5
+		Tick: 150
+		Transpose: true
 	stand: DATA.R8
-		Start: 1402
-		Facings: -8
+		Start: 1458
+		Length: 5
+		Tick: 150
 		Transpose: true
 	run: DATA.R8
 		Start: 1410
@@ -181,25 +187,20 @@ medic: # actually thumper
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
-		Start: 1462
+	undeployed-idle: DATA.R8
+		Start: 1402
+		Facings: -8
+		Transpose: true
+	undeployed-stand: DATA.R8
+		Start: 1402
+		Facings: -8
+		Transpose: true
+	undeployed-run: DATA.R8
+		Start: 1410
+		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-stand: DATA.R8
-		Start: 1470
-		Facings: -8
-		Transpose: true
-	prone-run: DATA.R8
-		Start: 1478
-		Length: 3
-		Facings: -8
-		Transpose: true
-		Tick: 120
-	heal: DATA.R8
-		Start: 1458
-		Length: 5
-		Tick: 480
 	die1: DATA.R8
 		Frames: 1543, 1550, 1557, 1564, 1571, 1578, 1585, 1592, 1599, 1600, 1601, 1602
 		Length: 12
@@ -223,22 +224,6 @@ medic: # actually thumper
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4014
-		Offset: -30,-24
-
-thumping:
-	idle: DATA.R8
-		Start: 1458
-		Length: 5
-		Tick: 150
-	make: DATA.R8
-		Start: 1458
-		Length: 5
-	damaged-idle: DATA.R8
-		Start: 1458
-		Length: 5
-		Tick: 150
-	icon: DATA.R8
-		Frames: 4014
 		Offset: -30,-24
 
 fremen:

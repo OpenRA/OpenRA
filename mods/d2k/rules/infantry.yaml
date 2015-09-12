@@ -72,36 +72,37 @@ bazooka:
 	AttractsWorms:
 		Intensity: 180
 
-medic:
+thumper:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
-		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
+		BuildPaletteOrder: 50
+		Prerequisites: upgrade.barracks, radar, ~techlevel.medium
 	Valued:
-		Cost: 500
+		Cost: 400
 	Tooltip:
-		Name: Medic
-		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
+		Name: Thumper
+		Description: Attracts sandsworm through vibrations.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Bounds: 12,17,0,0
 	Health:
-		HP: 60
+		HP: 25
 	Mobile:
-		Speed: 42
-	AutoHeal:
-	Armament:
-		Weapon: Heal
-	AttackMedic:
-		Cursor: ability
-		OutsideRangeCursor: ability
-	WithInfantryBody:
-		AttackSequence: heal
+		Speed: 53
 	Passenger:
-		PipType: Blue
 	-AutoTarget:
-	AttractsWorms:
-		Intensity: 180
-	Voiced:
-		VoiceSet: EngineerVoice
+	-TakeCover:
+	WithInfantryBody:
+		IdleSequences: idle
+		MinIdleWaitTicks: 20
+		MaxIdleWaitTicks: 20
+	Thumper:
+	AttractsWorms@DEPLOYED:
+		UpgradeTypes: WormAttraction
+		Intensity: 1000
+		Falloff: 100, 100, 100, 95, 80, 60, 30, 20, 10, 0
+	Targetable:
+		TargetTypes: Ground, Infantry
 
 fremen:
 	Inherits: ^Infantry
@@ -138,6 +139,8 @@ fremen:
 	-MustBeDestroyed:
 	Voiced:
 		VoiceSet: FremenVoice
+	Targetable:
+		TargetTypes: Ground, Infantry
 
 grenadier:
 	Inherits: ^Infantry
