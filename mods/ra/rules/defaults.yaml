@@ -631,6 +631,8 @@
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2
+	CustomSelectionSize:
+		CustomBounds: 96,48
 	Health:
 		HP: 1000
 	ProximityCaptor:
