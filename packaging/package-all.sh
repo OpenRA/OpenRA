@@ -67,6 +67,9 @@ cp thirdparty/download/MaxMind.GeoIP2.dll packaging/built
 cp thirdparty/download/Newtonsoft.Json.dll packaging/built
 cp thirdparty/download/RestSharp.dll packaging/built
 
+# global chat
+cp thirdparty/download/SmarIrc4net.dll packaging/built
+
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 

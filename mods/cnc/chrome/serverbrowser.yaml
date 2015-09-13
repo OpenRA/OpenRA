@@ -1,74 +1,31 @@
 Container@SERVERBROWSER_PANEL:
 	Logic: ServerBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 500)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 730
-	Height: 535
+	Height: 595
 	Children:
 		Label@TITLE:
 			Text: Multiplayer
 			Width: 740
-			Y: 0-25
+			Y: 0-10
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Background@bg:
 			Width: 730
-			Height: 500
+			Height: PARENT_BOTTOM - 30
 			Background: panel-black
+			Y: 15
 			Children:
-				Label@SHOW_LABEL_TITLE:
-					X: 20
-					Y: 465
-					Width: 20
-					Height: 25
-					Text: Show:
-					Font: Bold
-				Checkbox@WAITING_FOR_PLAYERS:
-					X: 80
-					Y: 467
-					Width: 100
-					Height: 20
-					Text: Waiting
-					TextColor: 50,205,50
-				Checkbox@EMPTY:
-					X: 180
-					Y: 467
-					Width: 100
-					Height: 20
-					Text: Empty
-				Checkbox@PASSWORD_PROTECTED:
-					X: 270
-					Y: 467
-					Width: 100
-					Height: 20
-					Text: Protected
-					TextColor: 255,0,0
-				Checkbox@ALREADY_STARTED:
-					X: 385
-					Y: 467
-					Width: 100
-					Height: 20
-					Text: Started
-					TextColor: 255,165,0
-				Checkbox@INCOMPATIBLE_VERSION:
-					X: 480
-					Y: 467
-					Width: 100
-					Height: 20
-					Text: Incompatible
-					TextColor: 190,190,190
-				Button@REFRESH_BUTTON:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 465
-					Width: 100
-					Height: 25
-					Text: Refresh
-				ScrollPanel@SERVER_LIST:
+				Container@IRC_ROOT:
 					X: 15
 					Y: 15
+				ScrollPanel@SERVER_LIST:
+					X: 15
+					Y: 280
 					Width: 700
-					Height: 440
+					Height: 240
 					Children:
 						ScrollItem@HEADER_TEMPLATE:
 							Width: PARENT_RIGHT-27
@@ -129,35 +86,82 @@ Container@SERVERBROWSER_PANEL:
 									Height: 25
 				Label@PROGRESS_LABEL:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: PARENT_BOTTOM / 2 - HEIGHT
+					Y: PARENT_BOTTOM / 2 - HEIGHT + (280 / 2)
 					Width: 710
 					Height: 25
 					Font: Bold
 					Align: Center
 					Visible: false
+				Label@SHOW_LABEL_TITLE:
+					X: 20
+					Y: 525
+					Width: 20
+					Height: 25
+					Text: Show:
+					Font: Bold
+				Checkbox@WAITING_FOR_PLAYERS:
+					X: 80
+					Y: 527
+					Width: 100
+					Height: 20
+					Text: Waiting
+					TextColor: 50,205,50
+				Checkbox@EMPTY:
+					X: 180
+					Y: 527
+					Width: 100
+					Height: 20
+					Text: Empty
+				Checkbox@PASSWORD_PROTECTED:
+					X: 270
+					Y: 527
+					Width: 100
+					Height: 20
+					Text: Protected
+					TextColor: 255,0,0
+				Checkbox@ALREADY_STARTED:
+					X: 385
+					Y: 527
+					Width: 100
+					Height: 20
+					Text: Started
+					TextColor: 255,165,0
+				Checkbox@INCOMPATIBLE_VERSION:
+					X: 480
+					Y: 527
+					Width: 100
+					Height: 20
+					Text: Incompatible
+					TextColor: 190,190,190
+				Button@REFRESH_BUTTON:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 525
+					Width: 100
+					Height: 25
+					Text: Refresh
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0
-			Y: 499
+			Y: PARENT_BOTTOM - 16
 			Width: 140
 			Height: 35
 			Text: Back
 		Button@CREATE_BUTTON:
 			X: PARENT_RIGHT - 140 - 10 - 140 - 10 - 140
-			Y: 499
+			Y: PARENT_BOTTOM - 16
 			Width: 140
 			Height: 35
 			Text: Create
 		Button@DIRECTCONNECT_BUTTON:
 			X: PARENT_RIGHT - 140 - 10 - 140
-			Y: 499
+			Y: PARENT_BOTTOM - 16
 			Width: 140
 			Height: 35
 			Text: Direct IP
 		Button@JOIN_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - 140
-			Y: 499
+			Y: PARENT_BOTTOM - 16
 			Width: 140
 			Height: 35
 			Text: Join
