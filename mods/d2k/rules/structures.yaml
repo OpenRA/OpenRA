@@ -716,18 +716,7 @@ research_centre:
 		Cost: 1500
 	Tooltip:
 		Name: Ix Lab
-		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-	ParatroopersPower:
-		Icon: paratroopers
-		Prerequisites: ~techlevel.superweapons
-		UnitType: carryall.infantry
-		FlareTime: 0
-		ChargeTime: 180
-		Description: Paratroopers
-		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		DropItems: light_inf, light_inf, trooper, trooper, engineer, trooper, light_inf, light_inf
-		SelectTargetSound:
-		FlareType:
+		Description: Unlocks experimental tanks
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
