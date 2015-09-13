@@ -95,49 +95,6 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Ornithopter
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
-	Health:
-		HP: 150
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
-	Armament:
-		Weapon: M_HMG
-		LocalOffset: 85,-213,-85
-	AttackHeli:
-		FacingTolerance: 20
-	Helicopter:
-		LandWhenIdle: false
-		InitialFacing: 20
-		ROT: 6
-		Speed: 280
-		RepairBuildings: repair_pad
-		RearmBuildings:
-		AirborneUpgrades: airborne
-	SpawnActorOnDeath:
-		Actor: ornithopter.husk
-	SelectionDecorations:
-	Selectable:
-		Bounds: 32,32
-	Targetable@GROUND:
-		TargetTypes: Ground, Vehicle
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
-	Targetable@AIRBORNE:
-		TargetTypes: Air
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
-	Voiced:
-		VoiceSet: GenericVoice
-
-ornithopter.bomber:
-	Inherits: ^Plane
 	AttackBomber:
 	Armament:
 		Weapon: OrniBomb
@@ -157,25 +114,10 @@ ornithopter.bomber:
 	Tooltip:
 		Name: Ornithopter
 	SpawnActorOnDeath:
-		Actor: ornithopter.bomber.husk
+		Actor: ornithopter.husk
 	RejectsOrders:
-	RenderSprites:
-		Image: ornithopter
 
 ornithopter.husk:
-	Inherits: ^AircraftHusk
-	Tooltip:
-		Name: Ornithopter
-	Helicopter:
-		ROT: 6
-		Speed: 280
-		RepairBuildings:
-		RearmBuildings:
-		AirborneUpgrades: airborne
-	RenderSprites:
-		Image: ornithopter
-
-ornithopter.bomber.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
