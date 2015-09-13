@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			HashSet<string> actors;
 			if (!ai.Info.BuildingCommonNames.TryGetValue(commonName, out actors))
-				throw new InvalidOperationException("Can't find {0} in the HackyAI BuildingCommonNames definition.".F(commonName));
+				return null;
 
 			var available = buildables.Where(actor =>
 			{
