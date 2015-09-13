@@ -34,7 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
-		[PaletteReference] public readonly string Palette = "cloak";
+
+		public readonly string Palette = "cloak";
+		public readonly bool IsPlayerPalette = false;
 
 		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
@@ -112,10 +114,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
 			{
-				if (string.IsNullOrEmpty(Info.Palette))
+				var palette = string.IsNullOrEmpty(Info.Palette) ? null : Info.IsPlayerPalette ? wr.Palette(Info.Palette + self.Owner.InternalName) : wr.Palette(Info.Palette);
+				if (palette == null)
 					return r;
 				else
-					return r.Select(a => a.WithPalette(wr.Palette(Info.Palette)));
+					return r.Select(a => a.WithPalette(palette));
 			}
 			else
 				return SpriteRenderable.None;

@@ -561,6 +561,7 @@ HBOX:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
+		IsPlayerPalette: true
 	Turreted:
 		ROT: 255
 	-QuantizeFacingsFromSequence:

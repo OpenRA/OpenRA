@@ -355,6 +355,7 @@ stealth_raider:
 		CloakDelay: 90
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
+		IsPlayerPalette: true
 	AutoTarget:
 		InitialStance: HoldFire
 	-MustBeDestroyed:

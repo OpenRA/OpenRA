@@ -135,6 +135,7 @@ fremen:
 		CloakDelay: 250
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
+		IsPlayerPalette: true
 	-MustBeDestroyed:
 	Voiced:
 		VoiceSet: FremenVoice

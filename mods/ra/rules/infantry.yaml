@@ -524,7 +524,8 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: yes
+		UncloakOnMove: true
+		IsPlayerPalette: true
 	DetectCloaked:
 		Range: 6
 	-MustBeDestroyed:

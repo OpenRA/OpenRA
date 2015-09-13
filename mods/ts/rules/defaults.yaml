@@ -103,6 +103,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 
 ^Building:
 	Inherits: ^BasicBuilding
@@ -208,6 +209,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 	MustBeDestroyed:
 
 ^BuildingPlug:
@@ -307,6 +309,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -406,6 +409,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 	MustBeDestroyed:
 	RenderSprites:
 	ThrowsShrapnel:
