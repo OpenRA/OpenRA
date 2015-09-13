@@ -133,7 +133,6 @@ waypoint:
 	Inherits: carryall
 	Helicopter:
 		InitialFacing: 104
-		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: carryall
 		Palette: colorpicker

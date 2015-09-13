@@ -57,7 +57,6 @@ frigate:
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
-		AirborneUpgrades: airborne
 	Health:
 		HP: 500
 	-AppearsOnRadar:
@@ -86,7 +85,6 @@ ornithopter:
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
-		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -104,7 +102,6 @@ ornithopter.husk:
 		Speed: 350
 		RepairBuildings:
 		RearmBuildings:
-		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: ornithopter
 
@@ -117,7 +114,6 @@ carryall.husk:
 		Speed: 210
 		RepairBuildings:
 		RearmBuildings:
-		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: carryall
 
