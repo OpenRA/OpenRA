@@ -466,7 +466,6 @@
 		DestroyedSounds: sandbag2.aud
 	Crushable:
 		CrushClasses: wall
-	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
