@@ -189,8 +189,6 @@
 		Bounds: 12,18,0,-6
 	Targetable:
 		TargetTypes: Ground, Infantry
-		UpgradeTypes: parachute
-		UpgradeMaxEnabledLevel: 0
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -228,11 +226,6 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
-	WithParachute:
-		UpgradeTypes: parachute
-		UpgradeMinEnabledLevel: 1
-		ShadowImage: parach-shadow
-		ShadowSequence: idle
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
