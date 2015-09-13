@@ -93,7 +93,7 @@ frigate:
 	FlyAwayOnIdle:
 	RejectsOrders:
 
-ornithopter.bomber:
+ornithopter:
 	Inherits: ^Plane
 	AttackBomber:
 	Armament:
@@ -114,12 +114,10 @@ ornithopter.bomber:
 	Tooltip:
 		Name: Ornithopter
 	SpawnActorOnDeath:
-		Actor: ornithopter.bomber.husk
+		Actor: ornithopter.husk
 	RejectsOrders:
-	RenderSprites:
-		Image: ornithopter
 
-ornithopter.bomber.husk:
+ornithopter.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter

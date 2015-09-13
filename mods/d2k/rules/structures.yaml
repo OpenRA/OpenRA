@@ -692,8 +692,8 @@ high_tech_factory:
 		Prerequisites: ~techlevel.superweapons, upgrade.hightech
 		ChargeTime: 180
 		SquadSize: 3
-		LongDesc: Ornithopters hit the target with parabombs
-		UnitType: ornithopter.bomber
+		LongDesc: Ornithopters hit the target with bombs
+		UnitType: ornithopter
 		SelectTargetSound:
 		DisplayBeacon: True
 		CameraActor: camera
