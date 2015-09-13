@@ -21,6 +21,14 @@ carryall.reinforce:
 		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:
@@ -49,7 +57,6 @@ frigate:
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
-		AirborneUpgrades: airborne
 	Health:
 		HP: 500
 	-AppearsOnRadar:
@@ -65,6 +72,8 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
+	Targetable:
+		TargetTypes: Air
 	AttackBomber:
 	Armament:
 		Weapon: OrniBomb
@@ -78,7 +87,6 @@ ornithopter:
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
-		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -96,7 +104,6 @@ ornithopter.husk:
 		Speed: 350
 		RepairBuildings:
 		RearmBuildings:
-		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: ornithopter
 
@@ -109,7 +116,6 @@ carryall.husk:
 		Speed: 210
 		RepairBuildings:
 		RearmBuildings:
-		AirborneUpgrades: airborne
 	RenderSprites:
 		Image: carryall
 
