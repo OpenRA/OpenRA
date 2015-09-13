@@ -441,7 +441,7 @@ DevBullet:
 		Explosion: shockwave
 		ImpactSound: EXPLMD1.WAV
 
-227mm:
+mtank_pri:
 	ReloadDelay: 115
 	Range: 6c0
 	Report: MISSLE1.WAV
