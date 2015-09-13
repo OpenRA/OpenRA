@@ -36,9 +36,9 @@ namespace OpenRA.Traits
 
 		public ScreenMap(World world, ScreenMapInfo info)
 		{
-			var ts = Game.ModData.Manifest.TileSize;
-			var width = world.Map.MapSize.X * ts.Width;
-			var height = world.Map.MapSize.Y * ts.Height;
+			var size = world.Map.Grid.TileSize;
+			var width = world.Map.MapSize.X * size.Width;
+			var height = world.Map.MapSize.Y * size.Height;
 			partitionedFrozenActors = new Cache<Player, SpatiallyPartitioned<FrozenActor>>(
 				_ => new SpatiallyPartitioned<FrozenActor>(width, height, info.BinSize));
 			partitionedActors = new SpatiallyPartitioned<Actor>(width, height, info.BinSize);

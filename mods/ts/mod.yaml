@@ -111,12 +111,12 @@ TileSets:
 	./mods/ts/tilesets/temperate.yaml
 	./mods/ts/tilesets/snow.yaml
 
-TileSize: 48,24
-TileShape: Diamond
-SubCells:
-	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
-	DefaultIndex: 2
-MaximumTerrainHeight: 16
+MapGrid:
+	TileSize: 48,24
+	Type: Diamond
+	MaximumTerrainHeight: 16
+	SubCellOffsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	SubCellDefaultIndex: 2
 
 Cursors:
 	./mods/ts/cursors.yaml

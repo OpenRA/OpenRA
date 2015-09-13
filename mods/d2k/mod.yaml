@@ -49,7 +49,9 @@ Sequences:
 TileSets:
 	./mods/d2k/tilesets/arrakis.yaml
 
-TileSize: 32,32
+MapGrid:
+	TileSize: 32,32
+	Type: Rectangle
 
 Cursors:
 	./mods/d2k/cursors.yaml

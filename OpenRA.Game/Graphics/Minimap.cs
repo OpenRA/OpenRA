@@ -20,12 +20,12 @@ namespace OpenRA.Graphics
 	{
 		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{
-			var isDiamond = map.TileShape == TileShape.Diamond;
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
 
 			// Fudge the heightmap offset by adding as much extra as we need / can.
 			// This tries to correct for our incorrect assumption that MPos == PPos
-			var heightOffset = Math.Min(map.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
+			var heightOffset = Math.Min(map.Grid.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
 			var width = b.Width;
 			var height = b.Height + heightOffset;
 
@@ -81,12 +81,12 @@ namespace OpenRA.Graphics
 		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			var terrain = new Bitmap(terrainBitmap);
-			var isDiamond = map.TileShape == TileShape.Diamond;
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
 
 			// Fudge the heightmap offset by adding as much extra as we need / can
 			// This tries to correct for our incorrect assumption that MPos == PPos
-			var heightOffset = Math.Min(map.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
+			var heightOffset = Math.Min(map.Grid.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
 			var width = b.Width;
 			var height = b.Height + heightOffset;
 

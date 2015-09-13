@@ -151,8 +151,7 @@ namespace OpenRA
 		};
 
 		public const int MaxTilesInCircleRange = 50;
-		public readonly TileShape TileShape;
-		public readonly byte MaximumTerrainHeight;
+		public readonly MapGrid Grid;
 
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
@@ -275,7 +274,7 @@ namespace OpenRA
 		public Map(TileSet tileset, int width, int height)
 		{
 			var size = new Size(width, height);
-			var tileShape = Game.ModData.Manifest.TileShape;
+			Grid = Game.ModData.Manifest.Get<MapGrid>();
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
 
 			Title = "Name your map here";
@@ -287,29 +286,27 @@ namespace OpenRA
 			Videos = new MapVideos();
 			Options = new MapOptions();
 
-			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(tileShape, size));
+			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
 
 			MapTiles = Exts.Lazy(() =>
 			{
-				var ret = new CellLayer<TerrainTile>(tileShape, size);
+				var ret = new CellLayer<TerrainTile>(Grid.Type, size);
 				ret.Clear(tileRef);
-				if (MaximumTerrainHeight > 0)
+				if (Grid.MaximumTerrainHeight > 0)
 					ret.CellEntryChanged += UpdateProjection;
 				return ret;
 			});
 
 			MapHeight = Exts.Lazy(() =>
 			{
-				var ret = new CellLayer<byte>(tileShape, size);
+				var ret = new CellLayer<byte>(Grid.Type, size);
 				ret.Clear(0);
-				if (MaximumTerrainHeight > 0)
+				if (Grid.MaximumTerrainHeight > 0)
 					ret.CellEntryChanged += UpdateProjection;
 				return ret;
 			});
 
 			SpawnPoints = Exts.Lazy(() => new CPos[0]);
-			TileShape = tileShape;
-			MaximumTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
 
 			PostInit();
 		}
@@ -374,12 +371,11 @@ namespace OpenRA
 			MapResources = Exts.Lazy(LoadResourceTiles);
 			MapHeight = Exts.Lazy(LoadMapHeight);
 
-			TileShape = Game.ModData.Manifest.TileShape;
-			MaximumTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
+			Grid = Game.ModData.Manifest.Get<MapGrid>();
 
-			SubCellOffsets = Game.ModData.Manifest.SubCellOffsets;
+			SubCellOffsets = Grid.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
-			DefaultSubCell = (SubCell)Game.ModData.Manifest.SubCellDefaultIndex;
+			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
 			if (Container.Exists("map.png"))
 				using (var dataStream = Container.GetContent("map.png"))
@@ -417,7 +413,7 @@ namespace OpenRA
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
-			AllCells = new CellRegion(TileShape, tl, br);
+			AllCells = new CellRegion(Grid.Type, tl, br);
 
 			var btl = new PPos(Bounds.Left, Bounds.Top);
 			var bbr = new PPos(Bounds.Right - 1, Bounds.Bottom - 1);
@@ -427,10 +423,10 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
-			var leftDelta = TileShape == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = TileShape == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = TileShape == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = TileShape == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
+			var leftDelta = Grid.Type == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
+			var topDelta = Grid.Type == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
+			var rightDelta = Grid.Type == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
+			var bottomDelta = Grid.Type == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
 			{
 				leftDelta + new WVec(0, 0, 512 * ramp[0]),
@@ -453,7 +449,7 @@ namespace OpenRA
 			// Initialize collections
 			foreach (var cell in AllCells)
 			{
-				var uv = cell.ToMPos(TileShape);
+				var uv = cell.ToMPos(Grid.Type);
 				cellProjection[uv] = new PPos[0];
 				inverseCellProjection[uv] = new List<MPos>();
 			}
@@ -467,9 +463,9 @@ namespace OpenRA
 		{
 			MPos uv;
 
-			if (MaximumTerrainHeight == 0)
+			if (Grid.MaximumTerrainHeight == 0)
 			{
-				uv = cell.ToMPos(TileShape);
+				uv = cell.ToMPos(Grid.Type);
 				cellProjection[cell] = new[] { (PPos)uv };
 				var inverse = inverseCellProjection[uv];
 				inverse.Clear();
@@ -480,7 +476,7 @@ namespace OpenRA
 			if (!initializedCellProjection)
 				InitializeCellProjection();
 
-			uv = cell.ToMPos(TileShape);
+			uv = cell.ToMPos(Grid.Type);
 
 			// Remove old reverse projection
 			foreach (var puv in cellProjection[uv])
@@ -635,7 +631,7 @@ namespace OpenRA
 				}
 			}
 
-			if (MaximumTerrainHeight > 0)
+			if (Grid.MaximumTerrainHeight > 0)
 				tiles.CellEntryChanged += UpdateProjection;
 
 			return tiles;
@@ -652,11 +648,11 @@ namespace OpenRA
 					s.Position = header.HeightsOffset;
 					for (var i = 0; i < MapSize.X; i++)
 						for (var j = 0; j < MapSize.Y; j++)
-							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, MaximumTerrainHeight);
+							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, Grid.MaximumTerrainHeight);
 				}
 			}
 
-			if (MaximumTerrainHeight > 0)
+			if (Grid.MaximumTerrainHeight > 0)
 				tiles.CellEntryChanged += UpdateProjection;
 
 			return tiles;
@@ -701,8 +697,8 @@ namespace OpenRA
 
 				// Data offsets
 				var tilesOffset = 17;
-				var heightsOffset = MaximumTerrainHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
-				var resourcesOffset = (MaximumTerrainHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
+				var heightsOffset = Grid.MaximumTerrainHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
+				var resourcesOffset = (Grid.MaximumTerrainHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
 
 				writer.Write((uint)tilesOffset);
 				writer.Write((uint)heightsOffset);
@@ -751,7 +747,7 @@ namespace OpenRA
 			// .ToMPos() returns the same result if the X and Y coordinates
 			// are switched. X < Y is invalid in the Diamond coordinate system,
 			// so we pre-filter these to avoid returning the wrong result
-			if (TileShape == TileShape.Diamond && cell.X < cell.Y)
+			if (Grid.Type == TileShape.Diamond && cell.X < cell.Y)
 				return false;
 
 			return Contains(cell.ToMPos(this));
@@ -767,7 +763,7 @@ namespace OpenRA
 
 		bool ContainsAllProjectedCellsCovering(MPos uv)
 		{
-			if (MaximumTerrainHeight == 0)
+			if (Grid.MaximumTerrainHeight == 0)
 				return Contains((PPos)uv);
 
 			foreach (var puv in ProjectedCellsCovering(uv))
@@ -783,7 +779,7 @@ namespace OpenRA
 
 		public WPos CenterOfCell(CPos cell)
 		{
-			if (TileShape == TileShape.Rectangle)
+			if (Grid.Type == TileShape.Rectangle)
 				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
 
 			// Convert from diamond cell position (x, y) to world position (u, v):
@@ -815,7 +811,7 @@ namespace OpenRA
 
 		public CPos CellContaining(WPos pos)
 		{
-			if (TileShape == TileShape.Rectangle)
+			if (Grid.Type == TileShape.Rectangle)
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
 			// Convert from world position to diamond cell position:
@@ -834,7 +830,7 @@ namespace OpenRA
 		public PPos ProjectedCellCovering(WPos pos)
 		{
 			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
-			return (PPos)CellContaining(projectedPos).ToMPos(TileShape);
+			return (PPos)CellContaining(projectedPos).ToMPos(Grid.Type);
 		}
 
 		static readonly PPos[] NoProjectedCells = { };
@@ -881,7 +877,7 @@ namespace OpenRA
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
-			AllCells = new CellRegion(TileShape, tl, br);
+			AllCells = new CellRegion(Grid.Type, tl, br);
 		}
 
 		public void SetBounds(PPos tl, PPos br)
@@ -896,7 +892,7 @@ namespace OpenRA
 			// for diamond cells.
 			var wtop = tl.V * 1024;
 			var wbottom = (br.V + 1) * 1024;
-			if (TileShape == TileShape.Diamond)
+			if (Grid.Type == TileShape.Diamond)
 			{
 				wtop /= 2;
 				wbottom /= 2;
@@ -995,7 +991,7 @@ namespace OpenRA
 
 		public MPos Clamp(MPos uv)
 		{
-			if (MaximumTerrainHeight == 0)
+			if (Grid.MaximumTerrainHeight == 0)
 				return (MPos)Clamp((PPos)uv);
 
 			// Already in bounds, so don't need to do anything.
@@ -1030,7 +1026,7 @@ namespace OpenRA
 			if (!unProjected.Any())
 			{
 				// Adjust V until we find a cell that works
-				for (var x = 2; x <= 2 * MaximumTerrainHeight; x++)
+				for (var x = 2; x <= 2 * Grid.MaximumTerrainHeight; x++)
 				{
 					var dv = ((x & 1) == 1 ? 1 : -1) * x / 2;
 					var test = new PPos(projected.U, projected.V + dv);
@@ -1070,12 +1066,12 @@ namespace OpenRA
 				cells = Unproject(new PPos(u, v));
 			} while (!cells.Any());
 
-			return cells.Random(rand).ToCPos(TileShape);
+			return cells.Random(rand).ToCPos(Grid.Type);
 		}
 
 		public CPos ChooseClosestEdgeCell(CPos cell)
 		{
-			return ChooseClosestEdgeCell(cell.ToMPos(TileShape)).ToCPos(TileShape);
+			return ChooseClosestEdgeCell(cell.ToMPos(Grid.Type)).ToCPos(Grid.Type);
 		}
 
 		public MPos ChooseClosestEdgeCell(MPos uv)
@@ -1101,7 +1097,7 @@ namespace OpenRA
 			if (!unProjected.Any())
 			{
 				// Adjust V until we find a cell that works
-				for (var x = 2; x <= 2 * MaximumTerrainHeight; x++)
+				for (var x = 2; x <= 2 * Grid.MaximumTerrainHeight; x++)
 				{
 					var dv = ((x & 1) == 1 ? 1 : -1) * x / 2;
 					var test = new PPos(edge.U, edge.V + dv);
@@ -1137,7 +1133,7 @@ namespace OpenRA
 				cells = Unproject(new PPos(u, v));
 			} while (!cells.Any());
 
-			return cells.Random(rand).ToCPos(TileShape);
+			return cells.Random(rand).ToCPos(Grid.Type);
 		}
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)

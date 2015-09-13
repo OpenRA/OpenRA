@@ -44,7 +44,7 @@ namespace OpenRA
 
 		public MPos ToMPos(Map map)
 		{
-			return ToMPos(map.TileShape);
+			return ToMPos(map.Grid.Type);
 		}
 
 		public MPos ToMPos(TileShape shape)

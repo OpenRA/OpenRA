@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				width = Math.Max(2, width);
 				height = Math.Max(2, height);
 
-				var maxTerrainHeight = Game.ModData.Manifest.MaximumTerrainHeight;
+				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
 				var tileset = modRules.TileSets[tilesetDropDown.Text];
 				var map = new Map(tileset, width + 2, height + maxTerrainHeight + 2);
 

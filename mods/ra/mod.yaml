@@ -201,6 +201,10 @@ Fonts:
 Missions:
 	./mods/ra/missions.yaml
 
+MapGrid:
+	TileSize: 24,24
+	Type: Rectangle
+
 SupportsMapsFrom: ra
 
 SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
