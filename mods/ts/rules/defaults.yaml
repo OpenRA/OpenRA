@@ -195,11 +195,9 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	GivesExperience:
 	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
-	UpdatesPlayerStatistics:
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
@@ -209,7 +207,6 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
-	MustBeDestroyed:
 
 ^BuildingPlug:
 	AlwaysVisible:
