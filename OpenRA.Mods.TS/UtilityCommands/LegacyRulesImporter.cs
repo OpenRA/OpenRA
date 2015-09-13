@@ -109,6 +109,28 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					Console.WriteLine("\t\tAmount: " + power);
 				}
 
+				var captureable = rulesSection.GetValue("Capturable", string.Empty);
+				if (!string.IsNullOrEmpty(captureable) && captureable == "true")
+					Console.WriteLine("\tCapturable:");
+
+				var crewed = rulesSection.GetValue("Crewed", string.Empty);
+				if (!string.IsNullOrEmpty(crewed) && crewed == "yes")
+					Console.WriteLine("\tEmitInfantryOnSell:");
+
+				var deploysInto = rulesSection.GetValue("DeploysInto", string.Empty);
+				if (!string.IsNullOrEmpty(deploysInto))
+				{
+					Console.WriteLine("\tTransforms:");
+					Console.WriteLine("\t\tIntoActor: " + deploysInto);
+				}
+
+				var undeploysInto = rulesSection.GetValue("UndeploysInto", string.Empty);
+				if (!string.IsNullOrEmpty(undeploysInto))
+				{
+					Console.WriteLine("\tTransforms:");
+					Console.WriteLine("\t\tIntoActor: " + undeploysInto);
+				}
+
 				if (artIni.Sections.Any(s => s.Name == building.ToLowerInvariant()))
 				{
 					var artSection = artIni.GetSection(building);
@@ -148,7 +170,6 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var buildup = artSection.GetValue("Buildup", string.Empty);
 					if (!string.IsNullOrEmpty(buildup) && buildup != "none")
 						Console.WriteLine("\tWithMakeAnimation:");
-
 
 					var terrainPalette = artSection.GetValue("TerrainPalette", string.Empty);
 					if (!string.IsNullOrEmpty(terrainPalette))
