@@ -218,8 +218,6 @@
 	Guardable:
 	DeathSounds:
 		DeathTypes: ExplosionDeath, SoundDeath, SmallExplosionDeath, BulletDeath
-	Parachutable:
-		FallRate: 130
 	MustBeDestroyed:
 	TerrainModifiesDamage:
 		TerrainModifier:
