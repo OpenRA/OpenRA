@@ -528,7 +528,7 @@ function CreateAutoCompList(editor,key,pos)
 
   local tab,rest = resolveAssign(editor,key)
   local progress = tab and tab.childs
-  ide:SetStatus(progress and tab.classname and ("Auto-completing '%s'..."):format(tab.classname) or "")
+  ide:SetStatusFor(progress and tab.classname and ("Auto-completing '%s'..."):format(tab.classname) or "")
   if not progress then return end
 
   if (tab == ac) then
