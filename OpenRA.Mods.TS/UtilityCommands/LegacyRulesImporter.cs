@@ -117,27 +117,32 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					if (!string.IsNullOrEmpty(foundation))
 					{
 						var dimensions = foundation.Split('x');
-						Console.WriteLine("\tBuilding:");
-
-						var adjacent = rulesSection.GetValue("Adjacent", string.Empty);
-						if (!string.IsNullOrEmpty(adjacent))
-							Console.WriteLine("\t\tAdjacent: " + adjacent);
-
-						Console.WriteLine("\t\tDimensions: " + dimensions.First() + "," + dimensions.Last());
-
-						Console.Write("\t\tFootprint:");
-						var width = 0;
-						int.TryParse(dimensions.First(), out width);
-						var height = 0;
-						int.TryParse(dimensions.Last(), out height);
-						for (var y = 0; y < height; y++)
+						if (dimensions.First() == "0" || dimensions.Last() == "0")
+							Console.WriteLine("\tImmobile:\n \t\tOccupiesSpace: False");
+						else
 						{
-							Console.Write(" ");
-							for (var x = 0; x < width; x++)
-								Console.Write("x");
-						}
+							Console.WriteLine("\tBuilding:");
 
-						Console.WriteLine();
+							var adjacent = rulesSection.GetValue("Adjacent", string.Empty);
+							if (!string.IsNullOrEmpty(adjacent))
+								Console.WriteLine("\t\tAdjacent: " + adjacent);
+
+							Console.WriteLine("\t\tDimensions: " + dimensions.First() + "," + dimensions.Last());
+
+							Console.Write("\t\tFootprint:");
+							var width = 0;
+							int.TryParse(dimensions.First(), out width);
+							var height = 0;
+							int.TryParse(dimensions.Last(), out height);
+							for (var y = 0; y < height; y++)
+							{
+								Console.Write(" ");
+								for (var x = 0; x < width; x++)
+									Console.Write("x");
+							}
+
+							Console.WriteLine();
+						}
 					}
 
 					var buildup = artSection.GetValue("Buildup", string.Empty);
@@ -158,7 +163,12 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				if (!string.IsNullOrEmpty(isAnimated) && isAnimated == "yes")
 					useTerrainPalette = false;
 
-				Console.WriteLine("\tRenderSprites:");
+				var invisibleInGame = rulesSection.GetValue("InvisibleInGame", string.Empty);
+				if (!string.IsNullOrEmpty(invisibleInGame) && invisibleInGame == "yes")
+					Console.WriteLine("\tRenderSpritesEditorOnly:");
+				else
+					Console.WriteLine("\tRenderSprites:");
+
 				if (useTerrainPalette)
 				{
 					if (Game.ModData.DefaultRules.Actors.ContainsKey("world"))
@@ -168,6 +178,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							Console.WriteLine("\t\tPalette: " + terrainPaletteDefintion.Last().Name);
 					}
 				}
+
+				var image = rulesSection.GetValue("Image", string.Empty);
+				if (!string.IsNullOrEmpty(image) && image != "none")
+					Console.WriteLine("\t\tImage: " + image.ToLowerInvariant());
 
 				Console.WriteLine("\tWithSpriteBody:");
 				Console.WriteLine("\tAutoSelectionSize:");
