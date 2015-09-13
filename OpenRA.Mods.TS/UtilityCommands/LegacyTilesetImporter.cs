@@ -87,7 +87,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 									images.Add(variant);
 							}
 
-							Console.WriteLine("\t\tImage: {0}", images.JoinWith(", "));
+							Console.WriteLine("\t\tImages: {0}", images.JoinWith(", "));
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
