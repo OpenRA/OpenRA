@@ -274,7 +274,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
+		ActorTypes: light_inf,light_inf,light_inf,light_inf,light_inf,trooper,trooper,trooper,engineer
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:

@@ -14,54 +14,54 @@ harvester.husk:
 	TransformOnCapture:
 		IntoActor: harvester
 
-siegetank.husk:
+siege_tank.husk:
 	Inherits: ^VehicleHusk
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
-		IntoActor: siegetank
+		IntoActor: siege_tank
 
-missiletank.husk:
+missile_tank.husk:
 	Inherits: ^VehicleHusk
 	TransformOnCapture:
-		IntoActor: missiletank
+		IntoActor: missile_tank
 
-sonictank.husk:
+sonic_tank.husk:
 	Inherits: ^VehicleHusk
 	TransformOnCapture:
-		IntoActor: sonictank
+		IntoActor: sonic_tank
 
-devast.husk:
+devastator.husk:
 	Inherits: ^VehicleHusk
 	Health:
 		HP: 125
 	TransformOnCapture:
-		IntoActor: devast
+		IntoActor: devastator
 
-deviatortank.husk:
+deviator.husk:
 	Inherits: ^VehicleHusk
 	TransformOnCapture:
-		IntoActor: deviatortank
+		IntoActor: deviator
 
-^combat.husk:
+^combat_tank.husk:
 	Inherits: ^VehicleHusk
 	Health:
 		HP: 100
 	ThrowsParticle@turret:
 		Anim: turret
 
-combata.husk:
-	Inherits: ^combat.husk
+combat_tank_a.husk:
+	Inherits: ^combat_tank.husk
 	TransformOnCapture:
-		IntoActor: combata
+		IntoActor: combat_tank_a
 
-combath.husk:
-	Inherits: ^combat.husk
+combat_tank_h.husk:
+	Inherits: ^combat_tank.husk
 	TransformOnCapture:
-		IntoActor: combath
+		IntoActor: combat_tank_h
 
-combato.husk:
-	Inherits: ^combat.husk
+combat_tank_o.husk:
+	Inherits: ^combat_tank.husk
 	TransformOnCapture:
-		IntoActor: combato
+		IntoActor: combat_tank_o
 

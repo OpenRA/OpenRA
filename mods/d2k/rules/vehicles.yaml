@@ -1,7 +1,7 @@
 mcv:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: repair, upgrade.heavy, ~techlevel.medium
+		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
 	Valued:
@@ -29,7 +29,7 @@ mcv:
 		EmptyWeapon: UnitExplodeLarge
 	Transforms:
 		Facing: 16
-		IntoActor: conyard
+		IntoActor: construction_yard
 		Offset: -1,-1
 		TransformSounds: BUILD1.WAV
 		NoTransformNotification: CannotDeploy
@@ -76,7 +76,7 @@ harvester:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
-		Actor: Harvester.Husk
+		Actor: harvester.Husk
 	WithHarvestOverlay:
 		Palette: effect50alpha
 	WithDockingAnimation:
@@ -94,8 +94,8 @@ trike:
 	Valued:
 		Cost: 250
 	Tooltip:
-		Name: Scout Trike
-		Description: Fast Scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
+		Name: Trike
+		Description: Fast scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
 	Selectable:
 		Class: trike
 	Health:
@@ -153,7 +153,7 @@ quad:
 	AttractsWorms:
 		Intensity: 470
 
-siegetank:
+siege_tank:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
@@ -194,22 +194,20 @@ siegetank:
 	Selectable:
 		Class: siegetank
 	SpawnActorOnDeath:
-		Actor: siegetank.husk
+		Actor: siege_tank.husk
 	AttractsWorms:
 		Intensity: 600
-	RenderSprites:
-		Image: SIEGETANK
 
-missiletank:
+missile_tank:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Rocket Tank
+		Name: Missile Tank
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Armor
-		Prerequisites: ~heavy.missiletank, upgrade.heavy, research, ~techlevel.high
+		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
 		BuildPaletteOrder: 60
 	Mobile:
 		Speed: 64
@@ -233,16 +231,16 @@ missiletank:
 	Selectable:
 		Class: missiletank
 	SpawnActorOnDeath:
-		Actor: missiletank.husk
+		Actor: missile_tank.husk
 	AttractsWorms:
 		Intensity: 600
 
-sonictank:
+sonic_tank:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: ~heavy.atreides, research, ~techlevel.high
+		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
 	Valued:
 		Cost: 1250
 	Tooltip:
@@ -266,16 +264,16 @@ sonictank:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
-		Actor: sonictank.husk
+		Actor: sonic_tank.husk
 	AttractsWorms:
 		Intensity: 600
 
-devast:
+devastator:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: ~heavy.harkonnen, research, ~techlevel.high
+		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -303,7 +301,7 @@ devast:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
-		Actor: devast.husk
+		Actor: devastator.husk
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
@@ -342,10 +340,10 @@ raider:
 	AttractsWorms:
 		Intensity: 420
 
-stealthraider:
+stealth_raider:
 	Inherits: raider
 	Buildable:
-		Prerequisites: ~light.ordos, upgrade.light, hightech, ~techlevel.medium
+		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
@@ -361,7 +359,7 @@ stealthraider:
 		InitialStance: HoldFire
 	-MustBeDestroyed:
 
-deviatortank:
+deviator:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
@@ -371,7 +369,7 @@ deviatortank:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
-		Prerequisites: ~heavy.ordos, research, ~techlevel.high
+		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
 	Mobile:
 		ROT: 3
 		Speed: 64
@@ -391,11 +389,11 @@ deviatortank:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
-		Actor: deviatortank.husk
+		Actor: deviator.husk
 	AttractsWorms:
 		Intensity: 600
 
-^combat:
+^combat_tank:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
@@ -436,17 +434,17 @@ deviatortank:
 	AttractsWorms:
 		Intensity: 520
 
-combata:
-	Inherits: ^combat
+combat_tank_a:
+	Inherits: ^combat_tank
 	Buildable:
 		Prerequisites: ~heavy.atreides
 	Armament:
 		Weapon: 80mm_A
 	SpawnActorOnDeath:
-		Actor: combata.husk
+		Actor: combat_tank_a.husk
 
-combath:
-	Inherits: ^combat
+combat_tank_h:
+	Inherits: ^combat_tank
 	Buildable:
 		Prerequisites: ~heavy.harkonnen
 	Armament:
@@ -461,10 +459,10 @@ combath:
 	Health:
 		HP: 440
 	SpawnActorOnDeath:
-		Actor: combath.husk
+		Actor: combat_tank_h.husk
 
-combato:
-	Inherits: ^combat
+combat_tank_o:
+	Inherits: ^combat_tank
 	Buildable:
 		Prerequisites: ~heavy.ordos
 	Turreted:
@@ -476,5 +474,5 @@ combato:
 		ROT: 8
 		Crushes: crate, infantry
 	SpawnActorOnDeath:
-		Actor: combato.husk
+		Actor: combat_tank_o.husk
 

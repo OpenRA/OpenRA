@@ -7,21 +7,21 @@ Player:
 		BuildingCommonNames:
 			ConstructionYard: conyard
 			Refinery: refinery
-			Power: power
-			VehiclesFactory: light, heavy, starport
-			Production: light, heavy, barracks, starport
+			Power: wind_trap
+			VehiclesFactory: light_factory, heavy_factory, starport
+			Production: light_factory, heavy_factory, barracks, starport
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
 			refinery: 4
 			barracks: 1
-			light: 1
-			heavy: 1
-			research: 1
-			repair: 1
-			radar: 1
-			hightech: 1
+			light_factory: 1
+			heavy_factory: 1
+			research_centre: 1
+			repair_pad: 1
+			outpost: 1
+			high_tech_factory: 1
 			palace: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
@@ -30,24 +30,24 @@ Player:
 		BuildingFractions:
 			refinery: 20.1%
 			barracks: 0.1%
-			light: 0.1%
-			heavy: 0.1%
-			radar: 0.1%
-			hightech: 0.1%
+			light_factory: 0.1%
+			heavy_factory: 0.1%
+			outpost: 0.1%
+			high_tech_factory: 0.1%
 			starport: 0.1%
-			research: 0.1%
-			repair: 0.1%
-			guntower: 8%
-			rockettower: 6%
-			power: 10%
+			research_centre: 0.1%
+			repair_pad: 0.1%
+			medium_gun_turret: 8%
+			large_gun_turret: 6%
+			wind_trap: 10%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			rifle: 6%
-			bazooka: 5%
+			light_inf: 6%
+			trooper: 5%
 			medic: 1%
 			fremen: 0.5%
 			sardaukar: 1.5%
@@ -56,23 +56,23 @@ Player:
 			grenadier: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
-			siegetank.starport: 5%
-			missiletank.starport: 7.5%
-			combata.starport: 15%
-			combath.starport: 15%
-			combato.starport: 15%
-			sonictank: 10%
-			devast: 10%
-			deviatortank: 7.5%
+			siege_tank.starport: 5%
+			missile_tank.starport: 7.5%
+			combat_tank_a.starport: 15%
+			combat_tank_h.starport: 15%
+			combat_tank_o.starport: 15%
+			sonic_tank: 10%
+			devastator: 10%
+			deviator: 7.5%
 			trike: 10%
 			raider: 10%
 			quad: 15%
-			siegetank: 10%
-			missiletank: 15%
-			stealthraider: 5%
-			combata: 100%
-			combath: 100%
-			combato: 100%
+			siege_tank: 10%
+			missile_tank: 15%
+			stealth_raider: 5%
+			combat_tank_a: 100%
+			combat_tank_h: 100%
+			combat_tank_o: 100%
 		UnitLimits:
 			harvester: 8
 		SquadSize: 8
@@ -136,21 +136,21 @@ Player:
 		BuildingCommonNames:
 			ConstructionYard: conyard
 			Refinery: refinery
-			Power: power
-			VehiclesFactory: light, heavy, starport
-			Production: light, heavy, barracks, starport
+			Power: wind_trap
+			VehiclesFactory: light_factory, heavy_factory, starport
+			Production: light_factory, heavy_factory, barracks, starport
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
 			refinery: 4
 			barracks: 1
-			light: 1
-			heavy: 1
-			research: 1
-			repair: 1
-			radar: 1
-			hightech: 1
+			light_factory: 1
+			heavy_factory: 1
+			research_centre: 1
+			repair_pad: 1
+			outpost: 1
+			high_tech_factory: 1
 			palace: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
@@ -159,24 +159,24 @@ Player:
 		BuildingFractions:
 			refinery: 20.1%
 			barracks: 0.1%
-			light: 0.1%
-			heavy: 0.1%
-			radar: 0.1%
-			hightech: 0.1%
-			repair: 0.1%
+			light_factory: 0.1%
+			heavy_factory: 0.1%
+			outpost: 0.1%
+			high_tech_factory: 0.1%
+			repair_pad: 0.1%
 			starport: 0.1%
 			palace: 0.1%
-			guntower: 5%
-			rockettower: 10%
-			power: 12%
+			medium_gun_turret: 5%
+			large_gun_turret: 10%
+			wind_trap: 12%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			rifle: 2%
-			bazooka: 2%
+			light_inf: 2%
+			trooper: 2%
 			medic: 0.5%
 			fremen: 0.25%
 			sardaukar: 1%
@@ -185,23 +185,23 @@ Player:
 			harvester: 1%
 			trike.starport: 7.5%
 			quad.starport: 12.5%
-			siegetank.starport: 5%
-			missiletank.starport: 7.5%
-			combata.starport: 15%
-			combath.starport: 15%
-			combato.starport: 15%
-			sonictank: 50%
-			devast: 40%
-			deviatortank: 5%
+			siege_tank.starport: 5%
+			missile_tank.starport: 7.5%
+			combat_tank_a.starport: 15%
+			combat_tank_h.starport: 15%
+			combat_tank_o.starport: 15%
+			sonic_tank: 50%
+			devastator: 40%
+			deviator: 5%
 			trike: 15%
 			raider: 15%
 			quad: 25%
-			siegetank: 10%
-			missiletank: 15%
-			stealthraider: 5%
-			combata: 100%
-			combath: 100%
-			combato: 100%
+			siege_tank: 10%
+			missile_tank: 15%
+			stealth_raider: 5%
+			combat_tank_a: 100%
+			combat_tank_h: 100%
+			combat_tank_o: 100%
 		UnitLimits:
 			harvester: 8
 		SquadSize: 6
@@ -265,21 +265,21 @@ Player:
 		BuildingCommonNames:
 			ConstructionYard: conyard
 			Refinery: refinery
-			Power: power
-			VehiclesFactory: light, heavy, starport
-			Production: light, heavy, barracks, starport
+			Power: wind_trap
+			VehiclesFactory: light_factory, heavy_factory, starport
+			Production: light_factory, heavy_factory, barracks, starport
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
 			refinery: 4
 			barracks: 1
-			light: 1
-			heavy: 1
-			research: 1
-			repair: 1
-			radar: 1
-			hightech: 1
+			light_factory: 1
+			heavy_factory: 1
+			research_centre: 1
+			repair_pad: 1
+			outpost: 1
+			high_tech_factory: 1
 			palace: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
@@ -288,24 +288,24 @@ Player:
 		BuildingFractions:
 			refinery: 20.1%
 			barracks: 0.1%
-			light: 0.1%
-			heavy: 0.1%
-			repair: 0.1%
-			radar: 0.1%
-			hightech: 0.1%
-			research: 0.1%
+			light_factory: 0.1%
+			heavy_factory: 0.1%
+			repair_pad: 0.1%
+			outpost: 0.1%
+			high_tech_factory: 0.1%
+			research_centre: 0.1%
 			palace: 0.1%
-			guntower: 4%
-			rockettower: 12%
-			power: 10%
+			medium_gun_turret: 4%
+			large_gun_turret: 12%
+			wind_trap: 10%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			rifle: 15%
-			bazooka: 13%
+			light_inf: 15%
+			trooper: 13%
 			medic: 2%
 			fremen: 1%
 			sardaukar: 3%
@@ -314,23 +314,23 @@ Player:
 			harvester: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
-			siegetank.starport: 5%
-			missiletank.starport: 7.5%
-			combata.starport: 15%
-			combath.starport: 15%
-			combato.starport: 15%
-			sonictank: 10%
-			devast: 10%
-			deviatortank: 7.5%
+			siege_tank.starport: 5%
+			missile_tank.starport: 7.5%
+			combat_tank_a.starport: 15%
+			combat_tank_h.starport: 15%
+			combat_tank_o.starport: 15%
+			sonic_tank: 10%
+			devastator: 10%
+			deviator: 7.5%
 			trike: 10%
 			raider: 10%
 			quad: 15%
-			siegetank: 10%
-			missiletank: 15%
-			stealthraider: 7.5%
-			combata: 100%
-			combath: 100%
-			combato: 100%
+			siege_tank: 10%
+			missile_tank: 15%
+			stealth_raider: 7.5%
+			combat_tank_a: 100%
+			combat_tank_h: 100%
+			combat_tank_o: 100%
 		UnitLimits:
 			harvester: 8
 		SquadSize: 10

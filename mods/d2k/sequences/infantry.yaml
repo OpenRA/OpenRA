@@ -1,4 +1,4 @@
-rifle:
+light_inf:
 	stand: DATA.R8
 		Start: 206
 		Facings: -8
@@ -59,7 +59,7 @@ rifle:
 		Start: 4011
 		Offset: -30,-24
 
-bazooka:
+trooper:
 	stand: DATA.R8
 		Start: 458
 		Facings: -8

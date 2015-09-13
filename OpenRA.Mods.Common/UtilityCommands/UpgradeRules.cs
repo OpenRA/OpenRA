@@ -110,6 +110,44 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
+		internal static string RenameD2kActors(string name)
+		{
+			switch (name)
+			{
+				case "rifle": return "light_inf";
+				case "bazooka": return "trooper";
+				case "stealthraider": return "stealth_raider";
+				case "combata": return "combat_tank_a";
+				case "combath": return "combat_tank_h";
+				case "combato": return "combat_tank_o";
+				case "siegetank": return "siege_tank";
+				case "missiletank": return "missile_tank";
+				case "sonictank": return "sonic_tank";
+				case "devast": return "devastator";
+				case "deviatortank": return "deviator";
+				case "orni": return "ornithopter";
+
+				case "combata.starport": return "combat_tank_a.starport";
+				case "combath.starport": return "combat_tank_h.starport";
+				case "combato.starport": return "combat_tank_o.starport";
+				case "siegetank.starport": return "siege_tank.starport";
+				case "missiletank.starport": return "missile_tank.starport";
+
+				case "conyard": return "construction_yard";
+				case "power": return "wind_trap";
+				case "light": return "light_factory";
+				case "heavy": return "heavy_factory";
+				case "guntower": return "medium_gun_turret";
+				case "rockettower": return "large_gun_turret";
+				case "research": return "research_centre";
+				case "repair": return "repair_pad";
+				case "radar": return "outpost";
+				case "hightech": return "high_tech_factory";
+
+				default: return name;
+			}
+		}
+
 		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
@@ -2084,6 +2122,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename D2k actors to match the original game.
+				if (engineVersion < 20150910 && Game.ModData.Manifest.Mod.Id == "d2k")
+					node.Key = RenameD2kActors(node.Key);
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -2642,6 +2684,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (node.Key == "Race")
 						node.Key = "Faction";
+				}
+
+				// Rename D2k actors to match the original game.
+				if (engineVersion < 20150909 && Game.ModData.Manifest.Mod.Id == "d2k")
+				{
+					node.Value.Value = RenameD2kActors(node.Value.Value);
 				}
 
 				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);

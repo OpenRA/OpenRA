@@ -2,22 +2,22 @@
 HarkonnenReinforcements = { }
 HarkonnenReinforcements["Easy"] =
 {
-	{ "rifle", "rifle" }
+	{ "light_inf", "light_inf" }
 }
 
 HarkonnenReinforcements["Normal"] =
 {
-	{ "rifle", "rifle" },
-	{ "rifle", "rifle", "rifle" },
-	{ "rifle", "trike" },
+	{ "light_inf", "light_inf" },
+	{ "light_inf", "light_inf", "light_inf" },
+	{ "light_inf", "trike" },
 }
 
 HarkonnenReinforcements["Hard"] =
 {
-	{ "rifle", "rifle" },
+	{ "light_inf", "light_inf" },
 	{ "trike", "trike" },
-	{ "rifle", "rifle", "rifle" },
-	{ "rifle", "trike" },
+	{ "light_inf", "light_inf", "light_inf" },
+	{ "light_inf", "trike" },
 	{ "trike", "trike" }
 }
 
@@ -34,7 +34,7 @@ ToHarvest["Easy"] = 2500
 ToHarvest["Normal"] = 3000
 ToHarvest["Hard"] = 3500
 
-AtreidesReinforcements = { "rifle", "rifle", "rifle", "rifle" }
+AtreidesReinforcements = { "light_inf", "light_inf", "light_inf", "light_inf" }
 AtreidesEntryPath = { AtreidesWaypoint.Location, AtreidesRally.Location }
 
 Messages =
