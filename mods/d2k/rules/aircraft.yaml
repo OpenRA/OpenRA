@@ -21,6 +21,14 @@ carryall.reinforce:
 		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:
