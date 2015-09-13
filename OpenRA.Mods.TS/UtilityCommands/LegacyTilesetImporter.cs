@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.TS.UtilityCommands
@@ -25,7 +27,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			return args.Length >= 3;
 		}
 
-		[Desc("FILENAME", "TEMPLATEEXTENSION", "Convert a legacy tileset to the OpenRA format.")]
+		[Desc("FILENAME", "TEMPLATEEXTENSION", "[TILESETNAME]", "Convert a legacy tileset to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -57,7 +59,21 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				"Cliff" // TS defines this as "Rock"
 			};
 
+			var metadata = new StringBuilder();
+			metadata.AppendLine("General:");
+
+			var name = args.Length > 3 ? args[3] : Path.GetFileNameWithoutExtension(args[2]);
+			metadata.AppendLine("\tName: {0}".F(name));
+			metadata.AppendLine("\tId: {0}".F(name.ToUpperInvariant()));
+			metadata.AppendLine("\tPalette: iso{0}.pal".F(extension));
+			metadata.AppendLine("\tHeightDebugColors:  00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
+				" 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080");
+
 			// Loop over template sets
+			var data = new StringBuilder();
+			data.AppendLine("Templates:");
+			var definedCategories = new HashSet<string>();
+			var usedCategories = new HashSet<string>();
 			try
 			{
 				for (var tilesetGroupIndex = 0;; tilesetGroupIndex++)
@@ -67,6 +83,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var sectionCount = int.Parse(section.GetValue("TilesInSet", "1"));
 					var sectionFilename = section.GetValue("FileName", "").ToLowerInvariant();
 					var sectionCategory = section.GetValue("SetName", "");
+					if (!string.IsNullOrEmpty(sectionCategory) && sectionFilename != "blank")
+						definedCategories.Add(sectionCategory);
 
 					// Loop over templates
 					for (var i = 1; i <= sectionCount; i++, templateIndex++)
@@ -77,9 +95,11 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
-							Console.WriteLine("\tTemplate@{0}:", templateIndex);
-							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
-							Console.WriteLine("\t\tId: {0}", templateIndex);
+							data.AppendLine("\tTemplate@{0}:".F(templateIndex));
+							data.AppendLine("\t\tCategory: {0}".F(sectionCategory));
+							usedCategories.Add(sectionCategory);
+
+							data.AppendLine("\t\tId: {0}".F(templateIndex));
 
 							var images = new List<string>();
 
@@ -91,7 +111,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 									images.Add(variant);
 							}
 
-							Console.WriteLine("\t\tImages: {0}", images.JoinWith(", "));
+							data.AppendLine("\t\tImages: {0}".F(images.JoinWith(", ")));
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
@@ -101,8 +121,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							for (var j = 0; j < offsets.Length; j++)
 								offsets[j] = s.ReadUInt32();
 
-							Console.WriteLine("\t\tSize: {0}, {1}", templateWidth, templateHeight);
-							Console.WriteLine("\t\tTiles:");
+							data.AppendLine("\t\tSize: {0}, {1}".F(templateWidth, templateHeight));
+							data.AppendLine("\t\tTiles:");
 
 							for (var j = 0; j < offsets.Length; j++)
 							{
@@ -117,17 +137,17 @@ namespace OpenRA.Mods.TS.UtilityCommands
 								if (terrainType >= terrainTypes.Length)
 									throw new InvalidDataException("Unknown terrain type {0} in {1}".F(terrainType, templateFilename));
 
-								Console.WriteLine("\t\t\t{0}: {1}", j, terrainTypes[terrainType]);
+								data.AppendLine("\t\t\t{0}: {1}".F(j, terrainTypes[terrainType]));
 								if (height != 0)
-									Console.WriteLine("\t\t\t\tHeight: {0}", height);
+									data.AppendLine("\t\t\t\tHeight: {0}".F(height));
 
 								if (rampType != 0)
-									Console.WriteLine("\t\t\t\tRampType: {0}", rampType);
+									data.AppendLine("\t\t\t\tRampType: {0}".F(rampType));
 
-								Console.WriteLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
-								Console.WriteLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
-								Console.WriteLine("\t\t\t\tZOffset: {0}", -tileSize.Height / 2.0f);
-								Console.WriteLine("\t\t\t\tZRamp: 0");
+								data.AppendLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}".F(s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8()));
+								data.AppendLine("\t\t\t\tZOffset: {0}".F(-tileSize.Height / 2.0f));
+								data.AppendLine("\t\t\t\tZRamp: 0");
 							}
 						}
 					}
@@ -137,6 +157,38 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{
 				// GetSection will throw when we run out of sections to import
 			}
+
+			var unusedCategories = definedCategories.Except(usedCategories);
+			metadata.Append("\tEditorTemplateOrder: " + usedCategories.JoinWith(", ") + " # " + unusedCategories.JoinWith(", "));
+
+			metadata.AppendLine();
+			metadata.AppendLine("\tSheetSize: 2048");
+			metadata.AppendLine("\tEnableDepth: true");
+			metadata.AppendLine();
+
+			metadata.AppendLine("Terrain:");
+			terrainTypes = terrainTypes.Distinct().ToArray();
+			foreach (var terrainType in terrainTypes)
+			{
+				metadata.AppendLine("\tTerrainType@{0}:".F(terrainType));
+				metadata.AppendLine("\t\tType: {0}".F(terrainType));
+
+				if (terrainType == "Water")
+				{
+					metadata.AppendLine("\t\tTargetTypes: Water");
+					metadata.AppendLine("\t\tIsWater: True");
+				}
+				else
+					metadata.AppendLine("\t\tTargetTypes: Ground");
+
+				// TODO guess Color from Low/HighRadarColor
+				metadata.AppendLine("\t\tColor: 000000");
+			}
+
+			metadata.AppendLine();
+
+			Console.Write(metadata.ToString());
+			Console.Write(data.ToString());
 		}
 	}
 }
