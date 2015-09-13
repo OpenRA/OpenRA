@@ -1238,7 +1238,7 @@ GASAND:
 		Value: 0
 	Tooltip:
 		Name: Sandbags
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 250
 	Armor:
