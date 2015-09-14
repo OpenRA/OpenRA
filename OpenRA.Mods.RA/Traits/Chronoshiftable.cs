@@ -17,8 +17,15 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("Can be teleported via Chronoshift power.")]
 	public class ChronoshiftableInfo : ITraitInfo
 	{
+		[Desc("Should the actor being killed instead of being teleported?")]
 		public readonly bool ExplodeInstead = false;
 		public readonly string ChronoshiftSound = "chrono2.aud";
+
+		[Desc("Should the actor return its location before the chronoshift?.")]
+		public readonly bool ReturnToOrigin = true;
+
+		[Desc("The color the bar of the 'return-to-origin' logic has.")]
+		public readonly Color TimeBarColor = Color.White;
 
 		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
@@ -31,7 +38,7 @@ namespace OpenRA.Mods.RA.Traits
 		bool killCargo;
 		int duration;
 
-		// Return-to-sender logic
+		// Return-to-origin logic
 		[Sync] public CPos Origin;
 		[Sync] public int ReturnTicks = 0;
 
@@ -49,6 +56,9 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Tick(Actor self)
 		{
+			if (!info.ReturnToOrigin)
+				return;
+
 			if (ReturnTicks <= 0)
 				return;
 
@@ -69,19 +79,19 @@ namespace OpenRA.Mods.RA.Traits
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
-			// some things appear chronoshiftable, but instead they just die.
+			// Some things appear chronoshiftable, but instead they just die.
 			if (info.ExplodeInstead)
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					// damage is inflicted by the chronosphere
+					// Damage is inflicted by the chronosphere
 					if (!self.Disposed)
 						self.InflictDamage(chronosphere, int.MaxValue, null);
 				});
 				return true;
 			}
 
-			// Set up return-to-sender info
+			// Set up return-to-origin info
 			Origin = self.Location;
 			ReturnTicks = duration;
 			this.duration = duration;
@@ -98,18 +108,24 @@ namespace OpenRA.Mods.RA.Traits
 		// Show the remaining time as a bar
 		public float GetValue()
 		{
-			// otherwise an empty bar is rendered all the time
+			if (!info.ReturnToOrigin)
+				return 0f;
+
+			// Otherwise an empty bar is rendered all the time
 			if (ReturnTicks == 0 || !self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0f;
 
 			return (float)ReturnTicks / duration;
 		}
 
-		public Color GetColor() { return Color.White; }
+		public Color GetColor() { return info.TimeBarColor; }
 
 		// 'self' is the spawned huskactor
 		public void HuskCreated(Actor self)
 		{
+			if (!info.ReturnToOrigin)
+				return;
+
 			var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
 			if (chronoshiftable != null && ReturnTicks > 0)
 			{
