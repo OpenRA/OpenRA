@@ -3619,10 +3619,10 @@ Templates:
 		Size: 2,2
 		Category: Rock-Detail
 		Tiles:
-			0: Sand
-			1: Sand
-			2: Sand
-			3: Sand
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
 	Template@422:
 		Id: 422
 		Images: BLOXTREE.R8
