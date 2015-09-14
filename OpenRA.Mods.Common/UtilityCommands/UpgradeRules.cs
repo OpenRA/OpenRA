@@ -2148,6 +2148,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = node.Key.Replace("-WithMuzzleFlash", "-WithMuzzleOverlay");
 				}
 
+				// WithSiloAnimation received own Sequence property, idle sequence is only 1 frame long now
+				if (engineVersion < 20150925)
+				{
+					if (depth == 2 && node.Key == "WithSiloAnimation")
+					{
+						Console.WriteLine("WithSiloAnimation received its own Sequence property, which defaults to 'stages'.");
+						Console.WriteLine("Update your sequences accordingly, if necessary.");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
