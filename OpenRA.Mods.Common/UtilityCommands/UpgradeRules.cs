@@ -2718,10 +2718,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150912)
+				if (engineVersion < 20151009)
 				{
 					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Missile" && node.Key == "Speed")
-						node.Key = "InitialSpeed";
+						node.Key = "MaximumLaunchSpeed";
 
 					if (depth == 2 && parentKey == "Projectile" && parent.Value.Value == "Missile" && node.Key == "RateOfTurn")
 						node.Key = "HorizontalRateOfTurn";
