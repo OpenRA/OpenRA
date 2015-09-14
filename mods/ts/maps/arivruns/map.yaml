@@ -1286,6 +1286,18 @@ Actors:
 	Actor422: trock02
 		Location: 147,106
 		Owner: Neutral
+	Actor423: tuntop04
+		Owner: Neutral
+		Location: 145,5
+	Actor424: tuntop04
+		Owner: Neutral
+		Location: 116,9
+	Actor425: tuntop02
+		Owner: Neutral
+		Location: 144,-19
+	Actor426: tuntop02
+		Owner: Neutral
+		Location: 115,-15
 
 Smudges:
 

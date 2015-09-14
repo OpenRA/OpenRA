@@ -199,3 +199,15 @@ TRACKS15:
 
 TRACKS16:
 	Inherits: ^Railway
+
+TUNTOP01:
+	Inherits: ^Tunnel
+
+TUNTOP02:
+	Inherits: ^Tunnel
+
+TUNTOP03:
+	Inherits: ^Tunnel
+
+TUNTOP04:
+	Inherits: ^Tunnel
