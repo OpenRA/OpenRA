@@ -61,18 +61,23 @@ namespace OpenRA.Mods.Common.Traits
 	public class WithDeathAnimation : INotifyKilled
 	{
 		public readonly WithDeathAnimationInfo Info;
+		readonly Crushable crushable;
 		readonly RenderSprites rs;
 
 		public WithDeathAnimation(Actor self, WithDeathAnimationInfo info)
 		{
 			Info = info;
 			rs = self.Trait<RenderSprites>();
+			crushable = self.TraitOrDefault<Crushable>();
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			// Killed by some non-standard means. This includes being crushed
-			// by a vehicle (Actors with Crushable trait will spawn CrushedSequence instead).
+			// Actors with Crushable trait will spawn CrushedSequence.
+			if (crushable != null && crushable.Crushed)
+				return;
+
+			// Killed by some non-standard means.
 			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
 				return;
 

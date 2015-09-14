@@ -45,11 +45,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
 		public readonly bool RequiresLobbyCreeps = false;
 
+		[Desc("Should no actor be spawned when the parent actor is crushed?")]
+		public readonly bool IgnoreCrushes = true;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
 	public class SpawnActorOnDeath : INotifyKilled
 	{
+		readonly Crushable crushable;
 		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
 
@@ -57,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
+			crushable = init.Self.TraitOrDefault<Crushable>();
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
@@ -66,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (!self.IsInWorld)
+				return;
+
+			if (info.IgnoreCrushes && crushable != null && crushable.Crushed)
 				return;
 
 			if (self.World.SharedRandom.Next(100) > info.Probability)
