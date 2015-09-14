@@ -94,9 +94,14 @@ proc:
 
 silo:
 	idle: silo2
-		Length: 9
 		Offset: 0,-1
 	damaged-idle: silo2
+		Start: 9
+		Offset: 0,-1
+	stages: silo2
+		Length: 9
+		Offset: 0,-1
+	damaged-stages: silo2
 		Start: 9
 		Length: 9
 		Offset: 0,-1

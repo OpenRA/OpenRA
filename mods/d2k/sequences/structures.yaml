@@ -384,9 +384,15 @@ refinery.atreides:
 silo.atreides:
 	idle: DATA.R8
 		Start: 2566
-		Length: 4
 		Offset: -16,16
 	damaged-idle: DATA.R8
+		Start: 2569
+		Offset: -16,16
+	stages: DATA.R8
+		Start: 2566
+		Length: 4
+		Offset: -16,16
+	damaged-stages: DATA.R8
 		Start: 2569
 		Offset: -16,16
 	make: DATA.R8
@@ -872,9 +878,15 @@ refinery.harkonnen:
 silo.harkonnen:
 	idle: DATA.R8
 		Start: 2726
-		Length: 4
 		Offset: -16,16
 	damaged-idle: DATA.R8
+		Start: 2730
+		Offset: -16,16
+	stages: DATA.R8
+		Start: 2726
+		Length: 4
+		Offset: -16,16
+	damaged-stages: DATA.R8
 		Start: 2730
 		Offset: -16,16
 	make: DATA.R8
@@ -1269,9 +1281,15 @@ refinery.ordos:
 silo.ordos:
 	idle: DATA.R8
 		Start: 2886
-		Length: 4
 		Offset: -16,16
 	damaged-idle: DATA.R8
+		Start: 2890
+		Offset: -16,16
+	stages: DATA.R8
+		Start: 2886
+		Length: 4
+		Offset: -16,16
+	damaged-stages: DATA.R8
 		Start: 2890
 		Offset: -16,16
 	make: DATA.R8

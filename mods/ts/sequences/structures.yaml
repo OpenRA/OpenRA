@@ -973,8 +973,11 @@ gasilo.gdi:
 		Offset: 0, -24
 		UseTilesetCode: true
 	idle: gtsilo_a
-		Length: 4
 	damaged-idle: gtsilo_a
+		Start: 4
+	stages: gtsilo_a
+		Length: 4
+	damaged-stages: gtsilo_a
 		Start: 4
 		Length: 4
 	idle-underlay:
@@ -1008,8 +1011,11 @@ gasilo.nod:
 		Offset: 0, -24
 		UseTilesetCode: true
 	idle: gtsilo_a
-		Length: 4
 	damaged-idle: gtsilo_a
+		Start: 4
+	stages: gtsilo_a
+		Length: 4
+	damaged-stages: gtsilo_a
 		Start: 4
 		Length: 4
 	idle-underlay:
