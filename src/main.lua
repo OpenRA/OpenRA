@@ -474,15 +474,31 @@ end
 
 -- set ide.config environment
 setmetatable(ide.config, {__index = {os = os, wxstc = wxstc, wx = wx, ID = ID}})
-ide.config.load = { interpreters = loadInterpreters, specs = loadSpecs,
-  tools = loadTools }
+ide.config.load = {interpreters = loadInterpreters, specs = loadSpecs, tools = loadTools}
 do
+  ide.configs = {
+    system = MergeFullPath("cfg", "user.lua"),
+    user = ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/user.lua"),
+  }
+
   local num = 0
   ide.config.package = function(p)
     if p then
       num = num + 1
       local name = 'config'..num..'package'
       ide.packages[name] = setmetatable(p, ide.proto.Plugin)
+    end
+  end
+
+  local includes = {}
+  ide.config.include = function(c)
+    if c then
+      for _, config in ipairs({ide.configs.system, ide.configs.user}) do
+        local p = config and MergeFullPath(config.."/../", c)
+        includes[p] = (includes[p] or 0) + 1
+        if includes[p] > 1 or LoadLuaConfig(p) then return end
+      end
+      print(("Can't find configuration file '%s' to process."):format(c))
     end
   end
 end
@@ -515,11 +531,6 @@ loadSpecs()
 loadTools()
 
 do
-  ide.configs = {
-    system = MergeFullPath("cfg", "user.lua"),
-    user = ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/user.lua"),
-  }
-
   -- process configs
   LoadLuaConfig(ide.configs.system)
   LoadLuaConfig(ide.configs.user)

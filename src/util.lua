@@ -508,6 +508,7 @@ function LoadLuaConfig(filename,isstring)
       report(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
   end
+  return true
 end
 
 function LoadSafe(data)
