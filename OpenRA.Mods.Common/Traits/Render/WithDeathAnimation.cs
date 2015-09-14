@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Is only used if UseDeathTypeSuffix is `True`.")]
 		public readonly Dictionary<string, int> DeathTypes = new Dictionary<string, int>();
 
+		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]
+		[SequenceReference] public readonly string FallbackSequence = null;
+
 		public static object LoadDeathTypes(MiniYaml yaml)
 		{
 			var md = yaml.ToDictionary();
@@ -77,9 +80,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (crushable != null && crushable.Crushed)
 				return;
 
+			var palette = Info.DeathSequencePalette;
+			if (Info.DeathPaletteIsPlayerPalette)
+				palette += self.Owner.InternalName;
+
 			// Killed by some non-standard means.
 			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
+			{
+				if (Info.FallbackSequence != null)
+					SpawnDeathAnimation(self, Info.FallbackSequence, palette);
+
 				return;
+			}
 
 			var sequence = Info.DeathSequence;
 			if (Info.UseDeathTypeSuffix)
@@ -91,10 +103,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				sequence += Info.DeathTypes[damageType];
 			}
-
-			var palette = Info.DeathSequencePalette;
-			if (Info.DeathPaletteIsPlayerPalette)
-				palette += self.Owner.InternalName;
 
 			SpawnDeathAnimation(self, sequence, palette);
 		}
