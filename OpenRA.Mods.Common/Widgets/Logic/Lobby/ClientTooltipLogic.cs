@@ -79,10 +79,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ping = orderManager.LobbyInfo.PingFromClient(client);
 			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
 			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
-			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if (clientIndex == orderManager.LocalClient.Index && UPnP.NatDevice != null
-				&& address == IPAddress.Loopback.ToString())
-				address = UPnP.NatDevice.GetExternalIP().ToString();
+
+			var address = LobbyUtils.GetExternalIP(clientIndex, orderManager);
 			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(address);
 			ip.GetText = () => cachedDescriptiveIP;
 			var cachedCountryLookup = GeoIP.LookupCountry(address);

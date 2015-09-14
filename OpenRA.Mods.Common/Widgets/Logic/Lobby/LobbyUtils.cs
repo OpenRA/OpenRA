@@ -482,5 +482,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 			playerName.GetColor = () => player.Color.RGB;
 		}
+
+		public static string GetExternalIP(int clientIndex, OrderManager orderManager)
+		{
+			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
+			if (clientIndex == orderManager.LocalClient.Index && address == IPAddress.Loopback.ToString() && UPnP.NatDevice != null)
+			{
+				var externalIP = UPnP.NatDevice.GetExternalIP();
+				if (externalIP != null)
+					address = externalIP.ToString();
+			}
+
+			return address;
+		}
 	}
 }
