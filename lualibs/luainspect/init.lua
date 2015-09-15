@@ -515,7 +515,7 @@ function M.require_inspect(name, report, spath)
     vinfo = T.error'module not found' --IMPROVE: include search paths?
   end
   M.package_loaded[name] = {vinfo, mast}
-  return vinfo
+  return vinfo, mast
 end
 
 
@@ -790,11 +790,12 @@ function M.infer_values(top_ast, tokenlist, src, report)
         -- Any call to require is handled specially (source analysis).
         if func == require and type(argvalues[1]) == 'string' then
           local spath = tostring(ast.lineinfo.first):gsub('<C|','<'):match('<([^|]+)') -- a HACK? relies on AST lineinfo
-          local val = M.require_inspect(argvalues[1], report, spath:gsub('[^\\/]+$', ''))
+          local val, mast = M.require_inspect(argvalues[1], report, spath:gsub('[^\\/]+$', ''))
           if known(val) and val ~= nil then
             ast.value = val
             found = true
           end -- note: on nil value, assumes analysis failed (not found). This is a heuristic only.
+          if mast and mast.valueglobals then ast.valueglobals = mast.valueglobals end
         end
         -- Attempt call if safe.
         if not found and (LS.safe_function[func] or func == pcall and LS.safe_function[argvalues[1]]) then
@@ -1089,10 +1090,10 @@ function M.uninspect(top_ast)
     ast.note = nil
 
     ast.nocollect = nil
-  end)
 
-  -- undo infer_values
-  top_ast.valueglobals = nil
+    -- undo infer_values
+    ast.valueglobals = nil
+  end)
 end
 
 
@@ -1143,6 +1144,10 @@ function M.inspect(top_ast, tokenlist, src, report)
   end
 
   LA.walk(top_ast, function(ast)
+    if top_ast ~= ast and ast.valueglobals then
+      for k in pairs(ast.valueglobals) do globals[k] = {set = ast} end
+      ast.valueglobals = nil
+    end
     if ast.tag == 'Id' or ast.isfield then
       local vname = ast[1]
       --TODO: rename definedglobal to definedfield for clarity
