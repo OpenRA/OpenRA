@@ -27,8 +27,10 @@ function M.warnings_from_string(src, file)
   local ast, err, linenum, colnum = LA.ast_from_string(src, file)
   if not ast and err then return nil, err, linenum, colnum end
 
+  LI.uninspect(ast)
   if ide.config.staticanalyzer.infervalue then
     local tokenlist = LA.ast_to_tokenlist(ast, src)
+    LI.clear_cache()
     LI.inspect(ast, tokenlist, src)
     LI.mark_related_keywords(ast, tokenlist, src)
   else
