@@ -60,10 +60,6 @@ e1.gdi:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: sidec01.mix:e1icon
@@ -130,10 +126,6 @@ e1.nod:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: sidec02.mix:e1icon
@@ -201,10 +193,6 @@ e2:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: e2icon
@@ -273,10 +261,6 @@ e3:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: e4icon
@@ -409,10 +393,6 @@ medic:
 		Start: 292
 		Length: 14
 		ShadowStart: 599
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: mediicon
@@ -471,10 +451,6 @@ engineer.gdi:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: sidec01.mix:engnicon
@@ -533,10 +509,6 @@ engineer.nod:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: sidec02.mix:engnicon
@@ -605,10 +577,6 @@ umagon:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: umagicon
@@ -677,10 +645,6 @@ ghost:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: gosticon
@@ -746,10 +710,6 @@ jumpjet:
 		Length: 2
 		Facings: 8
 		ShadowStart: 711
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: jjeticon
@@ -818,10 +778,6 @@ mhijack:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: chamicon
@@ -890,10 +846,6 @@ chamspy:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: chamicon
@@ -947,10 +899,6 @@ cyc2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 568
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: cybcicon
@@ -1008,10 +956,6 @@ cyborg:
 		Length: 6
 		Facings: 8
 		ShadowStart: 582
-	die5: # TODO: unused running frame 322 and following
-		Start: 292
-		Length: 14
-		ShadowStart: 662
 	die6: electro
 		Length: *
 	icon: cybiicon
@@ -1080,10 +1024,6 @@ mutant:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: mutcicon
@@ -1153,10 +1093,6 @@ mwmn:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: mutcicon
@@ -1226,10 +1162,6 @@ mutant3:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: mutcicon
@@ -1299,10 +1231,6 @@ tratos:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 	icon: mutcicon
@@ -1372,10 +1300,6 @@ oxanna:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 
@@ -1444,10 +1368,6 @@ slav:
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 
@@ -1524,6 +1444,20 @@ vislrg:
 		ShadowStart: 40
 		Tick: 80
 
+flameguy:
+	Defaults:
+		Facings: 7
+		Tick: 80
+	stand:
+	run:
+		Length: 6
+		ShadowStart: 48
+	die:
+		Start: 44
+		Facings: 1
+		Length: 104
+		ShadowStart: 192
+
 civ1:
 	Defaults:
 		Tick: 80
@@ -1579,10 +1513,6 @@ civ1:
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 
@@ -1636,10 +1566,6 @@ civ2:
 		ShadowStart: 451
 		Tick: 800
 		ZOffset: -511
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
 
@@ -1698,9 +1624,5 @@ civ3:
 		Length: 6
 		Facings: 8
 		ShadowStart: 456
-	die5: flameguy # TODO: walking animation unused
-		Start: 42
-		Length: 104
-		ShadowStart: 190
 	die6: electro
 		Length: *
