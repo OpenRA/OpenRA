@@ -66,6 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.Tilesets.Count == 0 && info.ExcludeTilesets.Count == 0)
 				return true;
 
+			if (info.Tilesets.Count == 0 && !info.ExcludeTilesets.Contains(tilesetId))
+				return true;
+
 			return info.Tilesets.Contains(tilesetId) && !info.ExcludeTilesets.Contains(tilesetId);
 		}
 
