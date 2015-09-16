@@ -82,7 +82,6 @@
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\PoisonedByTiberium.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
-    <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithReloadingTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />

@@ -12,10 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders the cargo loaded into the unit.")]
 	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
@@ -29,12 +28,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
 
-	public class WithCargo : IRenderModifier, ITick
+	public class WithCargo : IRenderModifier, ITick, INotifyPassengerEntered, INotifyPassengerExited
 	{
 		readonly Cargo cargo;
 		readonly IFacing facing;
 		readonly WithCargoInfo cargoInfo;
 		readonly IBodyOrientation body;
+
+		readonly List<IFacing> passengerFacings;
+		readonly Dictionary<Actor, PassengerInfo> passengerInfos;
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{
@@ -43,6 +45,29 @@ namespace OpenRA.Mods.Cnc.Traits
 			cargoInfo = info;
 
 			body = self.Trait<IBodyOrientation>();
+
+			passengerFacings = new List<IFacing>();
+			passengerInfos = new Dictionary<Actor, PassengerInfo>();
+		}
+
+		public void PassengerEntered(Actor self, Actor passenger)
+		{
+			var passengerFacing = passenger.TraitOrDefault<IFacing>();
+			if (passengerFacing != null)
+				passengerFacings.Add(passengerFacing);
+
+			var passengerInfo = passenger.Trait<Passenger>().Info;
+			if (!passengerInfos.ContainsKey(passenger))
+				passengerInfos.Add(passenger, passengerInfo);
+		}
+
+		public void PassengerExited(Actor self, Actor passenger)
+		{
+			var passengerFacing = passenger.TraitOrDefault<IFacing>();
+			if (passengerFacing != null)
+				passengerFacings.Remove(passengerFacing);
+
+			passengerInfos.Remove(passenger);
 		}
 
 		public void Tick(Actor self)
@@ -50,12 +75,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (facing == null)
 				return;
 
-			foreach (var c in cargo.Passengers)
-			{
-				var cargoFacing = c.TraitOrDefault<IFacing>();
-				if (cargoFacing != null)
-					cargoFacing.Facing = facing.Facing;
-			}
+			foreach (var passengerFacing in passengerFacings)
+				passengerFacing.Facing = facing.Facing;
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -68,8 +89,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var i = 0;
 			foreach (var c in cargo.Passengers)
 			{
-				var cargoPassenger = c.Trait<Passenger>();
-				if (cargoInfo.DisplayTypes.Contains(cargoPassenger.Info.CargoType))
+				if (cargoInfo.DisplayTypes.Contains(passengerInfos[c].CargoType))
 				{
 					var index = cargo.PassengerCount > 1 ? i++ % cargoInfo.LocalOffset.Length : cargoInfo.LocalOffset.Length / 2;
 					var localOffset = cargoInfo.LocalOffset[index];

@@ -424,6 +424,7 @@
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />
+    <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
