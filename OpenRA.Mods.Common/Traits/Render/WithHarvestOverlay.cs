@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
-	class WithHarvestOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	class WithHarvestOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "harvest";
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var rs = self.Trait<RenderSprites>();
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 
 			anim = new Animation(self.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			anim.IsDecoration = true;

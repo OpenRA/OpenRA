@@ -54,7 +54,7 @@ namespace OpenRA.Mods.TS.Traits
 		{
 			this.self = self;
 
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
 			var landVoxel = VoxelProvider.GetVoxel(rv.Image, info.LandSequence);

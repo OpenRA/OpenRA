@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders a parachute on units.")]
-	public class WithParachuteInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithParachuteInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("The image that contains the parachute sequences.")]
 		public readonly string Image = null;
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// For this, info.Image must not be null
 			var overlay = new Animation(self.World, info.Image);
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => IsTraitDisabled && !renderProlonged,

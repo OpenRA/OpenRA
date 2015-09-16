@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
 			: base(info)
 		{
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
 			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);

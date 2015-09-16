@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class NukePowerInfo : SupportPowerInfo, Requires<IBodyOrientationInfo>
+	class NukePowerInfo : SupportPowerInfo, Requires<BodyOrientationInfo>
 	{
 		[WeaponReference]
 		public readonly string MissileWeapon = "";
@@ -57,12 +57,12 @@ namespace OpenRA.Mods.Common.Traits
 	class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 
 		public NukePower(Actor self, NukePowerInfo info)
 			: base(self, info)
 		{
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 			this.info = info;
 		}
 

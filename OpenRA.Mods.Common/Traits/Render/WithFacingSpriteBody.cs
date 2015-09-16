@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class WithFacingSpriteBodyInfo : WithSpriteBodyInfo, Requires<IBodyOrientationInfo>, Requires<IFacingInfo>
+	public class WithFacingSpriteBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>
 	{
 		public override object Create(ActorInitializer init) { return new WithFacingSpriteBody(init, this); }
 

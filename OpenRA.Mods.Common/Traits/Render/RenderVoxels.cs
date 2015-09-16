@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p);
 	}
 
-	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<IBodyOrientationInfo>
+	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<VoxelAnimation> components = new List<VoxelAnimation>();
 		readonly Actor self;
 		readonly RenderVoxelsInfo info;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 		readonly WRot camera;
 		readonly WRot lightSource;
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 			camera = new WRot(WAngle.Zero, body.CameraPitch - new WAngle(256), new WAngle(256));
 			lightSource = new WRot(WAngle.Zero, new WAngle(256) - info.LightPitch, info.LightYaw);
 		}

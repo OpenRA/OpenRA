@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries.")]
-	public class CarryallInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	public class CarryallInfo : ITraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Set to false when the carryall should not automatically get new jobs.")]
 		public readonly bool Automatic = true;

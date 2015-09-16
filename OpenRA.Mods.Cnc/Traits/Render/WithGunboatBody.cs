@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<IBodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
+	class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";

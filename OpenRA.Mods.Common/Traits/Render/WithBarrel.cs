@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
 	public class WithBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
-		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use.")]
 		[SequenceReference] public readonly string Sequence = "barrel";
@@ -59,13 +59,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 
 		public WithBarrel(Actor self, WithBarrelInfo info)
 			: base(info)
 		{
 			this.self = self;
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 			armament = self.TraitsImplementing<Armament>()
 				.First(a => a.Info.Name == Info.Armament);
 			turreted = self.TraitsImplementing<Turreted>()

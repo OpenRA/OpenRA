@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class BodyOrientationInfo : ITraitInfo, IBodyOrientationInfo
+	public class BodyOrientationInfo : ITraitInfo
 	{
 		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait")]
 		public readonly int QuantizedFacings = -1;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
 	}
 
-	public class BodyOrientation : IBodyOrientation, ISync
+	public class BodyOrientation : ISync
 	{
 		readonly BodyOrientationInfo info;
 		readonly Lazy<int> quantizedFacings;

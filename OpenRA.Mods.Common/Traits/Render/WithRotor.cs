@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays a helicopter rotor overlay.")]
-	public class WithRotorInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithRotorInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use when flying")]
 		[SequenceReference] public readonly string Sequence = "rotor";
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var rs = self.Trait<RenderSprites>();
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			movement = self.Trait<IMove>();
 
 			rotorAnim = new Animation(self.World, rs.GetImage(self));

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
 	public class WithTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
-		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
+		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "turret";
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Animation DefaultAnimation;
 		protected readonly AttackBase Attack;
 		readonly RenderSprites rs;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
 
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			rs = self.Trait<RenderSprites>();
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 			Attack = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);

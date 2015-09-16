@@ -56,13 +56,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 
 		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
 			: base(info)
 		{
 			this.self = self;
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 			armament = self.TraitsImplementing<Armament>()
 				.First(a => a.Info.Name == Info.Armament);
 			turreted = self.TraitsImplementing<Turreted>()
