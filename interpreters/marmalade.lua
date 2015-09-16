@@ -12,6 +12,7 @@ local mac = ide.osname == "Macintosh"
 local exe = win and [[win32\s3e_simulator_release.exe]] or [[loader/osx/s3e_simulator_release]]
 local exe_d = win and [[win32\s3e_simulator_debug.exe]] or [[loader/osx/s3e_simulator_debug]]
 local s3e = os.getenv("S3E_DIR")
+local prev_debug_loader
 
 --[[
  Parse project file
@@ -126,8 +127,13 @@ return {
 
     -- Check Marmalade project configuration
     local via = LauncherFromHubProject(mproj, GetFileName(mfile))
+    
+    quick = prev_debug_loader == project_settings.isDebugLoader and quick or nil
 
     quick = quick or ide.config.path.quick or (project_settings.isDebugLoader and (s3e and GetFullPathIfExists(s3e, exe_d)) or (s3e and GetFullPathIfExists(s3e, exe)))
+    
+    prev_debug_loader = project_settings.isDebugLoader
+    
     if not quick then
       local sep = wx.wxPATH_SEP
       local path =
