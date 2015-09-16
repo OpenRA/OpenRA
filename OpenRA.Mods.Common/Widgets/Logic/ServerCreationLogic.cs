@@ -115,7 +115,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var settings = new ServerSettings(Game.Settings.Server);
 
 			// Create and join the server
-			Game.CreateServer(settings);
+			try
+			{
+				Game.CreateServer(settings);
+			}
+			catch (System.Net.Sockets.SocketException)
+			{
+				ConfirmationDialogs.CancelPrompt(
+					"Server Creation Failed",
+					"Could not listen on port {0}.\n\nCheck if the port is already being used.".F(Game.Settings.Server.ListenPort),
+					cancelText: "OK");
+
+				return;
+			}
+
 			Ui.CloseWindow();
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
