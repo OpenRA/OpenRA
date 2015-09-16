@@ -108,8 +108,11 @@ trike:
 	RevealsShroud:
 		Range: 7c0
 	WithMuzzleFlash:
-	Armament:
+	Armament@damage:
 		Weapon: HMG
+		LocalOffset: -416,0,0
+	Armament@muzzle:
+		Weapon: HMG_muzzle
 		LocalOffset: -416,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
@@ -328,8 +331,11 @@ raider:
 	RevealsShroud:
 		Range: 7c0
 	WithMuzzleFlash:
-	Armament:
+	Armament@damage:
 		Weapon: HMGo
+		LocalOffset: 170,0,0
+	Armament@muzzle:
+		Weapon: HMGo_muzzle
 		LocalOffset: 170,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
