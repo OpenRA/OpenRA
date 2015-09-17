@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Effects
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
-	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	class ContrailInfo : ITraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Effects
 	class Contrail : ITick, IRender
 	{
 		readonly ContrailInfo info;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 
 		// This is a mutable struct, so it can't be readonly.
 		ContrailRenderable trail;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Effects
 			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
 			trail = new ContrailRenderable(self.World, color, info.TrailLength, 0, 0);
 
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 		}
 
 		public void Tick(Actor self)

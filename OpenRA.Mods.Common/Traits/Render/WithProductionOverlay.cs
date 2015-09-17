@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]
-	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>, Requires<ProductionInfo>
+	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "production-overlay";
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
 		{
 			var rs = self.Trait<RenderSprites>();
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 
 			buildComplete = !self.Info.Traits.Contains<BuildingInfo>(); // always render instantly for units
 			production = self.Info.Traits.Get<ProductionInfo>();

@@ -27,13 +27,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeveloperMode devMode;
 
 		Lazy<AttackBase> attack;
-		Lazy<IBodyOrientation> coords;
+		Lazy<BodyOrientation> coords;
 		Lazy<Health> health;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
-			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;

@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 		Lazy<Turreted> turret;
-		Lazy<IBodyOrientation> coords;
+		Lazy<BodyOrientation> coords;
 		Lazy<AmmoPool> ammoPool;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// We can't resolve these until runtime
 			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			coords = Exts.Lazy(() => self.Trait<IBodyOrientation>());
+			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
 
 			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];

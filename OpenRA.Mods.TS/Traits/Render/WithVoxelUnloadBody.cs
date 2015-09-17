@@ -46,7 +46,7 @@ namespace OpenRA.Mods.TS.Traits
 
 		public WithVoxelUnloadBody(Actor self, WithVoxelUnloadBodyInfo info)
 		{
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
 			var idleVoxel = VoxelProvider.GetVoxel(rv.Image, info.IdleSequence);

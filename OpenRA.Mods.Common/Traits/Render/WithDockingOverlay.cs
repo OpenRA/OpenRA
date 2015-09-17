@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Rendered when a harvester is docked.")]
-	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
+	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "docking-overlay";
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 
 			var rs = self.Trait<RenderSprites>();
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 
 			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 

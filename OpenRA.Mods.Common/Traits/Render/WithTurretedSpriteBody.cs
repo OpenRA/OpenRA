@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor has turret art with facings baked into the sprite.")]
-	public class WithTurretedSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
+	public class WithTurretedSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
 	{
 		public override object Create(ActorInitializer init) { return new WithTurretedSpriteBody(init, this); }
 

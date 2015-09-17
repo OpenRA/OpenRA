@@ -25,20 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 		void PlayCustomAnimationBackwards(Actor self, string name, Action after);
 	}
 
-	public interface IBodyOrientation
-	{
-		WAngle CameraPitch { get; }
-		int QuantizedFacings { get; }
-		WVec LocalToWorld(WVec vec);
-		WRot QuantizeOrientation(Actor self, WRot orientation);
-	}
-
-	public interface IBodyOrientationInfo : ITraitInfo
-	{
-		WVec LocalToWorld(WVec vec);
-		WRot QuantizeOrientation(WRot orientation, int facings);
-	}
-
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);

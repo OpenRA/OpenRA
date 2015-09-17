@@ -34,7 +34,7 @@ namespace OpenRA.Mods.TS.Traits
 			this.info = info;
 			movement = self.Trait<IMove>();
 
-			var body = self.Trait<IBodyOrientation>();
+			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
 			var voxel = VoxelProvider.GetVoxel(rv.Image, "idle");

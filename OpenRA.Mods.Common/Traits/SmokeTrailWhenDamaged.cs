@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -29,13 +29,13 @@ namespace OpenRA.Mods.Common.Traits
 	class SmokeTrailWhenDamaged : ITick
 	{
 		readonly SmokeTrailWhenDamagedInfo info;
-		readonly IBodyOrientation body;
+		readonly BodyOrientation body;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
 		{
 			this.info = info;
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 		}
 
 		public void Tick(Actor self)
