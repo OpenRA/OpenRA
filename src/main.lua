@@ -51,6 +51,7 @@ ide = {
       app = nil,
     },
     editor = {
+      autoactivate = false,
       foldcompact = true,
       checkeol = true,
       saveallonrun = false,
