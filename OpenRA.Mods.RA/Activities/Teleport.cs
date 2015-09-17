@@ -102,8 +102,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)
 		{
-			if (teleporter == null)
-				return null;
+			var shroudOwner = teleporter != null ? teleporter.Owner : self.Owner;
 
 			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value);
 
@@ -111,13 +110,13 @@ namespace OpenRA.Mods.RA.Activities
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
 
 			var pos = self.Trait<IPositionable>();
-			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
+			if (pos.CanEnterCell(destination) && shroudOwner.Shroud.IsExplored(destination))
 				return destination;
 
 			var max = maximumDistance != null ? maximumDistance.Value : MaxCellSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
-				if (teleporter.Owner.Shroud.IsExplored(tile)
+				if (shroudOwner.Shroud.IsExplored(tile)
 					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
 					&& pos.CanEnterCell(tile))
 					return tile;
