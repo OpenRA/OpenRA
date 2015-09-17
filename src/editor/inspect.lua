@@ -209,6 +209,8 @@ if compilepos then
 end
 
 local function analyzeProgram(editor)
+  -- save all files (if requested) for "infervalue" analysis to keep the changes on disk
+  if ide.config.editor.saveallonrun and ide.config.staticanalyzer.infervalue then SaveAll(true) end
   if ide:GetLaunchedProcess() == nil and not ide:GetDebugger():IsConnected() then ClearOutput() end
   DisplayOutput("Analyzing the source code")
   frame:Update()
