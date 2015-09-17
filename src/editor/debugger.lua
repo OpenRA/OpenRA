@@ -889,6 +889,7 @@ do
     -- if there is any pending activation
     if debugger.activate then
       local file, line, content = unpack(debugger.activate)
+      debugger.activate = nil
       if content then
         local editor = NewFile()
         editor:SetText(content)
@@ -905,7 +906,6 @@ do
           activateDocument(file, line)
         end
       end
-      debugger.activate = nil
     end
   end
 end
