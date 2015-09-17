@@ -200,11 +200,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void EnumerateMaps(MapClassification tab, ScrollItemWidget template)
 		{
+			int playerCountFilter;
+			if (!int.TryParse(mapFilter, out playerCountFilter))
+				playerCountFilter = -1;
+
 			var maps = tabMaps[tab]
 				.Where(m => gameMode == null || m.Type == gameMode)
 				.Where(m => mapFilter == null ||
 					m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
-					m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0)
+					m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+					m.PlayerCount == playerCountFilter)
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
 
