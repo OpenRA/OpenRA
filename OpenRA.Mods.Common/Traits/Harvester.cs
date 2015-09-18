@@ -158,11 +158,13 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
-			var refs = (
-				from r in self.World.ActorsWithTrait<IAcceptResources>()
-				where r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor)
-				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Count(a => a.Trait.LinkedProc == r.Actor)
-				select new { Location = r.Actor.Location + r.Trait.DeliveryOffset, Actor = r.Actor, Occupancy = linkedHarvs }).ToDictionary(r => r.Location);
+			var refs = self.World.ActorsWithTrait<IAcceptResources>()
+				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
+				.Select(r => new {
+					Location = r.Actor.Location + r.Trait.DeliveryOffset,
+					Actor = r.Actor,
+					Occupancy = self.World.ActorsWithTrait<Harvester>().Count(a => a.Trait.LinkedProc == r.Actor) })
+				.ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
