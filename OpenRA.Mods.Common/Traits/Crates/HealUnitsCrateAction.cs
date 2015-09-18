@@ -26,12 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var unit in collector.World.Actors.Where(a => a.Owner == collector.Owner))
-			{
-				var health = unit.TraitOrDefault<Health>();
-				if (health != null && !health.IsDead)
-					health.InflictDamage(unit, unit, -(health.MaxHP - health.HP), null, true);
-			}
+			foreach (var healable in collector.World.ActorsWithTrait<Health>().Where(tp => tp.Actor.Owner == collector.Owner))
+				if (!healable.Trait.IsDead)
+					healable.Trait.InflictDamage(healable.Actor, healable.Actor, -(healable.Trait.MaxHP - healable.Trait.HP), null, true);
 
 			base.Activate(collector);
 		}
