@@ -266,6 +266,11 @@ bombs:
 		Start: 3280
 		Length: 4
 
+grenade:
+	idle: grenade.shp	# frames 3618-3621 from patch 1.06 DATA.R8
+		Length: 4
+		Tick: 80
+
 shrapnel:
 	idle: DATA.R8
 		Start: 3290
