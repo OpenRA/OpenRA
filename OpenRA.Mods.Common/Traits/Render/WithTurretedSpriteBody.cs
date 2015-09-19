@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			var t = init.Actor.Traits.WithInterface<TurretedInfo>().FirstOrDefault();
-			var wsb = init.Actor.Traits.WithInterface<WithSpriteBodyInfo>().FirstOrDefault();
+			var t = init.Actor.TraitInfos<TurretedInfo>().FirstOrDefault();
+			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().FirstOrDefault();
 
 			// Show the correct turret facing
 			var anim = new Animation(init.World, image, () => t.InitialFacing);

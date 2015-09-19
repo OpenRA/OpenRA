@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.AI
 			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
 
 			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
-			foreach (var t in Map.Rules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>())
+			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
 		}
 
@@ -437,7 +437,7 @@ namespace OpenRA.Mods.Common.AI
 			if (aircraftInfo == null)
 				return true;
 
-			var ammoPoolsInfo = actorInfo.Traits.WithInterface<AmmoPoolInfo>();
+			var ammoPoolsInfo = actorInfo.TraitInfos<AmmoPoolInfo>();
 
 			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
 			{

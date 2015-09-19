@@ -53,8 +53,8 @@ namespace OpenRA
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
 		{
-			var selectableFactions = world.Map.Rules.Actors["world"].Traits
-				.WithInterface<FactionInfo>().Where(f => !requireSelectable || f.Selectable)
+			var selectableFactions = world.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+				.Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
 			var selected = selectableFactions.FirstOrDefault(f => f.InternalName == name)
@@ -75,7 +75,7 @@ namespace OpenRA
 
 		static FactionInfo ChooseDisplayFaction(World world, string factionName)
 		{
-			var factions = world.Map.Rules.Actors["world"].Traits.WithInterface<FactionInfo>().ToArray();
+			var factions = world.Map.Rules.Actors["world"].TraitInfos<FactionInfo>().ToArray();
 
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}

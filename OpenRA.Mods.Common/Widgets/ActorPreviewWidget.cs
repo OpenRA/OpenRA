@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void SetPreview(ActorInfo actor, TypeDictionary td)
 		{
 			var init = new ActorPreviewInitializer(actor, worldRenderer, td);
-			preview = actor.Traits.WithInterface<IRenderActorPreviewInfo>()
+			preview = actor.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
 

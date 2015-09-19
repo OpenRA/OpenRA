@@ -36,12 +36,12 @@ namespace OpenRA.Mods.Common.Lint
 				Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal));
 
 			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
-			var factions = rules.Actors["world"].Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
 
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var renderInfo in actorInfo.Value.Traits.WithInterface<RenderSpritesInfo>())
+				foreach (var renderInfo in actorInfo.Value.TraitInfos<RenderSpritesInfo>())
 				{
 					foreach (var faction in factions)
 					{
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Lint
 								if (string.IsNullOrEmpty(sequence))
 									continue;
 
-								var renderInfo = actorInfo.Value.Traits.WithInterface<RenderSpritesInfo>().FirstOrDefault();
+								var renderInfo = actorInfo.Value.TraitInfos<RenderSpritesInfo>().FirstOrDefault();
 								if (renderInfo == null)
 									continue;
 

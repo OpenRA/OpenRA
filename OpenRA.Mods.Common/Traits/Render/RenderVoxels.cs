@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public interface IRenderActorPreviewVoxelsInfo
+	public interface IRenderActorPreviewVoxelsInfo : ITraitInfo
 	{
 		IEnumerable<VoxelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p);
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 			var orientation = WRot.FromFacing(facing);
-			var components = init.Actor.Traits.WithInterface<IRenderActorPreviewVoxelsInfo>()
+			var components = init.Actor.TraitInfos<IRenderActorPreviewVoxelsInfo>()
 				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, orientation, facings, palette))
 				.ToArray();
 

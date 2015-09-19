@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 
 			// Assume a single exit point for simplicity
-			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
+			var exit = self.Info.TraitInfos<ExitInfo>().First();
 
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);

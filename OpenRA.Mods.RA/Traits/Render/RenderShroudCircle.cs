@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecoration
+	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{

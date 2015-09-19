@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = Game.Settings.Player.Color;
 
-			foreach (var f in modRules.Actors["world"].Traits.WithInterface<FactionInfo>())
+			foreach (var f in modRules.Actors["world"].TraitInfos<FactionInfo>())
 				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
 
 			var gameStarting = false;
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					Map.RuleStatus != MapRuleStatus.Cached || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
 
-				var botNames = modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
+				var botNames = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
 				{
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
@@ -395,7 +395,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
 			if (startingUnits != null)
 			{
-				var startUnitsInfo = modRules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+				var startUnitsInfo = modRules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
 				var classes = startUnitsInfo.Select(a => a.Class).Distinct();
 				Func<string, string> className = c =>
 				{
@@ -459,7 +459,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var techLevel = optionsBin.GetOrNull<DropDownButtonWidget>("TECHLEVEL_DROPDOWNBUTTON");
 			if (techLevel != null)
 			{
-				var techTraits = modRules.Actors["player"].Traits.WithInterface<ProvidesTechPrerequisiteInfo>().ToList();
+				var techTraits = modRules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().ToList();
 				techLevel.IsVisible = () => techTraits.Count > 0;
 
 				var techLevelDescription = optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC");
@@ -610,7 +610,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-					var bot = modRules.Actors["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+					var bot = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 					if (slot != null && bot != null)
 						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));

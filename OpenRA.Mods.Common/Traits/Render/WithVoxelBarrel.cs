@@ -35,9 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var armament = init.Actor.Traits.WithInterface<ArmamentInfo>()
+			var armament = init.Actor.TraitInfos<ArmamentInfo>()
 				.First(a => a.Name == Armament);
-			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
+			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == armament.Turret);
 
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);

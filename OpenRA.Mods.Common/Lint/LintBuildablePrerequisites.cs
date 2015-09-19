@@ -20,13 +20,12 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
 			// ProvidesPrerequisite allows arbitrary prereq definitions
-			var customPrereqs = rules.Actors.SelectMany(a => a.Value.Traits
-				.WithInterface<ProvidesPrerequisiteInfo>().Select(p => p.Prerequisite ?? a.Value.Name));
+			var customPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ProvidesPrerequisiteInfo>()
+				.Select(p => p.Prerequisite ?? a.Value.Name));
 
 			// ProvidesTechPrerequisite allows arbitrary prereq definitions
 			// (but only one group at a time during gameplay)
-			var techPrereqs = rules.Actors.SelectMany(a => a.Value.Traits
-				.WithInterface<ProvidesTechPrerequisiteInfo>())
+			var techPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ProvidesTechPrerequisiteInfo>())
 				.SelectMany(p => p.Prerequisites);
 
 			var providedPrereqs = customPrereqs.Concat(techPrereqs);

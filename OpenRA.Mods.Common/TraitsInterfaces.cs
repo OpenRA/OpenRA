@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
 	}
 
-	public interface IPlaceBuildingDecoration
+	public interface IPlaceBuildingDecorationInfo : ITraitInfo
 	{
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}

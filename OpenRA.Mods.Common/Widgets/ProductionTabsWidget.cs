@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.world = world;
 
-			Groups = world.Map.Rules.Actors.Values.SelectMany(a => a.Traits.WithInterface<ProductionQueueInfo>())
+			Groups = world.Map.Rules.Actors.Values.SelectMany(a => a.TraitInfos<ProductionQueueInfo>())
 				.Select(q => q.Group).Distinct().ToDictionary(g => g, g => new ProductionTabGroup() { Group = g });
 
 			// Only visible if the production palette has icons to display

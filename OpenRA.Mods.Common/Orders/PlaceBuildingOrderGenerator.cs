@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Orders
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
-			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
+			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
 				foreach (var r in dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy)))
 					yield return r;
 
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Orders
 					};
 
 					var init = new ActorPreviewInitializer(rules.Actors[building], wr, td);
-					preview = rules.Actors[building].Traits.WithInterface<IRenderActorPreviewInfo>()
+					preview = rules.Actors[building].TraitInfos<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();
 

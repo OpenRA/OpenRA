@@ -134,7 +134,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => info.Types.Overlaps(t.GetTargetTypes()));
+			return target.Info.TraitInfos<ITargetableInfo>().Any(t => info.Types.Overlaps(t.GetTargetTypes()));
 		}
 	}
 }

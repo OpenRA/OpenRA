@@ -128,7 +128,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
-	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
+	public interface IDemolishableInfo : ITraitInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
 		void Demolish(Actor self, Actor saboteur);
@@ -172,7 +172,7 @@ namespace OpenRA.Traits
 		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
-	public interface IDefaultVisibilityInfo { }
+	public interface IDefaultVisibilityInfo : ITraitInfo { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
@@ -286,7 +286,7 @@ namespace OpenRA.Traits
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBotInfo { string Name { get; } }
+	public interface IBotInfo : ITraitInfo { string Name { get; } }
 	public interface IBot
 	{
 		void Activate(Player p);

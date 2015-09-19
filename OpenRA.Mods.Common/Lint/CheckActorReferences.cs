@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Lint
 			this.emitError = emitError;
 
 			foreach (var actorInfo in rules.Actors)
-				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
 					CheckTrait(actorInfo.Value, traitInfo, rules);
 		}
 

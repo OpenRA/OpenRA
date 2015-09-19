@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration, Requires<AttackBaseInfo>
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var armaments = ai.Traits.WithInterface<ArmamentInfo>()
+			var armaments = ai.TraitInfos<ArmamentInfo>()
 				.Where(a => a.UpgradeMinEnabledLevel == 0);
 			var range = FallbackRange;
 

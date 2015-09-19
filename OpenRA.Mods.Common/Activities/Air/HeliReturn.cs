@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 				heli.Reservation = res.Reserve(dest, self, heli);
 			}
 
-			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 			return Util.SequenceActivities(
