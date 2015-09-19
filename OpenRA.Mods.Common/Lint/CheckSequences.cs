@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 
-				foreach (var traitInfo in actorInfo.Value.Traits.WithInterface<ITraitInfo>())
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields)

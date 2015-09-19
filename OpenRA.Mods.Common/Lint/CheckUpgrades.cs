@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var trait in actorInfo.Value.Traits)
+				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeUsedReferenceAttribute>()))
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Lint
 			// Check all upgrades granted by traits.
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var trait in actorInfo.Value.Traits)
+				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeGrantedReferenceAttribute>()))
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Lint
 			// Get all upgrades granted by traits.
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var trait in actorInfo.Value.Traits)
+				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeGrantedReferenceAttribute>()))
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				foreach (var trait in actorInfo.Value.Traits)
+				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeUsedReferenceAttribute>()))
