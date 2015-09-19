@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Animation overlay;
 		bool buildComplete;
+		bool visible;
 
 		public WithRepairOverlay(Actor self, WithRepairOverlayInfo info)
 		{
@@ -47,11 +48,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
-			overlay.Play(info.Sequence);
+			overlay.PlayThen(info.Sequence, () => visible = false);
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !buildComplete,
+				() => !visible || !buildComplete,
 				() => info.PauseOnLowPower && self.IsDisabled(),
 				p => WithTurret.ZOffsetFromCenter(self, p, 1));
 
@@ -77,7 +78,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Repairing(Actor self, Actor host)
 		{
-			overlay.Play(overlay.CurrentSequence.Name);
+			visible = true;
+			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);
 		}
 	}
 }
