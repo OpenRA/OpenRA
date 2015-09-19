@@ -433,7 +433,7 @@
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
-    <Compile Include="Traits\Render\WithMuzzleFlash.cs" />
+    <Compile Include="Traits\Render\WithMuzzleOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithRankDecoration.cs" />

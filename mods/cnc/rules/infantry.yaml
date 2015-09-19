@@ -92,7 +92,7 @@ E4:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	AttackFrontal:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		SplitFacings: true
 	WithInfantryBody:
 		AttackSequence: shoot
@@ -124,7 +124,7 @@ E5:
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	AttackFrontal:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		SplitFacings: true
 	-PoisonedByTiberium:
 	WithInfantryBody:

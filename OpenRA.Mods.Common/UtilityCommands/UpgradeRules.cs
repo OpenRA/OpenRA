@@ -2138,6 +2138,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Value = node.Value.Value + "c0";
 				}
 
+				if (engineVersion < 20150920)
+				{
+					// Rename WithMuzzleFlash to WithMuzzleOverlay
+					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash"))
+						node.Key = node.Key.Replace("WithMuzzleFlash", "WithMuzzleOverlay");
+
+					if (depth == 1 && node.Key.StartsWith("-WithMuzzleFlash"))
+						node.Key = node.Key.Replace("-WithMuzzleFlash", "-WithMuzzleOverlay");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

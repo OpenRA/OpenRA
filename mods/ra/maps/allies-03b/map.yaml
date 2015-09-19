@@ -1382,7 +1382,7 @@ Rules:
 		-Huntable:
 		-Targetable:
 		-Armament:
-		-WithMuzzleFlash:
+		-WithMuzzleOverlay:
 		Cargo:
 			Types: ~disabled
 		RevealsShroud:

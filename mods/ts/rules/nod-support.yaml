@@ -183,7 +183,7 @@ GATICK:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 
 GAARTY:
 	Inherits@1: ^DeployedVehicle
@@ -218,7 +218,7 @@ GAARTY:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 
 NAMISL:
 	Inherits: ^Building

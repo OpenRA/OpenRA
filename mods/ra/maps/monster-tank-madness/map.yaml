@@ -2206,7 +2206,7 @@ Rules:
 			Recoil: 43
 			MuzzleSequence: muzzle
 		AttackTurreted:
-		WithMuzzleFlash:
+		WithMuzzleOverlay:
 		WithTurret:
 		AutoTarget:
 		Explodes:

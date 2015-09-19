@@ -182,7 +182,7 @@ YAK:
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Contrail:
 		Offset: -853,0,0
 	SpawnActorOnDeath:
@@ -328,7 +328,7 @@ HIND:
 		ReloadTicks: 8
 	SelectionDecorations:
 		VisualBounds: 38,32,0,0
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HIND.Husk
 	SmokeTrailWhenDamaged:

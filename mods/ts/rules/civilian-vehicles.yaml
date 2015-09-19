@@ -32,7 +32,7 @@
 		DamageCooldown: 200
 	WithVoxelTurret:
 	WithVoxelBarrel:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 
 ^TRUCK:
 	Inherits: ^CivilianVoxelVehicle

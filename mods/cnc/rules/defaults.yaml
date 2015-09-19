@@ -377,7 +377,7 @@
 	BodyOrientation:
 		QuantizedFacings: 8
 	WithSpriteBody:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		SplitFacings: true
 	Guard:
 		Voice: Move
