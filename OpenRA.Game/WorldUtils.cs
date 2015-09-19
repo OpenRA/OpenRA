@@ -32,12 +32,25 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
-			using (new PerfSample("FindUnitsInCircle"))
+			using (new PerfSample("FindActorsInCircle"))
 			{
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WDist.Zero);
 				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
 					a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
+			}
+		}
+
+		public static IEnumerable<Actor> FindActorsInAnnulus(this World world, WPos origin, WDist min, WDist max)
+		{
+			using (new PerfSample("FindActorsInAnnulus"))
+			{
+				// Target ranges are calculated in 2D, so ignore height differences
+				var minVec = new WVec(min, min, WDist.Zero);
+				var maxVec = new WVec(max, max, WDist.Zero);
+				return world.ActorMap.ActorsInBox((origin + minVec) - maxVec, (origin - minVec) + maxVec).Where(
+					a => (a.CenterPosition - origin).HorizontalLengthSquared <= max.LengthSquared
+						&& (a.CenterPosition - origin).HorizontalLengthSquared >= min.LengthSquared);
 			}
 		}
 

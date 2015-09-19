@@ -502,16 +502,16 @@ namespace OpenRA.Mods.Common.AI
 
 					foreach (var c in nearbyResources)
 					{
-						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(c, baseCenter, 2, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, 0, Info.MaxBaseRadius);
+					return findPos(baseCenter, baseCenter, 2, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
+					return findPos(baseCenter, baseCenter, 2, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
 			}
 
 			// Can't find a build location
