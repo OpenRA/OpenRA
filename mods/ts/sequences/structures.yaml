@@ -1073,10 +1073,12 @@ gadept.gdi:
 	circuits: gtdept_a
 		Length: 5
 		ZOffset: -1c511
+		Tick: 120
 	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
+		Tick: 120
 	crane: gtdept_c
 		Length: 16
 	platform: gtdept_d
@@ -1129,10 +1131,12 @@ gadept.nod:
 	circuits: gtdept_a
 		Length: 5
 		ZOffset: -1c511
+		Tick: 120
 	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
+		Tick: 120
 	crane: gtdept_c
 		Length: 16
 	platform: gtdept_d
