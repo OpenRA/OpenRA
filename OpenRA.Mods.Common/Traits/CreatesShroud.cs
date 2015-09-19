@@ -10,19 +10,17 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CreatesShroudInfo : RevealsShroudInfo
+	public class CreatesShroudInfo : AffectsShroudInfo
 	{
 		public override object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}
 
-	public class CreatesShroud : RevealsShroud
+	public class CreatesShroud : AffectsShroud
 	{
 		public CreatesShroud(Actor self, CreatesShroudInfo info)
-			: base(self, info)
-		{
-			addCellsToPlayerShroud = (p, uv) => p.Shroud.AddProjectedShroudGeneration(self, uv);
-			removeCellsFromPlayerShroud = p => p.Shroud.RemoveShroudGeneration(self);
-			isDisabled = () => self.IsDisabled();
-		}
+			: base(self, info) { }
+		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv) { p.Shroud.AddProjectedShroudGeneration(self, uv); }
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(self); }
+		protected override bool IsDisabled(Actor self) { return self.IsDisabled(); }
 	}
 }
