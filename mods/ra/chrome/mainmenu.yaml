@@ -228,14 +228,14 @@ Container@MAINMENU:
 		Background@NEWS_BG:
 			X: (WINDOW_RIGHT - WIDTH)/2
 			Y: 35
-			Width: 400
+			Width: 430
 			Height: 55
 			Children:
 				DropDownButton@NEWS_BUTTON:
 					Background: newsbutton
 					X: 15
 					Y: 15
-					Width: 370
+					Width: 400
 					Height: 25
 					Text: Battlefield News
 					Font: Bold
