@@ -28,7 +28,7 @@ namespace OpenRA
 		/// You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.
 		/// </summary>
 		public readonly string Name;
-		public readonly TypeDictionary Traits = new TypeDictionary();
+		readonly TypeDictionary traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
 
 		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
@@ -52,7 +52,7 @@ namespace OpenRA
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
 						try
 						{
-							Traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+							traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
 						}
 						catch (FieldLoader.MissingFieldsException e)
 						{
@@ -71,7 +71,7 @@ namespace OpenRA
 		{
 			Name = name;
 			foreach (var t in traitInfos)
-				Traits.Add(t);
+				traits.Add(t);
 		}
 
 		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
@@ -128,7 +128,7 @@ namespace OpenRA
 			if (constructOrderCache != null)
 				return constructOrderCache;
 
-			var source = Traits.WithInterface<ITraitInfo>().Select(i => new
+			var source = traits.WithInterface<ITraitInfo>().Select(i => new
 			{
 				Trait = i,
 				Type = i.GetType(),
@@ -179,7 +179,7 @@ namespace OpenRA
 
 		public IEnumerable<Pair<string, Type>> GetInitKeys()
 		{
-			var inits = Traits.WithInterface<ITraitInfo>().SelectMany(
+			var inits = traits.WithInterface<ITraitInfo>().SelectMany(
 				t => t.GetType().GetInterfaces()
 					.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(UsesInit<>))
 					.Select(i => i.GetGenericArguments()[0])).ToList();
@@ -191,9 +191,9 @@ namespace OpenRA
 					i.Name.Replace("Init", ""), i));
 		}
 
-		public bool HasTraitInfo<T>() where T : ITraitInfo { return Traits.Contains<T>(); }
-		public T TraitInfo<T>() where T : ITraitInfo { return Traits.Get<T>(); }
-		public T TraitInfoOrDefault<T>() where T : ITraitInfo { return Traits.GetOrDefault<T>(); }
-		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfo { return Traits.WithInterface<T>(); }
+		public bool HasTraitInfo<T>() where T : ITraitInfo { return traits.Contains<T>(); }
+		public T TraitInfo<T>() where T : ITraitInfo { return traits.Get<T>(); }
+		public T TraitInfoOrDefault<T>() where T : ITraitInfo { return traits.GetOrDefault<T>(); }
+		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfo { return traits.WithInterface<T>(); }
 	}
 }
