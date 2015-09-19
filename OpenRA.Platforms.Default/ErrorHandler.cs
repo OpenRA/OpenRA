@@ -14,7 +14,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
-	public static class ErrorHandler
+	static class ErrorHandler
 	{
 		public static void CheckGlVersion()
 		{

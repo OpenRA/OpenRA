@@ -50,6 +50,7 @@
     <Compile Include="FrameBuffer.cs" />
     <Compile Include="MultiTapDetection.cs" />
     <Compile Include="Texture.cs" />
+    <Compile Include="ThreadAffine.cs" />
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="OpenAlSoundEngine.cs" />
   </ItemGroup>

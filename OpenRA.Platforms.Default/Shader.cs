@@ -17,11 +17,11 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
-	public class Shader : IShader
+	class Shader : ThreadAffine, IShader
 	{
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
-		int program;
+		readonly int program;
 
 		protected int CompileShaderObject(ShaderType type, string name)
 		{
@@ -122,6 +122,7 @@ namespace OpenRA.Platforms.Default
 
 		public void Render(Action a)
 		{
+			VerifyThreadAffinity();
 			GL.UseProgram(program);
 
 			// bind the textures
@@ -138,6 +139,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetTexture(string name, ITexture t)
 		{
+			VerifyThreadAffinity();
 			if (t == null)
 				return;
 
@@ -148,6 +150,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetVec(string name, float x)
 		{
+			VerifyThreadAffinity();
 			GL.UseProgram(program);
 			ErrorHandler.CheckGlError();
 			var param = GL.GetUniformLocation(program, name);
@@ -158,6 +161,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetVec(string name, float x, float y)
 		{
+			VerifyThreadAffinity();
 			GL.UseProgram(program);
 			ErrorHandler.CheckGlError();
 			var param = GL.GetUniformLocation(program, name);
@@ -168,6 +172,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetVec(string name, float[] vec, int length)
 		{
+			VerifyThreadAffinity();
 			var param = GL.GetUniformLocation(program, name);
 			ErrorHandler.CheckGlError();
 			switch (length)
@@ -184,6 +189,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetMatrix(string name, float[] mtx)
 		{
+			VerifyThreadAffinity();
 			if (mtx.Length != 16)
 				throw new InvalidDataException("Invalid 4x4 matrix");
 

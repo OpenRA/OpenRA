@@ -16,15 +16,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
-	public sealed class Texture : ITexture
+	sealed class Texture : ThreadAffine, ITexture
 	{
 		int texture;
 		TextureScaleFilter scaleFilter;
-		Size size;
 
 		public int ID { get { return texture; } }
-
-		public Size Size { get { return size; } }
+		public Size Size { get; private set; }
 
 		bool disposed;
 
@@ -37,6 +35,7 @@ namespace OpenRA.Platforms.Default
 
 			set
 			{
+				VerifyThreadAffinity();
 				if (scaleFilter == value)
 					return;
 
@@ -83,10 +82,11 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(byte[] colors, int width, int height)
 		{
+			VerifyThreadAffinity();
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
-			size = new Size(width, height);
+			Size = new Size(width, height);
 			unsafe
 			{
 				fixed (byte* ptr = &colors[0])
@@ -103,13 +103,14 @@ namespace OpenRA.Platforms.Default
 		// An array of RGBA
 		public void SetData(uint[,] colors)
 		{
+			VerifyThreadAffinity();
 			var width = colors.GetUpperBound(1) + 1;
 			var height = colors.GetUpperBound(0) + 1;
 
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
-			size = new Size(width, height);
+			Size = new Size(width, height);
 			unsafe
 			{
 				fixed (uint* ptr = &colors[0, 0])
@@ -125,6 +126,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(Bitmap bitmap)
 		{
+			VerifyThreadAffinity();
 			var allocatedBitmap = false;
 			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
 			{
@@ -134,7 +136,7 @@ namespace OpenRA.Platforms.Default
 
 			try
 			{
-				size = new Size(bitmap.Width, bitmap.Height);
+				Size = new Size(bitmap.Width, bitmap.Height);
 				var bits = bitmap.LockBits(bitmap.Bounds(),
 					ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
@@ -153,7 +155,8 @@ namespace OpenRA.Platforms.Default
 
 		public byte[] GetData()
 		{
-			var data = new byte[4 * size.Width * size.Height];
+			VerifyThreadAffinity();
+			var data = new byte[4 * Size.Width * Size.Height];
 
 			ErrorHandler.CheckGlError();
 			GL.BindTexture(TextureTarget.Texture2D, texture);
@@ -172,10 +175,11 @@ namespace OpenRA.Platforms.Default
 
 		public void SetEmpty(int width, int height)
 		{
+			VerifyThreadAffinity();
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
-			size = new Size(width, height);
+			Size = new Size(width, height);
 			PrepareTexture();
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, width, height,
 				0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
