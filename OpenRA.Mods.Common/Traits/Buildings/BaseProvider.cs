@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Limits the zone where buildings can be constructed to a radius around this actor.")]
 	public class BaseProviderInfo : ITraitInfo
 	{
-		public readonly int Range = 10;
+		public readonly WDist Range = WDist.FromCells(10);
 		public readonly int Cooldown = 0;
 		public readonly int InitialDelay = 0;
 
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			yield return new RangeCircleRenderable(
 				self.CenterPosition,
-				WDist.FromCells(Info.Range),
+				Info.Range,
 				0,
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
 				Color.FromArgb(96, Color.Black));

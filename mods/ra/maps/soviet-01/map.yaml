@@ -652,7 +652,7 @@ Rules:
 	JEEP:
 		Explodes:
 		JamsRadar:
-			Range: 10
+			Range: 10c0
 	YAK:
 		Buildable:
 			Prerequisites: ~disabled

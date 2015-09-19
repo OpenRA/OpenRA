@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProximityCapturableInfo : ITraitInfo
 	{
 		public readonly bool Permanent = false;
-		public readonly int Range = 5;
+		public readonly WDist Range = WDist.FromCells(5);
 		public readonly bool MustBeClear = false;
 		public readonly HashSet<string> CaptorTypes = new HashSet<string> { "Vehicle", "Tank", "Infantry" };
 
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<Actor> UnitsInRange()
 		{
-			return Self.World.FindActorsInCircle(Self.CenterPosition, WDist.FromCells(Info.Range))
+			return Self.World.FindActorsInCircle(Self.CenterPosition, Info.Range)
 				.Where(a => a.IsInWorld && a != Self && !a.Disposed && !a.Owner.NonCombatant);
 		}
 

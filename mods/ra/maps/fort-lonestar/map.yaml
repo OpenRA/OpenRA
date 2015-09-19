@@ -570,7 +570,7 @@ Rules:
 			Produces: Defense, Infantry, Soldier, Dog
 		-Sellable:
 		BaseProvider:
-			Range: 12
+			Range: 12c0
 		Power:
 			Amount: 0
 	FTUR:

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var range = self.TraitsImplementing<DetectCloaked>()
 				.Where(a => !a.IsTraitDisabled)
-				.Select(a => WDist.FromCells(a.Info.Range))
+				.Select(a => a.Info.Range)
 				.Append(WDist.Zero).Max();
 
 			if (range == WDist.Zero)

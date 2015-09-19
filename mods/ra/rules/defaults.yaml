@@ -414,7 +414,7 @@
 		Types: Building
 	GivesBounty:
 	Guardable:
-		Range: 3
+		Range: 3c0
 	FrozenUnderFog:
 	GpsRemoveFrozenActor:
 	Tooltip:

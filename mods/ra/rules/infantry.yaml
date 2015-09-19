@@ -39,7 +39,7 @@ DOG:
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -222,7 +222,7 @@ SPY:
 		UpgradeMinEnabledLevel: 1
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -527,7 +527,7 @@ SNIPER:
 		UncloakOnMove: true
 		IsPlayerPalette: true
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded

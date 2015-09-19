@@ -633,7 +633,7 @@ Rules:
 	MISS:
 		ProximityCapturable:
 			MustBeClear: true
-			Range: 9
+			Range: 9c0
 			CaptorTypes: Ship,Vehicle,Tank,Infantry
 		StrategicPoint:
 			Critical: false

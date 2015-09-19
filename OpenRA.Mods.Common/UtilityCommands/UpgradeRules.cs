@@ -2126,6 +2126,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20150910 && Game.ModData.Manifest.Mod.Id == "d2k")
 					node.Key = RenameD2kActors(node.Key);
 
+				// Make Range WDist for all traits with circular ranges.
+				if (engineVersion < 20150917 && depth == 2 && node.Key == "Range")
+				{
+					if (parentKey == "DetectCloaked"
+							|| parentKey == "JamsMissiles"
+							|| parentKey == "JamsRadar"
+							|| parentKey == "Guardable"
+							|| parentKey == "BaseProvider"
+							|| parentKey == "ProximityCapturable")
+						node.Value.Value = node.Value.Value + "c0";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

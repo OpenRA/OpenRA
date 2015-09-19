@@ -46,7 +46,7 @@ SS:
 		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
@@ -101,7 +101,7 @@ MSUB:
 		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
@@ -151,7 +151,7 @@ DD:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 
 CA:
@@ -279,6 +279,6 @@ PT:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 

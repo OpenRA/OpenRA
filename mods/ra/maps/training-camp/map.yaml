@@ -827,7 +827,7 @@ Rules:
 		Production:
 			Produces: Building, Infantry, Soldier, Dog
 		BaseProvider:
-			Range: 16
+			Range: 16c0
 		Power:
 			Amount: 0
 	WEAP:

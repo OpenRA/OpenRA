@@ -412,7 +412,7 @@ TSLA:
 	Power:
 		Amount: -100
 	DetectCloaked:
-		Range: 8
+		Range: 8c0
 	ProvidesPrerequisite@buildingname:
 
 AGUN:
@@ -460,7 +460,7 @@ AGUN:
 	Power:
 		Amount: -50
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 
 DOME:
 	Inherits: ^Building
@@ -491,7 +491,7 @@ DOME:
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 	RenderDetectionCircle:
 	Power:
 		Amount: -40
@@ -538,7 +538,7 @@ PBOX:
 	Power:
 		Amount: -15
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 
 HBOX:
 	Inherits: ^Defense
@@ -574,7 +574,7 @@ HBOX:
 		InitialUnits: e1
 	-EmitInfantryOnSell:
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	AttackGarrisoned:
@@ -620,7 +620,7 @@ GUN:
 	Power:
 		Amount: -40
 	DetectCloaked:
-		Range: 7
+		Range: 7c0
 
 FTUR:
 	Inherits: ^Defense
@@ -655,7 +655,7 @@ FTUR:
 	Power:
 		Amount: -20
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	ProvidesPrerequisite@buildingname:
 
 SAM:
@@ -698,7 +698,7 @@ SAM:
 	Power:
 		Amount: -40
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 
 ATEK:
 	Inherits: ^Building
@@ -895,7 +895,7 @@ FACT:
 		ProductionType: Defense
 		Color: 138,138,138
 	BaseProvider:
-		Range: 16
+		Range: 16c0
 	WithBuildingPlacedAnimation:
 	Power:
 		Amount: 0

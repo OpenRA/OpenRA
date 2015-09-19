@@ -223,7 +223,7 @@
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DetectCloaked:
-		Range: 1
+		Range: 1c0
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
@@ -448,7 +448,7 @@
 		Notification: BuildingLost
 	ShakeOnDeath:
 	Guardable:
-		Range: 3
+		Range: 3c0
 	Tooltip:
 		GenericName: Structure
 	FrozenUnderFog:

@@ -281,7 +281,7 @@ GARADR:
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0

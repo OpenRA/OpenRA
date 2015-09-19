@@ -129,7 +129,7 @@ CAMERA:
 	ProximityCaptor:
 		Types: Camera
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 	BodyOrientation:
 		QuantizedFacings: 1
 	WithSpriteBody:
@@ -157,7 +157,7 @@ SONAR:
 	ProximityCaptor:
 		Types: Sonar
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 		CloakTypes: Underwater
 
 FLARE:

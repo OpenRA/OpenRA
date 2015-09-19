@@ -414,7 +414,7 @@ MNLY.AP:
 		Ammo: 5
 		RearmSound: minelay1.aud
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 		CloakTypes: Mine
 	RenderDetectionCircle:
 	Explodes:
@@ -449,7 +449,7 @@ MNLY.AT:
 		Ammo: 5
 		RearmSound: minelay1.aud
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
 		CloakTypes: Mine
 	RenderDetectionCircle:
 	Explodes:
@@ -532,13 +532,13 @@ MRJ:
 		Sequence: spinner
 		Offset: -256,0,256
 	JamsRadar:
-		Range: 15
+		Range: 15c0
 	JamsMissiles:
-		Range: 4
+		Range: 4c0
 		AlliedMissiles: False
 	RenderJammerCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 
 TTNK:
 	Inherits: ^Tank
@@ -742,7 +742,7 @@ STNK:
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded

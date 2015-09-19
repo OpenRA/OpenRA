@@ -41,7 +41,7 @@ CAMERA:
 		Range: 10c0
 		Type: CenterPosition
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 
 CRATE:
 	Inherits: ^Crate
