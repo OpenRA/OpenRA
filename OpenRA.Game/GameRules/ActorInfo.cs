@@ -67,6 +67,13 @@ namespace OpenRA
 			}
 		}
 
+		public ActorInfo(string name, params ITraitInfo[] traitInfos)
+		{
+			Name = name;
+			foreach (var t in traitInfos)
+				Traits.Add(t);
+		}
+
 		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
 			return node.Nodes.Where(n => n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
