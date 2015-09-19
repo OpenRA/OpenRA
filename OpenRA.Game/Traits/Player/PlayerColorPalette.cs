@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		[PaletteReference] public readonly string BasePalette = null;
 
 		[Desc("The prefix for the resulting player palettes")]
-		public readonly string BaseName = "player";
+		[PaletteDefinition(true)] public readonly string BaseName = "player";
 
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = { };

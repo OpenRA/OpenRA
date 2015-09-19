@@ -21,11 +21,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("The prefix for the resulting player palettes")]
-		public readonly string BaseName = null;
+		[PaletteDefinition(true)] public readonly string BaseName = null;
 
 		[FieldLoader.Require]
 		[Desc("The name of the player palette to base off.")]
-		public readonly string BasePalette = null;
+		[PaletteReference(true)] public readonly string BasePalette = null;
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;

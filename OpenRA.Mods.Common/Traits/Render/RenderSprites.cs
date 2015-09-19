@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string Palette = null;
 
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		public readonly string PlayerPalette = "player";
+		[PaletteReference(true)] public readonly string PlayerPalette = "player";
 
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;

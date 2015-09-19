@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly string Explosion = null;
 
 		[Desc("Palette to use for explosion effect.")]
-		public readonly string ExplosionPalette = "effect";
+		[PaletteReference("UsePlayerPalette")] public readonly string ExplosionPalette = "effect";
 
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
