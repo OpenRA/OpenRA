@@ -254,9 +254,9 @@ namespace OpenRA.Scripting
 		static readonly object[] NoArguments = new object[0];
 		Type[] FilterActorCommands(ActorInfo ai)
 		{
-			var method = typeof(TypeDictionary).GetMethod("Contains");
+			var method = typeof(ActorInfo).GetMethod("HasTraitInfo");
 			return knownActorCommands.Where(c => ExtractRequiredTypes(c)
-				.All(t => (bool)method.MakeGenericMethod(t).Invoke(ai.Traits, NoArguments)))
+				.All(t => (bool)method.MakeGenericMethod(t).Invoke(ai, NoArguments)))
 				.ToArray();
 		}
 

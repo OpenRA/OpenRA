@@ -141,9 +141,9 @@ namespace OpenRA.Mods.Common.AI
 				// HACK: HACK HACK HACK
 				// TODO: Derive this from BuildingCommonNames instead
 				var type = BuildingType.Building;
-				if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<AttackBaseInfo>())
+				if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<AttackBaseInfo>())
 					type = BuildingType.Defense;
-				else if (world.Map.Rules.Actors[currentBuilding.Item].Traits.Contains<RefineryInfo>())
+				else if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<RefineryInfo>())
 					type = BuildingType.Refinery;
 
 				var location = ai.ChooseBuildLocation(currentBuilding.Item, true, type);
