@@ -96,13 +96,13 @@ namespace OpenRA.Mods.Common.Widgets
 					var facing = underCursor.Init<FacingInit>();
 					if (facing != null)
 						underCursor.ReplaceInit(new FacingInit((facing.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.Traits.WithInterface<UsesInit<FacingInit>>().Any())
+					else if (underCursor.Info.HasTraitInfo<UsesInit<FacingInit>>())
 						underCursor.ReplaceInit(new FacingInit(mi.ScrollDelta));
 
 					var turret = underCursor.Init<TurretFacingInit>();
 					if (turret != null)
 						underCursor.ReplaceInit(new TurretFacingInit((turret.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.Traits.WithInterface<UsesInit<TurretFacingInit>>().Any())
+					else if (underCursor.Info.HasTraitInfo<UsesInit<TurretFacingInit>>())
 						underCursor.ReplaceInit(new TurretFacingInit(mi.ScrollDelta));
 				}
 			}

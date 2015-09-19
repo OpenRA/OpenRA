@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
-			canTurn = self.Info.Traits.WithInterface<IFacingInfo>().Any();
+			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
 		}
 
