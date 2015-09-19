@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (entryLocation.HasValue)
 			{
-				var pi = ai.Traits.GetOrDefault<AircraftInfo>();
+				var pi = ai.TraitInfoOrDefault<AircraftInfo>();
 				initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi != null ? pi.CruiseAltitude.Length : 0)));
 				initDict.Add(new LocationInit(entryLocation.Value));
 			}
@@ -137,10 +137,10 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 			{
-				var heli = transport.TraitOrDefault<Helicopter>();
+				var heli = transport.Info.TraitInfoOrDefault<HelicopterInfo>();
 				if (heli != null)
 				{
-					transport.QueueActivity(new Turn(transport, heli.Info.InitialFacing));
+					transport.QueueActivity(new Turn(transport, heli.InitialFacing));
 					transport.QueueActivity(new HeliLand(transport, true));
 					transport.QueueActivity(new Wait(15));
 				}

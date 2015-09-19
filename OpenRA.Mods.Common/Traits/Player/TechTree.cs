@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ActorChanged(Actor a)
 		{
-			var bi = a.Info.Traits.GetOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.HasTrait<ITechTreePrerequisite>() || (bi != null && bi.BuildLimit > 0)))
+			var bi = a.Info.TraitInfoOrDefault<BuildableInfo>();
+			if (a.Owner == player && (a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
 				Update();
 		}
 
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 					  a.Actor.IsInWorld &&
 					  !a.Actor.IsDead &&
 					  !ret.ContainsKey(a.Actor.Info.Name) &&
-					  a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0)
+					  a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0)
 				  .Do(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;

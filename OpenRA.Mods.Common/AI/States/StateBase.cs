@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool CanAttackTarget(Actor a, Actor target)
 		{
-			if (!a.HasTrait<AttackBase>())
+			if (!a.Info.HasTraitInfo<AttackBaseInfo>())
 				return false;
 
 			var targetTypes = target.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes);
@@ -82,11 +82,11 @@ namespace OpenRA.Mods.Common.AI
 
 			var u = squad.Units.Random(squad.Random);
 			var units = squad.World.FindActorsInCircle(u.CenterPosition, WDist.FromCells(DangerRadius)).ToList();
-			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.HasTrait<Building>());
+			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.Info.HasTraitInfo<BuildingInfo>());
 			if (ownBaseBuildingAround.Any())
 				return false;
 
-			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>());
+			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>());
 			if (!enemyAroundUnit.Any())
 				return false;
 

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Repair(Actor host)
 		{
 			this.host = host;
-			repairsUnits = host.Info.Traits.Get<RepairsUnitsInfo>();
+			repairsUnits = host.Info.TraitInfo<RepairsUnitsInfo>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (remainingTicks == 0)
 			{
-				var unitCost = self.Info.Traits.Get<ValuedInfo>().Cost;
+				var unitCost = self.Info.TraitInfo<ValuedInfo>().Cost;
 				var hpToRepair = repairsUnits.HpPerStep;
 				var cost = Math.Max(1, (hpToRepair * unitCost * repairsUnits.ValuePercentage) / (health.MaxHP * 100));
 

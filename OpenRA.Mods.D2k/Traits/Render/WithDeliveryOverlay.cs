@@ -49,7 +49,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			// always render instantly for units
-			buildComplete = !self.HasTrait<Building>();
+			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 
 			var overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.Play(info.Sequence);

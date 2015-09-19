@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.AI
 			{
 				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(12))
 					.Where(a1 => !a1.Disposed && !a1.IsDead);
-				var enemynearby = enemies.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy);
+				var enemynearby = enemies.Where(a1 => a1.Info.HasTraitInfo<ITargetableInfo>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy);
 				var target = enemynearby.ClosestTo(leader.CenterPosition);
 				if (target != null)
 				{

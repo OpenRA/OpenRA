@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Orders
 				yield break;
 
 			// Repair a building.
-			if (underCursor.Info.Traits.Contains<RepairableBuildingInfo>())
+			if (underCursor.Info.HasTraitInfo<RepairableBuildingInfo>())
 				yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
 
 			// Test for generic Repairable (used on units).

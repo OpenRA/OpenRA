@@ -181,7 +181,7 @@ namespace OpenRA.Graphics
 			if (World.Type == WorldType.Regular && Game.Settings.Game.AlwaysShowStatusBars)
 			{
 				foreach (var g in World.Actors.Where(a => !a.Disposed
-					&& a.HasTrait<Selectable>()
+					&& a.Info.HasTraitInfo<SelectableInfo>()
 					&& !World.FogObscures(a)
 					&& !World.Selection.Actors.Contains(a)))
 
@@ -193,7 +193,7 @@ namespace OpenRA.Graphics
 
 		public void DrawRollover(Actor unit)
 		{
-			if (unit.HasTrait<Selectable>())
+			if (unit.Info.HasTraitInfo<SelectableInfo>())
 				new SelectionBarsRenderable(unit).Render(this);
 		}
 

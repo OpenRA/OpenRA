@@ -44,7 +44,7 @@ namespace OpenRA.Mods.TS.Traits
 				() => false, () => frame));
 
 			// Selection size
-			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
+			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
 			var s = (int)(rvi.Scale * voxel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 		}

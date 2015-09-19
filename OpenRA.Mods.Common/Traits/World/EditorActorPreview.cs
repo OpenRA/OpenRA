@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = PreviewPosition(world, actor.InitDict);
 
 			var location = actor.InitDict.Get<LocationInit>().Value(worldRenderer.World);
-			var ios = Info.Traits.GetOrDefault<IOccupySpaceInfo>();
+			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
 
 			var subCellInit = actor.InitDict.GetOrDefault<SubCellInit>();
 			var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				Footprint = new ReadOnlyDictionary<CPos, SubCell>(footprint);
 			}
 
-			var tooltip = Info.Traits.GetOrDefault<TooltipInfo>();
+			var tooltip = Info.TraitInfoOrDefault<TooltipInfo>();
 			Tooltip = tooltip == null ? ID + ": " + Info.Name : ID + ": " + tooltip.Name + " (" + Info.Name + ")";
 
 			GeneratePreviews();
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 				var subCellInit = actor.InitDict.GetOrDefault<SubCellInit>();
 				var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
 
-				var buildingInfo = Info.Traits.GetOrDefault<BuildingInfo>();
+				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)
 					offset = FootprintUtils.CenterOffset(world, buildingInfo);
 

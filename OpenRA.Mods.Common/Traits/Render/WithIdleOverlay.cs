@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			var anim = new Animation(init.World, image, () => facing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
+			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),

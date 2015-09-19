@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public interface ISpriteBodyInfo : ITraitInfo { }
 	public interface ISpriteBody
 	{
 		void PlayCustomAnimation(Actor self, string newAnimation, Action after);
@@ -44,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyCharging { void Charging(Actor self, Target target); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyParachuteLanded { void OnLanded(); }
-	public interface IRenderActorPreviewInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
-	public interface ICruiseAltitudeInfo { WDist GetCruiseAltitude(); }
+	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
+	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
 	public interface IUpgradable
 	{
@@ -67,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Undocked();
 	}
 
+	public interface ITechTreePrerequisiteInfo : ITraitInfo { }
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites { get; }
@@ -91,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
+	public interface IAcceptResourcesInfo : ITraitInfo { }
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);

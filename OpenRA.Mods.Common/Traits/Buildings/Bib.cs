@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
-			var bi = init.Actor.Traits.Get<BuildingInfo>();
+			var bi = init.Actor.TraitInfo<BuildingInfo>();
 
 			var width = bi.Dimensions.X;
 			var bibOffset = bi.Dimensions.Y - 1;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			rs = self.Trait<RenderSprites>();
-			bi = self.Info.Traits.Get<BuildingInfo>();
+			bi = self.Info.TraitInfo<BuildingInfo>();
 		}
 
 		public void AddedToWorld(Actor self)

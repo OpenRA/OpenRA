@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.Self, this); }
 	}
 
-	class DisguiseToolTip : IToolTip
+	class DisguiseToolTip : ITooltip
 	{
 		readonly Actor self;
 		readonly Disguise disguise;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Traits
 				else
 				{
 					AsSprite = target.Trait<RenderSprites>().GetImage(target);
-					var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
+					var tooltip = target.TraitsImplementing<ITooltip>().FirstOrDefault();
 					AsPlayer = tooltip.Owner;
 					AsTooltipInfo = tooltip.TooltipInfo;
 				}
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA.Traits
 			var oldDisguiseSetting = Disguised;
 			var oldEffectiveOwner = AsPlayer;
 
-			var renderSprites = actorInfo.Traits.GetOrDefault<RenderSpritesInfo>();
+			var renderSprites = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
 			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Faction.InternalName);
 			AsPlayer = newOwner;
 			AsTooltipInfo = actorInfo.Traits.WithInterface<TooltipInfo>().FirstOrDefault();

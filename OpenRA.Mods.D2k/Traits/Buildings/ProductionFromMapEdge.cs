@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var pos = self.World.Map.CenterOfCell(location);
 
 			// If aircraft, spawn at cruise altitude
-			var aircraftInfo = producee.Traits.GetOrDefault<AircraftInfo>();
+			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 

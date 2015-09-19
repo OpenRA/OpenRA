@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Commands
 						var leveluporder = new Order("DevLevelUp", actor, false);
 						leveluporder.ExtraData = (uint)level;
 
-						if (actor.HasTrait<GainsExperience>())
+						if (actor.Info.HasTraitInfo<GainsExperienceInfo>())
 							world.IssueOrder(leveluporder);
 					}
 

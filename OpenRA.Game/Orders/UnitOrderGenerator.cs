@@ -20,7 +20,7 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			Target target;
@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
@@ -58,12 +58,12 @@ namespace OpenRA.Orders
 		{
 			var useSelect = false;
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 			{
-				if (underCursor.HasTrait<Selectable>())
+				if (underCursor.Info.HasTraitInfo<SelectableInfo>())
 					useSelect = true;
 			}
 
@@ -73,7 +73,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}

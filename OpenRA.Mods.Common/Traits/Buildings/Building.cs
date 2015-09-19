@@ -64,8 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var buildingMaxBounds = Dimensions;
-			var buildingTraits = world.Map.Rules.Actors[buildingName].Traits;
-			if (buildingTraits.Contains<BibInfo>() && !buildingTraits.Get<BibInfo>().HasMinibib)
+			var bibInfo = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<BibInfo>();
+			if (bibInfo != null && !bibInfo.HasMinibib)
 				buildingMaxBounds += new CVec(0, 1);
 
 			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
@@ -87,12 +87,12 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
-							&& a.HasTrait<GivesBuildableArea>());
+							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
-					else if (buildingAtPos.IsInWorld && buildingAtPos.HasTrait<GivesBuildableArea>()
+					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.HasTraitInfo<GivesBuildableAreaInfo>()
 						&& (buildingAtPos.Owner == p || (allyBuildRadius && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			if (SkipMakeAnimation || !self.HasTrait<WithMakeAnimation>())
+			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
 				NotifyBuildingComplete(self);
 		}
 

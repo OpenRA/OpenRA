@@ -30,7 +30,7 @@ namespace OpenRA.Mods.TS.Traits
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
 		{
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, "idle");
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation, facings) },
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.TS.Traits
 				() => 0));
 
 			// Selection size
-			var rvi = self.Info.Traits.Get<RenderVoxelsInfo>();
+			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
 			var s = (int)(rvi.Scale * idleVoxel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 

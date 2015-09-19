@@ -88,7 +88,7 @@ namespace OpenRA.Mods.RA.Traits
 				var movement = self.Trait<IPositionable>();
 
 				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
-					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
+					self.Info.TraitInfo<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
 
 				self.CancelActivity();
@@ -154,8 +154,8 @@ namespace OpenRA.Mods.RA.Traits
 
 				var underCursor = world.ScreenMap.ActorsAt(mi)
 					.Where(a => !world.FogObscures(a))
-					.MaxByOrDefault(a => a.Info.Traits.Contains<SelectableInfo>()
-						? a.Info.Traits.Get<SelectableInfo>().Priority : int.MinValue);
+					.MaxByOrDefault(a => a.Info.HasTraitInfo<SelectableInfo>()
+						? a.Info.TraitInfo<SelectableInfo>().Priority : int.MinValue);
 
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)
 				{
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				var movement = minelayer.Trait<IPositionable>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
-					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth);
+					minelayer.Info.TraitInfo<MinelayerInfo>().MinefieldDepth);
 
 				var pal = wr.Palette("terrain");
 				foreach (var c in minefield)

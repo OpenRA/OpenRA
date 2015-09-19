@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WithBuildingExplosion(Actor self, WithBuildingExplosionInfo info)
 		{
 			this.info = info;
-			buildingInfo = self.Info.Traits.Get<BuildingInfo>();
+			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
 
 		public void Killed(Actor self, AttackInfo e)

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HarvestResource(Actor self)
 		{
 			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			facing = self.Trait<IFacing>();
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();

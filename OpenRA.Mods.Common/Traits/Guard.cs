@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.SetTargetLine(target, Color.Yellow);
 
-			var range = WDist.FromCells(target.Actor.Info.Traits.Get<GuardableInfo>().Range);
+			var range = WDist.FromCells(target.Actor.Info.TraitInfo<GuardableInfo>().Range);
 			self.QueueActivity(false, new AttackMoveActivity(self, self.Trait<IMove>().MoveFollow(self, target, WDist.Zero, range)));
 		}
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(World world)
 		{
-			if (subjects.All(s => s.IsDead || !s.HasTrait<Guard>()))
+			if (subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
 				world.CancelInputMode();
 		}
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && !a.IsDead &&
 					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
-					a.HasTrait<Guardable>());
+					a.Info.HasTraitInfo<GuardableInfo>());
 		}
 	}
 }

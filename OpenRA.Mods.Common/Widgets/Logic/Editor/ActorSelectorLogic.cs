@@ -92,13 +92,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var a in actors)
 			{
 				var actor = a;
-				if (actor.Traits.Contains<BridgeInfo>()) // bridge layer takes care about that automatically
+				if (actor.HasTraitInfo<BridgeInfo>()) // bridge layer takes care about that automatically
 					continue;
 
-				if (!actor.Traits.Contains<IRenderActorPreviewInfo>())
+				if (!actor.HasTraitInfo<IRenderActorPreviewInfo>())
 					continue;
 
-				var filter = actor.Traits.GetOrDefault<EditorTilesetFilterInfo>();
+				var filter = actor.TraitInfoOrDefault<EditorTilesetFilterInfo>();
 				if (filter != null)
 				{
 					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.TileSet.Id))
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
 
-					var tooltip = actor.Traits.GetOrDefault<TooltipInfo>();
+					var tooltip = actor.TraitInfoOrDefault<TooltipInfo>();
 					item.GetTooltipText = () => tooltip == null ? actor.Name : tooltip.Name + " (" + actor.Name + ")";
 
 					panel.AddChild(item);

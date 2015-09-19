@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Lint
 					emitError("Actor type `{0}` defines multiple default visibility types!".F(actorInfo.Key));
 				else
 				{
-					var vis = actorInfo.Value.Traits.GetOrDefault<HiddenUnderShroudInfo>();
+					var vis = actorInfo.Value.TraitInfoOrDefault<HiddenUnderShroudInfo>();
 					if (vis != null && vis.Type == VisibilityType.Footprint)
 					{
-						var ios = actorInfo.Value.Traits.GetOrDefault<IOccupySpaceInfo>();
+						var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
 						if (ios == null)
 							emitError("Actor type `{0}` defines VisibilityType.Footprint in `{1}` but has no IOccupySpace traits!".F(actorInfo.Key, vis.GetType()));
 						else if (!ios.OccupiedCells(actorInfo.Value, CPos.Zero).Any())

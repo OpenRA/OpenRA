@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Orders
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
 			producer = queue.Actor;
-			placeBuildingInfo = producer.Owner.PlayerActor.Info.Traits.Get<PlaceBuildingInfo>();
+			placeBuildingInfo = producer.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			building = name;
 
 			// Clear selection if using Left-Click Orders
@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common.Orders
 			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
 
 			var info = map.Rules.Actors[building];
-			buildingInfo = info.Traits.Get<BuildingInfo>();
+			buildingInfo = info.TraitInfo<BuildingInfo>();
 
-			var buildableInfo = info.Traits.Get<BuildableInfo>();
+			var buildableInfo = info.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
 			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : producer.Owner.Faction.InternalName);
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Orders
 				var orderType = "PlaceBuilding";
 				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
 
-				var plugInfo = world.Map.Rules.Actors[building].Traits.GetOrDefault<PlugInfo>();
+				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
 				{
 					orderType = "PlacePlug";
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (world.Map.Rules.Actors[building].Traits.Contains<LineBuildInfo>())
+					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>())
 						orderType = "LineBuild";
 				}
 
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var cells = new Dictionary<CPos, bool>();
 
-			var plugInfo = rules.Actors[building].Traits.GetOrDefault<PlugInfo>();
+			var plugInfo = rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 			if (plugInfo != null)
 			{
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				cells.Add(topLeft, AcceptsPlug(topLeft, plugInfo));
 			}
-			else if (rules.Actors[building].Traits.Contains<LineBuildInfo>())
+			else if (rules.Actors[building].HasTraitInfo<LineBuildInfo>())
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)

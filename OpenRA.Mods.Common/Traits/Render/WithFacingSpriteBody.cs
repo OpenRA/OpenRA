@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			var ifacing = init.Actor.Traits.GetOrDefault<IFacingInfo>();
+			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 
 			var anim = new Animation(init.World, image, () => facing);

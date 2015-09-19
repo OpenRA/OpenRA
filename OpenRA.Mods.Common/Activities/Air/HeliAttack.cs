@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				target = value;
 				if (target.Type == TargetType.Actor)
-					canHideUnderFog = target.Actor.HasTrait<HiddenUnderFog>();
+					canHideUnderFog = target.Actor.Info.HasTraitInfo<HiddenUnderFogInfo>();
 			}
 		}
 

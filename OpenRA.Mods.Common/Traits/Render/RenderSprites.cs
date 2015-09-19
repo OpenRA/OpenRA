@@ -52,14 +52,14 @@ namespace OpenRA.Mods.Common.Traits
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var facings = 0;
-			var body = init.Actor.Traits.GetOrDefault<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfoOrDefault<BodyOrientationInfo>();
 			if (body != null)
 			{
 				facings = body.QuantizedFacings;
 
 				if (facings == -1)
 				{
-					var qbo = init.Actor.Traits.GetOrDefault<IQuantizeBodyOrientationInfo>();
+					var qbo = init.Actor.TraitInfoOrDefault<IQuantizeBodyOrientationInfo>();
 					facings = qbo != null ? qbo.QuantizedBodyFacings(init.Actor, sequenceProvider, faction) : 1;
 				}
 			}

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self)
 		{
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.TraitInfo<MobileInfo>();
 
 			// If a water-land transition is required, bail early
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
 		{
-			var mi = self.Info.Traits.Get<MobileInfo>();
+			var mi = self.Info.TraitInfo<MobileInfo>();
 			var targetCell = world.Map.CellContaining(target);
 
 			// Correct for SubCell offset

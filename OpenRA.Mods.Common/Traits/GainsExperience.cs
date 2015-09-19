@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			MaxLevel = info.Upgrades.Count;
 
-			var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
+			var cost = self.Info.TraitInfo<ValuedInfo>().Cost;
 			foreach (var kv in info.Upgrades)
 				nextLevel.Add(Pair.New(kv.Key * cost, kv.Value));
 

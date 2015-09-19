@@ -84,12 +84,6 @@ namespace OpenRA
 				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
 		}
 
-		public bool Contains<T>(Actor actor)
-		{
-			CheckDestroyed(actor);
-			return InnerGet<T>().GetMultiple(actor.ActorID).Any();
-		}
-
 		public T Get<T>(Actor actor)
 		{
 			CheckDestroyed(actor);

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (queue == null)
 			{
-				var type = info.ProductionType ?? self.Trait<Production>().Info.Produces.First();
+				var type = info.ProductionType ?? self.Info.TraitInfo<ProductionInfo>().Produces.First();
 
 				// Per-actor queue
 				// Note: this includes disabled queues, as each bar must bind to exactly one queue.

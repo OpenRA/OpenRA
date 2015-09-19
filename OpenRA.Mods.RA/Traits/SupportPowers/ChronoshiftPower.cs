@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var t in tiles)
 				units.UnionWith(Self.World.ActorMap.GetUnitsAt(t));
 
-			return units.Where(a => a.HasTrait<Chronoshiftable>() &&
+			return units.Where(a => a.Info.HasTraitInfo<ChronoshiftableInfo>() &&
 				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));
 		}
 

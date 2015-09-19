@@ -183,5 +183,9 @@ namespace OpenRA
 				i => Pair.New(
 					i.Name.Replace("Init", ""), i));
 		}
+
+		public bool HasTraitInfo<T>() where T : ITraitInfo { return Traits.Contains<T>(); }
+		public T TraitInfo<T>() where T : ITraitInfo { return Traits.Get<T>(); }
+		public T TraitInfoOrDefault<T>() where T : ITraitInfo { return Traits.GetOrDefault<T>(); }
 	}
 }

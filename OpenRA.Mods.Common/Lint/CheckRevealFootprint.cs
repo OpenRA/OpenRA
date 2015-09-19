@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (actorInfo.Key.StartsWith("^"))
 					continue;
 
-				var ios = actorInfo.Value.Traits.GetOrDefault<IOccupySpaceInfo>();
+				var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
 				foreach (var rsi in actorInfo.Value.Traits.WithInterface<RevealsShroudInfo>())
 				{
 					if (rsi.Type == VisibilityType.CenterPosition)

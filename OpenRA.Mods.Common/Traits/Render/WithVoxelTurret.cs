@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
 
-			var body = init.Actor.Traits.Get<BodyOrientationInfo>();
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var t = init.Actor.Traits.WithInterface<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 

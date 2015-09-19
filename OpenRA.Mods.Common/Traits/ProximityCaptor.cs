@@ -15,22 +15,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can capture ProximityCapturable actors.")]
-	public class ProximityCaptorInfo : ITraitInfo
+	public class ProximityCaptorInfo : TraitInfo<ProximityCaptor>
 	{
 		[FieldLoader.Require]
 		public readonly HashSet<string> Types = new HashSet<string>();
-		public object Create(ActorInitializer init) { return new ProximityCaptor(this); }
 	}
 
-	public class ProximityCaptor
-	{
-		public readonly ProximityCaptorInfo Info;
-
-		public ProximityCaptor(ProximityCaptorInfo info) { Info = info; }
-
-		public bool HasAny(IEnumerable<string> typesList)
-		{
-			return Info.Types.Overlaps(typesList);
-		}
-	}
+	public class ProximityCaptor { }
 }

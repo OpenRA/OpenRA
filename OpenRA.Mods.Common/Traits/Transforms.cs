@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			this.info = info;
-			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].Traits.GetOrDefault<BuildingInfo>();
+			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].TraitInfoOrDefault<BuildingInfo>();
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 		}
 
@@ -109,10 +109,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			if (self.HasTrait<IFacing>())
+			if (self.Info.HasTraitInfo<IFacingInfo>())
 				self.QueueActivity(new Turn(self, info.Facing));
 
-			if (self.HasTrait<Helicopter>())
+			if (self.Info.HasTraitInfo<HelicopterInfo>())
 				self.QueueActivity(new HeliLand(self, true));
 
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())

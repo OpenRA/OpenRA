@@ -99,7 +99,7 @@ namespace OpenRA.Mods.D2k.Traits
 			targetCountdown = Info.TargetRescanInterval;
 
 			// If close enough, we don't care about other actors.
-			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.HasTrait<AttractsWorms>());
+			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.Info.HasTraitInfo<AttractsWormsInfo>());
 			if (target != null)
 			{
 				self.CancelActivity();
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			Func<Actor, bool> isValidTarget = a =>
 			{
-				if (!a.HasTrait<AttractsWorms>())
+				if (!a.Info.HasTraitInfo<AttractsWormsInfo>())
 					return false;
 
 				return mobile.CanEnterCell(a.Location, null, false);

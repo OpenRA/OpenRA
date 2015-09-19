@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 			return inRange
 				.Where(a =>
 					a.AppearsHostileTo(self) &&
-					!a.HasTrait<AutoTargetIgnore>() &&
+					!a.Info.HasTraitInfo<AutoTargetIgnoreInfo>() &&
 					attack.HasAnyValidWeapons(Target.FromActor(a)) &&
 					self.Owner.CanTargetActor(a))
 				.ClosestTo(self);

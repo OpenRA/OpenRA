@@ -438,7 +438,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Map.Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
-					var options = modRules.Actors["player"].Traits.Get<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
+					var options = modRules.Actors["player"].TraitInfo<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
 					{
 						Title = "${0}".F(c),
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.StartingCash == c,
@@ -689,7 +689,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
 
 							// Restore default starting cash if the last map set it to something invalid
-							var pri = modRules.Actors["player"].Traits.Get<PlayerResourcesInfo>();
+							var pri = modRules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
 							if (!Map.Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
 								orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 						}

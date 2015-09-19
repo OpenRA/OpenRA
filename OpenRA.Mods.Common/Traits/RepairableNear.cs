@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<Building>("RepairNear", 5,
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("RepairNear", 5,
 					target => CanRepairAt(target), _ => ShouldRepair());
 			}
 		}

@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (CurrentQueue == null)
 					return Enumerable.Empty<ActorInfo>();
 
-				return CurrentQueue.AllItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
+				return CurrentQueue.AllItems().OrderBy(a => a.TraitInfo<BuildableInfo>().BuildPaletteOrder);
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var actor = World.Map.Rules.Actors[icon.Name];
 
-			if (item != null && item.Done && actor.Traits.Contains<BuildingInfo>())
+			if (item != null && item.Done && actor.HasTraitInfo<BuildingInfo>())
 			{
 				World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name);
 				return true;
@@ -319,11 +319,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var y = DisplayedIconCount / Columns;
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
 
-				var rsi = item.Traits.Get<RenderSpritesInfo>();
+				var rsi = item.TraitInfo<RenderSpritesInfo>();
 				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, faction));
-				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+				icon.Play(item.TraitInfo<TooltipInfo>().Icon);
 
-				var bi = item.Traits.Get<BuildableInfo>();
+				var bi = item.TraitInfo<BuildableInfo>();
 
 				var pi = new ProductionIcon()
 				{

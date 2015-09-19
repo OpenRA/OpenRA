@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			actor = target;
 			building = actor.TraitOrDefault<Building>();
-			capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+			capturesInfo = self.Info.TraitInfo<CapturesInfo>();
 			capturable = target.Trait<Capturable>();
 			health = actor.Trait<Health>();
 		}

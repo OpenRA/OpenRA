@@ -26,15 +26,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly DeveloperMode devMode;
 
+		readonly HealthInfo healthInfo;
 		Lazy<AttackBase> attack;
 		Lazy<BodyOrientation> coords;
-		Lazy<Health> health;
 
 		public CombatDebugOverlay(Actor self)
 		{
+			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
-			health = Exts.Lazy(() => self.TraitOrDefault<Health>());
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
-			if (health.Value != null)
-				wr.DrawRangeCircle(self.CenterPosition, health.Value.Info.Radius, Color.Red);
+			if (healthInfo != null)
+				wr.DrawRangeCircle(self.CenterPosition, healthInfo.Radius, Color.Red);
 
 			// No armaments to draw
 			if (attack.Value == null)
@@ -96,11 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage == 0)
 				return;
 
-			var health = self.TraitOrDefault<Health>();
-			if (health == null)
+			if (healthInfo == null)
 				return;
 
-			var damageText = "{0} ({1}%)".F(-e.Damage, e.Damage * 100 / health.MaxHP);
+			var maxHP = healthInfo.HP > 0 ? healthInfo.HP : 1;
+			var damageText = "{0} ({1}%)".F(-e.Damage, e.Damage * 100 / maxHP);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, damageText, 30)));
 		}

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
-			occupiesSpace = init.Self.Info.Traits.Contains<IOccupySpaceInfo>();
+			occupiesSpace = init.Self.Info.HasTraitInfo<IOccupySpaceInfo>();
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocation = CPos.Zero;
 			var target = Target.Invalid;
 
-			var bi = producee.Traits.GetOrDefault<BuildableInfo>();
+			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
 			if (bi != null && bi.ForceFaction != null)
 				factionVariant = bi.ForceFaction;
 
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 				var to = self.World.Map.CenterOfCell(exit);
 
-				var fi = producee.Traits.GetOrDefault<IFacingInfo>();
+				var fi = producee.TraitInfoOrDefault<IFacingInfo>();
 				var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
 
 				exitLocation = rp.Value != null ? rp.Value.Location : exit;
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
 		{
-			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
+			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
 			self.NotifyBlocker(self.Location + s.ExitCell);
 

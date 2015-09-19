@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (actor.First == null)
 				return true;
 
-			var ati = actor.First.Info.Traits.GetOrDefault<AutoTargetInfo>();
+			var ati = actor.First.Info.TraitInfoOrDefault<AutoTargetInfo>();
 			if (ati == null || !ati.EnableStances)
 				return false;
 
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformGuard()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.HasTrait<Guard>());
+				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<GuardInfo>());
 
 			if (actors.Any())
 				world.OrderGenerator = new GuardOrderGenerator(actors);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var building = world.ActorsWithTrait<Building>()
 					.Select(b => b.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.HasTrait<Selectable>());
+					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<SelectableInfo>());
 
 				// No buildings left
 				if (building == null)
@@ -223,8 +223,8 @@ namespace OpenRA.Mods.Common.Widgets
 		bool CycleProductionBuildings()
 		{
 			var facilities = world.ActorsWithTrait<Production>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.HasTrait<BaseBuilding>())
-				.OrderBy(f => f.Actor.Info.Traits.Get<ProductionInfo>().Produces.First())
+				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>())
+				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.Select(b => b.Actor)
 				.ToList();
 

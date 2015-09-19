@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.AI
 			var missileUnitsCount = 0;
 			foreach (var unit in units)
 			{
-				if (unit != null && unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>()
+				if (unit != null && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>()
 					&& !unit.IsDisabled())
 				{
 					var arms = unit.TraitsImplementing<Armament>();
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 				}
 
-				if (owner.TargetActor.HasTrait<ITargetable>() && CanAttackTarget(a, owner.TargetActor))
+				if (owner.TargetActor.Info.HasTraitInfo<ITargetableInfo>() && CanAttackTarget(a, owner.TargetActor))
 					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
 			}
 		}

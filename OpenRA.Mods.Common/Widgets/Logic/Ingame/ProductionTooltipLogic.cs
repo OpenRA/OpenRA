@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actor == null || actor == lastActor)
 					return;
 
-				var tooltip = actor.Traits.Get<TooltipInfo>();
-				var buildable = actor.Traits.Get<BuildableInfo>();
-				var cost = actor.Traits.Get<ValuedInfo>().Cost;
+				var tooltip = actor.TraitInfo<TooltipInfo>();
+				var buildable = actor.TraitInfo<BuildableInfo>();
+				var cost = actor.TraitInfo<ValuedInfo>().Cost;
 
 				nameLabel.GetText = () => tooltip.Name;
 
@@ -113,8 +113,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static string ActorName(Ruleset rules, string a)
 		{
 			ActorInfo ai;
-			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.Traits.Contains<TooltipInfo>())
-				return ai.Traits.Get<TooltipInfo>().Name;
+			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.HasTraitInfo<TooltipInfo>())
+				return ai.TraitInfo<TooltipInfo>().Name;
 
 			return a;
 		}
