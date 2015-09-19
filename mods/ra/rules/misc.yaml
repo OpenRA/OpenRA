@@ -348,7 +348,7 @@ CTFLAG:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Flag
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0

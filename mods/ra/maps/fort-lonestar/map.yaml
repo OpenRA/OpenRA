@@ -557,7 +557,7 @@ Rules:
 			HP: 3000
 		Armor:
 			Type: Wood
-		Bib:
+		WithTileFootprintOverlay:
 		RevealsShroud:
 			Range: 3c0
 		CashTrickler:

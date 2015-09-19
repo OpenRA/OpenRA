@@ -45,7 +45,7 @@ construction_yard:
 	LaysTerrain:
 		TerrainTypes: Rock
 		Template: 88
-	Bib:
+	WithTileFootprintOverlay:
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -92,7 +92,7 @@ wind_trap:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -127,7 +127,7 @@ barracks:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 800
 	Armor:
@@ -183,7 +183,7 @@ refinery:
 	Building:
 		Footprint: =xx xx=
 		Dimensions: 3,2
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 900
 	Armor:
@@ -274,7 +274,7 @@ light_factory:
 	Building:
 		Footprint: xxx xx=
 		Dimensions: 3,2
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 750
 	Armor:
@@ -331,7 +331,7 @@ heavy_factory:
 	Building:
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 1500
 	Armor:
@@ -394,7 +394,7 @@ outpost:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -670,7 +670,7 @@ high_tech_factory:
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 1500
 	Armor:
@@ -720,7 +720,7 @@ research_centre:
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
-	Bib:
+	WithTileFootprintOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -756,7 +756,7 @@ palace:
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: True
 	Health:
 		HP: 2000

@@ -278,7 +278,6 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
-    <Compile Include="Traits\Buildings\Bib.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
@@ -444,6 +443,7 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
+    <Compile Include="Traits\Render\WithTileFootprintOverlay.cs" />
     <Compile Include="Traits\Render\WithTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />

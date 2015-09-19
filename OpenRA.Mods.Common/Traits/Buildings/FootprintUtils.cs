@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
-			var bibInfo = rules.Actors[name].TraitInfoOrDefault<BibInfo>();
+			var bibInfo = rules.Actors[name].TraitInfoOrDefault<WithTileFootprintOverlayInfo>();
 			if (bibInfo != null && !bibInfo.HasMinibib)
 			{
 				dim += new CVec(0, 1);

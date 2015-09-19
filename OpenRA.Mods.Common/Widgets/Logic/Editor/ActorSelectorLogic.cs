@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var td = new TypeDictionary();
 				td.Add(new FacingInit(92));
 				td.Add(new TurretFacingInit(92));
-				td.Add(new HideBibPreviewInit());
+				td.Add(new HideWithTileFootprintOverlayPreviewInit());
 				td.Add(new OwnerInit(selectedOwner.Name));
 				td.Add(new FactionInit(selectedOwner.Faction));
 

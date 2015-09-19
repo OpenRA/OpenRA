@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Orders
 					{
 						new FactionInit(faction),
 						new OwnerInit(producer.Owner),
-						new HideBibPreviewInit()
+						new HideWithTileFootprintOverlayPreviewInit()
 					};
 
 					var init = new ActorPreviewInitializer(rules.Actors[building], wr, td);

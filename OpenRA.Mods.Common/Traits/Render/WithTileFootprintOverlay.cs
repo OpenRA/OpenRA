@@ -15,17 +15,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class WithTileFootprintOverlayInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference] public readonly string Sequence = "bib";
 		[PaletteReference] public readonly string Palette = "terrain";
 		public readonly bool HasMinibib = false;
 
-		public object Create(ActorInitializer init) { return new Bib(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithTileFootprintOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			if (init.Contains<HideBibPreviewInit>() && init.Get<HideBibPreviewInit, bool>())
+			if (init.Contains<HideWithTileFootprintOverlayPreviewInit>() && init.Get<HideWithTileFootprintOverlayPreviewInit, bool>())
 				yield break;
 
 			if (Palette != null)
@@ -64,14 +64,14 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class WithTileFootprintOverlay : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly BibInfo info;
+		readonly WithTileFootprintOverlayInfo info;
 		readonly RenderSprites rs;
 		readonly BuildingInfo bi;
 		readonly List<AnimationWithOffset> anims = new List<AnimationWithOffset>();
 
-		public Bib(Actor self, BibInfo info)
+		public WithTileFootprintOverlay(Actor self, WithTileFootprintOverlayInfo info)
 		{
 			this.info = info;
 			rs = self.Trait<RenderSprites>();
@@ -118,11 +118,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
+	public class HideWithTileFootprintOverlayPreviewInit : IActorInit<bool>, ISuppressInitExport
 	{
 		[FieldFromYamlKey] readonly bool value = true;
-		public HideBibPreviewInit() { }
-		public HideBibPreviewInit(bool init) { value = init; }
+		public HideWithTileFootprintOverlayPreviewInit() { }
+		public HideWithTileFootprintOverlayPreviewInit(bool init) { value = init; }
 		public bool Value(World world) { return value; }
 	}
 }
