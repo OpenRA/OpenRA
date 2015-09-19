@@ -123,8 +123,10 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
+			// Find any harvestable resources:
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.TileSet);
-			var search = PathSearch.Search(self.World, mobileInfo, self, true,
+			List<CPos> path;
+			using (var search = PathSearch.Search(self.World, mobileInfo, self, true,
 				loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
 				.WithCustomCost(loc =>
 				{
@@ -135,10 +137,8 @@ namespace OpenRA.Mods.Common.Activities
 					return 0;
 				})
 				.FromPoint(self.Location)
-				.FromPoint(searchFromLoc);
-
-			// Find any harvestable resources:
-			var path = pathFinder.FindPath(search);
+				.FromPoint(searchFromLoc))
+				path = pathFinder.FindPath(search);
 
 			if (path.Count > 0)
 				return path[0];

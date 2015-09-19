@@ -46,9 +46,14 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () =>
-				self.World.WorldActor.Trait<IPathFinder>().FindPath(
+			{
+				List<CPos> path;
+				using (var search =
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
-					.WithoutLaneBias());
+					.WithoutLaneBias())
+					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
+				return path;
+			};
 			this.destination = destination;
 			this.nearEnough = WDist.Zero;
 		}
@@ -85,9 +90,14 @@ namespace OpenRA.Mods.Common.Activities
 			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () =>
-				self.World.WorldActor.Trait<IPathFinder>().FindPath(
+			{
+				List<CPos> path;
+				using (var search =
 					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
-					.WithIgnoredActor(ignoredActor));
+					.WithIgnoredActor(ignoredActor))
+					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
+				return path;
+			};
 
 			this.destination = destination;
 			this.nearEnough = WDist.Zero;

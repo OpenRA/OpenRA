@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 	}
 
-	public class PathGraph : IGraph<CellInfo>
+	sealed class PathGraph : IGraph<CellInfo>
 	{
 		public Actor Actor { get; private set; }
 		public World World { get; private set; }
@@ -82,11 +82,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly CellConditions checkConditions;
 		readonly MobileInfo mobileInfo;
 		readonly MobileInfo.WorldMovementInfo worldMovementInfo;
+		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		CellLayer<CellInfo> cellInfo;
 
-		public PathGraph(CellLayer<CellInfo> cellInfo, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
 		{
-			this.cellInfo = cellInfo;
+			pooledLayer = layerPool.Get();
+			cellInfo = pooledLayer.Layer;
 			World = world;
 			this.mobileInfo = mobileInfo;
 			worldMovementInfo = mobileInfo.GetWorldMovementInfo(world);
@@ -174,26 +176,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return cellCost;
 		}
 
-		bool disposed;
-		public void Dispose()
-		{
-			if (disposed)
-				return;
-
-			disposed = true;
-
-			CellInfoLayerManager.Instance.PutBackIntoPool(cellInfo);
-			cellInfo = null;
-
-			GC.SuppressFinalize(this);
-		}
-
-		~PathGraph() { Dispose(); }
-
 		public CellInfo this[CPos pos]
 		{
 			get { return cellInfo[pos]; }
 			set { cellInfo[pos] = value; }
+		}
+
+		public void Dispose()
+		{
+			pooledLayer.Dispose();
+			cellInfo = null;
 		}
 	}
 }

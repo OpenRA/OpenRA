@@ -72,9 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 					return EmptyPath;
 			}
 
-			var pb = FindBidiPath(
-				PathSearch.FromPoint(world, mi, self, target, source, true),
-				PathSearch.FromPoint(world, mi, self, source, target, true).Reverse());
+			List<CPos> pb;
+			using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true))
+			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).Reverse())
+				pb = FindBidiPath(fromSrc, fromDest);
 
 			CheckSanePath2(pb, source, target);
 
@@ -106,11 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 					return EmptyPath;
 			}
 
-			var path = FindBidiPath(
-				PathSearch.FromPoints(world, mi, self, tilesInRange, source, true),
-				PathSearch.FromPoint(world, mi, self, source, targetCell, true).Reverse());
-
-			return path;
+			using (var fromSrc = PathSearch.FromPoints(world, mi, self, tilesInRange, source, true))
+			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, targetCell, true).Reverse())
+				return FindBidiPath(fromSrc, fromDest);
 		}
 
 		public List<CPos> FindPath(IPathSearch search)

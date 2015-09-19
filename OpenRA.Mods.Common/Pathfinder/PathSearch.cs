@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
@@ -18,6 +19,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	public sealed class PathSearch : BasePathSearch
 	{
+		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
+		static readonly ConditionalWeakTable<World, CellInfoLayerPool>.CreateValueCallback CreateLayerPool = world => new CellInfoLayerPool(world.Map);
+
+		static CellInfoLayerPool LayerPoolForWorld(World world)
+		{
+			return LayerPoolTable.GetValue(world, CreateLayerPool);
+		}
+
 		public override IEnumerable<Pair<CPos, int>> Considered
 		{
 			get { return considered; }
@@ -35,7 +44,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static IPathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked, Func<CPos, bool> goalCondition)
 		{
-			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), mi, self, world, checkForBlocked);
 			var search = new PathSearch(graph);
 			search.isGoal = goalCondition;
 			search.heuristic = loc => 0;
@@ -44,7 +53,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static IPathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
 		{
-			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), mi, self, world, checkForBlocked);
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)
@@ -64,7 +73,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static IPathSearch FromPoints(World world, MobileInfo mi, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
 		{
-			var graph = new PathGraph(CellInfoLayerManager.Instance.NewLayer(world.Map), mi, self, world, checkForBlocked);
+			var graph = new PathGraph(LayerPoolForWorld(world), mi, self, world, checkForBlocked);
 			var search = new PathSearch(graph)
 			{
 				heuristic = DefaultEstimator(target)

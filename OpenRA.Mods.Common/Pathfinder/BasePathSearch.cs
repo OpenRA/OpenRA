@@ -11,12 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
-	public interface IPathSearch
+	public interface IPathSearch : IDisposable
 	{
 		/// <summary>
 		/// The Graph used by the A*
@@ -163,5 +162,17 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public bool CanExpand { get { return !OpenQueue.Empty; } }
 		public abstract CPos Expand();
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+				Graph.Dispose();
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 	}
 }

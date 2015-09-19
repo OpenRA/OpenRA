@@ -148,10 +148,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!searchCells.Any())
 				return NoPath;
 
-			var fromSrc = PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true);
-			var fromDest = PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse();
-
-			return pathFinder.FindBidiPath(fromSrc, fromDest);
+			using (var fromSrc = PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true))
+			using (var fromDest = PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse())
+				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
