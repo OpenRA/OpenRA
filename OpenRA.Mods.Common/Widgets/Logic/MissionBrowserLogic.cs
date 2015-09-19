@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
 		readonly DropDownButtonWidget difficultyButton;
+		readonly LabelWidget difficultyLabel;
 		readonly ButtonWidget startBriefingVideoButton;
 		readonly ButtonWidget stopBriefingVideoButton;
 		readonly ButtonWidget startInfoVideoButton;
@@ -77,6 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionFont = Game.Renderer.Fonts[description.Font];
 
 			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
+			difficultyLabel = widget.Get<LabelWidget>("DIFFICULTY_LABEL");
 
 			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
 			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
@@ -187,10 +189,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionPanel.Layout.AdjustChildren();
 
 			difficultyButton.IsVisible = () => map.Options.Difficulties.Any();
+			difficultyLabel.IsVisible = () => map.Options.Difficulties.Any();
+
 			if (!map.Options.Difficulties.Any())
 				return;
 
 			difficulty = map.Options.Difficulties.First();
+			difficultyButton.GetText = () => difficulty;
+
 			difficultyButton.OnMouseDown = _ =>
 			{
 				var options = map.Options.Difficulties.Select(d => new DropDownOption
