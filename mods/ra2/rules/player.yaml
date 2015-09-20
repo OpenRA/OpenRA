@@ -1,0 +1,20 @@
+Player:
+	AlwaysVisible:
+	TechTree:
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+	ActorGroupProxy:
+	DeveloperMode:
+	Shroud:
+	FrozenActorLayer:
+	BaseAttackNotifier:
+	HarvesterAttackNotifier:
+	PlayerStatistics:
+	PlaceBeacon:
+	GlobalUpgradeManager:
+

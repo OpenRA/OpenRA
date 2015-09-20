@@ -1,0 +1,59 @@
+mpspawn:
+	idle:
+		Length: *
+
+waypoint:
+	idle:
+		Length: *
+
+moveflsh:
+	idle: ring
+		Length: *
+		Tick: 30
+
+resources:
+	Defaults:
+		UseTilesetExtension: true
+		Length: 12
+		ShadowStart: 12
+		Offset: 0, -15
+	tib01: tib01
+	tib02: tib02
+	tib03: tib03
+	tib04: tib04
+	tib05: tib05
+	tib06: tib06
+	tib07: tib07
+	tib08: tib08
+	tib09: tib09
+	tib10: tib10
+	tib11: tib11
+	tib12: tib12
+	tib13: tib13
+	tib14: tib14
+	tib15: tib15
+	tib16: tib16
+	tib17: tib17
+	tib18: tib18
+	tib19: tib19
+	tib20: tib20
+	gem01: gem01
+	gem02: gem02
+	gem03: gem03
+	gem04: gem04
+	gem05: gem05
+	gem06: gem06
+	gem07: gem07
+	gem08: gem08
+	gem09: gem09
+	gem10: gem10
+	gem11: gem11
+	gem12: gem12
+
+shroud:
+	Defaults:
+		Offset: 0, -1
+	shroud:
+		Length: *
+	fog: fog
+		Length: *
