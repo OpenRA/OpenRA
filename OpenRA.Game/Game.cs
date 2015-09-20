@@ -672,6 +672,7 @@ namespace OpenRA
 				worldRenderer.Dispose();
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
+			Sound.Dispose();
 			Renderer.Dispose();
 
 			OnQuit();

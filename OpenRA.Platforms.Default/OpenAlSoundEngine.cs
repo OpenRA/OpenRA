@@ -21,7 +21,7 @@ using OpenTK.Audio.OpenAL;
 
 namespace OpenRA.Platforms.Default
 {
-	class OpenAlSoundEngine : ISoundEngine
+	sealed class OpenAlSoundEngine : ISoundEngine
 	{
 		public SoundDevice[] AvailableDevices()
 		{
@@ -49,6 +49,7 @@ namespace OpenRA.Platforms.Default
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
 		const int PoolSize = 32;
 
+		IntPtr device;
 		float volume = 1f;
 		Dictionary<int, PoolSlot> sourcePool = new Dictionary<int, PoolSlot>();
 
@@ -88,16 +89,16 @@ namespace OpenRA.Platforms.Default
 			else
 				Console.WriteLine("Using default device");
 
-			var dev = Alc.OpenDevice(Game.Settings.Sound.Device);
-			if (dev == IntPtr.Zero)
+			device = Alc.OpenDevice(Game.Settings.Sound.Device);
+			if (device == IntPtr.Zero)
 			{
 				Console.WriteLine("Failed to open device. Falling back to default");
-				dev = Alc.OpenDevice(null);
-				if (dev == IntPtr.Zero)
+				device = Alc.OpenDevice(null);
+				if (device == IntPtr.Zero)
 					throw new InvalidOperationException("Can't create OpenAL device");
 			}
 
-			var ctx = Alc.CreateContext(dev, (int[])null);
+			var ctx = Alc.CreateContext(device, (int[])null);
 			if (ctx == ContextHandle.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
 			Alc.MakeContextCurrent(ctx);
@@ -285,6 +286,15 @@ namespace OpenRA.Platforms.Default
 			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
 			AL.Listener(ALListenerfv.Orientation, ref orientation);
 			AL.Listener(ALListenerf.EfxMetersPerUnit, .01f);
+		}
+
+		public void Dispose()
+		{
+			if (device == IntPtr.Zero)
+				return;
+
+			Alc.CloseDevice(device);
+			device = IntPtr.Zero;
 		}
 	}
 

@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Sound
+	public sealed class Sound : IDisposable
 	{
 		readonly ISoundEngine soundEngine;
 		Cache<string, ISoundSource> sounds;
@@ -367,6 +367,11 @@ namespace OpenRA
 				return false;
 
 			return PlayPredefined(rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
+		}
+
+		public void Dispose()
+		{
+			soundEngine.Dispose();
 		}
 	}
 }
