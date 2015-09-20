@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Animation overlay;
 		bool buildComplete;
+		bool visible;
 
 		public WithBuildingPlacedOverlay(Actor self, WithBuildingPlacedOverlayInfo info)
 		{
@@ -47,15 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !buildComplete);
+				() => !visible || !buildComplete);
 
-			overlay.Play(info.Sequence);
+			overlay.PlayThen(info.Sequence, () => visible = false);
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		public void BuildingComplete(Actor self)
 		{
 			buildComplete = true;
+			visible = false;
 		}
 
 		public void Sold(Actor self) { }
@@ -79,7 +81,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void BuildingPlaced(Actor self)
 		{
-			overlay.Play(overlay.CurrentSequence.Name);
+			visible = true;
+			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);
 		}
 	}
 }

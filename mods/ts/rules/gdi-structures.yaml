@@ -233,7 +233,7 @@ GADEPT:
 		Sequence: idle-light
 	WithIdleOverlay@GROUND:
 		Sequence: ground
-	WithRepairOverlay@CIRCUITS:
+	WithIdleOverlay@CIRCUITS:
 		Sequence: circuits
 	WithRepairOverlay@CRANE:
 		Sequence: crane
