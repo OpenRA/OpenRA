@@ -9,20 +9,20 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Traits;
-using StyleCop;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckSquenceSprites : IUtilityCommand
 	{
 		public string Name { get { return "--check-sequence-sprites"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
+		}
 
 		[Desc("Check the sequence definitions for missing sprite files.")]
 		public void Run(ModData modData, string[] args)

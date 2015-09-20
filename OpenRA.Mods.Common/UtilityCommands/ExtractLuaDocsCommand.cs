@@ -21,6 +21,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--lua-docs"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
+		}
+
 		[Desc("Generate Lua API documentation in MarkDown format.")]
 		public void Run(ModData modData, string[] args)
 		{

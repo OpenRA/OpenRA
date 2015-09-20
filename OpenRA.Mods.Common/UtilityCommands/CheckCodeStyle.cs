@@ -9,12 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using OpenRA.FileSystem;
-using OpenRA.Traits;
 using StyleCop;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -23,6 +18,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--check-code-style"; } }
 		int violationCount;
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("DIRECTORY", "Check the *.cs source code files in a directory for code style violations.")]
 		public void Run(ModData modData, string[] args)

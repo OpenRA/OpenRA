@@ -17,6 +17,8 @@ namespace OpenRA
 		/// </summary>
 		string Name { get; }
 
+		bool ValidateArguments(string[] args);
+
 		void Run(ModData modData, string[] args);
 	}
 }

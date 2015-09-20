@@ -15,7 +15,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.SpriteLoaders;
 
@@ -24,6 +23,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	class ConvertPngToShpCommand : IUtilityCommand
 	{
 		public string Name { get { return "--shp"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		public void Run(ModData modData, string[] args)

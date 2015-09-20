@@ -13,8 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.SpriteLoaders;
@@ -25,6 +23,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	class RemapShpCommand : IUtilityCommand
 	{
 		public string Name { get { return "--remap"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 5;
+		}
 
 		[Desc("SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP", "Remap SHPs to another palette")]
 		public void Run(ModData modData, string[] args)

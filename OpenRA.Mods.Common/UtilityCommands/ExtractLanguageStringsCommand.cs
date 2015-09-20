@@ -12,13 +12,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractLanguageStringsCommand : IUtilityCommand
 	{
 		public string Name { get { return "--extract-language-strings"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
+		}
 
 		[Desc("Extract translatable strings that are not yet localized and update chrome layout.")]
 		public void Run(ModData modData, string[] args)

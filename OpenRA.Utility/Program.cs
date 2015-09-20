@@ -40,17 +40,37 @@ namespace OpenRA.Utility
 			Game.InitializeSettings(Arguments.Empty);
 			var modData = new ModData(modName);
 			args = args.Skip(1).ToArray();
-			var actions = new Dictionary<string, Action<ModData, string[]>>();
+			var actions = new Dictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>>();
 			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
 			{
 				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
-				actions.Add(command.Name, command.Run);
+				var kvp = new KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
+				actions.Add(command.Name, kvp);
+			}
+
+			if (args.Length == 0)
+			{
+				PrintUsage(actions);
+				return;
 			}
 
 			try
 			{
-				var action = Exts.WithDefault((a, b) => PrintUsage(actions), () => actions[args[0]]);
-				action(modData, args);
+				if (!actions.ContainsKey(args[0]))
+					throw new ArgumentException();
+
+				var action = actions[args[0]].Key;
+				var validateActionArgs = actions[args[0]].Value;
+
+				if (validateActionArgs.Invoke(args))
+				{
+					action.Invoke(modData, args);
+				}
+				else
+				{
+					Console.WriteLine("Invalid arguments for '{0}'", args[0]);
+					GetActionUsage(args[0], action);
+				}
 			}
 			catch (Exception e)
 			{
@@ -58,12 +78,17 @@ namespace OpenRA.Utility
 				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
 				Log.Write("utility", "{0}", e);
 
-				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
-				throw;
+			    if (e is ArgumentException)
+			        Console.WriteLine("No such command '{0}'", args[0]);
+			    else
+			    {
+                    Console.WriteLine("Error: Utility application crashed. See utility.log for details");
+                    throw;
+			    }
 			}
 		}
 
-		static void PrintUsage(IDictionary<string, Action<ModData, string[]>> actions)
+		static void PrintUsage(IDictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>> actions)
 		{
 			Console.WriteLine("Run `OpenRA.Utility.exe [MOD]` to see a list of available commands.");
 			Console.WriteLine("The available mods are: " + string.Join(", ", ModMetadata.AllMods.Keys));
@@ -76,17 +101,22 @@ namespace OpenRA.Utility
 
 			foreach (var key in keys)
 			{
-				var descParts = actions[key].Method.GetCustomAttributes<DescAttribute>(true)
+				GetActionUsage(key, actions[key].Key);
+			}
+		}
+
+		static void GetActionUsage(string key, Action<ModData, string[]> action)
+		{
+			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
 					.SelectMany(d => d.Lines).ToArray();
 
-				if (descParts.Length == 0)
-					continue;
+			if (descParts.Length == 0)
+				return;
 
-				var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
-				var desc = descParts[descParts.Length - 1];
+			var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
+			var desc = descParts[descParts.Length - 1];
 
-				Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
-			}
+			Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
 		}
 	}
 }
