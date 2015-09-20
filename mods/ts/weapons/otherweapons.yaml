@@ -5,7 +5,7 @@ FireballLauncher:
 	Projectile: Bullet
 		Speed: 64
 		Image: FLAMEALL
-		Inaccuracy: 384
+		Inaccuracy: 0, 384
 	Burst: 5
 	BurstDelay: 5
 	Warhead@1Dam: SpreadDamage
@@ -29,7 +29,7 @@ FiendShard:
 	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
-		Inaccuracy: 512
+		Inaccuracy: 0, 512
 		Shadow: true
 		Angle: 60
 		Palette: greentiberium

@@ -2613,6 +2613,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// update inaccuracy modes
+				if (engineVersion < 20150902)
+				{
+					if (node.Key.StartsWith("Projectile") && node.Value.Value == "Bullet")
+					{
+						var inaccuracynode = node.Value.Nodes.FirstOrDefault(x => x.Key == "Inaccuracy");
+						if (inaccuracynode != null)
+							inaccuracynode.Value.Value = "0, " + inaccuracynode.Value.Value;
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

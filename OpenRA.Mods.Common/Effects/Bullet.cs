@@ -25,8 +25,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
 
-		[Desc("Maximum offset at the maximum range.")]
-		public readonly WDist Inaccuracy = WDist.Zero;
+		[Desc("Maximum inaccuracy offset. Can have two values.",
+			"First value determinates a fixed limit, second value scales along with weapon's range.")]
+		public readonly WDist[] Inaccuracy = { WDist.Zero };
 
 		[Desc("Image to display.")]
 		public readonly string Image = null;
@@ -105,10 +106,13 @@ namespace OpenRA.Mods.Common.Effects
 				speed = info.Speed[0];
 
 			target = args.PassiveTarget;
-			if (info.Inaccuracy.Length > 0)
+
+			if (info.Inaccuracy.Length > 1 || info.Inaccuracy[0].Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - pos).Length / args.Weapon.Range.Length;
+				var inaccuracy = info.Inaccuracy.Length > 1
+					? info.Inaccuracy[1].Length * (target - pos).Length / args.Weapon.Range.Length + info.Inaccuracy[0].Length
+					: info.Inaccuracy[0].Length;
+				var maxOffset = OpenRA.Traits.Util.ApplyPercentageModifiers(inaccuracy, args.InaccuracyModifiers);
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 

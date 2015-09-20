@@ -181,7 +181,7 @@ MammothMissiles:
 		Arm: 5
 		Blockable: false
 		Shadow: true
-		Inaccuracy: 853
+		Inaccuracy: 0, 853
 		Angle: 62
 		Image: DRAGON
 		RateOfTurn: 2
@@ -342,7 +342,7 @@ HonestJohn:
 		Arm: 10
 		Blockable: false
 		Shadow: true
-		Inaccuracy: 213
+		Inaccuracy: 0, 213
 		Image: patriot
 		Trail: smokey
 		Speed: 187

@@ -6,7 +6,7 @@ Grenade:
 		Blockable: false
 		Shadow: true
 		Angle: 45
-		Inaccuracy: 384
+		Inaccuracy: 0, 384
 		Image: DISCUS
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
