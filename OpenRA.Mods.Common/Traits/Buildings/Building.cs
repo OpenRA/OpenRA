@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void BeforeTransform(Actor self)
 		{
 			foreach (var s in Info.UndeploySounds)
-				Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+				Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 		}
 
 		public void OnTransform(Actor self) { }

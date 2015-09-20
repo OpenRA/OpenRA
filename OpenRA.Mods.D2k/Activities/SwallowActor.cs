@@ -105,7 +105,7 @@ namespace OpenRA.Mods.D2k.Activities
 		void PlayAttack(Actor self, WPos attackPosition, List<Player> affectedPlayers)
 		{
 			withSpriteBody.PlayCustomAnimation(self, sandworm.Info.MouthSequence);
-			Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
+			Game.Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
 
 			Game.RunAfterDelay(1000, () =>
 			{
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 		void NotifyPlayer(Player player, WPos location)
 		{
-			Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
+			Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
 
 			if (player == player.World.RenderPlayer)
 				radarPings.Add(() => true, location, Color.Red, 50);

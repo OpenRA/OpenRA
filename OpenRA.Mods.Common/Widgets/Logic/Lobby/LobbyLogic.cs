@@ -653,7 +653,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				chatPanel.ScrollToBottom(smooth: true);
 
-			Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+			Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
 
 		bool SwitchTeamChat()

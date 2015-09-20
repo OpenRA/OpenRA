@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Enable/Disable the radar
 			var enabled = IsEnabled();
 			if (enabled != cachedEnabled)
-				Sound.Play(enabled ? RadarOnlineSound : RadarOfflineSound);
+				Game.Sound.Play(enabled ? RadarOnlineSound : RadarOfflineSound);
 			cachedEnabled = enabled;
 
 			if (enabled)

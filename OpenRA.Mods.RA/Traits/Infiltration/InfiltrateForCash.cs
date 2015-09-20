@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Traits
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
 
-			Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
+			Game.Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
 		}

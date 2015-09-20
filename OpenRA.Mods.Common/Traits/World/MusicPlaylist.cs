@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!SongExists(currentSong))
 				return;
 
-			Sound.PlayMusicThen(currentSong, () =>
+			Game.Sound.PlayMusicThen(currentSong, () =>
 			{
 				if (!CurrentSongIsBackground && !Game.Settings.Sound.Repeat)
 					currentSong = GetNextSong();
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			currentSong = music;
 			CurrentSongIsBackground = false;
-			Sound.PlayMusicThen(music, onComplete);
+			Game.Sound.PlayMusicThen(music, onComplete);
 		}
 
 		public MusicInfo GetNextSong()
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Stop()
 		{
 			currentSong = null;
-			Sound.StopMusic();
+			Game.Sound.StopMusic();
 
 			if (currentBackgroundSong != null)
 			{
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Disposing(Actor self)
 		{
 			if (currentSong != null)
-				Sound.StopMusic();
+				Game.Sound.StopMusic();
 		}
 	}
 }

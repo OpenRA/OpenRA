@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 					notify.Charging(self, target);
 
 				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))
-					Sound.Play(attack.info.ChargeAudio, self.CenterPosition);
+					Game.Sound.Play(attack.info.ChargeAudio, self.CenterPosition);
 
 				return Util.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
 			}

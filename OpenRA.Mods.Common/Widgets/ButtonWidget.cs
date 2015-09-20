@@ -126,10 +126,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
 			}
 			else
-				Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
+				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
 		}
@@ -167,12 +167,12 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					OnMouseDown(mi);
 					Depressed = true;
-					Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
 				}
 				else
 				{
 					YieldMouseFocus(mi);
-					Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 				}
 			}
 			else if (mi.Event == MouseInputEvent.Move && HasMouseFocus)

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
-			Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, faction);
+			Game.Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, faction);
 		}
 	}
 }

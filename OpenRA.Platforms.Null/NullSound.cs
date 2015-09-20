@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Platforms.Null
 {
-	class NullSoundEngine : ISoundEngine
+	sealed class NullSoundEngine : ISoundEngine
 	{
 		public SoundDevice[] AvailableDevices()
 		{
@@ -42,6 +42,8 @@ namespace OpenRA.Platforms.Null
 		public void SetSoundVolume(float volume, ISound music, ISound video) { }
 
 		public float Volume { get; set; }
+
+		public void Dispose() { }
 	}
 
 	class NullSoundSource : ISoundSource { }

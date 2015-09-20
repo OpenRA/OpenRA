@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(false, new CallFunc(() =>
 				{
 					if (!string.IsNullOrEmpty(info.UndeploySound))
-						Sound.Play(info.UndeploySound, self.CenterPosition);
+						Game.Sound.Play(info.UndeploySound, self.CenterPosition);
 
 					if (string.IsNullOrEmpty(info.DeployAnimation))
 					{
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new CallFunc(() =>
 				{
 					if (!string.IsNullOrEmpty(info.DeploySound))
-						Sound.Play(info.DeploySound, self.CenterPosition);
+						Game.Sound.Play(info.DeploySound, self.CenterPosition);
 
 					if (string.IsNullOrEmpty(info.DeployAnimation))
 						return;

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			return new SelectTarget(Self.World, order, manager, this);
 		}
 

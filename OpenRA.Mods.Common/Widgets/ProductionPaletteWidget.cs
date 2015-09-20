@@ -220,14 +220,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
-				Sound.Play(TabClick);
+				Game.Sound.Play(TabClick);
 				return true;
 			}
 
 			if (item != null && item.Paused)
 			{
 				// Resume a paused item
-				Sound.Play(TabClick);
+				Game.Sound.Play(TabClick);
 				World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, false));
 				return true;
 			}
@@ -235,8 +235,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (CurrentQueue.BuildableItems().Any(a => a.Name == icon.Name))
 			{
 				// Queue a new item
-				Sound.Play(TabClick);
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
+				Game.Sound.Play(TabClick);
+				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
 					handleMultiple ? 5 : 1));
 				return true;
@@ -250,19 +250,19 @@ namespace OpenRA.Mods.Common.Widgets
 			if (item == null)
 				return false;
 
-			Sound.Play(TabClick);
+			Game.Sound.Play(TabClick);
 
 			if (item.Paused || item.Done || item.TotalCost == item.RemainingCost)
 			{
 				// Instant cancel of things we have not started yet and things that are finished
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
 					handleMultiple ? 5 : 1));
 			}
 			else
 			{
 				// Pause an existing item
-				Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, true));
 			}
 
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets
 				: HandleRightClick(item, icon, handleMultiple);
 
 			if (!handled)
-				Sound.Play(DisabledTabClick);
+				Game.Sound.Play(DisabledTabClick);
 
 			return true;
 		}

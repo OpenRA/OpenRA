@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Cloaked)
 			{
-				Sound.Play(Info.UncloakSound, self.CenterPosition);
+				Game.Sound.Play(Info.UncloakSound, self.CenterPosition);
 				if (upgradeManager != null)
 					foreach (var u in Info.WhileCloakedUpgrades)
 						upgradeManager.RevokeUpgrade(self, u, this);
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (remainingTime > 0 && !IsTraitDisabled && !damageDisabled && --remainingTime <= 0)
 			{
-				Sound.Play(Info.CloakSound, self.CenterPosition);
+				Game.Sound.Play(Info.CloakSound, self.CenterPosition);
 				if (upgradeManager != null)
 					foreach (var u in Info.WhileCloakedUpgrades)
 						upgradeManager.GrantUpgrade(self, u, this);

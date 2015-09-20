@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA
 {
-	public interface ISoundEngine
+	public interface ISoundEngine : IDisposable
 	{
 		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);

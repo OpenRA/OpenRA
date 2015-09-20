@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Warheads
 				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, palette)));
 
 			if (ImpactSound != null)
-				Sound.Play(ImpactSound, pos);
+				Game.Sound.Play(ImpactSound, pos);
 		}
 
 		public bool IsValidImpact(WPos pos, Actor firedBy)

@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 						w.Add(pilot);
 						pilot.QueueActivity(new Parachute(pilot, cp));
 					});
-					Sound.Play(info.ChuteSound, cp);
+					Game.Sound.Play(info.ChuteSound, cp);
 				}
 				else
 				{

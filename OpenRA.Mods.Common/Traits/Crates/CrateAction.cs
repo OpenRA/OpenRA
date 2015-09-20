@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Activate(Actor collector)
 		{
-			Sound.PlayToPlayer(collector.Owner, info.Notification);
+			Game.Sound.PlayToPlayer(collector.Owner, info.Notification);
 
 			if (info.Effect != null)
 				collector.World.AddFrameEndTask(w => w.Add(new CrateEffect(collector, info.Effect, info.Palette)));

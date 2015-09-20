@@ -164,7 +164,7 @@ namespace OpenRA
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = Stance.Neutral;
 
-			Sound.SoundVolumeModifier = 1.0f;
+			Game.Sound.SoundVolumeModifier = 1.0f;
 
 			gameInfo = new GameInformation
 			{
@@ -369,8 +369,8 @@ namespace OpenRA
 
 			frameEndActions.Clear();
 
-			Sound.StopAudio();
-			Sound.StopVideo();
+			Game.Sound.StopAudio();
+			Game.Sound.StopVideo();
 
 			// Dispose newer actors first, and the world actor last
 			foreach (var a in actors.Values.Reverse())

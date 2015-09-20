@@ -245,11 +245,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				return;
 
+			var rules = self.World.Map.Rules;
 			switch (order.OrderString)
 			{
 				case "StartProduction":
 					{
-						var unit = self.World.Map.Rules.Actors[order.TargetString];
+						var unit = rules.Actors[order.TargetString];
 						var bi = unit.TraitInfo<BuildableInfo>();
 						if (!bi.Queue.Contains(Info.Type))
 							return; /* Not built by this queue */
@@ -281,13 +282,13 @@ namespace OpenRA.Mods.Common.Traits
 								var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 
 								if (isBuilding && !hasPlayedSound)
-									hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 								else if (!isBuilding)
 								{
 									if (BuildUnit(order.TargetString))
-										Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+										Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 									else if (!hasPlayedSound && time > 0)
-										hasPlayedSound = Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+										hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
 								}
 							})));
 						}

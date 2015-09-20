@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.Add(playerBeacon);
 
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-					Sound.PlayNotification(self.World.Map.Rules, null, info.NotificationType, info.Notification,
+					Game.Sound.PlayNotification(self.World.Map.Rules, null, info.NotificationType, info.Notification,
 						self.World.RenderPlayer != null ? self.World.RenderPlayer.Faction.InternalName : null);
 
 				if (radarPings != null)

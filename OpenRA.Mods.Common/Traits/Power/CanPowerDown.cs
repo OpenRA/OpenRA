@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsTraitDisabled && order.OrderString == "PowerDown")
 			{
 				disabled = !disabled;
-				Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Faction.InternalName);
 				power.UpdateActor(self);
 
 				if (disabled)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!disabled || !Info.CancelWhenDisabled)
 				return;
 			disabled = false;
-			Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "EnablePower", self.Owner.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "EnablePower", self.Owner.Faction.InternalName);
 			power.UpdateActor(self);
 		}
 	}

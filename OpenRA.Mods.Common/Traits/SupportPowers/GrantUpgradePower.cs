@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
-			Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
 			return new SelectTarget(Self.World, order, manager, this);
 		}
 
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.Trait<WithSpriteBody>().PlayCustomAnimation(self, info.GrantUpgradeSequence);
 
-			Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Game.Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{

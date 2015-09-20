@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			stopped = true;
 			paused = true;
-			Sound.StopVideo();
+			Game.Sound.StopVideo();
 			onComplete = () => { };
 
 			invLength = video.Framerate * 1f / video.Frames;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var nextFrame = 0;
 				if (video.HasAudio)
-					nextFrame = (int)float2.Lerp(0, video.Frames, Sound.VideoSeekPosition * invLength);
+					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
 				else
 					nextFrame = video.CurrentFrame + 1;
 
@@ -176,9 +176,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			onComplete = after;
 			if (stopped)
-				Sound.PlayVideo(video.AudioData, video.AudioChannels, video.SampleBits, video.SampleRate);
+				Game.Sound.PlayVideo(video.AudioData, video.AudioChannels, video.SampleBits, video.SampleRate);
 			else
-				Sound.PlayVideo();
+				Game.Sound.PlayVideo();
 
 			stopped = paused = false;
 		}
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			paused = true;
-			Sound.PauseVideo();
+			Game.Sound.PauseVideo();
 		}
 
 		public void Stop()
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			stopped = true;
 			paused = true;
-			Sound.StopVideo();
+			Game.Sound.StopVideo();
 			video.Reset();
 			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
 			world.AddFrameEndTask(_ => onComplete());

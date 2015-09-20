@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Orders
 					orderType = "PlacePlug";
 					if (!AcceptsPlug(topLeft, plugInfo))
 					{
-						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
 						yield break;
 					}
 				}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Orders
 					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
 						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
 					{
-						Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
 						yield break;
 					}
 

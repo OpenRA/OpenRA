@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				var sound = pool.Info.RearmSound;
 				if (sound != null)
-					Sound.Play(sound, self.CenterPosition);
+					Game.Sound.Play(sound, self.CenterPosition);
 
 				ammoPoolsReloadTimes[pool] = pool.Info.ReloadTicks;
 			}

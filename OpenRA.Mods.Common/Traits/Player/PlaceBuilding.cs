@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						if (playSounds)
 							foreach (var s in buildingInfo.BuildSounds)
-								Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
+								Game.Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 
 						playSounds = false;
 					}
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					pluggable.EnablePlug(host, plugInfo.Type);
 					foreach (var s in buildingInfo.BuildSounds)
-						Sound.PlayToPlayer(order.Player, s, host.CenterPosition);
+						Game.Sound.PlayToPlayer(order.Player, s, host.CenterPosition);
 				}
 				else
 				{
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 					});
 
 					foreach (var s in buildingInfo.BuildSounds)
-						Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
+						Game.Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 				}
 
 				if (producer.Actor != null)
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (GetNumBuildables(self.Owner) > prevItems)
 					w.Add(new DelayedAction(info.NewOptionsNotificationDelay,
-							() => Sound.PlayNotification(self.World.Map.Rules, order.Player, "Speech", info.NewOptionsNotification, order.Player.Faction.InternalName)));
+							() => Game.Sound.PlayNotification(self.World.Map.Rules, order.Player, "Speech", info.NewOptionsNotification, order.Player.Faction.InternalName)));
 			});
 		}
 
