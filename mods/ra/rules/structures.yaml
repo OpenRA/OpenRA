@@ -1494,7 +1494,7 @@ SBAG:
 		Value: 0
 	Tooltip:
 		Name: Sandbag Wall
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1519,7 +1519,7 @@ FENC:
 		Value: 0
 	Tooltip:
 		Name: Wire Fence
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1554,6 +1554,7 @@ BRIK:
 		Type: Concrete
 	Crushable:
 		CrushClasses: heavywall
+	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: concrete

@@ -18,6 +18,7 @@ GAWALL:
 		HP: 300
 	Armor:
 		Type: Concrete
+	BlocksProjectiles:
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:

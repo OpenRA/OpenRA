@@ -892,7 +892,7 @@ BRIK:
 		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
-		Description: Stops infantry and most tanks.
+		Description: Stops infantry and most tanks.\nBlocks some projectiles.
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
@@ -901,6 +901,7 @@ BRIK:
 		HP: 250
 	Armor:
 		Type: Heavy
+	BlocksProjectiles:
 	Crushable:
 		CrushClasses: heavywall
 		-CrushSound:

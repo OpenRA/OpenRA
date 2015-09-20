@@ -556,7 +556,6 @@
 	Crushable:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
-	BlocksProjectiles:
 	LineBuild:
 		Range: 8
 		NodeTypes: wall
