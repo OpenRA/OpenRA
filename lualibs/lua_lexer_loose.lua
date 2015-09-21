@@ -203,7 +203,7 @@ function M.lexc(code, f, pos)
     M.lex(code, function(tag, name, pos)
       yield {tag=tag, name, lineinfo=pos}
     end, pos)
-    yield {tag='Eof'}
+    yield {tag='Eof', lineinfo = #code+1}
   end)
   return setmetatable({f=func}, Stream)
 end
