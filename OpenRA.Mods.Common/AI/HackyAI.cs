@@ -500,11 +500,11 @@ namespace OpenRA.Mods.Common.AI
 					// Try and place the refinery near a resource field
 					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
 						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
-						.Shuffle(Random);
+						.Shuffle(Random).ToList();
 
-					foreach (var c in nearbyResources)
+					if (nearbyResources.Count > 0)
 					{
-						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(nearbyResources.First(), baseCenter, 0, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
