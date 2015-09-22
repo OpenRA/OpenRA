@@ -834,7 +834,7 @@ function findReplace:createPanel()
   local replaceCtrl = wx.wxTextCtrl(ctrl, wx.wxID_ANY, replaceHintText,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTE_PROCESS_ENTER + wx.wxTE_PROCESS_TAB + wx.wxBORDER_STATIC)
-  self.ac = {[findCtrl:GetId()] = {}, [replaceCtrl:GetId()] = {}}
+  self.ac = {[findCtrl:GetId()] = {}, [replaceCtrl:GetId()] = {}, [scope:GetId()] = {}}
 
   local findSizer = wx.wxBoxSizer(wx.wxHORIZONTAL)
   findSizer:Add(findCtrl, 1, wx.wxLEFT + wx.wxRIGHT + wx.wxALIGN_LEFT + wx.wxEXPAND + wx.wxFIXED_MINSIZE, 1)
