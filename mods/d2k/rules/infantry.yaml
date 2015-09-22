@@ -9,7 +9,7 @@ light_inf:
 		Name: Light Infantry
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Health:
-		HP: 50
+		HP: 600
 	Mobile:
 		Speed: 53
 	Armament:
@@ -32,7 +32,7 @@ engineer:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Health:
-		HP: 25
+		HP: 500
 	Mobile:
 		Speed: 53
 	Passenger:
@@ -60,7 +60,7 @@ trooper:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Health:
-		HP: 45
+		HP: 700
 	Mobile:
 		Speed: 42
 	Armament:
@@ -84,7 +84,7 @@ medic:
 		Name: Medic
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
 	Health:
-		HP: 60
+		HP: 375
 	Mobile:
 		Speed: 42
 	AutoHeal:
@@ -117,10 +117,10 @@ fremen:
 	Mobile:
 		Speed: 53
 	Health:
-		HP: 70
-	Passenger:
+		HP: 700
 	RevealsShroud:
 		Range: 7c0
+	Passenger:
 	AutoTarget:
 		ScanRadius: 7
 	Armament@PRIMARY:
@@ -152,7 +152,7 @@ grenadier:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Health:
-		HP: 50
+		HP: 600
 	Mobile:
 		Speed: 53
 	Armament:
@@ -164,8 +164,8 @@ grenadier:
 		AttackSequence: throw
 		IdleSequences: idle
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
+		Weapon: GrenDeath
+		EmptyWeapon: GrenDeath
 	AttractsWorms:
 		Intensity: 180
 
@@ -181,7 +181,7 @@ sardaukar:
 		Name: Sardaukar
 		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Health:
-		HP: 100
+		HP: 1000
 	Mobile:
 		Speed: 42
 	RevealsShroud:
@@ -197,6 +197,10 @@ sardaukar:
 		Intensity: 180
 	Voiced:
 		VoiceSet: GenericVoice
+	Explodes:
+		Weapon: SardDeath
+		EmptyWeapon: SardDeath
+		Chance: 100
 
 saboteur:
 	Inherits: ^Infantry
@@ -210,7 +214,7 @@ saboteur:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Health:
-		HP: 100
+		HP: 400
 	Mobile:
 		Speed: 64
 	RevealsShroud:

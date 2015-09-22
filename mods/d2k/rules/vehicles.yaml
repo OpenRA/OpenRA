@@ -13,9 +13,9 @@ mcv:
 		Class: mcv
 		Priority: 3
 	Health:
-		HP: 800
+		HP: 4500
 	Armor:
-		Type: Light
+		Type: light
 	Mobile:
 		Speed: 64
 		Crushes: crate, infantry
@@ -64,9 +64,9 @@ harvester:
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
 	Health:
-		HP: 1000
+		HP: 4500
 	Armor:
-		Type: Heavy
+		Type: harvester
 	Mobile:
 		Speed: 64
 		Crushes: crate, infantry
@@ -99,17 +99,20 @@ trike:
 	Selectable:
 		Class: trike
 	Health:
-		HP: 100
+		HP: 900
 	Armor:
-		Type: Light
+		Type: wood
 	Mobile:
 		ROT: 10
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
 	WithMuzzleFlash:
-	Armament:
+	Armament@damage:
 		Weapon: HMG
+		LocalOffset: -416,0,0
+	Armament@muzzle:
+		Weapon: HMG_muzzle
 		LocalOffset: -416,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
@@ -132,9 +135,9 @@ quad:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
 	Health:
-		HP: 125
+		HP: 1100
 	Armor:
-		Type: Light
+		Type: light
 	Mobile:
 		ROT: 8
 		Speed: 96
@@ -165,9 +168,9 @@ siege_tank:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 120
+		HP: 1200
 	Armor:
-		Type: Heavy
+		Type: light
 	Mobile:
 		Speed: 53
 		ROT: 3
@@ -213,13 +216,13 @@ missile_tank:
 		Speed: 64
 		ROT: 5
 	Health:
-		HP: 90
+		HP: 1300
 	Armor:
-		Type: Light
+		Type: wood
 	RevealsShroud:
 		Range: 9c0
 	Armament:
-		Weapon: 227mm
+		Weapon: mtank_pri
 		LocalOffset: -213,128,171, -213,-256,171
 		FireDelay: 15
 	AttackFrontal:
@@ -247,9 +250,9 @@ sonic_tank:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
 	Health:
-		HP: 130
+		HP: 3000
 	Armor:
-		Type: Light
+		Type: light
 	Mobile:
 		ROT: 3
 		Speed: 74
@@ -280,9 +283,9 @@ devastator:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
 	Health:
-		HP: 650
+		HP: 5000
 	Armor:
-		Type: Heavy
+		Type: heavy
 	Mobile:
 		ROT: 3
 		Speed: 42
@@ -319,17 +322,20 @@ raider:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
 	Health:
-		HP: 110
+		HP: 1000
 	Armor:
-		Type: Light
+		Type: wood
 	Mobile:
 		ROT: 10
 		Speed: 149
 	RevealsShroud:
 		Range: 7c0
 	WithMuzzleFlash:
-	Armament:
+	Armament@damage:
 		Weapon: HMGo
+		LocalOffset: 170,0,0
+	Armament@muzzle:
+		Weapon: HMGo_muzzle
 		LocalOffset: 170,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
@@ -375,9 +381,9 @@ deviator:
 		ROT: 3
 		Speed: 64
 	Health:
-		HP: 125
+		HP: 1100
 	Armor:
-		Type: Light
+		Type: wood
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -405,9 +411,9 @@ deviator:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed
 	Health:
-		HP: 350
+		HP: 2100
 	Armor:
-		Type: Heavy
+		Type: heavy
 	Mobile:
 		Speed: 64
 		ROT: 6
@@ -458,7 +464,7 @@ combat_tank_h:
 	RevealsShroud:
 		Range: 7c0
 	Health:
-		HP: 440
+		HP: 2700
 	SpawnActorOnDeath:
 		Actor: combat_tank_h.husk
 
@@ -474,6 +480,8 @@ combat_tank_o:
 		Speed: 96
 		ROT: 8
 		Crushes: crate, infantry
+	Health:
+		HP: 1800
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk
 

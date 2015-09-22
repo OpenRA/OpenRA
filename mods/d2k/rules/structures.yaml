@@ -49,9 +49,9 @@ construction_yard:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 1000
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: cy
 	RevealsShroud:
 		Range: 10c0
 	Production:
@@ -94,9 +94,9 @@ wind_trap:
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
 		Range: 4c0
 	RenderSprites:
@@ -129,9 +129,9 @@ barracks:
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 800
+		HP: 3200
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
 		Range: 5c0
 	RallyPoint:
@@ -185,9 +185,9 @@ refinery:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 900
+		HP: 3000
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
 		Range: 6c0
 	Refinery:
@@ -236,9 +236,9 @@ silo:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 1500
 	Armor:
-		Type: Wood
+		Type: wall
 	RevealsShroud:
 		Range: 4c0
 	RenderSprites:
@@ -276,9 +276,9 @@ light_factory:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 750
+		HP: 3300
 	Armor:
-		Type: Wood
+		Type: light
 	RevealsShroud:
 		Range: 4c0
 	RenderSprites:
@@ -333,9 +333,9 @@ heavy_factory:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
 		Range: 4c0
 	RallyPoint:
@@ -396,9 +396,9 @@ outpost:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: light
 	RevealsShroud:
 		Range: 10c0
 	ProvidesRadar:
@@ -434,9 +434,9 @@ starport:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 1000
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: building
 	RevealsShroud:
 		Range: 7c0
 	RallyPoint:
@@ -499,9 +499,9 @@ wall:
 		Adjacent: 7
 		TerrainTypes: Rock, Concrete
 	Health:
-		HP: 300
+		HP: 2000
 	Armor:
-		Type: Concrete
+		Type: none
 	Crushable:
 		CrushClasses: Concretewall
 	BlocksProjectiles:
@@ -542,9 +542,9 @@ medium_gun_turret:
 		Bounds: 32,32
 		Priority: 3
 	Health:
-		HP: 400
+		HP: 2700
 	Armor:
-		Type: Concrete
+		Type: heavy
 	RevealsShroud:
 		Range: 8c0
 	BodyOrientation:
@@ -584,9 +584,9 @@ large_gun_turret:
 		Bounds: 32,32
 		Priority: 3
 	Health:
-		HP: 400
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: concrete
 	RevealsShroud:
 		Range: 10c0
 	BodyOrientation:
@@ -622,9 +622,9 @@ repair_pad:
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
-		HP: 500
+		HP: 3000
 	Armor:
-		Type: Concrete
+		Type: building
 	RevealsShroud:
 		Range: 5c0
 	Selectable:
@@ -672,9 +672,9 @@ high_tech_factory:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1500
+		HP: 3500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
 		Range: 4c0
 	RenderSprites:
@@ -722,9 +722,9 @@ research_centre:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 1000
+		HP: 2500
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
 		Range: 4c0
 	RenderSprites:
@@ -759,9 +759,9 @@ palace:
 	Bib:
 		HasMinibib: True
 	Health:
-		HP: 2000
+		HP: 4000
 	Armor:
-		Type: Wood
+		Type: wood
 	RevealsShroud:
 		Range: 8c0
 	RenderSprites:

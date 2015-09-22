@@ -59,7 +59,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
-		[PaletteReference] public readonly string TrailPalette = "effect";
+		// TODO: Re-add PaletteReference as soon as it handles player palettes
+		public readonly string TrailPalette = "effect";
 
 		public readonly bool TrailUsePlayerPalette = false;
 		public readonly int ContrailLength = 0;
