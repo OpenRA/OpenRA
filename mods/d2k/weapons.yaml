@@ -57,7 +57,7 @@ Bazooka:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosion: tiny_explosion
 		ImpactSound: EXPLSML1.WAV
 
 Fremen_S:
