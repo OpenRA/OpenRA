@@ -1,13 +1,13 @@
 explosion:
 	Defaults:
 		BlendMode: Additive
+		Tick: 80
 	piff: DATA.R8
 		Start: 3626
 		Length: 5
 	piffs: DATA.R8
 		Start: 3429
 		Length: 4
-		Tick: 80
 	small_explosion: DATA.R8
 		Start: 3403
 		Length: 15
@@ -17,15 +17,9 @@ explosion:
 	tiny_explosion: DATA.R8
 		Start: 3386
 		Length: 4
-		Tick: 80
 	nuke: DATA.R8
 		Start: 3965
 		Length: 14
-		Tick: 60
-	mini_explosion: DATA.R8
-		Start: 3403
-		Length: 15
-		Tick: 60
 	self_destruct: DATA.R8
 		Start: 3433
 		Length: 15
@@ -35,20 +29,12 @@ explosion:
 	large_explosion: DATA.R8
 		Start: 3988
 		Length: 22
-	artillery: DATA.R8
-		Start: 3988
-		Length: 22
-	small_artillery: DATA.R8
-		Start: 3390
-		Length: 12
-		Tick: 60
 	small_napalm: DATA.R8
 		Start: 3421
 		Length: 8
 	rocket_explosion: DATA.R8
 		Start: 3381
 		Length: 5
-		Tick: 80
 		BlendMode: Alpha
 	shockwave: DATA.R8
 		Start: 3687
@@ -58,7 +44,8 @@ explosion:
 		Start: 3512
 		Length: 23
 		BlendMode: Alpha
-		Tick: 80
+		Offset: 12, -10
+		Tick: 120
 	corpse: DATA.R8
 		Start: 430
 		Length: 12

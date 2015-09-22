@@ -565,7 +565,7 @@ DeviatorMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_artillery
+		Explosion: med_explosion
 		ImpactSound: EXPLLG3.WAV
 
 Sound:
@@ -645,7 +645,7 @@ OrniBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: NAPALM1.WAV
 
 Crush:
@@ -723,7 +723,7 @@ CrateExplosion:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplodeSmall:
@@ -738,7 +738,7 @@ UnitExplodeMed:
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
 grenade:
