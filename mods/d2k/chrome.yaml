@@ -96,6 +96,10 @@ flags: buttons.png
 	ordos: 45,114,22,21
 	Random: 67,114,23,21
 	spectator: 67,114,23,21
+	corrino: 90,114,22,21
+	smuggler: 111,114,23,21
+	fremen: 133,114,23,21
+	worm: 156,114,23,21
 
 # Used for the menu
 dialog: dialog.png
