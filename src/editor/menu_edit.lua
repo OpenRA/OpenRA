@@ -46,20 +46,36 @@ menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
 
+local function getCtrlWithFocus(edType)
+  local ctrl = ide:GetMainFrame():FindFocus()
+  return ctrl and ctrl:GetClassInfo():GetClassName() == edType and ctrl:DynamicCast(edType) or nil
+end
+
 local function onUpdateUIEditorInFocus(event)
   event:Enable(GetEditorWithFocus(GetEditor()) ~= nil)
 end
 
 local function onUpdateUIEditMenu(event)
+  local menu_id = event:GetId()
   local editor = GetEditorWithFocus()
-  if editor == nil then event:Enable(false); return end
+  if editor == nil then
+    local editor = getCtrlWithFocus("wxTextCtrl")
+    event:Enable(editor and (
+        menu_id == ID_PASTE and editor:CanPaste() or
+        menu_id == ID_UNDO and editor:CanUndo() or
+        menu_id == ID_REDO and editor:CanRedo() or
+        menu_id == ID_CUT and editor:CanCut() or
+        menu_id == ID_COPY and editor:CanCopy() or
+        menu_id == ID_SELECTALL and true
+      ) or false)
+    return
+  end
 
   local alwaysOn = {
     [ID_SELECTALL] = true,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
   }
-  local menu_id = event:GetId()
   local enable =
     -- pasting is allowed when the document is not read-only and the selection
     -- (if any) has no protected text; since pasting handles protected text,
@@ -72,14 +88,26 @@ local function onUpdateUIEditMenu(event)
 end
 
 local function onEditMenu(event)
+  local menu_id = event:GetId()
   local editor = GetEditorWithFocus()
-  if editor == nil then event:Skip(); return end
+  if editor == nil then
+    local editor = getCtrlWithFocus("wxTextCtrl")
+    if not editor or not (
+      menu_id == ID_PASTE and editor:Paste() or
+      menu_id == ID_UNDO and editor:Undo() or
+      menu_id == ID_REDO and editor:Redo() or
+      menu_id == ID_CUT and editor:Cut() or
+      menu_id == ID_COPY and editor:Copy() or
+      menu_id == ID_SELECTALL and editor:SetSelection(-1, -1) or
+      true
+    ) then event:Skip() end
+    return
+  end
 
   if PackageEventHandle("onEditorAction", editor, event) == false then
     return
   end
 
-  local menu_id = event:GetId()
   local copytext
   if (menu_id == ID_CUT or menu_id == ID_COPY)
   and ide.wxver >= "2.9.5" and editor:GetSelections() > 1 then

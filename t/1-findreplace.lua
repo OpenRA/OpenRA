@@ -88,6 +88,12 @@ editor:MarkerAdd(0, FILE_MARKER)
 ide:GetDocument(editor):Save()
 is(editor:GetText():match("Updated %d"), "Updated 0", "Replace fails on invalid line numbers.")
 
+
+findReplace:SetFind("something")
+findReplace:Show() -- set focus on the find
+ide.frame:ProcessEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_CUT))
+ok(findReplace:GetFind() == nil, "`Cut` command cuts content of the `Find` control in the search panel.")
+
 -- cleanup
 findReplace:Hide()
 while editor:CanUndo() do editor:Undo() end
