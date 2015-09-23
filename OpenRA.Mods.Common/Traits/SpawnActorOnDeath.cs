@@ -10,12 +10,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public enum OwnerType { Victim, Killer, InternalName }
 
@@ -96,34 +95,8 @@ namespace OpenRA.Mods.RA.Traits
 				if (info.SkipMakeAnimations)
 					td.Add(new SkipMakeAnimsInit());
 
-				// Allows the husk to drag to its final position
-				var mobile = self.TraitOrDefault<Mobile>();
-				if (mobile != null)
-				{
-					if (!mobile.CanEnterCell(self.Location, self, false)) return;
-					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location)));
-				}
-
-				var facing = self.TraitOrDefault<IFacing>();
-				if (facing != null)
-					td.Add(new FacingInit(facing.Facing));
-
-				var turreted = self.TraitsImplementing<Turreted>();
-				if (turreted.Any())
-				{
-					var turretFacings = new Dictionary<string, int>();
-					foreach (var t in turreted)
-						turretFacings.Add(t.Name, t.TurretFacing);
-					td.Add(new TurretFacingsInit(turretFacings));
-				}
-
-				// TODO: untie this and move to Mods.Common
-				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
-				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
-				{
-					td.Add(new ChronoshiftOriginInit(chronoshiftable.Origin));
-					td.Add(new ChronoshiftReturnInit(chronoshiftable.ReturnTicks));
-				}
+				foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
+					modifier.ModifyDeathActorInit(self, td);
 
 				var huskActor = self.TraitsImplementing<IHuskModifier>()
 					.Select(ihm => ihm.HuskActor(self))

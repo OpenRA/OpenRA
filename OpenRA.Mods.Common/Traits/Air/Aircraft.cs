@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice,
+	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
@@ -326,6 +326,11 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
 				yield return new Repair(a);
+		}
+
+		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		{
+			init.Add(new FacingInit(Facing));
 		}
 
 		#region Implement IPositionable
