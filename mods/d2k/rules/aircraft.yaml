@@ -6,9 +6,9 @@ carryall.reinforce:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 	Health:
-		HP: 250
+		HP: 4800
 	Armor:
-		Type: Light
+		Type: light
 	Helicopter:
 		CruiseAltitude: 2100
 		InitialFacing: 0
@@ -57,16 +57,10 @@ frigate:
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
-	Health:
-		HP: 500
 	-AppearsOnRadar:
-	Armor:
-		Type: Heavy
 	Cargo:
 		MaxWeight: 20
 		PipCount: 10
-	DamageMultiplier@INVULNERABLE:
-		Modifier: 0
 	FlyAwayOnIdle:
 	RejectsOrders:
 
@@ -78,9 +72,9 @@ ornithopter:
 	Armament:
 		Weapon: OrniBomb
 	Health:
-		HP: 100
+		HP: 900
 	Armor:
-		Type: Light
+		Type: light
 	Plane:
 		ROT: 2
 		Speed: 189
