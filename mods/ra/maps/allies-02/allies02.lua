@@ -28,10 +28,10 @@ elseif Map.Difficulty == "Normal" then
 	Announcements =
 	{
 		{ "WarningFiveMinutesRemaining", DateTime.Seconds(3) },
-		{ "WarningFourMinutesRemaining", DateTime.Minutes(6) },
-		{ "WarningThreeMinutesRemaining", DateTime.Minutes(7) },
-		{ "WarningTwoMinutesRemaining", DateTime.Minutes(8) },
-		{ "WarningOneMinuteRemaining", DateTime.Minutes(9) }
+		{ "WarningFourMinutesRemaining", DateTime.Minutes(1) },
+		{ "WarningThreeMinutesRemaining", DateTime.Minutes(2) },
+		{ "WarningTwoMinutesRemaining", DateTime.Minutes(3) },
+		{ "WarningOneMinuteRemaining", DateTime.Minutes(4) }
 	}
 
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
