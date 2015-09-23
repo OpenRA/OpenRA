@@ -13,7 +13,7 @@ carryall.reinforce:
 		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
-		Speed: 160
+		Speed: 112
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repair_pad
 		RearmBuildings:
@@ -52,8 +52,8 @@ frigate:
 		Name: Frigate
 		Description: Supply spacecraft
 	Plane:
-		ROT: 5
-		Speed: 350
+		ROT: 1
+		Speed: 126
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False
@@ -82,9 +82,9 @@ ornithopter:
 	Armor:
 		Type: Light
 	Plane:
-		ROT: 5
-		Speed: 350
-		RepairBuildings: repair_pad
+		ROT: 2
+		Speed: 189
+		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False
 	AmmoPool:
@@ -101,7 +101,7 @@ ornithopter.husk:
 		Name: Ornithopter
 	Plane:
 		ROT: 5
-		Speed: 350
+		Speed: 189
 		RepairBuildings:
 		RearmBuildings:
 	RenderSprites:
@@ -113,7 +113,7 @@ carryall.husk:
 		Name: Carryall
 	Helicopter:
 		ROT: 4
-		Speed: 210
+		Speed: 112
 		RepairBuildings:
 		RearmBuildings:
 	RenderSprites:

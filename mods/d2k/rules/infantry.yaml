@@ -11,7 +11,7 @@ light_inf:
 	Health:
 		HP: 600
 	Mobile:
-		Speed: 53
+		Speed: 43
 	Armament:
 		Weapon: LMG
 	AttackFrontal:
@@ -34,7 +34,7 @@ engineer:
 	Health:
 		HP: 500
 	Mobile:
-		Speed: 53
+		Speed: 31
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -62,7 +62,7 @@ trooper:
 	Health:
 		HP: 700
 	Mobile:
-		Speed: 42
+		Speed: 31
 	Armament:
 		Weapon: Bazooka
 		LocalOffset: 0,0,555
@@ -115,7 +115,7 @@ fremen:
 		BuildPaletteOrder: 100
 		Prerequisites: ~barracks.atreides, palace, ~techlevel.high
 	Mobile:
-		Speed: 53
+		Speed: 43
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -154,7 +154,7 @@ grenadier:
 	Health:
 		HP: 600
 	Mobile:
-		Speed: 53
+		Speed: 43
 	Armament:
 		LocalOffset: 0,0,555
 		Weapon: grenade
@@ -183,7 +183,7 @@ sardaukar:
 	Health:
 		HP: 1000
 	Mobile:
-		Speed: 42
+		Speed: 31
 	RevealsShroud:
 		Range: 6c0
 	WithInfantryBody:
@@ -216,7 +216,7 @@ saboteur:
 	Health:
 		HP: 400
 	Mobile:
-		Speed: 64
+		Speed: 43
 	RevealsShroud:
 		Range: 7c0
 	C4Demolition:
