@@ -60,13 +60,13 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Sand: 90
+			Sand: 100
 			Rock: 100
-			Transition: 95
+			Transition: 100
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
 		ROT: 5
 	SelectionDecorations:
 	Selectable:
@@ -100,14 +100,6 @@
 	Inherits: ^Vehicle
 	Mobile:
 		Crushes: crate, infantry
-		TerrainSpeeds:
-			Sand: 85
-			Rock: 100
-			Transition: 92
-			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 70
 
 ^Husk:
 	Inherits@1: ^SpriteActor
@@ -176,14 +168,14 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Sand: 80
+			Sand: 100
 			Rock: 100
-			Transition: 90
+			Transition: 100
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
-			Rough: 70
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
+			Rough: 80
 	SelectionDecorations:
 	Selectable:
 		Bounds: 12,18,0,-6
