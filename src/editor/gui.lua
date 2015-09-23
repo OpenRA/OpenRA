@@ -49,6 +49,17 @@ local function createFrame()
   statusBar:SetStatusStyles({wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT})
   statusBar:SetStatusWidths({-1, section_width, section_width, section_width*5, section_width*4})
   statusBar:SetStatusText(GetIDEString("statuswelcome"))
+  statusBar:Connect(wx.wxEVT_LEFT_DOWN, function (event)
+      local rect = wx.wxRect()
+      statusBar:GetFieldRect(4, rect)
+      if rect:Contains(event:GetPosition()) then -- click on the interpreter
+        local menuitem = ide:FindMenuItem(ID.INTERPRETER)
+        if menuitem then
+          local menu = menuitem:GetSubMenu()
+          if menu then statusBar:PopupMenu(menu) end
+        end
+      end
+    end)
 
   local mgr = wxaui.wxAuiManager()
   mgr:SetManagedWindow(frame)
