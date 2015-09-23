@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
 			var bodyFacing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
-			var turretFacing = init.Contains<TurretFacingInit>() ? init.Get<TurretFacingInit, int>() : t.InitialFacing;
+			var turretFacing = Turreted.GetInitialTurretFacing(init, t.InitialFacing, Turret);
 
 			var anim = new Animation(init.World, image, () => turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));

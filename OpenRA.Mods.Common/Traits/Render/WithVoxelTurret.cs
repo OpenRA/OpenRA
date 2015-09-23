@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);
 			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
 
-			var turretFacing = init.Contains<TurretFacingInit>() ? init.Get<TurretFacingInit, int>() : t.InitialFacing;
+			var turretFacing = Turreted.GetInitialTurretFacing(init, t.InitialFacing, Turret);
 			var turretBodyOrientation = new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(turretFacing) - orientation.Yaw);
 			var turretOrientation = new[] { turretBodyOrientation, body.QuantizeOrientation(orientation, facings) };
 			yield return new VoxelAnimation(voxel, () => turretOffset, () => turretOrientation, () => false, () => 0);

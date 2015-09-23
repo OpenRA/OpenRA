@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
@@ -107,11 +108,14 @@ namespace OpenRA.Mods.RA.Traits
 				if (facing != null)
 					td.Add(new FacingInit(facing.Facing));
 
-				// TODO: This will only take the first turret if there are multiple
-				// This isn't a problem with the current units, but may be a problem for mods
-				var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-				if (turreted != null)
-					td.Add(new TurretFacingInit(turreted.TurretFacing));
+				var turreted = self.TraitsImplementing<Turreted>();
+				if (turreted.Any())
+				{
+					var turretFacings = new Dictionary<string, int>();
+					foreach (var t in turreted)
+						turretFacings.Add(t.Name, t.TurretFacing);
+					td.Add(new TurretFacingsInit(turretFacings));
+				}
 
 				// TODO: untie this and move to Mods.Common
 				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();

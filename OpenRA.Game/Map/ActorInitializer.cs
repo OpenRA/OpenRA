@@ -14,7 +14,15 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class ActorInitializer
+	public interface IActorInitializer
+	{
+		World World { get; }
+		T Get<T>() where T : IActorInit;
+		U Get<T, U>() where T : IActorInit<U>;
+		bool Contains<T>() where T : IActorInit;
+	}
+
+	public class ActorInitializer : IActorInitializer
 	{
 		public readonly Actor Self;
 		public World World { get { return Self.World; } }
@@ -44,14 +52,6 @@ namespace OpenRA
 		[FieldFromYamlKey] readonly int value = 128;
 		public FacingInit() { }
 		public FacingInit(int init) { value = init; }
-		public int Value(World world) { return value; }
-	}
-
-	public class TurretFacingInit : IActorInit<int>
-	{
-		[FieldFromYamlKey] readonly int value = 128;
-		public TurretFacingInit() { }
-		public TurretFacingInit(int init) { value = init; }
 		public int Value(World world) { return value; }
 	}
 
