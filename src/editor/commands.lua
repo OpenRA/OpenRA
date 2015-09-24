@@ -118,7 +118,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
           end
         end
       end
-      if filesize then
+      if filesize and filesize > 0 then
         ide:PopStatus()
         ide:PushStatus(TR("%s%% loaded..."):format(math.floor(100*editor:GetLength()/filesize)))
       end
