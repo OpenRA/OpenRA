@@ -2138,6 +2138,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Value = node.Value.Value + "c0";
 				}
 
+				// Rename Bib to WithTileFootprintOverlay
+				if (engineVersion < 20150921)
+				{
+					if (depth == 1 && node.Key == "Bib")
+						node.Key = "WithTileFootprintOverlay";
+
+					if (depth == 1 && node.Key == "-Bib")
+						node.Key = "-WithTileFootprintOverlay";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

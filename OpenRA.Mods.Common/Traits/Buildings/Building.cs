@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var buildingMaxBounds = Dimensions;
-			var bibInfo = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<BibInfo>();
+			var bibInfo = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<WithTileFootprintOverlayInfo>();
 			if (bibInfo != null && !bibInfo.HasMinibib)
 				buildingMaxBounds += new CVec(0, 1);
 

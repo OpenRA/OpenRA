@@ -34,7 +34,7 @@ HOSP:
 		Name: Hospital
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 	ProvidesPrerequisite@buildingname:
 
@@ -45,7 +45,7 @@ HOSP.Husk:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Hospital (Destroyed)
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 
 BIO:
@@ -94,7 +94,7 @@ MISS:
 		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 	WithMakeAnimation:
 	ProvidesPrerequisite@buildingname:

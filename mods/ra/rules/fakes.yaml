@@ -14,7 +14,7 @@ FACF:
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
-	Bib:
+	WithTileFootprintOverlay:
 	RenderSprites:
 		Image: FACT
 	Valued:
@@ -36,7 +36,7 @@ WEAF:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Bib:
+	WithTileFootprintOverlay:
 	RenderSprites:
 		Image: WEAP
 	WithProductionDoorOverlay:
@@ -114,7 +114,7 @@ DOMF:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Bib:
+	WithTileFootprintOverlay:
 	RenderSprites:
 		Image: DOME
 	Valued:
@@ -138,7 +138,7 @@ ATEF:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Bib:
+	WithTileFootprintOverlay:
 	RenderSprites:
 		Image: ATEK
 	Valued:
@@ -165,7 +165,7 @@ PDOF:
 		Dimensions: 2,2
 	RenderSprites:
 		Image: PDOX
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 	Valued:
 		Cost: 150

@@ -71,7 +71,7 @@ FCOM:
 		Name: Forward Command
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithTileFootprintOverlay:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -92,7 +92,7 @@ HOSP:
 		Name: Hospital
 	RevealsShroud:
 		Range: 3c0
-	Bib:
+	WithTileFootprintOverlay:
 		HasMinibib: Yes
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -306,7 +306,7 @@ MISS:
 		Type: Wood
 	Tooltip:
 		Name: Technology Center
-	Bib:
+	WithTileFootprintOverlay:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
