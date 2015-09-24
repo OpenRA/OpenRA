@@ -570,7 +570,7 @@ DeviatorMissile:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		ImpactSound: EXPLLG3.WAV
+		ImpactSound: EXPLMD2.WAV
 
 Sound:
 	ReloadDelay: 90
