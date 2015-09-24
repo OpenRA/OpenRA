@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// Pick a spawn/exit point pair
-			var exit = self.Info.Traits.WithInterface<ExitInfo>().Shuffle(self.World.SharedRandom)
+			var exit = self.Info.TraitInfos<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
 			if (exit != null || !occupiesSpace)

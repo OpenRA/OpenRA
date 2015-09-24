@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Server
 
 			if (server.LobbyInfo.GlobalSettings.StartingUnitsClass != defaults.StartingUnitsClass)
 			{
-				var startUnitsInfo = server.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+				var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
 				var selectedClass = startUnitsInfo.Where(u => u.Class == server.LobbyInfo.GlobalSettings.StartingUnitsClass).Select(u => u.ClassName).FirstOrDefault();
 				var className = selectedClass != null ? selectedClass : server.LobbyInfo.GlobalSettings.StartingUnitsClass;
 				server.SendOrderTo(conn, "Message", "Starting Units: {0}".F(className));

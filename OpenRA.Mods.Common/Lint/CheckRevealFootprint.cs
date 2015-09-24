@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
-				foreach (var rsi in actorInfo.Value.Traits.WithInterface<RevealsShroudInfo>())
+				foreach (var rsi in actorInfo.Value.TraitInfos<RevealsShroudInfo>())
 				{
 					if (rsi.Type == VisibilityType.CenterPosition)
 						continue;

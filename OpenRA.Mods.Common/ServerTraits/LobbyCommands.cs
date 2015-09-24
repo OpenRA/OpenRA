@@ -620,7 +620,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						var startUnitsInfo = server.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+						var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
 						var selectedClass = startUnitsInfo.Where(u => u.Class == s).Select(u => u.ClassName).FirstOrDefault();
 						var className = selectedClass != null ? selectedClass : s;
 

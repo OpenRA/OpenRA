@@ -128,7 +128,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
-	public interface IDemolishableInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
+	public interface IDemolishableInfo : ITraitInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
 		void Demolish(Actor self, Actor saboteur);
@@ -172,7 +172,7 @@ namespace OpenRA.Traits
 		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
-	public interface IDefaultVisibilityInfo { }
+	public interface IDefaultVisibilityInfo : ITraitInfo { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
@@ -279,14 +279,14 @@ namespace OpenRA.Traits
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfo { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
-	public interface UsesInit<T> where T : IActorInit { }
+	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
 
 	public interface INotifySelected { void Selected(Actor self); }
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBotInfo { string Name { get; } }
+	public interface IBotInfo : ITraitInfo { string Name { get; } }
 	public interface IBot
 	{
 		void Activate(Player p);

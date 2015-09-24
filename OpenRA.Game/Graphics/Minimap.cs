@@ -90,7 +90,7 @@ namespace OpenRA.Graphics
 			var width = b.Width;
 			var height = b.Height + heightOffset;
 
-			var resources = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
+			var resources = resourceRules.Actors["world"].TraitInfos<ResourceTypeInfo>()
 				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),

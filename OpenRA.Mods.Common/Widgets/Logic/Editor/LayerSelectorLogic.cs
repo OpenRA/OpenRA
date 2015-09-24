@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			layerTemplateList.RemoveChildren();
 
-			var resources = modRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>();
+			var resources = modRules.Actors["world"].TraitInfos<ResourceTypeInfo>();
 			foreach (var resource in resources)
 			{
 				var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,

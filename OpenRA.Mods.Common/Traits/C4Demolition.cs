@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				return target.Info.Traits.WithInterface<IDemolishableInfo>().Any(i => i.IsValidTarget(target.Info, self));
+				return target.Info.TraitInfos<IDemolishableInfo>().Any(i => i.IsValidTarget(target.Info, self));
 			}
 		}
 	}

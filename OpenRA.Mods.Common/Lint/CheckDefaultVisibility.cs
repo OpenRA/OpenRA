@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (actorInfo.Key.StartsWith("^"))
 					continue;
 
-				var count = actorInfo.Value.Traits.WithInterface<IDefaultVisibilityInfo>().Count();
+				var count = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>().Count();
 
 				if (count == 0)
 					emitError("Actor type `{0}` does not define a default visibility type!".F(actorInfo.Key));

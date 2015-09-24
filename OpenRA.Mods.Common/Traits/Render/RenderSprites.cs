@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public interface IRenderActorPreviewSpritesInfo
+	public interface IRenderActorPreviewSpritesInfo : ITraitInfo
 	{
 		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p);
 	}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			foreach (var spi in init.Actor.Traits.WithInterface<IRenderActorPreviewSpritesInfo>())
+			foreach (var spi in init.Actor.TraitInfos<IRenderActorPreviewSpritesInfo>())
 				foreach (var preview in spi.RenderPreviewSprites(init, this, image, facings, palette))
 					yield return preview;
 		}

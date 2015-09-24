@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (res != null)
 							Reservation = res.Reserve(order.TargetActor, self, this);
 
-						var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+						var exit = order.TargetActor.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 						var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 						self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);

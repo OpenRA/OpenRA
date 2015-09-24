@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecoration
+	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			var worldActor = map.Rules.Actors["world"];
 
-			var factions = worldActor.Traits.WithInterface<FactionInfo>().Select(f => f.InternalName).ToHashSet();
+			var factions = worldActor.TraitInfos<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
 					emitError("Invalid faction {0} chosen for player {1}.".F(player.Faction, player.Name));

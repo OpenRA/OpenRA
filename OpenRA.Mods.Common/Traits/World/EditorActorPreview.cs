@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 		void GeneratePreviews()
 		{
 			var init = new ActorPreviewInitializer(Info, worldRenderer, actor.InitDict);
-			previews = Info.Traits.WithInterface<IRenderActorPreviewInfo>()
+			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
 		}

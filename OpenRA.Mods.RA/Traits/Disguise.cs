@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Traits
 			var renderSprites = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
 			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Faction.InternalName);
 			AsPlayer = newOwner;
-			AsTooltipInfo = actorInfo.Traits.WithInterface<TooltipInfo>().FirstOrDefault();
+			AsTooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault();
 
 			HandleDisguise(oldEffectiveOwner, oldDisguiseSetting);
 		}

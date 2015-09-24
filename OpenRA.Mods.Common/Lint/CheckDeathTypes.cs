@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var animations = actorInfo.Value.Traits.WithInterface<WithDeathAnimationInfo>().ToList();
+				var animations = actorInfo.Value.TraitInfos<WithDeathAnimationInfo>().ToList();
 				if (!animations.Any())
 					continue;
 
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (!deathTypes.Any())
 					continue;
 
-				var targetable = actorInfo.Value.Traits.WithInterface<ITargetableInfo>().SelectMany(x => x.GetTargetTypes()).ToList();
+				var targetable = actorInfo.Value.TraitInfos<ITargetableInfo>().SelectMany(x => x.GetTargetTypes()).ToList();
 				if (!targetable.Any())
 					continue;
 

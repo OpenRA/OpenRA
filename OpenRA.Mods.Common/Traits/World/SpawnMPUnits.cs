@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		static void SpawnUnitsForPlayer(World w, Player p, CPos sp)
 		{
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings.StartingUnitsClass;
-			var unitGroup = w.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>()
+			var unitGroup = w.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Factions != null && g.Factions.Contains(p.Faction.InternalName))
 				.RandomOrDefault(w.SharedRandom);
 
