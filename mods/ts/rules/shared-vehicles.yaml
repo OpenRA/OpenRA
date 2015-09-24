@@ -57,8 +57,8 @@ HARV:
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
 		UnloadTicksPerBale: 1
-		SearchFromProcRadius: 24
-		SearchFromOrderRadius: 12
+		SearchFromProcRadius: 36
+		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
 		DeliverVoice: Move
 	Mobile:
