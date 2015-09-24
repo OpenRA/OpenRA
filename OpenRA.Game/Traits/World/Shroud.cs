@@ -20,7 +20,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 
-	public class Shroud
+	public class Shroud : ISync
 	{
 		[Sync] public bool Disabled;
 

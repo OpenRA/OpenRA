@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}
 
-	public class ParaDrop : ITick, INotifyRemovedFromWorld
+	public class ParaDrop : ITick, ISync, INotifyRemovedFromWorld
 	{
 		readonly ParaDropInfo info;
 		readonly Actor self;

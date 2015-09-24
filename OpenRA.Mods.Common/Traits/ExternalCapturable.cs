@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick
+	public class ExternalCapturable : ITick, ISync
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
