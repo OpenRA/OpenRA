@@ -232,7 +232,7 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
 	Projectile: Missile
 		Inaccuracy: 64
 		Image: RPG
@@ -246,7 +246,7 @@ Rocket:
 		Spread: 250
 		Falloff: 100, 95, 70, 50, 25, 5, 0
 		Damage: 250
-		ValidTargets: Ground, Air
+		ValidTargets: Ground
 		Versus:
 			none: 25
 			wall: 100
