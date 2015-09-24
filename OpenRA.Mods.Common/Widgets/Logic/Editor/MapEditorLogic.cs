@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -65,6 +66,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var coordinateLabel = widget.GetOrNull<LabelWidget>("COORDINATE_LABEL");
 			if (coordinateLabel != null)
 				coordinateLabel.GetText = () => worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos).ToString();
+
+			var cashLabel = widget.GetOrNull<LabelWidget>("CASH_LABEL");
+			if (cashLabel != null)
+			{
+				var reslayer = worldRenderer.World.WorldActor.TraitsImplementing<EditorResourceLayer>().FirstOrDefault();
+				if (reslayer != null)
+					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
+			}
 		}
 	}
 }

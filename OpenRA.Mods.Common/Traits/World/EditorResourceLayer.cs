@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
 
+		public int NetWorth { get; private set; }
+
 		public EditorResourceLayer(Actor self)
 		{
 			if (self.World.Type != WorldType.Editor)
@@ -88,6 +90,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var uv = cell.ToMPos(Map);
 			var tile = Map.MapResources.Value[uv];
+
+			var t = Tiles[cell];
+			if (t.Density > 0)
+				NetWorth -= t.Density * t.Type.Info.ValuePerUnit;
 
 			ResourceType type;
 			if (Resources.TryGetValue(tile.Type, out type))
@@ -149,8 +155,12 @@ namespace OpenRA.Mods.Common.Traits
 				return t;
 			}
 
+			NetWorth -= t.Density * type.Info.ValuePerUnit;
+
 			// Set density based on the number of neighboring resources
 			t.Density = ResourceDensityAt(c);
+
+			NetWorth += t.Density * type.Info.ValuePerUnit;
 
 			var sprites = type.Variants[t.Variant];
 			var frame = int2.Lerp(0, sprites.Length - 1, t.Density - 1, type.Info.MaxDensity);
