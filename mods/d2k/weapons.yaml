@@ -300,13 +300,15 @@ Rocket:
 
 TowerMissile:
 	ReloadDelay: 60
+	Burst: 2
+	BurstDelay: 60
 	Range: 5c512
 	MinRange: 1c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Blockable: false
-		Shadow: yes
+		Shadow: true
 		RateOfTurn: 1
 		Inaccuracy: 384
 		Image: MISSILE2
@@ -333,8 +335,8 @@ TowerMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLSML4.WAV
+		Explosion: small_explosion
+		ImpactSound: EXPLSML1.WAV
 
 80mm_A:
 	ReloadDelay: 50
@@ -455,8 +457,10 @@ DevBullet:
 
 mtank_pri:
 	ReloadDelay: 115
+	Burst: 2
+	BurstDelay: 115
 	Range: 6c0
-	Report: MISSLE1.WAV
+	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Speed: 281
@@ -487,8 +491,8 @@ mtank_pri:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLSML4.WAV
+		Explosion: small_explosion
+		ImpactSound: EXPLSML1.WAV
 
 DeviatorMissile:
 	ReloadDelay: 160

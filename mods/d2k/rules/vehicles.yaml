@@ -207,7 +207,7 @@ missile_tank:
 		Cost: 1000
 	Tooltip:
 		Name: Missile Tank
-		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
+		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings, Aircraft\n  Weak vs Infantry
 	Buildable:
 		Queue: Armor
 		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
