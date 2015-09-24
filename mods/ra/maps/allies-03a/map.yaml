@@ -439,16 +439,16 @@ Actors:
 		Owner: USSR
 	Actor127: v19
 		Location: 70,56
-		Owner: Neutral
+		Owner: USSR
 	Actor128: v19
 		Location: 70,54
-		Owner: Neutral
+		Owner: USSR
 	Actor129: v19
 		Location: 72,54
-		Owner: Neutral
+		Owner: USSR
 	Actor130: v19
 		Location: 74,54
-		Owner: Neutral
+		Owner: USSR
 	Actor131: brl3
 		Location: 84,65
 		Owner: USSR
@@ -457,7 +457,7 @@ Actors:
 		Owner: USSR
 	Actor133: v19
 		Location: 83,65
-		Owner: Neutral
+		Owner: USSR
 	Actor134: barl
 		Location: 78,70
 		Owner: USSR
@@ -487,16 +487,16 @@ Actors:
 		Owner: USSR
 	Actor142: v19
 		Location: 87,66
-		Owner: Neutral
+		Owner: USSR
 	Actor143: v19
 		Location: 85,68
-		Owner: Neutral
+		Owner: USSR
 	Actor144: v19
 		Location: 82,66
-		Owner: Neutral
+		Owner: USSR
 	Actor145: v19
 		Location: 85,63
-		Owner: Neutral
+		Owner: USSR
 	Actor146: v04
 		Location: 54,52
 		Owner: Neutral
@@ -523,10 +523,10 @@ Actors:
 		Owner: USSR
 	Actor154: v19
 		Location: 59,61
-		Owner: Neutral
+		Owner: USSR
 	Actor155: v19
 		Location: 57,61
-		Owner: Neutral
+		Owner: USSR
 	Actor156: brl3
 		Location: 58,61
 		Owner: USSR
@@ -559,7 +559,7 @@ Actors:
 		Owner: USSR
 	Actor170: v19
 		Location: 54,68
-		Owner: Neutral
+		Owner: USSR
 	Actor179: brl3
 		Location: 77,66
 		Owner: USSR
@@ -631,7 +631,7 @@ Actors:
 		Owner: USSR
 	Actor202: v19
 		Location: 101,48
-		Owner: Neutral
+		Owner: USSR
 	Actor203: brl3
 		Location: 96,50
 		Owner: USSR
@@ -652,13 +652,13 @@ Actors:
 		Owner: USSR
 	Actor209: v19
 		Location: 102,67
-		Owner: Neutral
+		Owner: USSR
 	Actor210: v19
 		Location: 101,69
-		Owner: Neutral
+		Owner: USSR
 	Actor211: v19
 		Location: 100,71
-		Owner: Neutral
+		Owner: USSR
 	Actor212: brl3
 		Location: 102,66
 		Owner: USSR
@@ -718,7 +718,7 @@ Actors:
 		Owner: USSR
 	Actor232: v19
 		Location: 91,68
-		Owner: Neutral
+		Owner: USSR
 	Actor233: brl3
 		Location: 91,69
 		Owner: USSR
@@ -727,13 +727,13 @@ Actors:
 		Owner: USSR
 	Actor234: v19
 		Location: 84,51
-		Owner: Neutral
+		Owner: USSR
 	Actor235: v19
 		Location: 87,51
-		Owner: Neutral
+		Owner: USSR
 	Actor236: v19
 		Location: 86,52
-		Owner: Neutral
+		Owner: USSR
 	Actor237: brl3
 		Location: 84,52
 		Owner: USSR

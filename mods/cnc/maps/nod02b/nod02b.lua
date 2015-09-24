@@ -149,7 +149,7 @@ Tick = function()
 		Nod.MarkCompletedObjective(NodObjective2)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(NodObjective1) and CheckForBase(Nod, NodBaseBuildings) then
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(NodObjective1) and CheckForBase(Nod) then
 		Nod.MarkCompletedObjective(NodObjective1)
 	end
 
@@ -158,23 +158,16 @@ Tick = function()
 	end
 end
 
-CheckForBase = function(player, buildings)
-	local checked = { }
-	local baseBuildings = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-		if actor.Owner ~= Nod or Utils.Any(checked, function(bldng) return bldng.Type == actor.Type end) then
-			return false
-		end
+CheckForBase = function(player)
+	local buildings = 0
 
-		local found = false
-		for i = 1, #buildings, 1 do
-			if actor.Type == buildings[i] then
-				found = true
-				checked[#checked + 1] = actor
-			end
+	Utils.Do(NodBaseBuildings, function(name)
+		if #player.GetActorsByType(name) > 0 then
+			buildings = buildings + 1
 		end
-		return found
 	end)
-	return #baseBuildings >= 3
+
+	return buildings == #NodBaseBuildings
 end
 
 OnAnyDamaged = function(actors, func)

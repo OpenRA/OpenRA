@@ -245,7 +245,7 @@ InitTriggers = function()
 			player.MarkCompletedObjective(FreePrisoners)
 		end)
 
-		local oilPumps = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Type == "v19" end)
+		local oilPumps = ussr.GetActorsByType("v19")
 
 		Trigger.OnAllKilled(oilPumps, function()
 			player.MarkCompletedObjective(KillUSSR)

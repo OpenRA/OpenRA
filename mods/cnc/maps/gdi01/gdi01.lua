@@ -2,6 +2,7 @@ MCVReinforcements = { "mcv" }
 InfantryReinforcements = { "e1", "e1", "e1" }
 VehicleReinforcements = { "jeep" }
 NodPatrol = { "e1", "e1" }
+GDIBaseBuildings = { "pyle", "fact", "nuke" }
 
 SendNodPatrol = function()
 	Reinforcements.Reinforce(enemy, NodPatrol, { nod0.Location, nod1.Location }, 15, function(soldier)
@@ -48,12 +49,16 @@ Reinforce = function(units)
 	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location, reinforcementsTarget.Location)
 end
 
-CheckForBase = function()
-	baseBuildings = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-		return actor.Type == "fact" or actor.Type == "pyle" or actor.Type == "nuke"
+CheckForBase = function(player)
+	local buildings = 0
+
+	Utils.Do(GDIBaseBuildings, function(name)
+		if #player.GetActorsByType(name) > 0 then
+			buildings = buildings + 1
+		end
 	end)
 
-	return #baseBuildings >= 3
+	return buildings == #GDIBaseBuildings
 end
 
 WorldLoaded = function()
@@ -102,7 +107,7 @@ Tick = function()
 		player.MarkFailedObjective(secureAreaObjective)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not player.IsObjectiveCompleted(beachheadObjective) and CheckForBase() then
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not player.IsObjectiveCompleted(beachheadObjective) and CheckForBase(player) then
 		player.MarkCompletedObjective(beachheadObjective)
 	end
 end
