@@ -207,8 +207,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var maps = tabMaps[tab]
 				.Where(m => gameMode == null || m.Type == gameMode)
 				.Where(m => mapFilter == null ||
-					m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
-					m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0 ||
+					(m.Title != null && m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
+					(m.Author != null && m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
 					m.PlayerCount == playerCountFilter)
 				.OrderBy(m => m.PlayerCount)
 				.ThenBy(m => m.Title);
