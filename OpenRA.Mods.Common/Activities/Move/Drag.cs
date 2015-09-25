@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IPositionable positionable;
 		readonly IMove movement;
-		readonly IDisableMove[] moveDisablers;
+		readonly IDisabledTrait disableable;
 		WPos start, end;
 		int length;
 		int ticks = 0;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			positionable = self.Trait<IPositionable>();
 			movement = self.TraitOrDefault<IMove>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
+			disableable = movement as IDisabledTrait;
 			this.start = start;
 			this.end = end;
 			this.length = length;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+			if (disableable != null && disableable.IsTraitDisabled)
 				return this;
 
 			var pos = length > 1

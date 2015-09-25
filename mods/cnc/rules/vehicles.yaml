@@ -89,6 +89,8 @@ APC:
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
 	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 		ROT: 8
 		Speed: 128
 	Health:
@@ -120,6 +122,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		LoadingUpgrades: notmobile
 	SpawnActorOnDeath:
 		Actor: APC.Husk
 

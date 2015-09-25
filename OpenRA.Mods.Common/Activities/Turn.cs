@@ -11,18 +11,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class Turn : Activity
 	{
-		readonly IDisableMove[] moveDisablers;
+		readonly IDisabledTrait disablable;
 		readonly int desiredFacing;
 
 		public Turn(Actor self, int desiredFacing)
 		{
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
+			disablable = self.TraitOrDefault<IMove>() as IDisabledTrait;
 			this.desiredFacing = desiredFacing;
 		}
 
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceled)
 				return NextActivity;
-			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+			if (disablable != null && disablable.IsTraitDisabled)
 				return this;
 
 			var facing = self.Trait<IFacing>();

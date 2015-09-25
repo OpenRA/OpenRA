@@ -127,7 +127,6 @@ namespace OpenRA.Traits
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
-	public interface IDisableMove { bool MoveDisabled(Actor self); }
 
 	public interface ISeedableResource { void Seed(Actor self); }
 

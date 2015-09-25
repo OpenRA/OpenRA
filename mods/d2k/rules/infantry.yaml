@@ -93,6 +93,8 @@ thumper:
 	RevealsShroud:
 		Range: 2c768
 	Mobile:
+		UpgradeTypes: deployed
+		UpgradeMaxEnabledLevel: 0
 		Speed: 43
 	DeployToUpgrade:
 		DeployedUpgrades: deployed
@@ -117,9 +119,6 @@ thumper:
 	AttractsWorms:
 		Intensity: 1000
 		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
-	DisableOnUpgrade:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
 	Passenger:

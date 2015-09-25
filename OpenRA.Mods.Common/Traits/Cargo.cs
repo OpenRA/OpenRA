@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, IDisableMove, INotifyActorDisposing
+		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -228,7 +228,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.UnloadVoice;
 		}
 
-		public bool MoveDisabled(Actor self) { return reserves.Any(); }
 		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty(Actor self) { return cargo.Count == 0; }
 

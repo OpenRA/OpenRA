@@ -47,6 +47,8 @@ LST:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 		Crushes: crate
 		TerrainSpeeds:
 			Clear: 100
@@ -76,4 +78,5 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 		PassengerFacing: 0
+		LoadingUpgrades: notmobile
 

@@ -98,6 +98,7 @@ BUS:
 		MaxWeight: 20
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 
 PICK:
 	Inherits: ^CivilianVoxelVehicle
@@ -119,6 +120,7 @@ PICK:
 		MaxWeight: 2
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 
 CAR:
 	Inherits: ^CivilianVoxelVehicle
@@ -140,6 +142,7 @@ CAR:
 		MaxWeight: 4
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 
 WINI:
 	Inherits: ^CivilianVoxelVehicle
@@ -161,6 +164,7 @@ WINI:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 
 LOCOMOTIVE:
 	Inherits: ^Train
@@ -169,10 +173,8 @@ LOCOMOTIVE:
 	Tooltip:
 		Name: Train Locomotive
 	Cargo:
-		Types: Infantry
 		MaxWeight: 2
 		PipCount: 2
-		UnloadVoice: Unload
 
 TRAINCAR:
 	Inherits: ^Train
@@ -181,10 +183,8 @@ TRAINCAR:
 	Tooltip:
 		Name: Passenger Car
 	Cargo:
-		Types: Infantry
 		MaxWeight: 10
 		PipCount: 5
-		UnloadVoice: Unload
 
 CARGOCAR:
 	Inherits: ^Train
@@ -193,8 +193,6 @@ CARGOCAR:
 	Tooltip:
 		Name: Cargo Car
 	Cargo:
-		Types: Infantry
 		MaxWeight: 10
 		PipCount: 5
-		UnloadVoice: Unload
 

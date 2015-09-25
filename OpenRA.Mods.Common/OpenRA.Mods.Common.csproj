@@ -483,7 +483,6 @@
     <Compile Include="Traits\ProducibleWithLevel.cs" />
     <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
-    <Compile Include="Traits\Upgrades\DisableMovementOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />

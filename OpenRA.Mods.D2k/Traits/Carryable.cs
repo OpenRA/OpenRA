@@ -29,7 +29,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable : IDisableMove, INotifyHarvesterAction, ICallForTransport
+	public class Carryable : INotifyHarvesterAction, ICallForTransport
 	{
 		readonly CarryableInfo info;
 		readonly Actor self;
@@ -195,13 +195,6 @@ namespace OpenRA.Mods.D2k.Traits
 			Lock();
 
 			return true;
-		}
-
-		// IMoveDisabled
-		public bool MoveDisabled(Actor self)
-		{
-			// We do not want to move while being locked. The carrier will try to pick us up.
-			return locked;
 		}
 	}
 }

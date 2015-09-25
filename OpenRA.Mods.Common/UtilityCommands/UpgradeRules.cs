@@ -2510,6 +2510,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Notify how to restore blocking movement of Mobile actors with Carryable and/or Cargo
+				if (engineVersion < 20151204 && depth == 2)
+				{
+					if (node.Key == "Carryable")
+					{
+						Console.WriteLine("Use CarryableUpgrades of Carryable to disable Mobile while " + parent.Key + " is waiting or being carried.");
+					}
+					else if (node.Key == "Cargo")
+					{
+						Console.WriteLine("Use LoadingUpgrades of Cargo to disable Mobile while " + parent.Key + " is loading cargo.");
+					}
+					else if (node.Key == "DeployToUpgrade")
+					{
+						Console.WriteLine("Use Upgrades of DeployToUpgrade to disable Mobile while " + parent.Key + " is deployed (instead of DisableUpgrade).");
+					}
+					else if (node.Key == "DisableUpgrade")
+					{
+						Console.WriteLine("DisableUpgrade no longer disables Mobile. Use Mobile upgradablility instead for " + parent.Key + ".");
+					}
+					else if (node.Key == "DisableMovementOnUpgrade")
+					{
+						parent.Value.Nodes.Remove(node);
+						Console.WriteLine("DisableMovementOnUpgrade is removed. Use Mobile upgradablility instead for " + parent.Key + ".");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

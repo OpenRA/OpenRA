@@ -58,6 +58,8 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 		Crushes: crate, spicebloom
 		TerrainSpeeds:
 			Sand: 100
@@ -92,6 +94,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	Carryable:
+		CarryableUpgrades: notmobile
 	WithDecorationCarryable:
 		Image: pips
 		Sequence: pickup-indicator
