@@ -2724,6 +2724,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					node.Value.Value = RenameD2kActors(node.Value.Value);
 				}
 
+				if (engineVersion < 20150925)
+				{
+					if (node.Key == "DisableUpgrade")
+						node.Key = "DisableOnUpgrade";
+				}
+
 				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

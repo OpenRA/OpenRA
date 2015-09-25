@@ -12,18 +12,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Disable the actor when this trait is enabled by an upgrade.")]
-	public class DisableUpgradeInfo : UpgradableTraitInfo
+	[Desc("Disable the ability to move and turn of the actor when this trait is enabled by an upgrade.")]
+	public class DisableMovementInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new DisableUpgrade(this); }
+		public override object Create(ActorInitializer init) { return new DisableMovementOnUpgrade(this); }
 	}
 
-	public class DisableUpgrade : UpgradableTrait<DisableUpgradeInfo>, IDisable, IDisableMove
+	public class DisableMovementOnUpgrade : UpgradableTrait<DisableMovementInfo>, IDisableMove
 	{
-		public DisableUpgrade(DisableUpgradeInfo info)
+		public DisableMovementOnUpgrade(DisableMovementInfo info)
 			: base(info) { }
 
-		public bool Disabled { get { return !IsTraitDisabled; } }
 		public bool MoveDisabled(Actor self) { return !IsTraitDisabled; }
 	}
 }
