@@ -158,13 +158,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
 
-			loadButton.Text = modInstallStatus[mod] ? "Load Mod" : "Install Assets";
-
-			loadButton.Text = modPrerequisitesFulfilled[mod.Id] ? loadButton.Text : "Prerequisites missing!";
+			loadButton.Text = !modPrerequisitesFulfilled[mod.Id] ? "Install mod" :
+				modInstallStatus[mod] ? "Load Mod" : "Install Assets";
 		}
 
 		void LoadMod(ModMetadata mod)
 		{
+			if (!modPrerequisitesFulfilled[mod.Id])
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "modId", mod.Id }
+				};
+
+				Ui.OpenWindow("INSTALL_MOD_PANEL", widgetArgs);
+				return;
+			}
+
 			if (!modInstallStatus[mod])
 			{
 				var widgetArgs = new WidgetArgs
