@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+			if (mobile.IsTraitDisabled || moveDisablers.Any(d => d.MoveDisabled(self)))
 				return this;
 
 			if (destination == mobile.ToCell)
