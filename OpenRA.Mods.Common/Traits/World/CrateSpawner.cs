@@ -19,14 +19,17 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class CrateSpawnerInfo : ITraitInfo
 	{
-		[Desc("Minimum number of crates")]
+		[Desc("Minimum number of crates.")]
 		public readonly int Minimum = 1;
 
-		[Desc("Maximum number of crates")]
+		[Desc("Maximum number of crates.")]
 		public readonly int Maximum = 255;
 
-		[Desc("Average time (seconds) between crate spawn")]
-		public readonly int SpawnInterval = 180;
+		[Desc("Average time (ticks) between crate spawn.")]
+		public readonly int SpawnInterval = 180 * 25;
+
+		[Desc("Delay (in ticks) before the first crate spawns.")]
+		public readonly int InitialSpawnDelay = 300 * 25;
 
 		[Desc("Which terrain types can we drop on?")]
 		public readonly HashSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" };
@@ -34,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which terrain types count as water?")]
 		public readonly HashSet<string> ValidWater = new HashSet<string> { "Water" };
 
-		[Desc("Chance of generating a water crate instead of a land crate")]
-		public readonly float WaterChance = .2f;
+		[Desc("Chance of generating a water crate instead of a land crate.")]
+		public readonly int WaterChance = 20;
 
 		[ActorReference]
 		[Desc("Crate actors to drop")]
@@ -68,6 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			this.self = self;
+
+			ticks = info.InitialSpawnDelay;
 		}
 
 		public void Tick(Actor self)
@@ -77,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--ticks <= 0)
 			{
-				ticks = info.SpawnInterval * 25;
+				ticks = info.SpawnInterval;
 
 				var toSpawn = Math.Max(0, info.Minimum - crates)
 					+ (crates < info.Maximum ? 1 : 0);
@@ -89,9 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SpawnCrate(Actor self)
 		{
-			var threshold = 100;
-			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
-			var pp = ChooseDropCell(self, inWater, threshold);
+			var inWater = self.World.SharedRandom.Next(100) < info.WaterChance;
+			var pp = ChooseDropCell(self, inWater, 100);
 
 			if (pp == null)
 				return;

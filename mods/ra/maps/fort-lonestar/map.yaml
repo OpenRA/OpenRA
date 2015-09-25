@@ -497,7 +497,7 @@ Rules:
 	World:
 		CrateSpawner:
 			Maximum: 1
-			SpawnInterval: 100
+			SpawnInterval: 2500
 			CrateActors: fortcrate
 		-SpawnMPUnits:
 		-MPStartLocations:

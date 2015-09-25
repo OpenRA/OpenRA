@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var value = float.Parse(input, CultureInfo.InvariantCulture);
 
-			if (value < 1)
+			if (value <= 1)
 				value = (int)Math.Round(value * 100, 0);
 			else
 				value = (int)Math.Round(value, 0);
@@ -2155,6 +2155,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						Console.WriteLine("WithSiloAnimation received its own Sequence property, which defaults to 'stages'.");
 						Console.WriteLine("Update your sequences accordingly, if necessary.");
+					}
+				}
+
+				if (engineVersion < 20150926)
+				{
+					if (node.Key == "CrateSpawner")
+					{
+						var interval = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpawnInterval");
+						if (interval != null)
+						{
+							var value = Exts.ParseIntegerInvariant(interval.Value.Value);
+							interval.Value.Value = (value * 25).ToString();
+						}
+
+						var chance = node.Value.Nodes.FirstOrDefault(n => n.Key == "WaterChance");
+						if (chance != null)
+							ConvertFloatToIntPercentage(ref chance.Value.Value);
 					}
 				}
 

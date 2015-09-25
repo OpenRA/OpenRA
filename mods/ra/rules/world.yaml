@@ -105,8 +105,8 @@ World:
 		QuantizedFacings: 16
 		Minimum: 1
 		Maximum: 3
-		SpawnInterval: 120
-		WaterChance: .2
+		SpawnInterval: 3000
+		WaterChance: 20
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
