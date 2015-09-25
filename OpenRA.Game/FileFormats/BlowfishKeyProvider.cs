@@ -119,12 +119,6 @@ namespace OpenRA.FileFormats
 			pubkey.Len = BitLenBigNum(pubkey.KeyOne, 64) - 1;
 		}
 
-		uint LenPreData()
-		{
-			var a = (pubkey.Len - 1) / 8;
-			return (55 / a + 1) * (a + 1);
-		}
-
 		static int CompareBigNum(uint[] n1, uint[] n2, uint len)
 		{
 			while (len > 0)
@@ -462,46 +456,37 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		static unsafe void Memcopy(byte* dest, byte* src, int len)
+		byte[] ProcessPredata(byte[] src)
 		{
-			while (len-- != 0) *dest++ = *src++;
-		}
-
-		unsafe void ProcessPredata(byte* pre, uint pre_len, byte* buf)
-		{
+			var dest = new byte[256];
 			var n2 = new uint[64];
 			var n3 = new uint[64];
 
-			var a = (pubkey.Len - 1) / 8;
+			var a = (int)((pubkey.Len - 1) / 8);
+			var pre_len = (55 / a + 1) * (a + 1);
+			var srcOffset = 0;
+			var destOffset = 0;
+
 			while (a + 1 <= pre_len)
 			{
 				InitBigNum(n2, 0, 64);
-				fixed (uint* pn2 = &n2[0])
-					Memcopy((byte*)pn2, pre, (int)a + 1);
-				CalcKey(n3, n2, pubkey.KeyTwo, pubkey.KeyOne, 64);
 
-				fixed (uint* pn3 = &n3[0])
-					Memcopy(buf, (byte*)pn3, (int)a);
+				Buffer.BlockCopy(src, srcOffset, n2, 0, a + 1);
+				CalcKey(n3, n2, pubkey.KeyTwo, pubkey.KeyOne, 64);
+				Buffer.BlockCopy(n3, 0, dest, destOffset, a);
 
 				pre_len -= a + 1;
-				pre += a + 1;
-				buf += a;
+				srcOffset += a + 1;
+				destOffset += a;
 			}
+
+			return dest;
 		}
 
 		public byte[] DecryptKey(byte[] src)
 		{
 			InitPublicKey();
-			var dest = new byte[256];
-
-			unsafe
-			{
-				fixed (byte* pdest = &dest[0])
-				fixed (byte* psrc = &src[0])
-					ProcessPredata(psrc, LenPreData(), pdest);
-			}
-
-			return dest.Take(56).ToArray();
+			return ProcessPredata(src).Take(56).ToArray();
 		}
 	}
 }
