@@ -56,7 +56,28 @@ namespace OpenRA.FileSystem
 			this.priority = priority;
 			this.type = type;
 
-			s = GlobalFileSystem.Open(filename);
+			// HACK: Binaries built by mono that run on Windows exhibit an issue where parsing this file sometimes
+			// returns garbage results. This usually manifests in an exception trying to build the index as there will
+			// be many duplicate entries. Retrying is generally sufficient for a successful parse.
+			const int Attempts = 3;
+			for (var i = 1; i <= Attempts; i++)
+			{
+				try
+				{
+					LoadMixFile(filename, out s, out index, out dataStart);
+					break;
+				}
+				catch (ArgumentException)
+				{
+					if (i == Attempts)
+						throw;
+				}
+			}
+		}
+
+		static void LoadMixFile(string filename, out Stream stream, out Dictionary<uint, PackageEntry> index, out long dataStart)
+		{
+			var s = GlobalFileSystem.Open(filename);
 			try
 			{
 				// Detect format type
@@ -79,10 +100,12 @@ namespace OpenRA.FileSystem
 				index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 					"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
 					null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+
+				stream = s;
 			}
 			catch (Exception)
 			{
-				Dispose();
+				s.Dispose();
 				throw;
 			}
 		}
