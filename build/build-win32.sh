@@ -140,7 +140,7 @@ if [ $BUILD_52 ]; then
   LUAV="52"
   LUAD="5.2"
   LUAS=$LUAV
-  LUA_BASENAME="lua-5.2.2"
+  LUA_BASENAME="lua-5.2.4"
 fi
 
 LUA_FILENAME="$LUA_BASENAME.tar.gz"
@@ -156,7 +156,7 @@ if [ $BUILD_53 ]; then
 fi
 
 if [ $BUILD_JIT ]; then
-  LUA_BASENAME="LuaJIT-2.0.2"
+  LUA_BASENAME="LuaJIT-2.0.4"
   LUA_FILENAME="$LUA_BASENAME.tar.gz"
   LUA_URL="http://luajit.org/download/$LUA_FILENAME"
 fi
