@@ -78,16 +78,21 @@ proc:
 
 silo:
 	idle:
-		Length: 5
 		Offset: 0,-1
 	damaged-idle:
 		Start: 5
-		Length: 5
 		Offset: 0,-1
 	dead:
 		Start: 10
 		Offset: 0,-1
 		Tick: 800
+	stages:
+		Length: 5
+		Offset: 0,-1
+	damaged-stages:
+		Start: 5
+		Length: 5
+		Offset: 0,-1
 	make: silomake
 		Length: *
 		Tick: 80

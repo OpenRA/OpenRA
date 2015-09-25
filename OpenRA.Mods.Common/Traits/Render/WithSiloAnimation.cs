@@ -18,6 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Render trait for buildings that change the sprite according to the remaining resource storage capacity across all depots.")]
 	class WithSiloAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
+		[Desc("Sequence to use for resources-dependent 'stages'."), SequenceReference]
+		public readonly string Sequence = "stages";
+
+		[Desc("Internal resource stages. Does not have to match number of sequence frames.")]
 		public readonly int Stages = 10;
 
 		public object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
@@ -38,9 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void BuildingComplete(Actor self)
 		{
-			var animation = wsb.NormalizeSequence(self, wsb.Info.Sequence);
-
-			wsb.DefaultAnimation.PlayFetchIndex(animation,
+			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
 				() => playerResources.ResourceCapacity != 0
 				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
 					: 0);
@@ -49,6 +51,11 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
+
+			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
+				() => playerResources.ResourceCapacity != 0
+				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
+					: 0);
 		}
 	}
 }
