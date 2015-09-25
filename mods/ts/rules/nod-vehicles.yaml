@@ -26,7 +26,7 @@ BGGY:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 
 BIKE:
 	Inherits: ^VoxelVehicle
@@ -97,7 +97,7 @@ TTNK:
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	RevealsShroud:
 		Range: 5c0
 	Transforms:

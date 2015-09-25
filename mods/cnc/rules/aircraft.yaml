@@ -84,7 +84,7 @@ HELI:
 		SelfReloadTicks: 200
 	WithRotor:
 		Offset: 0,0,85
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
 	AutoTarget:
@@ -205,7 +205,7 @@ A10:
 		Name: gun
 		Weapon: Vulcan
 		LocalOffset: 1024,0,-85
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Armament@BOMBS:
 		Name: bombs
 		Weapon: Napalm

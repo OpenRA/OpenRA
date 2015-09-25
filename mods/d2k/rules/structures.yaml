@@ -549,7 +549,7 @@ medium_gun_turret:
 		Range: 8c0
 	BodyOrientation:
 		QuantizedFacings: 32
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Turreted:
 		ROT: 6
 		InitialFacing: 128

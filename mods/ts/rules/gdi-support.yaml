@@ -99,7 +99,7 @@ GACTWR:
 		UpgradeMinEnabledLevel: 1
 		Weapon: RedEye2
 		LocalOffset: 512,0,512
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
 	WithIdleOverlay@LIGHTS:

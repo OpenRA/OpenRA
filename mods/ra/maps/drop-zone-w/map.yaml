@@ -236,8 +236,8 @@ Rules:
 			Name: secondary
 			Weapon: M60mg
 		AttackFrontal:
-		WithMuzzleFlash@PRIMARY:
-		WithMuzzleFlash@SECONDARY:
+		WithMuzzleOverlay@PRIMARY:
+		WithMuzzleOverlay@SECONDARY:
 			Armament: secondary
 		MustBeDestroyed:
 			RequiredForShortGame: true

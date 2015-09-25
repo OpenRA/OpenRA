@@ -107,7 +107,7 @@ trike:
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMG
 		LocalOffset: -416,0,0
@@ -187,7 +187,7 @@ siege_tank:
 		LocalOffset: 512,0,320
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	Explodes:
 		Weapon: UnitExplodeMed
@@ -297,7 +297,7 @@ devastator:
 		LocalOffset: 640,0,32
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		IgnoreOffset: true
 	AutoTarget:
 	Explodes:
@@ -330,7 +330,7 @@ raider:
 		Speed: 149
 	RevealsShroud:
 		Range: 7c0
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMGo
 		LocalOffset: 170,0,0
@@ -430,7 +430,7 @@ deviator:
 		LocalOffset: 256,0,0
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	Explodes:

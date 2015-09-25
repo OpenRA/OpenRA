@@ -113,7 +113,7 @@ APC:
 		LocalOffset: 85,85,299, 85,-85,299
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	Cargo:
@@ -148,7 +148,7 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	AutoTarget:
 		InitialStance: Defend
 	SpawnActorOnDeath:
@@ -185,7 +185,7 @@ FTNK:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AutoTarget:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 		SplitFacings: true
 	Explodes:
 		Weapon: FlametankExplode
@@ -221,7 +221,7 @@ BGGY:
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
@@ -291,7 +291,7 @@ JEEP:
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
@@ -326,7 +326,7 @@ LTNK:
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
@@ -360,7 +360,7 @@ MTNK:
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	WithTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
@@ -406,7 +406,7 @@ HTNK:
 		Recoil: 10
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10

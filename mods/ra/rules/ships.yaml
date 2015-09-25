@@ -199,7 +199,7 @@ CA:
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 44,44
 	WithTurret@PRIMARY:
@@ -272,7 +272,7 @@ PT:
 		Weapon: DepthCharge
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 36,36
 	WithTurret:

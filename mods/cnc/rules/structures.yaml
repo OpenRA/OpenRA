@@ -659,7 +659,7 @@ GUN:
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	-WithDeathAnimation:
 	DetectCloaked:
 		Range: 3c0
@@ -700,7 +700,7 @@ SAM:
 		Weapon: SAMMissile
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
@@ -779,7 +779,7 @@ GTWR:
 		QuantizedFacings: 8
 	DetectCloaked:
 		Range: 3c0
-	WithMuzzleFlash:
+	WithMuzzleOverlay:
 	Turreted:
 		ROT: 255
 	Power:
