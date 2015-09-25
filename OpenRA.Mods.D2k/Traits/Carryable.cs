@@ -17,10 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Can be carried by units with the trait `Carryall`.")]
-	public class CarryableInfo : ITraitInfo
+	public class CarryableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
 		[Desc("Required distance away from destination before requesting a pickup. Default is 6 cells.")]
-		public WDist MinDistance = WDist.FromCells(6);
+		public readonly WDist MinDistance = WDist.FromCells(6);
+
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant to self while waiting or being carried.")]
+		public readonly string[] CarryableUpgrades = { };
 
 		public object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
@@ -29,11 +33,32 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		readonly CarryableInfo info;
 		readonly Actor self;
+		readonly UpgradeManager upgradeManager;
 
 		public bool Reserved { get; private set; }
 
 		// If we're locked there isn't much we can do. We'll have to wait for the carrier to finish with us. We should not move or get new orders!
 		bool locked;
+
+		void Unlock()
+		{
+			if (!locked)
+				return;
+
+			locked = false;
+			foreach (var u in info.CarryableUpgrades)
+				upgradeManager.RevokeUpgrade(self, u, this);
+		}
+
+		void Lock()
+		{
+			if (locked)
+				return;
+
+			locked = true;
+			foreach (var u in info.CarryableUpgrades)
+				upgradeManager.GrantUpgrade(self, u, this);
+		}
 
 		public bool WantsTransport { get; set; }
 		public CPos Destination;
@@ -43,6 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.info = info;
 			this.self = self;
+			upgradeManager = self.Trait<UpgradeManager>();
 
 			locked = false;
 			Reserved = false;
@@ -110,7 +136,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void Dropped()
 		{
 			WantsTransport = false;
-			locked = false;
+			Unlock();
 
 			if (afterLandActivity != null)
 			{
@@ -144,7 +170,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void UnReserve(Actor carrier)
 		{
 			Reserved = false;
-			locked = false;
+			Unlock();
 		}
 
 		// Prepare for transport pickup
@@ -166,7 +192,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// Cancel our activities
 			self.CancelActivity();
-			locked = true;
+			Lock();
 
 			return true;
 		}
