@@ -46,7 +46,7 @@ namespace OpenRA
 
 		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
 		{
-			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
+			throw new YamlException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
 		};
 
 		public static Action<string, Type> UnknownFieldAction = (s, f) =>

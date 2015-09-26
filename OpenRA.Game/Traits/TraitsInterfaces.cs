@@ -369,5 +369,6 @@ namespace OpenRA.Traits
 		bool RemoveActor(Actor self, Player owner);
 	}
 
-	public interface IRulesetLoaded : ITraitInfo { void RulesetLoaded(Ruleset rules, ActorInfo ai); }
+	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
+	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfo { }
 }

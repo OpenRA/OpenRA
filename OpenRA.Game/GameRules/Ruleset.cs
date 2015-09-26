@@ -44,8 +44,38 @@ namespace OpenRA
 			Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
 
 			foreach (var a in Actors.Values)
+			{
 				foreach (var t in a.TraitInfos<IRulesetLoaded>())
-					t.RulesetLoaded(this, a);
+				{
+					try
+					{
+						t.RulesetLoaded(this, a);
+					}
+					catch (YamlException e)
+					{
+						throw new YamlException("Actor type {0}: {1}".F(a.Name, e.Message));
+					}
+				}
+			}
+
+			foreach (var weapon in Weapons)
+			{
+				foreach (var warhead in weapon.Value.Warheads)
+				{
+					var cacher = warhead as IRulesetLoaded<WeaponInfo>;
+					if (cacher != null)
+					{
+						try
+						{
+							cacher.RulesetLoaded(this, weapon.Value);
+						}
+						catch (YamlException e)
+						{
+							throw new YamlException("Weapon type {0}: {1}".F(weapon.Key, e.Message));
+						}
+					}
+				}
+			}
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }

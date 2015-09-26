@@ -102,6 +102,10 @@ namespace OpenRA.FileFormats
 					{
 						return new ReplayMetadata(fs, path);
 					}
+					catch (YamlException ex)
+					{
+						Log.Write("debug", ex.ToString());
+					}
 					catch (InvalidOperationException ex)
 					{
 						Log.Write("debug", ex.ToString());
