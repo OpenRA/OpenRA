@@ -8,7 +8,6 @@ Folders:
 	.
 	./mods/modchooser
 
-
 Cursors:
 	./mods/modchooser/cursors.yaml
 
@@ -20,6 +19,7 @@ Assemblies:
 
 ChromeLayout:
 	./mods/modchooser/modchooser.yaml
+	./mods/modchooser/install.yaml
 
 Notifications:
 	./mods/modchooser/notifications.yaml

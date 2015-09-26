@@ -9,10 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -20,38 +16,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InstallMusicLogic
 	{
 		[ObjectCreator.UseCtor]
-		public InstallMusicLogic(Widget widget)
+		public InstallMusicLogic(Widget widget, string modId)
 		{
 			var installMusicContainer = widget.Get("INSTALL_MUSIC_PANEL");
 
-			Action loadDefaultMod = () => Game.RunAfterTick(() =>
-				Game.InitializeMod(Game.Settings.Game.Mod, null));
+			Action loadDefaultMod = () => Game.RunAfterTick(() => Game.InitializeMod(modId, null));
 
-			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
+			var cancelButton = installMusicContainer.GetOrNull<ButtonWidget>("BACK_BUTTON");
 			if (cancelButton != null)
 				cancelButton.OnClick = loadDefaultMod;
 
-			var copyFromDiscButton = installMusicContainer.GetOrNull<ButtonWidget>("COPY_FROM_CD_BUTTON");
+			var copyFromDiscButton = installMusicContainer.GetOrNull<ButtonWidget>("INSTALL_MUSIC_BUTTON");
 			if (copyFromDiscButton != null)
 			{
 				copyFromDiscButton.OnClick = () =>
 				{
-					Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs() {
-						{ "continueLoading", loadDefaultMod },
+					Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs
+					{
+						{ "afterInstall", loadDefaultMod },
+						{ "modId", modId }
 					});
 				};
 			}
 
-			var downloadButton = installMusicContainer.GetOrNull<ButtonWidget>("DOWNLOAD_BUTTON");
+			var downloadButton = installMusicContainer.GetOrNull<ButtonWidget>("DOWNLOAD_MUSIC_BUTTON");
 			if (downloadButton != null)
 			{
-				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
-				downloadButton.IsVisible = () => !string.IsNullOrEmpty(installData.MusicPackageMirrorList);
+				var installData = ModMetadata.AllMods[modId].Content;
+				downloadButton.IsDisabled = () => string.IsNullOrEmpty(installData.MusicPackageMirrorList);
 				downloadButton.OnClick = () =>
 				{
-					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs() {
+					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", new WidgetArgs
+					{
 						{ "afterInstall", loadDefaultMod },
 						{ "mirrorListUrl", installData.MusicPackageMirrorList },
+						{ "modId", modId }
 					});
 				};
 			}

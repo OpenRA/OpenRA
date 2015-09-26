@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace OpenRA
 		public string Version;
 		public string Author;
 		public bool Hidden;
+		public ContentInstaller Content;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
 		{
@@ -34,19 +36,30 @@ namespace OpenRA
 			var ret = new Dictionary<string, ModMetadata>();
 			foreach (var m in mods)
 			{
-				var yamlPath = Platform.ResolvePath(".", "mods", m, "mod.yaml");
-				if (!File.Exists(yamlPath))
-					continue;
+				try
+				{
+					var yamlPath = Platform.ResolvePath(".", "mods", m, "mod.yaml");
+					if (!File.Exists(yamlPath))
+						continue;
 
-				var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
-				var nd = yaml.ToDictionary();
-				if (!nd.ContainsKey("Metadata"))
-					continue;
+					var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
+					var nd = yaml.ToDictionary();
+					if (!nd.ContainsKey("Metadata"))
+						continue;
 
-				var mod = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
-				mod.Id = m;
+					var mod = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
+					mod.Id = m;
 
-				ret.Add(m, mod);
+					if (nd.ContainsKey("ContentInstaller"))
+						mod.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
+
+					ret.Add(m, mod);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("An exception occured when trying to load ModMetadata for `{0}`:".F(m));
+					Console.WriteLine(ex.Message);
+				}
 			}
 
 			return ret;

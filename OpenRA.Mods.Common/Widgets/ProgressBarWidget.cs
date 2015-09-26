@@ -10,12 +10,17 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
 	public class ProgressBarWidget : Widget
 	{
+		public string Background = "progressbar-bg";
+		public string Bar = "progressbar-thumb";
+		public Size BarMargin = new Size(2, 2);
+
 		public int Percentage = 0;
 		public bool Indeterminate = false;
 
@@ -44,14 +49,16 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var rb = RenderBounds;
 			var percentage = GetPercentage();
-			WidgetUtils.DrawPanel("progressbar-bg", rb);
+			WidgetUtils.DrawPanel(Background, rb);
 
-			var barRect = wasIndeterminate ?
-				new Rectangle(rb.X + 2 + (int)(0.75 * offset * (rb.Width - 4)), rb.Y + 2, (rb.Width - 4) / 4, rb.Height - 4) :
-				new Rectangle(rb.X + 2, rb.Y + 2, percentage * (rb.Width - 4) / 100, rb.Height - 4);
+			var minBarWidth = (int)(ChromeProvider.GetImage(Bar, "border-l").Size.X + ChromeProvider.GetImage(Bar, "border-r").Size.X);
+			var maxBarWidth = rb.Width - BarMargin.Width * 2;
+			var barWidth = wasIndeterminate ? maxBarWidth / 4 : percentage * maxBarWidth / 100;
+			barWidth = Math.Max(barWidth, minBarWidth);
 
-			if (barRect.Width > 0)
-				WidgetUtils.DrawPanel("progressbar-thumb", barRect);
+			var barOffset = wasIndeterminate ? (int)(0.75 * offset * maxBarWidth) : 0;
+			var barRect = new Rectangle(rb.X + BarMargin.Width + barOffset, rb.Y + BarMargin.Height, barWidth, rb.Height - 2 * BarMargin.Height);
+			WidgetUtils.DrawPanel(Bar, barRect);
 		}
 
 		bool wasIndeterminate;

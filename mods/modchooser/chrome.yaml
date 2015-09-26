@@ -124,6 +124,28 @@ button-highlighted-disabled: chrome.png
 	corner-bl: 256,566,10,10
 	corner-br: 310,566,10,10
 
+progressbar-bg: chrome.png
+	background: 453,565,56,6
+	border-r: 507,565,5,6
+	border-l: 448,565,5,6
+	border-b: 453,571,54,5
+	border-t: 453,560,54,5
+	corner-tl: 448,560,5,5
+	corner-tr: 507,560,5,5
+	corner-bl: 448,571,5,5
+	corner-br: 507,571,5,5
+
+progressbar-thumb: chrome.png
+	background: 453,549,56,6
+	border-r: 507,549,5,6
+	border-l: 448,549,5,6
+	border-b: 453,555,54,5
+	border-t: 453,544,54,5
+	corner-tl: 448,544,5,5
+	corner-tr: 507,544,5,5
+	corner-bl: 448,555,5,5
+	corner-br: 507,555,5,5
+
 panel-rule: chrome.png
 	border-t: 64,512,64,2
 

@@ -90,11 +90,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
 			if (installButton != null)
 			{
-				installButton.IsDisabled = () => world == null || world.Type != WorldType.Shellmap;
-				var args = new string[] { "Install.Music=true" };
+				installButton.IsDisabled = () => world.Type != WorldType.Shellmap;
+				var args = new[] { "installMusic={0}".F(Game.ModData.Manifest.Mod.Id) };
 				installButton.OnClick = () =>
-					Game.RunAfterTick(() =>
-						Game.InitializeMod(Game.Settings.Game.Mod, new Arguments(args)));
+					Game.RunAfterTick(() => Game.InitializeMod("modchooser", new Arguments(args)));
 
 				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;

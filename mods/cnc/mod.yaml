@@ -90,7 +90,6 @@ Assemblies:
 	./mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	./mods/cnc/chrome/install.yaml
 	./mods/cnc/chrome/mainmenu.yaml
 	./mods/cnc/chrome/serverbrowser.yaml
 	./mods/cnc/chrome/createserver.yaml
@@ -140,10 +139,7 @@ LoadScreen: CncLoadScreen
 	Text: Loading
 
 ContentInstaller:
-	TestFiles: conquer.mix, desert.mix, sounds.mix, speech.mix, temperat.mix, tempicnh.mix, winter.mix
-	BackgroundWidget: INSTALL_BACKGROUND
-	MenuWidget: INSTALL_PANEL
-	MusicMenuWidget: INSTALL_MUSIC_PANEL
+	TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
 	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
 	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt

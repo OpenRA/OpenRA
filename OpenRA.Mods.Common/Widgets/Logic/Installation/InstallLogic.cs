@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -17,31 +15,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InstallLogic : Widget
 	{
 		[ObjectCreator.UseCtor]
-		public InstallLogic(Widget widget, Action continueLoading)
+		public InstallLogic(Widget widget, string mirrorListUrl, string modId)
 		{
-			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 			var panel = widget.Get("INSTALL_PANEL");
-			var widgetArgs = new WidgetArgs()
+			var widgetArgs = new WidgetArgs
 			{
-				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
-				{ "continueLoading", continueLoading },
-				{ "mirrorListUrl", installData.PackageMirrorList },
+				{ "afterInstall", () => { Game.InitializeMod(modId, new Arguments()); } },
+				{ "mirrorListUrl", mirrorListUrl },
+				{ "modId", modId }
 			};
 
-			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
-				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", widgetArgs);
+			var mod = ModMetadata.AllMods[modId];
+			var text = "OpenRA requires the original {0} game content.".F(mod.Title);
+			panel.Get<LabelWidget>("DESC1").Text = text;
+
+			var downloadButton = panel.Get<ButtonWidget>("DOWNLOAD_BUTTON");
+			downloadButton.OnClick = () => Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", widgetArgs);
+			downloadButton.IsDisabled = () => string.IsNullOrEmpty(mod.Content.PackageMirrorList);
 
 			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", widgetArgs);
 
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
-			{
-				Game.RunAfterTick(() =>
-				{
-					Game.Settings.Game.PreviousMod = Game.ModData.Manifest.Mod.Id;
-					Game.InitializeMod("modchooser", null);
-				});
-			};
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = Ui.CloseWindow;
 		}
 	}
 }
