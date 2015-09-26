@@ -21,15 +21,15 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackBase attack;
 		readonly IMove move;
 		readonly IFacing facing;
+		readonly Armament armament;
 		readonly WDist minRange;
-		readonly WDist maxRange;
 		readonly IPositionable positionable;
 
-		public Attack(Actor self, Target target, WDist minRange, WDist maxRange, bool allowMovement)
+		public Attack(Actor self, Target target, Armament armament, bool allowMovement)
 		{
 			Target = target;
-			this.minRange = minRange;
-			this.maxRange = maxRange;
+			this.minRange = armament.Weapon.MinRange;
+			this.armament = armament;
 
 			attack = self.Trait<AttackBase>();
 			facing = self.Trait<IFacing>();
@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// Try to move within range
+			var maxRange = armament.MaxRange();
 			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
 				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 

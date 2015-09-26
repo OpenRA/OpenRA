@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WDist.Zero;
 
 			return Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.Weapon.Range)
+				.Select(a => a.MaxRange())
 				.Append(WDist.Zero).Max();
 		}
 
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				var a = ab.ChooseArmamentForTarget(target);
-				cursor = a != null && !target.IsInRange(self.CenterPosition, a.Weapon.Range)
+				cursor = a != null && !target.IsInRange(self.CenterPosition, a.MaxRange())
 					? ab.Info.OutsideRangeCursor
 					: ab.Info.Cursor;
 

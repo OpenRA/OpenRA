@@ -52,7 +52,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (a == null)
 				return;
 
-			if (!target.IsInRange(self.CenterPosition, a.Weapon.Range))
+			if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 				return;
 
 			self.CancelActivity();

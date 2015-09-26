@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -62,7 +62,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		public WeaponInfo WeaponInfo { get; private set; }
+		public WDist ModifiedRange { get; private set; }
+
 		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()];
+			ModifiedRange = new WDist(Util.ApplyPercentageModifiers(
+				WeaponInfo.Range.Length,
+				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
+		}
 	}
 
 	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
@@ -75,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		Lazy<BodyOrientation> coords;
 		Lazy<AmmoPool> ammoPool;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
+		Lazy<IEnumerable<int>> rangeModifiers;
 
 		public WDist Recoil;
 		public int FireDelay { get; private set; }
@@ -89,8 +101,9 @@ namespace OpenRA.Mods.Common.Traits
 			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
+			rangeModifiers = Exts.Lazy(() => self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier()));
 
-			Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
+			Weapon = info.WeaponInfo;
 			Burst = Weapon.Burst;
 
 			var barrels = new List<Barrel>();
@@ -107,6 +120,11 @@ namespace OpenRA.Mods.Common.Traits
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
+		}
+
+		public WDist MaxRange()
+		{
+			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers.Value));
 		}
 
 		public void Tick(Actor self)
@@ -148,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (ammoPool.Value != null && !ammoPool.Value.HasAmmo())
 				return null;
 
-			if (!target.IsInRange(self.CenterPosition, Weapon.Range))
+			if (!target.IsInRange(self.CenterPosition, MaxRange()))
 				return null;
 
 			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
@@ -171,6 +189,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
 					.Select(a => a.GetInaccuracyModifier()).ToArray(),
+
+				RangeModifiers = self.TraitsImplementing<IRangeModifier>()
+					.Select(a => a.GetRangeModifier()).ToArray(),
 
 				Source = muzzlePosition,
 				SourceActor = self,

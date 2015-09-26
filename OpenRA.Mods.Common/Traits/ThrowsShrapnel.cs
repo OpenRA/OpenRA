@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 						InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
 							.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
+						RangeModifiers = self.TraitsImplementing<IRangeModifier>()
+							.Select(a => a.GetRangeModifier()).ToArray(),
+
 						Source = self.CenterPosition,
 						SourceActor = self,
 						PassiveTarget = self.CenterPosition + new WVec(range, 0, 0).Rotate(rotation)

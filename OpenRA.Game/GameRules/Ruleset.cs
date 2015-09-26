@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -41,6 +42,10 @@ namespace OpenRA
 			Music = new ReadOnlyDictionary<string, MusicInfo>(music);
 			TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
 			Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
+
+			foreach (var a in Actors.Values)
+				foreach (var t in a.TraitInfos<IRulesetLoaded>())
+					t.RulesetLoaded(this, a);
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }

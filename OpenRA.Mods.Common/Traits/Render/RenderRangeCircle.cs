@@ -18,22 +18,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo, Requires<AttackBaseInfo>
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
 		[Desc("Range to draw if no armaments are available")]
 		public readonly WDist FallbackRange = WDist.Zero;
 
+		// Computed range
+		WDist range;
+
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var armaments = ai.TraitInfos<ArmamentInfo>()
-				.Where(a => a.UpgradeMinEnabledLevel == 0);
-			var range = FallbackRange;
-
-			if (armaments.Any())
-				range = armaments.Select(a => w.Map.Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max();
-
 			if (range == WDist.Zero)
 				yield break;
 
@@ -52,6 +48,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public object Create(ActorInitializer init) { return new RenderRangeCircle(init.Self); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.UpgradeMinEnabledLevel == 0);
+
+			if (armaments.Any())
+				range = armaments.Select(a => a.ModifiedRange).Max();
+			else
+				range = FallbackRange;
+		}
 	}
 
 	class RenderRangeCircle : IPostRenderSelection

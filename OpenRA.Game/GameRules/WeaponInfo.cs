@@ -21,6 +21,7 @@ namespace OpenRA.GameRules
 		public WeaponInfo Weapon;
 		public int[] DamageModifiers;
 		public int[] InaccuracyModifiers;
+		public int[] RangeModifiers;
 		public int Facing;
 		public WPos Source;
 		public Actor SourceActor;
