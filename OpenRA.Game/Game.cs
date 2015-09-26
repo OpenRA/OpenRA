@@ -384,9 +384,9 @@ namespace OpenRA
 
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the worldactor.
-		static ActionQueue delayedActions = new ActionQueue();
-		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
-		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
+		static volatile ActionQueue delayedActions = new ActionQueue();
+		public static void RunAfterTick(Action a) { delayedActions.Add(a, Game.RunTime); }
+		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, Game.RunTime + delayMilliseconds); }
 
 		static void TakeScreenshotInner()
 		{
@@ -487,7 +487,7 @@ namespace OpenRA
 
 		static void LogicTick()
 		{
-			delayedActions.PerformActions();
+			delayedActions.PerformActions(Game.RunTime);
 
 			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{

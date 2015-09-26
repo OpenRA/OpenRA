@@ -45,6 +45,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OpenRA.Game\ActionQueueTest.cs" />
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\CoordinateTest.cs" />
