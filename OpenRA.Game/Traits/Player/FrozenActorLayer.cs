@@ -41,13 +41,14 @@ namespace OpenRA.Traits
 		public DamageState DamageState;
 
 		public bool Visible = true;
-		public bool NeedRenderables;
+		public bool NeedRenderables { get; private set; }
 		public bool IsRendering { get; private set; }
 
-		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud)
+		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud, bool startsRevealed)
 		{
 			actor = self;
 			this.shroud = shroud;
+			NeedRenderables = startsRevealed;
 			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)

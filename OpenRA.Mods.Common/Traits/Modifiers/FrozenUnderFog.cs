@@ -38,10 +38,19 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<ITooltip> tooltip;
 		readonly Lazy<Health> health;
 
-		readonly Dictionary<Player, bool> visible;
-		readonly Dictionary<Player, FrozenActor> frozen;
+		readonly Dictionary<Player, FrozenState> stateByPlayer = new Dictionary<Player, FrozenState>();
 
 		bool initialized;
+
+		class FrozenState
+		{
+			public readonly FrozenActor FrozenActor;
+			public bool IsVisible;
+			public FrozenState(FrozenActor frozenActor)
+			{
+				FrozenActor = frozenActor;
+			}
+		}
 
 		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)
 		{
@@ -55,9 +64,6 @@ namespace OpenRA.Mods.Common.Traits
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<ITooltip>().FirstOrDefault());
 			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
-
-			frozen = new Dictionary<Player, FrozenActor>();
-			visible = init.World.Players.ToDictionary(p => p, p => false);
 		}
 
 		bool IsVisibleInner(Actor self, Player byPlayer)
@@ -67,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				return self.OccupiesSpace.OccupiedCells()
 					.Any(o => byPlayer.Shroud.IsExplored(o.First));
 
-			return visible[byPlayer];
+			return initialized && stateByPlayer[byPlayer].IsVisible;
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
@@ -87,19 +93,21 @@ namespace OpenRA.Mods.Common.Traits
 			VisibilityHash = 0;
 			foreach (var player in self.World.Players)
 			{
-				bool isVisible;
 				FrozenActor frozenActor;
+				bool isVisible;
 				if (!initialized)
 				{
-					frozen[player] = frozenActor = new FrozenActor(self, footprint, player.Shroud);
-					frozen[player].NeedRenderables = frozenActor.NeedRenderables = startsRevealed;
+					frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
+					isVisible = startsRevealed;
+					stateByPlayer.Add(player, new FrozenState(frozenActor) { IsVisible = isVisible });
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-					isVisible = visible[player] |= startsRevealed;
 				}
 				else
 				{
-					frozenActor = frozen[player];
-					isVisible = visible[player] = !frozenActor.Visible;
+					var state = stateByPlayer[player];
+					frozenActor = state.FrozenActor;
+					isVisible = !frozenActor.Visible;
+					state.IsVisible = isVisible;
 				}
 
 				if (isVisible)
@@ -127,7 +135,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return IsVisible(self, self.World.RenderPlayer) || (initialized && frozen[self.World.RenderPlayer].IsRendering) ? r : SpriteRenderable.None;
+			return
+				IsVisible(self, self.World.RenderPlayer) ||
+				(initialized && stateByPlayer[self.World.RenderPlayer].FrozenActor.IsRendering) ?
+				r : SpriteRenderable.None;
 		}
 	}
 }
