@@ -13,9 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Special case trait for unselectable actors that need to define targetable area bounds",
-	"for special cases like C4, engineer repair and tooltips.",
-	"Examples: bridge huts and crates.")]
+	[Desc("Special case trait for actors that need to define targetable area and screen map bounds manually.")]
 	public class CustomSelectionSizeInfo : ITraitInfo
 	{
 		[FieldLoader.Require]

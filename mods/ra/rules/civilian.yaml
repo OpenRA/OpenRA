@@ -399,6 +399,8 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
+	CustomSelectionSize:
+		CustomBounds: 120,72
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
@@ -415,6 +417,8 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
+	CustomSelectionSize:
+		CustomBounds: 120,48
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
@@ -431,6 +435,8 @@ SBRIDGE1:
 	Building:
 		Footprint: ___ ___
 		Dimensions: 3,2
+	CustomSelectionSize:
+		CustomBounds: 72,48
 	FreeActor@north:
 		Actor: bridgehut.small
 		SpawnOffset: 1,0
@@ -447,6 +453,8 @@ SBRIDGE2:
 	Building:
 		Footprint: __ __ __
 		Dimensions: 2,3
+	CustomSelectionSize:
+		CustomBounds: 48,72
 	FreeActor@west:
 		Actor: bridgehut.small
 		SpawnOffset: 0,1
@@ -460,9 +468,6 @@ SBRIDGE3:
 		Template: 523
 		DamagedTemplate: 524
 		DestroyedTemplate: 525
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
@@ -476,9 +481,6 @@ SBRIDGE4:
 		Template: 527
 		DamagedTemplate: 528
 		DestroyedTemplate: 529
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
