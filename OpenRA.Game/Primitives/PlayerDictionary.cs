@@ -11,7 +11,7 @@ namespace OpenRA.Primitives
 		readonly T[] valueByPlayerIndex;
 		readonly Dictionary<Player, T> valueByPlayer;
 
-		public PlayerDictionary(World world, Func<Player, T> valueFactory)
+		public PlayerDictionary(World world, Func<Player, int, T> valueFactory)
 		{
 			var players = world.Players;
 			if (players.Length == 0)
@@ -24,11 +24,15 @@ namespace OpenRA.Primitives
 			for (var i = 0; i < players.Length; i++)
 			{
 				var player = players[i];
-				var state = valueFactory(player);
+				var state = valueFactory(player, i);
 				valueByPlayerIndex[i] = state;
 				valueByPlayer[player] = state;
 			}
 		}
+
+		public PlayerDictionary(World world, Func<Player, T> valueFactory)
+			: this(world, (player, _) => valueFactory(player))
+		{ }
 
 		/// <summary>Gets the value for the specified player. This is slower than specifying a player index.</summary>
 		public T this[Player player] { get { return valueByPlayer[player]; } }
