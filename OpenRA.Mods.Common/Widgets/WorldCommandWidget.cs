@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (world == null || world.LocalPlayer == null)
+			if (world == null)
 				return false;
 
 			return ProcessInput(e);
@@ -63,6 +63,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (key == ks.ToSelectionKey)
 					return ToSelection();
+
+				// Put all functions that are valid for observers/spectators above this line.
+				if (world.LocalPlayer == null || world.LocalPlayer.Spectating)
+					return false;
 
 				// Put all functions that aren't unit-specific before this line!
 				if (!world.Selection.Actors.Any() || world.IsGameOver)
@@ -188,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool CycleBases()
 		{
 			var bases = world.ActorsWithTrait<BaseBuilding>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer)
+				.Where(a => a.Actor.Owner == world.RenderPlayer)
 				.Select(b => b.Actor)
 				.ToList();
 
@@ -197,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var building = world.ActorsWithTrait<Building>()
 					.Select(b => b.Actor)
-					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<SelectableInfo>());
+					.FirstOrDefault(a => a.Owner == world.RenderPlayer && a.Info.HasTraitInfo<SelectableInfo>());
 
 				// No buildings left
 				if (building == null)
@@ -223,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool CycleProductionBuildings()
 		{
 			var facilities = world.ActorsWithTrait<Production>()
-				.Where(a => a.Actor.Owner == world.LocalPlayer && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>())
+				.Where(a => a.Actor.Owner == world.RenderPlayer && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>())
 				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.Select(b => b.Actor)
 				.ToList();
