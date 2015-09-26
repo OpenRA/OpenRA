@@ -104,6 +104,7 @@ ChromeLayout:
 
 Weapons:
 	./mods/d2k/weapons.yaml
+	./mods/d2k/weapons/debris.yaml
 
 Voices:
 	./mods/d2k/audio/voices.yaml
