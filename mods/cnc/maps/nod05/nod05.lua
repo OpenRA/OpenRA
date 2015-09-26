@@ -270,10 +270,8 @@ IdleHunt = function(unit)
 end
 
 CheckForSams = function(player)
-	local baseBuildings = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-		return actor.Owner == Nod and actor.Type == 'sam' end)
-
-	return #baseBuildings >= 3
+	local sams = Nod.GetActorsByType("sam")
+	return #sams >= 3
 end
 
 checkProduction = function(player)
