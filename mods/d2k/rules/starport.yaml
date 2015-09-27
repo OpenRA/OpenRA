@@ -1,7 +1,7 @@
 mcv.starport:
 	Inherits: mcv
 	Buildable:
-		Prerequisites: repair_pad
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 2500
@@ -11,6 +11,7 @@ mcv.starport:
 harvester.starport:
 	Inherits: harvester
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1500
@@ -20,6 +21,7 @@ harvester.starport:
 trike.starport:
 	Inherits: trike
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 315
@@ -29,6 +31,7 @@ trike.starport:
 quad.starport:
 	Inherits: quad
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 500
@@ -38,6 +41,7 @@ quad.starport:
 siege_tank.starport:
 	Inherits: siege_tank
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1075
@@ -47,6 +51,7 @@ siege_tank.starport:
 missile_tank.starport:
 	Inherits: missile_tank
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1250
@@ -86,6 +91,7 @@ combat_tank_o.starport:
 carryall.starport:
 	Inherits: carryall
 	Buildable:
+		Prerequisites: starport
 		Queue: Starport
 	Valued:
 		Cost: 1500
