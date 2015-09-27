@@ -22,7 +22,7 @@ mcv:
 		Speed: 31
 		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
-		Range: 8c0
+		Range: 2c768
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -79,7 +79,7 @@ harvester:
 		Speed: 43
 		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
-		Range: 4c0
+		Range: 3c768
 	Explodes:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
@@ -120,7 +120,7 @@ trike:
 		ROT: 10
 		Speed: 128
 	RevealsShroud:
-		Range: 7c0
+		Range: 4c768
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMG
@@ -158,7 +158,7 @@ quad:
 		ROT: 8
 		Speed: 96
 	RevealsShroud:
-		Range: 8c0
+		Range: 4c768
 	Armament:
 		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
@@ -193,7 +193,7 @@ siege_tank:
 		Speed: 43
 		ROT: 3
 	RevealsShroud:
-		Range: 8c0
+		Range: 6c768
 	Turreted:
 		ROT: 3
 		Offset: 0,0,-32
@@ -239,7 +239,7 @@ missile_tank:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 9c0
+		Range: 6c768
 	Armament:
 		Weapon: mtank_pri
 		LocalOffset: -128,128,171, -128,-128,171
@@ -277,7 +277,7 @@ sonic_tank:
 		ROT: 3
 		Speed: 31
 	RevealsShroud:
-		Range: 6c0
+		Range: 5c768
 	Armament:
 		Weapon: Sound
 		LocalOffset: 600,0,427
@@ -313,7 +313,7 @@ devastator:
 		Speed: 31
 		Crushes: crate, infantry, spicebloom, wall
 	RevealsShroud:
-		Range: 7c0
+		Range: 4c768
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
@@ -357,7 +357,7 @@ raider:
 		ROT: 10
 		Speed: 149
 	RevealsShroud:
-		Range: 7c0
+		Range: 4c768
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMGo
@@ -417,7 +417,7 @@ deviator:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 5c0
+		Range: 4c768
 	Armament:
 		Weapon: DeviatorMissile
 		LocalOffset: -299,0,85
@@ -452,7 +452,7 @@ deviator:
 		Speed: 75
 		ROT: 5
 	RevealsShroud:
-		Range: 8c0
+		Range: 5c768
 	Turreted:
 		ROT: 5
 		RealignDelay: 0
@@ -491,8 +491,6 @@ combat_tank_h:
 		Weapon: 80mm_H
 	Mobile:
 		Speed: 64
-	RevealsShroud:
-		Range: 7c0
 	Health:
 		HP: 2700
 	SpawnActorOnDeath:
