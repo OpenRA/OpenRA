@@ -19,8 +19,6 @@ light_inf:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
-	AttractsWorms:
-		Intensity: 120
 
 engineer:
 	Inherits: ^Infantry
@@ -45,8 +43,6 @@ engineer:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
-	AttractsWorms:
-		Intensity: 180
 	Voiced:
 		VoiceSet: EngineerVoice
 
@@ -73,8 +69,6 @@ trooper:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
-	AttractsWorms:
-		Intensity: 180
 
 medic:
 	Inherits: ^Infantry
@@ -104,8 +98,6 @@ medic:
 		AttackSequence: heal
 	Passenger:
 		PipType: Blue
-	AttractsWorms:
-		Intensity: 180
 	Voiced:
 		VoiceSet: EngineerVoice
 
@@ -174,8 +166,6 @@ grenadier:
 	Explodes:
 		Weapon: GrenDeath
 		EmptyWeapon: GrenDeath
-	AttractsWorms:
-		Intensity: 180
 
 sardaukar:
 	Inherits: ^Infantry
@@ -203,8 +193,6 @@ sardaukar:
 	Armament@SECONDARY:
 		Weapon: M_HMG
 	AttackFrontal:
-	AttractsWorms:
-		Intensity: 180
 	Voiced:
 		VoiceSet: GenericVoice
 	Explodes:
@@ -232,8 +220,6 @@ saboteur:
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
-	AttractsWorms:
-		Intensity: 120
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
