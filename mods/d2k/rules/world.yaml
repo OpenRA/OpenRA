@@ -67,6 +67,7 @@ World:
 		ValidGround: Sand, Dune, Rock
 	DomainIndex:
 	PathfinderDebugOverlay:
+	WarheadDebugOverlay:
 	BuildableTerrainLayer:
 	D2kResourceLayer:
 	ResourceClaimLayer:
@@ -146,4 +147,3 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	D2kEditorResourceLayer:
-

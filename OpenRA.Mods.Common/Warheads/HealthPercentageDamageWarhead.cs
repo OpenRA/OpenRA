@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -22,6 +23,14 @@ namespace OpenRA.Mods.Common.Warheads
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
+
+			if (world.LocalPlayer != null)
+			{
+				var devMode = world.LocalPlayer.PlayerActor.TraitOrDefault<DeveloperMode>();
+				if (devMode != null && devMode.ShowCombatGeometry)
+					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Spread);
+			}
+
 			var range = Spread[0];
 			var hitActors = world.FindActorsInCircle(pos, range);
 			if (Spread.Length > 1 && Spread[1].Length > 0)
