@@ -144,7 +144,7 @@ camera:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 8c0
+		Range: 6c768
 		Type: CenterPosition
 
 wormspawner:
