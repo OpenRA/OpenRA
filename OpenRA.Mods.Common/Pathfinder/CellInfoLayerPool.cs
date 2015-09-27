@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				CellLayer<CellInfo>.CreateInstance(
 					mpos => new CellInfo(int.MaxValue, int.MaxValue, mpos.ToCPos(map), CellStatus.Unvisited),
 					new Size(map.MapSize.X, map.MapSize.Y),
-					map.TileShape);
+					map.Grid.Type);
 		}
 
 		public PooledCellInfoLayer Get()

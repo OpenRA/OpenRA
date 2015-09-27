@@ -92,15 +92,15 @@ namespace OpenRA.Graphics
 		public Viewport(WorldRenderer wr, Map map)
 		{
 			worldRenderer = wr;
+			var grid = Game.ModData.Manifest.Get<MapGrid>();
 
 			// Calculate map bounds in world-px
 			if (wr.World.Type == WorldType.Editor)
 			{
 				// The full map is visible in the editor
-				var ts = Game.ModData.Manifest.TileSize;
-				var width = map.MapSize.X * ts.Width;
-				var height = map.MapSize.Y * ts.Height;
-				if (wr.World.Map.TileShape == TileShape.Diamond)
+				var width = map.MapSize.X * grid.TileSize.Width;
+				var height = map.MapSize.Y * grid.TileSize.Height;
+				if (wr.World.Map.Grid.Type == TileShape.Diamond)
 					height /= 2;
 
 				mapBounds = new Rectangle(0, 0, width, height);
@@ -115,23 +115,22 @@ namespace OpenRA.Graphics
 			}
 
 			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
-			tileSize = Game.ModData.Manifest.TileSize;
+			tileSize = grid.TileSize;
 		}
 
 		public CPos ViewToWorld(int2 view)
 		{
 			var world = worldRenderer.Viewport.ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
-			var ts = Game.ModData.Manifest.TileSize;
-			var candidates = CandidateMouseoverCells(world);
+			var candidates = CandidateMouseoverCells(world).ToList();
 			var tileSet = worldRenderer.World.TileSet;
 
 			foreach (var uv in candidates)
 			{
 				// Coarse filter to nearby cells
-				var p = map.CenterOfCell(uv.ToCPos(map.TileShape));
+				var p = map.CenterOfCell(uv.ToCPos(map.Grid.Type));
 				var s = worldRenderer.ScreenPxPosition(p);
-				if (Math.Abs(s.X - world.X) <= ts.Width && Math.Abs(s.Y - world.Y) <= ts.Height)
+				if (Math.Abs(s.X - world.X) <= tileSize.Width && Math.Abs(s.Y - world.Y) <= tileSize.Height)
 				{
 					var ramp = 0;
 					if (map.Contains(uv))
@@ -153,11 +152,11 @@ namespace OpenRA.Graphics
 
 			// Mouse is not directly over a cell (perhaps on a cliff)
 			// Try and find the closest cell
-			if (candidates.Any())
+			if (candidates.Count > 0)
 			{
 				return candidates.OrderBy(uv =>
 				{
-					var p = map.CenterOfCell(uv.ToCPos(map.TileShape));
+					var p = map.CenterOfCell(uv.ToCPos(map.Grid.Type));
 					var s = worldRenderer.ScreenPxPosition(p);
 					var dx = Math.Abs(s.X - world.X);
 					var dy = Math.Abs(s.Y - world.Y);
@@ -177,8 +176,8 @@ namespace OpenRA.Graphics
 			var minPos = worldRenderer.ProjectedPosition(world);
 
 			// Find all the cells that could potentially have been clicked
-			var a = map.CellContaining(minPos - new WVec(1024, 0, 0)).ToMPos(map.TileShape);
-			var b = map.CellContaining(minPos + new WVec(512, 512 * map.MaximumTerrainHeight, 0)).ToMPos(map.TileShape);
+			var a = map.CellContaining(minPos - new WVec(1024, 0, 0)).ToMPos(map.Grid.Type);
+			var b = map.CellContaining(minPos + new WVec(512, 512 * map.Grid.MaximumTerrainHeight, 0)).ToMPos(map.Grid.Type);
 
 			for (var v = b.V; v >= a.V; v--)
 				for (var u = b.U; u >= a.U; u--)
@@ -244,7 +243,7 @@ namespace OpenRA.Graphics
 			// Diamond tile shapes don't have straight edges, and so we need
 			// an additional cell margin to include the cells that are half
 			// visible on each edge.
-			if (map.TileShape == TileShape.Diamond)
+			if (map.Grid.Type == TileShape.Diamond)
 			{
 				tl = new PPos(tl.U - 1, tl.V - 1);
 				br = new PPos(br.U + 1, br.V + 1);

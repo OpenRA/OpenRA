@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var pr in Players.Players.Values)
 				wr.UpdatePalettesForPlayer(pr.Name, pr.Color, false);
 
-			var ts = Game.ModData.Manifest.TileSize;
+			var ts = world.Map.Grid.TileSize;
 			var width = world.Map.MapSize.X * ts.Width;
 			var height = world.Map.MapSize.Y * ts.Height;
 			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, info.BinSize);

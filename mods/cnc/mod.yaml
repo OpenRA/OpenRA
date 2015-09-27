@@ -201,6 +201,10 @@ Fonts:
 Missions:
 	./mods/cnc/missions.yaml
 
+MapGrid:
+	TileSize: 24,24
+	Type: Rectangle
+
 SupportsMapsFrom: cnc
 
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA

@@ -41,8 +41,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (template == null)
 					return;
 
-				var ts = Game.ModData.Manifest.TileSize;
-				var shape = Game.ModData.Manifest.TileShape;
+				var grid = Game.ModData.Manifest.Get<MapGrid>();
+				var ts = grid.TileSize;
+				var shape = grid.Type;
 				bounds = worldRenderer.Theater.TemplateBounds(template, ts, shape);
 			}
 		}
@@ -70,8 +71,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (template == null)
 				return;
 
-			var ts = Game.ModData.Manifest.TileSize;
-			var shape = Game.ModData.Manifest.TileShape;
+			var grid = Game.ModData.Manifest.Get<MapGrid>();
+			var ts = grid.TileSize;
+			var shape = grid.Type;
 			var scale = GetScale();
 
 			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));

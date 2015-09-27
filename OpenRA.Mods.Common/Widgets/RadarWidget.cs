@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 
-			isDiamond = world.Map.TileShape == TileShape.Diamond;
+			isDiamond = world.Map.Grid.Type == TileShape.Diamond;
 			cellWidth = isDiamond ? 2 : 1;
 			previewWidth = world.Map.MapSize.X;
 			previewHeight = world.Map.MapSize.Y;
@@ -379,7 +379,7 @@ namespace OpenRA.Mods.Common.Widgets
 								if (!world.Map.Contains(cell.First))
 									continue;
 
-								var uv = cell.First.ToMPos(world.Map.TileShape);
+								var uv = cell.First.ToMPos(world.Map.Grid.Type);
 								var color = cell.Second.ToArgb();
 								if (isDiamond)
 								{
