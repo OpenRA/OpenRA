@@ -299,7 +299,16 @@ function FileWrite(file, content)
   return ok, not ok and wx.wxSysErrorMsg() or nil
 end
 
-function FileSize(fname) return wx.wxFileExists(fname) and wx.wxFileSize(fname) or nil end
+function FileSize(fname)
+  if not wx.wxFileExists(fname) then return end
+  local size = wx.wxFileSize(fname)
+  -- size can be returned as 0 for symlinks, so check with wxFile:Length();
+  -- can't use wxFile:Length() as it's reported incorrectly for some non-seekable files
+  -- (see https://github.com/pkulchenko/ZeroBraneStudio/issues/458);
+  -- the combination of wxFileSize and wxFile:Length() should do the right thing.
+  if size == 0 then size = wx.wxFile(fname, wx.wxFile.read):Length() end
+  return size
+end
 
 function FileRead(fname, length, callback)
   -- on OSX "Open" dialog allows to open applications, which are folders
@@ -323,7 +332,7 @@ function FileRead(fname, length, callback)
     return true, wx.wxSysErrorMsg()
   end
 
-  local _, content = file:Read(length or wx.wxFileSize(fname))
+  local _, content = file:Read(length or FileSize(fname))
   file:Close()
   return content, wx.wxSysErrorMsg()
 end
