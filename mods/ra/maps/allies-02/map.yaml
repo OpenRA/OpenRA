@@ -734,6 +734,9 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+	^CivBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
