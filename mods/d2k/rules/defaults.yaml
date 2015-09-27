@@ -284,7 +284,6 @@
 	AttackTurreted:
 	AutoTarget:
 	RenderRangeCircle:
-	RenderDetectionCircle:
 	-GivesBuildableArea:
 	-WithCrumbleOverlay:
 	-WithMakeAnimation:

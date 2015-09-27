@@ -424,9 +424,6 @@ outpost:
 	RevealsShroud:
 		Range: 10c0
 	ProvidesRadar:
-	DetectCloaked:
-		Range: 6c0
-	RenderDetectionCircle:
 	RenderSprites:
 		Image: outpost.harkonnen
 		FactionImages:
@@ -585,8 +582,6 @@ medium_gun_turret:
 		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
-	DetectCloaked:
-		Range: 5c0
 	Power:
 		Amount: -50
 	SelectionDecorations:
@@ -630,8 +625,6 @@ large_gun_turret:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	DetectCloaked:
-		Range: 6c0
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -808,9 +801,6 @@ palace:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 4c0
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@nuke:
