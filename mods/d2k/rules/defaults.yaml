@@ -163,7 +163,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 6c0
+		Range: 3c768
 	Mobile:
 		Crushes: crate, spicebloom
 		SharesCell: true

@@ -35,6 +35,8 @@ engineer:
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Health:
 		HP: 500
+	RevealsShroud:
+		Range: 2c768
 	Mobile:
 		Speed: 31
 	Passenger:
@@ -61,6 +63,8 @@ trooper:
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Health:
 		HP: 700
+	RevealsShroud:
+		Range: 4c768
 	Mobile:
 		Speed: 31
 	Armament:
@@ -85,6 +89,8 @@ medic:
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
 	Health:
 		HP: 375
+	RevealsShroud:
+		Range: 2c768
 	Mobile:
 		Speed: 42
 	Armament:
@@ -117,8 +123,7 @@ fremen:
 	Health:
 		HP: 700
 	RevealsShroud:
-		Range: 7c0
-	Passenger:
+		Range: 4c768
 	AutoTarget:
 		ScanRadius: 7
 	Armament@PRIMARY:
@@ -185,7 +190,7 @@ sardaukar:
 	Mobile:
 		Speed: 31
 	RevealsShroud:
-		Range: 6c0
+		Range: 4c768
 	WithInfantryBody:
 		AttackSequence: shoot
 	Armament@PRIMARY:
@@ -215,8 +220,6 @@ saboteur:
 		HP: 400
 	Mobile:
 		Speed: 43
-	RevealsShroud:
-		Range: 7c0
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
