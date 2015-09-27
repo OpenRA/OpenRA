@@ -67,6 +67,8 @@ construction_yard:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2000
+	EmitInfantryOnSell:
+		ActorTypes: light_inf, light_inf, engineer
 	BaseBuilding:
 	ProductionBar:
 	Power:
