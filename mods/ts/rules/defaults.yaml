@@ -689,6 +689,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7

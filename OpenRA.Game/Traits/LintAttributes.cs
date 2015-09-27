@@ -45,9 +45,28 @@ namespace OpenRA.Traits
 	public sealed class UpgradeUsedReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class PaletteDefinitionAttribute : Attribute { }
+	public sealed class PaletteDefinitionAttribute : Attribute
+	{
+		public readonly bool IsPlayerPalette;
+		public PaletteDefinitionAttribute(bool isPlayerPalette = false)
+		{
+			IsPlayerPalette = isPlayerPalette;
+		}
+	}
 
-	// TODO: differentiate player palettes
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class PaletteReferenceAttribute : Attribute { }
+	public sealed class PaletteReferenceAttribute : Attribute
+	{
+		public readonly bool IsPlayerPalette;
+		public PaletteReferenceAttribute(bool isPlayerPalette = false)
+		{
+			IsPlayerPalette = isPlayerPalette;
+		}
+
+		public readonly string PlayerPaletteReferenceSwitch;
+		public PaletteReferenceAttribute(string playerPaletteReferenceSwitch)
+		{
+			PlayerPaletteReferenceSwitch = playerPaletteReferenceSwitch;
+		}
+	}
 }

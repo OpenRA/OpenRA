@@ -58,8 +58,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
 
-		public readonly string TrailPalette = "effect";
+		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
 		public readonly bool TrailUsePlayerPalette = false;
+
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
