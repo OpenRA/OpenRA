@@ -87,6 +87,9 @@ pips:
 	pip-disguise: pip-disguise
 		Length: *
 		Tick: 300
+	pip-ammoempty: pips2
+	pip-ammo: pips2
+		Start: 1
 
 v2:
 	idle:

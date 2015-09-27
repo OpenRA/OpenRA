@@ -219,6 +219,9 @@ pips:
 		Start: 5
 	groups: pdigits
 		Length: *
+	pip-ammoempty:
+	pip-ammo:
+		Start: 1
 
 overlay:
 	build-valid-desert:
