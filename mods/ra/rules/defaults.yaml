@@ -612,6 +612,7 @@
 	FallsToEarth:
 		Spins: False
 		Moves: True
+		Velocity: 86
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
