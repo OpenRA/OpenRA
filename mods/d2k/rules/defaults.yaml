@@ -248,8 +248,8 @@
 		BuildSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	Capturable:
+		CaptureThreshold: 1.0
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV

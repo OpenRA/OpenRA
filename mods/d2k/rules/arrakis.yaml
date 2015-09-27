@@ -69,8 +69,7 @@ sietch:
 	-DamagedWithoutFoundation:
 	-GivesBuildableArea:
 	-Sellable:
-	-ExternalCapturable:
-	-ExternalCapturableBar:
+	-Capturable:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:

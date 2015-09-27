@@ -42,10 +42,8 @@ engineer:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	ExternalCaptures:
-		Type: building
 	Captures:
-		CaptureTypes: husk
+		CaptureTypes: building, husk
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 180
@@ -139,8 +137,8 @@ fremen:
 	WithInfantryBody:
 		AttackSequence: shoot
 	Cloak:
-		InitialDelay: 250
-		CloakDelay: 250
+		InitialDelay: 85
+		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
@@ -236,6 +234,13 @@ saboteur:
 	-AutoTarget:
 	AttractsWorms:
 		Intensity: 120
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+		UncloakOnMove: true
+		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: SaboteurVoice
 
