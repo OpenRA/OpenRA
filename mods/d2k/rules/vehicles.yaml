@@ -41,6 +41,10 @@ mcv:
 		Intensity: 700
 	SelectionDecorations:
 		VisualBounds: 42,42
+	SelfHealing:
+		Step: 5
+		Ticks: 3
+		HealIfBelow: 50%
 
 harvester:
 	Inherits: ^Vehicle
@@ -60,8 +64,8 @@ harvester:
 		Class: harvester
 		Priority: 7
 	Harvester:
-		PipCount: 10
-		Capacity: 40
+		PipCount: 7
+		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
 		UnloadTicksPerBale: 5
@@ -88,6 +92,10 @@ harvester:
 		Intensity: 700
 	SelectionDecorations:
 		VisualBounds: 42,42
+	SelfHealing:
+		Step: 5
+		Ticks: 3
+		HealIfBelow: 50%
 
 trike:
 	Inherits: ^Vehicle
@@ -324,6 +332,10 @@ devastator:
 		Intensity: 700
 	SelectionDecorations:
 		VisualBounds: 44,38,0,0
+	SelfHealing:
+		Step: 5
+		Ticks: 3
+		HealIfBelow: 50%
 
 raider:
 	Inherits: ^Vehicle
