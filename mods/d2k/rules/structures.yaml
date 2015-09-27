@@ -529,7 +529,7 @@ wall:
 		CrushClasses: Concretewall
 	BlocksProjectiles:
 	LineBuild:
-		Range: 8
+		Range: 5
 		NodeTypes: wall, turret
 	LineBuildNode:
 		Types: wall
