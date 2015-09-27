@@ -113,7 +113,7 @@ wind_trap:
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
-		Amount: 100
+		Amount: 200
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
 
@@ -167,7 +167,7 @@ barracks:
 		Prerequisite: barracks.medics
 		Factions: atreides, ordos
 	Power:
-		Amount: -20
+		Amount: -30
 	RenderSprites:
 		Image: barracks.harkonnen
 		FactionImages:
@@ -224,7 +224,7 @@ refinery:
 		Sequence: smoke
 		Palette: effectAdditive
 	Power:
-		Amount: -30
+		Amount: -75
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	ProvidesPrerequisite@buildingname:
@@ -266,7 +266,7 @@ silo:
 		Capacity: 2000
 	-EmitInfantryOnSell:
 	Power:
-		Amount: -5
+		Amount: -15
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	ThrowsShrapnel:
@@ -331,7 +331,7 @@ light_factory:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -20
+		Amount: -125
 
 heavy_factory:
 	Inherits: ^Building
@@ -390,7 +390,7 @@ heavy_factory:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -30
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
@@ -436,7 +436,7 @@ outpost:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
 	Power:
-		Amount: -40
+		Amount: -125
 	ProvidesPrerequisite@buildingname:
 
 starport:
@@ -497,7 +497,7 @@ starport:
 		Prerequisite: starport.harkonnen
 		Factions: harkonnen
 	Power:
-		Amount: -40
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 
 wall:
@@ -588,7 +588,7 @@ medium_gun_turret:
 	DetectCloaked:
 		Range: 5c0
 	Power:
-		Amount: -20
+		Amount: -50
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
@@ -633,7 +633,7 @@ large_gun_turret:
 	DetectCloaked:
 		Range: 6c0
 	Power:
-		Amount: -30
+		Amount: -60
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
@@ -678,7 +678,7 @@ repair_pad:
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
-		Amount: -10
+		Amount: -50
 	ProvidesPrerequisite@buildingname:
 
 high_tech_factory:
@@ -734,7 +734,7 @@ high_tech_factory:
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	Power:
-		Amount: -40
+		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
 
@@ -771,7 +771,7 @@ research_centre:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
-		Amount: -40
+		Amount: -175
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,80
@@ -812,7 +812,7 @@ palace:
 	DetectCloaked:
 		Range: 4c0
 	Power:
-		Amount: -50
+		Amount: -200
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Factions: harkonnen
