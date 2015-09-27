@@ -430,7 +430,7 @@ C10:
 VICE:
 	Inherits: ^Viceroid
 	AttackWander:
-		WanderMoveRadius: 1
-		MinMoveDelayInTicks: 1500
-		MaxMoveDelayInTicks: 1600
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 
