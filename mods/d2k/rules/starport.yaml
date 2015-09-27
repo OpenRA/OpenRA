@@ -85,8 +85,8 @@ combat_tank_o.starport:
 
 carryall.starport:
 	Inherits: carryall
-	Valued:
-		Cost: 1500
 	Buildable:
 		Queue: Starport
+	Valued:
+		Cost: 1500
 
