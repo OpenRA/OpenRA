@@ -4,7 +4,7 @@ BikeReinforcments = { "bike" }
 
 
 ReinforceWithLandingCraft = function(units, transportStart, transportUnload, rallypoint)
-	local transport = Actor.Create("oldlst", true, { Owner = nod, Facing = 0, Location = transportStart })
+	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = 0, Location = transportStart })
 	local subcell = 0
 	Utils.Do(units, function(a)
 		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))
@@ -33,41 +33,41 @@ ReinforceWithLandingCraft = function(units, transportStart, transportUnload, ral
 end
 
 WorldLoaded = function()
-	nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("Nod")
 	dinosaur = Player.GetPlayer("Dinosaur")
 	civilian = Player.GetPlayer("Civilian")
 
-	InvestigateObj = nod.AddPrimaryObjective("Investigate the nearby village for reports of \nstrange activity.")
+	InvestigateObj = player.AddPrimaryObjective("Investigate the nearby village for reports of \nstrange activity.")
 
-	Trigger.OnObjectiveAdded(nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	Trigger.OnObjectiveCompleted(nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 
-	Trigger.OnObjectiveFailed(nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(nod, function()
-		Media.PlaySpeechNotification(nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(nod, function()
-		Media.PlaySpeechNotification(nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	ReachVillageObj = nod.AddPrimaryObjective("Reach the village.")
+	ReachVillageObj = player.AddPrimaryObjective("Reach the village.")
 
 	Trigger.OnPlayerDiscovered(civilian, function(_, discoverer)
-		if discoverer == nod and not nod.IsObjectiveCompleted(ReachVillageObj) then
+		if discoverer == player and not player.IsObjectiveCompleted(ReachVillageObj) then
 			if not dinosaur.HasNoRequiredUnits() then
-				KillDinos = nod.AddPrimaryObjective("Kill all creatures in the area.")
+				KillDinos = player.AddPrimaryObjective("Kill all creatures in the area.")
 			end
 
-			nod.MarkCompletedObjective(ReachVillageObj)
+			player.MarkCompletedObjective(ReachVillageObj)
 		end
 	end)
 
@@ -89,12 +89,12 @@ end
 
 Tick = function()
 	if InitialUnitsArrived then
-		if nod.HasNoRequiredUnits() then
-			nod.MarkFailedObjective(InvestigateObj)
+		if player.HasNoRequiredUnits() then
+			player.MarkFailedObjective(InvestigateObj)
 		end
 		if dinosaur.HasNoRequiredUnits() then
-			if KillDinos then nod.MarkCompletedObjective(KillDinos) end
-			nod.MarkCompletedObjective(InvestigateObj)
+			if KillDinos then player.MarkCompletedObjective(KillDinos) end
+			player.MarkCompletedObjective(InvestigateObj)
 		end
 	end
 end

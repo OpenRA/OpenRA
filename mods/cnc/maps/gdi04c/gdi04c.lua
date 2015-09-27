@@ -36,12 +36,12 @@ TownAttackAction = function(actor)
 end
 
 AttackTown = function()
-	Reinforcements.Reinforce(nod, TownAttackWave1, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(0.25), TownAttackAction)
+	Reinforcements.Reinforce(enemy, TownAttackWave1, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(0.25), TownAttackAction)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Reinforcements.Reinforce(nod, TownAttackWave2, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
+		Reinforcements.Reinforce(enemy, TownAttackWave2, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
-		Reinforcements.Reinforce(nod, TownAttackWave3, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
+		Reinforcements.Reinforce(enemy, TownAttackWave3, { NodReinfEntry.Location, NodReinfRally.Location }, DateTime.Seconds(1), TownAttackAction)
 	end)
 end
 
@@ -63,7 +63,7 @@ end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("GDI")
-	nod = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("Nod")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -87,7 +87,7 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops.")
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
 	gdiObjective1 = player.AddPrimaryObjective("Defend the town of Białystok.")
 	gdiObjective2 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
 
@@ -123,9 +123,9 @@ end
 
 Tick = function()
 	if player.HasNoRequiredUnits() then
-		nod.MarkCompletedObjective(nodObjective)
+		enemy.MarkCompletedObjective(nodObjective)
 	end
-	if nod.HasNoRequiredUnits() then
+	if enemy.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(gdiObjective1)
 		player.MarkCompletedObjective(gdiObjective2)
 	end

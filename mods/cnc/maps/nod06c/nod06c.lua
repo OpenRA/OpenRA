@@ -24,7 +24,7 @@ ProdTriggerFunctionTime = DateTime.Minutes(5)
 
 Atk1TriggerFunction = function()
 	for type, count in pairs({ ['e1'] = 2, ['e2'] = 3 }) do
-		MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+		MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 		Utils.Do(MyActors, function(actor)
 			MovementAndHunt(actor, Grd1Waypoints)
 		end)
@@ -33,7 +33,7 @@ end
 
 Atk2TriggerFunction = function()
 	for type, count in pairs({ ['e1'] = 2, ['e2'] = 3 , ['jeep'] = 1}) do
-		MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+		MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 		Utils.Do(MyActors, function(actor)
 			IdleHunt(actor)
 		end)
@@ -44,14 +44,14 @@ ProdTriggerFunction = function()
 	local Units = AllUnits[DateTime.GameTime % #AllUnits + 1]
 
 	Utils.Do(Units, function(UnitType)
-		if (UnitType == 'jeep' or UnitType == 'mtnk') and not Factory.IsDead and Factory.Owner == GDI then
+		if (UnitType == 'jeep' or UnitType == 'mtnk') and not Factory.IsDead and Factory.Owner == enemy then
 			Factory.Build({UnitType})
-		elseif (UnitType == 'e1' or UnitType == 'e2' or UnitType == 'e3') and not Barracks.IsDead and Barracks.Owner == GDI then
+		elseif (UnitType == 'e1' or UnitType == 'e2' or UnitType == 'e3') and not Barracks.IsDead and Barracks.Owner == enemy then
 			Barracks.Build({UnitType})
 		end
 	end)
 
-	local list = GDI.GetGroundAttackers()
+	local list = enemy.GetGroundAttackers()
 	local counter = 1
 	while counter <= 5 do
 		counter = counter + 1
@@ -75,40 +75,40 @@ end
 InsertNodUnits = function()
 	Camera.Position = UnitsRallyRight.CenterPosition
 	
-	Media.PlaySpeechNotification(Nod, "Reinforce")
-	Reinforcements.Reinforce(Nod, NodStartUnitsVehicle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 30)
-	Reinforcements.Reinforce(Nod, NodStartUnitsMiddle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 15)
-	Reinforcements.Reinforce(Nod, NodStartUnitsLeft, { UnitsEntryLeft.Location, UnitsRallyLeft.Location }, 15)
-	Reinforcements.Reinforce(Nod, NodStartUnitsRight, { UnitsEntryRight.Location, UnitsRallyRight.Location }, 15)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, NodStartUnitsVehicle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 30)
+	Reinforcements.Reinforce(player, NodStartUnitsMiddle, { UnitsEntryMiddle.Location, UnitsRallyMiddle.Location }, 15)
+	Reinforcements.Reinforce(player, NodStartUnitsLeft, { UnitsEntryLeft.Location, UnitsRallyLeft.Location }, 15)
+	Reinforcements.Reinforce(player, NodStartUnitsRight, { UnitsEntryRight.Location, UnitsRallyRight.Location }, 15)
 end
 
 WorldLoaded = function()
-	GDI = Player.GetPlayer("GDI")
-	Nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("GDI")
 
-	Trigger.OnObjectiveAdded(Nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	Trigger.OnObjectiveCompleted(Nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 
-	Trigger.OnObjectiveFailed(Nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
-	NodObjective3 = Nod.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard.")
-	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
+	NodObjective1 = player.AddPrimaryObjective("Steal the GDI nuclear detonator.")
+	NodObjective3 = player.AddSecondaryObjective("Infiltrate the barracks, weapon factory and \nthe construction yard.")
+	GDIObjective = enemy.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
 	InsertNodUnits()
 
@@ -117,31 +117,31 @@ WorldLoaded = function()
 	Trigger.OnAllKilled(Atk2ActorTriggerActivator, Atk2TriggerFunction)
 
 	Trigger.OnEnteredFootprint(ChinCellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			Media.PlaySpeechNotification(Nod, "Reinforce")
-			Reinforcements.ReinforceWithTransport(Nod, 'tran', nil, { ChnEntry.Location, waypoint10.Location }, nil, nil, nil)
+		if a.Owner == player then
+			Media.PlaySpeechNotification(player, "Reinforce")
+			Reinforcements.ReinforceWithTransport(player, 'tran', nil, { ChnEntry.Location, waypoint10.Location }, nil, nil, nil)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(DzneCellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			Actor.Create('flare', true, { Owner = Nod, Location = waypoint10.Location })
+		if a.Owner == player then
+			Actor.Create('flare', true, { Owner = player, Location = waypoint10.Location })
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Win1CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point.")
-			Nod.MarkCompletedObjective(NodObjective1)
+		if a.Owner == player then
+			NodObjective2 = player.AddPrimaryObjective("Move to the evacuation point.")
+			player.MarkCompletedObjective(NodObjective1)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Win2CellTriggerActivator, function(a, id)
-		if a.Owner == Nod and NodObjective2 then
-			Nod.MarkCompletedObjective(NodObjective2)
+		if a.Owner == player and NodObjective2 then
+			player.MarkCompletedObjective(NodObjective2)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
@@ -150,16 +150,16 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
-		GDI.MarkCompletedObjective(GDIObjective)
+	if DateTime.GameTime > 2 and player.HasNoRequiredUnits() then
+		enemy.MarkCompletedObjective(GDIObjective)
 	end
 
-	if DateTime.GameTime % 5 == 0 and Barracks.Owner == Nod and Factory.Owner == Nod and Yard.Owner == Nod then
-		Nod.MarkCompletedObjective(NodObjective3)
+	if DateTime.GameTime % 5 == 0 and Barracks.Owner == player and Factory.Owner == player and Yard.Owner == player then
+		player.MarkCompletedObjective(NodObjective3)
 	end
 
-	if DateTime.GameTime % 7 == 0 and not Nod.IsObjectiveCompleted(NodObjective3) and (Barracks.IsDead or Factory.IsDead or Yard.IsDead) then
-		Nod.MarkFailedObjective(NodObjective3)
+	if DateTime.GameTime % 7 == 0 and not player.IsObjectiveCompleted(NodObjective3) and (Barracks.IsDead or Factory.IsDead or Yard.IsDead) then
+		player.MarkFailedObjective(NodObjective3)
 	end
 end
 

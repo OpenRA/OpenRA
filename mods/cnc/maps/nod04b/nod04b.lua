@@ -21,7 +21,7 @@ Hummer1Waypoints = { waypoint8, waypoint7, waypoint6, waypoint5, waypoint4, wayp
 Apc1TriggerFunctionTime = DateTime.Seconds(3)
 
 Apc1TriggerFunction = function()
-	Reinforcements.ReinforceWithTransport(GDI, 'apc', Apc1Units, Apc1Waypoints, nil,
+	Reinforcements.ReinforceWithTransport(enemy, 'apc', Apc1Units, Apc1Waypoints, nil,
 	function(transport, cargo)
 		Utils.Do(cargo, function(actor)
 			IdleHunt(actor)
@@ -31,7 +31,7 @@ Apc1TriggerFunction = function()
 end
 
 Hum1TriggerFunction = function(actor, discoverer)
-	MyActors = Utils.Take(2, GDI.GetActorsByType('jeep'))
+	MyActors = Utils.Take(2, enemy.GetActorsByType('jeep'))
 	Utils.Do(MyActors, function(actor)
 		MoveAndHunt(actor, Hummer1Waypoints)
 	end)
@@ -55,35 +55,35 @@ MoveAndHunt = function(unit)
 end
 
 Apc2TriggerFunction = function()
-	MyActors = Utils.Take(1, GDI.GetActorsByType('apc'))
+	MyActors = Utils.Take(1, enemy.GetActorsByType('apc'))
 	Utils.Do(MyActors, function(actor)
 		MoveAndHunt(actor, Apc2Waypoints)
 	end)
 end
 
 WinTriggerFunction = function()
-	Nod.MarkCompletedObjective(NodObjective1)
+	player.MarkCompletedObjective(NodObjective1)
 end
 
 InsertNodUnits = function()
 	Camera.Position = CameraPoint.CenterPosition
 
-	Media.PlaySpeechNotification(Nod, "Reinforce")
-	Reinforcements.ReinforceWithTransport(Nod, 'tran', NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location }, nil, nil)
-	Reinforcements.ReinforceWithTransport(Nod, 'tran', NodUnitsRocket, { EntryPointRocket.Location, RallyPointRocket.Location }, { EntryPointRocket.Location }, nil, nil)
-	Reinforcements.ReinforceWithTransport(Nod, 'tran', NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location }, nil, nil)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location }, nil, nil)
+	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsRocket, { EntryPointRocket.Location, RallyPointRocket.Location }, { EntryPointRocket.Location }, nil, nil)
+	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location }, nil, nil)
 end
 
 WorldLoaded = function()
-	GDI = Player.GetPlayer("GDI")
-	Nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("GDI")
 
 	Trigger.AfterDelay(Apc1TriggerFunctionTime, Apc1TriggerFunction)
 
 	Trigger.OnEnteredFootprint(Civ2CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
+		if a.Owner == player then
 			for type, count in pairs({ ['c6'] = 1, ['c7'] = 1, ['c8'] = 1, ['c9'] = 1 }) do
-				MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+				MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 				Utils.Do(MyActors, function(actor)
 					Movement(actor, Civ2Waypoints)
 				end)
@@ -93,9 +93,9 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Civ1CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
+		if a.Owner == player then
 			for type, count in pairs({ ['c2'] = 1, ['c3'] = 1, ['c4'] = 1, ['c5'] = 1 }) do
-				MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+				MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 				Utils.Do(MyActors, function(actor)
 					Movement(actor, Civ1Waypoints)
 				end)
@@ -109,50 +109,50 @@ WorldLoaded = function()
 	Trigger.OnAllRemovedFromWorld(Apc2ActorTriggerActivator, Apc2TriggerFunction)
 
 	Trigger.OnEnteredFootprint(Apc3CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			MoveAndHunt(GDI.GetActorsByType('apc')[1], Apc3Waypoints)
+		if a.Owner == player then
+			MoveAndHunt(enemy.GetActorsByType('apc')[1], Apc3Waypoints)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnAllRemovedFromWorld(WinActorTriggerActivator, WinTriggerFunction)
 
-	Trigger.OnObjectiveAdded(Nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	Trigger.OnObjectiveCompleted(Nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 
-	Trigger.OnObjectiveFailed(Nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
-	NodObjective1 = Nod.AddPrimaryObjective("Destroy the village and kill all civilians.")
-	NodObjective2 = Nod.AddSecondaryObjective("Kill all GDI units in the area.")
+	GDIObjective = enemy.AddPrimaryObjective("Kill all enemies.")
+	NodObjective1 = player.AddPrimaryObjective("Destroy the village and kill all civilians.")
+	NodObjective2 = player.AddSecondaryObjective("Kill all GDI units in the area.")
 
 	InsertNodUnits()
 end
 
 Tick = function()
-	if Nod.HasNoRequiredUnits() then
+	if player.HasNoRequiredUnits() then
 		if DateTime.GameTime > 2 then
-			GDI.MarkCompletedObjective(GDIObjective)
+			enemy.MarkCompletedObjective(GDIObjective)
 		end
 	end
 
-	if GDI.HasNoRequiredUnits() then
-		Nod.MarkCompletedObjective(NodObjective2)
+	if enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(NodObjective2)
 	end
 end
 
