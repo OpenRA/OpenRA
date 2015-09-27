@@ -39,29 +39,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\nod04a\nod04a.lua = mods\cnc\maps\nod04a\nod04a.lua
 		mods\cnc\maps\nod04b\nod04b.lua = mods\cnc\maps\nod04b\nod04b.lua
 		mods\cnc\maps\nod05\nod05.lua = mods\cnc\maps\nod05\nod05.lua
-		mods\cnc\maps\funpark01\scj01ea.lua = mods\cnc\maps\funpark01\scj01ea.lua
 		mods\cnc\maps\nod06a\nod06a.lua = mods\cnc\maps\nod06a\nod06a.lua
 		mods\cnc\maps\nod06b\nod06b.lua = mods\cnc\maps\nod06b\nod06b.lua
 		mods\cnc\maps\nod06c\nod06c.lua = mods\cnc\maps\nod06c\nod06c.lua
+		mods\cnc\maps\funpark01\scj01ea.lua = mods\cnc\maps\funpark01\scj01ea.lua
+		mods\cnc\maps\cnc64gdi01\cnc64gdi01.lua = mods\cnc\maps\cnc64gdi01\cnc64gdi01.lua
 		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Red Alert Lua scripts", "{B35D533F-BEB6-4674-A466-324EEFD97259}"
 	ProjectSection(SolutionItems) = preProject
-		mods\ra\maps\allies-05a\AI.lua = mods\ra\maps\allies-05a\AI.lua
 		mods\ra\maps\allies-01\allies01.lua = mods\ra\maps\allies-01\allies01.lua
 		mods\ra\maps\allies-02\allies02.lua = mods\ra\maps\allies-02\allies02.lua
 		mods\ra\maps\allies-03a\allies03a.lua = mods\ra\maps\allies-03a\allies03a.lua
 		mods\ra\maps\allies-03b\allies03b.lua = mods\ra\maps\allies-03b\allies03b.lua
 		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
-		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
+		mods\ra\maps\allies-05a\AI.lua = mods\ra\maps\allies-05a\AI.lua
+		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
+		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
+		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
+		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
-		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
-		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
-		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
-		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
+		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"
