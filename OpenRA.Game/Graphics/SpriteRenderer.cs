@@ -119,5 +119,10 @@ namespace OpenRA.Graphics
 			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
+
+		public void SetDepthPreviewEnabled(bool enabled)
+		{
+			shader.SetBool("EnableDepthPreview", enabled);
+		}
 	}
 }

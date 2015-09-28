@@ -145,7 +145,7 @@ ChromeLayout:
 	./mods/ts/chrome/ingame-observerstats.yaml
 	./mods/ts/chrome/ingame-player.yaml
 	./mods/ra/chrome/ingame-perf.yaml
-	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ts/chrome/ingame-debug.yaml
 	./mods/ra/chrome/mainmenu.yaml
 	./mods/ra/chrome/settings.yaml
 	./mods/ra/chrome/credits.yaml
