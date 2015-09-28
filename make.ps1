@@ -113,6 +113,8 @@ elseif ($command -eq "version")
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
 			sc $mod $replacement
+			$replacement = (gc $mod) -Replace "modchooser:.*", ("modchooser: {0}" -f $version)
+			sc $mod $replacement
 		}
 		echo ("Version strings set to '{0}'." -f $version)
 	}
