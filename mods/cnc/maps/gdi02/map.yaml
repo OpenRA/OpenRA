@@ -59,11 +59,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
@@ -781,6 +776,8 @@ Sequences:
 			Start: 0
 			Facings: 1
 			ZOffset: -1024
+		icon: lsticnh.tem
+			AddExtension: False
 
 VoxelSequences:
 

@@ -67,11 +67,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
