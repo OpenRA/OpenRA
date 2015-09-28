@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			// The four layers are stored in a 2x2 grid within a single texture
-			radarSheet = new Sheet(new Size(2 * previewWidth, 2 * previewHeight).NextPowerOf2());
+			radarSheet = new Sheet(SheetType.BGRA, new Size(2 * previewWidth, 2 * previewHeight).NextPowerOf2());
 			radarSheet.CreateBuffer();
 			radarData = radarSheet.GetData();
 

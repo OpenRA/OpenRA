@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
+				return new Sheet(SheetType.Indexed, new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);

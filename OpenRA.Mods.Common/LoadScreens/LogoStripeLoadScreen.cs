@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 			if (info.ContainsKey("Image"))
 			{
-				sheet = new Sheet(Platform.ResolvePath(info["Image"]));
+				sheet = new Sheet(SheetType.BGRA, Platform.ResolvePath(info["Image"]));
 				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
 				stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
 				stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);

@@ -40,16 +40,16 @@ namespace OpenRA.Graphics
 		int rowHeight = 0;
 		Point p;
 
-		public static Sheet AllocateSheet(int sheetSize)
+		public static Sheet AllocateSheet(SheetType type, int sheetSize)
 		{
-			return new Sheet(new Size(sheetSize, sheetSize));
+			return new Sheet(type, new Size(sheetSize, sheetSize));
 		}
 
 		public SheetBuilder(SheetType t)
 			: this(t, Game.Settings.Graphics.SheetSize) { }
 
 		public SheetBuilder(SheetType t, int sheetSize)
-			: this(t, () => AllocateSheet(sheetSize)) { }
+			: this(t, () => AllocateSheet(t, sheetSize)) { }
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
