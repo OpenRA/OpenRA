@@ -75,7 +75,9 @@ namespace OpenRA.Platforms.Default
 			}
 
 			context = SDL.SDL_GL_CreateContext(window);
-			SDL.SDL_GL_MakeCurrent(window, context);
+			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
+				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
+
 			GraphicsContext.CurrentContext = context;
 
 			GL.LoadAll();
