@@ -74,6 +74,9 @@ namespace OpenRA.Mods.Common.AI
 			"for StructureProductionResumeDelay before retrying.")]
 		public readonly int MaximumFailedPlacementAttempts = 3;
 
+		[Desc("How many randomly chosen cells with resources to check when deciding refinery placement.")]
+		public readonly int MaxResourceCellsToCheck = 3;
+
 		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
 		public readonly int CheckForNewBasesDelay = 1500;
 
@@ -500,11 +503,11 @@ namespace OpenRA.Mods.Common.AI
 					// Try and place the refinery near a resource field
 					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
 						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
-						.Shuffle(Random).ToList();
+						.Shuffle(Random).Take(Info.MaxResourceCellsToCheck);
 
-					if (nearbyResources.Count > 0)
+					foreach (var r in nearbyResources)
 					{
-						var found = findPos(nearbyResources.First(), baseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(r, baseCenter, 0, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
