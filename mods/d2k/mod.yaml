@@ -199,7 +199,7 @@ GameSpeeds:
 		Timestep: 50
 		OrderLatency: 3
 	default:
-		Name: Default
+		Name: Normal
 		Timestep: 40
 		OrderLatency: 3
 	faster:

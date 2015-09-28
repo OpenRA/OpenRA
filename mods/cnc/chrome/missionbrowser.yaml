@@ -21,7 +21,7 @@ Container@MISSIONBROWSER_PANEL:
 					X: 15
 					Y: 15
 					Width: 239
-					Height: 307
+					Height: 347
 					Children:
 						ScrollItem@HEADER:
 							Width: PARENT_RIGHT-27
@@ -66,7 +66,7 @@ Container@MISSIONBROWSER_PANEL:
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
 							Y: 213
 							Width: PARENT_RIGHT
-							Height: 134
+							Height: 99
 							Children:
 								Label@MISSION_DESCRIPTION:
 									X: 4
@@ -74,13 +74,31 @@ Container@MISSIONBROWSER_PANEL:
 									Width: PARENT_RIGHT - 32
 									VAlign: Top
 									Font: Small
-				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X: 15
-					Y: 337
-					Width: 239
-					Height: 25
-					Text: Difficulty
-					Font: Regular
+						Label@DIFFICULTY_DESC:
+							Y: 322
+							Width: 56
+							Height: 25
+							Text: Difficulty:
+							Align: Right
+						DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+							X: 61
+							Y: 322
+							Width: 120
+							Height: 25
+							Font: Regular
+						Label@GAMESPEED_DESC:
+							X: PARENT_RIGHT - WIDTH - 125
+							Y: 322
+							Width: 120
+							Height: 25
+							Text: Speed:
+							Align: Right
+						DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+							X: PARENT_RIGHT - WIDTH
+							Y: 322
+							Width: 120
+							Height: 25
+							Font: Regular
 		Button@BACK_BUTTON:
 			Y: 376
 			Width: 140

@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
 		readonly DropDownButtonWidget difficultyButton;
+		readonly DropDownButtonWidget gameSpeedButton;
 		readonly ButtonWidget startBriefingVideoButton;
 		readonly ButtonWidget stopBriefingVideoButton;
 		readonly ButtonWidget startInfoVideoButton;
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		PlayingVideo playingVideo;
 
 		string difficulty;
+		string gameSpeed;
 
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
@@ -77,6 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionFont = Game.Renderer.Fonts[description.Font];
 
 			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
+			gameSpeedButton = widget.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");
 
 			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
 			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
@@ -186,27 +189,57 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionPanel.ScrollToTop();
 			descriptionPanel.Layout.AdjustChildren();
 
-			difficultyButton.IsVisible = () => map.Options.Difficulties.Any();
-			if (!map.Options.Difficulties.Any())
-				return;
-
-			difficulty = map.Options.Difficulties.First();
-			difficultyButton.OnMouseDown = _ =>
+			if (difficultyButton != null)
 			{
-				var options = map.Options.Difficulties.Select(d => new DropDownOption
+				difficultyButton.IsDisabled = () => !map.Options.Difficulties.Any();
+
+				difficulty = map.Options.Difficulties.FirstOrDefault();
+				difficultyButton.GetText = () => difficulty ?? "Normal";
+				difficultyButton.OnMouseDown = _ =>
 				{
-					Title = d,
-					IsSelected = () => difficulty == d,
-					OnClick = () => difficulty = d
-				});
-				Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-				{
-					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-					item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-					return item;
+					var options = map.Options.Difficulties.Select(d => new DropDownOption
+					{
+						Title = d,
+						IsSelected = () => difficulty == d,
+						OnClick = () => difficulty = d
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 				};
-				difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-			};
+			}
+
+			if (gameSpeedButton != null)
+			{
+				var speeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+				gameSpeed = "default";
+
+				gameSpeedButton.GetText = () => speeds[gameSpeed].Name;
+				gameSpeedButton.OnMouseDown = _ =>
+				{
+					var options = speeds.Select(s => new DropDownOption
+					{
+						Title = s.Value.Name,
+						IsSelected = () => gameSpeed == s.Key,
+						OnClick = () => gameSpeed = s.Key
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					gameSpeedButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
 		}
 
 		float cachedSoundVolume;
@@ -280,6 +313,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Action lobbyReady = null;
 			lobbyReady = () =>
 			{
+				om.IssueOrder(Order.Command("gamespeed {0}".F(gameSpeed)));
 				om.IssueOrder(Order.Command("difficulty {0}".F(difficulty)));
 				Game.LobbyInfoChanged -= lobbyReady;
 				onStart();
