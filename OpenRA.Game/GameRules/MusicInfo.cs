@@ -32,21 +32,9 @@ namespace OpenRA.GameRules
 
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
-
-			if (!GlobalFileSystem.Exists(Filename))
-				return;
-
-			Exists = true;
-			using (var s = GlobalFileSystem.Open(Filename))
-			{
-				if (Filename.ToLowerInvariant().EndsWith("wav"))
-					Length = (int)WavLoader.WaveLength(s);
-				else
-					Length = (int)AudLoader.SoundLength(s);
-			}
 		}
 
-		public void Reload()
+		public void Load()
 		{
 			if (!GlobalFileSystem.Exists(Filename))
 				return;

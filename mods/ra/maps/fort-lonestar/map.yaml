@@ -23,7 +23,6 @@ Videos:
 Music:
 	rain: Rain (ambient)
 		Hidden: true
-		Filename: ./mods/ra/maps/fort-lonestar/rain
 
 Options:
 	Fog: True
