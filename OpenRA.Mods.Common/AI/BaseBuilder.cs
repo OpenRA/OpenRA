@@ -117,7 +117,9 @@ namespace OpenRA.Mods.Common.AI
 			// Add a random factor so not every AI produces at the same tick early in the game.
 			// Minimum should not be negative as delays in HackyAI could be zero.
 			var randomFactor = ai.Random.Next(0, ai.Info.StructureProductionRandomBonusDelay);
-			waitTicks = active ? ai.Info.StructureProductionActiveDelay + randomFactor
+
+			// Needs to be at least 4 * OrderLatency because otherwise the AI frequently duplicates build orders (i.e. makes the same build decision twice)
+			waitTicks = active ? 4 * world.LobbyInfo.GlobalSettings.OrderLatency + ai.Info.StructureProductionActiveDelay + randomFactor
 				: ai.Info.StructureProductionInactiveDelay + randomFactor;
 		}
 
