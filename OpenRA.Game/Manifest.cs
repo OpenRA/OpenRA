@@ -29,7 +29,7 @@ namespace OpenRA
 		}
 	}
 
-	// Describes what is to be loaded in order to run a mod
+	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
 	public class Manifest
 	{
 		public static readonly Dictionary<string, Manifest> AllMods = LoadMods();
@@ -106,12 +106,10 @@ namespace OpenRA
 			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
 			// Allow inherited mods to import parent maps.
-			var compat = new List<string>();
-			compat.Add(mod);
+			var compat = new List<string> { Mod.Id };
 
 			if (yaml.ContainsKey("SupportsMapsFrom"))
-				foreach (var c in yaml["SupportsMapsFrom"].Value.Split(','))
-					compat.Add(c.Trim());
+				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
 
@@ -198,6 +196,7 @@ namespace OpenRA
 
 		static Dictionary<string, Manifest> LoadMods()
 		{
+			// Get mods that are in the game folder.
 			var basePath = Platform.ResolvePath(".", "mods");
 			var mods = Directory.GetDirectories(basePath)
 				.Select(x => x.Substring(basePath.Length + 1));
