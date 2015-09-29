@@ -207,7 +207,7 @@ MapGrid:
 
 SupportsMapsFrom: ra
 
-SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
+SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetExtensions:
