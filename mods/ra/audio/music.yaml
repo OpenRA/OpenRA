@@ -44,7 +44,3 @@ float_v2: Floating
 grndwire: Ground Wire
 search: The Search
 wastelnd: Wasteland
-
-# Special effects
-rain: Rain (ambient)
-	Hidden: true
