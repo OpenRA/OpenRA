@@ -281,6 +281,7 @@ namespace OpenRA
 			Sound.Initialize();
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
+			ModData.MountFiles();
 			ModData.InitializeLoaders();
 			if (!Settings.Server.Dedicated)
 				Renderer.InitializeFonts(ModData.Manifest);

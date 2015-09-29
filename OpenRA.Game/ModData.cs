@@ -74,11 +74,6 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			// HACK: Mount only local folders so we have a half-working environment for the asset installer
-			GlobalFileSystem.UnmountAll();
-			foreach (var dir in Manifest.Folders)
-				GlobalFileSystem.Mount(dir);
-
 			defaultRules = Exts.Lazy(() => RulesetCache.Load());
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
@@ -90,6 +85,11 @@ namespace OpenRA
 		{
 			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
 				LoadScreen.Display();
+		}
+
+		public void MountFiles()
+		{
+			GlobalFileSystem.LoadFromManifest(Manifest);
 		}
 
 		public void InitializeLoaders()
