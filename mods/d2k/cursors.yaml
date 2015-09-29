@@ -1,7 +1,7 @@
 ShadowIndex: 1
 
 Palettes:
-	mouse: d2k.pal
+	mouse: PALETTE.BIN
 
 Cursors:
 	MOUSE.R8: mouse
