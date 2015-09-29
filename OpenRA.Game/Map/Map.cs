@@ -18,6 +18,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Support;
@@ -228,6 +229,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> MusicDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
@@ -360,6 +362,7 @@ namespace OpenRA
 			VoxelSequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
 			WeaponDefinitions = MiniYaml.NodesOrEmpty(yaml, "Weapons");
 			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
+			MusicDefinitions = MiniYaml.NodesOrEmpty(yaml, "Music");
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
@@ -572,6 +575,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));
 			root.Add(new MiniYamlNode("Weapons", null, WeaponDefinitions));
 			root.Add(new MiniYamlNode("Voices", null, VoiceDefinitions));
+			root.Add(new MiniYamlNode("Music", null, MusicDefinitions));
 			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
 			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
 
