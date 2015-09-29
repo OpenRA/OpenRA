@@ -18,10 +18,12 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Hunt : Activity
 	{
+		readonly IMove move;
 		readonly IEnumerable<Actor> targets;
 
 		public Hunt(Actor self)
 		{
+			move = self.Trait<IMove>();
 			var attack = self.Trait<AttackBase>();
 			targets = self.World.Actors.Where(a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
 				&& a.Info.HasTraitInfo<HuntableInfo>() && IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
@@ -42,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			return Util.SequenceActivities(
-				new AttackMoveActivity(self, new Move(self, target.Location, WDist.FromCells(2))),
+				new AttackMoveActivity(self, move.MoveTo(target.Location, 2)),
 				new Wait(25),
 				this);
 		}
