@@ -61,13 +61,16 @@ namespace OpenRA
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
 
-		public Manifest(string mod)
+		public Manifest(string modId, string modPath = null)
 		{
-			var path = Platform.ResolvePath(".", "mods", mod, "mod.yaml");
+			if (modPath == null)
+				modPath = ModMetadata.CandidateModPaths[modId];
+
+			var path = Path.Combine(modPath, "mod.yaml");
 			yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
-			Mod.Id = mod;
+			Mod.Id = modId;
 
 			// TODO: Use fieldloader
 			Folders = YamlList(yaml, "Folders", true);
@@ -202,21 +205,16 @@ namespace OpenRA
 
 		static Dictionary<string, Manifest> LoadMods()
 		{
-			// Get mods that are in the game folder.
-			var basePath = Platform.ResolvePath(".", "mods");
-			var mods = Directory.GetDirectories(basePath)
-				.Select(x => x.Substring(basePath.Length + 1));
-
 			var ret = new Dictionary<string, Manifest>();
-			foreach (var mod in mods)
+			foreach (var mod in ModMetadata.CandidateModPaths)
 			{
-				if (!File.Exists(Platform.ResolvePath(".", "mods", mod, "mod.yaml")))
+				if (!File.Exists(Path.Combine(mod.Value, "mod.yaml")))
 					continue;
 
 				try
 				{
-					var manifest = new Manifest(mod);
-					ret.Add(mod, manifest);
+					var manifest = new Manifest(mod.Key, mod.Value);
+					ret.Add(mod.Key, manifest);
 				}
 				catch (Exception ex)
 				{
