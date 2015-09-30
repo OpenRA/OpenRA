@@ -49,7 +49,7 @@ namespace OpenRA
 
 		public MPos ToMPos(MapGridType gridType)
 		{
-			if (gridType == MapGridType.Rectangle)
+			if (gridType == MapGridType.Rectangular)
 				return new MPos(X, Y);
 
 			// Convert from diamond cell (x, y) position to rectangular map position (u, v)

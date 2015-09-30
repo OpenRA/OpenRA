@@ -43,7 +43,7 @@ namespace OpenRA
 
 		public CPos ToCPos(MapGridType gridType)
 		{
-			if (gridType == MapGridType.Rectangle)
+			if (gridType == MapGridType.Rectangular)
 				return new CPos(U, V);
 
 			// Convert from rectangular map position to diamond cell position

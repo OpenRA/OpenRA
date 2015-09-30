@@ -786,7 +786,7 @@ namespace OpenRA
 
 		public WPos CenterOfCell(CPos cell)
 		{
-			if (Grid.Type == MapGridType.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
 
 			// Convert from diamond cell position (x, y) to world position (u, v):
@@ -818,7 +818,7 @@ namespace OpenRA
 
 		public CPos CellContaining(WPos pos)
 		{
-			if (Grid.Type == MapGridType.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
 			// Convert from world position to diamond cell position:

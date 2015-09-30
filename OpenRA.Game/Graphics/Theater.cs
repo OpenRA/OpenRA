@@ -125,8 +125,8 @@ namespace OpenRA.Graphics
 						continue;
 
 					var sprite = TileSprite(tile);
-					var u = mapGrid == MapGridType.Rectangle ? x : (x - y) / 2f;
-					var v = mapGrid == MapGridType.Rectangle ? y : (x + y) / 2f;
+					var u = mapGrid == MapGridType.Rectangular ? x : (x - y) / 2f;
+					var v = mapGrid == MapGridType.Rectangular ? y : (x + y) / 2f;
 
 					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.Size;
 					var rect = new Rectangle((int)(tl.X + sprite.Offset.X), (int)(tl.Y + sprite.Offset.Y), (int)sprite.Size.X, (int)sprite.Size.Y);
