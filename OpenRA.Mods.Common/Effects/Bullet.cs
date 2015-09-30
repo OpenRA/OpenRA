@@ -16,6 +16,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
@@ -166,12 +167,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
-			var cell = world.Map.CellContaining(pos);
-			var height = world.Map.DistanceAboveTerrain(pos);
-
-			var shouldExplode = height.Length <= 0 // Hit the ground
-				|| ticks++ >= length // Flight length reached/exceeded
-				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())); // Hit a wall or other blocking obstacle
+			var shouldExplode = ticks++ >= length // Flight length reached/exceeded
+				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)); // Hit a wall or other blocking obstacle
 
 			if (shouldExplode)
 				Explode(world);
