@@ -13,17 +13,25 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Hides the entire map in shroud.")]
 	class HideMapCrateActionInfo : CrateActionInfo
 	{
+		[Desc("Should the map also be hidden for the allies of the collector's owner?")]
+		public readonly bool IncludeAllies = false;
+
 		public override object Create(ActorInitializer init) { return new HideMapCrateAction(init.Self, this); }
 	}
 
 	class HideMapCrateAction : CrateAction
 	{
+		readonly HideMapCrateActionInfo info;
+
 		public HideMapCrateAction(Actor self, HideMapCrateActionInfo info)
-			: base(self, info) { }
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			// don't ever hide the map for people who have GPS.
+			// Don't ever hide the map for people who have GPS.
 			if (collector.Owner.HasFogVisibility)
 				return 0;
 
@@ -32,7 +40,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			collector.Owner.Shroud.ResetExploration();
+			if (info.IncludeAllies)
+			{
+				foreach (var player in collector.World.Players)
+					if (player.IsAlliedWith(collector.Owner))
+						player.Shroud.ResetExploration();
+            }
+			else
+				collector.Owner.Shroud.ResetExploration();
+
 			base.Activate(collector);
 		}
 	}
