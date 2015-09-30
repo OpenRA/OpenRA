@@ -39,9 +39,9 @@ namespace OpenRA
 			// The bottom edge is trickier: cells at MPos.V > bottomRight.V may have
 			// been projected into this region if they have height > 0.
 			// Each height step is equivalent to 512 WRange units, which is one MPos
-			// step for diamond cells, but only half a MPos step for classic cells. Doh!
+			// step for isometric cells, but only half a MPos step for classic cells. Doh!
 			var maxHeight = map.Grid.MaximumTerrainHeight;
-			var heightOffset = map.Grid.Type == MapGridType.Diamond ? maxHeight : maxHeight / 2;
+			var heightOffset = map.Grid.Type == MapGridType.RectangularIsometric ? maxHeight : maxHeight / 2;
 
 			// Use the MapHeight data array to clamp the bottom coordinate so it doesn't overflow the map
 			mapBottomRight = map.MapHeight.Value.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));

@@ -128,9 +128,9 @@ namespace OpenRA
 		public bool Contains(CPos cell)
 		{
 			// .ToMPos() returns the same result if the X and Y coordinates
-			// are switched. X < Y is invalid in the Diamond coordinate system,
+			// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
 			// so we pre-filter these to avoid returning the wrong result
-			if (GridType == MapGridType.Diamond && cell.X < cell.Y)
+			if (GridType == MapGridType.RectangularIsometric && cell.X < cell.Y)
 				return false;
 
 			return Contains(cell.ToMPos(GridType));
