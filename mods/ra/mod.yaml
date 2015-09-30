@@ -207,7 +207,7 @@ Missions:
 
 MapGrid:
 	TileSize: 24,24
-	Type: Rectangle
+	Type: Rectangular
 
 SupportsMapsFrom: ra
 

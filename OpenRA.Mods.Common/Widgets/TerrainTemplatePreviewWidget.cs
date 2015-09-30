@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Common.Widgets
 					var sprite = worldRenderer.Theater.TileSprite(tile, 0);
 					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
 
-					var u = gridType == MapGridType.Rectangle ? x : (x - y) / 2f;
-					var v = gridType == MapGridType.Rectangle ? y : (x + y) / 2f;
+					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
+					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
 					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
 					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(Palette), size);
 				}

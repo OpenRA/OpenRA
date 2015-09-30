@@ -51,7 +51,7 @@ TileSets:
 
 MapGrid:
 	TileSize: 32,32
-	Type: Rectangle
+	Type: Rectangular
 
 Cursors:
 	./mods/d2k/cursors.yaml
