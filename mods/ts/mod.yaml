@@ -113,7 +113,7 @@ TileSets:
 
 MapGrid:
 	TileSize: 48,24
-	Type: Diamond
+	Type: RectangularIsometric
 	MaximumTerrainHeight: 16
 	SubCellOffsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
 	SubCellDefaultIndex: 2

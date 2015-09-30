@@ -13,7 +13,7 @@ using System.IO;
 
 namespace OpenRA
 {
-	public enum MapGridType { Rectangular, Diamond }
+	public enum MapGridType { Rectangular, RectangularIsometric }
 
 	public class MapGrid : IGlobalModData
 	{

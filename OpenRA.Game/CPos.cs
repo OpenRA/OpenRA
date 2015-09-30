@@ -52,7 +52,7 @@ namespace OpenRA
 			if (gridType == MapGridType.Rectangular)
 				return new MPos(X, Y);
 
-			// Convert from diamond cell (x, y) position to rectangular map position (u, v)
+			// Convert from RectangularIsometric cell (x, y) position to rectangular map position (u, v)
 			//  - The staggered rows make this fiddly (hint: draw a diagram!)
 			// (a) Consider the relationships:
 			//  - +1x (even -> odd) adds (0, 1) to (u, v)

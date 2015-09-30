@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var preview = Preview();
 			var point = cell.ToMPos(gridType);
-			var cellWidth = gridType == MapGridType.Diamond ? 2 : 1;
+			var cellWidth = gridType == MapGridType.RectangularIsometric ? 2 : 1;
 			var dx = (int)(previewScale * cellWidth * (point.U - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.V - preview.Bounds.Top));
 

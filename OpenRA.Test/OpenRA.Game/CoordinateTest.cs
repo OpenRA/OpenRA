@@ -34,7 +34,7 @@ namespace OpenRA.Test
 						catch (Exception e)
 						{
 							// Known problem on isometric mods that shouldn't be visible to players as these are outside the map.
-							if (gridType == MapGridType.Diamond && y > x)
+							if (gridType == MapGridType.RectangularIsometric && y > x)
 								continue;
 
 							Console.WriteLine("Coordinate {0} on grid type {1} failed to convert back.".F(cell, gridType));
