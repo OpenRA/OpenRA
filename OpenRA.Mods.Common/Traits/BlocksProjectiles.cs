@@ -24,5 +24,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
 			: base(info) { }
+
+		public static bool AnyBlockingActorAt(World world, WPos pos)
+		{
+			return world.ActorMap.GetUnitsAt(world.Map.CellContaining(pos))
+				.Any(a => a.TraitsImplementing<BlocksProjectiles>().Any(Exts.IsTraitEnabled));
+		}
 	}
 }

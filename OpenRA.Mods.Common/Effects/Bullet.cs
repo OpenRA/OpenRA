@@ -167,12 +167,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
-			var cell = world.Map.CellContaining(pos);
-			var height = world.Map.DistanceAboveTerrain(pos);
-
-			var shouldExplode = height.Length <= 0 // Hit the ground
-				|| ticks++ >= length // Flight length reached/exceeded
-				|| BlockedByActor(world, pos); // Hit a wall or other blocking obstacle
+			var shouldExplode = ticks++ >= length // Flight length reached/exceeded
+				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)); // Hit a wall or other blocking obstacle
 
 			if (shouldExplode)
 				Explode(world);
@@ -211,12 +207,6 @@ namespace OpenRA.Mods.Common.Effects
 			world.AddFrameEndTask(w => w.Remove(this));
 
 			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
-		}
-
-		bool BlockedByActor(World world, WPos pos)
-		{
-			return info.Blockable && world.ActorMap.GetUnitsAt(world.Map.CellContaining(pos))
-					.Any(a => a.TraitsImplementing<BlocksProjectiles>().Any(Exts.IsTraitEnabled));
 		}
 	}
 }
