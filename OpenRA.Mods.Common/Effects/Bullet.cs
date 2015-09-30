@@ -167,10 +167,8 @@ namespace OpenRA.Mods.Common.Effects
 				contrail.Update(pos);
 
 			var cell = world.Map.CellContaining(pos);
-			var height = world.Map.DistanceAboveTerrain(pos);
 
-			var shouldExplode = height.Length <= 0 // Hit the ground
-				|| ticks++ >= length // Flight length reached/exceeded
+			var shouldExplode = ticks++ >= length // Flight length reached/exceeded
 				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())); // Hit a wall or other blocking obstacle
 
 			if (shouldExplode)
