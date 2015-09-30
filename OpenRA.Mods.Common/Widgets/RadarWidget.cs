@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 
-			isDiamond = world.Map.Grid.Type == TileShape.Diamond;
+			isDiamond = world.Map.Grid.Type == MapGridType.Diamond;
 			cellWidth = isDiamond ? 2 : 1;
 			previewWidth = world.Map.MapSize.X;
 			previewHeight = world.Map.MapSize.Y;

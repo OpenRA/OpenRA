@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -428,10 +426,10 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
-			var leftDelta = Grid.Type == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = Grid.Type == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = Grid.Type == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = Grid.Type == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
+			var leftDelta = Grid.Type == MapGridType.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
+			var topDelta = Grid.Type == MapGridType.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
+			var rightDelta = Grid.Type == MapGridType.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
+			var bottomDelta = Grid.Type == MapGridType.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
 			{
 				leftDelta + new WVec(0, 0, 512 * ramp[0]),
@@ -756,7 +754,7 @@ namespace OpenRA
 			// .ToMPos() returns the same result if the X and Y coordinates
 			// are switched. X < Y is invalid in the Diamond coordinate system,
 			// so we pre-filter these to avoid returning the wrong result
-			if (Grid.Type == TileShape.Diamond && cell.X < cell.Y)
+			if (Grid.Type == MapGridType.Diamond && cell.X < cell.Y)
 				return false;
 
 			return Contains(cell.ToMPos(this));
@@ -788,7 +786,7 @@ namespace OpenRA
 
 		public WPos CenterOfCell(CPos cell)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangle)
 				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
 
 			// Convert from diamond cell position (x, y) to world position (u, v):
@@ -820,7 +818,7 @@ namespace OpenRA
 
 		public CPos CellContaining(WPos pos)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangle)
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
 			// Convert from world position to diamond cell position:
@@ -901,7 +899,7 @@ namespace OpenRA
 			// for diamond cells.
 			var wtop = tl.V * 1024;
 			var wbottom = (br.V + 1) * 1024;
-			if (Grid.Type == TileShape.Diamond)
+			if (Grid.Type == MapGridType.Diamond)
 			{
 				wtop /= 2;
 				wbottom /= 2;
