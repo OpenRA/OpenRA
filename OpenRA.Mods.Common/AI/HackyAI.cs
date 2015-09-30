@@ -1036,12 +1036,20 @@ namespace OpenRA.Mods.Common.AI
 				ChooseRandomUnitToBuild(queue) :
 				ChooseUnitToBuild(queue);
 
-			if (unit != null
-				&& Info.UnitsToBuild.ContainsKey(unit.Name)
-				&& (!Info.UnitLimits.ContainsKey(unit.Name)
-					|| World.Actors.Count(a => a.Info.Name == unit.Name && a.Owner == Player) < Info.UnitLimits[unit.Name]))
+			if (unit == null)
+				return;
 
-				QueueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
+			var name = unit.Name;
+
+			if (Info.UnitsToBuild != null && !Info.UnitsToBuild.ContainsKey(name))
+				return;
+
+			if (Info.UnitLimits != null &&
+				Info.UnitLimits.ContainsKey(name) &&
+				World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name])
+				return;
+
+			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
 		void BuildUnit(string category, string name)
