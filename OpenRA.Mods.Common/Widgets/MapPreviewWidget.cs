@@ -130,11 +130,11 @@ namespace OpenRA.Mods.Common.Widgets
 				tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public int2 ConvertToPreview(CPos cell, TileShape gridType)
+		public int2 ConvertToPreview(CPos cell, MapGridType gridType)
 		{
 			var preview = Preview();
 			var point = cell.ToMPos(gridType);
-			var cellWidth = gridType == TileShape.Diamond ? 2 : 1;
+			var cellWidth = gridType == MapGridType.Diamond ? 2 : 1;
 			var dx = (int)(previewScale * cellWidth * (point.U - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.V - preview.Bounds.Top));
 

@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -43,7 +41,7 @@ namespace OpenRA
 			// Each height step is equivalent to 512 WRange units, which is one MPos
 			// step for diamond cells, but only half a MPos step for classic cells. Doh!
 			var maxHeight = map.Grid.MaximumTerrainHeight;
-			var heightOffset = map.Grid.Type == TileShape.Diamond ? maxHeight : maxHeight / 2;
+			var heightOffset = map.Grid.Type == MapGridType.Diamond ? maxHeight : maxHeight / 2;
 
 			// Use the MapHeight data array to clamp the bottom coordinate so it doesn't overflow the map
 			mapBottomRight = map.MapHeight.Value.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));

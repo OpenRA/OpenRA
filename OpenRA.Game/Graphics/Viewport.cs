@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 				// The full map is visible in the editor
 				var width = map.MapSize.X * grid.TileSize.Width;
 				var height = map.MapSize.Y * grid.TileSize.Height;
-				if (wr.World.Map.Grid.Type == TileShape.Diamond)
+				if (wr.World.Map.Grid.Type == MapGridType.Diamond)
 					height /= 2;
 
 				mapBounds = new Rectangle(0, 0, width, height);
@@ -243,7 +243,7 @@ namespace OpenRA.Graphics
 			// Diamond tile shapes don't have straight edges, and so we need
 			// an additional cell margin to include the cells that are half
 			// visible on each edge.
-			if (map.Grid.Type == TileShape.Diamond)
+			if (map.Grid.Type == MapGridType.Diamond)
 			{
 				tl = new PPos(tl.U - 1, tl.V - 1);
 				br = new PPos(br.U + 1, br.V + 1);

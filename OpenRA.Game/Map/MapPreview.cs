@@ -47,7 +47,7 @@ namespace OpenRA
 		public readonly int players;
 		public readonly Rectangle bounds;
 		public readonly int[] spawnpoints = { };
-		public readonly TileShape map_grid_type;
+		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
 	}
@@ -63,7 +63,7 @@ namespace OpenRA
 		public string Author { get; private set; }
 		public int PlayerCount { get; private set; }
 		public CPos[] SpawnPoints { get; private set; }
-		public TileShape GridType { get; private set; }
+		public MapGridType GridType { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
@@ -99,7 +99,7 @@ namespace OpenRA
 			generatingMinimap = false;
 		}
 
-		public MapPreview(string uid, TileShape gridType, MapCache cache)
+		public MapPreview(string uid, MapGridType gridType, MapCache cache)
 		{
 			this.cache = cache;
 			Uid = uid;

@@ -23,7 +23,7 @@ namespace OpenRA
 {
 	public sealed class MapCache : IEnumerable<MapPreview>, IDisposable
 	{
-		public static readonly MapPreview UnknownMap = new MapPreview(null, TileShape.Rectangle, null);
+		public static readonly MapPreview UnknownMap = new MapPreview(null, MapGridType.Rectangle, null);
 		readonly Cache<string, MapPreview> previews;
 		readonly ModData modData;
 		readonly SheetBuilder sheetBuilder;
