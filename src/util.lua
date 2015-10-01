@@ -430,11 +430,11 @@ function TR(msg, count)
   -- if there is count and no corresponding message, then
   -- get the message from the (default) english language,
   -- otherwise the message is not going to be pluralized properly
-  if count and not message then
+  if count and (not message or type(message) == 'table' and not next(message)) then
     message, counter = messages.en[msg], messages.en[0]
   end
   return count and counter and message and type(message) == 'table'
-    and message[counter(count)] or message or msg
+    and message[counter(count)] or (type(message) == 'string' and message or msg)
 end
 
 -- wxwidgets 2.9.x may report the last folder twice (depending on how the
