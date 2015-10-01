@@ -15,6 +15,12 @@ AutocreateSquads =
 	{ "arty", "arty" }
 }
 
+HeliPatrolPaths =
+{
+	{ HeliPatrol1.Location, HeliPatrol2.Location, HeliPatrol3.Location, HeliPatrol4.Location, HeliPatrol5.Location, HeliPatrol6.Location },
+	{ HeliPatrol5.Location, HeliPatrol4.Location, HeliPatrol3.Location, HeliPatrol2.Location, HeliPatrol1.Location, HeliPatrol6.Location }
+}
+
 AttackTriggers = { AttackTrigger1, AttackTrigger2, AttackTrigger3, AttackTrigger4 }
 
 harvester = { "harv" }
@@ -176,7 +182,13 @@ end
 
 HeliHunt = function()
 	local helicopters = enemy.GetActorsByType("heli")
-	SquadHunt(helicopters)
+	local patrolpath = Utils.Random(HeliPatrolPaths)
+
+	Utils.Do(helicopters, function(actor)
+		Trigger.OnIdle(actor, function()
+			actor.Patrol(patrolpath)
+		end)
+	end)
 end
 
 SquadHunt = function(actors)
