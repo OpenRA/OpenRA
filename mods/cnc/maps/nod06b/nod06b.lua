@@ -20,20 +20,20 @@ Chn2Waypoints = { ChnEntry.Location, waypoint0.Location }
 Gdi5Waypoint = { waypoint1, waypoint2, waypoint3, waypoint4, waypoint5, waypoint6, waypoint7 }
 
 HuntTriggerFunction = function()
-	local list = GDI.GetGroundAttackers()
+	local list = enemy.GetGroundAttackers()
 	Utils.Do(list, function(unit)
 		IdleHunt(unit)
 	end)
 end
 
 Win1TriggerFunction = function()
-	NodObjective2 = Nod.AddPrimaryObjective("Move to the evacuation point.")
-	Nod.MarkCompletedObjective(NodObjective1)
+	NodObjective2 = player.AddPrimaryObjective("Move to the evacuation point.")
+	player.MarkCompletedObjective(NodObjective1)
 end
 
 Chn1TriggerFunction = function()
 	if not Chn1Switch then
-		local cargo = Reinforcements.ReinforceWithTransport(GDI, 'tran', Gdi1Units, Chn1Waypoints, { ChnEntry.Location })[2]
+		local cargo = Reinforcements.ReinforceWithTransport(enemy, 'tran', Gdi1Units, Chn1Waypoints, { ChnEntry.Location })[2]
 		Utils.Do(cargo, function(actor)
 			IdleHunt(actor)
 		end)
@@ -44,7 +44,7 @@ end
 Atk1TriggerFunction = function()
 	if not Atk1Switch then
 		for type, count in pairs({ ['e2'] = 2, ['jeep'] = 1, ['e1'] = 2}) do
-			MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+			MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 			Utils.Do(MyActors, function(actor)
 				IdleHunt(actor)
 			end)
@@ -56,7 +56,7 @@ end
 Atk2TriggerFunction = function()
 	if not Atk2Switch then
 		for type, count in pairs({ ['e2'] = 2, ['e1'] = 2}) do
-			MyActors = Utils.Take(count, GDI.GetActorsByType(type))
+			MyActors = Utils.Take(count, enemy.GetActorsByType(type))
 			Utils.Do(MyActors, function(actor)
 				MoveAndHunt(actor, Gdi5Waypoint)
 			end)
@@ -67,7 +67,7 @@ end
 
 Chn2TriggerFunction = function()
 	if not Chn2Switch then
-		local cargo = Reinforcements.ReinforceWithTransport(GDI, 'tran', Gdi1Units, Chn2Waypoints, { ChnEntry.Location })[2]
+		local cargo = Reinforcements.ReinforceWithTransport(enemy, 'tran', Gdi1Units, Chn2Waypoints, { ChnEntry.Location })[2]
 		Utils.Do(cargo, function(actor)
 			IdleHunt(actor)
 		end)
@@ -85,68 +85,68 @@ MoveAndHunt = function(unit, waypoints)
 end
 
 InsertNodUnits = function()
-	Media.PlaySpeechNotification(Nod, "Reinforce")
+	Media.PlaySpeechNotification(player, "Reinforce")
 	Camera.Position = UnitsRallyVehicle2.CenterPosition
 
-	Reinforcements.Reinforce(Nod, NodUnitsVehicle1, { UnitsEntryVehicle.Location, UnitsRallyVehicle1.Location }, 10)
-	Reinforcements.Reinforce(Nod, NodUnitsVehicle2, { UnitsEntryVehicle.Location, UnitsRallyVehicle2.Location }, 15)
-	Reinforcements.Reinforce(Nod, NodUnitsGunner, { UnitsEntryGunner.Location, UnitsRallyGunner.Location }, 15)
-	Reinforcements.Reinforce(Nod, NodUnitsRocket, { UnitsEntryRocket.Location, UnitsRallyRocket.Location }, 25)
+	Reinforcements.Reinforce(player, NodUnitsVehicle1, { UnitsEntryVehicle.Location, UnitsRallyVehicle1.Location }, 10)
+	Reinforcements.Reinforce(player, NodUnitsVehicle2, { UnitsEntryVehicle.Location, UnitsRallyVehicle2.Location }, 15)
+	Reinforcements.Reinforce(player, NodUnitsGunner, { UnitsEntryGunner.Location, UnitsRallyGunner.Location }, 15)
+	Reinforcements.Reinforce(player, NodUnitsRocket, { UnitsEntryRocket.Location, UnitsRallyRocket.Location }, 25)
 end
 
 WorldLoaded = function()
-	GDI = Player.GetPlayer("GDI")
-	Nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("GDI")
 
-	Trigger.OnObjectiveAdded(Nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	Trigger.OnObjectiveCompleted(Nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 
-	Trigger.OnObjectiveFailed(Nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	NodObjective1 = Nod.AddPrimaryObjective("Steal the GDI nuclear detonator.")
-	GDIObjective = GDI.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
+	NodObjective1 = player.AddPrimaryObjective("Steal the GDI nuclear detonator.")
+	GDIObjective = enemy.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
 	InsertNodUnits()
 
 	Trigger.OnEnteredFootprint(HuntCellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
+		if a.Owner == player then
 			HuntTriggerFunction()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(DzneCellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			Actor.Create('flare', true, { Owner = Nod, Location = waypoint17.Location })
+		if a.Owner == player then
+			Actor.Create('flare', true, { Owner = player, Location = waypoint17.Location })
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Win1CellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
+		if a.Owner == player then
 			Win1TriggerFunction()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Win2CellTriggerActivator, function(a, id)
-		if a.Owner == Nod and NodObjective2 then
-			Nod.MarkCompletedObjective(NodObjective2)
+		if a.Owner == player and NodObjective2 then
+			player.MarkCompletedObjective(NodObjective2)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
@@ -160,18 +160,18 @@ WorldLoaded = function()
 	OnAnyDamaged(Chn2ActorTriggerActivator, Chn2TriggerFunction)
 
 	Trigger.OnEnteredFootprint(ChnCellTriggerActivator, function(a, id)
-		if a.Owner == Nod then
-			Media.PlaySpeechNotification(Nod, "Reinforce")
-			Reinforcements.ReinforceWithTransport(Nod, 'tran', nil, { ChnEntry.Location, waypoint17.Location }, nil, nil, nil)
+		if a.Owner == player then
+			Media.PlaySpeechNotification(player, "Reinforce")
+			Reinforcements.ReinforceWithTransport(player, 'tran', nil, { ChnEntry.Location, waypoint17.Location }, nil, nil, nil)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 end
 
 Tick = function()
-	if Nod.HasNoRequiredUnits() then
+	if player.HasNoRequiredUnits() then
 		if DateTime.GameTime > 2 then
-			GDI.MarkCompletedObjective(GDIObjective)
+			enemy.MarkCompletedObjective(GDIObjective)
 		end
 	end
 end

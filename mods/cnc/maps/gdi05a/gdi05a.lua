@@ -56,7 +56,7 @@ AttackPaths =
 }
 
 Build = function(factory, units, action)
-	if factory.IsDead or factory.Owner ~= nod then
+	if factory.IsDead or factory.Owner ~= enemy then
 		return
 	end
 
@@ -72,7 +72,7 @@ Attack = function()
 	local path = Utils.Random(AttackPaths)
 	Build(types[1], types[2], function(units)
 		Utils.Do(units, function(unit)
-			if unit.Owner ~= nod then return end
+			if unit.Owner ~= enemy then return end
 			unit.Patrol(path, false)
 			Trigger.OnIdle(unit, unit.Hunt)
 		end)
@@ -84,7 +84,7 @@ end
 Grd1Action = function()
 	Build(Airfield, Grd1UnitTypes, function(units)
 		Utils.Do(units, function(unit)
-			if unit.Owner ~= nod then return end
+			if unit.Owner ~= enemy then return end
 			Trigger.OnKilled(unit, function()
 				Trigger.AfterDelay(Grd1Delay[Map.Difficulty], Grd1Action)
 			end)
@@ -96,7 +96,7 @@ end
 Grd2Action = function()
 	Build(Airfield, Grd2UnitTypes, function(units)
 		Utils.Do(units, function(unit)
-			if unit.Owner ~= nod then return end
+			if unit.Owner ~= enemy then return end
 			unit.Patrol(Grd2Path, true, DateTime.Seconds(5))
 		end)
 	end)
@@ -121,19 +121,19 @@ Grd3Action = function()
 end
 
 DiscoverGdiBase = function(actor, discoverer)
-	if baseDiscovered or not discoverer == gdi then
+	if baseDiscovered or not discoverer == player then
 		return
 	end
 
 	Utils.Do(GdiBase, function(actor)
-		actor.Owner = gdi
+		actor.Owner = player
 	end)
 	GdiHarv.FindResources()
 
 	baseDiscovered = true
 
-	gdiObjective3 = gdi.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	gdi.MarkCompletedObjective(gdiObjective1)
+	gdiObjective3 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	player.MarkCompletedObjective(gdiObjective1)
 	
 	Attack()
 end
@@ -143,17 +143,17 @@ SetupWorld = function()
 		unit.Destroy()
 	end)
 
-	Media.PlaySpeechNotification(gdi, "Reinforce")
-	Reinforcements.Reinforce(gdi, GdiTanks, { GdiTankEntry.Location, GdiTankRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
-	Reinforcements.Reinforce(gdi, GdiApc, { GdiApcEntry.Location, GdiApcRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
-	Reinforcements.Reinforce(gdi, GdiInfantry, { GdiInfantryEntry.Location, GdiInfantryRallyPoint.Location }, 15, function(actor) actor.Stance = "Defend" end)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, GdiTanks, { GdiTankEntry.Location, GdiTankRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
+	Reinforcements.Reinforce(player, GdiApc, { GdiApcEntry.Location, GdiApcRallyPoint.Location }, DateTime.Seconds(1), function(actor) actor.Stance = "Defend" end)
+	Reinforcements.Reinforce(player, GdiInfantry, { GdiInfantryEntry.Location, GdiInfantryRallyPoint.Location }, 15, function(actor) actor.Stance = "Defend" end)
 
 	Trigger.OnPlayerDiscovered(gdiBase, DiscoverGdiBase)
 
 	Utils.Do(Map.NamedActors, function(actor)
-		if actor.Owner == nod and actor.HasProperty("StartBuildingRepairs") then
+		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == nod and building.Health < RepairThreshold[Map.Difficulty] * building.MaxHealth then
+				if building.Owner == enemy and building.Health < RepairThreshold[Map.Difficulty] * building.MaxHealth then
 					building.StartBuildingRepairs()
 				end
 			end)
@@ -161,15 +161,15 @@ SetupWorld = function()
 	end)
 
 	Trigger.OnAllKilled(NodSams, function()
-		gdi.MarkCompletedObjective(gdiObjective2)
-		Actor.Create("airstrike.proxy", true, { Owner = gdi })
+		player.MarkCompletedObjective(gdiObjective2)
+		Actor.Create("airstrike.proxy", true, { Owner = player })
 	end)
 
 	GdiHarv.Stop()
 	NodHarv.FindResources()
 	if Map.Difficulty ~= "Easy" then
 		Trigger.OnDamaged(NodHarv, function()
-			Utils.Do(nod.GetGroundAttackers(), function(unit)
+			Utils.Do(enemy.GetGroundAttackers(), function(unit)
 				unit.AttackMove(NodHarv.Location)
 				if Map.Difficulty == "Hard" then
 					unit.Hunt()
@@ -185,30 +185,30 @@ end
 
 WorldLoaded = function()
 	gdiBase = Player.GetPlayer("AbandonedBase")
-	gdi = Player.GetPlayer("GDI")
-	nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("GDI")
+	enemy = Player.GetPlayer("Nod")
 
-	Trigger.OnObjectiveAdded(gdi, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	Trigger.OnObjectiveCompleted(gdi, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
-	Trigger.OnObjectiveFailed(gdi, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerLost(gdi, function()
+	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	Trigger.OnPlayerWon(gdi, function()
+	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	nodObjective = nod.AddPrimaryObjective("Destroy all GDI troops.")
-	gdiObjective1 = gdi.AddPrimaryObjective("Find the GDI base.")
-	gdiObjective2 = gdi.AddSecondaryObjective("Destroy all SAM sites to receive air support.")
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
+	gdiObjective1 = player.AddPrimaryObjective("Find the GDI base.")
+	gdiObjective2 = player.AddSecondaryObjective("Destroy all SAM sites to receive air support.")
 
 	SetupWorld()
 
@@ -216,12 +216,12 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if gdi.HasNoRequiredUnits() then
+	if player.HasNoRequiredUnits() then
 		if DateTime.GameTime > 2 then
-			nod.MarkCompletedObjective(nodObjective)
+			enemy.MarkCompletedObjective(nodObjective)
 		end
 	end
-	if baseDiscovered and nod.HasNoRequiredUnits() then
-		gdi.MarkCompletedObjective(gdiObjective3)
+	if baseDiscovered and enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(gdiObjective3)
 	end
 end
