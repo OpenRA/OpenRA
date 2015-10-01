@@ -359,6 +359,9 @@ namespace OpenRA
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
 
+			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
+			Renderer.InitializeDepthBuffer(grid);
+
 			if (Cursor != null)
 				Cursor.Dispose();
 
