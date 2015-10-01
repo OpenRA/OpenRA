@@ -144,7 +144,7 @@ return {
   ["Find the next text occurrence"] = "Cerca la successiva occorrenza nel testo", -- src\editor\menu_search.lua
   ["Find"] = "Ricerca", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "Apri o chiudi tutti i blocchi di codice", -- src\editor\menu_edit.lua
-  ["Found %d instance."] = {}, -- src\editor\findreplace.lua
+  ["Found %d instance."] = {"Trovata %d istanza.", "Trovate %d istanze."}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "Trovato punto di auto-revcovery e ripristinata la sessione salvata", -- src\editor\commands.lua
   ["Full &Screen"] = "Schermo intero", -- src\editor\menu_view.lua
   ["Go To Definition"] = "Vai a Definizione", -- src\editor\editor.lua
@@ -218,7 +218,7 @@ return {
   ["Replace All Selections"] = "Sostituisci Tutte le Selezioni", -- src\editor\editor.lua
   ["Replace all"] = "Sostituisci Tutto", -- src\editor\toolbar.lua
   ["Replace next instance"] = nil, -- src\editor\toolbar.lua
-  ["Replaced %d instance."] = {}, -- src\editor\findreplace.lua
+  ["Replaced %d instance."] = {"Sostituita %d istanza.", "Sostituite %d istanze."}, -- src\editor\findreplace.lua
   ["Replaced an invalid UTF8 character with %s."] = "Sostituito un carattere UTF8 invalido con %s.", -- src\editor\commands.lua
   ["Reset to default layout"] = "Ritorna al default layout", -- src\editor\menu_view.lua
   ["Run As Scratchpad"] = "Esegui in Scratchpad (Live coding)", -- src\editor\menu_project.lua
@@ -302,7 +302,7 @@ return {
   ["Undo last edit"] = "Annulla l'ultima azione di edit", -- src\editor\menu_edit.lua
   ["Unmap Directory"] = nil, -- src\editor\filetree.lua
   ["Unset '%s' As Start File"] = nil, -- src\editor\filetree.lua
-  ["Updated %d file."] = {}, -- src\editor\findreplace.lua
+  ["Updated %d file."] =  {"Aggiornato %d file.", "Aggiornati %d file."}, -- src\editor\findreplace.lua
   ["Updating symbol index and settings..."] = nil, -- src\editor\outline.lua
   ["Use %s to close."] = nil, -- src\editor\findreplace.lua
   ["Use '%s' to see full description."] = "Utilizza '%s' per vedere la descrizione completa.", -- src\editor\editor.lua
