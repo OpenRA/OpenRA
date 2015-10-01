@@ -72,6 +72,7 @@ namespace OpenRA.Platforms.Default
 
 		// Depth buffer
 		public const int GL_DEPTH_COMPONENT = 0x1902;
+		public const int GL_LEQUAL = 0x0203;
 
 		// BlendingFactorDest
 		public const int GL_ZERO = 0;
@@ -276,6 +277,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void BlendFunc(int sfactor, int dfactor);
 		public static BlendFunc glBlendFunc { get; private set; }
 
+		public delegate void DepthFunc(int func);
+		public static DepthFunc glDepthFunc { get; private set; }
+
 		public delegate void Scissor(int x, int y, int width, int height);
 		public static Scissor glScissor { get; private set; }
 
@@ -418,6 +422,7 @@ namespace OpenRA.Platforms.Default
 				glDisable = Bind<Disable>("glDisable");
 				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
 				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
+				glDepthFunc = Bind<DepthFunc>("glDepthFunc");
 				glScissor = Bind<Scissor>("glScissor");
 				glPushClientAttrib = Bind<PushClientAttrib>("glPushClientAttrib");
 				glPopClientAttrib = Bind<PopClientAttrib>("glPopClientAttrib");

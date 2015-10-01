@@ -224,6 +224,8 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_DEPTH_TEST);
 			OpenGL.CheckGLError();
+			OpenGL.glDepthFunc(OpenGL.GL_LEQUAL);
+			OpenGL.CheckGLError();
 		}
 
 		public void DisableDepthBuffer()
