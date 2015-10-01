@@ -54,7 +54,7 @@ end
 
 local file = ... -- pass an existing file name as a parameter
 local messages = {}
-for _, mask in ipairs({"zbstudio/*.lua", "src/main.lua", "src/editor/*.lua"}) do
+for _, mask in ipairs({"src/main.lua", "src/editor/*.lua"}) do
   for _, file in ipairs(FileSysGet(mask, wx.wxFILE)) do
     local content = FileRead(file)
     for msg in content:gmatch("[^%w]TR(%b())") do
@@ -83,9 +83,12 @@ end
 local plural = existing[0] and ("  [0] = "..existing[0].."\n") or ""
 existing[0] = nil
 
+local en = loadfile("cfg/i18n/en.lua")() -- load 'en' with translations that require pluralization
+
 local msgs = {}
 for m, files in pairs(messages) do
-  local str = "  ["..m.."] = "..(existing[m] or 'nil, --')
+  local str = "  ["..m.."] = "
+  ..(existing[m] or (en[m:gsub([=[^['"]]=],''):gsub([=[['"]$]=],'')] and '{}, --' or 'nil, --'))
   str = str:gsub(" %-%-.*$", "").." -- "
   for f in pairs(files) do str = str .. f .. ", " end
   msgs[#msgs+1] = str:gsub(", $", "")
