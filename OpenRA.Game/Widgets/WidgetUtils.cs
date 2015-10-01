@@ -70,7 +70,9 @@ namespace OpenRA.Widgets
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.RgbaColorRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+			var tl = new float2(r.Left, r.Top);
+			var br = new float2(r.Right, r.Bottom);
+			Game.Renderer.RgbaColorRenderer.FillEllipse(tl, br, c);
 		}
 
 		public static int[] GetBorderSizes(string collection)

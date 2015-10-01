@@ -119,7 +119,7 @@ namespace OpenRA
 				lastResolution = Resolution;
 				RgbaSpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
 				SpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
-				RgbaColorRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
+				RgbaColorRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
 			}
 
 			// If zoom evaluates as different due to floating point weirdness that's OK, setting the parameters again is harmless.
@@ -130,7 +130,7 @@ namespace OpenRA
 				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 				WorldSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 				WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
-				WorldRgbaColorRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldRgbaColorRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 			}
 		}
 
