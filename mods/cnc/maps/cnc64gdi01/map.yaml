@@ -709,6 +709,24 @@ Actors:
 		Owner: Nod
 		Location: 28,11
 		Facing: 92
+	HeliPatrol1: waypoint
+		Owner: Nod
+		Location: 15,43
+	HeliPatrol2: waypoint
+		Owner: Nod
+		Location: 3,49
+	HeliPatrol3: waypoint
+		Owner: Nod
+		Location: 24,55
+	HeliPatrol4: waypoint
+		Owner: Nod
+		Location: 44,52
+	HeliPatrol5: waypoint
+		Owner: Nod
+		Location: 45,32
+	HeliPatrol6: waypoint
+		Owner: Nod
+		Location: 26,14
 
 Smudges:
 
@@ -762,6 +780,9 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
+			ShowOwnerRow: false
+	BIO.Husk:
+		Tooltip:
 			ShowOwnerRow: false
 	EYE:
 		IonCannonPower:
