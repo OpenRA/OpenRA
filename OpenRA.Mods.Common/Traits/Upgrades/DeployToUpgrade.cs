@@ -52,13 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when undeploying.")]
 		public readonly string UndeploySound = null;
 
-		public object Create(ActorInitializer init) { return new DeployToUpgrade(init.Self, this); }
+		public object Create(ActorInitializer init) { return new DeployToUpgrade(init, this); }
 	}
+
+	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
 	public class DeployToUpgrade : IResolveOrder, IIssueOrder, INotifyCreated
 	{
-		enum DeployState { Undeployed, Deploying, Deployed }
-
 		readonly Actor self;
 		readonly DeployToUpgradeInfo info;
 		readonly UpgradeManager manager;
@@ -68,19 +68,44 @@ namespace OpenRA.Mods.Common.Traits
 
 		DeployState deployState;
 
-		public DeployToUpgrade(Actor self, DeployToUpgradeInfo info)
+		public DeployToUpgrade(ActorInitializer init, DeployToUpgradeInfo info)
 		{
-			this.self = self;
+			this.self = init.Self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
+			if (init.Contains<DeployStateInit>())
+				deployState = init.Get<DeployStateInit, DeployState>();
 		}
 
 		public void Created(Actor self)
 		{
-			OnUndeployCompleted();
+			switch (deployState)
+			{
+				case DeployState.Undeployed:
+					OnUndeployCompleted();
+					break;
+				case DeployState.Deploying:
+					if (canTurn)
+						self.Trait<IFacing>().Facing = info.Facing;
+
+					Deploy(true);
+					break;
+				case DeployState.Deployed:
+					if (canTurn)
+						self.Trait<IFacing>().Facing = info.Facing;
+
+					OnDeployCompleted();
+					break;
+				case DeployState.Undeploying:
+					if (canTurn)
+						self.Trait<IFacing>().Facing = info.Facing;
+
+					Undeploy(true);
+					break;
+			}
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -99,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeployToUpgrade" || deployState == DeployState.Deploying)
+			if (order.OrderString != "DeployToUpgrade" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
 				return;
 
 			if (!order.Queued)
@@ -157,10 +182,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
-		void Deploy()
+		void Deploy() { Deploy(false); }
+		void Deploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
-			if (deployState != DeployState.Undeployed)
+			if (!init && deployState != DeployState.Undeployed)
 				return;
 
 			if (!IsOnValidTerrain())
@@ -170,7 +196,8 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.Play(info.DeploySound, self.CenterPosition);
 
 			// Revoke upgrades that are used while undeployed.
-			OnDeployStarted();
+			if (!init)
+				OnDeployStarted();
 
 			// If there is no animation to play just grant the upgrades that are used while deployed.
 			// Alternatively, play the deploy animation and then grant the upgrades.
@@ -181,16 +208,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the upgrades.</summary>
-		void Undeploy()
+		void Undeploy() { Undeploy(false); }
+		void Undeploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
-			if (deployState != DeployState.Deployed)
+			if (!init && deployState != DeployState.Deployed)
 				return;
 
 			if (!string.IsNullOrEmpty(info.UndeploySound))
 				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
 
-			OnUndeployStarted();
+			if (!init)
+				OnUndeployStarted();
 
 			// If there is no animation to play just grant the upgrades that are used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the upgrades.
@@ -231,5 +260,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			deployState = DeployState.Undeployed;
 		}
+	}
+
+	public class DeployStateInit : IActorInit<DeployState>
+	{
+		[FieldFromYamlKey]
+		readonly DeployState value = DeployState.Deployed;
+		public DeployStateInit() { }
+		public DeployStateInit(DeployState init) { value = init; }
+		public DeployState Value(World world) { return value; }
 	}
 }
