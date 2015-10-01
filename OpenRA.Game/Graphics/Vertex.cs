@@ -21,9 +21,6 @@ namespace OpenRA.Graphics
 		public Vertex(float3 xyz, float u, float v, float p, float c)
 			: this(xyz.X, xyz.Y, xyz.Z, u, v, p, c) { }
 
-		public Vertex(float[] xyz, float u, float v, float p, float c)
-			: this(xyz[0], xyz[1], xyz[2], u, v, p, c) { }
-
 		public Vertex(float x, float y, float z, float u, float v, float p, float c)
 		{
 			X = x; Y = y; Z = z;
