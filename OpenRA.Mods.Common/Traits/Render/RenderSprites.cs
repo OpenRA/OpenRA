@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size * info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 	}

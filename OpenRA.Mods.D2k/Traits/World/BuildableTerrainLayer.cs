@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// Terrain tiles define their origin at the topleft
 			var s = theater.TileSprite(tile);
-			dirty[cell] = new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode);
+			dirty[cell] = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)

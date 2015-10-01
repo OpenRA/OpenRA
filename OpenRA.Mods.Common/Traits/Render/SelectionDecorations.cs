@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
 
-			var pos = basePosition - (0.5f * pipImages.Image.Size).ToInt2() + new int2(9, 5);
+			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
 			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, pal, 1f);
 		}
 
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pipImages = new Animation(self.World, "pips");
 			pipImages.PlayRepeating(PipStrings[0]);
 
-			var pipSize = pipImages.Image.Size.ToInt2();
+			var pipSize = pipImages.Image.Size.XY.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
 			var pal = wr.Palette(Info.Palette);

@@ -71,10 +71,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		struct TileInfo
 		{
-			public readonly float2 ScreenPosition;
+			public readonly float3 ScreenPosition;
 			public readonly byte Variant;
 
-			public TileInfo(float2 screenPosition, byte variant)
+			public TileInfo(float3 screenPosition, byte variant)
 			{
 				ScreenPosition = screenPosition;
 				Variant = variant;

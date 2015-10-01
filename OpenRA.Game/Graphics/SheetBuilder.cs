@@ -66,7 +66,7 @@ namespace OpenRA.Graphics
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
-				return new Sprite(current, Rectangle.Empty, spriteOffset, channel, BlendMode.Alpha);
+				return new Sprite(current, Rectangle.Empty, 0, spriteOffset, channel, BlendMode.Alpha);
 
 			var rect = Allocate(size, spriteOffset);
 			Util.FastCopyIntoChannel(rect, src);
@@ -129,7 +129,7 @@ namespace OpenRA.Graphics
 				p = new Point(0, 0);
 			}
 
-			var rect = new Sprite(current, new Rectangle(p, imageSize), spriteOffset, channel, BlendMode.Alpha);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), 0, spriteOffset, channel, BlendMode.Alpha);
 			p.X += imageSize.Width;
 
 			return rect;

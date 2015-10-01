@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (sprite != cachedSprite)
 			{
-				offset = 0.5f * (new float2(RenderBounds.Size) - sprite.Size);
+				offset = 0.5f * (new float2(RenderBounds.Size) - sprite.Size.XY);
 				cachedSprite = sprite;
 			}
 
