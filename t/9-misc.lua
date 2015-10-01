@@ -1,3 +1,8 @@
+for _, ln in ipairs({'cn', 'de', 'eo', 'pt-br', 'es', 'fr', 'it', 'ru'}) do
+  local func = loadfile(("cfg/i18n/%s.lua"):format(ln))
+  ok(type(func) == 'function' and func() ~= nil, ("Loaded '%s' language file."):format(ln))
+end
+
 local fixed, invalid = FixUTF8("+\128\129\130+\194\127+", "+")
 is(fixed, "++++++\127+", "Invalid UTF8 is fixed (1/2).")
 is(#invalid, 4, "Invalid UTF8 is fixed (2/2).")
