@@ -101,7 +101,7 @@
     <Compile Include="Activities\Air\HeliFly.cs" />
     <Compile Include="Activities\Air\HeliFlyCircle.cs" />
     <Compile Include="Activities\Air\HeliLand.cs" />
-    <Compile Include="Activities\Air\HeliReturn.cs" />
+    <Compile Include="Activities\Air\HeliReturnToBase.cs" />
     <Compile Include="Activities\Air\Land.cs" />
     <Compile Include="Activities\Air\ResupplyAircraft.cs" />
     <Compile Include="Activities\Air\ReturnToBase.cs" />
@@ -202,9 +202,11 @@
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
+    <Compile Include="Orders\AircraftMoveOrderTargeter.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="Pathfinder\CellInfo.cs" />
     <Compile Include="PlayerExtensions.cs" />
+    <Compile Include="Scripting\Properties\AircraftProperties.cs" />
     <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
@@ -235,13 +237,11 @@
     <Compile Include="Scripting\Properties\DiplomacyProperties.cs" />
     <Compile Include="Scripting\Properties\HarvesterProperties.cs" />
     <Compile Include="Scripting\Properties\HealthProperties.cs" />
-    <Compile Include="Scripting\Properties\HelicopterProperties.cs" />
     <Compile Include="Scripting\Properties\GeneralProperties.cs" />
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
     <Compile Include="Scripting\Properties\DemolitionProperties.cs" />
-    <Compile Include="Scripting\Properties\PlaneProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
@@ -258,8 +258,6 @@
     <Compile Include="Traits\Air\AttackPlane.cs" />
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
-    <Compile Include="Traits\Air\Helicopter.cs" />
-    <Compile Include="Traits\Air\Plane.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
     <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\Armament.cs" />

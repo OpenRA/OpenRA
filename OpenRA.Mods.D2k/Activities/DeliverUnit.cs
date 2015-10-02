@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Activities
 		readonly IMove movement;
 		readonly Carryable carryable;
 		readonly Carryall carryall;
-		readonly Helicopter helicopter;
+		readonly Aircraft aircraft;
 		readonly IPositionable positionable;
 		readonly IFacing cargoFacing;
 		readonly IFacing selfFacing;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Activities
 			cargo = carryall.Carrying;
 			movement = self.Trait<IMove>();
 			carryable = cargo.Trait<Carryable>();
-			helicopter = self.Trait<Helicopter>();
+			aircraft = self.Trait<Aircraft>();
 			positionable = cargo.Trait<IPositionable>();
 			cargoFacing = cargo.Trait<IFacing>();
 			selfFacing = self.Trait<IFacing>();
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.D2k.Activities
 						return this;
 					}
 
-					if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
+					if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.LandAltitude))
 						return this;
 					state = State.Release;
 					return Util.SequenceActivities(new Wait(15), this);

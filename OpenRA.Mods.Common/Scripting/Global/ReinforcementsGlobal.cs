@@ -137,11 +137,19 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 			{
-				var heli = transport.Info.TraitInfoOrDefault<HelicopterInfo>();
-				if (heli != null)
+				var aircraftInfo = transport.TraitOrDefault<Aircraft>();
+				if (aircraftInfo != null)
 				{
-					transport.QueueActivity(new Turn(transport, heli.InitialFacing));
-					transport.QueueActivity(new HeliLand(transport, true));
+					if (!aircraftInfo.IsPlane)
+					{
+						transport.QueueActivity(new Turn(transport, aircraftInfo.Info.InitialFacing));
+						transport.QueueActivity(new HeliLand(transport, true));
+					}
+					else
+					{
+						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last())));
+					}
+
 					transport.QueueActivity(new Wait(15));
 				}
 
@@ -151,7 +159,7 @@ namespace OpenRA.Mods.Common.Scripting
 					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
 				}
 
-				transport.QueueActivity(new Wait(heli != null ? 50 : 25));
+				transport.QueueActivity(new Wait(aircraftInfo != null ? 50 : 25));
 			}
 
 			if (exitFunc != null)

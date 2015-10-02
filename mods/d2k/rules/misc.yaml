@@ -131,7 +131,7 @@ waypoint:
 
 ^carryall.colorpicker:
 	Inherits: carryall
-	Helicopter:
+	Aircraft:
 		InitialFacing: 104
 	RenderSprites:
 		Image: carryall

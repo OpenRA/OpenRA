@@ -85,10 +85,11 @@ TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Transport Helicopter
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 149
 		AirborneUpgrades: airborne
+		CanHover: True
 	WithRotor@PRIMARY:
 		Offset: -597,0,341
 	WithRotor@SECONDARY:
@@ -117,7 +118,7 @@ BADR.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
 		Name: Badger
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 149
 		AirborneUpgrades: airborne
@@ -140,7 +141,7 @@ MIG.Husk:
 		Offset: -598,-683,0
 	Contrail@2:
 		Offset: -598,683,0
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 186
 		AirborneUpgrades: airborne
@@ -160,7 +161,7 @@ YAK.Husk:
 		Name: Yak Attack Plane
 	Contrail:
 		Offset: -853,0,0
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 149
 		AirborneUpgrades: airborne
@@ -178,10 +179,11 @@ HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Longbow
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 149
 		AirborneUpgrades: airborne
+		CanHover: True
 	WithRotor:
 		Offset: 0,0,85
 	SmokeTrailWhenDamaged:
@@ -197,10 +199,11 @@ HIND.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Hind
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 112
 		AirborneUpgrades: airborne
+		CanHover: True
 	WithRotor:
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
@@ -213,7 +216,7 @@ HIND.Husk:
 
 U2.Husk:
 	Inherits: ^PlaneHusk
-	Plane:
+	Aircraft:
 		ROT: 7
 		Speed: 373
 		AirborneUpgrades: airborne

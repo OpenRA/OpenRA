@@ -10,20 +10,19 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyTimed : Activity
 	{
-		readonly Plane plane;
+		readonly Aircraft plane;
 		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
 		public FlyTimed(int ticks, Actor self)
 		{
 			remainingTicks = ticks;
-			plane = self.Trait<Plane>();
+			plane = self.Trait<Aircraft>();
 			cruiseAltitude = plane.Info.CruiseAltitude;
 		}
 

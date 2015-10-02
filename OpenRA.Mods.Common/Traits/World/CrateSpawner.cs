@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 					var dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
 					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(dropFacing));
 
-					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].TraitInfo<PlaneInfo>().CruiseAltitude.Length;
+					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 					var target = self.World.Map.CenterOfCell(p) + new WVec(0, 0, altitude);
 					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;

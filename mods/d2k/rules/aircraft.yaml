@@ -9,7 +9,7 @@ carryall.reinforce:
 		HP: 4800
 	Armor:
 		Type: light
-	Helicopter:
+	Aircraft:
 		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
@@ -21,6 +21,7 @@ carryall.reinforce:
 		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
+		CanHover: True
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		UpgradeTypes: airborne
@@ -51,7 +52,7 @@ frigate:
 	Tooltip:
 		Name: Frigate
 		Description: Supply spacecraft
-	Plane:
+	Aircraft:
 		ROT: 1
 		Speed: 126
 		RepairBuildings: repair_pad
@@ -66,7 +67,6 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
-	Targetable:
 		TargetTypes: Air
 	AttackBomber:
 	Armament:
@@ -75,12 +75,13 @@ ornithopter:
 		HP: 900
 	Armor:
 		Type: light
-	Plane:
+	Aircraft:
 		ROT: 2
 		Speed: 189
 		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False
+		CanHover: True
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -93,7 +94,7 @@ ornithopter.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Ornithopter
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 189
 		RepairBuildings:
@@ -105,11 +106,12 @@ carryall.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Carryall
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 112
 		RepairBuildings:
 		RearmBuildings:
+		CanHover: True
 	RenderSprites:
 		Image: carryall
 

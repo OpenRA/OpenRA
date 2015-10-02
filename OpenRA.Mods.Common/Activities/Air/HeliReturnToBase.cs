@@ -15,13 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class HeliReturn : Activity
+	public class HeliReturnToBase : Activity
 	{
-		readonly Helicopter heli;
+		readonly Aircraft heli;
 
-		public HeliReturn(Actor self)
+		public HeliReturnToBase(Actor self)
 		{
-			heli = self.Trait<Helicopter>();
+			heli = self.Trait<Aircraft>();
 		}
 
 		public Actor ChooseHelipad(Actor self)

@@ -131,11 +131,12 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
-	Helicopter:
+	Aircraft:
 		RepairBuildings: hpad
 		RearmBuildings:
 		LandWhenIdle: false
 		AirborneUpgrades: airborne
+		CanHover: True
 	HiddenUnderFog:
 		Type: CenterPosition
 	ActorLostNotification:
@@ -664,6 +665,9 @@
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
 	WithShadow:
+	Aircraft:
+		AirborneUpgrades: airborne
+		CanHover: True
 	FallsToEarth:
 		Spins: True
 		Moves: False

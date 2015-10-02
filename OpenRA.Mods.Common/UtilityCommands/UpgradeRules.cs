@@ -1832,9 +1832,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (inftraits != null)
 						{
 							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
-								{
-									new MiniYamlNode("Sequence", "stand"),
-								}));
+							{
+								new MiniYamlNode("Sequence", "stand"),
+							}));
 						}
 
 						var other = node.Value.Nodes.FirstOrDefault(x =>
@@ -2030,7 +2030,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							}
 							else
 								cloakedTargetTypes = new MiniYamlNode("TargetTypes", "");
-							node.Value.Nodes.Add(new MiniYamlNode("Targetable@UNDERWATER", "", new List<MiniYamlNode> {
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@UNDERWATER", "", new List<MiniYamlNode>
+							{
 								cloakedTargetTypes,
 								new MiniYamlNode("UpgradeTypes", "underwater"),
 								new MiniYamlNode("UpgradeMinEnabledLevel", "1")
@@ -2067,7 +2068,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							}
 							else
 								groundTargetTypes = new MiniYamlNode("TargetTypes", "");
-							node.Value.Nodes.Add(new MiniYamlNode("Targetable@GROUND", "", new List<MiniYamlNode> {
+							node.Value.Nodes.Add(new MiniYamlNode("Targetable@GROUND", "", new List<MiniYamlNode>
+							{
 								groundTargetTypes,
 								new MiniYamlNode("UpgradeTypes", "airborne"),
 								new MiniYamlNode("UpgradeMaxEnabledLevel", "0")
@@ -2172,6 +2174,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var chance = node.Value.Nodes.FirstOrDefault(n => n.Key == "WaterChance");
 						if (chance != null)
 							ConvertFloatToIntPercentage(ref chance.Value.Value);
+					}
+				}
+
+				if (engineVersion < 20150927)
+				{
+					if (depth == 1 && node.Key == "Plane")
+						node.Key = "Aircraft";
+
+					if (depth == 1 && node.Key == "Helicopter")
+					{
+						node.Key = "Aircraft";
+						node.Value.Nodes.Add(new MiniYamlNode("CanHover", "True"));
 					}
 				}
 

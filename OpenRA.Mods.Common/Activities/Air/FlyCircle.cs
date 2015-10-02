@@ -10,18 +10,17 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyCircle : Activity
 	{
-		readonly Plane plane;
+		readonly Aircraft plane;
 		readonly WDist cruiseAltitude;
 
 		public FlyCircle(Actor self)
 		{
-			plane = self.Trait<Plane>();
+			plane = self.Trait<Aircraft>();
 			cruiseAltitude = plane.Info.CruiseAltitude;
 		}
 

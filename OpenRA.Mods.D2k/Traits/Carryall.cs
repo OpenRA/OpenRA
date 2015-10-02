@@ -50,7 +50,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 			IsBusy = false;
 			IsCarrying = false;
-			var helicopter = self.Info.TraitInfoOrDefault<HelicopterInfo>();
+
+			var helicopter = self.Info.TraitInfoOrDefault<AircraftInfo>();
 			carryHeight = helicopter != null ? helicopter.LandAltitude : WDist.Zero;
 		}
 

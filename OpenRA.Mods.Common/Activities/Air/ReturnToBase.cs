@@ -18,22 +18,22 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
-		readonly Plane plane;
-		readonly PlaneInfo planeInfo;
+		readonly Aircraft plane;
+		readonly AircraftInfo planeInfo;
 		bool isCalculated;
 		Actor dest;
 		WPos w1, w2, w3;
 
-		public ReturnToBase(Actor self, Actor dest)
+		public ReturnToBase(Actor self, Actor dest = null)
 		{
 			this.dest = dest;
-			plane = self.Trait<Plane>();
-			planeInfo = self.Info.TraitInfo<PlaneInfo>();
+			plane = self.Trait<Aircraft>();
+			planeInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = self.Info.TraitInfo<PlaneInfo>().RearmBuildings;
+			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
 			return self.World.ActorsWithTrait<Reservable>()
 				.Where(a => a.Actor.Owner == self.Owner)
 				.Where(a => rearmBuildings.Contains(a.Actor.Info.Name)
@@ -94,7 +94,6 @@ namespace OpenRA.Mods.Common.Activities
 			w1 = posCenter + tangentOffset;
 			w2 = approachCenter + tangentOffset;
 			w3 = approachStart;
-			plane.RTBPathHash = w1 + (WVec)w2 + (WVec)w3;
 
 			isCalculated = true;
 		}

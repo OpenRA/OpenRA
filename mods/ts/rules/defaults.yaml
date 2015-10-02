@@ -482,17 +482,18 @@
 
 ^Helicopter:
 	Inherits: ^Aircraft
-	Helicopter:
+	Aircraft:
 		RepairBuildings: gadept
 		RearmBuildings:
 		LandWhenIdle: no
 		CruiseAltitude: 2048
 		Voice: Move
 		AirborneUpgrades: airborne
+		CanHover: True
 
 ^Plane:
 	Inherits: ^Aircraft
-	Plane:
+	Aircraft:
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no

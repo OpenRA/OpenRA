@@ -16,23 +16,34 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Movement")]
-	public class PlaneProperties : ScriptActorProperties, Requires<PlaneInfo>
+	public class AircraftProperties : ScriptActorProperties, Requires<AircraftInfo>
 	{
-		public PlaneProperties(ScriptContext context, Actor self)
-			: base(context, self) { }
+		readonly bool isPlane;
+
+		public AircraftProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			isPlane = self.Trait<Aircraft>().IsPlane;
+		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
+			if (isPlane)
+				Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
+			else
+				Self.QueueActivity(new HeliFly(Self, Target.FromCell(Self.World, cell)));
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Return to the base, which is either the airfield given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor airfield = null)
 		{
-			Self.QueueActivity(new ReturnToBase(Self, airfield));
+			if (isPlane)
+				Self.QueueActivity(new ReturnToBase(Self, airfield));
+			else
+				Self.QueueActivity(new HeliReturnToBase(Self));
 		}
 	}
 }

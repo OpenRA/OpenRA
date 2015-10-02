@@ -9,14 +9,13 @@ TRAN:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: true
 		ROT: 5
 		Speed: 140
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
-		AirborneUpgrades: airborne
 	Health:
 		HP: 90
 	Armor:
@@ -53,11 +52,10 @@ HELI:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
-	Helicopter:
+	Aircraft:
 		RearmBuildings: hpad
 		ROT: 4
 		Speed: 186
-		AirborneUpgrades: airborne
 	Health:
 		HP: 125
 	Armor:
@@ -105,11 +103,10 @@ ORCA:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
-	Helicopter:
+	Aircraft:
 		RearmBuildings: hpad
 		ROT: 4
 		Speed: 186
-		AirborneUpgrades: airborne
 	Health:
 		HP: 90
 	Armor:
@@ -151,7 +148,7 @@ C17:
 		Description: Drops vehicle reinforcements on Airstrips
 	Valued:
 		Cost: 2000
-	Plane:
+	Aircraft:
 		ROT: 5
 		Speed: 326
 		Repulsable: False
@@ -188,7 +185,7 @@ A10:
 		Description: Used to deliver air strikes.
 	Valued:
 		Cost: 2000
-	Plane:
+	Aircraft:
 		ROT: 4
 		Speed: 373
 		Repulsable: False
@@ -221,10 +218,9 @@ TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Chinook Transport
-	Helicopter:
+	Aircraft:
 		ROT: 5
 		Speed: 140
-		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 8c0
 		Type: CenterPosition
@@ -239,10 +235,9 @@ HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Apache Longbow
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 186
-		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
@@ -255,10 +250,9 @@ ORCA.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Orca
-	Helicopter:
+	Aircraft:
 		ROT: 4
 		Speed: 186
-		AirborneUpgrades: airborne
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition

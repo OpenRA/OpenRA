@@ -4,13 +4,12 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
-		AirborneUpgrades: airborne
 	Health:
 		HP: 60
 	Armor:
@@ -40,7 +39,7 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 168
@@ -48,7 +47,6 @@ DSHP:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
-		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -76,11 +74,10 @@ ORCA:
 		Prerequisites: ~gahpad
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
+	Aircraft:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
-		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -115,7 +112,7 @@ ORCAB:
 		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
-	Plane:
+	Aircraft:
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		ROT: 3
@@ -155,7 +152,7 @@ ORCATRAN:
 		BuildPaletteOrder: 10
 		Prerequisites: ~disabled
 	RenderSprites:
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 84
@@ -163,7 +160,6 @@ ORCATRAN:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
-		AirborneUpgrades: airborne
 	Health:
 		HP: 200
 	Armor:
@@ -189,7 +185,7 @@ TRNSPORT:
 		Queue: Air
 		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad, gadept
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 149
@@ -198,7 +194,6 @@ TRNSPORT:
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
-		AirborneUpgrades: airborne
 	Health:
 		HP: 175
 	Armor:
@@ -226,7 +221,7 @@ SCRIN:
 		Bounds: 30,24
 	Voiced:
 		VoiceSet: Scrin
-	Plane:
+	Aircraft:
 		MaximumPitch: 90
 		ROT: 3
 		Speed: 168
@@ -265,11 +260,10 @@ APACHE:
 		Prerequisites: ~nahpad
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
+	Aircraft:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
-		AirborneUpgrades: airborne
 	Health:
 		HP: 225
 	Armor:

@@ -15,14 +15,14 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliLand : Activity
 	{
-		readonly Helicopter helicopter;
+		readonly Aircraft helicopter;
 		bool requireSpace;
 		bool playedSound;
 
 		public HeliLand(Actor self, bool requireSpace)
 		{
 			this.requireSpace = requireSpace;
-			helicopter = self.Trait<Helicopter>();
+			helicopter = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
