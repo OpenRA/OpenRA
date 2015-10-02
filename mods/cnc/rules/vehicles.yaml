@@ -420,7 +420,7 @@ HTNK:
 MSAM:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1200
+		Cost: 1000
 	Tooltip:
 		Name: Rocket Launcher
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.

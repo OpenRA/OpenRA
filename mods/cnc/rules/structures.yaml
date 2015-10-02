@@ -475,7 +475,7 @@ HQ:
 	AirstrikePower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeTime: 180
+		ChargeTime: 210
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -520,6 +520,7 @@ FIX:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
+		Interval: 15
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
@@ -669,9 +670,9 @@ GUN:
 SAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 750
+		Cost: 700
 	CustomBuildTimeValue:
-		Value: 2160
+		Value: 2000
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
