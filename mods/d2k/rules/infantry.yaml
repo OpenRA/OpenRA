@@ -87,17 +87,17 @@ medic:
 		HP: 375
 	Mobile:
 		Speed: 42
-	AutoHeal:
 	Armament:
 		Weapon: Heal
-	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: heal
 	Passenger:
 		PipType: Blue
-	-AutoTarget:
 	AttractsWorms:
 		Intensity: 180
 	Voiced:

@@ -156,9 +156,11 @@ REPAIR:
 		Range: 5c0
 	Armament:
 		Weapon: Repair
-	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
 		Voice: Attack
 
 WEED:
