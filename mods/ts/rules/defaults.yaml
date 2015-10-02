@@ -54,7 +54,7 @@
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
 		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
+	DisableOnUpgrade@EMPDISABLE:
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
 	TimedUpgradeBar@EMPDISABLE:

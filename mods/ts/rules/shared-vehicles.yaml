@@ -140,7 +140,7 @@ LPST:
 		StartSequence: make
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
-	DisableUpgrade:
+	DisableOnUpgrade:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
 	DetectCloaked:
