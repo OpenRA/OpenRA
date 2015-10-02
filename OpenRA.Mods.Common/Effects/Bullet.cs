@@ -47,6 +47,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;
 
+		[Desc("Loop these sequences of Trail while this projectile is moving.")]
+		[SequenceReference("Trail")] public readonly string[] TrailSequences = { "idle" };
+
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
 
@@ -179,7 +182,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.Sequences.Random(world.SharedRandom))));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.TrailSequences.Random(world.SharedRandom))));
 				smokeTicks = info.TrailInterval;
 			}
 
