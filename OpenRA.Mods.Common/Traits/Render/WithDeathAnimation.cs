@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(null, true)] public readonly string DeathSequence = "die";
 
 		[Desc("The palette used for `DeathSequence`.")]
-		public readonly string DeathSequencePalette = "player";
+		[PaletteReference("DeathPaletteIsPlayerPalette")] public readonly string DeathSequencePalette = "player";
 
 		[Desc("Custom death animation palette is a player palette BaseName")]
 		public readonly bool DeathPaletteIsPlayerPalette = true;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference] public readonly string CrushedSequence = null;
 
 		[Desc("The palette used for `CrushedSequence`.")]
-		public readonly string CrushedSequencePalette = "effect";
+		[PaletteReference("CrushedPaletteIsPlayerPalette")] public readonly string CrushedSequencePalette = "effect";
 
 		[Desc("Custom crushed animation palette is a player palette BaseName")]
 		public readonly bool CrushedPaletteIsPlayerPalette = false;

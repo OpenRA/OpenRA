@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
 			preview.Template = world.TileSet.Templates.First(t => t.Value.Id == template).Value;
-			bounds = worldRenderer.Theater.TemplateBounds(preview.Template, Game.ModData.Manifest.TileSize, world.Map.TileShape);
+			var grid = world.Map.Grid;
+			bounds = worldRenderer.Theater.TemplateBounds(preview.Template, grid.TileSize, grid.Type);
 
 			// The preview widget may be rendered by the higher-level code before it is ticked.
 			// Force a manual tick to ensure the bounds are set correctly for this first draw.
@@ -106,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets
 							continue;
 
 						mapTiles[c] = new TerrainTile(Template, index);
-						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, map.MaximumTerrainHeight);
+						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
 					}
 				}
 			}

@@ -106,8 +106,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
 
-				var ts = Game.ModData.Manifest.TileSize;
-				var groundZ = ts.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
 
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));

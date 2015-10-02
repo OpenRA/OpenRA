@@ -19,7 +19,7 @@ GDIStartUnits = 0
 Grd2TriggerFunction = function()
 	if not Grd2TriggerSwitch then
 		Grd2TriggerSwitch = true
-		MyActors = getActors(GDI, { ['e1'] = 5 })
+		MyActors = getActors(enemy, { ['e1'] = 5 })
 		Utils.Do(MyActors, function(actor)
 			Gdi5Movement(actor)
 		end)
@@ -27,35 +27,35 @@ Grd2TriggerFunction = function()
 end
 
 Atk8TriggerFunction = function()
-	MyActors = getActors(GDI, { ['e1'] = 2 })
+	MyActors = getActors(enemy, { ['e1'] = 2 })
 	Utils.Do(MyActors, function(actor)
 		Gdi1Movement(actor)
 	end)
 end
 
 Atk7TriggerFunction = function()
-	MyActors = getActors(GDI, { ['e1'] = 3 })
+	MyActors = getActors(enemy, { ['e1'] = 3 })
 	Utils.Do(MyActors, function(actor)
 		Gdi3Movement(actor)
 	end)
 end
 
 Atk4TriggerFunction = function()
-	MyActors = getActors(GDI, { ['e1'] = 3 })
+	MyActors = getActors(enemy, { ['e1'] = 3 })
 	Utils.Do(MyActors, function(actor)
 		Gdi3Movement(actor)
 	end)
 end
 
 Atk3TriggerFunction = function()
-	MyActors = getActors(GDI, { ['e1'] = 2 })
+	MyActors = getActors(enemy, { ['e1'] = 2 })
 	Utils.Do(MyActors, function(actor)
 		Gdi1Movement(actor)
 	end)
 end
 
 Atk6TriggerFunction = function()
-	MyActors = getActors(GDI, { ['e1'] = 2 })
+	MyActors = getActors(enemy, { ['e1'] = 2 })
 	Utils.Do(MyActors, function(actor)
 		Gdi1Movement(actor)
 	end)
@@ -64,7 +64,7 @@ end
 Atk5TriggerFunction = function()
 	if not Atk5TriggerSwitch then
 		Atk5TriggerSwitch = true
-		MyActors = getActors(GDI, { ['e1'] = 3 })
+		MyActors = getActors(enemy, { ['e1'] = 3 })
 		Utils.Do(MyActors, function(actor)
 			Gdi3Movement(actor)
 		end)
@@ -72,7 +72,7 @@ Atk5TriggerFunction = function()
 end
 
 HuntTriggerFunction = function()
-	local list = GDI.GetGroundAttackers()
+	local list = enemy.GetGroundAttackers()
 	Utils.Do(list, function(unit)
 		IdleHunt(unit)
 	end)
@@ -97,32 +97,32 @@ Gdi3Movement = function(unit)
 end
 
 WorldLoaded = function()
-	GDI = Player.GetPlayer("GDI")
-	Nod = Player.GetPlayer("Nod")
+	player = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("GDI")
 
-	Trigger.OnObjectiveAdded(Nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	Trigger.OnObjectiveCompleted(Nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
 
-	Trigger.OnObjectiveFailed(Nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(Nod, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	GDIObjective = GDI.AddPrimaryObjective("Kill all enemies.")
-	NodObjective1 = Nod.AddPrimaryObjective("Build a base.")
-	NodObjective2 = Nod.AddPrimaryObjective("Destroy all GDI units.")
+	GDIObjective = enemy.AddPrimaryObjective("Kill all enemies.")
+	NodObjective1 = player.AddPrimaryObjective("Build a base.")
+	NodObjective2 = player.AddPrimaryObjective("Destroy all GDI units.")
 
 	OnAnyDamaged(Grd2ActorTriggerActivator, Grd2TriggerFunction)
 	Trigger.AfterDelay(Atk8TriggerFunctionTime, Atk8TriggerFunction)
@@ -139,22 +139,22 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if Nod.HasNoRequiredUnits() then
+	if player.HasNoRequiredUnits() then
 		if DateTime.GameTime > 2 then
-			GDI.MarkCompletedObjective(GDIObjective)
+			enemy.MarkCompletedObjective(GDIObjective)
 		end
 	end
 
-	if GDI.HasNoRequiredUnits() then
-		Nod.MarkCompletedObjective(NodObjective2)
+	if enemy.HasNoRequiredUnits() then
+		player.MarkCompletedObjective(NodObjective2)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(NodObjective1) and CheckForBase(Nod) then
-		Nod.MarkCompletedObjective(NodObjective1)
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not player.IsObjectiveCompleted(NodObjective1) and CheckForBase(player) then
+		player.MarkCompletedObjective(NodObjective1)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(3) == 0 and Barracks.IsInWorld and Barracks.Owner == gdi then
-		checkProduction(GDI)
+	if DateTime.GameTime % DateTime.Seconds(3) == 0 and Barracks.IsInWorld and Barracks.Owner == enemy then
+		checkProduction(enemy)
 	end
 end
 
@@ -214,7 +214,7 @@ end
 
 getStartUnits = function()
 	local Units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-		return actor.Owner == GDI
+		return actor.Owner == enemy
 	end)
 	Utils.Do(Units, function(unit)
 		if unit.Type == UnitToRebuild then
@@ -224,9 +224,9 @@ getStartUnits = function()
 end
 
 InsertNodUnits = function()
-	Media.PlaySpeechNotification(Nod, "Reinforce")
-	Reinforcements.Reinforce(Nod, NodUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
-	Reinforcements.Reinforce(Nod, { "mcv" }, { McvEntry.Location, McvRally.Location })
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, NodUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
+	Reinforcements.Reinforce(player, { "mcv" }, { McvEntry.Location, McvRally.Location })
 end
 
 IdleHunt = function(unit)

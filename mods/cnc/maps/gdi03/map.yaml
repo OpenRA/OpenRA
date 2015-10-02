@@ -60,11 +60,6 @@ Players:
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor0: wood

@@ -25,6 +25,7 @@ namespace OpenRA.Graphics
 		static readonly int[][] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
 		static readonly int[][] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
 
+		public readonly Size TileSize;
 		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
@@ -40,6 +41,7 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(World world)
 		{
 			World = world;
+			TileSize = World.Map.Grid.TileSize;
 			Viewport = new Viewport(this, world.Map);
 
 			createPaletteReference = CreatePaletteReference;
@@ -231,8 +233,7 @@ namespace OpenRA.Graphics
 		// Conversion between world and screen coordinates
 		public float2 ScreenPosition(WPos pos)
 		{
-			var ts = Game.ModData.Manifest.TileSize;
-			return new float2(ts.Width * pos.X / 1024f, ts.Height * (pos.Y - pos.Z) / 1024f);
+			return new float2(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)
@@ -245,10 +246,9 @@ namespace OpenRA.Graphics
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public void ScreenVectorComponents(WVec vec, out float x, out float y, out float z)
 		{
-			var ts = Game.ModData.Manifest.TileSize;
-			x = ts.Width * vec.X / 1024f;
-			y = ts.Height * vec.Y / 1024f;
-			z = ts.Height * vec.Z / 1024f;
+			x = TileSize.Width * vec.X / 1024f;
+			y = TileSize.Height * vec.Y / 1024f;
+			z = TileSize.Height * vec.Z / 1024f;
 		}
 
 		// For scaling vectors to pixel sizes in the voxel renderer
@@ -269,8 +269,7 @@ namespace OpenRA.Graphics
 
 		public float ScreenZPosition(WPos pos, int offset)
 		{
-			var ts = Game.ModData.Manifest.TileSize;
-			return ZPosition(pos, offset) * ts.Height / 1024f;
+			return ZPosition(pos, offset) * TileSize.Height / 1024f;
 		}
 
 		static int ZPosition(WPos pos, int offset)
@@ -284,8 +283,7 @@ namespace OpenRA.Graphics
 		/// </summary>
 		public WPos ProjectedPosition(int2 screenPx)
 		{
-			var ts = Game.ModData.Manifest.TileSize;
-			return new WPos(1024 * screenPx.X / ts.Width, 1024 * screenPx.Y / ts.Height, 0);
+			return new WPos(1024 * screenPx.X / TileSize.Width, 1024 * screenPx.Y / TileSize.Height, 0);
 		}
 
 		public void Dispose()

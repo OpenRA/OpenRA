@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new WDist(43);
 
+		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
+		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
 
@@ -46,7 +49,10 @@ namespace OpenRA.Mods.Common.Warheads
 				InitializeRange();
 
 			var world = firedBy.World;
-			var hitActors = world.FindActorsInCircle(pos, Range[Range.Length - 1]);
+
+			// This only finds actors where the center is within the search radius,
+			// so we need to search beyond the maximum spread to account for actors with large health radius
+			var hitActors = world.FindActorsInCircle(pos, Range[Range.Length - 1] + TargetExtraSearchRadius);
 
 			foreach (var victim in hitActors)
 			{

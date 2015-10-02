@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class MissileInfo : IProjectileInfo
+	public class MissileInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
@@ -59,10 +59,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
-		// TODO: Re-add PaletteReference as soon as it handles player palettes
-		public readonly string TrailPalette = "effect";
-
+		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
 		public readonly bool TrailUsePlayerPalette = false;
+
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
 
-	class Missile : IEffect, ISync
+	public class Missile : IEffect, ISync
 	{
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
@@ -202,7 +201,7 @@ namespace OpenRA.Mods.Common.Effects
 			var shouldExplode = (pos.Z < 0) // Hit the ground
 				|| (dist.LengthSquared < info.CloseEnough.LengthSquared) // Within range
 				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (info.Blockable && world.ActorMap.GetUnitsAt(cell).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())) // Hit a wall or other blocking obstacle
+				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
 

@@ -123,6 +123,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (frozen != null)
 			{
+				var actor = frozen.Actor;
+				if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(actor, world.RenderPlayer)))
+					return;
+
 				FrozenActorTooltip = frozen;
 				if (frozen.Actor != null)
 					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();

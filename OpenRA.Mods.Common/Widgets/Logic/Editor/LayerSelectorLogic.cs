@@ -67,12 +67,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
 
-				var tileWidth = Game.ModData.Manifest.TileSize.Width;
-				var tileHeight = Game.ModData.Manifest.TileSize.Height;
-				layerPreview.Bounds.Width = tileWidth;
-				layerPreview.Bounds.Height = tileHeight;
-				newResourcePreviewTemplate.Bounds.Width = tileWidth + (layerPreview.Bounds.X * 2);
-				newResourcePreviewTemplate.Bounds.Height = tileHeight + (layerPreview.Bounds.Y * 2);
+				var tileSize = Game.ModData.Manifest.Get<MapGrid>().TileSize;
+				layerPreview.Bounds.Width = tileSize.Width;
+				layerPreview.Bounds.Height = tileSize.Height;
+				newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);
+				newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
 
 				newResourcePreviewTemplate.IsVisible = () => true;
 				newResourcePreviewTemplate.GetTooltipText = () => resource.Name;

@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Color spawnColor, spawnContrastColor;
 		readonly int2 spawnLabelOffset;
 		readonly int cellWidth;
+		readonly TileShape shape;
 
 		public Func<MapPreview> Preview = () => null;
 		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
@@ -83,7 +84,8 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 
-			cellWidth = Game.ModData.Manifest.TileShape == TileShape.Diamond ? 2 : 1;
+			shape = Game.ModData.Manifest.Get<MapGrid>().Type;
+			cellWidth = shape == TileShape.Diamond ? 2 : 1;
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -106,6 +108,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 
+			shape = other.shape;
 			cellWidth = other.cellWidth;
 		}
 
@@ -138,8 +141,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int2 ConvertToPreview(CPos cell)
 		{
 			var preview = Preview();
-			var tileShape = Game.ModData.Manifest.TileShape;
-			var point = cell.ToMPos(tileShape);
+			var point = cell.ToMPos(shape);
 			var dx = (int)(previewScale * cellWidth * (point.U - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.V - preview.Bounds.Top));
 

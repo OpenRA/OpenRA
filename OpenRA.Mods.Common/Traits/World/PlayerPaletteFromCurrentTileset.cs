@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class PlayerPaletteFromCurrentTilesetInfo : ITraitInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[FieldLoader.Require, PaletteDefinition(true)]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
 		[Desc("Map listed indices to shadow.")]

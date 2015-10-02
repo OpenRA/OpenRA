@@ -38,7 +38,7 @@ namespace OpenRA
 
 		public CPos ToCPos(Map map)
 		{
-			return ToCPos(map.TileShape);
+			return ToCPos(map.Grid.Type);
 		}
 
 		public CPos ToCPos(TileShape shape)

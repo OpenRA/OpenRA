@@ -692,12 +692,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly MobileInfo unitType;
 			readonly bool rejectMove;
+			readonly IDisableMove[] moveDisablers;
 			public bool OverrideSelection { get { return false; } }
 
 			public MoveOrderTargeter(Actor self, MobileInfo unitType)
 			{
 				this.unitType = unitType;
 				rejectMove = !self.AcceptsOrder("Move");
+				moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 			}
 
 			public string OrderID { get { return "Move"; } }
@@ -716,7 +718,9 @@ namespace OpenRA.Mods.Common.Traits
 				cursor = self.World.Map.Contains(location) ?
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? unitType.Cursor) : unitType.BlockedCursor;
 
-				if ((!explored && !unitType.MoveIntoShroud) || (explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue))
+				if ((!explored && !unitType.MoveIntoShroud)
+					|| (explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue)
+					|| moveDisablers.Any(d => d.MoveDisabled(self)))
 					cursor = unitType.BlockedCursor;
 
 				return true;

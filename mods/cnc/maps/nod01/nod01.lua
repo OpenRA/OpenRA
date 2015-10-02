@@ -5,26 +5,26 @@ RifleInfantryReinforcements = { "e1", "e1" }
 RocketInfantryReinforcements = { "e3", "e3", "e3", "e3", "e3" }
 
 SendInitialForces = function()
-	Media.PlaySpeechNotification(nod, "Reinforce")
-	Reinforcements.Reinforce(nod, InitialForcesA, { StartSpawnPointLeft.Location, StartRallyPoint.Location }, 5)
-	Reinforcements.Reinforce(nod, InitialForcesB, { StartSpawnPointRight.Location, StartRallyPoint.Location }, 10)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, InitialForcesA, { StartSpawnPointLeft.Location, StartRallyPoint.Location }, 5)
+	Reinforcements.Reinforce(player, InitialForcesB, { StartSpawnPointRight.Location, StartRallyPoint.Location }, 10)
 end
 
 SendFirstInfantryReinforcements = function()
-	Media.PlaySpeechNotification(nod, "Reinforce")
-	Reinforcements.Reinforce(nod, RifleInfantryReinforcements, { StartSpawnPointRight.Location, StartRallyPoint.Location }, 15)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, RifleInfantryReinforcements, { StartSpawnPointRight.Location, StartRallyPoint.Location }, 15)
 end
 
 SendSecondInfantryReinforcements = function()
-	Media.PlaySpeechNotification(nod, "Reinforce")
-	Reinforcements.Reinforce(nod, RifleInfantryReinforcements, { StartSpawnPointLeft.Location, StartRallyPoint.Location }, 15)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, RifleInfantryReinforcements, { StartSpawnPointLeft.Location, StartRallyPoint.Location }, 15)
 end
 
 SendLastInfantryReinforcements = function()
-	Media.PlaySpeechNotification(nod, "Reinforce")
+	Media.PlaySpeechNotification(player, "Reinforce")
 
 	-- Move the units properly into the map before they start attacking
-	local forces = Reinforcements.Reinforce(nod, RocketInfantryReinforcements, { VillageSpawnPoint.Location, VillageRallyPoint.Location }, 8)
+	local forces = Reinforcements.Reinforce(player, RocketInfantryReinforcements, { VillageSpawnPoint.Location, VillageRallyPoint.Location }, 8)
 	Utils.Do(forces, function(a)
 		a.Stance = "Defend"
 		a.CallFunc(function() a.Stance = "AttackAnything" end)
@@ -32,35 +32,35 @@ SendLastInfantryReinforcements = function()
 end
 
 WorldLoaded = function()
-	nod = Player.GetPlayer("Nod")
-	gdi = Player.GetPlayer("GDI")
+	player = Player.GetPlayer("Nod")
+	enemy = Player.GetPlayer("GDI")
 	villagers = Player.GetPlayer("Villagers")
 
-	Trigger.OnObjectiveAdded(nod, function(p, id)
+	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
-	Trigger.OnObjectiveCompleted(nod, function(p, id)
+	Trigger.OnObjectiveCompleted(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
 	end)
-	Trigger.OnObjectiveFailed(nod, function(p, id)
+	Trigger.OnObjectiveFailed(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Trigger.OnPlayerWon(nod, function()
-		Media.PlaySpeechNotification(nod, "Win")
+	Trigger.OnPlayerWon(player, function()
+		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnPlayerLost(nod, function()
-		Media.PlaySpeechNotification(nod, "Lose")
+	Trigger.OnPlayerLost(player, function()
+		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	NodObjective1 = nod.AddPrimaryObjective("Kill Nikoomba.")
-	NodObjective2 = nod.AddPrimaryObjective("Destroy the village.")
-	NodObjective3 = nod.AddSecondaryObjective("Destroy all GDI troops in the area.")
-	GDIObjective1 = gdi.AddPrimaryObjective("Eliminate all Nod forces.")
+	NodObjective1 = player.AddPrimaryObjective("Kill Nikoomba.")
+	NodObjective2 = player.AddPrimaryObjective("Destroy the village.")
+	NodObjective3 = player.AddSecondaryObjective("Destroy all GDI troops in the area.")
+	GDIObjective1 = enemy.AddPrimaryObjective("Eliminate all Nod forces.")
 
 	Trigger.OnKilled(Nikoomba, function()
-		nod.MarkCompletedObjective(NodObjective1)
+		player.MarkCompletedObjective(NodObjective1)
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			SendLastInfantryReinforcements()
 		end)
@@ -75,14 +75,14 @@ end
 
 Tick = function()
 	if DateTime.GameTime > 2 then
-		if nod.HasNoRequiredUnits() then
-			gdi.MarkCompletedObjective(GDIObjective1)
+		if player.HasNoRequiredUnits() then
+			enemy.MarkCompletedObjective(GDIObjective1)
 		end
 		if villagers.HasNoRequiredUnits() then
-			nod.MarkCompletedObjective(NodObjective2)
+			player.MarkCompletedObjective(NodObjective2)
 		end
-		if gdi.HasNoRequiredUnits() then
-			nod.MarkCompletedObjective(NodObjective3)
+		if enemy.HasNoRequiredUnits() then
+			player.MarkCompletedObjective(NodObjective3)
 		end
 	end
 end

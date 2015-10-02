@@ -2150,6 +2150,8 @@ Rules:
 		Explodes:
 			Weapon: BarrelExplode
 			EmptyWeapon: BarrelExplode
+		Tooltip:
+			ShowOwnerRow: false
 	DEMITRI:
 		Inherits: DELPHI
 		Tooltip:

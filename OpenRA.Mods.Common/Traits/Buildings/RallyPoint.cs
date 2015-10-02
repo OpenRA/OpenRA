@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
 
 		[Desc("Custom indicator palette name")]
-		public readonly string Palette = "player";
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = true;

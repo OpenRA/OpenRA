@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		internal static void ConvertPxToRange(ref string input, int scaleMult, int scaleDiv)
 		{
 			var value = Exts.ParseIntegerInvariant(input);
-			var ts = Game.ModData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.Get<MapGrid>().TileSize;
 			var world = value * 1024 * scaleMult / (scaleDiv * ts.Height);
 			var cells = world / 1024;
 			var subcells = world - 1024 * cells;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		internal static void ConvertInt2ToWVec(ref string input)
 		{
 			var offset = FieldLoader.GetValue<int2>("(value)", input);
-			var ts = Game.ModData.Manifest.TileSize;
+			var ts = Game.ModData.Manifest.Get<MapGrid>().TileSize;
 			var world = new WVec(offset.X * 1024 / ts.Width, offset.Y * 1024 / ts.Height, 0);
 			input = world.ToString();
 		}
@@ -2739,6 +2739,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20150909 && Game.ModData.Manifest.Mod.Id == "d2k")
 				{
 					node.Value.Value = RenameD2kActors(node.Value.Value);
+				}
+
+				if (engineVersion < 20150925)
+				{
+					if (node.Key == "DisableUpgrade")
+						node.Key = "DisableOnUpgrade";
 				}
 
 				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);

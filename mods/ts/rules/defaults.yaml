@@ -54,7 +54,7 @@
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
 		Palette: disabled
-	DisableUpgrade@EMPDISABLE:
+	DisableOnUpgrade@EMPDISABLE:
 		UpgradeTypes: empdisable
 		UpgradeMinEnabledLevel: 1
 	TimedUpgradeBar@EMPDISABLE:
@@ -689,6 +689,7 @@
 		UpgradeMinEnabledLevel: 1
 		InitialDelay: 0
 		CloakDelay: 90
+		IsPlayerPalette: true
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7

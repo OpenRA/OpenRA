@@ -4,7 +4,7 @@ Palettes:
 	mouse: d2k.pal
 
 Cursors:
-	mouse.r8: mouse
+	MOUSE.R8: mouse
 		scroll-t:
 			Start: 112
 			X: 24

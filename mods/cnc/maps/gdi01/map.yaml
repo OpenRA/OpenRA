@@ -42,7 +42,7 @@ Players:
 		Faction: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
-		Enemies: GDI, Creeps
+		Enemies: GDI
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -55,17 +55,12 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
-		Enemies: Nod, Creeps
+		Enemies: Nod
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor0: sbag
@@ -547,6 +542,8 @@ Sequences:
 			Start: 0
 			Facings: 1
 			ZOffset: -1024
+		icon: lsticnh.tem
+			AddExtension: False
 
 VoxelSequences:
 

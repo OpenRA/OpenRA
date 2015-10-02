@@ -600,6 +600,9 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+	^CivBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy

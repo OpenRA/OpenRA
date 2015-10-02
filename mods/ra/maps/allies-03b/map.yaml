@@ -1257,6 +1257,9 @@ Rules:
 	^TechBuilding:
 		Capturable:
 			Type: ~disabled
+	^CivBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false

@@ -68,7 +68,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				var template = tileset.Templates[tileId];
-				var bounds = worldRenderer.Theater.TemplateBounds(template, Game.ModData.Manifest.TileSize, worldRenderer.World.Map.TileShape);
+				var grid = worldRenderer.World.Map.Grid;
+				var bounds = worldRenderer.Theater.TemplateBounds(template, grid.TileSize, grid.Type);
 
 				// Scale templates to fit within the panel
 				var scale = 1f;

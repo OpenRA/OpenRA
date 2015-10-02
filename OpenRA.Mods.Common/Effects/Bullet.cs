@@ -16,6 +16,7 @@ using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
@@ -58,8 +59,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Delay in ticks until trail animaion is spawned.")]
 		public readonly int TrailDelay = 1;
 
-		public readonly string TrailPalette = "effect";
+		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
 		public readonly bool TrailUsePlayerPalette = false;
+
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
@@ -165,8 +167,10 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
-			if (ticks++ >= length || (info.Blockable && world.ActorMap
-				.GetUnitsAt(world.Map.CellContaining(pos)).Any(a => a.Info.HasTraitInfo<IBlocksProjectilesInfo>())))
+			var shouldExplode = ticks++ >= length // Flight length reached/exceeded
+				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)); // Hit a wall or other blocking obstacle
+
+			if (shouldExplode)
 				Explode(world);
 		}
 

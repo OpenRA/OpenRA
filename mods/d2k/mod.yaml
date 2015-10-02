@@ -49,7 +49,9 @@ Sequences:
 TileSets:
 	./mods/d2k/tilesets/arrakis.yaml
 
-TileSize: 32,32
+MapGrid:
+	TileSize: 32,32
+	Type: Rectangle
 
 Cursors:
 	./mods/d2k/cursors.yaml
@@ -197,7 +199,7 @@ GameSpeeds:
 		Timestep: 50
 		OrderLatency: 3
 	default:
-		Name: Default
+		Name: Normal
 		Timestep: 40
 		OrderLatency: 3
 	faster:

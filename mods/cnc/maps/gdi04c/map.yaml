@@ -66,11 +66,6 @@ Players:
 		NonCombatant: True
 		Faction: gdi
 		Enemies: Nod
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor0: v17

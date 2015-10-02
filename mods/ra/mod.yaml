@@ -201,6 +201,10 @@ Fonts:
 Missions:
 	./mods/ra/missions.yaml
 
+MapGrid:
+	TileSize: 24,24
+	Type: Rectangle
+
 SupportsMapsFrom: ra
 
 SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
@@ -218,7 +222,7 @@ GameSpeeds:
 		Timestep: 50
 		OrderLatency: 3
 	default:
-		Name: Default
+		Name: Normal
 		Timestep: 40
 		OrderLatency: 3
 	faster:

@@ -18,9 +18,12 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckPalettes : ILintRulesPass
 	{
+		List<string> palettes = new List<string>();
+		List<string> playerPalettes = new List<string>();
+
 		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			var palettes = GetPalettes(emitError, rules).ToList();
+			GetPalettes(emitError, rules);
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -29,14 +32,36 @@ namespace OpenRA.Mods.Common.Lint
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
 					{
+						var isPlayerPalette = false;
+
+						var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
+						if (paletteReference != null)
+						{
+							if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
+							{
+								var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+								isPlayerPalette = (bool)fieldInfo.GetValue(traitInfo);
+							}
+							else
+								isPlayerPalette = paletteReference.IsPlayerPalette;
+						}
+
 						var references = LintExts.GetFieldValues(traitInfo, field, emitError);
 						foreach (var reference in references)
 						{
 							if (string.IsNullOrEmpty(reference))
 								continue;
 
-							if (!palettes.Contains(reference))
-								emitError("Undefined palette reference {0} detected at {1}".F(reference, traitInfo));
+							if (isPlayerPalette)
+							{
+								if (!playerPalettes.Contains(reference))
+									emitError("Undefined player palette reference {0} detected at {1} for {2}".F(reference, traitInfo, actorInfo.Key));
+							}
+							else
+							{
+								if (!palettes.Contains(reference))
+									emitError("Undefined palette reference {0} detected at {1} for {2}".F(reference, traitInfo, actorInfo.Key));
+							}
 						}
 					}
 				}
@@ -48,16 +73,36 @@ namespace OpenRA.Mods.Common.Lint
 				if (projectileInfo == null)
 					continue;
 
-				foreach (var field in projectileInfo.GetType().GetFields())
+				var fields = projectileInfo.GetType().GetFields();
+				foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
 				{
-					if (field.HasAttribute<PaletteReferenceAttribute>())
-					{
-						var references = LintExts.GetFieldValues(projectileInfo, field, emitError);
-						foreach (var reference in references)
-						{
-							if (string.IsNullOrEmpty(reference))
-								continue;
+					var isPlayerPalette = false;
 
+					var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).First();
+					if (paletteReference != null)
+					{
+						if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
+						{
+							var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+							isPlayerPalette = (bool)fieldInfo.GetValue(projectileInfo);
+						}
+						else
+							isPlayerPalette = paletteReference.IsPlayerPalette;
+					}
+
+					var references = LintExts.GetFieldValues(projectileInfo, field, emitError);
+					foreach (var reference in references)
+					{
+						if (string.IsNullOrEmpty(reference))
+							continue;
+
+						if (isPlayerPalette)
+						{
+							if (!playerPalettes.Contains(reference))
+								emitError("Undefined player palette reference {0} detected at weapon {1}.".F(reference, weaponInfo.Key));
+						}
+						else
+						{
 							if (!palettes.Contains(reference))
 								emitError("Undefined palette reference {0} detected at weapon {1}.".F(reference, weaponInfo.Key));
 						}
@@ -66,7 +111,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		static IEnumerable<string> GetPalettes(Action<string> emitError, Ruleset rules)
+		void GetPalettes(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -75,9 +120,15 @@ namespace OpenRA.Mods.Common.Lint
 					var fields = traitInfo.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<PaletteDefinitionAttribute>()))
 					{
+						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).First();
 						var values = LintExts.GetFieldValues(traitInfo, field, emitError);
 						foreach (var value in values)
-							yield return value;
+						{
+							if (paletteDefinition.IsPlayerPalette)
+								playerPalettes.Add(value);
+							else
+								palettes.Add(value);
+						}
 					}
 				}
 			}
