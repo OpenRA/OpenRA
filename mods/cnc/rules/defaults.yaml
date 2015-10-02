@@ -209,7 +209,7 @@
 		DeathType: TiberiumDeath
 		RequiresLobbyCreeps: true
 	Crushable:
-		WarnProbability: 67
+		WarnProbability: 75
 		CrushSound: squish2.aud
 	Guardable:
 	SelfHealing@HOSPITAL:
@@ -223,7 +223,7 @@
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DetectCloaked:
-		Range: 1c0
+		Range: 2c0
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:

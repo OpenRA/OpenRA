@@ -42,7 +42,7 @@
 		TerrainType: BlueTiberium
 		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
 		MaxDensity: 12
-		ValuePerUnit: 75
+		ValuePerUnit: 60
 		Name: BlueTiberium
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
