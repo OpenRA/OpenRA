@@ -118,6 +118,7 @@ World:
 	ResourceLayer:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
+	WarheadDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
@@ -171,4 +172,3 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorResourceLayer:
-

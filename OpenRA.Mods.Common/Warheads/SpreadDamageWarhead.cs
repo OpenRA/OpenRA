@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -49,6 +50,13 @@ namespace OpenRA.Mods.Common.Warheads
 				InitializeRange();
 
 			var world = firedBy.World;
+
+			if (world.LocalPlayer != null)
+			{
+				var devMode = world.LocalPlayer.PlayerActor.TraitOrDefault<DeveloperMode>();
+				if (devMode != null && devMode.ShowCombatGeometry)
+					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range);
+			}
 
 			// This only finds actors where the center is within the search radius,
 			// so we need to search beyond the maximum spread to account for actors with large health radius
