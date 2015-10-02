@@ -1,5 +1,211 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Oct 02 2015)
+
+### Highlights
+  - Added symbol indexing of project files for project-wide search.
+  - Added support for `file@symbol` fuzzy search (#385).
+  - Added processing of `ini` setting relative to the IDE location (closes #483).
+  - Added Stack/Watch view refresh after switching focus when needed.
+  - Improved memory handling for large files.
+  - Improved application performance and memory usage.
+  - Improved auto-complete order of results and suggestions for case-sensitive matches.
+  - Updated Windows launcher to add dpi awareness for high dpi monitors.
+  - Update marmalade API definition to 7.9
+  - Fixed a memory leak after a search panel is opened.
+  - Fixed an occasional crash from the filetree on Linux (#425, #464).
+  - Fixed recursive file traversal to skip directories when mask is specified.
+
+### Special thanks
+  - To Nick Smith for Marmalade interpreter updates.
+  - To Christoph Kubisch for glslc updates.
+  - To Brigham Toskin for auto-complete improvements.
+  - To Joergen von Bargen for optimized UTF8 validation.
+
+### Improvements
+  - Added handling of translation messages that require pluralization (#70).
+  - Added check for non-zero file size before reporting load progress (#530).
+  - Added switching interpreters by clicking on the interpreter label in the status bar.
+  - Added handling of editor commands (Copy/Paste/SelectAll/Undo/Redo) in search panel controls.
+  - Added position to the end-of-file lexer token (closes #529).
+  - Added reporting when a file can't be removed from a project tree.
+  - Added explicit initialization for `editor.autoactivate` default setting.
+  - Added allowing `editor.saveallonrun` with `infervalue` static analyzer (closes #524).
+  - Added support for `include` command in config files.
+  - Added document `Close` method (#166).
+  - Added descriptions for new Lua 5.3 `math.*` and `coroutine.*` functions.
+  - Added functions new to Lua 5.3 to the list of keywords.
+  - Added reporting of deserialization failures for saved package data.
+  - Added collapsing white spaces from names shown in the Outline.
+  - Added workaround for a memory leak in wxlua after a search panel is opened.
+  - Added jumping to the current function in the outline (#515).
+  - Added highlighting current functions for better visibility (#515).
+  - Added skipping unneded fields from the symbol index to reduce memory usage (#515).
+  - Added showing position of the current function in the Outline (closes #515).
+  - Added explicit editor destroy during find and replace to conserve memory.
+  - Added explicit editor destroy during symbol indexing to conserve memory.
+  - Added turning jitting on when running under LuaJIT.
+  - Added `Run to Cursor` to the popup menu in the editor (#413).
+  - Added showing memory usage stats in the status bar configured by `showmemoryusage`.
+  - Added skipping opening a file from symbol search when nothing is matched.
+  - Added skipping directories during directory traversal (#499).
+  - Added `SetStatusFor` package method to set temporary status (#166).
+  - Added forcing immediate refresh of symbol index when requested from the menu (#499).
+  - Added `onMenuOutput` event (#166).
+  - Added `onMenuWatch` event (#166).
+  - Added disabling symbol indexing for directories/projects (#499).
+  - Added refreshing of symbol index to the project menu (#499).
+  - Added reporting of the number of files queued for indexing (#499).
+  - Added reporting when indexing is completed (#499).
+  - Added `GetOutline` package method (#166, #499).
+  - Added exclusion to not report `arg` as global in static analysis (closes #503).
+  - Added `commandbar.width` to set the width of command bar.
+  - Added skipping symbol index queue when symbol inactivity is not set (#499).
+  - Added setting different types of indentation guides.
+  - Added optimization with prefiltering for short patterns (#31, #499).
+  - Added status message during index update (#499).
+  - Added purging of outdated cache for symbol indexing (#499).
+  - Added symbol processing of tabs that are not saved yet (#499).
+  - Added indexing of project files (#499).
+  - Added `commandbar.maxitems` configuration setting (#499).
+  - Added caching of symbols for open files (#499).
+  - Added support for `file.lua@symbol` fuzzy search (#385).
+  - Added symbol search in all open files (#385).
+  - Added check to avoid loops in type assignment during auto-complete (#498).
+  - Added primitive handling of `require` in type assignments for known APIs (fixes #498).
+  - Added support for aborting file reading callback (#491).
+  - Added progress display when loading large files (#491).
+  - Added status methods: `GetStatus`, `PushStatus`, and `PopStatus` (#166).
+  - Added `onMenuOutline` callback (#166, #337).
+  - Added ability to toggle outline sorting from the local menu (#337, #494).
+  - Added activating Output panel after compilation errors.
+  - Added package `SetStatus` method (#166).
+  - Added `Ctrl/Cmd-Enter`/`Ctrl/Cmd-Shift-Enter` to add line after/before the current one (#334).
+  - Added ignoring current selection in auto-complete with `Shift-Enter` (closes #494).
+  - Added hiding auto-complete after typing one of the offered options (#494).
+  - Added activating Output notebook to show search results if it's hidden (#416).
+  - Added reporting of errors when unable to open file for static analysis.
+  - Added collapsing whitespaces in function parameters in the outline (#337).
+  - Added emphasis for the preference type in the config file template.
+  - Added `FileSize` method as the default one returns non-zero result for non-existing files.
+  - Added reporting of `FileWrite` failing to write the entire content.
+  - Added package methods `AddIndicator`, `GetIndicator`, and `RemoveIndicator` (#166).
+  - Added missing `Detach Process` id to keymap (pkulchenko/MobDebug#19).
+  - Added a check for `ini` setting pointing to a path with a writeable directory (#483).
+  - Added a check for `ini` setting pointing to a directory (#483).
+  - Added processing of `ini` setting relative to the IDE location (closes #483).
+  - Added Watch view refresh after switching focus when needed.
+  - Added Stack view refresh after switching focus when needed.
+  - Added forced `Refresh`/`Update` to improve redrawing of commandbar on Windows 8.
+  - Added a check for a window to be shown to avoid callback recursion on OSX (fixes #473).
+  - Added package `IsWindowShown` method (#166).
+  - Added package `onEditorPreClose` event (#166, closes #461).
+  - Added deleting the rest of the word on auto-complete (`acandtip.droprest`).
+  - Added closing editor tab when renaming to an open file from the project tree.
+  - Added refresh of the target file after renaming from the project tree.
+  - Added a check for object with a focus (occasionally triggered on Linux).
+  - Added workaround to fix crash on Linux from the project tree (#425, #464).
+  - Added `DoWhenIdle` package method (#166).
+  - Disabled unhiding one of wxwidgets windows that is only used for message passing (Windows).
+  - Disabled initial highlight when showing current function disabled in the outline (#515).
+  - Disabled dragging out search results tab to avoid unexpected results (#416).
+  - Enabled compilation during running/debugging (closes #479).
+  - Enabled static analysis during running/debugging (#479).
+  - Integrate ZeroBrane with Marmalade's Hub GUI
+  - Improved auto-complete suggestions for case-sensitive matches.
+  - Improved compactness of saved package settings (#166, #499).
+  - Improved performance of saving symbol index data (#499).
+  - Improved memory usage when closing large files (#491).
+  - Improved handling of large files (#491).
+  - Improved the order of results in auto-complete (closes #469).
+  - glslc tool: add menu option for pre-process mode
+  - Optimized saving package settings (#166, #499).
+  - Optimized UTF8 validation (thanks to Joergen von Bargen).
+  - Optimized handling of multi-line changes in the editor (closes #477).
+  - Removed forced garbage collection as it led to crashes on Linux (#425, closes #464).
+  - Revised: auto-complete results (amends #469, w/@pkulchenko patch)
+  - Switched to the bottom location for the search results by default (#416).
+  - Updated translation files for new messages (#70).
+  - Updated translation logic to accept empty tables for pluralization values (#70).
+  - Updated build scripts to use the most recent releases of LuaJIT and Lua 5.2.
+  - Updated OSX launcher to keep `DYLD_LIBRARY_PATH` if already set.
+  - Updated build scripts to use the most recent releases of LuaJIT and Lua 5.2.
+  - Update marmalade API definition to 7.9
+  - Updated static analyzer (luainspect) to take globals in 'required' files into account (#520).
+  - Updated static analyzer to refresh cache of 'required' modules (#520).
+  - Updated C/cpp spec to skip `if(...)` from the list of functions.
+  - Updated C/cpp spec to properly handle functions at the beginning of a file.
+  - Updated package data serialization to use simpler dumper for faster processing.
+  - Updated saving symbol index to be called less frequently (#499).
+  - Updated list of fields to skip from saved symbol index (#499).
+  - Updated Run/Debug to not force saving new tabs when `Start` file is set.
+  - Updated interpreter handling to allow setting of default value in the config (closes #518).
+  - Updated highlighting of the current function in the Outline to select one item (#515).
+  - Updated auto-complete to close when one of the options matches the current input.
+  - Updated applying limit to the commandbar results to allow them to be resorted.
+  - Updated status messages for better visibility on OSX during index refresh (#499).
+  - Updated tracking of editor updates to skip unneeded notifications on OSX (#499).
+  - Updated symbol refresh to do processing as soon as the path is known (#499).
+  - Updated symbol index to skip unused elements in serialization (#499).
+  - Updated prefiltering to limit prefix to avoid penalty for long `s.*s.*s...` (#31).
+  - Updated package `SetSettings` method to allow passing of additional parameters (#166).
+  - Updated status of files indexing for symbol search (#499).
+  - Updated `DoWhenIdle` handling to gracefully handle a long queue.
+  - Updated `Go To Symbol` to refresh files loaded in the preview (#499, #385).
+  - Updated symbol search to only refresh outline when it's not populated (#385).
+  - Updated search logic to avoid showing search results in recent files (#416).
+  - Updated line number handling to adjust for large files (#491).
+  - Updated `busted` interpreter to check for proper extension on Windows (closes #495).
+  - Updated handling of binary and utf8 validness checks for large files (#491).
+  - Updated build scripts for Lua 5.3 to use 5.3.1.
+  - Updated toolbar to show large icons by default on large screens.
+  - Updated outline to only retrieve entry text when there are tokens to process (#337).
+  - Updated getting text length without requesting editor content.
+  - Updated showing function indicator handling to allow for easier enabling.
+  - Updated indicator processing to use new API.
+  - Updated ID references in toolbar to use the new access method.
+  - Updated ID references in keymap to use the new access method.
+  - Updated `Detach Process` to allow access to it while the process is running.
+  - Updated metalua/static analyzer to accept long integer and imaginary numbers (closes #482).
+  - Updated internal parser to accept long integer, imaginary, and floating point hex numbers (#482).
+  - Updated internal parser to accept numbers that start with a period (#482).
+  - Updated compilation and static analysis to keep output when running/debugging (#479).
+  - Updated indentation after strings with brackets and escaped quotes (#324).
+  - Updated `AnalyzeString` to add filename parameter (closes #463).
+  - Updated Windows launcher to add dpi awareness for high dpi monitors.
+  - Upgraded Mobdebug (0.628) to include `keyignore` serializer option.
+  - Upgraded Mobdebug (0.627) to improve debugging of code with overloaded `string` methods.
+  - Upgraded Mobdebug (0.624) to make `DONE` async and to add `__tostring` protection (closes #446).
+
+### Fixes
+  - Fixed text search and fuzzy symbol search in symlinks (#458, #530).
+  - Fixed opening only one tab for external debugging of dynamic code on Linux (closes #526).
+  - Fix live picking up debug vs release binaries (Marmalade)
+  - Fixed highlighting for those specs that don't have information on where functions end (#515).
+  - Fixed highlighting the current function when anonymous functions are hidden (#515).
+  - Fixed styling of comments that include markup inside markup (fixes #514).
+  - Fixed updating symbols in new files that haven't been indexed yet (#499).
+  - Fixed opening empty files (fixes #510).
+  - Fixed autocomplete for words that may include underscores in suggestions.
+  - Fixed crash on OSX during symbol indexing when filetree menu is open (#499).
+  - Fixed crash on Linux during symbol indexing when filetree menu is open (fixes #507).
+  - Fixed duplicates between variables and dynamic words in auto-complete.
+  - Fixed uncommenting of the last line in the selection to keep un/comment reversible (fixes #509).
+  - Fixed assignment parsing when the type value is re-assigned (#498).
+  - Fixed mouse selection in auto-complete on OSX (fixes #496).
+  - Fixed fuzzy file search to not double open already opened files (#31).
+  - Fixed indentation of lines that end with partial long strings with opening brackets (#324).
+  - Fixed indentation of lines with long strings that include opening brackets (#324).
+  - Fixed indicators on table fields after variables that look like multiple assignments (#492).
+  - Fixed indicators on table fields after variables (fixes #492).
+  - Fixed variable usage based on static analysis.
+  - Fixed initial select-and-find search.
+  - Fixed returning focus to the editor after find-in-files followed by page search (#416).
+  - Fixed performance of initial fuzzy search for line numbers (closes #476).
+  - Fixed Output tab name when debugging aborted after run-time error.
+  - Fixed recursive file traversal to skip directories when mask is specified.
+  - Fixed crash in `collectgarbage` from the filetree on Linux (#425, #464).
+
 ## v1.10 (May 13 2015)
 
 ### Highlights
