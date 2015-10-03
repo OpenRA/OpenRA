@@ -1,0 +1,211 @@
+MapFormat: 7
+
+RequiresMod: d2k
+
+Title: Atreides 02b
+
+Description: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 52,52
+
+Bounds: 2,2,48,48
+
+Visibility: MissionSelector
+
+Type: Campaign
+
+Videos:
+	Briefing: a_br02_e.vqa
+
+Options:
+	Crates: False
+	Creeps: True
+	Fog: True
+	Shroud: True
+	AllyBuildRadius: False
+	FragileAlliances: False
+	StartingCash: 5000
+	TechLevel: Low
+	ConfigurableStartingUnits: False
+	Difficulties: Easy, Normal, Hard
+	ShortGame: False
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: True
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		ColorRamp: 170,255,200
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		ColorRamp: 0,255,127
+		Enemies: Atreides
+
+Actors:
+	Actor0: light_inf
+		Location: 26,8
+		Owner: Atreides
+	Actor1: trike
+		Location: 28,8
+		Owner: Atreides
+	Actor2: trike
+		Location: 30,8
+		Owner: Atreides
+	Actor3: light_inf
+		Location: 24,10
+		Owner: Atreides
+	Actor5: trike
+		Location: 31,11
+		Owner: Atreides
+	Actor6: light_inf
+		Location: 47,11
+		Owner: Harkonnen
+	Actor7: light_inf
+		Location: 25,12
+		Owner: Atreides
+	Actor8: light_inf
+		Location: 8,14
+		Owner: Harkonnen
+	Actor9: light_inf
+		Location: 27,14
+		Owner: Atreides
+	Actor10: wormspawner
+		Location: 40,17
+		Owner: Creeps
+	Actor11: light_inf
+		Location: 40,33
+		Owner: Harkonnen
+	Actor12: trike
+		Location: 14,39
+		Owner: Harkonnen
+	Actor13: light_inf
+		Location: 16,39
+		Owner: Harkonnen
+	Actor14: trike
+		Location: 18,39
+		Owner: Harkonnen
+	Actor16: trike
+		Location: 16,41
+		Owner: Harkonnen
+	Actor17: light_inf
+		Location: 9,42
+		Owner: Harkonnen
+	Actor20: light_inf
+		Location: 11,44
+		Owner: Harkonnen
+	Actor21: trike
+		Location: 12,46
+		Owner: Harkonnen
+	Actor22: light_inf
+		Location: 18,46
+		Owner: Harkonnen
+	Actor23: light_inf
+		Location: 21,46
+		Owner: Harkonnen
+	Actor24: trike
+		Location: 16,48
+		Owner: Harkonnen
+	HConyard: construction_yard
+		Location: 14,42
+		Owner: Harkonnen
+	HOutpost: outpostnopower
+		Location: 11,40
+		Owner: Harkonnen
+	HBarracks: barracks
+		Location: 18,42
+		Owner: Harkonnen
+	AConyard: construction_yard
+		Location: 27,10
+		Owner: Atreides
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 2,22
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 49,33
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 12,7
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 36,15
+	HarkonnenRally3: waypoint
+		Owner: Neutral
+		Location: 18,17
+	HarkonnenRally4: waypoint
+		Owner: Neutral
+		Location: 30,28
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			EarlyGameOver: true
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LuaScript:
+			Scripts: atreides02b.lua
+		ObjectivesPanel:
+			PanelName: MISSION_OBJECTIVES
+		WormManager:
+			Minimum: 1
+			Maximum: 1
+	carryall.reinforce:
+		Cargo:
+			MaxWeight: 10
+	construction_yard:
+		Production:
+			Produces: Building
+	concreteb:
+		Buildable:
+			Prerequisites: ~disabled
+	heavy_factory:
+		Buildable:
+			Prerequisites: ~disabled
+	medium_gun_turret:
+		Buildable:
+			Prerequisites: ~disabled
+	wall:
+		Buildable:
+			Prerequisites: ~disabled
+	outpost:
+		Buildable:
+			Prerequisites: barracks
+	outpostnopower:
+		Inherits: outpost
+		Buildable:
+			Prerequisites: ~disabled
+		-RequiresPower:
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:
