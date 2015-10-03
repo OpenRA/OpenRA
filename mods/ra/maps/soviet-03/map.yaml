@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -47,18 +47,18 @@ Players:
 	PlayerReference@England:
 		Name: England
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Allies: Germany, Soviet
 		Enemies: USSR
 	PlayerReference@Soviet:
 		Name: Soviet
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: England, Germany, USSR
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Allies: England, Soviet
 		Enemies: USSR, Creeps
 	PlayerReference@USSR:
@@ -69,7 +69,7 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Enemies: Germany, England, Creeps

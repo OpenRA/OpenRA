@@ -6,7 +6,7 @@ LtRail:
 		Speed: 1c682
 		BeamWidth: 1
 		BeamDuration: 10
-		Color: 200,0,128,255
+		Color: 0080FFC8
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 150
@@ -25,7 +25,7 @@ MechRailgun:
 	BurstDelay: 60
 	Report: RAILUSE5.AUD
 	Projectile: LaserZap
-		Color: 200,0,255,255
+		Color: 00FFFFC8
 		BeamWidth: 3
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -44,7 +44,7 @@ SonicZap:
 	Charges: yes
 	Report: SONIC4.AUD
 	Projectile: LaserZap
-		Color: 200,0,255,255
+		Color: 00FFFFC8
 		BeamWidth: 12
 		BeamDuration: 50
 	Warhead@1Dam: SpreadDamage

@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -674,7 +674,7 @@ Rules:
 			SwingOffset: 1.0, 1.5
 			SwingSpeed: 0.001, 0.025
 			SwingAmplitude: 1.0, 1.5
-			ParticleColors: 255,236,236,236, 255,228,228,228, 255,208,208,208, 255,188,188,188
+			ParticleColors: ECECEC, E4E4E4, D0D0D0, BCBCBC
 			LineTailAlphaValue: 0
 		GlobalLightingPaletteEffect:
 			Red: 0.9

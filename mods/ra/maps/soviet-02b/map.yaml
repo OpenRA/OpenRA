@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -46,7 +46,7 @@ Players:
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
@@ -56,7 +56,7 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Enemies: Germany, Creeps

@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -35,12 +35,12 @@ Players:
 	PlayerReference@Allies:
 		Name: Allies
 		Faction: allies
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Allies
 
 Actors:

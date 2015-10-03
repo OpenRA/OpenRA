@@ -59,7 +59,7 @@
 		UpgradeMinEnabledLevel: 1
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
-		Color: 255,255,255
+		Color: FFFFFF
 	WithDecoration@EMPDISABLE:
 		Image: emp
 		Sequence: idle

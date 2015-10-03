@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -39,14 +39,14 @@ Players:
 	PlayerReference@France:
 		Name: France
 		Faction: allies
-		ColorRamp: 115,115,143
+		Color: 5CC1A3
 		Allies: Germany
 		Enemies: USSR
 	PlayerReference@Germany:
 		Name: Germany
 		NonCombatant: True
 		Faction: allies
-		ColorRamp: 0,0,80
+		Color: 505050
 		Allies: France
 		Enemies: USSR
 	PlayerReference@USSR:
@@ -57,7 +57,7 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Enemies: France, Germany

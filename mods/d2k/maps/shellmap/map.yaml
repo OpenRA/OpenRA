@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: d2k
 
@@ -31,13 +31,13 @@ Players:
 	PlayerReference@Atreides:
 		Name: Atreides
 		Faction: atreides
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Faction: atreides
 		Enemies: Atreides
-		ColorRamp: 210,255,127
+		Color: EF00FE
 
 Actors:
 	Actor4: spicebloom

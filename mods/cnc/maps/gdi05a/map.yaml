@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: cnc
 
@@ -41,7 +41,7 @@ Players:
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: Nod
 		Enemies: GDI
 	PlayerReference@GDI:
@@ -52,7 +52,7 @@ Players:
 		LockFaction: True
 		Faction: gdi
 		LockColor: True
-		ColorRamp: 31,222,183
+		Color: F5D378
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
@@ -60,7 +60,7 @@ Players:
 	PlayerReference@AbandonedBase:
 		Name: AbandonedBase
 		NonCombatant: True
-		ColorRamp: 31,222,183
+		Color: F5D378
 		Faction: gdi
 	PlayerReference@Neutral:
 		Name: Neutral

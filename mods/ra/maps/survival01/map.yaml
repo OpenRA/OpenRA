@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -45,14 +45,14 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 115,240,130
+		Color: 0CF7B2
 		LockSpawn: True
 		LockTeam: True
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
-		ColorRamp: 0,255,128
+		Color: FF0101
 		Enemies: Allies
 
 Actors:

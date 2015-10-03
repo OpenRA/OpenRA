@@ -1,5 +1,5 @@
 Container@SKIRMISH_STATS:
-	Height:	PARENT_BOTTOM
+	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
 	Logic: GameInfoStatsLogic
 	Children:
@@ -24,7 +24,7 @@ Container@SKIRMISH_STATS:
 			Font: Bold
 			Text: Destroy all opposition!
 			Disabled: yes
-			TextColorDisabled: 255,255,255
+			TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:
 			X: 22
 			Y: 80

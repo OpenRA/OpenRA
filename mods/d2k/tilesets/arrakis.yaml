@@ -10,47 +10,47 @@ Terrain:
 	TerrainType@Clear:
 		Type: Clear
 		TargetTypes: Ground
-		Color: 255,0,0,0
+		Color: 000000
 	TerrainType@Cliff:
 		Type: Cliff
 		TargetTypes: Ground
-		Color: 255,74,41,16
+		Color: 4A2910
 	TerrainType@Concrete:
 		Type: Concrete
 		TargetTypes: Ground
-		Color: 255,232,196,152
+		Color: E8C498
 	TerrainType@Dune:
 		Type: Dune
 		TargetTypes: Ground
-		Color: 255,239,222,140
+		Color: EFDE8C
 	TerrainType@Ice:
 		Type: Ice
 		TargetTypes: Ground
 		IsWater: True
-		Color: 255,255,255,255
+		Color: FFFFFF
 	TerrainType@Rock:
 		Type: Rock
 		TargetTypes: Ground
 		AcceptsSmudgeType: RockCrater
-		Color: 255,206,140,66
+		Color: CE8C42
 	TerrainType@Rough:
 		Type: Rough
 		TargetTypes: Ground
-		Color: 255,88,116,116
+		Color: 587474
 		CustomCursor: move-rough
 	TerrainType@Sand:
 		Type: Sand
 		TargetTypes: Ground
 		AcceptsSmudgeType: SandCrater
-		Color: 255,208,192,160
+		Color: D0C0A0
 	TerrainType@Spice:
 		Type: Spice
 		TargetTypes: Ground
-		Color: 255,239,148,74
+		Color: EF944A
 	TerrainType@Transition:
 		Type: Transition
 		TargetTypes: Ground
-		Color: 255,207,166,100
+		Color: CFA664
 
 Templates:
 	Template@0:

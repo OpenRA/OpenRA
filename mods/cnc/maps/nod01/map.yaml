@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: cnc
 
@@ -47,7 +47,7 @@ Players:
 	PlayerReference@GDI:
 		Name: GDI
 		Faction: gdi
-		ColorRamp: 31,222,183
+		Color: F5D378
 		Allies: Villagers
 		Enemies: Nod
 	PlayerReference@Nod:
@@ -58,7 +58,7 @@ Players:
 		LockFaction: True
 		Faction: nod
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI, Villagers

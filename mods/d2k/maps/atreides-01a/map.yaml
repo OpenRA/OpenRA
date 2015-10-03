@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: d2k
 
@@ -50,14 +50,14 @@ Players:
 		Playable: true
 		Faction: atreides
 		LockFaction: true
-		ColorRamp: 170,255,200
+		Color: 9191FF
 		LockColor: true
 		Enemies: Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Faction: harkonnen
 		LockFaction: true
-		ColorRamp: 0,255,127
+		Color: FE0000
 		LockColor: true
 		Enemies: Atreides, Creeps
 

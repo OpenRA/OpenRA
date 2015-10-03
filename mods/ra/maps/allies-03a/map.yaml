@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -43,7 +43,7 @@ Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
@@ -52,7 +52,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Enemies: USSR
 
 Actors:
