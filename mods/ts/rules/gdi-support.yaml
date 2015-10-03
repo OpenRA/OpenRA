@@ -189,6 +189,22 @@ GAPOWRUP:
 	Power:
 		Amount: 50
 
+GAPLUG2:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Seeker Control
+		Description: Enables use of the hunter-seeker droid.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi
+	Plug:
+		Type: plug.hunterseeker
+	Power:
+		Amount: -50
+
 GAPLUG3:
 	Inherits: ^BuildingPlug
 	Valued:

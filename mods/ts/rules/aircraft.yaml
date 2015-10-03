@@ -304,6 +304,7 @@ HUNTER:
 		EmptyWeapon: SuicideBomb
 	Aircraft:
 		RearmBuildings:
+		RepairBuildings:
 		ROT: 16
 		Speed: 355
 		CruiseAltitude: 256

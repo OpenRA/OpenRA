@@ -375,6 +375,18 @@ GAPLUG:
 		InsufficientPowerSound:
 		DisplayRadarPing: True
 		CameraActor: camera
+	ProduceActorPower:
+		UpgradeTypes: plug.hunterseeker
+		UpgradeMinEnabledLevel: 1
+		Description: Hunter Seeker
+		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Icon: hunterseeker
+		Actors: hunter
+		Type: HunterSeeker
+		ChargeTime: 720
+	Production:
+		Produces: HunterSeeker
+	Exit@1:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -382,22 +394,36 @@ GAPLUG:
 		UpgradeTypes: plug.ioncannon
 		UpgradeMinEnabledLevel: 1
 		Amount: -100
+	Power@hunterseeker:
+		UpgradeTypes: plug.hunterseeker
+		UpgradeMinEnabledLevel: 1
+		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2
 		Upgrades:
 			plug.ioncannon: plug.ioncannon, plug.ioncannona
+			plug.hunterseeker: plug.hunterseeker, plug.hunterseekera
 	WithIdleOverlay@ioncannona:
 		UpgradeTypes: plug.ioncannona
 		UpgradeMinEnabledLevel: 1
 		Sequence: idle-ioncannona
+	WithIdleOverlay@hunterseekera:
+		UpgradeTypes: plug.hunterseekera
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
 		Upgrades:
 			plug.ioncannon: plug.ioncannon, plug.ioncannonb
+			plug.hunterseeker: plug.hunterseeker, plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
 		UpgradeTypes: plug.ioncannonb
 		UpgradeMinEnabledLevel: 1
 		Sequence: idle-ioncannonb
+	WithIdleOverlay@hunterseekerb:
+		UpgradeTypes: plug.hunterseekerb
+		UpgradeMinEnabledLevel: 1
+		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 115,104,0,-24
