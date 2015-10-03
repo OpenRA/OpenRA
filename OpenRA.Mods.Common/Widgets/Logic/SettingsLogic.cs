@@ -588,6 +588,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "Disabled", MouseScrollType.Disabled },
 				{ "Standard", MouseScrollType.Standard },
 				{ "Inverted", MouseScrollType.Inverted },
+				{ "Joystick", MouseScrollType.Joystick },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>

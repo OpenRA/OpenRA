@@ -333,7 +333,7 @@ Container@SETTINGS_PANEL:
 							Width: 160
 							Height: 20
 							Font: Regular
-							Text: Middle-Mouse Scrolling:
+							Text: Mouse Scrolling Method:
 							Align: Right
 						DropDownButton@MOUSE_SCROLL:
 							X: PARENT_RIGHT - WIDTH - 15

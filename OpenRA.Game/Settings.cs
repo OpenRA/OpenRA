@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public enum MouseScrollType { Disabled, Standard, Inverted }
+	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
 
 	public class ServerSettings
 	{
@@ -167,6 +167,7 @@ namespace OpenRA
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;
 		public int SelectionDeadzone = 24;
+		public int JoystickScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
 		public bool AlwaysShowStatusBars = false;
