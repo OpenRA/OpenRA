@@ -287,3 +287,43 @@ APACHE:
 	RenderSprites:
 	Hovers:
 
+HUNTER:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Hunter-Seeker Droid
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	DemoTruck:
+	Explodes:
+		Weapon: SuicideBomb
+		EmptyWeapon: SuicideBomb
+	Aircraft:
+		RearmBuildings:
+		ROT: 16
+		Speed: 355
+		CruiseAltitude: 256
+		CanHover: True
+	Targetable:
+		TargetTypes: Ground, Vehicle
+	HiddenUnderFog:
+		Type: CenterPosition
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+	RenderSprites:
+		Image: GGHUNT
+	WithFacingSpriteBody:
+	Hovers:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	DrawLineToTarget:
+	AppearsOnRadar:
+		UseLocation: yes
+	Selectable:
+	SelectionDecorations:
+		Palette: pips
+	ActorLostNotification:
