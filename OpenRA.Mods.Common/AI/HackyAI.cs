@@ -74,6 +74,9 @@ namespace OpenRA.Mods.Common.AI
 			"for StructureProductionResumeDelay before retrying.")]
 		public readonly int MaximumFailedPlacementAttempts = 3;
 
+		[Desc("How many randomly chosen cells with resources to check when deciding refinery placement.")]
+		public readonly int MaxResourceCellsToCheck = 3;
+
 		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
 		public readonly int CheckForNewBasesDelay = 1500;
 
@@ -97,6 +100,9 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
+
+		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
+		public readonly int MinBaseRadius = 2;
 
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
@@ -500,22 +506,22 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingType.Refinery:
 
 					// Try and place the refinery near a resource field
-					var nearbyResources = Map.FindTilesInCircle(baseCenter, Info.MaxBaseRadius)
+					var nearbyResources = Map.FindTilesInAnnulus(baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius)
 						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
-						.Shuffle(Random);
+						.Shuffle(Random).Take(Info.MaxResourceCellsToCheck);
 
-					foreach (var c in nearbyResources)
+					foreach (var r in nearbyResources)
 					{
-						var found = findPos(c, baseCenter, 0, Info.MaxBaseRadius);
+						var found = findPos(r, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, 0, Info.MaxBaseRadius);
+					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, 0, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
+					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
 			}
 
 			// Can't find a build location
