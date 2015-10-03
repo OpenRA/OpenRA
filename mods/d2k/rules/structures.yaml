@@ -782,6 +782,12 @@ palace:
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Factions: harkonnen
+	ProvidesPrerequisite@fremen:
+		Prerequisite: palace.fremen
+		Factions: atreides
+	ProvidesPrerequisite@saboteur:
+		Prerequisite: palace.saboteur
+		Factions: ordos
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand
@@ -800,6 +806,39 @@ palace:
 		DisplayRadarPing: True
 		CameraActor: camera
 		ActivationSequence:
+	ProduceActorPower@fremen:
+		Description: Recruit Fremen
+		LongDesc: Elite sniper infantry unit                       \n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
+		Icon: fremen
+		Prerequisites: ~techlevel.superweapons, ~palace.fremen
+		Actors: fremen, fremen
+		Type: Palace
+		ChargeTime: 60
+		ReadyAudio: Reinforce
+		BlockedAudio: NoRoom
+		OrderName: ProduceActorPower.Fremen
+	ProduceActorPower@saboteur:
+		Description: Recruit Saboteur
+		LongDesc: Sneaky infantry, armed with explosives           \n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Icon: saboteur
+		Prerequisites: ~techlevel.superweapons, ~palace.saboteur
+		Actors: saboteur
+		Type: Palace
+		ChargeTime: 40
+		ReadyAudio: Reinforce
+		BlockedAudio: NoRoom
+		OrderName: ProduceActorPower.Saboteur
+	Exit@1:
+		SpawnOffset: -704,768,0
+		ExitCell: -1,2
+	Exit@2:
+		SpawnOffset: -704,768,0
+		ExitCell: -1,3
+	Exit@3:
+		SpawnOffset: -704,768,0
+		ExitCell: 0,3
+	Production:
+		Produces: Palace
 	CanPowerDown:
 	DisabledOverlay:
 	RequiresPower:

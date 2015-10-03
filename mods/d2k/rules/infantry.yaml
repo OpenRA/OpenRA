@@ -113,7 +113,7 @@ fremen:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Prerequisites: ~barracks.atreides, palace, ~techlevel.high
+		Prerequisites: ~disabled
 	Mobile:
 		Speed: 43
 	Health:
@@ -207,7 +207,7 @@ saboteur:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
-		Prerequisites: ~barracks.ordos, palace, ~techlevel.high
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 800
 	Tooltip:
