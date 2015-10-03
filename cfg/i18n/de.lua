@@ -222,9 +222,9 @@ return {
   ["Replaced an invalid UTF8 character with %s."] = "Unbekanntes UTF8-Symbol ersetzt mit %s.", -- src\editor\commands.lua
   ["Reset to default layout"] = "Standard-Layout wiederherstellen", -- src\editor\menu_view.lua
   ["Run As Scratchpad"] = "Als &Entwurf starten", -- src\editor\menu_project.lua
-  ["Run To Cursor"] = nil, -- src\editor\menu_project.lua, src\editor\editor.lua
+  ["Run To Cursor"] = "Stoppe Ausführung an Cursorposition", -- src\editor\menu_project.lua, src\editor\editor.lua
   ["Run as Scratchpad"] = "Als &Entwurf starten", -- src\editor\toolbar.lua
-  ["Run to cursor"] = nil, -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Run to cursor"] = "Stoppe Ausführung an Cursorposition", -- src\editor\toolbar.lua, src\editor\menu_project.lua
   ["S&top Debugging"] = "Debugging a&nhalten", -- src\editor\menu_project.lua
   ["S&top Process"] = "Prozeß &anhalten", -- src\editor\menu_project.lua
   ["Save &As..."] = "S&peichern als...", -- src\editor\gui.lua, src\editor\menu_file.lua
