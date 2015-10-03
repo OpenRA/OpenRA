@@ -344,6 +344,54 @@ namespace OpenRA
 					Visibility = MapVisibility.MissionSelector;
 			}
 
+			// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
+			if (MapFormat < 8)
+			{
+				var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
+				if (players != null)
+				{
+					bool noteHexColors = false;
+					bool noteColorRamp = false;
+					foreach (var player in players.Value.Nodes)
+					{
+						var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
+						if (colorRampNode != null)
+						{
+							Color dummy;
+							var parts = colorRampNode.Value.Value.Split(',');
+							if (parts.Length == 3 || parts.Length == 4)
+							{
+								// Try to convert old normalized HSL value to a rgb hex color
+								try
+								{
+									HSLColor color = new HSLColor(
+										(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
+									colorRampNode.Value.Value = FieldSaver.FormatValue(color);
+									noteHexColors = true;
+								}
+								catch (Exception)
+								{
+									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
+								}
+							}
+							else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
+								throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
+
+							colorRampNode.Key = "Color";
+							noteColorRamp = true;
+						}
+					}
+
+					Console.WriteLine("Converted " + path + " to MapFormat 8.");
+					if (noteHexColors)
+						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
+					else if (noteColorRamp)
+						Console.WriteLine("ColorRamp is now called Color.");
+				}
+			}
+
 			SpawnPoints = Exts.Lazy(() =>
 			{
 				var spawns = new List<CPos>();
@@ -389,7 +437,7 @@ namespace OpenRA
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
 			// TODO: this isn't very nice
-			if (MapFormat < 7)
+			if (MapFormat < 8)
 				Save(path);
 
 			Uid = ComputeHash();
@@ -537,7 +585,7 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 7;
+			MapFormat = 8;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]

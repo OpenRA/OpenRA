@@ -56,12 +56,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The value range that can be swung to the left or right. SwingAmplitude min. and max. value in px/tick.")]
 		public readonly float[] SwingAmplitude = { 1.0f, 1.5f };
 
-		[Desc("The randomly selected ArgbColors for the particles. Use this order: a,r,g,b,  a,r,g,b, a,...")]
+		[Desc("The randomly selected rgb(a) hex colors for the particles. Use this order: rrggbb[aa], rrggbb[aa], ...")]
 		public readonly Color[] ParticleColors = {
-			Color.FromArgb(255, 236, 236, 236),
-			Color.FromArgb(255, 228, 228, 228),
-			Color.FromArgb(255, 208, 208, 208),
-			Color.FromArgb(255, 188, 188, 188)
+			Color.FromArgb(236, 236, 236),
+			Color.FromArgb(228, 228, 228),
+			Color.FromArgb(208, 208, 208),
+			Color.FromArgb(188, 188, 188)
 		};
 
 		[Desc("Works only with line enabled and can get used to fade out the tail of the line like a contrail.")]

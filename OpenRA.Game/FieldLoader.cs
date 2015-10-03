@@ -212,21 +212,9 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(Color))
 			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-					if (parts.Length == 3)
-						return Color.FromArgb(
-							Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
-					if (parts.Length == 4)
-						return Color.FromArgb(
-							Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255));
-				}
+				Color color;
+				if (value != null && HSLColor.TryParseRGB(value, out color))
+					return color;
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
@@ -235,20 +223,11 @@ namespace OpenRA
 				if (value != null)
 				{
 					var parts = value.Split(',');
-
-					if (parts.Length % 4 != 0)
-						return InvalidValueAction(value, fieldType, fieldName);
-
-					var colors = new Color[parts.Length / 4];
+					var colors = new Color[parts.Length];
 
 					for (var i = 0; i < colors.Length; i++)
-					{
-						colors[i] = Color.FromArgb(
-							Exts.ParseIntegerInvariant(parts[4 * i]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[4 * i + 1]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[4 * i + 2]).Clamp(0, 255),
-							Exts.ParseIntegerInvariant(parts[4 * i + 3]).Clamp(0, 255));
-					}
+						if (!HSLColor.TryParseRGB(parts[i], out colors[i]))
+							return InvalidValueAction(value, fieldType, fieldName);
 
 					return colors;
 				}
@@ -259,9 +238,12 @@ namespace OpenRA
 			{
 				if (value != null)
 				{
-					var parts = value.Split(',');
+					Color rgb;
+					if (HSLColor.TryParseRGB(value, out rgb))
+						return new HSLColor(rgb);
 
-					// Allow old ColorRamp format to be parsed as HSLColor
+					// Allow old HSLColor/ColorRamp formats to be parsed as HSLColor
+					var parts = value.Split(',');
 					if (parts.Length == 3 || parts.Length == 4)
 						return new HSLColor(
 							(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
