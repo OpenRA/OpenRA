@@ -709,6 +709,7 @@
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
     <Compile Include="Scripting\Global\LightingGlobal.cs" />
+    <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
