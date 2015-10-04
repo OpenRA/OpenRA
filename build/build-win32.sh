@@ -189,6 +189,16 @@ if [ $BUILD_LUA ]; then
     # move luajit to lua as it's expected by luasocket and other components
     cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
   else
+    # need to patch Lua io to support large (>2GB) files on Windows:
+    # http://lua-users.org/lists/lua-l/2015-05/msg00370.html
+    cat <<EOF >>src/luaconf.h
+#if defined(liolib_c) && defined(__MINGW32__)
+#include <sys/types.h>
+#define l_fseek(f,o,w) fseeko64(f,o,w)
+#define l_ftell(f) ftello64(f)
+#define l_seeknum off64_t
+#endif
+EOF
     make mingw || { echo "Error: failed to build Lua"; exit 1; }
     make install INSTALL_TOP="$INSTALL_DIR"
   fi
