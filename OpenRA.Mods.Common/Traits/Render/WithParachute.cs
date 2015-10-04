@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => IsTraitDisabled && !renderProlonged,
 				() => false,
-				p => WithTurret.ZOffsetFromCenter(self, p, 1));
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			var rs = self.Trait<RenderSprites>();
 			rs.Add(anim, info.Palette);

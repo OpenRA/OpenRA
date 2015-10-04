@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 						() => PortOffset(self, port),
 						() => false,
 						() => false,
-						p => WithTurret.ZOffsetFromCenter(self, p, 1024));
+						p => RenderUtils.ZOffsetFromCenter(self, p, 1024));
 
 					muzzles.Add(muzzleFlash);
 					muzzleAnim.PlayThen(sequence, () => muzzles.Remove(muzzleFlash));
