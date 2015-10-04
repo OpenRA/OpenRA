@@ -271,6 +271,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats == null) return template;
 			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
+			template.Get<LabelWidget>("EXPERIENCE").GetText = () => stats.ExperienceGained.ToString();
 			template.Get<LabelWidget>("KD_RATIO").GetText = () => KillDeathRatio(stats.UnitsKilled + stats.BuildingsKilled, stats.UnitsDead + stats.BuildingsDead);
 			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
 

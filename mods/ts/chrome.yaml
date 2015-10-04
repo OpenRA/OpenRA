@@ -498,7 +498,7 @@ newsbutton-highlighted: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-    
+	
 newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
@@ -807,4 +807,4 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
+	separator: 512,1,1,19
