@@ -16,10 +16,12 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class DeployOrderTargeter : IOrderTargeter
 	{
+		private const string DeployCursor = "deploy";
+
 		readonly Func<string> cursor;
 
 		public DeployOrderTargeter(string order, int priority)
-			: this(order, priority, () => "deploy")
+			: this(order, priority, () => DeployCursor)
 		{
 		}
 

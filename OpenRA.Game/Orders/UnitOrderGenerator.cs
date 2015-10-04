@@ -17,6 +17,9 @@ namespace OpenRA.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{
+		private const string SelectCursor = "select";
+		private const string DefaultCursor = "default";
+
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var underCursor = world.ScreenMap.ActorsAt(mi)
@@ -84,7 +87,7 @@ namespace OpenRA.Orders
 
 			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
 
-			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
+			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? SelectCursor : DefaultCursor);
 		}
 
 		// Used for classic mouse orders, determines whether or not action at xy is move or select

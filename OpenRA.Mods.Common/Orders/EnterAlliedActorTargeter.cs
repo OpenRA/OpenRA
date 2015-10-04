@@ -15,12 +15,15 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
 	{
+		private const string EnterTargetCursor = "enter";
+		private const string EnterTargetBlockedCursor = "enter-blocked";
+
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
 		public EnterAlliedActorTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base(order, priority, "enter", false, true)
+			: base(order, priority, EnterTargetCursor, false, true)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
@@ -31,7 +34,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (!target.Info.HasTraitInfo<T>() || !canTarget(target))
 				return false;
 
-			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
+			cursor = useEnterCursor(target) ? EnterTargetCursor : EnterTargetBlockedCursor;
 			return true;
 		}
 
