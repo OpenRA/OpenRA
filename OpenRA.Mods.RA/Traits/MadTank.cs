@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -22,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class MadTankInfo : ITraitInfo, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
+	class MadTankInfo : ITraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		[SequenceReference] public readonly string ThumpSequence = "piston";
 		public readonly int ThumpInterval = 8;
@@ -47,7 +48,15 @@ namespace OpenRA.Mods.RA.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		public WeaponInfo ThumpDamageWeaponInfo { get; private set; }
+		public WeaponInfo DetonationWeaponInfo { get; private set; }
+
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			ThumpDamageWeaponInfo = rules.Weapons[ThumpDamageWeapon.ToLowerInvariant()];
+			DetonationWeaponInfo = rules.Weapons[DetonationWeapon.ToLowerInvariant()];
+		}
 	}
 
 	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport
@@ -76,10 +85,8 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				if (info.ThumpDamageWeapon != null)
 				{
-					var weapon = self.World.Map.Rules.Weapons[info.ThumpDamageWeapon.ToLowerInvariant()];
-
 					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
-					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+					info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
 				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
@@ -118,10 +125,8 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				if (info.DetonationWeapon != null)
 				{
-					var weapon = self.World.Map.Rules.Weapons[info.DetonationWeapon.ToLowerInvariant()];
-
 					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-					weapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+					info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
 				self.Kill(self);

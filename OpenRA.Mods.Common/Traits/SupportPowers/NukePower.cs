@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
@@ -17,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class NukePowerInfo : SupportPowerInfo, Requires<BodyOrientationInfo>
+	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
 	{
 		[WeaponReference]
 		public readonly string MissileWeapon = "";
@@ -51,7 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence the launching actor should play when activating this power.")]
 		public readonly string ActivationSequence = "active";
 
+		public WeaponInfo WeaponInfo { get; private set; }
+
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[MissileWeapon.ToLowerInvariant()]; }
 	}
 
 	class NukePower : SupportPower
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
-			var missile = new NukeLaunch(self.Owner, info.MissileWeapon,
+			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
 				info.FlightVelocity, info.FlightDelay, info.SkipAscent,

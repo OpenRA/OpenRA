@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -16,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class IonCannonPowerInfo : SupportPowerInfo
+	class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
@@ -32,10 +33,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Which weapon to fire"), WeaponReference]
 		public readonly string Weapon = "IonCannon";
 
+		public WeaponInfo WeaponInfo { get; private set; }
+
 		[Desc("Apply the weapon impact this many ticks into the effect")]
 		public readonly int WeaponDelay = 7;
 
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.Self, this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
 	}
 
 	class IonCannonPower : SupportPower
@@ -55,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				Game.Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
-				w.Add(new IonCannon(self.Owner, info.Weapon, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
+				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
 
 				if (info.CameraActor == null)
 					return;
