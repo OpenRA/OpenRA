@@ -20,51 +20,6 @@ Container@SERVER_LOBBY:
 				Container@MAP_PREVIEW_ROOT:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-				Container@LABEL_CONTAINER:
-					X: 20
-					Y: 5
-					Children:
-						Label@NAME:
-							Width: 200
-							Height: 25
-							Text: Player
-							Align: Center
-							Font: Bold
-						Label@COLOR:
-							Width: 70
-							Height: 25
-							X: 210
-							Text: Color
-							Align: Center
-							Font: Bold
-						Label@FACTION:
-							Width: 100
-							Height: 25
-							X: 285
-							Text: Faction
-							Align: Center
-							Font: Bold
-						Label@TEAM:
-							Width: 50
-							Height: 25
-							X: 390
-							Text: Team
-							Align: Center
-							Font: Bold
-						Label@SPAWN:
-							X: 445
-							Width: 50
-							Height: 25
-							Text: Spawn
-							Align: Left
-							Font: Bold
-						Label@STATUS:
-							X: 501
-							Width: 20
-							Height: 25
-							Text: Ready
-							Align: Left
-							Font: Bold
 				Container@PLAYER_BIN_ROOT:
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15

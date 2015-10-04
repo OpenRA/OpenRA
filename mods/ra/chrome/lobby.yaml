@@ -16,52 +16,6 @@ Background@SERVER_LOBBY:
 		Container@MAP_PREVIEW_ROOT:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
-		Container@LABEL_CONTAINER:
-			X: 25
-			Y: 40
-			Children:
-				Label@LABEL_LOBBY_NAME:
-					X: 0
-					Width: 180
-					Height: 25
-					Text: Name
-					Align: Center
-					Font: Bold
-				Label@LABEL_LOBBY_COLOR:
-					X: 190
-					Width: 80
-					Height: 25
-					Text: Color
-					Align: Center
-					Font: Bold
-				Label@LABEL_LOBBY_FACTION:
-					X: 280
-					Width: 130
-					Height: 25
-					Text: Faction
-					Align: Center
-					Font: Bold
-				Label@LABEL_LOBBY_TEAM:
-					X: 420
-					Width: 48
-					Height: 25
-					Text: Team
-					Align: Center
-					Font: Bold
-				Label@LABEL_LOBBY_SPAWN:
-					X: 478
-					Width: 48
-					Height: 25
-					Text: Spawn
-					Align: Center
-					Font: Bold
-				Label@LABEL_LOBBY_STATUS:
-					X: 535
-					Width: 20
-					Height: 25
-					Text: Ready
-					Align: Left
-					Font: Bold
 		Container@PLAYER_BIN_ROOT:
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20

@@ -128,13 +128,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			UpdateCurrentMap();
-			players = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYER_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
-			players.IsVisible = () => panel == PanelType.Players;
 
-			var playerBinHeaders = lobby.GetOrNull<ContainerWidget>("LABEL_CONTAINER");
-			if (playerBinHeaders != null)
-				playerBinHeaders.IsVisible = () => panel == PanelType.Players;
+			var playerBin = Ui.LoadWidget("LOBBY_PLAYER_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
+			playerBin.IsVisible = () => panel == PanelType.Players;
 
+			players = playerBin.Get<ScrollPanelWidget>("LOBBY_PLAYERS");
 			editablePlayerTemplate = players.Get("TEMPLATE_EDITABLE_PLAYER");
 			nonEditablePlayerTemplate = players.Get("TEMPLATE_NONEDITABLE_PLAYER");
 			emptySlotTemplate = players.Get("TEMPLATE_EMPTY");
