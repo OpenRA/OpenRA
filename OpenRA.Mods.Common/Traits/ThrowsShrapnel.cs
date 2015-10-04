@@ -15,13 +15,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
-	public class ThrowsShrapnelInfo : ITraitInfo
+	public class ThrowsShrapnelInfo : ITraitInfo, IRulesetLoaded
 	{
 		[WeaponReference, FieldLoader.Require]
 		public string[] Weapons = { };
 		public int[] Pieces = { 3, 10 };
 		public WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };
+
+		public WeaponInfo[] WeaponInfos { get; private set; }
+
 		public object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			WeaponInfos = Weapons.Select(w => rules.Weapons[w.ToLowerInvariant()]).ToArray();
+		}
 	}
 
 	class ThrowsShrapnel : INotifyKilled
@@ -35,9 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo attack)
 		{
-			foreach (var name in info.Weapons)
+			foreach (var wep in info.WeaponInfos)
 			{
-				var wep = self.World.Map.Rules.Weapons[name.ToLowerInvariant()];
 				var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]);
 				var range = self.World.SharedRandom.Next(info.Range[0].Length, info.Range[1].Length);
 

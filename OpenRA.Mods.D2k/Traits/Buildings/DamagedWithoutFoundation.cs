@@ -16,21 +16,23 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Reduces health points over time when the actor is placed on unsafe terrain.")]
-	class DamagedWithoutFoundationInfo : ITraitInfo, Requires<HealthInfo>
+	class DamagedWithoutFoundationInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
 		[WeaponReference]
 		public readonly string Weapon = "weathering";
 		public readonly HashSet<string> SafeTerrain = new HashSet<string> { "Concrete" };
 		public readonly int DamageThreshold = 50;
 
+		public WeaponInfo WeaponInfo { get; private set; }
+
 		public object Create(ActorInitializer init) { return new DamagedWithoutFoundation(init.Self, this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
 	}
 
 	class DamagedWithoutFoundation : ITick, ISync, INotifyAddedToWorld
 	{
 		readonly DamagedWithoutFoundationInfo info;
 		readonly Health health;
-		readonly WeaponInfo weapon;
 
 		[Sync] int damageThreshold = 100;
 		[Sync] int damageTicks;
@@ -39,7 +41,6 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()];
 		}
 
 		public void AddedToWorld(Actor self)
@@ -69,8 +70,8 @@ namespace OpenRA.Mods.D2k.Traits
 			if (health.HP <= damageThreshold || --damageTicks > 0)
 				return;
 
-			weapon.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
-			damageTicks = weapon.ReloadDelay;
+			info.WeaponInfo.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
+			damageTicks = info.WeaponInfo.ReloadDelay;
 		}
 	}
 }

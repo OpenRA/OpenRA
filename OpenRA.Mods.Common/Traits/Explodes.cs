@@ -11,13 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ITraitInfo
+	public class ExplodesInfo : ITraitInfo, IRulesetLoaded
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
@@ -34,7 +35,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("DeathType(s) to apply upon explosion.")]
 		public readonly HashSet<string> DeathType = new HashSet<string>();
 
+		public WeaponInfo WeaponInfo { get; private set; }
+		public WeaponInfo EmptyWeaponInfo { get; private set; }
+
 		public object Create(ActorInitializer init) { return new Explodes(this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			WeaponInfo = string.IsNullOrEmpty(Weapon) ? null : rules.Weapons[Weapon.ToLowerInvariant()];
+			EmptyWeaponInfo = string.IsNullOrEmpty(EmptyWeapon) ? null : rules.Weapons[EmptyWeapon.ToLowerInvariant()];
+		}
 	}
 
 	public class Explodes : INotifyKilled
@@ -55,15 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.DeathType.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
 				return;
 
-			var weaponName = ChooseWeaponForExplosion(self);
-			if (string.IsNullOrEmpty(weaponName))
+			var weapon = ChooseWeaponForExplosion(self);
+			if (weapon == null)
 				return;
 
-			if (!e.Attacker.World.Map.Rules.Weapons.ContainsKey(weaponName.ToLowerInvariant()))
-				throw new InvalidOperationException("Actor " + self.Info.Name
-					+ ": Could not find weapon '" + weaponName.ToLowerInvariant() + "', check for typos.");
-
-			var weapon = e.Attacker.World.Map.Rules.Weapons[weaponName.ToLowerInvariant()];
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 
@@ -71,11 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
 		}
 
-		string ChooseWeaponForExplosion(Actor self)
+		WeaponInfo ChooseWeaponForExplosion(Actor self)
 		{
 			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
 			var useFullExplosion = self.World.SharedRandom.Next(100) <= info.LoadedChance;
-			return (shouldExplode && useFullExplosion) ? info.Weapon : info.EmptyWeapon;
+			return (shouldExplode && useFullExplosion) ? info.WeaponInfo : info.EmptyWeaponInfo;
 		}
 	}
 }

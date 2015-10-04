@@ -12,13 +12,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class BridgeInfo : ITraitInfo, Requires<HealthInfo>, Requires<BuildingInfo>
+	class BridgeInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>, Requires<BuildingInfo>
 	{
 		public readonly bool Long = false;
 
@@ -41,7 +42,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The name of the weapon to use when demolishing the bridge")]
 		[WeaponReference] public readonly string DemolishWeapon = "Demolish";
 
+		public WeaponInfo DemolishWeaponInfo { get; private set; }
+
 		public object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { DemolishWeaponInfo = rules.Weapons[DemolishWeapon.ToLowerInvariant()]; }
 
 		public IEnumerable<Pair<ushort, int>> Templates
 		{
@@ -333,10 +338,8 @@ namespace OpenRA.Mods.Common.Traits
 			var initialDamage = health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				var weapon = saboteur.World.Map.Rules.Weapons[info.DemolishWeapon.ToLowerInvariant()];
-
 				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-				weapon.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
+				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
 
 				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
 				self.Kill(saboteur);

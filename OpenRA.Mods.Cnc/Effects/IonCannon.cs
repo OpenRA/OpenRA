@@ -23,12 +23,12 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly Animation anim;
 		readonly Player firedBy;
 		readonly string palette;
-		readonly string weapon;
+		readonly WeaponInfo weapon;
 
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, CPos location, string effect, string palette, int delay)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -44,7 +44,6 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim.Tick();
 			if (!impacted && weaponDelay-- <= 0)
 			{
-				var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
 				weapon.Impact(target, firedBy.PlayerActor, Enumerable.Empty<int>());
 				impacted = true;
 			}

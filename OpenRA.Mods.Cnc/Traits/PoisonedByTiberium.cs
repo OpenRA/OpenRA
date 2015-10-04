@@ -16,12 +16,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PoisonedByTiberiumInfo : UpgradableTraitInfo
+	class PoisonedByTiberiumInfo : UpgradableTraitInfo, IRulesetLoaded
 	{
 		[WeaponReference] public readonly string Weapon = "Tiberium";
 		public readonly HashSet<string> Resources = new HashSet<string> { "Tiberium", "BlueTiberium" };
 
+		public WeaponInfo WeaponInfo { get; private set; }
+
 		public override object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
 	}
 
 	class PoisonedByTiberium : UpgradableTrait<PoisonedByTiberiumInfo>, ITick, ISync
@@ -45,10 +48,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (r == null || !Info.Resources.Contains(r.Info.Name))
 				return;
 
-			var weapon = self.World.Map.Rules.Weapons[Info.Weapon.ToLowerInvariant()];
-
-			weapon.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
-			poisonTicks = weapon.ReloadDelay;
+			Info.WeaponInfo.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
+			poisonTicks = Info.WeaponInfo.ReloadDelay;
 		}
 	}
 }

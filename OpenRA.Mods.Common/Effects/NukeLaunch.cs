@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Player firedBy;
 		readonly Animation anim;
-		readonly string weapon;
+		readonly WeaponInfo weapon;
 		readonly string flashType;
 
 		readonly WPos ascendSource;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Player firedBy, string weapon, WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
+		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -49,13 +49,12 @@ namespace OpenRA.Mods.Common.Effects
 			descendSource = targetPos + offset;
 			descendTarget = targetPos;
 
-			anim = new Animation(firedBy.World, weapon);
+			anim = new Animation(firedBy.World, name);
 			anim.PlayRepeating("up");
 
 			pos = launchPos;
-			var weaponRules = firedBy.World.Map.Rules.Weapons[weapon.ToLowerInvariant()];
-			if (weaponRules.Report != null && weaponRules.Report.Any())
-				Game.Sound.Play(weaponRules.Report.Random(firedBy.World.SharedRandom), pos);
+			if (weapon.Report != null && weapon.Report.Any())
+				Game.Sound.Play(weapon.Report.Random(firedBy.World.SharedRandom), pos);
 
 			if (skipAscent)
 				ticks = turn;
@@ -82,7 +81,6 @@ namespace OpenRA.Mods.Common.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
