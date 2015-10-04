@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
 
+		int2? joystickScrollStart, joystickScrollEnd;
+
 		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
@@ -87,6 +89,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			if (IsJoystickScrolling)
+			{
+				// Base the JoystickScrolling speed on the Scroll Speed slider
+				var rate = 0.01f * Game.Settings.Game.ViewportEdgeScrollStep;
+
+				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
+				worldRenderer.Viewport.Scroll(scroll, false);
+			}
+
 			UpdateMouseover();
 			base.Draw();
 		}
@@ -147,18 +158,57 @@ namespace OpenRA.Mods.Common.Widgets
 			return null;
 		}
 
+		bool IsJoystickScrolling
+		{
+			get
+			{
+				return joystickScrollStart.HasValue && joystickScrollEnd.HasValue &&
+					(joystickScrollStart.Value - joystickScrollEnd.Value).Length > Game.Settings.Game.JoystickScrollDeadzone;
+			}
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var scrolltype = Game.Settings.Game.MouseScroll;
 			if (scrolltype == MouseScrollType.Disabled)
 				return false;
 
-			if (mi.Event == MouseInputEvent.Move &&
-				(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
+			if (scrolltype == MouseScrollType.Standard || scrolltype == MouseScrollType.Inverted)
 			{
-				var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
-				worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
-				return true;
+				if (mi.Event == MouseInputEvent.Move &&
+					(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
+				{
+					var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
+					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
+					return true;
+				}
+			}
+
+			// Tiberian Sun style right-click-and-drag scrolling
+			if (scrolltype == MouseScrollType.Joystick)
+			{
+				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+				{
+					if (!TakeMouseFocus(mi))
+						return false;
+					joystickScrollStart = mi.Location;
+				}
+
+				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
+				{
+					var wasJoystickScrolling = IsJoystickScrolling;
+
+					joystickScrollStart = joystickScrollEnd = null;
+					YieldMouseFocus(mi);
+
+					if (wasJoystickScrolling)
+						return true;
+				}
+
+				if (mi.Event == MouseInputEvent.Move && mi.Button == MouseButton.Right && joystickScrollStart.HasValue)
+				{
+					joystickScrollEnd = mi.Location;
+				}
 			}
 
 			return false;

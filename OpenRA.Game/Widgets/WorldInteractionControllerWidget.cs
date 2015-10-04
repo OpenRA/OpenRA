@@ -132,7 +132,7 @@ namespace OpenRA.Widgets
 				YieldMouseFocus(mi);
 			}
 
-			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
 			{
 				// Don't do anything while selecting
 				if (!hasBox)
