@@ -203,6 +203,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanSpawnResourceAt(ResourceType newResourceType, CPos cell)
 		{
+			if (!world.Map.Contains(cell))
+				return false;
+
 			var currentResourceType = GetResource(cell);
 			return (currentResourceType == newResourceType && !IsFull(cell))
 				|| (currentResourceType == null && AllowResourceAt(newResourceType, cell));
