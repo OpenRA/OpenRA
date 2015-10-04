@@ -2399,6 +2399,60 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20151127)
+				{
+					// Rename WithTurret to WithSpriteTurret
+					if (depth == 1 && node.Key.StartsWith("WithTurret"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithSpriteTurret";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					if (depth == 1 && node.Key.StartsWith("-WithTurret"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-WithSpriteTurret";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					// Rename WithBarrel to WithSpriteBarrel
+					if (depth == 1 && node.Key.StartsWith("WithBarrel"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithSpriteBarrel";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					if (depth == 1 && node.Key.StartsWith("-WithBarrel"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-WithSpriteBarrel";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					// Rename WithReloadingTurret to WithReloadingSpriteTurret
+					if (depth == 1 && node.Key.StartsWith("WithReloadingTurret"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithReloadingSpriteTurret";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+
+					if (depth == 1 && node.Key.StartsWith("-WithReloadingTurret"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-WithReloadingSpriteTurret";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

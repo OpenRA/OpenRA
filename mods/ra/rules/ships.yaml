@@ -149,7 +149,7 @@ DD:
 	AttackTurreted:
 	SelectionDecorations:
 		VisualBounds: 38,38
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
@@ -204,9 +204,9 @@ CA:
 	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 44,44
-	WithTurret@PRIMARY:
+	WithSpriteTurret@PRIMARY:
 		Turret: primary
-	WithTurret@SECONDARY:
+	WithSpriteTurret@SECONDARY:
 		Turret: secondary
 	AutoTarget:
 
@@ -277,7 +277,7 @@ PT:
 	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 36,36
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater

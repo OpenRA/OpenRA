@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
-	public class WithTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
+	public class WithSpriteTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
 		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Sequence name to use")]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Render recoil")]
 		public readonly bool Recoils = true;
 
-		public override object Create(ActorInitializer init) { return new WithTurret(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithSpriteTurret(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithTurret : UpgradableTrait<WithTurretInfo>, ITick, INotifyDamageStateChanged
+	public class WithSpriteTurret : UpgradableTrait<WithSpriteTurretInfo>, ITick, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
 		protected readonly AttackBase Attack;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Turreted t;
 		readonly Armament[] arms;
 
-		public WithTurret(Actor self, WithTurretInfo info)
+		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
 		{
 			rs = self.Trait<RenderSprites>();

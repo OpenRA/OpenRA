@@ -2209,7 +2209,7 @@ Rules:
 			MuzzleSequence: muzzle
 		AttackTurreted:
 		WithMuzzleOverlay:
-		WithTurret:
+		WithSpriteTurret:
 		AutoTarget:
 		Explodes:
 			Weapon: MiniNuke

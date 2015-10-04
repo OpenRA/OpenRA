@@ -412,7 +412,7 @@
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
-    <Compile Include="Traits\Render\WithBarrel.cs" />
+    <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
@@ -441,7 +441,7 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
-    <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\Render\WithSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />

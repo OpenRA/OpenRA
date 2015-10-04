@@ -1388,7 +1388,7 @@ Rules:
 		-Huntable:
 		-Targetable:
 		-Armament:
-		-WithTurret:
+		-WithSpriteTurret:
 		-WithMuzzleOverlay:
 		Cargo:
 			Types: ~disabled

@@ -61,7 +61,7 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: 1TNK.Husk
@@ -98,7 +98,7 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
@@ -137,7 +137,7 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
@@ -185,7 +185,7 @@ V2RL:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
@@ -344,7 +344,7 @@ JEEP:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
@@ -608,7 +608,7 @@ FTRK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SelectionDecorations:
 		VisualBounds: 28,28
@@ -738,7 +738,7 @@ STNK:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
-	WithTurret:
+	WithSpriteTurret:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4

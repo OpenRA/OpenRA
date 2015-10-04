@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Renders ammo-dependent turret graphics for units with the Turreted trait.")]
-	public class WithReloadingTurretInfo : WithTurretInfo, Requires<AmmoPoolInfo>, Requires<ArmamentInfo>
+	public class WithReloadingSpriteTurretInfo : WithSpriteTurretInfo, Requires<AmmoPoolInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("AmmoPool to use for ammo-dependent sequences.")]
 		public readonly string AmmoPoolName = null;
@@ -27,17 +27,17 @@ namespace OpenRA.Mods.Cnc.Traits
 			"Adds current reload stage to Sequence as suffix when a matching AmmoPool is present.")]
 		public readonly int ReloadStages = -1;
 
-		public override object Create(ActorInitializer init) { return new WithReloadingTurret(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithReloadingSpriteTurret(init.Self, this); }
 	}
 
-	public class WithReloadingTurret : WithTurret
+	public class WithReloadingSpriteTurret : WithSpriteTurret
 	{
 		readonly int reloadStages;
 		readonly AmmoPool ammoPool;
 		string sequence;
 		string ammoSuffix;
 
-		public WithReloadingTurret(Actor self, WithReloadingTurretInfo info)
+		public WithReloadingSpriteTurret(Actor self, WithReloadingSpriteTurretInfo info)
 			: base(self, info)
 		{
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(a => a.Info.Name == info.AmmoPoolName);

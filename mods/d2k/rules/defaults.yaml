@@ -283,7 +283,7 @@
 
 ^Defense:
 	Inherits: ^Building
-	WithTurret:
+	WithSpriteTurret:
 	AttackTurreted:
 	AutoTarget:
 	RenderRangeCircle:

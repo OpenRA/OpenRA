@@ -134,7 +134,7 @@ NASAM:
 		ROT: 10
 		InitialFacing: 50
 	AttackTurreted:
-	WithTurret:
+	WithSpriteTurret:
 		Recoils: no
 	Armament:
 		Weapon: RedEye2

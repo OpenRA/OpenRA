@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
-	public class WithBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
+	public class WithSpriteBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
 		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use.")]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Visual offset.")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public override object Create(ActorInitializer init) { return new WithBarrel(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithSpriteBarrel(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithBarrel : UpgradableTrait<WithBarrelInfo>
+	public class WithSpriteBarrel : UpgradableTrait<WithSpriteBarrelInfo>
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
 
-		public WithBarrel(Actor self, WithBarrelInfo info)
+		public WithSpriteBarrel(Actor self, WithSpriteBarrelInfo info)
 			: base(info)
 		{
 			this.self = self;

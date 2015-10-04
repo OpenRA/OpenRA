@@ -205,7 +205,7 @@ siege_tank:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
@@ -465,7 +465,7 @@ deviator:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeMed
