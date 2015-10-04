@@ -2,6 +2,8 @@ MSLO:
 	Inherits: ^Building
 	Valued:
 		Cost: 2500
+    GivesExperience:
+        Experience: 2500
 	Tooltip:
 		Name: Missile Silo
 		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
@@ -52,6 +54,8 @@ GAP:
 	Inherits: ^Building
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Gap Generator
 		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
@@ -93,6 +97,8 @@ SPEN:
 		Proxy: powerproxy.sonarpulse
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Sub Pen
 		Description: Produces and repairs\nsubmarines and transports.
@@ -178,6 +184,8 @@ SYRD:
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
@@ -264,6 +272,8 @@ IRON:
 		BuildLimit: 1
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Iron Curtain
 		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
@@ -312,6 +322,8 @@ PDOX:
 		BuildLimit: 1
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Chronosphere
 		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
@@ -380,6 +392,8 @@ TSLA:
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
 	Valued:
 		Cost: 1200
+    GivesExperience:
+        Experience: 1200
 	Tooltip:
 		Name: Tesla Coil
 		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
@@ -423,6 +437,8 @@ AGUN:
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -470,6 +486,8 @@ DOME:
 		Prerequisites: proc, ~techlevel.medium
 	Valued:
 		Cost: 1800
+    GivesExperience:
+        Experience: 1800
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
@@ -509,6 +527,8 @@ PBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Health:
 		HP: 400
 	Armor:
@@ -552,6 +572,8 @@ HBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Health:
 		HP: 600
 	Armor:
@@ -594,6 +616,8 @@ GUN:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Turret
 		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -630,6 +654,8 @@ FTUR:
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Flame Tower
 		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
@@ -666,6 +692,8 @@ SAM:
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 	Valued:
 		Cost: 750
+    GivesExperience:
+        Experience: 750
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -708,6 +736,8 @@ ATEK:
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Allied Tech Center
 		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
@@ -747,6 +777,8 @@ WEAP:
 		Prerequisites: proc, ~techlevel.low
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: War Factory
 		Description: Produces vehicles.
@@ -879,6 +911,8 @@ FACT:
 		Produces: Building,Defense
 	Valued:
 		Cost: 2500
+    GivesExperience:
+        Experience: 2500
 	Tooltip:
 		Name: Construction Yard
 		Description: Produces structures.
@@ -914,6 +948,8 @@ PROC:
 		Prerequisites: anypower, ~techlevel.infonly
 	Valued:
 		Cost: 1400
+    GivesExperience:
+        Experience: 1400
 	Tooltip:
 		Name: Ore Refinery
 		Description: Refines Ore and Gems\ninto credits.
@@ -969,6 +1005,8 @@ SILO:
 		Prerequisites: proc, ~techlevel.infonly
 	Valued:
 		Cost: 150
+    GivesExperience:
+        Experience: 150
 	Tooltip:
 		Name: Silo
 		Description: Stores excess refined\nOre and Gems.
@@ -998,6 +1036,8 @@ HPAD:
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads\nhelicopters.
@@ -1067,6 +1107,8 @@ AFLD:
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Airfield
 		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
@@ -1176,6 +1218,8 @@ POWR:
 		Prerequisites: ~techlevel.infonly
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Power Plant
 		Description: Provides power for other structures.
@@ -1213,6 +1257,8 @@ APWR:
 		Prerequisites: dome, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides double the power of a\nstandard Power Plant.
@@ -1254,6 +1300,8 @@ STEK:
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Soviet Tech Center
 		Description: Provides Soviet advanced technologies.
@@ -1281,6 +1329,8 @@ BARR:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Trains infantry.
@@ -1347,6 +1397,8 @@ KENN:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
 		Cost: 100
+    GivesExperience:
+        Experience: 100
 	Tooltip:
 		Name: Kennel
 		Description: Trains Attack Dogs.
@@ -1382,6 +1434,8 @@ TENT:
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Tooltip:
 		Name: Allied Barracks
 		Description: Trains infantry.
@@ -1454,6 +1508,8 @@ FIX:
 		Prerequisites: weap, ~techlevel.medium
 	Valued:
 		Cost: 1200
+    GivesExperience:
+        Experience: 1200
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles for credits.
@@ -1490,6 +1546,8 @@ SBAG:
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 	Valued:
 		Cost: 25
+    GivesExperience:
+        Experience: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1515,6 +1573,8 @@ FENC:
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 	Valued:
 		Cost: 25
+    GivesExperience:
+        Experience: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1540,6 +1600,8 @@ BRIK:
 		Prerequisites: fact, ~techlevel.medium
 	Valued:
 		Cost: 100
+    GivesExperience:
+        Experience: 100
 	CustomSellValue:
 		Value: 0
 	Tooltip:

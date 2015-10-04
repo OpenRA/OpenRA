@@ -9,6 +9,8 @@ GAWALL:
 		DestroyedSounds:
 	Valued:
 		Cost: 50
+    GivesExperience:
+        Experience: 50
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -32,6 +34,8 @@ GACTWR:
 		Type: wall
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Component Tower
 		Description: Modular tower for base defenses.
@@ -132,6 +136,8 @@ GAVULC:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 150
+    GivesExperience:
+        Experience: 150
 	Tooltip:
 		Name: Vulcan Tower
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
@@ -148,6 +154,8 @@ GAROCK:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: RPG Upgrade
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
@@ -164,6 +172,8 @@ GACSAM:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: SAM Upgrade
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -180,6 +190,8 @@ GAPOWRUP:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 150
+    GivesExperience:
+        Experience: 150
 	Tooltip:
 		Name: Power Turbine
 		Description: Provides extra power generation.
@@ -212,6 +224,8 @@ GAPLUG3:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Ion Cannon Uplink
 		Description: Enables use of the Ion Cannon.

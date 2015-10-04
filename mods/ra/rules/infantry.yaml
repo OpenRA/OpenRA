@@ -7,6 +7,8 @@ DOG:
 		Prerequisites: ~kenn, ~techlevel.infonly
 	Valued:
 		Cost: 200
+    GivesExperience:
+        Experience: 200
 	Tooltip:
 		Name: Attack Dog
 		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
@@ -55,6 +57,8 @@ E1:
 		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 100
+    GivesExperience:
+        Experience: 200
 	Tooltip:
 		Name: Rifle Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
@@ -81,6 +85,8 @@ E2:
 		Prerequisites: ~barr, ~techlevel.infonly
 	Valued:
 		Cost: 160
+    GivesExperience:
+        Experience: 160
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
@@ -114,6 +120,8 @@ E3:
 		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Rocket Soldier
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
@@ -143,6 +151,8 @@ E4:
 		Prerequisites: ~barr, ftur, ~techlevel.low
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Flamethrower
 		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
@@ -170,6 +180,8 @@ E6:
 		Prerequisites: ~barracks, ~techlevel.infonly
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
@@ -192,6 +204,8 @@ SPY:
 		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	-Tooltip:
 	DisguiseToolTip:
 		Name: Spy
@@ -239,6 +253,8 @@ SPY.England:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 250
+    GivesExperience:
+        Experience: 500
 	DisguiseToolTip:
 		Name: British Spy
 	RenderSprites:
@@ -254,6 +270,8 @@ E7:
 		BuildLimit: 1
 	Valued:
 		Cost: 1200
+    GivesExperience:
+        Experience: 1200
 	Tooltip:
 		Name: Tanya
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
@@ -300,6 +318,8 @@ MEDI:
 		Prerequisites: ~tent, ~techlevel.infonly
 	Valued:
 		Cost: 200
+    GivesExperience:
+        Experience: 200
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Unarmed
@@ -331,6 +351,8 @@ MECH:
 		Prerequisites: ~tent, fix, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Mechanic
 		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
@@ -409,6 +431,8 @@ THF:
 	Inherits: ^Soldier
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Tooltip:
 		Name: Thief
 		Description: Steals enemy credits.\n  Unarmed
@@ -434,6 +458,8 @@ HIJACKER:
 		Prerequisites: ~barr, fix, ~techlevel.medium
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed
@@ -472,6 +498,8 @@ SHOK:
 		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Tooltip:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
@@ -506,6 +534,8 @@ SNIPER:
 	Inherits: ^Soldier
 	Valued:
 		Cost: 700
+    GivesExperience:
+        Experience: 700
 	Tooltip:
 		Name: Sniper
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
@@ -550,6 +580,8 @@ Zombie:
 	Inherits: ^Soldier
 	Valued:
 		Cost: 100
+    GivesExperience:
+        Experience: 100
 	Tooltip:
 		Name: Zombie
 		Description: Slow undead. Attacks in close combat.
@@ -577,6 +609,8 @@ Ant:
 	Inherits: ^Infantry
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Giant Ant
 		Description: Irradiated insect that grew oversize.

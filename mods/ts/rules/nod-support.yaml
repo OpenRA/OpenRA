@@ -9,6 +9,8 @@ NAWALL:
 		DestroyedSounds:
 	Valued:
 		Cost: 50
+    GivesExperience:
+        Experience: 50
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -29,6 +31,8 @@ NALASR:
 	Inherits: ^Defense
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Laser Turret
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -68,6 +72,8 @@ NAOBEL:
 	Inherits: ^Defense
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Obelisk of Light
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -110,6 +116,8 @@ NASAM:
 	Inherits: ^Defense
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: S.A.M. Site
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -148,6 +156,8 @@ GATICK:
 	Inherits: ^DeployedVehicle
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Deployed Tick Tank
 	Health:
@@ -191,6 +201,8 @@ GAARTY:
 	Inherits@1: ^DeployedVehicle
 	Valued:
 		Cost: 975
+    GivesExperience:
+        Experience: 975
 	Tooltip:
 		Name: Deployed Artillery
 	Health:
@@ -231,6 +243,8 @@ NAMISL:
 		BuildLimit: 1
 	Valued:
 		Cost: 1300
+    GivesExperience:
+        Experience: 1300
 	Tooltip:
 		Name: Nod Missile Silo
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.

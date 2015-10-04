@@ -2,6 +2,8 @@ MCV:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
@@ -40,6 +42,8 @@ HARV:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Harvester
 		GenericName: Harvester
@@ -81,6 +85,8 @@ APC:
 	Inherits: ^Tank
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: APC
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
@@ -127,6 +133,8 @@ ARTY:
 	Inherits: ^Tank
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
@@ -162,6 +170,8 @@ FTNK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Flame Tank
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
@@ -195,6 +205,8 @@ BGGY:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Nod Buggy
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
@@ -229,6 +241,8 @@ BIKE:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Recon Bike
 		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -265,6 +279,8 @@ JEEP:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 400
+    GivesExperience:
+        Experience: 400
 	Tooltip:
 		Name: Hum-Vee
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
@@ -299,6 +315,8 @@ LTNK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Light Tank
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -334,6 +352,8 @@ MTNK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Medium Tank
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
@@ -370,6 +390,8 @@ HTNK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
@@ -419,6 +441,8 @@ MSAM:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Rocket Launcher
 		Description: Long range rocket artillery.\n  Strong vs all Ground units.
@@ -455,6 +479,8 @@ MLRS:
 	Inherits: ^Tank
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Mobile S.A.M.
 		Description: Powerful anti-air unit.\nCannot attack Ground units.
@@ -497,6 +523,8 @@ STNK:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 900
+    GivesExperience:
+        Experience: 900
 	Tooltip:
 		Name: Stealth Tank
 		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
@@ -536,6 +564,8 @@ MHQ:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Mobile HQ
 		Description: Mobile base of operations

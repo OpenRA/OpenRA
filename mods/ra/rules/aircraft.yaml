@@ -34,6 +34,8 @@ BADR:
 		Interval: 2
 	-EjectOnDeath:
 	RejectsOrders:
+    GivesExperience:
+        Experience: 1000
 
 BADR.Bomber:
 	Inherits: ^Plane
@@ -74,6 +76,8 @@ BADR.Bomber:
 	RejectsOrders:
 	RenderSprites:
 		Image: badr
+    GivesExperience:
+        Experience: 1000
 
 MIG:
 	Inherits: ^Plane
@@ -84,6 +88,8 @@ MIG:
 		Prerequisites: ~afld, stek, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Mig Attack Plane
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
@@ -141,6 +147,8 @@ YAK:
 		Prerequisites: ~afld, ~techlevel.medium
 	Valued:
 		Cost: 1350
+    GivesExperience:
+        Experience: 1350
 	Tooltip:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
@@ -202,6 +210,8 @@ TRAN:
 		Prerequisites: ~hpad, ~techlevel.medium
 	Valued:
 		Cost: 900
+    GivesExperience:
+        Experience: 900
 	Tooltip:
 		Name: Transport Helicopter
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
@@ -245,6 +255,8 @@ HELI:
 		Prerequisites: ~hpad, atek, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Longbow
 		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
@@ -296,6 +308,8 @@ HIND:
 		Prerequisites: ~hpad, ~techlevel.medium
 	Valued:
 		Cost: 1350
+    GivesExperience:
+        Experience: 1350
 	Tooltip:
 		Name: Hind
 		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
@@ -371,4 +385,6 @@ U2:
 		Offset: -1c43,0,0
 		Interval: 2
 	RejectsOrders:
+    GivesExperience:
+        Experience: 2000
 

@@ -2,6 +2,8 @@ FACT:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
@@ -98,6 +100,8 @@ NUKE:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Power Plant
 		Description: Generates power
@@ -123,6 +127,8 @@ NUK2:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power, cheaper than the\nstandard Power Plant
@@ -148,6 +154,8 @@ PROC:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	Tooltip:
 		Name: Tiberium Refinery
 		Description: Processes raw Tiberium\ninto useable resources
@@ -193,6 +201,8 @@ SILO:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Tiberium Silo
 		Description: Stores processed Tiberium
@@ -230,6 +240,8 @@ PYLE:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -271,6 +283,8 @@ HAND:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Hand of Nod
 		Description: Trains infantry
@@ -311,6 +325,8 @@ AFLD:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Airstrip
 		Description: Provides a dropzone\nfor vehicle reinforcements
@@ -354,6 +370,8 @@ WEAP:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Weapons Factory
 		Description: Produces vehicles
@@ -398,6 +416,8 @@ HPAD:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
@@ -444,6 +464,8 @@ HQ:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Communications Center
 		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
@@ -498,6 +520,8 @@ FIX:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Repair Facility
 		Description: Repairs vehicles
@@ -531,6 +555,8 @@ EYE:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 1800
+    GivesExperience:
+        Experience: 1800
 	Tooltip:
 		Name: Advanced Communications Center
 		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
@@ -582,6 +608,8 @@ TMPL:
 	Inherits: ^BaseBuilding
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Temple of Nod
 		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
@@ -632,6 +660,8 @@ GUN:
 	Inherits: ^Defense
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
@@ -671,6 +701,8 @@ SAM:
 	Inherits: ^Defense
 	Valued:
 		Cost: 700
+    GivesExperience:
+        Experience: 700
 	CustomBuildTimeValue:
 		Value: 2000
 	Tooltip:
@@ -711,6 +743,8 @@ OBLI:
 	Inherits: ^Defense
 	Valued:
 		Cost: 1500
+    GivesExperience:
+        Experience: 1500
 	CustomBuildTimeValue:
 		Value: 3120
 	Tooltip:
@@ -756,6 +790,8 @@ GTWR:
 	Inherits: ^Defense
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
@@ -791,6 +827,8 @@ ATWR:
 	Inherits: ^Defense
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	CustomBuildTimeValue:
 		Value: 2880
 	Tooltip:
@@ -840,6 +878,8 @@ SBAG:
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
+    GivesExperience:
+        Experience: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -865,6 +905,8 @@ CYCL:
 	Inherits: ^Wall
 	Valued:
 		Cost: 25
+    GivesExperience:
+        Experience: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -890,6 +932,8 @@ BRIK:
 	Inherits: ^Wall
 	Valued:
 		Cost: 100
+    GivesExperience:
+        Experience: 100
 	CustomSellValue:
 		Value: 0
 	Tooltip:
