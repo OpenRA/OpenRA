@@ -153,6 +153,7 @@ ChromeLayout:
 	./mods/ra/chrome/lobby-mappreview.yaml
 	./mods/ra/chrome/lobby-players.yaml
 	./mods/ra/chrome/lobby-options.yaml
+	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
 	./mods/ts/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml

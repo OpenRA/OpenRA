@@ -20,36 +20,43 @@ Container@SERVER_LOBBY:
 				Container@MAP_PREVIEW_ROOT:
 					X: PARENT_RIGHT-15-WIDTH
 					Y: 30
-					Width: 194
+					Width: 174
 					Height: 250
-				Container@TOP_PANELS_ROOT:
-					X: 15
-					Y: 30
-					Width: 556
-					Height: 219
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 254
-					Width: 166
+					Width: 162
 					Height: 25
 					Text: Slot Admin
-				Button@OPTIONS_BUTTON:
-					X: 186
-					Y: 254
-					Width: 125
-					Height: 25
+				Button@PLAYERS_TAB:
+					X: 182
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Players
+				Button@OPTIONS_TAB:
+					X: 322
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Options
+				Button@MUSIC_TAB:
+					X: 462
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Music
 				Button@CHANGEMAP_BUTTON:
-					X: 316
+					X: PARENT_RIGHT - WIDTH - 15
 					Y: 254
-					Width: 125
+					Width: 174
 					Height: 25
 					Text: Change Map
-				Button@START_GAME_BUTTON:
-					X: 446
-					Y: 254
-					Width: 125
-					Height: 25
-					Text: Start Game
+				Container@TOP_PANELS_ROOT:
+					X: 15
+					Y: 30
+					Width: 582
+					Height: 219
 				ScrollPanel@CHAT_DISPLAY:
 					X: 15
 					Y: 285
@@ -104,12 +111,12 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: Settings
-		Button@MUSIC_BUTTON:
-			X: 300
+		Button@START_GAME_BUTTON:
+			X: PARENT_RIGHT - WIDTH
 			Y: 499
 			Width: 140
 			Height: 35
-			Text: Music
+			Text: Start Game
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 

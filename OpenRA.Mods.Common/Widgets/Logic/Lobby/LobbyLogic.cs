@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset modRules;
 		readonly World shellmapWorld;
 
-		enum PanelType { Players, Options, Kick, ForceStart }
+		enum PanelType { Players, Options, Music, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
 		readonly Widget lobby;
@@ -276,10 +276,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var optionsBin = Ui.LoadWidget("LOBBY_OPTIONS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
-			var optionsButton = lobby.Get<ButtonWidget>("OPTIONS_BUTTON");
-			optionsButton.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick || panel == PanelType.ForceStart;
-			optionsButton.GetText = () => panel == PanelType.Options ? "Players" : "Options";
-			optionsButton.OnClick = () => panel = (panel == PanelType.Options) ? PanelType.Players : PanelType.Options;
+			var musicBin = Ui.LoadWidget("LOBBY_MUSIC_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
+			{
+				{ "onExit", DoNothing },
+				{ "world", worldRenderer.World }
+			});
+			musicBin.IsVisible = () => panel == PanelType.Music;
+
+			var optionsTab = lobby.Get<ButtonWidget>("OPTIONS_TAB");
+			optionsTab.IsHighlighted = () => panel == PanelType.Options;
+			optionsTab.IsDisabled = () => Map.RuleStatus != MapRuleStatus.Cached || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsTab.OnClick = () => panel = PanelType.Options;
+
+			var playersTab = lobby.Get<ButtonWidget>("PLAYERS_TAB");
+			playersTab.IsHighlighted = () => panel == PanelType.Players;
+			playersTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
+			playersTab.OnClick = () => panel = PanelType.Players;
+
+			var musicTab = lobby.GetOrNull<ButtonWidget>("MUSIC_TAB");
+			musicTab.IsHighlighted = () => panel == PanelType.Music;
+			musicTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
+			musicTab.OnClick = () => panel = PanelType.Music;
 
 			// Force start panel
 			Action startGame = () =>
@@ -583,14 +600,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
 			chatPanel.RemoveChildren();
-
-			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
-			if (musicButton != null)
-				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
-				{
-					{ "onExit", DoNothing },
-					{ "world", worldRenderer.World }
-				});
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)

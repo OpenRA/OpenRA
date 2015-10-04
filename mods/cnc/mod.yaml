@@ -98,6 +98,7 @@ ChromeLayout:
 	./mods/cnc/chrome/lobby-mappreview.yaml
 	./mods/cnc/chrome/lobby-players.yaml
 	./mods/cnc/chrome/lobby-options.yaml
+	./mods/cnc/chrome/lobby-music.yaml
 	./mods/cnc/chrome/lobby-kickdialogs.yaml
 	./mods/cnc/chrome/connection.yaml
 	./mods/cnc/chrome/color-picker.yaml

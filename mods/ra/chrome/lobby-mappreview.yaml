@@ -9,7 +9,7 @@ Container@LOBBY_MAP_PREVIEW:
 			Children:
 				Background@MAP_BG:
 					Width: PARENT_RIGHT
-					Height: 214
+					Height: 174
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -19,19 +19,19 @@ Container@LOBBY_MAP_PREVIEW:
 							Height: PARENT_BOTTOM-2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
-					Y: 215
+					Y: 172
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
 				Label@MAP_TYPE:
-					Y: 232
+					Y: 187
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: TinyBold
 					Align: Center
 				Label@MAP_AUTHOR:
-					Y: 245
+					Y: 200
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -42,7 +42,7 @@ Container@LOBBY_MAP_PREVIEW:
 			Children:
 				Background@MAP_BG:
 					Width: PARENT_RIGHT
-					Height: 214
+					Height: 174
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -52,20 +52,20 @@ Container@LOBBY_MAP_PREVIEW:
 							Height: PARENT_BOTTOM-2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
-					Y: 215
+					Y: 172
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
 				Label@MAP_STATUS_A:
-					Y:232
+					Y: 187
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
 					Text: This map is not compatible
 				Label@MAP_STATUS_B:
-					Y:245
+					Y: 200
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -77,7 +77,7 @@ Container@LOBBY_MAP_PREVIEW:
 			Children:
 				Background@MAP_BG:
 					Width: PARENT_RIGHT
-					Height: 182
+					Height: 142
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -87,25 +87,25 @@ Container@LOBBY_MAP_PREVIEW:
 							Height: PARENT_BOTTOM-2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
-					Y: 185
+					Y: 142
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
 				Label@MAP_TYPE:
-					Y: 202
+					Y: 157
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: TinyBold
 					Align: Center
 				Label@MAP_AUTHOR:
-					Y: 215
+					Y: 170
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Button@MAP_INSTALL:
-					Y: 242
+					Y: 194
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
@@ -116,7 +116,7 @@ Container@LOBBY_MAP_PREVIEW:
 			Children:
 				Background@MAP_BG:
 					Width: PARENT_RIGHT
-					Height: 182
+					Height: 142
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -126,13 +126,13 @@ Container@LOBBY_MAP_PREVIEW:
 							Height: PARENT_BOTTOM-2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
-					Y: 185
+					Y: 142
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
 				Label@MAP_STATUS_SEARCHING:
-					Y: 215
+					Y: 157
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -142,40 +142,39 @@ Container@LOBBY_MAP_PREVIEW:
 					Width: PARENT_RIGHT
 					Children:
 						Label@a:
-							Y: 202
+							Y: 157
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 							Text: This map was not found on the
 						Label@b:
-							Y: 215
+							Y: 170
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 							Text: OpenRA Resource Center
 				Label@MAP_STATUS_ERROR:
-					Y: 215
+					Y: 157
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
 					Text: An error occurred during installation
 				Label@MAP_STATUS_DOWNLOADING:
-					Y: 215
+					Y: 157
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
 				ProgressBar@MAP_PROGRESSBAR:
-					Y: 242
+					Y: 194
 					Width: PARENT_RIGHT
 					Height: 25
 					Indeterminate: True
 				Button@MAP_RETRY:
-					Y: 242
+					Y: 194
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
-
