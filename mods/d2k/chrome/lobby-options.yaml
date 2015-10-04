@@ -1,8 +1,6 @@
 Background@LOBBY_OPTIONS_BIN:
-	X: 20
-	Y: 67
-	Width: 593
-	Height: 235
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
 	Background: dialog3
 	Children:
 		Label@TITLE:

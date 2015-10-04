@@ -16,7 +16,11 @@ Background@SERVER_LOBBY:
 		Container@MAP_PREVIEW_ROOT:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
-		Container@PLAYER_BIN_ROOT:
+		Container@TOP_PANELS_ROOT:
+			X: 20
+			Y: 67
+			Width: 593
+			Height: 235
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 291

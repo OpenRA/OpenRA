@@ -3,8 +3,10 @@ Container@LOBBY_PLAYER_BIN:
 	Height: PARENT_BOTTOM
 	Children:
 		Container@LABEL_CONTAINER:
-			X: 25
-			Y: 40
+			X: 5
+			Y: 0-27
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
 			Children:
 				Label@LABEL_LOBBY_NAME:
 					X: 0
@@ -49,12 +51,10 @@ Container@LOBBY_PLAYER_BIN:
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
-			X: 20
-			Y: 67
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
 			TopBottomSpacing: 5
 			ItemSpacing: 5
-			Width: 593
-			Height: 235
 			Children:
 				Container@TEMPLATE_EDITABLE_PLAYER:
 					X: 5

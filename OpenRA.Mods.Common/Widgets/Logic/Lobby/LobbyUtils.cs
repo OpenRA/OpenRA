@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				before();
 
-				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby, new WidgetArgs
+				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
 				{
 					{ "clientName", c.Name },
 					{ "okPressed", okPressed },
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var spectatorCount = orderManager.LobbyInfo.Clients.Count(c => c.IsObserver);
 				if (spectatorCount > 0)
 				{
-					Game.LoadWidget(null, "KICK_SPECTATORS_DIALOG", lobby, new WidgetArgs
+					Game.LoadWidget(null, "KICK_SPECTATORS_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
 					{
 						{ "clientCount", "{0}".F(spectatorCount) },
 						{ "okPressed", okPressed },
