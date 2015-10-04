@@ -86,8 +86,9 @@ ChromeLayout:
 	./mods/ra/chrome/credits.yaml
 	./mods/ra/chrome/lobby.yaml
 	./mods/ra/chrome/lobby-mappreview.yaml
-	./mods/d2k/chrome/lobby-playerbin.yaml
-	./mods/d2k/chrome/lobby-dialogs.yaml
+	./mods/d2k/chrome/lobby-players.yaml
+	./mods/d2k/chrome/lobby-options.yaml
+	./mods/ra/chrome/lobby-kickdialogs.yaml
 	./mods/d2k/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
 	./mods/ra/chrome/create-server.yaml
