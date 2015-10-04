@@ -23,11 +23,11 @@ TRAN:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	WithRotor@PRIMARY:
+	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,171
 		Sequence: rotor2
 		GroundSequence: slow-rotor2
-	WithRotor@SECONDARY:
+	WithSpriteRotorOverlay@SECONDARY:
 		Offset: 597,0,85
 	Cargo:
 		Types: Infantry
@@ -80,7 +80,7 @@ HELI:
 		SelfReloads: true
 		ReloadCount: 10
 		SelfReloadTicks: 200
-	WithRotor:
+	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
@@ -224,9 +224,9 @@ TRAN.Husk:
 	RevealsShroud:
 		Range: 8c0
 		Type: CenterPosition
-	WithRotor@PRIMARY:
+	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,171
-	WithRotor@SECONDARY:
+	WithSpriteRotorOverlay@SECONDARY:
 		Offset: 597,0,85
 	RenderSprites:
 		Image: tran
@@ -241,7 +241,7 @@ HELI.Husk:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	WithRotor:
+	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	RenderSprites:
 		Image: heli

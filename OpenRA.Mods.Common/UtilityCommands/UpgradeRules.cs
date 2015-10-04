@@ -2189,6 +2189,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20151004)
+				{
+					if (depth == 1 && node.Key == "WithRotor")
+						node.Key = "WithSpriteRotorOverlay";
+
+					if (depth == 1 && node.Key == "-WithRotor")
+						node.Key = "-WithSpriteRotorOverlay";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

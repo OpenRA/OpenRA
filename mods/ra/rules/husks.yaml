@@ -90,9 +90,9 @@ TRAN.Husk:
 		Speed: 149
 		AirborneUpgrades: airborne
 		CanHover: True
-	WithRotor@PRIMARY:
+	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
-	WithRotor@SECONDARY:
+	WithSpriteRotorOverlay@SECONDARY:
 		Offset: 597,0,213
 	RevealsShroud:
 		Range: 12c0
@@ -184,7 +184,7 @@ HELI.Husk:
 		Speed: 149
 		AirborneUpgrades: airborne
 		CanHover: True
-	WithRotor:
+	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
@@ -204,7 +204,7 @@ HIND.Husk:
 		Speed: 112
 		AirborneUpgrades: airborne
 		CanHover: True
-	WithRotor:
+	WithSpriteRotorOverlay:
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 		MinDamage: Undamaged

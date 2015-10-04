@@ -221,11 +221,11 @@ TRAN:
 		AltitudeVelocity: 0c100
 		AirborneUpgrades: airborne
 		CanHover: True
-	WithRotor@PRIMARY:
+	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
 		GroundSequence: slow-rotor2
-	WithRotor@SECONDARY:
+	WithSpriteRotorOverlay@SECONDARY:
 		Offset: 597,0,213
 	Cargo:
 		Types: Infantry
@@ -271,7 +271,7 @@ HELI:
 		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
-	WithRotor:
+	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	AmmoPool:
 		Ammo: 8
@@ -324,7 +324,7 @@ HIND:
 		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
-	WithRotor:
+	WithSpriteRotorOverlay:
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6
