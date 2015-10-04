@@ -1,9 +1,7 @@
 Container@LOBBY_MAP_PREVIEW:
 	Logic: LobbyMapPreviewLogic
-	X: PARENT_RIGHT-20-WIDTH
-	Y: 67
-	Width: 214
-	Height: 250
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
 	Children:
 		Container@MAP_AVAILABLE:
 			Width: PARENT_RIGHT

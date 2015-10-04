@@ -18,8 +18,10 @@ Container@SERVER_LOBBY:
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					X: PARENT_RIGHT-15-WIDTH
+					Y: 30
+					Width: 194
+					Height: 250
 				Container@TOP_PANELS_ROOT:
 					X: 15
 					Y: 30

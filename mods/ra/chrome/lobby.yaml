@@ -14,8 +14,10 @@ Background@SERVER_LOBBY:
 			Height: 20
 			Font: Bold
 		Container@MAP_PREVIEW_ROOT:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			X: PARENT_RIGHT-20-WIDTH
+			Y: 67
+			Width: 214
+			Height: 250
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
