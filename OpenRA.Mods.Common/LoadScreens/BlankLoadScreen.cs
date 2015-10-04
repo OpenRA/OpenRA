@@ -41,16 +41,6 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Ui.ResetAll();
 			Game.Settings.Save();
 
-			var installData = Game.ModData.Manifest.Get<ContentInstaller>();
-			var isModContentInstalled = installData.TestFiles.All(f => GlobalFileSystem.Exists(Path.GetFileName(f)));
-
-			// Mod assets are missing!
-			if (!isModContentInstalled)
-			{
-				Game.InitializeMod("modchooser", new Arguments());
-				return;
-			}
-
 			// Join a server directly
 			var connect = Launch.GetConnectAddress();
 			if (!string.IsNullOrEmpty(connect))
