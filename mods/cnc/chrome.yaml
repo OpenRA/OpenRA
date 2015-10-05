@@ -413,6 +413,16 @@ panel-allblack: chrome.png
 	corner-bl: 0,62,2,2
 	corner-br: 62,62,2,2
 
+panel-transparent: chrome.png
+	border-r: 190,2,2,60
+	border-l: 128,2,2,60
+	border-b: 130,62,60,2
+	border-t: 130,0,60,2
+	corner-tl: 128,0,2,2
+	corner-tr: 190,0,2,2
+	corner-bl: 128,62,2,2
+	corner-br: 190,62,2,2
+
 shellmapborder: chrome.png
 	border-t: 161,128,62,33
 	border-b: 161,223,62,33
