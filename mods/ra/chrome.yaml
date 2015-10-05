@@ -954,7 +954,6 @@ logos: loadscreen.png
 	logo: 0,0,256,256
 
 mainmenu-border: dialog.png
-	background: 688,427,40,40
 	border-r: 728,427,40,40
 	border-l: 648,427,40,40
 	border-b: 688,467,40,40
