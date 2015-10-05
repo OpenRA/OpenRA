@@ -363,15 +363,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (game.State == (int)ServerState.GameStarted)
 			{
-				var label = "";
-				try
+				var label = "In progress";
+
+				DateTime startTime;
+				if (DateTime.TryParse(game.Started, out startTime))
 				{
-					var runTime = DateTime.Now - System.DateTime.Parse(game.Started);
-					label = "In progress for {0} minute{1}".F(runTime.Minutes, runTime.Minutes > 1 ? "s" : "");
-				}
-				catch (Exception)
-				{
-					label = "In progress";
+					var totalMinutes = Math.Ceiling((DateTime.UtcNow - startTime).TotalMinutes);
+					label += " for {0} minute{1}".F(totalMinutes, totalMinutes > 1 ? "s" : "");
 				}
 
 				return game.Protected ? label + " (Password protected)" : label;
