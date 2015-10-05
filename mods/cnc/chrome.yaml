@@ -432,7 +432,6 @@ shellmapborder: chrome.png
 	corner-tr: 223,128,33,33
 	corner-bl: 128,223,33,33
 	corner-br: 223,223,33,33
-	background: 161,161,62,62
 
 music: chrome.png
 	pause: 256,0,16,16
