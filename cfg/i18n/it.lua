@@ -247,7 +247,7 @@ return {
   ["Select all text in the editor"] = "Seleziona tutto il testo nell'editor", -- src\editor\menu_edit.lua
   ["Select the word under cursor and find its next occurrence"] = "Seleziona la parola e trova successivo", -- src\editor\menu_search.lua
   ["Select the word under cursor and find its previous occurrence"] = "Seleziona la parola e trova precedente", -- src\editor\menu_search.lua
-  ["Set As Start File"] = "Imposta come Inizio File", -- src\editor\filetree.lua
+  ["Set As Start File"] = "Imposta come File di Partenza", -- src\editor\filetree.lua
   ["Set From Current File"] = "Impostato da file corrente", -- src\editor\menu_project.lua
   ["Set To Project Directory"] = "Imposta a Directory di Progetto", -- src\editor\findreplace.lua
   ["Set project directory from current file"] = "Definisci la directory del progeetto dal file corrente", -- src\editor\toolbar.lua, src\editor\menu_project.lua
@@ -301,7 +301,7 @@ return {
   ["Unable to stop program (pid: %d), code %d."] = "Impossibile fermare il programma (pid: %d), code %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Annulla l'ultima azione di edit", -- src\editor\menu_edit.lua
   ["Unmap Directory"] = "Togli mappatura Directory", -- src\editor\filetree.lua
-  ["Unset '%s' As Start File"] = "Togli '%s' come Inizio File", -- src\editor\filetree.lua
+  ["Unset '%s' As Start File"] = "Togli '%s' come File di Partenza", -- src\editor\filetree.lua
   ["Updated %d file."] =  {"Aggiornato %d file.", "Aggiornati %d file."}, -- src\editor\findreplace.lua
   ["Updating symbol index and settings..."] = "Aggiornamento indice simbili e impostazioni...", -- src\editor\outline.lua
   ["Use %s to close."] = "Utilizza %s per chiudere.", -- src\editor\findreplace.lua
