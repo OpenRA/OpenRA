@@ -37,12 +37,19 @@ RunInitialActivities = function()
 
 	Trigger.OnEnteredFootprint(VillageCamArea, function(actor, id)
 		if actor.Owner == player then
-			local camera = Actor.Create("camera", true, { Owner = player, Location = VillagePoint.Location })
 			Trigger.RemoveFootprintTrigger(id)
-			Trigger.OnAllKilled(Village, function()
-				camera.Destroy()
-			end)
+
+			if not AllVillagersDead then
+				VillageCamera = Actor.Create("camera", true, { Owner = player, Location = VillagePoint.Location })
+			end
 		end
+	end)
+
+	Trigger.OnAllKilled(Village, function()
+		if VillageCamera then
+			VillageCamera.Destroy()
+		end
+		AllVillagersDead = true
 	end)
 
 	Trigger.OnAnyKilled(Civs, function()
