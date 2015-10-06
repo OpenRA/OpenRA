@@ -2340,6 +2340,16 @@ Rules:
 	E7:
 		Buildable:
 			Prerequisites: ~disabled
+	C1:
+		-Crushable:
+	C2:
+		-Crushable:
+	C5:
+		-Crushable:
+	C7:
+		-Crushable:
+	C8:
+		-Crushable:
 	SHOK:
 		Buildable:
 			Prerequisites: ~disabled
