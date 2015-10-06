@@ -74,5 +74,15 @@ namespace OpenRA.Mods.Common.Scripting
 
 			return result.ToArray();
 		}
+
+		[Desc("Check if the player has these prerequisites available.")]
+		public bool HasPrerequisites(string[] type)
+		{
+			var tt = Player.PlayerActor.TraitOrDefault<TechTree>();
+			if (tt == null)
+				throw new LuaException("Missing TechTree trait on player {0}!".F(Player));
+
+			return tt.HasPrerequisites(type);
+		}
 	}
 }
