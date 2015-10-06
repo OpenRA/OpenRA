@@ -463,6 +463,9 @@ Actors:
 		Owner: Greece
 		Facing: 224
 		SubCell: 2
+	Actor214: healcrate
+		Owner: Neutral
+		Location: 88,69
 	Actor227: flare
 		Owner: Spain
 		Location: 75,49
