@@ -29,11 +29,11 @@ Bazooka:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 281
+		InitialSpeed: 281
 		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 1
-		Trail: bazooka_trail2
+		HorizontalRateOfTurn: 1
+		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 		RangeLimit: 35
@@ -236,11 +236,11 @@ Rocket:
 	Projectile: Missile
 		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 0
-		Trail: bazooka_trail2
+		HorizontalRateOfTurn: 0
+		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
-		Speed: 343
+		InitialSpeed: 343
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 250
