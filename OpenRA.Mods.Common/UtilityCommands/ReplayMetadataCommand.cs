@@ -18,6 +18,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--replay-metadata"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
+
 		[Desc("REPLAYFILE", "Print the game metadata from a replay file.")]
 		public void Run(ModData modData, string[] args)
 		{

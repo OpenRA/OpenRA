@@ -17,6 +17,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--map-import"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
+
 		[Desc("FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{

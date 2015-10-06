@@ -9,10 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
@@ -21,6 +18,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	class GenerateMinimapCommand : IUtilityCommand
 	{
 		public string Name { get { return "--map-preview"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("MAPFILE", "Render PNG minimap of specified oramap file.")]
 		public void Run(ModData modData, string[] args)

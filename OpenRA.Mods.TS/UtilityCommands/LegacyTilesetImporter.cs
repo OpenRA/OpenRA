@@ -20,6 +20,11 @@ namespace OpenRA.Mods.TS.UtilityCommands
 	{
 		public string Name { get { return "--tileset-import"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 3;
+		}
+
 		[Desc("FILENAME", "TEMPLATEEXTENSION", "Convert a legacy tileset to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{

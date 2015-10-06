@@ -9,16 +9,19 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class UpgradeModCommand : IUtilityCommand
 	{
 		public string Name { get { return "--upgrade-mod"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("CURRENTENGINE", "Upgrade mod rules to the latest engine version.")]
 		public void Run(ModData modData, string[] args)

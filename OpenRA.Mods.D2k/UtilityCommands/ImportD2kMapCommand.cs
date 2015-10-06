@@ -17,6 +17,11 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 	{
 		public string Name { get { return "--import-d2k-map"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 3;
+		}
+
 		[Desc("FILENAME", "TILESET", "Convert a legacy Dune 2000 MAP file to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{

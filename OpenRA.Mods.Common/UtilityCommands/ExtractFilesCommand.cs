@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -20,6 +18,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	class ExtractFilesCommand : IUtilityCommand
 	{
 		public string Name { get { return "--extract"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("Extract files from mod packages to the current directory")]
 		public void Run(ModData modData, string[] args)

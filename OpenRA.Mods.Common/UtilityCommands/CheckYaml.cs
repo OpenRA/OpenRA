@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -32,6 +31,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		static void EmitWarning(string e)
 		{
 			Console.WriteLine("OpenRA.Utility(1,1): Warning: {0}", e);
+		}
+
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
 		}
 
 		[Desc("[MAPFILE]", "Check a mod or map for certain yaml errors.")]

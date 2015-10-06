@@ -9,14 +9,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -24,6 +21,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	class ConvertSpriteToPngCommand : IUtilityCommand
 	{
 		public string Name { get { return "--png"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 3;
+		}
 
 		[Desc("SPRITEFILE PALETTE [--noshadow] [--nopadding]",
 			  "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]

@@ -9,15 +9,17 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class GetMapHashCommand : IUtilityCommand
 	{
 		public string Name { get { return "--map-hash"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		public void Run(ModData modData, string[] args)

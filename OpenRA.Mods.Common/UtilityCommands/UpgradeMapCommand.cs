@@ -8,16 +8,16 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class UpgradeMapCommand : IUtilityCommand
 	{
 		public string Name { get { return "--upgrade-map"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 3;
+		}
 
 		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
 		public void Run(ModData modData, string[] args)

@@ -20,6 +20,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--docs"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
+		}
+
 		[Desc("Generate trait documentation in MarkDown format.")]
 		public void Run(ModData modData, string[] args)
 		{

@@ -9,21 +9,23 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Traits;
-using StyleCop;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class FixClassicTilesets : IUtilityCommand
 	{
 		public string Name { get { return "--fix-classic-tilesets"; } }
+
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
 
 		[Desc("EXTENSIONS", "Fixes missing template tile definitions and adds filename extensions.")]
 		public void Run(ModData modData, string[] args)
