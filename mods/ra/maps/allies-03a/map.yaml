@@ -1376,6 +1376,9 @@ Rules:
 	^Crate:
 		Tooltip:
 			ShowOwnerRow: false
+	FCOM:
+		Tooltip:
+			ShowOwnerRow: false
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E2,E2

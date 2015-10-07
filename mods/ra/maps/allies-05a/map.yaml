@@ -1763,6 +1763,8 @@ Rules:
 			Prerequisites: ~disabled
 	FCOM:
 		MustBeDestroyed:
+		Tooltip:
+			ShowOwnerRow: false
 	4TNK:
 		Buildable:
 			Prerequisites: ~disabled
