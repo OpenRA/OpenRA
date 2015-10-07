@@ -249,7 +249,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT-255
 			Y: 278
 			Width: 250
-			Height: 324
+			Height: WINDOW_BOTTOM-370
 			ClickThrough: false
 			Children:
 				Container@TILES_BG:
@@ -280,7 +280,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT-255
 			Y: 278
 			Width: 250
-			Height: 324
+			Height: WINDOW_BOTTOM-370
 			ClickThrough: false
 			Children:
 				Container@LAYERS_BG:
@@ -307,7 +307,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT-255
 			Y: 278
 			Width: 250
-			Height: 324
+			Height: WINDOW_BOTTOM-370
 			ClickThrough: false
 			Children:
 				Container@ACTORS_BG:

@@ -228,7 +228,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT-250
 					Y: 290
 					Width: 240
-					Height: 360
+					Height: WINDOW_BOTTOM-382
 					Children:
 						DropDownButton@TILE_CATEGORY:
 							X: 10
@@ -260,7 +260,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT-250
 					Y: 290
 					Width: 240
-					Height: 360
+					Height: WINDOW_BOTTOM-382
 					Children:
 						ScrollPanel@LAYERTEMPLATE_LIST:
 							X: 10
@@ -287,7 +287,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT-250
 					Y: 290
 					Width: 240
-					Height: 360
+					Height: WINDOW_BOTTOM-382
 					Children:
 						DropDownButton@OWNERS_DROPDOWN:
 							X: 10
