@@ -89,8 +89,8 @@ namespace OpenRA.Widgets
 					{
 						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
 						{
-							if (!(World.ScreenMap.ActorsAt(xy).Where(x => x.Info.HasTraitInfo<SelectableInfo>() &&
-								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))).Any() && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
+							if (!(World.ScreenMap.ActorsAt(xy).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
+								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))) && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
 								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
 							{
 								// Order units instead of selecting
@@ -242,7 +242,7 @@ namespace OpenRA.Widgets
 				{
 					// Get all the selected actors' selection classes
 					var selectedClasses = World.Selection.Actors
-						.Where(x => x.Owner == player)
+						.Where(x => !x.IsDead && x.Owner == player)
 						.Select(a => a.Trait<Selectable>().Class)
 						.ToHashSet();
 
