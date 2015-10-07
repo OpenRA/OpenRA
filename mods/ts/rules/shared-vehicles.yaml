@@ -148,27 +148,3 @@ LPST:
 		UpgradeMinEnabledLevel: 1
 		Range: 18
 	RenderDetectionCircle:
-
-GGHUNT:
-	Inherits: ^Vehicle
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Hunter-Seeker Droid
-	Mobile:
-		ROT: 16
-		Speed: 355
-	Health:
-		HP: 500
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 7c0
-	WithFacingSpriteBody:
-	DemoTruck:
-		Voice: Attack
-	Explodes:
-		Weapon: SuicideBomb
-		EmptyWeapon: SuicideBomb
-	AutoSelectionSize:
-

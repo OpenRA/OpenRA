@@ -35,10 +35,10 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
 			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(Self.World, order, manager, this);
+			self.World.OrderGenerator = new SelectChronoshiftTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Traits
 			return true;
 		}
 
-		class SelectTarget : IOrderGenerator
+		class SelectChronoshiftTarget : IOrderGenerator
 		{
 			readonly ChronoshiftPower power;
 			readonly int range;
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Traits
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, ChronoshiftPower power)
+			public SelectChronoshiftTarget(World world, string order, SupportPowerManager manager, ChronoshiftPower power)
 			{
 				// Clear selection if using Left-Click Orders
 				if (Game.Settings.Game.UseClassicMouseStyle)

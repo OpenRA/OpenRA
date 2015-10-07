@@ -1234,12 +1234,24 @@ gaplug:
 		Length: 15
 		Reverses: true
 		Tick: 120
+	idle-hunterseekera: gaplug_e
+		Length: 15
+		Tick: 120
+		Reverses: true
+		Offset: -12, -42
+	idle-hunterseekerb: gaplug_e
+		Length: 15
+		Reverses: true
+		Tick: 120
 	make: gtplugmk
 		Length: 17
 		ShadowStart: 17
 	icon: plugicon
 		Offset: 0, 0
 		UseTilesetCode: false
+
+gaplug2:
+	icon: rad2icon
 
 gaplug3:
 	icon: rad3icon

@@ -222,7 +222,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			manager.Self.World.OrderGenerator = Instances.First().OrderGenerator(key, manager);
+			var power = Instances.FirstOrDefault();
+			if (power == null)
+				return;
+
+			power.SelectTarget(power.Self, key, manager);
 		}
 
 		public void Activate(Order order)

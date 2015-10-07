@@ -324,6 +324,12 @@ icon:
 	ornistrike: DATA.R8
 		Start: 4031
 		Offset: -30,-24
+	fremen: DATA.R8
+		Start: 4032
+		Offset: -30,-24
+	saboteur: DATA.R8
+		Start: 4034
+		Offset: -30,-24
 	deathhand: DATA.R8
 		Start: 4035
 		Offset: -30,-24

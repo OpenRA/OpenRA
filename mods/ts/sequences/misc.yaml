@@ -334,6 +334,7 @@ largecraters:
 icon:
 	clustermissile: mltiicon
 	ioncannon: ioncicon
+	hunterseeker: detnicon
 
 clustermissile:
 	up: null # TODO

@@ -46,10 +46,10 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
+		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
 			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectTarget(Self.World, order, manager, this);
+			self.World.OrderGenerator = new SelectUpgradeTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		class SelectTarget : IOrderGenerator
+		class SelectUpgradeTarget : IOrderGenerator
 		{
 			readonly GrantUpgradePower power;
 			readonly int range;
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
+			public SelectUpgradeTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
 			{
 				// Clear selection if using Left-Click Orders
 				if (Game.Settings.Game.UseClassicMouseStyle)

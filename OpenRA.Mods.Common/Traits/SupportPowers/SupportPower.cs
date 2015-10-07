@@ -81,6 +81,12 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
 		}
 
+		public virtual void SelectTarget(Actor self, string order, SupportPowerManager manager)
+		{
+			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
+		}
+
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			if (Info.DisplayRadarPing && manager.RadarPings != null)
@@ -91,12 +97,6 @@ namespace OpenRA.Mods.Common.Traits
 					order.Player.Color.RGB,
 					Info.RadarPingDuration);
 			}
-		}
-
-		public virtual IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
-		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			return new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
 		}
 	}
 }
