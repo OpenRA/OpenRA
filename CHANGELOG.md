@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Oct 02 2015)
+## Current master (Oct 06 2015)
 
 ### Highlights
   - Added symbol indexing of project files for project-wide search.
@@ -12,15 +12,19 @@
   - Improved auto-complete order of results and suggestions for case-sensitive matches.
   - Updated Windows launcher to add dpi awareness for high dpi monitors.
   - Update marmalade API definition to 7.9
+  - Upgraded Lua 5.3 interpreter to 5.3.1 on Windows (closes #453, closes #460).
   - Fixed a memory leak after a search panel is opened.
   - Fixed an occasional crash from the filetree on Linux (#425, #464).
   - Fixed recursive file traversal to skip directories when mask is specified.
 
 ### Special thanks
-  - To Nick Smith for Marmalade interpreter updates.
-  - To Christoph Kubisch for glslc updates.
+  - To [riidom](https://github.com/riidom) for German translation update.
+  - To [Yonaba](https://github.com/Yonaba/) for French translation update.
+  - To [Leo Bartoloni](https://github.com/bartoleo) for Italian translation update.
+  - To [Christoph Kubisch](https://github.com/pixeljetstream) for glslc updates.
   - To Brigham Toskin for auto-complete improvements.
   - To Joergen von Bargen for optimized UTF8 validation.
+  - To Nick Smith for Marmalade interpreter updates.
 
 ### Improvements
   - Added handling of translation messages that require pluralization (#70).
@@ -125,6 +129,10 @@
   - Removed forced garbage collection as it led to crashes on Linux (#425, closes #464).
   - Revised: auto-complete results (amends #469, w/@pkulchenko patch)
   - Switched to the bottom location for the search results by default (#416).
+  - Updated italian translations (thanks to Leo Bartoloni)
+  - Updated Russian translation (#70).
+  - Update de.lua (thanks to riidom)
+  - Updated french translation as of commit (thanks to Yonaba)
   - Updated translation files for new messages (#70).
   - Updated translation logic to accept empty tables for pluralization values (#70).
   - Updated build scripts to use the most recent releases of LuaJIT and Lua 5.2.
@@ -173,6 +181,7 @@
   - Updated indentation after strings with brackets and escaped quotes (#324).
   - Updated `AnalyzeString` to add filename parameter (closes #463).
   - Updated Windows launcher to add dpi awareness for high dpi monitors.
+  - Upgraded Lua 5.3 interpreter to 5.3.1 on Windows (closes #453, closes #460).
   - Upgraded Mobdebug (0.628) to include `keyignore` serializer option.
   - Upgraded Mobdebug (0.627) to improve debugging of code with overloaded `string` methods.
   - Upgraded Mobdebug (0.624) to make `DONE` async and to add `__tostring` protection (closes #446).
