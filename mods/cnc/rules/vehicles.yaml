@@ -481,12 +481,12 @@ MLRS:
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
+	ReloadAmmo:
+		ReloadTicks: 45
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
-		SelfReloads: true
 		ReloadCount: 1
-		SelfReloadTicks: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary

@@ -1070,6 +1070,10 @@ HPAD:
 	Production:
 		Produces: Aircraft, Helicopter
 	Reservable:
+	UpgradeActorsNear:
+		Upgrades: aircraftreload
+		Range: 512
+		VerticalRange: 1
 	ProductionBar:
 	PrimaryBuilding:
 	Power:
@@ -1147,6 +1151,10 @@ AFLD:
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
+	UpgradeActorsNear:
+		Upgrades: aircraftreload
+		Range: 512
+		VerticalRange: 1
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
@@ -1570,6 +1578,9 @@ FIX:
 		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
+	UpgradeActorsNear:
+		Upgrades: fixreload
+		Range: 512
 	RepairsUnits:
 		Interval: 10
 		FinishRepairingNotification: UnitRepaired

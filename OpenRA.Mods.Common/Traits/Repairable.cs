@@ -33,19 +33,21 @@ namespace OpenRA.Mods.Common.Traits
 		readonly RepairableInfo info;
 		readonly Health health;
 		readonly AmmoPool[] ammoPools;
+		readonly ReloadAmmo[] reloadAmmo;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().Where(x => x.Info.UpgradeMinEnabledLevel > 0).ToArray();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanResupplyAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
@@ -57,6 +59,17 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool CanResupplyAt(Actor target)
+		{
+			if (CanRepairAt(target))
+				return true;
+
+			if (CanRearmAt(target))
+				return true;
+
+			return false;
+		}
+
 		bool CanRepairAt(Actor target)
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
@@ -64,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearmAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(target.Info.Name));
 		}
 
 		bool CanRepair()
@@ -74,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
+			return reloadAmmo.Any() && ammoPools.Any(x => !x.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -86,7 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
+				if ((!CanRepairAt(order.TargetActor) && !CanRearmAt(order.TargetActor))
+					|| (!CanRepair() && !CanRearm()))
 					return;
 
 				var movement = self.Trait<IMove>();
@@ -109,13 +123,12 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
 			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			if (CanRearmAt(order.TargetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self));
 
-			self.QueueActivity(new Repair(order.TargetActor));
+			if (CanRepair() && CanRepairAt(order.TargetActor))
+				self.QueueActivity(new Repair(order.TargetActor));
 
 			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
+			if (rp != null && !CanRearm())
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{

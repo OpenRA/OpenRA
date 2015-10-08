@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	// TODO: Add InitializeAfter<ReloadAmmoInfo> once we have support for that
 	[Desc("Actor has a limited amount of ammo, after using it all the actor must reload in some way.")]
 	public class AmmoPoolInfo : ITraitInfo
 	{
@@ -41,27 +42,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play for each reloaded ammo magazine.")]
 		public readonly string RearmSound = null;
 
-		[Desc("Time to reload per ReloadCount on airfield etc.")]
-		public readonly int ReloadTicks = 25 * 2;
-
-		[Desc("Whether or not ammo is replenished on its own.")]
-		public readonly bool SelfReloads = false;
-
-		[Desc("Time to reload per ReloadCount when actor 'SelfReloads'.")]
-		public readonly int SelfReloadTicks = 25 * 2;
-
-		[Desc("Whether or not reload timer should be reset when ammo has been fired.")]
-		public readonly bool ResetOnFire = false;
-
 		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
 
-	public class AmmoPool : INotifyAttack, IPips, ITick, ISync
+	public class AmmoPool : INotifyCreated, INotifyAttack, IPips, ITick, ISync
 	{
 		public readonly AmmoPoolInfo Info;
 		[Sync] public int CurrentAmmo;
 		[Sync] public int RemainingTicks;
 		public int PreviousAmmo;
+		ReloadAmmo reload;
 
 		public AmmoPool(Actor self, AmmoPoolInfo info)
 		{
@@ -71,8 +61,17 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				CurrentAmmo = Info.Ammo;
 
-			RemainingTicks = Info.SelfReloadTicks;
 			PreviousAmmo = GetAmmoCount();
+		}
+
+		public void Created(Actor self)
+		{
+			reload = self.TraitsImplementing<ReloadAmmo>()
+				.Where(a => a.Info.ReloadAmmoPools.Contains(Info.Name))
+				.FirstOrDefault();
+
+			if (reload != null && !reload.IsTraitDisabled)
+				RemainingTicks = reload.Info.ReloadTicks;
 		}
 
 		public int GetAmmoCount() { return CurrentAmmo; }
@@ -105,22 +104,39 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!Info.SelfReloads)
+			if (reload == null || reload.IsTraitDisabled)
 				return;
 
 			// Resets the tick counter if ammo was fired.
-			if (Info.ResetOnFire && GetAmmoCount() < PreviousAmmo)
+			if (reload.Info.ResetOnFire && GetAmmoCount() < PreviousAmmo)
 			{
-				RemainingTicks = Info.SelfReloadTicks;
+				RemainingTicks = reload.Info.ReloadTicks;
 				PreviousAmmo = GetAmmoCount();
 			}
 
-			if (!FullAmmo() && --RemainingTicks == 0)
+			if (!FullAmmo() && --RemainingTicks <= 0)
 			{
-				RemainingTicks = Info.SelfReloadTicks;
+				RemainingTicks = reload.Info.ReloadTicks;
 
 				for (var i = 0; i < Info.ReloadCount; i++)
+				{
+					// HACK to check if we are on the helipad/airfield/etc.
+					var hostBuilding = self.World.ActorMap.GetActorsAt(self.Location)
+						.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
+
+					if (hostBuilding != null)
+					{
+						var wsb = hostBuilding.Trait<WithSpriteBody>();
+						if (wsb.DefaultAnimation.HasSequence("active"))
+							wsb.PlayCustomAnimation(hostBuilding, "active", () => wsb.CancelCustomAnimation(self));
+					}
+
 					GiveAmmo();
+
+					var sound = Info.RearmSound;
+					if (sound != null)
+						Game.Sound.Play(sound, self.CenterPosition);
+				}
 
 				PreviousAmmo = GetAmmoCount();
 			}

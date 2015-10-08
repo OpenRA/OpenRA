@@ -207,6 +207,10 @@ GAHPAD:
 	PrimaryBuilding:
 	Reservable:
 	RepairsUnits:
+	UpgradeActorsNear:
+		Upgrades: aircraftreload
+		Range: 512
+		VerticalRange: 1
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
