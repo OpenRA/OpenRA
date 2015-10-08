@@ -410,6 +410,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					{ "ToggleStatusBarsKey", "Toggle status bars" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+
+					{ "MapScrollUp", "Map scroll up" },
+					{ "MapScrollDown", "Map scroll down" },
+					{ "MapScrollLeft", "Map scroll left" },
+					{ "MapScrollRight", "Map scroll right" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
