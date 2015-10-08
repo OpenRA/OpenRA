@@ -23,6 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
+		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "fix" };
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
@@ -33,12 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly RepairableInfo info;
 		readonly Health health;
 		readonly AmmoPool[] ammoPools;
+		readonly bool needsReloading;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			needsReloading = self.Info.HasTraitInfo<ReloadAmmoInfo>() && self.Info.TraitInfos<ReloadAmmoInfo>().Any(y => y.UpgradeMinEnabledLevel > 0);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -64,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearmAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return info.RearmBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRepair()
@@ -74,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
+			return needsReloading && ammoPools.Any(x => !x.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -109,13 +113,12 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
 			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			if (CanRearmAt(order.TargetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self));
 
-			self.QueueActivity(new Repair(order.TargetActor));
+			if (CanRepair() && CanRepairAt(order.TargetActor))
+				self.QueueActivity(new Repair(order.TargetActor));
 
 			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
+			if (rp != null && !CanRearm())
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{

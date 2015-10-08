@@ -192,6 +192,9 @@ NAHPAD:
 	PrimaryBuilding:
 	Reservable:
 	RepairsUnits:
+	UpgradeActorsNear:
+		Upgrades: aircraftreload
+		Range: 512
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform

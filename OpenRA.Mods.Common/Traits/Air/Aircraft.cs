@@ -322,8 +322,6 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
-				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
 				yield return new Repair(a);
 		}

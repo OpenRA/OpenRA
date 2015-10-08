@@ -413,6 +413,10 @@ MNLY.AP:
 	AmmoPool:
 		Ammo: 5
 		RearmSound: minelay1.aud
+	ReloadAmmo:
+		UpgradeTypes: fixreload
+		ReloadTicks: 50
+		UpgradeMinEnabledLevel: 1
 	DetectCloaked:
 		Range: 5c0
 		CloakTypes: Mine
@@ -448,6 +452,10 @@ MNLY.AT:
 	AmmoPool:
 		Ammo: 5
 		RearmSound: minelay1.aud
+	ReloadAmmo:
+		UpgradeTypes: fixreload
+		ReloadTicks: 50
+		UpgradeMinEnabledLevel: 1
 	DetectCloaked:
 		Range: 5c0
 		CloakTypes: Mine
