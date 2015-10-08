@@ -817,12 +817,12 @@ Weapons:
 		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
-			Speed: 128
+			MaximumLaunchSpeed: 128
 			Arm: 2
 			High: true
 			Shadow: false
 			Proximity: true
-			Trail: smokey
+			TrailImage: smokey
 			ContrailLength: 150
 			Inaccuracy: 853
 			Image: DRAGON

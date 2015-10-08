@@ -29,11 +29,11 @@ Bazooka:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 281
+		MaximumLaunchSpeed: 281
 		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 1
-		Trail: bazooka_trail2
+		HorizontalRateOfTurn: 1
+		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 		RangeLimit: 35
@@ -236,11 +236,11 @@ Rocket:
 	Projectile: Missile
 		Inaccuracy: 64
 		Image: RPG
-		RateOfTurn: 0
-		Trail: bazooka_trail2
+		HorizontalRateOfTurn: 0
+		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
-		Speed: 343
+		MaximumLaunchSpeed: 343
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 250
@@ -309,12 +309,12 @@ TowerMissile:
 	Projectile: Missile
 		Blockable: false
 		Shadow: true
-		RateOfTurn: 1
+		HorizontalRateOfTurn: 1
 		Inaccuracy: 384
 		Image: MISSILE2
-		Trail: large_trail
+		TrailImage: large_trail
 		TrailInterval: 1
-		Speed: 320
+		MaximumLaunchSpeed: 320
 	Warhead@1Dam: SpreadDamage
 		Spread: 280
 		Falloff: 100, 100, 100, 95, 60, 25, 0
@@ -463,13 +463,13 @@ mtank_pri:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 281
-		RateOfTurn: 3
+		MaximumLaunchSpeed: 281
+		HorizontalRateOfTurn: 3
 		Blockable: false
 		Shadow: yes
 		Inaccuracy: 96
 		Image: MISSILE2
-		Trail: large_trail
+		TrailImage: large_trail
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Spread: 280
@@ -500,13 +500,13 @@ DeviatorMissile:
 	Report: MISSLE1.WAV
 	InvalidTargets: Infantry, Structure
 	Projectile: Missile
-		Speed: 281
+		MaximumLaunchSpeed: 281
 		Blockable: false
 		Shadow: yes
 		RateofTurn: 1
 		Inaccuracy: 256
 		Image: MISSILE
-		Trail: deviator_trail
+		TrailImage: deviator_trail
 		TrailPalette: deviatorgas
 		TrailUsePlayerPalette: true
 		TrailInterval: 1

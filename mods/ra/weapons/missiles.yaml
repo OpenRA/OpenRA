@@ -7,13 +7,13 @@ Maverick:
 	BurstDelay: 7
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		Speed: 256
+		MaximumLaunchSpeed: 256
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 512
 		Image: DRAGON
-		RateOfTurn: 5
+		HorizontalRateOfTurn: 5
 		RangeLimit: 60
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -43,14 +43,14 @@ Dragon:
 	Report: MISSILE6.AUD
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		Speed: 213
+		MaximumLaunchSpeed: 213
 		Arm: 2
 		Blockable: false
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 5
+		HorizontalRateOfTurn: 5
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -82,13 +82,13 @@ HellfireAG:
 	BurstDelay: 10
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		Speed: 256
+		MaximumLaunchSpeed: 256
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 10
+		HorizontalRateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -120,13 +120,13 @@ HellfireAA:
 	BurstDelay: 10
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 384
+		MaximumLaunchSpeed: 384
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 10
+		HorizontalRateOfTurn: 10
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -156,13 +156,13 @@ MammothTusk:
 	Burst: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile
-		Speed: 341
+		MaximumLaunchSpeed: 341
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 15
+		HorizontalRateOfTurn: 15
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -199,9 +199,9 @@ Nike:
 		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		RateOfTurn: 25
+		HorizontalRateOfTurn: 25
 		RangeLimit: 50
-		Speed: 341
+		MaximumLaunchSpeed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -227,9 +227,9 @@ RedEye:
 		Blockable: false
 		ContrailLength: 10
 		Image: MISSILE
-		RateOfTurn: 20
+		HorizontalRateOfTurn: 20
 		RangeLimit: 30
-		Speed: 298
+		MaximumLaunchSpeed: 298
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -291,9 +291,9 @@ Stinger:
 		Blockable: false
 		ContrailLength: 10
 		Image: DRAGON
-		RateOfTurn: 20
+		HorizontalRateOfTurn: 20
 		RangeLimit: 50
-		Speed: 170
+		MaximumLaunchSpeed: 170
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -331,9 +331,9 @@ StingerAA:
 		Blockable: false
 		ContrailLength: 10
 		Image: DRAGON
-		RateOfTurn: 20
+		HorizontalRateOfTurn: 20
 		RangeLimit: 50
-		Speed: 255
+		MaximumLaunchSpeed: 255
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -369,9 +369,9 @@ TorpTube:
 	Projectile: Missile
 		Image: MISSILE
 		Arm: 3
-		Speed: 85
-		Trail: bubbles
-		RateOfTurn: 1
+		MaximumLaunchSpeed: 85
+		TrailImage: bubbles
+		HorizontalRateOfTurn: 1
 		RangeLimit: 160
 		BoundToTerrainType: Water
 		Palette: shadow
@@ -441,14 +441,14 @@ APTusk:
 	Report: MISSILE6.AUD
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		Speed: 298
+		MaximumLaunchSpeed: 298
 		Arm: 2
 		Blockable: false
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 10
+		HorizontalRateOfTurn: 10
 		RangeLimit: 22
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
