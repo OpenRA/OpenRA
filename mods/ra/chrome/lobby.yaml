@@ -2,7 +2,7 @@ Background@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 858
+	Width: 808
 	Height: 600
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
@@ -16,46 +16,53 @@ Background@SERVER_LOBBY:
 		Container@MAP_PREVIEW_ROOT:
 			X: PARENT_RIGHT-20-WIDTH
 			Y: 67
-			Width: 214
+			Width: 174
 			Height: 250
-		Container@TOP_PANELS_ROOT:
-			X: 20
-			Y: 67
-			Width: 593
-			Height: 235
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20
-			Y: PARENT_BOTTOM - 291
-			Width: 167
+			Y: 291
+			Width: 180
 			Height: 25
 			Font: Bold
 			Text: Slot Admin
-		Button@OPTIONS_BUTTON:
-			X: 194
-			Y: PARENT_BOTTOM - 291
-			Width: 135
-			Height: 25
+		Button@PLAYERS_TAB:
+			X: 243
+			Y: 285
+			Width: 120
+			Height: 31
 			Font: Bold
-			Text: Game Options
+			Text: Players
+		Button@OPTIONS_TAB:
+			X: 363
+			Y: 285
+			Width: 120
+			Height: 31
+			Font: Bold
+			Text: Options
+		Button@MUSIC_TAB:
+			X: 483
+			Y: 285
+			Width: 120
+			Height: 31
+			Font: Bold
+			Text: Music
+		Container@TOP_PANELS_ROOT:
+			X: 20
+			Y: 67
+			Width: 583
+			Height: 219
 		Button@CHANGEMAP_BUTTON:
-			X: 336
-			Y: PARENT_BOTTOM - 291
-			Width: 135
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 291
+			Width: 174
 			Height: 25
 			Text: Change Map
-			Font: Bold
-		Button@START_GAME_BUTTON:
-			X: 478
-			Y: PARENT_BOTTOM - 291
-			Width: 135
-			Height: 25
-			Text: Start Game
 			Font: Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X: 20
 			Y: PARENT_BOTTOM - HEIGHT - 52
-			Width: 818
-			Height: 210
+			Width: PARENT_RIGHT - 40
+			Height: 227
 			TopBottomSpacing: 2
 			ItemSpacing: 2
 			Children:
@@ -84,7 +91,7 @@ Background@SERVER_LOBBY:
 		TextField@CHAT_TEXTFIELD:
 			X: 20
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: PARENT_RIGHT - 167
+			Width: PARENT_RIGHT - 300
 			Height: 25
 			LeftMargin: 50
 			Children:
@@ -94,6 +101,13 @@ Background@SERVER_LOBBY:
 					Height: 25
 					Align: Right
 					Text: Chat:
+		Button@START_GAME_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 150
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: Start Game
+			Font: Bold
 		Button@DISCONNECT_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - HEIGHT - 20

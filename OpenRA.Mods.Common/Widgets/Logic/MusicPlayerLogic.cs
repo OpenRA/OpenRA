@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MusicPlayerLogic(Widget widget, Ruleset modRules, World world, Action onExit)
 		{
-			var panel = widget.Get("MUSIC_PANEL");
+			var panel = widget;
 
 			musicList = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
 			itemTemplate = musicList.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
@@ -83,6 +83,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return "{0:D2}:{1:D2} / {2:D2}:{3:D2}".F(minutes, seconds, totalMinutes, totalSeconds);
 			};
 
+			var musicTitle = panel.GetOrNull<LabelWidget>("TITLE_LABEL");
+			if (musicTitle != null)
+				musicTitle.GetText = () => currentSong != null ? currentSong.Title : "No song playing";
+
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Game.Sound.MusicVolume = x;
 			musicSlider.Value = Game.Sound.MusicVolume;
@@ -114,7 +118,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
+			var backButton = panel.GetOrNull<ButtonWidget>("BACK_BUTTON");
+			if (backButton != null)
+				backButton.OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
 		}
 
 		public void BuildMusicTable()
