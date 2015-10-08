@@ -45,7 +45,9 @@ MEDIC:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: Heal
-	AttackMedic:
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: heal
 	SelfHealing:

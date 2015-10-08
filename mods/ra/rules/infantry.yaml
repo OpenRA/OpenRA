@@ -307,13 +307,13 @@ MEDI:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
 	Armament:
 		Weapon: Heal
-	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
-	-AutoTarget:
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
 	WithInfantryBody:
 		StandSequences: stand
 		AttackSequence: heal
@@ -341,16 +341,16 @@ MECH:
 	Passenger:
 		PipType: Yellow
 		Voice: Move
-	AutoHeal:
 	Armament:
 		Weapon: Repair
-	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
 		Voice: Move
 	Captures:
 		CaptureTypes: husk
-	-AutoTarget:
 	WithInfantryBody:
 		AttackSequence: repair
 		StandSequences: stand

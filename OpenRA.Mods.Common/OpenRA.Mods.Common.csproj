@@ -117,7 +117,6 @@
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\HarvesterDockSequence.cs" />
-    <Compile Include="Activities\Heal.cs" />
     <Compile Include="Activities\Hunt.cs" />
     <Compile Include="Activities\Move\AttackMoveActivity.cs" />
     <Compile Include="Activities\Move\Drag.cs" />
@@ -268,11 +267,9 @@
     <Compile Include="Traits\Attack\AttackFollow.cs" />
     <Compile Include="Traits\Attack\AttackFrontal.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
-    <Compile Include="Traits\Attack\AttackMedic.cs" />
     <Compile Include="Traits\Attack\AttackOmni.cs" />
     <Compile Include="Traits\Attack\AttackTurreted.cs" />
     <Compile Include="Traits\Attack\AttackWander.cs" />
-    <Compile Include="Traits\AutoHeal.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BlocksProjectiles.cs" />
     <Compile Include="Traits\Buildable.cs" />

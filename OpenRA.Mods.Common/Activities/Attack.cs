@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -21,15 +22,17 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackBase attack;
 		readonly IMove move;
 		readonly IFacing facing;
-		readonly Armament armament;
-		readonly WDist minRange;
 		readonly IPositionable positionable;
+		readonly bool forceAttack;
 
-		public Attack(Actor self, Target target, Armament armament, bool allowMovement)
+		WDist minRange;
+		WDist maxRange;
+
+		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
 		{
 			Target = target;
-			this.minRange = armament.Weapon.MinRange;
-			this.armament = armament;
+
+			this.forceAttack = forceAttack;
 
 			attack = self.Trait<AttackBase>();
 			facing = self.Trait<IFacing>();
@@ -64,8 +67,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
 				return NextActivity;
 
+			// Drop the target once none of the weapons are effective against it
+			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack);
+			if (!armaments.Any())
+				return NextActivity;
+
+			// Update ranges
+			minRange = armaments.Max(a => a.Weapon.MinRange);
+			maxRange = armaments.Min(a => a.MaxRange());
+
 			// Try to move within range
-			var maxRange = armament.MaxRange();
 			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
 				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 
@@ -73,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities(new Turn(self, desiredFacing), this);
 
-			attack.DoAttack(self, Target);
+			attack.DoAttack(self, Target, armaments);
 
 			return this;
 		}

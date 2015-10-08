@@ -27,6 +27,14 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Damage percentage versus each armortype.")]
 		public readonly Dictionary<string, int> Versus;
 
+		public override bool IsValidAgainst(Actor victim, Actor firedBy)
+		{
+			if (Damage < 0 && victim.GetDamageState() == DamageState.Undamaged)
+				return false;
+
+			return base.IsValidAgainst(victim, firedBy);
+		}
+
 		public static object LoadVersus(MiniYaml yaml)
 		{
 			var nd = yaml.ToDictionary();

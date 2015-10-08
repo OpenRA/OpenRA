@@ -2198,6 +2198,52 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "-WithSpriteRotorOverlay";
 				}
 
+				if (engineVersion < 20151005)
+				{
+					// Move certain properties from Parachutable to new WithParachute trait
+					// Add dependency traits to actors implementing Parachutable
+					// Make otherwise targetable parachuting actors untargetable
+					var heal = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AutoHeal"));
+					if (heal != null)
+					{
+						var otherNodes = nodes;
+						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
+								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+
+						var target = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-AutoTarget"));
+						if (target != null)
+							node.Value.Nodes.Remove(target);
+						else if (!inherits("AutoTarget"))
+							node.Value.Nodes.Add(new MiniYamlNode("AutoTarget", ""));
+
+						node.Value.Nodes.Remove(heal);
+					}
+
+					var atkmedic = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackMedic"));
+					if (atkmedic != null)
+					{
+						var crsr = atkmedic.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("Cursor"));
+						var hasorcrsr = atkmedic.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("OutsideRangeCursor"));
+						foreach (var armmnt in node.Value.Nodes.Where(n => n.Key.StartsWith("Armament")))
+						{
+							if (crsr != null)
+								armmnt.Value.Nodes.Add(new MiniYamlNode("Cursor", crsr.Value));
+
+							if (hasorcrsr != null)
+								armmnt.Value.Nodes.Add(new MiniYamlNode("OutsideRangeCursor", hasorcrsr.Value));
+							armmnt.Value.Nodes.Add(new MiniYamlNode("TargetStances", "Ally"));
+							armmnt.Value.Nodes.Add(new MiniYamlNode("ForceTargetStances", "None"));
+						}
+
+						if (crsr != null)
+							atkmedic.Value.Nodes.Remove(crsr);
+						if (hasorcrsr != null)
+							atkmedic.Value.Nodes.Remove(hasorcrsr);
+
+						atkmedic.Key = "AttackFrontal";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
