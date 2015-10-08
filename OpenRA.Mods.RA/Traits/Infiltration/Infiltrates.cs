@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
 			if (target.Type != TargetType.Actor
-				|| Info.Types.Overlaps(target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes)))
+				|| !Info.Types.Overlaps(target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes)))
 				return;
 
 			if (!order.Queued)
