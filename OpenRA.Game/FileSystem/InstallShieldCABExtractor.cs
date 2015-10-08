@@ -443,6 +443,7 @@ namespace OpenRA.FileSystem
 
 		public void ExtractFile(uint index, string fileName)
 		{
+			Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 			using (var destfile = File.Open(fileName, FileMode.Create))
 				GetContentById(index, destfile);
 		}
