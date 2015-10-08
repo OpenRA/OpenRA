@@ -1,18 +1,16 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Oct 06 2015)
+## v1.20 (Oct 08 2015)
 
 ### Highlights
   - Added symbol indexing of project files for project-wide search.
   - Added support for `file@symbol` fuzzy search (#385).
-  - Added processing of `ini` setting relative to the IDE location (closes #483).
-  - Added Stack/Watch view refresh after switching focus when needed.
+  - Added processing of `ini` setting relative to the IDE location (#483).
   - Improved memory handling for large files.
   - Improved application performance and memory usage.
   - Improved auto-complete order of results and suggestions for case-sensitive matches.
   - Updated Windows launcher to add dpi awareness for high dpi monitors.
-  - Update marmalade API definition to 7.9
-  - Upgraded Lua 5.3 interpreter to 5.3.1 on Windows (closes #453, closes #460).
+  - Upgraded Lua 5.3 interpreter to 5.3.1.
   - Fixed a memory leak after a search panel is opened.
   - Fixed an occasional crash from the filetree on Linux (#425, #464).
   - Fixed recursive file traversal to skip directories when mask is specified.
@@ -181,6 +179,8 @@
   - Updated indentation after strings with brackets and escaped quotes (#324).
   - Updated `AnalyzeString` to add filename parameter (closes #463).
   - Updated Windows launcher to add dpi awareness for high dpi monitors.
+  - Upgraded Lua 5.3 interpreter to 5.3.1 on Linux (x86 and x64).
+  - Upgraded Lua 5.3 interpreter to 5.3.1 on OSX.
   - Upgraded Lua 5.3 interpreter to 5.3.1 on Windows (closes #453, closes #460).
   - Upgraded Mobdebug (0.628) to include `keyignore` serializer option.
   - Upgraded Mobdebug (0.627) to improve debugging of code with overloaded `string` methods.
