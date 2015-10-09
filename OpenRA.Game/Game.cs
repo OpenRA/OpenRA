@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using OpenRA.Chat;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -44,6 +45,8 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static Sound Sound;
 		public static bool HasInputFocus = false;
+
+		public static GlobalChat GlobalChat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -204,6 +207,7 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
+			Log.AddChannel("irc", "irc.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -236,6 +240,8 @@ namespace OpenRA
 			}
 
 			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+
+			GlobalChat = new GlobalChat();
 
 			Console.WriteLine("Available mods:");
 			foreach (var mod in ModMetadata.AllMods)
@@ -688,6 +694,8 @@ namespace OpenRA
 				worldRenderer.Dispose();
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
+
+			GlobalChat.Dispose();
 			Sound.Dispose();
 			Renderer.Dispose();
 

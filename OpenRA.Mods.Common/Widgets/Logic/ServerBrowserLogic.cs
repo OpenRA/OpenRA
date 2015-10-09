@@ -135,14 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; RefreshServerList(); };
 			}
 
-			try
-			{
-				Game.LoadWidget(null, "SERVERBROWSER_IRC", panel.Get("IRC_ROOT"), new WidgetArgs());
-			}
-			catch
-			{
-				Log.Write("debug", "Failed to load server browser IRC chrome layout");
-			}
+			Game.LoadWidget(null, "GLOBALCHAT_PANEL", panel.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
 
 			RefreshServerList();
 

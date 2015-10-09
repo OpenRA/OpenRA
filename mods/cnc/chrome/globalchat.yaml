@@ -1,22 +1,36 @@
-Container@SERVERBROWSER_IRC:
-	Logic: IrcLogic
-	Width: 700
-	Height: 250
+Container@GLOBALCHAT_PANEL:
+	Logic: GlobalChatLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
 	Children:
-		Container@IRC_CONTAINER:
+		Container@GLOBALCHAT_MAIN_PANEL:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
+				Background@TOPIC:
+					Width: 565
+					Height: 20
+					Background: panel-transparent
+					Children:
+						Label@CHANNEL_TOPIC:
+							X: 10
+							Y: 0-1
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM
+							Font: TinyBold
+							Align: Center
 				ScrollPanel@HISTORY_PANEL:
 					Width: 565
-					Height: PARENT_BOTTOM - 30
+					Y: 19
+					Height: PARENT_BOTTOM - 49
 					ItemSpacing: 5
-				Label@HISTORY_TEMPLATE:
-					X: 5
-					Width: 530
-					Height: 25
-					WordWrap: True
-				TextField@INPUT_BOX:
+					Children:
+						Label@HISTORY_TEMPLATE:
+							X: 5
+							Width: 530
+							Height: 25
+							WordWrap: True
+				TextField@CHAT_TEXTFIELD:
 					Y: PARENT_BOTTOM - 25
 					Width: 565
 					Height: 25
@@ -24,8 +38,20 @@ Container@SERVERBROWSER_IRC:
 					X: 570
 					Width: 130
 					Height: PARENT_BOTTOM - 30
-				Label@NICKNAME_TEMPLATE:
-					X: 5
+					Children:
+						Container@NICKNAME_TEMPLATE:
+							Height: 20
+							Width: PARENT_RIGHT-25
+							Children:
+								Image@INDICATOR:
+									ImageCollection: lobby-bits
+									ImageName: admin
+									X: 4
+									Y: 9
+								Label@NICK:
+									X: 15
+									Width: PARENT_RIGHT-15
+									Height: 20
 				Button@DISCONNECT_BUTTON:
 					X: 570
 					Y: PARENT_BOTTOM - 25
@@ -33,7 +59,7 @@ Container@SERVERBROWSER_IRC:
 					Height: 25
 					Text: Disconnect
 					Font: Bold
-		Background@IRC_CONNECT_BG:
+		Background@GLOBALCHAT_CONNECT_PANEL:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Background: scrollpanel-bg
@@ -48,7 +74,7 @@ Container@SERVERBROWSER_IRC:
 					X: 200
 					Y: PARENT_BOTTOM / 4 + 35
 					Text: Nickname:
-				TextField@NICKNAME_BOX:
+				TextField@NICKNAME_TEXTFIELD:
 					X: 270
 					Y: PARENT_BOTTOM / 4 + 25
 					Width: 150
@@ -58,6 +84,7 @@ Container@SERVERBROWSER_IRC:
 					Y: PARENT_BOTTOM / 4 + 75
 					Height: 20
 					Width: 180
+					Font: Regular
 					Text: Connect Automatically
 				Button@CONNECT_BUTTON:
 					X: 430

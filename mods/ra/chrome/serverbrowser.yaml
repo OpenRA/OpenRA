@@ -118,10 +118,11 @@ Background@SERVERBROWSER_PANEL:
 							Y: 40
 							Align: Right
 							Height: 25
-		Container@IRC_ROOT:
+		Container@GLOBALCHAT_ROOT:
 			X: 20
 			Y: 370
-			Width: 260
+			Width: 700
+			Height: 255
 		Label@PROGRESS_LABEL:
 			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: PARENT_BOTTOM / 2 - HEIGHT
