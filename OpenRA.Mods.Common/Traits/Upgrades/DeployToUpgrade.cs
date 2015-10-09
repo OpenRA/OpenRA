@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Leave empty to allow any.")]
 		public readonly HashSet<string> AllowedTerrainTypes = new HashSet<string>();
 
+		[Desc("Can this actor deploy on slopes?")]
+		public readonly bool CanDeployOnRamps = false;
+
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
 
@@ -73,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("DeployToUpgrade", 5,
-				() => OnValidTerrain() ? info.DeployCursor : info.DeployBlockedCursor); }
+				() => IsOnValidTerrain() ? info.DeployCursor : info.DeployBlockedCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -89,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeployToUpgrade")
 				return;
 
-			if (!OnValidTerrain())
+			if (!IsOnValidTerrain())
 				return;
 
 			if (isUpgraded)
@@ -141,7 +144,12 @@ namespace OpenRA.Mods.Common.Traits
 			isUpgraded = !isUpgraded;
 		}
 
-		bool OnValidTerrain()
+		bool IsOnValidTerrain()
+		{
+			return IsOnValidTerrainType() && IsOnValidRampType();
+		}
+
+		bool IsOnValidTerrainType()
 		{
 			if (!self.World.Map.Contains(self.Location))
 				return false;
@@ -154,6 +162,23 @@ namespace OpenRA.Mods.Common.Traits
 			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[self.Location])].Type;
 
 			return info.AllowedTerrainTypes.Contains(terrainType);
+		}
+
+		bool IsOnValidRampType()
+		{
+			if (info.CanDeployOnRamps)
+				return true;
+
+			var ramp = 0;
+			if (self.World.Map.Contains(self.Location))
+			{
+				var tile = self.World.Map.MapTiles.Value[self.Location];
+				var ti = self.World.TileSet.GetTileInfo(tile);
+				if (ti != null)
+					ramp = ti.RampType;
+			}
+
+			return ramp == 0;
 		}
 
 		void GrantUpgrades()
