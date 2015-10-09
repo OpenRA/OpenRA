@@ -104,8 +104,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Aggressor = attacker;
-			if (at == null || !at.IsReachableTarget(at.Target, info.AllowMovement && Stance != UnitStance.Defend))
-				Attack(self, Aggressor);
+			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
+			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+				Attack(self, Aggressor, allowMove);
 		}
 
 		public void TickIdle(Actor self)
@@ -113,9 +114,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (Stance < UnitStance.Defend || !info.TargetWhenIdle)
 				return;
 
-			var allowMovement = info.AllowMovement && Stance != UnitStance.Defend;
-			if (at == null || !at.IsReachableTarget(at.Target, allowMovement))
-				ScanAndAttack(self, allowMovement);
+			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
+			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+				ScanAndAttack(self, allowMove);
 		}
 
 		public void Tick(Actor self)
@@ -143,15 +144,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var targetActor = ScanForTarget(self, null, allowMove);
 			if (targetActor != null)
-				Attack(self, targetActor);
+				Attack(self, targetActor, allowMove);
 		}
 
-		void Attack(Actor self, Actor targetActor)
+		void Attack(Actor self, Actor targetActor, bool allowMove)
 		{
 			TargetedActor = targetActor;
 			var target = Target.FromActor(targetActor);
 			self.SetTargetLine(target, Color.Red, false);
-			attack.AttackTarget(target, false, info.AllowMovement && Stance != UnitStance.Defend);
+			attack.AttackTarget(target, false, allowMove);
 		}
 
 		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
@@ -168,10 +169,16 @@ namespace OpenRA.Mods.Common.Traits
 				// Select only the first compatible armament for each actor: if this actor is selected
 				// it will be thanks to the first armament anyways, since that is the first selection
 				// criterion
-				.Select(a => new KeyValuePair<Armament, Actor>(
-					attack.ChooseArmamentsForTarget(Target.FromActor(a), false)
-						.Where(arm => allowMove || arm.MaxRange().Length > (a.CenterPosition - self.CenterPosition).Length)
-						.FirstOrDefault(), a))
+				.Select(a =>
+				{
+					var target = Target.FromActor(a);
+					return new KeyValuePair<Armament, Actor>(
+						attack.ChooseArmamentsForTarget(target, false)
+							.Where(arm => allowMove
+								|| (target.IsInRange(self.CenterPosition, arm.MaxRange())
+								&& !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange)))
+							.FirstOrDefault(), a);
+				})
 
 				.Where(kv => kv.Key != null && kv.Value.TraitOrDefault<AutoTargetIgnore>() == null)
 				.GroupBy(kv => kv.Key, kv => kv.Value)
