@@ -155,6 +155,7 @@ ChromeLayout:
 	./mods/ra/chrome/lobby-options.yaml
 	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
+	./mods/ra/chrome/lobby-globalchat.yaml
 	./mods/ts/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
 	./mods/ra/chrome/create-server.yaml

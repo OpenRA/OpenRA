@@ -90,6 +90,7 @@ ChromeLayout:
 	./mods/d2k/chrome/lobby-options.yaml
 	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
+	./mods/ra/chrome/lobby-globalchat.yaml
 	./mods/d2k/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
 	./mods/ra/chrome/create-server.yaml

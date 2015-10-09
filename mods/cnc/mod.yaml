@@ -100,6 +100,7 @@ ChromeLayout:
 	./mods/cnc/chrome/lobby-options.yaml
 	./mods/cnc/chrome/lobby-music.yaml
 	./mods/cnc/chrome/lobby-kickdialogs.yaml
+	./mods/cnc/chrome/lobby-globalchat.yaml
 	./mods/cnc/chrome/connection.yaml
 	./mods/cnc/chrome/color-picker.yaml
 	./mods/cnc/chrome/mapchooser.yaml
