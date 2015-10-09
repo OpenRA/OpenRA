@@ -115,18 +115,6 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!HasKeyboardFocus)
 				return false;
 
-			if ((e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER) && OnEnterKey())
-				return true;
-
-			if (e.Key == Keycode.TAB && OnTabKey())
-				return true;
-
-			if (e.Key == Keycode.ESCAPE && OnEscKey())
-				return true;
-
-			if (e.Key == Keycode.LALT && OnAltKey())
-				return true;
-
 			Func<int> getPrevWhitespaceIndex = () =>
 				Text.Substring(0, CursorPosition).TrimEnd().LastIndexOf(' ') + 1;
 
@@ -141,156 +129,155 @@ namespace OpenRA.Mods.Common.Widgets
 					return CursorPosition + trimmed_spaces + next_whitespace;
 			};
 
-			if (e.Key == Keycode.LEFT)
-			{
-				if (CursorPosition > 0)
-				{
-					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-					{
-						CursorPosition = getPrevWhitespaceIndex();
-					}
-					else
-					{
-						CursorPosition--;
-					}
-				}
+			Func<bool> isOSX = () => Platform.CurrentPlatform == PlatformType.OSX;
 
-				return true;
-			}
+			switch (e.Key) {
+				case Keycode.RETURN:
+				case Keycode.KP_ENTER:
+					if (OnEnterKey())
+						return true;
+					break;
 
-			if (e.Key == Keycode.RIGHT)
-			{
-				if (CursorPosition <= Text.Length - 1) {
-					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-					{
-						CursorPosition = getNextWhitespaceIndex();
-					}
-					else
-					{
-						CursorPosition++;
-					}
-				}
+				case Keycode.TAB:
+					if (OnTabKey())
+						return true;
+					break;
 
-				return true;
-			}
+				case Keycode.ESCAPE:
+					if (OnEscKey())
+						return true;
+					break;
 
-			if (e.Key == Keycode.HOME)
-			{
-				CursorPosition = 0;
-				return true;
-			}
+				case Keycode.LALT:
+					if (OnAltKey())
+						return true;
+					break;
 
-			if (e.Key == Keycode.END)
-			{
-				CursorPosition = Text.Length;
-				return true;
-			}
+				case Keycode.LEFT:
+					if (CursorPosition > 0)
+						if ((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						(isOSX() && e.Modifiers.HasModifier(Modifiers.Alt)))
+							CursorPosition = getPrevWhitespaceIndex();
+						else
+							CursorPosition--;
+					break;
 
-			if (e.Key == Keycode.K && e.Modifiers.HasModifier(Modifiers.Ctrl) &&
-				(Platform.CurrentPlatform != PlatformType.OSX))
-			{
-				// equivalent to cmd+delete on osx
-				if (CursorPosition < Text.Length)
-				{
-					Text = Text.Remove(CursorPosition);
-					OnTextEdited();
-				}
+				case Keycode.RIGHT:
+					if (CursorPosition <= Text.Length - 1)
+						if ((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						(isOSX() && e.Modifiers.HasModifier(Modifiers.Alt)))
+							CursorPosition = getNextWhitespaceIndex();
+						else
+							CursorPosition++;
 
-				return true;
-			}
+					break;
 
-			if (e.Key == Keycode.U && e.Modifiers.HasModifier(Modifiers.Ctrl) &&
-				(Platform.CurrentPlatform != PlatformType.OSX))
-			{
-				// equivalent to cmd+backspace on osx
-				Text = Text.Substring(CursorPosition);
-				CursorPosition = 0;
-				OnTextEdited();
-				return true;
-			}
-
-			if (e.Key == Keycode.X &&
-				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
-			{
-				if (!string.IsNullOrEmpty(Text))
-				{
-					Text = Text.Remove(0);
+				case Keycode.HOME:
 					CursorPosition = 0;
-					OnTextEdited();
-					return true;
-				}
-			}
+					break;
 
-			if (e.Key == Keycode.DELETE)
-			{
-				if (CursorPosition < Text.Length)
-				{
-					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+				case Keycode.END:
+					CursorPosition = Text.Length;
+					break;
+
+				case Keycode.K:
+					// ctrl+k is equivalent to cmd+delete on osx
+					if (!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
-						Text = Text.Substring(0, CursorPosition) + Text.Substring(getNextWhitespaceIndex());
-					}
-					else if (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))
-					{
-						// equivalent to ctrl+k on non-osx
 						Text = Text.Remove(CursorPosition);
+						OnTextEdited();
 					}
-					else
+
+					break;
+
+				case Keycode.U:
+					// ctrl+u is equivalent to cmd+backspace on osx
+					if (!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition > 0)
 					{
-						Text = Text.Remove(CursorPosition, 1);
+						Text = Text.Substring(CursorPosition);
+						CursorPosition = 0;
+						OnTextEdited();
 					}
 
-					OnTextEdited();
+					break;
+
+				case Keycode.X:
+					if (((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						 (isOSX() && e.Modifiers.HasModifier(Modifiers.Meta))) &&
+						 (!string.IsNullOrEmpty(Text)))
+					{
+						Text = Text.Remove(0);
+						CursorPosition = 0;
+						OnTextEdited();
+					}
+
+					break;
+
+				case Keycode.DELETE:
+					// cmd+delete is equivalent to ctrl+k on non-osx
+					if (CursorPosition < Text.Length)
+					{
+						if ((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						(isOSX() && e.Modifiers.HasModifier(Modifiers.Alt)))
+							Text = Text.Substring(0, CursorPosition) + Text.Substring(getNextWhitespaceIndex());
+						else if (isOSX() && e.Modifiers.HasModifier(Modifiers.Meta))
+							Text = Text.Remove(CursorPosition);
+						else
+							Text = Text.Remove(CursorPosition, 1);
+
+						OnTextEdited();
+					}
+
+					break;
+
+				case Keycode.BACKSPACE:
+					// cmd+backspace is equivalent to ctrl+u on non-osx
+					if (CursorPosition > 0)
+					{
+						if ((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						(isOSX() && e.Modifiers.HasModifier(Modifiers.Alt)))
+						{
+							var prev_whitespace = getPrevWhitespaceIndex();
+							Text = Text.Substring(0, prev_whitespace) + Text.Substring(CursorPosition);
+							CursorPosition = prev_whitespace;
+						}
+						else if (isOSX() && e.Modifiers.HasModifier(Modifiers.Meta))
+						{
+							Text = Text.Substring(CursorPosition);
+							CursorPosition = 0;
+						}
+						else
+						{
+							CursorPosition--;
+							Text = Text.Remove(CursorPosition, 1);
+						}
+
+						OnTextEdited();
+					}
+
+					break;
+
+				case Keycode.V:
+					if ((!isOSX() && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+						 (isOSX() && e.Modifiers.HasModifier(Modifiers.Meta)))
+					{
+						var clipboardText = Game.Renderer.GetClipboardText();
+
+						// Take only the first line of the clipboard contents
+						var nl = clipboardText.IndexOf('\n');
+						if (nl > 0)
+							clipboardText = clipboardText.Substring(0, nl);
+
+						clipboardText = clipboardText.Trim();
+						if (clipboardText.Length > 0)
+							HandleTextInput(clipboardText);
+					}
+
+					break;
+
+				default:
+					break;
 				}
-
-				return true;
-			}
-
-			if (e.Key == Keycode.BACKSPACE && CursorPosition > 0)
-			{
-				if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-				(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-				{
-					var prev_whitespace = getPrevWhitespaceIndex();
-					Text = Text.Substring(0, prev_whitespace) + Text.Substring(CursorPosition);
-					CursorPosition = prev_whitespace;
-				}
-				else if (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))
-				{
-					// equivalent to ctrl+u on non-osx
-					Text = Text.Substring(CursorPosition);
-					CursorPosition = 0;
-				}
-				else
-				{
-					CursorPosition--;
-					Text = Text.Remove(CursorPosition, 1);
-				}
-
-				OnTextEdited();
-				return true;
-			}
-
-			if (e.Key == Keycode.V &&
-				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
-			{
-				var clipboardText = Game.Renderer.GetClipboardText();
-
-				// Take only the first line of the clipboard contents
-				var nl = clipboardText.IndexOf('\n');
-				if (nl > 0)
-					clipboardText = clipboardText.Substring(0, nl);
-
-				clipboardText = clipboardText.Trim();
-				if (clipboardText.Length > 0)
-					HandleTextInput(clipboardText);
-
-				return true;
-			}
 
 			return true;
 		}
