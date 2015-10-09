@@ -127,18 +127,51 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Key == Keycode.LALT && OnAltKey())
 				return true;
 
+			Func<int> getPrevWhitespaceIndex = () =>
+				Text.Substring(0, CursorPosition).TrimEnd().LastIndexOf(' ') + 1;
+
+			Func<int> getNextWhitespaceIndex = () => {
+				var substr_len = Text.Substring(CursorPosition).Length;
+				var substr_trimmed = Text.Substring(CursorPosition).TrimStart();
+				var trimmed_spaces = substr_len - substr_trimmed.Length;
+				var next_whitespace = substr_trimmed.IndexOf(' ');
+				if (next_whitespace == -1)
+					return Text.Length;
+				else
+					return CursorPosition + trimmed_spaces + next_whitespace;
+			};
+
 			if (e.Key == Keycode.LEFT)
 			{
 				if (CursorPosition > 0)
-					CursorPosition--;
+				{
+					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+					{
+						CursorPosition = getPrevWhitespaceIndex();
+					}
+					else
+					{
+						CursorPosition--;
+					}
+				}
 
 				return true;
 			}
 
 			if (e.Key == Keycode.RIGHT)
 			{
-				if (CursorPosition <= Text.Length - 1)
-					CursorPosition++;
+				if (CursorPosition <= Text.Length - 1) {
+					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+					{
+						CursorPosition = getNextWhitespaceIndex();
+					}
+					else
+					{
+						CursorPosition++;
+					}
+				}
 
 				return true;
 			}
@@ -155,11 +188,61 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
+			if (e.Key == Keycode.K && e.Modifiers.HasModifier(Modifiers.Ctrl) &&
+				(Platform.CurrentPlatform != PlatformType.OSX))
+			{
+				// equivalent to cmd+delete on osx
+				if (CursorPosition < Text.Length)
+				{
+					Text = Text.Remove(CursorPosition);
+					OnTextEdited();
+				}
+
+				return true;
+			}
+
+			if (e.Key == Keycode.U && e.Modifiers.HasModifier(Modifiers.Ctrl) &&
+				(Platform.CurrentPlatform != PlatformType.OSX))
+			{
+				// equivalent to cmd+backspace on osx
+				Text = Text.Substring(CursorPosition);
+				CursorPosition = 0;
+				OnTextEdited();
+				return true;
+			}
+
+			if (e.Key == Keycode.X &&
+				((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+				 (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))))
+			{
+				if (!string.IsNullOrEmpty(Text))
+				{
+					Text = Text.Remove(0);
+					CursorPosition = 0;
+					OnTextEdited();
+					return true;
+				}
+			}
+
 			if (e.Key == Keycode.DELETE)
 			{
 				if (CursorPosition < Text.Length)
 				{
-					Text = Text.Remove(CursorPosition, 1);
+					if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+					(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+					{
+						Text = Text.Substring(0, CursorPosition) + Text.Substring(getNextWhitespaceIndex());
+					}
+					else if (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))
+					{
+						// equivalent to ctrl+k on non-osx
+						Text = Text.Remove(CursorPosition);
+					}
+					else
+					{
+						Text = Text.Remove(CursorPosition, 1);
+					}
+
 					OnTextEdited();
 				}
 
@@ -168,8 +251,25 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (e.Key == Keycode.BACKSPACE && CursorPosition > 0)
 			{
-				CursorPosition--;
-				Text = Text.Remove(CursorPosition, 1);
+				if ((Platform.CurrentPlatform != PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
+				(Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+				{
+					var prev_whitespace = getPrevWhitespaceIndex();
+					Text = Text.Substring(0, prev_whitespace) + Text.Substring(CursorPosition);
+					CursorPosition = prev_whitespace;
+				}
+				else if (Platform.CurrentPlatform == PlatformType.OSX && e.Modifiers.HasModifier(Modifiers.Meta))
+				{
+					// equivalent to ctrl+u on non-osx
+					Text = Text.Substring(CursorPosition);
+					CursorPosition = 0;
+				}
+				else
+				{
+					CursorPosition--;
+					Text = Text.Remove(CursorPosition, 1);
+				}
+
 				OnTextEdited();
 				return true;
 			}
