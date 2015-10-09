@@ -17,18 +17,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public interface IFolder : IDisposable
-	{
-		Stream GetContent(string filename);
-		bool Exists(string filename);
-		IEnumerable<uint> ClassicHashes();
-		IEnumerable<uint> CrcHashes();
-		IEnumerable<string> AllFileNames();
-		void Write(Dictionary<string, byte[]> contents);
-		int Priority { get; }
-		string Name { get; }
-	}
-
 	public static class GlobalFileSystem
 	{
 		public static List<IFolder> MountedFolders = new List<IFolder>();
