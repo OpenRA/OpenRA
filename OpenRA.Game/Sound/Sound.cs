@@ -9,14 +9,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -48,17 +45,17 @@ namespace OpenRA
 
 		ISoundSource LoadSound(string filename)
 		{
-			if (!GlobalFileSystem.Exists(filename))
+			if (!Game.ModData.ModFiles.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
 			if (filename.ToLowerInvariant().EndsWith("wav"))
-				using (var s = GlobalFileSystem.Open(filename))
+				using (var s = Game.ModData.ModFiles.Open(filename))
 					return LoadWave(new WavLoader(s));
 
-			using (var s = GlobalFileSystem.Open(filename))
+			using (var s = Game.ModData.ModFiles.Open(filename))
 				return LoadSoundRaw(AudLoader.LoadSound(s), 1, 16, 22050);
 		}
 

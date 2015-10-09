@@ -27,7 +27,7 @@ namespace OpenRA.FileSystem
 			Name = filename;
 			Priority = priority;
 
-			s = GlobalFileSystem.Open(filename);
+			s = Game.ModData.ModFiles.Open(filename);
 			try
 			{
 				if (s.ReadASCII(4) != "BIGF")

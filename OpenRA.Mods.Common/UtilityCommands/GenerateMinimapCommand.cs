@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -30,9 +29,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 			var map = new Map(args[1]);
 
-			GlobalFileSystem.UnmountAll();
+			modData.ModFiles.UnmountAll();
 			foreach (var dir in Game.ModData.Manifest.Folders)
-				GlobalFileSystem.Mount(dir);
+				modData.ModFiles.Mount(dir);
 
 			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);
 

@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -130,7 +129,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public void ConvertIniMap(string iniFile)
 		{
-			using (var stream = GlobalFileSystem.Open(iniFile))
+			using (var stream = Game.ModData.ModFiles.Open(iniFile))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");
@@ -162,7 +161,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				else
 				{
 					// CnC
-					using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
+					using (var s = Game.ModData.ModFiles.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
 						UnpackCncTileData(s);
 					ReadCncOverlay(file);
 					ReadCncTrees(file);

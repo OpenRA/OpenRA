@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 
 namespace OpenRA.GameRules
 {
@@ -36,11 +35,11 @@ namespace OpenRA.GameRules
 
 		public void Load()
 		{
-			if (!GlobalFileSystem.Exists(Filename))
+			if (!Game.ModData.ModFiles.Exists(Filename))
 				return;
 
 			Exists = true;
-			using (var s = GlobalFileSystem.Open(Filename))
+			using (var s = Game.ModData.ModFiles.Open(Filename))
 			{
 				if (Filename.ToLowerInvariant().EndsWith("wav"))
 					Length = (int)WavLoader.WaveLength(s);

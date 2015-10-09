@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace OpenRA.Graphics
@@ -110,7 +111,9 @@ namespace OpenRA.Graphics
 				sheet = cachedSheets[mi.Src];
 			else
 			{
-				sheet = new Sheet(SheetType.BGRA, mi.Src);
+				using (var stream = Game.ModData.ModFiles.Open(mi.Src))
+					sheet = new Sheet(SheetType.BGRA, stream);
+
 				cachedSheets.Add(mi.Src, sheet);
 			}
 

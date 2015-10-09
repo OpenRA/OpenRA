@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Traits;
@@ -41,14 +40,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var srcMod = args[1].Split(':')[0];
 
 			Game.ModData = new ModData(srcMod);
-			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 			var srcRules = Game.ModData.RulesetCache.Load();
 			var srcPaletteInfo = srcRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
 			Game.ModData = new ModData(destMod);
-			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 			var destRules = Game.ModData.RulesetCache.Load();
 			var destPaletteInfo = destRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;

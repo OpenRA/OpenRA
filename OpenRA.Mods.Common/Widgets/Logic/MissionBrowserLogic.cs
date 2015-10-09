@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -171,11 +170,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var briefingVideo = selectedMapPreview.Map.Videos.Briefing;
 			var briefingVideoVisible = briefingVideo != null;
-			var briefingVideoDisabled = !(briefingVideoVisible && GlobalFileSystem.Exists(briefingVideo));
+			var briefingVideoDisabled = !(briefingVideoVisible && Game.ModData.ModFiles.Exists(briefingVideo));
 
 			var infoVideo = selectedMapPreview.Map.Videos.BackgroundInfo;
 			var infoVideoVisible = infoVideo != null;
-			var infoVideoDisabled = !(infoVideoVisible && GlobalFileSystem.Exists(infoVideo));
+			var infoVideoDisabled = !(infoVideoVisible && Game.ModData.ModFiles.Exists(infoVideo));
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
@@ -295,7 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var gameStartVideo = selectedMapPreview.Map.Videos.GameStart;
-			if (gameStartVideo != null && GlobalFileSystem.Exists(gameStartVideo))
+			if (gameStartVideo != null && Game.ModData.ModFiles.Exists(gameStartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;

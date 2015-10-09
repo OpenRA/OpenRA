@@ -14,7 +14,6 @@ using System.IO;
 using Eluant;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -165,10 +164,10 @@ namespace OpenRA.Mods.Common.Scripting
 			else
 				onCompleteRadar = () => { };
 
-			Stream s = null;
+			Stream s;
 			try
 			{
-				s = GlobalFileSystem.Open(movie);
+				s = Game.ModData.ModFiles.Open(movie);
 			}
 			catch (FileNotFoundException e)
 			{

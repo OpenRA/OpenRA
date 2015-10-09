@@ -17,34 +17,16 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public static class GlobalFileSystem
+	public class FileSystem
 	{
-		public static List<IFolder> MountedFolders = new List<IFolder>();
-		static Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
-		static Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+		public readonly List<string> FolderPaths = new List<string>();
+		public readonly List<IFolder> MountedFolders = new List<IFolder>();
 
-		public static List<string> FolderPaths = new List<string>();
+		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 
-		static void MountInner(IFolder folder)
-		{
-			MountedFolders.Add(folder);
-
-			foreach (var hash in folder.ClassicHashes())
-			{
-				var l = classicHashIndex[hash];
-				if (!l.Contains(folder))
-					l.Add(folder);
-			}
-
-			foreach (var hash in folder.CrcHashes())
-			{
-				var l = crcHashIndex[hash];
-				if (!l.Contains(folder))
-					l.Add(folder);
-			}
-		}
-
-		static int order = 0;
+		int order;
+		Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+		Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 
 		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
@@ -99,7 +81,13 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order);
 		}
 
-		public static void Mount(string name, string annotation = null)
+		public void Mount(IFolder mount)
+		{
+			if (!MountedFolders.Contains(mount))
+				MountedFolders.Add(mount);
+		}
+
+		public void Mount(string name, string annotation = null)
 		{
 			var optional = name.StartsWith("~");
 			if (optional)
@@ -117,7 +105,34 @@ namespace OpenRA.FileSystem
 				a();
 		}
 
-		public static void UnmountAll()
+		void MountInner(IFolder folder)
+		{
+			MountedFolders.Add(folder);
+
+			foreach (var hash in folder.ClassicHashes())
+			{
+				var folderList = classicHashIndex[hash];
+				if (!folderList.Contains(folder))
+					folderList.Add(folder);
+			}
+
+			foreach (var hash in folder.CrcHashes())
+			{
+				var folderList = crcHashIndex[hash];
+				if (!folderList.Contains(folder))
+					folderList.Add(folder);
+			}
+		}
+
+		public bool Unmount(IFolder mount)
+		{
+			if (MountedFolders.Contains(mount))
+				mount.Dispose();
+
+			return MountedFolders.RemoveAll(f => f == mount) > 0;
+		}
+
+		public void UnmountAll()
 		{
 			foreach (var folder in MountedFolders)
 				folder.Dispose();
@@ -128,20 +143,7 @@ namespace OpenRA.FileSystem
 			crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 		}
 
-		public static bool Unmount(IFolder mount)
-		{
-			if (MountedFolders.Contains(mount))
-				mount.Dispose();
-
-			return MountedFolders.RemoveAll(f => f == mount) > 0;
-		}
-
-		public static void Mount(IFolder mount)
-		{
-			if (!MountedFolders.Contains(mount)) MountedFolders.Add(mount);
-		}
-
-		public static void LoadFromManifest(Manifest manifest)
+		public void LoadFromManifest(Manifest manifest)
 		{
 			UnmountAll();
 			foreach (var dir in manifest.Folders)
@@ -151,7 +153,7 @@ namespace OpenRA.FileSystem
 				Mount(pkg.Key, pkg.Value);
 		}
 
-		static Stream GetFromCache(PackageHashType type, string filename)
+		Stream GetFromCache(PackageHashType type, string filename)
 		{
 			var index = type == PackageHashType.CRC32 ? crcHashIndex : classicHashIndex;
 			var folder = index[PackageEntry.HashFilename(filename, type)]
@@ -164,7 +166,7 @@ namespace OpenRA.FileSystem
 			return null;
 		}
 
-		public static Stream Open(string filename)
+		public Stream Open(string filename)
 		{
 			Stream s;
 			if (!TryOpen(filename, out s))
@@ -173,7 +175,7 @@ namespace OpenRA.FileSystem
 			return s;
 		}
 
-		public static bool TryOpen(string name, out Stream s)
+		public bool TryOpen(string name, out Stream s)
 		{
 			var filename = name;
 			var foldername = string.Empty;
@@ -217,7 +219,7 @@ namespace OpenRA.FileSystem
 			return false;
 		}
 
-		public static bool Exists(string name)
+		public bool Exists(string name)
 		{
 			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
 			if (explicitFolder)
@@ -231,8 +233,6 @@ namespace OpenRA.FileSystem
 				return MountedFolders.Any(f => f.Exists(name));
 		}
 
-		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
-
 		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)
 		{
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -243,15 +243,15 @@ namespace OpenRA.FileSystem
 			var filename = frags[0] + ".dll";
 
 			Assembly a;
-			if (assemblyCache.TryGetValue(filename, out a))
+			if (AssemblyCache.TryGetValue(filename, out a))
 				return a;
 
-			if (Exists(filename))
-				using (var s = Open(filename))
+			if (Game.ModData.ModFiles.Exists(filename))
+				using (var s = Game.ModData.ModFiles.Open(filename))
 				{
 					var buf = s.ReadBytes((int)s.Length);
 					a = Assembly.Load(buf);
-					assemblyCache.Add(filename, a);
+					AssemblyCache.Add(filename, a);
 					return a;
 				}
 

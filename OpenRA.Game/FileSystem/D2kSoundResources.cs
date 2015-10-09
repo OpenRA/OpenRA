@@ -29,7 +29,7 @@ namespace OpenRA.FileSystem
 			this.filename = filename;
 			this.priority = priority;
 
-			s = GlobalFileSystem.Open(filename);
+			s = Game.ModData.ModFiles.Open(filename);
 			try
 			{
 				filenames = new List<string>();

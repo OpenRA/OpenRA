@@ -39,14 +39,14 @@ namespace OpenRA.FileSystem
 
 			// Build the index and dispose the stream, it is no longer needed after this
 			List<IdxEntry> entries;
-			using (var indexStream = GlobalFileSystem.Open(indexFilename))
+			using (var indexStream = Game.ModData.ModFiles.Open(indexFilename))
 				entries = new IdxReader(indexStream).Entries;
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 				"{0} (bag format)".F(filename),
 				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
 
-			s = GlobalFileSystem.Open(filename);
+			s = Game.ModData.ModFiles.Open(filename);
 		}
 
 		public int Priority { get { return 1000 + bagFilePriority; } }
@@ -159,9 +159,9 @@ namespace OpenRA.FileSystem
 		public IEnumerable<string> AllFileNames()
 		{
 			var lookup = new Dictionary<uint, string>();
-			if (GlobalFileSystem.Exists("global mix database.dat"))
+			if (Game.ModData.ModFiles.Exists("global mix database.dat"))
 			{
-				var db = new XccGlobalDatabase(GlobalFileSystem.Open("global mix database.dat"));
+				var db = new XccGlobalDatabase(Game.ModData.ModFiles.Open("global mix database.dat"));
 				foreach (var e in db.Entries)
 				{
 					var hash = IdxEntry.HashFilename(e, PackageHashType.CRC32);
@@ -175,7 +175,7 @@ namespace OpenRA.FileSystem
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
-			GlobalFileSystem.Unmount(this);
+			Game.ModData.ModFiles.Unmount(this);
 			throw new NotImplementedException("Updating bag files unsupported");
 		}
 

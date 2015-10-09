@@ -34,7 +34,7 @@ namespace OpenRA.FileSystem
 			this.priority = priority;
 			index = new Dictionary<string, Entry>();
 
-			stream = GlobalFileSystem.Open(filename);
+			stream = Game.ModData.ModFiles.Open(filename);
 			try
 			{
 				index = new Dictionary<string, Entry>();

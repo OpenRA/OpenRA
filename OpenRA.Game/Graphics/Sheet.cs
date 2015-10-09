@@ -11,8 +11,9 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -47,9 +48,8 @@ namespace OpenRA.Graphics
 			Size = texture.Size;
 		}
 
-		public Sheet(SheetType type, string filename)
+		public Sheet(SheetType type, Stream stream)
 		{
-			using (var stream = GlobalFileSystem.Open(filename))
 			using (var bitmap = (Bitmap)Image.FromStream(stream))
 			{
 				Size = bitmap.Size;

@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -217,9 +216,9 @@ namespace OpenRA.Graphics
 		{
 			VxlReader vxl;
 			HvaReader hva;
-			using (var s = GlobalFileSystem.Open(files.First + ".vxl"))
+			using (var s = Game.ModData.ModFiles.Open(files.First + ".vxl"))
 				vxl = new VxlReader(s);
-			using (var s = GlobalFileSystem.Open(files.Second + ".hva"))
+			using (var s = Game.ModData.ModFiles.Open(files.Second + ".hva"))
 				hva = new HvaReader(s, files.Second + ".hva");
 			return new Voxel(this, vxl, hva);
 		}

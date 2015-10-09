@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.TS.UtilityCommands
 {
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
@@ -73,10 +72,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					for (var i = 1; i <= sectionCount; i++, templateIndex++)
 					{
 						var templateFilename = "{0}{1:D2}.{2}".F(sectionFilename, i, extension);
-						if (!GlobalFileSystem.Exists(templateFilename))
+						if (!Game.ModData.ModFiles.Exists(templateFilename))
 							continue;
 
-						using (var s = GlobalFileSystem.Open(templateFilename))
+						using (var s = Game.ModData.ModFiles.Open(templateFilename))
 						{
 							Console.WriteLine("\tTemplate@{0}:", templateIndex);
 							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
@@ -88,7 +87,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							for (var v = 'a'; v <= 'z'; v++)
 							{
 								var variant = "{0}{1:D2}{2}.{3}".F(sectionFilename, i, v, extension);
-								if (GlobalFileSystem.Exists(variant))
+								if (Game.ModData.ModFiles.Exists(variant))
 									images.Add(variant);
 							}
 

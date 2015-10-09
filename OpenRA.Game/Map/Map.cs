@@ -317,7 +317,7 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
+			Container = FileSystem.FileSystem.OpenPackage(path, null, int.MaxValue);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
@@ -650,7 +650,7 @@ namespace OpenRA
 				Path = toPath;
 
 				// Create a new map package
-				Container = GlobalFileSystem.CreatePackage(Path, int.MaxValue, entries);
+				Container = FileSystem.FileSystem.CreatePackage(Path, int.MaxValue, entries);
 			}
 
 			// Update existing package

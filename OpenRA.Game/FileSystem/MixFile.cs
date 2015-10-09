@@ -57,7 +57,7 @@ namespace OpenRA.FileSystem
 			this.priority = priority;
 			this.type = type;
 
-			s = GlobalFileSystem.Open(filename);
+			s = Game.ModData.ModFiles.Open(filename);
 			try
 			{
 				// Detect format type
@@ -223,9 +223,9 @@ namespace OpenRA.FileSystem
 				}
 			}
 
-			if (GlobalFileSystem.Exists("global mix database.dat"))
+			if (Game.ModData.ModFiles.Exists("global mix database.dat"))
 			{
-				var db = new XccGlobalDatabase(GlobalFileSystem.Open("global mix database.dat"));
+				var db = new XccGlobalDatabase(Game.ModData.ModFiles.Open("global mix database.dat"));
 				foreach (var e in db.Entries)
 				{
 					var hash = PackageEntry.HashFilename(e, type);
@@ -249,7 +249,7 @@ namespace OpenRA.FileSystem
 		{
 			// Cannot modify existing mixfile - rename existing file and
 			// create a new one with original content plus modifications
-			GlobalFileSystem.Unmount(this);
+			Game.ModData.ModFiles.Unmount(this);
 
 			// TODO: Add existing data to the contents list
 			if (index.Count > 0)

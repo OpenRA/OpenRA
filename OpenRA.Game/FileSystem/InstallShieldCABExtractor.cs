@@ -14,11 +14,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace OpenRA.FileSystem
 {
-	public class InstallShieldCABExtractor : IDisposable, IFolder
+	public class InstallShieldCABExtractor : IFolder
 	{
 		const uint FileSplit = 0x1;
 		const uint FileObfuscated = 0x2;
@@ -277,7 +276,7 @@ namespace OpenRA.FileSystem
 					cabFile.Dispose();
 
 				++volumeNumber;
-				cabFile = GlobalFileSystem.Open("{0}{1}.cab".F(commonName, volumeNumber));
+				cabFile = Game.ModData.ModFiles.Open("{0}{1}.cab".F(commonName, volumeNumber));
 				if (cabFile.ReadUInt32() != 0x28635349)
 					throw new InvalidDataException("Not an Installshield CAB package");
 
@@ -341,7 +340,7 @@ namespace OpenRA.FileSystem
 			var fileGroupOffsets = new List<uint>();
 
 			this.priority = priority;
-			hdrFile = GlobalFileSystem.Open(hdrFilename);
+			hdrFile = Game.ModData.ModFiles.Open(hdrFilename);
 
 			// Strips archive number AND file extension
 			commonName = Regex.Replace(hdrFilename, @"\d*\.[^\.]*$", "");

@@ -31,7 +31,7 @@ namespace OpenRA.FileSystem
 
 			filenames = new List<string>();
 
-			s = GlobalFileSystem.Open(filename);
+			s = Game.ModData.ModFiles.Open(filename);
 			try
 			{
 				// Parse package header
