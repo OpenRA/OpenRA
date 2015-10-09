@@ -218,7 +218,6 @@ namespace OpenRA
 
 			GeoIP.Initialize();
 
-			ModData.ModFiles.Mount(Platform.GameDir); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
 			foreach (var r in renderers)
 			{
