@@ -42,7 +42,7 @@ with [Lua](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victo
 [Corona SDK](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio),
 GSL-shell, and other engines.
 * Function outline.
-* Fuzzy search with `Go To File`, `Go To Symbol`, and `Insert Library Function`.
+* Fuzzy search with `Go To File`, project-wide `Go To Symbol`, and `Insert Library Function`.
 * Several ways to extend the current functionality:
   - specs (`spec/`): specifications for file syntax, lexer, and keywords;
   - apis (`api/`): descriptions for [code completion and tooltips](http://studio.zerobrane.com/doc-api-auto-complete);
@@ -102,13 +102,12 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Where is Estrela?
 
-The projects have been merged and ZeroBrane Studio will lead the future.
-Please reassociate files with ZeroBrane Studio. To keep your history of files
-and projects copy the contents of the `EstrelaEditor.ini` in your HOME
-directory to `ZeroBraneStudio.ini`. If you have used Estrela for graphics
-shader authoring or luxinia, create/modify the `cfg/user.lua` to include the
-content of `cfg/estrela.lua` to load all tools and specifications by default
-again.
+The Estrela project has been merged into ZeroBrane Studio.
+To keep your history of files and projects copy the contents of the `EstrelaEditor.ini`
+in your HOME directory to `ZeroBraneStudio.ini`.
+If you have used Estrela for graphics shader authoring or luxinia, create/modify
+the `cfg/user.lua` and add `include "estrela.lua"` (1.20+) to load all tools
+and specifications by default again.
   
 ## License
 
