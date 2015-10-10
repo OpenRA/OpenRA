@@ -56,6 +56,12 @@ namespace OpenRA.Mods.Common.Widgets
 		// This is crap
 		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
 
+		public override void Hidden()
+		{
+			base.Hidden();
+			RemovePanel();
+		}
+
 		public override void Removed()
 		{
 			base.Removed();
