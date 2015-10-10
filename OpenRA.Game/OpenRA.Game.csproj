@@ -246,6 +246,8 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="GameSpeed.cs" />
+    <Compile Include="GlobalChat.cs" />
+    <Compile Include="Primitives\ObservableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
