@@ -182,7 +182,7 @@ namespace OpenRA.Network
 			public string Difficulty;
 			public bool Crates = true;
 			public bool Creeps = true;
-			public bool Shroud = true;
+			public bool Shroud = false;
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
