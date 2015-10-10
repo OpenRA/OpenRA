@@ -4,7 +4,9 @@ light_inf:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 	Valued:
-		Cost: 100
+		Cost: 50
+	CustomBuildTimeValue:
+		Value: 54
 	Tooltip:
 		Name: Light Infantry
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
@@ -27,7 +29,9 @@ engineer:
 		BuildPaletteOrder: 50
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 500
+		Cost: 400
+	CustomBuildTimeValue:
+		Value: 108
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
@@ -55,7 +59,9 @@ trooper:
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 250
+		Cost: 90
+	CustomBuildTimeValue:
+		Value: 73
 	Tooltip:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
@@ -79,7 +85,9 @@ medic:
 		BuildPaletteOrder: 60
 		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
 	Valued:
-		Cost: 500
+		Cost: 200
+	CustomBuildTimeValue:
+		Value: 108
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
@@ -105,8 +113,6 @@ medic:
 
 fremen:
 	Inherits: ^Infantry
-	Valued:
-		Cost: 800
 	Tooltip:
 		Name: Fremen
 		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
@@ -116,6 +122,8 @@ fremen:
 		Prerequisites: ~disabled
 	Mobile:
 		Speed: 43
+	Valued:
+		Cost: 200	## actually 0, but spawns from support power at Palace
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -147,7 +155,9 @@ grenadier:
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
 	Valued:
-		Cost: 160
+		Cost: 80
+	CustomBuildTimeValue:
+		Value: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
@@ -176,7 +186,9 @@ sardaukar:
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
 	Valued:
-		Cost: 400
+		Cost: 200
+	CustomBuildTimeValue:
+		Value: 81
 	Tooltip:
 		Name: Sardaukar
 		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
@@ -209,7 +221,7 @@ saboteur:
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
 	Valued:
-		Cost: 800
+		Cost: 300	## actually 0, but spawns from support power at Palace
 	Tooltip:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings

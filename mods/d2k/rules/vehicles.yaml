@@ -6,6 +6,8 @@ mcv:
 		BuildPaletteOrder: 110
 	Valued:
 		Cost: 2000
+	CustomBuildTimeValue:
+		Value: 648
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard\n  Unarmed
@@ -48,7 +50,9 @@ harvester:
 		BuildPaletteOrder: 10
 		InitialActivity: FindResources
 	Valued:
-		Cost: 1000
+		Cost: 1200
+	CustomBuildTimeValue:
+		Value: 540
 	Tooltip:
 		Name: Spice Harvester
 		Description: Collects Spice for processing\n  Unarmed
@@ -92,7 +96,9 @@ trike:
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.regulartrikes
 	Valued:
-		Cost: 250
+		Cost: 300
+	CustomBuildTimeValue:
+		Value: 194
 	Tooltip:
 		Name: Trike
 		Description: Fast scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
@@ -131,6 +137,8 @@ quad:
 		BuildPaletteOrder: 20
 	Valued:
 		Cost: 400
+	CustomBuildTimeValue:
+		Value: 277
 	Tooltip:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
@@ -163,7 +171,9 @@ siege_tank:
 		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
 	Valued:
-		Cost: 850
+		Cost: 700
+	CustomBuildTimeValue:
+		Value: 324
 	Tooltip:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
@@ -203,8 +213,6 @@ siege_tank:
 
 missile_tank:
 	Inherits: ^Tank
-	Valued:
-		Cost: 1000
 	Tooltip:
 		Name: Missile Tank
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings, Aircraft\n  Weak vs Infantry
@@ -212,6 +220,10 @@ missile_tank:
 		Queue: Armor
 		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
 		BuildPaletteOrder: 60
+	Valued:
+		Cost: 900
+	CustomBuildTimeValue:
+		Value: 441
 	Mobile:
 		Speed: 64
 		ROT: 5
@@ -244,7 +256,9 @@ sonic_tank:
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
 	Valued:
-		Cost: 1250
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 486
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
@@ -277,7 +291,9 @@ devastator:
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 	Valued:
-		Cost: 1200
+		Cost: 1050
+	CustomBuildTimeValue:
+		Value: 540
 	Tooltip:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
@@ -316,7 +332,9 @@ raider:
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.ordos
 	Valued:
-		Cost: 300
+		Cost: 350
+	CustomBuildTimeValue:
+		Value: 194
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
@@ -352,6 +370,8 @@ stealth_raider:
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
+	CustomBuildTimeValue:
+		Value: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
@@ -369,6 +389,8 @@ deviator:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 486
 	Tooltip:
 		Name: Deviator
 		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
@@ -406,6 +428,8 @@ deviator:
 		BuildPaletteOrder: 40
 	Valued:
 		Cost: 700
+	CustomBuildTimeValue:
+		Value: 373
 	Tooltip:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed

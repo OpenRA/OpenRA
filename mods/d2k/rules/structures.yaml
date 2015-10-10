@@ -25,6 +25,8 @@ concretea:
 		Dimensions: 2,2
 	Valued:
 		Cost: 20
+	CustomBuildTimeValue:
+		Value: 54
 
 concreteb:
 	Inherits: ^concrete
@@ -33,6 +35,8 @@ concreteb:
 		Dimensions: 3,3
 	Valued:
 		Cost: 50
+	CustomBuildTimeValue:
+		Value: 81
 	Buildable:
 		Prerequisites: upgrade.conyard
 
@@ -85,7 +89,9 @@ wind_trap:
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
+	CustomBuildTimeValue:
+		Value: 180
 	Tooltip:
 		Name: Wind Trap
 		Description: Provides power for other structures
@@ -120,7 +126,9 @@ barracks:
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 300
+		Cost: 225
+	CustomBuildTimeValue:
+		Value: 231
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -177,6 +185,8 @@ refinery:
 		Bounds: 96,64
 	Valued:
 		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 540
 	Tooltip:
 		Name: Spice Refinery
 		Description: Harvesters unload Spice here for processing
@@ -228,7 +238,9 @@ silo:
 	Selectable:
 		Bounds: 32,32
 	Valued:
-		Cost: 150
+		Cost: 120
+	CustomBuildTimeValue:
+		Value: 135
 	Tooltip:
 		Name: Silo
 		Description: Stores excess harvested Spice
@@ -272,6 +284,8 @@ light_factory:
 		Bounds: 96,64
 	Valued:
 		Cost: 500
+	CustomBuildTimeValue:
+		Value: 277
 	Tooltip:
 		Name: Light Factory
 		Description: Produces light vehicles
@@ -328,7 +342,9 @@ heavy_factory:
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 2000
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 648
 	Tooltip:
 		Name: Heavy Factory
 		Description: Produces heavy vehicles
@@ -391,7 +407,9 @@ outpost:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 700
+		Cost: 750
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
@@ -423,8 +441,6 @@ outpost:
 
 starport:
 	Inherits: ^Building
-	Valued:
-		Cost: 2000
 	Tooltip:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
@@ -432,6 +448,10 @@ starport:
 		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
+	Valued:
+		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 540
 	Building:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
@@ -491,7 +511,9 @@ wall:
 		DamagedSounds:
 		DestroyedSounds: EXPLSML4.WAV
 	Valued:
-		Cost: 100
+		Cost: 20
+	CustomBuildTimeValue:
+		Value: 54
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -533,7 +555,9 @@ medium_gun_turret:
 		Prerequisites: barracks
 		BuildPaletteOrder: 90
 	Valued:
-		Cost: 650
+		Cost: 550
+	CustomBuildTimeValue:
+		Value: 231
 	Tooltip:
 		Name: Gun Turret
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -575,7 +599,9 @@ large_gun_turret:
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
-		Cost: 850
+		Cost: 750
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Rocket Turret
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
@@ -618,7 +644,9 @@ repair_pad:
 		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
-		Cost: 500
+		Cost: 800
+	CustomBuildTimeValue:
+		Value: 324
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
@@ -662,7 +690,9 @@ high_tech_factory:
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 750
+		Cost: 1150
+	CustomBuildTimeValue:
+		Value: 405
 	Tooltip:
 		Name: High Tech Factory
 		Description: Unlocks advanced technology
@@ -717,7 +747,9 @@ research_centre:
 	Selectable:
 		Bounds: 96,64,0,16
 	Valued:
-		Cost: 1500
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 270
 	Tooltip:
 		Name: Ix Lab
 		Description: Unlocks experimental tanks
@@ -753,7 +785,9 @@ palace:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 2000
+		Cost: 1600
+	CustomBuildTimeValue:
+		Value: 810
 	Tooltip:
 		Name: Palace
 		Description: Unlocks elite infantry
