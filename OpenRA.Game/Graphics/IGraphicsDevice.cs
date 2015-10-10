@@ -61,6 +61,7 @@ namespace OpenRA
 		Bitmap TakeScreenshot();
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
+		bool SetClipboardText(string text);
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
 		void SetLineWidth(float width);

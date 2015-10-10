@@ -382,6 +382,12 @@ namespace OpenRA.Platforms.Default
 			return input.GetClipboardText();
 		}
 
+		public bool SetClipboardText(string text)
+		{
+			VerifyThreadAffinity();
+			return input.SetClipboardText(text);
+		}
+
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size)
 		{
 			VerifyThreadAffinity();

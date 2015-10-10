@@ -123,15 +123,15 @@ namespace OpenRA.Mods.Common.Widgets
 			Func<int> getPrevWhitespaceIndex = () =>
 				Text.Substring(0, CursorPosition).TrimEnd().LastIndexOf(' ') + 1;
 
-			Func<int> getNextWhitespaceIndex = () => {
+			Func<int> getNextWhitespaceIndex = () =>
+			{
 				var substr = Text.Substring(CursorPosition);
 				var substrTrimmed = substr.TrimStart();
 				var trimmedSpaces = substr.Length - substrTrimmed.Length;
 				var nextWhitespace = substrTrimmed.IndexOf(' ');
 				if (nextWhitespace == -1)
 					return Text.Length;
-				else
-					return CursorPosition + trimmedSpaces + nextWhitespace;
+				return CursorPosition + trimmedSpaces + nextWhitespace;
 			};
 
 			var isOSX = Platform.CurrentPlatform == PlatformType.OSX;
@@ -161,21 +161,24 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.LEFT:
 					ResetBlinkCycle();
 					if (CursorPosition > 0)
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						(isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+					{
+						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 							CursorPosition = getPrevWhitespaceIndex();
 						else
 							CursorPosition--;
+					}
+
 					break;
 
 				case Keycode.RIGHT:
 					ResetBlinkCycle();
 					if (CursorPosition <= Text.Length - 1)
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						(isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+					{
+						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 							CursorPosition = getNextWhitespaceIndex();
 						else
 							CursorPosition++;
+					}
 
 					break;
 
@@ -214,10 +217,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				case Keycode.X:
 					ResetBlinkCycle();
-					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						 (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))) &&
-						 (!string.IsNullOrEmpty(Text)))
+					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))) &&
+						!string.IsNullOrEmpty(Text))
 					{
+						Game.Renderer.SetClipboardText(Text);
 						Text = Text.Remove(0);
 						CursorPosition = 0;
 						OnTextEdited();
@@ -230,8 +233,7 @@ namespace OpenRA.Mods.Common.Widgets
 					ResetBlinkCycle();
 					if (CursorPosition < Text.Length)
 					{
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						(isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 							Text = Text.Substring(0, CursorPosition) + Text.Substring(getNextWhitespaceIndex());
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
 							Text = Text.Remove(CursorPosition);
@@ -248,8 +250,7 @@ namespace OpenRA.Mods.Common.Widgets
 					ResetBlinkCycle();
 					if (CursorPosition > 0)
 					{
-						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						(isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
+						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 						{
 							var prev_whitespace = getPrevWhitespaceIndex();
 							Text = Text.Substring(0, prev_whitespace) + Text.Substring(CursorPosition);
@@ -273,8 +274,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				case Keycode.V:
 					ResetBlinkCycle();
-					if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) ||
-						 (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
+					if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
 					{
 						var clipboardText = Game.Renderer.GetClipboardText();
 

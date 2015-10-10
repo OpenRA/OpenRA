@@ -42,6 +42,7 @@ namespace OpenRA.Platforms.Null
 		public Bitmap TakeScreenshot() { return new Bitmap(1, 1); }
 
 		public string GetClipboardText() { return ""; }
+		public bool SetClipboardText(string text) { return false; }
 		public void PumpInput(IInputHandler ih)
 		{
 			Game.HasInputFocus = false;
