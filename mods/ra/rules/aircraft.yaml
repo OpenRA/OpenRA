@@ -272,6 +272,7 @@ HELI:
 		FacingTolerance: 20
 	Aircraft:
 		RearmBuildings: hpad
+		TakeOffWhenResupplied: true
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
@@ -329,6 +330,7 @@ HIND:
 		FacingTolerance: 20
 	Aircraft:
 		RearmBuildings: hpad
+		TakeOffWhenResupplied: true
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
