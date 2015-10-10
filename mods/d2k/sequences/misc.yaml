@@ -161,7 +161,7 @@ rallypoint:
 		Length: *
 
 beacon:
-	arrow: mouse.r8
+	arrow: MOUSE.R8
 		Start: 148
 		Offset: -24,-24
 	circles: fpls.shp
