@@ -207,7 +207,7 @@ missile_tank:
 		Cost: 1000
 	Tooltip:
 		Name: Missile Tank
-		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
+		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings, Aircraft\n  Weak vs Infantry
 	Buildable:
 		Queue: Armor
 		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
@@ -223,8 +223,7 @@ missile_tank:
 		Range: 9c0
 	Armament:
 		Weapon: mtank_pri
-		LocalOffset: -213,128,171, -213,-256,171
-		FireDelay: 15
+		LocalOffset: -128,128,171, -128,-128,171
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
@@ -260,7 +259,7 @@ sonic_tank:
 		Range: 6c0
 	Armament:
 		Weapon: Sound
-		LocalOffset: 640,0,427
+		LocalOffset: 600,0,427
 	AttackFrontal:
 	AutoTarget:
 	Explodes:

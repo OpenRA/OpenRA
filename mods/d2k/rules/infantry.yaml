@@ -65,7 +65,7 @@ trooper:
 		Speed: 31
 	Armament:
 		Weapon: Bazooka
-		LocalOffset: 0,0,555
+		LocalOffset: 128,0,256
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
@@ -156,8 +156,8 @@ grenadier:
 	Mobile:
 		Speed: 43
 	Armament:
-		LocalOffset: 0,0,555
 		Weapon: grenade
+		LocalOffset: 0,0,320
 		FireDelay: 15
 	AttackFrontal:
 	WithInfantryBody:

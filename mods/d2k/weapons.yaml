@@ -57,7 +57,7 @@ Bazooka:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosion: tiny_explosion
 		ImpactSound: EXPLSML1.WAV
 
 Fremen_S:
@@ -232,7 +232,7 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Report: ROCKET1.WAV
-	ValidTargets: Ground, Air
+	ValidTargets: Ground
 	Projectile: Missile
 		Inaccuracy: 64
 		Image: RPG
@@ -246,7 +246,7 @@ Rocket:
 		Spread: 250
 		Falloff: 100, 95, 70, 50, 25, 5, 0
 		Damage: 250
-		ValidTargets: Ground, Air
+		ValidTargets: Ground
 		Versus:
 			none: 25
 			wall: 100
@@ -300,13 +300,15 @@ Rocket:
 
 TowerMissile:
 	ReloadDelay: 60
+	Burst: 2
+	BurstDelay: 60
 	Range: 5c512
 	MinRange: 1c0
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Blockable: false
-		Shadow: yes
+		Shadow: true
 		RateOfTurn: 1
 		Inaccuracy: 384
 		Image: MISSILE2
@@ -333,8 +335,8 @@ TowerMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLSML4.WAV
+		Explosion: small_explosion
+		ImpactSound: EXPLSML1.WAV
 
 80mm_A:
 	ReloadDelay: 50
@@ -455,8 +457,10 @@ DevBullet:
 
 mtank_pri:
 	ReloadDelay: 115
+	Burst: 2
+	BurstDelay: 115
 	Range: 6c0
-	Report: MISSLE1.WAV
+	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Speed: 281
@@ -487,8 +491,8 @@ mtank_pri:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLSML4.WAV
+		Explosion: small_explosion
+		ImpactSound: EXPLSML1.WAV
 
 DeviatorMissile:
 	ReloadDelay: 160
@@ -565,8 +569,8 @@ DeviatorMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_artillery
-		ImpactSound: EXPLLG3.WAV
+		Explosion: med_explosion
+		ImpactSound: EXPLMD2.WAV
 
 Sound:
 	ReloadDelay: 90
@@ -645,7 +649,7 @@ OrniBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: NAPALM1.WAV
 
 Crush:
@@ -723,7 +727,7 @@ CrateExplosion:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplodeSmall:
@@ -738,7 +742,7 @@ UnitExplodeMed:
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
-		Explosion: artillery
+		Explosion: large_explosion
 		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
 grenade:
