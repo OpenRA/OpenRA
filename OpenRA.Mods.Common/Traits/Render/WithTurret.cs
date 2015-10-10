@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
 	public class WithTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
-		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
+		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "turret";
