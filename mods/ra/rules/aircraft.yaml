@@ -112,6 +112,7 @@ MIG:
 	ReloadAmmo:
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
+		RearmBuildings: afld
 	AmmoPool:
 		Ammo: 8
 	ReturnOnIdle:
@@ -176,6 +177,7 @@ YAK:
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 		ReloadTicks: 33
+		RearmBuildings: afld
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
@@ -274,6 +276,7 @@ HELI:
 	ReloadAmmo:
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
+		RearmBuildings: hpad
 	AmmoPool:
 		Ammo: 8
 	SelectionDecorations:
@@ -328,6 +331,7 @@ HIND:
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 		ReloadTicks: 32
+		RearmBuildings: hpad
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6

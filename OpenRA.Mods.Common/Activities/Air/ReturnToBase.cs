@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
+			var reloadAmmo = self.TraitsImplementing<ReloadAmmo>().Where(x => x.Info.UpgradeMinEnabledLevel > 0).ToArray();
 			return self.World.ActorsHavingTrait<Reservable>()
 				.Where(a => a.Owner == self.Owner
-					&& rearmBuildings.Contains(a.Info.Name)
+					&& reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(a.Info.Name))
 					&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
 		}

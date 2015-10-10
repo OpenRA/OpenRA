@@ -352,7 +352,6 @@
 		Bounds: 24,24
 	Aircraft:
 		RepairBuildings: fix
-		RearmBuildings: afld
 		AirborneUpgrades: airborne
 		CruisingUpgrades: cruising
 	Targetable@GROUND:
@@ -394,7 +393,6 @@
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
-		RearmBuildings: hpad
 		CanHover: True
 	GpsDot:
 		String: Helicopter

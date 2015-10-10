@@ -97,6 +97,7 @@ ORCA:
 		FacingTolerance: 20
 		Voice: Attack
 	ReloadAmmo:
+		RearmBuildings: gahpad, nahpad
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 	AmmoPool:
@@ -144,6 +145,7 @@ ORCAB:
 		Voice: Attack
 		FacingTolerance: 20
 	ReloadAmmo:
+		RearmBuildings: gahpad, nahpad
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 		ReloadTicks: 200
@@ -267,6 +269,7 @@ SCRIN:
 		Voice: Attack
 		FacingTolerance: 20
 	ReloadAmmo:
+		RearmBuildings: gahpad, nahpad
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 	AmmoPool:
@@ -311,10 +314,12 @@ APACHE:
 		FacingTolerance: 20
 		Voice: Attack
 	ReloadAmmo:
+		RearmBuildings: gahpad, nahpad
 		UpgradeTypes: aircraftreload
 		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 12
+		ReloadCount: 3
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty

@@ -477,8 +477,8 @@
 		AirborneUpgrades: airborne
 		CruisingUpgrades: cruising
 		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
-		LandWhenIdle: no
+		LandWhenIdle: false
+		TakeOffWhenResupplied: false
 		Voice: Move
 		IdealSeparation: 853
 	Voiced:

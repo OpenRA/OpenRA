@@ -32,8 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
-		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
@@ -65,6 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
+		[Desc("Take off from resupplying structure when fully rearmed/repaired?")]
+		public readonly bool TakeOffWhenResupplied = true;
+
 		[Desc("Does this actor need to turn before landing?")]
 		public readonly bool TurnToLand = false;
 
@@ -94,6 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool IsPlane;
 		public readonly AircraftInfo Info;
 		readonly Actor self;
+		ReloadAmmo[] reloadAmmo;
 
 		UpgradeManager um;
 		IDisposable reservation;
@@ -129,6 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			um = self.TraitOrDefault<UpgradeManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().Where(x => x.Info.UpgradeMinEnabledLevel > 0).ToArray();
 		}
 
 		public void AddedToWorld(Actor self)
@@ -164,6 +167,29 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Repulse();
+
+			if (!airborne && Info.TakeOffWhenResupplied && IsResupplied(self))
+				self.QueueActivity(new TakeOff(self));
+		}
+
+		public bool IsResupplied(Actor self)
+		{
+			var host = GetActorBelow();
+
+			// We don't want aircraft to take off if they're not sitting on a rearm/repair structure
+			if (host == null)
+				return false;
+
+			var needsRepairsHere = !airborne && Info.RepairBuildings.Contains(host.Info.Name)
+				&& self.GetDamageState() != DamageState.Undamaged;
+
+			var needsReloadHere = !airborne && reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(host.Info.Name))
+				&& self.TraitsImplementing<AmmoPool>().Any(x => !x.FullAmmo());
+
+			if (needsRepairsHere || needsReloadHere)
+				return false;
+
+			return true;
 		}
 
 		public void Repulse()
@@ -278,7 +304,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return Info.RearmBuildings.Contains(a.Info.Name)
+			return reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(a.Info.Name))
 				|| Info.RepairBuildings.Contains(a.Info.Name);
 		}
 
@@ -553,7 +579,6 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));

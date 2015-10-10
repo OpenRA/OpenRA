@@ -458,7 +458,7 @@ namespace OpenRA.Mods.Common.AI
 			if (buildingReload != null)
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
-				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));
+				var countBuildings = buildingReload.RearmBuildings.Sum(b => CountBuilding(b, Player));
 				if (countOwnAir >= countBuildings)
 					return false;
 			}
