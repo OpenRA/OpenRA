@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly CrushableInfo info;
 
+		public bool Crushed;
+
 		public Crushable(Actor self, CrushableInfo info)
 		{
 			this.self = self;
@@ -49,6 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnCrush(Actor crusher)
 		{
+			Crushed = true;
+
 			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
 			var wda = self.TraitsImplementing<WithDeathAnimation>()
 				.FirstOrDefault(s => s.Info.CrushedSequence != null);

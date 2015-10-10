@@ -165,7 +165,9 @@ namespace OpenRA.Traits
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 	public interface IDisable { bool Disabled { get; } }
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
+
 	public interface IHuskModifier { string HuskActor(Actor self); }
+	public interface IHuskCreated { void HuskCreated(Actor self); }
 
 	public interface IRadarSignature
 	{

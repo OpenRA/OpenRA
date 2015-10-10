@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public enum OwnerType { Victim, Killer, InternalName }
 
@@ -45,11 +45,15 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
 		public readonly bool RequiresLobbyCreeps = false;
 
+		[Desc("Should no actor be spawned when the parent actor is crushed?")]
+		public readonly bool IgnoreCrushes = true;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
 	public class SpawnActorOnDeath : INotifyKilled
 	{
+		readonly Crushable crushable;
 		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
 
@@ -57,6 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.info = info;
 
+			crushable = init.Self.TraitOrDefault<Crushable>();
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
@@ -66,6 +71,9 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			if (!self.IsInWorld)
+				return;
+
+			if (info.IgnoreCrushes && crushable != null && crushable.Crushed)
 				return;
 
 			if (self.World.SharedRandom.Next(100) > info.Probability)
@@ -113,19 +121,14 @@ namespace OpenRA.Mods.RA.Traits
 				if (turreted != null)
 					td.Add(new TurretFacingInit(turreted.TurretFacing));
 
-				// TODO: untie this and move to Mods.Common
-				var chronoshiftable = self.TraitOrDefault<Chronoshiftable>();
-				if (chronoshiftable != null && chronoshiftable.ReturnTicks > 0)
-				{
-					td.Add(new ChronoshiftOriginInit(chronoshiftable.Origin));
-					td.Add(new ChronoshiftReturnInit(chronoshiftable.ReturnTicks));
-				}
-
 				var huskActor = self.TraitsImplementing<IHuskModifier>()
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				w.CreateActor(huskActor ?? info.Actor, td);
+				var newActor = w.CreateActor(huskActor ?? info.Actor, td);
+
+				foreach (var hc in self.TraitsImplementing<IHuskCreated>())
+					hc.HuskCreated(newActor);
 			});
 		}
 	}

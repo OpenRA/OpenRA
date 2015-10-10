@@ -65,3 +65,30 @@ ENGINEER:
 			gdi: engineer.gdi
 			nod: engineer.nod
 
+FLAMEGUY:
+	Inherits: ^ExistsInWorld
+	Mobile:
+		Speed: 71
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+	RenderSprites:
+	HiddenUnderFog:
+	WithInfantryBody:
+		IdleSequences: run
+	Health:
+		HP: 160
+	SelfHealing:
+		Step: -10
+		HealIfBelow: 1.01
+	ScaredyCat:
+	WithDeathAnimation:
+		FallbackSequence: die
+		UseDeathTypeSuffix: false

@@ -260,7 +260,6 @@
 			BulletDeath: 1
 			SmallExplosionDeath: 2
 			HeadshotDeath: 3
-			FireDeath: 5
 	WithDeathAnimation@explosion:
 		DeathSequencePalette: effect
 		DeathPaletteIsPlayerPalette: False
@@ -289,6 +288,9 @@
 		InternalOwner: Creeps
 		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
 		RequiresLobbyCreeps: true
+	SpawnActorOnDeath@FLAMEGUY:
+		Actor: FLAMEGUY
+		DeathType: FireDeath
 	Guard:
 		Voice: Move
 	Guardable:

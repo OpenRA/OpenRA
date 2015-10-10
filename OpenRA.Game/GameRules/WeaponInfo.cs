@@ -153,7 +153,8 @@ namespace OpenRA.GameRules
 		{
 			foreach (var warhead in Warheads)
 			{
-				var wh = warhead; // force the closure to bind to the current warhead
+				// Force the closure to bind to the current warhead
+				var wh = warhead;
 
 				Action a = () => wh.DoImpact(target, firedBy, damageModifiers);
 				if (wh.Delay > 0)

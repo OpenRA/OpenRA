@@ -34,6 +34,10 @@ namespace OpenRA.Mods.Common.Lint
 				if (!targetable.Any())
 					continue;
 
+				var sa = actorInfo.Value.TraitInfos<SpawnActorOnDeathInfo>();
+				if (sa.Any())
+					deathTypes.AddRange(sa.Where(t => t.DeathType != null).Select(dt => dt.DeathType).ToList());
+
 				foreach (var weaponInfo in rules.Weapons)
 				{
 					var warheads = weaponInfo.Value.Warheads.OfType<DamageWarhead>().Where(dw => dw.Damage > 0);
@@ -49,7 +53,7 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (!warhead.DamageTypes.Overlaps(deathTypes))
-							emitError("Actor type `{0}` does not define a death animation for weapon `{1}`!"
+							emitError("Actor type `{0}` does neither define a death animation nor spawns an actor on death for weapon `{1}`!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}
 				}

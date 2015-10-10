@@ -134,7 +134,7 @@ namespace OpenRA.Traits
 			};
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-					 .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
 			if (DamageState != oldState)
