@@ -417,8 +417,8 @@ namespace OpenRA.Mods.Common.Server
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Developer Cheats."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "allowed" : "disallowed"));
+						server.SendMessage("{0} {1} the Debug Menu."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "enabled" : "disabled"));
 
 						return true;
 					}
