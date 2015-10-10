@@ -281,13 +281,29 @@ namespace OpenRA
 			Sound.Initialize();
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
-			ModData.MountFiles();
-			ModData.InitializeLoaders();
-			if (!Settings.Server.Dedicated)
-				Renderer.InitializeFonts(ModData.Manifest);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
+
+			if (Settings.Server.Dedicated)
+			{
+				RunDedicatedServer();
+				Environment.Exit(0);
+			}
+
+			var installData = ModData.Manifest.Get<ContentInstaller>();
+			var isModContentInstalled = installData.TestFiles.All(f => File.Exists(Platform.ResolvePath(f)));
+
+			// Mod assets are missing!
+			if (!isModContentInstalled)
+			{
+				InitializeMod("modchooser", new Arguments());
+				return;
+			}
+
+			ModData.MountFiles();
+			ModData.InitializeLoaders();
+			Renderer.InitializeFonts(ModData.Manifest);
 
 			if (Cursor != null)
 				Cursor.Dispose();
@@ -320,39 +336,38 @@ namespace OpenRA
 
 			JoinLocal();
 
-			if (Settings.Server.Dedicated)
+			ModData.LoadScreen.StartGame(args);
+		}
+
+		public static void RunDedicatedServer()
+		{
+			while (true)
 			{
+				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
+				Settings.Save();
+				CreateServer(new ServerSettings(Settings.Server));
+
 				while (true)
 				{
-					Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
-					Settings.Save();
-					CreateServer(new ServerSettings(Settings.Server));
-					while (true)
+					Thread.Sleep(100);
+
+					if (server.State == Server.ServerState.GameStarted && server.Conns.Count < 1)
 					{
-						Thread.Sleep(100);
-
-						if (server.State == Server.ServerState.GameStarted && server.Conns.Count < 1)
-						{
-							Console.WriteLine("No one is playing, shutting down...");
-							server.Shutdown();
-							break;
-						}
+						Console.WriteLine("No one is playing, shutting down...");
+						server.Shutdown();
+						break;
 					}
-
-					if (Settings.Server.DedicatedLoop)
-					{
-						Console.WriteLine("Starting a new server instance...");
-						ModData.MapCache.LoadMaps();
-						continue;
-					}
-
-					break;
 				}
 
-				Environment.Exit(0);
+				if (Settings.Server.DedicatedLoop)
+				{
+					Console.WriteLine("Starting a new server instance...");
+					ModData.MapCache.LoadMaps();
+					continue;
+				}
+
+				break;
 			}
-			else
-				ModData.LoadScreen.StartGame(args);
 		}
 
 		public static void LoadEditor(string mapUid)
