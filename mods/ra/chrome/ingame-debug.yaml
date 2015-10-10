@@ -51,7 +51,7 @@ Container@DEBUG_PANEL:
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Disable visibility checks
+			Text: Disable Visibility Checks
 		Button@GIVE_CASH:
 			X: 90
 			Y: 150
