@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.AI
 		readonly IPathFinder pathfinder;
 
 		readonly Func<Actor, bool> isEnemyUnit;
-		readonly Predicate<Actor> unitIsDeadOrHasNewOwner;
+		readonly Predicate<Actor> unitCannotBeOrdered;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -242,7 +242,8 @@ namespace OpenRA.Mods.Common.AI
 				Player.Stances[unit.Owner] == Stance.Enemy
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
-			unitIsDeadOrHasNewOwner = a => a.Owner != Player || a.IsDead;
+
+			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -612,7 +613,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
-				s.Units.RemoveAll(unitIsDeadOrHasNewOwner);
+				s.Units.RemoveAll(unitCannotBeOrdered);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -631,8 +632,9 @@ namespace OpenRA.Mods.Common.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(unitIsDeadOrHasNewOwner);
-			unitsHangingAroundTheBase.RemoveAll(unitIsDeadOrHasNewOwner);
+
+			activeUnits.RemoveAll(unitCannotBeOrdered);
+			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
 
 			if (--rushTicks <= 0)
 			{
