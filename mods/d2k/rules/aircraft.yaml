@@ -38,6 +38,10 @@ carryall.reinforce:
 		Automatic: False
 	RenderSprites:
 		Image: carryall
+	SelfHealing:
+		Step: 5
+		Ticks: 3
+		HealIfBelow: 50%
 
 carryall:
 	Inherits: carryall.reinforce

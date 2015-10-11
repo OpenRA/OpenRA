@@ -67,6 +67,8 @@ construction_yard:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2000
+	EmitInfantryOnSell:
+		ActorTypes: light_inf, light_inf, engineer
 	BaseBuilding:
 	ProductionBar:
 	Power:
@@ -113,7 +115,7 @@ wind_trap:
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
-		Amount: 100
+		Amount: 200
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
 
@@ -143,7 +145,7 @@ barracks:
 	RevealsShroud:
 		Range: 5c0
 	RallyPoint:
-		Offset: 1,3
+		Offset: 1,2
 	Exit@1:
 		SpawnOffset: 352,576,0
 		ExitCell: 0,2
@@ -167,7 +169,7 @@ barracks:
 		Prerequisite: barracks.medics
 		Factions: atreides, ordos
 	Power:
-		Amount: -20
+		Amount: -30
 	RenderSprites:
 		Image: barracks.harkonnen
 		FactionImages:
@@ -224,7 +226,7 @@ refinery:
 		Sequence: smoke
 		Palette: effectAdditive
 	Power:
-		Amount: -30
+		Amount: -75
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	ProvidesPrerequisite@buildingname:
@@ -266,7 +268,7 @@ silo:
 		Capacity: 2000
 	-EmitInfantryOnSell:
 	Power:
-		Amount: -5
+		Amount: -15
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	ThrowsShrapnel:
@@ -331,7 +333,7 @@ light_factory:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -20
+		Amount: -125
 
 heavy_factory:
 	Inherits: ^Building
@@ -390,7 +392,7 @@ heavy_factory:
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
-		Amount: -30
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
@@ -424,9 +426,6 @@ outpost:
 	RevealsShroud:
 		Range: 10c0
 	ProvidesRadar:
-	DetectCloaked:
-		Range: 6c0
-	RenderDetectionCircle:
 	RenderSprites:
 		Image: outpost.harkonnen
 		FactionImages:
@@ -436,7 +435,7 @@ outpost:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
 	Power:
-		Amount: -40
+		Amount: -125
 	ProvidesPrerequisite@buildingname:
 
 starport:
@@ -497,7 +496,7 @@ starport:
 		Prerequisite: starport.harkonnen
 		Factions: harkonnen
 	Power:
-		Amount: -40
+		Amount: -150
 	ProvidesPrerequisite@buildingname:
 
 wall:
@@ -532,7 +531,7 @@ wall:
 		CrushClasses: Concretewall
 	BlocksProjectiles:
 	LineBuild:
-		Range: 8
+		Range: 5
 		NodeTypes: wall, turret
 	LineBuildNode:
 		Types: wall
@@ -585,10 +584,8 @@ medium_gun_turret:
 		Weapon: 110mm_Gun
 		LocalOffset: 512,0,432
 		MuzzleSequence: muzzle
-	DetectCloaked:
-		Range: 5c0
 	Power:
-		Amount: -20
+		Amount: -50
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
@@ -630,10 +627,8 @@ large_gun_turret:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
-	DetectCloaked:
-		Range: 6c0
 	Power:
-		Amount: -30
+		Amount: -60
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
 
@@ -678,7 +673,7 @@ repair_pad:
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
-		Amount: -10
+		Amount: -50
 	ProvidesPrerequisite@buildingname:
 
 high_tech_factory:
@@ -734,7 +729,7 @@ high_tech_factory:
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	Power:
-		Amount: -40
+		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
 
@@ -771,7 +766,7 @@ research_centre:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
-		Amount: -40
+		Amount: -175
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,80
@@ -808,11 +803,8 @@ palace:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 4c0
 	Power:
-		Amount: -50
+		Amount: -200
 	ProvidesPrerequisite@nuke:
 		Prerequisite: palace.nuke
 		Factions: harkonnen
