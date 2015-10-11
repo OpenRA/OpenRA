@@ -164,6 +164,7 @@ upgrade.conyard:
 		Description: Unlocks new construction options
 	Buildable:
 		BuildPaletteOrder: 50
+		Prerequisites: construction_yard
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
