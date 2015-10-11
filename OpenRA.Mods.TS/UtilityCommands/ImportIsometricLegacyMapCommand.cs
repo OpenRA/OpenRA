@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -204,7 +205,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			ReadTerrainActors(map, file);
 			ReadWaypoints(map, file);
 			ReadOverlay(map, file);
-
+			ReadLighting(map, file);
 
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
@@ -426,6 +427,50 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				else
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
 			}
+		}
+
+		void ReadLighting(Map map, IniFile file)
+		{
+			var red = 1.0f;
+			var blue = 1.0f;
+			var green = 1.0f;
+			var ambient = 1.0f;
+
+			var lightingSection = file.GetSection("Lighting");
+			foreach (var kv in lightingSection)
+			{
+				switch (kv.Key)
+				{
+				case "Red":
+					float.TryParse(kv.Value, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out red);
+					break;
+				case "Blue":
+					float.TryParse(kv.Value, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out blue);
+					break;
+				case "Green":
+					float.TryParse(kv.Value, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out green);
+					break;
+				case "Ambient":
+					float.TryParse(kv.Value, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out ambient);
+					break;
+				default:
+					Console.WriteLine("Ignoring unknown lighting type: `{0}`".F(kv.Key));
+					break;
+				}
+			}
+
+			var node = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()
+				{
+					new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", new List<MiniYamlNode>()
+					{
+						new MiniYamlNode("Red", red.ToString(NumberFormatInfo.InvariantInfo)),
+						new MiniYamlNode("Blue", blue.ToString(NumberFormatInfo.InvariantInfo)),
+						new MiniYamlNode("Green", green.ToString(NumberFormatInfo.InvariantInfo)),
+						new MiniYamlNode("Ambient", ambient.ToString(NumberFormatInfo.InvariantInfo))
+					}))
+				}));
+
+			map.RuleDefinitions.Add(node);
 		}
 	}
 }
