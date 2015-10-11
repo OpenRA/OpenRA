@@ -10,12 +10,13 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class SpreadDamageWarhead : DamageWarhead
+	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new WDist(43);
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
 
-		public void InitializeRange()
+		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
 			if (Range != null)
 			{
@@ -46,9 +47,6 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			if (Range == null)
-				InitializeRange();
-
 			var world = firedBy.World;
 
 			if (world.LocalPlayer != null)
