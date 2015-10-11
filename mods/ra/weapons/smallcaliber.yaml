@@ -9,7 +9,7 @@ Colt45:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 50
-		ValidTargets: Infantry
+		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: piff
