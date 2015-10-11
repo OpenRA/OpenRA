@@ -155,7 +155,6 @@ namespace OpenRA.Widgets
                 }
 
                 worldRenderer.Viewport.Zoom = zoomLevel;
-                Game.Settings.Graphics.PixelDouble = true;
             }
 
             if (mi.Event == MouseInputEvent.Scroll && mi.ScrollDelta == -1)
@@ -169,7 +168,6 @@ namespace OpenRA.Widgets
                 }
 
                 worldRenderer.Viewport.Zoom = zoomLevel;
-                Game.Settings.Graphics.PixelDouble = false;
             }
 
             lastMousePosition = xy;
