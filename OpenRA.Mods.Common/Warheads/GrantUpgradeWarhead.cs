@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Warheads
 					if (Duration > 0)
 					{
 						if (um.AcknowledgesUpgrade(a, u))
-							um.GrantTimedUpgrade(a, u, Duration, firedBy);
+							um.GrantTimedUpgrade(a, u, Duration, firedBy, Upgrades.Count(upg => upg == u));
 					}
 					else
 					{

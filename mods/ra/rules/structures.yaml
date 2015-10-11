@@ -387,6 +387,9 @@ TSLA:
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
+		UpgradeTypes: tesla
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 3
 	Selectable:
 		Bounds: 24,24,0,16
 	SelectionDecorations:
@@ -403,7 +406,16 @@ TSLA:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
+		UpgradeTypes: tesla
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 3
 		Weapon: TeslaZap
+		LocalOffset: 0,0,427
+	Armament@Upgraded:
+		UpgradeTypes: tesla
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 3
+		Weapon: TeslaZap.Upgraded
 		LocalOffset: 0,0,427
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
@@ -414,6 +426,8 @@ TSLA:
 	DetectCloaked:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, TeslaBoost
 
 AGUN:
 	Inherits: ^Defense

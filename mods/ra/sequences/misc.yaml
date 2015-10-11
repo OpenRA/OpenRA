@@ -160,6 +160,13 @@ litning:
 		Start: 4
 		Length: 4
 
+litningupg:
+	bright:
+		Length: 4
+	dim: litning
+		Start: 4
+		Length: 4
+
 fb1:
 	idle: 
 		Length: *

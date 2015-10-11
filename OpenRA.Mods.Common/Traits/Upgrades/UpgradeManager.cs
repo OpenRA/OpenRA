@@ -85,13 +85,13 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		/// <summary>Upgrade level increments are limited to one per source, i.e., if a single source
-		/// attempts granting multiple upgrades, they will not accumulate. They will replace each other
-		/// instead, leaving only the last granted upgrade active. An upgrade from each new distinct
-		/// source will increment the upgrade's level until AcceptsUpgrade starts returning false. Then,
-		/// when no new levels are accepted, the upgrade source with the shortest remaining upgrade
-		/// duration will be replaced by the new source.</summary>
-		public void GrantTimedUpgrade(Actor self, string upgrade, int duration, object source = null)
+		/// <summary>Upgrade level increments are limited to dupesAllowed per source, i.e., if a single
+		/// source attempts granting more upgrades than dupesAllowed, they will not accumulate. They will
+		/// replace each other instead, leaving only the most recently granted upgrade active. Each new
+		/// upgrade granting request will increment the upgrade's level until AcceptsUpgrade starts
+		/// returning false. Then, when no new levels are accepted, the upgrade source with the shortest
+		/// remaining upgrade duration will be replaced by the new source.</summary>
+		public void GrantTimedUpgrade(Actor self, string upgrade, int duration, object source = null, int dupesAllowed = 1)
 		{
 			var timed = timedUpgrades.FirstOrDefault(u => u.Upgrade == upgrade);
 			if (timed == null)
@@ -102,17 +102,17 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			var src = timed.Sources.FirstOrDefault(s => s.Source == source);
-			if (src == null)
+			var srcs = timed.Sources.Where(s => s.Source == source);
+			if (srcs.Count() < dupesAllowed)
 			{
 				timed.Sources.Add(new TimedUpgrade.UpgradeSource(duration, source));
 				if (AcceptsUpgrade(self, upgrade))
 					GrantUpgrade(self, upgrade, timed);
 				else
-					timed.Sources.Remove(timed.Sources.OrderByDescending(s => s.Remaining).Last());
+					timed.Sources.Remove(timed.Sources.MinBy(s => s.Remaining));
 			}
 			else
-				src.Remaining = duration;
+				srcs.MinBy(s => s.Remaining).Remaining = duration;
 
 			timed.Remaining = Math.Max(duration, timed.Remaining);
 		}

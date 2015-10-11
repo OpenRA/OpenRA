@@ -13,23 +13,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Needs power to operate.")]
-	class RequiresPowerInfo : ITraitInfo
+	class RequiresPowerInfo : UpgradableTraitInfo, ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new RequiresPower(init.Self); }
+		public override object Create(ActorInitializer init) { return new RequiresPower(init.Self, this); }
 	}
 
-	class RequiresPower : IDisable, INotifyOwnerChanged
+	class RequiresPower : UpgradableTrait<RequiresPowerInfo>, IDisable, INotifyOwnerChanged
 	{
 		PowerManager playerPower;
 
-		public RequiresPower(Actor self)
+		public RequiresPower(Actor self, RequiresPowerInfo info)
+			: base(info)
 		{
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
 		public bool Disabled
 		{
-			get { return playerPower.PowerProvided < playerPower.PowerDrained; }
+			get { return playerPower.PowerProvided < playerPower.PowerDrained && !IsTraitDisabled; }
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
