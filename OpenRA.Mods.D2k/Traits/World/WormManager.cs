@@ -20,13 +20,13 @@ namespace OpenRA.Mods.D2k.Traits
 	class WormManagerInfo : ITraitInfo
 	{
 		[Desc("Minimum number of worms")]
-		public readonly int Minimum = 2;
+		public readonly int Minimum = 0;
 
 		[Desc("Maximum number of worms")]
 		public readonly int Maximum = 4;
 
 		[Desc("Time (in ticks) between worm spawn.")]
-		public readonly int SpawnInterval = 3000;
+		public readonly int SpawnInterval = 6000;
 
 		[Desc("Name of the actor that will be spawned.")]
 		public readonly string WormSignature = "sandworm";

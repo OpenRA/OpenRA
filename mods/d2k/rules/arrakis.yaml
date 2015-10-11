@@ -31,12 +31,12 @@ sandworm:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 	Health:
-		HP: 1200
-		Radius: 3
+		HP: 9990
+		Radius: 256
 	Armor:
 		Type: None
 	Mobile:
-		Speed: 50
+		Speed: 42
 		TerrainSpeeds:
 			Sand: 100
 			Dune: 100
