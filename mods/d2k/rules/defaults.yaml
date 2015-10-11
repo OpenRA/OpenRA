@@ -124,13 +124,10 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: yes
-	Capturable:
-		Type: husk
-		AllowAllies: yes
-		CaptureThreshold: 1.0
-	TransformOnCapture:
-		ForceHealthPercentage: 25
 	DisabledOverlay:
+	Explodes:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 
 ^AircraftHusk:
 	Inherits: ^Husk
