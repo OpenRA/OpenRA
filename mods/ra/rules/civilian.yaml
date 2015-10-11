@@ -257,7 +257,7 @@ BARL:
 	Armor:
 		Type: None
 	Targetable:
-		TargetTypes: Ground, DemoTruck
+		TargetTypes: Ground, DemoTruck, Barrel
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
@@ -277,7 +277,7 @@ BRL3:
 	Armor:
 		Type: None
 	Targetable:
-		TargetTypes: Ground, DemoTruck
+		TargetTypes: Ground, DemoTruck, Barrel
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
