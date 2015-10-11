@@ -852,6 +852,7 @@ SpiceExplosion:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		AffectsParent: true
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
 		Size: 2,2
