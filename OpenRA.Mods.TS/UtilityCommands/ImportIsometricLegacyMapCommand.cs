@@ -402,6 +402,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 				//var owner = entries[0];
 				var name = entries[1].ToLowerInvariant();
+				if (name == "tstlamp")
+					name = "galite";
 				var health = short.Parse(entries[2]);
 				var rx = int.Parse(entries[3]);
 				var ry = int.Parse(entries[4]);
