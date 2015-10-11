@@ -564,6 +564,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
+			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
 
 			return () => { };
 		}
@@ -583,6 +584,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.PerfGraph = dds.PerfGraph;
 				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
 				ds.BotDebug = dds.BotDebug;
+				ds.LuaDebug = dds.LuaDebug;
 			};
 		}
 

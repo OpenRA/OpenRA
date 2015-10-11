@@ -101,6 +101,7 @@ namespace OpenRA
 	public class DebugSettings
 	{
 		public bool BotDebug = false;
+		public bool LuaDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
 		public float LongTickThresholdMs = 1;
