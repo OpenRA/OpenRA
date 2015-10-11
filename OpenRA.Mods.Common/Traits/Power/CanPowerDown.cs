@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorImage = "poweroff";
-		public readonly string IndicatorSequence = "offline";
+		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "offline";
 
-		public readonly string IndicatorPalette = "chrome";
+		[PaletteReference] public readonly string IndicatorPalette = "chrome";
 
 		public override object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
