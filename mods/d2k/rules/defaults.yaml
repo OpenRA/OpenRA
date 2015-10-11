@@ -254,7 +254,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: light_inf,light_inf,light_inf,light_inf,light_inf,trooper,trooper,trooper,engineer
+		ActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:
