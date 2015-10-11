@@ -2200,9 +2200,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (engineVersion < 20151005)
 				{
-					// Move certain properties from Parachutable to new WithParachute trait
-					// Add dependency traits to actors implementing Parachutable
-					// Make otherwise targetable parachuting actors untargetable
+					// Units with AutoHeal have it replaced by AutoTarget
 					var heal = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AutoHeal"));
 					if (heal != null)
 					{
@@ -2219,6 +2217,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.Remove(heal);
 					}
 
+					// Units with AttackMedic have it replaced by an appropriate AttackFrontal
 					var atkmedic = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackMedic"));
 					if (atkmedic != null)
 					{
