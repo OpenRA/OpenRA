@@ -168,7 +168,6 @@
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Traits\EditorTilesetFilter.cs" />
-    <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />

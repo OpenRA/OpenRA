@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
