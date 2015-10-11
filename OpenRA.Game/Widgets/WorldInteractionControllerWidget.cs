@@ -148,7 +148,7 @@ namespace OpenRA.Widgets
             {
                 var zoomLevel = worldRenderer.Viewport.Zoom + 0.5f;
 
-                //maximum level = 4
+                // Maximum level = 4
                 if (zoomLevel > 4f)
                 {
                     zoomLevel = 4f;
@@ -161,7 +161,7 @@ namespace OpenRA.Widgets
             {
                 var zoomLevel = worldRenderer.Viewport.Zoom - 0.5f;
 
-                //minimum level = 0.5
+                // Minimum level = 0.5
                 if (zoomLevel < 0.5f)
                 {
                     zoomLevel = 0.5f;
