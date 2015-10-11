@@ -54,11 +54,12 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 	class ImportIsometricLegacyMapCommand : IUtilityCommand
 	{
-		public string Name { get { return "--import-ts-map"; } }
 		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
+
+		public string Name { get { return "--import-isometric-map"; } }
 
 		int2 FullSize;
 		int actorCount = 0;
@@ -191,7 +192,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 
-			map.Save("mods/ts/maps/" + Path.GetFileNameWithoutExtension(filename) + "/");
+			map.Save("mods/" + modData.Manifest.Mod.Id + "/maps/" + Path.GetFileNameWithoutExtension(filename) + "/");
 		}
 
 		Map GenerateMapHeader(string filename, IniFile file, ModData modData)
