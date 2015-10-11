@@ -238,8 +238,12 @@ IntroSequence = function()
 		Media.PlaySpeechNotification(player, "TimerStarted")
 		timerStarted = true
 	end)
+
+	-- Trigger a game over if the player lost all human units before the security system has been deactivated
 	Trigger.OnAllKilled(StartingUnits, function()
-		enemy.MarkCompletedObjective(alliedObjective)
+		if not controlCenterTrigger then
+			enemy.MarkCompletedObjective(alliedObjective)
+		end
 	end)
 end
 
