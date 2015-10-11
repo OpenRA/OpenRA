@@ -493,8 +493,9 @@ BRIDGEHUT:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	CustomSelectionSize:
-		CustomBounds: 48,48
+	Selectable:
+		Bounds: 48,48
+		Priority: 2
 	BridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
@@ -504,8 +505,9 @@ BRIDGEHUT.small:
 	Building:
 		Footprint: _
 		Dimensions: 1,1
-	CustomSelectionSize:
-		CustomBounds: 24,24
+	Selectable:
+		Bounds: 24,24
+		Priority: 2
 	BridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
