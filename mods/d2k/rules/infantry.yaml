@@ -74,34 +74,48 @@ trooper:
 	WithInfantryBody:
 		AttackSequence: shoot
 
-medic:
+thumper:
 	Inherits: ^Infantry
+	-AutoTarget:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
+		Prerequisites: upgrade.barracks, ~techlevel.high
 	Valued:
 		Cost: 200
 	CustomBuildTimeValue:
 		Value: 108
 	Tooltip:
-		Name: Medic
-		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
+		Name: Thumper
+		Description: Attracts nearby worms\n  Unarmed
 	Health:
 		HP: 375
 	RevealsShroud:
 		Range: 2c768
 	Mobile:
-		Speed: 42
-	Armament:
-		Weapon: Heal
-		Cursor: ability
-		OutsideRangeCursor: ability
-		TargetStances: Ally
-		ForceTargetStances: None
-	AttackFrontal:
+		Speed: 43
+	DeployToUpgrade:
+		Upgrades: deployed
+		Facing: 128
+		AllowedTerrainTypes: Sand, Spice, Dune
 	WithInfantryBody:
-		AttackSequence: heal
+		UpgradeTypes: deployed
+		UpgradeMaxEnabledLevel: 0
+	WithSpriteBody@DEPLOYED:
+		Sequence: thump
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@DEPLOYED:
+		Sequence: thump-sand
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	AttractsWorms:
+		Intensity: 1000
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	DisableOnUpgrade:
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
 	Passenger:
 		PipType: Blue
 	Voiced:

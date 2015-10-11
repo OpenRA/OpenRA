@@ -170,7 +170,7 @@ engineer:
 		Start: 4013
 		Offset: -30,-24
 
-medic: # actually thumper
+thumper:
 	stand: DATA.R8
 		Start: 1402
 		Facings: -8
@@ -196,10 +196,15 @@ medic: # actually thumper
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	heal: DATA.R8
+	thump: DATA.R8
 		Start: 1458
 		Length: 5
 		Tick: 480
+	thump-sand: DATA.R8
+		Start: 3626
+		Length: 5
+		Tick: 480
+		BlendMode: Multiply
 	die1: DATA.R8
 		Frames: 1543, 1550, 1557, 1564, 1571, 1578, 1585, 1592, 1599, 1600, 1601, 1602
 		Length: 12
