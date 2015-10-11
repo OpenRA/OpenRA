@@ -460,6 +460,8 @@ HQ:
 		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
@@ -547,6 +549,8 @@ EYE:
 		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
@@ -598,6 +602,8 @@ TMPL:
 		Bounds: 72,48,0,16
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 2000
