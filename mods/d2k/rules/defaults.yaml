@@ -175,7 +175,7 @@
 			Rough: 80
 	SelectionDecorations:
 	Selectable:
-		Bounds: 12,18,0,-6
+		Bounds: 12,20,0,-4
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
