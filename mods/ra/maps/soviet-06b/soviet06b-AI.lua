@@ -13,11 +13,11 @@ end
 
 BaseBuildings =
 {
-	{ "apwr", CVec.New(-13, 7), 500, true },
-	{ "tent", CVec.New(-2, 12), 400, true },
-	{ "proc", CVec.New(-7, 5), 1400, true },
-	{ "weap", CVec.New(-9, 11), 2000, true },
-	{ "apwr", CVec.New(-4, 1), 500, true }
+	{ "apwr", CVec.New(5, -9), 500, true },
+	{ "tent", CVec.New(-4, -4), 400, true },
+	{ "proc", CVec.New(0, -8), 1400, true },
+	{ "weap", CVec.New(-4, -8), 2000, true },
+	{ "apwr", CVec.New(6, -5), 500, true }
 }
 
 BuildBase = function()
