@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Cargo can fire their weapons out of fire ports.")]
-	public class AttackGarrisonedInfo : AttackFollowInfo, Requires<CargoInfo>
+	public class AttackGarrisonedInfo : AttackFollowInfo, IRulesetLoaded, Requires<CargoInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Fire port offsets in local coordinates.")]
@@ -39,16 +39,39 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Fire port yaw cone angle.")]
 		public readonly WAngle[] PortCones = null;
 
+		public FirePort[] Ports { get; private set; }
+
 		[PaletteReference] public readonly string MuzzlePalette = "effect";
 
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (PortOffsets.Length == 0)
+				throw new YamlException("PortOffsets must have at least one entry.");
+
+			if (PortYaws.Length != PortOffsets.Length)
+				throw new YamlException("PortYaws must define an angle for each port.");
+
+			if (PortCones.Length != PortOffsets.Length)
+				throw new YamlException("PortCones must define an angle for each port.");
+
+			Ports = new FirePort[PortOffsets.Length];
+
+			for (var i = 0; i < PortOffsets.Length; i++)
+			{
+				Ports[i] = new FirePort
+				{
+					Offset = PortOffsets[i],
+					Yaw = PortYaws[i],
+					Cone = PortCones[i],
+				};
+			}
+		}
 	}
 
 	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
 	{
-		public readonly FirePort[] Ports;
-
-		AttackGarrisonedInfo info;
+		public readonly new AttackGarrisonedInfo Info;
 		Lazy<BodyOrientation> coords;
 		List<Armament> armaments;
 		List<AnimationWithOffset> muzzles;
@@ -59,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackGarrisoned(Actor self, AttackGarrisonedInfo info)
 			: base(self, info)
 		{
-			this.info = info;
+			this.Info = info;
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();
@@ -68,28 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 			paxRender = new Dictionary<Actor, RenderSprites>();
 
 			getArmaments = () => armaments;
-
-			if (info.PortOffsets.Length == 0)
-				throw new InvalidOperationException("PortOffsets must have at least one entry.");
-
-			if (info.PortYaws.Length != info.PortOffsets.Length)
-				throw new InvalidOperationException("PortYaws must define an angle for each port.");
-
-			if (info.PortCones.Length != info.PortOffsets.Length)
-				throw new InvalidOperationException("PortCones must define an angle for each port.");
-
-			var p = new List<FirePort>();
-			for (var i = 0; i < info.PortOffsets.Length; i++)
-			{
-				p.Add(new FirePort
-				{
-					Offset = info.PortOffsets[i],
-					Yaw = info.PortYaws[i],
-					Cone = info.PortCones[i],
-				});
-			}
-
-			Ports = p.ToArray();
 		}
 
 		public void PassengerEntered(Actor self, Actor passenger)
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
 			armaments.AddRange(
 				passenger.TraitsImplementing<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name)));
+				.Where(a => Info.Armaments.Contains(a.Info.Name)));
 		}
 
 		public void PassengerExited(Actor self, Actor passenger)
@@ -114,14 +115,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Pick a random port that faces the target
 			var bodyYaw = facing.Value != null ? WAngle.FromFacing(facing.Value.Facing) : WAngle.Zero;
-			var indices = Enumerable.Range(0, Ports.Length).Shuffle(self.World.SharedRandom);
+			var indices = Enumerable.Range(0, Info.Ports.Length).Shuffle(self.World.SharedRandom);
 			foreach (var i in indices)
 			{
-				var yaw = bodyYaw + Ports[i].Yaw;
+				var yaw = bodyYaw + Info.Ports[i].Yaw;
 				var leftTurn = (yaw - targetYaw).Angle;
 				var rightTurn = (targetYaw - yaw).Angle;
-				if (Math.Min(leftTurn, rightTurn) <= Ports[i].Cone.Angle)
-					return Ports[i];
+				if (Math.Min(leftTurn, rightTurn) <= Info.Ports[i].Cone.Angle)
+					return Info.Ports[i];
 			}
 
 			return null;
@@ -178,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			var pal = wr.Palette(info.MuzzlePalette);
+			var pal = wr.Palette(Info.MuzzlePalette);
 
 			// Display muzzle flashes
 			foreach (var m in muzzles)

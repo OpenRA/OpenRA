@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (garrison != null)
 			{
 				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
-				foreach (var p in garrison.Ports)
+				foreach (var p in garrison.Info.Ports)
 				{
 					var pos = self.CenterPosition + coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
 					var da = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw + p.Cone)).Rotate(bodyOrientation));

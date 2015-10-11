@@ -59,9 +59,13 @@ namespace OpenRA.Network
 
 				return session;
 			}
-			catch (InvalidOperationException e)
+			catch (YamlException)
 			{
-				throw new InvalidOperationException("Session deserialized invalid MiniYaml:\n{0}".F(data), e);
+				throw new YamlException("Session deserialized invalid MiniYaml:\n{0}".F(data));
+			}
+			catch (InvalidOperationException)
+			{
+				throw new YamlException("Session deserialized invalid MiniYaml:\n{0}".F(data));
 			}
 		}
 
