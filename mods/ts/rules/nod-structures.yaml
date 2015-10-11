@@ -233,6 +233,8 @@ NARADR:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -352,6 +354,8 @@ NASTLH:
 		Amount: -350
 	RequiresPower:
 	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
 	UpgradeActorsNear:
 		Upgrades: cloakgenerator

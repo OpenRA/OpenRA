@@ -62,6 +62,8 @@ GACTWR:
 		UpgradeMinEnabledLevel: 1
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	WithSpriteTurret@VULC:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1

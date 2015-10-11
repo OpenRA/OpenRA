@@ -278,6 +278,8 @@ GARADR:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -347,6 +349,8 @@ GAPLUG:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	DisabledOverlay:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
