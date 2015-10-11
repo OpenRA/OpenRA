@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Reload ammo pools with these names.")]
 		public readonly HashSet<string> ReloadAmmoPools = new HashSet<string> { "primary" };
 
+		[Desc("Actor can only reload at these resupplying actors.")]
+		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "" };
+
 		[Desc("Reload time in ticks per AmmoPool.ReloadCount.")]
 		public readonly int ReloadTicks = 50;
 

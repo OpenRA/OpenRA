@@ -19,37 +19,35 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
+	class ResupplyableInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "fix" };
-
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
+		public virtual object Create(ActorInitializer init) { return new Resupplyable(init.Self, this); }
 	}
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
+	class Resupplyable : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly RepairableInfo info;
+		readonly ResupplyableInfo info;
 		readonly Health health;
 		readonly AmmoPool[] ammoPools;
-		readonly bool needsReloading;
+		readonly ReloadAmmo[] reloadAmmo;
 
-		public Repairable(Actor self, RepairableInfo info)
+		public Resupplyable(Actor self, ResupplyableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
-			needsReloading = self.Info.HasTraitInfo<ReloadAmmoInfo>() && self.Info.TraitInfos<ReloadAmmoInfo>().Any(y => y.UpgradeMinEnabledLevel > 0);
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().Where(x => x.Info.UpgradeMinEnabledLevel > 0).ToArray();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanResupplyAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
@@ -61,6 +59,17 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool CanResupplyAt(Actor target)
+		{
+			if (CanRepairAt(target))
+				return true;
+
+			if (CanRearmAt(target))
+				return true;
+
+			return false;
+		}
+
 		bool CanRepairAt(Actor target)
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
@@ -68,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearmAt(Actor target)
 		{
-			return info.RearmBuildings.Contains(target.Info.Name);
+			return reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(target.Info.Name));
 		}
 
 		bool CanRepair()
@@ -78,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return needsReloading && ammoPools.Any(x => !x.FullAmmo());
+			return !reloadAmmo.Any() && ammoPools.Any(x => !x.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -90,7 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
+				if ((!CanRepairAt(order.TargetActor) && !CanRearmAt(order.TargetActor))
+					|| (!CanRepair() && !CanRearm()))
 					return;
 
 				var movement = self.Trait<IMove>();

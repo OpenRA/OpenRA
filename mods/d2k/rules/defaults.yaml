@@ -80,7 +80,7 @@
 	DrawLineToTarget:
 	HiddenUnderFog:
 	ActorLostNotification:
-	Repairable:
+	Resupplyable:
 		RepairBuildings: repair_pad
 	Guard:
 		Voice: Guard

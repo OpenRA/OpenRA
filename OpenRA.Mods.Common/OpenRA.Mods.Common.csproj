@@ -448,7 +448,7 @@
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
     <Compile Include="Traits\Render\WithVoxelBody.cs" />
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
-    <Compile Include="Traits\Repairable.cs" />
+    <Compile Include="Traits\Resupplyable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />

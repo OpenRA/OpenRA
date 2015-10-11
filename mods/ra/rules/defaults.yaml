@@ -87,7 +87,7 @@
 		TargetTypes: Ground, Repair, Vehicle
 		UpgradeTypes: parachute
 		UpgradeMaxEnabledLevel: 0
-	Repairable:
+	Resupplyable:
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle

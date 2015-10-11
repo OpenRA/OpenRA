@@ -72,7 +72,7 @@
 		Bounds: 24,24
 	Targetable:
 		TargetTypes: Ground, Vehicle
-	Repairable:
+	Resupplyable:
 	Passenger:
 		CargoType: Vehicle
 	ActorLostNotification:

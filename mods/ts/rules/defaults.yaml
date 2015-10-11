@@ -384,7 +384,7 @@
 		VoiceSet: Vehicle
 	Targetable:
 		TargetTypes: Ground, Vehicle, Repair
-	Repairable:
+	Resupplyable:
 		RepairBuildings: gadept
 		Voice: Move
 	Passenger:
