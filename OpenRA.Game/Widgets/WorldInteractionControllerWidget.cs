@@ -144,7 +144,33 @@ namespace OpenRA.Widgets
 				}
 			}
 
-			lastMousePosition = xy;
+            if (mi.Event == MouseInputEvent.Scroll && mi.ScrollDelta == +1)
+            {
+                var zoomLevel = worldRenderer.Viewport.Zoom + 0.5f;
+
+                // Maximum level = 4
+                if (zoomLevel > 4f)
+                {
+                    zoomLevel = 4f;
+                }
+
+                worldRenderer.Viewport.Zoom = zoomLevel;
+            }
+
+            if (mi.Event == MouseInputEvent.Scroll && mi.ScrollDelta == -1)
+            {
+                var zoomLevel = worldRenderer.Viewport.Zoom - 0.5f;
+
+                // Minimum level = 0.5
+                if (zoomLevel < 0.5f)
+                {
+                    zoomLevel = 0.5f;
+                }
+
+                worldRenderer.Viewport.Zoom = zoomLevel;
+            }
+
+            lastMousePosition = xy;
 
 			return true;
 		}
