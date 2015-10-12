@@ -1,6 +1,5 @@
 c1:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -53,7 +52,6 @@ c1:
 		Tick: 1600
 c2:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -106,7 +104,6 @@ c2:
 		Tick: 1600
 c3:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -159,7 +156,6 @@ c3:
 		Tick: 1600
 c4:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -212,7 +208,6 @@ c4:
 		Tick: 1600
 c5:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -265,7 +260,6 @@ c5:
 		Tick: 1600
 c6:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -318,7 +312,6 @@ c6:
 		Tick: 1600
 c7:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -371,7 +364,6 @@ c7:
 		Tick: 1600
 c8:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -424,7 +416,6 @@ c8:
 		Tick: 1600
 c9:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8
@@ -477,7 +468,6 @@ c9:
 		Tick: 1600
 c10:
 	stand:
-		Start: 0
 		Facings: 8
 	panic-stand:
 		Start: 8

@@ -36,7 +36,7 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					Text: Player
 					Font: Bold
-				Label@RACE:
+				Label@FACTION:
 					X: 150
 					Width: 80
 					Height: 25
@@ -69,6 +69,7 @@ Container@SKIRMISH_STATS:
 			Y: 105
 			Width: 482
 			Height: 255
+			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				Container@PLAYER_TEMPLATE:

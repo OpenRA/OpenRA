@@ -4,6 +4,6 @@
 Cursors:
 	cursor.shp: cursor
 		default:
-			start:0
-			x: -4
-			y: -7
+			Start:0
+			X: -4
+			Y: -7

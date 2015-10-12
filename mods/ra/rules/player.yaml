@@ -1,4 +1,5 @@
 Player:
+	AlwaysVisible:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
@@ -7,7 +8,6 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
@@ -15,31 +15,26 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Ship:
 		Type: Ship
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		SpeedUp: True
-		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:
@@ -50,10 +45,6 @@ Player:
 	PlayerResources:
 	ActorGroupProxy:
 	DeveloperMode:
-	PlayerColorPalette:
-		BasePalette: player
-		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
-	PlayerHighlightPalette:
 	GpsWatcher:
 	Shroud:
 	FrozenActorLayer:
@@ -73,4 +64,9 @@ Player:
 		Name: Unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.unrestricted
 	GlobalUpgradeManager:
+	EnemyWatcher:
+	VeteranProductionIconOverlay:
+		Offset: 2, 2
+		Image: iconchevrons
+		Sequence: veteran
 

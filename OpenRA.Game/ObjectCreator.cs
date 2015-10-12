@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
@@ -107,7 +106,7 @@ namespace OpenRA
 			var it = typeof(T);
 			return GetTypes().Where(t => t != it && it.IsAssignableFrom(t));
 		}
-		
+
 		public IEnumerable<Type> GetTypes()
 		{
 			return assemblies.Select(ma => ma.First).Distinct()

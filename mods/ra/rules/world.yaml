@@ -1,20 +1,100 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
+	ActorMap:
+	ScreenMap:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: map
+	TerrainGeometryOverlay:
+	LoadWidgetAtGameStart:
+	ShroudRenderer:
+		FogVariants: shroud
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+	Faction@0:
+		Name: Allies
+		InternalName: allies
+		Side: Allies
+		Selectable: False
+	Faction@1:
+		Name: England
+		InternalName: england
+		Side: Allies
+		Description: England: Espionage\nSpecial Unit: British Spy\nSpecial Unit: Phase Transport
+	Faction@2:
+		Name: France
+		InternalName: france
+		Side: Allies
+		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Mobile Gap Generator
+	Faction@3:
+		Name: Germany
+		InternalName: germany
+		Side: Allies
+		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
+	Faction@4:
+		Name: Soviet
+		InternalName: soviet
+		Side: Soviet
+		Selectable: False
+	Faction@5:
+		Name: Russia
+		InternalName: russia
+		Side: Soviet
+		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
+	Faction@6:
+		Name: Ukraine
+		InternalName: ukraine
+		Side: Soviet
+		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
+	Faction@random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: RandomAllies, RandomSoviet
+		Side: Random
+		Description: A random country.
+	Faction@randomallies:
+		Name: Allies
+		InternalName: RandomAllies
+		RandomFactionMembers: england, france, germany
+		Side: Random
+		Description: A random Allied country.
+	Faction@randomsoviet:
+		Name: Soviet
+		InternalName: RandomSoviet
+		RandomFactionMembers: russia, ukraine
+		Side: Random
+		Description: A random Soviet country.
+	ResourceType@ore:
+		ResourceType: 1
+		Palette: player
+		Variants: gold01,gold02,gold03,gold04
+		MaxDensity: 12
+		ValuePerUnit: 25
+		Name: Ore
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+		TerrainType: Ore
+	ResourceType@gem:
+		ResourceType: 2
+		Palette: player
+		Variants: gem01,gem02,gem03,gem04
+		MaxDensity: 3
+		ValuePerUnit: 50
+		Name: Gems
+		PipColor: Red
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+		TerrainType: Gems
+
 World:
+	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
 	PlayerCommands:
 	HelpCommand:
-	ScreenMap:
-	ActorMap:
-	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
 	ScreenShaker:
-	MenuPaletteEffect:
-	WaterPaletteRotation:
-		ExcludePalettes: player, effect
-	ChronoshiftPaletteEffect:
-	NukePaletteEffect:
-	LightPaletteRotator:
-		ExcludePalettes: terrain, effect
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
@@ -25,79 +105,8 @@ World:
 		QuantizedFacings: 16
 		Minimum: 1
 		Maximum: 3
-		SpawnInterval: 120
-		WaterChance: .2
-	PlayerPaletteFromCurrentTileset:
-		Name: player
-		ShadowIndex: 3,4
-	PaletteFromCurrentTileset:
-		Name: terrain
-		ShadowIndex: 3,4
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: temperat.pal
-		ShadowIndex: 3
-		AllowModifiers: false
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: temperat.pal
-		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@moveflash:
-		Name: moveflash
-		R: 255
-		G: 255
-		B: 255
-		A: 64
-	PaletteFromRGBA@invuln:
-		Name: invuln
-		R: 128
-		G: 0
-		B: 0
-		A: 128
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	ShroudPalette@shroud:
-		Type: Shroud
-	ShroudPalette@fog:
-		Name: fog
-		Fog: true
-	ShroudRenderer:
-		FogVariants: shroud
-		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
-		UseExtendedIndex: true
-	Country@0:
-		Name: Allies
-		Race: allies
-	Country@1:
-		Name: Soviet
-		Race: soviet
+		SpawnInterval: 3000
+		WaterChance: 20
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
@@ -108,43 +117,19 @@ World:
 		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
-	ResourceType@ore:
-		ResourceType: 1
-		Palette: player
-		EditorSprite: gold01
-		Variants: gold01,gold02,gold03,gold04
-		MaxDensity: 12
-		ValuePerUnit: 25
-		Name: Ore
-		PipColor: Yellow
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
-		TerrainType: Ore
-	ResourceType@gem:
-		ResourceType: 2
-		Palette: player
-		EditorSprite: gem01
-		Variants: gem01,gem02,gem03,gem04
-		MaxDensity: 3
-		ValuePerUnit: 50
-		Name: Gems
-		PipColor: Red
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
-		TerrainType: Gems
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
+	WarheadDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Races: soviet, allies
+		Factions: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	MPStartUnits@lightallies:
 		Class: light
 		ClassName: Light Support
-		Races: allies
+		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
 		InnerSupportRadius: 3
@@ -152,7 +137,7 @@ World:
 	MPStartUnits@lightsoviet:
 		Class: light
 		ClassName: Light Support
-		Races: soviet
+		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
 		InnerSupportRadius: 3
@@ -160,7 +145,7 @@ World:
 	MPStartUnits@heavyallies:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: allies
+		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
 		InnerSupportRadius: 3
@@ -168,7 +153,7 @@ World:
 	MPStartUnits@heavysoviet:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: soviet
+		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3
@@ -183,3 +168,7 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

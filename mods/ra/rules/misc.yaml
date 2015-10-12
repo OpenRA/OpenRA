@@ -1,65 +1,19 @@
 MINP:
-	Mine:
-		CrushClasses: mine
-		DetonateClasses: mine
-		AvoidFriendly: no
+	Inherits: ^Mine
 	Explodes:
 		Weapon: APMine
-	Health:
-		HP: 100
-		NotifyAppliedDamage: false
-	Armor:
-		Type: Light
-	RenderSimple:
-	Cloak:
-		CloakSound:
-		UncloakSound:
-		Palette:
-		CloakTypes: Mine
-	Tooltip:
-		Name: Mine
-	ProximityCaptor:
-		Types: Mine
-	TargetableUnit:
-		TargetTypes: Ground
-	BodyOrientation:
-	Immobile:
-		OccupiesSpace: true
 
 MINV:
-	Mine:
-		CrushClasses: mine
-		DetonateClasses: mine
-		AvoidFriendly: no
+	Inherits: ^Mine
 	Explodes:
 		Weapon: ATMine
-	Health:
-		HP: 100
-		NotifyAppliedDamage: false
-	Armor:
-		Type: Light
-	RenderSimple:
-	Cloak:
-		CloakSound:
-		UncloakSound:
-		Palette:
-		CloakTypes: Mine
-	Tooltip:
-		Name: Mine
-	ProximityCaptor:
-		Types: Mine
-	TargetableUnit:
-		TargetTypes: Ground
-	BodyOrientation:
-	Immobile:
-		OccupiesSpace: true
 
 CRATE:
 	Inherits: ^Crate
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
-		UseCashTick: yes
+		UseCashTick: true
 	LevelUpCrateAction:
 		SelectionShares: 40
 	ExplodeCrateAction@fire:
@@ -78,10 +32,6 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-	SupportPowerCrateAction@parabombs:
-		SelectionShares: 5
-		Proxy: powerproxy.parabombs
-		Effect: parabombs
 	DuplicateUnitCrateAction:
 		SelectionShares: 10
 		MaxAmount: 5
@@ -94,51 +44,51 @@ CRATE:
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
 		Units: jeep
-		ValidRaces: allies
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
 		Units: arty
-		ValidRaces: allies
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
 		Units: v2rl
-		ValidRaces: soviet
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
 		Units: 1tnk
-		ValidRaces: allies
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
-		ValidRaces: allies
+		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
 		Units: 3tnk
-		ValidRaces: soviet
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, fix
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Units: 4tnk
-		ValidRaces: soviet
+		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.unrestricted, fix, techcenter
 	GiveUnitCrateAction@squadlight:
 		SelectionShares: 7
 		Units: e1,e1,e1,e3,e3
-		ValidRaces: allies, soviet
+		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
 	GiveUnitCrateAction@squadheavyallies:
 		SelectionShares: 7
 		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
-		ValidRaces: allies
+		ValidFactions: allies, england, france, germany
 		TimeDelay: 4500
 	GiveUnitCrateAction@squadheavysoviet:
 		SelectionShares: 7
 		Units: e1,e1,e4,e4,e3,e3,e3
-		ValidRaces: soviet
+		ValidFactions: soviet, russia, ukraine
 		TimeDelay: 4500
 	GrantUpgradeCrateAction@invuln:
 		SelectionShares: 5
@@ -155,8 +105,8 @@ MONEYCRATE:
 		Amount: 500
 		SelectionShares: 1
 		UseCashTick: true
-	WithCrateBody:
-		Images: wcrate
+	RenderSprites:
+		Image: wcrate
 
 HEALCRATE:
 	Inherits: ^Crate
@@ -168,150 +118,157 @@ HEALCRATE:
 		Effect: heal
 
 CAMERA:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
-	BodyOrientation:
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
+	BodyOrientation:
+		QuantizedFacings: 1
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Image: camera
 
 camera.paradrop:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
+		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
-	BodyOrientation:
 
 SONAR:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
-	RevealsShroud:
-		Range: 10c0
 	ProximityCaptor:
 		Types: Sonar
-	BodyOrientation:
 	DetectCloaked:
-		Range: 10
+		Range: 10c0
 		CloakTypes: Underwater
 
 FLARE:
 	Immobile:
 		OccupiesSpace: false
-	Health:
-		HP: 1000
 	RevealsShroud:
 		Range: 3c0
-	RenderFlare:
+		Type: CenterPosition
+	RenderSprites:
 		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
+	BodyOrientation:
+		QuantizedFacings: 1
 	HiddenUnderFog:
+		Type: CenterPosition
 	Tooltip:
 		Name: Flare
-	ProximityCaptor:
-		Types: Flare
-	BodyOrientation:
+		ShowOwnerRow: false
 
 MINE:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Ore Mine
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: yes
 	AutoTargetIgnore:
-	BodyOrientation:
 	SeedsResource:
 
-RAILMINE:
+GMINE:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Gem Mine
-	RenderBuilding:
+	RenderSprites:
 		Palette: player
+	WithSpriteBody:
 	Building:
-		Footprint: xx
-		Dimensions: 2,1
+		Footprint: x
+		Dimensions: 1,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: no
 	AutoTargetIgnore:
-	BodyOrientation:
 	SeedsResource:
 		ResourceType: Gems
 
+RAILMINE:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
+	Tooltip:
+		Name: Abandoned Mine
+	RenderSprites:
+		Palette: player
+	WithSpriteBody:
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	AutoTargetIgnore:
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
+
 QUEE:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RenderBuilding:
+	WithSpriteBody:
 	AppearsOnRadar:
-	BodyOrientation:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: true
 
 LAR1:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	RenderBuilding:
+	RenderSprites:
 		Palette: terrain
+	WithSpriteBody:
 	AppearsOnRadar:
-	BodyOrientation:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: true
 
 LAR2:
+	Inherits@1: LAR1
 	Tooltip:
 		Name: Ant Larvae
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	RenderBuilding:
-		Palette: terrain
-	AppearsOnRadar:
-	BodyOrientation:
-	EditorTilesetFilter:
-		RequireTilesets: INTERIOR
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: true
 
 powerproxy.parabombs:
+	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
 		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
-		OneShot: yes
-		AllowMultiple: yes
+		OneShot: true
+		AllowMultiple: true
 		UnitType: badr.bomber
 		SelectTargetSound: slcttgt1.aud
 		QuantizedFacings: 8
@@ -320,6 +277,7 @@ powerproxy.parabombs:
 		CameraActor: camera
 
 powerproxy.sonarpulse:
+	AlwaysVisible:
 	SpawnActorPower:
 		Icon: sonar
 		Description: Sonar Pulse
@@ -333,15 +291,67 @@ powerproxy.sonarpulse:
 		EffectSequence: moveflsh
 		EffectPalette: moveflash
 
+powerproxy.paratroopers:
+	AlwaysVisible:
+	ParatroopersPower:
+		Icon: paratroopers
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		DropItems: E1,E1,E1,E3,E3
+		SelectTargetSound: slcttgt1.aud
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: pinficon
+
+barracks.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
+vehicles.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
+aircraft.upgraded:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
 	BodyOrientation:
+		QuantizedFacings: 1
+
+^fact.colorpicker:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker
+
+CTFLAG:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Flag
+	Bib:
+		HasMinibib: Yes
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+	-Selectable:
+	-Targetable:
 

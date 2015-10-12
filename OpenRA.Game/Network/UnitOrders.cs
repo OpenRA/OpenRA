@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -44,6 +44,10 @@ namespace OpenRA.Network
 							var player = world != null ? world.FindPlayerByClient(client) : null;
 							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
 							suffix = client.IsObserver ? " (Spectator)" : suffix;
+
+							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
+								suffix += " (Ally)";
+
 							Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 						}
 						else
@@ -52,7 +56,7 @@ namespace OpenRA.Network
 					}
 
 				case "Message": // Server message
-						Game.AddChatLine(Color.White, "Server", order.TargetString);
+					Game.AddChatLine(Color.White, "Server", order.TargetString);
 					break;
 
 				case "Disconnected": /* reports that the target player disconnected */
@@ -93,8 +97,17 @@ namespace OpenRA.Network
 
 				case "StartGame":
 					{
+						if (Game.ModData.MapCache[orderManager.LobbyInfo.GlobalSettings.Map].Status != MapStatus.Available)
+						{
+							Game.Disconnect();
+							Game.LoadShellMap();
+
+							// TODO: After adding a startup error dialog, notify the replay load failure.
+							break;
+						}
+
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
-						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
+						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
 					}
 
@@ -104,7 +117,7 @@ namespace OpenRA.Network
 						if (client != null)
 						{
 							var pause = order.TargetString == "Pause";
-							if (orderManager.World.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
+							if (orderManager.World.Paused != pause && world != null && !world.LobbyInfo.IsSinglePlayer)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
 								Game.AddChatLine(Color.White, "", pausetext);
@@ -119,16 +132,36 @@ namespace OpenRA.Network
 
 				case "HandshakeRequest":
 					{
-						// TODO: Switch to the server's mod if we have it
-						// Otherwise send the handshake with our current settings and let the server reject us
-						var mod = Game.modData.Manifest.Mod;
+						// Switch to the server's mod if we need and are able to
+						var mod = Game.ModData.Manifest.Mod;
+						var request = HandshakeRequest.Deserialize(order.TargetString);
 
+						ModMetadata serverMod;
+						if (request.Mod != mod.Id &&
+							ModMetadata.AllMods.TryGetValue(request.Mod, out serverMod) &&
+							serverMod.Version == request.Version)
+						{
+							var replay = orderManager.Connection as ReplayConnection;
+							var launchCommand = replay != null ?
+								"Launch.Replay=" + replay.Filename :
+								"Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
+
+							Game.ModData.LoadScreen.Display();
+							Game.InitializeMod(request.Mod, new Arguments(launchCommand));
+
+							break;
+						}
+
+						Game.Settings.Player.Name = Settings.SanitizedPlayerName(Game.Settings.Player.Name);
+						Game.Settings.Save();
+
+						// Otherwise send the handshake with our current settings and let the server reject us
 						var info = new Session.Client()
 						{
 							Name = Game.Settings.Player.Name,
 							PreferredColor = Game.Settings.Player.Color,
 							Color = Game.Settings.Player.Color,
-							Country = "random",
+							Faction = "Random",
 							SpawnPoint = 0,
 							Team = 0,
 							State = Session.ClientState.Invalid
@@ -235,7 +268,7 @@ namespace OpenRA.Network
 
 				case "SetStance":
 					{
-						if (!Game.orderManager.LobbyInfo.GlobalSettings.FragileAlliances)
+						if (!Game.OrderManager.LobbyInfo.GlobalSettings.FragileAlliances)
 							return;
 
 						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);
@@ -267,8 +300,7 @@ namespace OpenRA.Network
 						if (!order.IsImmediate)
 						{
 							var self = order.Subject;
-							var health = self.TraitOrDefault<Health>();
-							if (health == null || !health.IsDead)
+							if (!self.IsDead)
 								foreach (var t in self.TraitsImplementing<IResolveOrder>())
 									t.ResolveOrder(self, order);
 						}

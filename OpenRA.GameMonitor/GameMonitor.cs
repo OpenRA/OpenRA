@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
@@ -20,12 +20,16 @@ namespace OpenRA
 {
 	class GameMonitor
 	{
-		static string processName = "OpenRA.Game.exe";
 		static Process gameProcess;
-		
+
 		[STAThread]
 		static void Main(string[] args)
 		{
+			var executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			var processName = Path.Combine(executableDirectory, "OpenRA.Game.exe");
+
+			Directory.SetCurrentDirectory(executableDirectory);
+
 			var psi = new ProcessStartInfo(processName, string.Join(" ", args));
 
 			try
@@ -67,14 +71,14 @@ namespace OpenRA
 				Text = "OpenRA has encountered a fatal error and must close.{0}Refer to the crash logs and FAQ for more information.".F(Environment.NewLine),
 				TextAlign = ContentAlignment.TopCenter
 			};
-			
+
 			var viewLogs = new Button
 			{
 				Location = new Point(10, 80),
 				Size = new Size(75, 23),
 				Text = "View Logs"
 			};
-			
+
 			var viewFaq = new Button
 			{
 				Location = new Point(90, 80),
@@ -89,7 +93,7 @@ namespace OpenRA
 				Text = "Quit",
 				DialogResult = DialogResult.Cancel
 			};
-			
+
 			form.Controls.Add(notice);
 			form.Controls.Add(viewLogs);
 			form.Controls.Add(viewFaq);

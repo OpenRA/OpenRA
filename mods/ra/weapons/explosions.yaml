@@ -1,0 +1,277 @@
+CrateNapalm:
+	Warhead@1Dam: SpreadDamage
+		Spread: 170
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 90
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: firebl3.aud
+
+CrateExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: kaboom15.aud
+
+CrateNuke:
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Res_impact: DestroyResource
+	Warhead@3Eff_impact: CreateEffect
+		Explosion: nuke
+		ImpactSound: kaboom1.aud
+	Warhead@4Dam_areanuke: SpreadDamage
+		Spread: 1c0
+		Damage: 60
+		Falloff: 1000, 600, 400, 250, 150, 100, 0
+		Delay: 4
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@5Res_areanuke: DestroyResource
+		Size: 5,4
+		Delay: 4
+	Warhead@6Smu_areanuke: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 5,4
+		Delay: 4
+	Warhead@7Eff_areanuke: CreateEffect
+		ImpactSound: kaboom22.aud
+		Delay: 4
+
+MiniNuke:
+	ValidTargets: Ground, Water, Air
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 150
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Res_impact: DestroyResource
+		Size: 1
+	Warhead@3Eff_impact: CreateEffect
+		Explosion: nuke
+		ImpactSound: kaboom1.aud
+	Warhead@4Dam_areanuke1: SpreadDamage
+		Spread: 2c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 5
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@5Res_areanuke1: DestroyResource
+		Size: 2
+		Delay: 5
+	Warhead@6Eff_areanuke1: CreateEffect
+		ImpactSound: kaboom22.aud
+		Delay: 5
+	Warhead@7Dam_areanuke2: SpreadDamage
+		Spread: 3c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 10
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@8Res_areanuke2: DestroyResource
+		Size: 3
+		Delay: 10
+	Warhead@9Dam_areanuke3: SpreadDamage
+		Spread: 4c0
+		Damage: 60
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 15
+		ValidTargets: Ground, Water, Air
+		Versus:
+			Concrete: 25
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@10Res_areanuke3: DestroyResource
+		Size: 4
+		Delay: 15
+	Warhead@11Smu_areanuke3: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 4
+		Delay: 15
+
+UnitExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: kaboom22.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+UnitExplodeShip:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: building
+		ImpactSound: kaboom25.aud
+
+UnitExplodeSubmarine:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+
+UnitExplodeSmall:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 40
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: kaboom15.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+ArtilleryExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 150
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: self_destruct
+		ImpactSound: kaboom22.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosion: large_splash
+		ImpactSound: splash9.aud
+		ValidImpactTypes: Water
+
+BarrelExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 5
+		Versus:
+			None: 120
+			Wood: 200
+			Light: 50
+			Heavy: 25
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 2,1
+		Delay: 5
+	Warhead@3Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: firebl3.aud
+		Delay: 5
+
+ATMine:
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 400
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: mineblo1.aud
+
+APMine:
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 400
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: napalm
+		ImpactSound: mine1.aud
+
+OreExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Res: CreateResource
+		AddsResourceType: Ore
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: kaboom25.aud
+

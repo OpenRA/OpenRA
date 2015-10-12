@@ -1,5 +1,5 @@
 Container@SKIRMISH_STATS:
-	Height:	PARENT_BOTTOM
+	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
 	Logic: GameInfoStatsLogic
 	Children:
@@ -36,7 +36,7 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					Text: Player
 					Font: Bold
-				Label@RACE:
+				Label@FACTION:
 					X: 150
 					Width: 80
 					Height: 25
@@ -44,8 +44,8 @@ Container@SKIRMISH_STATS:
 					Font: Bold
 					Align: Center
 				Label@STANCE:
-					X: 240
-					Width: 70
+					X: 260
+					Width: 50
 					Height: 25
 					Text: Team
 					Font: Bold
@@ -69,6 +69,7 @@ Container@SKIRMISH_STATS:
 			Y: 105
 			Width: 482
 			Height: 265
+			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				Container@PLAYER_TEMPLATE:
@@ -88,11 +89,11 @@ Container@SKIRMISH_STATS:
 							Height: 16
 						Label@FACTION:
 							X: 195
-							Width: 40
+							Width: 65
 							Height: 25
 						Label@TEAM:
-							X: 240
-							Width: 70
+							X: 260
+							Width: 50
 							Height: 25
 							Align: Center
 						Label@KILLS:

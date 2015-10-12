@@ -1,0 +1,335 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Warheads;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits
+{
+	public abstract class AttackBaseInfo : UpgradableTraitInfo, ITraitInfo
+	{
+		[Desc("Armament names")]
+		public readonly string[] Armaments = { "primary", "secondary" };
+
+		public readonly string Cursor = null;
+
+		public readonly string OutsideRangeCursor = null;
+
+		[Desc("Does the attack type require the attacker to enter the target's cell?")]
+		public readonly bool AttackRequiresEnteringCell = false;
+
+		[Desc("Does not care about shroud or fog. Enables the actor to launch an attack against a target even if he has no visibility of it.")]
+		public readonly bool IgnoresVisibility = false;
+
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public override abstract object Create(ActorInitializer init);
+	}
+
+	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	{
+		readonly string attackOrderName = "Attack";
+		readonly string forceAttackOrderName = "ForceAttack";
+
+		[Sync] public bool IsAttacking { get; internal set; }
+		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
+
+		protected Lazy<IFacing> facing;
+		protected Lazy<Building> building;
+		protected Lazy<IPositionable> positionable;
+		protected Func<IEnumerable<Armament>> getArmaments;
+
+		readonly Actor self;
+
+		public AttackBase(Actor self, AttackBaseInfo info)
+			: base(info)
+		{
+			this.self = self;
+
+			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
+				.Where(a => info.Armaments.Contains(a.Info.Name)).ToArray());
+
+			getArmaments = () => armaments.Value;
+
+			facing = Exts.Lazy(() => self.TraitOrDefault<IFacing>());
+			building = Exts.Lazy(() => self.TraitOrDefault<Building>());
+			positionable = Exts.Lazy(() => self.Trait<IPositionable>());
+		}
+
+		protected virtual bool CanAttack(Actor self, Target target)
+		{
+			if (!self.IsInWorld || IsTraitDisabled)
+				return false;
+
+			if (!HasAnyValidWeapons(target))
+				return false;
+
+			// Building is under construction or is being sold
+			if (building.Value != null && !building.Value.BuildComplete)
+				return false;
+
+			if (!target.IsValidFor(self))
+				return false;
+
+			if (Armaments.All(a => a.IsReloading))
+				return false;
+
+			if (self.IsDisabled())
+				return false;
+
+			return true;
+		}
+
+		public virtual void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		{
+			if (armaments == null && !CanAttack(self, target))
+				return;
+
+			foreach (var a in armaments ?? Armaments)
+				a.CheckFire(self, facing.Value, target);
+		}
+
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
+			{
+				if (IsTraitDisabled)
+					yield break;
+
+				var armament = Armaments.FirstOrDefault(a => a.Weapon.Warheads.Any(w => (w is DamageWarhead)));
+				if (armament == null)
+					yield break;
+
+				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
+				yield return new AttackOrderTargeter(this, 6, negativeDamage);
+			}
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			if (order is AttackOrderTargeter)
+			{
+				switch (target.Type)
+				{
+					case TargetType.Actor:
+						return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+					case TargetType.FrozenActor:
+						return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+					case TargetType.Terrain:
+						return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				}
+			}
+
+			return null;
+		}
+
+		public virtual void ResolveOrder(Actor self, Order order)
+		{
+			var forceAttack = order.OrderString == forceAttackOrderName;
+			if (forceAttack || order.OrderString == attackOrderName)
+			{
+				var target = self.ResolveFrozenActorOrder(order, Color.Red);
+				if (!target.IsValidFor(self))
+					return;
+
+				self.SetTargetLine(target, Color.Red);
+				AttackTarget(target, order.Queued, true, forceAttack);
+			}
+		}
+
+		static Target TargetFromOrder(Actor self, Order order)
+		{
+			// Not targeting a frozen actor
+			if (order.ExtraData == 0)
+				return Target.FromOrder(self.World, order);
+
+			// Targeted an actor under the fog
+			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			if (frozenLayer == null)
+				return Target.Invalid;
+
+			var frozen = frozenLayer.FromID(order.ExtraData);
+			if (frozen == null)
+				return Target.Invalid;
+
+			// Target is still alive - resolve the real order
+			if (frozen.Actor != null && frozen.Actor.IsInWorld)
+				return Target.FromActor(frozen.Actor);
+
+			return Target.Invalid;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
+		}
+
+		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
+
+		public bool HasAnyValidWeapons(Target t)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
+				return false;
+
+			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
+		}
+
+		public WDist GetMinimumRange()
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			var min = Armaments.Where(a => !a.IsTraitDisabled)
+				.Select(a => a.Weapon.MinRange)
+				.Append(WDist.MaxValue).Min();
+			return min != WDist.MaxValue ? min : WDist.Zero;
+		}
+
+		public WDist GetMaximumRange()
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			return Armaments.Where(a => !a.IsTraitDisabled)
+				.Select(a => a.MaxRange())
+				.Append(WDist.Zero).Max();
+		}
+
+		// Enumerates all armaments, that this actor possesses, that can be used against Target t
+		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack, bool onlyEnabled = true)
+		{
+			// If force-fire is not used, and the target requires force-firing or the target is
+			// terrain or invalid, no armaments can be used
+			if (!forceAttack && (t.RequiresForceFire || t.Type == TargetType.Terrain || t.Type == TargetType.Invalid))
+				return Enumerable.Empty<Armament>();
+
+			// Get target's owner; in case of terrain or invalid target there will be no problems
+			// with owner == null since forceFire will have to be true in this part of the method
+			// (short-circuiting in the logical expression below)
+			var owner = null as Player;
+			if (t.Type == TargetType.FrozenActor)
+				owner = t.FrozenActor.Owner;
+			else if (t.Type == TargetType.Actor)
+				owner = t.Actor.Owner;
+
+			return Armaments.Where(a => (!a.IsTraitDisabled || !onlyEnabled) &&
+				a.Weapon.IsValidAgainst(t, self.World, self) &&
+				(owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances)
+					.HasStance(self.Owner.Stances[owner])));
+		}
+
+		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
+		{
+			if (self.IsDisabled() || IsTraitDisabled)
+				return;
+
+			if (!target.IsValidFor(self))
+				return;
+
+			if (!queued)
+				self.CancelActivity();
+
+			self.QueueActivity(GetAttackActivity(self, target, allowMove, forceAttack));
+		}
+
+		public bool IsReachableTarget(Target target, bool allowMove)
+		{
+			return HasAnyValidWeapons(target)
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
+		}
+
+		class AttackOrderTargeter : IOrderTargeter
+		{
+			readonly AttackBase ab;
+
+			public AttackOrderTargeter(AttackBase ab, int priority, bool negativeDamage)
+			{
+				this.ab = ab;
+				this.OrderID = ab.attackOrderName;
+				this.OrderPriority = priority;
+			}
+
+			public string OrderID { get; private set; }
+			public int OrderPriority { get; private set; }
+			public bool OverrideSelection { get { return true; } }
+
+			bool CanTargetActor(Actor self, Target target, TargetModifiers modifiers, ref string cursor)
+			{
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
+				var a = ab.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
+				if (a == null)
+					return false;
+
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
+					: ab.Info.Cursor ?? a.Info.Cursor;
+
+				if (!forceAttack)
+					return true;
+
+				OrderID = ab.forceAttackOrderName;
+				return true;
+			}
+
+			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
+			{
+				if (!self.World.Map.Contains(location))
+					return false;
+
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+				// Targeting the terrain is only possible with force-attack modifier
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) || !modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				var target = Target.FromCell(self.World, location);
+				var a = ab.ChooseArmamentsForTarget(target, true).FirstOrDefault();
+				if (a == null)
+					return false;
+
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
+					: ab.Info.Cursor ?? a.Info.Cursor;
+
+				OrderID = ab.forceAttackOrderName;
+				return true;
+			}
+
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			{
+				switch (target.Type)
+				{
+					case TargetType.Actor:
+					case TargetType.FrozenActor:
+						return CanTargetActor(self, target, modifiers, ref cursor);
+					case TargetType.Terrain:
+						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
+					default:
+						return false;
+				}
+			}
+
+			public bool IsQueued { get; protected set; }
+		}
+	}
+}

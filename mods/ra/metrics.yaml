@@ -7,6 +7,7 @@ Metrics:
 	ButtonTextColorDisabled: 128,128,128
 	ButtonTextContrast: false
 	ButtonTextContrastColor: 0,0,0
+	ButtonBaseLine: 0
 	CheckboxPressedState: false
 	HotkeyFont: Regular
 	HotkeyColor: 255,255,255
@@ -20,7 +21,23 @@ Metrics:
 	TextContrast: false
 	TextContrastColor: 0,0,0
 	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+	ColorPickerActorType: ^fact.colorpicker
 	SpawnFont: TinyBold
 	SpawnColor: 255,255,255
 	SpawnContrastColor: 0,0,0
 	SpawnLabelOffset: 0,1
+	FactionSuffix-allies: allies
+	FactionSuffix-england: allies
+	FactionSuffix-france: allies
+	FactionSuffix-germany: allies
+	FactionSuffix-soviet: soviet
+	FactionSuffix-russia: soviet
+	FactionSuffix-ukraine: soviet
+	IncompatibleGameColor: 169,169,169
+	CantJoinGameColor: 211,211,211
+	ProtectedGameColor: 255,0,0
+	IncompatibleProtectedGameColor: 178,34,34
+	WaitingGameColor: 0,255,0
+	IncompatibleWaitingGameColor: 50,205,50
+	GameStartedColor: 255,165,0
+	IncompatibleGameStartedColor: 210,105,30

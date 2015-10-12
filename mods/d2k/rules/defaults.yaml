@@ -1,120 +1,129 @@
-^Vehicle:
+^ExistsInWorld:
 	AppearsOnRadar:
-	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Sand: 90
-			Rock: 100
-			Transition: 95
-			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
-		ROT: 5
-	SelectionDecorations:
-	Selectable:
-		Voice: VehicleVoice
-	TargetableUnit:
-		TargetTypes: Ground, C4
-	Passenger:
-		CargoType: Vehicle
-	AttackMove:
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	ProximityCaptor:
-		Types: Vehicle
-	GivesBounty:
-	Repairable:
-		RepairBuildings: repaira,repairo,repairh
-	CombatDebugOverlay:
-	Guard:
-	Guardable:
-	RenderUnit:
-	BodyOrientation:
 	UpdatesPlayerStatistics:
-	Huntable:
-	Demolishable:
+	CombatDebugOverlay:
+	GivesExperience:
 	ScriptTriggers:
-	GainsStatUpgrades:
+	UpgradeManager:
+	Huntable:
+
+^SpriteActor:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
+
+^GainsExperience:
+	GainsExperience:
+		Upgrades:
+			200: firepower, damage, speed, reload, inaccuracy, rank
+			400: firepower, damage, speed, reload, inaccuracy, rank
+			800: firepower, damage, speed, reload, inaccuracy, rank
+			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
+	FirepowerMultiplier@EXPERIENCE:
+		UpgradeTypes: firepower
+		Modifier: 105, 110, 120, 130
+	DamageMultiplier@EXPERIENCE:
+		UpgradeTypes: damage
+		Modifier: 95, 90, 85, 75
+	SpeedMultiplier@EXPERIENCE:
+		UpgradeTypes: speed
+		Modifier: 105, 110, 120, 140
+	ReloadDelayMultiplier@EXPERIENCE:
+		UpgradeTypes: reload
+		Modifier: 95, 90, 85, 75
+	InaccuracyMultiplier@EXPERIENCE:
+		UpgradeTypes: inaccuracy
+		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
 		Step: 2
 		Ticks: 100
 		HealIfBelow: 1
 		DamageCooldown: 125
-		RequiresUpgrade: selfheal
-	UpgradeManager:
+		UpgradeTypes: selfheal
+		UpgradeMinEnabledLevel: 1
+	WithRankDecoration:
+		Image: rank
+		Sequence: rank
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		Offset: 2, 2
+		UpgradeTypes: rank
+		ZOffset: 256
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 4
+
+^Vehicle:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
+		ROT: 5
+	SelectionDecorations:
+	Selectable:
+		Bounds: 32,32
+	Targetable:
+		TargetTypes: Ground, Vehicle, C4
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	DrawLineToTarget:
+	HiddenUnderFog:
+	ActorLostNotification:
+	Repairable:
+		RepairBuildings: repair
+	Guard:
+		Voice: Guard
+	Guardable:
+	WithFacingSpriteBody:
+	Demolishable:
+	TemporaryOwnerManager:
+	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
+	Carryable:
+	WithDecorationCarryable:
+		Image: pips
+		Sequence: pickup-indicator
+		Offset: -12, -12
 
 ^Tank:
-	AppearsOnRadar:
+	Inherits: ^Vehicle
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Sand: 85
-			Rock: 100
-			Transition: 92
-			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 70
-		ROT: 5
-	SelectionDecorations:
-	Selectable:
-		Voice: VehicleVoice
-	TargetableUnit:
-		TargetTypes: Ground, C4
-	Passenger:
-		CargoType: Vehicle
-	AttackMove:
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
-	ActorLostNotification:
-	ProximityCaptor:
-		Types: Tank
-	GivesBounty:
-	Repairable:
-		RepairBuildings: repaira,repairo,repairh
-	CombatDebugOverlay:
-	Guard:
-	Guardable:
-	RenderUnit:
-	BodyOrientation:
-	UpdatesPlayerStatistics:
-	Huntable:
-	Demolishable:
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		RequiresUpgrade: selfheal
-	UpgradeManager:
+		Crushes: crate, infantry
 
 ^Husk:
+	Inherits@1: ^SpriteActor
 	Health:
 		HP: 75
 	Armor:
 		Type: Light
-	Husk:
-		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
 	HiddenUnderFog:
-	Burns:
-		Interval: 4
-	ProximityCaptor:
-		Types: Husk
+		Type: CenterPosition
 	Tooltip:
 		Name: Wreck
-	BodyOrientation:
-	TargetableUnit:
-		TargetTypes: Ground
-		RequiresForceFire: yes
 	AutoTargetIgnore:
+	ScriptTriggers:
+	WithFacingSpriteBody:
+
+^VehicleHusk:
+	Inherits: ^Husk
+	Husk:
+		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
+	Burns:
+		Interval: 4
+	Targetable:
+		TargetTypes: Ground, Vehicle
+		RequiresForceFire: yes
 	Capturable:
 		Type: husk
 		AllowAllies: yes
@@ -122,7 +131,14 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:
-	ScriptTriggers:
+
+^AircraftHusk:
+	Inherits: ^Husk
+	WithShadow:
+	FallsToEarth:
+		Spins: False
+		Moves: True
+		Explosion: UnitExplodeLarge
 
 ^TowerHusk:
 	Health:
@@ -134,29 +150,14 @@
 	HiddenUnderFog:
 	Burns:
 		Interval: 2
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Destroyed Tower
-	ProximityCaptor:
-		Types: Husk
-	BodyOrientation:
 	ScriptTriggers:
 
-^AircraftHusk:
-	Inherits: ^Husk
-	-Husk:
-	-Burns:
-	-Capturable:
-	-TransformOnCapture:
-	-TargetableUnit:
-	FallsToEarth:
-		Spins: False
-		Moves: True
-		Explosion: UnitExplodeScale
-
 ^Infantry:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
 	Health:
 		Radius: 96
 	Armor:
@@ -167,100 +168,78 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Sand: 80
+			Sand: 100
 			Rock: 100
-			Transition: 90
+			Transition: 100
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 80
-			Dune: 60
-			Rough: 70
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
+			Rough: 80
 	SelectionDecorations:
 	Selectable:
-		Voice: InfantryVoice
-	TargetableUnit:
-		TargetTypes: Ground
-	RenderInfantry:
+		Bounds: 12,18,0,-6
+	Targetable:
+		TargetTypes: Ground, Infantry
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
 	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithDeathAnimation:
+		DeathTypes:
+			ExplosionDeath: 1
+			SoundDeath: 2
+			SmallExplosionDeath: 3
+			BulletDeath: 4
+		CrushedSequence: die-crushed
 	AutoTarget:
 	AttackMove:
+	DrawLineToTarget:
 	Passenger:
 		CargoType: Infantry
 		PipType: Green
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Infantry
-	GivesBounty:
 	Crushable:
 		CrushSound: CRUSH1.WAV
-	RepairableNear:
-		Buildings: barra, barro
-		CloseEnough: 1
-	CombatDebugOverlay:
 	Guard:
+		Voice: Guard
 	Guardable:
-	BodyOrientation:
-	UpdatesPlayerStatistics:
-	Huntable:
-	ScriptTriggers:
 	DeathSounds:
-	Parachutable:
-		FallRate: 130
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		RequiresUpgrade: selfheal
-	UpgradeManager:
+		DeathTypes: ExplosionDeath, SoundDeath, SmallExplosionDeath, BulletDeath
+	MustBeDestroyed:
+	TerrainModifiesDamage:
+		TerrainModifier:
+			Rough: 80
+	Voiced:
+		VoiceSet: InfantryVoice
 
 ^Plane:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	AppearsOnRadar:
 		UseLocation: yes
-	SelectionDecorations:
-	Selectable:
-		Voice: GenericVoice
-	TargetableAircraft:
-		TargetTypes: Air
-		GroundedTargetTypes: Ground
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
+		Type: CenterPosition
+		AlwaysVisibleStances: None
 	ActorLostNotification:
-	ProximityCaptor:
-		Types: Plane
-	GivesBounty:
-	CombatDebugOverlay:
-	BodyOrientation:
-	UpdatesPlayerStatistics:
-	Huntable:
 	AttackMove:
-	ScriptTriggers:
-	GainsStatUpgrades:
-	SelfHealing@ELITE:
-		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
-		DamageCooldown: 125
-		RequiresUpgrade: selfheal
-	UpgradeManager:
-
-^Helicopter:
-	Inherits: ^Plane
+	DrawLineToTarget:
+	Voiced:
+		VoiceSet: GenericVoice
+	WithFacingSpriteBody:
+	WithShadow:
 
 ^Building:
-	AppearsOnRadar:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
 	SelectionDecorations:
 	Selectable:
 		Priority: 2
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Building:
 		Dimensions: 1,1
@@ -269,43 +248,53 @@
 		BuildSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	Capturable:
+		CaptureThreshold: 1.0
 	SoundOnDamageTransition:
-		DamagedSound: EXPLSML1.WAV
-		DestroyedSound: EXPLHG1.WAV
-	RenderBuilding:
+		DamagedSounds: EXPLSML1.WAV
+		DestroyedSounds: EXPLHG1.WAV
+	WithSpriteBody:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
+		ActorTypes: light_inf,light_inf,light_inf,light_inf,light_inf,trooper,trooper,trooper,engineer
 	MustBeDestroyed:
-	GivesExperience:
+		RequiredForShortGame: true
 	FrozenUnderFog:
 	CaptureNotification:
 	ActorLostNotification:
 		Notification: BuildingLost
-	EditorAppearance:
-		RelativeToTopLeft: yes
 	ShakeOnDeath:
-	ProximityCaptor:
-		Types: Building
 	Sellable:
 		SellSounds: BUILD1.WAV
-	GivesBounty:
-	CombatDebugOverlay:
 	Guardable:
-		Range: 3
-	BodyOrientation:
-	UpdatesPlayerStatistics:
+		Range: 3c0
 	WithCrumbleOverlay:
-	Huntable:
 	Demolishable:
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:
-		Weapons: shrapnel
+		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	ScriptTriggers:
 	WithMakeAnimation:
+
+^Defense:
+	Inherits: ^Building
+	WithTurret:
+	AttackTurreted:
+	AutoTarget:
+	RenderRangeCircle:
+	-GivesBuildableArea:
+	-WithCrumbleOverlay:
+	-WithMakeAnimation:
+	-WithSpriteBody:
+	WithWallSpriteBody:
+	LineBuildNode:
+		Types: turret
+	ThrowsShrapnel:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 5
+		Range: 2c0, 5c0
+	MustBeDestroyed:
+		RequiredForShortGame: false
 

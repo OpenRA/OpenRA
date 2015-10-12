@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,14 +13,30 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Support;
 
 namespace OpenRA.Graphics
 {
-	public class Theater
+	class TheaterTemplate
 	{
-		SheetBuilder sheetBuilder;
-		Dictionary<ushort, Sprite[]> templates;
-		Sprite missingTile;
+		public readonly Sprite[] Sprites;
+		public readonly int Stride;
+		public readonly int Variants;
+
+		public TheaterTemplate(Sprite[] sprites, int stride, int variants)
+		{
+			Sprites = sprites;
+			Stride = stride;
+			Variants = variants;
+		}
+	}
+
+	public sealed class Theater : IDisposable
+	{
+		readonly Dictionary<ushort, TheaterTemplate> templates = new Dictionary<ushort, TheaterTemplate>();
+		readonly SheetBuilder sheetBuilder;
+		readonly Sprite missingTile;
+		readonly MersenneTwister random;
 		TileSet tileset;
 
 		public Theater(TileSet tileset)
@@ -33,24 +49,31 @@ namespace OpenRA.Graphics
 					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize), true);
+				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
-			templates = new Dictionary<ushort, Sprite[]>();
+			random = new MersenneTwister();
 
-			var frameCache = new FrameCache(Game.modData.SpriteLoaders, tileset.Extensions);
+			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
-				var allFrames = frameCache[t.Value.Image];
-				var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
-				var sprites = frames.Select(f => sheetBuilder.Add(f));
+				var variants = new List<Sprite[]>();
+
+				foreach (var i in t.Value.Images)
+				{
+					var allFrames = frameCache[i];
+					var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
+					variants.Add(frames.Select(f => sheetBuilder.Add(f)).ToArray());
+				}
+
+				var allSprites = variants.SelectMany(s => s);
 
 				// Ignore the offsets baked into R8 sprites
 				if (tileset.IgnoreTileSpriteOffsets)
-					sprites = sprites.Select(s => new Sprite(s.sheet, s.bounds, float2.Zero, s.channel, s.blendMode));
+					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, float2.Zero, s.Channel, s.BlendMode));
 
-				templates.Add(t.Value.Id, sprites.ToArray());
+				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), t.Value.Images.Length));
 			}
 
 			// 1x1px transparent tile
@@ -59,16 +82,17 @@ namespace OpenRA.Graphics
 			Sheet.ReleaseBuffer();
 		}
 
-		public Sprite TileSprite(TerrainTile r)
+		public Sprite TileSprite(TerrainTile r, int? variant = null)
 		{
-			Sprite[] template;
+			TheaterTemplate template;
 			if (!templates.TryGetValue(r.Type, out template))
 				return missingTile;
 
-			if (r.Index >= template.Length)
+			if (r.Index >= template.Stride)
 				return missingTile;
 
-			return template[r.Index];
+			var start = template.Variants > 1 ? variant.HasValue ? variant.Value : random.Next(template.Variants) : 0;
+			return template.Sprites[start * template.Stride + r.Index];
 		}
 
 		public Rectangle TemplateBounds(TerrainTemplateInfo template, Size tileSize, TileShape tileShape)
@@ -91,8 +115,8 @@ namespace OpenRA.Graphics
 					var u = tileShape == TileShape.Rectangle ? x : (x - y) / 2f;
 					var v = tileShape == TileShape.Rectangle ? y : (x + y) / 2f;
 
-					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.size;
-					var rect = new Rectangle((int)(tl.X + sprite.offset.X), (int)(tl.Y + sprite.offset.Y), (int)sprite.size.X, (int)sprite.size.Y);
+					var tl = new float2(u * tileSize.Width, (v - 0.5f * tileInfo.Height) * tileSize.Height) - 0.5f * sprite.Size;
+					var rect = new Rectangle((int)(tl.X + sprite.Offset.X), (int)(tl.Y + sprite.Offset.Y), (int)sprite.Size.X, (int)sprite.Size.Y);
 					templateRect = templateRect.HasValue ? Rectangle.Union(templateRect.Value, rect) : rect;
 				}
 			}
@@ -101,5 +125,10 @@ namespace OpenRA.Graphics
 		}
 
 		public Sheet Sheet { get { return sheetBuilder.Current; } }
+
+		public void Dispose()
+		{
+			sheetBuilder.Dispose();
+		}
 	}
 }

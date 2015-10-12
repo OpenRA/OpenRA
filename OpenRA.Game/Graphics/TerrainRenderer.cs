@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,55 +8,47 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
-	class TerrainRenderer
+	sealed class TerrainRenderer : IDisposable
 	{
-		IVertexBuffer<Vertex> vertexBuffer;
-
-		World world;
-		Map map;
+		readonly TerrainSpriteLayer terrain;
+		readonly Theater theater;
+		readonly CellLayer<TerrainTile> mapTiles;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
-			this.world = world;
-			this.map = world.Map;
+			theater = wr.Theater;
+			mapTiles = world.Map.MapTiles.Value;
 
-			var terrainPalette = wr.Palette("terrain").Index;
-			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
-			var nv = 0;
+			terrain = new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha,
+				wr.Palette("terrain"), wr.World.Type != WorldType.Editor);
 
-			foreach (var cell in map.Cells)
-			{
-				var tile = wr.Theater.TileSprite(map.MapTiles.Value[cell]);
-				var pos = wr.ScreenPosition(map.CenterOfCell(cell)) + tile.offset - 0.5f * tile.size;
-				Util.FastCreateQuad(vertices, pos, tile, terrainPalette, nv, tile.size);
-				nv += 4;
-			}
+			foreach (var cell in world.Map.AllCells)
+				UpdateCell(cell);
 
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
-			vertexBuffer.SetData(vertices, nv);
+			world.Map.MapTiles.Value.CellEntryChanged += UpdateCell;
+			world.Map.MapHeight.Value.CellEntryChanged += UpdateCell;
+		}
+
+		public void UpdateCell(CPos cell)
+		{
+			terrain.Update(cell, theater.TileSprite(mapTiles[cell]));
 		}
 
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			var verticesPerRow = 4*map.Bounds.Width;
-			var cells = viewport.VisibleCells;
-			var shape = wr.world.Map.TileShape;
-
-			// Only draw the rows that are visible.
-			// VisibleCells is clamped to the map, so additional checks are unnecessary
-			var firstRow = Map.CellToMap(shape, cells.TopLeft).Y - map.Bounds.Top;
-			var lastRow = Map.CellToMap(shape, cells.BottomRight).Y - map.Bounds.Top + 1;
-
-			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
-				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
-				PrimitiveType.QuadList, wr.Theater.Sheet);
-
-			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
+			terrain.Draw(viewport);
+			foreach (var r in wr.World.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
+		}
+
+		public void Dispose()
+		{
+			terrain.Dispose();
 		}
 	}
 }

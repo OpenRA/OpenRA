@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -20,17 +18,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--upgrade-mod"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
+
 		[Desc("CURRENTENGINE", "Upgrade mod rules to the latest engine version.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
-			Game.modData.MapCache.LoadMaps();
+			Game.ModData = modData;
+			Game.ModData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);
 
 			Console.WriteLine("Processing Rules:");
-			foreach (var filename in Game.modData.Manifest.Rules)
+			foreach (var filename in Game.ModData.Manifest.Rules)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -41,7 +44,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Weapons:");
-			foreach (var filename in Game.modData.Manifest.Weapons)
+			foreach (var filename in Game.ModData.Manifest.Weapons)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -52,7 +55,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Tilesets:");
-			foreach (var filename in Game.modData.Manifest.TileSets)
+			foreach (var filename in Game.ModData.Manifest.TileSets)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -62,8 +65,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					file.WriteLine(yaml.WriteToString());
 			}
 
+			Console.WriteLine("Processing Cursors:");
+			foreach (var filename in Game.ModData.Manifest.Cursors)
+			{
+				Console.WriteLine("\t" + filename);
+				var yaml = MiniYaml.FromFile(filename);
+				UpgradeRules.UpgradeCursors(engineDate, ref yaml, null, 0);
+
+				using (var file = new StreamWriter(filename))
+					file.WriteLine(yaml.WriteToString());
+			}
+
 			Console.WriteLine("Processing Maps:");
-			var maps = Game.modData.MapCache
+			var maps = Game.ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available)
 				.Select(m => m.Map);
 
@@ -72,6 +86,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("\t" + map.Path);
 				UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
+				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
+				UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
 				map.Save(map.Path);
 			}
 		}

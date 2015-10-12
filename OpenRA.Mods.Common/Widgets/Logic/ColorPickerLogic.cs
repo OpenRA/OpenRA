@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,6 +10,8 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -17,16 +19,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ColorPickerLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
+		public ColorPickerLogic(Widget widget, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
-			var ticker = widget.GetOrNull<LogicTickerWidget>("ANIMATE_PREVIEW");
-			if (ticker != null)
-			{
-				var preview = widget.Get<SpriteSequenceWidget>("PREVIEW");
-				var anim = preview.GetAnimation();
-				anim.PlayRepeating(anim.CurrentSequence.Name);
-				ticker.OnTick = anim.Tick;
-			}
+			string actorType;
+			if (!ChromeMetrics.TryGet<string>("ColorPickerActorType", out actorType))
+				actorType = "mcv";
+
+			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
+			var actor = world.Map.Rules.Actors[actorType];
+
+			var td = new TypeDictionary();
+			td.Add(new HideBibPreviewInit());
+			td.Add(new OwnerInit(world.WorldActor.Owner));
+			td.Add(new FactionInit(world.WorldActor.Owner.PlayerReference.Faction));
+
+			if (preview != null)
+				preview.SetPreview(actor, td);
 
 			var hueSlider = widget.Get<SliderWidget>("HUE");
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
@@ -75,4 +83,3 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 }
-

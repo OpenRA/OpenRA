@@ -1,28 +1,40 @@
 mcv:
 	idle:
-		Start: 0
 		Facings: 32
 	icon: mcvicon
-		Start: 0
 
 mcvhusk:
 	idle:
-		Start: 0
 		Facings: 32
 		ZOffset: -1023
 
 truk:
 	idle:
-		Start: 0
 		Facings: 32
 	icon: trukicon
-		Start: 0
 
 harv:
-	idle:
-		Start: 0
+	idle: harvempty
 		Facings: 32
-	harvest:
+	harvest: harvempty
+		Start: 32
+		Length: 8
+		Facings: 8
+	empty-idle: harvempty
+		Facings: 32
+	empty-harvest: harvempty
+		Start: 32
+		Length: 8
+		Facings: 8
+	half-idle: harvhalf
+		Facings: 32
+	half-harvest: harvhalf
+		Start: 32
+		Length: 8
+		Facings: 8
+	full-idle:
+		Facings: 32
+	full-harvest:
 		Start: 32
 		Length: 8
 		Facings: 8
@@ -35,64 +47,28 @@ harv:
 	icon: harvicon
 		Start: 0
 
-harvhalf:
-	idle:
-		Start: 0
-		Facings: 32
-	harvest:
-		Start: 32
-		Length: 8
-		Facings: 8
-	dock: harv
-		Start: 96
-		Length: 8
-	dock-loop: harv
-		Start: 104
-		Length: 7
-
-harvempty:
-	idle:
-		Start: 0
-		Facings: 32
-	harvest:
-		Start: 32
-		Length: 8
-		Facings: 8
-	dock: harv
-		Start: 96
-		Length: 8
-	dock-loop: harv
-		Start: 104
-		Length: 7
-
 hhusk:
 	idle:
-		Start: 0
 		Facings: 32
 		ZOffset: -1023
 
 hhusk2:
 	idle:
-		Start: 0
 		Facings: 32
 		ZOffset: -1023
 
 1tnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 2
 	icon: 1tnkicon
-		Start: 0
 
 1tnk.destroyed:
 	idle: 1tnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: 1tnk
@@ -102,20 +78,16 @@ hhusk2:
 
 2tnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: 2tnkicon
-		Start: 0
 
 2tnk.destroyed:
 	idle: 2tnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: 2tnk
@@ -125,20 +97,16 @@ hhusk2:
 
 3tnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: 3tnkicon
-		Start: 0
 
 3tnk.destroyed:
 	idle: 3tnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: 3tnk
@@ -148,20 +116,16 @@ hhusk2:
 
 4tnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: 4tnkicon
-		Start: 0
 
 4tnk.destroyed:
 	idle: 4tnk
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	turret: 4tnk
@@ -171,7 +135,6 @@ hhusk2:
 
 v2rl:
 	idle:
-		Start: 0
 		Facings: 32
 	empty-idle:
 		Start: 32
@@ -183,41 +146,31 @@ v2rl:
 		Start: 72
 		Facings: 8
 	icon: v2rlicon
-		Start: 0
 
 arty:
 	idle:
-		Start: 0
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: artyicon
-		Start: 0
 
 jeep:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
 	unload:
-		Start: 0
 		Facings: 32
 	icon: jeepicon
-		Start: 0
 
 apc:
 	idle:
-		Start: 0
 		Facings: 32
 	muzzle: minigun
-		Start: 0
 		Length: 6
 		Facings: 8
 	open:
@@ -226,28 +179,22 @@ apc:
 	unload:
 		Start: 32
 	icon: apcicon
-		Start: 0
 
 mnly:
 	idle:
-		Start: 0
 		Facings: 32
 	icon: mnlyicon
-		Start: 0
 
 mrj:
 	idle:
-		Start: 0
 		Facings: 32
 	spinner:
 		Start: 32
 		Length: 32
 	icon: mrjicon
-		Start: 0
 
 mgg:
 	idle:
-		Start: 0
 		Facings: 32
 	spinner:
 		Start: 32
@@ -256,11 +203,9 @@ mgg:
 		Start: 32
 		Length: 1
 	icon: mggicon
-		Start: 0
 
 mgg.destroyed:
 	idle: mgg
-		Start: 0
 		Facings: 32
 		ZOffset: -512
 	spinner: mgg
@@ -269,65 +214,50 @@ mgg.destroyed:
 		ZOffset: -512
 	spinner-idle: mgg
 		Start: 32
-		Length: 1
 
 ttnk:
 	idle:
-		Start: 0
 		Facings: 32
 	spinner:
 		Start: 32
 		Length: 32
 	icon: ttnkicon
-		Start: 0
 
 ftrk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 32
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 2
 	icon: ftrkicon
-		Start: 0
 
 dtrk:
 	idle:
-		Start: 0
 		Facings: 32
 	icon: dtrkicon
-		Start: 0
 
 ctnk:
 	idle:
-		Start: 0
 		Facings: 32
 	muzzle: gunfire2
-		Start: 0
 		Length: 5
 	icon: ctnkicon
-		Start: 0
 
 qtnk:
 	idle:
-		Start: 0
 		Facings: 32
 	piston:
 		Start: 32
 		Facings: 8
 		Length: 8
 	icon: qtnkicon
-		Start: 0
 
 stnk:
 	idle:
-		Start: 0
 		Facings: 32
 	turret:
 		Start: 38
 		Facings: 32
 	icon: stnkicon
-		Start: 0

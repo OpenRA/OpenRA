@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,22 +8,26 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
 {
 	public class QuadRenderer : Renderer.IBatchRenderer
 	{
-		Renderer renderer;
-		IShader shader;
+		readonly Renderer renderer;
+		readonly IShader shader;
+		readonly Action renderAction;
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Vertex[] vertices;
 		int nv = 0;
 
 		public QuadRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
+			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList);
 		}
 
 		public void Flush()
@@ -31,12 +35,7 @@ namespace OpenRA.Graphics
 			if (nv > 0)
 			{
 				renderer.Device.SetBlendMode(BlendMode.Alpha);
-				shader.Render(() =>
-				{
-					var vb = renderer.GetTempVertexBuffer();
-					vb.SetData(vertices, nv);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
-				});
+				shader.Render(renderAction);
 				renderer.Device.SetBlendMode(BlendMode.None);
 
 				nv = 0;
@@ -45,11 +44,12 @@ namespace OpenRA.Graphics
 
 		public void FillRect(RectangleF rect, Color color)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > Renderer.TempBufferSize)
+			if (nv + 4 > renderer.TempBufferSize)
 				Flush();
 
+			color = Util.PremultiplyAlpha(color);
 			var r = color.R / 255.0f;
 			var g = color.G / 255.0f;
 			var b = color.B / 255.0f;
@@ -65,7 +65,7 @@ namespace OpenRA.Graphics
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

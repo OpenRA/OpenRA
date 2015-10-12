@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,78 +17,83 @@ namespace OpenRA.Primitives
 {
 	public class TypeDictionary : IEnumerable
 	{
-		Dictionary<Type, object> dataSingular = new Dictionary<Type, object>();
-		Dictionary<Type, List<object>> dataMultiple = new Dictionary<Type, List<object>>();
+		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
+		readonly Dictionary<Type, List<object>> data = new Dictionary<Type, List<object>>();
 
-		public void Add( object val )
+		public void Add(object val)
 		{
 			var t = val.GetType();
 
-			foreach( var i in t.GetInterfaces() )
-				InnerAdd( i, val );
-			foreach( var tt in t.BaseTypes() )
-				InnerAdd( tt, val );
+			foreach (var i in t.GetInterfaces())
+				InnerAdd(i, val);
+			foreach (var tt in t.BaseTypes())
+				InnerAdd(tt, val);
 		}
 
-		void InnerAdd( Type t, object val )
+		void InnerAdd(Type t, object val)
 		{
-			List<object> objs;
-			object obj;
-
-			if( dataMultiple.TryGetValue( t, out objs ) )
-				objs.Add( val );
-			else if( dataSingular.TryGetValue( t, out obj ) )
-			{
-				dataSingular.Remove( t );
-				dataMultiple.Add( t, new List<object> { obj, val } );
-			}
-			else
-				dataSingular.Add( t, val );
+			data.GetOrAdd(t, CreateList).Add(val);
 		}
 
 		public bool Contains<T>()
 		{
-			return dataSingular.ContainsKey(typeof(T)) || dataMultiple.ContainsKey(typeof(T));
+			return data.ContainsKey(typeof(T));
 		}
 
 		public T Get<T>()
 		{
-			if (dataMultiple.ContainsKey(typeof(T)))
-				throw new InvalidOperationException("TypeDictionary contains multiple instance of type `{0}`".F(typeof(T)));
-
-			object ret;
-			if (!dataSingular.TryGetValue(typeof(T), out ret))
-				throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(typeof(T)));
-			return (T)ret;
+			return (T)Get(typeof(T), true);
 		}
 
 		public T GetOrDefault<T>()
 		{
-			return (T)GetOrDefault(typeof(T));
+			var result = Get(typeof(T), false);
+			if (result == null)
+				return default(T);
+			return (T)result;
 		}
 
-		public object GetOrDefault(Type t)
+		object Get(Type t, bool throwsIfMissing)
 		{
-			if (dataMultiple.ContainsKey(t))
-				throw new InvalidOperationException("TypeDictionary contains multiple instances of type `{0}`".F(t));
-
-			object ret;
-			if (!dataSingular.TryGetValue(t, out ret))
+			List<object> ret;
+			if (!data.TryGetValue(t, out ret))
+			{
+				if (throwsIfMissing)
+					throw new InvalidOperationException("TypeDictionary does not contain instance of type `{0}`".F(t));
 				return null;
-			return ret;
+			}
+
+			if (ret.Count > 1)
+				throw new InvalidOperationException("TypeDictionary contains multiple instances of type `{0}`".F(t));
+			return ret[0];
 		}
 
 		public IEnumerable<T> WithInterface<T>()
 		{
 			List<object> objs;
-			object obj;
-
-			if( dataMultiple.TryGetValue( typeof( T ), out objs ) )
+			if (data.TryGetValue(typeof(T), out objs))
 				return objs.Cast<T>();
-			else if( dataSingular.TryGetValue( typeof( T ), out obj ) )
-				return new T[] { (T)obj };
-			else
-				return new T[ 0 ];
+			return new T[0];
+		}
+
+		public void Remove<T>(T val)
+		{
+			var t = val.GetType();
+
+			foreach (var i in t.GetInterfaces())
+				InnerRemove(i, val);
+			foreach (var tt in t.BaseTypes())
+				InnerRemove(tt, val);
+		}
+
+		void InnerRemove(Type t, object val)
+		{
+			List<object> objs;
+			if (!data.TryGetValue(t, out objs))
+				return;
+			objs.Remove(val);
+			if (objs.Count == 0)
+				data.Remove(t);
 		}
 
 		public IEnumerator GetEnumerator()
@@ -99,9 +104,9 @@ namespace OpenRA.Primitives
 
 	public static class TypeExts
 	{
-		public static IEnumerable<Type> BaseTypes( this Type t )
+		public static IEnumerable<Type> BaseTypes(this Type t)
 		{
-			while( t != null )
+			while (t != null)
 			{
 				yield return t;
 				t = t.BaseType;

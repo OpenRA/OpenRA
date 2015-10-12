@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,7 +13,6 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.RA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
@@ -24,12 +23,12 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly Animation anim;
 		readonly Player firedBy;
 		readonly string palette;
-		readonly string weapon;
+		readonly WeaponInfo weapon;
 
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, string weapon, World world, CPos location, string effect, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, CPos location, string effect, string palette, int delay)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -45,7 +44,6 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim.Tick();
 			if (!impacted && weaponDelay-- <= 0)
 			{
-				var weapon = world.Map.Rules.Weapons[this.weapon.ToLowerInvariant()];
 				weapon.Impact(target, firedBy.PlayerActor, Enumerable.Empty<int>());
 				impacted = true;
 			}

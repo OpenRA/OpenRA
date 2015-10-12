@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,9 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -19,10 +16,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--map-hash"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return args.Length >= 2;
+		}
+
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		public void Run(ModData modData, string[] args)
 		{
-			Game.modData = modData;
+			Game.ModData = modData;
 			var result = new Map(args[1]).Uid;
 			Console.WriteLine(result);
 		}

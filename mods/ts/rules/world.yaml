@@ -1,88 +1,71 @@
-World:
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: maps
 	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
-	MenuPaletteEffect:
-	BuildingInfluence:
-	ChooseBuildTabOnSelect:
-	PaletteFromFile@player:
-		Name: player
-		Filename: unittem.pal
-		ShadowIndex: 1
-	PaletteFromCurrentTileset:
-		Name: terrain
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: cameo.pal
-		AllowModifiers: false
-		ShadowIndex: 242
-	PaletteFromFile@pips:
-		Name: pips
-		Filename: palette.pal
-		AllowModifiers: false
-		ShadowIndex: 4
-	PaletteFromFile@ra:
-		Name: ra
-		Filename: palette.pal
-		ShadowIndex: 4
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: anim.pal
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: unittem.pal
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@moveflash:
-		Name: moveflash
-		R: 255
-		G: 255
-		B: 255
-		A: 64
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	TSShroudPalette@shroud:
-		Type: Shroud
 	ShroudRenderer:
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
 		ShroudPalette: shroud
 		FogPalette: shroud
-	VoxelNormalsPalette@normals:
-		Name: normals
-		Type: TiberianSun
-	Country@0:
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+	Faction@0:
 		Name: GDI
-		Race: gdi
-	Country@1:
+		InternalName: gdi
+	Faction@1:
 		Name: Nod
-		Race: nod
+		InternalName: nod
+	ResourceType@Tiberium:
+		ResourceType: 1
+		Palette: greentiberium
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 50
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: Tiberium
+	ResourceType@BlueTiberium:
+		ResourceType: 2
+		Palette: bluetiberium
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 100
+		Name: BlueTiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: BlueTiberium
+	ResourceType@Veins:
+		ResourceType: 3
+		Palette: player
+		Variants: veins
+		MaxDensity: 1
+		ValuePerUnit: 0
+		Name: Veins
+		PipColor: Red
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: true
+		TerrainType: Veins
+	TerrainGeometryOverlay:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
 	DomainIndex:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch
@@ -113,63 +96,81 @@ World:
 		Sequence: largecraters
 	ResourceLayer:
 	ResourceClaimLayer:
-	FixedColorPalette@GreenTiberium:
-		Base: player
-		Name: greentiberium
-		Color: 57, 201, 128
-		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-	ResourceType@Tiberium:
-		ResourceType: 1
-		Palette: greentiberium
-		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
-		MaxDensity: 12
-		ValuePerUnit: 50
-		Name: Tiberium
-		PipColor: Green
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: false
-		TerrainType: Tiberium
-	FixedColorPalette@BlueTiberium:
-		Base: player
-		Name: bluetiberium
-		Color: 154, 220, 184
-		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-	ResourceType@BlueTiberium:
-		ResourceType: 2
-		Palette: bluetiberium
-		EditorSprite: waypoint # TODO: editor can't handle the real ones
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
-		MaxDensity: 12
-		ValuePerUnit: 100
-		Name: BlueTiberium
-		PipColor: Blue
-		AllowedTerrainTypes: Clear, Rough, DirtRoad
-		AllowUnderActors: false
-		TerrainType: BlueTiberium
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
+	WarheadDebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartUnits@MCV:
 		Class: none
 		ClassName: MCV Only
-		Races: gdi, nod
+		Factions: gdi, nod
 		BaseActor: mcv
-	MPStartUnits@TEST:
+	MPStartUnits@light.gdi:
+		Class: light
+		ClassName: Light
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e2,e2
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@light.nod:
+		Class: light
+		ClassName: Light
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.gdi:
+		Class: medium
+		ClassName: Medium
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,jumpjet,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.nod:
+		Class: medium
+		ClassName: Medium
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,cyborg,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.gdi:
 		Class: heavy
-		ClassName: Heavy Support
-		Races: gdi,nod
+		ClassName: Heavy
+		Factions: gdi
 		BaseActor: mcv
-		SupportActors: e1,e2,e3,cyborg,cyc2,jumpjet,umagon,ghost,mmch,smech,hmec,bggy,bike,art2,ttnk,hvr,sonic,subtank,repair,4tnk
+		SupportActors: e1,e2,e2,smech,mmch
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.nod:
+		Class: heavy
+		ClassName: Heavy
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e3,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 3000
+		WaterChance: 0
+		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
 	ScreenShaker:
 	RadarPings:
 	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

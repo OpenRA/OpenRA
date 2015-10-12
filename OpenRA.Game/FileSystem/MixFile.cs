@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class MixFile : IFolder, IDisposable
+	public sealed class MixFile : IFolder
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
@@ -37,9 +37,17 @@ namespace OpenRA.FileSystem
 				File.Delete(filename);
 
 			s = File.Create(filename);
-			index = new Dictionary<uint, PackageEntry>();
-			contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
-			Write(contents);
+			try
+			{
+				index = new Dictionary<uint, PackageEntry>();
+				contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
+				Write(contents);
+			}
+			catch
+			{
+				Dispose();
+				throw;
+			}
 		}
 
 		public MixFile(string filename, PackageHashType type, int priority)
@@ -47,30 +55,36 @@ namespace OpenRA.FileSystem
 			this.filename = filename;
 			this.priority = priority;
 			this.type = type;
+
 			s = GlobalFileSystem.Open(filename);
-
-			// Detect format type
-			s.Seek(0, SeekOrigin.Begin);
-			var isCncMix = s.ReadUInt16() != 0;
-
-			// The C&C mix format doesn't contain any flags or encryption
-			var isEncrypted = false;
-			if (!isCncMix)
-				isEncrypted = (s.ReadUInt16() & 0x2) != 0;
-
-			List<PackageEntry> entries;
-			if (isEncrypted)
+			try
 			{
-				long unused;
-				entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
-			}
-			else
-				entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
+				// Detect format type
+				var isCncMix = s.ReadUInt16() != 0;
 
-			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
-				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, dataStart),
-				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
-			);
+				// The C&C mix format doesn't contain any flags or encryption
+				var isEncrypted = false;
+				if (!isCncMix)
+					isEncrypted = (s.ReadUInt16() & 0x2) != 0;
+
+				List<PackageEntry> entries;
+				if (isEncrypted)
+				{
+					long unused;
+					entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
+				}
+				else
+					entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
+
+				index = entries.ToDictionaryWithConflictLog(x => x.Hash,
+					"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
+					null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+			}
+			catch (Exception)
+			{
+				Dispose();
+				throw;
+			}
 		}
 
 		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
@@ -83,7 +97,7 @@ namespace OpenRA.FileSystem
 			for (var i = 0; i < numFiles; i++)
 				items.Add(new PackageEntry(s));
 
-			headerEnd = offset + 6 + numFiles*PackageEntry.Size;
+			headerEnd = offset + 6 + numFiles * PackageEntry.Size;
 			return items;
 		}
 
@@ -101,8 +115,8 @@ namespace OpenRA.FileSystem
 			var numFiles = ms.ReadUInt16();
 
 			// Decrypt the full header - round bytes up to a full block
-			var blockCount = (13 + numFiles*PackageEntry.Size)/8;
-			headerEnd = offset + 80 + blockCount*8;
+			var blockCount = (13 + numFiles * PackageEntry.Size) / 8;
+			headerEnd = offset + 80 + blockCount * 8;
 
 			return Decrypt(ReadBlocks(s, offset + 80, blockCount), fish);
 		}
@@ -113,7 +127,7 @@ namespace OpenRA.FileSystem
 
 			var ms = new MemoryStream();
 			var writer = new BinaryWriter(ms);
-			foreach(var t in decrypted)
+			foreach (var t in decrypted)
 				writer.Write(t);
 			writer.Flush();
 
@@ -123,10 +137,19 @@ namespace OpenRA.FileSystem
 
 		static uint[] ReadBlocks(Stream s, long offset, int count)
 		{
+			if (offset < 0)
+				throw new ArgumentOutOfRangeException("offset", "Non-negative number required.");
+
+			if (count < 0)
+				throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+
+			if (offset + (count * 2) > s.Length)
+				throw new ArgumentException("Bytes to read {0} and offset {1} greater than stream length {2}.".F(count * 2, offset, s.Length));
+
 			s.Seek(offset, SeekOrigin.Begin);
 
 			// A block is a single encryption unit (represented as two 32-bit integers)
-			var ret = new uint[2*count];
+			var ret = new uint[2 * count];
 			for (var i = 0; i < ret.Length; i++)
 				ret[i] = s.ReadUInt32();
 
@@ -167,7 +190,7 @@ namespace OpenRA.FileSystem
 			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
-		static readonly uint[] Nothing = {};
+		static readonly uint[] Nothing = { };
 		public IEnumerable<uint> ClassicHashes()
 		{
 			if (type == PackageHashType.Classic)
@@ -219,7 +242,7 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 1000 + priority; } }
 		public string Name { get { return filename; } }
-		
+
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and
@@ -261,8 +284,7 @@ namespace OpenRA.FileSystem
 
 		public void Dispose()
 		{
-			if (s != null)
-				s.Dispose();
+			s.Dispose();
 		}
 	}
 }

@@ -5,8 +5,8 @@ V01:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church
-	LeavesHusk:
-		HuskActor: V01.Husk
+	SpawnActorOnDeath:
+		Actor: V01.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -25,8 +25,8 @@ V02:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
-		HuskActor: V02.Husk
+	SpawnActorOnDeath:
+		Actor: V02.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -43,8 +43,8 @@ V03:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
-		HuskActor: V03.Husk
+	SpawnActorOnDeath:
+		Actor: V03.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -61,8 +61,8 @@ V04:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	LeavesHusk:
-		HuskActor: V04.Husk
+	SpawnActorOnDeath:
+		Actor: V04.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -79,8 +79,8 @@ V05:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
-		HuskActor: V05.Husk
+	SpawnActorOnDeath:
+		Actor: V05.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -97,8 +97,8 @@ V06:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
-		HuskActor: V06.Husk
+	SpawnActorOnDeath:
+		Actor: V06.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -115,8 +115,8 @@ V07:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
-		HuskActor: V07.Husk
+	SpawnActorOnDeath:
+		Actor: V07.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -130,8 +130,8 @@ V07.Husk:
 
 V08:
 	Inherits: ^CivBuilding
-	LeavesHusk:
-		HuskActor: V08.Husk
+	SpawnActorOnDeath:
+		Actor: V08.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -142,8 +142,8 @@ V08.Husk:
 
 V09:
 	Inherits: ^CivBuilding
-	LeavesHusk:
-		HuskActor: V09.Husk
+	SpawnActorOnDeath:
+		Actor: V09.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -154,8 +154,8 @@ V09.Husk:
 
 V10:
 	Inherits: ^CivBuilding
-	LeavesHusk:
-		HuskActor: V10.Husk
+	SpawnActorOnDeath:
+		Actor: V10.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -166,8 +166,8 @@ V10.Husk:
 
 V11:
 	Inherits: ^CivBuilding
-	LeavesHusk:
-		HuskActor: V11.Husk
+	SpawnActorOnDeath:
+		Actor: V11.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -178,8 +178,8 @@ V11.Husk:
 
 V12:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V12.Husk
+	SpawnActorOnDeath:
+		Actor: V12.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -190,8 +190,8 @@ V12.Husk:
 
 V13:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V13.Husk
+	SpawnActorOnDeath:
+		Actor: V13.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -202,8 +202,8 @@ V13.Husk:
 
 V14:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V14.Husk
+	SpawnActorOnDeath:
+		Actor: V14.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -214,8 +214,8 @@ V14.Husk:
 
 V15:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V15.Husk
+	SpawnActorOnDeath:
+		Actor: V15.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -226,8 +226,8 @@ V15.Husk:
 
 V16:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V16.Husk
+	SpawnActorOnDeath:
+		Actor: V16.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -238,8 +238,8 @@ V16.Husk:
 
 V17:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V17.Husk
+	SpawnActorOnDeath:
+		Actor: V17.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -250,8 +250,8 @@ V17.Husk:
 
 V18:
 	Inherits: ^CivField
-	LeavesHusk:
-		HuskActor: V18.Husk
+	SpawnActorOnDeath:
+		Actor: V18.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -265,8 +265,8 @@ ARCO:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	LeavesHusk:
-		HuskActor: ARCO.Husk
+	SpawnActorOnDeath:
+		Actor: ARCO.Husk
 
 ARCO.Husk:
 	Inherits: ^CivBuildingHusk
@@ -287,7 +287,7 @@ BARB:
 		NodeTypes: barbwire
 	LineBuildNode:
 		Types: barbwire
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: barbwire
 
 WOOD:
@@ -303,7 +303,7 @@ WOOD:
 		NodeTypes: woodfence
 	LineBuildNode:
 		Types: woodfence
-	RenderBuildingWall:
+	WithWallSpriteBody:
 		Type: woodfence
 
 BRIDGE1:
@@ -314,6 +314,8 @@ BRIDGE1:
 	Building:
 		Footprint: ____ ____ ____ ____
 		Dimensions: 4,4
+	CustomSelectionSize:
+		CustomBounds: 96,96
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,0
@@ -329,6 +331,8 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____ _____ _____ _____
 		Dimensions: 5,5
+	CustomSelectionSize:
+		CustomBounds: 120,120
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,0
@@ -344,6 +348,8 @@ BRIDGE3:
 	Building:
 		Footprint: ______ ______ ______ ______ ______
 		Dimensions: 6,5
+	CustomSelectionSize:
+		CustomBounds: 144,120
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 3,0
@@ -359,6 +365,8 @@ BRIDGE4:
 	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
+	CustomSelectionSize:
+		CustomBounds: 144,96
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 1,0
@@ -367,106 +375,62 @@ BRIDGE4:
 		SpawnOffset: 3,2
 
 BRIDGEHUT:
+	AlwaysVisible:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	Selectable:
-		Selectable: false
-		Bounds: 48,48
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 48,48
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 C1:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianMaleVoice
+	Voiced:
+		VoiceSet: CivilianMaleVoice
 
 C2:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C3:
 	Inherits: ^CivInfantry
 
 C4:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
 
 C6:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C7:
 	Inherits: ^CivInfantry
 
 C8:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C9:
 	Inherits: ^CivInfantry
 
 C10:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 VICE:
-	AppearsOnRadar:
-	Health:
-		Radius: 427
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 6c0
-	Mobile:
-		Speed: 71
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 60
-			Road: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Beach: 60
-	Selectable:
-		Voice: DinoVoice
-	TargetableUnit:
-		TargetTypes: Ground
-	AutoTarget:
-		ScanRadius: 5
-	AttackMove:
-	HiddenUnderFog:
-	GivesExperience:
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Visceroid
-	Armament:
-		Weapon: Chemspray
-		LocalOffset: 384,0,0
-		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
-	AttackFrontal:
+	Inherits: ^Viceroid
 	AttackWander:
-	RenderUnit:
-	WithMuzzleFlash:
-		SplitFacings: true
-	CombatDebugOverlay:
-	Guard:
-	Guardable:
-	UpdatesPlayerStatistics:
-	BodyOrientation:
-		QuantizedFacings: 8
-	PoisonedByTiberium:
-		Weapon: Heal
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45
 

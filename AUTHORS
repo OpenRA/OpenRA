@@ -3,19 +3,24 @@ hard work of many contributors.
 
 The OpenRA developers are:
     * Chris Forbes (chrisf)
-    * Curtis Shmyr (hamb)
+    * Igor Popov (ihptru)
+    * Lukas Franke (abcdefg30)
     * Matthias Mailänder (Mailaender)
     * Oliver Brakmann (obrakmann)
     * Paul Chote (pchote)
-    * ScottNZ
+    * Pavel Penev (penev92)
+    * Reaperrr
+    * Tom Roostan (RoosterDragon)
 
 Previous developers included:
     * Alli Witheford (alzeih)
     * Caleb Anderson (RobotCaleb)
+    * Curtis Shmyr (hamb)
     * Daniel Hernandez (Mancano)
     * Megan Bowra-Dean (beedee)
     * Mike Bundy (kehaar)
     * Robert Pepperell (ytinasni)
+    * ScottNZ
 
 Also thanks to:
     * Adam Valy (Tschokky)
@@ -26,52 +31,64 @@ Also thanks to:
     * Andrew Perkins
     * Andrew Riedi
     * Andreas Beck (baxtor)
+    * Ang Soon Li (asl97)
     * Arik Lirette (Angusm3)
     * Barnaby Smith (mvi)
     * Bellator
     * Braxton Williams (Buddytex)
+    * Bryan Wilbur
     * Bugra Cuhadaroglu (BugraC)
     * Christer Ulfsparre (Holloweye)
+    * Chris Grant (Unit158)
+    * clem
     * Cody Brittain (Generalcamo)
     * D2k Sardaukar
     * Daniel Derejvanik (Harisson)
     * Danny Keary (Dan9550)
+    * David Jiménez (Rydra)
+    * David Russell (DavidARussell)
     * DeadlySurprise
+    * Dmitri Suvorov (suvjunmd)
     * Erasmus Schroder (rasco)
     * Eric Bajumpaa (SteelPhase)
     * Fahrradkette
     * Frank Razenberg (zzattack)
     * Gareth Needham (Ripley`)
+    * Glen Anderson (GlenAnderson)
+    * Glenn Martin Jensen (Baxxster)
     * Gordon Martin (Happy0)
     * Guido Lipke (LipkeGu)
+    * Gyula Zimmermann (Graion Dilach)
     * Huw Pascoe
     * Ian T. Jacobsen (Smilex)
-    * Igor Popov (ihptru)
     * Imago
     * Iran
     * Jacob Dufault (jacobdufault)
     * James Dunne (jsd)
+    * Jan-Willem Buurlage (jwbuurlage)
     * Jason (atlimit8)
     * Jeff Harris (jeff_1amstudios)
     * Jes
     * Joakim Lindberg (booom3)
+    * Joppy Furr
     * Kanar
     * Kenny Hoxworth (hoxworth)
     * Krishnakanth Mallik
     * Kyrre Soerensen (zypres)
     * Lawrence Wang
     * Lesueur Benjamin (Valkirie)
-    * Lukas Franke (abcdefg30)
     * Maarten Meuris (Nyerguds)
     * Mark Olson (markolson)
     * Matija Hustic (matija-hustic)
     * Matthew Gatland (mgatland)
     * Matthew Uzzell (MUzzell)
+    * Matthijs Benschop (Nerdie)
     * Max621
     * Max Ugrumov (katzsmile)
     * Michael Sztolcman (s1w_)
     * Mustafa Alperen Seki (MustaphaTR)
     * Neil Shivkar (havok13888)
+    * Nooze
     * Nukem
     * Okunev Yu Dmitry (xaionaro)
     * Olaf van der Spek
@@ -82,7 +99,6 @@ Also thanks to:
     * Psydev
     * Raymond Bedrossian (Squiggles211)
     * Raymond Martineau (mart0258)
-    * Reaperrr
     * Riderr3
     * Rikhardur Bjarni Einarsson (WolfGaming)
     * Sascha Biedermann (bidifx)
@@ -93,11 +109,13 @@ Also thanks to:
     * Teemu Nieminen (Temeez)
     * Tim Mylemans (gecko)
     * Tirili
-    * Tom Roostan (RoosterDragon)
     * Tristan Keating (Kilkakon)
     * Tristan Mühlbacher (MicroBit)
     * Vladimir Komarov (VrKomarov)
     * Wuschel
+
+Using GNU FreeFont distributed under the GNU GPL
+terms.
 
 Using Simple DirectMedia Layer distributed under
 the terms of the zlib license.
@@ -133,6 +151,9 @@ Motmans and distributed under the MIT license.
 
 Using ICSharpCode.SharpZipLib initially by Mike
 Krueger and distributed under the GNU GPL terms.
+
+Using SmartIrc4Net developed by Mirco Bauer
+distributed under the LGPL version 2.1 or later.
 
 
 Finally, special thanks goes to the original teams

@@ -1,0 +1,68 @@
+GADPSA:
+	Inherits: ^DeployedVehicle
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Deployed Sensor Array
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 8c0
+	Transforms:
+		IntoActor: lpst
+		Facing: 159
+		TransformSounds: place2.aud
+		NoTransformSounds:
+		Voice: Move
+	-AutoTarget:
+	-DrawLineToTarget:
+	-AttackTurreted:
+	-RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 6c0
+
+NAPULS:
+	Inherits: ^Defense
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: EMP Cannon
+		Description: Disables vehicles.\nRequires power to operate.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 90
+		Prerequisites: radar
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 78, 54, 0, -12
+	RequiresPower:
+	DisabledOverlay:
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8c0
+	Turreted:
+		ROT: 10
+		InitialFacing: 300
+	AttackTurreted:
+	Armament:
+		Weapon: EMPulseCannon
+	WithTurret:
+		Sequence: turret
+	Power:
+		Amount: -150
+	SelectionDecorations:
+		VisualBounds: 78, 54, 0, -12
+	RenderSprites:
+		Image: napuls.gdi
+		FactionImages:
+			gdi: napuls.gdi
+			nod: napuls.nod
+

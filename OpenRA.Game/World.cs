@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,18 +22,19 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class World
+	public enum WorldType { Regular, Shellmap, Editor }
+
+	public sealed class World : IDisposable
 	{
-		static readonly Func<CPos, bool> FalsePredicate = cell => false;
-		internal readonly TraitDictionary traitDict = new TraitDictionary();
-		readonly HashSet<Actor> actors = new HashSet<Actor>();
+		internal readonly TraitDictionary TraitDict = new TraitDictionary();
+		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
 
 		public int Timestep;
 
-		internal readonly OrderManager orderManager;
-		public Session LobbyInfo { get { return orderManager.LobbyInfo; } }
+		internal readonly OrderManager OrderManager;
+		public Session LobbyInfo { get { return OrderManager.LobbyInfo; } }
 
 		public readonly MersenneTwister SharedRandom;
 
@@ -43,50 +44,37 @@ namespace OpenRA
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
-		bool gameOver;
+		public bool IsGameOver { get; private set; }
 		public void EndGame()
 		{
-			if (!gameOver)
+			if (!IsGameOver)
 			{
-				gameOver = true;
+				IsGameOver = true;
+
+				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
+					t.GameOver(this);
+
 				GameOver();
 			}
 		}
 
-		public bool ObserveAfterWinOrLose;
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined) ? null : renderPlayer; }
+			get { return renderPlayer == null || (renderPlayer.WinState != WinState.Undefined && !Map.Visibility.HasFlag(MapVisibility.MissionSelector)) ? null : renderPlayer; }
 			set { renderPlayer = value; }
 		}
 
-		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(a); }
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.CanViewActor(a); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
-		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
+		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
-		
-		public Func<CPos, bool> FogObscuresTest(CellRegion region)
-		{
-			var rp = RenderPlayer;
-			if (rp == null)
-				return FalsePredicate;
-			var predicate = rp.Shroud.IsVisibleTest(region);
-			return cell => !predicate(cell);
-		}
-
-		public Func<CPos, bool> ShroudObscuresTest(CellRegion region)
-		{
-			var rp = RenderPlayer;
-			if (rp == null)
-				return FalsePredicate;
-			var predicate = rp.Shroud.IsExploredTest(region);
-			return cell => !predicate(cell);
-		}
+		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
+		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
 		public bool IsReplay
 		{
-			get { return orderManager.Connection is ReplayConnection; }
+			get { return OrderManager.Connection is ReplayConnection; }
 		}
 
 		public bool AllowDevCommands
@@ -104,22 +92,31 @@ namespace OpenRA
 		}
 
 		public readonly Actor WorldActor;
+
 		public readonly Map Map;
+
 		public readonly TileSet TileSet;
+
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
+		public readonly WorldType Type;
+
 		readonly GameInformation gameInfo;
 
-		public void IssueOrder(Order o) { orderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
+		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
 
-		IOrderGenerator orderGenerator_;
+		IOrderGenerator orderGenerator;
 		public IOrderGenerator OrderGenerator
 		{
-			get { return orderGenerator_; }
+			get
+			{
+				return orderGenerator;
+			}
+
 			set
 			{
 				Sync.AssertUnsynced("The current order generator may not be changed from synced code");
-				orderGenerator_ = value;
+				orderGenerator = value;
 			}
 		}
 
@@ -141,17 +138,19 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Map map, OrderManager orderManager, bool isShellmap)
+		internal World(Map map, OrderManager orderManager, WorldType type)
 		{
-			IsShellmap = isShellmap;
-			this.orderManager = orderManager;
-			orderGenerator_ = new UnitOrderGenerator();
+			Type = type;
+			OrderManager = orderManager;
+			orderGenerator = new UnitOrderGenerator();
 			Map = map;
+			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 
 			TileSet = map.Rules.TileSets[Map.Tileset];
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
-			WorldActor = CreateActor("World", new TypeDictionary());
+			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
+			WorldActor = CreateActor(worldActorType, new TypeDictionary());
 			ActorMap = WorldActor.Trait<ActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 
@@ -165,28 +164,43 @@ namespace OpenRA
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = Stance.Neutral;
 
-			Sound.SoundVolumeModifier = 1.0f;
+			Game.Sound.SoundVolumeModifier = 1.0f;
 
 			gameInfo = new GameInformation
 			{
+				Mod = Game.ModData.Manifest.Mod.Id,
+				Version = Game.ModData.Manifest.Mod.Version,
+
 				MapUid = Map.Uid,
 				MapTitle = Map.Title
 			};
+
+			if (!LobbyInfo.GlobalSettings.Shroud)
+				foreach (var player in Players)
+					player.Shroud.ExploreAll(this);
 		}
 
 		public void LoadComplete(WorldRenderer wr)
 		{
+			// ScreenMap must be initialized before anything else
+			using (new Support.PerfTimer("ScreenMap.WorldLoaded"))
+				ScreenMap.WorldLoaded(this, wr);
+
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
 			{
+				// These have already been initialized
+				if (wlh == ScreenMap)
+					continue;
+
 				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
 					wlh.WorldLoaded(this, wr);
 			}
 
 			gameInfo.StartTimeUtc = DateTime.UtcNow;
 			foreach (var player in Players)
-				gameInfo.AddPlayer(player, orderManager.LobbyInfo);
+				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
-			var rc = orderManager.Connection as ReplayRecorderConnection;
+			var rc = OrderManager.Connection as ReplayRecorderConnection;
 			if (rc != null)
 				rc.Metadata = new ReplayMetadata(gameInfo);
 		}
@@ -209,7 +223,7 @@ namespace OpenRA
 		public void Add(Actor a)
 		{
 			a.IsInWorld = true;
-			actors.Add(a);
+			actors.Add(a.ActorID, a);
 			ActorAdded(a);
 
 			foreach (var t in a.TraitsImplementing<INotifyAddedToWorld>())
@@ -219,7 +233,7 @@ namespace OpenRA
 		public void Remove(Actor a)
 		{
 			a.IsInWorld = false;
-			actors.Remove(a);
+			actors.Remove(a.ActorID);
 			ActorRemoved(a);
 
 			foreach (var t in a.TraitsImplementing<INotifyRemovedFromWorld>())
@@ -228,6 +242,7 @@ namespace OpenRA
 
 		public void Add(IEffect b) { effects.Add(b); }
 		public void Remove(IEffect b) { effects.Remove(b); }
+		public void RemoveAll(Predicate<IEffect> predicate) { effects.RemoveAll(predicate); }
 
 		public void AddFrameEndTask(Action<World> a) { frameEndActions.Enqueue(a); }
 
@@ -237,7 +252,7 @@ namespace OpenRA
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }
-		public bool IsShellmap = false;
+
 		public int WorldTick { get; private set; }
 
 		public void SetPauseState(bool paused)
@@ -256,7 +271,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
+			if (!Paused && (Type != WorldType.Shellmap || Game.Settings.Game.ShowShellmap))
 			{
 				WorldTick++;
 
@@ -266,7 +281,7 @@ namespace OpenRA
 							ni.Trait.TickIdle(ni.Actor);
 
 				using (new PerfSample("tick_activities"))
-					foreach (var a in actors)
+					foreach (var a in actors.Values)
 						a.Tick();
 
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
@@ -284,8 +299,16 @@ namespace OpenRA
 			ActorsWithTrait<ITickRender>().DoTimed(x => x.Trait.TickRender(wr, x.Actor), "Render");
 		}
 
-		public IEnumerable<Actor> Actors { get { return actors; } }
+		public IEnumerable<Actor> Actors { get { return actors.Values; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+
+		public Actor GetActorById(uint actorId)
+		{
+			Actor a;
+			if (actors.TryGetValue(actorId, out a))
+				return a;
+			return null;
+		}
 
 		uint nextAID = 0;
 		internal uint NextAID()
@@ -295,7 +318,7 @@ namespace OpenRA
 
 		public int SyncHash()
 		{
-			//using (new PerfSample("synchash"))
+			// using (new PerfSample("synchash"))
 			{
 				var n = 0;
 				var ret = 0;
@@ -325,7 +348,7 @@ namespace OpenRA
 
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
-			return traitDict.ActorsWithTrait<T>();
+			return TraitDict.ActorsWithTrait<T>();
 		}
 
 		public void OnPlayerWinStateChanged(Player player)
@@ -336,6 +359,26 @@ namespace OpenRA
 				pi.Outcome = player.WinState;
 				pi.OutcomeTimestampUtc = DateTime.UtcNow;
 			}
+		}
+
+		public bool Disposing;
+
+		public void Dispose()
+		{
+			Disposing = true;
+
+			frameEndActions.Clear();
+
+			Game.Sound.StopAudio();
+			Game.Sound.StopVideo();
+
+			// Dispose newer actors first, and the world actor last
+			foreach (var a in actors.Values.Reverse())
+				a.Dispose();
+
+			// Actor disposals are done in a FrameEndTask
+			while (frameEndActions.Count != 0)
+				frameEndActions.Dequeue()(this);
 		}
 	}
 

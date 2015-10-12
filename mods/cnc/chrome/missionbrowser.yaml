@@ -66,7 +66,7 @@ Container@MISSIONBROWSER_PANEL:
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
 							Y: 213
 							Width: PARENT_RIGHT
-							Height: 134
+							Height: 99
 							Children:
 								Label@MISSION_DESCRIPTION:
 									X: 4
@@ -74,6 +74,31 @@ Container@MISSIONBROWSER_PANEL:
 									Width: PARENT_RIGHT - 32
 									VAlign: Top
 									Font: Small
+						Label@DIFFICULTY_DESC:
+							Y: 322
+							Width: 56
+							Height: 25
+							Text: Difficulty:
+							Align: Right
+						DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+							X: 61
+							Y: 322
+							Width: 120
+							Height: 25
+							Font: Regular
+						Label@GAMESPEED_DESC:
+							X: PARENT_RIGHT - WIDTH - 125
+							Y: 322
+							Width: 120
+							Height: 25
+							Text: Speed:
+							Align: Right
+						DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+							X: PARENT_RIGHT - WIDTH
+							Y: 322
+							Width: 120
+							Height: 25
+							Font: Regular
 		Button@BACK_BUTTON:
 			Y: 376
 			Width: 140
@@ -81,19 +106,33 @@ Container@MISSIONBROWSER_PANEL:
 			Text: Back
 			Font: Bold
 			Key: escape
-		Button@START_VIDEO_BUTTON:
+		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 290
 			Y: 376
 			Width: 140
 			Height: 35
-			Text: View Briefing
+			Text: Watch Briefing
 			Font: Bold
-		Button@STOP_VIDEO_BUTTON:
+		Button@STOP_BRIEFING_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 290
 			Y: 376
 			Width: 140
 			Height: 35
 			Text: Stop Briefing
+			Font: Bold
+		Button@START_INFO_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 440
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Watch Info Video
+			Font: Bold
+		Button@STOP_INFO_VIDEO_BUTTON:
+			X: PARENT_RIGHT - 440
+			Y: 376
+			Width: 140
+			Height: 35
+			Text: Stop Info Video
 			Font: Bold
 		Button@STARTGAME_BUTTON:
 			X: PARENT_RIGHT - 140
@@ -109,3 +148,14 @@ Container@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+Background@FULLSCREEN_PLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: panel-allblack
+	Visible: False
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM

@@ -1,6 +1,7 @@
 Player:
 	HackyAI@Cabal:
 		Name: Cabal
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -51,7 +52,7 @@ Player:
 			e2: 10%
 			e4: 7%
 			e5: 5%
-			harv: 1%
+			harv: 10%
 			bggy: 5%
 			bike: 40%
 			ltnk: 25%
@@ -64,6 +65,8 @@ Player:
 			htnk: 50%
 			heli: 5%
 			orca: 5%
+		UnitLimits:
+			harv: 8
 		SquadSize: 15
 		SupportPowerDecision@Airstrike:
 			OrderName: AirstrikePowerInfoOrder
@@ -119,6 +122,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@Watson:
 		Name: Watson
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -169,7 +173,7 @@ Player:
 			e3: 30%
 			e4: 30%
 			e5: 30%
-			harv: 1%
+			harv: 10%
 			bggy: 10%
 			ftnk: 10%
 			arty: 40%
@@ -182,6 +186,8 @@ Player:
 			htnk: 50%
 			jeep: 20%
 			mtnk: 50%
+		UnitLimits:
+			harv: 8
 		SquadSize: 15
 		SupportPowerDecision@Airstrike:
 			OrderName: AirstrikePowerInfoOrder
@@ -237,6 +243,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@HAL9001:
 		Name: HAL 9001
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -287,7 +294,7 @@ Player:
 			e3: 30%
 			e4: 50%
 			e5: 50%
-			harv: 6%
+			harv: 16%
 			bggy: 10%
 			bike: 10%
 			ltnk: 40%
@@ -302,6 +309,8 @@ Player:
 			msam: 50%
 			htnk: 50%
 			orca: 10%
+		UnitLimits:
+			harv: 8
 		SquadSize: 8
 		SupportPowerDecision@Airstrike:
 			OrderName: AirstrikePowerInfoOrder

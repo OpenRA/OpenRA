@@ -1,43 +1,50 @@
 Player:
+	AlwaysVisible:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
+		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
-		RequireOwner: false
+	ClassicProductionQueue@Upgrade:
+		Type: Upgrade
+		BuildSpeed: 1.0
+		LowPowerSlowdown: 0
+		QueuedAudio: Upgrading
+		ReadyAudio: NewOptions
+		BlockedAudio: NoRoom
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		LowPowerSlowdown: 2
+		BuildSpeed: 1.0
+		LowPowerSlowdown: 3
 		BlockedAudio: NoRoom
-		RequireOwner: false
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
+		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
-		RequireOwner: false
 	ClassicProductionQueue@Armor:
 		Type: Armor
+		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
-		RequireOwner: false
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildSpeed: .2
-		LowPowerSlowdown: 1
+		BuildSpeed: 0.85
+		LowPowerSlowdown: 0
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
-		RequireOwner: false
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
+		BuildSpeed: 1.25
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
-		RequireOwner: false
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:
@@ -50,10 +57,6 @@ Player:
 		AdviceInterval: 650
 	ActorGroupProxy:
 	DeveloperMode:
-	PlayerColorPalette:
-		BasePalette: d2k
-		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
-	PlayerHighlightPalette:
 	BaseAttackNotifier:
 	Shroud:
 	FrozenActorLayer:
@@ -72,4 +75,6 @@ Player:
 	ProvidesTechPrerequisite@all:
 		Name: Unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+	EnemyWatcher:
+	HarvesterInsurance:
 

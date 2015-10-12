@@ -13,7 +13,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CustomCommands>
@@ -26,13 +26,29 @@
     <DebugType>full</DebugType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ts" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/ts" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="Eluant">
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -48,20 +64,17 @@
       <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
-      <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRA.Mods.RA</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShroudPalette.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
-    <Compile Include="TiberianSunRefinery.cs" />
-    <Compile Include="Render\WithVoxelWalkerBody.cs" />
-    <Compile Include="Render\WithVoxelUnloadBody.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
+    <Compile Include="Traits\Render\WithPermanentInjury.cs" />
+    <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelWaterBody.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
+    <Compile Include="Traits\World\TSShroudPalette.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

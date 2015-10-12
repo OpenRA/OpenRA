@@ -1,6 +1,7 @@
 Player:
 	HackyAI@TestAI:
 		Name: Test AI
+		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: gacnst
 			Refinery: proc
@@ -24,6 +25,12 @@ Player:
 			gatech: 1
 			natech: 1
 			nastlh: 1
+			gavulc: 4
+			garock: 4
+			gacsam: 4
+			naobel: 2
+			nalasr: 8
+			nasam: 4
 		BuildingFractions:
 			proc: 30%
 			gapowr: 35%
@@ -37,17 +44,26 @@ Player:
 			gatech: 1%
 			natech: 1%
 			nastlh: 1%
+			nalasr: 10%
+			gavulc: 10%
+			garock: 10%
+			gacsam: 6%
+			nasam: 6%
+			naobel: 3%
 		UnitsToBuild:
 			e1: 80%
 			e2: 8%
 			e3: 30%
 			medic: 2%
 			jumpjet: 15%
+			harv: 10%
 			mmch: 15%
 			smech: 25%
 			bike: 60%
 			bggy: 75%
 			ttnk: 45%
 			stnk: 8%
+		UnitLimits:
+			harv: 8
 		SquadSize: 20
 

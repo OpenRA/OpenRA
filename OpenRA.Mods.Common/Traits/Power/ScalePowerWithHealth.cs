@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,22 +10,22 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Power
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Scale power amount with the current health.")]
 	public class ScalePowerWithHealthInfo : ITraitInfo, Requires<PowerInfo>, Requires<HealthInfo>
 	{
-		public object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.self); }
+		public object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.Self); }
 	}
 
-	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage
+	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage, INotifyOwnerChanged
 	{
-		readonly Power power;
 		readonly Health health;
+		PowerManager power;
 
 		public ScalePowerWithHealth(Actor self)
 		{
-			power = self.Trait<Power>();
+			power = self.Owner.PlayerActor.Trait<PowerManager>();
 			health = self.Trait<Health>();
 		}
 
@@ -34,9 +34,10 @@ namespace OpenRA.Mods.Common.Power
 			return 100 * health.HP / health.MaxHP;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void Damaged(Actor self, AttackInfo e) { power.UpdateActor(self); }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			power.PlayerPower.UpdateActor(self);
+			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 	}
 }

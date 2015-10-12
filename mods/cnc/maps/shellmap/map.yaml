@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -16,22 +14,24 @@ MapSize: 96,48
 
 Bounds: 8,1,80,45
 
-UseAsShellmap: True
+Visibility: Shellmap
 
 Type: Shellmap
+
+Videos:
 
 Options:
 
 Players:
 	PlayerReference@Nod:
 		Name: Nod
-		Race: nod
+		Faction: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
 		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Allies: GDI
 		Enemies: Nod, Creeps
@@ -39,56 +39,44 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: Random
+		Faction: Random
 		Enemies: Nod, GDI, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
 
 Actors:
-	boat1: boat
-		Location: 45,33
-		Owner: GDI
-	boat2: boat
-		Location: 39,37
-		Owner: GDI
-	boat3: boat
-		Location: 70,33
-		Owner: GDI
-	boat4: boat
-		Location: 79,37
-		Owner: GDI
 	Actor4: fix
 		Location: 59,44
 		Owner: GDI
@@ -962,6 +950,18 @@ Actors:
 	Actor221: jeep
 		Location: 57,45
 		Owner: GDI
+	boat1: boat
+		Location: 45,33
+		Owner: GDI
+	boat2: boat
+		Location: 39,37
+		Owner: GDI
+	boat3: boat
+		Location: 70,33
+		Owner: GDI
+	boat4: boat
+		Location: 79,37
+		Owner: GDI
 	lst1: lst
 		Location: 53,35
 		Owner: GDI
@@ -992,13 +992,10 @@ Rules:
 		-CrateSpawner:
 		MenuPaletteEffect:
 			Effect: Desaturated
-		PlayMusicOnMapLoad:
-			Music: map1
-			Loop: true
 		LuaScript:
 			Scripts: shellmap.lua
-		LoadWidgetAtGameStart:
-			Widget: MENU_BACKGROUND
+		MusicPlaylist:
+			BackgroundMusic: map1
 	LST:
 		Mobile:
 			Speed: 42

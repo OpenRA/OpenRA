@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,9 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Commands
@@ -34,19 +36,24 @@ namespace OpenRA.Mods.Common.Commands
 				help.RegisterHelp(name, helpText);
 			};
 
-			register("disableshroud", "toggles shroud.");
+			register("visibility", "toggles visibility checks and minimap.");
 			register("givecash", "gives the default or specified amount of money.");
+			register("givecashall", "gives the default or specified amount of money to all players and ai.");
 			register("instantbuild", "toggles instant building.");
 			register("buildanywhere", "toggles you the ability to build anywhere.");
 			register("unlimitedpower", "toggles infinite power.");
 			register("enabletech", "toggles the ability to build everything.");
 			register("instantcharge", "toggles instant support power charging.");
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
-			register("crash", "crashes the game");
+			register("crash", "crashes the game.");
+			register("levelup", "adds a specified number of levels to the selected actors.");
 		}
 
 		public void InvokeCommand(string name, string arg)
 		{
+			if (world.LocalPlayer == null)
+				return;
+
 			if (!world.AllowDevCommands)
 			{
 				Game.Debug("Cheats are disabled.");
@@ -56,18 +63,30 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "givecash":
-					var order = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
+					var givecashorder = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
 					int cash;
+					int.TryParse(arg, out cash);
 
-					if (int.TryParse(arg, out cash))
-						order.ExtraData = (uint)cash;
-
+					givecashorder.ExtraData = (uint)cash;
 					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
-					world.IssueOrder(order);
+					world.IssueOrder(givecashorder);
 
 					break;
 
-				case "disableshroud": IssueDevCommand(world, "DevShroudDisable"); break;
+				case "givecashall":
+					int.TryParse(arg, out cash);
+
+					foreach (var player in world.Players.Where(p => !p.NonCombatant))
+					{
+						var givecashall = new Order("DevGiveCash", player.PlayerActor, false);
+						givecashall.ExtraData = (uint)cash;
+						Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), player.PlayerName);
+						world.IssueOrder(givecashall);
+					}
+
+					break;
+
+				case "visibility": IssueDevCommand(world, "DevVisibility"); break;
 				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
 				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
 				case "unlimitedpower": IssueDevCommand(world, "DevUnlimitedPower"); break;
@@ -75,17 +94,29 @@ namespace OpenRA.Mods.Common.Commands
 				case "instantcharge": IssueDevCommand(world, "DevFastCharge"); break;
 
 				case "all":
-					IssueDevCommand(world, "DevShroudDisable");
-					IssueDevCommand(world, "DevFastBuild");
-					IssueDevCommand(world, "DevBuildAnywhere");
-					IssueDevCommand(world, "DevUnlimitedPower");
-					IssueDevCommand(world, "DevEnableTech");
-					IssueDevCommand(world, "DevFastCharge");
-					IssueDevCommand(world, "DevGiveCash");
+					IssueDevCommand(world, "DevAll");
 					break;
 
 				case "crash":
 					throw new DevException();
+
+				case "levelup":
+					var level = 0;
+					int.TryParse(arg, out level);
+
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead || actor.Disposed)
+							continue;
+
+						var leveluporder = new Order("DevLevelUp", actor, false);
+						leveluporder.ExtraData = (uint)level;
+
+						if (actor.Info.HasTraitInfo<GainsExperienceInfo>())
+							world.IssueOrder(leveluporder);
+					}
+
+					break;
 			}
 		}
 

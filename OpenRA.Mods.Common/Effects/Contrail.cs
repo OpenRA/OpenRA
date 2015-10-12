@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,12 +12,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
 	[Desc("Draw a colored contrail behind this actor when they move.")]
-	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>
+	class ContrailInfo : ITraitInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -31,14 +32,16 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Use player remap color instead of a custom color?")]
 		public readonly bool UsePlayerColor = true;
 
-		public object Create(ActorInitializer init) { return new Contrail(init.self, this); }
+		public object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
 	}
 
 	class Contrail : ITick, IRender
 	{
-		ContrailInfo info;
+		readonly ContrailInfo info;
+		readonly BodyOrientation body;
+
+		// This is a mutable struct, so it can't be readonly.
 		ContrailRenderable trail;
-		IBodyOrientation body;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
@@ -47,7 +50,7 @@ namespace OpenRA.Mods.Common.Effects
 			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
 			trail = new ContrailRenderable(self.World, color, info.TrailLength, 0, 0);
 
-			body = self.Trait<IBodyOrientation>();
+			body = self.Trait<BodyOrientation>();
 		}
 
 		public void Tick(Actor self)

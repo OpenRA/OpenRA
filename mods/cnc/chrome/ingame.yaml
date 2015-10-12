@@ -2,6 +2,7 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		Container@WORLD_ROOT:
+			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
@@ -27,28 +28,7 @@ Container@INGAME_ROOT:
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT/2
 					Y: 40
-				Container@PERFORMANCE_INFO:
-					Logic: PerfDebugLogic
-					Children:
-						Label@PERF_TEXT:
-							X: WINDOW_RIGHT - 200
-							Y: WINDOW_BOTTOM - 70
-							Width: 170
-							Height: 40
-							Contrast: true
-							VAlign: Top
-						Background@GRAPH_BG:
-							X: 10
-							Y: WINDOW_BOTTOM-HEIGHT-10
-							Width: 220
-							Height: 220
-							Background: panel-black
-							Children:
-								PerfGraph@GRAPH:
-									X: 10
-									Y: 10
-									Width: 200
-									Height: 200
+				Container@PERF_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
@@ -59,9 +39,40 @@ Container@INGAME_ROOT:
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+		Label@MISSION_TEXT:
+			X: WINDOW_RIGHT/2 - 256
+			Y: 22
+			Width: 512
+			Height: 25
+			Font: Bold
+			Align: Center
+			Contrast: true
+
+Container@PERF_WIDGETS:
+	Logic: PerfDebugLogic
+	Children:
+		Label@PERF_TEXT:
+			X: WINDOW_RIGHT - 200
+			Y: WINDOW_BOTTOM - 70
+			Width: 170
+			Height: 40
+			Contrast: true
+			VAlign: Top
+		Background@GRAPH_BG:
+			X: 10
+			Y: WINDOW_BOTTOM-HEIGHT-10
+			Width: 220
+			Height: 220
+			Background: panel-black
+			Children:
+				PerfGraph@GRAPH:
+					X: 10
+					Y: 10
+					Width: 200
+					Height: 200
 
 Container@OBSERVER_WIDGETS:
-	Logic: OrderButtonsChromeLogic
+	Logic: MenuButtonsChromeLogic
 	Children:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
@@ -237,7 +248,7 @@ Container@PLAYER_WIDGETS:
 					ReadyText: Ready
 					HoldText: On Hold
 		Background@SIDEBAR_BACKGROUND:
-			Logic: OrderButtonsChromeLogic
+			Logic: MenuButtonsChromeLogic
 			X: WINDOW_RIGHT - 204
 			Y: 30
 			Width: 194
@@ -260,6 +271,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: order-icons
 							ImageName: options
 				Button@BEACON_BUTTON:
+					Logic: BeaconOrderButtonLogic
 					X: 62
 					Y: 0-24
 					Width: 30
@@ -273,6 +285,7 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: order-icons
 				Button@SELL_BUTTON:
+					Logic: SellOrderButtonLogic
 					X: 102
 					Y: 0-24
 					Width: 30
@@ -286,6 +299,7 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: order-icons
 				Button@REPAIR_BUTTON:
+					Logic: RepairOrderButtonLogic
 					X: 142
 					Y: 0-24
 					Width: 30
@@ -314,6 +328,12 @@ Container@PLAYER_WIDGETS:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							Children:
 								LogicTicker@RADAR_TICKER:
+						VqaPlayer@PLAYER:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							Skippable: false
 				Background@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
 					X: 4
@@ -363,10 +383,10 @@ Container@PLAYER_WIDGETS:
 						ProductionTypeButton@BUILDING:
 							Width: 30
 							Height: 30
-							Key: e
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
+							HotkeyName: ProductionTypeBuildingKey
 							Children:
 								Image@ICON:
 									X: 7
@@ -376,10 +396,10 @@ Container@PLAYER_WIDGETS:
 							X: 35
 							Width: 30
 							Height: 30
-							Key: r
-							TooltipText: Defence
+							TooltipText: Support
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defence
+							HotkeyName: ProductionTypeDefenseKey
 							Children:
 								Image@ICON:
 									X: 7
@@ -389,10 +409,10 @@ Container@PLAYER_WIDGETS:
 							X: 70
 							Width: 30
 							Height: 30
-							Key: t
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
+							HotkeyName: ProductionTypeInfantryKey
 							Children:
 								Image@ICON:
 									X: 7
@@ -402,10 +422,10 @@ Container@PLAYER_WIDGETS:
 							X: 105
 							Width: 30
 							Height: 30
-							Key: y
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
+							HotkeyName: ProductionTypeVehicleKey
 							Children:
 								Image@ICON:
 									X: 7
@@ -415,10 +435,10 @@ Container@PLAYER_WIDGETS:
 							X: 140
 							Width: 30
 							Height: 30
-							Key: u
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
+							HotkeyName: ProductionTypeAircraftKey
 							Children:
 								Image@ICON:
 									X: 7

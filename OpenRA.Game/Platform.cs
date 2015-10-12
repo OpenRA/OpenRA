@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,24 +26,24 @@ namespace OpenRA
 
 		static PlatformType GetCurrentPlatform()
 		{
-				if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-					return PlatformType.Windows;
+			if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+				return PlatformType.Windows;
 
-				try
-				{
-					var psi = new ProcessStartInfo("uname", "-s");
-					psi.UseShellExecute = false;
-					psi.RedirectStandardOutput = true;
-					var p = Process.Start(psi);
-					var kernelName = p.StandardOutput.ReadToEnd();
-					if (kernelName.Contains("Linux") || kernelName.Contains("BSD"))
-						return PlatformType.Linux;
-					if (kernelName.Contains("Darwin"))
-						return PlatformType.OSX;
-				}
-				catch {	}
+			try
+			{
+				var psi = new ProcessStartInfo("uname", "-s");
+				psi.UseShellExecute = false;
+				psi.RedirectStandardOutput = true;
+				var p = Process.Start(psi);
+				var kernelName = p.StandardOutput.ReadToEnd();
+				if (kernelName.Contains("Darwin"))
+					return PlatformType.OSX;
+				else
+					return PlatformType.Linux;
+			}
+			catch { }
 
-				return PlatformType.Unknown;
+			return PlatformType.Unknown;
 		}
 
 		public static string RuntimeVersion
@@ -58,7 +58,7 @@ namespace OpenRA
 				if (version == null)
 					return "Mono (unknown version) CLR {0}".F(Environment.Version);
 
-				return "Mono {0} CLR {1}".F(version.Invoke(null, null), Environment.Version); 
+				return "Mono {0} CLR {1}".F(version.Invoke(null, null), Environment.Version);
 			}
 		}
 
@@ -75,16 +75,16 @@ namespace OpenRA
 
 			switch (CurrentPlatform)
 			{
-			case PlatformType.Windows:
-				dir += Path.DirectorySeparatorChar + "OpenRA";
-				break;
-			case PlatformType.OSX:
-				dir += "/Library/Application Support/OpenRA";
-				break;
-			case PlatformType.Linux:
-			default:
-				dir += "/.openra";
-				break;
+				case PlatformType.Windows:
+					dir += Path.DirectorySeparatorChar + "OpenRA";
+					break;
+				case PlatformType.OSX:
+					dir += "/Library/Application Support/OpenRA";
+					break;
+				case PlatformType.Linux:
+				default:
+					dir += "/.openra";
+					break;
 			}
 
 			if (!Directory.Exists(dir))
@@ -98,6 +98,8 @@ namespace OpenRA
 		/// <summary>Replace special character prefixes with full paths</summary>
 		public static string ResolvePath(string path)
 		{
+			path = path.TrimEnd(new char[] { ' ', '\t' });
+
 			// paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^"))
 				path = SupportDir + path.Substring(1);
@@ -126,6 +128,5 @@ namespace OpenRA
 
 			return path;
 		}
-
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -49,10 +49,16 @@ namespace OpenRA
 		{
 			Log.AddChannel("exception", "exception.log");
 
-			if (Game.modData != null)
+			if (Game.ModData != null)
 			{
-				var mod = Game.modData.Manifest.Mod;
+				var mod = Game.ModData.Manifest.Mod;
 				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
+			}
+
+			if (Game.OrderManager != null && Game.OrderManager.World != null && Game.OrderManager.World.Map != null)
+			{
+				var map = Game.OrderManager.World.Map;
+				Log.Write("exception", "on map {0} ({1} by {2}).", map.Uid, map.Title, map.Author);
 			}
 
 			Log.Write("exception", "Operating System: {0} ({1})", Platform.CurrentPlatform, Environment.OSVersion);
@@ -86,8 +92,9 @@ namespace OpenRA
 				Indent(sb, d);
 				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);
 			}
-			else // TODO: more exception types
+			else
 			{
+				// TODO: more exception types
 			}
 
 			if (e.InnerException != null)

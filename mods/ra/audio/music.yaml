@@ -1,0 +1,50 @@
+intro: Intro
+	Hidden: true
+map: Map
+	Hidden: true
+score: Militant Force
+	Hidden: true
+await_r: Await
+bigf226m: Bigfoot
+credits: Reload Fire
+crus226m: Crush
+dense_r: Dense
+fac1226m: Face to the Enemy 1
+fac2226m: Face to the Enemy 2
+fogger1a: Fogger
+hell226m: Hell March
+mud1a: Mud
+radio2: Radio 2
+rollout: Roll Out
+run1226m: Run for your Life
+smsh226m: Smash
+snake: Snake
+terminat: Terminate
+tren226m: Trenches
+twin: Twin Cannon
+vector1a: Vector
+work226m: Workmen
+
+# Counterstrike tracks
+2nd_hand: The Second Hand
+backstab: Backstab
+shut_it: Shut It
+under3: Underlying Thoughts
+chaos2: Chaos
+twinmix1: Twin Cannon Remix
+vr2: Voice Rhythm 2
+araziod: Arazoid
+
+# Aftermath tracks
+bog: Bog
+gloom: Gloom
+rpt: Running through Pipes (Mech Man 2)
+traction: Traction
+float_v2: Floating
+grndwire: Ground Wire
+search: The Search
+wastelnd: Wasteland
+
+# Special effects
+rain: Rain (ambient)
+	Hidden: true

@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 64,64
 
 Bounds: 16,16,32,32
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Drop Zone
+
+Videos:
 
 Options:
 	Crates: True
@@ -27,6 +27,7 @@ Options:
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 5000
+	TechLevel: Unrestricted
 	ConfigurableStartingUnits: False
 
 Players:
@@ -34,67 +35,67 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 
 Actors:
 	Actor0: apc
@@ -188,22 +189,13 @@ Rules:
 	World:
 		CrateSpawner:
 			Maximum: 3
-			SpawnInterval: 5
+			SpawnInterval: 125
+			CrateActors: unitcrate
+			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
-	CRATE:
-		-LevelUpCrateAction:
-		-GiveMcvCrateAction:
-		-RevealMapCrateAction:
-		-HideMapCrateAction:
-		-ExplodeCrateAction@nuke:
-		-ExplodeCrateAction@boom:
-		-ExplodeCrateAction@fire:
-		-SupportPowerCrateAction@parabombs:
-		-GiveCashCrateAction:
-		-DuplicateUnitCrateAction:
-		-GiveUnitCrateAction@squadlight:
-		-GiveUnitCrateAction@squadheavysoviet:
+	UNITCRATE:
+		Inherits: ^Crate
 		GiveUnitCrateAction@ttnk:
 			SelectionShares: 4
 			Units: ttnk
@@ -236,6 +228,7 @@ Rules:
 		RevealsShroud:
 			Range: 40c0
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		-AttackMove:
 	HARV:
 		Tooltip:
@@ -266,8 +259,8 @@ Weapons:
 		Range: 10c0
 		Warhead: SpreadDamage
 			Spread: 42
-			DeathType: 5
 			Damage: 80
+			DamageTypes: Prone50Percent, TriggerProne, FireDeath
 
 Voices:
 

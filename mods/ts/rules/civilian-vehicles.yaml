@@ -1,0 +1,200 @@
+4TNK:
+	Inherits: ^VoxelTank
+	Valued:
+		Cost: 1700
+	Tooltip:
+		Name: Mammoth Tank
+	Mobile:
+		Speed: 56
+		ROT: 5
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6c0
+	Turreted:
+		ROT: 3
+	Armament@PRIMARY:
+		Weapon: 120mmx
+		LocalOffset: 500,60,360, 500,-85,360
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Weapon: MammothTusk
+		LocalOffset: 0,200,410, 0,-200,410
+	AttackTurreted:
+		Voice: Attack
+	AutoTarget:
+	SelfHealing:
+		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
+	WithVoxelTurret:
+	WithVoxelBarrel:
+	WithMuzzleOverlay:
+
+^TRUCK:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Truck
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 5c0
+
+TRUCKA:
+	Inherits: ^TRUCK
+
+TRUCKB:
+	Inherits: ^TRUCK
+
+ICBM:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Ballistic Missile Launcher
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		ROT: 5
+	RevealsShroud:
+		Range: 7c0
+	Transforms:
+		IntoActor: gaicbm
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+		Voice: Move
+
+BUS:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: School Bus
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 5
+		UnloadVoice: Unload
+
+PICK:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Pickup
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 5
+		UnloadVoice: Unload
+
+CAR:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Automobile
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 5
+		UnloadVoice: Unload
+
+WINI:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Recreational Vehicle
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadVoice: Unload
+
+LOCOMOTIVE:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Train Locomotive
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 2
+		UnloadVoice: Unload
+
+TRAINCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Passenger Car
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		PipCount: 5
+		UnloadVoice: Unload
+
+CARGOCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Cargo Car
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		PipCount: 5
+		UnloadVoice: Unload
+

@@ -1,7 +1,7 @@
 if DateTime.IsHalloween then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
-	ParadropUnitTypes = { "zombie", "zombie", "zombie", "zombie", "zombie" }
+	ProxyType = "powerproxy.parazombies"
 	ProducedUnitTypes =
 	{
 		{ AlliedBarracks1, { "e1", "e3" } },
@@ -15,7 +15,7 @@ if DateTime.IsHalloween then
 else
 	UnitTypes = { "3tnk", "ftrk", "ttnk", "apc" }
 	BeachUnitTypes = { "e1", "e2", "e3", "e4", "e1", "e2", "e3", "e4", "e1", "e2", "e3", "e4", "e1", "e2", "e3", "e4" }
-	ParadropUnitTypes = { "e1", "e1", "e2", "e3", "e4" }
+	ProxyType = "powerproxy.paratroopers"
 	ProducedUnitTypes =
 	{
 		{ AlliedBarracks1, { "e1", "e3" } },
@@ -36,9 +36,17 @@ ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Par
 BindActorTriggers = function(a)
 	if a.HasProperty("Hunt") then
 		if a.Owner == allies then
-			Trigger.OnIdle(a, a.Hunt)
+			Trigger.OnIdle(a, function(a)
+				if a.IsInWorld then
+					a.Hunt()
+				end
+			end)
 		else
-			Trigger.OnIdle(a, function(a) a.AttackMove(AlliedTechnologyCenter.Location) end)
+			Trigger.OnIdle(a, function(a)
+				if a.IsInWorld then
+					a.AttackMove(AlliedTechnologyCenter.Location)
+				end
+			end)
 		end
 	end
 
@@ -83,17 +91,13 @@ InsertAlliedChinookReinforcements = function(entry, hpad)
 end
 
 ParadropSovietUnits = function()
-	local lz = Utils.Random(ParadropWaypoints).Location
-	local start = Map.CenterOfCell(Map.RandomEdgeCell()) + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-	local transport = Actor.Create("badr", true, { CenterPosition = start, Owner = soviets, Facing = (Map.CenterOfCell(lz) - start).Facing })
+	local lz = Utils.Random(ParadropWaypoints)
+	local units = powerproxy.SendParatroopers(lz.CenterPosition)
 
-	Utils.Do(ParadropUnitTypes, function(type)
-		local a = Actor.Create(type, false, { Owner = soviets })
+	Utils.Do(units, function(a)
 		BindActorTriggers(a)
-		transport.LoadPassenger(a)
 	end)
 
-	transport.Paradrop(lz)
 	Trigger.AfterDelay(DateTime.Seconds(35), ParadropSovietUnits)
 end
 
@@ -139,7 +143,7 @@ speed = 5
 
 Tick = function()
 	ticks = ticks + 1
-	
+
 	local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
 	Camera.Position = viewportOrigin + WVec.New(19200 * math.sin(t), 20480 * math.cos(t), 0)
 end
@@ -154,6 +158,7 @@ WorldLoaded = function()
 	ShipAlliedUnits()
 	InsertAlliedChinookReinforcements(Chinook1Entry, HeliPad1)
 	InsertAlliedChinookReinforcements(Chinook2Entry, HeliPad2)
+	powerproxy = Actor.Create(ProxyType, false, { Owner = soviets })
 	ParadropSovietUnits()
 	Trigger.AfterDelay(DateTime.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)

@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -10,40 +8,45 @@ Description: In order for the Brotherhood to gain a foothold, we must begin by e
 
 Author: Westwood Studios
 
-PreviewVideo: nod1.vqa
-
 Tileset: DESERT
 
 MapSize: 64,64
 
 Bounds: 21,14,37,24
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	BackgroundInfo: intro2.vqa
+	Briefing: nod1.vqa
+	GameLost: nodlose.vqa
+
 Options:
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@Villagers:
 		Name: Villagers
 		NonCombatant: True
-		Race: gdi
+		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Allies: Villagers
 		Enemies: Nod
@@ -52,18 +55,13 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI, Villagers
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Race: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor46: e1
@@ -186,6 +184,12 @@ Actors:
 	Actor24: rock2
 		Location: 31,61
 		Owner: Neutral
+	Actor27: jeep
+		Location: 31,28
+		Owner: GDI
+	Actor28: jeep
+		Location: 28,29
+		Owner: GDI
 	Vil01: v21
 		Location: 29,23
 		Owner: Villagers
@@ -264,12 +268,6 @@ Actors:
 	VillageRallyPoint: waypoint
 		Location: 24,17
 		Owner: Neutral
-	Actor27: jeep
-		Location: 31,28
-		Owner: GDI
-	Actor28: jeep
-		Location: 28,29
-		Owner: GDI
 
 Smudges:
 
@@ -286,32 +284,32 @@ Rules:
 			Scripts: nod01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: nomercy
+			VictoryMusic: nod_win1
 	C10:
 		Tooltip:
 			Name: Nikoomba
 	^Bridge:
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
 	^CivBuilding:
 		MustBeDestroyed:
 	^CivInfantry:
 		MustBeDestroyed:
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -335,8 +333,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		-MustBeDestroyed:
 
 Sequences:
 

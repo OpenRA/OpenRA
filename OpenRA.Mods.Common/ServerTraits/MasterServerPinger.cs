@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
-		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
-												// of leeway.
+		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
+		const int MasterPingInterval = 60 * 3;
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
 
 		public void Tick(S server)
@@ -58,49 +58,59 @@ namespace OpenRA.Mods.Common.Server
 			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot != null).Count();
 			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
 			var numSpectators = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot == null).Count();
+			var numSlots = server.LobbyInfo.Slots.Where(s => !s.Value.Closed).Count() - numBots;
 			var passwordProtected = string.IsNullOrEmpty(server.Settings.Password) ? 0 : 1;
 			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
 
 			Action a = () =>
+			{
+				try
 				{
-					try
+					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
+					if (isInitialPing) url += "&new=1";
+
+					using (var wc = new WebClient())
 					{
-						var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
-						if (isInitialPing) url += "&new=1";
+						wc.Proxy = null;
+						var masterResponse = wc.DownloadData(
+							server.Settings.MasterServer + url.F(
+							server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
+							(int)server.State,
+							numPlayers,
+							numBots,
+							"{0}@{1}".F(mod.Id, mod.Version),
+							server.LobbyInfo.GlobalSettings.Map,
+							numSlots,
+							numSpectators,
+							passwordProtected,
+							string.Join(",", clients)));
 
-						using (var wc = new WebClient())
+						if (isInitialPing)
 						{
-							wc.Proxy = null;
-							wc.DownloadData(
-								server.Settings.MasterServer + url.F(
-								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-								(int)server.State,
-								numPlayers,
-								numBots,
-								"{0}@{1}".F(mod.Id, mod.Version),
-								server.LobbyInfo.GlobalSettings.Map,
-								server.Map.PlayerCount,
-								numSpectators,
-								passwordProtected,
-								string.Join(",", clients)));
-
-							if (isInitialPing)
+							var masterResponseText = Encoding.UTF8.GetString(masterResponse);
+							isInitialPing = false;
+							lock (masterServerMessages)
 							{
-								isInitialPing = false;
-								lock (masterServerMessages)
-									masterServerMessages.Enqueue("Master server communication established.");
+								masterServerMessages.Enqueue("Master server communication established.");
+								if (masterResponseText.Contains("[001]"))  // Server does not respond code
+								{
+									Log.Write("server", masterResponseText);
+									masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+									masterServerMessages.Enqueue("Game has not been advertised online.");
+								}
 							}
 						}
 					}
-					catch (Exception ex)
-					{
-						Log.Write("server", ex.ToString());
-						lock (masterServerMessages)
-							masterServerMessages.Enqueue("Master server communication failed.");
-					}
+				}
+				catch (Exception ex)
+				{
+					Log.Write("server", ex.ToString());
+					lock (masterServerMessages)
+						masterServerMessages.Enqueue("Master server communication failed.");
+				}
 
-					isBusy = false;
-				};
+				isBusy = false;
+			};
 
 			a.BeginInvoke(null, null);
 		}

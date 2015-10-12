@@ -1,27 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.RA", "OpenRA.Mods.RA\OpenRA.Mods.RA.csproj", "{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Cnc", "OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Editor", "OpenRA.Editor\OpenRA.Editor.csproj", "{00038B75-405B-44F5-8691-BD2546DBE224}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.TilesetBuilder", "OpenRA.TilesetBuilder\OpenRA.TilesetBuilder.csproj", "{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Lint", "OpenRA.Lint\OpenRA.Lint.csproj", "{F9FA4D9F-2302-470A-8A07-6E37F488C124}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Null", "OpenRA.Renderer.Null\OpenRA.Renderer.Null.csproj", "{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Platforms.Null", "OpenRA.Platforms.Null\OpenRA.Platforms.Null.csproj", "{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.D2k", "OpenRA.Mods.D2k\OpenRA.Mods.D2k.csproj", "{C0B0465C-6BE2-409C-8770-3A9BF64C4344}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.TS", "OpenRA.Mods.TS\OpenRA.Mods.TS.csproj", "{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Renderer.Sdl2", "OpenRA.Renderer.Sdl2\OpenRA.Renderer.Sdl2.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Platforms.Default", "OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}"
 EndProject
@@ -29,12 +25,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 	ProjectSection(SolutionItems) = preProject
 		mods\cnc\maps\gdi01\gdi01.lua = mods\cnc\maps\gdi01\gdi01.lua
 		mods\cnc\maps\gdi02\gdi02.lua = mods\cnc\maps\gdi02\gdi02.lua
+		mods\cnc\maps\gdi03\gdi03.lua = mods\cnc\maps\gdi03\gdi03.lua
 		mods\cnc\maps\gdi04a\gdi04a.lua = mods\cnc\maps\gdi04a\gdi04a.lua
 		mods\cnc\maps\gdi04b\gdi04b.lua = mods\cnc\maps\gdi04b\gdi04b.lua
 		mods\cnc\maps\gdi04c\gdi04c.lua = mods\cnc\maps\gdi04c\gdi04c.lua
+		mods\cnc\maps\gdi05a\gdi05a.lua = mods\cnc\maps\gdi05a\gdi05a.lua
+		mods\cnc\maps\gdi05b\gdi05b.lua = mods\cnc\maps\gdi05b\gdi05b.lua
 		mods\cnc\maps\nod01\nod01.lua = mods\cnc\maps\nod01\nod01.lua
+		mods\cnc\maps\nod02a\nod02a.lua = mods\cnc\maps\nod02a\nod02a.lua
+		mods\cnc\maps\nod02b\nod02b.lua = mods\cnc\maps\nod02b\nod02b.lua
 		mods\cnc\maps\nod03a\nod03a.lua = mods\cnc\maps\nod03a\nod03a.lua
 		mods\cnc\maps\nod03b\nod03b.lua = mods\cnc\maps\nod03b\nod03b.lua
+		mods\cnc\maps\nod04a\nod04a.lua = mods\cnc\maps\nod04a\nod04a.lua
+		mods\cnc\maps\nod04b\nod04b.lua = mods\cnc\maps\nod04b\nod04b.lua
+		mods\cnc\maps\nod05\nod05.lua = mods\cnc\maps\nod05\nod05.lua
+		mods\cnc\maps\nod06a\nod06a.lua = mods\cnc\maps\nod06a\nod06a.lua
+		mods\cnc\maps\nod06b\nod06b.lua = mods\cnc\maps\nod06b\nod06b.lua
+		mods\cnc\maps\nod06c\nod06c.lua = mods\cnc\maps\nod06c\nod06c.lua
+		mods\cnc\maps\funpark01\scj01ea.lua = mods\cnc\maps\funpark01\scj01ea.lua
+		mods\cnc\maps\cnc64gdi01\cnc64gdi01.lua = mods\cnc\maps\cnc64gdi01\cnc64gdi01.lua
 		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
 	EndProjectSection
 EndProject
@@ -43,11 +52,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\allies-01\allies01.lua = mods\ra\maps\allies-01\allies01.lua
 		mods\ra\maps\allies-02\allies02.lua = mods\ra\maps\allies-02\allies02.lua
 		mods\ra\maps\allies-03a\allies03a.lua = mods\ra\maps\allies-03a\allies03a.lua
+		mods\ra\maps\allies-03b\allies03b.lua = mods\ra\maps\allies-03b\allies03b.lua
+		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
+		mods\ra\maps\allies-05a\AI.lua = mods\ra\maps\allies-05a\AI.lua
 		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
-		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
-		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
+		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
+		mods\ra\maps\soviet-07\soviet07.lua = mods\ra\maps\soviet-07\soviet07.lua
+		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
+		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
+		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
+		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"
+	ProjectSection(SolutionItems) = preProject
+		mods\d2k\maps\atreides-01a\atreides01a.lua = mods\d2k\maps\atreides-01a\atreides01a.lua
+		mods\d2k\maps\atreides-01b\atreides01b.lua = mods\d2k\maps\atreides-01b\atreides01b.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
@@ -64,36 +86,53 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.ActiveCfg = Debug|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.Build.0 = Debug|x86
-		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.ActiveCfg = Debug|x86
-		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.Build.0 = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.ActiveCfg = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.Build.0 = Release|x86
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.ActiveCfg = Debug|x86
 		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Debug|x86.Build.0 = Debug|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|x86.ActiveCfg = Release|x86
+		{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}.Release|x86.Build.0 = Release|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.ActiveCfg = Debug|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.Build.0 = Debug|x86
-		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.ActiveCfg = Debug|x86
-		{00038B75-405B-44F5-8691-BD2546DBE224}.Debug|x86.Build.0 = Debug|x86
-		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.ActiveCfg = Debug|x86
-		{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}.Debug|x86.Build.0 = Debug|x86
-		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.ActiveCfg = Debug|x86
-		{F9FA4D9F-2302-470A-8A07-6E37F488C124}.Debug|x86.Build.0 = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.ActiveCfg = Release|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.Build.0 = Release|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.ActiveCfg = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.Build.0 = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.ActiveCfg = Release|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.Build.0 = Release|x86
 		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|x86.ActiveCfg = Debug|x86
 		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Debug|x86.Build.0 = Debug|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|x86.ActiveCfg = Release|x86
+		{0C4AEC1A-E7D5-4114-8CCD-3EEC82872981}.Release|x86.Build.0 = Release|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.ActiveCfg = Debug|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.ActiveCfg = Release|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.Build.0 = Release|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.ActiveCfg = Debug|x86
 		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Debug|x86.Build.0 = Debug|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Release|x86.ActiveCfg = Release|x86
+		{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}.Release|x86.Build.0 = Release|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.ActiveCfg = Release|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.Build.0 = Release|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.Build.0 = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.ActiveCfg = Release|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.Build.0 = Release|x86
 		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.ActiveCfg = Debug|x86
 		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.Build.0 = Debug|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Release|x86.ActiveCfg = Release|x86
+		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Release|x86.Build.0 = Release|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.ActiveCfg = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.ActiveCfg = Release|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,7 +143,7 @@ Global
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
 		$1.ResourceNamePolicy = FileFormatDefault
-		$0.TextStylePolicy = $2
+		$0.TextStylePolicy = $7
 		$2.TabsToSpaces = False
 		$2.NoTabsAfterNonTabs = True
 		$2.inheritsSet = VisualStudio
@@ -129,27 +168,23 @@ Global
 		$3.inheritsSet = Mono
 		$3.inheritsScope = text/x-csharp
 		$3.scope = text/x-csharp
-		$0.TextStylePolicy = $4
 		$4.TabsToSpaces = False
 		$4.NoTabsAfterNonTabs = True
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
 		$4.scope = text/plain
-		$0.TextStylePolicy = $5
 		$5.NoTabsAfterNonTabs = True
 		$5.inheritsSet = Mono
 		$5.inheritsScope = text/plain
 		$5.scope = text/microsoft-resx
-		$0.XmlFormattingPolicy = $6
+		$0.XmlFormattingPolicy = $8
 		$6.inheritsSet = Mono
 		$6.inheritsScope = application/xml
 		$6.scope = text/microsoft-resx
-		$0.TextStylePolicy = $7
 		$7.NoTabsAfterNonTabs = True
 		$7.inheritsSet = Mono
 		$7.inheritsScope = text/plain
 		$7.scope = application/xml
-		$0.XmlFormattingPolicy = $8
 		$8.inheritsSet = Mono
 		$8.inheritsScope = application/xml
 		$8.scope = application/xml
@@ -158,21 +193,19 @@ Global
 		$9.IncludeInNewFiles = True
 		$0.NameConventionPolicy = $10
 		$10.Rules = $11
-		$11.NamingRule = $12
+		$11.NamingRule = $31
 		$12.Name = Namespaces
 		$12.AffectedEntity = Namespace
 		$12.VisibilityMask = VisibilityMask
 		$12.NamingStyle = PascalCase
 		$12.IncludeInstanceMembers = True
 		$12.IncludeStaticEntities = True
-		$11.NamingRule = $13
 		$13.Name = Types
 		$13.AffectedEntity = Class, Struct, Enum, Delegate
 		$13.VisibilityMask = Public
 		$13.NamingStyle = PascalCase
 		$13.IncludeInstanceMembers = True
 		$13.IncludeStaticEntities = True
-		$11.NamingRule = $14
 		$14.Name = Interfaces
 		$14.RequiredPrefixes = $15
 		$15.String = I
@@ -181,7 +214,6 @@ Global
 		$14.NamingStyle = PascalCase
 		$14.IncludeInstanceMembers = True
 		$14.IncludeStaticEntities = True
-		$11.NamingRule = $16
 		$16.Name = Attributes
 		$16.RequiredSuffixes = $17
 		$17.String = Attribute
@@ -190,7 +222,6 @@ Global
 		$16.NamingStyle = PascalCase
 		$16.IncludeInstanceMembers = True
 		$16.IncludeStaticEntities = True
-		$11.NamingRule = $18
 		$18.Name = Event Arguments
 		$18.RequiredSuffixes = $19
 		$19.String = EventArgs
@@ -199,7 +230,6 @@ Global
 		$18.NamingStyle = PascalCase
 		$18.IncludeInstanceMembers = True
 		$18.IncludeStaticEntities = True
-		$11.NamingRule = $20
 		$20.Name = Exceptions
 		$20.RequiredSuffixes = $21
 		$21.String = Exception
@@ -208,70 +238,60 @@ Global
 		$20.NamingStyle = PascalCase
 		$20.IncludeInstanceMembers = True
 		$20.IncludeStaticEntities = True
-		$11.NamingRule = $22
 		$22.Name = Methods
 		$22.AffectedEntity = Methods
 		$22.VisibilityMask = Protected, Public
 		$22.NamingStyle = PascalCase
 		$22.IncludeInstanceMembers = True
 		$22.IncludeStaticEntities = True
-		$11.NamingRule = $23
 		$23.Name = Static Readonly Fields
 		$23.AffectedEntity = ReadonlyField
 		$23.VisibilityMask = Protected, Public
 		$23.NamingStyle = PascalCase
 		$23.IncludeInstanceMembers = False
 		$23.IncludeStaticEntities = True
-		$11.NamingRule = $24
 		$24.Name = Fields
 		$24.AffectedEntity = Field
 		$24.VisibilityMask = Protected, Public
 		$24.NamingStyle = PascalCase
 		$24.IncludeInstanceMembers = True
 		$24.IncludeStaticEntities = True
-		$11.NamingRule = $25
 		$25.Name = ReadOnly Fields
 		$25.AffectedEntity = ReadonlyField
 		$25.VisibilityMask = Protected, Public
 		$25.NamingStyle = PascalCase
 		$25.IncludeInstanceMembers = True
 		$25.IncludeStaticEntities = False
-		$11.NamingRule = $26
 		$26.Name = Constant Fields
 		$26.AffectedEntity = ConstantField
 		$26.VisibilityMask = Protected, Public
 		$26.NamingStyle = PascalCase
 		$26.IncludeInstanceMembers = True
 		$26.IncludeStaticEntities = True
-		$11.NamingRule = $27
 		$27.Name = Properties
 		$27.AffectedEntity = Property
 		$27.VisibilityMask = Protected, Public
 		$27.NamingStyle = PascalCase
 		$27.IncludeInstanceMembers = True
 		$27.IncludeStaticEntities = True
-		$11.NamingRule = $28
 		$28.Name = Events
 		$28.AffectedEntity = Event
 		$28.VisibilityMask = Protected, Public
 		$28.NamingStyle = PascalCase
 		$28.IncludeInstanceMembers = True
 		$28.IncludeStaticEntities = True
-		$11.NamingRule = $29
 		$29.Name = Enum Members
 		$29.AffectedEntity = EnumMember
 		$29.VisibilityMask = VisibilityMask
 		$29.NamingStyle = PascalCase
 		$29.IncludeInstanceMembers = True
 		$29.IncludeStaticEntities = True
-		$11.NamingRule = $30
 		$30.Name = Parameters
 		$30.AffectedEntity = Parameter
 		$30.VisibilityMask = VisibilityMask
 		$30.NamingStyle = CamelCase
 		$30.IncludeInstanceMembers = True
 		$30.IncludeStaticEntities = True
-		$11.NamingRule = $31
 		$31.Name = Type Parameters
 		$31.RequiredPrefixes = $32
 		$32.String = T

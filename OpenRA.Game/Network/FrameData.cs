@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,6 +19,11 @@ namespace OpenRA.Network
 		{
 			public int Client;
 			public Order Order;
+
+			public override string ToString()
+			{
+				return "ClientId: {0} {1}".F(Client, Order);
+			}
 		}
 
 		readonly Dictionary<int, int> clientQuitTimes = new Dictionary<int, int>();

@@ -2,11 +2,11 @@ Metadata:
 	Title: Mod Chooser
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
+	Hidden: true
 
 Folders:
 	.
 	./mods/modchooser
-
 
 Cursors:
 	./mods/modchooser/cursors.yaml
@@ -19,12 +19,13 @@ Assemblies:
 
 ChromeLayout:
 	./mods/modchooser/modchooser.yaml
+	./mods/modchooser/install.yaml
 
 Notifications:
 	./mods/modchooser/notifications.yaml
 
 LoadScreen: ModChooserLoadScreen
-	Image: mods/modchooser/chrome.png
+	Image: ./mods/modchooser/chrome.png
 
 ChromeMetrics:
 	./mods/modchooser/metrics.yaml
@@ -52,3 +53,5 @@ Fonts:
 LobbyDefaults:
 
 SpriteFormats: ShpTD
+
+SpriteSequenceFormat: DefaultSpriteSequence

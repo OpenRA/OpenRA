@@ -4,11 +4,7 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: gdi
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 149
@@ -20,22 +16,22 @@ DPOD:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+		UnloadVoice: Move
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
-	LimitedAmmo:
+		Voice: Attack
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 DSHP:
 	Inherits: ^Helicopter
@@ -43,30 +39,27 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-	Buildable:
-		Queue: Air
-		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gaweap
-	Helicopter:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 3c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+		UnloadVoice: Move
+	Hovers:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -74,16 +67,15 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
-		Description: Helicopter Gunship with Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad
-		Owner: gdi
+		Prerequisites: ~gahpad
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
-		RearmBuildings: gahpad
+	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
 	Health:
@@ -92,56 +84,62 @@ ORCA:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+		Voice: Attack
+	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+	Hovers:
 
 ORCAB:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: gahpad, gatech
-		Owner: gdi
+		Prerequisites: ~gahpad, gatech
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
-		RearmBuildings: gahpad
-		ROT: 5
-		Speed: 112
+	Aircraft:
+		CruiseAltitude: 3072
+		MaximumPitch: 120
+		ROT: 3
+		Speed: 96
+		AirborneUpgrades: airborne
 	Health:
 		HP: 260
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
-	AttackHeli:
+	AttackPlane:
+		Voice: Attack
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 2
+	AmmoPool:
+		Ammo: 10
 		PipCount: 2
+		ReloadCount: 5
+		ReloadTicks: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+	Hovers:
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -152,27 +150,29 @@ ORCATRAN:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad
-	Helicopter:
+		Prerequisites: ~disabled
+	RenderSprites:
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 200
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+		UnloadVoice: Move
+	Hovers:
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -180,64 +180,72 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
-		Owner: gdi
-		Prerequisites: gahpad, gadept
-	Helicopter:
+		Prerequisites: ~gahpad, gadept
+	Aircraft:
 		LandWhenIdle: yes
 		ROT: 5
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
+		AltitudeVelocity: 64
 	Health:
 		HP: 175
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+	Hovers:
+	Selectable:
+		Bounds: 44,32,0,-8
 
 SCRIN:
-	Inherits: ^Helicopter
+	Inherits: ^Plane
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad, natech
-		Owner: nod
+		Prerequisites: ~nahpad, natech
 	Selectable:
 		Bounds: 30,24
-		Voice: Scrin
-	Helicopter:
-		RearmBuildings: nahpad
+	Voiced:
+		VoiceSet: Scrin
+	Aircraft:
+		MaximumPitch: 90
 		ROT: 3
 		Speed: 168
+		AirborneUpgrades: airborne
 	Health:
 		HP: 280
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: Proton
-	AttackHeli:
+	AttackPlane:
+		Voice: Attack
 		FacingTolerance: 20
-	LimitedAmmo:
-		Ammo: 3
+	AmmoPool:
+		Ammo: 15
 		PipCount: 3
+		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
 
 APACHE:
 	Inherits: ^Helicopter
@@ -245,15 +253,15 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: nahpad
-		Owner: nod
+		Prerequisites: ~nahpad
 	Selectable:
 		Bounds: 30,24
-	Helicopter:
-		RearmBuildings: nahpad
+	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
 	Health:
@@ -262,19 +270,61 @@ APACHE:
 		Type: Light
 	RevealsShroud:
 		Range: 2c0
+		Type: CenterPosition
 	Armament:
 		Weapon: HarpyClaw
 	AttackHeli:
 		FacingTolerance: 20
-	LimitedAmmo:
+		Voice: Attack
+	AmmoPool:
 		Ammo: 12
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
-	WithRotor:
+	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
-	RenderVoxels:
-	WithVoxelBody:
+	Hovers:
 
+HUNTER:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Hunter-Seeker Droid
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	DemoTruck:
+	Explodes:
+		Weapon: SuicideBomb
+		EmptyWeapon: SuicideBomb
+	Aircraft:
+		RearmBuildings:
+		RepairBuildings:
+		ROT: 16
+		Speed: 355
+		CruiseAltitude: 256
+		CanHover: True
+	Targetable:
+		TargetTypes: Ground, Vehicle
+	HiddenUnderFog:
+		Type: CenterPosition
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+	RenderSprites:
+		Image: GGHUNT
+	WithFacingSpriteBody:
+	Hovers:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	DrawLineToTarget:
+	AppearsOnRadar:
+		UseLocation: yes
+	Selectable:
+	SelectionDecorations:
+		Palette: pips
+	ActorLostNotification:

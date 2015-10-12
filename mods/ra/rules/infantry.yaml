@@ -1,5 +1,5 @@
 DOG:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Dog
@@ -9,27 +9,43 @@ DOG:
 		Cost: 200
 	Tooltip:
 		Name: Attack Dog
-		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		GenericName: Dog
 	Selectable:
-		Voice: DogVoice
 		Bounds: 12,17,-1,-4
+	SelectionDecorations:
+		VisualBounds: 12,17,-1,-4
 	Health:
 		HP: 12
 	Mobile:
 		Speed: 99
+		Voice: Move
+	Guard:
+		Voice: Move
+	Passenger:
+		Voice: Move
 	RevealsShroud:
 		Range: 5c0
 	Armament:
 		Weapon: DogJaw
 	AttackLeap:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Targetable:
+		TargetTypes: Ground, Infantry
+	WithInfantryBody:
+		AttackSequence: shoot
+		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5
+		Range: 5c0
+	Voiced:
+		VoiceSet: DogVoice
+	-TakeCover:
 
 E1:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -39,13 +55,9 @@ E1:
 		Cost: 100
 	Tooltip:
 		Name: Rifle Infantry
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 50
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: M1Carbine
 	Armament@GARRISONED:
@@ -53,13 +65,13 @@ E1:
 		Weapon: Vulcan
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 E2:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -69,9 +81,7 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
+		Description: Infantry armed with grenades.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 50
 	Mobile:
@@ -85,16 +95,16 @@ E2:
 		Weapon: Grenade
 		FireDelay: 15
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		AttackSequence: throw
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 E3:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -104,13 +114,9 @@ E3:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
-		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
-	Selectable:
-		Bounds: 12,17,0,-9
+		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 45
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -121,13 +127,13 @@ E3:
 		Name: garrisoned
 		Weapon: Dragon
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 E4:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -137,13 +143,9 @@ E4:
 		Cost: 300
 	Tooltip:
 		Name: Flamethrower
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
-	Selectable:
-		Bounds: 12,17,0,-9
+		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 40
-	Mobile:
-		Speed: 56
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
@@ -152,13 +154,13 @@ E4:
 		Name: garrisoned
 		Weapon: Flamer
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 E6:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -168,66 +170,80 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Voice: EngineerVoice
-		Bounds: 12,17,0,-9
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
+		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
 	ExternalCaptures:
 		Type: building
-	TakeCover:
 	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	Voiced:
+		VoiceSet: EngineerVoice
 
 SPY:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
-		Prerequisites: dome, ~tent, ~techlevel.medium
+		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 500
 	-Tooltip:
 	DisguiseToolTip:
 		Name: Spy
 		GenericName: Soldier
-		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
-	Selectable:
-		Voice: SpyVoice
-		Bounds: 12,17,0,-9
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
+	-Guard:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
-	TakeCover:
+		Voice: Move
 	Disguise:
+		Voice: Move
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
-	-RenderInfantry:
-	RenderDisguise:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		AttackSequence: shoot
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
+	WithDecoration@disguise:
+		Image: pips
+		Sequence: pip-disguise
+		Palette: effect
+		ReferencePoint: Top, Right
+		Offset: 4, -2
+		ZOffset: 256
+		UpgradeTypes: disguise
+		UpgradeMinEnabledLevel: 1
+	IgnoresDisguise:
+	DetectCloaked:
+		Range: 5c0
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
+	AttackMove:
+		Voice: Move
+	Voiced:
+		VoiceSet: SpyVoice
+
+SPY.England:
+	Inherits: SPY
+	Buildable:
+		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
+	Valued:
+		Cost: 250
+	DisguiseToolTip:
+		Name: British Spy
+	RenderSprites:
+		Image: spy
 
 E7:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -238,14 +254,14 @@ E7:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
-	Selectable:
-		Voice: TanyaVoice
-		Bounds: 12,17,0,-9
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Health:
 		HP: 100
 	Mobile:
 		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
 	RevealsShroud:
 		Range: 6c0
 	C4Demolition:
@@ -253,6 +269,7 @@ E7:
 		Voice: Demolish
 	Passenger:
 		PipType: Red
+		Voice: Move
 	Armament@PRIMARY:
 		Weapon: Colt45
 	Armament@SECONDARY:
@@ -262,14 +279,18 @@ E7:
 		Weapon: Colt45
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
+	WithInfantryBody:
+		AttackSequence: shoot
+		StandSequences: stand
 	AnnounceOnBuild:
 	AnnounceOnKill:
+	Voiced:
+		VoiceSet: TanyaVoice
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 MEDI:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -279,32 +300,28 @@ MEDI:
 		Cost: 200
 	Tooltip:
 		Name: Medic
-		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Voice: MedicVoice
-		Bounds: 12,17,0,-9
+		Description: Heals nearby infantry.\n  Unarmed
 	Health:
 		HP: 80
-	Mobile:
-		Speed: 56
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
 	Armament:
 		Weapon: Heal
-	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
-	TakeCover:
-	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		AttackAnimation: heal
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+	WithInfantryBody:
+		StandSequences: stand
+		AttackSequence: heal
+	Voiced:
+		VoiceSet: MedicVoice
 
 MECH:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -314,111 +331,100 @@ MECH:
 		Cost: 500
 	Tooltip:
 		Name: Mechanic
-		Description: Repairs nearby vehicles and restores\nhusks to working condition.\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Voice: MechanicVoice
-		Bounds: 12,17,0,-9
+		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
 	Health:
 		HP: 80
 	Mobile:
-		Speed: 56
+		Voice: Move
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
-	AutoHeal:
+		Voice: Move
 	Armament:
 		Weapon: Repair
-	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+		Voice: Move
 	Captures:
 		CaptureTypes: husk
-	TakeCover:
-	-AutoTarget:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		AttackAnimation: heal
+	WithInfantryBody:
+		AttackSequence: repair
+		StandSequences: stand
+	Voiced:
+		VoiceSet: MechanicVoice
 
 EINSTEIN:
-	Inherits: ^Infantry
-	Selectable:
-		Voice: EinsteinVoice
-		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 10
+	Inherits: ^CivInfantry
 	Tooltip:
 		Name: Prof. Einstein
-	Health:
-		HP: 25
 	Mobile:
 		Speed: 71
-	RevealsShroud:
-		Range: 2c0
-	-AutoTarget:
-	ProximityCaptor:
-		Types: CivilianInfantry
-	RenderInfantry:
-	ScaredyCat:
+	Voiced:
+		VoiceSet: EinsteinVoice
 
 DELPHI:
-	Inherits: ^Infantry
-	Selectable:
-		Voice: CivilianMaleVoice
-		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 10
+	Inherits: ^CivInfantry
 	Tooltip:
 		Name: Agent Delphi
-	Health:
-		HP: 25
 	Mobile:
 		Speed: 71
-	RevealsShroud:
-		Range: 2c0
-	-AutoTarget:
-	ProximityCaptor:
-		Types: CivilianInfantry
-	RenderInfantry:
-	ScaredyCat:
 
 CHAN:
 	Inherits: ^CivInfantry
+	Selectable:
+		Class: CHAN
 	Tooltip:
 		Name: Agent Chan
 
 GNRL:
-	Inherits: ^CivInfantry
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
 	Tooltip:
 		Name: General
 	Selectable:
-		Voice: StavrosVoice
+		Class: GNRL
+	Mobile:
+		Voice: Move
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
+	Voiced:
+		VoiceSet: StavrosVoice
+	-ScaredyCat:
+	WithInfantryBody:
+		IdleSequences: idle1
 
 THF:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Thief
-		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
-	Selectable:
-		Voice: ThiefVoice
-		Bounds: 12,17,0,-9
-	Health:
-		HP: 25
-	Mobile:
-		Speed: 56
+		Description: Steals enemy credits.\n  Unarmed
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 	Infiltrates:
 		InfiltrateTypes: Cash
-	TakeCover:
 	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
 
 HIJACKER:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -428,14 +434,9 @@ HIJACKER:
 		Cost: 500
 	Tooltip:
 		Name: Hijacker
-		Description: Hijacks enemy vehicles. Unarmed\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-	Selectable:
-		Voice: ThiefVoice
-		Bounds: 12,17,0,-9
+		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
 		HP: 50
-	Mobile:
-		Speed: 56
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -443,56 +444,75 @@ HIJACKER:
 	Captures:
 		CaptureTypes: vehicle
 	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
+	-TakeCover:
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
 
 SHOK:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
-		Prerequisites: ~barr, stek, tsla, ~techlevel.unrestricted
+		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Shock Trooper
-		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
-	Selectable:
-		Voice: ShokVoice
-		Bounds: 12,17,0,-9
+		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 100
+		HP: 60
 	Mobile:
-		Speed: 56
+		Voice: Move
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	Armament@PRIMARY:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: PortaTesla
+	Armament@CHARGE:
+		Weapon: PortaCharge
+		LocalOffset: 427,0,341
+		TargetStances: Ally
+		ForceTargetStances: None
+		Cursor: ability
+		OutsideRangeCursor: ability
+	AmmoPool:
+		PipCount: 0
+		SelfReloads: true
+		SelfReloadTicks: 70
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
+	WithInfantryBody:
+		AttackSequence: shoot
+	Voiced:
+		VoiceSet: ShokVoice
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 SNIPER:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 700
 	Tooltip:
 		Name: Sniper
-		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
-		Prerequisites: ~barr, dome, ~techlevel.medium
-	Selectable:
-		Bounds: 12,17,0,-6
-	Mobile:
-		Speed: 56
+		Prerequisites: ~disabled
 	Health:
 		HP: 80
 	Passenger:
@@ -508,21 +528,23 @@ SNIPER:
 		Weapon: Sniper
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
-	TakeCover:
-	RenderInfantry:
-		IdleAnimations: idle1,idle2
-		StandAnimations: stand,stand2
+	WithInfantryBody:
+		AttackSequence: shoot
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: yes
+		UncloakOnMove: true
+		IsPlayerPalette: true
 	DetectCloaked:
-		Range: 6
+		Range: 6c0
+	-MustBeDestroyed:
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
 
 Zombie:
-	Inherits: ^Infantry
+	Inherits: ^Soldier
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -532,9 +554,6 @@ Zombie:
 		Queue: Infantry
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
-	Selectable:
-		Voice: AntVoice
-		Bounds: 12,17,0,-9
 	Health:
 		HP: 250
 	Mobile:
@@ -542,8 +561,14 @@ Zombie:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
+		IdleSequences: idle1
 	Armament:
 		Weapon: claw
+	Voiced:
+		VoiceSet: AntVoice
+	-TakeCover:
 
 Ant:
 	Inherits: ^Infantry
@@ -557,8 +582,9 @@ Ant:
 		BuildPaletteOrder: 1954
 		Prerequisites: ~bio
 	Selectable:
-		Voice: AntVoice
-		Bounds: 30,30,0,-2
+		Bounds: 24,24,0,-5
+	SelectionDecorations:
+		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
 		Radius: 469
@@ -569,8 +595,14 @@ Ant:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
 	Armament:
 		Weapon: mandible
+	Targetable:
+		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
+	Voiced:
+		VoiceSet: AntVoice
 

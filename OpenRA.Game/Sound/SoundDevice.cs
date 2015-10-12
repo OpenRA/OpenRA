@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,10 +8,13 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
-	interface ISoundEngine
+	public interface ISoundEngine : IDisposable
 	{
+		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
 		float Volume { get; set; }
@@ -41,7 +44,7 @@ namespace OpenRA
 		}
 	}
 
-	interface ISoundSource { }
+	public interface ISoundSource { }
 
 	public interface ISound
 	{

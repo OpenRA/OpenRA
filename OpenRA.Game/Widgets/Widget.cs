@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 
 		public static int LastTickTime = Game.RunTime;
 
-		static Stack<Widget> WindowList = new Stack<Widget>();
+		static readonly Stack<Widget> WindowList = new Stack<Widget>();
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;
@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
 		{
-			var window = Game.modData.WidgetLoader.LoadWidget(args, Root, id);
+			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
 				Root.RemoveChild(WindowList.Peek());
 			WindowList.Push(window);
@@ -67,10 +67,12 @@ namespace OpenRA.Widgets
 
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
 		{
-			return Game.modData.WidgetLoader.LoadWidget(args, parent, id);
+			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
 		public static void Tick() { Root.TickOuter(); }
+
+		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
 		public static void Draw() { Root.DrawOuter(); }
 
@@ -129,18 +131,27 @@ namespace OpenRA.Widgets
 			while (WindowList.Count > 0)
 				CloseWindow();
 		}
+
+		public static void ResetTooltips()
+		{
+			// Issue a no-op mouse move to force any tooltips to be recalculated
+			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None, 0,
+				Viewport.LastMousePos, Modifiers.None, 0));
+		}
 	}
 
 	public abstract class Widget
 	{
+		public readonly List<Widget> Children = new List<Widget>();
+
 		// Info defined in YAML
 		public string Id = null;
 		public string X = "0";
 		public string Y = "0";
 		public string Width = "0";
 		public string Height = "0";
-		public string Logic = null;
-		public object LogicObject { get; private set; }
+		public string[] Logic = { };
+		public object[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
@@ -150,7 +161,6 @@ namespace OpenRA.Widgets
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
 		public Widget() { IsVisible = () => Visible; }
-		public readonly List<Widget> Children = new List<Widget>();
 
 		public Widget(Widget widget)
 		{
@@ -229,12 +239,13 @@ namespace OpenRA.Widgets
 
 		public void PostInit(WidgetArgs args)
 		{
-			if (Logic == null)
+			if (!Logic.Any())
 				return;
 
 			args["widget"] = this;
 
-			LogicObject = Game.modData.ObjectCreator.CreateObject<object>(Logic, args);
+			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<object>(l, args))
+				.ToArray();
 
 			args.Remove("widget");
 		}
@@ -324,8 +335,8 @@ namespace OpenRA.Widgets
 			return EventBounds.Contains(pos) ? GetCursor(pos) : null;
 		}
 
-		public virtual void MouseEntered() {}
-		public virtual void MouseExited() {}
+		public virtual void MouseEntered() { }
+		public virtual void MouseExited() { }
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
 
 		public bool HandleMouseInputOuter(MouseInput mi)
@@ -335,6 +346,7 @@ namespace OpenRA.Widgets
 				return false;
 
 			var oldMouseOver = Ui.MouseOverWidget;
+
 			// Send the event to the deepest children first and bubble up if unhandled
 			foreach (var child in Children.OfType<Widget>().Reverse())
 				if (child.HandleMouseInputOuter(mi))
@@ -385,7 +397,19 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
-		public virtual void Draw() {}
+		public virtual void PrepareRenderables() { }
+
+		public virtual void PrepareRenderablesOuter()
+		{
+			if (IsVisible())
+			{
+				PrepareRenderables();
+				foreach (var child in Children)
+					child.PrepareRenderablesOuter();
+			}
+		}
+
+		public virtual void Draw() { }
 
 		public virtual void DrawOuter()
 		{
@@ -397,7 +421,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public virtual void Tick() {}
+		public virtual void Tick() { }
 
 		public virtual void TickOuter()
 		{
@@ -427,7 +451,7 @@ namespace OpenRA.Widgets
 		public virtual void RemoveChildren()
 		{
 			while (Children.Count > 0)
-				RemoveChild(Children[Children.Count-1]);
+				RemoveChild(Children[Children.Count - 1]);
 		}
 
 		public virtual void Removed()
@@ -452,12 +476,13 @@ namespace OpenRA.Widgets
 				if (w != null)
 					return w;
 			}
+
 			return null;
 		}
 
 		public T GetOrNull<T>(string id) where T : Widget
 		{
-			return (T) GetOrNull(id);
+			return (T)GetOrNull(id);
 		}
 
 		public T Get<T>(string id) where T : Widget
@@ -475,6 +500,8 @@ namespace OpenRA.Widgets
 
 	public class ContainerWidget : Widget
 	{
+		public readonly bool ClickThrough = true;
+
 		public ContainerWidget() { IgnoreMouseOver = true; }
 		public ContainerWidget(ContainerWidget other)
 			: base(other) { IgnoreMouseOver = true; }
@@ -482,7 +509,12 @@ namespace OpenRA.Widgets
 		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }
 		public Func<KeyInput, bool> OnKeyPress = _ => false;
-		public override bool HandleKeyPress(KeyInput e)	{ return OnKeyPress(e);	}
+		public override bool HandleKeyPress(KeyInput e) { return OnKeyPress(e); }
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return !ClickThrough && EventBounds.Contains(mi.Location);
+		}
 	}
 
 	public class WidgetArgs : Dictionary<string, object>

@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -34,11 +34,16 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
+			if (world.LocalPlayer == null)
+				return;
+
 			switch (name)
 			{
 				case "pause":
 					world.IssueOrder(new Order("PauseGame", null, false)
-						{ TargetString = world.Paused ? "UnPause" : "Pause" });
+					{
+						TargetString = world.Paused ? "UnPause" : "Pause"
+					});
 					break;
 				case "surrender":
 					world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));

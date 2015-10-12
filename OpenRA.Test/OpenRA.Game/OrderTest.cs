@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,14 +22,16 @@ namespace OpenRA.Test
 		[SetUp]
 		public void SetUp()
 		{
-			order = new Order("TestOrder", null, false) {
+			order = new Order("TestOrder", null, false)
+			{
 				TargetString = "TestTarget",
 				TargetLocation = new CPos(1234, 5678),
 				ExtraData = 1234,
 				ExtraLocation = new CPos(555, 555)
 			};
 
-			immediateOrder = new Order("TestOrderImmediate", null, false) {
+			immediateOrder = new Order("TestOrderImmediate", null, false)
+			{
 				IsImmediate = true,
 				TargetString = "TestTarget"
 			};

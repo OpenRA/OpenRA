@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -29,6 +29,7 @@ namespace OpenRA
 				else
 					end = mid;
 			}
+
 			return start;
 		}
 	}
@@ -79,14 +80,8 @@ namespace OpenRA
 
 		static void CheckDestroyed(Actor actor)
 		{
-			if (actor.Destroyed)
+			if (actor.Disposed)
 				throw new InvalidOperationException("Attempted to get trait from destroyed object ({0})".F(actor));
-		}
-
-		public bool Contains<T>(Actor actor)
-		{
-			CheckDestroyed(actor);
-			return InnerGet<T>().GetMultiple(actor.ActorID).Any();
 		}
 
 		public T Get<T>(Actor actor)
@@ -155,7 +150,7 @@ namespace OpenRA
 				if (index >= actors.Count || actors[index].ActorID != actor)
 					return default(T);
 				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
-					throw new InvalidOperationException("Actor has multiple traits of type `{0}`".F(typeof(T)));
+					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
 				else return traits[index];
 			}
 
@@ -187,6 +182,7 @@ namespace OpenRA
 					this.actor = actor;
 					Reset();
 				}
+
 				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
 				public T Current { get { return traits[index]; } }
@@ -219,6 +215,7 @@ namespace OpenRA
 					traits = container.traits;
 					Reset();
 				}
+
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
 				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }
@@ -228,14 +225,15 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				for (var i = actors.Count - 1; i >= 0; i--)
-				{
-					if (actors[i].ActorID == actor)
-					{
-						actors.RemoveAt(i);
-						traits.RemoveAt(i);
-					}
-				}
+				var startIndex = actors.BinarySearchMany(actor);
+				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+					return;
+				var endIndex = startIndex + 1;
+				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+					endIndex++;
+				var count = endIndex - startIndex;
+				actors.RemoveRange(startIndex, count);
+				traits.RemoveRange(startIndex, count);
 			}
 		}
 	}

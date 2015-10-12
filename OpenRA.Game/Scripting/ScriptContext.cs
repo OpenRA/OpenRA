@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,8 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -47,23 +47,23 @@ namespace OpenRA.Scripting
 
 	public abstract class ScriptActorProperties
 	{
-		protected readonly Actor self;
-		protected readonly ScriptContext context;
+		protected readonly Actor Self;
+		protected readonly ScriptContext Context;
 		public ScriptActorProperties(ScriptContext context, Actor self)
 		{
-			this.self = self;
-			this.context = context;
+			Self = self;
+			Context = context;
 		}
 	}
 
 	public abstract class ScriptPlayerProperties
 	{
-		protected readonly Player player;
-		protected readonly ScriptContext context;
+		protected readonly Player Player;
+		protected readonly ScriptContext Context;
 		public ScriptPlayerProperties(ScriptContext context, Player player)
 		{
-			this.player = player;
-			this.context = context;
+			Player = player;
+			Context = context;
 		}
 	}
 
@@ -80,7 +80,7 @@ namespace OpenRA.Scripting
 			// The 'this.' resolves the actual (subclass) type
 			var type = this.GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
-			if (names.Count() != 1)
+			if (names.Length != 1)
 				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
@@ -123,12 +123,12 @@ namespace OpenRA.Scripting
 
 			World = world;
 			WorldRenderer = worldRenderer;
-			knownActorCommands = Game.modData.ObjectCreator
+			knownActorCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptActorProperties>()
 				.ToArray();
 
 			ActorCommands = new Cache<ActorInfo, Type[]>(FilterActorCommands);
-			PlayerCommands = Game.modData.ObjectCreator
+			PlayerCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
 
@@ -148,7 +148,7 @@ namespace OpenRA.Scripting
 					registerGlobal.Call("print", fn).Dispose();
 
 				// Register global tables
-				var bindings = Game.modData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
+				var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
 				foreach (var b in bindings)
 				{
 					var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>
@@ -242,21 +242,21 @@ namespace OpenRA.Scripting
 				runtime.Dispose();
 		}
 
-		static Type[] ExtractRequiredTypes(Type t)
+		static IEnumerable<Type> ExtractRequiredTypes(Type t)
 		{
 			// Returns the inner types of all the Requires<T> interfaces on this type
 			var outer = t.GetInterfaces()
 				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>));
 
-			return outer.SelectMany(i => i.GetGenericArguments()).ToArray();
+			return outer.SelectMany(i => i.GetGenericArguments());
 		}
 
 		static readonly object[] NoArguments = new object[0];
 		Type[] FilterActorCommands(ActorInfo ai)
 		{
-			var method = typeof(TypeDictionary).GetMethod("Contains");
+			var method = typeof(ActorInfo).GetMethod("HasTraitInfo");
 			return knownActorCommands.Where(c => ExtractRequiredTypes(c)
-				.All(t => (bool)method.MakeGenericMethod(t).Invoke(ai.Traits, NoArguments)))
+				.All(t => (bool)method.MakeGenericMethod(t).Invoke(ai, NoArguments)))
 				.ToArray();
 		}
 

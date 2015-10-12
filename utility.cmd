@@ -14,7 +14,7 @@ echo.
 goto choosemod
 )
 if /I "%mod%" EQU "ra" (goto help)
-if /I "%mod%" EQU "td" (goto help)
+if /I "%mod%" EQU "cnc" (goto help)
 if /I "%mod%" EQU "ts" (goto help)
 if /I "%mod%" EQU "d2k" (goto help)
 echo.

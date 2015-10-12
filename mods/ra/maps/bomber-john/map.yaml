@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 56,56
 
 Bounds: 16,16,24,24
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Minigame
+
+Videos:
 
 Options:
 	Crates: False
@@ -27,6 +27,7 @@ Options:
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 60
+	TechLevel: Unrestricted
 	ConfigurableStartingUnits: False
 
 Players:
@@ -34,68 +35,68 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: allies
-		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+		Faction: allies
+		Enemies: Creeps
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi3, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi2, Multi4, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi1, Multi2, Multi3, Multi5, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi1, Multi6, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi1, Multi7
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
-		LockRace: True
-		Race: soviet
-		Enemies: Multi0, Multi2, Multi3, Multi4, Multi5, Multi6, Multi1
+		LockFaction: True
+		Faction: soviet
+		Enemies: Creeps
 
 Actors:
 	Actor69: ftur
@@ -813,7 +814,6 @@ Rules:
 			Queue: Vehicle
 			BuildPaletteOrder: 30
 			Prerequisites: fix
-			Owner: allies
 		Valued:
 			Cost: 800
 		Tooltip:
@@ -830,9 +830,8 @@ Rules:
 			ROT: 900
 		RevealsShroud:
 			Range: 40c0
-		RenderUnit:
-			Image: MNLY
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		Transforms:
 			IntoActor: ftur
 			Offset: 0,0
@@ -840,6 +839,8 @@ Rules:
 		CashTrickler:
 			Period: 150
 			Amount: 20
+		RenderSprites:
+			Image: MNLY
 	FTUR:
 		Health:
 			HP: 1000
@@ -848,6 +849,7 @@ Rules:
 			Offset: 0,0
 			Facing: 96
 		MustBeDestroyed:
+			RequiredForShortGame: true
 		CashTrickler:
 			Period: 150
 			Amount: 30
@@ -873,25 +875,27 @@ Rules:
 			EndChargeSound: ironrdy1.aud
 			Range: 1
 			Upgrades: invulnerability
+			GrantUpgradeSequence: idle
 		Power:
 			Amount: 0
 	MINVV:
+		Inherits@1: ^SpriteActor
+		HiddenUnderFog:
 		Building:
 			Adjacent: 99
 			TerrainTypes: Clear,Road
-		ProvidesCustomPrerequisite:
+		ProvidesPrerequisite:
 			Prerequisite: MNLYVV
 		Buildable:
 			Queue: Building
 			BuildPaletteOrder: 30
-			Owner: allies, soviet
 		Valued:
 			Cost: 30
 		Health:
 			HP: 200
-		RenderBuilding:
+		RenderSprites:
 			Image: miner
-			HasMakeAnimation: false
+		WithSpriteBody:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
@@ -905,7 +909,6 @@ Rules:
 		Explodes:
 			Weapon: CrateNuke
 			EmptyWeapon: CrateNuke
-		BodyOrientation:
 	T17:
 		Health:
 			HP: 999999999
@@ -939,6 +942,7 @@ Rules:
 			EndChargeSound: ironrdy1.aud
 			Range: 1
 			Upgrades: invulnerability
+			GrantUpgradeSequence: idle
 
 Sequences:
 	miner:

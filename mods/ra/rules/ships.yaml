@@ -9,7 +9,7 @@ SS:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
-		Description: Submerged anti-ship unit armed with\ntorpedoes.\nCan detect other submarines.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
 	Health:
 		HP: 250
 	Armor:
@@ -19,35 +19,39 @@ SS:
 		Speed: 71
 	RevealsShroud:
 		Range: 6c0
-	-TargetableUnit:
-	TargetableSubmarine:
+	Targetable:
 		TargetTypes: Ground, Water, Repair
-		CloakedTargetTypes: Underwater, Repair
-	RenderUnit:
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
+		Palette: submerged
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	Selectable:
-		Bounds: 38,38
-	Chronoshiftable:
-	RepairableNear:
+	SelectionDecorations:
+		VisualBounds: 38,38
 	AutoTarget:
 		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 MSUB:
 	Inherits: ^Ship
@@ -60,7 +64,7 @@ MSUB:
 		Cost: 2400
 	Tooltip:
 		Name: Missile Submarine
-		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
 	Health:
 		HP: 400
 	Armor:
@@ -70,35 +74,39 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
-	RenderUnit:
-	-TargetableUnit:
-	TargetableSubmarine:
+	Targetable:
 		TargetTypes: Ground, Water, Repair
-		CloakedTargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 100
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
+		Palette: submerged
 	Armament:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-	Selectable:
-		Bounds: 44,44
-	Chronoshiftable:
-	RepairableNear:
+	SelectionDecorations:
+		VisualBounds: 44,44
 	AutoTarget:
 		InitialStance: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
 
 DD:
 	Inherits: ^Ship
@@ -111,7 +119,7 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
-		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
 	Armor:
@@ -132,21 +140,19 @@ DD:
 		Weapon: DepthCharge
 		LocalOffset: 0,-100,0, 0,100,0
 		LocalYaw: 80, -80
+	Armament@TERTIARY:
+		Weapon: StingerAA
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 64, -64
 	AttackTurreted:
-	Selectable:
-		Bounds: 38,38
-	RenderUnit:
+	SelectionDecorations:
+		VisualBounds: 38,38
 	WithTurret:
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
 
 CA:
 	Inherits: ^Ship
@@ -159,7 +165,7 @@ CA:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
-		Description: Very slow long-range ship.\n  Strong vs Buildings\n  Weak vs Ships, Submarines
+		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
 	Health:
 		HP: 800
 	Armor:
@@ -193,20 +199,14 @@ CA:
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
-	Selectable:
-		Bounds: 44,44
-	RenderUnit:
+	WithMuzzleOverlay:
+	SelectionDecorations:
+		VisualBounds: 44,44
 	WithTurret@PRIMARY:
 		Turret: primary
 	WithTurret@SECONDARY:
 		Turret: secondary
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
 
 LST:
 	Inherits: ^Ship
@@ -228,16 +228,16 @@ LST:
 		Speed: 113
 	RevealsShroud:
 		Range: 6c0
-	RenderLandingCraft:
+	SelectionDecorations:
+		VisualBounds: 36,36
+	WithLandingCraftAnimation:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
-	RepairableNear:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
+		PassengerFacing: 0
+	-Chronoshiftable:
 
 PT:
 	Inherits: ^Ship
@@ -250,7 +250,7 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
-		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
 	Health:
 		HP: 200
 	Armor:
@@ -272,19 +272,13 @@ PT:
 		Weapon: DepthCharge
 		MuzzleSequence: muzzle
 	AttackTurreted:
-	WithMuzzleFlash:
-	Selectable:
-		Bounds: 32,32
-	RenderUnit:
+	WithMuzzleOverlay:
+	SelectionDecorations:
+		VisualBounds: 36,36
 	WithTurret:
 	AutoTarget:
-	Chronoshiftable:
-	RepairableNear:
 	DetectCloaked:
 		CloakTypes: Underwater
-		Range: 4
+		Range: 4c0
 	RenderDetectionCircle:
-	Explodes:
-		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
 

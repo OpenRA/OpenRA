@@ -6,12 +6,15 @@ V19:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Oil Derrick
-	LeavesHusk:
-		HuskActor: V19.Husk
+	SpawnActorOnDeath:
+		Actor: V19.Husk
 
 V19.Husk:
 	Inherits: ^CivBuildingHusk
-	WithFire:
+	WithSpriteBody:
+	WithIdleOverlay:
+		StartSequence: fire-start
+		Sequence: fire-loop
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -29,10 +32,11 @@ HOSP:
 		HP: 1000
 	Tooltip:
 		Name: Hospital
-	LeavesHusk:
-		HuskActor: HOSP.Husk
+	SpawnActorOnDeath:
+		Actor: HOSP.Husk
 	Bib:
 		HasMinibib: Yes
+	ProvidesPrerequisite@buildingname:
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
@@ -64,9 +68,10 @@ BIO:
 		LowPowerSlowdown: 3
 	ProductionBar:
 	RallyPoint:
-		RallyPoint: -1,-1
-	LeavesHusk:
-		HuskActor: BIO.Husk
+		Offset: -1,-1
+	SpawnActorOnDeath:
+		Actor: BIO.Husk
+	ProvidesPrerequisite@buildingname:
 
 BIO.Husk:
 	Inherits: ^CivBuildingHusk
@@ -78,7 +83,6 @@ BIO.Husk:
 
 MISS:
 	Inherits: ^CivBuilding
-	RenderBuilding:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -93,4 +97,5 @@ MISS:
 	Bib:
 		HasMinibib: Yes
 	WithMakeAnimation:
+	ProvidesPrerequisite@buildingname:
 

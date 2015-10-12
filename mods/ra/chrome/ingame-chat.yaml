@@ -41,6 +41,7 @@ Container@CHAT_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 30
 					Width: 550
 					Height: 164
+					TopBottomSpacing: 4
 					ItemSpacing: 4
 					Align: Bottom
 					Children:

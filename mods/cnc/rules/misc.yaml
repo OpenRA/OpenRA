@@ -20,43 +20,71 @@ CRATE:
 		SelectionShares: 5
 		Effect: cloak
 		Upgrades: cloak
-	DuplicateUnitCrateAction:
-		SelectionShares: 10
-		MaxAmount: 5
-		MinAmount: 1
-		MaxDuplicateValue: 1250
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120
 		Units: mcv
 
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Palette: chrome
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Palette: chrome
 	BodyOrientation:
+		QuantizedFacings: 1
+
+^fact.colorpicker:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker
 
 CAMERA:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 10c0
-	BodyOrientation:
+		Type: CenterPosition
 
 CAMERA.small:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
+		Type: CenterPosition
+
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+		Type: CenterPosition
+	RenderSprites:
+		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
+	HiddenUnderFog:
+		Type: CenterPosition
+	Tooltip:
+		Name: Flare
 	BodyOrientation:
+		QuantizedFacings: 1
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -18,18 +19,19 @@ namespace OpenRA.Traits
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
 	public class FrozenActorLayerInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.self); }
+		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self); }
 	}
 
 	public class FrozenActor
 	{
-		public readonly CPos[] Footprint;
-		public readonly CellRegion FootprintRegion;
+		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
+		public readonly HashSet<string> TargetTypes;
+		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
+		readonly Shroud shroud;
 
-		public IRenderable[] Renderables { private get; set; }
 		public Player Owner;
 
 		public ITooltipInfo TooltipInfo;
@@ -38,29 +40,65 @@ namespace OpenRA.Traits
 		public int HP;
 		public DamageState DamageState;
 
-		public bool Visible;
+		public bool Visible = true;
+		public bool NeedRenderables { get; private set; }
+		public bool IsRendering { get; private set; }
 
-		public FrozenActor(Actor self, CPos[] footprint, CellRegion footprintRegion)
+		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud, bool startsRevealed)
 		{
 			actor = self;
-			Footprint = footprint;
-			FootprintRegion = footprintRegion;
+			this.shroud = shroud;
+			NeedRenderables = startsRevealed;
+			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
+
+			// Consider all cells inside the map area (ignoring the current map bounds)
+			Footprint = footprint
+				.Where(m => shroud.Contains(m))
+				.ToArray();
 
 			CenterPosition = self.CenterPosition;
-			Bounds = self.Bounds.Value;
+			Bounds = self.Bounds;
+			TargetTypes = self.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes).ToHashSet();
+
+			UpdateVisibility();
 		}
 
 		public uint ID { get { return actor.ActorID; } }
-		public bool IsValid { get { return Owner != null && HasRenderables; } }
+		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
-		public Actor Actor { get { return !actor.IsDead() ? actor : null; } }
+		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+
+		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 
 		int flashTicks;
-		public void Tick(World world, Shroud shroud)
+		IRenderable[] renderables = NoRenderables;
+
+		public void Tick()
 		{
-			Visible = !Footprint.Any(shroud.IsVisibleTest(FootprintRegion));
+			UpdateVisibility();
+
 			if (flashTicks > 0)
 				flashTicks--;
+		}
+
+		void UpdateVisibility()
+		{
+			var wasVisible = Visible;
+
+			// We are doing the following LINQ manually for performance since this is a hot path.
+			// Visible = !Footprint.Any(shroud.IsVisible);
+			Visible = true;
+			foreach (var puv in Footprint)
+			{
+				if (shroud.IsVisible(puv))
+				{
+					Visible = false;
+					break;
+				}
+			}
+
+			if (Visible && !wasVisible)
+				NeedRenderables = true;
 		}
 
 		public void Flash()
@@ -70,20 +108,38 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (Renderables == null)
-				return SpriteRenderable.None;
+			if (NeedRenderables)
+			{
+				NeedRenderables = false;
+				if (!actor.Disposed)
+				{
+					IsRendering = true;
+					renderables = actor.Render(wr).ToArray();
+					IsRendering = false;
+				}
+			}
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
-				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
+				return renderables.Concat(renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
 
-			return Renderables;
+			return renderables;
 		}
 
-		public bool HasRenderables { get { return Renderables != null && Renderables.Any(); } }
+		public bool HasRenderables { get { return renderables.Any(); } }
+
+		public bool ShouldBeRemoved(Player owner)
+		{
+			// We use a loop here for performance reasons
+			foreach (var rfa in removeFrozenActors)
+				if (rfa.RemoveActor(actor, owner))
+					return true;
+
+			return false;
+		}
 
 		public override string ToString()
 		{
@@ -98,7 +154,7 @@ namespace OpenRA.Traits
 
 		readonly World world;
 		readonly Player owner;
-		Dictionary<uint, FrozenActor> frozen;
+		readonly Dictionary<uint, FrozenActor> frozen;
 
 		public FrozenActorLayer(Actor self)
 		{
@@ -119,22 +175,26 @@ namespace OpenRA.Traits
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
-			foreach (var kv in frozen)
+			foreach (var kvp in frozen)
 			{
-				FrozenHash += (int)kv.Key;
+				var hash = (int)kvp.Key;
+				FrozenHash += hash;
 
-				kv.Value.Tick(self.World, self.Owner.Shroud);
-				if (kv.Value.Visible)
-					VisibilityHash += (int)kv.Key;
+				var frozenActor = kvp.Value;
+				frozenActor.Tick();
 
-				if (!kv.Value.Visible && kv.Value.Actor == null)
-					remove.Add(kv.Key);
+				if (frozenActor.ShouldBeRemoved(owner))
+					remove.Add(kvp.Key);
+				else if (frozenActor.Visible)
+					VisibilityHash += hash;
+				else if (frozenActor.Actor == null)
+					remove.Add(kvp.Key);
 			}
 
-			foreach (var r in remove)
+			foreach (var actorID in remove)
 			{
-				world.ScreenMap.Remove(owner, frozen[r]);
-				frozen.Remove(r);
+				world.ScreenMap.Remove(owner, frozen[actorID]);
+				frozen.Remove(actorID);
 			}
 		}
 

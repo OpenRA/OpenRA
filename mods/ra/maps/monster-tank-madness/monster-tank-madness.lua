@@ -18,7 +18,6 @@ ExtractionHeli = "tran"
 ExtractionWaypoint = CPos.New(DemitriLZ.Location.X, 0)
 ExtractionLZ = DemitriLZ.Location
 BeachTrigger = { CPos.New(19, 44), CPos.New(20, 44), CPos.New(21, 44), CPos.New(22, 44), CPos.New(22, 45), CPos.New(23, 45), CPos.New(22, 44), CPos.New(24, 45), CPos.New(24, 46), CPos.New(24, 47), CPos.New(25, 47), CPos.New(25, 48) }
-SetupAlliedBaseTrigger = { CPos.New(19, 33),  CPos.New(20, 33),  CPos.New(21, 33),  CPos.New(22, 33),  CPos.New(23, 33),  CPos.New(24, 33),  CPos.New(25, 33),  CPos.New(26, 33),  CPos.New(27, 33),  CPos.New(28, 33) }
 DemitriAreaTrigger = { CPos.New(32, 98), CPos.New(32, 99), CPos.New(33, 99), CPos.New(33, 100), CPos.New(33, 101), CPos.New(33, 102), CPos.New(32, 102), CPos.New(32, 103) }
 HospitalAreaTrigger = { CPos.New(43, 41), CPos.New(44, 41), CPos.New(45, 41), CPos.New(46, 41), CPos.New(46, 42), CPos.New(46, 43), CPos.New(46, 44), CPos.New(46, 45), CPos.New(46, 46), CPos.New(45, 46), CPos.New(44, 46), CPos.New(43, 46) }
 
@@ -97,12 +96,11 @@ SetupAlliedBase = function()
 end
 
 SendAlliedUnits = function()
-	Camera.Position = StartEntryPoint.CenterPosition
-	Actor.Create("camera" ,true , { Owner = player, Location = ProvingGroundsCameraPoint.Location })
-	Actor.Create("camera" ,true , { Owner = ussr, Location = USSRSpen.Location })
+	InitObjectives()
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(player, "ReinforcementsArrived") end)
-		--To avoid overlapping "battlecontrol initialized" and "reinforcements have arrived"
+	Camera.Position = StartEntryPoint.CenterPosition
+
+	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 	Utils.Do(AlliedUnits, function(table)
 		Trigger.AfterDelay(table[1], function()
 			Reinforcements.Reinforce(player, table[2], { StartEntryPoint.Location, StartMovePoint.Location }, 18)
@@ -146,12 +144,13 @@ SuperTankDomeInfiltrated = function()
 
 	player.MarkCompletedObjective(InfiltrateRadarDome)
 	Trigger.AfterDelay(DateTime.Minutes(3), SuperTanksDestruction)
+	ticked = DateTime.Minutes(3)
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
 
-		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			Media.DisplayMessage("In 3 minutes the super tanks will self destruct.")
+		Trigger.AfterDelay(DateTime.Seconds(4), function()
+			Media.DisplayMessage("In 3 minutes the super tanks will self-destruct.")
 			Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
 		end)
 	end)
@@ -167,6 +166,9 @@ SuperTanksDestruction = function()
 
 	Utils.Do(SuperTanks, function(tnk)
 		if not tnk.IsDead then
+			local camera = Actor.Create("camera", true, { Owner = player, Location = tnk.Location })
+			Trigger.AfterDelay(DateTime.Seconds(3), camera.Destroy)
+
 			Trigger.ClearAll(tnk)
 			tnk.Kill()
 		end
@@ -209,6 +211,7 @@ CreateDemitri = function()
 	end)
 end
 
+ticked = -1
 Tick = function()
 	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
 
@@ -219,6 +222,37 @@ Tick = function()
 			end
 		end
 	end
+
+	if ticked > 0 then
+		UserInterface.SetMissionText("The super tanks self-destruct in " .. Utils.FormatTime(ticked), TimerColor)
+		ticked = ticked - 1
+	elseif ticked == 0 then
+		FinishTimer()
+		ticked = ticked - 1
+	end
+end
+
+FinishTimer = function()
+	for i = 0, 9, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The super tanks are destroyed!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
+end
+
+SetupMission = function()
+	TestCamera = Actor.Create("camera" ,true , { Owner = player, Location = ProvingGroundsCameraPoint.Location })
+	Camera.Position = ProvingGroundsCameraPoint.CenterPosition
+	TimerColor = player.Color
+
+	Trigger.AfterDelay(DateTime.Seconds(12), function()
+		Media.PlaySpeechNotification(player, "StartGame")
+		Trigger.AfterDelay(DateTime.Seconds(2), SendAlliedUnits)
+	end)
 end
 
 InitPlayers = function()
@@ -244,7 +278,7 @@ InitObjectives = function()
 	end)
 
 	EliminateSuperTanks = player.AddPrimaryObjective("Eliminate these super tanks.")
-	CrossRiver = player.AddPrimaryObjective("Find a way to transport your forces to the mainland")
+	CrossRiver = player.AddPrimaryObjective("Find a way to transport your forces to the mainland.")
 	FindOutpost = player.AddPrimaryObjective("Find our outpost and start repairs on it.")
 	RescueCivilians = player.AddSecondaryObjective("Evacuate all civilians from the hospital.")
 	BadGuyObj = badguy.AddPrimaryObjective("Deny the destruction of the super tanks.")
@@ -260,7 +294,7 @@ InitObjectives = function()
 	end)
 
 	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
+		Media.PlaySpeechNotification(player, "MissionFailed")
 
 		ussr.MarkCompletedObjective(USSRObj)
 		badguy.MarkCompletedObjective(BadGuyObj)
@@ -268,7 +302,7 @@ InitObjectives = function()
 		turkey.MarkCompletedObjective(TurkeyObj)
 	end)
 	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
+		Media.PlaySpeechNotification(player, "MissionAccomplished")
 		Media.DisplayMessage("Dr. Demitri has been extracted and the super tanks have been dealt with.")
 
 		ussr.MarkFailedObjective(USSRObj)
@@ -301,6 +335,10 @@ InitTriggers = function()
 		end
 	end)
 
+	Trigger.OnKilled(UkraineBarrel, function()
+		if not UkraineBuilding.IsDead then UkraineBuilding.Kill() end
+	end)
+
 	Trigger.OnAnyKilled(USSROutpostFlameTurrets, function()
 		Utils.Do(ExplosiveBarrels, function(barrel)
 			if not barrel.IsDead then barrel.Kill() end
@@ -329,10 +367,9 @@ InitTriggers = function()
 		end
 	end)
 
-	Trigger.OnEnteredFootprint(SetupAlliedBaseTrigger, function(a, id)
-		if not outpostReached and a.Owner == player then
+	Trigger.OnPlayerDiscovered(outpost, function(_, discoverer)
+		if not outpostReached and discoverer == player then
 			outpostReached = true
-			Trigger.RemoveFootprintTrigger(id)
 			SetupAlliedBase()
 		end
 	end)
@@ -352,14 +389,24 @@ InitTriggers = function()
 			EvacuateCivilians()
 		end
 	end)
+
+	local tanksLeft = 0
+	Trigger.OnExitedProximityTrigger(ProvingGroundsCameraPoint.CenterPosition, WDist.New(10 * 1024), function(a, id)
+		if a.Type == "5tnk" then
+			tanksLeft = tanksLeft + 1
+			if tanksLeft == 3 then
+				if TestCamera.IsInWorld then TestCamera.Destroy() end
+				Trigger.RemoveProximityTrigger(id)
+			end
+		end
+	end)
 end
 
 WorldLoaded = function()
 
 	InitPlayers()
-	InitObjectives()
 	InitTriggers()
 
-	SendAlliedUnits()
+	SetupMission()
 end
 

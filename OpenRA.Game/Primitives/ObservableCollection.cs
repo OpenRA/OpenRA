@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -18,6 +18,7 @@ namespace OpenRA.Primitives
 	public class ObservableCollection<T> : Collection<T>, IObservableCollection
 	{
 		public event Action<object> OnAdd = k => { };
+
 		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
 		#pragma warning disable 67
 		public event Action<object> OnRemove = k => { };

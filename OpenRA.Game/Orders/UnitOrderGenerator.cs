@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,7 +20,7 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			Target target;
@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(c => world.ShroudObscures(c)))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
@@ -37,7 +37,7 @@ namespace OpenRA.Orders
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
 				.Where(o => o != null)
-				.ToArray();
+				.ToList();
 
 			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
 			if (actorsInvolved.Any())
@@ -58,13 +58,12 @@ namespace OpenRA.Orders
 		{
 			var useSelect = false;
 			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.HasTrait<ITargetable>())
+				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 			{
-				var selectable = underCursor.TraitOrDefault<Selectable>();
-				if (selectable != null && selectable.Info.Selectable)
+				if (underCursor.Info.HasTraitInfo<SelectableInfo>())
 					useSelect = true;
 			}
 
@@ -74,18 +73,32 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.Traits.Contains<ITargetableInfo>() && !a.Footprint.All(c => world.ShroudObscures(c)))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
 
-			var orders = world.Selection.Actors
+			var ordersWithCursor = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, mi))
-				.Where(o => o != null)
-				.ToArray();
+				.Where(o => o != null && o.Cursor != null);
 
-			var cursorName = orders.Select(o => o.Cursor).FirstOrDefault();
-			return cursorName ?? (useSelect ? "select" : "default");
+			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
+
+			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
+		}
+
+		// Used for classic mouse orders, determines whether or not action at xy is move or select
+		public static bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		{
+			var target = Target.FromActor(world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority());
+			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
+
+			var o = OrderForUnit(underCursor, target, mi);
+
+			if (o != null && o.Order.OverrideSelection)
+				return false;
+
+			return true;
 		}
 
 		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
@@ -93,10 +106,13 @@ namespace OpenRA.Orders
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
-			if (self.Destroyed || !target.IsValidFor(self))
+			if (self.World.IsGameOver)
 				return null;
 
-			if (mi.Button == Game.mouseButtonPreference.Action)
+			if (self.Disposed || !target.IsValidFor(self))
+				return null;
+
+			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 			{
 				foreach (var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany(trait => trait.Orders
@@ -126,7 +142,7 @@ namespace OpenRA.Orders
 		{
 			if (order == null && iot.OrderID != null)
 				Game.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);
-			else if (iot.OrderID != order.OrderString)
+			else if (order != null && iot.OrderID != order.OrderString)
 				Game.Debug("BUG: in order targeter - decided on {0} but ordered {1}", iot.OrderID, order.OrderString);
 			return order;
 		}
@@ -147,25 +163,6 @@ namespace OpenRA.Orders
 				this.Cursor = cursor;
 				this.Target = target;
 			}
-		}
-	}
-
-	public static class SelectableExts
-	{
-		public static int SelectionPriority(this ActorInfo a)
-		{
-			var selectableInfo = a.Traits.GetOrDefault<SelectableInfo>();
-			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
-		}
-
-		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors)
-		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
-		}
-
-		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors)
-		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
 		}
 	}
 }

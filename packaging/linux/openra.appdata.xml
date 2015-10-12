@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>openra.desktop</id>
+  <pkgname>openra</pkgname>
+  <name>OpenRA</name>
+  <project_license>GPL-3.0</project_license>
+  <summary>Reimagining of early Westwood real-time strategy games</summary>
+  <developer_name>The OpenRA developers</developer_name>
+  <description>
+    <p>
+      OpenRA is a Libre/Free Real Time Strategy project
+      that recreates the classic Command &amp; Conquer titles.
+    </p>
+    <p>
+      It includes recreations of Tiberian Dawn, Red Alert,
+      and Dune 2000. These are not intended to be perfect
+      copies, but instead combine the classic gameplay of
+      the originals with modern improvements such as unit
+      veterancy and the fog of war.
+    </p>
+  </description>
+  <url type="bugtracker">http://bugs.openra.net</url>
+  <url type="donation">https://www.bountysource.com/teams/openra</url>
+  <url type="faq">http://wiki.openra.net/FAQ</url>
+  <url type="help">http://wiki.openra</url>
+  <url type="homepage">http://www.openra</url>
+  <icon type="cached">openra.png</icon>
+  <icon type="remote" width="128" height="138">http://www.openra.net/images/soviet-logo-fallback.png</icon>
+  <icon type="local" width="128" height="128">/usr/share/icons/hicolor/128x128/apps/openra.png</icon>
+  <categories>
+​    <category>Game</category>
+​    <category>StrategyGame</category>
+​  </categories>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Red Alert mod</caption>
+      <image height="296" width="196">http://www.openra.net/images/appdata/ra.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Tiberian Dawn mod</caption>
+      <image height="296" width="196">http://www.openra.net/images/appdata/cnc.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Dune 2000 mod</caption>
+      <image height="296" width="196">http://www.openra.net/images/appdata/d2k.png</image>
+    </screenshot>
+  </screenshots>
+</component>

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 
@@ -28,7 +27,6 @@ namespace OpenRA.Utility
 
 			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
-			Log.LogPath = Platform.ResolvePath("^", "Logs");
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 
@@ -39,19 +37,40 @@ namespace OpenRA.Utility
 				return;
 			}
 
+			Game.InitializeSettings(Arguments.Empty);
 			var modData = new ModData(modName);
 			args = args.Skip(1).ToArray();
-			var actions = new Dictionary<string, Action<ModData, string[]>>();
+			var actions = new Dictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>>();
 			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
 			{
 				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
-				actions.Add(command.Name, command.Run);
+				var kvp = new KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
+				actions.Add(command.Name, kvp);
+			}
+
+			if (args.Length == 0)
+			{
+				PrintUsage(actions);
+				return;
 			}
 
 			try
 			{
-				var action = Exts.WithDefault((a,b) => PrintUsage(actions), () => actions[args[0]]);
-				action(modData, args);
+				if (!actions.ContainsKey(args[0]))
+					throw new ArgumentException();
+
+				var action = actions[args[0]].Key;
+				var validateActionArgs = actions[args[0]].Value;
+
+				if (validateActionArgs.Invoke(args))
+				{
+					action.Invoke(modData, args);
+				}
+				else
+				{
+					Console.WriteLine("Invalid arguments for '{0}'", args[0]);
+					GetActionUsage(args[0], action);
+				}
 			}
 			catch (Exception e)
 			{
@@ -59,12 +78,17 @@ namespace OpenRA.Utility
 				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
 				Log.Write("utility", "{0}", e);
 
-				Console.WriteLine("Error: Utility application crashed. See utility.log for details");
-				throw;
+			    if (e is ArgumentException)
+			        Console.WriteLine("No such command '{0}'", args[0]);
+			    else
+			    {
+                    Console.WriteLine("Error: Utility application crashed. See utility.log for details");
+                    throw;
+			    }
 			}
 		}
 
-		static void PrintUsage(IDictionary<string, Action<ModData, string[]>> actions)
+		static void PrintUsage(IDictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>> actions)
 		{
 			Console.WriteLine("Run `OpenRA.Utility.exe [MOD]` to see a list of available commands.");
 			Console.WriteLine("The available mods are: " + string.Join(", ", ModMetadata.AllMods.Keys));
@@ -72,31 +96,27 @@ namespace OpenRA.Utility
 
 			if (actions == null)
 				return;
-			foreach (var a in actions)
+
+			var keys = actions.Keys.OrderBy(x => x);
+
+			foreach (var key in keys)
 			{
-				var descParts = a.Value.Method.GetCustomAttributes<DescAttribute>(true)
-					.SelectMany(d => d.Lines);
-
-				if (!descParts.Any())
-					continue;
-
-				var args = descParts.Take(descParts.Count() - 1).JoinWith(" ");
-				var desc = descParts.Last();
-
-				Console.WriteLine("  {0} {1}    ({2})", a.Key, args, desc);
+				GetActionUsage(key, actions[key].Key);
 			}
 		}
 
-		static string GetNamedArg(string[] args, string arg)
+		static void GetActionUsage(string key, Action<ModData, string[]> action)
 		{
-			if (args.Length < 2)
-				return null;
+			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
+					.SelectMany(d => d.Lines).ToArray();
 
-			var i = Array.IndexOf(args, arg);
-			if (i < 0 || i == args.Length - 1)  // doesnt exist, or doesnt have a value.
-				return null;
+			if (descParts.Length == 0)
+				return;
 
-			return args[i + 1];
+			var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
+			var desc = descParts[descParts.Length - 1];
+
+			Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
 		}
 	}
 }

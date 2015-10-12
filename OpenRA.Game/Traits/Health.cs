@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,7 +9,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -18,16 +17,16 @@ namespace OpenRA.Traits
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
 
-		[Desc("Physical size of the unit used for damage calculations.  Impacts within this radius apply full damage")]
-		public readonly WRange Radius = new WRange(426);
+		[Desc("Physical size of the unit used for damage calculations. Impacts within this radius apply full damage.")]
+		public readonly WDist Radius = new WDist(426);
 
-		[Desc("Don't trigger interfaces such as AnnounceOnKill.")]
+		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
 
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead };
+	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
 
 	public class Health : ISync, ITick
 	{
@@ -40,9 +39,10 @@ namespace OpenRA.Traits
 		public Health(ActorInitializer init, HealthInfo info)
 		{
 			Info = info;
-			MaxHP = info.HP;
+			MaxHP = info.HP > 0 ? info.HP : 1;
 
-			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, float>() * MaxHP) : MaxHP;
+			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
+
 			DisplayHp = hp;
 		}
 
@@ -86,31 +86,31 @@ namespace OpenRA.Traits
 			{
 				Attacker = repairer,
 				Damage = -MaxHP,
-				DamageState = this.DamageState,
+				DamageState = DamageState,
 				PreviousDamageState = DamageState.Dead,
 				Warhead = null,
 			};
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-			         .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+				.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
 				nd.Damaged(self, ai);
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 				nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead())
+			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead)
 				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
-				         .Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+					.Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
 					nd.AppliedDamage(repairer, self, ai);
 		}
 
-		public void InflictDamage(Actor self, Actor attacker, int damage, DamageWarhead warhead, bool ignoreModifiers)
+		public void InflictDamage(Actor self, Actor attacker, int damage, IWarhead warhead, bool ignoreModifiers)
 		{
-			// Overkill! don't count extra hits as more kills!
+			// Overkill! Don't count extra hits as more kills!
 			if (IsDead)
 				return;
 
-			var oldState = this.DamageState;
+			var oldState = DamageState;
 
 			// Apply any damage modifiers
 			if (!ignoreModifiers && damage > 0)
@@ -122,13 +122,13 @@ namespace OpenRA.Traits
 				damage = Util.ApplyPercentageModifiers(damage, modifiers);
 			}
 
-			hp = Exts.Clamp(hp - damage, 0, MaxHP);
+			hp = (hp - damage).Clamp(0, MaxHP);
 
 			var ai = new AttackInfo
 			{
 				Attacker = attacker,
 				Damage = damage,
-				DamageState = this.DamageState,
+				DamageState = DamageState,
 				PreviousDamageState = oldState,
 				Warhead = warhead,
 			};
@@ -141,10 +141,10 @@ namespace OpenRA.Traits
 				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
 					nd.DamageStateChanged(self, ai);
 
-			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead())
+			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead)
 				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
 					 .Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
-				nd.AppliedDamage(attacker, self, ai);
+					nd.AppliedDamage(attacker, self, ai);
 
 			if (hp == 0)
 			{
@@ -153,9 +153,12 @@ namespace OpenRA.Traits
 					nd.Killed(self, ai);
 
 				if (RemoveOnDeath)
-					self.Destroy();
+					self.Dispose();
 
-				Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
+				if (attacker == null)
+					Log.Write("debug", "{0} #{1} was killed.", self.Info.Name, self.ActorID);
+				else
+					Log.Write("debug", "{0} #{1} killed by {2} #{3}", self.Info.Name, self.ActorID, attacker.Info.Name, attacker.ActorID);
 			}
 		}
 
@@ -169,28 +172,40 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class HealthInit : IActorInit<float>
+	public class HealthInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] public readonly float value = 1f;
+		[FieldFromYamlKey] readonly int value = 100;
+		readonly bool allowZero;
 		public HealthInit() { }
-		public HealthInit( float init ) { value = init; }
-		public float Value( World world ) { return value; }
+		public HealthInit(int init, bool allowZero = false)
+		{
+			this.allowZero = allowZero;
+			value = init;
+		}
+
+		public int Value(World world)
+		{
+			if (value < 0 || (value == 0 && !allowZero))
+				return 1;
+
+			return value;
+		}
 	}
 
 	public static class HealthExts
 	{
 		public static DamageState GetDamageState(this Actor self)
 		{
-			if (self.Destroyed)
+			if (self.Disposed)
 				return DamageState.Dead;
 
 			var health = self.TraitOrDefault<Health>();
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
-		public static void InflictDamage(this Actor self, Actor attacker, int damage, DamageWarhead warhead)
+		public static void InflictDamage(this Actor self, Actor attacker, int damage, IWarhead warhead)
 		{
-			if (self.Destroyed) return;
+			if (self.Disposed) return;
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead, false);

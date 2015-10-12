@@ -1,0 +1,132 @@
+Debris:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 96
+		Blockable: false
+		Angle: 30, 90
+		Inaccuracy: 1c256
+		Image: shrapnel
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 150
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: small_explosion
+		ImpactSound: EXPLLG5.WAV
+
+Debris2:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 96
+		Blockable: false
+		Angle: 30, 90
+		Inaccuracy: 1c256
+		Image: shrapnel2
+		Trail: bazooka_trail
+		TrailPalette: effect75alpha
+		TrailInterval: 2
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 250
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: EXPLLG5.WAV
+
+Debris3:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 96
+		Blockable: false
+		Angle: 30, 90
+		Inaccuracy: 1c256
+		Image: shrapnel3
+		Trail: large_trail
+		TrailPalette: effect75alpha
+		TrailInterval: 1
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 150
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: med_explosion
+		ImpactSound: EXPLLG5.WAV
+
+Debris4:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 96
+		Blockable: false
+		Angle: 30, 90
+		Inaccuracy: 1c256
+		Image: shrapnel4
+		Trail: large_trail
+		TrailPalette: effect75alpha
+		TrailInterval: 1
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Damage: 250
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: EXPLLG5.WAV

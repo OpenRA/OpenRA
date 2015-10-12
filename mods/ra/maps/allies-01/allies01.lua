@@ -12,7 +12,7 @@ SendInsertionHelicopter = function()
 	local passengers = Reinforcements.ReinforceWithTransport(player, InsertionHelicopterType,
 		TanyaReinforcements, InsertionPath, { InsertionEntry.Location })[2]
 	local tanya = passengers[1]
-	Trigger.OnKilled(tanya, RescueFailed)
+	Trigger.OnKilled(tanya, TanyaKilledInAction)
 	tanya.Stance = "HoldFire"
 end
 
@@ -95,8 +95,13 @@ LabDestroyed = function()
 end
 
 RescueFailed = function()
-	player.MarkFailedObjective(SurviveObjective)
-	ussr.MarkCompletedObjective(DefendObjective)
+	Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+	player.MarkFailedObjective(EinsteinSurviveObjective)
+end
+
+TanyaKilledInAction = function()
+	Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+	player.MarkFailedObjective(TanyaSurviveObjective)
 end
 
 OilPumpDestroyed = function()
@@ -124,8 +129,10 @@ HelicopterGone = function()
 		Media.PlaySpeechNotification(player, "TargetRescued")
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			player.MarkCompletedObjective(ExtractObjective)
-			player.MarkCompletedObjective(SurviveObjective)
-			ussr.MarkFailedObjective(DefendObjective)
+			player.MarkCompletedObjective(EinsteinSurviveObjective)
+			if not player.IsObjectiveFailed(TanyaSurviveObjective) then
+				player.MarkCompletedObjective(TanyaSurviveObjective)
+			end
 			if not collateralDamage then
 				player.MarkCompletedObjective(CivilProtectionObjective)
 			end
@@ -134,15 +141,11 @@ HelicopterGone = function()
 end
 
 MissionAccomplished = function()
-	Media.PlaySpeechNotification(player, "Win")
-	--Trigger.AfterDelay(DateTime.Seconds(1), function()
-		--Media.PlayMovieFullscreen("snowbomb.vqa")  -- https://github.com/OpenRA/OpenRA/issues/4224
-	--end)
+	Media.PlaySpeechNotification(player, "MissionAccomplished")
 end
 
 MissionFailed = function()
-	Media.PlaySpeechNotification(player, "Lose")
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlayMovieFullscreen("bmap.vqa") end)
+	Media.PlaySpeechNotification(player, "MissionFailed")
 end
 
 SetUnitStances = function()
@@ -175,15 +178,12 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, MissionFailed)
 	Trigger.OnPlayerWon(player, MissionAccomplished)
 
-	Media.PlayMovieFullscreen("landing.vqa", function()
-		FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
-		SurviveObjective = player.AddPrimaryObjective("Tanya and Einstein must survive.")
-		england.AddPrimaryObjective("Destroy the soviet base after a successful rescue.")
-		CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
-		DefendObjective = ussr.AddPrimaryObjective("Kill Tanya and keep Einstein hostage.")
+	FindEinsteinObjective = player.AddPrimaryObjective("Find Einstein.")
+	TanyaSurviveObjective = player.AddPrimaryObjective("Tanya must survive.")
+	EinsteinSurviveObjective = player.AddPrimaryObjective("Einstein must survive.")
+	CivilProtectionObjective = player.AddSecondaryObjective("Protect all civilians.")
 
-		RunInitialActivities()
-	end)
+	RunInitialActivities()
 
 	Trigger.OnKilled(Lab, LabDestroyed)
 	Trigger.OnKilled(OilPump, OilPumpDestroyed)

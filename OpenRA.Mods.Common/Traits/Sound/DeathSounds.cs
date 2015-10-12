@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,7 +8,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -17,33 +19,34 @@ namespace OpenRA.Mods.Common.Traits
 	public class DeathSoundsInfo : ITraitInfo
 	{
 		[Desc("Death notification voice.")]
-		public readonly string DeathSound = "Die";
-		
+		[VoiceReference] public readonly string Voice = "Die";
+
 		[Desc("Multiply volume with this factor.")]
 		public readonly float VolumeMultiplier = 1f;
 
-		[Desc("DeathTypes that this should be used for. If empty, this will be used as the default sound.")]
-		public readonly string[] DeathTypes = { };
+		[Desc("Damage types that this should be used for (defined on the warheads).",
+			"If empty, this will be used as the default sound for all death types.")]
+		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}
 
 	public class DeathSounds : INotifyKilled
 	{
-		DeathSoundsInfo info;
+		readonly DeathSoundsInfo info;
 
 		public DeathSounds(DeathSoundsInfo info) { this.info = info; }
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			var warhead = e.Warhead as DamageWarhead;
+
 			// Killed by some non-standard means
-			if (e.Warhead == null)
+			if (warhead == null)
 				return;
 
-			var cp = self.CenterPosition;
-
-			if (info.DeathTypes.Contains(e.Warhead.DeathType) || (!info.DeathTypes.Any() && !self.Info.Traits.WithInterface<DeathSoundsInfo>().Any(dsi => dsi.DeathTypes.Contains(e.Warhead.DeathType))))
-				Sound.PlayVoiceLocal(info.DeathSound, self, self.Owner.Country.Race, cp, info.VolumeMultiplier);
+			if (warhead.DamageTypes.Overlaps(info.DeathTypes))
+				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}
 }

@@ -22,13 +22,19 @@ BOAT:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
 	AttackTurreted:
-	RenderGunboat:
+	-QuantizeFacingsFromSequence:
+	BodyOrientation:
+		QuantizedFacings: 2
+	WithGunboatBody:
+		Sequence: left # Just a work-around to avoid crash
 	Selectable:
 		Bounds: 42,24
 	AutoTarget:
 		AllowMovement: false
 	WithSmoke:
 	RejectsOrders:
+	SelectionDecorations:
+		VisualBounds: 42,24
 
 LST:
 	Inherits: ^Ship
@@ -37,7 +43,7 @@ LST:
 	Tooltip:
 		Name: Landing Craft
 	Buildable:
-		Queue: Vehicle
+		Queue: Vehicle.GDI
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Mobile:
@@ -60,7 +66,7 @@ LST:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
-	RenderUnit:
+	WithFacingSpriteBody:
 	WithRoof:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle
@@ -69,4 +75,5 @@ LST:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
 		PipCount: 5
+		PassengerFacing: 0
 

@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -14,9 +12,11 @@ MapSize: 64,64
 
 Bounds: 4,4,56,56
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: Conquest
+
+Videos:
 
 Options:
 
@@ -25,23 +25,23 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
-		Race: Random
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		Enemies: Multi0, Multi1
 
 Actors:

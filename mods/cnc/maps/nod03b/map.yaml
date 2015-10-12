@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -10,38 +8,42 @@ Description: GDI has established a prison camp, where they are detaining some of
 
 Author: Westwood Studios
 
-PreviewVideo: nod3.vqa
-
 Tileset: DESERT
 
 MapSize: 64,64
 
 Bounds: 13,16,42,34
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	Briefing: nod3.vqa
+	GameStart: dessweep.vqa
+	GameWon: desflees.vqa
+	GameLost: flag.vqa
+
 Options:
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 4000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
-		Allies: GDI
-		Enemies: Nod
+		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
-		Race: gdi
+		Faction: gdi
 		ColorRamp: 31,222,183
 		Allies: GDI
 		Enemies: Nod
@@ -50,175 +52,139 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: nod
+		LockFaction: True
+		Faction: nod
 		LockColor: True
 		ColorRamp: 3,255,127
 		LockSpawn: True
 		LockTeam: True
 		Allies: Nod
 		Enemies: GDI
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Race: Random
-		Enemies: Nod, GDI
 
 Actors:
 	Actor117: e1
 		Location: 41,21
 		Owner: GDI
-		Health: 1
 		Facing: 192
 		SubCell: 0
 	Actor118: e1
 		Location: 48,21
 		Owner: GDI
-		Health: 1
 		Facing: 192
 		SubCell: 4
 	Actor119: e2
 		Location: 27,25
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 0
 	Actor120: e2
 		Location: 36,30
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 4
 	Actor121: e2
 		Location: 41,39
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 1
 	Actor122: e2
 		Location: 42,49
 		Owner: GDI
-		Health: 1
 		Facing: 32
 		SubCell: 0
 	Actor123: e2
 		Location: 43,26
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor111: e1
 		Location: 34,31
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor106: e1
 		Location: 40,22
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor107: e1
 		Location: 40,21
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor108: e1
 		Location: 36,33
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor109: e1
 		Location: 34,24
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 3
 	Actor86: e1
 		Location: 51,21
 		Owner: GDI
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor87: e1
 		Location: 16,39
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor88: e1
 		Location: 20,28
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor89: e1
 		Location: 19,21
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor90: e1
 		Location: 30,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor91: e1
 		Location: 30,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor92: e1
 		Location: 34,32
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor93: e1
 		Location: 23,35
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor94: e1
 		Location: 17,32
 		Owner: GDI
-		Health: 1
 		Facing: 128
 		SubCell: 1
 	Actor95: e1
 		Location: 24,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor96: e1
 		Location: 15,37
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 1
 	Actor97: e1
 		Location: 24,30
 		Owner: GDI
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor98: e1
 		Location: 35,27
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor82: e1
 		Location: 25,43
 		Owner: GDI
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor0: sbag
@@ -377,155 +343,111 @@ Actors:
 	Actor51: silo
 		Location: 23,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor52: silo
 		Location: 18,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor53: pyle
 		Location: 23,19
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor54: nuke
 		Location: 25,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor55: fact
 		Location: 27,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor56: gtwr
 		Location: 18,23
 		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor57: v20
 		Location: 13,38
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor58: v21
 		Location: 13,40
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor59: v22
 		Location: 18,40
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor60: v24
 		Location: 15,37
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor61: v25
 		Location: 17,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor62: v19
 		Location: 28,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor63: proc
 		Location: 20,17
 		Owner: GDI
-		Health: 1
-		Facing: 0
-	TechCenter: miss
-		Location: 14,17
-		Owner: GDI
-		Health: 1
-		Facing: 0
 	Actor65: v19
 		Location: 29,41
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor67: v19
 		Location: 30,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
 	Actor68: v19
 		Location: 29,42
 		Owner: Neutral
-		Health: 1
-		Facing: 0
+	Actor72: jeep
+		Location: 28,21
+		Owner: GDI
+		Facing: 128
+	Actor73: jeep
+		Location: 35,30
+		Owner: GDI
+		Facing: 96
+	Actor74: jeep
+		Location: 32,36
+		Owner: GDI
+		Facing: 96
+	Actor75: jeep
+		Location: 29,21
+		Owner: GDI
+		Facing: 128
+	Actor77: jeep
+		Location: 47,21
+		Owner: GDI
+		Facing: 160
+	Actor101: c1
+		Location: 16,36
+		Owner: Neutral
+		Facing: 192
+		SubCell: 4
+	Actor102: c3
+		Location: 17,40
+		Owner: Neutral
+		Facing: 224
+		SubCell: 2
+	Actor103: c5
+		Location: 16,40
+		Owner: Neutral
+		Facing: 224
+		SubCell: 1
+	Actor104: c6
+		Location: 14,36
+		Owner: Neutral
+		Health: 60
+		SubCell: 4
+	Actor105: c7
+		Location: 18,38
+		Owner: Neutral
+		Facing: 224
+		SubCell: 4
+	TechCenter: miss
+		Location: 14,17
+		Owner: GDI
 	McvEntry: waypoint
 		Location: 54,38
 		Owner: Neutral
 	McvDeploy: waypoint
 		Location: 52,36
 		Owner: Neutral
-	Actor72: jeep
-		Location: 28,21
-		Owner: GDI
-		Health: 1
-		Facing: 128
-	Actor73: jeep
-		Location: 35,30
-		Owner: GDI
-		Health: 1
-		Facing: 96
-	Actor74: jeep
-		Location: 32,36
-		Owner: GDI
-		Health: 1
-		Facing: 96
-	Actor75: jeep
-		Location: 29,21
-		Owner: GDI
-		Health: 1
-		Facing: 128
 	NodEntry: waypoint
 		Location: 54,40
 		Owner: Neutral
 	NodRallypoint: waypoint
 		Location: 50,42
 		Owner: Neutral
-	Actor77: jeep
-		Location: 47,21
-		Owner: GDI
-		Health: 1
-		Facing: 160
-	Actor101: c1
-		Location: 16,36
-		Owner: Neutral
-		Health: 1
-		Facing: 192
-		SubCell: 4
-	Actor102: c3
-		Location: 17,40
-		Owner: Neutral
-		Health: 1
-		Facing: 224
-		SubCell: 2
-	Actor103: c5
-		Location: 16,40
-		Owner: Neutral
-		Health: 1
-		Facing: 224
-		SubCell: 1
-	Actor104: c6
-		Location: 14,36
-		Owner: Neutral
-		Health: 0.5976563
-		Facing: 0
-		SubCell: 4
-	Actor105: c7
-		Location: 18,38
-		Owner: Neutral
-		Health: 1
-		Facing: 224
-		SubCell: 4
 	PlayerBase: waypoint
 		Location: 50,39
 		Owner: Neutral
@@ -584,25 +506,22 @@ Rules:
 			Scripts: nod03b.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: chrg226m
+			VictoryMusic: nod_win1
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Helicopter:
-		SpawnViceroid:
-			Probability: 0
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -626,8 +545,6 @@ Rules:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
-	HARV:
-		-MustBeDestroyed:
 	HQ:
 		AirstrikePower:
 			Prerequisites: ~disabled

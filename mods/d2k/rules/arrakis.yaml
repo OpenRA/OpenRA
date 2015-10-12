@@ -1,0 +1,78 @@
+spicebloom:
+	Inherits@1: ^SpriteActor
+	HiddenUnderShroud:
+	WithSpriteBody:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	Tooltip:
+		Name: Spice Bloom
+	SeedsResource:
+		ResourceType: Spice
+		Interval: 75
+	WithActiveAnimation:
+	RadarColorFromTerrain:
+		Terrain: Spice
+	WithMakeAnimation:
+
+sandworm:
+	Inherits@1: ^SpriteActor
+	Tooltip:
+		Name: Sandworm
+		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
+	Health:
+		HP: 1200
+		Radius: 3
+	Armor:
+		Type: None
+	Mobile:
+		Speed: 50
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+			Spice: 100
+	Targetable:
+		TargetTypes: Ground
+	WithFacingSpriteBody:
+	WithAttackOverlay:
+		Sequence: sand
+	HiddenUnderFog:
+	AppearsOnRadar:
+		UseLocation: yes
+	AttackSwallow:
+		AttackRequiresEnteringCell: true
+		IgnoresVisibility: true
+	Armament:
+		Weapon: WormJaw
+	Sandworm:
+		WanderMoveRadius: 5
+	IgnoresCloak:
+	AnnounceOnSeen:
+		Notification: WormSign
+		PingRadar: True
+
+sietch:
+	Inherits: ^Building
+	Tooltip:
+		Name: Fremen Sietch
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		TerrainTypes: Cliff
+	Health:
+		HP: 400
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 10c0
+	-DamagedWithoutFoundation:
+	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
+	Power:
+		Amount: 0
+	ProvidesPrerequisite@buildingname:
+	-WithMakeAnimation:
+	-WithCrumbleOverlay:
+

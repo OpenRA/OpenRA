@@ -1,6 +1,4 @@
-Selectable: True
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 2,2,110,124
 
-UseAsShellmap: False
+Visibility: Lobby
 
 Type: KotH
+
+Videos:
 
 Options:
 
@@ -27,51 +27,59 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
-		Race: Random
+		AllowBots: False
+		Faction: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 
 Actors:
@@ -625,7 +633,7 @@ Rules:
 	MISS:
 		ProximityCapturable:
 			MustBeClear: true
-			Range: 9
+			Range: 9c0
 			CaptorTypes: Ship,Vehicle,Tank,Infantry
 		StrategicPoint:
 			Critical: false
@@ -633,9 +641,10 @@ Rules:
 			Name: Strategic Point
 		RevealsShroud:
 			Range: 20c0
-		Invulnerable:
+		DamageMultiplier@INVULNERABLE:
+			Modifier: 0
 		-Selectable:
-		-TargetableBuilding:
+		-Targetable:
 	Player:
 		StrategicVictoryConditions:
 			TicksToHold: 3000

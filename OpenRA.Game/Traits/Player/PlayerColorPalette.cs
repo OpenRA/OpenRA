@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -16,34 +17,37 @@ namespace OpenRA.Traits
 	public class PlayerColorPaletteInfo : ITraitInfo
 	{
 		[Desc("The name of the palette to base off.")]
-		public readonly string BasePalette = null;
+		[PaletteReference] public readonly string BasePalette = null;
+
 		[Desc("The prefix for the resulting player palettes")]
-		public readonly string BaseName = "player";
+		[PaletteDefinition(true)] public readonly string BaseName = "player";
+
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = { };
+
 		[Desc("Luminosity range to span.")]
 		public readonly float Ramp = 0.05f;
+
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.self.Owner, this); }
+		public object Create(ActorInitializer init) { return new PlayerColorPalette(this); }
 	}
 
-	public class PlayerColorPalette : ILoadsPalettes
+	public class PlayerColorPalette : ILoadsPlayerPalettes
 	{
-		readonly Player owner;
 		readonly PlayerColorPaletteInfo info;
 
-		public PlayerColorPalette(Player owner, PlayerColorPaletteInfo info)
+		public PlayerColorPalette(PlayerColorPaletteInfo info)
 		{
-			this.owner = owner;
 			this.info = info;
 		}
 
-		public void LoadPalettes(WorldRenderer wr)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
 		{
-			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
-			wr.AddPalette(info.BaseName + owner.InternalName, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
+			var remap = new PlayerColorRemap(info.RemapIndex, color, info.Ramp);
+			var pal = new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap);
+			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
 		}
 	}
 }

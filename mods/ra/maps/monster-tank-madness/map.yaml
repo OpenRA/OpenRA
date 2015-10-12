@@ -1,12 +1,10 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: ra
 
 Title: Monster Tank Madness
 
-Description: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.
+Description: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
 
 Author: Westwood Studios
 
@@ -16,9 +14,11 @@ MapSize: 128,128
 
 Bounds: 19,16,87,88
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Mission
+
+Videos:
 
 Options:
 	Crates: False
@@ -28,6 +28,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5000
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Greece:
@@ -35,8 +36,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: allies
+		LockFaction: True
+		Faction: allies
 		LockColor: True
 		ColorRamp: 161,134,200
 		LockSpawn: True
@@ -44,13 +45,13 @@ Players:
 		Enemies: BadGuy, USSR, Ukraine, Turkey
 	PlayerReference@BadGuy:
 		Name: BadGuy
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: USSR
-		Enemies: Greece, Turkey, Ukraine
+		Enemies: Greece, Turkey
 	PlayerReference@USSR:
 		Name: USSR
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 3,255,127
 		Allies: BadGuy, Ukraine
 		Enemies: Greece, Turkey
@@ -58,68 +59,67 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: allies
-		Enemies: Turkey
+		Faction: allies
 	PlayerReference@Ukraine:
 		Name: Ukraine
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 32,255,202
 		Allies: BadGuy, USSR
 		Enemies: Greece, Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
-		Race: soviet
+		Faction: soviet
 		ColorRamp: 14,123,167
-		Enemies: Greece, BadGuy, USSR, Ukraine, Neutral, Outpost
+		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
 	PlayerReference@Outpost:
 		Name: Outpost
 		NonCombatant: True
-		Race: allies
+		Faction: allies
 		Enemies: BadGuy, USSR, Ukraine, Turkey
 
 Actors:
 	Actor0: sbag
 		Location: 21,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor1: sbag
 		Location: 22,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor2: sbag
 		Location: 43,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor3: sbag
 		Location: 44,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor4: sbag
 		Location: 45,26
-		Owner: Neutral
+		Owner: Outpost
 	Actor5: sbag
 		Location: 45,27
-		Owner: Neutral
+		Owner: Outpost
 	Actor6: sbag
 		Location: 39,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor7: sbag
 		Location: 40,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor8: sbag
 		Location: 45,28
-		Owner: Neutral
+		Owner: Outpost
 	Actor9: sbag
 		Location: 39,29
-		Owner: Neutral
+		Owner: Outpost
 	Actor10: sbag
 		Location: 39,30
-		Owner: Neutral
+		Owner: Outpost
 	Actor11: sbag
 		Location: 26,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor12: sbag
 		Location: 27,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor13: sbag
 		Location: 28,31
-		Owner: Neutral
+		Owner: Outpost
 	Actor14: brik
 		Location: 87,31
 		Owner: Neutral
@@ -170,7 +170,7 @@ Actors:
 		Owner: Neutral
 	Actor30: sbag
 		Location: 28,32
-		Owner: Neutral
+		Owner: Outpost
 	Actor31: brik
 		Location: 87,32
 		Owner: Neutral
@@ -1353,46 +1353,46 @@ Actors:
 	Actor424: weap
 		Location: 38,19
 		Owner: Outpost
-		Health: 0.375
+		Health: 37
 	Actor425: pbox
 		Location: 22,27
 		Owner: Outpost
-		Health: 0.28125
+		Health: 28
 	Actor426: pbox
 		Location: 44,27
 		Owner: Outpost
-		Health: 0.3515625
+		Health: 35
 	Actor427: pbox
 		Location: 40,29
 		Owner: Outpost
-		Health: 0.375
+		Health: 37
 	Actor428: dome
 		Location: 35,19
 		Owner: Outpost
-		Health: 0.3515625
+		Health: 35
 	Actor429: gun
 		Location: 45,25
 		Owner: Outpost
-		Health: 0.3125
+		Health: 31
 		Facing: 96
 	Actor430: gun
 		Location: 29,30
 		Owner: Outpost
-		Health: 0.1875
+		Health: 19
 		Facing: 32
 	Actor431: gun
 		Location: 38,29
 		Owner: Outpost
-		Health: 0.3945313
+		Health: 39
 		Facing: 96
 	Actor432: tent
 		Location: 33,22
 		Owner: Outpost
-		Health: 0.5
+		Health: 50
 	Actor433: fix
 		Location: 32,28
 		Owner: Outpost
-		Health: 0.3125
+		Health: 31
 	Actor434: ftur
 		Location: 78,34
 		Owner: BadGuy
@@ -1420,9 +1420,6 @@ Actors:
 	Actor442: miss
 		Location: 86,33
 		Owner: BadGuy
-	SuperTankDome: dome.NoInfiltrate
-		Location: 90,32
-		Owner: BadGuy
 	Actor444: ftur
 		Location: 91,47
 		Owner: BadGuy
@@ -1444,7 +1441,7 @@ Actors:
 	Actor450: spen
 		Location: 102,47
 		Owner: BadGuy
-		Health: 0.875
+		Health: 88
 	Actor451: fact
 		Location: 88,87
 		Owner: USSR
@@ -1526,13 +1523,6 @@ Actors:
 	Actor477: apwr
 		Location: 89,78
 		Owner: USSR
-	USSRSpen: spen
-		Location: 32,56
-		Owner: BadGuy
-		Health: 0.6875
-	USSROutpostSilo: silo
-		Location: 37,61
-		Owner: BadGuy
 	Actor480: powr
 		Location: 34,61
 		Owner: BadGuy
@@ -1563,14 +1553,8 @@ Actors:
 	Actor489: brl3
 		Location: 37,65
 		Owner: USSR
-	ExplosiveBarrel1: brl3
-		Location: 38,62
-		Owner: USSR
 	Actor491: brl3
 		Location: 28,62
-		Owner: USSR
-	ExplosiveBarrel2: brl3
-		Location: 28,60
 		Owner: USSR
 	Actor493: brl3
 		Location: 30,61
@@ -1599,12 +1583,6 @@ Actors:
 	Actor501: barl
 		Location: 39,63
 		Owner: USSR
-	FlameTurret1: ftur
-		Location: 30,64
-		Owner: BadGuy
-	FlameTurret2: ftur
-		Location: 33,66
-		Owner: BadGuy
 	Actor504: brl3
 		Location: 37,66
 		Owner: BadGuy
@@ -1614,40 +1592,26 @@ Actors:
 	Actor506: barl
 		Location: 38,66
 		Owner: BadGuy
-	AlliedBaseProc: proc
-		Location: 27,25
-		Owner: Outpost
-		Health: 0.3476563
-		FreeActor: False
-	AlliedBaseHarv: harv
-		Location: 30,26
-		Owner: Neutral
 	Actor508: silo
 		Location: 36,18
 		Owner: Outpost
-		Health: 0.5898438
+		Health: 59
 	Actor509: silo
 		Location: 37,18
 		Owner: Outpost
-		Health: 0.08203125
+		Health: 8
 	Actor510: silo
 		Location: 37,19
 		Owner: Outpost
-		Health: 0.3320313
+		Health: 33
 	Actor511: apwr
 		Location: 26,20
 		Owner: Outpost
-		Health: 0.25
+		Health: 25
 	Actor512: apwr
 		Location: 23,23
 		Owner: Outpost
-		Health: 0.1367188
-	Hospital: hosp
-		Location: 43,43
-		Owner: Neutral
-	DemitriChurch: v01
-		Location: 28,99
-		Owner: Neutral
+		Health: 14
 	Actor515: v02
 		Location: 23,99
 		Owner: Neutral
@@ -1707,9 +1671,6 @@ Actors:
 		Owner: Ukraine
 	Actor534: v04
 		Location: 91,59
-		Owner: Ukraine
-	Actor535: v05
-		Location: 82,51
 		Owner: Ukraine
 	Actor536: v06
 		Location: 82,54
@@ -1807,9 +1768,6 @@ Actors:
 	Actor567: brl3
 		Location: 80,53
 		Owner: Ukraine
-	Actor568: brl3
-		Location: 81,52
-		Owner: Ukraine
 	Actor569: brl3
 		Location: 82,53
 		Owner: Ukraine
@@ -1858,18 +1816,6 @@ Actors:
 	Actor584: brl3
 		Location: 89,53
 		Owner: Ukraine
-	stnk1: 5tnk
-		Location: 89,59
-		Owner: Turkey
-		Facing: 0
-	stnk2: 5tnk
-		Location: 77,57
-		Owner: Turkey
-		Facing: 0
-	stnk3: 5tnk
-		Location: 94,53
-		Owner: Turkey
-		Facing: 0
 	Actor588: v2rl
 		Location: 91,75
 		Owner: USSR
@@ -1889,7 +1835,6 @@ Actors:
 	Actor592: badtruk
 		Location: 89,36
 		Owner: BadGuy
-		Facing: 0
 	Actor593: v2rl
 		Location: 32,48
 		Owner: BadGuy
@@ -1897,23 +1842,18 @@ Actors:
 	Actor594: 3tnk
 		Location: 85,86
 		Owner: USSR
-		Facing: 0
 	Actor595: v2rl
 		Location: 86,86
 		Owner: USSR
-		Facing: 0
 	Actor596: dtrk
 		Location: 74,81
 		Owner: USSR
-		Facing: 0
 	Actor597: dtrk
 		Location: 77,83
 		Owner: USSR
-		Facing: 0
 	Actor598: ttnk
 		Location: 55,61
 		Owner: USSR
-		Facing: 0
 	Actor599: bad3tnk
 		Location: 76,27
 		Owner: BadGuy
@@ -1921,7 +1861,6 @@ Actors:
 	Actor600: dtrk
 		Location: 86,83
 		Owner: USSR
-		Facing: 0
 	Actor601: e1
 		Location: 24,71
 		Owner: BadGuy
@@ -1940,7 +1879,6 @@ Actors:
 	Actor604: e1
 		Location: 29,72
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 1
 	Actor605: e2
 		Location: 29,70
@@ -1955,57 +1893,46 @@ Actors:
 	Actor607: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor608: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor609: e1
 		Location: 82,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor610: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 0
 	Actor611: e1
 		Location: 81,88
 		Owner: USSR
-		Facing: 0
 		SubCell: 4
 	Actor612: e3
 		Location: 83,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 0
 	Actor613: e3
 		Location: 83,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor614: e3
 		Location: 84,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 1
 	Actor615: e4
 		Location: 85,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor616: e4
 		Location: 85,89
 		Owner: USSR
-		Facing: 0
 		SubCell: 3
 	Actor617: e4
 		Location: 85,90
 		Owner: USSR
-		Facing: 0
 		SubCell: 2
 	Actor618: e1
 		Location: 61,23
@@ -2015,12 +1942,10 @@ Actors:
 	Actor619: e1
 		Location: 74,26
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 1
 	Actor620: e1
 		Location: 75,25
 		Owner: BadGuy
-		Facing: 0
 		SubCell: 4
 	Actor621: e2
 		Location: 78,19
@@ -2047,6 +1972,69 @@ Actors:
 		Owner: BadGuy
 		Facing: 224
 		SubCell: 2
+	Actor507: v11
+		Location: 97,56
+		Owner: Ukraine
+	Actor513: brl3
+		Location: 85,56
+		Owner: Ukraine
+	Actor514: brl3
+		Location: 97,59
+		Owner: Ukraine
+	Actor626: camera
+		Location: 32,56
+		Owner: USSR
+	UkraineBarrel: brl3
+		Location: 81,52
+		Owner: Ukraine
+	UkraineBuilding: v05
+		Location: 82,51
+		Owner: Ukraine
+	SuperTankDome: dome.NoInfiltrate
+		Location: 90,32
+		Owner: BadGuy
+	USSRSpen: spen
+		Location: 32,56
+		Owner: BadGuy
+		Health: 69
+	USSROutpostSilo: silo
+		Location: 37,61
+		Owner: BadGuy
+	ExplosiveBarrel1: brl3
+		Location: 38,62
+		Owner: USSR
+	ExplosiveBarrel2: brl3
+		Location: 28,60
+		Owner: USSR
+	FlameTurret1: ftur
+		Location: 30,64
+		Owner: BadGuy
+	FlameTurret2: ftur
+		Location: 33,66
+		Owner: BadGuy
+	AlliedBaseProc: proc
+		Location: 27,25
+		Owner: Outpost
+		Health: 35
+		FreeActor: False
+	AlliedBaseHarv: harv
+		Location: 30,26
+		Owner: Neutral
+	Hospital: hosp
+		Location: 43,43
+		Owner: Neutral
+	DemitriChurch: v01
+		Location: 28,99
+		Owner: Neutral
+	stnk1: 5tnk
+		Location: 89,59
+		Owner: Turkey
+	stnk2: 5tnk
+		Location: 77,57
+		Owner: Turkey
+	stnk3: 5tnk
+		Location: 94,53
+		Owner: Turkey
 	DemitriLZ: waypoint
 		Location: 30,21
 		Owner: Neutral
@@ -2086,15 +2074,6 @@ Actors:
 	AlliedBaseEntryPoint: waypoint
 		Location: 42,16
 		Owner: Neutral
-	Actor507: v11
-		Location: 97,56
-		Owner: Ukraine
-	Actor513: brl3
-		Location: 85,56
-		Owner: Ukraine
-	Actor514: brl3
-		Location: 97,59
-		Owner: Ukraine
 	AlliedBaseEntryRight: waypoint
 		Location: 29,32
 		Owner: Neutral
@@ -2121,45 +2100,66 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		EnemyWatcher:
 	World:
-		-CrateDrop:
+		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
 			Scripts: monster-tank-madness.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		-StartGameNotification:
 	^Building:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		AnnounceOnSeen:
 	^Infantry:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Ship:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Helicopter:
+		Tooltip:
+			GenericVisibility: Enemy
+			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
+	^Crate:
+		Tooltip:
 			ShowOwnerRow: false
 	^CivBuilding:
 		Explodes:
 			Weapon: BarrelExplode
 			EmptyWeapon: BarrelExplode
+		Tooltip:
+			ShowOwnerRow: false
 	DEMITRI:
 		Inherits: DELPHI
 		Tooltip:
 			Name: Dr. Demitri
-		RenderInfantry:
-			Image: DELPHI
 		Passenger:
 			CargoType: Demitri
+		RenderSprites:
+			Image: DELPHI
 	TRAN:
 		RevealsShroud:
 			Range: 0c0
@@ -2208,41 +2208,42 @@ Rules:
 			Recoil: 43
 			MuzzleSequence: muzzle
 		AttackTurreted:
-		WithMuzzleFlash:
-		RenderUnit:
-			Image: 4TNK
+		WithMuzzleOverlay:
 		WithTurret:
 		AutoTarget:
 		Explodes:
 			Weapon: MiniNuke
 			EmptyWeapon: MiniNuke
-		LeavesHusk:
-			HuskActor: 5TNK.Husk
+		SpawnActorOnDeath:
+			Actor: 5TNK.Husk
 		SelfHealing:
 			Step: 1
 			Ticks: 1
-			HealIfBelow: 50%
+			HealIfBelow: 100%
 			DamageCooldown: 150
 		Selectable:
 			Bounds: 44,38,0,-4
+		-EjectOnDeath:
+		RenderSprites:
+			Image: 4TNK
 	5TNK.Husk:
 		Inherits: ^Husk
 		Tooltip:
 			Name: Husk (Super Tank)
-		RenderUnit:
-			Image: 4TNK
 		ThrowsParticle@turret:
 			Anim: turret
 		Health:
 			HP: 2000
+		RenderSprites:
+			Image: 4TNK
 	DOME.NoInfiltrate:
 		Inherits: DOME
 		Buildable:
 			Prerequisites: ~disabled
-		RenderBuilding:
+		RenderSprites:
 			Image: DOME
 		-InfiltrateForExploration:
-		TargetableBuilding:
+		Targetable:
 			TargetTypes: Ground, C4, DetonateAttack, MissionObjective
 	SPY:
 		Infiltrates:
@@ -2251,16 +2252,16 @@ Rules:
 		Inherits: 3TNK
 		Buildable:
 			Prerequisites: ~disabled
-		RenderUnit:
-			Image: 3TNK
 		-EjectOnDeath:
+		RenderSprites:
+			Image: 3TNK
 	BADTRUK:
 		Inherits: TRUK
 		Buildable:
 			Prerequisites: ~disabled
-		RenderUnit:
-			Image: TRUK
 		-EjectOnDeath:
+		RenderSprites:
+			Image: TRUK
 	SS:
 		Buildable:
 			Prerequisites: ~disabled
@@ -2339,7 +2340,20 @@ Rules:
 	E7:
 		Buildable:
 			Prerequisites: ~disabled
+	C1:
+		-Crushable:
+	C2:
+		-Crushable:
+	C5:
+		-Crushable:
+	C7:
+		-Crushable:
+	C8:
+		-Crushable:
 	SHOK:
+		Buildable:
+			Prerequisites: ~disabled
+	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
 	STNK:
@@ -2351,10 +2365,6 @@ Rules:
 	QTNK:
 		Buildable:
 			Prerequisites: ~disabled
-	CAMERA.Large:
-		Inherits: CAMERA
-		RevealsShroud:
-			Range: 1000
 
 Sequences:
 
@@ -2363,10 +2373,10 @@ VoxelSequences:
 Weapons:
 	FireballLauncher:
 		Projectile:
-			High: True
+			Blockable: false
 	TurretGun:
 		Projectile:
-			High: True
+			Blockable: false
 	SuperTankPrimary:
 		ROF: 70
 		Range: 4c768
@@ -2379,13 +2389,13 @@ Weapons:
 		Warhead@1Dam: SpreadDamage
 			Spread: 128
 			Damage: 50
-			DeathType: 4
 			InvalidTargets: Air, Infantry
 			Versus:
 				None: 20
 				Wood: 75
 				Light: 75
 				Concrete: 50
+			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3EffGround: CreateEffect

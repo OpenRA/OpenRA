@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,17 +16,15 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class Explosion : IEffect
 	{
-		World world;
+		readonly World world;
+		readonly string palette;
+		readonly Animation anim;
 		WPos pos;
-		CPos cell;
-		string palette;
-		Animation anim;
 
 		public Explosion(World world, WPos pos, string sequence, string palette)
 		{
 			this.world = world;
 			this.pos = pos;
-			this.cell = world.Map.CellContaining(pos);
 			this.palette = palette;
 			anim = new Animation(world, "explosion");
 			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
@@ -36,7 +34,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (world.FogObscures(cell))
+			if (world.FogObscures(pos))
 				return SpriteRenderable.None;
 
 			return anim.Render(pos, wr.Palette(palette));

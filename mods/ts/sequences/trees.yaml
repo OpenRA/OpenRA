@@ -1,51 +1,202 @@
 tibtre01:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 tibtre02:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 tibtre03:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 11
+	Defaults:
+		UseTilesetExtension: true
 		Offset: 0, -12
+	idle:
+		ShadowStart: 11
 	active:
 		Start: 1
 		Length: 10
 		ShadowStart: 12
 		Tick: 160
-		Offset: 0, -12
 
 bigblue:
-	idle:
-		Start: 0
-		Length: 1
-		ShadowStart: 10
+	Defaults:
 		Offset: 0, -12
-	active:
+	idle: bigblue2
+		ShadowStart: 10
+	active: bigblue2
 		Start: 1
 		Length: 9
 		ShadowStart: 11
 		Tick: 160
+
+tree01:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
 		Offset: 0, -12
+
+tree02:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree03:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree04:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree05:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree06:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree07:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree08:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree09:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree10:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree11:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree12:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree13:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree14:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree15:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree16:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree17:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree18:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree19:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree20:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree21:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree22:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree23:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree24:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+tree25:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
+
+veinhole:
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0,-60

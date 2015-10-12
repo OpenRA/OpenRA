@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,26 +11,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenTK;
-using OpenTK.Audio.OpenAL;
 
 namespace OpenRA
 {
-	public static class Sound
+	public sealed class Sound : IDisposable
 	{
-		static ISoundEngine soundEngine;
-		static Cache<string, ISoundSource> sounds;
-		static ISoundSource rawSource;
-		static ISound music;
-		static ISound video;
-		static MusicInfo currentMusic;
+		readonly ISoundEngine soundEngine;
+		Cache<string, ISoundSource> sounds;
+		ISoundSource rawSource;
+		ISound music;
+		ISound video;
+		MusicInfo currentMusic;
 
-		static ISoundSource LoadSound(string filename)
+		public Sound(string engineName)
+		{
+			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
+			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
+		}
+
+		static ISoundEngine CreateDevice(Assembly platformDll)
+		{
+			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
+			{
+				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
+				return factory.CreateSound();
+			}
+
+			throw new InvalidOperationException("Platform DLL is missing PlatformAttribute to tell us what type to use!");
+		}
+
+		ISoundSource LoadSound(string filename)
 		{
 			if (!GlobalFileSystem.Exists(filename))
 			{
@@ -43,38 +59,20 @@ namespace OpenRA
 					return LoadWave(new WavLoader(s));
 
 			using (var s = GlobalFileSystem.Open(filename))
-				return LoadSoundRaw(AudLoader.LoadSound(s));
+				return LoadSoundRaw(AudLoader.LoadSound(s), 1, 16, 22050);
 		}
 
-		static ISoundSource LoadWave(WavLoader wave)
+		ISoundSource LoadWave(WavLoader wave)
 		{
 			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
 		}
 
-		static ISoundSource LoadSoundRaw(byte[] rawData)
+		ISoundSource LoadSoundRaw(byte[] rawData, int channels, int sampleBits, int sampleRate)
 		{
-			return soundEngine.AddSoundSourceFromMemory(rawData, 1, 16, 22050);
+			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 		}
 
-		static ISoundEngine CreateEngine(string engine)
-		{
-			engine = Game.Settings.Server.Dedicated ? "Null" : engine;
-			switch (engine)
-			{
-			case "AL": return new OpenAlSoundEngine();
-			case "Null": return new NullSoundEngine();
-
-			default:
-				throw new InvalidOperationException("Unsupported sound engine: {0}".F(engine));
-			}
-		}
-
-		public static void Create(string engine)
-		{
-			soundEngine = CreateEngine(engine);
-		}
-
-		public static void Initialize()
+		public void Initialize()
 		{
 			sounds = new Cache<string, ISoundSource>(LoadSound);
 			music = null;
@@ -82,26 +80,23 @@ namespace OpenRA
 			video = null;
 		}
 
-		public static SoundDevice[] AvailableDevices()
+		public SoundDevice[] AvailableDevices()
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("AL", null, "Default Output"),
+				new SoundDevice("Default", null, "Default Output"),
 				new SoundDevice("Null", null, "Output Disabled")
 			};
 
-			var devices = OpenAlSoundEngine.AvailableDevices()
-				.Select(d => new SoundDevice("AL", d, d));
-
-			return defaultDevices.Concat(devices).ToArray();
+			return defaultDevices.Concat(soundEngine.AvailableDevices()).ToArray();
 		}
 
-		public static void SetListenerPosition(WPos position)
+		public void SetListenerPosition(WPos position)
 		{
 			soundEngine.SetListenerPosition(position);
 		}
 
-		static ISound Play(Player player, string name, bool headRelative, WPos pos, float volumeModifier)
+		ISound Play(Player player, string name, bool headRelative, WPos pos, float volumeModifier = 1f, bool loop = false)
 		{
 			if (string.IsNullOrEmpty(name))
 				return null;
@@ -109,42 +104,49 @@ namespace OpenRA
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
-				false, headRelative, pos,
+				loop, headRelative, pos,
 				InternalSoundVolume * volumeModifier, true);
 		}
 
-		public static ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1); }
-		public static ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1); }
-		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }
-		public static ISound Play(string name, WPos pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
-		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, WPos.Zero, 1); }
-		public static ISound PlayToPlayer(Player player, string name, WPos pos) { return Play(player, name, false, pos, 1); }
-
-		public static void PlayVideo(byte[] raw)
+		public void StopAudio()
 		{
-			rawSource = LoadSoundRaw(raw);
+			soundEngine.StopAllSounds();
+		}
+
+		public ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1f); }
+		public ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1f); }
+		public ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }
+		public ISound Play(string name, WPos pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
+		public ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, WPos.Zero, 1f); }
+		public ISound PlayToPlayer(Player player, string name, WPos pos) { return Play(player, name, false, pos, 1f); }
+		public ISound PlayLooped(string name) { return PlayLooped(name, WPos.Zero); }
+		public ISound PlayLooped(string name, WPos pos) { return Play(null, name, true, pos, 1f, true); }
+
+		public void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
+		{
+			rawSource = LoadSoundRaw(raw, channels, sampleBits, sampleRate);
 			video = soundEngine.Play2D(rawSource, false, true, WPos.Zero, InternalSoundVolume, false);
 		}
 
-		public static void PlayVideo()
+		public void PlayVideo()
 		{
 			if (video != null)
 				soundEngine.PauseSound(video, false);
 		}
 
-		public static void PauseVideo()
+		public void PauseVideo()
 		{
 			if (video != null)
 				soundEngine.PauseSound(video, true);
 		}
 
-		public static void StopVideo()
+		public void StopVideo()
 		{
 			if (video != null)
 				soundEngine.StopSound(video);
 		}
 
-		public static void Tick()
+		public void Tick()
 		{
 			// Song finished
 			if (MusicPlaying && !music.Playing)
@@ -154,16 +156,16 @@ namespace OpenRA
 			}
 		}
 
-		static Action onMusicComplete;
-		public static bool MusicPlaying { get; private set; }
-		public static MusicInfo CurrentMusic { get { return currentMusic; } }
+		Action onMusicComplete;
+		public bool MusicPlaying { get; private set; }
+		public MusicInfo CurrentMusic { get { return currentMusic; } }
 
-		public static void PlayMusic(MusicInfo m)
+		public void PlayMusic(MusicInfo m)
 		{
 			PlayMusicThen(m, () => { });
 		}
 
-		public static void PlayMusicThen(MusicInfo m, Action then)
+		public void PlayMusicThen(MusicInfo m, Action then)
 		{
 			if (m == null || !m.Exists)
 				return;
@@ -188,7 +190,7 @@ namespace OpenRA
 			MusicPlaying = true;
 		}
 
-		public static void PlayMusic()
+		public void PlayMusic()
 		{
 			if (music == null)
 				return;
@@ -197,13 +199,13 @@ namespace OpenRA
 			soundEngine.PauseSound(music, false);
 		}
 
-		public static void StopSound(ISound sound)
+		public void StopSound(ISound sound)
 		{
 			if (sound != null)
 				soundEngine.StopSound(sound);
 		}
 
-		public static void StopMusic()
+		public void StopMusic()
 		{
 			if (music != null)
 				soundEngine.StopSound(music);
@@ -212,7 +214,7 @@ namespace OpenRA
 			currentMusic = null;
 		}
 
-		public static void PauseMusic()
+		public void PauseMusic()
 		{
 			if (music == null)
 				return;
@@ -221,14 +223,14 @@ namespace OpenRA
 			soundEngine.PauseSound(music, true);
 		}
 
-		public static float GlobalVolume
+		public float GlobalVolume
 		{
 			get { return soundEngine.Volume; }
 			set { soundEngine.Volume = value; }
 		}
 
-		static float soundVolumeModifier = 1.0f;
-		public static float SoundVolumeModifier
+		float soundVolumeModifier = 1.0f;
+		public float SoundVolumeModifier
 		{
 			get
 			{
@@ -242,8 +244,8 @@ namespace OpenRA
 			}
 		}
 
-		static float InternalSoundVolume { get { return SoundVolume * soundVolumeModifier; } }
-		public static float SoundVolume
+		float InternalSoundVolume { get { return SoundVolume * soundVolumeModifier; } }
+		public float SoundVolume
 		{
 			get
 			{
@@ -257,7 +259,7 @@ namespace OpenRA
 			}
 		}
 
-		public static float MusicVolume
+		public float MusicVolume
 		{
 			get
 			{
@@ -272,7 +274,7 @@ namespace OpenRA
 			}
 		}
 
-		public static float VideoVolume
+		public float VideoVolume
 		{
 			get
 			{
@@ -287,18 +289,19 @@ namespace OpenRA
 			}
 		}
 
-		public static float MusicSeekPosition
+		public float MusicSeekPosition
 		{
 			get { return music != null ? music.SeekPosition : 0; }
 		}
 
-		public static float VideoSeekPosition
+		public float VideoSeekPosition
 		{
 			get { return video != null ? video.SeekPosition : 0; }
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Ruleset ruleset, Player p, Actor voicedUnit, string type, string definition, string variant, bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
+		public bool PlayPredefined(Ruleset ruleset, Player p, Actor voicedActor, string type, string definition, string variant,
+			bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
 			if (ruleset == null)
 				throw new ArgumentNullException("ruleset");
@@ -309,24 +312,18 @@ namespace OpenRA
 			if (ruleset.Voices == null || ruleset.Notifications == null)
 				return false;
 
-			var rules = (voicedUnit != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
+			var rules = (voicedActor != null) ? ruleset.Voices[type] : ruleset.Notifications[type];
 			if (rules == null)
 				return false;
 
-			var id = voicedUnit != null ? voicedUnit.ActorID : 0;
+			var id = voicedActor != null ? voicedActor.ActorID : 0;
 
 			string clip;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
 
-			if (voicedUnit != null)
+			if (voicedActor != null)
 			{
-				if (!rules.VoicePools.Value.ContainsKey("Attack"))
-					rules.VoicePools.Value.Add("Attack", rules.VoicePools.Value["Move"]);
-
-				if (!rules.VoicePools.Value.ContainsKey("AttackMove"))
-					rules.VoicePools.Value.Add("AttackMove", rules.VoicePools.Value["Move"]);
-
 				if (!rules.VoicePools.Value.ContainsKey(definition))
 					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
 
@@ -356,38 +353,12 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 				soundEngine.Play2D(sounds[name],
 					false, relative, pos,
-					(InternalSoundVolume * volumeModifier), attenuateVolume);
+					InternalSoundVolume * volumeModifier, attenuateVolume);
 
 			return true;
 		}
 
-		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
-		{
-			if (voicedUnit == null || phrase == null)
-				return false;
-
-			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (mi == null || mi.Voice == null)
-				return false;
-
-			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, true, WPos.Zero, 1f, true);
-		}
-		
-		public static bool PlayVoiceLocal(string phrase, Actor voicedUnit, string variant, WPos pos, float volume)
-		{
-			if (voicedUnit == null || phrase == null)
-				return false;
-
-			var mi = voicedUnit.Info.Traits.GetOrDefault<SelectableInfo>();
-			if (mi == null || mi.Voice == null)
-				return false;
-
-			var type = mi.Voice.ToLowerInvariant();
-			return PlayPredefined(voicedUnit.World.Map.Rules, null, voicedUnit, type, phrase, variant, false, pos, volume, true);
-		}
-
-		public static bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
+		public bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
 		{
 			if (rules == null)
 				throw new ArgumentNullException("rules");
@@ -396,6 +367,11 @@ namespace OpenRA
 				return false;
 
 			return PlayPredefined(rules, player, null, type.ToLowerInvariant(), notification, variant, true, WPos.Zero, 1f, false);
+		}
+
+		public void Dispose()
+		{
+			soundEngine.Dispose();
 		}
 	}
 }

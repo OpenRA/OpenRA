@@ -1,102 +1,243 @@
-RIFLE:
+light_inf:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: ~barracks
 	Valued:
-		Cost: 100
+		Cost: 50
+	CustomBuildTimeValue:
+		Value: 54
 	Tooltip:
-		Name: Rifleman
+		Name: Light Infantry
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
-	Selectable:
-		Bounds: 12,17,0,0
 	Health:
-		HP: 50
+		HP: 600
 	Mobile:
-		Speed: 53
+		Speed: 43
 	Armament:
 		Weapon: LMG
 	AttackFrontal:
-	TakeCover:
+	WithInfantryBody:
+		AttackSequence: shoot
 
-ENGINEER:
+engineer:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: ~barracks, radar, ~techlevel.medium
+		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 500
+		Cost: 400
+	CustomBuildTimeValue:
+		Value: 108
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,0
-		Voice: EngineerVoice
 	Health:
-		HP: 25
+		HP: 500
 	Mobile:
-		Speed: 53
+		Speed: 31
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
-	ExternalCaptures:
-		Type: building
 	Captures:
-		CaptureTypes: husk
+		CaptureTypes: building, husk
 	-AutoTarget:
+	Voiced:
+		VoiceSet: EngineerVoice
 
-BAZOOKA:
+trooper:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~barracks, radar, ~techlevel.medium
+		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 250
+		Cost: 90
+	CustomBuildTimeValue:
+		Value: 73
 	Tooltip:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
-	Selectable:
-		Bounds: 12,17,0,0
 	Health:
-		HP: 45
+		HP: 700
 	Mobile:
-		Speed: 42
+		Speed: 31
 	Armament:
 		Weapon: Bazooka
-		LocalOffset: 0,0,555
+		LocalOffset: 128,0,256
 	AttackFrontal:
-	TakeCover:
+	WithInfantryBody:
+		AttackSequence: shoot
 
-MEDIC:
+medic:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~medics, ~techlevel.high
+		Prerequisites: ~barracks.medics, upgrade.barracks, ~techlevel.high
 	Valued:
-		Cost: 500
+		Cost: 200
+	CustomBuildTimeValue:
+		Value: 108
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry\n  Strong vs Nothing\n  Weak vs Everything
-	Selectable:
-		Bounds: 12,17,0,0
-		Voice: EngineerVoice
 	Health:
-		HP: 60
+		HP: 375
 	Mobile:
 		Speed: 42
-	AutoHeal:
 	Armament:
 		Weapon: Heal
-	AttackMedic:
 		Cursor: ability
 		OutsideRangeCursor: ability
-	RenderInfantry:
-		AttackAnimation: heal
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: heal
 	Passenger:
 		PipType: Blue
+	Voiced:
+		VoiceSet: EngineerVoice
+
+fremen:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Fremen
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~disabled
+	Mobile:
+		Speed: 43
+	Valued:
+		Cost: 200	## actually 0, but spawns from support power at Palace
+	Health:
+		HP: 700
+	RevealsShroud:
+		Range: 7c0
+	Passenger:
+	AutoTarget:
+		ScanRadius: 7
+	Armament@PRIMARY:
+		Weapon: Fremen_S
+	Armament@SECONDARY:
+		Weapon: Fremen_L
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+		IsPlayerPalette: true
+	-MustBeDestroyed:
+	Voiced:
+		VoiceSet: FremenVoice
+
+grenadier:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
+	Valued:
+		Cost: 80
+	CustomBuildTimeValue:
+		Value: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Health:
+		HP: 600
+	Mobile:
+		Speed: 43
+	Armament:
+		Weapon: grenade
+		LocalOffset: 0,0,320
+		FireDelay: 15
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: throw
+		IdleSequences: idle
+	Explodes:
+		Weapon: GrenDeath
+		EmptyWeapon: GrenDeath
+
+sardaukar:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
+	Valued:
+		Cost: 200
+	CustomBuildTimeValue:
+		Value: 81
+	Tooltip:
+		Name: Sardaukar
+		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+	Health:
+		HP: 1000
+	Mobile:
+		Speed: 31
+	RevealsShroud:
+		Range: 6c0
+	WithInfantryBody:
+		AttackSequence: shoot
+	Armament@PRIMARY:
+		Weapon: M_LMG
+	Armament@SECONDARY:
+		Weapon: M_HMG
+	AttackFrontal:
+	Voiced:
+		VoiceSet: GenericVoice
+	Explodes:
+		Weapon: SardDeath
+		EmptyWeapon: SardDeath
+		Chance: 100
+
+saboteur:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~disabled
+	Valued:
+		Cost: 300	## actually 0, but spawns from support power at Palace
+	Tooltip:
+		Name: Saboteur
+		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+	Health:
+		HP: 400
+	Mobile:
+		Speed: 43
+	RevealsShroud:
+		Range: 7c0
+	C4Demolition:
+		C4Delay: 45
 	-AutoTarget:
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+		UncloakOnMove: true
+		IsPlayerPalette: true
+	Voiced:
+		VoiceSet: SaboteurVoice
+
+nsfremen:
+	Inherits: fremen
+	Tooltip:
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles
+	Buildable:
+		BuildPaletteOrder: 105
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: fremen
+	-Cloak:
 

@@ -47,41 +47,48 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/cnc" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/cnc" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Drawing" />
     <Reference Include="Eluant">
-      <HintPath>..\thirdparty\Eluant.dll</HintPath>
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="Effects\IonCannon.cs" />
-    <Compile Include="IonCannonPower.cs" />
-    <Compile Include="PoisonedByTiberium.cs" />
-    <Compile Include="ProductionAirdrop.cs" />
-    <Compile Include="SpawnViceroid.cs" />
-    <Compile Include="TiberiumRefinery.cs" />
+    <Compile Include="Traits\AttackPopupTurreted.cs" />
+    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
+    <Compile Include="Traits\PoisonedByTiberium.cs" />
+    <Compile Include="Traits\Render\WithGunboatBody.cs" />
+    <Compile Include="Traits\Render\WithCargo.cs" />
+    <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
+    <Compile Include="Traits\Render\WithReloadingTurret.cs" />
+    <Compile Include="Traits\Render\WithRoof.cs" />
+    <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
-    <Compile Include="Render\RenderGunboat.cs" />
-    <Compile Include="Render\WithCargo.cs" />
-    <Compile Include="Render\WithDeliveryAnimation.cs" />
-    <Compile Include="Render\WithFire.cs" />
-    <Compile Include="Render\WithRoof.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -92,11 +99,6 @@
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
       <Name>OpenRA.Mods.Common</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
-      <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
-      <Name>OpenRA.Mods.RA</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

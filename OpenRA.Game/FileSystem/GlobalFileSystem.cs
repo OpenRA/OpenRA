@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public interface IFolder
+	public interface IFolder : IDisposable
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
@@ -74,6 +74,8 @@ namespace OpenRA.FileSystem
 				throw new NotImplementedException("The creation of .PAK archives is unimplemented");
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
 				throw new NotImplementedException("The creation of .big archives is unimplemented");
+			if (filename.EndsWith(".cab", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("The creation of .cab archives is unimplemented");
 
 			return new Folder(filename, order, content);
 		}
@@ -88,6 +90,7 @@ namespace OpenRA.FileSystem
 
 				return new MixFile(filename, type, order);
 			}
+
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
@@ -100,6 +103,10 @@ namespace OpenRA.FileSystem
 				return new PakFile(filename, order);
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
 				return new BigFile(filename, order);
+			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
+				return new BagFile(filename, order);
+			if (filename.EndsWith(".hdr", StringComparison.InvariantCultureIgnoreCase))
+				return new InstallShieldCABExtractor(filename, order);
 
 			return new Folder(filename, order);
 		}
@@ -124,6 +131,9 @@ namespace OpenRA.FileSystem
 
 		public static void UnmountAll()
 		{
+			foreach (var folder in MountedFolders)
+				folder.Dispose();
+
 			MountedFolders.Clear();
 			FolderPaths.Clear();
 			classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
@@ -132,6 +142,9 @@ namespace OpenRA.FileSystem
 
 		public static bool Unmount(IFolder mount)
 		{
+			if (MountedFolders.Contains(mount))
+				mount.Dispose();
+
 			return MountedFolders.RemoveAll(f => f == mount) > 0;
 		}
 
@@ -163,52 +176,72 @@ namespace OpenRA.FileSystem
 			return null;
 		}
 
-		public static Stream Open(string filename) { return OpenWithExts(filename, ""); }
-
-		public static Stream OpenWithExts(string filename, params string[] exts)
+		public static Stream Open(string filename)
 		{
 			Stream s;
-			if (!TryOpenWithExts(filename, exts, out s))
+			if (!TryOpen(filename, out s))
 				throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 
 			return s;
 		}
 
-		public static bool TryOpenWithExts(string filename, string[] exts, out Stream s)
+		public static bool TryOpen(string name, out Stream s)
 		{
-			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1)
-			{
-				foreach (var ext in exts)
-				{
-					s = GetFromCache(PackageHashType.Classic, filename + ext);
-					if (s != null)
-						return true;
+			var filename = name;
+			var foldername = string.Empty;
 
-					s = GetFromCache(PackageHashType.CRC32, filename + ext);
-					if (s != null)
-						return true;
-				}
+			// Used for faction specific packages; rule out false positive on Windows C:\ drive notation
+			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitFolder)
+			{
+				var divide = name.Split(':');
+				foldername = divide.First();
+				filename = divide.Last();
 			}
 
-			foreach (var ext in exts)
+			// Check the cache for a quick lookup if the folder name is unknown
+			// TODO: This disables caching for explicit folder requests
+			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1 && !explicitFolder)
 			{
-				var possibleName = filename + ext;
-				var folder = MountedFolders
-					.Where(x => x.Exists(possibleName))
-					.MaxByOrDefault(x => x.Priority);
-
-				if (folder != null)
-				{
-					s = folder.GetContent(possibleName);
+				s = GetFromCache(PackageHashType.Classic, filename);
+				if (s != null)
 					return true;
-				}
+
+				s = GetFromCache(PackageHashType.CRC32, filename);
+				if (s != null)
+					return true;
+			}
+
+			// Ask each package individually
+			IFolder folder;
+			if (explicitFolder && !string.IsNullOrEmpty(foldername))
+				folder = MountedFolders.Where(x => x.Name == foldername).MaxByOrDefault(x => x.Priority);
+			else
+				folder = MountedFolders.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
+
+			if (folder != null)
+			{
+				s = folder.GetContent(filename);
+				return true;
 			}
 
 			s = null;
 			return false;
 		}
 
-		public static bool Exists(string filename) { return MountedFolders.Any(f => f.Exists(filename)); }
+		public static bool Exists(string name)
+		{
+			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitFolder)
+			{
+				var divide = name.Split(':');
+				var foldername = divide.First();
+				var filename = divide.Last();
+				return MountedFolders.Where(n => n.Name == foldername).Any(f => f.Exists(filename));
+			}
+			else
+				return MountedFolders.Any(f => f.Exists(name));
+		}
 
 		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 

@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	using NamesValuesPair = Pair<string[], string[]>;
+	using NamesValuesPair = Pair<string[], object[]>;
 
 	class SyncReport
 	{
@@ -35,10 +35,10 @@ namespace OpenRA.Network
 			TypeInfo typeInfo;
 			lock (typeInfoCache)
 				typeInfo = typeInfoCache[type];
-			var values = new string[typeInfo.Names.Length];
+			var values = new object[typeInfo.Names.Length];
 			var index = 0;
 
-			foreach (var func in typeInfo.MemberToStringFunctions)
+			foreach (var func in typeInfo.SerializableCopyOfMemberFunctions)
 				values[index++] = func(sync);
 
 			return Pair.New(typeInfo.Names, values);
@@ -95,13 +95,13 @@ namespace OpenRA.Network
 			}
 		}
 
-		internal void DumpSyncReport(int frame)
+		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
 		{
 			foreach (var r in syncReports)
 			{
 				if (r.Frame == frame)
 				{
-					var mod = Game.modData.Manifest.Mod;
+					var mod = Game.ModData.Manifest.Mod;
 					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
 					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
 					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
@@ -127,6 +127,10 @@ namespace OpenRA.Network
 							if (nvp.Second[i] != null)
 								Log.Write("sync", "\t\t {0}: {1}".F(nvp.First[i], nvp.Second[i]));
 					}
+
+					Log.Write("sync", "Orders Issued:");
+					foreach (var o in orders)
+						Log.Write("sync", "\t {0}", o.ToString());
 
 					return;
 				}
@@ -166,7 +170,7 @@ namespace OpenRA.Network
 			static ParameterExpression syncParam = Expression.Parameter(typeof(ISync), "sync");
 			static ConstantExpression nullString = Expression.Constant(null, typeof(string));
 
-			public readonly Func<ISync, string>[] MemberToStringFunctions;
+			public readonly Func<ISync, object>[] SerializableCopyOfMemberFunctions;
 			public readonly string[] Names;
 
 			public TypeInfo(Type type)
@@ -182,12 +186,24 @@ namespace OpenRA.Network
 							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);
 
 				var sync = Expression.Convert(syncParam, type);
-				MemberToStringFunctions = fields
-					.Select(fi => MemberToString(Expression.Field(sync, fi), fi.FieldType, fi.Name))
-					.Concat(properties.Select(pi => MemberToString(Expression.Property(sync, pi), pi.PropertyType, pi.Name)))
+				SerializableCopyOfMemberFunctions = fields
+					.Select(fi => SerializableCopyOfMember(Expression.Field(sync, fi), fi.FieldType, fi.Name))
+					.Concat(properties.Select(pi => SerializableCopyOfMember(Expression.Property(sync, pi), pi.PropertyType, pi.Name)))
 					.ToArray();
 
 				Names = fields.Select(fi => fi.Name).Concat(properties.Select(pi => pi.Name)).ToArray();
+			}
+
+			static Func<ISync, object> SerializableCopyOfMember(MemberExpression getMember, Type memberType, string name)
+			{
+				if (memberType.IsValueType)
+				{
+					// We can get a copy just by accessing the member since it is a value type.
+					var boxedCopy = Expression.Convert(getMember, typeof(object));
+					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { syncParam }).Compile();
+				}
+
+				return MemberToString(getMember, memberType, name);
 			}
 
 			static Func<ISync, string> MemberToString(MemberExpression getMember, Type memberType, string name)
@@ -197,10 +213,13 @@ namespace OpenRA.Network
 				var toString = memberType.GetMethod("ToString", Type.EmptyTypes);
 				Expression getString;
 				if (memberType.IsValueType)
+				{
+					// (ISync sync) => { return ((TSync)sync).Foo.ToString(); }
 					getString = Expression.Call(getMember, toString);
+				}
 				else
 				{
-					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString()); }
+					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString(); }
 					var memberVariable = Expression.Variable(memberType, getMember.Member.Name);
 					var assignMemberVariable = Expression.Assign(memberVariable, getMember);
 					var member = Expression.Block(new[] { memberVariable }, assignMemberVariable);

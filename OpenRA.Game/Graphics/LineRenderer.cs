@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,30 +9,43 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace OpenRA.Graphics
 {
 	public class LineRenderer : Renderer.IBatchRenderer
 	{
-		static float2 offset = new float2(0.5f, 0.5f);
-		float lineWidth = 1f;
-		Renderer renderer;
-		IShader shader;
+		static readonly float2 Offset = new float2(0.5f, 0.5f);
 
-		Vertex[] vertices = new Vertex[Renderer.TempBufferSize];
+		readonly Renderer renderer;
+		readonly IShader shader;
+		readonly Action renderAction;
+
+		readonly Vertex[] vertices;
 		int nv = 0;
+
+		float lineWidth = 1f;
 
 		public LineRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
+			vertices = new Vertex[renderer.TempBufferSize];
+			renderAction = () =>
+			{
+				renderer.SetLineWidth(LineWidth);
+				renderer.DrawBatch(vertices, nv, PrimitiveType.LineList);
+			};
 		}
-
 
 		public float LineWidth
 		{
-			get { return lineWidth; }
+			get
+			{
+				return lineWidth;
+			}
+
 			set
 			{
 				if (LineWidth != value)
@@ -47,14 +60,9 @@ namespace OpenRA.Graphics
 			if (nv > 0)
 			{
 				renderer.Device.SetBlendMode(BlendMode.Alpha);
-				shader.Render(() =>
-				{
-					var vb = renderer.GetTempVertexBuffer();
-					vb.SetData(vertices, nv);
-					renderer.SetLineWidth(LineWidth);
-					renderer.DrawBatch(vb, 0, nv, PrimitiveType.LineList);
-				});
+				shader.Render(renderAction);
 				renderer.Device.SetBlendMode(BlendMode.None);
+
 				nv = 0;
 			}
 		}
@@ -63,32 +71,84 @@ namespace OpenRA.Graphics
 		{
 			var tr = new float2(br.X, tl.Y);
 			var bl = new float2(tl.X, br.Y);
-			DrawLine(tl, tr, c, c);
-			DrawLine(tl, bl, c, c);
-			DrawLine(tr, br, c, c);
-			DrawLine(bl, br, c, c);
+			DrawLine(tl, tr, c);
+			DrawLine(tl, bl, c);
+			DrawLine(tr, br, c);
+			DrawLine(bl, br, c);
+		}
+
+		public void DrawLine(float2 start, float2 end, Color color)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (nv + 2 > renderer.TempBufferSize)
+				Flush();
+
+			color = Util.PremultiplyAlpha(color);
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+			vertices[nv++] = new Vertex(start + Offset, r, g, b, a);
+			vertices[nv++] = new Vertex(end + Offset, r, g, b, a);
 		}
 
 		public void DrawLine(float2 start, float2 end, Color startColor, Color endColor)
 		{
-			Renderer.CurrentBatchRenderer = this;
+			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 2 > Renderer.TempBufferSize)
+			if (nv + 2 > renderer.TempBufferSize)
 				Flush();
 
-			vertices[nv++] = new Vertex(start + offset,
-				startColor.R / 255.0f, startColor.G / 255.0f,
-				startColor.B / 255.0f, startColor.A / 255.0f);
+			startColor = Util.PremultiplyAlpha(startColor);
+			var r = startColor.R / 255.0f;
+			var g = startColor.G / 255.0f;
+			var b = startColor.B / 255.0f;
+			var a = startColor.A / 255.0f;
+			vertices[nv++] = new Vertex(start + Offset, r, g, b, a);
 
-			vertices[nv++] = new Vertex(end + offset,
-				endColor.R / 255.0f, endColor.G / 255.0f,
-				endColor.B / 255.0f, endColor.A / 255.0f);
+			endColor = Util.PremultiplyAlpha(endColor);
+			r = endColor.R / 255.0f;
+			g = endColor.G / 255.0f;
+			b = endColor.B / 255.0f;
+			a = endColor.A / 255.0f;
+			vertices[nv++] = new Vertex(end + Offset, r, g, b, a);
+		}
+
+		public void DrawLineStrip(IEnumerable<float2> points, Color color)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			color = Util.PremultiplyAlpha(color);
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+
+			var first = true;
+			var prev = new Vertex();
+			foreach (var point in points)
+			{
+				if (first)
+				{
+					first = false;
+					prev = new Vertex(point + Offset, r, g, b, a);
+					continue;
+				}
+
+				if (nv + 2 > renderer.TempBufferSize)
+					Flush();
+
+				vertices[nv++] = prev;
+				prev = new Vertex(point + Offset, r, g, b, a);
+				vertices[nv++] = prev;
+			}
 		}
 
 		public void FillRect(RectangleF r, Color color)
 		{
 			for (var y = r.Top; y < r.Bottom; y++)
-				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
+				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color);
 		}
 
 		public void FillEllipse(RectangleF r, Color color)
@@ -99,15 +159,15 @@ namespace OpenRA.Graphics
 			var yc = (r.Bottom + r.Top) / 2;
 			for (var y = r.Top; y <= r.Bottom; y++)
 			{
-				var dx = a * (float)(Math.Sqrt(1 - (y - yc) * (y - yc) / b / b));
-				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color, color);
+				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
+				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color);
 			}
 		}
 
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
 			shader.SetVec("r2", -1, 1);
 		}
 	}

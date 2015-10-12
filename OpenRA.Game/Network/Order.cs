@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -72,7 +72,7 @@ namespace OpenRA
 						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
 
-						var targetActorId = flags.HasField(OrderFields.TargetActor) ? r.ReadUInt32() : 0xffffffff;
+						var targetActorId = flags.HasField(OrderFields.TargetActor) ? r.ReadUInt32() : uint.MaxValue;
 						var targetLocation = (CPos)(flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero);
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
@@ -104,28 +104,20 @@ namespace OpenRA
 
 		static uint UIntFromActor(Actor a)
 		{
-			if (a == null) return 0xffffffff;
+			if (a == null) return uint.MaxValue;
 			return a.ActorID;
 		}
 
 		static bool TryGetActorFromUInt(World world, uint aID, out Actor ret)
 		{
-			if (aID == 0xFFFFFFFF)
+			if (aID == uint.MaxValue)
 			{
 				ret = null;
 				return true;
 			}
-			else
-			{
-				foreach (var a in world.Actors.Where(x => x.ActorID == aID))
-				{
-					ret = a;
-					return true;
-				}
 
-				ret = null;
-				return false;
-			}
+			ret = world.GetActorById(aID);
+			return ret != null;
 		}
 
 		// Named constructors for Orders.
@@ -155,19 +147,19 @@ namespace OpenRA
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
 		}
 
-		public static Order StartProduction(Actor subject, int queueID, string item, int count)
+		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
-		public static Order PauseProduction(Actor subject, int queueID, string item, bool pause)
+		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, pause ? 1 : 0) };
+			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
 		}
 
-		public static Order CancelProduction(Actor subject, int queueID, string item, int count)
+		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { TargetString = item, ExtraLocation = new CPos(queueID, count) };
+			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
 		// For scripting special powers
@@ -195,7 +187,7 @@ namespace OpenRA
 
 			switch (OrderString)
 			{
-				/* 
+				/*
 				 * Format:
 				 * u8: orderID.
 				 * 0xFF: Full serialized order.

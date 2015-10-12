@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,13 +8,16 @@
  */
 #endregion
 
-using System;
+using OpenRA.Mods.Common.Scripting;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadIngamePlayerOrObserverUILogic
 	{
+		bool loadingObserverWidgets = false;
+
 		[ObjectCreator.UseCtor]
 		public LoadIngamePlayerOrObserverUILogic(Widget widget, World world)
 		{
@@ -29,16 +32,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+				var objectives = world.LocalPlayer.PlayerActor.Info.TraitInfoOrDefault<MissionObjectivesInfo>();
 
 				sidebarTicker.OnTick = () =>
 				{
 					// Switch to observer mode after win/loss
-					if (world.ObserveAfterWinOrLose && world.LocalPlayer.WinState != WinState.Undefined)
-						Game.RunAfterTick(() =>
+					if (world.LocalPlayer.WinState != WinState.Undefined && !loadingObserverWidgets)
+					{
+						loadingObserverWidgets = true;
+						Game.RunAfterDelay(objectives != null ? objectives.GameOverDelay : 0, () =>
 						{
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});
+					}
 				};
 			}
 
@@ -46,9 +53,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			world.GameOver += () =>
 			{
-				worldRoot.RemoveChildren();
+				Ui.CloseWindow();
 				menuRoot.RemoveChildren();
-				Game.LoadWidget(world, "LEAVE_MAP_WIDGET", menuRoot, new WidgetArgs());
+
+				if (world.LocalPlayer != null)
+				{
+					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+					var video = world.LocalPlayer.WinState == WinState.Won ? world.Map.Videos.GameWon : world.Map.Videos.GameLost;
+
+					if (!string.IsNullOrEmpty(video) && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+						Media.PlayFMVFullscreen(world, video, () => { });
+				}
+
+				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
+				if (optionsButton != null)
+					optionsButton.OnClick();
 			};
 		}
 	}

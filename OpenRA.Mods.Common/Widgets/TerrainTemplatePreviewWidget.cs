@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -41,8 +41,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (template == null)
 					return;
 
-				var ts = Game.modData.Manifest.TileSize;
-				var shape = Game.modData.Manifest.TileShape;
+				var grid = Game.ModData.Manifest.Get<MapGrid>();
+				var ts = grid.TileSize;
+				var shape = grid.Type;
 				bounds = worldRenderer.Theater.TemplateBounds(template, ts, shape);
 			}
 		}
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
-			tileset = other.worldRenderer.world.Map.Rules.TileSets[other.worldRenderer.world.Map.Tileset];
+			tileset = other.worldRenderer.World.Map.Rules.TileSets[other.worldRenderer.World.Map.Tileset];
 			Template = other.Template;
 			GetScale = other.GetScale;
 		}
@@ -70,8 +71,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (template == null)
 				return;
 
-			var ts = Game.modData.Manifest.TileSize;
-			var shape = Game.modData.Manifest.TileShape;
+			var grid = Game.ModData.Manifest.Get<MapGrid>();
+			var ts = grid.TileSize;
+			var shape = grid.Type;
 			var scale = GetScale();
 
 			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));
@@ -89,12 +91,12 @@ namespace OpenRA.Mods.Common.Widgets
 					if (tileInfo == null)
 						continue;
 
-					var sprite = worldRenderer.Theater.TileSprite(tile);
-					var size = new float2(sprite.size.X * scale, sprite.size.Y * scale);
+					var sprite = worldRenderer.Theater.TileSprite(tile, 0);
+					var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
 
 					var u = shape == TileShape.Rectangle ? x : (x - y) / 2f;
 					var v = shape == TileShape.Rectangle ? y : (x + y) / 2f;
-					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.size);
+					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
 					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(Palette), size);
 				}
 			}

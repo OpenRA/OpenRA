@@ -1,4 +1,5 @@
-CRATE:
+crate:
+	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -16,8 +17,17 @@ CRATE:
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes
+	ExplodeCrateAction@1:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 40
+	RevealMapCrateAction:
+		SelectionShares: 2
+		Effect: reveal-map
 	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
 		Units: trike
@@ -25,7 +35,7 @@ CRATE:
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
 		Units: raider
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.low, Light
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
@@ -33,127 +43,220 @@ CRATE:
 		Prerequisites: techlevel.medium, Light, Outpost
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
-		Units: combata
-		ValidRaces: atreides
+		Units: combat_tank_a
+		ValidFactions: atreides
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatH:
 		SelectionShares: 10
-		Units: combath
-		ValidRaces: harkonnen
+		Units: combat_tank_h
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@CombatO:
 		SelectionShares: 10
-		Units: combato
-		ValidRaces: ordos
+		Units: combat_tank_o
+		ValidFactions: ordos
 		Prerequisites: techlevel.low, Heavy
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 10
-		Units: siegetank
+		Units: siege_tank
 		Prerequisites: techlevel.medium, Heavy, Outpost
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
-		Units: missiletank
+		Units: missile_tank
 		Prerequisites: techlevel.high, Hitech
 	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
-		Units: stealthraider
-		ValidRaces: ordos
+		Units: stealth_raider
+		ValidFactions: ordos
 		Prerequisites: techlevel.medium, Hitech
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
 		Units: fremen,fremen
-		ValidRaces: atreides
+		ValidFactions: atreides
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Sardaukar:
 		SelectionShares: 8
 		Units: sardaukar,sardaukar
-		ValidRaces: harkonnen
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@Saboteur:
 		SelectionShares: 3
 		Units: saboteur,saboteur
-		ValidRaces: ordos
+		ValidFactions: ordos
 		Prerequisites: techlevel.high, Palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
-		Units: sonictank
-		ValidRaces: atreides
+		Units: sonic_tank
+		ValidFactions: atreides
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@Devast:
 		SelectionShares: 2
-		Units: devast
-		ValidRaces: harkonnen
+		Units: devastator
+		ValidFactions: harkonnen
 		Prerequisites: techlevel.high, Research
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
-		Units: deviatortank
-		ValidRaces: ordos
+		Units: deviator
+		ValidFactions: ordos
 		Prerequisites: techlevel.high, Research
-	GiveMcvCrateAction@Atreides:
+	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
-		Units: mcva
-		ValidRaces: atreides
-	GiveMcvCrateAction@Harkonnen:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Units: mcvh
-		ValidRaces: harkonnen
-	GiveMcvCrateAction@Ordos:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Units: mcvo
-		ValidRaces: ordos
+		Units: mcv
+	QuantizeFacingsFromSequence:
 	RenderSprites:
 		Palette: effect
 	WithCrateBody:
-	Selectable:
-		Selectable: false
-		Bounds: 15,15,-1,-1
-	ProximityCaptor:
-		Types: Crate
 	Passenger:
-	BodyOrientation:
+	CustomSelectionSize:
+		CustomBounds: 20,20
 
 mpspawn:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
 waypoint:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
-	RenderEditorOnly:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
 
-SPICEBLOOM:
-	RenderBuilding:
-	Building:
-		Footprint: x
-		Dimensions: 1,1
-	AppearsOnRadar:
-	EditorAppearance:
-		RelativeToTopLeft: yes
-	ProximityCaptor:
-		Types: Tree
-	Tooltip:
-		Name: Spice Bloom
-	SeedsResource:
-		ResourceType: Spice
-		Interval: 75
-	WithActiveAnimation:
-	RadarColorFromTerrain:
-		Terrain: Spice
-	BodyOrientation:
-	WithMakeAnimation:
+^carryall.colorpicker:
+	Inherits: carryall
+	Aircraft:
+		InitialFacing: 104
+	RenderSprites:
+		Image: carryall
+		Palette: colorpicker
 
-CAMERA:
+camera:
+	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 8c0
+		Type: CenterPosition
+
+wormspawner:
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
 	BodyOrientation:
+		QuantizedFacings: 1
+	WormSpawner:
+
+upgrade.conyard:
+	AlwaysVisible:
+	Tooltip:
+		Name: Construction Yard Upgrade
+		Description: Unlocks new construction options
+	Buildable:
+		BuildPaletteOrder: 50
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 1000
+	CustomBuildTimeValue:
+		Value: 590
+	RenderSprites:
+		Image: conyard.harkonnen
+		FactionImages:
+			atreides: conyard.atreides
+			ordos: conyard.ordos
+			corrino: conyard.corrino
+	ProvidesPrerequisite@upgradename:
+
+upgrade.barracks:
+	AlwaysVisible:
+	Tooltip:
+		Name: Barracks Upgrade
+		Description: Unlocks additional infantry
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: barracks
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 500
+	CustomBuildTimeValue:
+		Value: 290
+	RenderSprites:
+		Image: barracks.harkonnen
+		FactionImages:
+			atreides: barracks.atreides
+			ordos: barracks.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.light:
+	AlwaysVisible:
+	Tooltip:
+		Name: Light Factory Upgrade
+		Description: Unlocks additional light units
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: light_factory
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 400
+	CustomBuildTimeValue:
+		Value: 215
+	RenderSprites:
+		Image: light.harkonnen
+		FactionImages:
+			atreides: light.atreides
+			ordos: light.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.heavy:
+	AlwaysVisible:
+	Tooltip:
+		Name: Heavy Factory Upgrade
+		Description: Unlocks advanced technology and heavy weapons
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: heavy_factory
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 800
+	CustomBuildTimeValue:
+		Value: 380
+	RenderSprites:
+		Image: heavy.harkonnen
+		FactionImages:
+			atreides: heavy.atreides
+			ordos: heavy.ordos
+			corrino: heavy.corrino
+	ProvidesPrerequisite@upgradename:
+
+upgrade.hightech:
+	AlwaysVisible:
+	Tooltip:
+		Name: High Tech Factory Upgrade
+		Description: Unlocks the Air Strike superweapon
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
+		Queue: Upgrade
+		BuildLimit: 1
+	Valued:
+		Cost: 1500
+	CustomBuildTimeValue:
+		Value: 720
+	RenderSprites:
+		Image: hightech.atreides
+	ProvidesPrerequisite@upgradename:
 

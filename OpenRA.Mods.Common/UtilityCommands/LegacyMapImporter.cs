@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,8 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -110,6 +108,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		Ruleset rules;
 		List<string> players = new List<string>();
 		Action<string> errorHandler;
+		MapPlayers mapPlayers;
 
 		LegacyMapImporter(string filename, Ruleset rules, Action<string> errorHandler)
 		{
@@ -123,7 +122,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var map = new LegacyMapImporter(filename, rules, errorHandler).map;
 			map.RequiresMod = mod;
-			map.MakeDefaultPlayers();
 			map.FixOpenAreas(rules);
 			return map;
 		}
@@ -132,79 +130,86 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public void ConvertIniMap(string iniFile)
 		{
-			var file = new IniFile(GlobalFileSystem.Open(iniFile));
-			var basic = file.GetSection("Basic");
-			var mapSection = file.GetSection("Map");
-			var legacyMapFormat = (IniMapFormat)Exts.ParseIntegerInvariant(basic.GetValue("NewINIFormat", "0"));
-			var offsetX = Exts.ParseIntegerInvariant(mapSection.GetValue("X", "0"));
-			var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
-			var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
-			var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
-			mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
-			var size = new Size(mapSize, mapSize);
-
-			var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
-			map = Map.FromTileset(rules.TileSets[tileset]);
-			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile));
-			map.Author = "Westwood Studios";
-			map.MapSize.X = mapSize;
-			map.MapSize.Y = mapSize;
-			map.Bounds = Rectangle.FromLTRB(offsetX, offsetY, offsetX + width, offsetY + height);
-			map.Selectable = true;
-
-			map.Smudges = Exts.Lazy(() => new List<SmudgeReference>());
-			map.Actors = Exts.Lazy(() => new Dictionary<string, ActorReference>());
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(TileShape.Rectangle, size));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(TileShape.Rectangle, size));
-
-			map.Options = new MapOptions();
-
-			if (legacyMapFormat == IniMapFormat.RedAlert)
+			using (var stream = GlobalFileSystem.Open(iniFile))
 			{
-				UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
-				UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
-				ReadRATrees(file);
-			}
-			else
-			{
-				// CnC
-				using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
-					UnpackCncTileData(s);
-				ReadCncOverlay(file);
-				ReadCncTrees(file);
-			}
+				var file = new IniFile(stream);
+				var basic = file.GetSection("Basic");
+				var mapSection = file.GetSection("Map");
+				var legacyMapFormat = (IniMapFormat)Exts.ParseIntegerInvariant(basic.GetValue("NewINIFormat", "0"));
+				var offsetX = Exts.ParseIntegerInvariant(mapSection.GetValue("X", "0"));
+				var offsetY = Exts.ParseIntegerInvariant(mapSection.GetValue("Y", "0"));
+				var width = Exts.ParseIntegerInvariant(mapSection.GetValue("Width", "0"));
+				var height = Exts.ParseIntegerInvariant(mapSection.GetValue("Height", "0"));
+				mapSize = (legacyMapFormat == IniMapFormat.RedAlert) ? 128 : 64;
 
-			LoadActors(file, "STRUCTURES");
-			LoadActors(file, "UNITS");
-			LoadActors(file, "INFANTRY");
-			LoadSmudges(file, "SMUDGE");
-
-			foreach (var p in players)
-				LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
-
-			var wps = file.GetSection("Waypoints")
-					.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
-					.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
-						LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)))
-					.ToArray();
-
-			// Add waypoint actors
-			foreach (var kv in wps)
-			{
-				if (kv.First <= 7)
+				var tileset = Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8);
+				map = new Map(rules.TileSets[tileset], mapSize, mapSize)
 				{
-					var a = new ActorReference("mpspawn");
-					a.Add(new LocationInit((CPos)kv.Second));
-					a.Add(new OwnerInit("Neutral"));
-					map.Actors.Value.Add("Actor" + map.Actors.Value.Count.ToString(), a);
+					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(iniFile)),
+					Author = "Westwood Studios"
+				};
+
+				var tl = new PPos(offsetX, offsetY);
+				var br = new PPos(offsetX + width - 1, offsetY + height - 1);
+				map.SetBounds(tl, br);
+
+				if (legacyMapFormat == IniMapFormat.RedAlert)
+				{
+					UnpackRATileData(ReadPackedSection(file.GetSection("MapPack")));
+					UnpackRAOverlayData(ReadPackedSection(file.GetSection("OverlayPack")));
+					ReadRATrees(file);
 				}
 				else
 				{
-					var a = new ActorReference("waypoint");
-					a.Add(new LocationInit((CPos)kv.Second));
-					a.Add(new OwnerInit("Neutral"));
-					map.Actors.Value.Add("waypoint" + kv.First, a);
+					// CnC
+					using (var s = GlobalFileSystem.Open(iniFile.Substring(0, iniFile.Length - 4) + ".bin"))
+						UnpackCncTileData(s);
+					ReadCncOverlay(file);
+					ReadCncTrees(file);
 				}
+
+				LoadVideos(file, "BASIC");
+				LoadActors(file, "STRUCTURES");
+				LoadActors(file, "UNITS");
+				LoadActors(file, "INFANTRY");
+				LoadActors(file, "SHIPS");
+				LoadSmudges(file, "SMUDGE");
+
+				var wps = file.GetSection("Waypoints")
+						.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
+						.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
+							LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)));
+
+				// Add waypoint actors
+				foreach (var kv in wps)
+				{
+					if (kv.First <= 7)
+					{
+						var ar = new ActorReference("mpspawn")
+						{
+							new LocationInit((CPos)kv.Second),
+							new OwnerInit("Neutral")
+						};
+
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					}
+					else
+					{
+						var ar = new ActorReference("waypoint")
+						{
+							new LocationInit((CPos)kv.Second),
+							new OwnerInit("Neutral")
+						};
+
+						map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					}
+				}
+
+				// Create default player definitions only if there are no players to import
+				mapPlayers = new MapPlayers(map.Rules, (players.Count == 0) ? map.SpawnPoints.Value.Length : 0);
+				foreach (var p in players)
+					LoadPlayer(file, p, legacyMapFormat == IniMapFormat.RedAlert);
+				map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 			}
 		}
 
@@ -269,7 +274,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			for (var j = 0; j < mapSize; j++)
 				for (var i = 0; i < mapSize; i++)
 					map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
-
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
@@ -283,18 +287,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
-					
+
 					var cell = new CPos(i, j);
 					map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
 
 					if (o != 255 && overlayActorMapping.ContainsKey(redAlertOverlayNames[o]))
 					{
-						map.Actors.Value.Add("Actor" + actorCount++,
-							new ActorReference(overlayActorMapping[redAlertOverlayNames[o]])
-							{
-								new LocationInit(cell),
-								new OwnerInit("Neutral")
-							});
+						var ar = new ActorReference(overlayActorMapping[redAlertOverlayNames[o]])
+						{
+							new LocationInit(cell),
+							new OwnerInit("Neutral")
+						};
+
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
 					}
 				}
 			}
@@ -309,12 +314,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in terrain)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
-				map.Actors.Value.Add("Actor" + actorCount++,
-					new ActorReference(kv.Value.ToLowerInvariant())
-					{
-						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
-						new OwnerInit("Neutral")
-					});
+				var ar = new ActorReference(kv.Value.ToLowerInvariant())
+				{
+					new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
+					new OwnerInit("Neutral")
+				};
+
+				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
 			}
 		}
 
@@ -349,12 +355,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
 
 				if (overlayActorMapping.ContainsKey(kv.Value.ToLower()))
-					map.Actors.Value.Add("Actor" + actorCount++,
-						new ActorReference(overlayActorMapping[kv.Value.ToLower()])
-						{
-							new LocationInit(cell),
-							new OwnerInit("Neutral")
-						});
+				{
+					var ar = new ActorReference(overlayActorMapping[kv.Value.ToLower()])
+					{
+						new LocationInit(cell),
+						new OwnerInit("Neutral")
+					};
+
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+				}
 			}
 		}
 
@@ -367,12 +376,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in terrain)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
-				map.Actors.Value.Add("Actor" + actorCount++,
-					new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
-					{
-						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
-						new OwnerInit("Neutral")
-					});
+				var ar = new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
+				{
+					new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
+					new OwnerInit("Neutral")
+				};
+
+				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
 			}
 		}
 
@@ -386,22 +396,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					var parts = s.Value.Split(',');
-					var loc = Exts.ParseIntegerInvariant(parts[3]);
 					if (parts[0] == "")
 						parts[0] = "Neutral";
 
 					if (!players.Contains(parts[0]))
 						players.Add(parts[0]);
 
+					var loc = Exts.ParseIntegerInvariant(parts[3]);
+					var health = Exts.ParseIntegerInvariant(parts[2]) * 100 / 256;
+					var facing = (section == "INFANTRY") ? Exts.ParseIntegerInvariant(parts[6]) : Exts.ParseIntegerInvariant(parts[4]);
+
 					var actor = new ActorReference(parts[1].ToLowerInvariant())
 					{
 						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
 						new OwnerInit(parts[0]),
-						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo) / 256),
-						new FacingInit((section == "INFANTRY")
-							? Exts.ParseIntegerInvariant(parts[6])
-							: Exts.ParseIntegerInvariant(parts[4])),
 					};
+
+					var initDict = actor.InitDict;
+					if (health != 100)
+						initDict.Add(new HealthInit(health));
+					if (facing != 0)
+						initDict.Add(new FacingInit(facing));
 
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
@@ -409,7 +424,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (!rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
 						errorHandler("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
 					else
-						map.Actors.Value.Add("Actor" + actorCount++, actor);
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, actor.Save()));
 				}
 				catch (Exception)
 				{
@@ -425,55 +440,56 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// loc=type,loc,depth
 				var parts = s.Value.Split(',');
 				var loc = Exts.ParseIntegerInvariant(parts[1]);
-				map.Smudges.Value.Add(new SmudgeReference(parts[0].ToLowerInvariant(), new int2(loc % mapSize, loc / mapSize), Exts.ParseIntegerInvariant(parts[2])));
+				var key = "{0} {1},{2} {3}".F(parts[0].ToLowerInvariant(), loc % mapSize, loc / mapSize, Exts.ParseIntegerInvariant(parts[2]));
+				map.SmudgeDefinitions.Add(new MiniYamlNode(key, ""));
 			}
 		}
 
 		void LoadPlayer(IniFile file, string section, bool isRA)
 		{
 			string c;
-			string race;
+			string faction;
 			switch (section)
 			{
 				case "Spain":
 					c = "gold";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "England":
 					c = "green";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Ukraine":
 					c = "orange";
-					race = "soviet";
+					faction = "soviet";
 					break;
 				case "Germany":
 					c = "black";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "France":
 					c = "teal";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Turkey":
 					c = "salmon";
-					race = "allies";
+					faction = "allies";
 					break;
 				case "Greece":
 				case "GoodGuy":
 					c = isRA ? "blue" : "gold";
-					race = isRA ? "allies" : "gdi";
+					faction = isRA ? "allies" : "gdi";
 					break;
 				case "USSR":
 				case "BadGuy":
 					c = "red";
-					race = isRA ? "soviet" : "nod";
+					faction = isRA ? "soviet" : "nod";
 					break;
 				case "Special":
 				case "Neutral":
 				default:
 					c = "neutral";
-					race = isRA ? "allies" : "gdi";
+					faction = isRA ? "allies" : "gdi";
 					break;
 			}
 
@@ -482,7 +498,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
-				Race = race,
+				Faction = faction,
 				Color = namedColorMapping[c]
 			};
 
@@ -501,7 +517,39 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			map.Players.Add(section, pr);
+			// Overwrite default player definitions if needed
+			if (!mapPlayers.Players.ContainsKey(section))
+				mapPlayers.Players.Add(section, pr);
+			else
+				mapPlayers.Players[section] = pr;
+		}
+
+		void LoadVideos(IniFile file, string section)
+		{
+			foreach (var s in file.GetSection(section))
+			{
+				if (s.Value != "x" && s.Value != "<none>")
+				{
+					switch (s.Key)
+					{
+						case "Intro":
+							map.Videos.BackgroundInfo = s.Value.ToLower() + ".vqa";
+							break;
+						case "Brief":
+							map.Videos.Briefing = s.Value.ToLower() + ".vqa";
+							break;
+						case "Action":
+							map.Videos.GameStart = s.Value.ToLower() + ".vqa";
+							break;
+						case "Win":
+							map.Videos.GameWon = s.Value.ToLower() + ".vqa";
+							break;
+						case "Lose":
+							map.Videos.GameLost = s.Value.ToLower() + ".vqa";
+							break;
+					}
+				}
+			}
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,8 +26,8 @@ namespace OpenRA
 
 		// Corners in map coordinates
 		// These will only equal TopLeft and BottomRight for TileShape.Rectangular
-		readonly CPos mapTopLeft;
-		readonly CPos mapBottomRight;
+		readonly MPos mapTopLeft;
+		readonly MPos mapBottomRight;
 
 		public CellRegion(TileShape shape, CPos topLeft, CPos bottomRight)
 		{
@@ -35,17 +35,15 @@ namespace OpenRA
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
 
-			mapTopLeft = Map.CellToMap(shape, TopLeft);
-			mapBottomRight = Map.CellToMap(shape, BottomRight);
+			mapTopLeft = TopLeft.ToMPos(shape);
+			mapBottomRight = BottomRight.ToMPos(shape);
 		}
 
 		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
 		public static CellRegion Expand(CellRegion region, int cordon)
 		{
-			var offset = new CVec(cordon, cordon);
-			var tl = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.TopLeft) - offset);
-			var br = Map.MapToCell(region.shape, Map.CellToMap(region.shape, region.BottomRight) + offset);
-
+			var tl = new MPos(region.mapTopLeft.U - cordon, region.mapTopLeft.V - cordon).ToCPos(region.shape);
+			var br = new MPos(region.mapBottomRight.U + cordon, region.mapBottomRight.V + cordon).ToCPos(region.shape);
 			return new CellRegion(region.shape, tl, br);
 		}
 
@@ -83,8 +81,13 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			var uv = Map.CellToMap(shape, cell);
-			return uv.X >= mapTopLeft.X && uv.X <= mapBottomRight.X && uv.Y >= mapTopLeft.Y && uv.Y <= mapBottomRight.Y;
+			var uv = cell.ToMPos(shape);
+			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
+		}
+
+		public MapCoordsRegion MapCoords
+		{
+			get { return new MapCoordsRegion(mapTopLeft, mapBottomRight); }
 		}
 
 		public CellRegionEnumerator GetEnumerator()
@@ -102,7 +105,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public class CellRegionEnumerator : IEnumerator<CPos>
+		public sealed class CellRegionEnumerator : IEnumerator<CPos>
 		{
 			readonly CellRegion r;
 
@@ -123,25 +126,25 @@ namespace OpenRA
 				u += 1;
 
 				// Check for column overflow
-				if (u > r.mapBottomRight.X)
+				if (u > r.mapBottomRight.U)
 				{
 					v += 1;
-					u = r.mapTopLeft.X;
+					u = r.mapTopLeft.U;
 
 					// Check for row overflow
-					if (v > r.mapBottomRight.Y)
+					if (v > r.mapBottomRight.V)
 						return false;
 				}
 
-				current = Map.MapToCell(r.shape, new CPos(u, v));
+				current = new MPos(u, v).ToCPos(r.shape);
 				return true;
 			}
 
 			public void Reset()
 			{
 				// Enumerator starts *before* the first element in the sequence.
-				u = r.mapTopLeft.X - 1;
-				v = r.mapTopLeft.Y;
+				u = r.mapTopLeft.U - 1;
+				v = r.mapTopLeft.V;
 			}
 
 			public CPos Current { get { return current; } }

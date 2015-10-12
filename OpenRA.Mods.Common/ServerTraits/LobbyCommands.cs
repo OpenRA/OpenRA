@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,11 +13,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
-using OpenRA.Mods.Common.Server;
-using OpenRA.Mods.Common;
 
 namespace OpenRA.Mods.Common.Server
 {
@@ -33,7 +32,7 @@ namespace OpenRA.Mods.Common.Server
 
 			if (requiresHost && !client.IsAdmin)
 			{
-				server.SendOrderTo(conn, "Message", "Only the host can do that");
+				server.SendOrderTo(conn, "Message", "Only the host can do that.");
 				return false;
 			}
 
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (!ValidateCommand(server, conn, client, cmd))
+			if (server == null || conn == null || client == null || !ValidateCommand(server, conn, client, cmd))
 				return false;
 
 			var dict = new Dictionary<string, Func<string, bool>>
@@ -91,7 +90,7 @@ namespace OpenRA.Mods.Common.Server
 						client.State = state;
 
 						Log.Write("server", "Player @{0} is {1}",
-							conn.socket.RemoteEndPoint, client.State);
+							conn.Socket.RemoteEndPoint, client.State);
 
 						server.SyncLobbyClients();
 
@@ -105,7 +104,7 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can start the game");
+							server.SendOrderTo(conn, "Message", "Only the host can start the game.");
 							return true;
 						}
 
@@ -135,7 +134,7 @@ namespace OpenRA.Mods.Common.Server
 							return false;
 
 						client.Slot = s;
-						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
+						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 						server.SyncLobbyClients();
 						CheckAutoStart(server);
 
@@ -187,15 +186,18 @@ namespace OpenRA.Mods.Common.Server
 								server.LobbyInfo.Clients.Remove(occupant);
 								server.SyncLobbyClients();
 								var ping = server.LobbyInfo.PingFromClient(occupant);
-								server.LobbyInfo.ClientPings.Remove(ping);
-								server.SyncClientPing();
+								if (ping != null)
+								{
+									server.LobbyInfo.ClientPings.Remove(ping);
+									server.SyncClientPing();
+								}
 							}
 							else
 							{
 								var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
 								if (occupantConn != null)
 								{
-									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host");
+									server.SendOrderTo(occupantConn, "ServerError", "Your slot was closed by the host.");
 									server.DropClient(occupantConn);
 								}
 							}
@@ -222,7 +224,11 @@ namespace OpenRA.Mods.Common.Server
 						{
 							server.LobbyInfo.Clients.Remove(occupant);
 							var ping = server.LobbyInfo.PingFromClient(occupant);
-							server.LobbyInfo.ClientPings.Remove(ping);
+							if (ping != null)
+							{
+								server.LobbyInfo.ClientPings.Remove(ping);
+								server.SyncClientPing();
+							}
 						}
 
 						server.SyncLobbyClients();
@@ -257,7 +263,7 @@ namespace OpenRA.Mods.Common.Server
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
-							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client");
+							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client.");
 							return true;
 						}
 
@@ -271,7 +277,7 @@ namespace OpenRA.Mods.Common.Server
 								Name = botType,
 								Bot = botType,
 								Slot = parts[0],
-								Country = "random",
+								Faction = "Random",
 								SpawnPoint = 0,
 								Team = 0,
 								State = Session.ClientState.NotReady,
@@ -299,7 +305,7 @@ namespace OpenRA.Mods.Common.Server
 							bot.Bot = botType;
 						}
 
-						S.SyncClientToPlayerReference(bot, server.Map.Players[parts[0]]);
+						S.SyncClientToPlayerReference(bot, server.MapPlayers.Players[parts[0]]);
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
 						return true;
@@ -310,13 +316,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can change the map");
+							server.SendOrderTo(conn, "Message", "Only the host can change the map.");
 							return true;
 						}
 
 						if (server.ModData.MapCache[s].Status != MapStatus.Available)
 						{
-							server.SendOrderTo(conn, "Message", "Map was not found on server");
+							server.SendOrderTo(conn, "Message", "Map was not found on server.");
 							return true;
 						}
 
@@ -347,9 +353,9 @@ namespace OpenRA.Mods.Common.Server
 							if (c.Slot != null)
 							{
 								// Remove Bot from slot if slot forbids bots
-								if (c.Bot != null && !server.Map.Players[c.Slot].AllowBots)
+								if (c.Bot != null && !server.MapPlayers.Players[c.Slot].AllowBots)
 									server.LobbyInfo.Clients.Remove(c);
-								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+								S.SyncClientToPlayerReference(c, server.MapPlayers.Players[c.Slot]);
 							}
 							else if (c.Bot != null)
 								server.LobbyInfo.Clients.Remove(c);
@@ -365,6 +371,9 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
 
+						if (server.Map.RuleDefinitions.Any())
+							server.SendMessage("This map contains custom rules. Game experience may change.");
+
 						return true;
 					}
 				},
@@ -373,13 +382,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.FragileAlliances.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled alliance configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled alliance configuration.");
 							return true;
 						}
 
@@ -396,20 +405,20 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.Cheats.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration.");
 							return true;
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Developer Cheats."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "allowed" : "disallowed"));
+						server.SendMessage("{0} {1} the Debug Menu."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "enabled" : "disabled"));
 
 						return true;
 					}
@@ -419,20 +428,20 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.Shroud.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration.");
 							return true;
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Shroud."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "enabled" : "disabled"));
+						server.SendMessage("{0} {1} Explored map."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "disabled" : "enabled"));
 
 						return true;
 					}
@@ -442,13 +451,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.Fog.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration.");
 							return true;
 						}
 
@@ -465,7 +474,7 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
@@ -478,13 +487,13 @@ namespace OpenRA.Mods.Common.Server
 
 						var maxTeams = (server.LobbyInfo.Clients.Count(c => c.Slot != null) + 1) / 2;
 						teamCount = teamCount.Clamp(0, maxTeams);
-						var players = server.LobbyInfo.Slots
+						var clients = server.LobbyInfo.Slots
 							.Select(slot => server.LobbyInfo.ClientInSlot(slot.Key))
 							.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam);
 
 						var assigned = 0;
-						var playerCount = players.Count();
-						foreach (var player in players)
+						var clientCount = clients.Count();
+						foreach (var player in clients)
 						{
 							// Free for all
 							if (teamCount == 0)
@@ -494,7 +503,7 @@ namespace OpenRA.Mods.Common.Server
 							else if (teamCount == 1)
 								player.Team = player.Bot == null ? 1 : 2;
 							else
-								player.Team = assigned++ * teamCount / playerCount + 1;
+								player.Team = assigned++ * teamCount / clientCount + 1;
 						}
 
 						server.SyncLobbyClients();
@@ -506,20 +515,43 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.Crates.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration.");
 							return true;
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Crates);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Crates Appear."
+						server.SendMessage("{0} {1} Crates."
 							.F(client.Name, server.LobbyInfo.GlobalSettings.Crates ? "enabled" : "disabled"));
+
+						return true;
+					}
+				},
+				{ "creeps",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						if (server.Map.Options.Creeps.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled Creeps spawning configuration.");
+							return true;
+						}
+
+						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Creeps);
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} {1} Creeps spawning."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.Creeps ? "enabled" : "disabled"));
 
 						return true;
 					}
@@ -529,19 +561,19 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.AllyBuildRadius.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration.");
 							return true;
 						}
 
 						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllyBuildRadius);
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Build off Ally ConYards."
+						server.SendMessage("{0} {1} Build off Allies' ConYards."
 							.F(client.Name, server.LobbyInfo.GlobalSettings.AllyBuildRadius ? "enabled" : "disabled"));
 
 						return true;
@@ -550,9 +582,12 @@ namespace OpenRA.Mods.Common.Server
 				{ "difficulty",
 					s =>
 					{
+						if (!server.Map.Options.Difficulties.Any())
+							return true;
+
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
@@ -575,17 +610,17 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (!server.Map.Options.ConfigurableStartingUnits)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration.");
 							return true;
 						}
 
-						var startUnitsInfo = server.Map.Rules.Actors["world"].Traits.WithInterface<MPStartUnitsInfo>();
+						var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
 						var selectedClass = startUnitsInfo.Where(u => u.Class == s).Select(u => u.ClassName).FirstOrDefault();
 						var className = selectedClass != null ? selectedClass : s;
 
@@ -601,13 +636,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.StartingCash.HasValue)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration.");
 							return true;
 						}
 
@@ -623,13 +658,13 @@ namespace OpenRA.Mods.Common.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
 						if (server.Map.Options.TechLevel != null)
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration");
+							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
 							return true;
 						}
 
@@ -640,12 +675,40 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "gamespeed",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+
+						GameSpeed speed;
+						if (!gameSpeeds.Speeds.TryGetValue(s, out speed))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid game speed selected.");
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.GameSpeedType = s;
+						server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
+						server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+
+						server.SyncLobbyInfo();
+						server.SendMessage("{0} changed Game Speed to {1}.".F(client.Name, speed.Name));
+
+						return true;
+					}
+				},
 				{ "kick",
 					s =>
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can kick players");
+							server.SendOrderTo(conn, "Message", "Only the host can kick players.");
 							return true;
 						}
 
@@ -668,9 +731,9 @@ namespace OpenRA.Mods.Common.Server
 
 						var kickClient = server.GetClient(kickConn);
 
-						Log.Write("server", "Kicking client {0} as requested", kickClientID);
+						Log.Write("server", "Kicking client {0}.", kickClientID);
 						server.SendMessage("{0} kicked {1} from the server.".F(client.Name, kickClient.Name));
-						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server");
+						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server.");
 						server.DropClient(kickConn);
 
 						bool tempBan;
@@ -678,7 +741,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (tempBan)
 						{
-							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickClient.IpAddress);
+							Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IpAddress);
 							server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
 							server.TempBans.Add(kickClient.IpAddress);
 						}
@@ -692,14 +755,18 @@ namespace OpenRA.Mods.Common.Server
 				{ "name",
 					s =>
 					{
-						Log.Write("server", "Player@{0} is now known as {1}", conn.socket.RemoteEndPoint, s);
-						server.SendMessage("{0} is now known as {1}.".F(client.Name, s));
-						client.Name = s;
+						var sanitizedName = OpenRA.Settings.SanitizedPlayerName(s);
+						if (sanitizedName == client.Name)
+							return true;
+
+						Log.Write("server", "Player@{0} is now known as {1}.", conn.Socket.RemoteEndPoint, sanitizedName);
+						server.SendMessage("{0} is now known as {1}.".F(client.Name, sanitizedName));
+						client.Name = sanitizedName;
 						server.SyncLobbyClients();
 						return true;
 					}
 				},
-				{ "race",
+				{ "faction",
 					s =>
 					{
 						var parts = s.Split(' ');
@@ -709,11 +776,11 @@ namespace OpenRA.Mods.Common.Server
 						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
-						// Map has disabled race changes
-						if (server.LobbyInfo.Slots[targetClient.Slot].LockRace)
+						// Map has disabled faction changes
+						if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 							return true;
 
-						targetClient.Country = parts[1];
+						targetClient.Faction = parts[1];
 						server.SyncLobbyClients();
 						return true;
 					}
@@ -764,7 +831,7 @@ namespace OpenRA.Mods.Common.Server
 
 						int spawnPoint;
 						if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
-							|| spawnPoint < 0 || spawnPoint > server.Map.GetSpawnPoints().Length)
+							|| spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Value.Length)
 						{
 							Log.Write("server", "Invalid spawn point: {0}", parts[1]);
 							return true;
@@ -772,7 +839,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (server.LobbyInfo.Clients.Where(cc => cc != client).Any(cc => (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0)))
 						{
-							server.SendOrderTo(conn, "Message", "You can't be at the same spawn point as another player");
+							server.SendOrderTo(conn, "Message", "You cannot occupy the same spawn point as another player.");
 							return true;
 						}
 
@@ -809,6 +876,29 @@ namespace OpenRA.Mods.Common.Server
 						server.SyncLobbyClients();
 						return true;
 					}
+				},
+				{ "shortgame",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							return true;
+						}
+
+						if (server.Map.Options.ShortGame.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled short game configuration.");
+							return true;
+						}
+
+						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.ShortGame);
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage("{0} {1} Short Game."
+							.F(client.Name, server.LobbyInfo.GlobalSettings.ShortGame ? "enabled" : "disabled"));
+
+						return true;
+					}
 				}
 			};
 
@@ -838,7 +928,7 @@ namespace OpenRA.Mods.Common.Server
 				PlayerReference = pr.Name,
 				Closed = false,
 				AllowBots = pr.AllowBots,
-				LockRace = pr.LockRace,
+				LockFaction = pr.LockFaction,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
 				LockSpawn = pr.LockSpawn,
@@ -849,7 +939,9 @@ namespace OpenRA.Mods.Common.Server
 		static void LoadMap(S server)
 		{
 			server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Map;
-			server.LobbyInfo.Slots = server.Map.Players
+
+			server.MapPlayers = new MapPlayers(server.Map.PlayerDefinitions);
+			server.LobbyInfo.Slots = server.MapPlayers.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);

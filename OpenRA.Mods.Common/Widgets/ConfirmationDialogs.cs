@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -39,6 +39,23 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
+		public static void CancelPrompt(string title, string text, Action onCancel = null, string cancelText = null)
+		{
+			var prompt = Ui.OpenWindow("CANCEL_PROMPT");
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
+
+			if (!string.IsNullOrEmpty(cancelText))
+				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
+
+			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+		}
+
 		public static void TextInputPrompt(
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,
@@ -49,19 +66,13 @@ namespace OpenRA.Mods.Common.Widgets
 			Func<bool> doValidate = null;
 			ButtonWidget acceptButton = null, cancelButton = null;
 
-			//
 			// Title
-			//
 			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 
-			//
 			// Prompt
-			//
 			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => prompt;
 
-			//
 			// Text input
-			//
 			var input = panel.Get<TextFieldWidget>("INPUT_TEXT");
 			var isValid = false;
 			input.Text = initialText;
@@ -86,9 +97,7 @@ namespace OpenRA.Mods.Common.Widgets
 			input.CursorPosition = input.Text.Length;
 			input.OnTextEdited = () => doValidate();
 
-			//
 			// Buttons
-			//
 			acceptButton = panel.Get<ButtonWidget>("ACCEPT_BUTTON");
 			if (!string.IsNullOrEmpty(acceptText))
 				acceptButton.GetText = () => acceptText;
@@ -113,9 +122,7 @@ namespace OpenRA.Mods.Common.Widgets
 					onCancel();
 			};
 
-			//
 			// Validation
-			//
 			doValidate = () =>
 			{
 				if (inputValidator == null)

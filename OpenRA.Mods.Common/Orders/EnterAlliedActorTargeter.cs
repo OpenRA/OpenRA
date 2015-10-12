@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter
+	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
 		public EnterAlliedActorTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base (order, priority, "enter", false, true)
+			: base(order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!target.HasTrait<T>() || !canTarget(target))
+			if (!target.Info.HasTraitInfo<T>() || !canTarget(target))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";

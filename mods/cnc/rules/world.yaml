@@ -1,88 +1,65 @@
-World:
-	ChatCommands:
-	DevCommands:
-	PlayerCommands:
-	HelpCommand:
+^BaseWorld:
+	AlwaysVisible:
+	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
-	LoadWidgetAtGameStart:
-		Widget: INGAME_ROOT
-	MenuPaletteEffect:
-		MenuEffect: Desaturated
-	CloakPaletteEffect:
-	ScreenShaker:
-	NukePaletteEffect:
-	WaterPaletteRotation:
-		ExcludePalettes: effect
-	BuildingInfluence:
-	BridgeLayer:
-		Bridges: bridge1, bridge2, bridge3, bridge4
-	PaletteFromCurrentTileset@terrain:
-		Name: terrain
-		ShadowIndex: 4
-	PaletteFromCurrentTileset@static:
-		Name: staticterrain
-		ShadowIndex: 4
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: temperat.pal
-		ShadowIndex: 3
-		AllowModifiers: false
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: temperat.pal
-		ShadowIndex: 4
-	PaletteFromFile@colorpicker:
-		Name: colorpicker
-		Filename: temperat.pal
-		ShadowIndex: 4
-		AllowModifiers: false
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@cloak:
-		Name: cloak
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@moveflash:
-		Name: moveflash
-		R: 255
-		G: 255
-		B: 255
-		A: 64
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	ShroudPalette@shroud:
-		Type: Shroud
-	ShroudPalette@fog:
-		Name: fog
-		Fog: true
+	MusicPlaylist:
+		VictoryMusic: win1
+		DefeatMusic: nod_map1
+	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
 		FogVariants: typea, typeb, typec, typed
 		OverrideFullShroud: full
 		OverrideFullFog: full
-	Country@gdi:
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+		Description: Select a random faction.
+	Faction@gdi:
 		Name: GDI
-		Race: gdi
-	Country@nod:
+		InternalName: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+	Faction@nod:
 		Name: Nod
-		Race: nod
+		InternalName: nod
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
+	ResourceType@green-tib:
+		ResourceType: 1
+		Palette: staticterrain
+		TerrainType: Tiberium
+		Variants: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		MaxDensity: 12
+		ValuePerUnit: 35
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+	ResourceType@blue-tib:
+		ResourceType: 2
+		Palette: bluetiberium
+		TerrainType: BlueTiberium
+		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		MaxDensity: 12
+		ValuePerUnit: 60
+		Name: BlueTiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	DomainIndex:
@@ -95,104 +72,75 @@ World:
 		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
-	ResourceType@green-tib:
-		ResourceType: 1
-		Palette: staticterrain
-		TerrainType: Tiberium
-		EditorSprite: ti1
-		Variants: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
-		MaxDensity: 12
-		ValuePerUnit: 35
-		Name: Tiberium
-		PipColor: Green
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
-	FixedColorPalette@BlueTiberium:
-		Base: terrain
-		Name: bluetiberium
-		Color: 152, 255, 196
-		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
-	ResourceType@blue-tib:
-		ResourceType: 2
-		Palette: bluetiberium
-		TerrainType: BlueTiberium
-		EditorSprite: bti1
-		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
-		MaxDensity: 12
-		ValuePerUnit: 75
-		Name: BlueTiberium
-		PipColor: Blue
-		AllowedTerrainTypes: Clear,Road
-		AllowUnderActors: false
 	PathfinderDebugOverlay:
-	TerrainGeometryOverlay:
+	WarheadDebugOverlay:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
 		ClassName: MCV Only
-		Races: gdi, nod
+		Factions: gdi, nod
 		BaseActor: mcv
 	MPStartUnits@defaultgdia:
 		Class: light
 		ClassName: Light Support
-		Races: gdi
+		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	MPStartUnits@defaultgdib:
 		Class: light
 		ClassName: Light Support
-		Races: gdi
+		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
 	MPStartUnits@defaultnoda:
 		Class: light
 		ClassName: Light Support
-		Races: nod
+		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,bggy,bike
 	MPStartUnits@defaultnodb:
 		Class: light
 		ClassName: Light Support
-		Races: nod
+		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,e3,bggy
 	MPStartUnits@defaultnodc:
 		Class: light
 		ClassName: Light Support
-		Races: nod
+		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
 	MPStartUnits@heavynoda:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: nod
+		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	MPStartUnits@heavynodb:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: nod
+		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	MPStartUnits@heavygdia:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: gdi
+		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	MPStartUnits@heavygdib:
 		Class: heavy
 		ClassName: Heavy Support
-		Races: gdi
+		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnMPUnits:
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
-		SpawnInterval: 120
+		SpawnInterval: 3000
 		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
@@ -201,3 +149,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	RadarPings:
 
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:

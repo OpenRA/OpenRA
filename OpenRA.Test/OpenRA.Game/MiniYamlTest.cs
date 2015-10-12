@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,77 +10,93 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
+using NUnit.Framework;
 using OpenRA.GameRules;
 using OpenRA.Traits;
-using NUnit.Framework;
 
 namespace OpenRA.Test
 {
 	[TestFixture]
 	public class MiniYamlTest
 	{
-		readonly string yamlForParent = @"
-^Parent:
-	FromParent:
-	FromParentRemove:
+		readonly string mixedMergeA = @"
+Merge:
+	FromA:
+	FromARemovedB:
+	FromARemovedA:
+	-FromBRemovedA:
+	-FromARemovedA:
 ";
-		readonly string yamlForChild = @"
-Child:
-	Inherits: ^Parent
-	FromChild:
-	-FromParentRemove:
+
+		readonly string mixedMergeB = @"
+Merge:
+	FromB:
+	FromBRemovedA:
+	FromBRemovedB:
+	-FromARemovedB:
+	-FromBRemovedB:
 ";
-		List<MiniYamlNode> parentList;
-		List<MiniYamlNode> childList;
-		MiniYaml parent;
-		MiniYaml child;
 
-		[SetUp]
-		public void SetUp()
-		{
-			parentList = MiniYaml.FromString(yamlForParent);
-			childList = MiniYaml.FromString(yamlForChild);
-			parent = parentList.First().Value;
-			child = childList.First().Value;
-		}
+		readonly string yamlTabStyle = @"
+Root1:
+	Child1:
+		Attribute1: Test
+		Attribute2: Test
+	Child2:
+		Attribute1: Test
+		Attribute2: Test
+Root2:
+	Child1:
+		Attribute1: Test
+";
 
-		void InheritanceTest(List<MiniYamlNode> nodes)
-		{
-			Assert.That(nodes.Any(n => n.Key == "FromParent"), Is.True, "Node from parent");
-			Assert.That(nodes.Any(n => n.Key == "FromChild"), Is.True, "Node from child");
-			Assert.That(nodes.Any(n => n.Key == "FromParentRemove"), Is.Not.True, "Node from parent - node from child");
-		}
+		readonly string yamlMixedStyle = @"
+Root1:
+    Child1:
+        Attribute1: Test
+        Attribute2: Test
+	Child2:
+		Attribute1: Test
+	    Attribute2: Test
+Root2:
+    Child1:
+		Attribute1: Test
+";
 
-		[TestCase(TestName = "MergeStrict(MiniYaml, MiniYaml)")]
+		[TestCase(TestName = "Merging: mixed addition and removal")]
 		public void MergeYamlA()
 		{
-			var res = MiniYaml.MergeStrict(parent, child);
-			InheritanceTest(res.Nodes);
+			var a = MiniYaml.FromString(mixedMergeA, "mixedMergeA");
+			var b = MiniYaml.FromString(mixedMergeB, "mixedMergeB");
+
+			// Merge order should not matter
+			// Note: All the Merge* variants are different plumbing over the same
+			// internal logic.  Testing only MergeStrict is sufficent.
+			TestMixedMerge(MiniYaml.MergeStrict(a, b).First().Value);
+			TestMixedMerge(MiniYaml.MergeStrict(b, a).First().Value);
 		}
 
-		[TestCase(TestName = "MergeLiberal(MiniYaml, MiniYaml)")]
-		public void MergeYamlB()
+		void TestMixedMerge(MiniYaml result)
 		{
-			var res = MiniYaml.MergeLiberal(parent, child);
-			InheritanceTest(res.Nodes);
+			Console.WriteLine(result.ToLines("result").JoinWith("\n"));
+			Assert.That(result.Nodes.Any(n => n.Key == "FromA"), Is.True, "Node from A");
+			Assert.That(result.Nodes.Any(n => n.Key == "FromB"), Is.True, "Node from B");
+			Assert.That(result.Nodes.Any(n => n.Key == "FromARemovedA"), Is.Not.True, "Node from A removed by A");
+			Assert.That(result.Nodes.Any(n => n.Key == "FromARemovedB"), Is.Not.True, "Node from A removed by B");
+			Assert.That(result.Nodes.Any(n => n.Key == "FromBRemovedA"), Is.Not.True, "Node from B removed by A");
+			Assert.That(result.Nodes.Any(n => n.Key == "FromBRemovedB"), Is.Not.True, "Node from B removed by B");
 		}
 
-		[TestCase(TestName = "MergeStrict(List<MiniYamlNode>, List<MiniYamlNode>)")]
-		public void MergeYamlC()
+		[TestCase(TestName = "Mixed tabs & spaces indents")]
+		public void TestIndents()
 		{
-			var res = MiniYaml.MergeStrict(parentList, childList).Last();
-			Assert.That(res.Key, Is.EqualTo("Child"));
-			InheritanceTest(res.Value.Nodes);
-		}
-
-		[TestCase(TestName = "MergeLiberal(List<MiniYamlNode>, List<MiniYamlNode>)")]
-		public void MergeYamlD()
-		{
-			var res = MiniYaml.MergeLiberal(parentList, childList).Last();
-			Assert.That(res.Key, Is.EqualTo("Child"));
-			InheritanceTest(res.Value.Nodes);
+			var tabs = MiniYaml.FromString(yamlTabStyle, "yamlTabStyle").WriteToString();
+			Console.WriteLine(tabs);
+			var mixed = MiniYaml.FromString(yamlMixedStyle, "yamlMixedStyle").WriteToString();
+			Console.WriteLine(mixed);
+			Assert.That(tabs, Is.EqualTo(mixed));
 		}
 	}
 }

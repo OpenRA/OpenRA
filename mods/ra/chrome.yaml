@@ -5,21 +5,85 @@ sidebar-allies: chrome.png
 	background-supportoverlay: 184,118,64,48
 
 sidebar-button-allies: chrome.png
-	background: 56,28,28,28
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
 sidebar-button-allies-hover: chrome.png
-	background: 56,0,28,28
+	background: 59,3,22,22
+	border-r: 81,3,3,22
+	border-l: 56,3,3,22
+	border-b: 59,25,22,3
+	border-t: 59,0,22,3
+	corner-tl: 56,0,3,3
+	corner-tr: 81,0,3,3
+	corner-bl: 56,25,3,3
+	corner-br: 81,25,3,3
 sidebar-button-allies-pressed: chrome.png
-	background: 56,28,28,28
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
 sidebar-button-allies-highlighted: chrome.png
-	background: 84,28,28,28
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
 sidebar-button-allies-highlighted-hover: chrome.png
-	background: 84,0,28,28
+	background: 87,3,22,22
+	border-r: 109,3,3,22
+	border-l: 84,3,3,22
+	border-b: 87,25,22,3
+	border-t: 87,0,22,3
+	corner-tl: 84,0,3,3
+	corner-tr: 109,0,3,3
+	corner-bl: 84,25,3,3
+	corner-br: 109,25,3,3
 sidebar-button-allies-highlighted-pressed: chrome.png
-	background: 84,28,28,28
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
 sidebar-button-allies-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 sidebar-button-allies-highlighted-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
 sidebar-soviet: chrome.png
 	background-top: 274,167,238,290
@@ -28,21 +92,85 @@ sidebar-soviet: chrome.png
 	background-supportoverlay: 249,118,64,48
 
 sidebar-button-soviet: chrome.png
-	background: 0,28,28,28
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
 sidebar-button-soviet-hover: chrome.png
-	background: 0,0,28,28
+	background: 3,3,22,22
+	border-r: 25,3,3,22
+	border-l: 0,3,3,22
+	border-b: 3,25,22,3
+	border-t: 3,0,22,3
+	corner-tl: 0,0,3,3
+	corner-tr: 25,0,3,3
+	corner-bl: 0,25,3,3
+	corner-br: 25,25,3,3
 sidebar-button-soviet-pressed: chrome.png
-	background: 0,28,28,28
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
 sidebar-button-soviet-highlighted: chrome.png
-	background: 28,28,28,28
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
 sidebar-button-soviet-highlighted-hover: chrome.png
-	background: 28,0,28,28
+	background: 31,3,22,22
+	border-r: 53,3,3,22
+	border-l: 28,3,3,22
+	border-b: 31,25,22,3
+	border-t: 31,0,22,3
+	corner-tl: 28,0,3,3
+	corner-tr: 53,0,3,3
+	corner-bl: 28,25,3,3
+	corner-br: 53,25,3,3
 sidebar-button-soviet-highlighted-pressed: chrome.png
-	background: 28,28,28,28
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
 sidebar-button-soviet-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 sidebar-button-soviet-highlighted-disabled: chrome.png
-	background: 168,0,28,28
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
 
 sidebar-bits: chrome.png
 	production-tooltip-time: 416, 80, 16, 16
@@ -78,6 +206,9 @@ order-icons: chrome.png
 	options: 480,0,16,16
 	options-disabled: 480,16,16,16
 	options-active: 480,32,16,16
+	debug: 351,48,16,16
+	debug-disabled: 351,64,16,16
+	debug-active: 351,80,16,16
 	diplomacy: 464,48,16,16
 	diplomacy-disabled: 464,64,16,16
 	diplomacy-active: 464,80,16,16
@@ -103,6 +234,8 @@ sidebar-observer: chrome.png
 	observer-bottom: 512,495,238,8
 
 sidebar-button-observershroud: chrome.png
+sidebar-button-observershroud-pressed: chrome.png
+sidebar-button-observershroud-hover: chrome.png
 
 sidebar-button-observer: chrome.png
 	background: 117,33,18,18
@@ -336,10 +469,23 @@ strategic: strategic.png
 	player_owned: 96,0,32,32
 
 flags: buttons.png
-	allies: 30,112,30,15
 	soviet: 0,112,30,15
-	random: 60,112,30,15
+	allies: 30,112,30,15
+	Random: 60,112,30,15
+	RandomAllies: 30,172,30,15
+	RandomSoviet: 0,172,30,15
 	spectator: 60,112,30,15
+	
+	russia: 0,127,30,15
+	ukraine: 30,127,30,15
+	england: 60,127,30,15
+	
+	germany: 0,142,30,15
+	spain: 30,142,30,15
+	france: 60,142,30,15
+	
+	turkey: 0,157,30,15
+	greece: 30,157,30,15
 
 music: musicplayer.png
 	pause: 0,0,25,25
@@ -351,10 +497,10 @@ music: musicplayer.png
 	slowmo: 168,0,25,25
 
 scrollbar: buttons.png
-	down_arrow: 16,140,16,16
-	down_pressed: 16,140,16,16
-	up_arrow: 32,140,16,16
-	up_pressed: 32,140,16,16
+	down_arrow: 116,140,16,16
+	down_pressed: 116,140,16,16
+	up_arrow: 132,140,16,16
+	up_pressed: 132,140,16,16
 
 # A copy of dialog3 (pressed button)
 progressbar-bg: dialog.png
@@ -728,10 +874,10 @@ checkbox: dialog.png
 	corner-br: 767,127,1,1
 
 checkbox-bits: buttons.png
-	checked: 0,157,16,16
-	checked-disabled: 0,173,16,16
-	crossed: 16,157,16,16
-	crossed-disabled: 16,173,16,16
+	checked: 100,157,16,16
+	checked-disabled: 100,173,16,16
+	crossed: 116,157,16,16
+	crossed-disabled: 116,173,16,16
 
 checkbox-hover: dialog.png
 	background: 641,129,126,126
@@ -808,7 +954,6 @@ logos: loadscreen.png
 	logo: 0,0,256,256
 
 mainmenu-border: dialog.png
-	background: 688,427,40,40
 	border-r: 728,427,40,40
 	border-l: 648,427,40,40
 	border-b: 688,467,40,40
@@ -817,3 +962,7 @@ mainmenu-border: dialog.png
 	corner-tr: 728,387,40,40
 	corner-bl: 648,467,40,40
 	corner-br: 728,467,40,40
+
+dropdown: dialog.png
+    separator: 512,1,1,19
+    observer-separator: 768,256,1,19

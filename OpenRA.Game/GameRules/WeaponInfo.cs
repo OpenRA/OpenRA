@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,8 +19,9 @@ namespace OpenRA.GameRules
 	public class ProjectileArgs
 	{
 		public WeaponInfo Weapon;
-		public IEnumerable<int> DamageModifiers;
-		public IEnumerable<int> InaccuracyModifiers;
+		public int[] DamageModifiers;
+		public int[] InaccuracyModifiers;
+		public int[] RangeModifiers;
 		public int Facing;
 		public WPos Source;
 		public Actor SourceActor;
@@ -30,10 +31,10 @@ namespace OpenRA.GameRules
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
 
-	public class WeaponInfo
+	public sealed class WeaponInfo
 	{
 		[Desc("The maximum range the weapon can fire.")]
-		public readonly WRange Range = WRange.Zero;
+		public readonly WDist Range = WDist.Zero;
 
 		[Desc("The sound played when the weapon is fired.")]
 		public readonly string[] Report = null;
@@ -46,25 +47,23 @@ namespace OpenRA.GameRules
 
 		public readonly bool Charges = false;
 
-		public readonly string Palette = "effect";
-
 		[Desc("What types of targets are affected.")]
-		public readonly string[] ValidTargets = { "Ground", "Water" };
+		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
-		public readonly string[] InvalidTargets = { };
+		public readonly HashSet<string> InvalidTargets = new HashSet<string>();
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine.")]
 		public readonly int BurstDelay = 5;
 
 		[Desc("The minimum range the weapon can fire.")]
-		public readonly WRange MinRange = WRange.Zero;
+		public readonly WDist MinRange = WDist.Zero;
 
 		[FieldLoader.LoadUsing("LoadProjectile")]
 		public readonly IProjectileInfo Projectile;
 
 		[FieldLoader.LoadUsing("LoadWarheads")]
-		public readonly List<Warhead> Warheads = new List<Warhead>();
+		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
 		public WeaponInfo(string name, MiniYaml content)
 		{
@@ -83,15 +82,20 @@ namespace OpenRA.GameRules
 
 		static object LoadWarheads(MiniYaml yaml)
 		{
-			var retList = new List<Warhead>();
+			var retList = new List<IWarhead>();
 			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead")))
 			{
-				var ret = Game.CreateObject<Warhead>(node.Value.Value + "Warhead");
+				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
 				FieldLoader.Load(ret, node.Value);
 				retList.Add(ret);
 			}
 
 			return retList;
+		}
+
+		public bool IsValidTarget(IEnumerable<string> targetTypes)
+		{
+			return ValidTargets.Overlaps(targetTypes) && !InvalidTargets.Overlaps(targetTypes);
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
@@ -110,8 +114,7 @@ namespace OpenRA.GameRules
 					return false;
 
 				var cellInfo = world.Map.GetTerrainInfo(cell);
-				if (!ValidTargets.Intersect(cellInfo.TargetTypes).Any()
-					|| InvalidTargets.Intersect(cellInfo.TargetTypes).Any())
+				if (!IsValidTarget(cellInfo.TargetTypes))
 					return false;
 
 				return true;
@@ -123,9 +126,8 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var targetable = victim.TraitOrDefault<ITargetable>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any()
-				|| InvalidTargets.Intersect(targetable.TargetTypes).Any())
+			var targetable = victim.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
+			if (!IsValidTarget(targetable.SelectMany(t => t.TargetTypes)))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
@@ -137,9 +139,7 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			var targetable = victim.Info.Traits.GetOrDefault<ITargetableInfo>();
-			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any()
-				|| InvalidTargets.Intersect(targetable.GetTargetTypes()).Any())
+			if (!IsValidTarget(victim.TargetTypes))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))

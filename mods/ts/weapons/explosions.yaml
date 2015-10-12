@@ -1,0 +1,67 @@
+UnitExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: large_twlt
+		ImpactSound: expnew09.aud
+
+UnitExplodeSmall:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 40
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosion: medium_brnl
+		ImpactSound: expnew13.aud
+
+TiberiumExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@3Eff: CreateEffect
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
+
+SmallDebris:
+	ReloadDelay: 60
+	Range: 4c0
+	Report:
+	Projectile: Bullet
+		Speed: 50, 125
+		Angle: 91, 264
+		Image: dbrissm
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true
+
+LargeDebris:
+	ReloadDelay: 60
+	Range: 4c0
+	Report:
+	Projectile: Bullet
+		Speed: 50, 125
+		Angle: 91, 264
+		Image: dbrislg
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true

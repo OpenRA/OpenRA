@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Power;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
@@ -19,18 +19,20 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Actor a;
 		readonly Animation anim;
+		readonly CanPowerDown canPowerDown;
 
 		public PowerdownIndicator(Actor a)
 		{
 			this.a = a;
+			canPowerDown = a.Trait<CanPowerDown>();
 
-			anim = new Animation(a.World, "poweroff");
-			anim.PlayRepeating("offline");
+			anim = new Animation(a.World, canPowerDown.Info.IndicatorImage);
+			anim.PlayRepeating(canPowerDown.Info.IndicatorSequence);
 		}
 
 		public void Tick(World world)
 		{
-			if (!a.IsInWorld || a.IsDead() || !a.Trait<CanPowerDown>().Disabled)
+			if (!a.IsInWorld || a.IsDead || !canPowerDown.Disabled)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
@@ -38,10 +40,10 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (a.Destroyed || wr.world.FogObscures(a))
+			if (a.Disposed || wr.World.FogObscures(a))
 				return SpriteRenderable.None;
 
-			return anim.Render(a.CenterPosition, wr.Palette("chrome"));
+			return anim.Render(a.CenterPosition, wr.Palette(canPowerDown.Info.IndicatorPalette));
 		}
 	}
 }

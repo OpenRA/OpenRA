@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -43,22 +43,18 @@ namespace OpenRA.Network
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
 		public IConnection Connection { get; private set; }
 
-		public readonly int SyncHeaderSize = 9;
-
 		List<Order> localOrders = new List<Order>();
 
 		List<ChatLine> chatCache = new List<ChatLine>();
 
 		public readonly ReadOnlyList<ChatLine> ChatCache;
 
-		static void OutOfSync(int frame)
-		{
-			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
-		}
+		bool disposed;
 
-		static void OutOfSync(int frame, string blame)
+		void OutOfSync(int frame)
 		{
-			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n Compare syncreport.log with other players.".F(frame, blame));
+			syncReport.DumpSyncReport(frame, frameData.OrdersForFrame(World, frame));
+			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
 		}
 
 		public void StartGame()
@@ -122,8 +118,16 @@ namespace OpenRA.Network
 				});
 
 			foreach (var p in immediatePackets)
+			{
 				foreach (var o in p.Second.ToOrderList(World))
+				{
 					UnitOrders.ProcessOrder(this, World, p.First, o);
+
+					// A mod switch or other event has pulled the ground from beneath us
+					if (disposed)
+						return;
+				}
+			}
 		}
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
@@ -135,39 +139,14 @@ namespace OpenRA.Network
 			if (syncForFrame.TryGetValue(frame, out existingSync))
 			{
 				if (packet.Length != existingSync.Length)
-				{
-					syncReport.DumpSyncReport(frame);
 					OutOfSync(frame);
-				}
 				else
-				{
 					for (var i = 0; i < packet.Length; i++)
-					{
 						if (packet[i] != existingSync[i])
-						{
-							syncReport.DumpSyncReport(frame);
-
-							if (i < SyncHeaderSize)
-								OutOfSync(frame, "Tick");
-							else
-								OutOfSync(frame, (i - SyncHeaderSize) / 4);
-						}
-					}
-				}
+							OutOfSync(frame);
 			}
 			else
 				syncForFrame.Add(frame, packet);
-		}
-
-		void OutOfSync(int frame, int index)
-		{
-			var orders = frameData.OrdersForFrame(World, frame);
-
-			// Invalid index
-			if (index >= orders.Count())
-				OutOfSync(frame);
-
-			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}\n Compare syncreport.log with other players.".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
 
 		public bool IsReadyForNextFrame
@@ -194,17 +173,10 @@ namespace OpenRA.Network
 			Connection.Send(NetFrameNumber + FramesAhead, localOrders.Select(o => o.Serialize()).ToList());
 			localOrders.Clear();
 
-			var sync = new List<int>();
-			sync.Add(World.SyncHash());
-
 			foreach (var order in frameData.OrdersForFrame(World, NetFrameNumber))
-			{
 				UnitOrders.ProcessOrder(this, World, order.Client, order.Order);
-				sync.Add(World.SyncHash());
-			}
 
-			var ss = sync.SerializeSync();
-			Connection.SendSync(NetFrameNumber, ss);
+			Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 
 			syncReport.UpdateSyncReport();
 
@@ -213,6 +185,7 @@ namespace OpenRA.Network
 
 		public void Dispose()
 		{
+			disposed = true;
 			if (Connection != null)
 				Connection.Dispose();
 		}

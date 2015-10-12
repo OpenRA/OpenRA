@@ -5,7 +5,6 @@ shellmapbits: chrome.png
 	record: 288,16,16,16
 
 logos: chrome.png
-	install:128,0,128,128
 	eva:256,64,128,64
 	nod-load:0,256,256,256
 	gdi-load:256,256,256,256
@@ -414,6 +413,16 @@ panel-allblack: chrome.png
 	corner-bl: 0,62,2,2
 	corner-br: 62,62,2,2
 
+panel-transparent: chrome.png
+	border-r: 190,2,2,60
+	border-l: 128,2,2,60
+	border-b: 130,62,60,2
+	border-t: 130,0,60,2
+	corner-tl: 128,0,2,2
+	corner-tr: 190,0,2,2
+	corner-bl: 128,62,2,2
+	corner-br: 190,62,2,2
+
 shellmapborder: chrome.png
 	border-t: 161,128,62,33
 	border-b: 161,223,62,33
@@ -423,7 +432,6 @@ shellmapborder: chrome.png
 	corner-tr: 223,128,33,33
 	corner-bl: 128,223,33,33
 	corner-br: 223,223,33,33
-	background: 161,161,62,62
 
 music: chrome.png
 	pause: 256,0,16,16
@@ -461,7 +469,7 @@ scrollbar: chrome.png
 flags: chrome.png
 	nod: 352,0,32,16
 	gdi: 352,16,32,16
-	random: 352,32,32,16
+	Random: 352,32,32,16
 
 strategic: strategic.png
 	unowned: 0,0,32,32
@@ -512,3 +520,6 @@ order-icons: chrome.png
 	stats: 480,96,16,16
 	stats-disabled: 480,112,16,16
 	stats-active: 480,128,16,16
+
+dropdown: chrome.png
+    separator: 64,1,1,19

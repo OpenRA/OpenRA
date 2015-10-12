@@ -1,6 +1,4 @@
-Selectable: False
-
-MapFormat: 6
+MapFormat: 7
 
 RequiresMod: cnc
 
@@ -10,31 +8,38 @@ Description: Nod has captured classified GDI property.\n\nYou must find and retr
 
 Author: Westwood Studios
 
-PreviewVideo: gdi4b.vqa
-
 Tileset: TEMPERAT
 
 MapSize: 64,64
 
 Bounds: 5,11,50,38
 
-UseAsShellmap: False
+Visibility: MissionSelector
 
 Type: Campaign
 
+Videos:
+	BackgroundInfo: bkground.vqa
+	Briefing: gdi4b.vqa
+	GameStart: nitejump.vqa
+	GameWon: burdet1.vqa
+	GameLost: gameover.vqa
+
 Options:
 	Crates: False
+	Creeps: False
 	Fog: True
 	Shroud: True
 	AllyBuildRadius: False
 	FragileAlliances: False
 	StartingCash: 0
 	ConfigurableStartingUnits: False
+	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
 		Name: Nod
-		Race: nod
+		Faction: nod
 		ColorRamp: 3,255,127
 		Allies: Nod
 		Enemies: GDI
@@ -43,8 +48,8 @@ Players:
 		Playable: True
 		AllowBots: False
 		Required: True
-		LockRace: True
-		Race: gdi
+		LockFaction: True
+		Faction: gdi
 		LockColor: True
 		ColorRamp: 31,222,183
 		LockSpawn: True
@@ -55,41 +60,36 @@ Players:
 		Name: Neutral
 		OwnsWorld: True
 		NonCombatant: True
-		Race: gdi
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Race: Random
-		Enemies: Nod, GDI
+		Faction: gdi
 
 Actors:
 	Actor0: sbag
 		Location: 10,18
-		Owner: Neutral
+		Owner: Nod
 	Actor1: sbag
 		Location: 9,18
-		Owner: Neutral
+		Owner: Nod
 	Actor2: sbag
 		Location: 8,18
-		Owner: Neutral
+		Owner: Nod
 	Actor3: sbag
 		Location: 7,18
-		Owner: Neutral
+		Owner: Nod
 	Actor4: sbag
 		Location: 7,17
-		Owner: Neutral
+		Owner: Nod
 	Actor5: sbag
 		Location: 6,17
-		Owner: Neutral
+		Owner: Nod
 	Actor6: sbag
 		Location: 6,16
-		Owner: Neutral
+		Owner: Nod
 	Actor7: sbag
 		Location: 6,15
-		Owner: Neutral
+		Owner: Nod
 	Actor8: sbag
 		Location: 6,14
-		Owner: Neutral
+		Owner: Nod
 	Actor9: cycl
 		Location: 15,13
 		Owner: Neutral
@@ -98,7 +98,7 @@ Actors:
 		Owner: Neutral
 	Actor11: sbag
 		Location: 6,13
-		Owner: Neutral
+		Owner: Nod
 	Actor12: cycl
 		Location: 15,12
 		Owner: Neutral
@@ -110,37 +110,37 @@ Actors:
 		Owner: Neutral
 	Actor15: sbag
 		Location: 6,12
-		Owner: Neutral
+		Owner: Nod
 	Actor16: sbag
 		Location: 15,11
-		Owner: Neutral
+		Owner: Nod
 	Actor17: sbag
 		Location: 14,11
-		Owner: Neutral
+		Owner: Nod
 	Actor18: sbag
 		Location: 13,11
-		Owner: Neutral
+		Owner: Nod
 	Actor19: sbag
 		Location: 12,11
-		Owner: Neutral
+		Owner: Nod
 	Actor20: sbag
 		Location: 11,11
-		Owner: Neutral
+		Owner: Nod
 	Actor21: sbag
 		Location: 10,11
-		Owner: Neutral
+		Owner: Nod
 	Actor22: sbag
 		Location: 9,11
-		Owner: Neutral
+		Owner: Nod
 	Actor23: sbag
 		Location: 8,11
-		Owner: Neutral
+		Owner: Nod
 	Actor24: sbag
 		Location: 7,11
-		Owner: Neutral
+		Owner: Nod
 	Actor25: sbag
 		Location: 6,11
-		Owner: Neutral
+		Owner: Nod
 	Actor26: t05
 		Location: 18,42
 		Owner: Neutral
@@ -324,254 +324,200 @@ Actors:
 	Actor86: t05
 		Location: 35,23
 		Owner: Neutral
-	HandOfNod: hand
-		Location: 15,14
-		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor88: nuke
 		Location: 11,12
 		Owner: Nod
-		Health: 1
-		Facing: 0
 	Actor89: hq
 		Location: 10,14
 		Owner: Nod
-		Health: 1
-		Facing: 0
-	Hunter1: bggy
-		Location: 27,37
-		Owner: Nod
-		Health: 1
-		Facing: 0
-	Hunter2: bggy
-		Location: 41,29
-		Owner: Nod
-		Health: 1
-		Facing: 128
 	Actor92: jeep
 		Location: 49,45
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor93: bggy
 		Location: 10,23
 		Owner: Nod
-		Health: 1
 		Facing: 96
 	Actor94: apc
 		Location: 48,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor95: apc
 		Location: 51,45
 		Owner: GDI
-		Health: 1
 		Facing: 224
 	Actor96: bggy
 		Location: 34,18
 		Owner: Nod
-		Health: 1
 		Facing: 64
 	Actor97: bggy
 		Location: 53,26
 		Owner: Nod
-		Health: 1
 		Facing: 128
-	tank: ltnk
-		Location: 8,17
-		Owner: Nod
-		Health: 1
-		Facing: 96
 	Actor99: e3
 		Location: 8,45
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor100: e3
 		Location: 9,45
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor101: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor102: e3
 		Location: 36,15
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 2
 	Actor103: e1
 		Location: 50,47
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 1
 	Actor104: e3
 		Location: 25,33
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 3
 	Actor105: e1
 		Location: 11,46
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 3
 	Actor106: e1
 		Location: 30,37
 		Owner: Nod
-		Health: 1
 		Facing: 32
 		SubCell: 3
 	Actor107: e3
 		Location: 17,44
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 0
 	Actor108: e1
 		Location: 23,33
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 0
 	Actor109: e1
 		Location: 28,31
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 1
 	Actor110: e1
 		Location: 10,31
 		Owner: Nod
-		Health: 1
 		Facing: 160
 		SubCell: 0
 	Actor111: e3
 		Location: 33,20
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 2
 	Actor112: e3
 		Location: 25,18
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 0
 	Actor113: e1
 		Location: 49,46
 		Owner: GDI
-		Health: 1
-		Facing: 0
 		SubCell: 4
 	Actor114: e1
 		Location: 49,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor115: e1
 		Location: 49,47
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor116: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 2
 	Actor117: e2
 		Location: 51,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 4
 	Actor118: e2
 		Location: 52,46
 		Owner: GDI
-		Health: 1
 		Facing: 224
 		SubCell: 3
 	Actor119: e3
 		Location: 39,32
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 4
 	Actor120: e3
 		Location: 12,16
 		Owner: Nod
-		Health: 1
 		Facing: 96
 		SubCell: 2
 	Actor121: e1
 		Location: 10,35
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 4
 	Actor122: e1
 		Location: 12,20
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor123: e1
 		Location: 14,20
 		Owner: Nod
-		Health: 1
 		Facing: 128
 		SubCell: 4
 	Actor124: e3
 		Location: 52,29
 		Owner: Nod
-		Health: 1
 		Facing: 64
 		SubCell: 3
 	Actor125: e3
 		Location: 8,31
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 0
 	Actor126: e3
 		Location: 19,25
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
+	tank: ltnk
+		Location: 8,17
+		Owner: Nod
+		Facing: 96
+	HandOfNod: hand
+		Location: 15,14
+		Owner: Nod
+	Hunter1: bggy
+		Location: 27,37
+		Owner: Nod
+	Hunter2: bggy
+		Location: 41,29
+		Owner: Nod
+		Facing: 128
 	Hunter3: e3
 		Location: 37,36
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Hunter4: e3
 		Location: 38,35
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 1
 	Hunter5: e3
 		Location: 38,35
 		Owner: Nod
-		Health: 1
-		Facing: 0
 		SubCell: 4
-	waypoint26: waypoint
-		Location: 42,41
+	crate: CRATE.plain
+		Location: 14,13
+		Owner: Neutral
+	HeliEntry: waypoint
+		Location: 4,26
 		Owner: Neutral
 	GDIHeliLZ: waypoint
 		Location: 8,14
@@ -579,29 +525,23 @@ Actors:
 	NodHeliLZ: waypoint
 		Location: 40,30
 		Owner: Neutral
-	waypoint4: waypoint
-		Location: 18,47
-		Owner: Neutral
-	waypoint3: waypoint
-		Location: 11,42
-		Owner: Neutral
-	waypoint2: waypoint
-		Location: 12,28
-		Owner: Neutral
-	waypoint1: waypoint
+	NodPatrol1: waypoint
 		Location: 13,19
 		Owner: Neutral
-	GDIReinforcementsWP1: waypoint
-		Location: 50,45
+	NodPatrol2: waypoint
+		Location: 12,28
 		Owner: Neutral
-	crate: CRATE.plain
-		Location: 14,13
+	NodPatrol3: waypoint
+		Location: 11,42
 		Owner: Neutral
-	HeliEntry: waypoint
-		Location: 4,26
+	NodPatrol4: waypoint
+		Location: 18,47
 		Owner: Neutral
 	GDIReinforcementsEntry: waypoint
 		Location: 54,45
+		Owner: Neutral
+	GDIReinforcementsWP1: waypoint
+		Location: 50,45
 		Owner: Neutral
 
 Smudges:
@@ -615,17 +555,17 @@ Rules:
 			Scripts: gdi04b.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MusicPlaylist:
+			StartingMusic: fist226m
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
 	^Vehicle:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Tank:
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
@@ -634,9 +574,6 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 	^Infantry:
-		SpawnViceroid:
-			Probability: 0
-		MustBeDestroyed:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false

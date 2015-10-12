@@ -5,6 +5,7 @@ Background@MUSIC_PANEL:
 	Width: 360
 	Height: 450
 	Children:
+		LogicTicker@SONG_WATCHER:
 		ScrollPanel@MUSIC_LIST:
 			X: 15
 			Y: 45

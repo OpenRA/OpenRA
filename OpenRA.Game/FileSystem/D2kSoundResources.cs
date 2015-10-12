@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,7 +14,7 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public class D2kSoundResources : IFolder
+	public sealed class D2kSoundResources : IFolder
 	{
 		readonly Stream s;
 
@@ -30,22 +30,28 @@ namespace OpenRA.FileSystem
 			this.priority = priority;
 
 			s = GlobalFileSystem.Open(filename);
-			s.Seek(0, SeekOrigin.Begin);
-
-			filenames = new List<string>();
-
-			var headerLength = s.ReadUInt32();
-			while (s.Position < headerLength + 4)
+			try
 			{
-				var name = s.ReadASCIIZ();
-				var offset = s.ReadUInt32();
-				var length = s.ReadUInt32();
+				filenames = new List<string>();
 
-				var hash = PackageEntry.HashFilename(name, PackageHashType.Classic);
-				if (!index.ContainsKey(hash))
-					index.Add(hash, new PackageEntry(hash, offset, length));
+				var headerLength = s.ReadUInt32();
+				while (s.Position < headerLength + 4)
+				{
+					var name = s.ReadASCIIZ();
+					var offset = s.ReadUInt32();
+					var length = s.ReadUInt32();
 
-				filenames.Add(name);
+					var hash = PackageEntry.HashFilename(name, PackageHashType.Classic);
+					if (!index.ContainsKey(hash))
+						index.Add(hash, new PackageEntry(hash, offset, length));
+
+					filenames.Add(name);
+				}
+			}
+			catch
+			{
+				Dispose();
+				throw;
 			}
 		}
 
@@ -76,7 +82,7 @@ namespace OpenRA.FileSystem
 
 		public string Name { get { return filename; } }
 
-		public int Priority { get { return 1000 + priority; }}
+		public int Priority { get { return 1000 + priority; } }
 
 		public IEnumerable<uint> ClassicHashes()
 		{
@@ -91,6 +97,11 @@ namespace OpenRA.FileSystem
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			throw new NotImplementedException("Cannot save Dune 2000 Sound Resources.");
+		}
+
+		public void Dispose()
+		{
+			s.Dispose();
 		}
 	}
 }

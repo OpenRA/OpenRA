@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,7 +22,7 @@ namespace OpenRA
 		public readonly int X, Y, Z;
 
 		public WPos(int x, int y, int z) { X = x; Y = y; Z = z; }
-		public WPos(WRange x, WRange y, WRange z) { X = x.Range; Y = y.Range; Z = z.Range; }
+		public WPos(WDist x, WDist y, WDist z) { X = x.Length; Y = y.Length; Z = z.Length; }
 
 		public static readonly WPos Zero = new WPos(0, 0, 0);
 
@@ -32,9 +32,12 @@ namespace OpenRA
 		public static WPos operator -(WPos a, WVec b) { return new WPos(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
 		public static WVec operator -(WPos a, WPos b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
 
-		public static bool operator ==(WPos me, WPos other) { return (me.X == other.X && me.Y == other.Y && me.Z == other.Z); }
+		public static bool operator ==(WPos me, WPos other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
 		public static bool operator !=(WPos me, WPos other) { return !(me == other); }
 
+		/// <summary>
+		/// Returns the linear interpolation between points 'a' and 'b'
+		/// </summary>
 		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)

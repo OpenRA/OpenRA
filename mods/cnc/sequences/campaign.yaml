@@ -1,19 +1,15 @@
 lst:
 	idle: lstnew
-		Start: 0
 		Facings: 32
 	unload: lstnew
-		Start: 0
 		Facings: 32
 	roof: lstnew2
-		Start: 0
 		Facings: 32
-	icon: lsticnh
-		Start: 0
+	icon: lsticnh.tem
+		AddExtension: False
 
 boat:
 	left:
-		Start: 0
 		Facings: 32
 	damaged-left:
 		Start: 32
@@ -36,9 +32,8 @@ boat:
 		Start: 160
 		Facings: 32
 	wake-right: wake
-		Start: 0
 		Length: 6
 		Offset: -1,2
 		Tick: 120
-	icon: boaticnh
-		Start: 0
+	icon: boaticnh.tem
+		AddExtension: False

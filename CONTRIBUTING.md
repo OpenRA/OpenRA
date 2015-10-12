@@ -4,7 +4,10 @@
 
 * Have you read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ)?
 * Add the appropriate log files on crashes.
+* Mention the version you have tested against.
 * Please be specific on how to reproduce the problem.
+* Do not submit duplicate issues. Search first.
+* Avoid including multiple requests/bugs into a single issue.
 
 ## Patches
 

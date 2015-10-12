@@ -61,7 +61,7 @@ Background@MISSIONBROWSER_PANEL:
 				ScrollPanel@MISSION_DESCRIPTION_PANEL:
 					Y: 212
 					Width: PARENT_RIGHT
-					Height: 165
+					Height: 130
 					Children:
 						Label@MISSION_DESCRIPTION:
 							X: 4
@@ -69,19 +69,59 @@ Background@MISSIONBROWSER_PANEL:
 							Width: PARENT_RIGHT - 32
 							VAlign: Top
 							Font: Small
-		Button@START_VIDEO_BUTTON:
+				Label@DIFFICULTY_DESC:
+					Y: 352
+					Width: 56
+					Height: 25
+					Text: Difficulty:
+					Align: Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: 61
+					Y: 352
+					Width: 120
+					Height: 25
+					Font: Regular
+				Label@GAMESPEED_DESC:
+					X: PARENT_RIGHT - WIDTH - 125
+					Y: 352
+					Width: 120
+					Height: 25
+					Text: Speed:
+					Align: Right
+				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 352
+					Width: 120
+					Height: 25
+					Font: Regular
+
+		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
-			Width: 120
+			Width: 130
 			Height: 25
-			Text: Play Briefing
+			Text: Watch Briefing
 			Font: Bold
-		Button@STOP_VIDEO_BUTTON:
+		Button@STOP_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
-			Width: 120
+			Width: 130
 			Height: 25
 			Text: Stop Briefing
+			Font: Bold
+		Button@START_INFO_VIDEO_BUTTON:
+			X: 160
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Watch Info Video
+			Font: Bold
+		Button@STOP_INFO_VIDEO_BUTTON:
+			X: 160
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Stop Info Video
 			Font: Bold
 		Button@STARTGAME_BUTTON:
 			X: PARENT_RIGHT - 140 - 130
@@ -110,3 +150,14 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+Background@FULLSCREEN_PLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: dialog5
+	Visible: False
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM

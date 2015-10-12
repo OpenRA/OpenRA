@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,59 +14,62 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModBrowserLogic
 	{
-		Widget modList;
-		ButtonWidget modTemplate;
-		ModMetadata[] allMods;
+		readonly Widget modList;
+		readonly ButtonWidget modTemplate;
+		readonly ModMetadata[] allMods;
+		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
+		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
+		readonly Cache<ModMetadata, bool> modInstallStatus;
+		readonly Widget modChooserPanel;
+		readonly ButtonWidget loadButton;
+		readonly SheetBuilder sheetBuilder;
 		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
-		Dictionary<string, Sprite> previews;
-		Dictionary<string, Sprite> logos;
 
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
 		{
-			var panel = widget;
-			var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
+			modChooserPanel = widget;
+			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
-			loadButton.IsDisabled = () => selectedMod.Id == Game.modData.Manifest.Mod.Id;
+			loadButton.IsDisabled = () => selectedMod.Id == Game.ModData.Manifest.Mod.Id;
 
-			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			modChooserPanel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
-			modList = panel.Get("MOD_LIST");
+			modList = modChooserPanel.Get("MOD_LIST");
 			modTemplate = modList.Get<ButtonWidget>("MOD_TEMPLATE");
 
-			panel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
-			panel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Title;
-			panel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
-			panel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Version;
+			modChooserPanel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
+			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Title;
+			modChooserPanel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
+			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Version;
 
-			var prevMod = panel.Get<ButtonWidget>("PREV_MOD");
+			var prevMod = modChooserPanel.Get<ButtonWidget>("PREV_MOD");
 			prevMod.OnClick = () => { modOffset -= 1; RebuildModList(); };
 			prevMod.IsVisible = () => modOffset > 0;
 
-			var nextMod = panel.Get<ButtonWidget>("NEXT_MOD");
+			var nextMod = modChooserPanel.Get<ButtonWidget>("NEXT_MOD");
 			nextMod.OnClick = () => { modOffset += 1; RebuildModList(); };
 			nextMod.IsVisible = () => modOffset + 5 < allMods.Length;
 
-			panel.Get<RGBASpriteWidget>("MOD_PREVIEW").GetSprite = () =>
+			modChooserPanel.Get<RGBASpriteWidget>("MOD_PREVIEW").GetSprite = () =>
 			{
 				Sprite ret = null;
 				previews.TryGetValue(selectedMod.Id, out ret);
 				return ret;
 			};
 
-			var sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			previews = new Dictionary<string, Sprite>();
-			logos = new Dictionary<string, Sprite>();
-			allMods = ModMetadata.AllMods.Values.Where(m => m.Id != "modchooser")
+			sheetBuilder = new SheetBuilder(SheetType.BGRA);
+			allMods = ModMetadata.AllMods.Values.Where(m => !m.Hidden)
 				.OrderBy(m => m.Title)
 				.ToArray();
 
@@ -75,29 +78,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					var preview = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "preview.png"));
-					if (preview.Width != 296 || preview.Height != 196)
-						continue;
-
-					previews.Add(mod.Id, sheetBuilder.Add(preview));
+					using (var preview = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "preview.png")))
+						if (preview.Width == 296 && preview.Height == 196)
+							previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
 				catch (Exception) { }
 
 				try
 				{
-					var logo = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "logo.png"));
-					if (logo.Width != 96 || logo.Height != 96)
-						continue;
-
-					logos.Add(mod.Id, sheetBuilder.Add(logo));
+					using (var logo = new Bitmap(Platform.ResolvePath(".", "mods", mod.Id, "logo.png")))
+						if (logo.Width == 96 && logo.Height == 96)
+							logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
 				catch (Exception) { }
 			}
 
+			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
 
-			ModMetadata initialMod = null;
+			ModMetadata initialMod;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
-			SelectMod(initialMod ?? ModMetadata.AllMods["ra"]);
+			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : ModMetadata.AllMods["ra"]);
 
 			RebuildModList();
 		}
@@ -119,6 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					break;
 
 				var mod = allMods[j];
+
 				var item = modTemplate.Clone() as ButtonWidget;
 				item.Bounds = new Rectangle(outerMargin + i * stride, 0, width, height);
 				item.IsHighlighted = () => selectedMod == mod;
@@ -154,15 +155,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
+
+			loadButton.Text = modInstallStatus[mod] ? "Load Mod" : "Install Assets";
 		}
 
-		static void LoadMod(ModMetadata mod)
+		void LoadMod(ModMetadata mod)
 		{
+			if (!modInstallStatus[mod])
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "continueLoading", () =>
+						Game.RunAfterTick(() => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments())) },
+					{ "mirrorListUrl", mod.Content.PackageMirrorList },
+					{ "modId", mod.Id }
+				};
+
+				Ui.OpenWindow("INSTALL_PANEL", widgetArgs);
+
+				return;
+			}
+
 			Game.RunAfterTick(() =>
 			{
 				Ui.CloseWindow();
+				sheetBuilder.Dispose();
 				Game.InitializeMod(mod.Id, null);
 			});
+		}
+
+		static bool IsModInstalled(ModMetadata mod)
+		{
+			return mod.Content.TestFiles.All(file => File.Exists(Path.GetFullPath(Platform.ResolvePath(file))));
 		}
 	}
 }

@@ -30,14 +30,12 @@ Background@COLOR_CHOOSER:
 					Y: 2
 					Width: 144
 					Height: 72
-		SpriteSequence@PREVIEW:
+		ActorPreview@PREVIEW:
 			X: 153
 			Y: 1
 			Width: 80
 			Height: 73
-			Palette: colorpicker
-			Unit: fact
-			Sequence: idle
+			Animate: true
 		Button@RANDOM_BUTTON:
 			Key: tab
 			X: 158

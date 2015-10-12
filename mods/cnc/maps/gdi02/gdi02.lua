@@ -49,7 +49,7 @@ NodAttack = function()
 	if #nodUnits > AttackerSquadSize * 2 then
 		local attackers = Utils.Skip(nodUnits, #nodUnits - AttackerSquadSize)
 		Utils.Do(attackers, function(unit)
-			unit.AttackMove(waypoint2.Location)
+			unit.AttackMove(NodAttackWaypoint.Location)
 			Trigger.OnIdle(unit, unit.Hunt)
 		end)
 		Trigger.OnAllKilled(attackers, function() Trigger.AfterDelay(DateTime.Seconds(15), NodAttack) end)
@@ -72,30 +72,15 @@ WorldLoaded = function()
 
 	Trigger.OnPlayerWon(player, function()
 		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("flag.vqa")
-		end)
 	end)
 
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("gameover.vqa")
-		end)
 	end)
 
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops")
-	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area")
-	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium Refinery")
-
-	-- Work around limitations with the yaml merger that prevent MustBeDestroyed from working on the silos
-	siloARemoved = false
-	Trigger.OnCapture(SiloA, function() siloARemoved = true end)
-	Trigger.OnKilled(SiloA, function() siloARemoved = true end)
-
-	siloBRemoved = false
-	Trigger.OnCapture(SiloB, function() siloBRemoved = true end)
-	Trigger.OnKilled(SiloB, function() siloBRemoved = true end)
+	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
+	gdiObjective1 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	gdiObjective2 = player.AddSecondaryObjective("Capture the Tiberium refinery.")
 
 	Trigger.OnCapture(NodRefinery, function() player.MarkCompletedObjective(gdiObjective2) end)
 	Trigger.OnKilled(NodRefinery, function() player.MarkFailedObjective(gdiObjective2) end)
@@ -107,7 +92,7 @@ Tick = function()
 	if player.HasNoRequiredUnits() then
 		enemy.MarkCompletedObjective(nodObjective)
 	end
-	if enemy.HasNoRequiredUnits() and siloARemoved and siloBRemoved then
+	if enemy.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(gdiObjective1)
 	end
 end

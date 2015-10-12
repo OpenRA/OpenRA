@@ -9,7 +9,7 @@ InsertYaks = function()
 		local yak = Actor.Create(yakType, true, { CenterPosition = start, Owner = player, Facing = (Map.CenterOfCell(dest) - start).Facing })
 		yak.Move(dest)
 		yak.ReturnToBase(Airfields[i])
-		i = i + i
+		i = i + 1
 	end)
 end
 
@@ -17,6 +17,7 @@ JeepDemolishingBridge = function()
 	StartJeep.Move(StartJeepMovePoint.Location)
 
 	Trigger.OnIdle(StartJeep, function()
+		Trigger.ClearAll(StartJeep)
 		if not BridgeBarrel.IsDead then
 			BridgeBarrel.Kill()
 		end
@@ -34,7 +35,6 @@ WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	france = Player.GetPlayer("France")
 	germany = Player.GetPlayer("Germany")
-	turkey = Player.GetPlayer("Turkey")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -46,38 +46,27 @@ WorldLoaded = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
 	end)
 
-	Media.PlayMovieFullscreen("flare.vqa", function()
-		CivilProtectionObjective = france.AddPrimaryObjective("Protect the civilians.")
-		VillageRaidObjective = player.AddPrimaryObjective("Raze the village.")
-		JeepDemolishingBridge()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "StartGame")
-		end)
+	VillageRaidObjective = player.AddPrimaryObjective("Raze the village.")
+
+	Trigger.OnAllRemovedFromWorld(Airfields, function()
+		player.MarkFailedObjective(VillageRaidObjective)
 	end)
 
+	JeepDemolishingBridge()
+
 	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("snstrafe.vqa")
-		end)
+		Media.PlaySpeechNotification(player, "MissionAccomplished")
 	end)
 
 	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlayMovieFullscreen("sfrozen.vqa")
-		end)
+		Media.PlaySpeechNotification(player, "MissionFailed")
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
 end
 
 Tick = function()
-	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() and turkey.HasNoRequiredUnits() then
+	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(VillageRaidObjective)
-	end
-
-	if player.HasNoRequiredUnits() then
-		france.MarkCompletedObjective(CivilProtectionObjective)
 	end
 end

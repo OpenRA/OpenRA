@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -28,22 +28,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		WorldRenderer worldRenderer;
 		SoundDevice soundDevice;
 
-		static readonly string originalSoundDevice;
-		static readonly string originalSoundEngine;
-		static readonly WindowMode originalGraphicsMode;
-		static readonly string originalGraphicsRenderer;
-		static readonly int2 originalGraphicsWindowedSize;
-		static readonly int2 originalGraphicsFullscreenSize;
+		static readonly string OriginalSoundDevice;
+		static readonly string OriginalSoundEngine;
+		static readonly WindowMode OriginalGraphicsMode;
+		static readonly string OriginalGraphicsRenderer;
+		static readonly int2 OriginalGraphicsWindowedSize;
+		static readonly int2 OriginalGraphicsFullscreenSize;
 
 		static SettingsLogic()
 		{
 			var original = Game.Settings;
-			originalSoundDevice = original.Sound.Device;
-			originalSoundEngine = original.Sound.Engine;
-			originalGraphicsMode = original.Graphics.Mode;
-			originalGraphicsRenderer = original.Graphics.Renderer;
-			originalGraphicsWindowedSize = original.Graphics.WindowedSize;
-			originalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
+			OriginalSoundDevice = original.Sound.Device;
+			OriginalSoundEngine = original.Sound.Engine;
+			OriginalGraphicsMode = original.Graphics.Mode;
+			OriginalGraphicsRenderer = original.Graphics.Renderer;
+			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
+			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				current.Save();
 
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
-				if (originalSoundDevice != current.Sound.Device ||
-					originalSoundEngine != current.Sound.Engine ||
-					originalGraphicsMode != current.Graphics.Mode ||
-					originalGraphicsRenderer != current.Graphics.Renderer ||
-					originalGraphicsWindowedSize != current.Graphics.WindowedSize ||
-					originalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
+				if (OriginalSoundDevice != current.Sound.Device ||
+					OriginalSoundEngine != current.Sound.Engine ||
+					OriginalGraphicsMode != current.Graphics.Mode ||
+					OriginalGraphicsRenderer != current.Graphics.Renderer ||
+					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
+					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.PromptConfirmAction(
 						"Restart Now?",
 						"Some changes will not be applied until\nthe game is restarted. Restart now?",
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var textBox = key.Get<HotkeyEntryWidget>("HOTKEY");
 			textBox.Key = (Hotkey)field.GetValue(ks);
-			textBox.OnLoseFocus = () =>	field.SetValue(ks, textBox.Key);
+			textBox.OnLoseFocus = () => field.SetValue(ks, textBox.Key);
 			parent.AddChild(key);
 		}
 
@@ -148,11 +148,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
+			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
+			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
@@ -173,8 +175,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
 
+			// Cursor doubling is only supported with software cursors and when pixel doubling is enabled
 			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
-			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble;
+			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble || Game.Cursor is HardwareCursor;
+
+			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
+			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -185,29 +191,71 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+			var escPressed = false;
 			frameLimitTextfield.OnLoseFocus = () =>
 			{
+				if (escPressed)
+				{
+					escPressed = false;
+					return;
+				}
+
 				int fps;
 				Exts.TryParseIntegerInvariant(frameLimitTextfield.Text, out fps);
 				ds.MaxFramerate = fps.Clamp(1, 1000);
 				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
 			};
+
 			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
+			frameLimitTextfield.OnEscKey = () =>
+			{
+				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
+				escPressed = true;
+				frameLimitTextfield.YieldKeyboardFocus();
+				return true;
+			};
+
 			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
 
 			// Player profile
 			var ps = Game.Settings.Player;
 
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
-			nameTextfield.Text = ps.Name;
+			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
+			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+			nameTextfield.OnLoseFocus = () =>
+			{
+				if (escPressed)
+				{
+					escPressed = false;
+					return;
+				}
+
+				nameTextfield.Text = nameTextfield.Text.Trim();
+				if (nameTextfield.Text.Length == 0)
+					nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+				else
+				{
+					nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
+					ps.Name = nameTextfield.Text;
+				}
+			};
+
 			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
-			nameTextfield.OnLoseFocus = () => { ps.Name = nameTextfield.Text; };
+			nameTextfield.OnEscKey = () =>
+			{
+				nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+				escPressed = true;
+				nameTextfield.YieldKeyboardFocus();
+				return true;
+			};
 
 			var colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
 			colorPreview.Color = ps.Color;
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
-			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.world);
+			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
+			colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorPreview, worldRenderer.World);
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color.RGB;
 
 			return () =>
@@ -252,7 +300,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var ss = Game.Settings.Sound;
 
-			BindCheckboxPref(panel, "SHELLMAP_MUSIC", ss, "MapMusic");
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
@@ -260,11 +307,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
 
 			// Update volume immediately
-			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Sound.SoundVolume = x;
-			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Sound.MusicVolume = x;
-			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Sound.VideoVolume = x;
+			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
+			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
+			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
 
-			var devices = Sound.AvailableDevices();
+			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
@@ -284,7 +331,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var dss = new SoundSettings();
 			return () =>
 			{
-				ss.MapMusic = dss.MapMusic;
 				ss.SoundVolume = dss.SoundVolume;
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
@@ -293,9 +339,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.Engine = dss.Engine;
 
 				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;
+				Game.Sound.SoundVolume = ss.SoundVolume;
 				panel.Get<SliderWidget>("MUSIC_VOLUME").Value = ss.MusicVolume;
+				Game.Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
-				soundDevice = Sound.AvailableDevices().First();
+				Game.Sound.VideoVolume = ss.VideoVolume;
+				soundDevice = Game.Sound.AvailableDevices().First();
 			};
 		}
 
@@ -332,7 +381,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
 			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
 			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
+			var developerTemplate = hotkeyList.Get("DEVELOPER_TEMPLATE");
 			hotkeyList.RemoveChildren();
+
+			Func<bool> returnTrue = () => true;
+			Action doNothing = () => { };
 
 			// Game
 			{
@@ -357,9 +410,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					{ "ToggleStatusBarsKey", "Toggle status bars" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+
+					{ "MapScrollUp", "Map scroll up" },
+					{ "MapScrollDown", "Map scroll down" },
+					{ "MapScrollLeft", "Map scroll left" },
+					{ "MapScrollRight", "Map scroll right" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
 				hotkeyList.AddChild(header);
 
@@ -375,7 +433,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "ObserverWorldView", "Disable Shroud" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
 				hotkeyList.AddChild(header);
 
@@ -395,7 +453,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "GuardKey", "Guard" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
 				hotkeyList.AddChild(header);
 
@@ -405,12 +463,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Production
 			{
-				var hotkeys = new Dictionary<string, string>();
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "ProductionTypeBuildingKey", "Building Tab" },
+					{ "ProductionTypeDefenseKey", "Defense Tab" },
+					{ "ProductionTypeInfantryKey", "Infantry Tab" },
+					{ "ProductionTypeVehicleKey", "Vehicle Tab" },
+					{ "ProductionTypeAircraftKey", "Aircraft Tab" },
+					{ "ProductionTypeNavalKey", "Naval Tab" },
+					{ "ProductionTypeTankKey", "Tank Tab" },
+					{ "ProductionTypeMerchantKey", "Starport Tab" },
+					{ "ProductionTypeUpgradeKey", "Upgrade Tab" }
+				};
+
 				for (var i = 1; i <= 24; i++)
 					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
+			}
+
+			// Support powers
+			{
+				var hotkeys = new Dictionary<string, string>();
+				for (var i = 1; i <= 6; i++)
+					hotkeys.Add("SupportPower{0:D2}Key".F(i), "Slot {0}".F(i));
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Support Power Commands";
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -421,27 +505,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "DevReloadChromeKey", "Reload Chrome" }
+					{ "DevReloadChromeKey", "Reload Chrome" },
+					{ "HideUserInterfaceKey", "Hide UI" },
+					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 
-				var header = ScrollItemWidget.Setup(hotkeyHeader, () => true, () => {});
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Developer commands";
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
-			return () =>
-			{
-				// Remove focus from the selected hotkey widget
-				// This is a bit of a hack, but works
-				if (Ui.KeyboardFocusWidget != null && panel.GetOrNull(Ui.KeyboardFocusWidget.Id) != null)
-				{
-					Ui.KeyboardFocusWidget.YieldKeyboardFocus();
-					Ui.KeyboardFocusWidget = null;
-				}
-			};
+			return () => { };
 		}
 
 		Action ResetInputPanel(Widget panel)
@@ -516,13 +593,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "Disabled", MouseScrollType.Disabled },
 				{ "Standard", MouseScrollType.Standard },
 				{ "Inverted", MouseScrollType.Inverted },
+				{ "Joystick", MouseScrollType.Joystick },
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => s.MouseScroll == options[o],
-				                                  () => s.MouseScroll = options[o]);
+					() => s.MouseScroll == options[o],
+					() => s.MouseScroll = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
@@ -585,7 +663,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.modData.Languages, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
 			return true;
 		}
 

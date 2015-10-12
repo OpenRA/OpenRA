@@ -37,6 +37,7 @@ Rules:
 	./mods/ra/rules/misc.yaml
 	./mods/ra/rules/ai.yaml
 	./mods/ra/rules/player.yaml
+	./mods/ra/rules/palettes.yaml
 	./mods/ra/rules/world.yaml
 	./mods/ra/rules/defaults.yaml
 	./mods/ra/rules/vehicles.yaml
@@ -47,6 +48,7 @@ Rules:
 	./mods/ra/rules/decoration.yaml
 	./mods/ra/rules/aircraft.yaml
 	./mods/ra/rules/ships.yaml
+	./mods/ra/rules/fakes.yaml
 
 Sequences:
 	./mods/ra/sequences/ships.yaml
@@ -56,6 +58,12 @@ Sequences:
 	./mods/ra/sequences/aircraft.yaml
 	./mods/ra/sequences/misc.yaml
 	./mods/ra/sequences/decorations.yaml
+
+TileSets:
+	./mods/ra/tilesets/snow.yaml
+	./mods/ra/tilesets/interior.yaml
+	./mods/ra/tilesets/temperat.yaml
+	./mods/ra/tilesets/desert.yaml
 
 Cursors:
 	./mods/ra/cursors.yaml
@@ -67,10 +75,8 @@ Assemblies:
 	./mods/common/OpenRA.Mods.Common.dll
 	./mods/ra/OpenRA.Mods.RA.dll
 	./mods/cnc/OpenRA.Mods.Cnc.dll
-	./mods/d2k/OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	./mods/ra/chrome/install.yaml
 	./mods/ra/chrome/ingame.yaml
 	./mods/ra/chrome/ingame-chat.yaml
 	./mods/ra/chrome/ingame-diplomacy.yaml
@@ -80,19 +86,21 @@ ChromeLayout:
 	./mods/ra/chrome/ingame-infobriefing.yaml
 	./mods/ra/chrome/ingame-infoobjectives.yaml
 	./mods/ra/chrome/ingame-infostats.yaml
-	./mods/ra/chrome/ingame-leavemap.yaml
 	./mods/ra/chrome/ingame-menu.yaml
 	./mods/ra/chrome/ingame-observer.yaml
 	./mods/ra/chrome/ingame-observerstats.yaml
 	./mods/ra/chrome/ingame-player.yaml
+	./mods/ra/chrome/ingame-perf.yaml
 	./mods/ra/chrome/ingame-debug.yaml
 	./mods/ra/chrome/mainmenu.yaml
 	./mods/ra/chrome/settings.yaml
 	./mods/ra/chrome/credits.yaml
 	./mods/ra/chrome/lobby.yaml
 	./mods/ra/chrome/lobby-mappreview.yaml
-	./mods/ra/chrome/lobby-playerbin.yaml
-	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/ra/chrome/lobby-players.yaml
+	./mods/ra/chrome/lobby-options.yaml
+	./mods/ra/chrome/lobby-music.yaml
+	./mods/ra/chrome/lobby-kickdialogs.yaml
 	./mods/ra/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
 	./mods/ra/chrome/create-server.yaml
@@ -106,46 +114,46 @@ ChromeLayout:
 	./mods/ra/chrome/assetbrowser.yaml
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
+	./mods/ra/chrome/editor.yaml
+	./mods/ra/chrome/irc.yaml
 
 Weapons:
-	./mods/ra/weapons.yaml
+	./mods/ra/weapons/explosions.yaml
+	./mods/ra/weapons/largecaliber.yaml
+	./mods/ra/weapons/missiles.yaml
+	./mods/ra/weapons/other.yaml
+	./mods/ra/weapons/smallcaliber.yaml
+	./mods/ra/weapons/superweapons.yaml
 	
 Voices:
-	./mods/ra/voices.yaml
+	./mods/ra/audio/voices.yaml
 
 Notifications:
-	./mods/ra/notifications.yaml
-	
-TileSets:
-	./mods/ra/tilesets/snow.yaml
-	./mods/ra/tilesets/interior.yaml
-	./mods/ra/tilesets/temperat.yaml
-	./mods/ra/tilesets/desert.yaml
+	./mods/ra/audio/notifications.yaml
 
 Music:
-	./mods/ra/music.yaml
-
-Movies:
-	./mods/ra/movies1.yaml
-	./mods/ra/movies2.yaml
+	./mods/ra/audio/music.yaml
 
 Translations:
 	./mods/ra/languages/english.yaml
 
-LoadScreen: DefaultLoadScreen
+LoadScreen: LogoStripeLoadScreen
 	Image: ./mods/ra/uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ContentInstaller:
-	InstallerMenuWidget: INSTALL_PANEL
-	TestFiles: allies.mix, conquer.mix, interior.mix, redalert.mix, russian.mix, snow.mix, sounds.mix, temperat.mix
+	TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
 	PackageMirrorList: http://www.openra.net/packages/ra-mirrors.txt
 	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX
 	PackageToExtractFromCD: MAIN.MIX
-	ExtractFilesFromCD: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
-	CopyFilesFromCD: INSTALL/REDALERT.MIX
+	ExtractFilesFromCD:
+		.: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
+	CopyFilesFromCD:
+		.: INSTALL/REDALERT.MIX
 	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
+	InstallShieldCABFilePackageIds: 105
+	InstallShieldCABFileIds: 116
 
 ServerTraits:
 	LobbyCommands
@@ -195,6 +203,35 @@ Fonts:
 Missions:
 	./mods/ra/missions.yaml
 
+MapGrid:
+	TileSize: 24,24
+	Type: Rectangle
+
 SupportsMapsFrom: ra
 
-SpriteFormats: ShpTD, TmpRA, TmpTD, ShpTS
+SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS
+
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERAT: .tem
+		SNOW: .sno
+		INTERIOR: .int
+		DESERT: .des
+
+GameSpeeds:
+	slower:
+		Name: Slower
+		Timestep: 50
+		OrderLatency: 3
+	default:
+		Name: Normal
+		Timestep: 40
+		OrderLatency: 3
+	faster:
+		Name: Faster
+		Timestep: 30
+		OrderLatency: 4
+	fastest:
+		Name: Fastest
+		Timestep: 20
+		OrderLatency: 6

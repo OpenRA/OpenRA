@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,11 +15,11 @@ using OpenRA.Graphics;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Assembly)]
-	public sealed class RendererAttribute : Attribute
+	public sealed class PlatformAttribute : Attribute
 	{
 		public readonly Type Type;
 
-		public RendererAttribute(Type graphicsDeviceType)
+		public PlatformAttribute(Type graphicsDeviceType)
 		{
 			if (!typeof(IDeviceFactory).IsAssignableFrom(graphicsDeviceType))
 				throw new InvalidOperationException("Incorrect type in RendererAttribute");
@@ -29,10 +29,22 @@ namespace OpenRA
 
 	public interface IDeviceFactory
 	{
-		IGraphicsDevice Create(Size size, WindowMode windowMode);
+		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode);
+		ISoundEngine CreateSound();
 	}
 
-	public enum BlendMode { None, Alpha, Additive, Subtractive, Multiply }
+	public interface IHardwareCursor : IDisposable { }
+
+	public enum BlendMode : byte
+	{
+		None,
+		Alpha,
+		Additive,
+		Subtractive,
+		Multiply,
+		Multiplicative,
+		DoubleMultiplicative
+	}
 
 	public interface IGraphicsDevice : IDisposable
 	{
@@ -46,6 +58,7 @@ namespace OpenRA
 
 		void Clear();
 		void Present();
+		Bitmap TakeScreenshot();
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
@@ -61,12 +74,17 @@ namespace OpenRA
 
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
+
+		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
+		void SetHardwareCursor(IHardwareCursor cursor);
 	}
 
-	public interface IVertexBuffer<T>
+	public interface IVertexBuffer<T> : IDisposable
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
+		void SetData(T[] vertices, int start, int length);
+		void SetData(IntPtr data, int start, int length);
 	}
 
 	public interface IShader
@@ -80,7 +98,8 @@ namespace OpenRA
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }
-	public interface ITexture
+
+	public interface ITexture : IDisposable
 	{
 		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
@@ -90,7 +109,7 @@ namespace OpenRA
 		TextureScaleFilter ScaleFilter { get; set; }
 	}
 
-	public interface IFrameBuffer
+	public interface IFrameBuffer : IDisposable
 	{
 		void Bind();
 		void Unbind();

@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,12 +17,12 @@ namespace OpenRA.Traits
 	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
 	public struct Target
 	{
-		public static readonly Target[] None = {};
+		public static readonly Target[] None = { };
 		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
 
 		TargetType type;
 		Actor actor;
-		ITargetable targetable;
+		IEnumerable<ITargetable> targetable;
 		FrozenActor frozen;
 		WPos pos;
 		int generation;
@@ -48,13 +48,13 @@ namespace OpenRA.Traits
 			return new Target
 			{
 				actor = a,
-				targetable = a.TraitOrDefault<ITargetable>(),
+				targetable = a.TraitsImplementing<ITargetable>(),
 				type = TargetType.Actor,
 				generation = a.Generation,
 			};
 		}
 
-		public static Target FromFrozenActor(FrozenActor a)  { return new Target { frozen = a, type = TargetType.FrozenActor }; }
+		public static Target FromFrozenActor(FrozenActor a) { return new Target { frozen = a, type = TargetType.FrozenActor }; }
 
 		public Actor Actor { get { return actor; } }
 		public FrozenActor FrozenActor { get { return frozen; } }
@@ -66,7 +66,7 @@ namespace OpenRA.Traits
 				if (type == TargetType.Actor)
 				{
 					// Actor is no longer in the world
-					if (!actor.IsInWorld || actor.IsDead())
+					if (!actor.IsInWorld || actor.IsDead)
 						return TargetType.Invalid;
 
 					// Actor generation has changed (teleported or captured)
@@ -83,15 +83,18 @@ namespace OpenRA.Traits
 			if (targeter == null || Type == TargetType.Invalid)
 				return false;
 
-			if (targetable != null && !targetable.TargetableBy(actor, targeter))
+			var targeted = this.actor;
+			if (targeted != null && !targetable.Any(t => t.IsTraitEnabled() && t.TargetableBy(targeted, targeter)))
 				return false;
 
 			return true;
 		}
 
+		// Currently all or nothing.
+		// TODO: either replace based on target type or put in singleton trait
 		public bool RequiresForceFire
 		{
-			get { return targetable != null && targetable.RequiresForceFire; }
+			get { return targetable != null && targetable.Any(Exts.IsTraitEnabled) && targetable.Where(Exts.IsTraitEnabled).All(t => t.RequiresForceFire); }
 		}
 
 		// Representative position - see Positions for the full set of targetable positions.
@@ -101,53 +104,59 @@ namespace OpenRA.Traits
 			{
 				switch (Type)
 				{
-				case TargetType.Actor:
-					return actor.CenterPosition;
-				case TargetType.FrozenActor:
-					return frozen.CenterPosition;
-				case TargetType.Terrain:
-					return pos;
-				default:
-				case TargetType.Invalid:
-					throw new InvalidOperationException("Attempting to query the position of an invalid Target");
+					case TargetType.Actor:
+						return actor.CenterPosition;
+					case TargetType.FrozenActor:
+						return frozen.CenterPosition;
+					case TargetType.Terrain:
+						return pos;
+					default:
+					case TargetType.Invalid:
+						throw new InvalidOperationException("Attempting to query the position of an invalid Target");
 				}
 			}
 		}
 
 		// Positions available to target for range checks
-		static readonly WPos[] NoPositions = {};
+		static readonly WPos[] NoPositions = { };
 		public IEnumerable<WPos> Positions
 		{
 			get
 			{
 				switch (Type)
 				{
-				case TargetType.Actor:
-					var targetable = actor.TraitOrDefault<ITargetable>();
-					if (targetable == null)
-						return new [] { actor.CenterPosition };
+					case TargetType.Actor:
+						var targetable = actor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
+						if (!targetable.Any())
+							return new[] { actor.CenterPosition };
 
-					var positions = targetable.TargetablePositions(actor);
-					return positions.Any() ? positions : new [] { actor.CenterPosition };
-				case TargetType.FrozenActor:
-					return new [] { frozen.CenterPosition };
-				case TargetType.Terrain:
-					return new [] { pos };
-				default:
-				case TargetType.Invalid:
-					return NoPositions;
+						var targetablePositions = actor.TraitOrDefault<ITargetablePositions>();
+						if (targetablePositions != null)
+						{
+							var positions = targetablePositions.TargetablePositions(actor);
+							if (positions.Any())
+								return positions;
+						}
+
+						return new[] { actor.CenterPosition };
+					case TargetType.FrozenActor:
+						return new[] { frozen.CenterPosition };
+					case TargetType.Terrain:
+						return new[] { pos };
+					default:
+					case TargetType.Invalid:
+						return NoPositions;
 				}
 			}
 		}
 
-		public bool IsInRange(WPos origin, WRange range)
+		public bool IsInRange(WPos origin, WDist range)
 		{
 			if (Type == TargetType.Invalid)
 				return false;
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			var rangeSquared = range.Range*range.Range;
-			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= rangeSquared);
+			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= range.LengthSquared);
 		}
 
 		public override string ToString()
@@ -168,6 +177,5 @@ namespace OpenRA.Traits
 					return "Invalid";
 			}
 		}
-
 	}
 }

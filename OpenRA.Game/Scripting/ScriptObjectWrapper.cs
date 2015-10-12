@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,12 +19,12 @@ namespace OpenRA.Scripting
 		protected abstract string DuplicateKeyError(string memberName);
 		protected abstract string MemberNotFoundError(string memberName);
 
-		protected readonly ScriptContext context;
+		protected readonly ScriptContext Context;
 		Dictionary<string, ScriptMemberWrapper> members;
 
 		public ScriptObjectWrapper(ScriptContext context)
 		{
-			this.context = context;
+			Context = context;
 		}
 
 		protected void Bind(IEnumerable<object> clrObjects)
@@ -38,7 +38,7 @@ namespace OpenRA.Scripting
 					if (members.ContainsKey(m.Name))
 						throw new LuaException(DuplicateKeyError(m.Name));
 
-					members.Add(m.Name, new ScriptMemberWrapper(context, obj, m));
+					members.Add(m.Name, new ScriptMemberWrapper(Context, obj, m));
 				}
 			}
 		}

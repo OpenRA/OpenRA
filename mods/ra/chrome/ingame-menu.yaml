@@ -66,10 +66,24 @@ Container@INGAME_MENU:
 					Height: 30
 					Text: Surrender
 					Font: Bold
+				Button@SAVE_MAP:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 180
+					Width: 140
+					Height: 30
+					Text: Save Map
+					Font: Bold
 				Button@ABORT_MISSION:
 					X: (PARENT_RIGHT - WIDTH)/2
 					Y: 220
 					Width: 140
 					Height: 30
 					Text: Abort Mission
+					Font: Bold
+				Button@EXIT_EDITOR:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 220
+					Width: 140
+					Height: 30
+					Text: Exit Map Editor
 					Font: Bold

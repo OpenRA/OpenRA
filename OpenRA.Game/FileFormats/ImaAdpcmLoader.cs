@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -31,9 +31,9 @@ namespace OpenRA.FileFormats
 
 	public static class ImaAdpcmLoader
 	{
-		static readonly int[] indexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
-		static readonly int[] stepTable = 
-		{	
+		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
+		static readonly int[] StepTable =
+		{
 			7, 8, 9, 10, 11, 12, 13, 14, 16,
 			17, 19, 21, 23, 25, 28, 31, 34, 37,
 			41, 45, 50, 55, 60, 66, 73, 80, 88,
@@ -43,7 +43,7 @@ namespace OpenRA.FileFormats
 			1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749,
 			3024, 3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484,
 			7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899, 15289,
-			16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767 
+			16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
 		};
 
 		static short DecodeImaAdpcmSample(byte b, ref int index, ref int current)
@@ -51,14 +51,14 @@ namespace OpenRA.FileFormats
 			var sb = (b & 8) != 0;
 			b &= 7;
 
-			var delta = (stepTable[index] * b) / 4 + stepTable[index] / 8;
+			var delta = (StepTable[index] * b) / 4 + StepTable[index] / 8;
 			if (sb) delta = -delta;
 
 			current += delta;
 			if (current > short.MaxValue) current = short.MaxValue;
 			if (current < short.MinValue) current = short.MinValue;
 
-			index += indexAdjust[b];
+			index += IndexAdjust[b];
 			if (index < 0) index = 0;
 			if (index > 88) index = 88;
 

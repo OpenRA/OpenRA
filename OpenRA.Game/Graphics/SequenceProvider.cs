@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,11 +12,36 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace OpenRA.Graphics
 {
-	using Sequences = IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, Sequence>>>;
-	using UnitSequences = Lazy<IReadOnlyDictionary<string, Sequence>>;
+	using Sequences = IReadOnlyDictionary<string, Lazy<IReadOnlyDictionary<string, ISpriteSequence>>>;
+	using UnitSequences = Lazy<IReadOnlyDictionary<string, ISpriteSequence>>;
+
+	public interface ISpriteSequence
+	{
+		string Name { get; }
+		int Start { get; }
+		int Length { get; }
+		int Stride { get; }
+		int Facings { get; }
+		int Tick { get; }
+		int ZOffset { get; }
+		int ShadowStart { get; }
+		int ShadowZOffset { get; }
+		int[] Frames { get; }
+
+		Sprite GetSprite(int frame);
+		Sprite GetSprite(int frame, int facing);
+		Sprite GetShadow(int frame, int facing);
+	}
+
+	public interface ISpriteSequenceLoader
+	{
+		Action<string> OnMissingSpriteError { get; set; }
+		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
+	}
 
 	public class SequenceProvider
 	{
@@ -29,17 +54,22 @@ namespace OpenRA.Graphics
 			this.SpriteCache = cache.SpriteCache;
 		}
 
-		public Sequence GetSequence(string unitName, string sequenceName)
+		public ISpriteSequence GetSequence(string unitName, string sequenceName)
 		{
 			UnitSequences unitSeq;
 			if (!sequences.Value.TryGetValue(unitName, out unitSeq))
 				throw new InvalidOperationException("Unit `{0}` does not have any sequences defined.".F(unitName));
 
-			Sequence seq;
+			ISpriteSequence seq;
 			if (!unitSeq.Value.TryGetValue(sequenceName, out seq))
 				throw new InvalidOperationException("Unit `{0}` does not have a sequence named `{1}`".F(unitName, sequenceName));
 
 			return seq;
+		}
+
+		public bool HasSequence(string unitName)
+		{
+			return sequences.Value.ContainsKey(unitName);
 		}
 
 		public bool HasSequence(string unitName, string sequenceName)
@@ -62,14 +92,17 @@ namespace OpenRA.Graphics
 
 		public void Preload()
 		{
+			SpriteCache.SheetBuilder.Current.CreateBuffer();
 			foreach (var unitSeq in sequences.Value.Values)
 				foreach (var seq in unitSeq.Value.Values) { }
+			SpriteCache.SheetBuilder.Current.ReleaseBuffer();
 		}
 	}
 
-	public class SequenceCache
+	public sealed class SequenceCache : IDisposable
 	{
 		readonly ModData modData;
+		readonly TileSet tileSet;
 		readonly Lazy<SpriteCache> spriteCache;
 		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
 
@@ -78,14 +111,16 @@ namespace OpenRA.Graphics
 		public SequenceCache(ModData modData, TileSet tileSet)
 		{
 			this.modData = modData;
+			this.tileSet = tileSet;
 
-			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, tileSet.Extensions, new SheetBuilder(SheetType.Indexed)));
+			// Every time we load a tile set, we create a sequence cache for it
+			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public Sequences LoadSequences(Map map)
 		{
 			using (new Support.PerfTimer("LoadSequences"))
-				return Load(map.SequenceDefinitions);
+				return Load(map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
 		}
 
 		Sequences Load(List<MiniYamlNode> sequenceNodes)
@@ -109,7 +144,7 @@ namespace OpenRA.Graphics
 					items.Add(node.Key, t);
 				else
 				{
-					t = Exts.Lazy(() => CreateUnitSequences(node));
+					t = Exts.Lazy(() => modData.SpriteSequenceLoader.ParseSequences(modData, tileSet, SpriteCache, node));
 					sequenceCache.Add(key, t);
 					items.Add(node.Key, t);
 				}
@@ -118,26 +153,10 @@ namespace OpenRA.Graphics
 			return new ReadOnlyDictionary<string, UnitSequences>(items);
 		}
 
-		IReadOnlyDictionary<string, Sequence> CreateUnitSequences(MiniYamlNode node)
+		public void Dispose()
 		{
-			var unitSequences = new Dictionary<string, Sequence>();
-
-			foreach (var kvp in node.Value.ToDictionary())
-			{
-				using (new Support.PerfTimer("new Sequence(\"{0}\")".F(node.Key), 20))
-				{
-					try
-					{
-						unitSequences.Add(kvp.Key, new Sequence(spriteCache.Value, node.Key, kvp.Key, kvp.Value));
-					}
-					catch (FileNotFoundException ex)
-					{
-						Log.Write("debug", ex.Message);
-					}
-				}
-			}
-
-			return new ReadOnlyDictionary<string, Sequence>(unitSequences);
+			if (spriteCache.IsValueCreated)
+				spriteCache.Value.SheetBuilder.Dispose();
 		}
 	}
 }

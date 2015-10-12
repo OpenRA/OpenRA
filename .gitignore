@@ -12,6 +12,12 @@ obj
 *.lastcodeanalysissucceeded
 _ReSharper.*/
 
+# movies
+*.vqa
+
+# archives
+*.mix
+
 # binaries
 mods/*/*.dll
 mods/*/*.mdb
@@ -22,6 +28,8 @@ mods/*/*.mdb
 /*.pdb
 /*.mdb
 /*.exe
+thirdparty/download/*
+*.mmdb.gz
 
 # backup files by various editors
 *~
@@ -54,9 +62,11 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 DOCUMENTATION.md
 Lua-API.md
 *.html
+openra.6
 
 # StyleCop
 *.Cache
+StyleCopViolations.xml
 
 # SublimeText
 *.sublime-project

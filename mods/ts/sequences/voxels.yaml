@@ -5,8 +5,9 @@ harv:
 	idle:
 	unload: horv
 
-apc: # TODO apcw in water
+apc:
 	idle:
+	water: apcw
 
 art2:
 	idle:
@@ -104,6 +105,15 @@ car:
 	idle:
 
 wini:
+	idle:
+
+locomotive:
+	idle: monoeng
+
+traincar:
+	idle: monocar
+
+cargocar:
 	idle:
 
 sonic:

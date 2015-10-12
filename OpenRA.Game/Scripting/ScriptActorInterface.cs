@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,7 +22,7 @@ namespace OpenRA.Scripting
 		protected override string MemberNotFoundError(string memberName)
 		{
 			var actorName = actor.Info.Name;
-			if (actor.IsDead())
+			if (actor.IsDead)
 				actorName += " (dead)";
 
 			return "Actor '{0}' does not define a property '{1}'".F(actorName, memberName);
@@ -38,13 +38,13 @@ namespace OpenRA.Scripting
 
 		void InitializeBindings()
 		{
-			var commandClasses = context.ActorCommands[actor.Info].AsEnumerable();
+			var commandClasses = Context.ActorCommands[actor.Info].AsEnumerable();
 
 			// Destroyed actors cannot have their traits queried
-			if (actor.Destroyed)
+			if (actor.Disposed)
 				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>());
 
-			var args = new object[] { context, actor };
+			var args = new object[] { Context, actor };
 			var objects = commandClasses.Select(cg =>
 			{
 				var groupCtor = cg.GetConstructor(new Type[] { typeof(ScriptContext), typeof(Actor) });

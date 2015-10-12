@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -21,40 +22,61 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>
+	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
 		public readonly ActorInfo Info;
 
 		public readonly World World;
+
 		public readonly uint ActorID;
-		public Lazy<Rectangle> Bounds;
 
-		Lazy<IOccupySpace> occupySpace;
-		Lazy<IFacing> facing;
-		Lazy<Health> health;
-		Lazy<IEffectiveOwner> effectiveOwner;
+		public Player Owner { get; set; }
 
-		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
-		public IEffectiveOwner EffectiveOwner { get { return effectiveOwner.Value; } }
+		public bool IsInWorld { get; internal set; }
+		public bool Disposed { get; private set; }
 
-		public CPos Location { get { return occupySpace.Value.TopLeft; } }
-		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
+		Activity currentActivity;
+
+		public Group Group;
+		public int Generation;
+
+		public Rectangle Bounds { get; private set; }
+		public Rectangle VisualBounds { get; private set; }
+		public IEffectiveOwner EffectiveOwner { get; private set; }
+		public IOccupySpace OccupiesSpace
+		{
+			get
+			{
+				if (occupySpace == null)
+					occupySpace = Trait<IOccupySpace>();
+				return occupySpace;
+			}
+		}
+
+		public bool IsIdle { get { return currentActivity == null; } }
+		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
+
+		public CPos Location { get { return OccupiesSpace.TopLeft; } }
+		public WPos CenterPosition { get { return OccupiesSpace.CenterPosition; } }
 
 		public WRot Orientation
 		{
 			get
 			{
 				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
-				var facingValue = facing.Value != null ? facing.Value.Facing : 0;
+				var facingValue = facing != null ? facing.Facing : 0;
 				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
 			}
 		}
 
-		[Sync] public Player Owner;
-
-		Activity currentActivity;
-		public Group Group;
-		public int Generation;
+		IOccupySpace occupySpace;
+		readonly IFacing facing;
+		readonly Health health;
+		readonly IRenderModifier[] renderModifiers;
+		readonly IRender[] renders;
+		readonly IDisable[] disables;
+		readonly IVisibilityModifier[] visibilityModifiers;
+		readonly IDefaultVisibility defaultVisibility;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -65,66 +87,82 @@ namespace OpenRA
 			if (initDict.Contains<OwnerInit>())
 				Owner = init.Get<OwnerInit, Player>();
 
-			occupySpace = Exts.Lazy(() => TraitOrDefault<IOccupySpace>());
-
 			if (name != null)
 			{
-				if (!world.Map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
-					throw new NotImplementedException("No rules definition for unit {0}".F(name.ToLowerInvariant()));
+				name = name.ToLowerInvariant();
 
-				Info = world.Map.Rules.Actors[name.ToLowerInvariant()];
+				if (!world.Map.Rules.Actors.ContainsKey(name))
+					throw new NotImplementedException("No rules definition for unit " + name);
+
+				Info = world.Map.Rules.Actors[name];
 				foreach (var trait in Info.TraitsInConstructOrder())
 					AddTrait(trait.Create(init));
 			}
 
-			facing = Exts.Lazy(() => TraitOrDefault<IFacing>());
-			health = Exts.Lazy(() => TraitOrDefault<Health>());
-			effectiveOwner = Exts.Lazy(() => TraitOrDefault<IEffectiveOwner>());
+			Bounds = DetermineBounds();
+			VisualBounds = DetermineVisualBounds();
+			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
+			facing = TraitOrDefault<IFacing>();
+			health = TraitOrDefault<Health>();
+			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
+			renders = TraitsImplementing<IRender>().ToArray();
+			disables = TraitsImplementing<IDisable>().ToArray();
+			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
+			defaultVisibility = Trait<IDefaultVisibility>();
+		}
 
-			Bounds = Exts.Lazy(() =>
-			{
-				var si = Info.Traits.GetOrDefault<SelectableInfo>();
-				var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-					TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+		Rectangle DetermineBounds()
+		{
+			var si = Info.TraitInfoOrDefault<SelectableInfo>();
+			var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
+				TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 
-				var offset = -size / 2;
-				if (si != null && si.Bounds != null && si.Bounds.Length > 2)
-					offset += new int2(si.Bounds[2], si.Bounds[3]);
+			var offset = -size / 2;
+			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
+				offset += new int2(si.Bounds[2], si.Bounds[3]);
 
-				return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-			});
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+		}
+
+		Rectangle DetermineVisualBounds()
+		{
+			var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
+			if (sd == null || sd.SelectionBoxBounds == null)
+				return Bounds;
+
+			var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
+
+			var offset = -size / 2;
+			if (sd.SelectionBoxBounds.Length > 2)
+				offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
+
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 		}
 
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
+
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
 		}
 
-		public bool IsIdle
-		{
-			get { return currentActivity == null; }
-		}
-
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var renderables = Renderables(wr);
-			foreach (var modifier in TraitsImplementing<IRenderModifier>())
+			foreach (var modifier in renderModifiers)
 				renderables = modifier.ModifyRender(this, wr, renderables);
 			return renderables;
 		}
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
 		{
-			foreach (var render in TraitsImplementing<IRender>())
+			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
 		}
-
-		public bool IsInWorld { get; internal set; }
 
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
@@ -170,48 +208,47 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F(Info.Name, ActorID, IsInWorld ? "" : " (not in world)");
+			var name = Info.Name + " " + ActorID;
+			if (!IsInWorld)
+				name += " (not in world)";
+			return name;
 		}
 
 		public T Trait<T>()
 		{
-			return World.traitDict.Get<T>(this);
+			return World.TraitDict.Get<T>(this);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.traitDict.GetOrDefault<T>(this);
+			return World.TraitDict.GetOrDefault<T>(this);
 		}
 
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
-			return World.traitDict.WithInterface<T>(this);
-		}
-
-		public bool HasTrait<T>()
-		{
-			return World.traitDict.Contains<T>(this);
+			return World.TraitDict.WithInterface<T>(this);
 		}
 
 		public void AddTrait(object trait)
 		{
-			World.traitDict.AddTrait(this, trait);
+			World.TraitDict.AddTrait(this, trait);
 		}
 
-		public bool Destroyed { get; private set; }
-
-		public void Destroy()
+		public void Dispose()
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (Destroyed)
+				if (Disposed)
 					return;
 
 				if (IsInWorld)
 					World.Remove(this);
 
-				World.traitDict.RemoveActor(this);
-				Destroyed = true;
+				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+					t.Disposing(this);
+
+				World.TraitDict.RemoveActor(this);
+				Disposed = true;
 
 				if (luaInterface != null)
 					luaInterface.Value.OnActorDestroyed();
@@ -223,41 +260,50 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
-				if (this.Destroyed)
+				if (Disposed)
 					return;
 
 				var oldOwner = Owner;
+				var wasInWorld = IsInWorld;
 
 				// momentarily remove from world so the ownership queries don't get confused
-				w.Remove(this);
+				if (wasInWorld)
+					w.Remove(this);
+
 				Owner = newOwner;
 				Generation++;
-				w.Add(this);
+
+				if (wasInWorld)
+					w.Add(this);
 
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
 		}
 
-		public bool IsDead()
-		{
-			if (Destroyed)
-				return true;
-
-			return (health.Value == null) ? false : health.Value.IsDead;
-		}
-
-		public bool IsDisguised()
-		{
-			return effectiveOwner.Value != null && effectiveOwner.Value.Disguised;
-		}
-
 		public void Kill(Actor attacker)
 		{
-			if (health.Value == null)
+			if (health == null)
 				return;
 
-			health.Value.InflictDamage(this, attacker, health.Value.MaxHP, null, true);
+			health.InflictDamage(this, attacker, health.MaxHP, null, true);
+		}
+
+		public bool IsDisabled()
+		{
+			foreach (var disable in disables)
+				if (disable.Disabled)
+					return true;
+			return false;
+		}
+
+		public bool CanBeViewedByPlayer(Player player)
+		{
+			foreach (var visibilityModifier in visibilityModifiers)
+				if (!visibilityModifier.IsVisible(this, player))
+					return false;
+
+			return defaultVisibility.IsVisible(this, player);
 		}
 
 		#region Scripting interface

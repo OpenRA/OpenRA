@@ -127,16 +127,23 @@ Container@MAINMENU:
 							Height: 30
 							Text: Music
 							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
+						Button@MAP_EDITOR_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
 							Y: 140
+							Width: 140
+							Height: 30
+							Text: Map Editor
+							Font: Bold
+						Button@ASSETBROWSER_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
 							Width: 140
 							Height: 30
 							Text: Asset Browser
 							Font: Bold
 						Button@CREDITS_BUTTON:
 							X: PARENT_RIGHT/2-WIDTH/2
-							Y: 180
+							Y: 220
 							Width: 140
 							Height: 30
 							Text: Credits
@@ -149,26 +156,53 @@ Container@MAINMENU:
 							Height: 30
 							Text: Back
 							Font: Bold
+				Background@MAP_EDITOR_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Map Editor
+							Align: Center
+							Font: Bold
+						Button@NEW_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: New Map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Load Map
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
 		Background@NEWS_BG:
 			X: (WINDOW_RIGHT - WIDTH)/2
 			Y: 35
-			Width: 400
+			Width: 430
 			Height: 55
 			Children:
 				DropDownButton@NEWS_BUTTON:
 					X: 15
 					Y: 15
-					Width: 370
+					Width: 400
 					Height: 25
 					Text: Battlefield News
 					Font: Bold
-				Label@NEWS_STATUS:
-					X: 80
-					Y: 0
-					Width: PARENT_RIGHT - 80 - 80 - 24
-					Height: PARENT_BOTTOM
-					Align: Center
-					VAlign: Middle
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:

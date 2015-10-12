@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -168,26 +168,26 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			{
 				case Format.Format20:
 				case Format.Format40:
-				{
-					if (h.RefImage.Data == null)
 					{
-						++recurseDepth;
-						Decompress(h.RefImage);
-						--recurseDepth;
+						if (h.RefImage.Data == null)
+						{
+							++recurseDepth;
+							Decompress(h.RefImage);
+							--recurseDepth;
+						}
+
+						h.Data = CopyImageData(h.RefImage.Data);
+						Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
+						break;
 					}
 
-					h.Data = CopyImageData(h.RefImage.Data);
-					Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
-					break;
-				}
-
 				case Format.Format80:
-				{
-					var imageBytes = new byte[Size.Width * Size.Height];
-					Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
-					h.Data = imageBytes;
-					break;
-				}
+					{
+						var imageBytes = new byte[Size.Width * Size.Height];
+						Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
+						h.Data = imageBytes;
+						break;
+					}
 
 				default:
 					throw new InvalidDataException();
@@ -203,14 +203,14 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
 		{
-			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToArray();
+			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToList();
 
 			// note: end-of-file and all-zeroes headers
-			var dataOffset = 14 + (compressedFrames.Length + 2) * 8;
+			var dataOffset = 14 + (compressedFrames.Count + 2) * 8;
 
 			using (var bw = new BinaryWriter(s))
 			{
-				bw.Write((ushort)compressedFrames.Length);
+				bw.Write((ushort)compressedFrames.Count);
 				bw.Write((ushort)0);
 				bw.Write((ushort)0);
 				bw.Write((ushort)size.Width);

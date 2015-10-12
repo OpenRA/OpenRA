@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,14 +20,23 @@ namespace OpenRA.Graphics
 	{
 		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
+
+			// Fudge the heightmap offset by adding as much extra as we need / can.
+			// This tries to correct for our incorrect assumption that MPos == PPos
+			var heightOffset = Math.Min(map.Grid.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
 			var width = b.Width;
-			var height = b.Height;
+			var height = b.Height + heightOffset;
+
+			var bitmapWidth = width;
+			if (isDiamond)
+				bitmapWidth = 2 * bitmapWidth - 1;
 
 			if (!actualSize)
-				width = height = Exts.NextPowerOf2(Math.Max(b.Width, b.Height));
+				bitmapWidth = height = Exts.NextPowerOf2(Math.Max(bitmapWidth, height));
 
-			var terrain = new Bitmap(width, height);
+			var terrain = new Bitmap(bitmapWidth, height);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -38,14 +47,27 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
-				for (var y = 0; y < b.Height; y++)
+				for (var y = 0; y < height; y++)
 				{
-					for (var x = 0; x < b.Width; x++)
+					for (var x = 0; x < width; x++)
 					{
-						var mapX = x + b.Left;
-						var mapY = y + b.Top;
-						var type = tileset[tileset.GetTerrainIndex(mapTiles[mapX, mapY])];
-						colors[y * stride + x] = type.Color.ToArgb();
+						var uv = new MPos(x + b.Left, y + b.Top);
+						var type = tileset.GetTileInfo(mapTiles[uv]);
+						var leftColor = type != null ? type.LeftColor : Color.Black;
+
+						if (isDiamond)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							var rightColor = type != null ? type.RightColor : Color.Black;
+							if (x + dx > 0)
+								colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
+
+							if (2 * x + dx < stride)
+								colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
+						}
+						else
+							colors[y * stride + x] = leftColor.ToArgb();
 					}
 				}
 			}
@@ -59,7 +81,17 @@ namespace OpenRA.Graphics
 		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			var terrain = new Bitmap(terrainBitmap);
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
+
+			// Fudge the heightmap offset by adding as much extra as we need / can
+			// This tries to correct for our incorrect assumption that MPos == PPos
+			var heightOffset = Math.Min(map.Grid.MaximumTerrainHeight, map.MapSize.Y - b.Bottom);
+			var width = b.Width;
+			var height = b.Height + heightOffset;
+
+			var resources = resourceRules.Actors["world"].TraitInfos<ResourceTypeInfo>()
+				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
 
 			var bitmapData = terrain.LockBits(terrain.Bounds(),
 				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
@@ -68,23 +100,31 @@ namespace OpenRA.Graphics
 			{
 				var colors = (int*)bitmapData.Scan0;
 				var stride = bitmapData.Stride / 4;
-				for (var y = 0; y < b.Height; y++)
+				for (var y = 0; y < height; y++)
 				{
-					for (var x = 0; x < b.Width; x++)
+					for (var x = 0; x < width; x++)
 					{
-						var mapX = x + b.Left;
-						var mapY = y + b.Top;
-						if (map.MapResources.Value[mapX, mapY].Type == 0)
+						var uv = new MPos(x + b.Left, y + b.Top);
+						if (map.MapResources.Value[uv].Type == 0)
 							continue;
 
-						var res = resourceRules.Actors["world"].Traits.WithInterface<ResourceTypeInfo>()
-							.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
-								.Select(t => t.TerrainType).FirstOrDefault();
-
-						if (res == null)
+						string res;
+						if (!resources.TryGetValue(map.MapResources.Value[uv].Type, out res))
 							continue;
 
-						colors[y * stride + x] = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
+						var color = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
+						if (isDiamond)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (x + dx > 0)
+								colors[y * stride + 2 * x + dx - 1] = color;
+
+							if (2 * x + dx < stride)
+								colors[y * stride + 2 * x + dx] = color;
+						}
+						else
+							colors[y * stride + x] = color;
 					}
 				}
 			}
@@ -94,108 +134,6 @@ namespace OpenRA.Graphics
 			return terrain;
 		}
 
-		public static Bitmap CustomTerrainBitmap(World world)
-		{
-			var map = world.Map;
-			var b = map.Bounds;
-
-			var size = Exts.NextPowerOf2(Math.Max(b.Width, b.Height));
-			var bitmap = new Bitmap(size, size);
-			var bitmapData = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			unsafe
-			{
-				var colors = (int*)bitmapData.Scan0;
-				var stride = bitmapData.Stride / 4;
-				for (var y = 0; y < b.Height; y++)
-				{
-					for (var x = 0; x < b.Width; x++)
-					{
-						var mapX = x + b.Left;
-						var mapY = y + b.Top;
-						var custom = map.CustomTerrain[mapX, mapY];
-						if (custom == byte.MaxValue)
-							continue;
-						colors[y * stride + x] = world.TileSet[custom].Color.ToArgb();
-					}
-				}
-			}
-
-			bitmap.UnlockBits(bitmapData);
-			return bitmap;
-		}
-
-		public static Bitmap ActorsBitmap(World world)
-		{
-			var map = world.Map;
-			var b = map.Bounds;
-
-			var size = Exts.NextPowerOf2(Math.Max(b.Width, b.Height));
-			var bitmap = new Bitmap(size, size);
-			var bitmapData = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			unsafe
-			{
-				var colors = (int*)bitmapData.Scan0;
-				var stride = bitmapData.Stride / 4;
-				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
-				{
-					if (world.FogObscures(t.Actor))
-						continue;
-
-					var color = t.Trait.RadarSignatureColor(t.Actor);
-					foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
-					{
-						var uv = Map.CellToMap(map.TileShape, cell);
-						if (b.Contains(uv.X, uv.Y))
-							colors[(uv.Y - b.Top) * stride + uv.X - b.Left] = color.ToArgb();
-					}
-				}
-			}
-
-			bitmap.UnlockBits(bitmapData);
-			return bitmap;
-		}
-
-		public static Bitmap ShroudBitmap(World world)
-		{
-			var map = world.Map;
-			var b = map.Bounds;
-
-			var size = Exts.NextPowerOf2(Math.Max(b.Width, b.Height));
-			var bitmap = new Bitmap(size, size);
-			if (world.RenderPlayer == null)
-				return bitmap;
-
-			var bitmapData = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-			var shroud = Color.Black.ToArgb();
-			var fog = Color.FromArgb(128, Color.Black).ToArgb();
-			var offset = new CVec(b.Left, b.Top);
-
-			unsafe
-			{
-				var colors = (int*)bitmapData.Scan0;
-				var stride = bitmapData.Stride / 4;
-				var shroudObscured = world.ShroudObscuresTest(map.Cells);
-				var fogObscured = world.FogObscuresTest(map.Cells);
-				foreach (var cell in map.Cells)
-				{
-					var uv = Map.CellToMap(map.TileShape, cell) - offset;
-					if (shroudObscured(cell))
-						colors[uv.Y * stride + uv.X] = shroud;
-					else if (fogObscured(cell))
-						colors[uv.Y * stride + uv.X] = fog;
-				}
-			}
-
-			bitmap.UnlockBits(bitmapData);
-			return bitmap;
-		}
-
 		public static Bitmap RenderMapPreview(TileSet tileset, Map map, bool actualSize)
 		{
 			return RenderMapPreview(tileset, map, map.Rules, actualSize);
@@ -203,8 +141,8 @@ namespace OpenRA.Graphics
 
 		public static Bitmap RenderMapPreview(TileSet tileset, Map map, Ruleset resourceRules, bool actualSize)
 		{
-			var terrain = TerrainBitmap(tileset, map, actualSize);
-			return AddStaticResources(tileset, map, resourceRules, terrain);
+			using (var terrain = TerrainBitmap(tileset, map, actualSize))
+				return AddStaticResources(tileset, map, resourceRules, terrain);
 		}
 	}
 }

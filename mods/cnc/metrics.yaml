@@ -7,6 +7,7 @@ Metrics:
 	ButtonTextColorDisabled: 128,128,128
 	ButtonTextContrast: false
 	ButtonTextContrastColor: 0,0,0
+	ButtonBaseLine: 0
 	CheckboxPressedState: true
 	HotkeyFont: Regular
 	HotkeyColor: 255,255,255
@@ -20,7 +21,16 @@ Metrics:
 	TextContrast: false
 	TextContrastColor: 0,0,0
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+	ColorPickerActorType: ^fact.colorpicker
 	SpawnFont: TinyBold
 	SpawnColor: 255,255,255
 	SpawnContrastColor: 0,0,0
 	SpawnLabelOffset: 0,1
+	IncompatibleGameColor: 169,169,169
+	CantJoinGameColor: 211,211,211
+	ProtectedGameColor: 255,0,0
+	IncompatibleProtectedGameColor: 139,0,0
+	WaitingGameColor: 0,255,0
+	IncompatibleWaitingGameColor: 50,205,50
+	GameStartedColor: 255,165,0
+	IncompatibleGameStartedColor: 210,105,30

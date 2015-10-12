@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -30,9 +30,9 @@ namespace OpenRA.FileFormats
 		public readonly int DataSize;
 		public readonly byte[] RawOutput;
 
-		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 };
+		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
-		
+
 		public WavLoader(Stream s)
 		{
 			while (s.Position < s.Length)
@@ -69,6 +69,7 @@ namespace OpenRA.FileFormats
 							UncompressedSize = s.ReadInt32();
 							s.ReadBytes(chunkSize - 4);
 						}
+
 						break;
 					case "data":
 						DataSize = s.ReadInt32();
@@ -80,6 +81,7 @@ namespace OpenRA.FileFormats
 							var chunkSize = s.ReadInt32();
 							s.ReadBytes(chunkSize);
 						}
+
 						break;
 				}
 			}
@@ -90,7 +92,7 @@ namespace OpenRA.FileFormats
 				BitsPerSample = 16;
 			}
 		}
-		
+
 		public static float WaveLength(Stream s)
 		{
 			s.Position = 12;
@@ -127,7 +129,7 @@ namespace OpenRA.FileFormats
 			// Decode each block of IMA ADPCM data in RawOutput
 			for (var block = 0; block < numBlocks; block++)
 			{
-				// Each block starts with a initial state per-channel 
+				// Each block starts with a initial state per-channel
 				for (var c = 0; c < Channels; c++)
 				{
 					predictor[c] = s.ReadInt16();

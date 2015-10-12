@@ -1,56 +1,60 @@
 C1:
-	Inherits: ^CivInfantry
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
 
 C2:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C3:
 	Inherits: ^CivInfantry
 
 C4:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	RenderSprites:
 		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
-	RenderInfantry:
+	RenderSprites:
 		Image: C1
 
 C6:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	RenderSprites:
 		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C7:
-	Inherits: ^CivInfantry
-	RenderInfantry:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
+	RenderSprites:
 		Image: C1
 
 C8:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	RenderSprites:
 		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 C9:
 	Inherits: ^CivInfantry
-	RenderInfantry:
+	RenderSprites:
 		Image: C1
 
 C10:
 	Inherits: ^CivInfantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-	RenderInfantry:
+	RenderSprites:
 		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
 
 FCOM:
 	Inherits: ^TechBuilding
@@ -70,6 +74,7 @@ FCOM:
 	Bib:
 	Power:
 		Amount: -200
+	ProvidesPrerequisite@buildingname:
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -89,7 +94,12 @@ HOSP:
 		Range: 3c0
 	Bib:
 		HasMinibib: Yes
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 V01:
 	Inherits: ^CivBuilding
@@ -101,7 +111,7 @@ V01:
 	RevealsShroud:
 		Range: 10c0
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V02:
 	Inherits: ^CivBuilding
@@ -109,7 +119,7 @@ V02:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V03:
 	Inherits: ^CivBuilding
@@ -117,7 +127,7 @@ V03:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V04:
 	Inherits: ^CivBuilding
@@ -125,7 +135,7 @@ V04:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V05:
 	Inherits: ^CivBuilding
@@ -133,7 +143,7 @@ V05:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V06:
 	Inherits: ^CivBuilding
@@ -141,7 +151,7 @@ V06:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V07:
 	Inherits: ^CivBuilding
@@ -149,62 +159,62 @@ V07:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V08:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V09:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V10:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V11:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V12:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V13:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V14:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V15:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V16:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V17:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V18:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		ExcludeTilesets: DESERT, INTERIOR
 
 V19:
 	Inherits: ^CivBuilding
@@ -212,8 +222,8 @@ V19:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Oil Pump
-	LeavesHusk:
-		HuskActor: V19.Husk
+	SpawnActorOnDeath:
+		Actor: V19.Husk
 	AutoTargetIgnore:
 
 V19.Husk:
@@ -222,10 +232,14 @@ V19.Husk:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Husk (Oil Pump)
-	WithFire:
+	RenderSprites:
+	WithSpriteBody:
+	WithIdleOverlay:
+		StartSequence: fire-start
+		Sequence: fire-loop
 	-Health:
 	-Selectable:
-	-TargetableBuilding:
+	-Targetable:
 	-Demolishable:
 
 BARL:
@@ -238,11 +252,12 @@ BARL:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+		ShowOwnerRow: False
 	AutoTargetIgnore:
 	Armor:
 		Type: None
-	TargetableBuilding:
-		TargetTypes: Ground, DemoTruck
+	Targetable:
+		TargetTypes: Ground, DemoTruck, Barrel
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
@@ -257,11 +272,12 @@ BRL3:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+		ShowOwnerRow: False
 	AutoTargetIgnore:
 	Armor:
 		Type: None
-	TargetableBuilding:
-		TargetTypes: Ground, DemoTruck
+	Targetable:
+		TargetTypes: Ground, DemoTruck, Barrel
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
@@ -291,7 +307,12 @@ MISS:
 	Tooltip:
 		Name: Technology Center
 	Bib:
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 BIO:
 	Inherits: ^TechBuilding
@@ -303,7 +324,12 @@ BIO:
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
-	DeadBuildingState:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	WithBuildingExplosion:
+		Delay: 1
+	ProvidesPrerequisite@buildingname:
 
 OILB:
 	Inherits: ^TechBuilding
@@ -373,6 +399,8 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
+	CustomSelectionSize:
+		CustomBounds: 120,72
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
@@ -389,6 +417,8 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
+	CustomSelectionSize:
+		CustomBounds: 120,48
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
@@ -405,6 +435,8 @@ SBRIDGE1:
 	Building:
 		Footprint: ___ ___
 		Dimensions: 3,2
+	CustomSelectionSize:
+		CustomBounds: 72,48
 	FreeActor@north:
 		Actor: bridgehut.small
 		SpawnOffset: 1,0
@@ -421,6 +453,8 @@ SBRIDGE2:
 	Building:
 		Footprint: __ __ __
 		Dimensions: 2,3
+	CustomSelectionSize:
+		CustomBounds: 48,72
 	FreeActor@west:
 		Actor: bridgehut.small
 		SpawnOffset: 0,1
@@ -434,9 +468,6 @@ SBRIDGE3:
 		Template: 523
 		DamagedTemplate: 524
 		DestroyedTemplate: 525
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
@@ -450,9 +481,6 @@ SBRIDGE4:
 		Template: 527
 		DamagedTemplate: 528
 		DestroyedTemplate: 529
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
@@ -461,27 +489,25 @@ SBRIDGE4:
 		SpawnOffset: 2,1
 
 BRIDGEHUT:
+	AlwaysVisible:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	Selectable:
-		Selectable: false
-		Bounds: 48,48
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 48,48
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 BRIDGEHUT.small:
+	AlwaysVisible:
 	Building:
 		Footprint: _
 		Dimensions: 1,1
-	Selectable:
-		Selectable: false
-		Bounds: 24,24
-		Priority: 2
+	CustomSelectionSize:
+		CustomBounds: 24,24
 	BridgeHut:
-	TargetableBuilding:
+	Targetable:
 		TargetTypes: BridgeHut, C4
 
 V20:
@@ -591,7 +617,7 @@ RUSHOUSE:
 ASIANHUT:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		RequireTilesets: TEMPERAT
 
 SNOWHUT:
 	Inherits: ^CivBuilding
@@ -600,6 +626,34 @@ SNOWHUT:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
-	RenderBuilding:
+	RenderSprites:
 		Scale: 0.7
+
+LHUS:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 24,24,0,16
+	SelectionDecorations:
+		VisualBounds: 24,48
+	Tooltip:
+		Name: Lighthouse
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+
+WINDMILL:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 24,24,0,8
+	SelectionDecorations:
+		VisualBounds: 36,36
+	Tooltip:
+		Name: Windmill
+	Building:
+		Footprint: x
+		Dimensions: 1,1
 

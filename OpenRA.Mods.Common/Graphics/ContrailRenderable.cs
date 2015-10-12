@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,11 +14,13 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct ContrailRenderable : IRenderable
+	public struct ContrailRenderable : IRenderable, IFinalizedRenderable
 	{
 		public int Length { get { return trail.Length; } }
 
 		readonly World world;
+		readonly Color color;
+		readonly int zOffset;
 
 		// Store trail positions in a circular buffer
 		readonly WPos[] trail;
@@ -26,11 +28,8 @@ namespace OpenRA.Mods.Common.Graphics
 		int length;
 		int skip;
 
-		readonly Color color;
-		readonly int zOffset;
-
 		public ContrailRenderable(World world, Color color, int length, int skip, int zOffset)
-			: this(world, new WPos[length], 0, 0, skip, color, zOffset) {}
+			: this(world, new WPos[length], 0, 0, skip, color, zOffset) { }
 
 		ContrailRenderable(World world, WPos[] trail, int next, int length, int skip, Color color, int zOffset)
 		{
@@ -43,19 +42,17 @@ namespace OpenRA.Mods.Common.Graphics
 			this.zOffset = zOffset;
 		}
 
-		public WPos Pos { get { return trail[idx(next-1)]; } }
-		public float Scale { get { return 1f; } }
+		public WPos Pos { get { return trail[Index(next - 1)]; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithScale(float newScale) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, zOffset); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, zOffset); }
 		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, newOffset); }
 		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }
 
-		public void BeforeRender(WorldRenderer wr) {}
+		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			// Need at least 4 points to smooth the contrail over
@@ -67,31 +64,29 @@ namespace OpenRA.Mods.Common.Graphics
 			wlr.LineWidth = wr.Viewport.Zoom;
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
-			var curPos = trail[idx(next - skip - 1)];
-			var curCell = wr.world.Map.CellContaining(curPos);
+			var curPos = trail[Index(next - skip - 1)];
 			var curColor = color;
 			for (var i = 0; i < length - skip - 4; i++)
 			{
 				var j = next - skip - i - 2;
-				var nextPos = Average(trail[idx(j)], trail[idx(j-1)], trail[idx(j-2)], trail[idx(j-3)]);
-				var nextCell = wr.world.Map.CellContaining(nextPos);
+				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
-				if (!world.FogObscures(curCell) && !world.FogObscures(nextCell))
+				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
 					wlr.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), curColor, nextColor);
 
 				curPos = nextPos;
-				curCell = nextCell;
 				curColor = nextColor;
 			}
 
 			wlr.LineWidth = oldWidth;
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) {}
+		public void RenderDebugGeometry(WorldRenderer wr) { }
+		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 
 		// Array index modulo length
-		int idx(int i)
+		int Index(int i)
 		{
 			var j = i % trail.Length;
 			return j < 0 ? j + trail.Length : j;
@@ -105,7 +100,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Update(WPos pos)
 		{
 			trail[next] = pos;
-			next = idx(next+1);
+			next = Index(next + 1);
 
 			if (length < trail.Length)
 				length++;

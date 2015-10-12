@@ -1,0 +1,128 @@
+E2:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~gapile
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Disc Thrower
+		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 56
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 5
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		AttackSequence: throw
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MEDIC:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Unarmed
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Prerequisites: ~gapile
+	Voiced:
+		VoiceSet: Medic
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 125
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: Heal
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: heal
+	SelfHealing:
+	Passenger:
+		PipType: Red
+
+JUMPJET:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Jumpjet Infantry
+		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 40
+		Prerequisites: ~gapile, garadr
+	Voiced:
+		VoiceSet: JumpJet
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	Passenger:
+		PipType: Green
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: JumpCannon
+	-Crushable:
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		AttackSequence: shoot
+	-TakeCover:
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+GHOST:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 1750
+	Tooltip:
+		Name: Ghost Stalker
+		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~gapile, gatech
+		BuildLimit: 1
+	Voiced:
+		VoiceSet: Ghost
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 200
+	PoisonedByTiberium:
+		Weapon: TiberiumHeal
+	Passenger:
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: LtRail
+		LocalOffset: 85,0,384
+	Crushable:
+		CrushSound: squishy2.aud
+	AttackFrontal:
+		Voice: Attack
+	C4Demolition:
+		C4Delay: 45
+		Voice: Attack
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+

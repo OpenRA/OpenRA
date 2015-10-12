@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -20,18 +19,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public string Name { get { return "--extract-language-strings"; } }
 
+		public bool ValidateArguments(string[] args)
+		{
+			return true;
+		}
+
 		[Desc("Extract translatable strings that are not yet localized and update chrome layout.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.modData = modData;
-			Game.modData.RulesetCache.LoadDefaultRules();
+			Game.ModData = modData;
+			Game.ModData.RulesetCache.Load();
 
-			var types = Game.modData.ObjectCreator.GetTypes();
+			var types = Game.ModData.ObjectCreator.GetTypes();
 			var translatableFields = types.SelectMany(t => t.GetFields())
 				.Where(f => f.HasAttribute<TranslateAttribute>()).Distinct();
 
-			foreach (var filename in Game.modData.Manifest.ChromeLayout)
+			foreach (var filename in Game.ModData.Manifest.ChromeLayout)
 			{
 				Console.WriteLine("# {0}:", filename);
 				var yaml = MiniYaml.FromFile(filename);
@@ -56,7 +60,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var node in nodes)
 			{
 				var alreadyTranslated = node.Value.Value != null && node.Value.Value.Contains('@');
-				if (translatables.Contains(node.Key) && !alreadyTranslated)
+				if (translatables.Contains(node.Key) && !alreadyTranslated && parentLabel != null)
 				{
 					var translationKey = "{0}-{1}-{2}".F(container.Replace('_', '-'), parentLabel.Replace('_', '-'), node.Key.ToUpper());
 					Console.WriteLine("\t{0}: {1}", translationKey, node.Value.Value);
