@@ -39,6 +39,7 @@ DOG:
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
+		CloakTypes: Cloak, Hija
 		Range: 5c0
 	Voiced:
 		VoiceSet: DogVoice
@@ -69,6 +70,9 @@ E1:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 E2:
 	Inherits: ^Soldier
@@ -102,6 +106,9 @@ E2:
 		Chance: 50
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 E3:
 	Inherits: ^Soldier
@@ -131,6 +138,9 @@ E3:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 E4:
 	Inherits: ^Soldier
@@ -158,6 +168,9 @@ E4:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 E6:
 	Inherits: ^Soldier
@@ -180,6 +193,9 @@ E6:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 SPY:
 	Inherits: ^Soldier
@@ -222,6 +238,7 @@ SPY:
 		UpgradeMinEnabledLevel: 1
 	IgnoresDisguise:
 	DetectCloaked:
+		CloakTypes: Cloak, Hija
 		Range: 5c0
 	Armament:
 		Weapon: SilencedPPK
@@ -288,6 +305,9 @@ E7:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 MEDI:
 	Inherits: ^Soldier
@@ -319,6 +339,9 @@ MEDI:
 		AttackSequence: heal
 	Voiced:
 		VoiceSet: MedicVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 MECH:
 	Inherits: ^Soldier
@@ -356,6 +379,9 @@ MECH:
 		StandSequences: stand
 	Voiced:
 		VoiceSet: MechanicVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 EINSTEIN:
 	Inherits: ^CivInfantry
@@ -443,6 +469,15 @@ HIJACKER:
 		PipType: Yellow
 	Captures:
 		CaptureTypes: vehicle
+	Cloak:
+		CloakTypes: Cloak, Hija
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound:
+		UncloakSound:
+		UncloakOnMove: yes
+	Crushable:
+		WarnProbability: 95
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -500,6 +535,9 @@ SHOK:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5c0
 
 SNIPER:
 	Inherits: ^Soldier
