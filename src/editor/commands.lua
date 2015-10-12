@@ -256,10 +256,12 @@ function OpenFile(event)
     (path and GetPathWithSep(path) or FileTreeGetDir() or ""),
     "",
     getExtsString(),
-    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
+    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST + wx.wxFD_MULTIPLE)
   if fileDialog:ShowModal() == wx.wxID_OK then
-    if not LoadFile(fileDialog:GetPath(), nil, true) then
-      ReportError(TR("Unable to load file '%s'."):format(fileDialog:GetPath()))
+    for _, path in ipairs(fileDialog:GetPaths()) do
+      if not LoadFile(path, nil, true) then
+        ReportError(TR("Unable to load file '%s'."):format(path))
+      end
     end
   end
   fileDialog:Destroy()
