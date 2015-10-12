@@ -6,13 +6,12 @@ BADR:
 		HP: 300
 	Armor:
 		Type: Light
-	Aircraft:
+	Plane:
 		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -24,8 +23,8 @@ BADR:
 		Offset: -432,560,0
 	Contrail@2:
 		Offset: -432,-560,0
-	SpawnActorOnDeath:
-		Actor: BADR.Husk
+	LeavesHusk:
+		HuskActor: BADR.Husk
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
 		Interval: 2
@@ -33,6 +32,7 @@ BADR:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
+	-GpsDot:
 	RejectsOrders:
 
 BADR.Bomber:
@@ -44,13 +44,12 @@ BADR.Bomber:
 		HP: 300
 	Armor:
 		Type: Light
-	Aircraft:
+	Plane:
 		CruiseAltitude: 2560
 		ROT: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 7
 	-Selectable:
@@ -62,8 +61,8 @@ BADR.Bomber:
 		Offset: -432,560,0
 	Contrail@2:
 		Offset: -432,-560,0
-	SpawnActorOnDeath:
-		Actor: BADR.Husk
+	LeavesHusk:
+		HuskActor: BADR.Husk
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
 		Interval: 2
@@ -71,6 +70,7 @@ BADR.Bomber:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
+	-GpsDot:
 	RejectsOrders:
 	RenderSprites:
 		Image: badr
@@ -100,7 +100,7 @@ MIG:
 		LocalYaw: -40, 24
 	AttackPlane:
 		FacingTolerance: 20
-	Aircraft:
+	Plane:
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		ROT: 4
@@ -108,7 +108,6 @@ MIG:
 		RearmBuildings: afld
 		RepulsionSpeed: 40
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -124,8 +123,8 @@ MIG:
 		Offset: -598,-683,0
 	Contrail@2:
 		Offset: -598,683,0
-	SpawnActorOnDeath:
-		Actor: MIG.Husk
+	LeavesHusk:
+		HuskActor: MIG.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
@@ -162,7 +161,7 @@ YAK:
 		MuzzleSequence: muzzle
 	AttackPlane:
 		FacingTolerance: 20
-	Aircraft:
+	Plane:
 		CruiseAltitude: 2560
 		RearmBuildings: afld
 		InitialFacing: 192
@@ -170,7 +169,6 @@ YAK:
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -182,11 +180,11 @@ YAK:
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
-	WithMuzzleOverlay:
+	WithMuzzleFlash:
 	Contrail:
 		Offset: -853,0,0
-	SpawnActorOnDeath:
-		Actor: YAK.Husk
+	LeavesHusk:
+		HuskActor: YAK.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
@@ -210,31 +208,27 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12c0
+		Range: 10c0
 		Type: CenterPosition
-	Aircraft:
+	Helicopter:
 		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
-		AirborneUpgrades: airborne
-		CanHover: True
-	WithSpriteRotorOverlay@PRIMARY:
+	WithRotor@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
 		GroundSequence: slow-rotor2
-	WithSpriteRotorOverlay@SECONDARY:
+	WithRotor@SECONDARY:
 		Offset: 597,0,213
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
-	SpawnActorOnDeath:
-		Actor: TRAN.Husk
-	SelectionDecorations:
-		VisualBounds: 40,36
+	LeavesHusk:
+		HuskActor: TRAN.Husk
 
 HELI:
 	Inherits: ^Helicopter
@@ -263,24 +257,22 @@ HELI:
 		LocalOffset: 0,213,-85
 	AttackHeli:
 		FacingTolerance: 20
-	Aircraft:
+	Helicopter:
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
-		AirborneUpgrades: airborne
-		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
-	WithSpriteRotorOverlay:
+	WithRotor:
 		Offset: 0,0,85
 	AmmoPool:
 		Ammo: 8
 	SelectionDecorations:
-		VisualBounds: 36,28
-	SpawnActorOnDeath:
-		Actor: HELI.Husk
+		VisualBounds: 36,28,0,0
+	LeavesHusk:
+		HuskActor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 	ProducibleWithLevel:
@@ -316,26 +308,24 @@ HIND:
 		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
-	Aircraft:
+	Helicopter:
 		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
-		AirborneUpgrades: airborne
-		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
-	WithSpriteRotorOverlay:
+	WithRotor:
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6
 		ReloadTicks: 8
 	SelectionDecorations:
-		VisualBounds: 38,32
-	WithMuzzleOverlay:
-	SpawnActorOnDeath:
-		Actor: HIND.Husk
+		VisualBounds: 38,32,0,0
+	WithMuzzleFlash:
+	LeavesHusk:
+		HuskActor: HIND.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 	ProducibleWithLevel:
@@ -347,24 +337,23 @@ U2:
 		HP: 2000
 	Armor:
 		Type: Heavy
-	Aircraft:
+	Plane:
 		CruiseAltitude: 2560
 		ROT: 7
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AttackBomber:
 	-Selectable:
 	-Voiced:
-	-Targetable@AIRBORNE:
+	-TargetableAircraft:
 	-GainsExperience:
 	Contrail@1:
 		Offset: -725,683,0
 	Contrail@2:
 		Offset: -725,-683,0
-	SpawnActorOnDeath:
-		Actor: U2.Husk
+	LeavesHusk:
+		HuskActor: U2.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -1c43,0,0
 		Interval: 2
