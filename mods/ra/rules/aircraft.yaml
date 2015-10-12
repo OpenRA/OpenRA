@@ -210,7 +210,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12c0
+		Range: 10c0
 		Type: CenterPosition
 	Aircraft:
 		RearmBuildings: hpad
