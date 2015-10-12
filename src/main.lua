@@ -155,7 +155,6 @@ ide = {
 
     activateoutput = true, -- activate output/console on Run/Debug/Compile
     unhidewindow = false, -- to unhide a gui window
-    allowinteractivescript = true, -- allow interaction in the output window
     projectautoopen = true,
     autorecoverinactivity = 10, -- seconds
     outlineinactivity = 0.250, -- seconds

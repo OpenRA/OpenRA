@@ -171,7 +171,6 @@ config = {
 
   activateoutput = false, -- activate output/console on Run/Debug/Compile
   unhidewindow = false, -- to unhide a gui window
-  allowinteractivescript = false, -- allow interaction in the output window
   projectautoopen = false, -- allow auto open/close files on a project switch
   autorecoverinactivity = nil, -- period of inactivity (s) for autorecover
   hidpi = false, -- HiDPI/Retina display support

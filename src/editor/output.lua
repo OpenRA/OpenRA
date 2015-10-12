@@ -270,8 +270,7 @@ local function getStreams()
           DisplayShell(str)
         else
           DisplayOutputNoMarker(str)
-          if str and ide.config.allowinteractivescript and
-            (getInputLine() > -1 or errorlog:GetReadOnly()) then
+          if str and (getInputLine() > -1 or errorlog:GetReadOnly()) then
             ActivateOutput()
             updateInputMarker()
           end
