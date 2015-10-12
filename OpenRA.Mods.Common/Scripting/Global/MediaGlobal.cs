@@ -95,6 +95,18 @@ namespace OpenRA.Mods.Common.Scripting
 				playlist.Play(musicInfo);
 		}
 
+		[Desc("Play track defined in music.yaml or map.yaml as background music." +
+			" If music is already playing use Media.StopMusic() to stop it" +
+			" and the background music will start automatically." +
+			" Keep the track empty to disable background music.")]
+		public void SetBackgroundMusic(string track = null)
+		{
+			if (!playlist.IsMusicAvailable)
+				return;
+
+			playlist.SetBackgroundMusic(string.IsNullOrEmpty(track) ? null : world.Map.Rules.Music[track]);
+		}
+
 		[Desc("Stop the current song.")]
 		public void StopMusic()
 		{
