@@ -32,14 +32,15 @@ DOG:
 		Voice: Attack
 	AttackMove:
 		Voice: Move
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
 		AttackSequence: shoot
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5c0
+		CloakTypes: Cloak, Hija
+		Range: 5
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -69,6 +70,9 @@ E1:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 E2:
 	Inherits: ^Soldier
@@ -102,6 +106,9 @@ E2:
 		Chance: 50
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 E3:
 	Inherits: ^Soldier
@@ -131,6 +138,9 @@ E3:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 E4:
 	Inherits: ^Soldier
@@ -158,6 +168,9 @@ E4:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 E6:
 	Inherits: ^Soldier
@@ -180,6 +193,9 @@ E6:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 SPY:
 	Inherits: ^Soldier
@@ -222,7 +238,8 @@ SPY:
 		UpgradeMinEnabledLevel: 1
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5c0
+		CloakTypes: Cloak, Hija
+		Range: 5
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -288,6 +305,9 @@ E7:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 MEDI:
 	Inherits: ^Soldier
@@ -307,18 +327,21 @@ MEDI:
 		Range: 3c0
 	Passenger:
 		PipType: Yellow
+	AutoHeal:
 	Armament:
 		Weapon: Heal
+	AttackMedic:
 		Cursor: heal
 		OutsideRangeCursor: heal
-		TargetStances: Ally
-		ForceTargetStances: None
-	AttackFrontal:
+	-AutoTarget:
 	WithInfantryBody:
 		StandSequences: stand
 		AttackSequence: heal
 	Voiced:
 		VoiceSet: MedicVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 MECH:
 	Inherits: ^Soldier
@@ -341,21 +364,24 @@ MECH:
 	Passenger:
 		PipType: Yellow
 		Voice: Move
+	AutoHeal:
 	Armament:
 		Weapon: Repair
+	AttackMedic:
 		Cursor: repair
 		OutsideRangeCursor: repair
-		TargetStances: Ally
-		ForceTargetStances: None
-	AttackFrontal:
 		Voice: Move
 	Captures:
 		CaptureTypes: husk
+	-AutoTarget:
 	WithInfantryBody:
 		AttackSequence: repair
 		StandSequences: stand
 	Voiced:
 		VoiceSet: MechanicVoice
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 EINSTEIN:
 	Inherits: ^CivInfantry
@@ -437,12 +463,23 @@ HIJACKER:
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
 		HP: 50
+	Mobile:
+		Speed: 85
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 	Captures:
 		CaptureTypes: vehicle
+	Cloak:
+		CloakTypes: Cloak, Hija
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound:
+		UncloakSound:
+		UncloakOnMove: yes
+	Crushable:
+		WarnProbability: 95
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -464,7 +501,7 @@ SHOK:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 60
+		HP: 100
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -475,17 +512,6 @@ SHOK:
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: PortaTesla
-	Armament@CHARGE:
-		Weapon: PortaCharge
-		LocalOffset: 427,0,341
-		TargetStances: Ally
-		ForceTargetStances: None
-		Cursor: ability
-		OutsideRangeCursor: ability
-	AmmoPool:
-		PipCount: 0
-		SelfReloads: true
-		SelfReloadTicks: 70
 	AttackFrontal:
 		Voice: Attack
 	AttackMove:
@@ -500,6 +526,9 @@ SHOK:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	DetectCloaked:
+		CloakTypes: Hija
+		Range: 5
 
 SNIPER:
 	Inherits: ^Soldier
@@ -535,10 +564,9 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: true
-		IsPlayerPalette: true
+		UncloakOnMove: yes
 	DetectCloaked:
-		Range: 6c0
+		Range: 6
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -599,7 +627,7 @@ Ant:
 		AttackSequence: bite
 	Armament:
 		Weapon: mandible
-	Targetable:
+	TargetableUnit:
 		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
