@@ -40,6 +40,22 @@ function ClearOutput(force)
   errorlog:SetReadOnly(true)
 end
 
+local inputBound = 0 -- to track where partial output ends for input editing purposes
+local function getInputLine()
+  return errorlog:MarkerPrevious(errorlog:GetLineCount()+1, PROMPT_MARKER_VALUE)
+end
+local function getInputText(bound)
+  return errorlog:GetTextRange(
+    errorlog:PositionFromLine(getInputLine())+(bound or 0), errorlog:GetLength())
+end
+local function updateInputMarker()
+  local lastline = errorlog:GetLineCount()-1
+  errorlog:MarkerDeleteAll(PROMPT_MARKER)
+  errorlog:MarkerAdd(lastline, PROMPT_MARKER)
+  inputBound = #getInputText()
+end
+function OutputEnableInput() updateInputMarker() end
+
 function DisplayOutputNoMarker(...)
   local message = ""
   local cnt = select('#',...)
@@ -48,12 +64,15 @@ function DisplayOutputNoMarker(...)
     message = message..tostring(v)..(i<cnt and "\t" or "")
   end
 
+  local promptLine = getInputLine()
+  local insertedAt = promptLine == -1 and errorlog:GetLength() or errorlog:PositionFromLine(promptLine) + inputBound
   local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
-  errorlog:AppendText(FixUTF8(message, "\022"))
+  errorlog:InsertText(insertedAt, FixUTF8(message, "\022"))
   errorlog:EmptyUndoBuffer()
   errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
+  if promptLine ~= -1 then updateInputMarker() end
 end
 function DisplayOutput(...)
   errorlog:MarkerAdd(errorlog:GetLineCount()-1, MESSAGE_MARKER)
@@ -226,22 +245,6 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   nameTab(errorlog, TR("Output (running)"))
 
   return pid
-end
-
-local inputBound -- to track where partial output ends for input editing purposes
-local function getInputLine()
-  local totalLines = errorlog:GetLineCount()
-  return errorlog:MarkerPrevious(totalLines+1, PROMPT_MARKER_VALUE)
-end
-local function getInputText(bound)
-  return errorlog:GetTextRange(
-    errorlog:PositionFromLine(getInputLine())+(bound or 0), errorlog:GetLength())
-end
-local function updateInputMarker()
-  local lastline = errorlog:GetLineCount()-1
-  errorlog:MarkerDeleteAll(PROMPT_MARKER)
-  errorlog:MarkerAdd(lastline, PROMPT_MARKER)
-  inputBound = #getInputText()
 end
 
 local readonce = 4096

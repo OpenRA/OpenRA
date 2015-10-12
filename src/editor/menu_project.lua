@@ -226,6 +226,7 @@ local function runInterpreter(wfilename, withdebugger)
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
   debugger.pid = ide.interpreter:frun(wfilename, withdebugger)
+  if debugger.pid then OutputEnableInput() end
   return debugger.pid
 end
 
