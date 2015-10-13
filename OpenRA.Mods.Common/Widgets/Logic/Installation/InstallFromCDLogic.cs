@@ -137,7 +137,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				afterInstall();
+				Game.RunAfterTick(() =>
+				{
+					Ui.CloseWindow();
+					afterInstall();
+				});
 			}) { IsBackground = true }.Start();
 		}
 
