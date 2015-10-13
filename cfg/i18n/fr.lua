@@ -205,7 +205,7 @@ return {
   ["Re&place In Files"] = "Remp&lacer dans les fichiers", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Ré-indente les lignes sélectionnées", -- src\editor\menu_edit.lua
   ["Reached end of text and wrapped around."] = "Fin de texte atteinte et repositionnement en début de texte.", -- src\editor\findreplace.lua
-  ["Recent &Projects"] = "&Projets récents", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Projets récents", -- src\editor\menu_file.lua
   ["Recent Files"] = "Fichiers récents", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Rétablit la dernière modification", -- src\editor\menu_edit.lua
   ["Refresh Index"] = "Actualiser l'index", -- src\editor\outline.lua

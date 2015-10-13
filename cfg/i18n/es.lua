@@ -205,7 +205,7 @@ return {
   ["Re&place In Files"] = "Remplazar en archivos", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = nil, -- src\editor\menu_edit.lua
   ["Reached end of text and wrapped around."] = nil, -- src\editor\findreplace.lua
-  ["Recent &Projects"] = nil, -- src\editor\menu_file.lua
+  ["Recent Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "Archivos recientes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Rehacer la última edición deshecha", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua

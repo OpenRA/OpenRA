@@ -205,7 +205,7 @@ return {
   ["Re&place In Files"] = "Замени&ть в файлах", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Исправить отступ в выделенных строчках", -- src\editor\menu_edit.lua
   ["Reached end of text and wrapped around."] = "Достигнут конец текста и произведен возврат к началу.", -- src\editor\findreplace.lua
-  ["Recent &Projects"] = "Недавние &проекты", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Недавние проекты", -- src\editor\menu_file.lua
   ["Recent Files"] = "Недавние файлы", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Вернуть последнее отмененное изменение", -- src\editor\menu_edit.lua
   ["Refresh Index"] = "Обновить индекс", -- src\editor\outline.lua

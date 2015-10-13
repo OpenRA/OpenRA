@@ -204,7 +204,7 @@ return {
   ["Re&place In Files"] = "在文档中替换", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = nil, -- src\editor\menu_edit.lua
   ["Reached end of text and wrapped around."] = nil, -- src\editor\findreplace.lua
-  ["Recent &Projects"] = nil, -- src\editor\menu_file.lua
+  ["Recent Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "最近的文档", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "重做最后被取消的编辑", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua

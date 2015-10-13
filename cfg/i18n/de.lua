@@ -205,7 +205,7 @@ return {
   ["Re&place In Files"] = "Ersetze in &Dateien", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Ausgewählte Zeilen neu einrücken", -- src\editor\menu_edit.lua
   ["Reached end of text and wrapped around."] = "Ende des Textes erreicht, setze am Beginn fort.", -- src\editor\findreplace.lua
-  ["Recent &Projects"] = "Letzte &Projekte", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Letzte Projekte", -- src\editor\menu_file.lua
   ["Recent Files"] = "Letzte Dateien", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Stelle letzte rückgängig gemachte Bearbeitung wieder her", -- src\editor\menu_edit.lua
   ["Refresh Index"] = "Index erneuern", -- src\editor\outline.lua
