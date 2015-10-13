@@ -503,6 +503,7 @@ function ide:AddIndicator(indic, num)
   return num
 end
 function ide:GetIndicator(indic) return indicators[indic] end
+function ide:GetIndicators() return indicators end
 function ide:RemoveIndicator(indic) indicators[indic] = nil end
 
 -- this provides a simple stack for saving/restoring current configuration
