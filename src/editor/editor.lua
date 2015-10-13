@@ -696,7 +696,7 @@ function CreateEditor(bare)
   editor:SetViewWhiteSpace(edcfg.whitespace and true or false)
 
   if (edcfg.usewrap) then
-    editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
+    editor:SetWrapMode(edcfg.wrapmode)
     editor:SetWrapStartIndent(0)
     if ide.wxver >= "2.9.5" then
       if edcfg.wrapflags then

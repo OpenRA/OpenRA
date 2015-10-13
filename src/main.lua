@@ -61,6 +61,7 @@ ide = {
       usetabs  = false,
       tabwidth = 2,
       usewrap = true,
+      wrapmode = wxstc.wxSTC_WRAP_WORD,
       calltipdelay = 500,
       smartindent = true,
       fold = true,
