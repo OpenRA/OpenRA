@@ -4,13 +4,13 @@ MultiCluster:
 	Report: MISL1.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 170
+		MaximumLaunchSpeed: 170
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 8
+		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage

@@ -61,9 +61,9 @@ CyCannon:
 	Report: SCRIN5B.AUD
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 192
+		MaximumLaunchSpeed: 192
 		Blockable: false
-		RateOfTurn: 2
+		HorizontalRateOfTurn: 2
 		Shadow: true
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage

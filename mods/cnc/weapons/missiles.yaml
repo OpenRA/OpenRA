@@ -9,10 +9,10 @@ Rockets:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 15
-		Trail: smokey
+		HorizontalRateOfTurn: 15
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 298
+		MaximumLaunchSpeed: 298
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -43,10 +43,10 @@ BikeRockets:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 10
-		Trail: smokey
+		HorizontalRateOfTurn: 10
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 213
+		MaximumLaunchSpeed: 213
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -78,10 +78,10 @@ OrcaAGMissiles:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 20
-		Trail: smokey
+		HorizontalRateOfTurn: 20
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 256
+		MaximumLaunchSpeed: 256
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -112,10 +112,10 @@ OrcaAAMissiles:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 20
-		Trail: smokey
+		HorizontalRateOfTurn: 20
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 298
+		MaximumLaunchSpeed: 298
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -143,10 +143,10 @@ MammothMissiles:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 20
-		Trail: smokey
+		HorizontalRateOfTurn: 20
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 341
+		MaximumLaunchSpeed: 341
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
@@ -216,10 +216,10 @@ MammothMissiles:
 		Blockable: false
 		Inaccuracy: 213
 		Image: DRAGON
-		RateOfTurn: 10
-		Trail: smokey
+		HorizontalRateOfTurn: 10
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 213
+		MaximumLaunchSpeed: 213
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -248,10 +248,10 @@ BoatMissile:
 		Blockable: false
 		Inaccuracy: 213
 		Image: DRAGON
-		RateOfTurn: 10
-		Trail: smokey
+		HorizontalRateOfTurn: 10
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 170
+		MaximumLaunchSpeed: 170
 		RangeLimit: 60
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -283,10 +283,10 @@ TowerMissle:
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
-		RateOfTurn: 20
-		Trail: smokey
+		HorizontalRateOfTurn: 20
+		TrailImage: smokey
 		ContrailLength: 8
-		Speed: 298
+		MaximumLaunchSpeed: 298
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
@@ -313,10 +313,10 @@ SAMMissile:
 		Arm: 0
 		Blockable: false
 		Image: MISSILE
-		RateOfTurn: 20
-		Speed: 426
+		HorizontalRateOfTurn: 20
+		MaximumLaunchSpeed: 426
 		RangeLimit: 35
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 8
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
@@ -372,10 +372,10 @@ Patriot:
 	Projectile: Missile
 		Blockable: false
 		Image: patriot
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 8
-		RateOfTurn: 20
-		Speed: 341
+		HorizontalRateOfTurn: 20
+		MaximumLaunchSpeed: 341
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 682

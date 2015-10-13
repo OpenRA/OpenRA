@@ -22,18 +22,35 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class MissileInfo : IProjectileInfo
 	{
+		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
+
+		[Desc("Projectile sequence name.")]
 		[SequenceReference("Image")] public readonly string Sequence = "idle";
 
+		[Desc("Palette used to render the projectile sequence.")]
 		[PaletteReference] public readonly string Palette = "effect";
 
+		[Desc("Should the projectile's shadow be rendered?")]
 		public readonly bool Shadow = false;
 
-		[Desc("Projectile speed in WDist / tick")]
-		public readonly WDist Speed = new WDist(8);
+		[Desc("Minimum vertical launch angle (pitch).")]
+		public readonly WAngle MinimumLaunchAngle = WAngle.Zero;
 
-		[Desc("Maximum vertical pitch when changing altitude.")]
-		public readonly WAngle MaximumPitch = WAngle.FromDegrees(30);
+		[Desc("Maximum vertical launch angle (pitch).")]
+		public readonly WAngle MaximumLaunchAngle = new WAngle(64);
+
+		[Desc("Minimum launch speed in WDist / tick")]
+		public readonly WDist MinimumLaunchSpeed = new WDist(75);
+
+		[Desc("Maximum launch speed in WDist / tick")]
+		public readonly WDist MaximumLaunchSpeed = new WDist(200);
+
+		[Desc("Maximum projectile speed in WDist / tick")]
+		public readonly WDist MaximumSpeed = new WDist(384);
+
+		[Desc("Projectile acceleration when propulsion activated.")]
+		public readonly WDist Acceleration = new WDist(5);
 
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
@@ -47,28 +64,58 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
 
-		[Desc("In n/256 per tick.")]
-		public readonly int RateOfTurn = 5;
+		[Desc("Horizontal rate of turn.")]
+		public readonly int HorizontalRateOfTurn = 5;
 
-		[Desc("Explode when following the target longer than this many ticks.")]
+		[Desc("Vertical rate of turn.")]
+		public readonly int VerticalRateOfTurn = 6;
+
+		[Desc("Run out of fuel after being activated this many ticks. Zero for unlimited fuel.")]
 		public readonly int RangeLimit = 0;
 
-		[Desc("Trail animation.")]
-		public readonly string Trail = null;
+		[Desc("Explode when running out of fuel.")]
+		public readonly bool ExplodeWhenEmpty = true;
 
-		[Desc("Interval in ticks between each spawned Trail animation.")]
-		public readonly int TrailInterval = 2;
+		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
+		public readonly WDist AirburstAltitude = WDist.Zero;
 
+		[Desc("Cruise altitude. Zero means no cruise altitude used.")]
+		public readonly WDist CruiseAltitude = new WDist(512);
+
+		[Desc("Activate homing mechanism after this many ticks.")]
+		public readonly int HomingActivationDelay = 0;
+
+		[Desc("Image that contains the trail animation.")]
+		public readonly string TrailImage = null;
+
+		[Desc("Smoke sequence name.")]
+		[SequenceReference("TrailImage")] public readonly string TrailSequence = "idle";
+
+		[Desc("Palette used to render the smoke sequence.")]
 		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the smoke sequence.")]
 		public readonly bool TrailUsePlayerPalette = false;
 
+		[Desc("Interval in ticks between spawning smoke animation.")]
+		public readonly int TrailInterval = 2;
+
+		[Desc("Should smoke animation be spawned when the propulsion is not activated.")]
+		public readonly bool TrailWhenDeactivated = false;
+
 		public readonly int ContrailLength = 0;
+
 		public readonly Color ContrailColor = Color.White;
+
 		public readonly bool ContrailUsePlayerColor = false;
+
 		public readonly int ContrailDelay = 1;
 
 		[Desc("Should missile targeting be thrown off by nearby actors with JamsMissiles.")]
 		public readonly bool Jammable = true;
+
+		[Desc("Range of facings by which jammed missiles can stray from current path.")]
+		public readonly int JammedDiversionRange = 20;
 
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
@@ -81,27 +128,51 @@ namespace OpenRA.Mods.Common.Effects
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
 
+	// TODO: double check square roots!!!
 	public class Missile : IEffect, ISync
 	{
+		enum States
+		{
+			Freefall,
+			Homing,
+			Hitting
+		}
+
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
+
+		// NOTE: Might be desirable to unhardcode the number -10
+		readonly WVec gravity = new WVec(0, 0, -10);
+
+		int ticks;
 
 		int ticksToNextSmoke;
 		ContrailRenderable contrail;
 		string trailPalette;
 
+		States state;
+		bool targetPassedBy;
+		bool lockOn = false;
+		bool allowPassBy; // TODO: use this also with high minimum launch angle settings
+
+		WPos targetPosition;
+		WVec offset;
+
+		WVec tarVel;
+		WVec predVel;
+
 		[Sync] WPos pos;
-		[Sync] int facing;
+		WVec velocity;
+		int speed;
+		int loopRadius;
 
-		[Sync] WPos targetPosition;
-		[Sync] WVec offset;
-		[Sync] int ticks;
+		int renderFacing;
+		[Sync] int hFacing;
+		[Sync] int vFacing;
 
-		[Sync] bool lockOn = false;
-
-		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
-		[Sync] public Target GuidedTarget { get { return args.GuidedTarget; } }
+		public Actor SourceActor { get { return args.SourceActor; } }
+		public Target GuidedTarget { get { return args.GuidedTarget; } }
 
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
@@ -109,14 +180,10 @@ namespace OpenRA.Mods.Common.Effects
 			this.args = args;
 
 			pos = args.Source;
-			facing = args.Facing;
-
+			hFacing = args.Facing;
 			targetPosition = args.PassiveTarget;
 
 			var world = args.SourceActor.World;
-
-			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
-				lockOn = true;
 
 			if (info.Inaccuracy.Length > 0)
 			{
@@ -124,10 +191,19 @@ namespace OpenRA.Mods.Common.Effects
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
+			DetermineLaunchSpeedAndAngle(world, out speed, out vFacing);
+
+			velocity = new WVec(0, -speed, 0)
+				.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
+				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)));
+
+			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
+				lockOn = true;
+
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(world, info.Image, () => facing);
-				anim.PlayRepeating("idle");
+				anim = new Animation(world, info.Image, () => renderFacing);
+				anim.PlayRepeating(info.Sequence);
 			}
 
 			if (info.ContrailLength > 0)
@@ -141,6 +217,159 @@ namespace OpenRA.Mods.Common.Effects
 				trailPalette += args.SourceActor.Owner.InternalName;
 		}
 
+		static int LoopRadius(int speed, int rot)
+		{
+			// loopRadius in w-units = speed in w-units per tick / angular speed in radians per tick
+			// angular speed in radians per tick = rot in facing units per tick * (pi radians / 128 facing units)
+			// pi = 314 / 100
+			// ==> loopRadius = (speed * 128 * 100) / (314 * rot)
+			return (speed * 6400) / (157 * rot);
+		}
+
+		void DetermineLaunchSpeedAndAngleForIncline(int predClfDist, int diffClfMslHgt, int relTarHorDist,
+			out int speed, out int vFacing)
+		{
+			speed = info.MaximumLaunchSpeed.Length;
+
+			// Find smallest vertical facing, for which the missile will be able to climb terrAltDiff w-units
+			// within hHeightChange w-units all the while ending the ascent with vertical facing 0
+			vFacing = info.MaximumLaunchAngle.Angle >> 2;
+
+			// Compute minimum speed necessary to both be able to face directly upwards and have enough space
+			// to hit the target without passing it by (and thus having to do horizontal loops)
+			var minSpeed = ((System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
+					(relTarHorDist + predClfDist) * 1024 / (2 * (2048 - WAngle.FromFacing(vFacing).Sin())))
+				* info.VerticalRateOfTurn * 157) / 6400).Clamp(info.MinimumLaunchSpeed.Length, info.MaximumLaunchSpeed.Length);
+
+			if ((sbyte)vFacing < 0)
+				speed = minSpeed;
+			else if (!WillClimbWithinDistance(vFacing, loopRadius, predClfDist, diffClfMslHgt)
+				&& !WillClimbAroundInclineTop(vFacing, loopRadius, predClfDist, diffClfMslHgt, speed))
+			{
+				// Find highest speed greater than the above minimum that allows the missile
+				// to surmount the incline
+				var vFac = vFacing;
+				speed = BisectionSearch(minSpeed, info.MaximumLaunchSpeed.Length, spd =>
+				{
+					var lpRds = LoopRadius(spd, info.VerticalRateOfTurn);
+					return WillClimbWithinDistance(vFac, lpRds, predClfDist, diffClfMslHgt)
+						|| WillClimbAroundInclineTop(vFac, lpRds, predClfDist, diffClfMslHgt, spd);
+				});
+			}
+			else
+			{
+				// Find least vertical facing that will allow the missile to climb
+				// terrAltDiff w-units within hHeightChange w-units
+				// all the while ending the ascent with vertical facing 0
+				vFacing = BisectionSearch(System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0),
+					(sbyte)(info.MaximumLaunchAngle.Angle >> 2),
+					vFac => !WillClimbWithinDistance(vFac, loopRadius, predClfDist, diffClfMslHgt)) + 1;
+			}
+		}
+
+		// TODO: Double check Launch parameter determination
+		void DetermineLaunchSpeedAndAngle(World world, out int speed, out int vFacing)
+		{
+			speed = info.MaximumLaunchSpeed.Length;
+			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+
+			// Compute current distance from target position
+			var tarDistVec = targetPosition + offset - pos;
+			var relTarHorDist = tarDistVec.HorizontalLength;
+
+			int predClfHgt, predClfDist, lastHtChg, lastHt;
+			InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
+
+			// Height difference between the incline height and missile height
+			var diffClfMslHgt = predClfHgt - pos.Z;
+
+			// Incline coming up
+			if (diffClfMslHgt >= 0)
+				DetermineLaunchSpeedAndAngleForIncline(predClfDist, diffClfMslHgt, relTarHorDist, out speed, out vFacing);
+			else if (lastHt != 0)
+			{
+				vFacing = System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0);
+				speed = info.MaximumLaunchSpeed.Length;
+			}
+			else
+			{
+				// Set vertical facing so that the missile faces its target
+				var vDist = new WVec(-tarDistVec.Z, -relTarHorDist, 0);
+				vFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, 0);
+
+				// Do not accept -1 as valid vertical facing since it is usually a numerical error
+				// and will lead to premature descent and crashing into the ground
+				if (vFacing == -1)
+					vFacing = 0;
+
+				// Make sure the chosen vertical facing adheres to prescribed bounds
+				vFacing = vFacing.Clamp((sbyte)(info.MinimumLaunchAngle.Angle >> 2),
+					(sbyte)(info.MaximumLaunchAngle.Angle >> 2));
+			}
+		}
+
+		// Will missile be able to climb terrAltDiff w-units within hHeightChange w-units
+		// all the while ending the ascent with vertical facing 0
+		// Calling this function only makes sense when vFacing is nonnegative
+		static bool WillClimbWithinDistance(int vFacing, int loopRadius, int predClfDist, int diffClfMslHgt)
+		{
+			// Missile's horizontal distance from loop's center
+			var missDist = loopRadius * WAngle.FromFacing(vFacing).Sin() / 1024;
+
+			// Missile's height below loop's top
+			var missHgt = loopRadius * (1024 - WAngle.FromFacing(vFacing).Cos()) / 1024;
+
+			// Height that would be climbed without changing vertical facing
+			// for a horizontal distance hHeightChange - missDist
+			var hgtChg = (predClfDist - missDist) * WAngle.FromFacing(vFacing).Tan() / 1024;
+
+			// Check if total manoeuvre height enough to overcome the incline's height
+			return hgtChg + missHgt >= diffClfMslHgt;
+		}
+
+		// This function checks if the missile's vertical facing is
+		// nonnegative, and the incline top's horizontal distance from the missile is
+		// less than loopRadius * (1024 - WAngle.FromFacing(vFacing).Sin()) / 1024
+		static bool IsNearInclineTop(int vFacing, int loopRadius, int predClfDist)
+		{
+			return vFacing >= 0 && predClfDist <= loopRadius * (1024 - WAngle.FromFacing(vFacing).Sin()) / 1024;
+		}
+
+		// Will missile climb around incline top if bringing vertical facing
+		// down to zero on an arc of radius loopRadius
+		// Calling this function only makes sense when IsNearInclineTop returns true
+		static bool WillClimbAroundInclineTop(int vFacing, int loopRadius, int predClfDist, int diffClfMslHgt, int speed)
+		{
+			// Vector from missile's current position pointing to the loop's center
+			var radius = new WVec(loopRadius, 0, 0)
+				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(System.Math.Max(0, 64 - vFacing))));
+
+			// Vector from loop's center to incline top + 64 hardcoded in height buffer zone
+			var topVector = new WVec(predClfDist, diffClfMslHgt + 64, 0) - radius;
+
+			// Check if incline top inside of the vertical loop
+			return topVector.Length <= loopRadius;
+		}
+
+		static int BisectionSearch(int lowerBound, int upperBound, System.Func<int, bool> testCriterion)
+		{
+			// Assuming that there exists an integer N between lowerBound and upperBound
+			// for which testCriterion returns true as well as all integers less than N,
+			// and for which testCriterion returns false for all integers greater than N,
+			// this function finds N.
+			while (upperBound - lowerBound > 1)
+			{
+				var middle = (upperBound + lowerBound) / 2;
+
+				if (testCriterion(middle))
+					lowerBound = middle;
+				else
+					upperBound = middle;
+			}
+
+			return lowerBound;
+		}
+
 		bool JammedBy(TraitPair<JamsMissiles> tp)
 		{
 			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
@@ -152,44 +381,402 @@ namespace OpenRA.Mods.Common.Effects
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
 		}
 
+		void ChangeSpeed(int sign = 1)
+		{
+			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.MaximumSpeed.Length);
+
+			// Compute the vertical loop radius
+			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+		}
+
+		WVec FreefallTick()
+		{
+			// Compute the projectile's freefall displacement
+			var move = velocity + gravity / 2;
+			velocity += gravity;
+			var velRatio = info.MaximumSpeed.Length * 1024 / velocity.Length;
+			if (velRatio < 1024)
+				velocity = velocity * velRatio / 1024;
+
+			return move;
+		}
+
+		// NOTE: It might be desirable to make lookahead more intelligent by outputting more information
+		//       than just the highest point in the lookahead distance
+		void InclineLookahead(World world, int distCheck, out int predClfHgt, out int predClfDist, out int lastHtChg, out int lastHt)
+		{
+			predClfHgt = 0; // Highest probed terrain height
+			predClfDist = 0; // Distance from highest point
+			lastHtChg = 0; // Distance from last time the height changes
+			lastHt = 0; // Height just before the last height change
+
+			// NOTE: Might be desired to unhardcode the lookahead step size
+			var stepSize = 32;
+			var step = new WVec(0, -stepSize, 0)
+				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing))); // Step vector of length 128
+
+			// Probe terrain ahead of the missile
+			// NOTE: Might be desired to unhardcode maximum lookahead distance
+			var maxLookaheadDistance = loopRadius * 4;
+			var posProbe = pos;
+			var curDist = 0;
+			var tickLimit = System.Math.Min(maxLookaheadDistance, distCheck) / stepSize;
+			var prevHt = 0;
+
+			// TODO: Make sure cell on map!!!
+			for (var tick = 0; tick <= tickLimit; tick++)
+			{
+				posProbe += step;
+				if (!world.Map.Contains(world.Map.CellContaining(posProbe)))
+					break;
+
+				var ht = world.Map.MapHeight.Value[world.Map.CellContaining(posProbe)] * 512;
+
+				curDist += stepSize;
+				if (ht > predClfHgt)
+				{
+					predClfHgt = ht;
+					predClfDist = curDist;
+				}
+
+				if (prevHt != ht)
+				{
+					lastHtChg = curDist;
+					lastHt = prevHt;
+					prevHt = ht;
+				}
+			}
+		}
+
+		int IncreaseAltitude(int predClfDist, int diffClfMslHgt, int relTarHorDist, int vFacing)
+		{
+			var desiredVFacing = vFacing;
+
+			// If missile is below incline top height and facing downwards, bring back
+			// its vertical facing above zero as soon as possible
+			if ((sbyte)vFacing < 0)
+				desiredVFacing = info.VerticalRateOfTurn;
+
+			// Missile will climb around incline top if bringing vertical facing
+			// down to zero on an arc of radius loopRadius
+			else if (IsNearInclineTop(vFacing, loopRadius, predClfDist)
+				&& WillClimbAroundInclineTop(vFacing, loopRadius, predClfDist, diffClfMslHgt, speed))
+				desiredVFacing = 0;
+
+			// Missile will not climb terrAltDiff w-units within hHeightChange w-units
+			// all the while ending the ascent with vertical facing 0
+			else if (!WillClimbWithinDistance(vFacing, loopRadius, predClfDist, diffClfMslHgt))
+
+				// Find smallest vertical facing, attainable in the next tick,
+				// for which the missile will be able to climb terrAltDiff w-units
+				// within hHeightChange w-units all the while ending the ascent
+				// with vertical facing 0
+				for (var vFac = System.Math.Min(vFacing + info.VerticalRateOfTurn - 1, 63); vFac >= vFacing; vFac--)
+					if (!WillClimbWithinDistance(vFac, loopRadius, predClfDist, diffClfMslHgt)
+						&& !(predClfDist <= loopRadius * (1024 - WAngle.FromFacing(vFac).Sin()) / 1024
+							&& WillClimbAroundInclineTop(vFac, loopRadius, predClfDist, diffClfMslHgt, speed)))
+					{
+						desiredVFacing = vFac + 1;
+						break;
+					}
+
+			// Attained height after ascent as predicted from upper part of incline surmounting manoeuvre
+			var predAttHght = loopRadius * (1024 - WAngle.FromFacing(vFacing).Cos()) / 1024 - diffClfMslHgt;
+
+			// Should the missile be slowed down in order to make it more manoeuverable
+			var slowDown = info.Acceleration.Length != 0 // Possible to decelerate
+				&& ((desiredVFacing != 0 // Lower part of incline surmounting manoeuvre
+
+						// Incline will be hit before vertical facing attains 64
+						&& (predClfDist <= loopRadius * (1024 - WAngle.FromFacing(vFacing).Sin()) / 1024
+
+							// When evaluating this the incline will be *not* be hit before vertical facing attains 64
+				// At current speed target too close to hit without passing it by
+							|| relTarHorDist <= 2 * loopRadius * (2048 - WAngle.FromFacing(vFacing).Sin()) / 1024 - predClfDist))
+
+					|| (desiredVFacing == 0 // Upper part of incline surmounting manoeuvre
+						&& relTarHorDist <= loopRadius * WAngle.FromFacing(vFacing).Sin() / 1024
+							+ Exts.ISqrt(predAttHght * (2 * loopRadius - predAttHght)))); // Target too close to hit at current speed
+
+			if (slowDown)
+				ChangeSpeed(-1);
+
+			return desiredVFacing;
+		}
+
+		int HomingInnerTick(int predClfDist, int diffClfMslHgt, int relTarHorDist, int lastHtChg, int lastHt,
+			int nxtRelTarHorDist, int relTarHgt, int vFacing, bool targetPassedBy)
+		{
+			int desiredVFacing = vFacing;
+
+			// Incline coming up -> attempt to reach the incline so that after predClfDist
+			// the height above the terrain is positive but as close to 0 as possible
+			// Also, never change horizontal facing and never travel backwards
+			// Possible techniques to avoid close cliffs are deceleration, turning
+			// as sharply as possible to travel directly upwards and then returning
+			// to zero vertical facing as low as possible while still not hittin the
+			// high terrain. A last technique (and the preferred one, normally used when
+			// the missile hasn't been fired near a cliff) is simply finding the smallest
+			// vertical facing that allows for a smooth climb to the new terrain's height
+			// and coming in at predClfDist at exactly zero vertical facing
+			if (diffClfMslHgt >= 0 && !allowPassBy)
+				desiredVFacing = IncreaseAltitude(predClfDist, diffClfMslHgt, relTarHorDist, vFacing);
+			else if (relTarHorDist <= 3 * loopRadius || state == States.Hitting)
+			{
+				// No longer travel at cruise altitude
+				state = States.Hitting;
+
+				if (lastHt >= targetPosition.Z)
+					allowPassBy = true;
+
+				if (!allowPassBy && (lastHt < targetPosition.Z || targetPassedBy))
+				{
+					// Aim for the target
+					var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
+					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+
+					// Do not accept -1  as valid vertical facing since it is usually a numerical error
+					// and will lead to premature descent and crashing into the ground
+					if (desiredVFacing == -1)
+						desiredVFacing = 0;
+
+					// If the target has been passed by, limit the absolute value of
+					// vertical facing by the maximum vertical rate of turn
+					// Do this because the missile will be looping horizontally
+					// and thus needs smaller vertical facings so as not
+					// to hit the ground prematurely
+					if (targetPassedBy)
+						desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+					else if (lastHt == 0)
+					{ // Before the target is passed by, missile speed should be changed
+						// Target's height above loop's center
+						var tarHgt = (loopRadius * WAngle.FromFacing(vFacing).Cos() / 1024 - System.Math.Abs(relTarHgt)).Clamp(0, loopRadius);
+
+						// Target's horizontal distance from loop's center
+						var tarDist = Exts.ISqrt(loopRadius * loopRadius - tarHgt * tarHgt);
+
+						// Missile's horizontal distance from loop's center
+						var missDist = loopRadius * WAngle.FromFacing(vFacing).Sin() / 1024;
+
+						// If the current height does not permit the missile
+						// to hit the target before passing it by, lower speed
+						// Otherwise, increase speed
+						if (relTarHorDist <= tarDist - System.Math.Sign(relTarHgt) * missDist)
+							ChangeSpeed(-1);
+						else
+							ChangeSpeed();
+					}
+				}
+				else if (allowPassBy || (lastHt != 0 && relTarHorDist - lastHtChg < loopRadius))
+				{
+					// Only activate this part if target too close to cliff
+					allowPassBy = true;
+
+					// Vector from missile's current position pointing to the loop's center
+					var radius = new WVec(loopRadius, 0, 0)
+						.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(64 - vFacing)));
+
+					// Vector from loop's center to incline top hardcoded in height buffer zone
+					var edgeVector = new WVec(lastHtChg, lastHt - pos.Z, 0) - radius;
+
+					if (!targetPassedBy)
+					{
+						// Climb to critical height
+						if (relTarHorDist > 2 * loopRadius)
+						{
+							// Target's distance from cliff
+							var d1 = relTarHorDist - lastHtChg;
+							if (d1 < 0)
+								d1 = 0;
+							if (d1 > 2 * loopRadius)
+								return 0;
+
+							// Find critical height at which the missile must be once it is at one loopRadius
+							// away from the target
+							var h1 = loopRadius - Exts.ISqrt(d1 * (2 * loopRadius - d1)) - (pos.Z - lastHt);
+
+							if (h1 > loopRadius * (1024 - WAngle.FromFacing(vFacing).Cos()) / 1024)
+								desiredVFacing = WAngle.ArcTan(Exts.ISqrt(h1 * (2 * loopRadius - h1)), loopRadius - h1).Angle >> 2;
+							else
+								desiredVFacing = 0;
+
+							// TODO: deceleration checks!!!
+						}
+						else
+						{
+							// Avoid the cliff edge
+							if (edgeVector.Length > loopRadius && lastHt > targetPosition.Z)
+							{
+								int vFac;
+								for (vFac = vFacing + 1; vFac <= vFacing + info.VerticalRateOfTurn - 1; vFac++)
+								{
+									// Vector from missile's current position pointing to the loop's center
+									radius = new WVec(loopRadius, 0, 0)
+										.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(64 - vFac)));
+
+									// Vector from loop's center to incline top + 64 hardcoded in height buffer zone
+									edgeVector = new WVec(lastHtChg, lastHt - pos.Z, 0) - radius;
+									if (edgeVector.Length <= loopRadius)
+										break;
+								}
+
+								desiredVFacing = vFac;
+							}
+							else
+							{
+								// Aim for the target
+								var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
+								desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
+									desiredVFacing = 0;
+							}
+						}
+					}
+					else
+					{
+						// Aim for the target
+						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
+						desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
+							desiredVFacing = 0;
+					}
+				}
+				else
+				{
+					// Aim to attain cruise altitude as soon as possible while having the absolute value
+					// of vertical facing bound by the maximum vertical rate of turn
+					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
+					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+
+					ChangeSpeed();
+				}
+			}
+			else
+			{
+				// Aim to attain cruise altitude as soon as possible while having the absolute value
+				// of vertical facing bound by the maximum vertical rate of turn
+				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
+				desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
+
+				ChangeSpeed();
+			}
+
+			return desiredVFacing;
+		}
+
+		WVec HomingTick(World world, WVec tarDistVec, int relTarHorDist)
+		{
+			int predClfHgt, predClfDist, lastHtChg, lastHt;
+			InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
+
+			// Height difference between the incline height and missile height
+			var diffClfMslHgt = predClfHgt - pos.Z;
+
+			// Get underestimate of distance from target in next tick
+			var nxtRelTarHorDist = (relTarHorDist - speed - info.Acceleration.Length).Clamp(0, relTarHorDist);
+
+			// Target height relative to the missile
+			var relTarHgt = tarDistVec.Z;
+
+			// Compute which direction the projectile should be facing
+			var desiredHFacing = OpenRA.Traits.Util.GetFacing(tarDistVec + predVel, hFacing);
+
+			if (allowPassBy && System.Math.Abs(desiredHFacing - hFacing) >= System.Math.Abs(desiredHFacing + 128 - hFacing))
+			{
+				desiredHFacing += 128;
+				targetPassedBy = true;
+			}
+			else
+				targetPassedBy = false;
+
+			var desiredVFacing = HomingInnerTick(predClfDist, diffClfMslHgt, relTarHorDist, lastHtChg, lastHt,
+				nxtRelTarHorDist, relTarHgt, vFacing, targetPassedBy);
+
+			// The target has been passed by
+			if (tarDistVec.HorizontalLength < speed * WAngle.FromFacing(vFacing).Cos() / 1024)
+				targetPassedBy = true;
+
+			// Check whether the homing mechanism is jammed
+			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(JammedBy);
+			if (jammed)
+			{
+				desiredHFacing = hFacing + world.SharedRandom.Next(-info.JammedDiversionRange, info.JammedDiversionRange + 1);
+				desiredVFacing = vFacing + world.SharedRandom.Next(-info.JammedDiversionRange, info.JammedDiversionRange + 1);
+			}
+			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
+				desiredHFacing = hFacing;
+
+			// Compute new direction the projectile will be facing
+			hFacing = OpenRA.Traits.Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
+			vFacing = OpenRA.Traits.Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
+
+			// Compute the projectile's guided displacement
+			return new WVec(0, -1024 * speed, 0)
+				.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
+				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)))
+				/ 1024;
+		}
+
 		public void Tick(World world)
 		{
 			ticks++;
 			if (anim != null)
 				anim.Tick();
 
-			// Missile tracks target
+			// Switch from freefall mode to homing mode
+			if (ticks == info.HomingActivationDelay + 1)
+			{
+				state = States.Homing;
+				speed = velocity.Length;
+
+				// Compute the vertical loop radius
+				loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
+			}
+
+			// Switch from homing mode to freefall mode
+			if (info.RangeLimit != 0 && ticks == info.RangeLimit + 1)
+			{
+				state = States.Freefall;
+				velocity = new WVec(0, -speed, 0)
+					.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
+					.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)));
+			}
+
+			// Check if target position should be updated (actor visible & locked on)
+			var newTarPos = targetPosition;
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
-				targetPosition = args.GuidedTarget.CenterPosition;
+				newTarPos = args.GuidedTarget.CenterPosition
+					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
-			var dist = targetPosition + offset - pos;
-			var desiredFacing = OpenRA.Traits.Util.GetFacing(dist, facing);
-			var desiredAltitude = targetPosition.Z;
-			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(JammedBy);
+			// Compute target's predicted velocity vector (assuming uniform circular motion)
+			var fac1 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
+			tarVel = newTarPos - targetPosition;
+			var fac2 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
+			predVel = tarVel.Rotate(WRot.FromFacing(fac2 - fac1));
+			targetPosition = newTarPos;
 
-			if (jammed)
-			{
-				desiredFacing = facing + world.SharedRandom.Next(-20, 21);
-				desiredAltitude = world.SharedRandom.Next(-43, 86);
-			}
-			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
-				desiredFacing = facing;
+			// Compute current distance from target position
+			var tarDistVec = targetPosition + offset - pos;
+			var relTarDist = tarDistVec.Length;
+			var relTarHorDist = tarDistVec.HorizontalLength;
 
-			facing = OpenRA.Traits.Util.TickFacing(facing, desiredFacing, info.RateOfTurn);
-			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * info.Speed.Length / 1024;
+			WVec move;
+			if (state == States.Freefall)
+				move = FreefallTick();
+			else
+				move = HomingTick(world, tarDistVec, relTarHorDist);
 
-			if (pos.Z != desiredAltitude)
-			{
-				var delta = move.HorizontalLength * info.MaximumPitch.Tan() / 1024;
-				var dz = (targetPosition.Z - pos.Z).Clamp(-delta, delta);
-				move += new WVec(0, 0, dz);
-			}
+			renderFacing = WAngle.ArcTan(move.Z - move.Y, move.X).Angle / 4 - 64;
 
+			// Move the missile
 			pos += move;
 
-			if (!string.IsNullOrEmpty(info.Trail) && --ticksToNextSmoke < 0)
+			// Create the smoke trail effect
+			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.Trail, trailPalette, info.Sequence)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.TrailImage, trailPalette, info.TrailSequence)));
 				ticksToNextSmoke = info.TrailInterval;
 			}
 
@@ -198,12 +785,16 @@ namespace OpenRA.Mods.Common.Effects
 
 			var cell = world.Map.CellContaining(pos);
 
-			var shouldExplode = (pos.Z < 0) // Hit the ground
-				|| (dist.LengthSquared < info.CloseEnough.LengthSquared) // Within range
-				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
+			// NOTE: High speeds might cause the missile to miss the target or fly through obstacles
+			//       In that case, big moves should probably be decomposed into multiple smaller ones with hit checks
+			var height = world.Map.DistanceAboveTerrain(pos);
+			var shouldExplode = (height.Length <= 0) // Hit the ground
+				|| (relTarDist < info.CloseEnough.Length) // Within range
+				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
-				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType); // Hit incompatible terrain
+				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
+				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
 
 			if (shouldExplode)
 				Explode(world);

@@ -5,13 +5,13 @@ Bazooka:
 	Report: RKETINF1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 213
+		MaximumLaunchSpeed: 213
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 8
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
 		RangeLimit: 50
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -48,14 +48,14 @@ HoverMissile:
 	Report: HOVRMIS1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 213
+		MaximumLaunchSpeed: 213
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 8
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -96,9 +96,9 @@ MammothTusk:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 10
-		Speed: 213
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 10
+		MaximumLaunchSpeed: 213
 		RangeLimit: 50
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -135,9 +135,9 @@ BikeMissile:
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 8
-		Speed: 213
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
+		MaximumLaunchSpeed: 213
 		RangeLimit: 50
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -170,14 +170,14 @@ Dragon:
 	Report: MISL1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 171
+		MaximumLaunchSpeed: 171
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 8
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
 		RangeLimit: 50
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -214,14 +214,14 @@ Hellfire:
 	Burst: 2
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 256
+		MaximumLaunchSpeed: 256
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 8
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
@@ -257,14 +257,14 @@ RedEye2:
 	Report: SAMSHOT1.AUD
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 384
+		MaximumLaunchSpeed: 384
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: DRAGON
-		Trail: small_smoke_trail
-		RateOfTurn: 5
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 5
 		RangeLimit: 100
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
