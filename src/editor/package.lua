@@ -77,7 +77,7 @@ end
 function ide:GetApp() return self.editorApp end
 function ide:GetAppName() return self.appname end
 function ide:GetEditor(index) return GetEditor(index) end
-function ide:GetEditorWithFocus(ed) return GetEditorWithFocus(ed) end
+function ide:GetEditorWithFocus(...) return GetEditorWithFocus(...) end
 function ide:GetEditorWithLastFocus()
   -- make sure ide.infocus is still a valid component and not "some" userdata
   return (self:IsValidCtrl(self.infocus)
