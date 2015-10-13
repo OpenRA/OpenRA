@@ -45,18 +45,24 @@ end
 
 local function connectPrintEvents(printer, printOut)
   local editor = ide:GetEditorWithFocus()
+  local cfg = ide.config.print
   local pages
 
   function printOut:OnPrintPage(pageNum)
     local dc = self:GetDC()
     local printRect, pageRect = printScaling(dc, printOut)
 
-    -- print to an area smaller by the height of the header
+    -- print to an area smaller by the height of the header/footer
     dc:SetFont(editor:GetFont())
     local _, headerHeight = dc:GetTextExtent("qH")
     local textRect = wx.wxRect(printRect)
-    textRect:SetY(textRect:GetY() + headerHeight*1.5)
-    textRect:SetHeight(textRect:GetHeight() - headerHeight*1.5)
+    if cfg.header then
+      textRect:SetY(textRect:GetY() + headerHeight*1.5)
+      textRect:SetHeight(textRect:GetHeight() - headerHeight*1.5)
+    end
+    if cfg.footer then
+      textRect:SetHeight(textRect:GetHeight() - headerHeight*1.5)
+    end
 
     local selection = printer:GetPrintDialogData():GetSelection()
     local spos = selection and editor:GetSelectionStart() or 1
@@ -76,19 +82,35 @@ local function connectPrintEvents(printer, printOut)
       ide:PopStatus()
     else
       editor:FormatRange(true, pages[pageNum], epos, dc, dc, textRect, pageRect)
-      
+
       local c = wx.wxColour(127, 127, 127)
       dc:SetPen(wx.wxPen(c, 1, wx.wxSOLID))
       dc:SetTextForeground(c)
-      dc:SetFont(editor:GetFont())
 
-      local pageNo = ('%d/%d'):format(pageNum, #pages)
       local doc = ide:GetDocument(editor)
-      local name = doc and doc:GetFileName() or ""
-      dc:DrawText(name, printRect.X, printRect.Y)
-      dc:DrawText(printOut.startTime, printRect.Left + (printRect.Left + printRect.Width - dc:GetTextExtentSize(printOut.startTime).Width)/2, printRect.Y)
-      dc:DrawText(pageNo, printRect.Left + printRect.Width - dc:GetTextExtentSize(pageNo).Width,  printRect.Y)
-      dc:DrawLine(printRect.X, printRect.Y + headerHeight, printRect.Left + printRect.Width, printRect.Y + headerHeight)
+      local format = "([^\t]*)\t?([^\t]*)\t?([^\t]*)"
+      local placeholders = {
+        D = printOut.startTime,
+        p = pageNum,
+        P = #pages,
+        S = doc and doc:GetFileName() or "",
+      }
+      dc:SetFont(editor:GetFont())
+      if cfg.header then
+        local left, center, right = ExpandPlaceholders(cfg.header, placeholders):match(format)
+        dc:DrawText(left, printRect.X, printRect.Y)
+        dc:DrawText(center, printRect.Left + (printRect.Left + printRect.Width - dc:GetTextExtentSize(center).Width)/2, printRect.Y)
+        dc:DrawText(right, printRect.Left + printRect.Width - dc:GetTextExtentSize(right).Width,  printRect.Y)
+        dc:DrawLine(printRect.X, printRect.Y + headerHeight, printRect.Left + printRect.Width, printRect.Y + headerHeight)
+      end
+      if cfg.footer then
+        local footerY = printRect.Y + printRect.Height - headerHeight
+        local left, center, right = ExpandPlaceholders(cfg.footer, placeholders):match(format)
+        dc:DrawText(left, printRect.X, footerY)
+        dc:DrawText(center, printRect.Left + (printRect.Left + printRect.Width - dc:GetTextExtentSize(center).Width)/2, footerY)
+        dc:DrawText(right, printRect.Left + printRect.Width - dc:GetTextExtentSize(right).Width,  footerY)
+        dc:DrawLine(printRect.X, footerY, printRect.Left + printRect.Width, footerY)
+      end
     end
     return true
   end

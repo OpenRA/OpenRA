@@ -121,6 +121,8 @@ ide = {
       magnification = -3,
       wrapmode = wxstc.wxSTC_WRAP_WORD,
       colourmode = wxstc.wxSTC_PRINT_BLACKONWHITE,
+      header = "%S\t%D\t%p/%P",
+      footer = nil,
     },
     toolbar = {
       icons = {},
