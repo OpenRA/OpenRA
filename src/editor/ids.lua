@@ -35,6 +35,8 @@ ID_RECENTFILESNEXT  = NewID()
 ID_RECENTPROJECTS   = NewID()
 ID_RECENTPROJECTSCLEAR = NewID()
 ID_RECENTPROJECTSPREV = NewID()
+ID_PRINT            = NewID()
+ID_PAGESETUP        = NewID()
 ID_EXIT             = linux and NewID() or wx.wxID_EXIT
 -- Edit menu
 ID_CUT              = linux and NewID() or wx.wxID_CUT

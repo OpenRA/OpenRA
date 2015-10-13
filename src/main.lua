@@ -117,7 +117,11 @@ ide = {
       zoom = 0,
       autohide = false,
     },
-
+    print = {
+      magnification = -3,
+      wrapmode = wxstc.wxSTC_WRAP_WORD,
+      colourmode = wxstc.wxSTC_PRINT_BLACKONWHITE,
+    },
     toolbar = {
       icons = {},
       iconmap = {},
@@ -570,7 +574,7 @@ for _, file in ipairs({
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
-    "inspect" }) do
+    "print", "inspect" }) do
   dofile("src/editor/"..file..".lua")
 end
 
