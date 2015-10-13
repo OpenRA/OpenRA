@@ -401,6 +401,8 @@
 	WithFacingSpriteBody:
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Aircraft:
+		CruiseAltitude: 2560
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
