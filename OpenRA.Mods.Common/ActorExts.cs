@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common
 			if (self.IsDead)
 				return false;
 
-			if (!self.Info.HasTraitInfo<IOccupySpaceInfo>())
+			if (self.OccupiesSpace == null)
 				return false;
 
 			if (!self.IsInWorld)
