@@ -574,7 +574,7 @@ namespace OpenRA.Mods.Common.AI
 
 			// Pick something worth attacking owned by that player
 			var target = World.Actors
-				.Where(a => a.Owner == enemy && a.Info.HasTraitInfo<IOccupySpaceInfo>())
+				.Where(a => a.Owner == enemy && a.OccupiesSpace != null)
 				.ClosestTo(World.Map.CenterOfCell(GetRandomBaseCenter()));
 
 			if (target == null)

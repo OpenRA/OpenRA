@@ -43,15 +43,7 @@ namespace OpenRA
 		public Rectangle Bounds { get; private set; }
 		public Rectangle VisualBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
-		public IOccupySpace OccupiesSpace
-		{
-			get
-			{
-				if (occupySpace == null)
-					occupySpace = Trait<IOccupySpace>();
-				return occupySpace;
-			}
-		}
+		public IOccupySpace OccupiesSpace { get; private set; }
 
 		public bool IsIdle { get { return currentActivity == null; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
@@ -69,7 +61,6 @@ namespace OpenRA
 			}
 		}
 
-		IOccupySpace occupySpace;
 		readonly IFacing facing;
 		readonly Health health;
 		readonly IRenderModifier[] renderModifiers;
@@ -96,7 +87,14 @@ namespace OpenRA
 
 				Info = world.Map.Rules.Actors[name];
 				foreach (var trait in Info.TraitsInConstructOrder())
+				{
 					AddTrait(trait.Create(init));
+
+					// Some traits rely on properties provided by IOccupySpace in their initialization,
+					// so we must ready it now, we cannot wait until all traits have finished construction.
+					if (trait is IOccupySpaceInfo)
+						OccupiesSpace = Trait<IOccupySpace>();
+				}
 			}
 
 			Bounds = DetermineBounds();
