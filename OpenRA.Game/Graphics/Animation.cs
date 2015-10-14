@@ -17,36 +17,35 @@ namespace OpenRA.Graphics
 {
 	public class Animation
 	{
-		readonly int defaultTick = 40; // 25 fps == 40 ms
 		public ISpriteSequence CurrentSequence { get; private set; }
-		public bool IsDecoration = false;
-		public Func<bool> Paused;
-
-		readonly Func<int> facingFunc;
-
-		int frame = 0;
-		bool backwards = false;
-
-		string name;
-
-		bool tickAlways;
-
-		public string Name { get { return name; } }
+		public string Name { get; private set; }
+		public bool IsDecoration { get; set; }
 
 		readonly SequenceProvider sequenceProvider;
+		readonly Func<int> facingFunc;
+		readonly Func<bool> paused;
+
+		int frame;
+		bool backwards;
+		bool tickAlways;
+		int timeUntilNextFrame;
+		Action tickFunc = () => { };
 
 		public Animation(World world, string name)
 			: this(world, name, () => 0) { }
 
 		public Animation(World world, string name, Func<int> facingFunc)
-			: this(world.Map.SequenceProvider, name, facingFunc) { }
+			: this(world, name, facingFunc, null) { }
 
-		public Animation(SequenceProvider sequenceProvider, string name, Func<int> facingFunc)
+		public Animation(World world, string name, Func<bool> paused)
+			: this(world, name, () => 0, paused) { }
+
+		public Animation(World world, string name, Func<int> facingFunc, Func<bool> paused)
 		{
-			this.sequenceProvider = sequenceProvider;
-			this.name = name.ToLowerInvariant();
-			this.tickFunc = () => { };
+			sequenceProvider = world.Map.SequenceProvider;
+			Name = name.ToLowerInvariant();
 			this.facingFunc = facingFunc;
+			this.paused = paused;
 		}
 
 		public int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
@@ -76,12 +75,23 @@ namespace OpenRA.Graphics
 			PlayThen(sequenceName, null);
 		}
 
+		int CurrentSequenceTickOrDefault()
+		{
+			const int DefaultTick = 40; // 25 fps == 40 ms
+			return CurrentSequence != null ? CurrentSequence.Tick : DefaultTick;
+		}
+
+		void PlaySequence(string sequenceName)
+		{
+			CurrentSequence = GetSequence(sequenceName);
+			timeUntilNextFrame = CurrentSequenceTickOrDefault();
+		}
+
 		public void PlayRepeating(string sequenceName)
 		{
 			backwards = false;
 			tickAlways = false;
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			PlaySequence(sequenceName);
 
 			frame = 0;
 			tickFunc = () =>
@@ -97,9 +107,8 @@ namespace OpenRA.Graphics
 			if (!HasSequence(sequenceName))
 				return false;
 
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			var tick = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
-			timeUntilNextFrame = Math.Min(tick, timeUntilNextFrame);
+			CurrentSequence = GetSequence(sequenceName);
+			timeUntilNextFrame = Math.Min(CurrentSequenceTickOrDefault(), timeUntilNextFrame);
 			frame %= CurrentSequence.Length;
 			return true;
 		}
@@ -108,8 +117,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = false;
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			PlaySequence(sequenceName);
 
 			frame = 0;
 			tickFunc = () =>
@@ -134,8 +142,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = true;
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			PlaySequence(sequenceName);
 
 			frame = func();
 			tickFunc = () => frame = func();
@@ -144,8 +151,7 @@ namespace OpenRA.Graphics
 		public void PlayFetchDirection(string sequenceName, Func<int> direction)
 		{
 			tickAlways = false;
-			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
-			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+			PlaySequence(sequenceName);
 
 			frame = 0;
 			tickFunc = () =>
@@ -159,16 +165,11 @@ namespace OpenRA.Graphics
 			};
 		}
 
-		int timeUntilNextFrame;
-		Action tickFunc;
-
 		public void Tick()
 		{
-			if (Paused == null || !Paused())
+			if (paused == null || !paused())
 				Tick(40); // tick one frame
 		}
-
-		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(name, seq); }
 
 		public void Tick(int t)
 		{
@@ -180,7 +181,7 @@ namespace OpenRA.Graphics
 				while (timeUntilNextFrame <= 0)
 				{
 					tickFunc();
-					timeUntilNextFrame += CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
+					timeUntilNextFrame += CurrentSequenceTickOrDefault();
 				}
 			}
 		}
@@ -189,17 +190,19 @@ namespace OpenRA.Graphics
 		{
 			newImage = newImage.ToLowerInvariant();
 
-			if (name != newImage)
+			if (Name != newImage)
 			{
-				name = newImage.ToLowerInvariant();
+				Name = newImage;
 				if (!ReplaceAnim(CurrentSequence.Name))
 					ReplaceAnim(newAnimIfMissing);
 			}
 		}
 
+		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(Name, seq); }
+
 		public ISpriteSequence GetSequence(string sequenceName)
 		{
-			return sequenceProvider.GetSequence(name, sequenceName);
+			return sequenceProvider.GetSequence(Name, sequenceName);
 		}
 
 		public string GetRandomExistingSequence(string[] sequences, MersenneTwister random)

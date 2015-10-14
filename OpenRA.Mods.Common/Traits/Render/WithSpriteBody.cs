@@ -51,7 +51,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var rs = init.Self.Trait<RenderSprites>();
 
-			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing);
+			Func<bool> paused = null;
+			if (info.PauseAnimationWhenDisabled)
+				paused = () => init.Self.IsDisabled() &&
+				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
+
+			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 
 			if (info.StartSequence != null)
@@ -59,10 +64,6 @@ namespace OpenRA.Mods.Common.Traits
 					() => PlayCustomAnimationRepeating(init.Self, info.Sequence));
 			else
 				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
-
-			if (info.PauseAnimationWhenDisabled)
-				DefaultAnimation.Paused = () =>
-					init.Self.IsDisabled() && DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)

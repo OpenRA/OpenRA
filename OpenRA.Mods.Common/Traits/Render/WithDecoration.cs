@@ -79,8 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			this.self = self;
 			image = info.Image ?? self.Info.Name;
-			anim = new Animation(self.World, image);
-			anim.Paused = () => self.World.Paused;
+			anim = new Animation(self.World, image, () => self.World.Paused);
 			anim.PlayRepeating(info.Sequence);
 		}
 

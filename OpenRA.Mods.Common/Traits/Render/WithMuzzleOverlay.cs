@@ -69,7 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 						new AnimationWithOffset(muzzleFlash,
 							() => info.IgnoreOffset ? WVec.Zero : armClosure.MuzzleOffset(self, barrel),
 							() => IsTraitDisabled || !visible[barrel],
-							() => false,
 							p => RenderUtils.ZOffsetFromCenter(self, p, 2)));
 				}
 			}

@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(world, info.Image, GetEffectiveFacing);
+				anim = new Animation(world, info.Image, new Func<int>(GetEffectiveFacing));
 				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 

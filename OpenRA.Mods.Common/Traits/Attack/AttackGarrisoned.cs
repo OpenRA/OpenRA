@@ -165,7 +165,6 @@ namespace OpenRA.Mods.Common.Traits
 					var muzzleFlash = new AnimationWithOffset(muzzleAnim,
 						() => PortOffset(self, port),
 						() => false,
-						() => false,
 						p => RenderUtils.ZOffsetFromCenter(self, p, 1024));
 
 					muzzles.Add(muzzleFlash);
