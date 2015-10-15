@@ -165,7 +165,7 @@ frame:Connect(ID_PRINT, wx.wxEVT_COMMAND_MENU_SELECTED,
     end
     -- bold keywords
     local keywords = {}
-    for _, num in ipairs(editor.spec and editor.spec.lexerstyleconvert and editor.spec.lexerstyleconvert.keywords0 or {}) do
+    for _, num in ipairs(ide:IsValidProperty(editor, 'spec') and editor.spec.lexerstyleconvert and editor.spec.lexerstyleconvert.keywords0 or {}) do
       keywords[num] = editor:StyleGetBold(num)
       editor:StyleSetBold(num, true)
     end
