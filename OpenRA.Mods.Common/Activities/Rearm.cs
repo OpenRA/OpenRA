@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 					continue;
 
 				// HACK to check if we are on the helipad/airfield/etc.
-				var hostBuilding = self.World.ActorMap.GetUnitsAt(self.Location)
+				var hostBuilding = self.World.ActorMap.GetActorsAt(self.Location)
 					.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
 
 				if (hostBuilding == null || !hostBuilding.IsInWorld)

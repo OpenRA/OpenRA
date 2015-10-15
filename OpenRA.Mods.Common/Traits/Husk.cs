@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTransientActors)
 				return SubCell.FullCell;
 
-			return self.World.ActorMap.GetUnitsAt(cell)
+			return self.World.ActorMap.GetActorsAt(cell)
 				.All(x => x == ignoreActor) ? SubCell.FullCell : SubCell.Invalid;
 		}
 

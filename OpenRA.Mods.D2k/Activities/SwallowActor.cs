@@ -61,7 +61,7 @@ namespace OpenRA.Mods.D2k.Activities
 			if ((location - targetLocation).Length > NearEnough)
 				return false;
 
-			var lunch = worm.World.ActorMap.GetUnitsAt(targetLocation)
+			var lunch = worm.World.ActorMap.GetActorsAt(targetLocation)
 				.Where(t => !t.Equals(worm) && weapon.IsValidAgainst(t, worm));
 
 			if (!lunch.Any())

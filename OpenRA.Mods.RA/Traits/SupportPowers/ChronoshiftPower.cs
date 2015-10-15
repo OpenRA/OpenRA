@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Traits
 			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new HashSet<Actor>();
 			foreach (var t in tiles)
-				units.UnionWith(Self.World.ActorMap.GetUnitsAt(t));
+				units.UnionWith(Self.World.ActorMap.GetActorsAt(t));
 
 			return units.Where(a => a.Info.HasTraitInfo<ChronoshiftableInfo>() &&
 				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));

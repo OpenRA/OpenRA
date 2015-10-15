@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Activities
 				mobile.FinishedMoving(self);
 				mobile.IsMoving = false;
 
-				self.World.ActorMap.GetUnitsAt(mobile.ToCell, mobile.ToSubCell)
+				self.World.ActorMap.GetActorsAt(mobile.ToCell, mobile.ToSubCell)
 					.Except(new[] { self }).Where(t => weapon.IsValidAgainst(t, self))
 					.Do(t => t.Kill(self));
 

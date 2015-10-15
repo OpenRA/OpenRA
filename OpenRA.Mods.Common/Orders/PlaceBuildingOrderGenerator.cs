@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Orders
 			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 
-			var blockers = allTiles.SelectMany(world.ActorMap.GetUnitsAt)
+			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
 				.Where(a => a.Owner == producer.Owner && a.IsIdle)
 				.Select(a => new TraitPair<Mobile> { Actor = a, Trait = a.TraitOrDefault<Mobile>() });
 

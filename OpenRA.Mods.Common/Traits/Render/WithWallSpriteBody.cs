@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Update connection to neighbours
 			var adjacentActors = CVec.Directions.SelectMany(dir =>
-				self.World.ActorMap.GetUnitsAt(self.Location + dir));
+				self.World.ActorMap.GetActorsAt(self.Location + dir));
 
 			adjacent = 0;
 			foreach (var a in adjacentActors)
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 		static void UpdateNeighbours(Actor self)
 		{
 			var adjacentActors = CVec.Directions.SelectMany(dir =>
-					self.World.ActorMap.GetUnitsAt(self.Location + dir))
+					self.World.ActorMap.GetActorsAt(self.Location + dir))
 				.Select(a => a.TraitOrDefault<WithWallSpriteBody>())
 				.Where(a => a != null);
 

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			if (desiredFrame > 0 && !self.World.ActorMap.GetUnitsAt(openExit).Any(a => a != self))
+			if (desiredFrame > 0 && !self.World.ActorMap.GetActorsAt(openExit).Any(a => a != self))
 				desiredFrame = 0;
 		}
 

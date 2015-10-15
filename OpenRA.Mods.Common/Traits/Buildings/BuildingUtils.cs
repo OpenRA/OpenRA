@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
 				return false;
 
-			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(cell).Any(a => a != toIgnore))
+			if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
 				return false;
 
 			var tile = world.Map.MapTiles.Value[cell];

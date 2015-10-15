@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
 				return false;
 
-			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyUnitsAt(cell))
+			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyActorsAt(cell))
 				return false;
 
 			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
