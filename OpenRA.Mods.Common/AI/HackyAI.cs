@@ -867,8 +867,6 @@ namespace OpenRA.Mods.Common.AI
 			// HACK: This needs to query against MCVs directly
 			var mcvs = self.World.Actors
 				.Where(a => a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>() && a.Info.HasTraitInfo<MobileInfo>());
-			if (!mcvs.Any())
-				return;
 
 			foreach (var mcv in mcvs)
 			{
