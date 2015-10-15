@@ -565,6 +565,10 @@ function ide:IsValidCtrl(ctrl)
   return ctrl and pcall(function() ctrl:GetId() end)
 end
 
+function ide:IsValidProperty(ctrl, prop)
+  return ide:IsValidCtrl(ctrl) and pcall(function() return ctrl[prop] end)
+end
+
 function ide:IsWindowShown(win)
   while win do
     if not win:IsShown() then return false end

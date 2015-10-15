@@ -161,7 +161,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI,
   function(event)
     local editor = GetEditorWithFocus(GetEditor())
     event:Enable(editor ~= nil
-      and pcall(function() return editor.spec end) and editor.spec
+      and ide:IsValidProperty(editor, 'spec') and editor.spec
       and editor.spec.linecomment and true or false)
   end)
 
