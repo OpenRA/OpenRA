@@ -183,7 +183,7 @@ frame:Connect(ID_PRINT, wx.wxEVT_UPDATE_UI, function(event) event:Enable(ide:Get
 local _, menu, epos = ide:FindMenuItem(ID.EXIT)
 if menu and epos then
   -- insert Print-repated menu items (going in the opposite order)
-  menu:InsertSeparator(epos)
-  menu:Insert(epos, ID_PAGESETUP, TR("Page Setup..."), "")
-  menu:Insert(epos, ID_PRINT, TR("&Print..."), TR("Print the current document"))
+  menu:Insert(epos-1, ID_PAGESETUP, TR("Page Setup..."), "")
+  menu:Insert(epos-1, ID_PRINT, TR("&Print..."), TR("Print the current document"))
+  menu:InsertSeparator(epos-1)
 end
