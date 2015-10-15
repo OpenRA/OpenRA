@@ -71,6 +71,22 @@ Cursors:
 		c4-minimap:
 			Start: 127
 			Length: 3
+		joystick-t-blocked:
+			Start: 130
+		joystick-tr-blocked:
+			Start: 131
+		joystick-r-blocked:
+			Start: 132
+		joystick-br-blocked:
+			Start: 133
+		joystick-b-blocked:
+			Start: 134
+		joystick-bl-blocked:
+			Start: 135
+		joystick-l-blocked:
+			Start: 136
+		joystick-tl-blocked:
+			Start: 137
 
 # Cursors that need minimap variants
 		deploy:
@@ -102,6 +118,10 @@ Cursors:
 			Length: 24
 	mouse3.shp: cursor
 		default:
+			Start: 0
+			X: -16
+			Y: -12
+		joystick-all:
 			Start: 0
 			X: -16
 			Y: -12
