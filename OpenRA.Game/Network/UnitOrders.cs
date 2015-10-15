@@ -76,8 +76,7 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)",
-										order.TargetString);
+									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)", order.TargetString);
 							}
 							else
 							{

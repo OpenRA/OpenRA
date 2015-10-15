@@ -71,15 +71,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
+				{
 					if (!chatText.Text.StartsWith("/"))
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
-					else
-						if (chatTraits != null)
-						{
-							var text = chatText.Text.Trim();
-							foreach (var trait in chatTraits)
-								trait.OnChat(orderManager.LocalClient.Name, text);
-						}
+					else if (chatTraits != null)
+					{
+						var text = chatText.Text.Trim();
+						foreach (var trait in chatTraits)
+							trait.OnChat(orderManager.LocalClient.Name, text);
+					}
+				}
 
 				chatText.Text = "";
 				CloseChat();
