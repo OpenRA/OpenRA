@@ -76,8 +76,28 @@ namespace OpenRA.Mods.Common.Widgets
 				tooltipContainer.Value.RemoveTooltip();
 		}
 
+		void Zoom(int amount)
+		{
+			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
+			float currentZoom = worldRenderer.Viewport.Zoom;
+			int nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
+			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
+			{
+				return;
+			}
+			float zoom = zoomSteps.ElementAt(nextIndex);
+			this.Parent.Get<DropDownButtonWidget>("ZOOM_BUTTON").SelectedItem = zoom;
+			worldRenderer.Viewport.Zoom = zoom;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Modifiers.Alt))
+			{
+				Zoom(mi.ScrollDelta);
+				return true;
+			}
+
 			if (CurrentBrush.HandleMouseInput(mi))
 				return true;
 

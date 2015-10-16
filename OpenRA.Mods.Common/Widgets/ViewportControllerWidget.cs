@@ -167,8 +167,32 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		void Zoom(int amount)
+		{
+			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
+			float currentZoom = worldRenderer.Viewport.Zoom;
+			float zoom;
+			int nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
+			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
+			{
+				return;
+			}
+			zoom = zoomSteps.ElementAt(nextIndex);
+			if (!this.world.IsGameOver && zoom < 1.0f)
+			{
+				return;
+			}
+			worldRenderer.Viewport.Zoom = zoom;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Modifiers.Alt))
+			{
+				Zoom(mi.ScrollDelta);
+				return true;
+			}
+
 			var scrolltype = Game.Settings.Game.MouseScroll;
 			if (scrolltype == MouseScrollType.Disabled)
 				return false;

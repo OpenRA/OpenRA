@@ -35,11 +35,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var selectedZoom = Game.Settings.Graphics.PixelDouble ? 2f : 1f;
 				var selectedLabel = selectedZoom.ToString();
+
+				zoomDropdown.SelectedItem = selectedZoom;
 				Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (zoom, itemTemplate) =>
 				{
-					var item = ScrollItemWidget.Setup(itemTemplate,
-						() => selectedZoom == zoom,
-						() => { worldRenderer.Viewport.Zoom = selectedZoom = zoom; selectedLabel = zoom.ToString(); });
+					var item = ScrollItemWidget.Setup(
+						itemTemplate,
+						() =>
+						{
+							return (float)zoomDropdown.SelectedItem == zoom;
+						},
+						() =>
+						{
+							zoomDropdown.SelectedItem = selectedZoom = zoom;
+							worldRenderer.Viewport.Zoom = selectedZoom;
+							selectedLabel = zoom.ToString();
+						}
+					);
 
 					var label = zoom.ToString();
 					item.Get<LabelWidget>("LABEL").GetText = () => label;
@@ -47,9 +59,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				};
 
-				var options = new[] { 2f, 1f, 0.5f, 0.25f };
+				var options = worldRenderer.Viewport.AvailableZoomSteps;
 				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-				zoomDropdown.GetText = () => selectedLabel;
+				zoomDropdown.GetText = () => zoomDropdown.SelectedItem.ToString();
 				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelDoubleKey;
 				zoomDropdown.OnKeyPress = e =>
 				{
