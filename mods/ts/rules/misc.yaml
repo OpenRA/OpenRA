@@ -63,7 +63,7 @@ CRATE:
 		SelectionShares: 1
 		Effect: reveal-map
 	GiveMcvCrateAction:
-		SelectionShares: 2
+		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv
 	GrantUpgradeCrateAction@cloak:
