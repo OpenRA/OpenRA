@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Effects
 			var diffClfMslHgt = predClfHgt - pos.Z;
 
 			// Incline coming up
-			if (diffClfMslHgt >= 0)
+			if (diffClfMslHgt >= 0 && predClfDist > 0)
 				DetermineLaunchSpeedAndAngleForIncline(predClfDist, diffClfMslHgt, relTarHorDist, out speed, out vFacing);
 			else if (lastHt != 0)
 			{
