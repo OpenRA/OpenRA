@@ -161,6 +161,7 @@ World:
 		SpawnInterval: 3000
 		WaterChance: 0
 		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
+		InitialSpawnDelay: 1500
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

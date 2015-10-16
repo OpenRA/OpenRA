@@ -65,6 +65,7 @@ World:
 		SpawnInterval: 1500
 		WaterChance: 0
 		ValidGround: Sand, Dune, Rock
+		InitialSpawnDelay: 1500
 	DomainIndex:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
