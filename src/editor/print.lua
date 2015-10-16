@@ -116,6 +116,10 @@ local function connectPrintEvents(printer, printOut)
   end
   function printOut:HasPage(pageNum) return pages[pageNum] ~= nil end
   function printOut:GetPageInfo()
+    -- on Linux `GetPageInfo` is called before the canvas is initialized, which prevents
+    -- proper calculation of the number of pages (wx2.9.5).
+    -- Return defaults here as it's going to be called once more in the right place.
+    if ide.osname == "Unix" and not pages then return 1, 9999, 1, 9999 end
     local printDD = printer:GetPrintDialogData()
     -- due to wxwidgets bug (http://trac.wxwidgets.org/ticket/17200), if `to` page is not set explicitly,
     -- only one page is being printed when `selection` option is selected in the print dialog.
@@ -123,7 +127,7 @@ local function connectPrintEvents(printer, printOut)
     local tofrom = not printDD:GetSelection() and not printDD:GetAllPages()
     return 1, #pages, tofrom and printDD:GetFromPage() or 1, tofrom and printDD:GetToPage() or #pages
   end
-  function printOut:OnPreparePrinting() printOut:OnPrintPage() end
+  function printOut:OnPreparePrinting() self:OnPrintPage() end
 end
 
 frame:Connect(ID_PAGESETUP, wx.wxEVT_COMMAND_MENU_SELECTED,
