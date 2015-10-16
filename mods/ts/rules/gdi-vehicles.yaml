@@ -94,7 +94,7 @@ SMECH:
 		ROT: 5
 		Speed: 99
 	Health:
-		HP: 800
+		HP: 175
 	Armor:
 		Type: Light
 	RevealsShroud:
