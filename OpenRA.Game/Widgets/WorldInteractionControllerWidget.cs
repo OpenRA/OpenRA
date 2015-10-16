@@ -275,8 +275,8 @@ namespace OpenRA.Widgets
 
 					World.Selection.Combine(World, newSelection, true, false);
 				}
-				else if (key == Game.Settings.Keys.ToggleStatusBarsKey)
-					return ToggleStatusBars();
+				else if (key == Game.Settings.Keys.CycleStatusBarsKey)
+					return CycleStatusBars();
 				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
 					return TogglePixelDouble();
 			}
@@ -319,9 +319,15 @@ namespace OpenRA.Widgets
 				.SubsetWithHighestSelectionPriority();
 		}
 
-		bool ToggleStatusBars()
+		bool CycleStatusBars()
 		{
-			Game.Settings.Game.AlwaysShowStatusBars ^= true;
+			if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
+				Game.Settings.Game.StatusBars = StatusBarsType.DamageShow;
+			else if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
+				Game.Settings.Game.StatusBars = StatusBarsType.AlwaysShow;
+			else if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
+				Game.Settings.Game.StatusBars = StatusBarsType.Standard;
+
 			return true;
 		}
 

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
 
 			if (Info.RenderSelectionBars)
-				yield return new SelectionBarsRenderable(self);
+				yield return new SelectionBarsRenderable(self, true, true);
 
 			if (!self.Owner.IsAlliedWith(wr.World.RenderPlayer))
 				yield break;

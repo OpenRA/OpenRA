@@ -18,17 +18,26 @@ namespace OpenRA.Graphics
 	{
 		readonly WPos pos;
 		readonly Actor actor;
+		readonly bool displayHealth;
+		readonly bool displayExtra;
 
-		public SelectionBarsRenderable(Actor actor)
-			: this(actor.CenterPosition, actor) { }
+		public SelectionBarsRenderable(Actor actor, bool displayHealth, bool displayExtra)
+			: this(actor.CenterPosition, actor)
+		{
+			this.displayHealth = displayHealth;
+			this.displayExtra = displayExtra;
+		}
 
 		public SelectionBarsRenderable(WPos pos, Actor actor)
+			: this()
 		{
 			this.pos = pos;
 			this.actor = actor;
 		}
 
 		public WPos Pos { get { return pos; } }
+		public bool DisplayHealth { get { return displayHealth; } }
+		public bool DisplayExtra { get { return displayExtra; } }
 
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
@@ -164,8 +173,11 @@ namespace OpenRA.Graphics
 			var start = new float2(bounds.Left + 1, bounds.Top);
 			var end = new float2(bounds.Right - 1, bounds.Top);
 
-			DrawHealthBar(wr, health, start, end);
-			DrawExtraBars(wr, start, end);
+			if (DisplayHealth)
+				DrawHealthBar(wr, health, start, end);
+
+			if (DisplayExtra)
+				DrawExtraBars(wr, start, end);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
