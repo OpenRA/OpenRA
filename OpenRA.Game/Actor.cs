@@ -44,6 +44,7 @@ namespace OpenRA
 		public Rectangle VisualBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
+		public ITargetable[] Targetables { get; private set; }
 
 		public bool IsIdle { get { return currentActivity == null; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
@@ -107,6 +108,7 @@ namespace OpenRA
 			disables = TraitsImplementing<IDisable>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
+			Targetables = TraitsImplementing<ITargetable>().ToArray();
 		}
 
 		Rectangle DetermineBounds()
@@ -318,6 +320,30 @@ namespace OpenRA
 					return false;
 
 			return defaultVisibility.IsVisible(this, player);
+		}
+
+		public IEnumerable<string> GetAllTargetTypes()
+		{
+			foreach (var targetable in Targetables)
+				foreach (var targetType in targetable.TargetTypes)
+					yield return targetType;
+		}
+
+		public IEnumerable<string> GetEnabledTargetTypes()
+		{
+			foreach (var targetable in Targetables)
+				if (targetable.IsTraitEnabled())
+					foreach (var targetType in targetable.TargetTypes)
+						yield return targetType;
+		}
+
+		public bool IsTargetableBy(Actor byActor)
+		{
+			foreach (var targetable in Targetables)
+				if (targetable.IsTraitEnabled() && targetable.TargetableBy(this, byActor))
+					return true;
+
+			return false;
 		}
 
 		#region Scripting interface

@@ -127,8 +127,9 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var targetable = victim.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
-			if (!IsValidTarget(targetable.SelectMany(t => t.TargetTypes)))
+			var targetTypes = victim.GetEnabledTargetTypes();
+
+			if (!IsValidTarget(targetTypes))
 				return false;
 
 			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))

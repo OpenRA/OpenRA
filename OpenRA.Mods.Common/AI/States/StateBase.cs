@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!a.Info.HasTraitInfo<AttackBaseInfo>())
 				return false;
 
-			var targetTypes = target.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes);
+			var targetTypes = target.GetEnabledTargetTypes();
 			if (!targetTypes.Any())
 				return false;
 

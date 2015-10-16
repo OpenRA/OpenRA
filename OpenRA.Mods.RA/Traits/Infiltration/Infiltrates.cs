@@ -77,8 +77,7 @@ namespace OpenRA.Mods.RA.Traits
 				targetTypes = frozen.TargetTypes;
 			}
 			else
-				targetTypes = order.TargetActor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled)
-					.SelectMany(t => t.TargetTypes);
+				targetTypes = order.TargetActor.GetEnabledTargetTypes();
 
 			return Info.Types.Overlaps(targetTypes);
 		}
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
 			if (target.Type != TargetType.Actor
-				|| !Info.Types.Overlaps(target.Actor.TraitsImplementing<ITargetable>().SelectMany(t => t.TargetTypes)))
+				|| !Info.Types.Overlaps(target.Actor.GetAllTargetTypes()))
 				return;
 
 			if (!order.Queued)
@@ -124,7 +123,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Overlaps(info.Types));
+			return info.Types.Overlaps(target.GetAllTargetTypes());
 		}
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
@@ -134,7 +133,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return target.Info.TraitInfos<ITargetableInfo>().Any(t => info.Types.Overlaps(t.GetTargetTypes()));
+			return info.Types.Overlaps(target.Info.TraitInfos<ITargetableInfo>().SelectMany(ti => ti.GetTargetTypes()));
 		}
 	}
 }

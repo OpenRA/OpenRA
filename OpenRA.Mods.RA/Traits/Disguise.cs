@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new HashSet<string> { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 

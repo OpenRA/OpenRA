@@ -58,8 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
-			var targetable = collector.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
-			if (!info.ValidTargets.Overlaps(targetable.SelectMany(t => t.TargetTypes)))
+			if (!info.ValidTargets.Overlaps(collector.GetEnabledTargetTypes()))
 				return false;
 
 			var positionable = collector.TraitOrDefault<IPositionable>();
