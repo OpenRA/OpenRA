@@ -135,24 +135,21 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Actor ScanForTarget(Actor self, Actor currentTarget, bool allowMove)
+		public Actor ScanForTarget(Actor self, bool allowMove)
 		{
 			if (nextScanTime <= 0)
 			{
+				nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 				var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
-				{
-					nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
-					return ChooseTarget(self, range, allowMove);
-				}
+				return ChooseTarget(self, range, allowMove);
 			}
 
-			return currentTarget;
+			return null;
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMove)
 		{
-			var targetActor = ScanForTarget(self, null, allowMove);
+			var targetActor = ScanForTarget(self, allowMove);
 			if (targetActor != null)
 				Attack(self, targetActor, allowMove);
 		}
