@@ -189,7 +189,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
 				return false;
 
-			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
+			foreach (var armament in Armaments)
+				if (armament.Weapon.IsValidAgainst(t, self.World, self))
+					return true;
+
+			return false;
 		}
 
 		public WDist GetMinimumRange()
@@ -197,9 +201,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			var min = Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.Weapon.MinRange)
-				.Append(WDist.MaxValue).Min();
+			var min = WDist.MaxValue;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+				var range = armament.Weapon.MinRange;
+				if (min > range)
+					min = range;
+			}
+
 			return min != WDist.MaxValue ? min : WDist.Zero;
 		}
 
@@ -208,9 +219,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			return Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.MaxRange())
-				.Append(WDist.Zero).Max();
+			var max = WDist.Zero;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+				var range = armament.MaxRange();
+				if (max < range)
+					max = range;
+			}
+
+			return max;
 		}
 
 		// Enumerates all armaments, that this actor possesses, that can be used against Target t

@@ -132,10 +132,11 @@ namespace OpenRA.GameRules
 			if (!IsValidTarget(targetTypes))
 				return false;
 
-			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
-				return false;
+			foreach (var warhead in Warheads)
+				if (warhead.IsValidAgainst(victim, firedBy))
+					return true;
 
-			return true;
+			return false;
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
