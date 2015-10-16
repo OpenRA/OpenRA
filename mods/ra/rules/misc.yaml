@@ -38,7 +38,7 @@ CRATE:
 		MinAmount: 1
 		MaxDuplicateValue: 1500
 	GiveMcvCrateAction:
-		SelectionShares: 2
+		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv
 	GiveUnitCrateAction@jeep:
