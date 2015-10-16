@@ -327,19 +327,20 @@ crate:
 		ZOffset: -511
 		Offset: -16,-16
 
-# TODO: keep the redundant spicebloom.shp for now for the awful WinForms maps editor
 spicebloom:
-	make: DATA.R8
+	grow1: DATA.R8
 		Start: 107
-		Length: 3
+		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	active: DATA.R8
-		Start: 109
+	grow2: DATA.R8
+		Start: 108
+		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	idle: DATA.R8
+	grow3: DATA.R8
 		Start: 109
+		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
 
@@ -400,3 +401,6 @@ sandcraters:
 		Length: 16
 		Offset: -16,-16
 
+null:
+	idle: DATA.R8
+		Start: 3304

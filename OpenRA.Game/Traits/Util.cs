@@ -149,5 +149,20 @@ namespace OpenRA.Traits
 
 			return (int)a;
 		}
+
+		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
+		{
+			for (;;)
+			{
+				var dx = r.Next(-1, 2);
+				var dy = r.Next(-1, 2);
+
+				if (dx == 0 && dy == 0)
+					continue;
+
+				p += new CVec(dx, dy);
+				yield return p;
+			}
+		}
 	}
 }

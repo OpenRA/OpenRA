@@ -18,9 +18,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class ThrowsShrapnelInfo : ITraitInfo, IRulesetLoaded
 	{
 		[WeaponReference, FieldLoader.Require]
-		public string[] Weapons = { };
-		public int[] Pieces = { 3, 10 };
-		public WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };
+		[Desc("The weapons used for shrapnel.")]
+		public readonly string[] Weapons = { };
+
+		[Desc("The amount of pieces of shrapnel to expel. Two values indicate a range.")]
+		public readonly int[] Pieces = { 3, 10 };
+
+		[Desc("The minimum and maximum distances the shrapnel may travel.")]
+		public readonly WDist[] Range = { WDist.FromCells(2), WDist.FromCells(5) };
 
 		public WeaponInfo[] WeaponInfos { get; private set; }
 

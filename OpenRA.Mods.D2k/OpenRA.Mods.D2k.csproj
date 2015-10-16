@@ -92,6 +92,7 @@
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
     <Compile Include="Traits\Sandworm.cs" />
+    <Compile Include="Traits\SpiceBloom.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />

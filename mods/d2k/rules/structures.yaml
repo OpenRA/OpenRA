@@ -528,7 +528,7 @@ wall:
 	Armor:
 		Type: none
 	Crushable:
-		CrushClasses: Concretewall
+		CrushClasses: wall
 	BlocksProjectiles:
 	LineBuild:
 		Range: 5

@@ -58,7 +58,7 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Mobile:
-		Crushes: crate
+		Crushes: crate, spicebloom
 		TerrainSpeeds:
 			Sand: 100
 			Rock: 100
@@ -99,7 +99,7 @@
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: crate, infantry
+		Crushes: crate, infantry, spicebloom
 
 ^Husk:
 	Inherits@1: ^SpriteActor
@@ -165,7 +165,7 @@
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
-		Crushes: crate
+		Crushes: crate, spicebloom
 		SharesCell: true
 		TerrainSpeeds:
 			Sand: 100
