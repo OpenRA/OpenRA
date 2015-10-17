@@ -680,7 +680,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
-			Scripts: main.lua, AI.lua, reinforcements_teams.lua
+			Scripts: soviet04b.lua, soviet04b-AI.lua, soviet04b-reinforcements_teams.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Infantry:

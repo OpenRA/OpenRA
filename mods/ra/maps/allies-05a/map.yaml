@@ -1592,7 +1592,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
-			Scripts: allies05a.lua, AI.lua
+			Scripts: allies05a.lua, allies05a-AI.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Infantry:
