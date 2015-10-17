@@ -48,6 +48,18 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, "scroll-r" },
 		};
 
+		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new Dictionary<ScrollDirection, string>
+		{
+			{ ScrollDirection.Up | ScrollDirection.Left, "joystick-tl-blocked" },
+			{ ScrollDirection.Up | ScrollDirection.Right, "joystick-tr-blocked" },
+			{ ScrollDirection.Down | ScrollDirection.Left, "joystick-bl-blocked" },
+			{ ScrollDirection.Down | ScrollDirection.Right, "joystick-br-blocked" },
+			{ ScrollDirection.Up, "joystick-t-blocked" },
+			{ ScrollDirection.Down, "joystick-b-blocked" },
+			{ ScrollDirection.Left, "joystick-l-blocked" },
+			{ ScrollDirection.Right, "joystick-r-blocked" },
+		};
+
 		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new Dictionary<ScrollDirection, float2>
 		{
 			{ ScrollDirection.Up, new float2(0, -1) },
@@ -147,10 +159,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override string GetCursor(int2 pos)
 		{
-			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this)
+			if (!IsJoystickScrolling &&
+			    (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
 				return null;
 
 			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
+
+			if (IsJoystickScrolling)
+			{
+				foreach (var dir in JoystickCursors)
+					if (blockedDirections.Includes(dir.Key))
+						return dir.Value;
+				return "joystick-all";
+			}
+
 			foreach (var dir in ScrollCursors)
 				if (edgeDirections.Includes(dir.Key))
 					return dir.Value + (blockedDirections.Includes(dir.Key) ? "-blocked" : "");

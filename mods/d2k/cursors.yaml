@@ -207,6 +207,42 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
+		joystick-all:
+			Start: 0
+			X: 24
+			Y: 24
+		joystick-t-blocked:
+			Start: 180
+			X: 24
+			Y: 24
+		joystick-tr-blocked:
+			Start: 188
+			X: 24
+			Y: 24
+		joystick-r-blocked:
+			Start: 196
+			X: 24
+			Y: 24
+		joystick-br-blocked:
+			Start: 204
+			X: 24
+			Y: 24
+		joystick-b-blocked:
+			Start: 212
+			X: 24
+			Y: 24
+		joystick-bl-blocked:
+			Start: 220
+			X: 24
+			Y: 24
+		joystick-l-blocked:
+			Start: 228
+			X: 24
+			Y: 24
+		joystick-tl-blocked:
+			Start: 236
+			X: 24
+			Y: 24
 
 # Cursors that need minimap variants
 		deploy:
