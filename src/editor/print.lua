@@ -81,6 +81,7 @@ local function connectPrintEvents(printer, printOut)
       if #pages == 0 then pages = {0} end
       ide:PopStatus()
     else
+      ide:SetStatusFor(TR("Formatting page %d..."):format(pageNum))
       editor:FormatRange(true, pages[pageNum], epos, dc, dc, textRect, pageRect)
 
       local c = wx.wxColour(127, 127, 127)
