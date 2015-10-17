@@ -186,7 +186,8 @@ frame:Connect(ID_PRINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_PRINT, wx.wxEVT_UPDATE_UI, function(event) event:Enable(ide:GetEditorWithFocus() ~= nil) end)
 
 local _, menu, epos = ide:FindMenuItem(ID.EXIT)
-if menu and epos then
+-- disable printing on Unix/Linux as it generates incorrect layout (wx2.9.5, wx3.1)
+if ide.osname ~= "Unix" and menu and epos then
   -- insert Print-repated menu items (going in the opposite order)
   menu:Insert(epos-1, ID_PAGESETUP, TR("Page Setup..."), "")
   menu:Insert(epos-1, ID_PRINT, TR("&Print..."), TR("Print the current document"))
