@@ -142,6 +142,7 @@ World:
 		Maximum: 6
 		SpawnInterval: 3000
 		WaterChance: 0
+		InitialSpawnDelay: 1500
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
