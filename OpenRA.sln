@@ -57,6 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\allies-05a\AI.lua = mods\ra\maps\allies-05a\AI.lua
 		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
 		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
+		mods\ra\maps\soviet-03\soviet03.lua = mods\ra\maps\soviet-03\soviet03.lua
 		mods\ra\maps\soviet-07\soviet07.lua = mods\ra\maps\soviet-07\soviet07.lua
 		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
 		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
