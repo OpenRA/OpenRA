@@ -81,6 +81,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showTerrainGeometryCheckbox.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 			}
 
+			var showDepthPreviewCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_DEPTH_PREVIEW");
+			if (showDepthPreviewCheckbox != null)
+			{
+				showDepthPreviewCheckbox.IsChecked = () => devTrait.ShowDepthPreview;
+				showDepthPreviewCheckbox.OnClick = () => devTrait.ShowDepthPreview ^= true;
+			}
+
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
 			if (allTechCheckbox != null)
 			{

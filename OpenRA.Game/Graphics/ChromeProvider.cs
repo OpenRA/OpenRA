@@ -106,7 +106,7 @@ namespace OpenRA.Graphics
 				sheet = cachedSheets[mi.Src];
 			else
 			{
-				sheet = new Sheet(mi.Src);
+				sheet = new Sheet(SheetType.BGRA, mi.Src);
 				cachedSheets.Add(mi.Src, sheet);
 			}
 

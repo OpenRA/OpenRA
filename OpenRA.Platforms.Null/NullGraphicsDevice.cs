@@ -63,6 +63,7 @@ namespace OpenRA.Platforms.Null
 
 	public class NullShader : IShader
 	{
+		public void SetBool(string name, bool value) { }
 		public void SetVec(string name, float x) { }
 		public void SetVec(string name, float x, float y) { }
 		public void SetVec(string name, float[] vec, int length) { }

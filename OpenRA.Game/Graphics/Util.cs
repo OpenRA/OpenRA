@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 	{
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
-		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
+		static readonly float[] ChannelSelect = { 0.2f, 0.4f, 0.6f, 0.8f };
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, float paletteTextureIndex, int nv, float2 size)
 		{
@@ -32,6 +32,8 @@ namespace OpenRA.Graphics
 		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, float paletteTextureIndex, int nv)
 		{
 			var attribC = ChannelSelect[(int)r.Channel];
+			if (r.Sheet.Type == SheetType.DualIndexed)
+				attribC *= -1;
 
 			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
 			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);

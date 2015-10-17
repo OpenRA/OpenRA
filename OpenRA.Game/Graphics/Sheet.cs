@@ -24,6 +24,8 @@ namespace OpenRA.Graphics
 		byte[] data;
 
 		public readonly Size Size;
+		public readonly SheetType Type;
+
 		public byte[] GetData()
 		{
 			CreateBuffer();
@@ -32,18 +34,20 @@ namespace OpenRA.Graphics
 
 		public bool Buffered { get { return data != null || texture == null; } }
 
-		public Sheet(Size size)
+		public Sheet(SheetType type, Size size)
 		{
+			Type = type;
 			Size = size;
 		}
 
-		public Sheet(ITexture texture)
+		public Sheet(SheetType type, ITexture texture)
 		{
+			Type = type;
 			this.texture = texture;
 			Size = texture.Size;
 		}
 
-		public Sheet(string filename)
+		public Sheet(SheetType type, string filename)
 		{
 			using (var stream = GlobalFileSystem.Open(filename))
 			using (var bitmap = (Bitmap)Image.FromStream(stream))
@@ -54,6 +58,7 @@ namespace OpenRA.Graphics
 				Util.FastCopyIntoSprite(new Sprite(this, bitmap.Bounds(), TextureChannel.Red), bitmap);
 			}
 
+			Type = type;
 			ReleaseBuffer();
 		}
 

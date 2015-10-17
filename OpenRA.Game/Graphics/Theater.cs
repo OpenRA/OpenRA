@@ -43,16 +43,18 @@ namespace OpenRA.Graphics
 		{
 			this.tileset = tileset;
 			var allocated = false;
+			var type = tileset.EnableDepth ? SheetType.DualIndexed : SheetType.Indexed;
+
 			Func<Sheet> allocate = () =>
 			{
 				if (allocated)
 					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
+				return new Sheet(type, new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
+			sheetBuilder = new SheetBuilder(type, allocate);
 			random = new MersenneTwister();
 
 			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
@@ -63,8 +65,19 @@ namespace OpenRA.Graphics
 				foreach (var i in t.Value.Images)
 				{
 					var allFrames = frameCache[i];
-					var frames = t.Value.Frames != null ? t.Value.Frames.Select(f => allFrames[f]).ToArray() : allFrames;
-					variants.Add(frames.Select(f => sheetBuilder.Add(f)).ToArray());
+					var frameCount = tileset.EnableDepth ? allFrames.Length / 2 : allFrames.Length;
+					var indices = t.Value.Frames != null ? t.Value.Frames : Enumerable.Range(0, frameCount);
+					variants.Add(indices.Select(j =>
+					{
+						var f = allFrames[j];
+						var s = sheetBuilder.Allocate(f.Size, f.Offset);
+						Util.FastCopyIntoChannel(s, 0, f.Data);
+
+						if (tileset.EnableDepth)
+							Util.FastCopyIntoChannel(s, 1, allFrames[j + frameCount].Data);
+
+						return s;
+					}).ToArray());
 				}
 
 				var allSprites = variants.SelectMany(s => s);

@@ -132,6 +132,9 @@ namespace OpenRA.Graphics
 			if (World.WorldActor.Disposed)
 				return;
 
+			if (devTrait.Value != null)
+				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
+
 			RefreshPalette();
 
 			if (World.Type == WorldType.Shellmap && !Game.Settings.Game.ShowShellmap)
