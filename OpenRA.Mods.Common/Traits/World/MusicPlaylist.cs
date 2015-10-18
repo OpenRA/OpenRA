@@ -66,9 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
 			IsMusicAvailable = playlist.Any();
 
-			if (SongExists(info.StartingMusic))
-				currentSong = world.Map.Rules.Music[info.StartingMusic];
-			else if (SongExists(info.BackgroundMusic))
+			if (SongExists(info.BackgroundMusic))
 			{
 				currentSong = currentBackgroundSong = world.Map.Rules.Music[info.BackgroundMusic];
 				CurrentSongIsBackground = true;
@@ -79,6 +77,12 @@ namespace OpenRA.Mods.Common.Traits
 				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
 				if (playlist.Length > installData.ShippedSoundtracks)
 					currentSong = random.FirstOrDefault();
+			}
+
+			if (SongExists(info.StartingMusic))
+			{
+				currentSong = world.Map.Rules.Music[info.StartingMusic];
+				CurrentSongIsBackground = false;
 			}
 
 			Play();
