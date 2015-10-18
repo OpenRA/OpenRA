@@ -603,6 +603,9 @@ namespace OpenRA
 
 			// Update existing package
 			Container.Write(entries);
+
+			// Update UID to match the newly saved data
+			Uid = ComputeHash();
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()

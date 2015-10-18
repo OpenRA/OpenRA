@@ -145,9 +145,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				map.Save(combinedPath);
 
-				// Reload map to calculate new UID
-				map = new Map(combinedPath);
-
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];
 				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, classification);
