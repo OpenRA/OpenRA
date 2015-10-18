@@ -450,6 +450,8 @@ HIJACKER:
 	WithInfantryBody:
 		-IdleSequences:
 		StandSequences: stand
+	Crushable:
+		WarnProbability: 95
 
 SHOK:
 	Inherits: ^Soldier
