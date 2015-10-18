@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -17,6 +18,12 @@ namespace OpenRA.Widgets
 		public RootWidget()
 		{
 			IgnoreMouseOver = true;
+			Game.Renderer.OnResolutionChange += (windowSize) => OnResolutionChange();
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			this.Bounds = new Rectangle(Point.Empty, Game.Renderer.Resolution);
 		}
 
 		public override bool HandleKeyPress(KeyInput e)

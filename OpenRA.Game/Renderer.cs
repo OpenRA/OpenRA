@@ -45,9 +45,11 @@ namespace OpenRA
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 
+		public event Action<Size> OnResolutionChange;
+
 		public Renderer(GraphicSettings graphicSettings, ServerSettings serverSettings)
 		{
-			var resolution = GetResolution(graphicSettings);
+			var resolution = new Size(graphicSettings.WindowedSize.X, graphicSettings.WindowedSize.Y);
 
 			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
 			var rendererPath = Platform.ResolvePath(".", "OpenRA.Platforms." + rendererName + ".dll");
@@ -72,14 +74,6 @@ namespace OpenRA
 			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
 		}
 
-		static Size GetResolution(GraphicSettings graphicsSettings)
-		{
-			var size = (graphicsSettings.Mode == WindowMode.Windowed)
-				? graphicsSettings.WindowedSize
-				: graphicsSettings.FullscreenSize;
-			return new Size(size.X, size.Y);
-		}
-
 		static IGraphicsDevice CreateDevice(Assembly platformDll, int width, int height, WindowMode window)
 		{
 			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
@@ -89,6 +83,24 @@ namespace OpenRA
 			}
 
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
+		}
+
+		public readonly Size MinimumResolution = new Size(800, 600);
+
+		public readonly Size[] SuggestedResolutions = new Size[]
+		{
+			new Size(800, 600),
+			new Size(1280, 720),
+			new Size(1024, 768),
+			new Size(1600, 900),
+			new Size(1920, 1080),
+		};
+
+		public void SetWindowSize(Size size, WindowMode windowMode)
+		{
+			Device.SetWindowSize(size, windowMode);
+			if (OnResolutionChange != null)
+				OnResolutionChange(Resolution);
 		}
 
 		public void InitializeFonts(Manifest m)
@@ -181,6 +193,7 @@ namespace OpenRA
 		}
 
 		public Size Resolution { get { return Device.WindowSize; } }
+		public WindowMode WindowMode { get { return Device.WindowMode; } }
 
 		public interface IBatchRenderer { void Flush();	}
 

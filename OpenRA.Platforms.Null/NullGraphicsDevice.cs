@@ -17,12 +17,16 @@ namespace OpenRA.Platforms.Null
 	public sealed class NullGraphicsDevice : IGraphicsDevice
 	{
 		public Size WindowSize { get; private set; }
+		public WindowMode WindowMode { get; private set; }
 
-		public NullGraphicsDevice(Size size, WindowMode window)
+		public NullGraphicsDevice(Size size, WindowMode windowMode)
 		{
 			Console.WriteLine("Using Null renderer");
 			WindowSize = size;
+			WindowMode = windowMode;
 		}
+
+		public void SetWindowSize(Size size, WindowMode windowMode) { }
 
 		public void Dispose() { }
 

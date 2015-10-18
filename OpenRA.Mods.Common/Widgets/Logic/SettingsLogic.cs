@@ -30,20 +30,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static readonly string OriginalSoundDevice;
 		static readonly string OriginalSoundEngine;
-		static readonly WindowMode OriginalGraphicsMode;
 		static readonly string OriginalGraphicsRenderer;
-		static readonly int2 OriginalGraphicsWindowedSize;
-		static readonly int2 OriginalGraphicsFullscreenSize;
 
 		static SettingsLogic()
 		{
 			var original = Game.Settings;
 			OriginalSoundDevice = original.Sound.Device;
 			OriginalSoundEngine = original.Sound.Engine;
-			OriginalGraphicsMode = original.Graphics.Mode;
 			OriginalGraphicsRenderer = original.Graphics.Renderer;
-			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
-			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -68,10 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (OriginalSoundDevice != current.Sound.Device ||
 					OriginalSoundEngine != current.Sound.Engine ||
-					OriginalGraphicsMode != current.Graphics.Mode ||
-					OriginalGraphicsRenderer != current.Graphics.Renderer ||
-					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
-					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
+					OriginalGraphicsRenderer != current.Graphics.Renderer)
 					ConfirmationDialogs.PromptConfirmAction(
 						"Restart Now?",
 						"Some changes will not be applied until\nthe game is restarted. Restart now?",
@@ -164,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
-				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Fullscreen (Native)";
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
@@ -182,12 +173,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
 			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
 
-			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
+			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode != WindowMode.NativeFullscreen;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = ds.WindowedSize.X.ToString();
 
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = ds.WindowedSize.Y.ToString();
+
+			var windowSize = panel.Get<DropDownButtonWidget>("WINDOW_SIZE_DROPDOWN");
+			windowSize.OnMouseDown = _ => ShowWindowSizeDropdown(windowSize, windowWidth, windowHeight);
+			windowSize.GetText = () =>
+			{
+				int x, y;
+				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
+				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
+				if (!Game.Renderer.SuggestedResolutions.Contains(new System.Drawing.Size(x, y)))
+					return "Custom";
+				return "{0}x{1}".F(windowWidth.Text, windowHeight.Text);
+			};
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
@@ -263,7 +266,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				int x, y;
 				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
 				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
-				ds.WindowedSize = new int2(x, y);
+
+				var min = Game.Renderer.MinimumResolution;
+				ds.WindowedSize = new int2(Math.Max(x, min.Width), Math.Max(y, min.Height));
+
+				var size = new System.Drawing.Size(ds.WindowedSize.X, ds.WindowedSize.Y);
+
+				if (Game.Renderer.Resolution != size || Game.Renderer.WindowMode != ds.Mode)
+					Game.Renderer.SetWindowSize(size, ds.Mode);
+
 				frameLimitTextfield.YieldKeyboardFocus();
 				nameTextfield.YieldKeyboardFocus();
 			};
@@ -632,7 +643,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
+				{ "Fullscreen (Native)", WindowMode.NativeFullscreen },
 				{ "Fullscreen", WindowMode.Fullscreen },
 				{ "Windowed", WindowMode.Windowed },
 			};
@@ -648,6 +659,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		static bool ShowWindowSizeDropdown(DropDownButtonWidget dropdown, TextFieldWidget width, TextFieldWidget height)
+		{
+			var options = Game.Renderer.SuggestedResolutions.ToDictionary(i => "{0}x{1}".F(i.Width, i.Height), i => new int2(i.Width, i.Height));
+			var keys = options.OrderBy(i => i.Value.Y).ThenBy(i => i.Value.X).Select(i => i.Key);
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => width.Text == options[o].X.ToString() && height.Text == options[o].Y.ToString(),
+					() =>
+					{
+						width.Text = options[o].X.ToString();
+						height.Text = options[o].Y.ToString();
+					});
+
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, keys, setupItem);
 			return true;
 		}
 
