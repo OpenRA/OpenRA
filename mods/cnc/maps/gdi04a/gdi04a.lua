@@ -11,19 +11,19 @@ GDIReinforcements = { "e2", "e2", "e2", "e2", "e2" }
 GDIReinforcementsWaypoints = { GDIReinforcementsEntry.Location, GDIReinforcementsWP1.Location }
 
 NodHelis = {
-	{ DateTime.Seconds(HeliDelay[1]), { NodHeliEntry.Location, NodHeliLZ1.Location }, { "e1", "e1", "e3" } },
-	{ DateTime.Seconds(HeliDelay[2]), { NodHeliEntry.Location, NodHeliLZ2.Location }, { "e1", "e1", "e1", "e1" } },
-	{ DateTime.Seconds(HeliDelay[3]), { NodHeliEntry.Location, NodHeliLZ3.Location }, { "e1", "e1", "e3" } }
+	{ delay = DateTime.Seconds(HeliDelay[1]), entry = { NodHeliEntry.Location, NodHeliLZ1.Location }, types = { "e1", "e1", "e3" } },
+	{ delay = DateTime.Seconds(HeliDelay[2]), entry = { NodHeliEntry.Location, NodHeliLZ2.Location }, types = { "e1", "e1", "e1", "e1" } },
+	{ delay = DateTime.Seconds(HeliDelay[3]), entry = { NodHeliEntry.Location, NodHeliLZ3.Location }, types = { "e1", "e1", "e3" } }
 }
 
 SendHeli = function(heli)
-	units = Reinforcements.ReinforceWithTransport(enemy, "tran", heli[3], heli[2], { heli[2][1] })
+	units = Reinforcements.ReinforceWithTransport(enemy, "tran", heli.types, heli.entry, { heli.entry[1] })
 	Utils.Do(units[2], function(actor)
 		actor.Hunt()
 		Trigger.OnIdle(actor, actor.Hunt)
 		Trigger.OnKilled(actor, KillCounter)
 	end)
-	Trigger.AfterDelay(heli[1], function() SendHeli(heli) end)
+	Trigger.AfterDelay(heli.delay, function() SendHeli(heli) end)
 end
 
 SendGDIReinforcements = function()
@@ -134,7 +134,7 @@ WorldLoaded = function()
 
 	BuildNod1()
 	Utils.Do(NodHelis, function(heli)
-		Trigger.AfterDelay(heli[1], function() SendHeli(heli) end)
+		Trigger.AfterDelay(heli.delay, function() SendHeli(heli) end)
 	end)
 
 	autoTrigger = false

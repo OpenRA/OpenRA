@@ -15,87 +15,87 @@ Snipers = { Sniper1, Sniper2, Sniper3, Sniper4, Sniper5, Sniper6, Sniper7, Snipe
 Wave = 0
 Waves =
 {
-	{ 500, SovietEntryPoints, Infantry, SpawnPoints },
+	{ delay = 500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
 
-	{ 750, PatrolWaypoints, Patrol, ParadropWaypoints },
+	{ delay = 750, entries = PatrolWaypoints, units = Patrol, targets = ParadropWaypoints },
 
-	{ 750, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Vehicles, SpawnPoints },
+	{ delay = 750, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Vehicles, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Vehicles, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Vehicles, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
-	{ 1, SovietEntryPoints, Vehicles, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Vehicles, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, LongRange, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = LongRange, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, LongRange, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
-	{ 1, SovietEntryPoints, LongRange, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = LongRange, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = LongRange, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, LongRange, SpawnPoints },
-	{ 1, SovietEntryPoints, LongRange, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
-	{ 1, SovietEntryPoints, Tank, SpawnPoints },
-	{ 1, SovietEntryPoints, Vehicles, SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = LongRange, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = LongRange, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Vehicles, targets = SpawnPoints },
 
-	{ 1500, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Infantry, SpawnPoints },
-	{ 1, SovietEntryPoints, Boss, SpawnPoints }
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
+	{ delay = 1, entries = SovietEntryPoints, units = Boss, targets = SpawnPoints }
 }
 
 SendUnits = function(entryCell, unitTypes, interval, targetCell)
@@ -121,13 +121,11 @@ SendWave = function()
 	Wave = Wave + 1
 	local wave = Waves[Wave]
 
-	local delay = wave[1]
-	local entry = Utils.Random(wave[2]).Location
-	local units = wave[3]
-	local target = Utils.Random(wave[4]).Location
+	local entry = Utils.Random(wave.entries).Location
+	local target = Utils.Random(wave.targets).Location
 
-	Trigger.AfterDelay(delay, function()
-		SendUnits(entry, units, 40, target)
+	Trigger.AfterDelay(wave.delay, function()
+		SendUnits(entry, wave.units, 40, target)
 
 		if not played then
 			played = true

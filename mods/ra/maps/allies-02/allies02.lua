@@ -15,23 +15,23 @@ if Map.Difficulty == "Easy" then
 	TimerTicks = DateTime.Minutes(10)
 	Announcements =
 	{
-		{ "TenMinutesRemaining", DateTime.Seconds(3) },
-		{ "WarningFiveMinutesRemaining", DateTime.Minutes(5) },
-		{ "WarningFourMinutesRemaining", DateTime.Minutes(6) },
-		{ "WarningThreeMinutesRemaining", DateTime.Minutes(7) },
-		{ "WarningTwoMinutesRemaining", DateTime.Minutes(8) },
-		{ "WarningOneMinuteRemaining", DateTime.Minutes(9) }
+		{ speech = "TenMinutesRemaining", delay = DateTime.Seconds(3) },
+		{ speech = "WarningFiveMinutesRemaining", delay = DateTime.Minutes(5) },
+		{ speech = "WarningFourMinutesRemaining", delay = DateTime.Minutes(6) },
+		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Minutes(7) },
+		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(8) },
+		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(9) }
 	}
 
 elseif Map.Difficulty == "Normal" then
 	TimerTicks = DateTime.Minutes(5)
 	Announcements =
 	{
-		{ "WarningFiveMinutesRemaining", DateTime.Seconds(3) },
-		{ "WarningFourMinutesRemaining", DateTime.Minutes(1) },
-		{ "WarningThreeMinutesRemaining", DateTime.Minutes(2) },
-		{ "WarningTwoMinutesRemaining", DateTime.Minutes(3) },
-		{ "WarningOneMinuteRemaining", DateTime.Minutes(4) }
+		{ speech = "WarningFiveMinutesRemaining", delay = DateTime.Seconds(3) },
+		{ speech = "WarningFourMinutesRemaining", delay = DateTime.Minutes(1) },
+		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Minutes(2) },
+		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(3) },
+		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(4) }
 	}
 
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
@@ -42,9 +42,9 @@ elseif Map.Difficulty == "Hard" then
 	TimerTicks = DateTime.Minutes(3)
 	Announcements =
 	{
-		{ "WarningThreeMinutesRemaining", DateTime.Seconds(3) },
-		{ "WarningTwoMinutesRemaining", DateTime.Minutes(1) },
-		{ "WarningOneMinuteRemaining", DateTime.Minutes(2) },
+		{ speech = "WarningThreeMinutesRemaining", delay = DateTime.Seconds(3) },
+		{ speech = "WarningTwoMinutesRemaining", delay = DateTime.Minutes(1) },
+		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(2) },
 	}
 
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
@@ -55,7 +55,7 @@ elseif Map.Difficulty == "Hard" then
 
 else
 	TimerTicks = DateTime.Minutes(1)
-	Announcements = { { "WarningOneMinuteRemaining", DateTime.Seconds(3) } }
+	Announcements = { { speech = "WarningOneMinuteRemaining", delay = DateTime.Seconds(3) } }
 	ConstructionVehicleReinforcements = { "jeep" }
 
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "dog", "dog" }
@@ -229,9 +229,9 @@ end
 
 ConvoyTimerAnnouncements = function()
 	for i = #Announcements, 1, -1 do
-		Trigger.AfterDelay(Announcements[i][2], function()
+		Trigger.AfterDelay(Announcements[i].delay, function()
 			if not ConvoyOnSite then
-				Media.PlaySpeechNotification(player, Announcements[i][1])
+				Media.PlaySpeechNotification(player, Announcements[i].speech)
 			end
 		end)
 	end
