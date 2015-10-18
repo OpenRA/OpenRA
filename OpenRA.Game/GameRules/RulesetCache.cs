@@ -80,7 +80,7 @@ namespace OpenRA
 
 			using (new PerfTimer("Music"))
 				music = LoadYamlRules(musicCache, m.Music,
-					NoMapRules,
+					map != null ? map.MusicDefinitions : NoMapRules,
 					(k, _) => new MusicInfo(k.Key, k.Value));
 
 			using (new PerfTimer("TileSets"))

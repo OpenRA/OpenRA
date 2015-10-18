@@ -15,6 +15,7 @@ using Eluant;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -55,14 +56,22 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		Action onComplete;
-		[Desc("Play track defined in music.yaml or keep it empty for a random song.")]
+		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
 			if (!playlist.IsMusicAvailable)
 				return;
 
-			var musicInfo = !string.IsNullOrEmpty(track) ? world.Map.Rules.Music[track]
-			: playlist.GetNextSong();
+			MusicInfo musicInfo;
+			if (string.IsNullOrEmpty(track))
+				musicInfo = playlist.GetNextSong();
+			else if (world.Map.Rules.Music.ContainsKey(track))
+				musicInfo = world.Map.Rules.Music[track];
+			else
+			{
+				Log.Write("lua", "Missing music track: " + track);
+				return;
+			}
 
 			if (func != null)
 			{

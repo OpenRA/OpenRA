@@ -20,6 +20,10 @@ Type: Minigame
 
 Videos:
 
+Music:
+	rain: Rain (ambient)
+		Hidden: true
+
 Options:
 	Fog: True
 	Shroud: True
