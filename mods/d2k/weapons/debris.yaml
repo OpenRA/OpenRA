@@ -9,7 +9,7 @@ Debris:
 		Image: shrapnel
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 150
 		Versus:
 			none: 20
@@ -43,7 +43,7 @@ Debris2:
 		TrailInterval: 2
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 250
 		Versus:
 			none: 90
@@ -77,7 +77,7 @@ Debris3:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 150
 		Versus:
 			none: 90
@@ -111,7 +111,7 @@ Debris4:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 250
 		Versus:
 			none: 90
