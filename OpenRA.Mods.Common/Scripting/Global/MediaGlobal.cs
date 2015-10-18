@@ -61,16 +61,8 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!playlist.IsMusicAvailable)
 				return;
 
-			MusicInfo musicInfo;
-			if (string.IsNullOrEmpty(track))
-				musicInfo = playlist.GetNextSong();
-			else if (world.Map.Rules.Music.ContainsKey(track))
-				musicInfo = world.Map.Rules.Music[track];
-			else
-			{
-				Log.Write("lua", "Missing music track: " + track);
-				return;
-			}
+			var musicInfo = !string.IsNullOrEmpty(track) ? GetMusicTrack(track)
+				: playlist.GetNextSong();
 
 			if (func != null)
 			{
@@ -103,7 +95,17 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!playlist.IsMusicAvailable)
 				return;
 
-			playlist.SetBackgroundMusic(string.IsNullOrEmpty(track) ? null : world.Map.Rules.Music[track]);
+			playlist.SetBackgroundMusic(string.IsNullOrEmpty(track) ? null : GetMusicTrack(track));
+		}
+
+		MusicInfo GetMusicTrack(string track)
+		{
+			var music = world.Map.Rules.Music;
+			if (music.ContainsKey(track))
+				return music[track];
+
+			Log.Write("lua", "Missing music track: " + track);
+			return null;
 		}
 
 		[Desc("Stop the current song.")]
