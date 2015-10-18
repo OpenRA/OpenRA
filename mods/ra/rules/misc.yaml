@@ -128,8 +128,6 @@ CAMERA:
 		Type: CenterPosition
 	ProximityCaptor:
 		Types: Camera
-	DetectCloaked:
-		Range: 10c0
 	BodyOrientation:
 		QuantizedFacings: 1
 	WithSpriteBody:
