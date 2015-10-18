@@ -24,15 +24,15 @@ NewSovietRallyPoints = { SovietRally3, SovietRally4, SovietRally8 }
 
 ParaWaves =
 {
-	{ AttackTicks, { "SovietSquad", SovietRally5 } },
-	{ 0, { "SovietSquad", SovietRally6 } },
-	{ AttackTicks * 2, { "SovietSquad", SovietParaDrop3 } },
-	{ 0, { "SovietPlatoonUnits", SovietRally5 } },
-	{ 0, { "SovietPlatoonUnits", SovietRally6 } },
-	{ 0, { "SovietSquad", SovietRally2 } },
-	{ AttackTicks * 2, { "SovietSquad", SovietParaDrop2 } },
-	{ AttackTicks * 2, { "SovietSquad", SovietParaDrop1 } },
-	{ AttackTicks * 3, { "SovietSquad", SovietParaDrop1 } }
+	{ delay = AttackTicks, type = "SovietSquad", target = SovietRally5  },
+	{ delay = 0, type = "SovietSquad", target = SovietRally6 },
+	{ delay = AttackTicks * 2, type = "SovietSquad", target = SovietParaDrop3 },
+	{ delay = 0, type = "SovietPlatoonUnits", target = SovietRally5 },
+	{ delay = 0, type = "SovietPlatoonUnits", target = SovietRally6 },
+	{ delay = 0, type = "SovietSquad", target = SovietRally2 },
+	{ delay = AttackTicks * 2, type = "SovietSquad", target = SovietParaDrop2 },
+	{ delay = AttackTicks * 2, type = "SovietSquad", target = SovietParaDrop1 },
+	{ delay = AttackTicks * 3, type = "SovietSquad", target = SovietParaDrop1 }
 }
 
 IdleHunt = function(unit)
@@ -120,8 +120,8 @@ Tick = function()
 end
 
 SendSovietParadrops = function(table)
-	local paraproxy = Actor.Create(table[1], false, { Owner = soviets })
-	units = paraproxy.SendParatroopers(table[2].CenterPosition)
+	local paraproxy = Actor.Create(table.type, false, { Owner = soviets })
+	units = paraproxy.SendParatroopers(table.target.CenterPosition)
 	Utils.Do(units, function(unit) IdleHunt(unit) end)
 	paraproxy.Destroy()
 end
@@ -227,13 +227,13 @@ end
 
 wave = 1
 SendParadrops = function()
-	SendSovietParadrops(ParaWaves[wave][2])
+	SendSovietParadrops(ParaWaves[wave])
 
 	wave = wave + 1
 	if wave > #ParaWaves then
 		Trigger.AfterDelay(AttackTicks, FrenchReinforcements)
 	else
-		Trigger.AfterDelay(ParaWaves[wave][1], SendParadrops)
+		Trigger.AfterDelay(ParaWaves[wave].delay, SendParadrops)
 	end
 end
 

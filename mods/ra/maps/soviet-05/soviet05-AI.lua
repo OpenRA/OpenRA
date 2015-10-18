@@ -13,28 +13,28 @@ IdlingUnits = function()
 end
 
 BaseBuildings = {
-	{ "powr", CVec.New(3, -2), 300 },
-	{ "tent", CVec.New(0, 4), 400 },
-	{ "hbox", CVec.New(3, 6), 600 },
-	{ "proc", CVec.New(4, 2), 1400 },
-	{ "powr", CVec.New(5, -3), 300 },
-	{ "weap", CVec.New(-5, 3), 2000 },
-	{ "hbox", CVec.New(-6, 5), 600 },
-	{ "gun", CVec.New(0, 8), 600 },
-	{ "gun", CVec.New(-4, 7), 600 },
-	{ "powr", CVec.New(-4, -3), 300 },
-	{ "proc", CVec.New(-9, 1), 1400 },
-	{ "powr", CVec.New(-8, -2), 300 },
-	{ "silo", CVec.New(6, 0), 150 },
-	{ "agun", CVec.New(-3, 0), 800 },
-	{ "powr", CVec.New(-6, -2), 300 },
-	{ "agun", CVec.New(4, 1), 800 },
-	{ "gun", CVec.New(-9, 5), 600 },
-	{ "gun", CVec.New(-2, -3), 600 },
-	{ "powr", CVec.New(4, 6), 300 },
-	{ "gun", CVec.New(3, -6), 600 },
-	{ "hbox", CVec.New(3, -4), 600 },
-	{ "gun", CVec.New(2, 3), 600 }
+	{ type = "powr", pos = CVec.New(3, -2), cost = 300 },
+	{ type = "tent", pos = CVec.New(0, 4), cost = 400 },
+	{ type = "hbox", pos = CVec.New(3, 6), cost = 600 },
+	{ type = "proc", pos = CVec.New(4, 2), cost = 1400 },
+	{ type = "powr", pos = CVec.New(5, -3), cost = 300 },
+	{ type = "weap", pos = CVec.New(-5, 3), cost = 2000 },
+	{ type = "hbox", pos = CVec.New(-6, 5), cost = 600 },
+	{ type = "gun", pos = CVec.New(0, 8), cost = 600 },
+	{ type = "gun", pos = CVec.New(-4, 7), cost = 600 },
+	{ type = "powr", pos = CVec.New(-4, -3), cost = 300 },
+	{ type = "proc", pos = CVec.New(-9, 1), cost = 1400 },
+	{ type = "powr", pos = CVec.New(-8, -2), cost = 300 },
+	{ type = "silo", pos = CVec.New(6, 0), cost = 150 },
+	{ type = "agun", pos = CVec.New(-3, 0), cost = 800 },
+	{ type = "powr", pos = CVec.New(-6, -2), cost = 300 },
+	{ type = "agun", pos = CVec.New(4, 1), cost = 800 },
+	{ type = "gun", pos = CVec.New(-9, 5), cost = 600 },
+	{ type = "gun", pos = CVec.New(-2, -3), cost = 600 },
+	{ type = "powr", pos = CVec.New(4, 6), cost = 300 },
+	{ type = "gun", pos = CVec.New(3, -6), cost = 600 },
+	{ type = "hbox", pos = CVec.New(3, -4), cost = 600 },
+	{ type = "gun", pos = CVec.New(2, 3), cost = 600 }
 }
 
 BuildBase = function()
@@ -43,7 +43,7 @@ BuildBase = function()
 	end
 
 	for i,v in ipairs(BaseBuildings) do
-		if not v[4] then
+		if not v.exists then
 			BuildBuilding(v)
 			return
 		end
@@ -53,12 +53,12 @@ BuildBase = function()
 end
 
 BuildBuilding = function(building)
-	Trigger.AfterDelay(Actor.BuildTime(building[1]), function()
-		local actor = Actor.Create(building[1], true, { Owner = GoodGuy, Location = MCVDeploy.Location + building[2] })
-		GoodGuy.Cash = GoodGuy.Cash - building[3]
+	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
+		local actor = Actor.Create(building.type, true, { Owner = GoodGuy, Location = MCVDeploy.Location + building.pos })
+		GoodGuy.Cash = GoodGuy.Cash - building.cost
 
-		building[4] = true
-		Trigger.OnKilled(actor, function() building[4] = false end)
+		building.exists = true
+		Trigger.OnKilled(actor, function() building.exists = false end)
 		Trigger.OnDamaged(actor, function(building)
 			if building.Owner == GoodGuy and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()

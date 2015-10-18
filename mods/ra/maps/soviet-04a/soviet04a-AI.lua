@@ -11,12 +11,15 @@ IdlingUnits = function()
 	end)
 end
 
+BaseBarracks =       { type = "tent", pos = CVec.New(-9, 6), cost = 400, exists = true }
+BaseProc =           { type = "proc", pos = CVec.New(4, 7), cost = 1400, exists = true }
+BaseWeaponsFactory = { type = "weap", pos = CVec.New(8, -1), cost = 2000, exists = true }
 BaseBuildings =
 {
-	{ "powr", CVec.New(0, 4), 300 },
-	{ "tent", CVec.New(-9, 6), 400, true },
-	{ "proc", CVec.New(4, 7), 1400, true },
-	{ "weap", CVec.New(8, -1), 2000, true }
+	{ type = "powr", pos = CVec.New(0, 4), cost = 300 },
+	BaseBarracks,
+	BaseProc,
+	BaseWeaponsFactory
 }
 
 BuildBase = function()
@@ -27,7 +30,7 @@ BuildBase = function()
 	end
 
 	for i,v in ipairs(BaseBuildings) do
-		if not v[4] then
+		if not v.exists then
 			BuildBuilding(v)
 			return
 		end
@@ -37,12 +40,12 @@ BuildBase = function()
 end
 
 BuildBuilding = function(building)
-	Trigger.AfterDelay(Actor.BuildTime(building[1]), function()
-		local actor = Actor.Create(building[1], true, { Owner = Greece, Location = GreeceCYard.Location + building[2] })
-		Greece.Cash = Greece.Cash - building[3]
+	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
+		local actor = Actor.Create(building.type, true, { Owner = Greece, Location = GreeceCYard.Location + building.pos })
+		Greece.Cash = Greece.Cash - building.cost
 
-		building[4] = true
-		Trigger.OnKilled(actor, function() building[4] = true end)
+		building.exists = true
+		Trigger.OnKilled(actor, function() building.exists = false end)
 		Trigger.OnDamaged(actor, function(building)
 			if building.Owner == Greece and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
@@ -54,7 +57,7 @@ BuildBuilding = function(building)
 end
 
 ProduceInfantry = function()
-	if not BaseBuildings[2][4] then
+	if not BaseBarracks.exists then
 		return
 	elseif Harvester.IsDead and Greece.Resources <= 299 then
 		return
@@ -77,7 +80,7 @@ ProduceInfantry = function()
 end
 
 ProduceArmor = function()
-	if not BaseBuildings[4][4] then
+	if not BaseWeaponsFactory.exists then
 		return
 	elseif Harvester.IsDead and Greece.Resources <= 599 then
 		return

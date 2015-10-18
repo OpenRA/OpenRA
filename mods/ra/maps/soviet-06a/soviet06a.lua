@@ -57,23 +57,23 @@ Trigger.OnAllKilled(Trucks, function()
 end)
 
 Trigger.OnKilled(Apwr, function(building)
-	BaseBuildings[1][4] = false
+	BaseApwr.exists = false
 end)
 
 Trigger.OnKilled(Barr, function(building)
-	BaseBuildings[2][4] = false
+	BaseTent.exists = false
 end)
 
 Trigger.OnKilled(Proc, function(building)
-	BaseBuildings[3][4] = false
+	BaseProc.exists = false
 end)
 
 Trigger.OnKilled(Weap, function(building)
-	BaseBuildings[4][4] = false
+	BaseWeap.exists = false
 end)
 
 Trigger.OnKilled(Apwr2, function(building)
-	BaseBuildings[5][4] = false
+	BaseApwr2.exists = false
 end)
 
 -- Activate the AI once the player deployed the Mcv
