@@ -40,7 +40,6 @@ DOG:
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
-		Range: 5c0
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -224,7 +223,6 @@ SPY:
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
-		Range: 5c0
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
