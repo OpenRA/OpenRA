@@ -90,10 +90,8 @@ E4:
 		LocalOffset: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
 	AttackFrontal:
 	WithMuzzleOverlay:
-		SplitFacings: true
 	WithInfantryBody:
 		AttackSequence: shoot
 
