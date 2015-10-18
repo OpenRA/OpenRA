@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 								&& !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange))), a);
 				})
 
-				.Where(kv => kv.Key != null)
+				.Where(kv => kv.Key != null && self.Owner.CanViewActor(kv.Value))
 				.GroupBy(kv => kv.Key, kv => kv.Value)
 				.ToDictionary(kv => kv.Key, kv => kv.ClosestTo(self));
 
