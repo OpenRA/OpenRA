@@ -2,7 +2,7 @@ MapFormat: 7
 
 RequiresMod: d2k
 
-Title: Atreides 02a
+Title: Atreides 02b
 
 Description: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
 
@@ -60,110 +60,80 @@ Players:
 		Enemies: Atreides, Creeps
 
 Actors:
-	Actor0: spicebloom
-		Location: 42,4
-		Owner: Neutral
+	Actor0: light_inf
+		Location: 26,8
+		Owner: Atreides
 	Actor1: trike
-		Location: 26,6
+		Location: 28,8
 		Owner: Atreides
 	Actor2: trike
-		Location: 11,8
-		Owner: Harkonnen
-	Actor3: trike
-		Location: 20,8
+		Location: 30,8
 		Owner: Atreides
-	Actor4: trike
-		Location: 23,8
+	Actor3: light_inf
+		Location: 24,10
+		Owner: Atreides
+	Actor5: trike
+		Location: 31,11
 		Owner: Atreides
 	Actor6: light_inf
-		Location: 19,11
-		Owner: Atreides
-	Actor7: trike
-		Location: 25,11
-		Owner: Atreides
-	Actor8: light_inf
+		Location: 47,11
+		Owner: Harkonnen
+	Actor7: light_inf
 		Location: 25,12
 		Owner: Atreides
-	Actor9: trike
-		Location: 45,12
+	Actor8: light_inf
+		Location: 8,14
 		Owner: Harkonnen
-	Actor10: light_inf
-		Location: 19,13
+	Actor9: light_inf
+		Location: 27,14
 		Owner: Atreides
-	Actor11: trike
-		Location: 23,13
-		Owner: Atreides
-	Actor12: light_inf
-		Location: 15,19
+	Actor10: wormspawner
+		Location: 40,17
+		Owner: Creeps
+	Actor11: light_inf
+		Location: 40,33
+		Owner: Harkonnen
+	Actor12: trike
+		Location: 14,39
 		Owner: Harkonnen
 	Actor13: light_inf
-		Location: 7,20
+		Location: 16,39
 		Owner: Harkonnen
-	Actor14: light_inf
-		Location: 34,21
+	Actor14: trike
+		Location: 18,39
 		Owner: Harkonnen
-	Actor15: spicebloom
-		Location: 25,23
-		Owner: Neutral
-	Actor16: light_inf
-		Location: 23,27
+	Actor16: trike
+		Location: 16,41
 		Owner: Harkonnen
 	Actor17: light_inf
-		Location: 48,31
+		Location: 9,42
 		Owner: Harkonnen
-	Actor18: wormspawner
-		Location: 43,35
-		Owner: Creeps
-	Actor19: light_inf
-		Location: 7,36
-		Owner: Harkonnen
-	Actor20: trike
-		Location: 40,37
+	Actor20: light_inf
+		Location: 11,44
 		Owner: Harkonnen
 	Actor21: trike
-		Location: 23,38
+		Location: 12,46
 		Owner: Harkonnen
 	Actor22: light_inf
-		Location: 25,38
+		Location: 18,46
 		Owner: Harkonnen
-	Actor23: spicebloom
-		Location: 11,40
-		Owner: Neutral
+	Actor23: light_inf
+		Location: 21,46
+		Owner: Harkonnen
 	Actor24: trike
-		Location: 22,40
+		Location: 16,48
 		Owner: Harkonnen
-	Actor26: trike
-		Location: 21,41
-		Owner: Harkonnen
-	Actor27: trike
-		Location: 23,41
-		Owner: Harkonnen
-	Actor28: light_inf
-		Location: 21,44
-		Owner: Harkonnen
-	Actor30: light_inf
-		Location: 22,46
-		Owner: Harkonnen
-	Actor31: light_inf
-		Location: 28,46
-		Owner: Harkonnen
-	Actor32: spicebloom
-		Location: 42,46
-		Owner: Neutral
 	HConyard: construction_yard
-		Location: 24,44
+		Location: 14,42
 		Owner: Harkonnen
-	HPower1: wind_trap
-		Location: 22,47
-		Owner: Harkonnen
-	HPower2: wind_trap
-		Location: 25,47
+	HOutpost: outpostnopower
+		Location: 11,40
 		Owner: Harkonnen
 	HBarracks: barracks
-		Location: 25,40
+		Location: 18,42
 		Owner: Harkonnen
 	AConyard: construction_yard
-		Location: 21,10
+		Location: 27,10
 		Owner: Atreides
 	HarkonnenEntry1: waypoint
 		Owner: Neutral
@@ -179,7 +149,7 @@ Actors:
 		Location: 36,15
 	HarkonnenRally3: waypoint
 		Owner: Neutral
-		Location: 21,18
+		Location: 18,17
 	HarkonnenRally4: waypoint
 		Owner: Neutral
 		Location: 30,28
@@ -196,7 +166,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
-			Scripts: atreides02a.lua
+			Scripts: atreides02b.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 		WormManager:
@@ -223,6 +193,11 @@ Rules:
 	outpost:
 		Buildable:
 			Prerequisites: barracks
+	outpostnopower:
+		Inherits: outpost
+		Buildable:
+			Prerequisites: ~disabled
+		-RequiresPower:
 
 Sequences:
 
