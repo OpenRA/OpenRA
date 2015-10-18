@@ -372,14 +372,12 @@
 		Weapon: Chemspray
 		LocalOffset: 384,0,0
 		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 8
 	WithSpriteBody:
 	WithMuzzleOverlay:
-		SplitFacings: true
 	Guard:
 		Voice: Move
 	Guardable:

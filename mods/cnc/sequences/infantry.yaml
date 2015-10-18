@@ -1,59 +1,67 @@
 vice:
 	idle:
 		Length: *
-	muzzle0: chem-n
-		Length: *
-		Offset: 3,4
-	muzzle1: chem-nw
-		Length: *
-		Offset: 4,1
-	muzzle2: chem-w
-		Length: *
-		Offset: 7,-3
-	muzzle3: chem-sw
-		Length: *
-		Offset: 3,-6
-	muzzle4: chem-s
-		Length: *
-		Offset: 1,-6
-	muzzle5: chem-se
-		Length: *
-		Offset: -3,-5
-	muzzle6: chem-e
-		Length: *
-		Offset: -6,-3
-	muzzle7: chem-ne
-		Length: *
-		Offset: -1,0
+	muzzle:
+		Combine:
+			chem-n:
+				Length: *
+				Offset: 1,2
+			chem-nw:
+				Length: *
+				Offset: 8,2
+			chem-w:
+				Length: *
+				Offset: 8,-3
+			chem-sw:
+				Length: *
+				Offset: 7,-6
+			chem-s:
+				Length: *
+				Offset: 1,-6
+			chem-se:
+				Length: *
+				Offset: -5,-6
+			chem-e:
+				Length: *
+				Offset: -7,-3
+			chem-ne:
+				Length: *
+				Offset: -3,2
+		Facings: 8
+		Length: 13
 	icon: viceicnh
 
 pvice:
 	idle:
 		Length: *
-	muzzle0: chem-n
-		Length: *
-		Offset: 3,4
-	muzzle1: chem-nw
-		Length: *
-		Offset: 4,1
-	muzzle2: chem-w
-		Length: *
-		Offset: 7,-3
-	muzzle3: chem-sw
-		Length: *
-		Offset: 3,-6
-	muzzle4: chem-s
-		Length: *
-		Offset: 1,-6
-	muzzle5: chem-se
-		Length: *
-		Offset: -3,-5
-	muzzle6: chem-e
-		Length: *
-		Offset: -6,-3
-	muzzle7: chem-ne
-		Length: *
-		Offset: -1,0
+	muzzle:
+		Combine:
+			chem-n:
+				Length: *
+				Offset: 1,2
+			chem-nw:
+				Length: *
+				Offset: 8,2
+			chem-w:
+				Length: *
+				Offset: 8,-3
+			chem-sw:
+				Length: *
+				Offset: 7,-6
+			chem-s:
+				Length: *
+				Offset: 1,-6
+			chem-se:
+				Length: *
+				Offset: -5,-6
+			chem-e:
+				Length: *
+				Offset: -7,-3
+			chem-ne:
+				Length: *
+				Offset: -3,2
+		Facings: 8
+		Length: 13
 	icon: viceicnh
 
 e1:
@@ -555,30 +563,34 @@ e5:
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	muzzle0: chem-n
-		Length: *
-		Offset: 1,2
-	muzzle1: chem-nw
-		Length: *
-		Offset: 8,2
-	muzzle2: chem-w
-		Length: *
-		Offset: 8,-3
-	muzzle3: chem-sw
-		Length: *
-		Offset: 7,-6
-	muzzle4: chem-s
-		Length: *
-		Offset: 1,-6
-	muzzle5: chem-se
-		Length: *
-		Offset: -5,-6
-	muzzle6: chem-e
-		Length: *
-		Offset: -7,-3
-	muzzle7: chem-ne
-		Length: *
-		Offset: -3,2
+	muzzle:
+		Combine:
+			chem-n:
+				Length: *
+				Offset: 1,2
+			chem-nw:
+				Length: *
+				Offset: 8,2
+			chem-w:
+				Length: *
+				Offset: 8,-3
+			chem-sw:
+				Length: *
+				Offset: 7,-6
+			chem-s:
+				Length: *
+				Offset: 1,-6
+			chem-se:
+				Length: *
+				Offset: -5,-6
+			chem-e:
+				Length: *
+				Offset: -7,-3
+			chem-ne:
+				Length: *
+				Offset: -3,2
+		Facings: 8
+		Length: 13
 	icon: e5icnh.tem
 		AddExtension: False
 

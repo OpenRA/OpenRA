@@ -182,11 +182,9 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AutoTarget:
 	WithMuzzleOverlay:
-		SplitFacings: true
 	Explodes:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
