@@ -195,7 +195,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 35
 							Height: 13
 						Container@FACTION:
-							X: 280
+							X: 270
 							Width: 150
 							Height: 25
 							Children:
