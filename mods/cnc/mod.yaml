@@ -122,7 +122,7 @@ ChromeLayout:
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 	./mods/cnc/chrome/editor.yaml
-	./mods/cnc/chrome/irc.yaml
+	./mods/cnc/chrome/globalchat.yaml
 
 Voices:
 	./mods/cnc/audio/voices.yaml

@@ -84,6 +84,9 @@
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmarIrc4net">
+      <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Activity.cs" />
@@ -246,6 +249,8 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="GameSpeed.cs" />
+    <Compile Include="GlobalChat.cs" />
+    <Compile Include="Primitives\ObservableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

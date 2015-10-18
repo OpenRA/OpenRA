@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
 		{
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
-				Root.RemoveChild(WindowList.Peek());
+				Root.HideChild(WindowList.Peek());
 			WindowList.Push(window);
 			return window;
 		}
@@ -448,10 +448,30 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		public virtual void HideChild(Widget child)
+		{
+			if (child != null)
+			{
+				Children.Remove(child);
+				child.Hidden();
+			}
+		}
+
 		public virtual void RemoveChildren()
 		{
 			while (Children.Count > 0)
 				RemoveChild(Children[Children.Count - 1]);
+		}
+
+		public virtual void Hidden()
+		{
+			// Using the forced versions because the widgets
+			// have been removed
+			ForceYieldKeyboardFocus();
+			ForceYieldMouseFocus();
+
+			foreach (var c in Children.OfType<Widget>().Reverse())
+				c.Hidden();
 		}
 
 		public virtual void Removed()
@@ -463,6 +483,11 @@ namespace OpenRA.Widgets
 
 			foreach (var c in Children.OfType<Widget>().Reverse())
 				c.Removed();
+
+			if (LogicObjects != null)
+				foreach (var l in LogicObjects)
+					if (l is IDisposable)
+						((IDisposable)l).Dispose();
 		}
 
 		public Widget GetOrNull(string id)

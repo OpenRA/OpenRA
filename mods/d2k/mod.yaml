@@ -104,7 +104,7 @@ ChromeLayout:
 	./mods/d2k/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
-	./mods/ra/chrome/irc.yaml
+	./mods/ra/chrome/globalchat.yaml
 
 Weapons:
 	./mods/d2k/weapons.yaml

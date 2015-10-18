@@ -18,9 +18,11 @@ Container@SERVERBROWSER_PANEL:
 			Background: panel-black
 			Y: 15
 			Children:
-				Container@IRC_ROOT:
+				Container@GLOBALCHAT_ROOT:
 					X: 15
 					Y: 15
+					Width: 700
+					Height: 260
 				ScrollPanel@SERVER_LIST:
 					X: 15
 					Y: 280

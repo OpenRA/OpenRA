@@ -294,9 +294,9 @@ namespace OpenRA
 		}
 	}
 
-	public class IrcSettings
+	public class ChatSettings
 	{
-		public string[] Hostname = { "irc.openra.net" };
+		public string Hostname = "irc.openra.net";
 		public int Port = 6667;
 		public string Channel = "lobby";
 		public string Nickname = "Newbie";
@@ -316,7 +316,7 @@ namespace OpenRA
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
-		public IrcSettings Irc = new IrcSettings();
+		public ChatSettings Chat = new ChatSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -332,7 +332,7 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
+				{ "Chat", Chat }
 			};
 
 			// Override fieldloader to ignore invalid entries

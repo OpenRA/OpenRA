@@ -41,3 +41,5 @@ Metrics:
 	IncompatibleWaitingGameColor: 50,205,50
 	GameStartedColor: 255,165,0
 	IncompatibleGameStartedColor: 210,105,30
+	GlobalChatTextColor: 255,255,255
+	GlobalChatNotificationColor: 211,211,211
