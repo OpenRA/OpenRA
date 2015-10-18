@@ -42,6 +42,7 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
+		Enemies: Atreides, Harkonnen
 	PlayerReference@Atreides:
 		Name: Atreides
 		Playable: True
@@ -49,14 +50,14 @@ Players:
 		Faction: atreides
 		LockColor: True
 		ColorRamp: 170,255,200
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
 		ColorRamp: 0,255,127
-		Enemies: Atreides
+		Enemies: Atreides, Creeps
 
 Actors:
 	Actor0: spicebloom
