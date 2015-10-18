@@ -145,30 +145,34 @@ bike.destroyed:
 ftnk:
 	idle:
 		Facings: 32
-	muzzle0: flame-n
-		Length: *
-		Offset: 3,8
-	muzzle1: flame-nw
-		Length: *
-		Offset: 4,6
-	muzzle2: flame-w
-		Length: *
-		Offset: 7,2
-	muzzle3: flame-sw
-		Length: *
-		Offset: 3,-2
-	muzzle4: flame-s
-		Length: *
-		Offset: 1,-2
-	muzzle5: flame-se
-		Length: *
-		Offset: -3,-1
-	muzzle6: flame-e
-		Length: *
-		Offset: -6,2
-	muzzle7: flame-ne
-		Length: *
-		Offset: -5,6
+	muzzle:
+		Combine:
+			flame-n:
+				Length: *
+				Offset: 3,6
+			flame-nw:
+				Length: *
+				Offset: 8,7
+			flame-w:
+				Length: *
+				Offset: 8,2
+			flame-sw:
+				Length: *
+				Offset: 7,-2
+			flame-s:
+				Length: *
+				Offset: 3,-2
+			flame-se:
+				Length: *
+				Offset: -5,-2
+			flame-e:
+				Length: *
+				Offset: -7,2
+			flame-ne:
+				Length: *
+				Offset: -7,8
+		Facings: 8
+		Length: 13
 	icon: ftnkicnh.tem
 		AddExtension: False
 
