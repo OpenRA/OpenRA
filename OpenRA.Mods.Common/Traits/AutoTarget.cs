@@ -157,14 +157,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
 		{
-			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range)
+				.Where(a => !a.Info.HasTraitInfo<AutoTargetIgnoreInfo>());
 
 			// Armaments are enumerated in attack.Armaments in construct order
 			// When autotargeting, first choose targets according to the used armament construct order
 			// And then according to distance from actor
 			// This enables preferential treatment of certain armaments
 			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
-			var actrarms = inRange
+			var actorByArmament = inRange
 
 				// Select only the first compatible armament for each actor: if this actor is selected
 				// it will be thanks to the first armament anyways, since that is the first selection
@@ -174,20 +175,19 @@ namespace OpenRA.Mods.Common.Traits
 					var target = Target.FromActor(a);
 					return new KeyValuePair<Armament, Actor>(
 						attack.ChooseArmamentsForTarget(target, false)
-							.Where(arm => allowMove
+							.FirstOrDefault(arm => allowMove
 								|| (target.IsInRange(self.CenterPosition, arm.MaxRange())
-								&& !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange)))
-							.FirstOrDefault(), a);
+								&& !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange))), a);
 				})
 
-				.Where(kv => kv.Key != null && kv.Value.TraitOrDefault<AutoTargetIgnore>() == null)
+				.Where(kv => kv.Key != null)
 				.GroupBy(kv => kv.Key, kv => kv.Value)
 				.ToDictionary(kv => kv.Key, kv => kv.ClosestTo(self));
 
 			foreach (var arm in attack.Armaments)
 			{
 				Actor actor;
-				if (actrarms.TryGetValue(arm, out actor))
+				if (actorByArmament.TryGetValue(arm, out actor))
 					return actor;
 			}
 
