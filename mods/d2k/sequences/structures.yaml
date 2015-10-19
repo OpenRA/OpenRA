@@ -380,6 +380,7 @@ refinery.atreides:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.atreides:
 	idle: DATA.R8
@@ -874,6 +875,7 @@ refinery.harkonnen:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.harkonnen:
 	idle: DATA.R8
@@ -1277,6 +1279,7 @@ refinery.ordos:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.ordos:
 	idle: DATA.R8

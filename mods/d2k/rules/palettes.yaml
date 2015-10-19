@@ -51,11 +51,6 @@
 		Name: effect50alpha
 		BasePalette: effect
 		Alpha: 0.5
-	PaletteFromPaletteWithAlpha@effectAdditive:
-		Name: effectAdditive
-		BasePalette: effect
-		Alpha: 0
-		Premultiply: false
 	PaletteFromScaledPalette@starportlights:
 		Name: starportlights
 		BasePalette: d2k
