@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !buildComplete);
+				() => !buildComplete || !docked);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
