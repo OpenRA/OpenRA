@@ -112,8 +112,7 @@ namespace OpenRA
 	public class GraphicSettings
 	{
 		public string Renderer = "Default";
-		public WindowMode Mode = WindowMode.PseudoFullscreen;
-		public int2 FullscreenSize = new int2(0, 0);
+		public WindowMode Mode = WindowMode.NativeFullscreen;
 		public int2 WindowedSize = new int2(1024, 768);
 		public bool HardwareCursors = true;
 		public bool PixelDouble = false;

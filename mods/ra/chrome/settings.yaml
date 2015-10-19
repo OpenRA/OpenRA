@@ -63,21 +63,21 @@ Background@SETTINGS_PANEL:
 			Height: PARENT_BOTTOM
 			Children:
 				Label@MODE_LABEL:
-					X: 110
+					X: 40
 					Y: 39
 					Width: 45
 					Height: 25
 					Align: Right
 					Text: Mode:
 				DropDownButton@MODE_DROPDOWN:
-					X: 160
+					X: 90
 					Y: 40
 					Width: 170
 					Height: 25
 					Font: Regular
 					Text: Windowed
 				Container@WINDOW_RESOLUTION:
-					X: 330
+					X: 260
 					Y: 40
 					Children:
 						Label@At:
@@ -105,6 +105,10 @@ Background@SETTINGS_PANEL:
 							Width: 45
 							Height: 25
 							MaxLength: 5
+						DropDownButton@WINDOW_SIZE_DROPDOWN:
+							X: 135
+							Width: 120
+							Height: 25
 				Checkbox@HARDWARECURSORS_CHECKBOX:
 					X: 310
 					Y: 75
@@ -118,7 +122,7 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: Mode, resolution, and cursor changes will be applied after the game is restarted
+					Text: Hardware cursor changes will be applied after the game is restarted
 				Checkbox@FRAME_LIMIT_CHECKBOX:
 					X: 15
 					Y: 125

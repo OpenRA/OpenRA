@@ -55,6 +55,8 @@ namespace OpenRA
 		IShader CreateShader(string name);
 
 		Size WindowSize { get; }
+		WindowMode WindowMode { get; }
+		void SetWindowSize(Size size, WindowMode windowMode);
 
 		void Clear();
 		void Present();
@@ -135,6 +137,6 @@ namespace OpenRA
 	{
 		Windowed,
 		Fullscreen,
-		PseudoFullscreen,
+		NativeFullscreen,
 	}
 }

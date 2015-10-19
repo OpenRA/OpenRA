@@ -28,6 +28,7 @@ namespace OpenRA.Platforms.Default
 		bool disposed;
 
 		public Size WindowSize { get; private set; }
+		public WindowMode WindowMode { get; private set; }
 
 		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
 		{
@@ -61,19 +62,6 @@ namespace OpenRA.Platforms.Default
 			else
 				ReleaseWindowMouseFocus();
 
-			if (windowMode == WindowMode.Fullscreen)
-				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
-			else if (windowMode == WindowMode.PseudoFullscreen)
-			{
-				// Work around a visual glitch in OSX: the window is offset
-				// partially offscreen if the dock is at the left of the screen
-				if (Platform.CurrentPlatform == PlatformType.OSX)
-					SDL.SDL_SetWindowPosition(window, 0, 0);
-
-				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
-				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
-			}
-
 			context = SDL.SDL_GL_CreateContext(window);
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
@@ -98,6 +86,47 @@ namespace OpenRA.Platforms.Default
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
+
+			Clear();
+			Present();
+			SetWindowSize(WindowSize, windowMode);
+		}
+
+		public void SetWindowSize(Size windowSize, WindowMode windowMode)
+		{
+			VerifyThreadAffinity();
+
+			SDL.SDL_DisplayMode display;
+
+			// SDL2 doesn't support resolution switching whilst in full screen mode.
+			SDL.SDL_SetWindowFullscreen(window, 0);
+			SDL.SDL_GetCurrentDisplayMode(0, out display);
+
+			if (windowMode == WindowMode.NativeFullscreen)
+				windowSize = new Size(display.w, display.h);
+
+			SDL.SDL_SetWindowSize(window, windowSize.Width, windowSize.Height);
+			SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, windowMode == WindowMode.Fullscreen ? "1" : "0");
+
+			if (windowMode == WindowMode.Fullscreen)
+			{
+				display.w = windowSize.Width;
+				display.h = windowSize.Height;
+				SDL.SDL_SetWindowDisplayMode(window, ref display);
+				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
+			}
+
+			if (windowMode == WindowMode.NativeFullscreen)
+				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+			if (windowMode == WindowMode.Windowed)
+				SDL.SDL_SetWindowPosition(window, SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED);
+			else
+				SDL.SDL_SetWindowPosition(window, 0, 0);
+
+			GL.Viewport(windowSize);
+			WindowSize = windowSize;
+			WindowMode = WindowMode;
 		}
 
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)

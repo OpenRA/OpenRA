@@ -208,8 +208,12 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		WidgetArgs widgetArgs;
+
 		public virtual void Initialize(WidgetArgs args)
 		{
+			this.widgetArgs = args;
+
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
@@ -235,6 +239,15 @@ namespace OpenRA.Widgets
 								   Evaluator.Evaluate(Y, substitutions),
 								   width,
 								   height);
+		}
+
+		protected void OnResolutionChange()
+		{
+			if (widgetArgs != null)
+				Initialize(widgetArgs);
+
+			foreach (var child in Children)
+				child.OnResolutionChange();
 		}
 
 		public void PostInit(WidgetArgs args)
