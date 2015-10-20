@@ -126,12 +126,6 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: Leave Game
-		Button@SETTINGS_BUTTON:
-			X: 150
-			Y: 539
-			Width: 140
-			Height: 35
-			Text: Settings
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH
 			Y: 539

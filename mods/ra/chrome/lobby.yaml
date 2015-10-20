@@ -135,7 +135,7 @@ Background@SERVER_LOBBY:
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Disconnect
+			Text: Leave Game
 			Font: Bold
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
