@@ -19,9 +19,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	// depends on the order of pips in WorldRenderer.cs!
+	// Depends on the order of pips in SelectionDecorations.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
-	public enum TagType { None, Fake, Primary }
 
 	[Flags]
 	public enum Stance
@@ -225,7 +224,6 @@ namespace OpenRA.Traits
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
-	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
 	public interface IPositionableInfo : ITraitInfo { }

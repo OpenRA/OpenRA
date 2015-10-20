@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
@@ -25,16 +26,29 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	public class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
-
-	public class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
+	public class PrimaryBuildingInfo : ITraitInfo
 	{
+		public readonly string Image = "pips";
+
+		[SequenceReference("Image")] public readonly string TagSequence = "tag-primary";
+
+		[PaletteReference] public readonly string Palette = "chrome";
+
+		public object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
+	}
+
+	public class PrimaryBuilding : IIssueOrder, IResolveOrder, IPostRenderSelection
+	{
+		readonly PrimaryBuildingInfo info;
+		readonly Actor self;
+
 		bool isPrimary = false;
 		public bool IsPrimary { get { return isPrimary; } }
 
-		public IEnumerable<TagType> GetTags()
+		public PrimaryBuilding(Actor self, PrimaryBuildingInfo info)
 		{
-			yield return isPrimary ? TagType.Primary : TagType.None;
+			this.self = self;
+			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -81,6 +95,22 @@ namespace OpenRA.Mods.Common.Traits
 			isPrimary = true;
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Faction.InternalName);
+		}
+
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		{
+			if (!isPrimary)
+				yield break;
+
+			var tagImages = new Animation(wr.World, info.Image);
+			var pal = wr.Palette(info.Palette);
+			var tagxyOffset = new int2(0, 6);
+			tagImages.PlayRepeating(info.TagSequence);
+			var b = self.VisualBounds;
+			var center = wr.ScreenPxPosition(self.CenterPosition);
+			var tm = wr.Viewport.WorldToViewPx(center + new int2((b.Left + b.Right) / 2, b.Top));
+			var pos = tm + tagxyOffset - (0.5f * tagImages.Image.Size).ToInt2();
+			yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
 		}
 	}
 }
