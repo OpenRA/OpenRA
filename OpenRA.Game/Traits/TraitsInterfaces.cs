@@ -19,6 +19,20 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
+	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
+
+	public interface IHealth
+	{
+		DamageState DamageState { get; }
+		int HP { get; }
+		int MaxHP { get; }
+		int DisplayHP { get; }
+		bool IsDead { get; }
+
+		void InflictDamage(Actor self, Actor attacker, int damage, IWarhead warhead, bool ignoreModifiers);
+		void Kill(Actor self, Actor attacker);
+	}
+
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
 	public enum TagType { None, Fake, Primary }

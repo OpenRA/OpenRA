@@ -9,8 +9,9 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
@@ -26,15 +27,13 @@ namespace OpenRA.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
-
-	public class Health : ISync, ITick
+	public class Health : IHealth, ISync, ITick
 	{
 		public readonly HealthInfo Info;
 
 		[Sync] int hp;
 
-		public int DisplayHp { get; private set; }
+		public int DisplayHP { get; private set; }
 
 		public Health(ActorInitializer init, HealthInfo info)
 		{
@@ -43,11 +42,11 @@ namespace OpenRA.Traits
 
 			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
 
-			DisplayHp = hp;
+			DisplayHP = hp;
 		}
 
 		public int HP { get { return hp; } }
-		public int MaxHP;
+		public int MaxHP { get; private set; }
 
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
@@ -162,13 +161,18 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public void Kill(Actor self, Actor attacker)
+		{
+			InflictDamage(self, attacker, MaxHP, null, true);
+		}
+
 		public void Tick(Actor self)
 		{
-			if (hp > DisplayHp)
-				DisplayHp = hp;
+			if (hp > DisplayHP)
+				DisplayHP = hp;
 
-			if (DisplayHp > hp)
-				DisplayHp = (2 * DisplayHp + hp) / 3;
+			if (DisplayHP > hp)
+				DisplayHP = (2 * DisplayHP + hp) / 3;
 		}
 	}
 
@@ -189,26 +193,6 @@ namespace OpenRA.Traits
 				return 1;
 
 			return value;
-		}
-	}
-
-	public static class HealthExts
-	{
-		public static DamageState GetDamageState(this Actor self)
-		{
-			if (self.Disposed)
-				return DamageState.Dead;
-
-			var health = self.TraitOrDefault<Health>();
-			return (health == null) ? DamageState.Undamaged : health.DamageState;
-		}
-
-		public static void InflictDamage(this Actor self, Actor attacker, int damage, IWarhead warhead)
-		{
-			if (self.Disposed) return;
-			var health = self.TraitOrDefault<Health>();
-			if (health == null) return;
-			health.InflictDamage(self, attacker, damage, warhead, false);
 		}
 	}
 }

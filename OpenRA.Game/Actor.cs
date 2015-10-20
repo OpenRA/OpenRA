@@ -71,7 +71,7 @@ namespace OpenRA
 
 		IOccupySpace occupySpace;
 		readonly IFacing facing;
-		readonly Health health;
+		readonly IHealth health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IDisable[] disables;
@@ -103,7 +103,7 @@ namespace OpenRA
 			VisualBounds = DetermineVisualBounds();
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
-			health = TraitOrDefault<Health>();
+			health = TraitOrDefault<IHealth>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			disables = TraitsImplementing<IDisable>().ToArray();
@@ -281,12 +281,28 @@ namespace OpenRA
 			});
 		}
 
-		public void Kill(Actor attacker)
+		public DamageState GetDamageState()
 		{
-			if (health == null)
+			if (Disposed)
+				return DamageState.Dead;
+
+			return (health == null) ? DamageState.Undamaged : health.DamageState;
+		}
+
+		public void InflictDamage(Actor attacker, int damage, IWarhead warhead)
+		{
+			if (Disposed || health == null)
 				return;
 
-			health.InflictDamage(this, attacker, health.MaxHP, null, true);
+			health.InflictDamage(this, attacker, damage, warhead, false);
+		}
+
+		public void Kill(Actor attacker)
+		{
+			if (Disposed || health == null)
+				return;
+
+			health.Kill(this, attacker);
 		}
 
 		public bool IsDisabled()
