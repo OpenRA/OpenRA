@@ -452,6 +452,7 @@ local function createBottomNotebook(frame)
   local shellbox = ide:CreateStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 
+  local menupos
   shellbox:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local menu = wx.wxMenu {
@@ -462,10 +463,16 @@ local function createBottomNotebook(frame)
           { ID_COPY, TR("&Copy") },
           { ID_PASTE, TR("&Paste") },
           { ID_SELECTALL, TR("Select &All") },
+          { },
+          { ID_SELECTCONSOLECOMMAND, TR("&Select Command") },
         }
+      menupos = event:GetPosition()
       PackageEventHandle("onMenuConsole", menu, shellbox, event)
       shellbox:PopupMenu(menu)
     end)
+
+  shellbox:Connect(ID_SELECTCONSOLECOMMAND, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) ConsoleSelectCommand(menupos) end)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)

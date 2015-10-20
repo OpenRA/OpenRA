@@ -14,6 +14,7 @@ local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
 local ERROR_MARKER = StylesGetMarker("error")
 local OUTPUT_MARKER = StylesGetMarker("output")
 local MESSAGE_MARKER = StylesGetMarker("message")
+local ANY_MARKER_VALUE = 2^25-1 -- marker numbers 0 to 24 have no pre-defined function
 
 out:SetFont(ide.font.oNormal)
 out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
@@ -72,9 +73,7 @@ local function caretOnPromptLine(disallowLeftmost, line)
     or currentLine == promptLine and positionInLine(promptLine) > boundary)
 end
 
-local function chomp(line)
-  return line:gsub("%s+$", "")
-end
+local function chomp(line) return (line:gsub("%s+$", "")) end
 
 local function getInput(line)
   local nextMarker = line
@@ -85,6 +84,19 @@ local function getInput(line)
   until out:MarkerGet(nextMarker) > 0 or nextMarker > count-1
   return chomp(out:GetTextRange(out:PositionFromLine(line),
                                 out:PositionFromLine(nextMarker)))
+end
+
+function ConsoleSelectCommand(point)
+  local cpos = out:ScreenToClient(point or wx.wxGetMousePosition())
+  local position = out:PositionFromPoint(cpos)
+  if position == wxstc.wxSTC_INVALID_POSITION then return end
+
+  local promptline = out:MarkerPrevious(out:LineFromPosition(position), PROMPT_MARKER_VALUE)
+  if promptline == wxstc.wxSTC_INVALID_POSITION then return end
+  local nextline = out:MarkerNext(promptline+1, ANY_MARKER_VALUE)
+  local epos = nextline ~= wxstc.wxSTC_INVALID_POSITION and out:PositionFromLine(nextline) or out:GetLength()
+  out:SetSelection(out:PositionFromLine(promptline), epos)
+  return true
 end
 
 local currentHistory

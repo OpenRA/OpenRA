@@ -152,6 +152,8 @@ ID_SYMBOLDIRDISABLE = NewID()
 ID_SYMBOLDIRENABLE  = NewID()
 -- outline menu
 ID_OUTLINESORT      = NewID()
+-- console menu
+ID_SELECTCONSOLECOMMAND = NewID()
 -- search toolbar
 ID_FINDALL          = NewID()
 ID_FINDREPLACENEXT  = NewID()
