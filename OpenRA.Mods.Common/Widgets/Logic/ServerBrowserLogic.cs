@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ServerBrowserLogic
+	public class ServerBrowserLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
 

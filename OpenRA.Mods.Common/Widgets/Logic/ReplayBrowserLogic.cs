@@ -22,7 +22,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ReplayBrowserLogic
+	public class ReplayBrowserLogic : ChromeLogic
 	{
 		static Filter filter = new Filter();
 

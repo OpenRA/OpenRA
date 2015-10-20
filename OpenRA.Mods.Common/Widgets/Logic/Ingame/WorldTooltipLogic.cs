@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class WorldTooltipLogic
+	public class WorldTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)

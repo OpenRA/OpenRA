@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ControlGroupLogic
+	public class ControlGroupLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ControlGroupLogic(Widget widget, World world, WorldRenderer worldRenderer)

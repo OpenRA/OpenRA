@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class DisconnectWatcherLogic
+	public class DisconnectWatcherLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public DisconnectWatcherLogic(Widget widget, OrderManager orderManager)

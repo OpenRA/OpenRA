@@ -12,7 +12,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LoadMapEditorLogic
+	public class LoadMapEditorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public LoadMapEditorLogic(Widget widget, World world)

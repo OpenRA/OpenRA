@@ -11,10 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class TabCompletionLogic
+	public class TabCompletionLogic : ChromeLogic
 	{
 		IList<string> candidates = new List<string>();
 		int currentCandidateIndex = 0;

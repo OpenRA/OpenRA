@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ClassicProductionLogic
+	public class ClassicProductionLogic : ChromeLogic
 	{
 		readonly ProductionPaletteWidget palette;
 		readonly World world;

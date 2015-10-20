@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ConnectionLogic
+	public class ConnectionLogic : ChromeLogic
 	{
 		Action onConnect, onAbort;
 		Action<string> onRetry;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	public class ConnectionFailedLogic
+	public class ConnectionFailedLogic : ChromeLogic
 	{
 		PasswordFieldWidget passwordField;
 		bool passwordOffsetAdjusted;

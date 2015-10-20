@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameRadarDisplayLogic
+	public class IngameRadarDisplayLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public IngameRadarDisplayLogic(Widget widget, World world)

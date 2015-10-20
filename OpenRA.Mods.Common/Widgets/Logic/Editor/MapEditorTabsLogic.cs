@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MapEditorTabsLogic
+	public class MapEditorTabsLogic : ChromeLogic
 	{
 		protected enum MenuType { Tiles, Layers, Actors }
 		protected MenuType menuType = MenuType.Tiles;

@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ServerCreationLogic
+	public class ServerCreationLogic : ChromeLogic
 	{
 		Widget panel;
 		Action onCreate;

@@ -140,6 +140,12 @@ namespace OpenRA.Widgets
 		}
 	}
 
+	public class ChromeLogic : IDisposable
+	{
+		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+		protected virtual void Dispose(bool disposing) { }
+	}
+
 	public abstract class Widget
 	{
 		public readonly List<Widget> Children = new List<Widget>();
@@ -151,7 +157,7 @@ namespace OpenRA.Widgets
 		public string Width = "0";
 		public string Height = "0";
 		public string[] Logic = { };
-		public object[] LogicObjects { get; private set; }
+		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
@@ -244,7 +250,7 @@ namespace OpenRA.Widgets
 
 			args["widget"] = this;
 
-			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<object>(l, args))
+			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
 				.ToArray();
 
 			args.Remove("widget");
@@ -486,8 +492,7 @@ namespace OpenRA.Widgets
 
 			if (LogicObjects != null)
 				foreach (var l in LogicObjects)
-					if (l is IDisposable)
-						((IDisposable)l).Dispose();
+					l.Dispose();
 		}
 
 		public Widget GetOrNull(string id)

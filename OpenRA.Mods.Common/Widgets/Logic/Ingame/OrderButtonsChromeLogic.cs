@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SellOrderButtonLogic
+	public class SellOrderButtonLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SellOrderButtonLogic(Widget widget, World world)
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	public class RepairOrderButtonLogic
+	public class RepairOrderButtonLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public RepairOrderButtonLogic(Widget widget, World world)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	public class PowerdownOrderButtonLogic
+	public class PowerdownOrderButtonLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public PowerdownOrderButtonLogic(Widget widget, World world)
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	public class BeaconOrderButtonLogic
+	public class BeaconOrderButtonLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public BeaconOrderButtonLogic(Widget widget, World world)

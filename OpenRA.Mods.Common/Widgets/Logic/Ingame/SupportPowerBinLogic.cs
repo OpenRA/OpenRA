@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SupportPowerBinLogic
+	public class SupportPowerBinLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SupportPowerBinLogic(Widget widget, World world)

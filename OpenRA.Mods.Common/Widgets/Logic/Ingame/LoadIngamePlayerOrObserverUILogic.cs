@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LoadIngamePlayerOrObserverUILogic
+	public class LoadIngamePlayerOrObserverUILogic : ChromeLogic
 	{
 		bool loadingObserverWidgets = false;
 

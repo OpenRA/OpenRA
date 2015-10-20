@@ -12,7 +12,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LoadIngamePerfLogic
+	public class LoadIngamePerfLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public LoadIngamePerfLogic(Widget widget, World world)

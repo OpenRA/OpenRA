@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MenuButtonsChromeLogic
+	public class MenuButtonsChromeLogic : ChromeLogic
 	{
 		readonly World world;
 		readonly Widget worldRoot;

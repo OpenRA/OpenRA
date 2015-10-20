@@ -23,7 +23,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ActorSelectorLogic
+	public class ActorSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
 		readonly DropDownButtonWidget ownersDropDown;

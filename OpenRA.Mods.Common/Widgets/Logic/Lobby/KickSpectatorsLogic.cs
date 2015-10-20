@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class KickSpectatorsLogic
+	class KickSpectatorsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public KickSpectatorsLogic(Widget widget, string clientCount, Action okPressed, Action cancelPressed)

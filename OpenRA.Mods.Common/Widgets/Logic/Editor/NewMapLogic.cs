@@ -21,7 +21,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class NewMapLogic
+	public class NewMapLogic : ChromeLogic
 	{
 		Widget panel;
 

@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MapEditorLogic
+	public class MapEditorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)

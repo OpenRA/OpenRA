@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ModBrowserLogic
+	public class ModBrowserLogic : ChromeLogic
 	{
 		readonly Widget modList;
 		readonly ButtonWidget modTemplate;

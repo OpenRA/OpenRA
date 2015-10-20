@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameMenuLogic
+	public class IngameMenuLogic : ChromeLogic
 	{
 		Widget menu;
 

@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SettingsLogic
+	public class SettingsLogic : ChromeLogic
 	{
 		enum PanelType { Display, Audio, Input, Advanced }
 		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();

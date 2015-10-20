@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public enum IngameInfoPanel { AutoSelect, Map, Objectives, Debug }
 
-	class GameInfoLogic
+	class GameInfoLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameInfoLogic(Widget widget, World world, IngameInfoPanel activePanel)

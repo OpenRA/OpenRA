@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoObjectivesLogic
+	class GameInfoObjectivesLogic : ChromeLogic
 	{
 		readonly ContainerWidget template;
 

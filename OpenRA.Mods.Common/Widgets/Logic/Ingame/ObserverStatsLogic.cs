@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ObserverStatsLogic
+	public class ObserverStatsLogic : ChromeLogic
 	{
 		ContainerWidget basicStatsHeaders;
 		ContainerWidget economyStatsHeaders;

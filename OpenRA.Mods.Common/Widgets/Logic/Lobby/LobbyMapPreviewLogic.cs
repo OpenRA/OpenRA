@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LobbyMapPreviewLogic
+	public class LobbyMapPreviewLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		internal LobbyMapPreviewLogic(Widget widget, OrderManager orderManager, LobbyLogic lobby)

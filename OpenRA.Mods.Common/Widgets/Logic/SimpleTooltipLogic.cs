@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SimpleTooltipLogic
+	public class SimpleTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<string> getText)

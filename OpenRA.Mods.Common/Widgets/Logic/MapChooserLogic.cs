@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MapChooserLogic
+	public class MapChooserLogic : ChromeLogic
 	{
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;

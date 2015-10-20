@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameCashCounterLogic
+	public class IngameCashCounterLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public IngameCashCounterLogic(Widget widget, World world)
