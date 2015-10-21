@@ -32,9 +32,6 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Sound to play when teleporting.")]
 		public readonly string ChronoshiftSound = "chrotnk1.aud";
 
-		[Desc("Display rectangles indicating the current charge status")]
-		public readonly int Pips = 2;
-
 		[Desc("Cursor to display when able to deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
 
@@ -46,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
-	class PortableChrono : IIssueOrder, IResolveOrder, ITick, IPips, IOrderVoice, ISync
+	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		[Sync] int chargeTick = 0;
 		public readonly PortableChronoInfo Info;
@@ -108,19 +105,12 @@ namespace OpenRA.Mods.RA.Traits
 			get { return chargeTick <= 0; }
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
+		public float GetValue()
 		{
-			for (var i = 0; i < Info.Pips; i++)
-			{
-				if ((1 - chargeTick * 1.0f / (25 * Info.ChargeTime)) * Info.Pips < i + 1)
-				{
-					yield return PipType.Transparent;
-					continue;
-				}
-
-				yield return PipType.Blue;
-			}
+			return (float)((chargeTick - (25 * Info.ChargeTime)) * (Info.ChargeTime * -0.0001));
 		}
+
+		public Color GetColor() { return Color.Magenta; }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
