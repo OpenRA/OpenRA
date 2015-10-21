@@ -19,6 +19,7 @@ GAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
+		Height: 640
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -46,6 +47,8 @@ GACTWR:
 		HP: 500
 	Armor:
 		Type: Light
+	BlocksProjectiles:
+		Height: 768
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:

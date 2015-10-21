@@ -6,7 +6,7 @@
 		Speed: 682
 		Image: 120mm
 		Shadow: true
-		Angle: 62
+		Angle: 75
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
