@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
-	public class ProductionTabsLogic
+	public class ProductionTabsLogic : ChromeLogic
 	{
 		readonly ProductionTabsWidget tabs;
 		readonly World world;

@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SpawnSelectorTooltipLogic
+	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview)

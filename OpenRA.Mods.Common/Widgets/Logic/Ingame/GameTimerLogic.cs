@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class GameTimerLogic
+	public class GameTimerLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameTimerLogic(Widget widget, OrderManager orderManager, World world)

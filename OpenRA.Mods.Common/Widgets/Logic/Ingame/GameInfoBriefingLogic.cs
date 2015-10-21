@@ -12,7 +12,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoBriefingLogic
+	class GameInfoBriefingLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameInfoBriefingLogic(Widget widget, World world)

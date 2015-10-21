@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class DebugMenuLogic
+	public class DebugMenuLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public DebugMenuLogic(Widget widget, World world)

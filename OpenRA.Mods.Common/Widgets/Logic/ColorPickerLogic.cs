@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ColorPickerLogic
+	public class ColorPickerLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ColorPickerLogic(Widget widget, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)

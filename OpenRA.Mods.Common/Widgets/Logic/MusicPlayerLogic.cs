@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MusicPlayerLogic
+	public class MusicPlayerLogic : ChromeLogic
 	{
 		readonly ScrollPanelWidget musicList;
 		readonly ScrollItemWidget itemTemplate;

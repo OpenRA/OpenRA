@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MainMenuLogic
+	public class MainMenuLogic : ChromeLogic
 	{
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, None }
 

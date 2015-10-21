@@ -704,6 +704,7 @@
     <Compile Include="Scripting\Global\LightingGlobal.cs" />
     <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
     <Compile Include="Widgets\Logic\GlobalChatLogic.cs" />
+    <Compile Include="Lint\CheckChromeLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

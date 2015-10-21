@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ReplayControlBarLogic
+	public class ReplayControlBarLogic : ChromeLogic
 	{
 		enum PlaybackSpeed { Regular, Slow, Fast, Maximum }
 

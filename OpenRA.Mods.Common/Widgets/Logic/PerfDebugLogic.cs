@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class PerfDebugLogic
+	public class PerfDebugLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public PerfDebugLogic(Widget widget)

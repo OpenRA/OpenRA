@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class DirectConnectLogic
+	public class DirectConnectLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public DirectConnectLogic(Widget widget, Action onExit, Action openLobby)

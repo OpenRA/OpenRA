@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameChatLogic
+	public class IngameChatLogic : ChromeLogic
 	{
 		readonly OrderManager orderManager;
 		readonly Ruleset modRules;

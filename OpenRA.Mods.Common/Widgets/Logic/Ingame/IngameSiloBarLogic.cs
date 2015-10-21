@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameSiloBarLogic
+	public class IngameSiloBarLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public IngameSiloBarLogic(Widget widget, World world)

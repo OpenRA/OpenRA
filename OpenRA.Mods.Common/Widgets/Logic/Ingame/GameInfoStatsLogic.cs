@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoStatsLogic
+	class GameInfoStatsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameInfoStatsLogic(Widget widget, World world)

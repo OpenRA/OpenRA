@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GlobalChatLogic : IDisposable
+	class GlobalChatLogic : ChromeLogic
 	{
 		readonly ScrollPanelWidget historyPanel;
 		readonly LabelWidget historyTemplate;
@@ -149,8 +149,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		bool disposed;
-		public void Dispose()
+		protected override void Dispose(bool disposing)
 		{
+			base.Dispose(disposing);
+
 			if (disposed)
 				return;
 

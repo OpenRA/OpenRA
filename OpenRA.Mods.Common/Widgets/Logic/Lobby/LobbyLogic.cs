@@ -21,7 +21,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LobbyLogic
+	public class LobbyLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
 
