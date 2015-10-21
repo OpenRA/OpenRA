@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
 
-		public int NetWorth { get; private set; }
+		public int NetWorth { get; protected set; }
 
 		public EditorResourceLayer(Actor self)
 		{
