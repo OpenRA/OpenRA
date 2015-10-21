@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 
+		public bool Disabled = false;
+
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
 		public Func<bool> OnEscKey = () => false;
@@ -36,14 +38,18 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
 
-		public Func<bool> IsDisabled = () => false;
+		public Func<bool> IsDisabled;
 		public Func<bool> IsValid = () => true;
 		public string Font = ChromeMetrics.Get<string>("TextfieldFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextfieldColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("TextfieldColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("TextfieldColorInvalid");
 
-		public TextFieldWidget() { }
+		public TextFieldWidget()
+		{
+			IsDisabled = () => Disabled;
+		}
+
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
 		{
@@ -54,6 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorDisabled = widget.TextColorDisabled;
 			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
+			IsDisabled = widget.IsDisabled;
 		}
 
 		public override bool YieldKeyboardFocus()

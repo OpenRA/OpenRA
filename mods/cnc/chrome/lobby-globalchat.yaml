@@ -1,4 +1,4 @@
-Container@GLOBALCHAT_PANEL:
+Container@LOBBY_GLOBALCHAT_PANEL:
 	Logic: GlobalChatLogic
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
@@ -8,9 +8,9 @@ Container@GLOBALCHAT_PANEL:
 			Height: PARENT_BOTTOM
 			Children:
 				Background@TOPIC:
-					Width: 565
+					Width: 582
 					Height: 20
-					Background: dialog2
+					Background: panel-transparent
 					Children:
 						Label@CHANNEL_TOPIC:
 							X: 10
@@ -20,9 +20,9 @@ Container@GLOBALCHAT_PANEL:
 							Font: TinyBold
 							Align: Center
 				ScrollPanel@HISTORY_PANEL:
-					Y: 20
-					Width: 565
-					Height: PARENT_BOTTOM - 50
+					Width: 582
+					Y: 19
+					Height: PARENT_BOTTOM - 19
 					ItemSpacing: 5
 					Children:
 						Label@HISTORY_TEMPLATE:
@@ -31,13 +31,22 @@ Container@GLOBALCHAT_PANEL:
 							Height: 25
 							WordWrap: True
 				TextField@CHAT_TEXTFIELD:
-					Y: PARENT_BOTTOM - 25
-					Width: 565
+					X: 200
+					Y: PARENT_BOTTOM + 5
+					Width: 382
 					Height: 25
+					LeftMargin: 60
+					Children:
+						Label@LABEL_CHATTYPE:
+							Y: 0-1
+							Width: 55
+							Height: 25
+							Align: Right
+							Text: Global:
 				ScrollPanel@NICKNAME_PANEL:
-					X: 570
-					Width: 130
-					Height: PARENT_BOTTOM - 30
+					X: 596
+					Width: PARENT_RIGHT - 596
+					Height: PARENT_BOTTOM
 					Children:
 						Container@NICKNAME_TEMPLATE:
 							Height: 20
@@ -53,11 +62,11 @@ Container@GLOBALCHAT_PANEL:
 									Width: PARENT_RIGHT-15
 									Height: 20
 				Button@DISCONNECT_BUTTON:
-					X: 570
-					Y: PARENT_BOTTOM - 25
-					Width: 130
+					X: 596
+					Y: PARENT_BOTTOM + 5
+					Width: PARENT_RIGHT - 596
 					Height: 25
-					Text: Disconnect
+					Text: Leave Chat
 					Font: Bold
 		Background@GLOBALCHAT_CONNECT_PANEL:
 			Width: PARENT_RIGHT
@@ -84,6 +93,7 @@ Container@GLOBALCHAT_PANEL:
 					Y: PARENT_BOTTOM / 4 + 75
 					Height: 20
 					Width: 180
+					Font: Regular
 					Text: Connect Automatically
 				Button@CONNECT_BUTTON:
 					X: 430
@@ -92,4 +102,18 @@ Container@GLOBALCHAT_PANEL:
 					Height: 25
 					Text: Connect
 					Font: Bold
+				TextField@FAKE_CHAT:
+					X: 200
+					Y: PARENT_BOTTOM + 5
+					Width: PARENT_RIGHT - 200
+					Height: 25
+					LeftMargin: 60
+					Disabled: true
+					Children:
+						Label@LABEL_CHATTYPE:
+							Y: 0-1
+							Width: 55
+							Height: 25
+							Align: Right
+							Text: Global:
 

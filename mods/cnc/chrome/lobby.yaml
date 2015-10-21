@@ -1,9 +1,9 @@
 Container@SERVER_LOBBY:
 	Logic: LobbyLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 500)/2
+	Y: (WINDOW_BOTTOM - 560)/2
 	Width: 800
-	Height: 535
+	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
@@ -14,7 +14,7 @@ Container@SERVER_LOBBY:
 			Align: Center
 		Background@bg:
 			Width: 800
-			Height: 500
+			Height: 540
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
@@ -57,63 +57,78 @@ Container@SERVER_LOBBY:
 					Y: 30
 					Width: 582
 					Height: 219
-				ScrollPanel@CHAT_DISPLAY:
+				Button@LOBBYCHAT_TAB:
+					X: 15
+					Y: PARENT_BOTTOM - 46
+					Width: 95
+					Height: 31
+					Text: Lobby
+				Button@GLOBALCHAT_TAB:
+					X: 115
+					Y: PARENT_BOTTOM - 46
+					Width: 95
+					Height: 31
+					Text: Global
+				Container@LOBBYCHAT:
 					X: 15
 					Y: 285
 					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 324
-					TopBottomSpacing: 2
-					ItemSpacing: 2
+					Height: PARENT_BOTTOM - 300
 					Children:
-						Container@CHAT_TEMPLATE:
-							Width: PARENT_RIGHT-27
-							Height: 16
-							X: 2
-							Y: 0
+						ScrollPanel@CHAT_DISPLAY:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 30
+							TopBottomSpacing: 2
+							ItemSpacing: 2
 							Children:
-								Label@TIME:
-									X: 3
-									Width: 50
-									Height: 15
-									VAlign: Top
-								Label@NAME:
-									X: 45
-									Width: 50
-									Height: 15
-									VAlign: Top
-								Label@TEXT:
-									X: 55
-									Width: PARENT_RIGHT - 60
-									Height: 15
-									WordWrap: true
-									VAlign: Top
-				TextField@CHAT_TEXTFIELD:
-					X: 15
-					Y: PARENT_BOTTOM - HEIGHT - 15
-					Width: PARENT_RIGHT - 30
-					Height: 25
-					LeftMargin: 50
-					Children:
-						Label@LABEL_CHATTYPE:
-							Y: 0-1
-							Width: 45
+								Container@CHAT_TEMPLATE:
+									Width: PARENT_RIGHT-27
+									Height: 16
+									X: 2
+									Y: 0
+									Children:
+										Label@TIME:
+											X: 3
+											Width: 50
+											Height: 15
+											VAlign: Top
+										Label@NAME:
+											X: 45
+											Width: 50
+											Height: 15
+											VAlign: Top
+										Label@TEXT:
+											X: 55
+											Width: PARENT_RIGHT - 60
+											Height: 15
+											WordWrap: true
+											VAlign: Top
+						TextField@CHAT_TEXTFIELD:
+							X: 200
+							Y: PARENT_BOTTOM - HEIGHT
+							Width: PARENT_RIGHT - 200
 							Height: 25
-							Align: Right
-							Text: Chat:
+							LeftMargin: 50
+							Children:
+								Label@LABEL_CHATTYPE:
+									Y: 0-1
+									Width: 45
+									Height: 25
+									Align: Right
+									Text: Chat:
+				Container@GLOBALCHAT_ROOT:
+					X: 15
+					Y: 285
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 330
 		Button@DISCONNECT_BUTTON:
-			Y: 499
+			Y: 539
 			Width: 140
 			Height: 35
 			Text: Leave Game
-		Button@SETTINGS_BUTTON:
-			X: 150
-			Y: 499
-			Width: 140
-			Height: 35
-			Text: Settings
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: 499
+			Y: 539
 			Width: 140
 			Height: 35
 			Text: Start Game

@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum PanelType { Players, Options, Music, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
+		enum ChatPanelType { Lobby, Global }
+		ChatPanelType chatPanel = ChatPanelType.Lobby;
+
 		readonly Widget lobby;
 		readonly Widget editablePlayerTemplate;
 		readonly Widget nonEditablePlayerTemplate;
@@ -45,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget nonEditableSpectatorTemplate;
 		readonly Widget newSpectatorTemplate;
 
-		readonly ScrollPanelWidget chatPanel;
+		readonly ScrollPanelWidget lobbyChatPanel;
 		readonly Widget chatTemplate;
 
 		readonly ScrollPanelWidget players;
@@ -567,6 +570,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
+			var globalChat = Game.LoadWidget(null, "LOBBY_GLOBALCHAT_PANEL", lobby.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
+			var globalChatInput = globalChat.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+
+			globalChat.IsVisible = () => chatPanel == ChatPanelType.Global;
+
+			var globalChatTab = lobby.Get<ButtonWidget>("GLOBALCHAT_TAB");
+			globalChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Global;
+			globalChatTab.OnClick = () =>
+			{
+				chatPanel = ChatPanelType.Global;
+				globalChatInput.TakeKeyboardFocus();
+			};
+
+			var lobbyChat = lobby.Get("LOBBYCHAT");
+			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
+
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatTextField.TakeKeyboardFocus();
@@ -576,7 +595,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 
 				// Always scroll to bottom when we've typed something
-				chatPanel.ScrollToBottom();
+				lobbyChatPanel.ScrollToBottom();
 
 				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
 				chatTextField.Text = "";
@@ -597,9 +616,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
 
-			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
-			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
-			chatPanel.RemoveChildren();
+			var lobbyChatTab = lobby.Get<ButtonWidget>("LOBBYCHAT_TAB");
+			lobbyChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Lobby;
+			lobbyChatTab.OnClick = () =>
+			{
+				chatPanel = ChatPanelType.Lobby;
+				chatTextField.TakeKeyboardFocus();
+			};
+
+			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
+			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
+			lobbyChatPanel.RemoveChildren();
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
@@ -655,10 +682,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
-			var scrolledToBottom = chatPanel.ScrolledToBottom;
-			chatPanel.AddChild(template);
+			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
+			lobbyChatPanel.AddChild(template);
 			if (scrolledToBottom)
-				chatPanel.ScrollToBottom(smooth: true);
+				lobbyChatPanel.ScrollToBottom(smooth: true);
 
 			Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
