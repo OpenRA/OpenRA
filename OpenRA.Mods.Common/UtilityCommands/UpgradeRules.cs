@@ -2144,10 +2144,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					// Rename WithMuzzleFlash to WithMuzzleOverlay
 					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash"))
-						node.Key = node.Key.Replace("WithMuzzleFlash", "WithMuzzleOverlay");
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithMuzzleOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 
 					if (depth == 1 && node.Key.StartsWith("-WithMuzzleFlash"))
-						node.Key = node.Key.Replace("-WithMuzzleFlash", "-WithMuzzleOverlay");
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-WithMuzzleOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 				}
 
 				// WithSiloAnimation received own Sequence property, idle sequence is only 1 frame long now
