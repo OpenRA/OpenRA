@@ -86,6 +86,7 @@
     </Reference>
     <Reference Include="SmarIrc4net">
       <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
