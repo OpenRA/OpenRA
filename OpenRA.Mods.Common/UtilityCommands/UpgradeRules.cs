@@ -2243,6 +2243,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// ChargeTime is now replaced by ChargeDelay.
+				// ChargeDelay uses 500 as a default now.
+				if (engineVersion < 20151022)
+				{
+					if (depth == 2 && parentKey == "PortableChrono" && node.Key == "ChargeTime")
+					{
+						node.Key = "ChargeDelay";
+
+						if (node.Value.Value != null)
+							node.Value.Value = (Exts.ParseIntegerInvariant(node.Value.Value) * 25).ToString();
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
