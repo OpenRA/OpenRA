@@ -87,7 +87,6 @@ Cursors:
 			Start: 136
 		joystick-tl-blocked:
 			Start: 137
-
 # Cursors that need minimap variants
 		deploy:
 			Start: 53
@@ -150,7 +149,6 @@ Cursors:
 		move-blocked-minimap:
 			Start: 25
 			Length: 1
-
 	mouse5.shp: cursor
 		guard:
 			Start: 0
@@ -158,7 +156,6 @@ Cursors:
 		guard-minimap:
 			Start: 8
 			Length: 8
-
 	mouse6.shp: cursor
 		goldwrench:
 			Start: 0
@@ -190,7 +187,6 @@ Cursors:
 		enter-blocked-minimap:
 			Start: 17
 			Length: 1
-
 	mouse7.shp: cursor
 		attackoutsiderange:
 			Start: 0

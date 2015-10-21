@@ -130,3 +130,4 @@ Debris4:
 	Warhead@3Eff: CreateEffect
 		Explosion: large_explosion
 		ImpactSound: EXPLLG5.WAV
+

@@ -671,9 +671,9 @@ Rules:
 			PaticleSize: 1, 3
 			ScatterDirection: -1, 1
 			Gravity: 1.00, 2.00
-			SwingOffset:  1.0, 1.5
-			SwingSpeed: 0.001, 0.025 
-			SwingAmplitude:  1.0, 1.5
+			SwingOffset: 1.0, 1.5
+			SwingSpeed: 0.001, 0.025
+			SwingAmplitude: 1.0, 1.5
 			ParticleColors: 255,236,236,236, 255,228,228,228, 255,208,208,208, 255,188,188,188
 			LineTailAlphaValue: 0
 		GlobalLightingPaletteEffect:

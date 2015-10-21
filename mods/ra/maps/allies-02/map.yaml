@@ -32,8 +32,8 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5700
 	ConfigurableStartingUnits: False
-	ShortGame: False
 	Difficulties: Easy, Normal, Hard, Real tough guy
+	ShortGame: False
 
 Players:
 	PlayerReference@USSR:
