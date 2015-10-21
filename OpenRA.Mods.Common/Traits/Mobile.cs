@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			foreach (var otherActor in world.ActorMap.GetUnitsAt(cell))
+			foreach (var otherActor in world.ActorMap.GetActorsAt(cell))
 				if (IsBlockedBy(self, otherActor, ignoreActor, check))
 					return false;
 
@@ -283,13 +283,13 @@ namespace OpenRA.Mods.Common.Traits
 				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check);
 
 				if (!SharesCell)
-					return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
+					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
 
 				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
 			}
 
 			if (!SharesCell)
-				return world.ActorMap.AnyUnitsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
+				return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
 
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
@@ -581,7 +581,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.CenterPosition.Z != 0)
 				return;
 
-			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
+			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.WarnCrush(self);
@@ -593,7 +593,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var crushables = self.World.ActorMap.GetUnitsAt(ToCell).Where(a => a != self)
+			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
 				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
 			foreach (var crushable in crushables)
 				crushable.OnCrush(self);
@@ -664,7 +664,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetUnitsAt(c)
+					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
 						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);

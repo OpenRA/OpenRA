@@ -110,12 +110,12 @@ namespace OpenRA.Mods.Common
 
 		public static void NotifyBlocker(this Actor self, CPos position)
 		{
-			NotifyBlocker(self, self.World.ActorMap.GetUnitsAt(position));
+			NotifyBlocker(self, self.World.ActorMap.GetActorsAt(position));
 		}
 
 		public static void NotifyBlocker(this Actor self, IEnumerable<CPos> positions)
 		{
-			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetUnitsAt(p)));
+			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetActorsAt(p)));
 		}
 
 		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,

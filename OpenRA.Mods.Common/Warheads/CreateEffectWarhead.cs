@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public static bool GetDirectHit(World world, CPos cell, WPos pos)
 		{
-			foreach (var unit in world.ActorMap.GetUnitsAt(cell))
+			foreach (var unit in world.ActorMap.GetActorsAt(cell))
 			{
 				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)

@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
-				units.AddRange(Self.World.ActorMap.GetUnitsAt(t));
+				units.AddRange(Self.World.ActorMap.GetActorsAt(t));
 
 			return units.Distinct().Where(a =>
 			{

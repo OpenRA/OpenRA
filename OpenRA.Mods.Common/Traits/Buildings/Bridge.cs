@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 		void KillUnitsOnBridge()
 		{
 			foreach (var c in footprint.Keys)
-				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
+				foreach (var a in self.World.ActorMap.GetActorsAt(c))
 					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
 						a.Kill(self);
 		}

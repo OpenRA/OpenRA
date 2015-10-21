@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (buildingAtPos == null)
 					{
-						var unitsAtPos = world.ActorMap.GetUnitsAt(pos).Where(a => a.IsInWorld
+						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
 							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
 

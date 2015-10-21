@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length != 0)
 				return null; // not on the ground.
 
-			return self.World.ActorMap.GetUnitsAt(self.Location)
+			return self.World.ActorMap.GetActorsAt(self.Location)
 				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
 		}
 
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.World.Map.Contains(cell))
 				return false;
 
-			if (self.World.ActorMap.AnyUnitsAt(cell))
+			if (self.World.ActorMap.AnyActorsAt(cell))
 				return false;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
-			if (target.Positions.Any(p => self.World.ActorMap.GetUnitsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
+			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
 				return false;
 
 			var res = target.Actor.TraitOrDefault<Reservable>();

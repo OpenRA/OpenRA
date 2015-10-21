@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnLanded()
 		{
 			// Check whether the crate landed on anything
-			var landedOn = self.World.ActorMap.GetUnitsAt(self.Location)
+			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)
 				.Where(a => a != self);
 
 			if (!landedOn.Any())
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTransientActors)
 				return SubCell.FullCell;
 
-			return !self.World.ActorMap.GetUnitsAt(cell)
+			return !self.World.ActorMap.GetActorsAt(cell)
 				.Where(x => x != ignoreActor)
 				.Any() ? SubCell.FullCell : SubCell.Invalid;
 		}

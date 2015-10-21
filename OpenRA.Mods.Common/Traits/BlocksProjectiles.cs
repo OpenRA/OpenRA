@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static bool AnyBlockingActorAt(World world, WPos pos)
 		{
-			return world.ActorMap.GetUnitsAt(world.Map.CellContaining(pos))
+			return world.ActorMap.GetActorsAt(world.Map.CellContaining(pos))
 				.Any(a => a.TraitsImplementing<BlocksProjectiles>().Any(Exts.IsTraitEnabled));
 		}
 	}
