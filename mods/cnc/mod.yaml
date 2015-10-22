@@ -91,9 +91,11 @@ Assemblies:
 
 ChromeLayout:
 	./mods/cnc/chrome/mainmenu.yaml
-	./mods/cnc/chrome/serverbrowser.yaml
-	./mods/cnc/chrome/createserver.yaml
-	./mods/cnc/chrome/directconnect.yaml
+	./mods/cnc/chrome/multiplayer.yaml
+	./mods/cnc/chrome/multiplayer-browser.yaml
+	./mods/cnc/chrome/multiplayer-createserver.yaml
+	./mods/cnc/chrome/multiplayer-directconnect.yaml
+	./mods/cnc/chrome/multiplayer-globalchat.yaml
 	./mods/cnc/chrome/lobby.yaml
 	./mods/cnc/chrome/lobby-mappreview.yaml
 	./mods/cnc/chrome/lobby-players.yaml
@@ -123,7 +125,6 @@ ChromeLayout:
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 	./mods/cnc/chrome/editor.yaml
-	./mods/cnc/chrome/globalchat.yaml
 
 Voices:
 	./mods/cnc/audio/voices.yaml

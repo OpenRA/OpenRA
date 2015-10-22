@@ -33,8 +33,8 @@ Metrics:
 	FactionSuffix-soviet: soviet
 	FactionSuffix-russia: soviet
 	FactionSuffix-ukraine: soviet
+	IncompatibleVersionColor: 211,211,211
 	IncompatibleGameColor: 169,169,169
-	CantJoinGameColor: 211,211,211
 	ProtectedGameColor: 255,0,0
 	IncompatibleProtectedGameColor: 178,34,34
 	WaitingGameColor: 0,255,0

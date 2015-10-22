@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var settings = Game.Settings;
 			preview = Game.ModData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
 
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
 			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
@@ -132,7 +131,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 			}
 
-			Ui.CloseWindow();
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}

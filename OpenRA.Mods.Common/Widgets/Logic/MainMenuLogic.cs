@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () =>
 			{
 				menuType = MenuType.None;
-				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
+				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 				{
 					{ "onStart", RemoveShellmapUI },
 					{ "onExit", () => menuType = MenuType.Main },
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.OnRemoteDirectConnect += (host, port) =>
 			{
 				menuType = MenuType.None;
-				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
+				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 				{
 					{ "onStart", RemoveShellmapUI },
 					{ "onExit", () => menuType = MenuType.Main },
