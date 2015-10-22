@@ -131,26 +131,27 @@ namespace OpenRA.Mods.Common.Graphics
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
 				var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
-				sprites = cache[src].Select(
+				Sprite[] cacheSprites = cache[src];
+				sprites = cacheSprites.Select(
 					s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
 
 				if (FlipX != null)
 				{
-					spritesFlipX = cache[src].Select(
+					spritesFlipX = cacheSprites.Select(
 						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Right, s.Bounds.Top, s.Bounds.Left, s.Bounds.Bottom),
 							s.Offset + offset, s.Channel, blendMode)).ToArray();
 				}
 
 				if (FlipY != null)
 				{
-					spritesFlipY = cache[src].Select(
+					spritesFlipY = cacheSprites.Select(
 						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Left, s.Bounds.Bottom, s.Bounds.Right, s.Bounds.Top),
 							s.Offset + offset, s.Channel, blendMode)).ToArray();
 				}
 
 				if (FlipX != null && FlipY != null)
 				{
-					spritesFlipXY = cache[src].Select(
+					spritesFlipXY = cacheSprites.Select(
 						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Right, s.Bounds.Bottom, s.Bounds.Left, s.Bounds.Top),
 							s.Offset + offset, s.Channel, blendMode)).ToArray();
 				}
