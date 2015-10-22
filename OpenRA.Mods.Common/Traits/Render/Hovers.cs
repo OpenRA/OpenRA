@@ -18,20 +18,21 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Changes the visual Z position periodically.")]
-	public class HoversInfo : ITraitInfo, Requires<IMoveInfo>
+	public class HoversInfo : UpgradableTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Amount of Z axis changes in world units.")]
 		public readonly int OffsetModifier = -43;
 
-		public object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
 	}
 
-	public class Hovers : IRenderModifier
+	public class Hovers : UpgradableTrait<HoversInfo>, IRenderModifier
 	{
 		readonly HoversInfo info;
 		readonly bool aircraft;
 
 		public Hovers(HoversInfo info, Actor self)
+			: base(info)
 		{
 			this.info = info;
 			aircraft = self.Info.HasTraitInfo<AircraftInfo>();
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (self.World.Paused)
+			if (self.World.Paused || IsTraitDisabled)
 				return r;
 
 			var visualOffset = !aircraft || self.CenterPosition.Z > 0 ? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
