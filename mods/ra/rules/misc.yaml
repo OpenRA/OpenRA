@@ -144,15 +144,9 @@ camera.spyplane:
 		CloakTypes: Cloak, Hijacker
 
 SONAR:
-	AlwaysVisible:
-	Immobile:
-		OccupiesSpace: false
-	Health:
-		HP: 1000
-	ProximityCaptor:
-		Types: Sonar
+	Inherits: camera.spyplane
+	-RevealsShroud:
 	DetectCloaked:
-		Range: 10c0
 		CloakTypes: Underwater
 
 FLARE:
