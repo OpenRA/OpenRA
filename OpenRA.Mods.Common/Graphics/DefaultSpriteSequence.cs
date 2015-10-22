@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -65,6 +66,9 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		readonly Sprite[] sprites;
+		readonly Sprite[] spritesFlipX;
+		readonly Sprite[] spritesFlipY;
+		readonly Sprite[] spritesFlipXY;
 		readonly bool reverseFacings, transpose;
 
 		protected readonly ISpriteSequenceLoader Loader;
@@ -79,6 +83,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ShadowStart { get; private set; }
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
+		public int[] FlipX { get; private set; }
+		public int[] FlipY { get; private set; }
 
 		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
@@ -109,6 +115,8 @@ namespace OpenRA.Mods.Common.Graphics
 				Tick = LoadField<int>(d, "Tick", 40);
 				transpose = LoadField<bool>(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
+				FlipX = LoadField<int[]>(d, "FlipX", null);
+				FlipY = LoadField<int[]>(d, "FlipY", null);
 
 				Facings = LoadField<int>(d, "Facings", 1);
 				if (Facings < 0)
@@ -155,6 +163,27 @@ namespace OpenRA.Mods.Common.Graphics
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
 						s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
+				}
+
+				if (FlipX != null)
+				{
+					spritesFlipX = cache[src].Select(
+						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Right, s.Bounds.Top, s.Bounds.Left, s.Bounds.Bottom),
+							s.Offset + offset, s.Channel, blendMode)).ToArray();
+				}
+
+				if (FlipY != null)
+				{
+					spritesFlipY = cache[src].Select(
+						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Left, s.Bounds.Bottom, s.Bounds.Right, s.Bounds.Top),
+							s.Offset + offset, s.Channel, blendMode)).ToArray();
+				}
+
+				if (FlipX != null && FlipY != null)
+				{
+					spritesFlipXY = cache[src].Select(
+						s => new Sprite(s.Sheet, Rectangle.FromLTRB(s.Bounds.Right, s.Bounds.Bottom, s.Bounds.Left, s.Bounds.Top),
+							s.Offset + offset, s.Channel, blendMode)).ToArray();
 				}
 
 				MiniYaml length;
@@ -221,10 +250,20 @@ namespace OpenRA.Mods.Common.Graphics
 			var i = transpose ? (frame % Length) * Facings + f :
 				(f * Stride) + (frame % Length);
 
-			if (Frames != null)
-				return sprites[Frames[i]];
+			Sprite[] spritesSource = sprites;
+			bool isFlipX = FlipX != null && FlipX[i] == -1;
+			bool isFlipY = FlipY != null && FlipY[i] == -1;
+			if (isFlipX && isFlipY)
+				spritesSource = spritesFlipXY;
+			else if (isFlipY)
+				spritesSource = spritesFlipY;
+			else if (isFlipX)
+				spritesSource = spritesFlipX;
 
-			return sprites[start + i];
+			if (Frames != null)
+				return spritesSource[Frames[i]];
+
+			return spritesSource[start + i];
 		}
 	}
 }
