@@ -133,14 +133,15 @@ CAMERA:
 		Image: camera
 
 camera.paradrop:
-	AlwaysVisible:
-	Immobile:
-		OccupiesSpace: false
-	Health:
-		HP: 1000
+	Inherits: CAMERA
 	RevealsShroud:
 		Range: 6c0
-		Type: CenterPosition
+
+camera.spyplane:
+	Inherits: CAMERA
+	DetectCloaked:
+		Range: 10c0
+		CloakTypes: Cloak, Hijacker
 
 SONAR:
 	AlwaysVisible:
