@@ -109,7 +109,8 @@
 		IsPlayerPalette: true
 
 ^Building:
-	Inherits: ^BasicBuilding
+	Inherits@1: ^BasicBuilding
+	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
 	Capturable:
 	RepairableBuilding:
@@ -331,7 +332,8 @@
 		CrushedPaletteIsPlayerPalette: true
 
 ^Cyborg:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^EmpDisable
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
