@@ -146,10 +146,10 @@ Cursors:
 		goldwrench-blocked: #TODO
 			Start: 213
 			Length: 1
-		nuke:
+		ioncannon:
 			Start: 279
 			Length: 20
-		ioncannon:
+		nuke:
 			Start: 319
 			Length: 9
 		sell:
