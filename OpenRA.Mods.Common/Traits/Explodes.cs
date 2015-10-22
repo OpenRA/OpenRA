@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ITraitInfo, IRulesetLoaded
+	public class ExplodesInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
@@ -32,13 +32,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance that this actor will explode at all.")]
 		public readonly int Chance = 100;
 
+		[Desc("Health level at which actor will explode.")]
+		public readonly int DamageThreshold = 0;
+
 		[Desc("DeathType(s) to apply upon explosion.")]
 		public readonly HashSet<string> DeathType = new HashSet<string>();
 
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
-		public object Create(ActorInitializer init) { return new Explodes(this); }
+		public object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			WeaponInfo = string.IsNullOrEmpty(Weapon) ? null : rules.Weapons[Weapon.ToLowerInvariant()];
@@ -46,11 +49,17 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Explodes : INotifyKilled
+	public class Explodes : INotifyKilled, INotifyDamage
 	{
 		readonly ExplodesInfo info;
 
-		public Explodes(ExplodesInfo info) { this.info = info; }
+		readonly Health health;
+
+		public Explodes(ExplodesInfo info, Actor self)
+		{
+			this.info = info;
+			health = self.Trait<Health>();
+		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
@@ -80,6 +89,15 @@ namespace OpenRA.Mods.Common.Traits
 			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
 			var useFullExplosion = self.World.SharedRandom.Next(100) <= info.LoadedChance;
 			return (shouldExplode && useFullExplosion) ? info.WeaponInfo : info.EmptyWeaponInfo;
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (info.DamageThreshold == 0)
+				return;
+
+			if (health.HP * 100 < info.DamageThreshold * health.MaxHP)
+				self.World.AddFrameEndTask(w => self.Kill(e.Attacker));
 		}
 	}
 }
