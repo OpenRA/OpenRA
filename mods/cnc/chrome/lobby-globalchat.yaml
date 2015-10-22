@@ -20,8 +20,8 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 							Font: TinyBold
 							Align: Center
 				ScrollPanel@HISTORY_PANEL:
-					Width: 582
 					Y: 19
+					Width: 582
 					Height: PARENT_BOTTOM - 19
 					ItemSpacing: 5
 					Children:

@@ -8,7 +8,7 @@ Container@GLOBALCHAT_PANEL:
 			Height: PARENT_BOTTOM
 			Children:
 				Background@TOPIC:
-					Width: 565
+					Width: 582
 					Height: 20
 					Background: dialog2
 					Children:
@@ -21,7 +21,7 @@ Container@GLOBALCHAT_PANEL:
 							Align: Center
 				ScrollPanel@HISTORY_PANEL:
 					Y: 20
-					Width: 565
+					Width: 582
 					Height: PARENT_BOTTOM - 50
 					ItemSpacing: 5
 					Children:
@@ -32,11 +32,19 @@ Container@GLOBALCHAT_PANEL:
 							WordWrap: True
 				TextField@CHAT_TEXTFIELD:
 					Y: PARENT_BOTTOM - 25
-					Width: 565
+					Width: 582
 					Height: 25
+					LeftMargin: 60
+					Children:
+						Label@LABEL_CHATTYPE:
+							Y: 0-1
+							Width: 55
+							Height: 25
+							Align: Right
+							Text: Global:
 				ScrollPanel@NICKNAME_PANEL:
-					X: 570
-					Width: 130
+					X: PARENT_RIGHT-WIDTH
+					Width: 174
 					Height: PARENT_BOTTOM - 30
 					Children:
 						Container@NICKNAME_TEMPLATE:
@@ -53,11 +61,11 @@ Container@GLOBALCHAT_PANEL:
 									Width: PARENT_RIGHT-15
 									Height: 20
 				Button@DISCONNECT_BUTTON:
-					X: 570
+					X: PARENT_RIGHT-WIDTH
 					Y: PARENT_BOTTOM - 25
-					Width: 130
+					Width: 174
 					Height: 25
-					Text: Disconnect
+					Text: Leave Chat
 					Font: Bold
 		Background@GLOBALCHAT_CONNECT_PANEL:
 			Width: PARENT_RIGHT
@@ -84,6 +92,7 @@ Container@GLOBALCHAT_PANEL:
 					Y: PARENT_BOTTOM / 4 + 75
 					Height: 20
 					Width: 180
+					Font: Regular
 					Text: Connect Automatically
 				Button@CONNECT_BUTTON:
 					X: 430
