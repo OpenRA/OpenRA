@@ -500,6 +500,7 @@ starport:
 
 wall:
 	Inherits@1: ^SpriteActor
+	CombatDebugOverlay:
 	HiddenUnderShroud:
 	Buildable:
 		Queue: Building

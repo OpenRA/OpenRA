@@ -545,6 +545,7 @@
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	CombatDebugOverlay:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
