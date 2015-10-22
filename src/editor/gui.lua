@@ -465,6 +465,7 @@ local function createBottomNotebook(frame)
           { ID_SELECTALL, TR("Select &All") },
           { },
           { ID_SELECTCONSOLECOMMAND, TR("&Select Command") },
+          { ID_CLEARCONSOLE, TR("C&lear Console Window") },
         }
       menupos = event:GetPosition()
       PackageEventHandle("onMenuConsole", menu, shellbox, event)
@@ -473,6 +474,8 @@ local function createBottomNotebook(frame)
 
   shellbox:Connect(ID_SELECTCONSOLECOMMAND, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ConsoleSelectCommand(menupos) end)
+  shellbox:Connect(ID_CLEARCONSOLE, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) ConsoleClear() end)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)

@@ -410,6 +410,11 @@ local function displayShellIntro()
   DisplayShellPrompt('')
 end
 
+function ConsoleClear()
+  out:ClearAll()
+  displayShellIntro()
+end
+
 out:Connect(wx.wxEVT_KEY_DOWN,
   function (event)
     -- this loop is only needed to allow to get to the end of function easily
@@ -490,8 +495,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         local promptText = getPromptText()
         if #promptText == 0 then return end -- nothing to execute, exit
         if promptText == 'clear' then
-          out:ClearAll()
-          displayShellIntro()
+          ConsoleClear()
         else
           DisplayShellDirect('\n')
           executeShellCode(promptText)
