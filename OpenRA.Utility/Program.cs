@@ -66,11 +66,12 @@ namespace OpenRA.Utility
 
 			try
 			{
-				if (!actions.ContainsKey(args[0]))
-					throw new NoSuchCommandException(args[0]);
+				var command = args[0];
+				if (!actions.ContainsKey(command))
+					throw new NoSuchCommandException(command);
 
-				var action = actions[args[0]].Key;
-				var validateActionArgs = actions[args[0]].Value;
+				var action = actions[command].Key;
+				var validateActionArgs = actions[command].Value;
 
 				if (validateActionArgs.Invoke(args))
 				{
@@ -78,8 +79,8 @@ namespace OpenRA.Utility
 				}
 				else
 				{
-					Console.WriteLine("Invalid arguments for '{0}'", args[0]);
-					GetActionUsage(args[0], action);
+					Console.WriteLine("Invalid arguments for '{0}'", command);
+					GetActionUsage(command, action);
 				}
 			}
 			catch (Exception e)
