@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
@@ -73,7 +73,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
