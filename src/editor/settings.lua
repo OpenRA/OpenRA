@@ -457,9 +457,8 @@ function SettingsRestoreView()
     local toolbar = frame.uimgr:GetPane("toolbar")
     local besth = toolbar:IsOk() and tonumber(uimgr:SavePaneInfo(toolbar):match("besth=([^;]+)"))
     uimgr:LoadPerspective(layout, false)
-    if toolbar:IsOk() then -- fix bestw and besth values
-      toolbar:BestSize(wx.wxSystemSettings.GetMetric(wx.wxSYS_SCREEN_X), besth or -1)
-    end
+    local screenw = frame:GetClientSize():GetWidth()
+    if toolbar:IsOk() and screenw > 0 then toolbar:BestSize(screenw, besth or -1) end
 
     -- check if debugging panes are not mentioned and float them
     for _, name in pairs({"stackpanel", "watchpanel", "searchpanel"}) do
