@@ -506,6 +506,9 @@
 	-GivesBuildableArea:
 	Health:
 		HP: 100
+	Explodes:
+		Weapon: Demolish
+		DamageThreshold: 90
 	RevealsShroud:
 		Range: 4c0
 	Fake:
