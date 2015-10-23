@@ -58,8 +58,12 @@ end
 
 package {
   onAppLoad = function()
+    local start = G.TimeGet()
     G.setfenv(runtests, env)
-    G.print = G.DisplayOutputLn
+    G.print = function(s, ...)
+      G.DisplayOutput(s, ...)
+      G.DisplayOutputLn(s:match("ok %d") and (" -- %.3fs"):format(G.TimeGet()-start) or "")
+    end
     runtests()
   end
 }
