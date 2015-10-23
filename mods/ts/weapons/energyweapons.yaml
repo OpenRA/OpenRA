@@ -124,8 +124,7 @@ Proton:
 		ImpactSound: ssplash3.aud
 		ValidImpactTypes: Water
 
-# Obelisk laser
-LaserFire:
+ObeliskLaserFire:
 	ReloadDelay: 120
 	Range: 10c512
 	Charges: true
@@ -137,8 +136,7 @@ LaserFire:
 		Damage: 250
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 
-# Laser turret
-LaserFire2:
+TurretLaserFire:
 	ReloadDelay: 40
 	Range: 5c512
 	Report: LASTUR1.AUD
