@@ -446,7 +446,7 @@ function SettingsRestoreView()
   local uimgr = frame.uimgr
   
   local layoutcur = uimgr:SavePerspective()
-  local layout = settingsReadSafe(settings,layoutlabel.UIMANAGER,layoutcur)
+  local layout = settingsReadSafe(settings,layoutlabel.UIMANAGER,"")
   if (layout ~= layoutcur) then
     -- save the current toolbar besth and re-apply after perspective is loaded
     -- bestw and besth has two separate issues:
@@ -456,7 +456,10 @@ function SettingsRestoreView()
     -- (2) besth may be wrong after icon size changes.
     local toolbar = frame.uimgr:GetPane("toolbar")
     local besth = toolbar:IsOk() and tonumber(uimgr:SavePaneInfo(toolbar):match("besth=([^;]+)"))
-    uimgr:LoadPerspective(layout, false)
+
+    -- reload the perspective if the saved one is not empty as it's different from the default
+    if #layout > 0 then uimgr:LoadPerspective(layout, false) end
+
     local screenw = frame:GetClientSize():GetWidth()
     if toolbar:IsOk() and screenw > 0 then toolbar:BestSize(screenw, besth or -1) end
 
