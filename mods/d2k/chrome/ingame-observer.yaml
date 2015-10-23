@@ -18,6 +18,25 @@ Container@OBSERVER_WIDGETS:
 			Text: Statistics (F1)
 			Font: Bold
 			Key: f1
+		Container@GAME_TIMER_BLOCK:
+			Logic: GameTimerLogic
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Width: 100
+			Height: 55
+			Children:
+				Label@GAME_TIMER:
+					Width: PARENT_RIGHT
+					Height: 30
+					Align: Center
+					Font: Title
+					Contrast: true
+				Label@GAME_TIMER_STATUS:
+					Y: 32
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Font: Bold
+					Contrast: true
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT-255
 			Y: 5
