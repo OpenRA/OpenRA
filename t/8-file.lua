@@ -33,20 +33,20 @@ ok(not FileRead(fcopy), "File deleted successfully.")
 
 local exlist = ide.config.excludelist
 local path = 'zbstudio/res/16'
-local bins0 = FileSysGetRecursive(path, true, '*.*')
+local bins0 = FileSysGetRecursive(path, true, '*')
 local bins1 = FileSysGetRecursive(path, true, '*.png')
 ok(#bins0 > 1, "'*.*' mask retrieves binary files.")
 
 ide.config.excludelist = ".png/"
-local bins = FileSysGetRecursive(path, true, '*.*')
+local bins = FileSysGetRecursive(path, true, '*')
 is(#bins, #bins0, "Excluding '.png/' still returns 'png' files.")
 
 ide.config.excludelist = ".png"
-bins = FileSysGetRecursive(path, true, '*.*')
+bins = FileSysGetRecursive(path, true, '*')
 is(#bins, 1, "Excluding '.png' skips 'png' files.")
 
 ide.config.excludelist = "*.png"
-bins = FileSysGetRecursive(path, true, '*.*')
+bins = FileSysGetRecursive(path, true, '*')
 is(#bins, 1, "Excluding '*.png' skips 'png' files.")
 
 ide.config.excludelist = "FIND*.png"

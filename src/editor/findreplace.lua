@@ -622,7 +622,7 @@ function findReplace:RunInFiles(replace)
   or not showaseditor then ctrl:SetFocus() end
 
   local startdir, mask = self:GetScope()
-  local completed = self:ProcInFiles(startdir, mask or "*.*", flags.SubDirs)
+  local completed = self:ProcInFiles(startdir, mask or "*", flags.SubDirs)
 
   -- reseditor may already be closed, so check if it's valid first
   if ide:IsValidCtrl(reseditor) then
