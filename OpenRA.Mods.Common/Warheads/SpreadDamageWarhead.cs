@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Warheads
 			if (Range != null)
 			{
 				if (Range.Length != 1 && Range.Length != Falloff.Length)
-					throw new InvalidOperationException("Number of range values must be 1 or equal to the number of Falloff values.");
+					throw new YamlException("Number of range values must be 1 or equal to the number of Falloff values.");
 
 				for (var i = 0; i < Range.Length - 1; i++)
 					if (Range[i] > Range[i + 1])
-						throw new InvalidOperationException("Range values must be specified in an increasing order.");
+						throw new YamlException("Range values must be specified in an increasing order.");
 			}
 			else
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
