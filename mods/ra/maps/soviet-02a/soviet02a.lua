@@ -91,9 +91,9 @@ WorldLoaded = function()
 
 			-- Don't "shoot" at the barrels if there is noone to shoot
 			if not FleeingUnits[1].IsDead then
-				FleeingUnits[1].Attack(Barrel)
+				FleeingUnits[1].Attack(Barrel, true, true)
 			elseif not FleeingUnits[2].IsDead then
-				FleeingUnits[2].Attack(Barrel)
+				FleeingUnits[2].Attack(Barrel, true, true)
 			end
 		end
 	end)
