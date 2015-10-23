@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class PortableChronoInfo : ITraitInfo
 	{
-		[Desc("Cooldown in seconds until the unit can teleport.")]
-		public readonly int ChargeTime = 20;
+		[Desc("Cooldown in ticks until the unit can teleport.")]
+		public readonly int ChargeDelay = 500;
 
 		[Desc("Can the unit teleport only a certain distance?")]
 		public readonly bool HasDistanceLimit = true;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void ResetChargeTime()
 		{
-			chargeTick = 25 * Info.ChargeTime;
+			chargeTick = Info.ChargeDelay;
 		}
 
 		public bool CanTeleport
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public float GetValue()
 		{
-			return (float)((chargeTick - (25 * Info.ChargeTime)) * (Info.ChargeTime * -0.0001));
+			return (float)(Info.ChargeDelay - chargeTick) / Info.ChargeDelay;
 		}
 
 		public Color GetColor() { return Color.Magenta; }
