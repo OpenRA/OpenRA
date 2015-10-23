@@ -14,7 +14,7 @@ BUILD_FLAGS="-O2 -shared -s -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
 
 # paths configuration
 WXWIDGETS_BASENAME="wxWidgets"
-WXWIDGETS_URL="http://svn.wxwidgets.org/svn/wx/wxWidgets/trunk"
+WXWIDGETS_URL="https://github.com/wxWidgets/wxWidgets.git"
 
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"
@@ -163,8 +163,7 @@ fi
 
 # build wxWidgets
 if [ $BUILD_WXWIDGETS ]; then
-  svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
-  svn revert -R "$WXWIDGETS_BASENAME"
+  git clone "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to get wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --enable-compat28 \

@@ -24,7 +24,7 @@ BUILD_FLAGS="-O2 -arch x86_64 -dynamiclib -undefined dynamic_lookup $MACOSX_FLAG
 
 # paths configuration
 WXWIDGETS_BASENAME="wxWidgets"
-WXWIDGETS_URL="http://svn.wxwidgets.org/svn/wx/wxWidgets/trunk"
+WXWIDGETS_URL="https://github.com/wxWidgets/wxWidgets.git"
 
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"
@@ -142,7 +142,7 @@ fi
 
 # build wxWidgets
 if [ $BUILD_WXWIDGETS ]; then
-  svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
+  git clone "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to get wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
   MINSDK=""
   if [ -d $MACOSX_SDK_PATH ]; then
