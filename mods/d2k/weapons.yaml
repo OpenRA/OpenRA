@@ -25,7 +25,6 @@ Bazooka:
 	ReloadDelay: 40
 	Range: 3c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
 		Inaccuracy: 256
@@ -39,7 +38,6 @@ Bazooka:
 		Spread: 192
 		Falloff: 100, 50, 25, 0
 		Damage: 300
-		ValidTargets: Ground
 		Versus:
 			none: 8
 			wall: 75
@@ -84,14 +82,12 @@ M_LMG:
 	ReloadDelay: 40
 	Range: 2c512
 	Report: MGUN2.WAV
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
 		Damage: 125
-		ValidTargets: Ground
 		Versus:
 			wall: 10
 			building: 25
@@ -132,14 +128,12 @@ Fremen_L:
 	Delay: 5
 	Range: 3c512
 	Report: BAZOOK2.WAV
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
 		Damage: 250
-		ValidTargets: Ground
 		Versus:
 			none: 25
 			building: 50
@@ -214,7 +208,6 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Report: ROCKET1.WAV
-	ValidTargets: Ground
 	Projectile: Missile
 		Inaccuracy: 256
 		Image: RPG
@@ -228,7 +221,6 @@ Rocket:
 		Spread: 160
 		Falloff: 100, 50, 25, 0
 		Damage: 250
-		ValidTargets: Ground
 		Versus:
 			none: 25
 			building: 50
