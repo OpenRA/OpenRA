@@ -818,7 +818,7 @@ ATWR:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 255
-		Offset: 128,128,-85
+		Offset: 128,128,0
 	Armament@PRIMARY:
 		Weapon: TowerMissle
 		LocalOffset: 256,128,0, 256,-128,0
