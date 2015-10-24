@@ -60,7 +60,7 @@ Players:
 		Faction: allies
 		ColorRamp: 161,134,236
 		Allies: England, Soviet
-		Enemies: USSR
+		Enemies: USSR, Creeps
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
