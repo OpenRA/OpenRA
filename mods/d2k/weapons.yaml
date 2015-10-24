@@ -30,7 +30,7 @@ Bazooka:
 	ValidTargets: Ground
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
-		Inaccuracy: 64
+		Inaccuracy: 256
 		Image: RPG
 		HorizontalRateOfTurn: 1
 		TrailImage: bazooka_trail2
@@ -234,7 +234,7 @@ Rocket:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
-		Inaccuracy: 64
+		Inaccuracy: 256
 		Image: RPG
 		HorizontalRateOfTurn: 0
 		TrailImage: bazooka_trail2
