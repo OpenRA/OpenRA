@@ -1121,7 +1121,7 @@ AFLD:
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
-		CameraActor: camera
+		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
 		UnitType: u2
 		QuantizedFacings: 8

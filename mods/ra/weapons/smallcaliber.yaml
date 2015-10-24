@@ -297,7 +297,7 @@ SilencedPPK:
 
 FLAK-23:
 	ReloadDelay: 10
-	Range: 8c0
+	Range: 6c0
 	Report: AACANON3.AUD
 	ValidTargets: Air, Ground, Water
 	Projectile: Bullet

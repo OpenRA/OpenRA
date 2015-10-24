@@ -39,7 +39,7 @@ DOG:
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5c0
+		CloakTypes: Cloak, Hijacker
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -222,7 +222,7 @@ SPY:
 		UpgradeMinEnabledLevel: 1
 	IgnoresDisguise:
 	DetectCloaked:
-		Range: 5c0
+		CloakTypes: Cloak, Hijacker
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -450,6 +450,14 @@ HIJACKER:
 	WithInfantryBody:
 		-IdleSequences:
 		StandSequences: stand
+	Crushable:
+		WarnProbability: 95
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		UncloakOnMove: true
+		CloakTypes: Cloak, Hijacker
+		IsPlayerPalette: true
 
 SHOK:
 	Inherits: ^Soldier
@@ -527,6 +535,7 @@ SNIPER:
 		UncloakOnMove: true
 		IsPlayerPalette: true
 	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
 		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
