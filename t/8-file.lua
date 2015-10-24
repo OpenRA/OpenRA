@@ -12,13 +12,13 @@ ok(ActivateFile(fullpath..':10'), "Load fullpath/file:line.")
 ok(not ActivateFile(fullpath..'/foo.bar:10'), "Doesn't load non-existent fullpath/file:line.")
 ClosePage() -- close activated file
 
-local luas = FileSysGetRecursive('.', true, '*.lua')
-local more = FileSysGetRecursive('.', true, '*.lua; *.more')
-cmp_ok(#luas, '>', 0, "List of files is returned for '.lua' extension")
-is(#luas, #more, "List of files is returned for '.lua' and '.lua; .more' is the same.")
+local luas = FileSysGetRecursive('t', true, '*.lua')
+local more = FileSysGetRecursive('t', true, '*.lua; *.more')
+cmp_ok(#luas, '>', 0, "List of files is returned for '.lua' extension.")
+is(#luas, #more, "Lists of files returned for '.lua' and '.lua; .more' are the same.")
 
-local luasnodir = FileSysGetRecursive('.', true, '*.lua', {folder = false})
-is(#luas, #luasnodir, "List of files is returned for '.lua' does not include folders.")
+local luasnodir = FileSysGetRecursive('t', true, '*.lua', {folder = false})
+is(#luas, #luasnodir, "List of files returned for '.lua' does not include folders.")
 
 local fcopy = "t/copy.lua!"
 ok(FileCopy("t/test.lua", fcopy), "File copied successfully.")
@@ -26,7 +26,7 @@ local copy = FileRead(fcopy)
 ok(copy, "Copied file exists.")
 ok(copy == FileRead("t/test.lua"), "Copy matches the original.")
 
-local luasmore = FileSysGetRecursive('.', true, '*.lua')
+local luasmore = FileSysGetRecursive('t', true, '*.lua')
 is(#luasmore, #luas, ("Mask '.lua' doesn't match '%s'"):format(fcopy))
 os.remove(fcopy)
 ok(not FileRead(fcopy), "File deleted successfully.")
@@ -58,33 +58,33 @@ bins = FileSysGetRecursive(path, true, 'FIND*.png')
 ok(#bins < #bins1, "Requesting `FIND*.png` filters specific files.")
 
 ide.config.excludelist = ""
-local bina = FileSysGetRecursive('.', true, '*.lua')
+local bina = FileSysGetRecursive('src', true, '*.lua')
 
-ide.config.excludelist = "src"
-bins = FileSysGetRecursive('.', true, '*.lua')
-is(#bins, #bina, "Excluding `src` still returns the content of `src` folder.")
+ide.config.excludelist = "editor"
+bins = FileSysGetRecursive('src', true, '*.lua')
+is(#bins, #bina, "Excluding `editor` still returns the content of `editor` folder.")
 
-ide.config.excludelist = "src/"
-bins = FileSysGetRecursive('.', true, '*.lua')
-ok(#bins < #bina, "Excluding `src/` skips the content of `src` folder.")
+ide.config.excludelist = "editor/"
+bins = FileSysGetRecursive('src', true, '*.lua')
+ok(#bins < #bina, "Excluding `editor/` skips the content of `editor` folder.")
 
-ide.config.excludelist = "src\\"
+ide.config.excludelist = "editor\\"
 local nosrc = #bins
-bins = FileSysGetRecursive('.', true, '*.lua')
-ok(#bins < #bina, "Excluding `src\\` skips the content of `src` folder.")
-is(#bins, nosrc, "Excluding `src\\` and `src/` produce the same result.")
+bins = FileSysGetRecursive('src', true, '*.lua')
+ok(#bins < #bina, "Excluding `editor\\` skips the content of `editor` folder.")
+is(#bins, nosrc, "Excluding `editor\\` and `editor/` produce the same result.")
 
-nosrc = #FileSysGetRecursive('.', true, '*.lua', {folder = false})
-ide.config.excludelist = "src/**.lua"
-bins = FileSysGetRecursive('.', true, '*.lua', {folder = false})
-is(#bins, nosrc, "Excluding `src/**.lua` skips lua files in subfolders.")
+nosrc = #FileSysGetRecursive('src', true, '*.lua', {folder = false})
+ide.config.excludelist = "editor/**.lua"
+bins = FileSysGetRecursive('src', true, '*.lua', {folder = false})
+is(#bins, nosrc, "Excluding `editor/**.lua` skips lua files in subfolders.")
 
 ide.config.excludelist = ""
 local editor = #FileSysGetRecursive('src/editor', true, '*.lua', {folder = false})
 
 ide.config.excludelist = "src/*.lua"
-bins = FileSysGetRecursive('.', true, '*.lua', {folder = false})
-is(#bins, nosrc+editor, "Excluding `src/*.lua` skips lua files only in `src` folder.")
+bins = FileSysGetRecursive('src', true, '*.lua', {folder = false})
+is(#bins, editor, "Excluding `src/*.lua` skips lua files only in `src` folder.")
 
 ide.config.excludelist = exlist
 bins = FileSysGetRecursive(path, true, '*', {skipbinary = true})
