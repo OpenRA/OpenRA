@@ -9,13 +9,11 @@ LMG:
 		Falloff: 100, 50, 25, 0
 		Damage: 125
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -48,8 +46,6 @@ Bazooka:
 			building: 40
 			wood: 45
 			light: 70
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -71,13 +67,11 @@ Fremen_S:
 		Falloff: 100, 50, 25, 0
 		Damage: 125
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -99,13 +93,11 @@ M_LMG:
 		Damage: 125
 		ValidTargets: Ground
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -125,12 +117,9 @@ M_HMG:
 		Damage: 250
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -153,12 +142,9 @@ Fremen_L:
 		ValidTargets: Ground
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -177,13 +163,11 @@ HMG:
 		Falloff: 100, 60, 30, 0
 		Damage: 180
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -202,13 +186,11 @@ HMGo:
 		Falloff: 100, 60, 30, 0
 		Damage: 180
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -249,12 +231,9 @@ Rocket:
 		ValidTargets: Ground
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -285,9 +264,7 @@ Rocket:
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -327,8 +304,6 @@ TowerMissile:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -356,9 +331,7 @@ TowerMissile:
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -385,9 +358,7 @@ TowerMissile:
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -414,9 +385,7 @@ TowerMissile:
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -440,15 +409,10 @@ DevBullet:
 		Damage: 650
 		Versus:
 			none: 50
-			wall: 100
 			building: 75
 			wood: 60
-			light: 100
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 40
-			harvester: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -483,8 +447,6 @@ mtank_pri:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -524,7 +486,6 @@ DeviatorMissile:
 			wood: 20
 			light: 20
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 10
 			harvester: 20
@@ -558,12 +519,9 @@ DeviatorMissile:
 		Damage: 450
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -587,13 +545,9 @@ Sound:
 		Falloff: 100, 100, 0
 		Damage: 500	#80 D2k but damages through all in path
 		Versus:
-			none: 100
 			wall: 50
 			building: 60
-			wood: 100
-			light: 100
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -643,7 +597,6 @@ OrniBomb:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -680,7 +633,6 @@ Atomic:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -701,7 +653,6 @@ CrateNuke:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -723,7 +674,6 @@ CrateExplosion:
 			wood: 50
 			light: 40
 			heavy: 30
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -764,12 +714,9 @@ grenade:
 		Damage: 150
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -792,12 +739,9 @@ GrenDeath:
 		Damage: 150
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -819,8 +763,6 @@ SardDeath:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -850,7 +792,6 @@ SpiceExplosion:
 			wood: 50
 			light: 40
 			heavy: 30
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
