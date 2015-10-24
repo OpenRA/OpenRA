@@ -788,7 +788,7 @@ namespace OpenRA.Mods.Common.Effects
 			// NOTE: High speeds might cause the missile to miss the target or fly through obstacles
 			//       In that case, big moves should probably be decomposed into multiple smaller ones with hit checks
 			var height = world.Map.DistanceAboveTerrain(pos);
-			var shouldExplode = (height.Length <= 0) // Hit the ground
+			var shouldExplode = (height.Length < 0) // Hit the ground
 				|| (relTarDist < info.CloseEnough.Length) // Within range
 				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)) // Hit a wall or other blocking obstacle
