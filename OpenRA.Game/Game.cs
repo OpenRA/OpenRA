@@ -767,7 +767,7 @@ namespace OpenRA
 
 		public static bool IsCurrentWorld(World world)
 		{
-			return OrderManager != null && OrderManager.World == world;
+			return OrderManager != null && OrderManager.World == world && !world.Disposing;
 		}
 	}
 }

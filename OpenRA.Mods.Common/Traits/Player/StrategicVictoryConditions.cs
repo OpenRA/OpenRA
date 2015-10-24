@@ -107,22 +107,22 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
 
-			if (player == player.World.LocalPlayer)
+			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
-				Game.RunAfterDelay(info.NotificationDelay, () =>
-				{
-					if (Game.IsCurrentWorld(player.World))
-						Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Faction.InternalName);
-				});
-			}
+				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Faction.InternalName);
+			});
 		}
 
 		public void OnPlayerWon(Player player)
 		{
 			Game.Debug("{0} is victorious.", player.PlayerName);
 
-			if (player == player.World.LocalPlayer)
-				Game.RunAfterDelay(info.NotificationDelay, () => Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Faction.InternalName));
+			Game.RunAfterDelay(info.NotificationDelay, () =>
+			{
+				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Faction.InternalName);
+			});
 		}
 
 		public void OnObjectiveAdded(Player player, int id) { }
