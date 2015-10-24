@@ -516,7 +516,7 @@ SNIPER:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
-		Prerequisites: ~disabled
+		Prerequisites: dome, ~infantry.france, ~techlevel.low
 	Health:
 		HP: 80
 	Passenger:
