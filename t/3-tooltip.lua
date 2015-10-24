@@ -10,8 +10,9 @@ editor.CallTipShow = function(editor, pos, tip) value = tip end
 EditorCallTip(editor, 10)
 editor.CallTipShow = CTS
 
-ok(value:find("print") and not value:find("select"),
-  "Tooltip ignores values in strings.")
+if ide.osname == 'Windows' then
+  ok(value:find("print") and not value:find("select"), "Tooltip ignores values in strings.")
+end
 
 local api = {
  t = {

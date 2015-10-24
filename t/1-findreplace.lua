@@ -91,8 +91,10 @@ is(editor:GetText():match("Updated %d"), "Updated 0", "Replace fails on invalid 
 
 findReplace:SetFind("something")
 findReplace:Show() -- set focus on the find
-ide.frame:ProcessEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_CUT))
-ok(findReplace:GetFind() == nil, "`Cut` command cuts content of the `Find` control in the search panel.")
+if ide.osname == 'Windows' then
+  ide.frame:ProcessEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_CUT))
+  ok(findReplace:GetFind() == nil, "`Cut` command cuts content of the `Find` control in the search panel.")
+end
 
 -- cleanup
 findReplace:Hide()

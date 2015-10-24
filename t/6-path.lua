@@ -10,19 +10,21 @@ ide.test.setLuaPaths(mainpath, 'Windows')
 ok(os.getenv('LUA_PATH'), "LUA_PATH is set.")
 ok(os.getenv('LUA_CPATH'), "LUA_CPATH is set.")
 
-ok(not (os.getenv('LUA_PATH') or ""):find(';;'),
-  "No ;; is added when LUA_PATH is specified.")
-ok(not (os.getenv('LUA_CPATH') or ""):find(';;'),
-  "No ;; is added when LUA_CPATH is specified.")
+-- these are Windows only tests, as os.getenv doesn't get update values after wxSetEnv
+if ide.osname == 'Windows' then
+  ok(not (os.getenv('LUA_PATH') or ""):find(';;'), "No ;; is added when LUA_PATH is specified.")
+  ok(not (os.getenv('LUA_CPATH') or ""):find(';;'), "No ;; is added when LUA_CPATH is specified.")
+end
 
 -- LUA_(C)PATH is not specified, ;; is added at the beginning
 wx.wxSetEnv('LUA_PATH', '')
 wx.wxSetEnv('LUA_CPATH', '')
 ide.test.setLuaPaths(mainpath, 'Windows')
-ok((os.getenv('LUA_PATH') or ""):find(';;'),
-  ";; is added when LUA_PATH is not specified.")
-ok((os.getenv('LUA_CPATH') or ""):find(';;'),
-  ";; is added when LUA_CPATH is not specified.")
+
+if ide.osname == 'Windows' then
+  ok((os.getenv('LUA_PATH') or ""):find(';;'), ";; is added when LUA_PATH is not specified.")
+  ok((os.getenv('LUA_CPATH') or ""):find(';;'), ";; is added when LUA_CPATH is not specified.")
+end
 
 -- ide.osclibs are added
 ok((os.getenv('LUA_CPATH') or ""):find(ide.osclibs, 1, true),
