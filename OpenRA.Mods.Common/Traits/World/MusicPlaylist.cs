@@ -168,6 +168,14 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayMusicThen(music, onComplete);
 		}
 
+		public void SetBackgroundMusic(MusicInfo music)
+		{
+			currentBackgroundSong = music;
+
+			if (CurrentSongIsBackground)
+				Stop();
+		}
+
 		public MusicInfo GetNextSong()
 		{
 			return GetSong(false);
