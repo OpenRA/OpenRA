@@ -6,13 +6,10 @@ Metadata:
 
 Folders:
 	.
-# Tiberian Sun
 	./mods/ts
 	./mods/ts/bits
 	./mods/ts/uibits
 	~^Content/ts
-# Red Alert
-	./mods/ra/uibits
 
 MapFolders:
 	./mods/ts/maps: System
