@@ -115,6 +115,8 @@ namespace OpenRA
 
 	public class Map
 	{
+		public const int MinimumSupportedMapFormat = 6;
+
 		static readonly int[][] CellCornerHalfHeights = new int[][]
 		{
 			// Flat
@@ -329,7 +331,7 @@ namespace OpenRA
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
 			// Use release-20141029 to convert older maps to format 6
-			if (MapFormat < 6)
+			if (MapFormat < MinimumSupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 
 			var nd = yaml.ToDictionary();

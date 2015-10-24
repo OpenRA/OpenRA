@@ -705,6 +705,7 @@
     <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
     <Compile Include="Widgets\Logic\GlobalChatLogic.cs" />
     <Compile Include="Lint\CheckChromeLogic.cs" />
+    <Compile Include="Lint\CheckMapMetadata.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
