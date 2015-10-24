@@ -15,6 +15,16 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Utility
 {
+	public class NoSuchCommandException : Exception
+	{
+		public readonly string Command;
+		public NoSuchCommandException(string command)
+			: base("No such command '{0}'".F(command))
+		{
+			Command = command;
+		}
+	}
+
 	class Program
 	{
 		static void Main(string[] args)
@@ -56,11 +66,12 @@ namespace OpenRA.Utility
 
 			try
 			{
-				if (!actions.ContainsKey(args[0]))
-					throw new ArgumentException();
+				var command = args[0];
+				if (!actions.ContainsKey(command))
+					throw new NoSuchCommandException(command);
 
-				var action = actions[args[0]].Key;
-				var validateActionArgs = actions[args[0]].Value;
+				var action = actions[command].Key;
+				var validateActionArgs = actions[command].Value;
 
 				if (validateActionArgs.Invoke(args))
 				{
@@ -68,8 +79,8 @@ namespace OpenRA.Utility
 				}
 				else
 				{
-					Console.WriteLine("Invalid arguments for '{0}'", args[0]);
-					GetActionUsage(args[0], action);
+					Console.WriteLine("Invalid arguments for '{0}'", command);
+					GetActionUsage(command, action);
 				}
 			}
 			catch (Exception e)
@@ -78,13 +89,13 @@ namespace OpenRA.Utility
 				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
 				Log.Write("utility", "{0}", e);
 
-			    if (e is ArgumentException)
-			        Console.WriteLine("No such command '{0}'", args[0]);
-			    else
-			    {
-                    Console.WriteLine("Error: Utility application crashed. See utility.log for details");
-                    throw;
-			    }
+				if (e is NoSuchCommandException)
+					Console.WriteLine(e.Message);
+				else
+				{
+					Console.WriteLine("Error: Utility application crashed. See utility.log for details");
+					throw;
+				}
 			}
 		}
 
