@@ -58,7 +58,7 @@ SYRF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, Structure
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -74,7 +74,7 @@ SYRF:
 SPEF:
 	Inherits: ^FakeBuilding
 	Targetable:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, Structure
 	Buildable:
 		BuildPaletteOrder: 910
 		Queue: Defense
