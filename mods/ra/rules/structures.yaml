@@ -101,7 +101,7 @@ SPEN:
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 	Targetable:
-		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -182,7 +182,7 @@ SYRD:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	Targetable:
-		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -477,7 +477,7 @@ DOME:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -925,7 +925,7 @@ PROC:
 	SelectionDecorations:
 		VisualBounds: 72,70,0,-2
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
 	Armor:
@@ -1196,7 +1196,7 @@ POWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
@@ -1237,7 +1237,7 @@ APWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
