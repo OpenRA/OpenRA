@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
 
 		[Desc("Damage percentage at each range step")]
-		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
+		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
