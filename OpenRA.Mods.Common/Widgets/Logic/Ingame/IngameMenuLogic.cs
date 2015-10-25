@@ -51,12 +51,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var exitDelay = iop != null ? iop.ExitDelay : 0;
 				if (mpe != null)
 				{
-					Game.RunAfterDelay(exitDelay, () => mpe.Fade(MenuPaletteEffect.EffectType.Black));
+					Game.RunAfterDelay(exitDelay, () =>
+					{
+						if (Game.IsCurrentWorld(world))
+							mpe.Fade(MenuPaletteEffect.EffectType.Black);
+					});
 					exitDelay += 40 * mpe.Info.FadeLength;
 				}
 
 				Game.RunAfterDelay(exitDelay, () =>
 				{
+					if (!Game.IsCurrentWorld(world))
+						return;
+
 					Game.Disconnect();
 					Ui.ResetAll();
 					Game.LoadShellMap();

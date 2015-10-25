@@ -109,8 +109,9 @@ namespace OpenRA.Mods.D2k.Activities
 
 			Game.RunAfterDelay(1000, () =>
 			{
-				foreach (var affectedPlayer in affectedPlayers)
-					NotifyPlayer(affectedPlayer, attackPosition);
+				if (Game.IsCurrentWorld(self.World))
+					foreach (var affectedPlayer in affectedPlayers)
+						NotifyPlayer(affectedPlayer, attackPosition);
 			});
 		}
 
