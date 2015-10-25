@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -94,6 +95,16 @@ namespace OpenRA.Mods.Common.Graphics
 			return fallback;
 		}
 
+		protected static Rectangle FlipRectangle(Rectangle rect, bool flipX, bool flipY)
+		{
+			var left = flipX ? rect.Right : rect.Left;
+			var top = flipY ? rect.Bottom : rect.Top;
+			var right = flipX ? rect.Left : rect.Right;
+			var bottom = flipY ? rect.Top : rect.Bottom;
+
+			return Rectangle.FromLTRB(left, top, right, bottom);
+		}
+
 		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 		{
 			Name = animation;
@@ -109,6 +120,8 @@ namespace OpenRA.Mods.Common.Graphics
 				Tick = LoadField<int>(d, "Tick", 40);
 				transpose = LoadField<bool>(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
+				var flipX = LoadField<bool>(d, "FlipX", false);
+				var flipY = LoadField<bool>(d, "FlipY", false);
 
 				Facings = LoadField<int>(d, "Facings", 1);
 				if (Facings < 0)
@@ -131,10 +144,12 @@ namespace OpenRA.Mods.Common.Graphics
 						// Allow per-sprite offset, start, and length
 						var subStart = LoadField<int>(sd, "Start", 0);
 						var subOffset = LoadField<float2>(sd, "Offset", float2.Zero);
+						var subFlipX = LoadField<bool>(sd, "FlipX", false);
+						var subFlipY = LoadField<bool>(sd, "FlipY", false);
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
 						var subSprites = cache[subSrc].Select(
-							s => new Sprite(s.Sheet, s.Bounds, s.Offset + subOffset + offset, s.Channel, blendMode));
+							s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, subFlipX, subFlipY), s.Offset + subOffset + offset, s.Channel, blendMode));
 
 						var subLength = 0;
 						MiniYaml subLengthYaml;
@@ -154,7 +169,7 @@ namespace OpenRA.Mods.Common.Graphics
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
-						s => new Sprite(s.Sheet, s.Bounds, s.Offset + offset, s.Channel, blendMode)).ToArray();
+						s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, flipX, flipY), s.Offset + offset, s.Channel, blendMode)).ToArray();
 				}
 
 				MiniYaml length;
