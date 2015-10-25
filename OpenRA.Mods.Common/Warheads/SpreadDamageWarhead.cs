@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly WDist Spread = new WDist(43);
 
 		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
