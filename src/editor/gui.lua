@@ -43,6 +43,16 @@ local function createFrame()
       end
     end)
 
+  -- update best size of the toolbar after resizing
+  frame:Connect(wx.wxEVT_SIZE, function(event)
+      local mgr = ide:GetUIManager()
+      local toolbar = mgr:GetPane("toolbar")
+      if toolbar and toolbar:IsOk() then
+        toolbar:BestSize(event:GetSize():GetWidth(), ide:GetToolBar():GetClientSize():GetHeight())
+        mgr:Update()
+      end
+    end)
+
   local menuBar = wx.wxMenuBar()
   local statusBar = frame:CreateStatusBar(5)
   local section_width = statusBar:GetTextExtent("OVRW")
