@@ -26,8 +26,8 @@ Metrics:
 	SpawnColor: 255,255,255
 	SpawnContrastColor: 0,0,0
 	SpawnLabelOffset: 0,1
+	IncompatibleVersionColor: 255,0,0
 	IncompatibleGameColor: 169,169,169
-	CantJoinGameColor: 211,211,211
 	ProtectedGameColor: 255,0,0
 	IncompatibleProtectedGameColor: 139,0,0
 	WaitingGameColor: 0,255,0

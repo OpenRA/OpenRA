@@ -449,6 +449,8 @@ lobby-bits: chrome.png
 	colorpicker: 257,33,14,14
 	huepicker: 388,96,7,15
 	kick: 386,115,11,11
+	protected: 403,97,10,13
+	protected-disabled: 403,113,10,13
 
 checkbox-bits: chrome.png
 	checked: 272,32,16,16

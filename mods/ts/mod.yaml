@@ -158,10 +158,12 @@ ChromeLayout:
 	./mods/ra/chrome/lobby-globalchat.yaml
 	./mods/ts/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
-	./mods/ra/chrome/create-server.yaml
-	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/multiplayer.yaml
+	./mods/ra/chrome/multiplayer-browser.yaml
+	./mods/ra/chrome/multiplayer-createserver.yaml
+	./mods/ra/chrome/multiplayer-directconnect.yaml
+	./mods/ra/chrome/multiplayer-globalchat.yaml
 	./mods/ra/chrome/connection.yaml
-	./mods/ra/chrome/directconnect.yaml
 	./mods/ra/chrome/replaybrowser.yaml
 	./mods/ts/chrome/dropdowns.yaml
 	./mods/ra/chrome/musicplayer.yaml
@@ -170,7 +172,6 @@ ChromeLayout:
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
-	./mods/ra/chrome/globalchat.yaml
 
 Voices:
 	./mods/ts/audio/voices.yaml

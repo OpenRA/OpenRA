@@ -47,6 +47,7 @@ namespace OpenRA
 		public readonly int players;
 		public readonly Rectangle bounds;
 		public readonly int[] spawnpoints = { };
+		public readonly TileShape map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
 	}
@@ -62,6 +63,7 @@ namespace OpenRA
 		public string Author { get; private set; }
 		public int PlayerCount { get; private set; }
 		public CPos[] SpawnPoints { get; private set; }
+		public TileShape GridType { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
 		public Map Map { get; private set; }
@@ -97,7 +99,7 @@ namespace OpenRA
 			generatingMinimap = false;
 		}
 
-		public MapPreview(string uid, MapCache cache)
+		public MapPreview(string uid, TileShape gridType, MapCache cache)
 		{
 			this.cache = cache;
 			Uid = uid;
@@ -107,6 +109,7 @@ namespace OpenRA
 			PlayerCount = 0;
 			Bounds = Rectangle.Empty;
 			SpawnPoints = NoSpawns;
+			GridType = gridType;
 			Status = MapStatus.Unavailable;
 			Class = MapClassification.Unknown;
 		}
@@ -120,6 +123,7 @@ namespace OpenRA
 			Author = m.Author;
 			Bounds = m.Bounds;
 			SpawnPoints = m.SpawnPoints.Value;
+			GridType = m.Grid.Type;
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
@@ -179,6 +183,7 @@ namespace OpenRA
 						for (var j = 0; j < r.spawnpoints.Length; j += 2)
 							spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 						SpawnPoints = spawns;
+						GridType = r.map_grid_type;
 
 						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}

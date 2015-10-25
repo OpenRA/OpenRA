@@ -274,6 +274,8 @@ lobby-bits: spawnpoints.png
 	admin: 64,5,7,5
 	colorpicker: 5,5,22,22
 	huepicker: 71,0,7,15
+	protected: 79,0,10,13
+	protected-disabled: 90,0,10,13
 
 strategic: strategic.png
 	unowned: 0,0,32,32

@@ -59,7 +59,7 @@ Container@MAPCHOOSER_PANEL:
 					X: 15
 					Y: 45
 					Width: PARENT_RIGHT - 30
-					Height: 440
+					Height: PARENT_BOTTOM - 60
 					Children:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
@@ -69,7 +69,7 @@ Container@MAPCHOOSER_PANEL:
 					X: 15
 					Y: 45
 					Width: PARENT_RIGHT - 30
-					Height: 440
+					Height: PARENT_BOTTOM - 60
 					Children:
 						ScrollPanel@MAP_LIST:
 							Width: PARENT_RIGHT
@@ -79,7 +79,6 @@ Container@MAPCHOOSER_PANEL:
 					Width: 183
 					Height: 232
 					X: 2
-					Y: 0
 					Visible: false
 					Children:
 						MapPreview@PREVIEW:
