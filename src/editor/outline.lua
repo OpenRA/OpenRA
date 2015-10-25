@@ -488,10 +488,16 @@ local package = ide:AddPackage('core.outline', {
         end)
 
       if fileitem and not ctrl:IsBold(fileitem) then
-        ctrl:SetItemBold(fileitem, true)
-        ctrl:ExpandAllChildren(fileitem)
-        ctrl:ScrollTo(fileitem)
-        ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
+        -- run the following changes on idle as doing them inline is causing a strange
+        -- issue on OSX when clicking on a tab may skip several tabs (#546);
+        -- this is somehow caused by `ExpandAllChildren` triggered from `SetFocus` inside
+        -- `PAGE_CHANGED` handler for the notebook.
+        ide:DoWhenIdle(function()
+            ctrl:SetItemBold(fileitem, true)
+            ctrl:ExpandAllChildren(fileitem)
+            ctrl:ScrollTo(fileitem)
+            ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
+          end)
       end
     end,
 
