@@ -243,8 +243,9 @@ V19.Husk:
 
 BARL:
 	Inherits: ^TechBuilding
-	Selectable:
-		Priority: 0
+	-Selectable:
+	CustomSelectionSize:
+		CustomBounds: 24,24
 	Health:
 		HP: 10
 	Explodes:
@@ -263,8 +264,9 @@ BARL:
 
 BRL3:
 	Inherits: ^TechBuilding
-	Selectable:
-		Priority: 0
+	-Selectable:
+	CustomSelectionSize:
+		CustomBounds: 24,24
 	Health:
 		HP: 10
 	Explodes:
