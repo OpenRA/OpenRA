@@ -54,7 +54,7 @@ BuildBuilding = function(building)
 end
 
 ProduceInfantry = function()
-	if not BaseBuildings[2][4] then
+	if not BaseTent.exists then
 		return
 	elseif Harvester.IsDead and enemy.Resources <= 299 then
 		return
@@ -77,7 +77,7 @@ ProduceInfantry = function()
 end
 
 ProduceArmor = function()
-	if not BaseBuildings[4][4] then
+	if not BaseWeap.exists then
 		return
 	elseif Harvester.IsDead and enemy.Resources <= 599 then
 		return
