@@ -1,6 +1,6 @@
 -- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
 
-local corona
+local pathcache
 local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
 
@@ -9,7 +9,7 @@ return {
   description = "Corona SDK mobile framework",
   api = {"baselib", "corona"},
   frun = function(self,wfilename,rundebug)
-    corona = corona or ide.config.path.corona -- check if the path is configured
+    local corona = ide.config.path.corona or pathcache -- check if the path is configured
     if not corona then
       local sep = win and ';' or ':'
       local default =
@@ -30,6 +30,7 @@ return {
           ..table.concat(paths, ", "))
         return
       end
+      pathcache = corona
     end
 
     local file = GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua')
@@ -82,7 +83,7 @@ return {
 
     local cfg = ide.config.corona or {}
     local debugopt = mac and "-debug 1 -project " or "-debug "
-    local skin = cfg.skin and (" -skin "..ide.config.corona.skin) or ""
+    local skin = cfg.skin and (" -skin "..cfg.skin) or ""
     local noconsole = (cfg.showconsole and ""
       or (mac and "-no-console YES " or "-no-console "))
     local cmd = ('"%s" %s%s"%s"%s')
