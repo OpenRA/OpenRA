@@ -56,13 +56,9 @@ namespace OpenRA.Network
 					var frame = BitConverter.ToInt32(packet, 0);
 					chunk.Packets.Add(Pair.New(client, packet));
 
-                    if (frame != int.MaxValue)
-                    {
-                        if (!lastClientsFrame.ContainsKey(client))
-                            lastClientsFrame[client] = frame;
-                        else if (frame > lastClientsFrame[client])
-                            lastClientsFrame[client] = frame;
-                    }
+					if (frame != int.MaxValue &&
+						(!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
+						lastClientsFrame[client] = frame;
 
 					if (packet.Length == 5 && packet[4] == 0xBF)
 						continue; // disconnect
@@ -91,6 +87,8 @@ namespace OpenRA.Network
 					}
 				}
 
+				var lastClientToDisconnect = lastClientsFrame.MaxBy(kvp => kvp.Value).Key;
+
 				// 2nd parse : replace all disconnect packets without frame with real
 				// disconnect frame
 				// NOTE: to modify/remove if a reconnect feature is set
@@ -99,13 +97,17 @@ namespace OpenRA.Network
 					foreach (var tmpPacketPair in tmpChunk.Packets)
 					{
 						var client = tmpPacketPair.First;
+
+						// Don't replace the final disconnection packet - we still want this to end the replay.
+						if (client == lastClientToDisconnect)
+							continue;
+
 						var packet = tmpPacketPair.Second;
 						if (packet.Length == 5 && packet[4] == 0xBF)
 						{
-							int lastClientFrame = lastClientsFrame[client];
-							byte[] lastFramePacket = BitConverter.GetBytes(lastClientFrame);
-							if (lastFramePacket.Length == 4)
-								Array.Copy(lastFramePacket, packet, lastFramePacket.Length);
+							var lastClientFrame = lastClientsFrame[client];
+							var lastFramePacket = BitConverter.GetBytes(lastClientFrame);
+							Array.Copy(lastFramePacket, packet, lastFramePacket.Length);
 						}
 					}
 				}
