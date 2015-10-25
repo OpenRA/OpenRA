@@ -4,13 +4,13 @@ if DateTime.IsHalloween then
 	ProxyType = "powerproxy.parazombies"
 	ProducedUnitTypes =
 	{
-		{ AlliedBarracks1, { "e1", "e3" } },
-		{ AlliedBarracks2, { "e1", "e3" } },
-		{ SovietBarracks1, { "ant" } },
-		{ SovietBarracks2, { "ant" } },
-		{ SovietBarracks3, { "ant" } },
-		{ AlliedWarFactory1, { "jeep", "1tnk", "2tnk", "arty", "ctnk" } },
-		{ SovietWarFactory1, { "3tnk", "4tnk", "v2rl", "ttnk", "apc" } }
+		{ factory = AlliedBarracks1, types = { "e1", "e3" } },
+		{ factory = AlliedBarracks2, types = { "e1", "e3" } },
+		{ factory = SovietBarracks1, types = { "ant" } },
+		{ factory = SovietBarracks2, types = { "ant" } },
+		{ factory = SovietBarracks3, types = { "ant" } },
+		{ factory = AlliedWarFactory1, types = { "jeep", "1tnk", "2tnk", "arty", "ctnk" } },
+		{ factory = SovietWarFactory1, types = { "3tnk", "4tnk", "v2rl", "ttnk", "apc" } }
 	}
 else
 	UnitTypes = { "3tnk", "ftrk", "ttnk", "apc" }
@@ -18,13 +18,13 @@ else
 	ProxyType = "powerproxy.paratroopers"
 	ProducedUnitTypes =
 	{
-		{ AlliedBarracks1, { "e1", "e3" } },
-		{ AlliedBarracks2, { "e1", "e3" } },
-		{ SovietBarracks1, { "dog", "e1", "e2", "e3", "e4", "shok" } },
-		{ SovietBarracks2, { "dog", "e1", "e2", "e3", "e4", "shok" } },
-		{ SovietBarracks3, { "dog", "e1", "e2", "e3", "e4", "shok" } },
-		{ AlliedWarFactory1, { "jeep", "1tnk", "2tnk", "arty", "ctnk" } },
-		{ SovietWarFactory1, { "3tnk", "4tnk", "v2rl", "ttnk", "apc" } }
+		{ factory = AlliedBarracks1, types = { "e1", "e3" } },
+		{ factory = AlliedBarracks2, types = { "e1", "e3" } },
+		{ factory = SovietBarracks1, types = { "dog", "e1", "e2", "e3", "e4", "shok" } },
+		{ factory = SovietBarracks2, types = { "dog", "e1", "e2", "e3", "e4", "shok" } },
+		{ factory = SovietBarracks3, types = { "dog", "e1", "e2", "e3", "e4", "shok" } },
+		{ factory = AlliedWarFactory1, types = { "jeep", "1tnk", "2tnk", "arty", "ctnk" } },
+		{ factory = SovietWarFactory1, types = { "3tnk", "4tnk", "v2rl", "ttnk", "apc" } }
 	}
 end
 
@@ -102,9 +102,9 @@ ParadropSovietUnits = function()
 end
 
 ProduceUnits = function(t)
-	local factory = t[1]
+	local factory = t.factory
 	if not factory.IsDead then
-		local unitType = t[2][Utils.RandomInteger(1, #t[2] + 1)]
+		local unitType = t.types[Utils.RandomInteger(1, #t.types + 1)]
 		factory.Wait(Actor.BuildTime(unitType))
 		factory.Produce(unitType)
 		factory.CallFunc(function() ProduceUnits(t) end)
@@ -121,8 +121,8 @@ SetupAlliedUnits = function()
 end
 
 SetupFactories = function()
-	Utils.Do(ProducedUnitTypes, function(pair)
-		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
+	Utils.Do(ProducedUnitTypes, function(production)
+		Trigger.OnProduction(production.factory, function(_, a) BindActorTriggers(a) end)
 	end)
 end
 

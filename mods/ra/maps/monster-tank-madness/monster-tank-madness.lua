@@ -1,8 +1,8 @@
 AlliedUnits =
 {
-	{ 0, { "1tnk", "1tnk", "2tnk", "2tnk" } },
-	{ DateTime.Seconds(3), { "e1", "e1", "e1", "e3", "e3" } },
-	{ DateTime.Seconds(7), { "e6" } }
+	{ delay = 0, types = { "1tnk", "1tnk", "2tnk", "2tnk" } },
+	{ delay = DateTime.Seconds(3), types = { "e1", "e1", "e1", "e3", "e3" } },
+	{ delay = DateTime.Seconds(7), types = { "e6" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
 CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
@@ -102,8 +102,8 @@ SendAlliedUnits = function()
 
 	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 	Utils.Do(AlliedUnits, function(table)
-		Trigger.AfterDelay(table[1], function()
-			Reinforcements.Reinforce(player, table[2], { StartEntryPoint.Location, StartMovePoint.Location }, 18)
+		Trigger.AfterDelay(table.delay, function()
+			Reinforcements.Reinforce(player, table.types, { StartEntryPoint.Location, StartMovePoint.Location }, 18)
 		end)
 	end)
 

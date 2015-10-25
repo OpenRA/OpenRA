@@ -29,9 +29,9 @@ HeliReinforcements = { "medi", "mech", "mech" }
 
 GreeceReinforcements =
 {
-	{ { "2tnk", "2tnk", "2tnk", "arty", "arty" }, { SpyEntry.Location, SpyLoadout.Location } },
-	{ { "e3", "e3", "e3", "e6", "e6" }, { SpyEntry.Location, GreeceLoadout1.Location } },
-	{ { "jeep", "jeep", "e1", "e1", "2tnk" }, { SpyEntry.Location, GreeceLoadout2.Location } }
+	{ types = { "2tnk", "2tnk", "2tnk", "arty", "arty" }, entry = { SpyEntry.Location, SpyLoadout.Location } },
+	{ types = { "e3", "e3", "e3", "e6", "e6" }, entry = { SpyEntry.Location, GreeceLoadout1.Location } },
+	{ types = { "jeep", "jeep", "e1", "e1", "2tnk" }, entry = { SpyEntry.Location, GreeceLoadout2.Location } }
 }
 
 DogPatrol = { Dog1, Dog2 }
@@ -104,8 +104,8 @@ SendReinforcements = function()
 	Camera.Position = ReinforceCamera.CenterPosition
 	greece.Cash = greece.Cash + ReinforceCash
 
-	Utils.Do(GreeceReinforcements, function(reinforceTable)
-		Reinforcements.ReinforceWithTransport(greece, InsertionTransport, reinforceTable[1], reinforceTable[2], { SpyEntry.Location })
+	Utils.Do(GreeceReinforcements, function(reinforcements)
+		Reinforcements.ReinforceWithTransport(greece, InsertionTransport, reinforcements.types, reinforcements.entry, { SpyEntry.Location })
 	end)
 
 	Media.PlaySpeechNotification(greece, "AlliedReinforcementsArrived")

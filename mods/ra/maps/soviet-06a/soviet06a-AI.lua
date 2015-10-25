@@ -11,14 +11,13 @@ IdlingUnits = function()
 	end)
 end
 
-BaseBuildings =
-{
-	{ "apwr", CVec.New(-13, 7), 500, true },
-	{ "tent", CVec.New(-2, 12), 400, true },
-	{ "proc", CVec.New(-7, 5), 1400, true },
-	{ "weap", CVec.New(-9, 11), 2000, true },
-	{ "apwr", CVec.New(-4, 1), 500, true }
-}
+BaseApwr =  { type = "apwr", pos = CVec.New(-13, 7), cost = 500, exists = true }
+BaseTent =  { type = "tent", pos = CVec.New(-2, 12), cost = 400, exists = true }
+BaseProc =  { type = "proc", pos = CVec.New(-7, 5), cost = 1400, exists = true }
+BaseWeap =  { type = "weap", pos = CVec.New(-9, 11), cost = 2000, exists = true }
+BaseApwr2 = { type = "apwr", pos = CVec.New(-4, 1), cost = 500, exists = true }
+
+BaseBuildings = { BaseApwr, BaseTent, BaseProc, BaseWeap, BaseApwr2 }
 
 BuildBase = function()
 	if CYard.IsDead or CYard.Owner ~= enemy then
@@ -28,7 +27,7 @@ BuildBase = function()
 	end
 
 	for i,v in ipairs(BaseBuildings) do
-		if not v[4] then
+		if not v.exists then
 			BuildBuilding(v)
 			return
 		end
@@ -38,12 +37,12 @@ BuildBase = function()
 end
 
 BuildBuilding = function(building)
-	Trigger.AfterDelay(Actor.BuildTime(building[1]), function()
-		local actor = Actor.Create(building[1], true, { Owner = enemy, Location = CYardLocation.Location + building[2] })
-		enemy.Cash = enemy.Cash - building[3]
+	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
+		local actor = Actor.Create(building.type, true, { Owner = enemy, Location = CYardLocation.Location + building.pos })
+		enemy.Cash = enemy.Cash - building.cost
 
-		building[4] = true
-		Trigger.OnKilled(actor, function() building[4] = false end)
+		building.exists = true
+		Trigger.OnKilled(actor, function() building.exists = false end)
 		Trigger.OnDamaged(actor, function(building)
 			if building.Owner == enemy and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()

@@ -8,14 +8,14 @@ AtkRoute2 = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoi
 
 AutoCreateTeams = 
 {
-	{ { ['e1'] = 1,  ['e3'] = 3 }, AtkRoute2 },
-	{ { ['e1'] = 3,  ['e3'] = 1 }, AtkRoute2 },
-	{ { ['e3'] = 4 }             , AtkRoute1 },
-	{ { ['e1'] = 4 }             , AtkRoute1 },
-	{ { ['bggy'] = 1 }           , AtkRoute1 },
-	{ { ['bggy'] = 1 }           , AtkRoute2 },
-	{ { ['ltnk'] = 1 }           , AtkRoute1 },
-	{ { ['ltnk'] = 1 }           , AtkRoute2 }
+	{ types = { e1 = 1, e3 = 3 }, route = AtkRoute2 },
+	{ types = { e1 = 3, e3 = 1 }, route = AtkRoute2 },
+	{ types = { e3 = 4 }        , route = AtkRoute1 },
+	{ types = { e1 = 4 }        , route = AtkRoute1 },
+	{ types = { bggy = 1 }      , route = AtkRoute1 },
+	{ types = { bggy = 1 }      , route = AtkRoute2 },
+	{ types = { ltnk = 1 }      , route = AtkRoute1 },
+	{ types = { ltnk = 1 }      , route = AtkRoute2 }
 }
 
 RepairThreshold = 0.6
@@ -55,8 +55,8 @@ end
 
 AutoCreateTeam = function()
 	local team = Utils.Random(AutoCreateTeams)
-	for type, count in pairs(team[1]) do
-		MoveThenHunt(Utils.Take(count, enemy.GetActorsByType(type)), team[2])
+	for type, count in pairs(team.types) do
+		MoveThenHunt(Utils.Take(count, enemy.GetActorsByType(type)), team.route)
 	end
 
 	Trigger.AfterDelay(Utils.RandomInteger(AutoAtkMinDelay, AutoAtkMaxDelay), AutoCreateTeam)
