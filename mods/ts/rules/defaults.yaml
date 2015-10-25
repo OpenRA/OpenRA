@@ -69,6 +69,9 @@
 		ShowToEnemies: true
 		ZOffset: 512
 		UpgradeMinEnabledLevel: 1
+	PowerMultiplier@EMPDISABLE:
+		UpgradeTypes: empdisable
+		Modifier: 0
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -106,7 +109,8 @@
 		IsPlayerPalette: true
 
 ^Building:
-	Inherits: ^BasicBuilding
+	Inherits@1: ^BasicBuilding
+	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
 	Capturable:
 	RepairableBuilding:
@@ -328,7 +332,8 @@
 		CrushedPaletteIsPlayerPalette: true
 
 ^Cyborg:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^EmpDisable
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
