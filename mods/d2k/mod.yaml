@@ -106,6 +106,7 @@ ChromeLayout:
 	./mods/d2k/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
+	./mods/ra/chrome/replaybrowser.yaml
 
 Weapons:
 	./mods/d2k/weapons.yaml
