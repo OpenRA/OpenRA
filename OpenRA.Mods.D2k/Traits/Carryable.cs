@@ -100,9 +100,8 @@ namespace OpenRA.Mods.D2k.Traits
 		public Actor GetClosestIdleCarrier()
 		{
 			// Find carriers
-			var carriers = self.World.ActorsWithTrait<Carryall>()
-				.Where(p => p.Actor.Owner == self.Owner && !p.Trait.IsBusy && p.Actor.IsInWorld)
-				.Select(h => h.Actor);
+			var carriers = self.World.ActorsHavingTrait<Carryall>(c => !c.IsBusy)
+				.Where(a => a.Owner == self.Owner && a.IsInWorld);
 
 			return carriers.ClosestTo(self);
 		}

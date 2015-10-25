@@ -42,9 +42,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null)
 			{
 				var rearmBuildings = heli.Info.RearmBuildings;
-				var nearestHpad = self.World.ActorsWithTrait<Reservable>()
-									.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
-									.Select(a => a.Actor)
+				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
+									.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
 									.ClosestTo(self);
 
 				if (nearestHpad == null)

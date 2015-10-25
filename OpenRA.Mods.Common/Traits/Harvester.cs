@@ -114,9 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (proc == null) return;
 			if (proc.Disposed) return;
 
-			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == proc)
-				.Select(a => Target.FromActor(a.Actor))
+			var linkedHarvs = proc.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc)
+				.Select(a => Target.FromActor(a))
 				.ToList();
 
 			proc.SetTargetLines(linkedHarvs, Color.Gold);
@@ -163,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(r => new {
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
-					Occupancy = self.World.ActorsWithTrait<Harvester>().Count(a => a.Trait.LinkedProc == r.Actor) })
+					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count() })
 				.ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Hunt(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
-			targets = self.World.ActorsWithTrait<Huntable>().Select(p => p.Actor).Where(
+			targets = self.World.ActorsHavingTrait<Huntable>().Where(
 				a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
 				&& IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
 		}

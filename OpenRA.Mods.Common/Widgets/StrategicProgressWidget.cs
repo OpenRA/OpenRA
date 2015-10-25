@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "critical_unowned"), offset + new float2(rb.Left + curX, rb.Top));
 
-				if (world.LocalPlayer != null && WorldUtils.AreMutualAllies(a.Actor.Owner, world.LocalPlayer))
+				if (world.LocalPlayer != null && WorldUtils.AreMutualAllies(a.Owner, world.LocalPlayer))
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "player_owned"), offset + new float2(rb.Left + curX, rb.Top));
-				else if (!a.Actor.Owner.NonCombatant)
+				else if (!a.Owner.NonCombatant)
 					WidgetUtils.DrawRGBA(ChromeProvider.GetImage("strategic", "enemy_owned"), offset + new float2(rb.Left + curX, rb.Top));
 
 				curX += 32;
@@ -96,8 +96,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void Init()
 		{
-			var visible = world.ActorsWithTrait<StrategicVictoryConditions>().Any() &&
-				world.ActorsWithTrait<StrategicPoint>().Any();
+			var visible = world.ActorsHavingTrait<StrategicVictoryConditions>().Any() &&
+				world.ActorsHavingTrait<StrategicPoint>().Any();
 
 			IsVisible = () => visible;
 			initialised = true;
