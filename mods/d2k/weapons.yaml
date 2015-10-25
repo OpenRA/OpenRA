@@ -506,8 +506,8 @@ DeviatorMissile:
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 384
-		Falloff: 100, 60, 30, 15, 0
+		Spread: 416
+		Falloff: 100, 65, 35, 20, 0
 		Damage: 450
 		Versus:
 			none: 125
@@ -702,7 +702,7 @@ grenade:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
+		Falloff: 100, 65, 35, 20, 0
 		Damage: 150
 		Versus:
 			none: 125
