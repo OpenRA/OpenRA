@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
@@ -37,10 +38,10 @@ namespace OpenRA.Graphics
 
 			FractionalOffset = offset / Size;
 
-			Left = (float)bounds.Left / sheet.Size.Width;
-			Top = (float)bounds.Top / sheet.Size.Height;
-			Right = (float)bounds.Right / sheet.Size.Width;
-			Bottom = (float)bounds.Bottom / sheet.Size.Height;
+			Left = (float)Math.Min(bounds.Left, bounds.Right) / sheet.Size.Width;
+			Top = (float)Math.Min(bounds.Top, bounds.Bottom) / sheet.Size.Height;
+			Right = (float)Math.Max(bounds.Left, bounds.Right) / sheet.Size.Width;
+			Bottom = (float)Math.Max(bounds.Top, bounds.Bottom) / sheet.Size.Height;
 		}
 	}
 
