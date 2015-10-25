@@ -161,10 +161,11 @@ namespace OpenRA.Platforms.Default
 								Platform.CurrentPlatform == PlatformType.Windows)
 								Game.Exit();
 							else
-
+							{
 								// Only register first keypress
 								if (e.key.repeat == 0)
 									inputHandler.OnKeyInput(keyEvent);
+							}
 
 							break;
 						}
