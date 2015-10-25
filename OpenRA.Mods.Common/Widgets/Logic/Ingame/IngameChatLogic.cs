@@ -109,6 +109,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (e.Event == KeyInputEvent.Up)
 					return false;
 
+				if (world.Type != WorldType.Regular)
+					return false;
+
 				if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
 				{
 					OpenChat();
