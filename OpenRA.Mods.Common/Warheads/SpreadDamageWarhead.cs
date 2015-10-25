@@ -65,13 +65,13 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(victim, firedBy))
 					continue;
 
-				var localModifiers = damageModifiers;
 				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo != null)
-				{
-					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
-					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
-				}
+				if (healthInfo == null)
+					continue;
+
+				var localModifiers = damageModifiers;
+				var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
+				localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 
 				DoImpact(victim, firedBy, localModifiers);
 			}
