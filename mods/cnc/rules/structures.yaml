@@ -694,6 +694,7 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
+		RealignDelay: -1
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
