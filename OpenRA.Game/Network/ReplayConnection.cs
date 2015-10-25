@@ -27,6 +27,7 @@ namespace OpenRA.Network
 		Queue<Chunk> chunks = new Queue<Chunk>();
 		List<byte[]> sync = new List<byte[]>();
 		int ordersFrame;
+		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
 		public int LocalClientId { get { return 0; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
@@ -55,6 +56,14 @@ namespace OpenRA.Network
 					var frame = BitConverter.ToInt32(packet, 0);
 					chunk.Packets.Add(Pair.New(client, packet));
 
+                    if (frame != int.MaxValue)
+                    {
+                        if (!lastClientsFrame.ContainsKey(client))
+                            lastClientsFrame[client] = frame;
+                        else if (frame > lastClientsFrame[client])
+                            lastClientsFrame[client] = frame;
+                    }
+
 					if (packet.Length == 5 && packet[4] == 0xBF)
 						continue; // disconnect
 					else if (packet.Length >= 5 && packet[4] == 0x65)
@@ -79,6 +88,25 @@ namespace OpenRA.Network
 						chunk = new Chunk();
 
 						TickCount = Math.Max(TickCount, frame);
+					}
+				}
+
+				// 2nd parse : replace all disconnect packets without frame with real
+				// disconnect frame
+				// NOTE: to modify/remove if a reconnect feature is set
+				foreach (var tmpChunk in chunks)
+				{
+					foreach (var tmpPacketPair in tmpChunk.Packets)
+					{
+						var client = tmpPacketPair.First;
+						var packet = tmpPacketPair.Second;
+						if (packet.Length == 5 && packet[4] == 0xBF)
+						{
+							int lastClientFrame = lastClientsFrame[client];
+							byte[] lastFramePacket = BitConverter.GetBytes(lastClientFrame);
+							if (lastFramePacket.Length == 4)
+								Array.Copy(lastFramePacket, packet, lastFramePacket.Length);
+						}
 					}
 				}
 			}
