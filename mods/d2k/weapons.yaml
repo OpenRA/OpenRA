@@ -677,18 +677,18 @@ CrateExplosion:
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
-		Explosion: building
-		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
+		Explosion: self_destruct
+		ImpactSound: EXPLSML1.WAV
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
+		Explosion: building
+		ImpactSound: EXPLSML2.WAV
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosion: large_explosion
-		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
+		ImpactSound: EXPLLG2.WAV
 
 grenade:
 	ReloadDelay: 50
