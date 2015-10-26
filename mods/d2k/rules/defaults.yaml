@@ -22,22 +22,22 @@
 			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
-		Modifier: 105, 110, 120, 130
+		Modifier: 105, 110, 115, 125
 	DamageMultiplier@EXPERIENCE:
 		UpgradeTypes: damage
-		Modifier: 95, 90, 85, 75
+		Modifier: 96, 92, 88, 80
 	SpeedMultiplier@EXPERIENCE:
 		UpgradeTypes: speed
-		Modifier: 105, 110, 120, 140
+		Modifier: 105, 110, 115, 125
 	ReloadDelayMultiplier@EXPERIENCE:
 		UpgradeTypes: reload
-		Modifier: 95, 90, 85, 75
+		Modifier: 96, 92, 88, 80
 	InaccuracyMultiplier@EXPERIENCE:
 		UpgradeTypes: inaccuracy
 		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
 		Step: 2
-		Ticks: 100
+		Ticks: 125
 		HealIfBelow: 1
 		DamageCooldown: 125
 		UpgradeTypes: selfheal
@@ -124,13 +124,10 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: yes
-	Capturable:
-		Type: husk
-		AllowAllies: yes
-		CaptureThreshold: 1.0
-	TransformOnCapture:
-		ForceHealthPercentage: 25
 	DisabledOverlay:
+	Explodes:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -178,7 +175,7 @@
 			Rough: 80
 	SelectionDecorations:
 	Selectable:
-		Bounds: 12,18,0,-6
+		Bounds: 12,20,0,-4
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -259,7 +256,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: light_inf,light_inf,light_inf,light_inf,light_inf,trooper,trooper,trooper,engineer
+		ActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:
@@ -276,8 +273,8 @@
 	DamagedWithoutFoundation:
 	ThrowsShrapnel:
 		Weapons: Debris, Debris2, Debris3, Debris4
-		Pieces: 3, 7
-		Range: 2c0, 5c0
+		Pieces: 2, 5
+		Range: 1c512, 4c0
 	WithMakeAnimation:
 
 ^Defense:
@@ -294,9 +291,9 @@
 	LineBuildNode:
 		Types: turret
 	ThrowsShrapnel:
-		Weapons: Debris, Debris2, Debris3, Debris4
-		Pieces: 2, 5
-		Range: 2c0, 5c0
+		Weapons: Debris, Debris3
+		Pieces: 2, 2
+		Range: 2c0, 4c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
 

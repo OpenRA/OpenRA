@@ -18,16 +18,16 @@ namespace OpenRA.Mods.D2k.Traits
 	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<WithSpriteBodyInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Time between rescanning for targets (in ticks).")]
-		public readonly int TargetRescanInterval = 32;
+		public readonly int TargetRescanInterval = 125;
 
 		[Desc("The radius in which the worm \"searches\" for targets.")]
-		public readonly WDist MaxSearchRadius = WDist.FromCells(27);
+		public readonly WDist MaxSearchRadius = WDist.FromCells(20);
 
 		[Desc("The range at which the worm launches an attack regardless of noise levels.")]
 		public readonly WDist IgnoreNoiseAttackRange = WDist.FromCells(3);
 
 		[Desc("The chance this actor has of disappearing after it attacks (in %).")]
-		public readonly int ChanceToDisappear = 80;
+		public readonly int ChanceToDisappear = 100;
 
 		[Desc("Name of the sequence that is used when the actor is idle or moving (not attacking).")]
 		[SequenceReference] public readonly string IdleSequence = "idle";
