@@ -220,7 +220,7 @@ namespace OpenRA.Graphics
 			using (var s = GlobalFileSystem.Open(files.First + ".vxl"))
 				vxl = new VxlReader(s);
 			using (var s = GlobalFileSystem.Open(files.Second + ".hva"))
-				hva = new HvaReader(s);
+				hva = new HvaReader(s, files.Second + ".hva");
 			return new Voxel(this, vxl, hva);
 		}
 
