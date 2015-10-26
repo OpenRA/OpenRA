@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					layer = pool.Pop();
 
 			if (layer == null)
-				layer = new CellLayer<CellInfo>(defaultLayer.Shape, defaultLayer.Size);
+				layer = new CellLayer<CellInfo>(defaultLayer.GridType, defaultLayer.Size);
 			layer.CopyValuesFrom(defaultLayer);
 			return layer;
 		}

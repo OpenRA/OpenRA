@@ -9,10 +9,8 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -428,10 +426,10 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
-			var leftDelta = Grid.Type == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = Grid.Type == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = Grid.Type == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = Grid.Type == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
+			var leftDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
+			var topDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
+			var rightDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
+			var bottomDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
 			{
 				leftDelta + new WVec(0, 0, 512 * ramp[0]),
@@ -754,9 +752,9 @@ namespace OpenRA
 		public bool Contains(CPos cell)
 		{
 			// .ToMPos() returns the same result if the X and Y coordinates
-			// are switched. X < Y is invalid in the Diamond coordinate system,
+			// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
 			// so we pre-filter these to avoid returning the wrong result
-			if (Grid.Type == TileShape.Diamond && cell.X < cell.Y)
+			if (Grid.Type == MapGridType.RectangularIsometric && cell.X < cell.Y)
 				return false;
 
 			return Contains(cell.ToMPos(this));
@@ -788,10 +786,10 @@ namespace OpenRA
 
 		public WPos CenterOfCell(CPos cell)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
 
-			// Convert from diamond cell position (x, y) to world position (u, v):
+			// Convert from isometric cell position (x, y) to world position (u, v):
 			// (a) Consider the relationships:
 			//  - Center of origin cell is (512, 512)
 			//  - +x adds (512, 512) to world pos
@@ -820,10 +818,10 @@ namespace OpenRA
 
 		public CPos CellContaining(WPos pos)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
-			// Convert from world position to diamond cell position:
+			// Convert from world position to isometric cell position:
 			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
 			// (b) Rotate axes by -pi/4
 			// (c) Divide through by sqrt(2) to bring us to an equivalent world pos aligned with u,v axes
@@ -898,10 +896,10 @@ namespace OpenRA
 			// Directly calculate the projected map corners in world units avoiding unnecessary
 			// conversions.  This abuses the definition that the width of the cell is always
 			// 1024 units, and that the height of two rows is 2048 for classic cells and 1024
-			// for diamond cells.
+			// for isometric cells.
 			var wtop = tl.V * 1024;
 			var wbottom = (br.V + 1) * 1024;
-			if (Grid.Type == TileShape.Diamond)
+			if (Grid.Type == MapGridType.RectangularIsometric)
 			{
 				wtop /= 2;
 				wbottom /= 2;
