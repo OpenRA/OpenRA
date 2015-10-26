@@ -57,7 +57,7 @@ construction_yard:
 	Armor:
 		Type: cy
 	RevealsShroud:
-		Range: 10c0
+		Range: 5c768
 	Production:
 		Produces: Building, Upgrade
 	Exit:
@@ -106,7 +106,7 @@ wind_trap:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 4c0
+		Range: 3c768
 	RenderSprites:
 		Image: power.harkonnen
 		FactionImages:
@@ -143,7 +143,7 @@ barracks:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 5c0
+		Range: 3c768
 	RallyPoint:
 		Offset: 1,2
 	Exit@1:
@@ -201,7 +201,7 @@ refinery:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 6c0
+		Range: 4c768
 	Refinery:
 		DockAngle: 160
 		DockOffset: 2,1
@@ -253,7 +253,7 @@ silo:
 	Armor:
 		Type: wall
 	RevealsShroud:
-		Range: 4c0
+		Range: 2c768
 	RenderSprites:
 		Image: silo.harkonnen
 		FactionImages:
@@ -299,7 +299,7 @@ light_factory:
 	Armor:
 		Type: light
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderSprites:
 		Image: light.harkonnen
 		FactionImages:
@@ -358,7 +358,7 @@ heavy_factory:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RallyPoint:
 		Offset: 0,3
 	Exit@1:
@@ -423,7 +423,7 @@ outpost:
 	Armor:
 		Type: light
 	RevealsShroud:
-		Range: 10c0
+		Range: 4c768
 	ProvidesRadar:
 	RenderSprites:
 		Image: outpost.harkonnen
@@ -460,7 +460,7 @@ starport:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 7c0
+		Range: 4c768
 	RallyPoint:
 		Offset: 1,3
 	Exit@1:
@@ -526,6 +526,8 @@ wall:
 		HP: 2000
 	Armor:
 		Type: none
+	RevealsShroud:
+		Range: 2c768
 	Crushable:
 		CrushClasses: wall
 	BlocksProjectiles:
@@ -572,7 +574,7 @@ medium_gun_turret:
 	Armor:
 		Type: heavy
 	RevealsShroud:
-		Range: 8c0
+		Range: 4c768
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithMuzzleOverlay:
@@ -614,7 +616,7 @@ large_gun_turret:
 	Armor:
 		Type: concrete
 	RevealsShroud:
-		Range: 10c0
+		Range: 5c768
 	BodyOrientation:
 		QuantizedFacings: 32
 	Armament:
@@ -652,7 +654,7 @@ repair_pad:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 5c0
+		Range: 4c768
 	Selectable:
 		Bounds: 96,64
 	SelectionDecorations:
@@ -704,7 +706,7 @@ high_tech_factory:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderSprites:
 		Image: hightech.harkonnen
 		FactionImages:
@@ -756,7 +758,7 @@ research_centre:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 4c768
 	RenderSprites:
 		Image: research.harkonnen
 		FactionImages:
@@ -795,7 +797,7 @@ palace:
 	Armor:
 		Type: wood
 	RevealsShroud:
-		Range: 8c0
+		Range: 4c768
 	RenderSprites:
 		Image: palace.harkonnen
 		FactionImages:
