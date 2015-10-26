@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
 
-			var filtersButton = widget.GetOrNull<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
+			var filtersButton = widget.Get<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
 			filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
 
 			var browserTab = widget.Get<ButtonWidget>("BROWSER_TAB");
