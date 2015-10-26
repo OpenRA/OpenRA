@@ -201,7 +201,7 @@ thumper:
 		Length: 5
 		Tick: 480
 	thump-sand: DATA.R8
-		Start: 3626
+		Frames: 3629, 3630, 3626, 3627, 3628
 		Length: 5
 		Tick: 480
 		BlendMode: Multiply
