@@ -5,17 +5,15 @@ LMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 48
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 128
+		Falloff: 100, 50, 25, 0
 		Damage: 125
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -27,10 +25,9 @@ Bazooka:
 	ReloadDelay: 40
 	Range: 3c0
 	Report: ROCKET1.WAV
-	ValidTargets: Ground
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
-		Inaccuracy: 64
+		Inaccuracy: 256
 		Image: RPG
 		HorizontalRateOfTurn: 1
 		TrailImage: bazooka_trail2
@@ -38,18 +35,15 @@ Bazooka:
 		TrailInterval: 1
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
-		Spread: 250
-		Falloff: 100, 95, 70, 50, 25, 5, 0
+		Spread: 192
+		Falloff: 100, 50, 25, 0
 		Damage: 300
-		ValidTargets: Ground
 		Versus:
 			none: 8
 			wall: 75
 			building: 40
 			wood: 45
 			light: 70
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -67,17 +61,15 @@ Fremen_S:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 48
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 128
+		Falloff: 100, 50, 25, 0
 		Damage: 125
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -90,22 +82,18 @@ M_LMG:
 	ReloadDelay: 40
 	Range: 2c512
 	Report: MGUN2.WAV
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 48
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 128
+		Falloff: 100, 50, 25, 0
 		Damage: 125
-		ValidTargets: Ground
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -120,17 +108,14 @@ M_HMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 48
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 192
+		Falloff: 100, 50, 25, 0
 		Damage: 250
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -143,22 +128,17 @@ Fremen_L:
 	Delay: 5
 	Range: 3c512
 	Report: BAZOOK2.WAV
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 64
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 192
+		Falloff: 100, 50, 25, 0
 		Damage: 250
-		ValidTargets: Ground
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -173,17 +153,15 @@ HMG:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 160
+		Falloff: 100, 60, 30, 0
 		Damage: 180
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -198,17 +176,15 @@ HMGo:
 	Projectile: Bullet
 		Speed: 1c256
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Falloff: 100, 100, 65, 30, 0
+		Spread: 160
+		Falloff: 100, 60, 30, 0
 		Damage: 180
 		Versus:
-			none: 100
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -232,9 +208,8 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Report: ROCKET1.WAV
-	ValidTargets: Ground
 	Projectile: Missile
-		Inaccuracy: 64
+		Inaccuracy: 256
 		Image: RPG
 		HorizontalRateOfTurn: 0
 		TrailImage: bazooka_trail2
@@ -243,18 +218,14 @@ Rocket:
 		MaximumLaunchSpeed: 343
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
-		Spread: 250
-		Falloff: 100, 95, 70, 50, 25, 5, 0
+		Spread: 160
+		Falloff: 100, 50, 25, 0
 		Damage: 250
-		ValidTargets: Ground
 		Versus:
 			none: 25
-			wall: 100
 			building: 50
 			wood: 65
-			light: 100
 			heavy: 50
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -277,17 +248,15 @@ Rocket:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 160
-		Falloff: 100, 100, 85, 50, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 290
 		Versus:
 			none: 20
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -310,14 +279,15 @@ TowerMissile:
 		Blockable: false
 		Shadow: true
 		HorizontalRateOfTurn: 1
+		RangeLimit: 50
 		Inaccuracy: 384
 		Image: MISSILE2
 		TrailImage: large_trail
 		TrailInterval: 1
 		MaximumLaunchSpeed: 320
 	Warhead@1Dam: SpreadDamage
-		Spread: 280
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 480
 		ValidTargets: Ground, Air
 		Versus:
@@ -326,8 +296,6 @@ TowerMissile:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -347,17 +315,15 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 180
-		Falloff: 100, 100, 85, 50, 15, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 270
 		Versus:
 			none: 20
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -376,17 +342,15 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 180
-		Falloff: 100, 100, 85, 50, 15, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 270
 		Versus:
 			none: 20
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -405,17 +369,15 @@ TowerMissile:
 		Inaccuracy: 380
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 180
-		Falloff: 100, 100, 85, 50, 15, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 270
 		Versus:
 			none: 20
 			wall: 50
 			building: 50
 			wood: 60
-			light: 100
 			heavy: 75
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -434,20 +396,15 @@ DevBullet:
 		Blockable: true
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 384
+		Falloff: 100, 50, 25, 0
 		Damage: 650
 		Versus:
 			none: 50
-			wall: 100
 			building: 75
 			wood: 60
-			light: 100
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 40
-			harvester: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -472,8 +429,8 @@ mtank_pri:
 		TrailImage: large_trail
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		Spread: 280
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 600
 		ValidTargets: Ground, Air
 		Versus:
@@ -482,8 +439,6 @@ mtank_pri:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -501,6 +456,7 @@ DeviatorMissile:
 	InvalidTargets: Infantry, Structure
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
+		RangeLimit: 40
 		Blockable: false
 		Shadow: yes
 		RateofTurn: 1
@@ -512,8 +468,8 @@ DeviatorMissile:
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		InvalidTargets: Infantry, Structure
-		Spread: 280
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 5
 		Versus:
 			none: 20
@@ -522,7 +478,6 @@ DeviatorMissile:
 			wood: 20
 			light: 20
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 10
 			harvester: 20
@@ -551,17 +506,14 @@ DeviatorMissile:
 		ContrailLength: 20
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
-		Spread: 280
-		Falloff: 100, 100, 85, 65, 40, 25, 0
+		Spread: 416
+		Falloff: 100, 65, 35, 20, 0
 		Damage: 450
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -581,17 +533,13 @@ Sound:
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 96
-		Falloff: 100, 100, 100, 50, 25, 0
+		Spread: 256
+		Falloff: 100, 100, 0
 		Damage: 500	#80 D2k but damages through all in path
 		Versus:
-			none: 100
 			wall: 50
 			building: 60
-			wood: 100
-			light: 100
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 50
@@ -631,8 +579,8 @@ OrniBomb:
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead@1Dam: SpreadDamage
-		Spread: 276
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 400
 		Versus:
 			none: 90
@@ -641,7 +589,6 @@ OrniBomb:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -669,7 +616,7 @@ Demolish:
 Atomic:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
-		Falloff: 200, 120, 80, 60, 40, 20, 10, 0
+		Falloff: 200, 100, 50, 25, 12, 0
 		Damage: 2700	##225 in vanilla but of course is a cluster bomb instead, so damage spread out
 		Versus:
 			none: 90
@@ -678,7 +625,6 @@ Atomic:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -690,6 +636,7 @@ Atomic:
 CrateNuke:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 500
 		Versus:
 			none: 90
@@ -698,7 +645,6 @@ CrateNuke:
 			wood: 60
 			light: 60
 			heavy: 60
-			concrete: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
@@ -710,8 +656,8 @@ CrateNuke:
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 276
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 200
 		Versus:
 			none: 90
@@ -720,7 +666,6 @@ CrateExplosion:
 			wood: 50
 			light: 40
 			heavy: 30
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -732,18 +677,18 @@ CrateExplosion:
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
-		Explosion: building
-		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
+		Explosion: self_destruct
+		ImpactSound: EXPLSML1.WAV
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
+		Explosion: building
+		ImpactSound: EXPLSML2.WAV
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosion: large_explosion
-		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
+		ImpactSound: EXPLLG2.WAV
 
 grenade:
 	ReloadDelay: 50
@@ -756,17 +701,14 @@ grenade:
 		Image: grenade
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 200
-		Falloff: 100, 100, 100, 95, 60, 0
+		Spread: 320
+		Falloff: 100, 65, 35, 20, 0
 		Damage: 150
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -784,17 +726,14 @@ Weathering:
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 280
-		Falloff: 100, 100, 100, 95, 60, 0
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 150
 		Versus:
 			none: 125
-			wall: 100
-			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -807,8 +746,8 @@ GrenDeath:
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
-		Spread: 280
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 256
+		Falloff: 100, 50, 25, 0
 		Damage: 300
 		Versus:
 			none: 15
@@ -816,8 +755,6 @@ SardDeath:
 			building: 60
 			wood: 65
 			light: 90
-			heavy: 100
-			concrete: 100
 			invulnerable: 0
 			cy: 30
 			harvester: 50
@@ -837,8 +774,8 @@ SpiceExplosion:
 		Trail: large_trail
 		Image: null
 	Warhead@1Dam: SpreadDamage
-		Spread: 480
-		Falloff: 100, 100, 100, 95, 60, 25, 0
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
 		Damage: 75
 		Versus:
 			none: 90
@@ -847,7 +784,6 @@ SpiceExplosion:
 			wood: 50
 			light: 40
 			heavy: 30
-			concrete: 100
 			invulnerable: 0
 			cy: 20
 			harvester: 25
@@ -858,5 +794,4 @@ SpiceExplosion:
 		Size: 2,2
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
-		ImpactSound: EXPLLG5.WAV
 
