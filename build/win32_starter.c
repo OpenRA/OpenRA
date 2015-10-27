@@ -169,8 +169,7 @@ int main (int argc, char *argv[])
     GetProcAddress(GetModuleHandle(TEXT("user32.dll")), "SetProcessDPIAware");
   if (NULL != pfnSetProcessDPIAwareness) pfnSetProcessDPIAwareness(Process_System_DPI_Aware);
 
-  SetDllDirectory(".\\bin\\");
-  hinstLib = LoadLibrary("lua51.dll");
+  hinstLib = LoadLibrary(".\\bin\\lua51.dll");
   if (hinstLib != NULL)
   {
     luaL_newstate = (voidfunc*) GetProcAddress(hinstLib, "luaL_newstate");
