@@ -61,6 +61,7 @@ construction_yard:
 		Range: 5c768
 	Production:
 		Produces: Building, Upgrade
+	Exit:
 	Valued:
 		Cost: 2000
 	Tooltip:
