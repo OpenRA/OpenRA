@@ -22,33 +22,33 @@ namespace OpenRA
 		// Corners of the region
 		public readonly CPos TopLeft;
 		public readonly CPos BottomRight;
-		readonly TileShape shape;
+		readonly MapGridType gridType;
 
 		// Corners in map coordinates
-		// These will only equal TopLeft and BottomRight for TileShape.Rectangular
+		// These will only equal TopLeft and BottomRight for MapGridType.Rectangular
 		readonly MPos mapTopLeft;
 		readonly MPos mapBottomRight;
 
-		public CellRegion(TileShape shape, CPos topLeft, CPos bottomRight)
+		public CellRegion(MapGridType gridType, CPos topLeft, CPos bottomRight)
 		{
-			this.shape = shape;
+			this.gridType = gridType;
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
 
-			mapTopLeft = TopLeft.ToMPos(shape);
-			mapBottomRight = BottomRight.ToMPos(shape);
+			mapTopLeft = TopLeft.ToMPos(gridType);
+			mapBottomRight = BottomRight.ToMPos(gridType);
 		}
 
 		/// <summary>Expand the specified region with an additional cordon. This may expand the region outside the map borders.</summary>
 		public static CellRegion Expand(CellRegion region, int cordon)
 		{
-			var tl = new MPos(region.mapTopLeft.U - cordon, region.mapTopLeft.V - cordon).ToCPos(region.shape);
-			var br = new MPos(region.mapBottomRight.U + cordon, region.mapBottomRight.V + cordon).ToCPos(region.shape);
-			return new CellRegion(region.shape, tl, br);
+			var tl = new MPos(region.mapTopLeft.U - cordon, region.mapTopLeft.V - cordon).ToCPos(region.gridType);
+			var br = new MPos(region.mapBottomRight.U + cordon, region.mapBottomRight.V + cordon).ToCPos(region.gridType);
+			return new CellRegion(region.gridType, tl, br);
 		}
 
 		/// <summary>Returns the minimal region that covers at least the specified cells.</summary>
-		public static CellRegion BoundingRegion(TileShape shape, IEnumerable<CPos> cells)
+		public static CellRegion BoundingRegion(MapGridType shape, IEnumerable<CPos> cells)
 		{
 			if (cells == null || !cells.Any())
 				throw new ArgumentException("cells must not be null or empty.", "cells");
@@ -81,7 +81,7 @@ namespace OpenRA
 
 		public bool Contains(CPos cell)
 		{
-			var uv = cell.ToMPos(shape);
+			var uv = cell.ToMPos(gridType);
 			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
 		}
 
@@ -136,7 +136,7 @@ namespace OpenRA
 						return false;
 				}
 
-				current = new MPos(u, v).ToCPos(r.shape);
+				current = new MPos(u, v).ToCPos(r.gridType);
 				return true;
 			}
 

@@ -13,11 +13,11 @@ using System.IO;
 
 namespace OpenRA
 {
-	public enum TileShape { Rectangle, Diamond }
+	public enum MapGridType { Rectangular, RectangularIsometric }
 
 	public class MapGrid : IGlobalModData
 	{
-		public readonly TileShape Type = TileShape.Rectangle;
+		public readonly MapGridType Type = MapGridType.Rectangular;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly byte MaximumTerrainHeight = 0;
 		public readonly byte SubCellDefaultIndex = byte.MaxValue;

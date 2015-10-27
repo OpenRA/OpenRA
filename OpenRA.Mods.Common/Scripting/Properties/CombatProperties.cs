@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Attack the target actor. The target actor needs to be visible.")]
-		public void Attack(Actor targetActor, bool allowMove = true)
+		public void Attack(Actor targetActor, bool allowMove = true, bool forceAttack = false)
 		{
 			var target = Target.FromActor(targetActor);
 			if (!target.IsValidFor(Self) || target.Type == TargetType.FrozenActor)
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !Self.Owner.CanTargetActor(targetActor))
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
-			attackBase.AttackTarget(target, true, allowMove);
+			attackBase.AttackTarget(target, true, allowMove, forceAttack);
 		}
 	}
 }

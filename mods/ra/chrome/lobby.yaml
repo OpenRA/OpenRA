@@ -7,11 +7,10 @@ Background@SERVER_LOBBY:
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
-			X: 0
 			Y: 15
 			Align: Center
 			Width: PARENT_RIGHT
-			Height: 20
+			Height: 25
 			Font: Bold
 		Container@MAP_PREVIEW_ROOT:
 			X: PARENT_RIGHT-20-WIDTH
@@ -85,9 +84,9 @@ Background@SERVER_LOBBY:
 					ItemSpacing: 2
 					Children:
 						Container@CHAT_TEMPLATE:
+							X: 2
 							Width: PARENT_RIGHT-27
 							Height: 16
-							X: 2
 							Children:
 								Label@TIME:
 									X: 3

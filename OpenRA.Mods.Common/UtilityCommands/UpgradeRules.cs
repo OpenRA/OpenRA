@@ -2144,10 +2144,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					// Rename WithMuzzleFlash to WithMuzzleOverlay
 					if (depth == 1 && node.Key.StartsWith("WithMuzzleFlash"))
-						node.Key = node.Key.Replace("WithMuzzleFlash", "WithMuzzleOverlay");
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithMuzzleOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 
 					if (depth == 1 && node.Key.StartsWith("-WithMuzzleFlash"))
-						node.Key = node.Key.Replace("-WithMuzzleFlash", "-WithMuzzleOverlay");
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "-WithMuzzleOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 				}
 
 				// WithSiloAnimation received own Sequence property, idle sequence is only 1 frame long now
@@ -2240,6 +2250,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							atkmedic.Value.Nodes.Remove(hasorcrsr);
 
 						atkmedic.Key = "AttackFrontal";
+					}
+				}
+
+				// ChargeTime is now replaced by ChargeDelay.
+				// ChargeDelay uses 500 as a default now.
+				if (engineVersion < 20151022)
+				{
+					if (depth == 2 && parentKey == "PortableChrono" && node.Key == "ChargeTime")
+					{
+						node.Key = "ChargeDelay";
+
+						if (node.Value.Value != null)
+							node.Value.Value = (Exts.ParseIntegerInvariant(node.Value.Value) * 25).ToString();
 					}
 				}
 

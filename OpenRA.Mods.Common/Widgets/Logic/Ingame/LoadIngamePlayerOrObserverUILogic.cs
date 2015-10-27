@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						loadingObserverWidgets = true;
 						Game.RunAfterDelay(objectives != null ? objectives.GameOverDelay : 0, () =>
 						{
+							if (!Game.IsCurrentWorld(world))
+								return;
+
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});

@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var spawnSize = new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Bounds.Size);
 			var selectedSpawn = preview.SpawnPoints
-				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
+				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp, preview.GridType), i))
 				.Where(a => ((a.First - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();

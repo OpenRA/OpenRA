@@ -49,8 +49,8 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					Height: PARENT_BOTTOM - 30
 					Children:
 						Container@NICKNAME_TEMPLATE:
-							Height: 20
 							Width: PARENT_RIGHT-25
+							Height: 20
 							Children:
 								Image@INDICATOR:
 									ImageCollection: lobby-bits

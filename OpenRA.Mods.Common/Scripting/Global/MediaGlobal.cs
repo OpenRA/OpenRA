@@ -20,7 +20,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -62,16 +61,8 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!playlist.IsMusicAvailable)
 				return;
 
-			MusicInfo musicInfo;
-			if (string.IsNullOrEmpty(track))
-				musicInfo = playlist.GetNextSong();
-			else if (world.Map.Rules.Music.ContainsKey(track))
-				musicInfo = world.Map.Rules.Music[track];
-			else
-			{
-				Log.Write("lua", "Missing music track: " + track);
-				return;
-			}
+			var musicInfo = !string.IsNullOrEmpty(track) ? GetMusicTrack(track)
+				: playlist.GetNextSong();
 
 			if (func != null)
 			{
@@ -93,6 +84,28 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 				playlist.Play(musicInfo);
+		}
+
+		[Desc("Play track defined in music.yaml or map.yaml as background music." +
+			" If music is already playing use Media.StopMusic() to stop it" +
+			" and the background music will start automatically." +
+			" Keep the track empty to disable background music.")]
+		public void SetBackgroundMusic(string track = null)
+		{
+			if (!playlist.IsMusicAvailable)
+				return;
+
+			playlist.SetBackgroundMusic(string.IsNullOrEmpty(track) ? null : GetMusicTrack(track));
+		}
+
+		MusicInfo GetMusicTrack(string track)
+		{
+			var music = world.Map.Rules.Music;
+			if (music.ContainsKey(track))
+				return music[track];
+
+			Log.Write("lua", "Missing music track: " + track);
+			return null;
 		}
 
 		[Desc("Stop the current song.")]
