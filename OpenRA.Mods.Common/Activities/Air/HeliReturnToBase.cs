@@ -53,13 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 					return Util.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
 			}
 
-			var res = dest.TraitOrDefault<Reservable>();
-
-			if (res != null)
-			{
-				heli.UnReserve();
-				heli.Reservation = res.Reserve(dest, self, heli);
-			}
+			heli.MakeReservation(dest);
 
 			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
