@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WVec.Zero;
 
 			// Repulsion only applies when we're flying!
-			var altitude = CenterPosition.Z;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition).Length;
 			if (altitude != Info.CruiseAltitude.Length)
 				return WVec.Zero;
 
