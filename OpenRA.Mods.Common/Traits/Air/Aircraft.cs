@@ -441,7 +441,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
+		public bool IsMoving { get { return self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
