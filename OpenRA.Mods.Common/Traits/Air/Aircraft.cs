@@ -543,7 +543,10 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var res = order.TargetActor.TraitOrDefault<Reservable>();
 						if (res != null)
+						{
+							UnReserve();
 							Reservation = res.Reserve(order.TargetActor, self, this);
+						}
 
 						Action enter = () =>
 						{
