@@ -40,7 +40,6 @@ BaseRearAttackWpts = { GroundAttackWpt1.Location, BaseRearAttackWpt1.Location, B
 SovietHarvesters = { Harvester1, Harvester2, Harvester3 }
 HarvesterGuard = { HarvGuard1, HarvGuard2, HarvGuard3 }
 
-UBoats = { Uboat1, Uboat2, Uboat3, Uboat4, Uboat5, Uboat6 }
 UboatPatrolWpts1 = { UboatPatrolWpt1.Location, UboatPatrolWpt2.Location, UboatPatrolWpt3.Location, UboatPatrolWpt4.Location }
 UboatPatrolWpts2 = { UboatPatrolWpt4.Location, UboatPatrolWpt2.Location, UboatPatrolWpt1.Location }
 UBoatPatrolUnits = { "ss" }
@@ -182,8 +181,6 @@ SetupWorld = function()
 			end)
 		end)
 	end)
-
-	Utils.Do(UBoats, function(a) a.Stance = "Defend" end)
 
 	Utils.Do(Map.NamedActors, function(actor)
 		if actor.Owner == soviets and actor.HasProperty("StartBuildingRepairs") then

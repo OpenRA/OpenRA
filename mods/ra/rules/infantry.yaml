@@ -32,6 +32,8 @@ DOG:
 		Voice: Attack
 	AttackMove:
 		Voice: Move
+	AutoTarget:
+		InitialStance: AttackAnything
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
@@ -517,7 +519,8 @@ SNIPER:
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
-		InitialStance: ReturnFire
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	Armament@PRIMARY:
 		Weapon: Sniper
 	Armament@GARRISONED:
