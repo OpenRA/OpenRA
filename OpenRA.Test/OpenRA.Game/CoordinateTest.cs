@@ -20,7 +20,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Test CPos and MPos conversion and back again.")]
 		public void CoarseToMapProjection()
 		{
-			foreach (var gridType in Enum.GetValues(typeof(MapGridType)).Cast<MapGridType>())
+			foreach (var shape in Enum.GetValues(typeof(TileShape)).Cast<TileShape>())
 			{
 				for (var x = 0; x < 12; x++)
 				{
@@ -29,15 +29,15 @@ namespace OpenRA.Test
 						var cell = new CPos(x, y);
 						try
 						{
-							Assert.That(cell, Is.EqualTo(cell.ToMPos(gridType).ToCPos(gridType)));
+							Assert.That(cell, Is.EqualTo(cell.ToMPos(shape).ToCPos(shape)));
 						}
 						catch (Exception e)
 						{
 							// Known problem on isometric mods that shouldn't be visible to players as these are outside the map.
-							if (gridType == MapGridType.RectangularIsometric && y > x)
+							if (shape == TileShape.Diamond && y > x)
 								continue;
 
-							Console.WriteLine("Coordinate {0} on grid type {1} failed to convert back.".F(cell, gridType));
+							Console.WriteLine("Coordinate {0} on shape {1} failed to convert back.".F(cell, shape));
 							throw e;
 						}
 					}

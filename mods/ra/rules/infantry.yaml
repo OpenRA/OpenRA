@@ -39,7 +39,7 @@ DOG:
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		Range: 5c0
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -222,7 +222,7 @@ SPY:
 		UpgradeMinEnabledLevel: 1
 	IgnoresDisguise:
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		Range: 5c0
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -450,14 +450,6 @@ HIJACKER:
 	WithInfantryBody:
 		-IdleSequences:
 		StandSequences: stand
-	Crushable:
-		WarnProbability: 95
-	Cloak:
-		InitialDelay: 250
-		CloakDelay: 120
-		UncloakOnMove: true
-		CloakTypes: Cloak, Hijacker
-		IsPlayerPalette: true
 
 SHOK:
 	Inherits: ^Soldier
@@ -483,6 +475,17 @@ SHOK:
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: PortaTesla
+	Armament@CHARGE:
+		Weapon: PortaCharge
+		LocalOffset: 427,0,341
+		TargetStances: Ally
+		ForceTargetStances: None
+		Cursor: ability
+		OutsideRangeCursor: ability
+	AmmoPool:
+		PipCount: 0
+		SelfReloads: true
+		SelfReloadTicks: 70
 	AttackFrontal:
 		Voice: Attack
 	AttackMove:
@@ -535,7 +538,6 @@ SNIPER:
 		UncloakOnMove: true
 		IsPlayerPalette: true
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
 		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:

@@ -28,23 +28,23 @@ Trigger.OnAllKilled(Trucks, function()
 end)
 
 Trigger.OnKilled(Apwr, function(building)
-	BaseApwr.exists = false
+	BaseBuildings[1][4] = false
 end)
 
 Trigger.OnKilled(Barr, function(building)
-	BaseTent.exists = false
+	BaseBuildings[2][4] = false
 end)
 
 Trigger.OnKilled(Proc, function(building)
-	BaseProc.exists = false
+	BaseBuildings[3][4] = false
 end)
 
 Trigger.OnKilled(Weap, function(building)
-	BaseWeap.exists = false
+	BaseBuildings[4][4] = false
 end)
 
 Trigger.OnKilled(Apwr2, function(building)
-	BaseApwr2.exists = false
+	BaseBuildings[5][4] = false
 end)
 
 Trigger.OnRemovedFromWorld(Mcv, function()

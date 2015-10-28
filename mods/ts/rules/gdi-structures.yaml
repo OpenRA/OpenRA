@@ -361,7 +361,6 @@ GAPLUG:
 	RevealsShroud:
 		Range: 6c0
 	IonCannonPower:
-		Cursor: ioncannon
 		UpgradeTypes: plug.ioncannon
 		UpgradeMinEnabledLevel: 1
 		Icon: ioncannon

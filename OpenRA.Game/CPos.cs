@@ -47,12 +47,12 @@ namespace OpenRA
 			return ToMPos(map.Grid.Type);
 		}
 
-		public MPos ToMPos(MapGridType gridType)
+		public MPos ToMPos(TileShape shape)
 		{
-			if (gridType == MapGridType.Rectangular)
+			if (shape == TileShape.Rectangle)
 				return new MPos(X, Y);
 
-			// Convert from RectangularIsometric cell (x, y) position to rectangular map position (u, v)
+			// Convert from diamond cell (x, y) position to rectangular map position (u, v)
 			//  - The staggered rows make this fiddly (hint: draw a diagram!)
 			// (a) Consider the relationships:
 			//  - +1x (even -> odd) adds (0, 1) to (u, v)

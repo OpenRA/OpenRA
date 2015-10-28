@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -99,7 +100,7 @@ namespace OpenRA.Graphics
 				// The full map is visible in the editor
 				var width = map.MapSize.X * grid.TileSize.Width;
 				var height = map.MapSize.Y * grid.TileSize.Height;
-				if (wr.World.Map.Grid.Type == MapGridType.RectangularIsometric)
+				if (wr.World.Map.Grid.Type == TileShape.Diamond)
 					height /= 2;
 
 				mapBounds = new Rectangle(0, 0, width, height);
@@ -239,9 +240,10 @@ namespace OpenRA.Graphics
 			var tl = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(TopLeft)).ToMPos(map);
 			var br = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(BottomRight)).ToMPos(map);
 
-			// RectangularIsometric maps don't have straight edges, and so we need an additional
-			// cell margin to include the cells that are half visible on each edge.
-			if (map.Grid.Type == MapGridType.RectangularIsometric)
+			// Diamond tile shapes don't have straight edges, and so we need
+			// an additional cell margin to include the cells that are half
+			// visible on each edge.
+			if (map.Grid.Type == TileShape.Diamond)
 			{
 				tl = new PPos(tl.U - 1, tl.V - 1);
 				br = new PPos(br.U + 1, br.V + 1);

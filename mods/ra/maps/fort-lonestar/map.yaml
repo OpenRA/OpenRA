@@ -20,6 +20,10 @@ Type: Minigame
 
 Videos:
 
+Music:
+	rain: Rain (ambient)
+		Hidden: true
+
 Options:
 	Fog: True
 	Shroud: True
@@ -999,10 +1003,6 @@ Weapons:
 			Explosion: piffs
 
 Voices:
-
-Music:
-	rain: Rain (ambient)
-		Hidden: true
 
 Notifications:
 

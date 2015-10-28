@@ -101,7 +101,7 @@ SPEN:
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 	Targetable:
-		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -182,7 +182,7 @@ SYRD:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	Targetable:
-		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -387,6 +387,9 @@ TSLA:
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
+		UpgradeTypes: tesla
+		UpgradeMaxEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 3
 	Selectable:
 		Bounds: 24,24,0,16
 	SelectionDecorations:
@@ -403,7 +406,16 @@ TSLA:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
+		UpgradeTypes: tesla
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 3
 		Weapon: TeslaZap
+		LocalOffset: 0,0,427
+	Armament@Upgraded:
+		UpgradeTypes: tesla
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 3
+		Weapon: TeslaZap.Upgraded
 		LocalOffset: 0,0,427
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
@@ -414,6 +426,8 @@ TSLA:
 	DetectCloaked:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, TeslaBoost
 
 AGUN:
 	Inherits: ^Defense
@@ -477,7 +491,7 @@ DOME:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -925,7 +939,7 @@ PROC:
 	SelectionDecorations:
 		VisualBounds: 72,70,0,-2
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
 	Armor:
@@ -1121,7 +1135,7 @@ AFLD:
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
-		CameraActor: camera.spyplane
+		CameraActor: camera
 		CameraRemoveDelay: 150
 		UnitType: u2
 		QuantizedFacings: 8
@@ -1196,7 +1210,7 @@ POWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
@@ -1237,7 +1251,7 @@ APWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
