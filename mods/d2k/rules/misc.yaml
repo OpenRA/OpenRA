@@ -144,7 +144,7 @@ camera:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 6c768
+		Range: 8c0
 		Type: CenterPosition
 
 wormspawner:
@@ -164,7 +164,6 @@ upgrade.conyard:
 		Description: Unlocks new construction options
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: construction_yard
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:

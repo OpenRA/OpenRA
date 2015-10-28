@@ -126,6 +126,10 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
+	ProximityCaptor:
+		Types: Camera
+	DetectCloaked:
+		Range: 10c0
 	BodyOrientation:
 		QuantizedFacings: 1
 	WithSpriteBody:
@@ -133,20 +137,27 @@ CAMERA:
 		Image: camera
 
 camera.paradrop:
-	Inherits: CAMERA
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
 	RevealsShroud:
 		Range: 6c0
-
-camera.spyplane:
-	Inherits: CAMERA
-	DetectCloaked:
-		Range: 10c0
-		CloakTypes: Cloak, Hijacker
+		Type: CenterPosition
+	ProximityCaptor:
+		Types: Camera
 
 SONAR:
-	Inherits: camera.spyplane
-	-RevealsShroud:
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	ProximityCaptor:
+		Types: Sonar
 	DetectCloaked:
+		Range: 10c0
 		CloakTypes: Underwater
 
 FLARE:

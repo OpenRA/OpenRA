@@ -35,9 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ProductionInfo Info;
 		public string Faction { get; private set; }
 
+		readonly bool occupiesSpace;
+
 		public Production(ActorInitializer init, ProductionInfo info)
 		{
 			Info = info;
+			occupiesSpace = init.Self.Info.HasTraitInfo<IOccupySpaceInfo>();
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
@@ -57,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 				new OwnerInit(self.Owner),
 			};
 
-			if (self.OccupiesSpace != null)
+			if (occupiesSpace)
 			{
 				exit = self.Location + exitinfo.ExitCell;
 				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (exitinfo.MoveIntoWorld)
 					{
 						if (exitinfo.ExitDelay > 0)
-							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
+							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay));
 
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
 						newUnit.QueueActivity(new AttackMoveActivity(
@@ -119,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			var exit = self.Info.TraitInfos<ExitInfo>().Shuffle(self.World.SharedRandom)
 				.FirstOrDefault(e => CanUseExit(self, producee, e));
 
-			if (exit != null || self.OccupiesSpace == null)
+			if (exit != null || !occupiesSpace)
 			{
 				DoProduction(self, producee, exit, factionVariant);
 				return true;

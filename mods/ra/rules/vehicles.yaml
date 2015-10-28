@@ -563,6 +563,17 @@ TTNK:
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
+	Armament@charge:
+		Weapon: TTankCharge
+		LocalOffset: 0,0,213
+		TargetStances: Ally
+		ForceTargetStances: None
+		Cursor: ability
+		OutsideRangeCursor: ability
+	AmmoPool:
+		PipCount: 0
+		SelfReloads: true
+		SelfReloadTicks: 120
 	AttackFrontal:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner

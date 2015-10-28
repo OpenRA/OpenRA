@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public AmbientSound(Actor self, AmbientSoundInfo info)
 		{
-			if (self.OccupiesSpace != null)
+			if (self.Info.HasTraitInfo<IOccupySpaceInfo>())
 				Game.Sound.PlayLooped(info.SoundFile, self.CenterPosition);
 			else
 				Game.Sound.PlayLooped(info.SoundFile);

@@ -61,6 +61,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly SpriteFont spawnFont;
 		readonly Color spawnColor, spawnContrastColor;
 		readonly int2 spawnLabelOffset;
+		readonly int cellWidth;
+		readonly TileShape shape;
 
 		public Func<MapPreview> Preview = () => null;
 		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
@@ -81,6 +83,9 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+
+			shape = Game.ModData.Manifest.Get<MapGrid>().Type;
+			cellWidth = shape == TileShape.Diamond ? 2 : 1;
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -102,6 +107,9 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+
+			shape = other.shape;
+			cellWidth = other.cellWidth;
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -130,11 +138,10 @@ namespace OpenRA.Mods.Common.Widgets
 				tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public int2 ConvertToPreview(CPos cell, MapGridType gridType)
+		public int2 ConvertToPreview(CPos cell)
 		{
 			var preview = Preview();
-			var point = cell.ToMPos(gridType);
-			var cellWidth = gridType == MapGridType.RectangularIsometric ? 2 : 1;
+			var point = cell.ToMPos(shape);
 			var dx = (int)(previewScale * cellWidth * (point.U - preview.Bounds.Left));
 			var dy = (int)(previewScale * (point.V - preview.Bounds.Top));
 
@@ -173,11 +180,10 @@ namespace OpenRA.Mods.Common.Widgets
 				var colors = SpawnOccupants().ToDictionary(c => c.Key, c => c.Value.Color.RGB);
 
 				var spawnPoints = preview.SpawnPoints;
-				var gridType = preview.GridType;
 				foreach (var p in spawnPoints)
 				{
 					var owned = colors.ContainsKey(p);
-					var pos = ConvertToPreview(p, gridType);
+					var pos = ConvertToPreview(p);
 					var sprite = owned ? spawnClaimed : spawnUnclaimed;
 					var offset = new int2(sprite.Bounds.Width, sprite.Bounds.Height) / 2;
 

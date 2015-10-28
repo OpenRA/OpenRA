@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
-		readonly bool isRectangularIsometric;
+		readonly bool isDiamond;
 		readonly int cellWidth;
 		readonly int previewWidth;
 		readonly int previewHeight;
@@ -64,11 +64,11 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 
-			isRectangularIsometric = world.Map.Grid.Type == MapGridType.RectangularIsometric;
-			cellWidth = isRectangularIsometric ? 2 : 1;
+			isDiamond = world.Map.Grid.Type == TileShape.Diamond;
+			cellWidth = isDiamond ? 2 : 1;
 			previewWidth = world.Map.MapSize.X;
 			previewHeight = world.Map.MapSize.Y;
-			if (isRectangularIsometric)
+			if (isDiamond)
 				previewWidth = 2 * previewWidth - 1;
 		}
 
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					if (isRectangularIsometric)
+					if (isDiamond)
 					{
 						// Odd rows are shifted right by 1px
 						var dx = uv.V & 1;
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var colors = (int*)colorBytes;
 					foreach (var uv in world.Map.Unproject(puv))
 					{
-						if (isRectangularIsometric)
+						if (isDiamond)
 						{
 							// Odd rows are shifted right by 1px
 							var dx = uv.V & 1;
@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 								var uv = cell.First.ToMPos(world.Map.Grid.Type);
 								var color = cell.Second.ToArgb();
-								if (isRectangularIsometric)
+								if (isDiamond)
 								{
 									// Odd rows are shifted right by 1px
 									var dx = uv.V & 1;
@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var dy = (int)(previewScale * (uv.V - world.Map.Bounds.Top));
 
 			// Odd rows are shifted right by 1px
-			if (isRectangularIsometric && (uv.V & 1) == 1)
+			if (isDiamond && (uv.V & 1) == 1)
 				dx += 1;
 
 			return new int2(mapRect.X + dx, mapRect.Y + dy);

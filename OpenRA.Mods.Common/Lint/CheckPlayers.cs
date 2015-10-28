@@ -59,17 +59,9 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var kv in map.ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-				var ownerInit = actorReference.InitDict.GetOrDefault<OwnerInit>();
-				if (ownerInit == null)
-				{
-					emitError("Actor {0} is not owned by any player.".F(kv.Key));
-				}
-				else
-				{
-					var ownerName = ownerInit.PlayerName;
-					if (!playerNames.Contains(ownerName))
-						emitError("Actor {0} is owned by unknown player {1}.".F(actorReference.Type, ownerName));
-				}
+				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
+				if (!playerNames.Contains(ownerName))
+					emitError("Actor {0} is owned by unknown player {1}.".F(actorReference.Type, ownerName));
 			}
 		}
 	}

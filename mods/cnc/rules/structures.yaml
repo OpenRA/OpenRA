@@ -694,7 +694,6 @@ SAM:
 	Turreted:
 		ROT: 10
 		InitialFacing: 0
-		RealignDelay: -1
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
@@ -819,7 +818,7 @@ ATWR:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 255
-		Offset: 128,128,0
+		Offset: 128,128,-85
 	Armament@PRIMARY:
 		Weapon: TowerMissle
 		LocalOffset: 256,128,0, 256,-128,0

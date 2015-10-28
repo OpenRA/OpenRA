@@ -142,6 +142,7 @@ Cursors:
 			Start: 130
 		joystick-tl-blocked:
 			Start: 131
+
 # Cursors that need minimap variants
 		deploy:
 			Start: 59
@@ -179,6 +180,7 @@ Cursors:
 		sell2:
 			Start: 148
 			Length: 12
+
 	nopower.shp: cursor
 		powerdown-blocked:
 			Start: 0
@@ -186,6 +188,7 @@ Cursors:
 		powerdown:
 			Start: 1
 			Length: 3
+
 	attackmove.shp: cursor
 		attackmove:
 			Start: 0

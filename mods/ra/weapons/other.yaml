@@ -151,6 +151,21 @@ TeslaZap:
 			Wood: 60
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
+TeslaZap.Upgraded:
+	ReloadDelay: 3
+	Charges: true
+	Range: 9c512
+	Report: TESLA1.AUD
+	Projectile: TeslaZap
+		Image: litningupg
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 120
+		Versus:
+			None: 1000
+			Wood: 60
+		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
+
 PortaTesla:
 	ReloadDelay: 70
 	Range: 6c0
@@ -164,6 +179,22 @@ PortaTesla:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
+PortaCharge:
+	ReloadDelay: 70
+	Range: 2c0
+	Report: teslacharge.aud
+	Charges: yes
+	ValidStances: Ally
+	ValidTargets: TeslaBoost
+	Projectile: TeslaZap
+		Image: litningupg
+	Warhead@charge: GrantUpgrade
+		Range: 42
+		Duration: 75
+		Upgrades: tesla
+		ValidStances: Ally
+		ValidTargets: TeslaBoost
+
 TTankZap:
 	ReloadDelay: 120
 	Range: 7c0
@@ -176,6 +207,22 @@ TTankZap:
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
+
+TTankCharge:
+	ReloadDelay: 120
+	Range: 2c0
+	Report: teslacharge.aud
+	Charges: yes
+	ValidStances: Ally
+	ValidTargets: TeslaBoost
+	Projectile: TeslaZap
+		Image: litningupg
+	Warhead@charge: GrantUpgrade
+		Range: 42
+		Duration: 125
+		Upgrades: tesla, tesla, tesla
+		ValidStances: Ally
+		ValidTargets: TeslaBoost
 
 DogJaw:
 	ValidTargets: Infantry

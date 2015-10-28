@@ -54,7 +54,7 @@ NALASR:
 		Offset: 298,-171,0
 	AttackTurreted:
 	Armament:
-		Weapon: TurretLaserFire
+		Weapon: LaserFire2
 	RenderVoxels:
 	WithVoxelTurret:
 	Power:
@@ -87,7 +87,7 @@ NAOBEL:
 	RevealsShroud:
 		Range: 8c0
 	Armament:
-		Weapon: ObeliskLaserFire
+		Weapon: LaserFire
 		LocalOffset: 1400,200,1250
 	AttackCharge:
 		ChargeAudio: obelpowr.aud

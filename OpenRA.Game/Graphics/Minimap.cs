@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 	{
 		public static Bitmap TerrainBitmap(TileSet tileset, Map map, bool actualSize = false)
 		{
-			var isRectangularIsometric = map.Grid.Type == MapGridType.RectangularIsometric;
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
 
 			// Fudge the heightmap offset by adding as much extra as we need / can.
@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 			var height = b.Height + heightOffset;
 
 			var bitmapWidth = width;
-			if (isRectangularIsometric)
+			if (isDiamond)
 				bitmapWidth = 2 * bitmapWidth - 1;
 
 			if (!actualSize)
@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 						var type = tileset.GetTileInfo(mapTiles[uv]);
 						var leftColor = type != null ? type.LeftColor : Color.Black;
 
-						if (isRectangularIsometric)
+						if (isDiamond)
 						{
 							// Odd rows are shifted right by 1px
 							var dx = uv.V & 1;
@@ -81,7 +81,7 @@ namespace OpenRA.Graphics
 		static Bitmap AddStaticResources(TileSet tileset, Map map, Ruleset resourceRules, Bitmap terrainBitmap)
 		{
 			var terrain = new Bitmap(terrainBitmap);
-			var isRectangularIsometric = map.Grid.Type == MapGridType.RectangularIsometric;
+			var isDiamond = map.Grid.Type == TileShape.Diamond;
 			var b = map.Bounds;
 
 			// Fudge the heightmap offset by adding as much extra as we need / can
@@ -113,7 +113,7 @@ namespace OpenRA.Graphics
 							continue;
 
 						var color = tileset[tileset.GetTerrainIndex(res)].Color.ToArgb();
-						if (isRectangularIsometric)
+						if (isDiamond)
 						{
 							// Odd rows are shifted right by 1px
 							var dx = uv.V & 1;

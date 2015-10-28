@@ -28,25 +28,25 @@ AttackUnitTypes =
 {
 	Easy =
 	{
-		{ factory = HandOfNod, types = { "e1", "e1" } },
-		{ factory = HandOfNod, types = { "e1", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e1", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e3", "e3" } },
+		{ HandOfNod, { "e1", "e1" } },
+		{ HandOfNod, { "e1", "e3" } },
+		{ HandOfNod, { "e1", "e1", "e3" } },
+		{ HandOfNod, { "e1", "e3", "e3" } },
 	},
 	Normal =
 	{
-		{ factory = HandOfNod, types = { "e1", "e1", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e3", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e1", "e3", "e3" } },
-		{ factory = Airfield, types = { "bggy" } },
+		{ HandOfNod, { "e1", "e1", "e3" } },
+		{ HandOfNod, { "e1", "e3", "e3" } },
+		{ HandOfNod, { "e1", "e1", "e3", "e3" } },
+		{ Airfield, { "bggy" } },
 	},
 	Hard =
 	{
-		{ factory = HandOfNod, types = { "e1", "e1", "e3", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e1", "e1", "e3", "e3" } },
-		{ factory = HandOfNod, types = { "e1", "e1", "e3", "e3", "e3" } },
-		{ factory = Airfield, types = { "bggy" } },
-		{ factory = Airfield, types = { "ltnk" } },
+		{ HandOfNod, { "e1", "e1", "e3", "e3" } },
+		{ HandOfNod, { "e1", "e1", "e1", "e3", "e3" } },
+		{ HandOfNod, { "e1", "e1", "e3", "e3", "e3" } },
+		{ Airfield, { "bggy" } },
+		{ Airfield, { "ltnk" } },
 	}
 }
 AttackPaths =
@@ -68,9 +68,9 @@ Build = function(factory, units, action)
 end
 
 Attack = function()
-	local production = Utils.Random(AttackUnitTypes[Map.Difficulty])
+	local types = Utils.Random(AttackUnitTypes[Map.Difficulty])
 	local path = Utils.Random(AttackPaths)
-	Build(production.factory, production.types, function(units)
+	Build(types[1], types[2], function(units)
 		Utils.Do(units, function(unit)
 			if unit.Owner ~= enemy then return end
 			unit.Patrol(path, false)

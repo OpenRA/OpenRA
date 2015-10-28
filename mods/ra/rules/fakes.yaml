@@ -19,10 +19,6 @@ FACF:
 		Image: FACT
 	Valued:
 		Cost: 250
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
 
 WEAF:
 	Inherits: ^FakeBuilding
@@ -47,10 +43,6 @@ WEAF:
 		Sequence: build-top
 	Valued:
 		Cost: 200
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
 
 SYRF:
 	Inherits: ^FakeBuilding
@@ -66,7 +58,7 @@ SYRF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
-		TargetTypes: Ground, Water, Structure
+		TargetTypes: Ground, Water
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -76,17 +68,13 @@ SYRF:
 		Image: SYRD
 	Valued:
 		Cost: 100
-	Health:
-		HP: 1000
-	Armor:
-		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
 SPEF:
 	Inherits: ^FakeBuilding
 	Targetable:
-		TargetTypes: Ground, Water, Structure
+		TargetTypes: Ground, Water
 	Buildable:
 		BuildPaletteOrder: 910
 		Queue: Defense
@@ -107,10 +95,6 @@ SPEF:
 		Image: SPEN
 	Valued:
 		Cost: 100
-	Health:
-		HP: 1000
-	Armor:
-		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
@@ -135,10 +119,6 @@ DOMF:
 		Image: DOME
 	Valued:
 		Cost: 180
-	Health:
-		HP: 1000
-	Armor:
-		Type: Wood
 	RequiresPower:
 	DisabledOverlay:
 
@@ -163,10 +143,6 @@ ATEF:
 		Image: ATEK
 	Valued:
 		Cost: 150
-	Health:
-		HP: 400
-	Armor:
-		Type: Wood
 	RequiresPower:
 	DisabledOverlay:
 
@@ -193,12 +169,6 @@ PDOF:
 		HasMinibib: Yes
 	Valued:
 		Cost: 150
-	Health:
-		HP: 1000
-	Armor:
-		Type: Wood
-	Explodes:
-		DamageThreshold: 50
 	RequiresPower:
 	DisabledOverlay:
 
@@ -223,12 +193,6 @@ MSLF:
 		Image: MSLO
 	Valued:
 		Cost: 250
-	Health:
-		HP: 1000
-	Armor:
-		Type: Wood
-	Explodes:
-		DamageThreshold: 50
 	RequiresPower:
 	DisabledOverlay:
 

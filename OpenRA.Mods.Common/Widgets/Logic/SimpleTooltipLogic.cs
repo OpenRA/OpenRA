@@ -26,13 +26,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				labelText = getText();
-				var textDim = font.Measure(labelText);
-				if (textDim.X != cachedWidth)
+				var textWidth = font.Measure(labelText).X;
+				if (textWidth != cachedWidth)
 				{
-					label.Bounds.Width = textDim.X;
-					widget.Bounds.Width = 2 * label.Bounds.X + textDim.X;
-					label.Bounds.Height = textDim.Y;
-					widget.Bounds.Height = 4 * label.Bounds.Y + textDim.Y;
+					label.Bounds.Width = textWidth;
+					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
 				}
 			};
 

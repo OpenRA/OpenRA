@@ -19,8 +19,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Utils")]
 	public class UtilsGlobal : ScriptGlobal
 	{
+		readonly World world;
 		public UtilsGlobal(ScriptContext context)
-			: base(context) { }
+			: base(context)
+		{
+			world = context.World;
+		}
 
 		[Desc("Calls a function on every element in a collection.")]
 		public void Do(LuaValue[] collection, LuaFunction func)
@@ -102,7 +106,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the ticks formatted to HH:MM:SS.")]
 		public string FormatTime(int ticks, bool leadingMinuteZero = true)
 		{
-			return WidgetUtils.FormatTime(ticks, leadingMinuteZero, 40);
+			return WidgetUtils.FormatTime(ticks, leadingMinuteZero, world.Timestep);
 		}
 	}
 }

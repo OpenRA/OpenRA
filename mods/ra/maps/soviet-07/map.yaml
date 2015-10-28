@@ -50,7 +50,7 @@ Players:
 		Faction: allies
 		ColorRamp: 161,134,236
 		Allies: Soviet
-		Enemies: USSR, Creeps
+		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -943,8 +943,6 @@ Weapons:
 			Delay: 5
 
 Voices:
-
-Music:
 
 Notifications:
 

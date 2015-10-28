@@ -7,14 +7,14 @@ Container@SERVER_LOBBY:
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
-			Width: PARENT_RIGHT
+			Width: 800
 			Y: 0-25
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			Width: 800
+			Height: 540
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
@@ -122,13 +122,13 @@ Container@SERVER_LOBBY:
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 330
 		Button@DISCONNECT_BUTTON:
-			Y: PARENT_BOTTOM - 36
+			Y: 539
 			Width: 140
 			Height: 35
 			Text: Leave Game
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 36
+			Y: 539
 			Width: 140
 			Height: 35
 			Text: Start Game

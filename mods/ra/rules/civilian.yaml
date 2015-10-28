@@ -237,15 +237,15 @@ V19.Husk:
 	WithIdleOverlay:
 		StartSequence: fire-start
 		Sequence: fire-loop
+	-Health:
 	-Selectable:
 	-Targetable:
 	-Demolishable:
 
 BARL:
 	Inherits: ^TechBuilding
-	-Selectable:
-	CustomSelectionSize:
-		CustomBounds: 24,24
+	Selectable:
+		Priority: 0
 	Health:
 		HP: 10
 	Explodes:
@@ -264,9 +264,8 @@ BARL:
 
 BRL3:
 	Inherits: ^TechBuilding
-	-Selectable:
-	CustomSelectionSize:
-		CustomBounds: 24,24
+	Selectable:
+		Priority: 0
 	Health:
 		HP: 10
 	Explodes:

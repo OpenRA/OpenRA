@@ -22,19 +22,19 @@ RunInitialActivities = function()
 	end)
 
 	Trigger.OnKilled(Powr, function(building)
-		BasePower.exists = false
+		BaseBuildings[1][4] = false
 	end)
 
 	Trigger.OnKilled(Barr, function(building)
-		BaseBarracks.exists = false
+		BaseBuildings[2][4] = false
 	end)
 
 	Trigger.OnKilled(Proc, function(building)
-		BaseProc.exists = false
+		BaseBuildings[3][4] = false
 	end)
 
 	Trigger.OnKilled(Weap, function(building)
-		BaseWeaponsFactory.exists = false
+		BaseBuildings[4][4] = false
 	end)
 
 	Trigger.OnEnteredFootprint(VillageCamArea, function(actor, id)

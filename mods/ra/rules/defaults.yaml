@@ -268,8 +268,6 @@
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
-	DetectCloaked:
-		CloakTypes: Hijacker
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -506,9 +504,6 @@
 	-GivesBuildableArea:
 	Health:
 		HP: 100
-	Explodes:
-		Weapon: Demolish
-		DamageThreshold: 90
 	RevealsShroud:
 		Range: 4c0
 	Fake:

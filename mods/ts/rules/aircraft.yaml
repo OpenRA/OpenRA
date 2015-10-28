@@ -97,9 +97,7 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	Hovers:
 
 ORCAB:
 	Inherits: ^Plane
@@ -141,9 +139,7 @@ ORCAB:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	Hovers:
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -176,9 +172,7 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	Hovers:
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -208,9 +202,7 @@ TRNSPORT:
 		Range: 2c0
 		Type: CenterPosition
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	Hovers:
 	Selectable:
 		Bounds: 44,32,0,-8
 
@@ -293,9 +285,7 @@ APACHE:
 	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	Hovers:
 
 HUNTER:
 	Inherits@1: ^GainsExperience
@@ -338,4 +328,3 @@ HUNTER:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
-
