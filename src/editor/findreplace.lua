@@ -19,6 +19,7 @@ ide.findReplace = {
   scopeText = nil,
   foundString = false, -- was the string found for the last search
   curfilename = "", -- for search in files
+  inselection = false,
   occurrences = 0,
   files = 0,
 
@@ -662,7 +663,7 @@ local icons = {
   find = {
     internal = {
       ID_FINDNEXT, ID_SEPARATOR,
-      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND,
+      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND, ID_FINDOPTSELECTION,
       ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -677,7 +678,7 @@ local icons = {
   replace = {
     internal = {
       ID_FINDNEXT, ID_FINDREPLACENEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
-      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND,
+      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND, ID_FINDOPTSELECTION,
       ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -742,6 +743,18 @@ function findReplace:createToolbar()
           tb:Refresh()
         end)
     end
+  end
+
+  local optseltool = tb:FindTool(ID_FINDOPTSELECTION)
+  if optseltool then
+    optseltool:SetSticky(self.inselection)
+    tb:EnableTool(ID_FINDOPTSELECTION, self.inselection)
+    ctrl:Connect(ID_FINDOPTSELECTION, wx.wxEVT_COMMAND_MENU_SELECTED,
+      function (event)
+        self.inselection = not self.inselection
+        tb:FindTool(event:GetId()):SetSticky(self.inselection)
+        tb:Refresh()
+      end)
   end
 
   tb:SetToolDropDown(ID_FINDSETDIR, true)
@@ -913,6 +926,9 @@ function findReplace:createPanel()
   end
 
   local function findIncremental(event)
+    -- don't do any incremental search when search in selection
+    if self.inselection then return end
+
     if not self.infiles and self.backfocus then
       self:GetEditor():SetSelection(self.backfocus.position, self.backfocus.position)
     end
@@ -991,6 +1007,8 @@ function findReplace:createPanel()
       if ed and ed ~= self.oveditor then
         self.backfocus = {
           editor = ed,
+          spos = ed:GetSelectionStart(),
+          epos = ed:GetSelectionEnd(),
           position = (ed:GetSelectionStart() == ed:GetSelectionEnd()
             and ed:GetCurrentPos() or ed:GetSelectionStart())
         }
@@ -1079,6 +1097,10 @@ function findReplace:refreshPanel(replace, infiles)
     value = (proj and self:GetScopeMRU(proj..sep) or
       self:SetScope(proj or wx.wxGetCwd(), '*.'..(#ext > 0 and ext or '*')))
   end
+  if ed then -- check if there is any selection
+    self.inselection = ed:LineFromPosition(ed:GetSelectionStart()) ~=
+      ed:LineFromPosition(ed:GetSelectionEnd())
+  end
   self:refreshToolbar(value)
 
   local mgr = ide:GetUIManager()
@@ -1118,7 +1140,7 @@ function findReplace:Hide(restorepos)
     local editor = self.backfocus.editor
     -- restore original position for Shift-Esc or failed search
     if restorepos or self.foundString == false then
-      editor:GotoPos(self.backfocus.position)
+      editor:SetSelection(self.backfocus.spos, self.backfocus.epos)
     end
     editor:SetFocus()
   elseif self:IsPreview(self.reseditor) then -- there is a preview, go there

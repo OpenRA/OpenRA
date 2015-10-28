@@ -45,6 +45,7 @@ ide.config.toolbar.iconmap = {
   [ID.FINDSETDIR] = {"FIND-OPT-SETDIR", TR("Set search directory")},
   [ID.FINDOPTDIRECTION] = {"FIND-OPT-DOWN", TR("Search direction")},
   [ID.FINDOPTWRAPWROUND] = {"FIND-OPT-WRAP-AROUND", TR("Wrap around")},
+  [ID.FINDOPTSELECTION] = {"FIND-OPT-SELECTION", TR("Search in selection")},
   [ID.FINDOPTWORD] = {"FIND-OPT-WORD", TR("Match whole word")},
   [ID.FINDOPTCASE] = {"FIND-OPT-CASE-SENSITIVE", TR("Match case")},
   [ID.FINDOPTREGEX] = {"FIND-OPT-REGEX", TR("Regular expression")},
