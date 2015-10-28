@@ -67,35 +67,23 @@ local function setSearchFlags(editor)
   editor:SetSearchFlags(flags)
 end
 
-local function setTarget(editor, fDown, fAll, fWrap)
-  local selStart = editor:GetSelectionStart()
-  local selEnd = editor:GetSelectionEnd()
+local function setTarget(editor, flags)
+  flags = flags or {}
+  local fDown, fAll, fWrap = flags.Down, flags.All, flags.Wrap
   local len = editor:GetLength()
+  local selStart, selEnd = editor:GetSelectionStart(), editor:GetSelectionEnd()
   local s, e
   if fDown then
-    s = iff(fAll, selStart, selEnd)
-    e = len
-  else
-    s = 0
-    e = iff(fAll, selEnd, selStart)
+    e = flags.EndPos or len
+    s = math.min(e, math.max(flags.StartPos or 0, iff(fAll, selStart, selEnd)))
+  else -- reverse the range for the backward search
+    e = flags.StartPos or 0
+    s = math.max(e, math.min(flags.EndPos or len, iff(fAll, selEnd, selStart)))
   end
-  -- if going up and not search/replace All, then switch the range to
-  -- allow the next match to be properly marked
-  if not fDown and not fAll then s, e = e, s end
   -- if wrap around and search all requested, then search the entire document
   if fAll and fWrap then s, e = 0, len end
   editor:SetTargetStart(s)
   editor:SetTargetEnd(e)
-  return e
-end
-
-local function setTargetAll(editor)
-  local s = 0
-  local e = editor:GetLength()
-
-  editor:SetTargetStart(s)
-  editor:SetTargetEnd(e)
-
   return e
 end
 
@@ -203,12 +191,13 @@ function findReplace:Find(reverse)
   local editor = self:GetEditor()
   if editor and self:HasText() then
     local fDown = iff(reverse, not self:GetFlags().Down, self:GetFlags().Down)
+    local bf = self.inselection and self.backfocus or {}
     setSearchFlags(editor)
-    setTarget(editor, fDown)
+    setTarget(editor, {Down = fDown, StartPos = bf.spos, EndPos = bf.epos})
     local posFind = editor:SearchInTarget(findText)
     if (posFind == NOTFOUND) and self:GetFlags().Wrap then
-      editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
-      editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
+      editor:SetTargetStart(iff(fDown, bf.spos or 0, bf.epos or editor:GetLength()))
+      editor:SetTargetEnd(iff(fDown, bf.epos or editor:GetLength(), bf.spos or 0))
       posFind = editor:SearchInTarget(findText)
       msg = TR("Reached end of text and wrapped around.")
     end
@@ -238,7 +227,7 @@ function findReplace:FindAll(inFileRegister)
   local found = false
   local editor = self:GetEditor()
   if editor and self:HasText() then
-    local e = setTargetAll(editor)
+    local e = setTarget(editor, {All = true, Wrap = true})
 
     setSearchFlags(editor)
     while true do
@@ -276,8 +265,14 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       return false
     end
 
-    local endTarget = resultsEditor and setTargetAll(editor) or
-      setTarget(editor, self:GetFlags().Down, fReplaceAll, self:GetFlags().Wrap)
+    -- in the preview results always replace in the entire file
+    local bf = self.inselection and self.backfocus
+    local endTarget = (resultsEditor and setTarget(editor, {All = true, Wrap = true})
+      -- when selection is marked, only replace in the selection
+      or (bf and setTarget(editor, {Down = self:GetFlags().Down, All = fReplaceAll, StartPos = bf.spos, EndPos = bf.epos}))
+      -- in all other cases, replace as selected
+      or setTarget(editor, {Down = self:GetFlags().Down, All = fReplaceAll, Wrap = self:GetFlags().Wrap})
+    )
 
     if fReplaceAll then
       if resultsEditor then editor:SetIndicatorCurrent(indicator.SEARCHMATCH) end
@@ -929,7 +924,7 @@ function findReplace:createPanel()
     -- don't do any incremental search when search in selection
     if self.inselection then return end
 
-    if not self.infiles and self.backfocus then
+    if not self.infiles and self.backfocus and self.backfocus.position then
       self:GetEditor():SetSelection(self.backfocus.position, self.backfocus.position)
     end
     -- don't search when used with "infiles", but still trigger autocomplete
