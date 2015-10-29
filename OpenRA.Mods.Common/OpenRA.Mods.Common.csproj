@@ -177,6 +177,10 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="HitShapes\IHitShape.cs" />
+    <Compile Include="HitShapes\Rectangle.cs" />
+    <Compile Include="HitShapes\Capsule.cs" />
+    <Compile Include="HitShapes\Circle.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
