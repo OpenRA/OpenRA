@@ -308,7 +308,10 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           editor:SetTargetStart(editor:GetTargetEnd())
           -- adjust the endTarget as the position could have changed;
           -- can't simply subtract text length as it could be a regexp
-          endTarget = endTarget + (editor:GetLength() - length)
+          local adjusted = editor:GetLength() - length
+          endTarget = endTarget + adjusted
+          -- also adjust the selection as the end marker can move after replacement
+          if bf and bf.epos then bf.epos = bf.epos + adjusted end
           editor:SetTargetEnd(endTarget)
           posFind = editor:SearchInTarget(findText)
         end
@@ -324,10 +327,13 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
       and editor:SearchInTarget(findText) ~= NOTFOUND then
+        local length = editor:GetLength()
         local start = editor:GetSelectionStart()
         local replaced = self:GetFlags().RegularExpr
           and editor:ReplaceTargetRE(replaceText)
           or editor:ReplaceTarget(replaceText)
+        local adjusted = editor:GetLength() - length
+        if bf and bf.epos then bf.epos = bf.epos + adjusted end
 
         editor:SetSelection(start, start + replaced)
         self.foundString = false
