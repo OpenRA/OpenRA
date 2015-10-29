@@ -52,7 +52,14 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false, timestep);
 				var text = Format.F(p.Info.Description, time);
-				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].Self.Owner.Color.RGB : Color.White;
+				var self = p.Instances[0].Self;
+				var playerColor = self.Owner.Color.RGB;
+
+				if (Game.Settings.Game.UsePlayerStanceColors)
+					playerColor = self.Owner.PlayerStanceColor(self);
+
+				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
+
 				return Pair.New(text, color);
 			}).ToArray();
 		}
