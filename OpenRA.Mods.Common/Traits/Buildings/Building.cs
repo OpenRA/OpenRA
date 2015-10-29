@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> { }
 	public class GivesBuildableArea { }
 
-	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
+	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo, UsesInit<LocationInit>
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
@@ -114,6 +115,16 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		{
+			if (!RequiresBaseProvider)
+				yield break;
+
+			foreach (var a in w.ActorsWithTrait<BaseProvider>())
+				foreach (var r in a.Trait.RenderAfterWorld(wr))
+					yield return r;
+		}
 	}
 
 	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, ITargetablePositions
