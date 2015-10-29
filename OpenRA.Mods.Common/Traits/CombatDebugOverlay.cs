@@ -12,7 +12,6 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -48,12 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
-			if (healthInfo != null)
-				RangeCircleRenderable.DrawRangeCircle(wr, self.CenterPosition, healthInfo.Radius,
-					1, Color.Red, 0, Color.Red);
-
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var iz = 1 / wr.Viewport.Zoom;
+
+			if (healthInfo != null)
+				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
 
 			if (blockInfo != null)
 			{

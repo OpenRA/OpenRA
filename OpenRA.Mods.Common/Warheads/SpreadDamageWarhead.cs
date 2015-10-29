@@ -66,9 +66,8 @@ namespace OpenRA.Mods.Common.Warheads
 				if (healthInfo == null)
 					continue;
 
-				var localModifiers = damageModifiers;
-				var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
-				localModifiers = localModifiers.Append(GetDamageFalloff(distance));
+				var distance = healthInfo.Shape.DistanceFromEdge(pos, victim);
+				var localModifiers = damageModifiers.Append(GetDamageFalloff(distance.Length));
 
 				DoImpact(victim, firedBy, localModifiers);
 			}
