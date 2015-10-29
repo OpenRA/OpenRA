@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -179,6 +180,24 @@ namespace OpenRA
 
 				return false;
 			}
+		}
+
+		public Color PlayerStanceColor(Actor a, bool isForSelectionBar = false)
+		{
+			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
+			if (player != null && !player.Spectating)
+			{
+				if (a.Owner == player)
+					return System.Drawing.Color.LimeGreen;
+
+				if (a.Owner.IsAlliedWith(player))
+					return System.Drawing.Color.Yellow;
+
+				if (!a.Owner.NonCombatant)
+					return System.Drawing.Color.Red;
+			}
+
+			return isForSelectionBar ? System.Drawing.Color.Tan : System.Drawing.Color.WhiteSmoke;
 		}
 
 		#region Scripting interface

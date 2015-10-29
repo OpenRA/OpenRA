@@ -304,6 +304,8 @@ namespace OpenRA.Widgets
 					return TogglePixelDouble();
 				else if (key == Game.Settings.Keys.ToggleMuteKey)
 					return ToggleMute();
+				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
+					return TogglePlayerStanceColors();
 			}
 
 			return false;
@@ -360,6 +362,7 @@ namespace OpenRA.Widgets
 		{
 			Game.Settings.Graphics.PixelDouble ^= true;
 			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+
 			return true;
 		}
 
@@ -377,6 +380,13 @@ namespace OpenRA.Widgets
 				Game.Sound.UnmuteAudio();
 				Game.Debug("Audio unmuted");
 			}
+
+			return true;
+		}
+
+		bool TogglePlayerStanceColors()
+		{
+			Game.Settings.Game.UsePlayerStanceColors ^= true;
 
 			return true;
 		}
