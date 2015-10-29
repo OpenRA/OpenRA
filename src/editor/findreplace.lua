@@ -199,7 +199,10 @@ function findReplace:Find(reverse)
       editor:SetTargetStart(iff(fDown, bf.spos or 0, bf.epos or editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, bf.epos or editor:GetLength(), bf.spos or 0))
       posFind = editor:SearchInTarget(findText)
-      msg = TR("Reached end of text and wrapped around.")
+      msg = (self.inselection
+        and TR("Reached end of selection and wrapped around.")
+        or TR("Reached end of text and wrapped around.")
+      )
     end
     if posFind == NOTFOUND then
       self.foundString = false
