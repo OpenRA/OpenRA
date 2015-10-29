@@ -11,14 +11,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows the player to execute build orders.", " Attach this to the player actor.")]
-	public class PlaceBuildingInfo : ITraitInfo, IPlaceBuildingDecorationInfo
+	public class PlaceBuildingInfo : ITraitInfo
 	{
 		[Desc("Palette to use for rendering the placement sprite.")]
 		[PaletteReference] public readonly string Palette = "terrain";
@@ -30,16 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string NewOptionsNotification = "NewOptions";
 
 		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }
-
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
-		{
-			if (!ai.TraitInfo<BuildingInfo>().RequiresBaseProvider)
-				yield break;
-
-			foreach (var a in w.ActorsWithTrait<BaseProvider>())
-				foreach (var r in a.Trait.RenderAfterWorld(wr))
-					yield return r;
-		}
 	}
 
 	public class PlaceBuilding : IResolveOrder
