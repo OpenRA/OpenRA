@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
-	class ProductionBarInfo : ITraitInfo
+	class ProductionBarInfo : ITraitInfo, Requires<ProductionInfo>
 	{
 		[Desc("Production queue type, for actors with multiple queues.")]
 		public readonly string ProductionType = null;
