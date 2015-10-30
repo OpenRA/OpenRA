@@ -335,6 +335,7 @@ icon:
 	clustermissile: mltiicon
 	ioncannon: ioncicon
 	hunterseeker: detnicon
+	empcannon: pulsicon
 
 clustermissile:
 	up: null # TODO
