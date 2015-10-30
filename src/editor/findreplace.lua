@@ -1004,25 +1004,39 @@ function findReplace:createPanel()
   end
 
   -- remember the current position in the editor when setting focus on find
+  local function refreshEditorInfo()
+    local ed = self:GetEditor()
+    if ed and ed ~= self.oveditor then
+      local spos, epos = ed:GetSelectionStart(), ed:GetSelectionEnd()
+      if not self.backfocus or self.backfocus.editor ~= ed then
+        self.backfocus = { editor = ed, spos = spos, epos = epos }
+      end
+      local bf = self.backfocus
+      bf.position = spos == epos and ed:GetCurrentPos() or spos
+      local inselection = ed:LineFromPosition(spos) ~= ed:LineFromPosition(epos)
+
+      -- when the focus is changed, don't remove current "inselection" status as the
+      -- selection may change to highlight the match; not doing this makes it difficult
+      -- to switch between searching and replacing without losing the current match
+      if inselection and (not self.inselection or bf.spos ~= spos or bf.epos ~= epos) then
+        bf.spos = spos
+        bf.epos = epos
+        self.inselection = inselection
+        self:refreshToolbar()
+      end
+    end
+  end
   findCtrl:Connect(wx.wxEVT_SET_FOCUS,
     function(event)
       event:Skip()
-      local ed = self:GetEditor()
-      if ed and ed ~= self.oveditor then
-        self.backfocus = {
-          editor = ed,
-          spos = ed:GetSelectionStart(),
-          epos = ed:GetSelectionEnd(),
-          position = (ed:GetSelectionStart() == ed:GetSelectionEnd()
-            and ed:GetCurrentPos() or ed:GetSelectionStart())
-        }
-      end
+      refreshEditorInfo()
     end)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, findIncremental)
   findCtrl:Connect(wx.wxEVT_CHAR, charHandle)
   replaceCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
       event:Skip()
+      refreshEditorInfo()
       -- hide the replace hint; should be done with SetHint method,
       -- but it's not yet available in wxlua 2.8.12
       if replaceCtrl:GetValue() == replaceHintText then replaceCtrl:ChangeValue('') end
@@ -1102,6 +1116,7 @@ function findReplace:refreshPanel(replace, infiles)
       self:SetScope(proj or wx.wxGetCwd(), '*.'..(#ext > 0 and ext or '*')))
   end
   if ed then -- check if there is any selection
+    self.backfocus = nil
     self.inselection = ed:LineFromPosition(ed:GetSelectionStart()) ~=
       ed:LineFromPosition(ed:GetSelectionEnd())
   end
