@@ -177,6 +177,7 @@
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	CombatDebugOverlay:
 	HiddenUnderShroud:
 	AppearsOnRadar:
 	Building:

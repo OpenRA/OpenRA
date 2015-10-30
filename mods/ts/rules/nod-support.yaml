@@ -19,6 +19,7 @@ NAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
+		Height: 640
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
