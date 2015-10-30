@@ -95,6 +95,7 @@ ide = {
       jumptocurrentfunction = true,
       showanonymous = '~',
       showcurrentfunction = true,
+      showcompact = false,
       showflat = false,
       showmethodindicator = false,
       showonefile = false,

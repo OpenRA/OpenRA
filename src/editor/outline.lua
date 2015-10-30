@@ -207,7 +207,8 @@ local function outlineRefresh(editor, force)
   if outcfg.sort then -- resort items for all parents that have been modified
     for item in pairs(resort) do ctrl:SortChildren(item) end
   end
-  ctrl:ExpandAllChildren(fileitem)
+  if outcfg.showcompact then ctrl:Expand(fileitem) else ctrl:ExpandAllChildren(fileitem) end
+
   -- scroll to the fileitem, but only if it's not a root item (as it's hidden)
   if fileitem:GetValue() ~= ctrl:GetRootItem():GetValue() then
     ctrl:ScrollTo(fileitem)
@@ -494,7 +495,11 @@ local package = ide:AddPackage('core.outline', {
         -- `PAGE_CHANGED` handler for the notebook.
         ide:DoWhenIdle(function()
             ctrl:SetItemBold(fileitem, true)
-            ctrl:ExpandAllChildren(fileitem)
+            if (ide.config.outline or {}).showcompact then
+              ctrl:Expand(fileitem)
+            else
+              ctrl:ExpandAllChildren(fileitem)
+            end
             ctrl:ScrollTo(fileitem)
             ctrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
           end)
