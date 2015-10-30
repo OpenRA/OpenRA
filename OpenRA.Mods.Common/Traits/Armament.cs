@@ -24,9 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, IRulesetLoaded, IArmamentInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
+		string IArmamentInfo.Name { get { return Name; } }
 
 		[WeaponReference, FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
@@ -91,9 +92,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
+		public Lazy<Turreted> Turret;
 
 		readonly Actor self;
-		Lazy<Turreted> turret;
 		Lazy<BodyOrientation> coords;
 		Lazy<AmmoPool> ammoPool;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			// We can't resolve these until runtime
-			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			Turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
 			rangeModifiers = Exts.Lazy(() => self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier()));
@@ -236,6 +237,9 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(m => m.GetReloadModifier());
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
+
+				foreach (var nfs in self.TraitsImplementing<INotifyFiredSalvo>())
+					nfs.FiredSalvo(Info);
 			}
 
 			return barrel;
@@ -248,11 +252,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
-			if (turret.Value != null)
+			if (Turret.Value != null)
 			{
-				var turretOrientation = coords.Value.QuantizeOrientation(self, turret.Value.LocalOrientation(self));
+				var turretOrientation = coords.Value.QuantizeOrientation(self, Turret.Value.LocalOrientation(self));
 				localOffset = localOffset.Rotate(turretOrientation);
-				localOffset += turret.Value.Offset;
+				localOffset += Turret.Value.Offset;
 			}
 
 			return coords.Value.LocalToWorld(localOffset.Rotate(bodyOrientation));
@@ -261,8 +265,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
 			var orientation = self.Orientation + WRot.FromYaw(b.Yaw);
-			if (turret.Value != null)
-				orientation += turret.Value.LocalOrientation(self);
+			if (Turret.Value != null)
+				orientation += Turret.Value.LocalOrientation(self);
 			return orientation;
 		}
 

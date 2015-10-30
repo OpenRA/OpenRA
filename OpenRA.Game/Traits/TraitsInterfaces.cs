@@ -370,6 +370,10 @@ namespace OpenRA.Traits
 
 	public interface IGameOver { void GameOver(World world); }
 
+	public interface IArmamentInfo { string Name { get; } }
+
+	public interface INotifyFiredSalvo { void FiredSalvo(IArmamentInfo ai); }
+
 	public interface IWarhead
 	{
 		int Delay { get; }
