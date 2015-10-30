@@ -99,7 +99,8 @@ namespace OpenRA.Mods.D2k.Traits
 			targetCountdown = Info.TargetRescanInterval;
 
 			// If close enough, we don't care about other actors.
-			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange).FirstOrDefault(x => x.Info.HasTraitInfo<AttractsWormsInfo>());
+			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange)
+				.FirstOrDefault(x => attackTrait.HasAnyValidWeapons(Target.FromActor(x)));
 			if (target != null)
 			{
 				self.CancelActivity();

@@ -563,10 +563,10 @@ Heal:
 
 WormJaw:
 	ReloadDelay: 10
-	InvalidTargets: Structure
+	InvalidTargets: Structure, Infantry
 	Range: 1c512
 	Warhead@1Dam: SpreadDamage
-		InvalidTargets: Structure
+		InvalidTargets: Structure, Infantry
 		Spread: 768
 		Falloff: 100, 100, 0
 		Damage: 10000
