@@ -228,7 +228,7 @@ Demolish:
 
 Claw:
 	ReloadDelay: 30
-	Range: 1c0
+	Range: 1c512
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -244,7 +244,7 @@ Claw:
 
 Mandible:
 	ReloadDelay: 10
-	Range: 1c0
+	Range: 1c512
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
