@@ -32,17 +32,24 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
-	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
+	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged
 	{
 		[Sync] public CPos Location;
 		public RallyPointInfo Info;
+		public string PaletteName { get; private set; }
 
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Info = info;
 			Location = self.Location + info.Offset;
-			var palette = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
-			self.World.AddFrameEndTask(w => w.Add(new RallyPointIndicator(self, palette)));
+			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
+			self.World.Add(new RallyPointIndicator(self, this));
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			if (Info.IsPlayerPalette)
+				PaletteName = Info.Palette + newOwner.InternalName;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
