@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				var devMode = world.LocalPlayer.PlayerActor.TraitOrDefault<DeveloperMode>();
 				if (devMode != null && devMode.ShowCombatGeometry)
-					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Spread);
+					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Spread, DebugOverlayColor);
 			}
 
 			var range = Spread[0];

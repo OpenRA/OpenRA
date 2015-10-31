@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				var devMode = world.LocalPlayer.PlayerActor.TraitOrDefault<DeveloperMode>();
 				if (devMode != null && devMode.ShowCombatGeometry)
-					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range);
+					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range, DebugOverlayColor);
 			}
 
 			// This only finds actors where the center is within the search radius,
