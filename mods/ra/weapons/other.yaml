@@ -199,6 +199,7 @@ Heal:
 		Spread: 213
 		Damage: -50
 		ValidTargets: Infantry
+		DebugOverlayColor: 00FF00
 
 Repair:
 	ReloadDelay: 80
@@ -211,6 +212,7 @@ Repair:
 		Spread: 213
 		Damage: -20
 		ValidTargets: Repair
+		DebugOverlayColor: 00FF00
 
 Crush:
 	Warhead@1Dam: SpreadDamage
