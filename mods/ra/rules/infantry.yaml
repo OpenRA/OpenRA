@@ -460,6 +460,8 @@ HIJACKER:
 		UncloakOnMove: true
 		CloakTypes: Cloak, Hijacker
 		IsPlayerPalette: true
+	Mobile:
+		Speed: 85
 
 SHOK:
 	Inherits: ^Soldier
