@@ -205,6 +205,8 @@
 	Guard:
 		Voice: Guard
 	Guardable:
+	DetectCloaked:
+		Range: 1c384
 	DeathSounds:
 		DeathTypes: ExplosionDeath, SoundDeath, SmallExplosionDeath, BulletDeath
 	MustBeDestroyed:
