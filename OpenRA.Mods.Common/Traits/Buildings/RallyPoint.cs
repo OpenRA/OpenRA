@@ -38,10 +38,15 @@ namespace OpenRA.Mods.Common.Traits
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
+		public void ResetLocation(Actor self)
+		{
+			Location = self.Location + Info.Offset;
+		}
+
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Info = info;
-			Location = self.Location + info.Offset;
+			ResetLocation(self);
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 			self.World.Add(new RallyPointIndicator(self, this));
 		}
@@ -50,6 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.IsPlayerPalette)
 				PaletteName = Info.Palette + newOwner.InternalName;
+
+			ResetLocation(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
