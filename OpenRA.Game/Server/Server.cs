@@ -408,7 +408,19 @@ namespace OpenRA.Server
 
 		void SetOrderLag()
 		{
-			LobbyInfo.GlobalSettings.OrderLatency = LobbyInfo.IsSinglePlayer ? 1 : 3;
+			int latency = 1;
+			if (!LobbyInfo.IsSinglePlayer)
+			{
+				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				GameSpeed speed;
+				if (gameSpeeds.Speeds.TryGetValue(LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+					latency = speed.OrderLatency;
+				else
+					latency = 3;
+			}
+
+			LobbyInfo.GlobalSettings.OrderLatency = latency;
+
 			SyncLobbyGlobalSettings();
 		}
 

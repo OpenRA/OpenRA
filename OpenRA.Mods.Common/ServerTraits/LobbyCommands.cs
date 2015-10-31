@@ -695,7 +695,8 @@ namespace OpenRA.Mods.Common.Server
 
 						server.LobbyInfo.GlobalSettings.GameSpeedType = s;
 						server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
-						server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+						server.LobbyInfo.GlobalSettings.OrderLatency =
+							server.LobbyInfo.IsSinglePlayer ? 1 : speed.OrderLatency;
 
 						server.SyncLobbyInfo();
 						server.SendMessage("{0} changed Game Speed to {1}.".F(client.Name, speed.Name));
