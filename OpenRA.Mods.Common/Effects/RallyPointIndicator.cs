@@ -20,16 +20,13 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Actor building;
 		readonly RallyPoint rp;
-		readonly string paletteName;
 		readonly Animation flag;
 		readonly Animation circles;
 
-		public RallyPointIndicator(Actor building, string paletteName)
+		public RallyPointIndicator(Actor building, RallyPoint rp)
 		{
 			this.building = building;
-			this.paletteName = paletteName;
-
-			rp = building.Trait<RallyPoint>();
+			this.rp = rp;
 
 			flag = new Animation(building.World, rp.Info.Image);
 			flag.PlayRepeating(rp.Info.FlagSequence);
@@ -63,7 +60,7 @@ namespace OpenRA.Mods.Common.Effects
 				return SpriteRenderable.None;
 
 			var pos = wr.World.Map.CenterOfCell(cachedLocation);
-			var palette = wr.Palette(paletteName);
+			var palette = wr.Palette(rp.PaletteName);
 			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
 		}
 	}
