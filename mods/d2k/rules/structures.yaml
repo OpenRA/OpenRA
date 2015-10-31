@@ -168,9 +168,6 @@ barracks:
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: barracks.harkonnen
 		Factions: harkonnen
-	ProvidesPrerequisite@medics:
-		Prerequisite: barracks.medics
-		Factions: atreides, ordos
 	Power:
 		Amount: -30
 	RenderSprites:

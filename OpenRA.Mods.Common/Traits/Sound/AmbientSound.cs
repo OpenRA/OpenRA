@@ -13,22 +13,61 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Plays a looping audio file at the actor position. Attach this to the `World` actor to cover the whole map.")]
-	class AmbientSoundInfo : ITraitInfo
+	class AmbientSoundInfo : UpgradableTraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string SoundFile = null;
 
-		public object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
+		[Desc("Interval between playing the sound (in ticks).")]
+		public readonly int Interval = 0;
+
+		public override object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
 	}
 
-	class AmbientSound
+	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick
 	{
+		ISound currentSound;
+		bool wasDisabled = true;
+		int interval;
+
 		public AmbientSound(Actor self, AmbientSoundInfo info)
+			: base(info)
 		{
+			interval = info.Interval;
+		}
+
+		public void Tick(Actor self)
+		{
+			if (IsTraitDisabled)
+			{
+				Game.Sound.StopSound(currentSound);
+				currentSound = null;
+				wasDisabled = true;
+				return;
+			}
+
+			if (wasDisabled && Info.Interval <= 0)
+			{
+				if (self.OccupiesSpace != null)
+					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
+				else
+					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
+			}
+
+			wasDisabled = false;
+
+			if (Info.Interval <= 0)
+				return;
+
+			if (interval-- > 0)
+				return;
+
+			interval = Info.Interval;
+
 			if (self.OccupiesSpace != null)
-				Game.Sound.PlayLooped(info.SoundFile, self.CenterPosition);
+				Game.Sound.Play(Info.SoundFile, self.CenterPosition);
 			else
-				Game.Sound.PlayLooped(info.SoundFile);
+				Game.Sound.Play(Info.SoundFile);
 		}
 	}
 }
