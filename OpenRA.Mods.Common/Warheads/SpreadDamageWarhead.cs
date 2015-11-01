@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly WDist Spread = new WDist(43);
 
 		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Damage percentage at each range step")]
-		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
+		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
@@ -65,13 +65,13 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(victim, firedBy))
 					continue;
 
-				var localModifiers = damageModifiers;
 				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo != null)
-				{
-					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
-					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
-				}
+				if (healthInfo == null)
+					continue;
+
+				var localModifiers = damageModifiers;
+				var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
+				localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 
 				DoImpact(victim, firedBy, localModifiers);
 			}
