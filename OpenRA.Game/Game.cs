@@ -253,6 +253,13 @@ namespace OpenRA
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
+		public static bool IsModInstalled(string modId)
+		{
+			return Manifest.AllMods[modId].RequiresMods.All(mod => ModMetadata.AllMods.ContainsKey(mod.Key)
+				&& ModMetadata.AllMods[mod.Key].Version == mod.Value
+				&& IsModInstalled(mod.Key));
+		}
+
 		public static void InitializeMod(string mod, Arguments args)
 		{
 			// Clear static state if we have switched mods
@@ -276,8 +283,8 @@ namespace OpenRA
 				ModData.Dispose();
 			ModData = null;
 
-			// Fall back to default if the mod doesn't exist
-			if (!ModMetadata.AllMods.ContainsKey(mod))
+			// Fall back to default if the mod doesn't exist or has missing prerequisites.
+			if (!ModMetadata.AllMods.ContainsKey(mod) || !IsModInstalled(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);

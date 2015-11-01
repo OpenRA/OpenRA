@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
 		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
 		readonly Cache<ModMetadata, bool> modInstallStatus;
+		readonly Cache<string, bool> modPrerequisitesFulfilled;
 		readonly Widget modChooserPanel;
 		readonly ButtonWidget loadButton;
 		readonly SheetBuilder sheetBuilder;
@@ -38,6 +39,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget)
 		{
+			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
+			modPrerequisitesFulfilled = new Cache<string, bool>(Game.IsModInstalled);
+
 			modChooserPanel = widget;
 			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
@@ -92,8 +96,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				catch (Exception) { }
 			}
-
-			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
 
 			ModMetadata initialMod;
 			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
@@ -156,11 +158,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
 
-			loadButton.Text = modInstallStatus[mod] ? "Load Mod" : "Install Assets";
+			loadButton.Text = !modPrerequisitesFulfilled[mod.Id] ? "Install mod" :
+				modInstallStatus[mod] ? "Load Mod" : "Install Assets";
 		}
 
 		void LoadMod(ModMetadata mod)
 		{
+			if (!modPrerequisitesFulfilled[mod.Id])
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "modId", mod.Id }
+				};
+
+				Ui.OpenWindow("INSTALL_MOD_PANEL", widgetArgs);
+				return;
+			}
+
 			if (!modInstallStatus[mod])
 			{
 				var widgetArgs = new WidgetArgs
