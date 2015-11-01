@@ -303,6 +303,8 @@ MISS:
 		Cost: 2000
 	Health:
 		HP: 400
+	RevealsShroud:
+		Range: 3c0
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -320,6 +322,8 @@ BIO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	RevealsShroud:
+		Range: 3c0
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
