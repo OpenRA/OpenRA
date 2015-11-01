@@ -899,10 +899,13 @@ Rules:
 			ShowOwnerRow: false
 	APWR:
 		Buildable:
-			Prerequisites: ~disabled
+			Prerequisites: ~structures.allies
 	ARTY:
 		Buildable:
 			Prerequisites: ~vehicles.allies, ~techlevel.low
+	ATEK:
+		Buildable:
+			Prerequisites: ~disabled
 	BRIK:
 		Buildable:
 			Prerequisites: ~disabled
@@ -915,13 +918,22 @@ Rules:
 	IRON:
 		Buildable:
 			Prerequisites: ~disabled
+	MECH:
+		Buildable:
+			Prerequisites: ~disabled
 	MSLO:
 		Buildable:
 			Prerequisites: ~disabled
 	E3:
 		Buildable:
 			Prerequisites: ~tent
+	E7:
+		Buildable:
+			Prerequisites: ~disabled
 	SHOK:
+		Buildable:
+			Prerequisites: ~disabled
+	SPY:
 		Buildable:
 			Prerequisites: ~disabled
 	SNIPER:
@@ -960,6 +972,24 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	STEK:
+		Buildable:
+			Prerequisites: ~disabled
+	PDOX:
+		Buildable:
+			Prerequisites: ~disabled
+	MRJ:
+		Buildable:
+			Prerequisites: ~disabled
+	CA:
+		Buildable:
+			Prerequisites: ~disabled
+	HELI:
+		Buildable:
+			Prerequisites: ~disabled
+	GAP:
+		Buildable:
+			Prerequisites: dome, ~structures.allies, ~techlevel.medium
+	MNLY.AT:
 		Buildable:
 			Prerequisites: ~disabled
 	DOG:
