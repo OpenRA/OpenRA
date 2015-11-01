@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -47,8 +48,15 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec Offset { get { return info.Offset + localOffset; } }
 		public string Name { get { return info.Turret; } }
 
-		public static int GetInitialTurretFacing(ActorInitializer init, int def)
+		public static int GetInitialTurretFacing(IActorInitializer init, int def, string turret = null)
 		{
+			if (turret != null && init.Contains<TurretFacingsInit>())
+			{
+				int facing;
+				if (init.Get<TurretFacingsInit, Dictionary<string, int>>().TryGetValue(turret, out facing))
+					return facing;
+			}
+
 			if (init.Contains<TurretFacingInit>())
 				return init.Get<TurretFacingInit, int>();
 
@@ -61,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Turreted(ActorInitializer init, TurretedInfo info)
 		{
 			this.info = info;
-			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing);
+			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing, info.Turret);
 		}
 
 		public void Created(Actor self)
@@ -127,5 +135,22 @@ namespace OpenRA.Mods.Common.Traits
 			var facing = Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
+	}
+
+	public class TurretFacingInit : IActorInit<int>
+	{
+		[FieldFromYamlKey] readonly int value = 128;
+		public TurretFacingInit() { }
+		public TurretFacingInit(int init) { value = init; }
+		public int Value(World world) { return value; }
+	}
+
+	public class TurretFacingsInit : IActorInit<Dictionary<string, int>>
+	{
+		[DictionaryFromYamlKey]
+		readonly Dictionary<string, int> value = new Dictionary<string, int>();
+		public TurretFacingsInit() { }
+		public TurretFacingsInit(Dictionary<string, int> init) { value = init; }
+		public Dictionary<string, int> Value(World world) { return value; }
 	}
 }

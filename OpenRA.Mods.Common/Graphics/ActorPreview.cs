@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Graphics
 		IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos);
 	}
 
-	public class ActorPreviewInitializer
+	public class ActorPreviewInitializer : IActorInitializer
 	{
 		public readonly ActorInfo Actor;
 		public readonly WorldRenderer WorldRenderer;
