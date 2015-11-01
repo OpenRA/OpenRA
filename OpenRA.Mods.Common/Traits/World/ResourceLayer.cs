@@ -294,6 +294,8 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in spriteLayers.Values)
 				kv.Dispose();
 
+			RenderContent.CellEntryChanged -= UpdateSpriteLayers;
+
 			disposed = true;
 		}
 
