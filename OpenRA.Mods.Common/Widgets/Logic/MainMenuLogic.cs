@@ -217,17 +217,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			Game.OnRemoteDirectConnect += (host, port) =>
+			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
+		}
+
+		void OnRemoteDirectConnect(string host, int port)
+		{
+			menuType = MenuType.None;
+			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
-				menuType = MenuType.None;
-				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
-				{
-					{ "onStart", RemoveShellmapUI },
-					{ "onExit", () => menuType = MenuType.Main },
-					{ "directConnectHost", host },
-					{ "directConnectPort", port },
-				});
-			};
+				{ "onStart", RemoveShellmapUI },
+				{ "onExit", () => menuType = MenuType.Main },
+				{ "directConnectHost", host },
+				{ "directConnectPort", port },
+			});
 		}
 
 		void LoadMapIntoEditor(Map map)
@@ -361,6 +363,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"",
 				OpenSkirmishLobbyPanel,
 				() => { Game.CloseServer(); menuType = MenuType.Main; });
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				Game.OnRemoteDirectConnect -= OnRemoteDirectConnect;
+			base.Dispose(disposing);
 		}
 	}
 }
