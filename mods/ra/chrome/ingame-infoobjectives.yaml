@@ -1,5 +1,5 @@
 Container@MISSION_OBJECTIVES:
-	Height:	PARENT_BOTTOM
+	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
 	Logic: GameInfoObjectivesLogic
 	Children:
@@ -40,4 +40,5 @@ Container@MISSION_OBJECTIVES:
 							Width: PARENT_RIGHT - 100
 							Height: PARENT_BOTTOM
 							Disabled: True
-							TextColorDisabled: 255,255,255
+							TextColorDisabled: FFFFFF
+

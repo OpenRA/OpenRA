@@ -23,7 +23,7 @@ Background@BUTTON_TOOLTIP:
 			Visible: false
 			Y: 3
 			Height: 23
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 
 Background@WORLD_TOOLTIP:
@@ -128,7 +128,7 @@ Background@PRODUCTION_TOOLTIP:
 			Visible: false
 			Y: 2
 			Height: 23
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@REQUIRES:
 			X: 7
@@ -185,7 +185,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Visible: false
 			Y: 2
 			Height: 23
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
 			Y: 9
@@ -215,3 +215,4 @@ Background@FACTION_DESCRIPTION_TOOLTIP:
 			Height: 14
 			Font: TinyBold
 			VAlign: Top
+

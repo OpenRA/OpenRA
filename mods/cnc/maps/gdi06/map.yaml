@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: cnc
 
@@ -24,10 +24,6 @@ Videos:
 	GameWon: sabotage.vqa
 	GameLost: gdilose.vqa
 
-Music:
-	rain-ambient: Rain (ambient)
-		Hidden: true
-
 Options:
 	Crates: False
 	Creeps: False
@@ -50,7 +46,7 @@ Players:
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: Nod
 		Enemies: GDI
 	PlayerReference@GDI:
@@ -61,7 +57,7 @@ Players:
 		LockFaction: True
 		Faction: gdi
 		LockColor: True
-		ColorRamp: 31,222,183
+		Color: F5D378
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
@@ -1066,7 +1062,7 @@ Rules:
 			SwingOffset: 0, 0
 			SwingSpeed: 0, 0
 			SwingAmplitude: 0, 0
-			ParticleColors: 255,48,64,116, 255,40,56,108, 255,32,44,96, 255,24,44,84
+			ParticleColors: 304074, 28386C, 202C60, 182C54
 			LineTailAlphaValue: 150
 		GlobalLightingPaletteEffect:
 			Red: 0.75
@@ -1164,6 +1160,10 @@ VoxelSequences:
 Weapons:
 
 Voices:
+
+Music:
+	rain-ambient: Rain (ambient)
+		Hidden: true
 
 Notifications:
 

@@ -893,7 +893,7 @@ FACT:
 		ProductionType: Building
 	ProductionBar@Defense:
 		ProductionType: Defense
-		Color: 138,138,138
+		Color: 8A8A8A
 	BaseProvider:
 		Range: 16c0
 	WithBuildingPlacedAnimation:

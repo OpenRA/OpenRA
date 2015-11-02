@@ -8,59 +8,59 @@ Terrain:
 	TerrainType@Beach:
 		Type: Beach
 		TargetTypes: Ground
-		Color: 255,176,156,120
+		Color: B09C78
 	TerrainType@Bridge:
 		Type: Bridge
 		TargetTypes: Ground, Bridge
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,96,96,96
+		Color: 606060
 	TerrainType@Clear:
 		Type: Clear
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,196,196,196
+		Color: C4C4C4
 	TerrainType@Gems:
 		Type: Gems
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,132,112,255
+		Color: 8470FF
 	TerrainType@Ore:
 		Type: Ore
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,148,128,96
+		Color: 948060
 	TerrainType@River:
 		Type: River
 		TargetTypes: Ground
-		Color: 255,92,140,180
+		Color: 5C8CB4
 	TerrainType@Road:
 		Type: Road
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,88,116,116
+		Color: 587474
 	TerrainType@Rock:
 		Type: Rock
 		TargetTypes: Ground
-		Color: 255,68,68,60
+		Color: 44443C
 	TerrainType@Rough:
 		Type: Rough
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,68,68,60
+		Color: 44443C
 	TerrainType@Tree:
 		Type: Tree
 		TargetTypes: Ground
-		Color: 255,28,32,36
+		Color: 1C2024
 	TerrainType@Wall:
 		Type: Wall
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,208,192,160
+		Color: D0C0A0
 	TerrainType@Water:
 		Type: Water
 		TargetTypes: Water
 		IsWater: True
-		Color: 255,92,116,164
+		Color: 5C74A4
 
 Templates:
 	Template@255:

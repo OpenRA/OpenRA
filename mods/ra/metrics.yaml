@@ -3,28 +3,28 @@
 Metrics:
 	ButtonDepth: 1
 	ButtonFont: Regular
-	ButtonTextColor: 255,255,255
-	ButtonTextColorDisabled: 128,128,128
+	ButtonTextColor: FFFFFF
+	ButtonTextColorDisabled: 808080
 	ButtonTextContrast: false
-	ButtonTextContrastColor: 0,0,0
+	ButtonTextContrastColor: 000000
 	ButtonBaseLine: 0
 	CheckboxPressedState: false
 	HotkeyFont: Regular
-	HotkeyColor: 255,255,255
-	HotkeyColorDisabled: 128,128,128
+	HotkeyColor: FFFFFF
+	HotkeyColorDisabled: 808080
 	TextfieldFont: Regular
-	TextfieldColor: 255,255,255
-	TextfieldColorDisabled: 128,128,128
-	TextfieldColorInvalid: 255,192,192
+	TextfieldColor: FFFFFF
+	TextfieldColorDisabled: 808080
+	TextfieldColorInvalid: FFC0C0
 	TextFont: Regular
-	TextColor: 255,255,255
+	TextColor: FFFFFF
 	TextContrast: false
-	TextContrastColor: 0,0,0
+	TextContrastColor: 000000
 	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	ColorPickerActorType: ^fact.colorpicker
 	SpawnFont: TinyBold
-	SpawnColor: 255,255,255
-	SpawnContrastColor: 0,0,0
+	SpawnColor: FFFFFF
+	SpawnContrastColor: 000000
 	SpawnLabelOffset: 0,1
 	FactionSuffix-allies: allies
 	FactionSuffix-england: allies
@@ -33,13 +33,14 @@ Metrics:
 	FactionSuffix-soviet: soviet
 	FactionSuffix-russia: soviet
 	FactionSuffix-ukraine: soviet
-	IncompatibleVersionColor: 211,211,211
-	IncompatibleGameColor: 169,169,169
-	ProtectedGameColor: 255,0,0
-	IncompatibleProtectedGameColor: 178,34,34
-	WaitingGameColor: 0,255,0
-	IncompatibleWaitingGameColor: 50,205,50
-	GameStartedColor: 255,165,0
-	IncompatibleGameStartedColor: 210,105,30
-	GlobalChatTextColor: 255,255,255
-	GlobalChatNotificationColor: 211,211,211
+	IncompatibleVersionColor: D3D3D3
+	IncompatibleGameColor: A9A9A9
+	ProtectedGameColor: FF0000
+	IncompatibleProtectedGameColor: B22222
+	WaitingGameColor: 00FF00
+	IncompatibleWaitingGameColor: 32CD32
+	GameStartedColor: FFA500
+	IncompatibleGameStartedColor: D2691E
+	GlobalChatTextColor: FFFFFF
+	GlobalChatNotificationColor: D3D3D3
+

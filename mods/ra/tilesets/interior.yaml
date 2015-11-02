@@ -9,29 +9,29 @@ Terrain:
 		Type: Clear
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,0,0,0
+		Color: 000000
 	TerrainType@ClearNoSmudges:
 		Type: ClearNoSmudges
 		TargetTypes: Ground
-		Color: 255,0,0,0
+		Color: 000000
 	TerrainType@Gems:
 		Type: Gems
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,132,112,255
+		Color: 8470FF
 	TerrainType@Ore:
 		Type: Ore
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 255,148,128,96
+		Color: 948060
 	TerrainType@Tree:
 		Type: Tree
 		TargetTypes: Ground
-		Color: 255,28,32,36
+		Color: 1C2024
 	TerrainType@Wall:
 		Type: Wall
 		TargetTypes: Ground
-		Color: 255,208,192,160
+		Color: D0C0A0
 
 Templates:
 	Template@255:

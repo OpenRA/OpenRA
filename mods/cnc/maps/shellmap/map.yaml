@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: cnc
 
@@ -26,13 +26,13 @@ Players:
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: Nod
 		Enemies: GDI, Creeps
 	PlayerReference@GDI:
 		Name: GDI
 		Faction: gdi
-		ColorRamp: 31,222,183
+		Color: F5D378
 		Allies: GDI
 		Enemies: Nod, Creeps
 	PlayerReference@Neutral:

@@ -19,7 +19,7 @@ Background@BUTTON_TOOLTIP:
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 
@@ -64,7 +64,7 @@ Background@PRODUCTION_TOOLTIP:
 		Label@HOTKEY:
 			Visible: false
 			Height: 23
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@REQUIRES:
 			X: 5
@@ -119,7 +119,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 		Label@HOTKEY:
 			Visible: false
 			Height: 20
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
 			Y: 6
@@ -207,3 +207,4 @@ Background@FACTION_DESCRIPTION_TOOLTIP:
 			Height: 14
 			Font: TinyBold
 			VAlign: Top
+

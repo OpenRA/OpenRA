@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -41,7 +41,7 @@ Players:
 		Name: Civilians
 		NonCombatant: True
 		Faction: allies
-		ColorRamp: 0,0,0
+		Color: 000000
 		Allies: Allies
 	PlayerReference@Allies:
 		Name: Allies
@@ -51,7 +51,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Allies: Civilians
@@ -59,7 +59,7 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Civilians, Allies
 
 Actors:

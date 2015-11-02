@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -39,20 +39,20 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Enemies: BadGuy, USSR, Ukraine, Turkey
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: USSR
 		Enemies: Greece, Turkey
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: BadGuy, Ukraine
 		Enemies: Greece, Turkey
 	PlayerReference@Neutral:
@@ -63,13 +63,13 @@ Players:
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Faction: soviet
-		ColorRamp: 32,255,202
+		Color: FFE495
 		Allies: BadGuy, USSR
 		Enemies: Greece, Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
 		Faction: soviet
-		ColorRamp: 14,123,167
+		Color: D1987C
 		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
 	PlayerReference@Outpost:
 		Name: Outpost

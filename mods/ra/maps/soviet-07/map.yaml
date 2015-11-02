@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -48,7 +48,7 @@ Players:
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Allies: Soviet
 		Enemies: USSR, Creeps
 	PlayerReference@USSR:
@@ -59,7 +59,7 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Allies: Soviet
@@ -67,12 +67,12 @@ Players:
 	PlayerReference@Soviet:
 		Name: Soviet
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: USSR, Greece
 	PlayerReference@Spain:
 		Name: Spain
 		Faction: allies
-		ColorRamp: 100,222,100
+		Color: 0CBB4A
 
 Actors:
 	Actor0: boxes01

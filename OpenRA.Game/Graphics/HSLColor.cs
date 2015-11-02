@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Globalization;
 using OpenRA.Scripting;
 
 namespace OpenRA.Graphics
@@ -27,13 +28,17 @@ namespace OpenRA.Graphics
 			return new HSLColor((byte)(255 * h), (byte)(255 * ss), (byte)(255 * ll));
 		}
 
+		public HSLColor(Color color)
+		{
+			RGB = color;
+			H = (byte)((color.GetHue() / 360.0f) * 255);
+			S = (byte)(color.GetSaturation() * 255);
+			L = (byte)(color.GetBrightness() * 255);
+		}
+
 		public static HSLColor FromRGB(int r, int g, int b)
 		{
-			var c = Color.FromArgb(r, g, b);
-			var h = (byte)((c.GetHue() / 360.0f) * 255);
-			var s = (byte)(c.GetSaturation() * 255);
-			var l = (byte)(c.GetBrightness() * 255);
-			return new HSLColor(h, s, l);
+			return new HSLColor(Color.FromArgb(r, g, b));
 		}
 
 		public static Color RGBFromHSL(float h, float s, float l)
@@ -66,6 +71,27 @@ namespace OpenRA.Graphics
 			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
 		}
 
+		public static bool TryParseRGB(string value, out Color color)
+		{
+			color = new Color();
+			value = value.Trim();
+			if (value.Length != 6 && value.Length != 8)
+				return false;
+
+			byte red, green, blue, alpha = 255;
+			if (!byte.TryParse(value.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out red)
+				|| !byte.TryParse(value.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out green)
+				|| !byte.TryParse(value.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out blue))
+				return false;
+
+			if (value.Length == 8
+				&& !byte.TryParse(value.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
+				return false;
+
+			color = Color.FromArgb(alpha, red, green, blue);
+			return true;
+		}
+
 		public static bool operator ==(HSLColor me, HSLColor other)
 		{
 			return me.H == other.H && me.S == other.S && me.L == other.L;
@@ -94,6 +120,18 @@ namespace OpenRA.Graphics
 		public override string ToString()
 		{
 			return "{0},{1},{2}".F(H, S, L);
+		}
+
+		public static string ToHexString(Color color)
+		{
+			if (color.A == 255)
+				return color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+			return color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2") + color.A.ToString("X2");
+		}
+
+		public string ToHexString()
+		{
+			return ToHexString(RGB);
 		}
 
 		public override int GetHashCode() { return H.GetHashCode() ^ S.GetHashCode() ^ L.GetHashCode(); }

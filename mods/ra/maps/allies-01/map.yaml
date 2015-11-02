@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -38,7 +38,7 @@ Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Greece, England
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -53,7 +53,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Allies: England
@@ -61,7 +61,7 @@ Players:
 	PlayerReference@England:
 		Name: England
 		Faction: allies
-		ColorRamp: 76,196,190
+		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
 

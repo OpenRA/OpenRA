@@ -10,8 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -146,6 +148,72 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				default: return name;
 			}
+		}
+
+		internal static void TryUpdateColor(ref string value)
+		{
+			if (value.Length == 0)
+				return;
+
+			try
+			{
+				var parts = value.Split(',');
+				if (parts.Length == 3)
+					value = FieldSaver.FormatValue(Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255)));
+				else if (parts.Length == 4)
+					value = FieldSaver.FormatValue(Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[3]).Clamp(0, 255)));
+			}
+			catch { }
+		}
+
+		internal static void TryUpdateColors(ref string value)
+		{
+			if (value.Length == 0)
+				return;
+
+			try
+			{
+				var parts = value.Split(',');
+				if (parts.Length % 4 != 0)
+					return;
+
+				var colors = new Color[parts.Length / 4];
+				for (var i = 0; i < colors.Length; i++)
+				{
+					colors[i] = Color.FromArgb(
+						Exts.ParseIntegerInvariant(parts[4 * i]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 1]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 2]).Clamp(0, 255),
+						Exts.ParseIntegerInvariant(parts[4 * i + 3]).Clamp(0, 255));
+				}
+
+				value = FieldSaver.FormatValue(colors);
+			}
+			catch { }
+		}
+
+		internal static void TryUpdateHSLColor(ref string value)
+		{
+			if (value.Length == 0)
+				return;
+
+			try
+			{
+				var parts = value.Split(',');
+				if (parts.Length == 3 || parts.Length == 4)
+					value = FieldSaver.FormatValue(new HSLColor(
+						(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
+						(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255)));
+			}
+			catch { }
 		}
 
 		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
@@ -2277,6 +2345,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20151027 && depth == 2)
+				{
+					if (node.Key == "Color")
+					{
+						if (parent.Key.StartsWith("FixedColorPalette"))
+							TryUpdateHSLColor(ref node.Value.Value);
+						else
+							TryUpdateColor(ref node.Value.Value);
+					}
+					else if (node.Key == "RadarPingColor" || node.Key == "SelectionBoxColor" || node.Key == "BarColor")
+						TryUpdateColor(ref node.Value.Value);
+					else if (node.Key == "Fog" || node.Key == "Shroud" || node.Key == "ParticleColors")
+						TryUpdateColors(ref node.Value.Value);
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -2764,6 +2847,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "TrailImage";
 				}
 
+				if (engineVersion < 20151027)
+				{
+					if (node.Key == "Color" || node.Key == "ContrailColor")
+						TryUpdateColor(ref node.Value.Value);
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -2784,6 +2873,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20150330)
 					if (depth == 2 && node.Key == "Image")
 						node.Key = "Images";
+
+				if (engineVersion < 20151027)
+				{
+					if (node.Key == "LeftColor" || node.Key == "RightColor" || node.Key == "Color")
+						TryUpdateColor(ref node.Value.Value);
+					else if (node.Key == "HeightDebugColors")
+						TryUpdateColors(ref node.Value.Value);
+				}
 
 				UpgradeTileset(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
@@ -2829,7 +2926,46 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						lockRace.Key = "LockFaction";
 				}
 
+				if (engineVersion < 20151027 && node.Key == "ColorRamp")
+				{
+					TryUpdateHSLColor(ref node.Value.Value);
+					node.Key = "Color";
+				}
+
 				UpgradePlayers(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
+		}
+
+		internal static void UpgradeChromeMetrics(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20151027)
+				{
+					if (node.Key.EndsWith("Color") || node.Key.EndsWith("ColorDisabled") || node.Key.EndsWith("ColorInvalid"))
+						TryUpdateColor(ref node.Value.Value);
+				}
+
+				UpgradeChromeMetrics(engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
+		}
+
+		internal static void UpgradeChromeLayout(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20151027)
+				{
+					if (node.Key == "Color" || node.Key == "ReadyTextAltColor" || node.Key == "TextColor" || node.Key == "TextColorDisabled")
+					{
+						if (parent.Key.StartsWith("MapPreview@"))
+							TryUpdateHSLColor(ref node.Value.Value);
+						else
+							TryUpdateColor(ref node.Value.Value);
+					}
+				}
+
+				UpgradeChromeLayout(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 

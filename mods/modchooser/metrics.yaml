@@ -3,21 +3,21 @@
 Metrics:
 	ButtonDepth: 0
 	ButtonFont: Bold
-	ButtonTextColor: 255,255,255
-	ButtonTextColorDisabled: 128,128,128
+	ButtonTextColor: FFFFFF
+	ButtonTextColorDisabled: 808080
 	ButtonTextContrast: false
-	ButtonTextContrastColor: 0,0,0
+	ButtonTextContrastColor: 000000
 	ButtonBaseLine: 2
 	CheckboxPressedState: true
 	HotkeyFont: Regular
-	HotkeyColor: 255,255,255
-	HotkeyColorDisabled: 128,128,128
+	HotkeyColor: FFFFFF
+	HotkeyColorDisabled: 808080
 	TextfieldFont: Regular
-	TextfieldColor: 255,255,255
-	TextfieldColorDisabled: 128,128,128
-	TextfieldColorInvalid: 255,192,192
+	TextfieldColor: FFFFFF
+	TextfieldColorDisabled: 808080
+	TextfieldColorInvalid: FFC0C0
 	TextFont: Regular
-	TextColor: 255,255,255
+	TextColor: FFFFFF
 	TextContrast: false
-	TextContrastColor: 0,0,0
+	TextContrastColor: 000000
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190

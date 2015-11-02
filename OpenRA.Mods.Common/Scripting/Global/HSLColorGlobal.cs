@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using Eluant;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 
@@ -30,11 +31,59 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			return new HSLColor(h, s, l);
 		}
 
-		public HSLColor White { get { return HSLColor.FromRGB(Color.White.R, Color.White.G, Color.White.B); } }
-		public HSLColor Black { get { return HSLColor.FromRGB(Color.Black.R, Color.Black.G, Color.Black.B); } }
-		public HSLColor Blue { get { return HSLColor.FromRGB(Color.Blue.R, Color.Blue.G, Color.Blue.B); } }
-		public HSLColor Red { get { return HSLColor.FromRGB(Color.Red.R, Color.Red.G, Color.Red.B); } }
-		public HSLColor Yellow { get { return HSLColor.FromRGB(Color.Yellow.R, Color.Yellow.G, Color.Yellow.B); } }
-		public HSLColor Green { get { return HSLColor.FromRGB(Color.Green.R, Color.Green.G, Color.Green.B); } }
+		[Desc("Create a new HSL color with the specified red/green/blue/[alpha] values.")]
+		public HSLColor FromRGB(int red, int green, int blue, int alpha = 255)
+		{
+			return new HSLColor(
+				Color.FromArgb(
+					alpha.Clamp(0, 255), red.Clamp(0, 255), green.Clamp(0, 255), blue.Clamp(0, 255)));
+		}
+
+		[Desc("Create a new HSL color with the specified red/green/blue/[alpha] hex string (rrggbb[aa]).")]
+		public HSLColor FromHex(string value)
+		{
+			Color rgb;
+			if (HSLColor.TryParseRGB(value, out rgb))
+				return new HSLColor(rgb);
+
+			throw new LuaException("Invalid rrggbb[aa] hex string.");
+		}
+
+		public HSLColor Aqua { get { return new HSLColor(Color.Aqua); } }
+		public HSLColor Black { get { return new HSLColor(Color.Black); } }
+		public HSLColor Blue { get { return new HSLColor(Color.Blue); } }
+		public HSLColor Brown { get { return new HSLColor(Color.Brown); } }
+		public HSLColor Cyan { get { return new HSLColor(Color.Cyan); } }
+		public HSLColor DarkBlue { get { return new HSLColor(Color.DarkBlue); } }
+		public HSLColor DarkCyan { get { return new HSLColor(Color.DarkCyan); } }
+		public HSLColor DarkGray { get { return new HSLColor(Color.DarkGray); } }
+		public HSLColor DarkGreen { get { return new HSLColor(Color.DarkGreen); } }
+		public HSLColor DarkOrange { get { return new HSLColor(Color.DarkOrange); } }
+		public HSLColor DarkRed { get { return new HSLColor(Color.DarkRed); } }
+		public HSLColor Fuchsia { get { return new HSLColor(Color.Fuchsia); } }
+		public HSLColor Gold { get { return new HSLColor(Color.Gold); } }
+		public HSLColor Gray { get { return new HSLColor(Color.Gray); } }
+		public HSLColor Green { get { return new HSLColor(Color.Green); } }
+		public HSLColor LawnGreen { get { return new HSLColor(Color.LawnGreen); } }
+		public HSLColor LightBlue { get { return new HSLColor(Color.LightBlue); } }
+		public HSLColor LightCyan { get { return new HSLColor(Color.LightCyan); } }
+		public HSLColor LightGray { get { return new HSLColor(Color.LightGray); } }
+		public HSLColor LightGreen { get { return new HSLColor(Color.LightGreen); } }
+		public HSLColor LightYellow { get { return new HSLColor(Color.LightYellow); } }
+		public HSLColor Lime { get { return new HSLColor(Color.Lime); } }
+		public HSLColor LimeGreen { get { return new HSLColor(Color.LimeGreen); } }
+		public HSLColor Magenta { get { return new HSLColor(Color.Magenta); } }
+		public HSLColor Maroon { get { return new HSLColor(Color.Maroon); } }
+		public HSLColor Navy { get { return new HSLColor(Color.Navy); } }
+		public HSLColor Olive { get { return new HSLColor(Color.Olive); } }
+		public HSLColor Orange { get { return new HSLColor(Color.Orange); } }
+		public HSLColor OrangeRed { get { return new HSLColor(Color.OrangeRed); } }
+		public HSLColor Purple { get { return new HSLColor(Color.Purple); } }
+		public HSLColor Red { get { return new HSLColor(Color.Red); } }
+		public HSLColor Salmon { get { return new HSLColor(Color.Salmon); } }
+		public HSLColor SkyBlue { get { return new HSLColor(Color.SkyBlue); } }
+		public HSLColor Teal { get { return new HSLColor(Color.Teal); } }
+		public HSLColor Yellow { get { return new HSLColor(Color.Yellow); } }
+		public HSLColor White { get { return new HSLColor(Color.White); } }
 	}
 }
