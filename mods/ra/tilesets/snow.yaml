@@ -3116,12 +3116,12 @@ Templates:
 		Category: Debris
 		Tiles:
 			0: Rough
-			1: Rough
-			2: Rough
-			3: Rough
-			4: Rough
-			5: Rough
-			6: Rough
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
 			7: Clear
 	Template@108:
 		Id: 108
@@ -3130,11 +3130,11 @@ Templates:
 		Category: Debris
 		Tiles:
 			0: Clear
-			1: Rough
-			2: Rough
-			3: Rough
-			4: Rough
-			5: Rough
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
 	Template@109:
 		Id: 109
 		Images: p13.sno
