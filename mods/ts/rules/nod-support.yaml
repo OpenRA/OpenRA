@@ -89,7 +89,7 @@ NAOBEL:
 		Range: 8c0
 	Armament:
 		Weapon: ObeliskLaserFire
-		LocalOffset: 1400,200,1250
+		LocalOffset: 1400,210,800
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 50
