@@ -2345,7 +2345,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20151027 && depth == 2)
+				if (engineVersion < 20151102 && depth == 2)
 				{
 					if (node.Key == "Color")
 					{
@@ -2847,7 +2847,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "TrailImage";
 				}
 
-				if (engineVersion < 20151027)
+				if (engineVersion < 20151102)
 				{
 					if (node.Key == "Color" || node.Key == "ContrailColor")
 						TryUpdateColor(ref node.Value.Value);
@@ -2874,7 +2874,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 2 && node.Key == "Image")
 						node.Key = "Images";
 
-				if (engineVersion < 20151027)
+				if (engineVersion < 20151102)
 				{
 					if (node.Key == "LeftColor" || node.Key == "RightColor" || node.Key == "Color")
 						TryUpdateColor(ref node.Value.Value);
@@ -2926,7 +2926,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						lockRace.Key = "LockFaction";
 				}
 
-				if (engineVersion < 20151027 && node.Key == "ColorRamp")
+				if (engineVersion < 20151102 && node.Key == "ColorRamp")
 				{
 					TryUpdateHSLColor(ref node.Value.Value);
 					node.Key = "Color";
@@ -2940,7 +2940,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				if (engineVersion < 20151027)
+				if (engineVersion < 20151102)
 				{
 					if (node.Key.EndsWith("Color") || node.Key.EndsWith("ColorDisabled") || node.Key.EndsWith("ColorInvalid"))
 						TryUpdateColor(ref node.Value.Value);
@@ -2954,7 +2954,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				if (engineVersion < 20151027)
+				if (engineVersion < 20151102)
 				{
 					if (node.Key == "Color" || node.Key == "ReadyTextAltColor" || node.Key == "TextColor" || node.Key == "TextColorDisabled")
 					{
