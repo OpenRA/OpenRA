@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			var warhead = e.Warhead as DamageWarhead;
-			if (info.DeathType != null && warhead != null && !warhead.DamageTypes.Contains(info.DeathType))
+			if (info.DeathType != null && (warhead == null || !warhead.DamageTypes.Contains(info.DeathType)))
 				return;
 
 			self.World.AddFrameEndTask(w =>
