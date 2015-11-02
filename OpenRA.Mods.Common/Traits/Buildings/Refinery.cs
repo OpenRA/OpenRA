@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[Desc("Does this refinery grant cash instead of resources?")]
+		public readonly bool GivesCash = false;
+
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
@@ -84,11 +87,17 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount)
+		{
+			return info.GivesCash ? true : playerResources.CanGiveResources(amount);
+		}
 
 		public void GiveResource(int amount)
 		{
-			playerResources.GiveResources(amount);
+			if (info.GivesCash)
+				playerResources.GiveCash(amount);
+			else
+				playerResources.GiveResources(amount);
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
