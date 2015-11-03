@@ -62,6 +62,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget chatLabel;
 		bool teamChat;
 
+		int lobbyChatUnreadMessages;
+		int globalChatLastReadMessages;
+		int globalChatUnreadMessages;
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -583,6 +587,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				globalChatInput.TakeKeyboardFocus();
 			};
 
+			var globalChatLabel = globalChatTab.Text;
+			globalChatTab.GetText = () =>
+			{
+				if (globalChatUnreadMessages == 0)
+					return globalChatLabel;
+
+				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
+			};
+
+			globalChatLastReadMessages = Game.GlobalChat.History.Count;
+
 			var lobbyChat = lobby.Get("LOBBYCHAT");
 			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
 
@@ -624,6 +639,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatTextField.TakeKeyboardFocus();
 			};
 
+			var lobbyChatLabel = lobbyChatTab.Text;
+			lobbyChatTab.GetText = () =>
+			{
+				if (lobbyChatUnreadMessages == 0)
+					return lobbyChatLabel;
+
+				return lobbyChatLabel + " ({0})".F(lobbyChatUnreadMessages);
+			};
+
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
 			lobbyChatPanel.RemoveChildren();
@@ -652,8 +676,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		public override void Tick()
+		{
+			var newMessages = Game.GlobalChat.History.Count;
+			globalChatUnreadMessages += newMessages - globalChatLastReadMessages;
+			globalChatLastReadMessages = newMessages;
+
+			if (chatPanel == ChatPanelType.Lobby)
+				lobbyChatUnreadMessages = 0;
+
+			if (chatPanel == ChatPanelType.Global)
+				globalChatUnreadMessages = 0;
+		}
+
 		void AddChatLine(Color c, string from, string text)
 		{
+			lobbyChatUnreadMessages += 1;
+
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var timeLabel = template.Get<LabelWidget>("TIME");
