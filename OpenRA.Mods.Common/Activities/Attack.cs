@@ -76,9 +76,13 @@ namespace OpenRA.Mods.Common.Activities
 			minRange = armaments.Max(a => a.Weapon.MinRange);
 			maxRange = armaments.Min(a => a.MaxRange());
 
-			// Try to move within range
-			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
+			if (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange))
+			{
+				// Try to move within range, drop the target otherwise
+				if (move == null)
+					return NextActivity;
 				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+			}
 
 			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
 			if (facing.Facing != desiredFacing)
