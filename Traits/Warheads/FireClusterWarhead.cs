@@ -27,7 +27,7 @@ namespace OpenRA.Mods.AS.Warheads
 		public readonly bool ForceFire = false;
 
 		[Desc("The range of the cells where the weapon should be fired.")]
-		public readonly int Range = 0;
+		public readonly int Range = 1;
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
