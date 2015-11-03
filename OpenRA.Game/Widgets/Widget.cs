@@ -143,6 +143,7 @@ namespace OpenRA.Widgets
 	public class ChromeLogic : IDisposable
 	{
 		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+		public virtual void Tick() { }
 		protected virtual void Dispose(bool disposing) { }
 	}
 
@@ -436,6 +437,10 @@ namespace OpenRA.Widgets
 				Tick();
 				foreach (var child in Children)
 					child.TickOuter();
+
+				if (LogicObjects != null)
+					foreach (var l in LogicObjects)
+						l.Tick();
 			}
 		}
 
