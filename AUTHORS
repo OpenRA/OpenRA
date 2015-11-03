@@ -7,6 +7,7 @@ The plugin is maintained by
  * Gyula Zimmermann (Graion Dilach)
    > DetonateWeaponPower
    > FireClusterWarhead
+   > HealthPercentageFirepowerMultiplier
 
 The project owes thanks for OpenRA for it's modularity
 which allows this project to exist in the first place.
