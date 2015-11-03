@@ -60,13 +60,14 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
-      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
+      <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
       <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
+    <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
