@@ -144,6 +144,8 @@ function Check-Command {
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
 		echo "Checking for code style violations in OpenRA.Mods.D2k..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
+		echo "Checking for code style violations in OpenRA.Mods.AS..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.AS
 		echo "Checking for code style violations in OpenRA.Utility..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
 		echo "Checking for code style violations in OpenRA.Test..."

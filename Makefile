@@ -156,6 +156,15 @@ mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
+# Attacque Supérior
+mod_as_SRCS := $(shell find OpenRA.Mods.AS/ -iname '*.cs')
+mod_as_TARGET = mods/as/OpenRA.Mods.AS.dll
+mod_as_KIND = library
+mod_as_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_cnc_TARGET)
+mod_as_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_cnc_TARGET)
+PROGRAMS += mod_as
+mod_as: $(mod_as_TARGET)
+
 check-scripts:
 	@echo
 	@echo "Checking for Lua syntax errors..."
@@ -181,6 +190,9 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.AS..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.AS
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
@@ -278,7 +290,7 @@ core: dependencies game platforms mods utility server
 
 package: all-dependencies core docs version
 
-mods: mod_common mod_cnc mod_d2k
+mods: mod_common mod_cnc mod_d2k mod_as
 
 all: dependencies core
 
