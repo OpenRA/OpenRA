@@ -10,9 +10,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
-using OpenRA.GameRules;
 
 namespace OpenRA.Mods.AS.Warheads
 {
@@ -21,6 +21,10 @@ namespace OpenRA.Mods.AS.Warheads
 		[WeaponReference, FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
+
+		[Desc("Ignore the weapon's target settings and always fire this weapon?",
+			"Enabling this allows legacy WW behaviour.")]
+		public readonly bool ForceFire = false;
 
 		[Desc("The range of the cells where the weapon should be fired.")]
 		public readonly int Range = 0;
@@ -31,12 +35,17 @@ namespace OpenRA.Mods.AS.Warheads
 			var targetCells = map.FindTilesInCircle(map.CellContaining(target.CenterPosition), Range);
 			var weapon = map.Rules.Weapons[Weapon.ToLowerInvariant()];
 
-			foreach (var cell in targetCells) {
+			foreach (var cell in targetCells)
+			{
+				var tc = Target.FromCell(firedBy.World, cell);
+
+				if (!weapon.IsValidAgainst(tc, firedBy.World, firedBy) && ForceFire)
+					continue;
 
 				var args = new ProjectileArgs
 				{
 					Weapon = weapon,
-					Facing = Util.GetFacing(map.CenterOfCell(cell)-target.CenterPosition, 0),
+					Facing = Util.GetFacing(map.CenterOfCell(cell) - target.CenterPosition, 0),
 
 					DamageModifiers = firedBy.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),
@@ -50,7 +59,7 @@ namespace OpenRA.Mods.AS.Warheads
 					Source = target.CenterPosition,
 					SourceActor = firedBy,
 					PassiveTarget = map.CenterOfCell(cell),
-					GuidedTarget = Target.FromCell(firedBy.World, cell)
+					GuidedTarget = tc
 				};
 
 				if (args.Weapon.Projectile != null)
@@ -63,13 +72,6 @@ namespace OpenRA.Mods.AS.Warheads
 						Game.Sound.Play(args.Weapon.Report.Random(firedBy.World.SharedRandom), target.CenterPosition);
 				}
 			}
-
-		}
-
-		public bool IsValidImpact(WPos pos, Actor firedBy)
-		{
-			return true;
 		}
 	}
 }
-
