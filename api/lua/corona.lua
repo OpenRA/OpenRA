@@ -3974,29 +3974,53 @@ local function stripTags(line)
       :gsub('[%]%[]', '')
       :gsub('&nbsp;', ' ')
       :gsub('&mdash;', '-')
+      :gsub('&minus;', '-')
+      :gsub('&[lr]dquo;', '"')
       :gsub('&sup(%d);', '%1')
-      :gsub('â€™', "'") -- replace unicode quote
+      :gsub('’', "'") -- replace unicode quote
 end
 
 local function extractOverview(filename)
-    local overviewInd
+    local overviewInd, parent, overview
     local i = 0
     local f = io.open(filename, 'r')
     for l in f:lines() do
         i = i + 1
         if l == '## Overview' then
             overviewInd = i + 2
+        elseif l:find("^> __Parent__") then
+            parent = l:match("%[(.-)%]")
         elseif i == overviewInd then
             if l:sub(1, 1) == '!' then
                 overviewInd = i + 2
             else
-                -- Uncomment to make descriptions shorter
-                --l = extractFirstSentence(l)
-                return stripTags(l)
+                overview = stripTags(l)
+                break
             end
         end
     end
     f:close()
+    return overview, parent
+end
+
+local function isSpecialType(r)
+  return (r
+    and r ~= 'String'
+    and r ~= 'Boolean'
+    and r ~= 'Number'
+    and r ~= 'Numbers'
+    and r ~= 'Constant'
+    and r ~= 'Function'
+    and r ~= 'Array'
+    and r ~= 'Table'
+    and r ~= 'TYPE'
+    and r ~= 'Object'
+    and r ~= 'Library'
+    and r ~= 'Module'
+    and r ~= 'CoronaClass'
+    and r ~= 'Event'
+    and r ~= 'Listener'
+    and r ~= 'Userdata')
 end
 
 local function extractTypeArgsReturns(filename)
@@ -4007,7 +4031,7 @@ local function extractTypeArgsReturns(filename)
     for l in f:lines() do
         i = i + 1
         if startswith(l, '> __Type__') then
-            t = l:match('%[(%a*)%]', 1):lower()
+            t = l:match('%[api%.type%.(%a*)%]', 1):lower()
         elseif startswith(l, '> __Return value__') then
             r = l:match('%[(%a*)%]', 1)
         elseif l == '## Syntax' then
@@ -4034,7 +4058,9 @@ local function processApiDir(root, kind, item)
 			local mode = lfs.attributes(fullPath, 'mode')
 			if mode == 'file' and item then
 				if entity == 'index.markdown' then
-                    API[item].description = extractOverview(fullPath)
+                    local description, parent = extractOverview(fullPath)
+                    API[item].description = description
+                    if parent and isSpecialType(parent) then API[item].inherits = specialType(parent) end
                 else
                     local t, a, r = extractTypeArgsReturns(fullPath)
                     if t ~= 'function' then
@@ -4043,23 +4069,7 @@ local function processApiDir(root, kind, item)
                         t = 'method'
                     end
                     local child = {type = t, description = extractOverview(fullPath), args = a, returns = r}
-                    if r and r ~= ''
-                        and r ~= 'String'
-                        and r ~= 'Boolean'
-                        and r ~= 'Number'
-                        and r ~= 'Numbers'
-                        and r ~= 'Constant'
-                        and r ~= 'Function'
-                        and r ~= 'Array'
-                        and r ~= 'Table'
-                        and r ~= 'TYPE'
-                        and r ~= 'Object'
-                        and r ~= 'Library'
-                        and r ~= 'Module'
-                        and r ~= 'CoronaClass'
-                        and r ~= 'Event'
-                        and r ~= 'Listener'
-                        and r ~= 'Userdata' then
+                    if r and r ~= '' and isSpecialType(r) then
                         child.valuetype = specialType(r)
                     elseif r == 'String' then
                         child.valuetype = 'string'
