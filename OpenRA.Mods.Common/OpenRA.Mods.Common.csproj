@@ -708,6 +708,8 @@
     <Compile Include="Lint\CheckChromeLogic.cs" />
     <Compile Include="Lint\CheckMapMetadata.cs" />
     <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
+    <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
+    <Compile Include="Traits\World\EditorSelectionLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

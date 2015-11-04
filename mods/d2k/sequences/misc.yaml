@@ -126,19 +126,23 @@ rank:
 		Length: *
 
 overlay:
-	build-valid-arrakis: DATA.R8
+	Defaults: DATA.R8
 		Offset: -16,-16
-	build-invalid: DATA.R8
+	build-valid-arrakis:
+	build-invalid:
 		Start: 1
-		Offset: -16,-16
-	target-select: DATA.R8
+	target-select:
 		Start: 2
-		Offset: -16,-16
-	target-valid-arrakis: DATA.R8
-		Offset: -16,-16
-	target-invalid: DATA.R8
+	target-valid-arrakis:
+	target-invalid:
 		Start: 1
+
+editor-overlay:
+	Defaults: DATA.R8
 		Offset: -16,-16
+	copy:
+	paste:
+		Start: 1
 
 rallypoint:
 	flag: flagfly.shp

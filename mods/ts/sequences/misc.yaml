@@ -7,6 +7,13 @@ overlay:
 		Start: 1
 	target-select:
 
+editor-overlay:
+	Defaults: place
+		Offset: 0, -12
+	copy:
+	paste:
+		Start: 1
+
 poweroff:
 	offline:
 		Length: *
