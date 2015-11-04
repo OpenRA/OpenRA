@@ -68,7 +68,7 @@ Background@MULTIPLAYER_PANEL:
 			Font: Bold
 
 ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: 147
+	Width: 158
 	Height: 130
 	Children:
 		Checkbox@WAITING_FOR_PLAYERS:
