@@ -34,6 +34,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public readonly string ResourceType = "Spice";
 
+		[Desc("Spice blooms only grow on these terrain types.")]
+		public readonly HashSet<string> GrowthTerrainTypes = new HashSet<string>();
+
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]
 		public readonly string Weapon = "SpiceExplosion";
@@ -78,6 +81,12 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Tick(Actor self)
 		{
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
+			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type))
+				return;
+
 			ticks++;
 
 			if (ticks >= growTicks)
