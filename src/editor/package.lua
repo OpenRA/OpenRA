@@ -101,6 +101,7 @@ function ide:GetKnownExtensions(ext)
       end
     end
   end
+  table.sort(knownexts)
   return knownexts
 end
 
