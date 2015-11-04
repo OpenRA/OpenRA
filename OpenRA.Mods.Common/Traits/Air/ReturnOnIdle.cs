@@ -36,14 +36,12 @@ namespace OpenRA.Mods.Common.Traits
 				// nowhere to land, pick something friendly and circle over it.
 
 				// i'd prefer something we own
-				var someBuilding = self.World.ActorsWithTrait<Building>()
-					.Select(a => a.Actor)
+				var someBuilding = self.World.ActorsHavingTrait<Building>()
 					.FirstOrDefault(a => a.Owner == self.Owner);
 
 				// failing that, something unlikely to shoot at us
 				if (someBuilding == null)
-					someBuilding = self.World.ActorsWithTrait<Building>()
-						.Select(a => a.Actor)
+					someBuilding = self.World.ActorsHavingTrait<Building>()
 						.FirstOrDefault(a => self.Owner.Stances[a.Owner] == Stance.Ally);
 
 				if (someBuilding == null)

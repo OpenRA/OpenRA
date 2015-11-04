@@ -107,6 +107,16 @@ namespace OpenRA
 			return InnerGet<T>().All();
 		}
 
+		public IEnumerable<Actor> ActorsHavingTrait<T>()
+		{
+			return InnerGet<T>().Actors();
+		}
+
+		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
+		{
+			return InnerGet<T>().Actors(predicate);
+		}
+
 		public void RemoveActor(Actor a)
 		{
 			foreach (var t in traits)
@@ -194,6 +204,33 @@ namespace OpenRA
 			{
 				++Queries;
 				return new AllEnumerable(this);
+			}
+
+			public IEnumerable<Actor> Actors()
+			{
+				++Queries;
+				Actor last = null;
+				for (var i = 0; i < actors.Count; i++)
+				{
+					if (actors[i] == last)
+						continue;
+					yield return actors[i];
+					last = actors[i];
+				}
+			}
+
+			public IEnumerable<Actor> Actors(Func<T, bool> predicate)
+			{
+				++Queries;
+				Actor last = null;
+
+				for (var i = 0; i < actors.Count; i++)
+				{
+					if (actors[i] == last || !predicate(traits[i]))
+						continue;
+					yield return actors[i];
+					last = actors[i];
+				}
 			}
 
 			class AllEnumerable : IEnumerable<TraitPair<T>>

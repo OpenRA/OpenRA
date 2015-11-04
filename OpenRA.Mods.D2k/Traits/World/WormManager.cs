@@ -48,7 +48,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public WormManager(Actor self, WormManagerInfo info)
 		{
 			this.info = info;
-			spawnPointActors = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
+			spawnPointActors = Exts.Lazy(() => self.World.ActorsHavingTrait<WormSpawner>().ToArray());
 		}
 
 		public void Tick(Actor self)

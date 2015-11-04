@@ -56,13 +56,13 @@ namespace OpenRA.Mods.Common.Traits
 			mo = self.Trait<MissionObjectives>();
 		}
 
-		public IEnumerable<TraitPair<StrategicPoint>> AllPoints
+		public IEnumerable<Actor> AllPoints
 		{
-			get { return player.World.ActorsWithTrait<StrategicPoint>(); }
+			get { return player.World.ActorsHavingTrait<StrategicPoint>(); }
 		}
 
 		public int Total { get { return AllPoints.Count(); } }
-		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Actor.Owner)); } }
+		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Owner)); } }
 
 		public bool Holding { get { return Owned >= info.RatioRequired * Total; } }
 

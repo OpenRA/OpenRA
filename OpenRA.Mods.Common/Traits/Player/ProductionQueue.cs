@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (!developerMode.AllTech && bi.BuildLimit > 0)
 						{
 							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsWithTrait<Buildable>().Count(a => a.Actor.Info.Name == order.TargetString && a.Actor.Owner == self.Owner);
+							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
 							fromLimit = bi.BuildLimit - (inQueue + owned);
 
 							if (fromLimit <= 0)

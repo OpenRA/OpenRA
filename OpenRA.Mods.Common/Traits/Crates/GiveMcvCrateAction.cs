@@ -36,8 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanGiveTo(collector))
 				return 0;
 
-			var hasBase = collector.World.ActorsWithTrait<BaseBuilding>()
-				.Any(a => a.Actor.Owner == collector.Owner);
+			var hasBase = collector.World.ActorsHavingTrait<BaseBuilding>()
+				.Any(a => a.Owner == collector.Owner);
 
 			return hasBase ? info.SelectionShares : info.NoBaseSelectionShares;
 		}

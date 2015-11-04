@@ -133,10 +133,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var type = bi.BuildAtProductionType ?? info.Type;
 
-				var selfsameBuildingsCount = self.World.ActorsWithTrait<Production>()
+				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
 					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
 
-				var speedModifier = selfsameBuildingsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
+				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 

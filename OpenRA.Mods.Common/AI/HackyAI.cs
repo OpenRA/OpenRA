@@ -171,10 +171,8 @@ namespace OpenRA.Mods.Common.AI
 
 		public CPos GetRandomBaseCenter()
 		{
-			var randomBaseBuilding = World.Actors.Where(
-				a => a.Owner == Player
-					&& a.Info.HasTraitInfo<BaseBuildingInfo>()
-					&& !a.Info.HasTraitInfo<MobileInfo>())
+			var randomBaseBuilding = World.ActorsHavingTrait<BaseBuilding>()
+				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>())
 				.RandomOrDefault(Random);
 
 			return randomBaseBuilding != null ? randomBaseBuilding.Location : initialBaseCenter;
@@ -288,10 +286,8 @@ namespace OpenRA.Mods.Common.AI
 		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
 		public bool EnoughWaterToBuildNaval()
 		{
-			var baseProviders = World.Actors.Where(
-				a => a.Owner == Player
-					&& a.Info.HasTraitInfo<BaseProviderInfo>()
-					&& !a.Info.HasTraitInfo<MobileInfo>());
+			var baseProviders = World.ActorsHavingTrait<BaseProvider>()
+				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>());
 
 			foreach (var b in baseProviders)
 			{
@@ -315,10 +311,8 @@ namespace OpenRA.Mods.Common.AI
 		// Check whether we have at least one building providing buildable area close enough to water to build naval structures
 		public bool CloseEnoughToWater()
 		{
-			var areaProviders = World.Actors.Where(
-				a => a.Owner == Player
-					&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>()
-					&& !a.Info.HasTraitInfo<MobileInfo>());
+			var areaProviders = World.ActorsHavingTrait<GivesBuildableArea>()
+				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>());
 
 			foreach (var a in areaProviders)
 			{
@@ -361,9 +355,9 @@ namespace OpenRA.Mods.Common.AI
 				return null;
 
 			var myUnits = Player.World
-				.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == Player)
-				.Select(a => a.Actor.Info.Name).ToList();
+				.ActorsHavingTrait<IPositionable>()
+				.Where(a => a.Owner == Player)
+				.Select(a => a.Info.Name).ToList();
 
 			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
 				if (buildableThings.Any(b => b.Name == unit.Key))
@@ -376,14 +370,12 @@ namespace OpenRA.Mods.Common.AI
 
 		int CountBuilding(string frac, Player owner)
 		{
-			return World.ActorsWithTrait<Building>()
-				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac);
+			return World.ActorsHavingTrait<Building>().Count(a => a.Owner == owner && a.Info.Name == frac);
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
-			return World.ActorsWithTrait<IPositionable>()
-				.Count(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit);
+			return World.ActorsHavingTrait<IPositionable>().Count(a => a.Owner == owner && a.Info.Name == unit);
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -391,8 +383,8 @@ namespace OpenRA.Mods.Common.AI
 			if (!Info.BuildingCommonNames.ContainsKey(commonName))
 				return null;
 
-			return World.ActorsWithTrait<Building>()
-				.Count(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name));
+			return World.ActorsHavingTrait<Building>()
+				.Count(a => a.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Info.Name));
 		}
 
 		public ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
@@ -498,7 +490,7 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingType.Defense:
 
 					// Build near the closest enemy structure
-					var closestEnemy = World.Actors.Where(a => !a.Disposed && a.Info.HasTraitInfo<BuildingInfo>() && Player.Stances[a.Owner] == Stance.Enemy)
+					var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
 						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
@@ -573,8 +565,8 @@ namespace OpenRA.Mods.Common.AI
 				leastLikedEnemies.Random(Random) : liveEnemies.FirstOrDefault();
 
 			// Pick something worth attacking owned by that player
-			var target = World.Actors
-				.Where(a => a.Owner == enemy && a.OccupiesSpace != null)
+			var target = World.ActorsHavingTrait<IOccupySpace>()
+				.Where(a => a.Owner == enemy)
 				.ClosestTo(World.Map.CenterOfCell(GetRandomBaseCenter()));
 
 			if (target == null)
@@ -605,8 +597,8 @@ namespace OpenRA.Mods.Common.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead
-				&& a.Info.HasTraitInfo<BaseBuildingInfo>() && !a.Info.HasTraitInfo<MobileInfo>()).ToList();
+			return World.ActorsHavingTrait<BaseBuilding>()
+				.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead && !a.Info.HasTraitInfo<MobileInfo>()).ToList();
 		}
 
 		void CleanSquads()
@@ -716,10 +708,8 @@ namespace OpenRA.Mods.Common.AI
 
 		void FindNewUnits(Actor self)
 		{
-			var newUnits = self.World.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == Player && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>()
-					&& !activeUnits.Contains(a.Actor))
-				.Select(a => a.Actor);
+			var newUnits = self.World.ActorsHavingTrait<IPositionable>()
+				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<BaseBuildingInfo>() && !activeUnits.Contains(a));
 
 			foreach (var a in newUnits)
 			{
@@ -843,8 +833,7 @@ namespace OpenRA.Mods.Common.AI
 		void InitializeBase(Actor self)
 		{
 			// Find and deploy our mcv
-			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>());
+			var mcv = self.World.ActorsHavingTrait<BaseBuilding>().FirstOrDefault(a => a.Owner == Player);
 
 			if (mcv != null)
 			{
@@ -865,8 +854,8 @@ namespace OpenRA.Mods.Common.AI
 		void FindAndDeployBackupMcv(Actor self)
 		{
 			// HACK: This needs to query against MCVs directly
-			var mcvs = self.World.Actors
-				.Where(a => a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>() && a.Info.HasTraitInfo<MobileInfo>());
+			var mcvs = self.World.ActorsHavingTrait<BaseBuilding>()
+				.Where(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>());
 
 			foreach (var mcv in mcvs)
 			{
@@ -1023,8 +1012,8 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.Actors.Any(a =>
-					a.Owner == Player && a.Info.HasTraitInfo<BaseBuildingInfo>() && a.Info.HasTraitInfo<MobileInfo>()))
+			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
+					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
 
 			foreach (var q in Info.UnitQueues)
