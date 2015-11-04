@@ -64,6 +64,7 @@ frigate:
 		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False
+		MaximumPitch: 20
 	-AppearsOnRadar:
 	Cargo:
 		MaxWeight: 20

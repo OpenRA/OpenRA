@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, self.Location + new CVec(9, 0))));
+				actor.QueueActivity(new Fly(actor, Target.FromCell(w, self.Location + new CVec(12, 0))));
 				actor.QueueActivity(new Land(actor, Target.FromActor(self)));
 				actor.QueueActivity(new CallFunc(() =>
 				{
