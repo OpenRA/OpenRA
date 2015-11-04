@@ -3922,85 +3922,85 @@ local DIR_SEP = '/'
 local API = {}
 
 local function trim(s)
-    local from = s:match"^%s*()"
-    return from > #s and "" or s:match(".*%S", from)
+  local from = s:match"^%s*()"
+  return from > #s and "" or s:match(".*%S", from)
 end
 
 local function startswith(s, piece)
-    return string.sub(s, 1, string.len(piece)) == piece
+  return string.sub(s, 1, string.len(piece)) == piece
 end
 
 local function endswith(s, send)
-    return #s >= #send and s:find(send, #s-#send+1, true) and true or false
+  return #s >= #send and s:find(send, #s-#send+1, true) and true or false
 end
 
 local function extractPath(p)
-    local c
-    for i = p:len(), 1, -1 do
-        c = p:sub(i, i)
-        if c == DIR_SEP then
-            return p:sub(1, i - 1), p:sub(i + 1)
-        end
+  local c
+  for i = p:len(), 1, -1 do
+    c = p:sub(i, i)
+    if c == DIR_SEP then
+      return p:sub(1, i - 1), p:sub(i + 1)
     end
+  end
 end
 
 local function beforeComma(line)
-    local c
-    for i = 1, line:len() do
-        if line:sub(i, i) == '.' then
-            return line:sub(1, i - 1)
-        end
+  local c
+  for i = 1, line:len() do
+    if line:sub(i, i) == '.' then
+      return line:sub(1, i - 1)
     end
-    return line
+  end
+  return line
 end
 
 local function extractFirstSentence(line)
-    local count = line:len()
-    for i = 1, count do
-        if line:sub(i, i) == '.' then
-            if i == count then
-                return line
-            elseif line:sub(i + 1, i + 1) == ' ' then
-                return line:sub(1, i)
-            end
-        end
+  local count = line:len()
+  for i = 1, count do
+    if line:sub(i, i) == '.' then
+      if i == count then
+        return line
+      elseif line:sub(i + 1, i + 1) == ' ' then
+        return line:sub(1, i)
+      end
     end
-    return line
+  end
+  return line
 end
 
 local function stripTags(line)
-    return line:gsub('%[api.+]', '')
-      :gsub('(%[.-%])%[.-%]','%1')
-      :gsub('[%]%[]', '')
-      :gsub('&nbsp;', ' ')
-      :gsub('&mdash;', '-')
-      :gsub('&minus;', '-')
-      :gsub('&[lr]dquo;', '"')
-      :gsub('&sup(%d);', '%1')
-      :gsub('’', "'") -- replace unicode quote
+  return line:gsub('%[api.+]', '')
+  :gsub('(%[.-%])%[.-%]','%1')
+  :gsub('[%]%[]', '')
+  :gsub('&nbsp;', ' ')
+  :gsub('&mdash;', '-')
+  :gsub('&minus;', '-')
+  :gsub('&[lr]dquo;', '"')
+  :gsub('&sup(%d);', '%1')
+  :gsub('’', "'") -- replace unicode quote
 end
 
 local function extractOverview(filename)
-    local overviewInd, parent, overview
-    local i = 0
-    local f = io.open(filename, 'r')
-    for l in f:lines() do
-        i = i + 1
-        if l == '## Overview' then
-            overviewInd = i + 2
-        elseif l:find("^> __Parent__") then
-            parent = l:match("%[(.-)%]")
-        elseif i == overviewInd then
-            if l:sub(1, 1) == '!' then
-                overviewInd = i + 2
-            else
-                overview = stripTags(l)
-                break
-            end
-        end
+  local overviewInd, parent, overview
+  local i = 0
+  local f = io.open(filename, 'r')
+  for l in f:lines() do
+    i = i + 1
+    if l == '## Overview' then
+      overviewInd = i + 2
+    elseif l:find("^> __Parent__") then
+      parent = l:match("%[(.-)%]")
+    elseif i == overviewInd then
+      if l:sub(1, 1) == '!' then
+        overviewInd = i + 2
+      else
+        overview = stripTags(l)
+        break
+      end
     end
-    f:close()
-    return overview, parent
+  end
+  f:close()
+  return overview, parent
 end
 
 local function isSpecialType(r)
@@ -4024,27 +4024,27 @@ local function isSpecialType(r)
 end
 
 local function extractTypeArgsReturns(filename)
-    local t, a, r
-    local syntaxInd
-    local i = 0
-    local f = io.open(filename, 'r')
-    for l in f:lines() do
-        i = i + 1
-        if startswith(l, '> __Type__') then
-            t = l:match('%[api%.type%.(%a*)%]', 1):lower()
-        elseif startswith(l, '> __Return value__') then
-            r = l:match('%[(%a*)%]', 1)
-        elseif l == '## Syntax' then
-            syntaxInd = i + 2
-        elseif i == syntaxInd then
-            a = l:match('%(.+%)', 1)
-        end
-        if t and a and r then
-            return t, a, r
-        end
+  local t, a, r
+  local syntaxInd
+  local i = 0
+  local f = io.open(filename, 'r')
+  for l in f:lines() do
+    i = i + 1
+    if startswith(l, '> __Type__') then
+      t = l:match('%[api%.type%.(%a*)%]', 1):lower()
+    elseif startswith(l, '> __Return value__') then
+      r = l:match('%[(%a*)%]', 1)
+    elseif l == '## Syntax' then
+      syntaxInd = i + 2
+    elseif i == syntaxInd then
+      a = l:match('%(.+%)', 1)
     end
-    f:close()
-    return t or '', a or '', r or ''
+    if t and a and r then
+      return t, a, r
+    end
+  end
+  f:close()
+  return t or '', a or '', r or ''
 end
 
 -- generate special valuetype names to avoid conflicts
@@ -4052,48 +4052,48 @@ end
 local function specialType(r) return '_'..r end
 
 local function processApiDir(root, kind, item)
-	for entity in lfs.dir(root) do
-		if entity:sub(1, 1) ~= '.' then
-			local fullPath = root .. DIR_SEP .. entity
-			local mode = lfs.attributes(fullPath, 'mode')
-			if mode == 'file' and item then
-				if entity == 'index.markdown' then
-                    local description, parent = extractOverview(fullPath)
-                    API[item].description = description
-                    if parent and isSpecialType(parent) then API[item].inherits = specialType(parent) end
-                else
-                    local t, a, r = extractTypeArgsReturns(fullPath)
-                    if t ~= 'function' then
-                        t, a, r = 'value', nil, nil
-                    elseif kind == 'class' then
-                        t = 'method'
-                    end
-                    local child = {type = t, description = extractOverview(fullPath), args = a, returns = r}
-                    if r and r ~= '' and isSpecialType(r) then
-                        child.valuetype = specialType(r)
-                    elseif r == 'String' then
-                        child.valuetype = 'string'
-                    end
-                    if t == 'function' or t == 'method' then
-                      child.args = a and #a > 1 and a or '()'
-                      child.returns = '('..(r or '')..')'
-                    end
-                    API[item].childs[beforeComma(entity)] = child
-                end
-			elseif mode == 'directory' and entity ~= 'global' then
-		if kind == 'class' then entity = specialType(entity) end
-                API[entity] = {type = kind, description = '', childs = {}}
-				processApiDir(fullPath, kind, entity)
-			end
-		end
-	end
+  for entity in lfs.dir(root) do
+    if entity:sub(1, 1) ~= '.' then
+      local fullPath = root .. DIR_SEP .. entity
+      local mode = lfs.attributes(fullPath, 'mode')
+      if mode == 'file' and item then
+        if entity == 'index.markdown' then
+          local description, parent = extractOverview(fullPath)
+          API[item].description = description
+          if parent and isSpecialType(parent) then API[item].inherits = specialType(parent) end
+        else
+          local t, a, r = extractTypeArgsReturns(fullPath)
+          if t ~= 'function' then
+            t, a, r = 'value', nil, nil
+          elseif kind == 'class' then
+            t = 'method'
+          end
+          local child = {type = t, description = extractOverview(fullPath), args = a, returns = r}
+          if r and r ~= '' and isSpecialType(r) then
+            child.valuetype = specialType(r)
+          elseif r == 'String' then
+            child.valuetype = 'string'
+          end
+          if t == 'function' or t == 'method' then
+            child.args = a and #a > 1 and a or '()'
+            child.returns = '('..(r or '')..')'
+          end
+          API[item].childs[beforeComma(entity)] = child
+        end
+      elseif mode == 'directory' and entity ~= 'global' then
+        if kind == 'class' then entity = specialType(entity) end
+        API[entity] = {type = kind, description = '', childs = {}}
+        processApiDir(fullPath, kind, entity)
+      end
+    end
+  end
 end
 processApiDir('library', 'lib')
 processApiDir('type', 'class')
 
 local _, path = nil, arg[-3]:gsub('[\\/]', DIR_SEP)
 repeat
-    path, _ = extractPath(path)
+  path, _ = extractPath(path)
 until endswith(path, 'bin')
 path, _ = extractPath(path)
 -- Path to ZeroBraneStudio dir
