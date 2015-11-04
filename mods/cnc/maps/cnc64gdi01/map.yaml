@@ -293,7 +293,7 @@ Actors:
 		Location: 38,27
 		Owner: Neutral
 	Actor77: split3
-		Location: 31,27
+		Location: 31,28
 		Owner: Neutral
 	Actor78: tc01
 		Location: 29,27
@@ -332,13 +332,13 @@ Actors:
 		Location: 21,9
 		Owner: Neutral
 	Actor90: split2
-		Location: 19,59
+		Location: 19,60
 		Owner: Neutral
 	Actor91: split3
-		Location: 22,58
+		Location: 22,59
 		Owner: Neutral
 	Actor92: split3
-		Location: 42,56
+		Location: 42,57
 		Owner: Neutral
 	Actor93: tc05
 		Location: 44,59
@@ -428,16 +428,16 @@ Actors:
 		Location: 4,14
 		Owner: Neutral
 	Actor122: split3
-		Location: 7,28
+		Location: 7,29
 		Owner: Neutral
 	Actor123: split3
-		Location: 7,32
+		Location: 7,33
 		Owner: Neutral
 	Actor124: split3
-		Location: 3,33
+		Location: 3,34
 		Owner: Neutral
 	Actor125: split3
-		Location: 22,41
+		Location: 22,42
 		Owner: Neutral
 	AttackTrigger1: proc
 		Location: 46,42
