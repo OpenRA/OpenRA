@@ -1,5 +1,5 @@
--- Author Sergey Lerg
--- converted from CoronaSDK-APIDOC-2015.2576.zip;
+-- Original author Sergey Lerg; updates by Paul Kulchenko
+-- Converted from CoronaSDK-APIDOC-2015-2731;
 -- the conversion script is at the bottom of this file
 
 do return {
@@ -27,6 +27,7 @@ do return {
    }
   },
   description = "A bitmap paint contains a single texture.",
+  inherits = "_Paint",
   type = "class"
  },
  _Body = {
@@ -106,7 +107,7 @@ do return {
     type = "value"
    },
    isSensor = {
-    description = "A sensor is a fixture that detects collisions but does not produce a physical response. Sensors do not generate contact points.",
+    description = "A sensor is a fixture that detects collisions but does not produce a response. Sensors do not generate contact points.",
     type = "value"
    },
    isSleepingAllowed = {
@@ -160,16 +161,19 @@ do return {
    }
   },
   description = "Button objects are created using widget.newButton().",
+  inherits = "_EventListener",
   type = "class"
  },
  _CirclePath = {
   childs = {},
-  description = "The circle path specifies the geometry of the corresponding shape object.",
+  description = "The circle path specifies the geometry of the corresponding circle object.",
+  inherits = "_Path",
   type = "class"
  },
  _CompositePaint = {
   childs = {},
   description = "Composite paints contain multiple images, thus enabling multi-texturing.",
+  inherits = "_Paint",
   type = "class"
  },
  _CoronaLibrary = {
@@ -257,6 +261,7 @@ do return {
  },
  _CoronaProvider = {
   childs = {},
+  inherits = "_CoronaPrototype",
   type = "class"
  },
  _DisplayObject = {
@@ -303,10 +308,6 @@ do return {
     description = "Retrieve or change the height of a display object. For text objects, this property can be used to get (but not set) the height.",
     type = "value"
    },
-   introspection = {
-    description = "",
-    type = "value"
-   },
    isHitTestMasked = {
     description = "Limits touch events to the masked portion of the object. This property can be read or set.",
     type = "value"
@@ -342,11 +343,11 @@ do return {
     type = "value"
    },
    maskX = {
-    description = "Retrieve or set the __x__ position of the mask applied to the display object using object:setMask().",
+    description = "Retrieve or set the __x__ position of the mask.",
     type = "value"
    },
    maskY = {
-    description = "Retrieve or set the __y__ position of the mask applied to the display object using object:setMask().",
+    description = "Retrieve or set the __y__ position of the mask.",
     type = "value"
    },
    parent = {
@@ -425,6 +426,7 @@ do return {
    }
   },
   description = "All drawing that occurs on the screen is accomplished by creating display objects. Anything that appears on the screen is an instance of a display object.",
+  inherits = "_EventListener",
   type = "class"
  },
  _EmitterObject = {
@@ -449,6 +451,7 @@ do return {
    }
   },
   description = "This object is used to display particle effects created with Particle Designer(http://71squared.com/particledesigner).",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _EventListener = {
@@ -497,7 +500,7 @@ do return {
    },
    read = {
     args = "( [fmt1] [, fmt2] [, ...] )",
-    description = "eads the file file, according to the given formats, which specify what to read. For each format, the function returns a String) with the characters read, or `nil` if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line.",
+    description = "Reads a file, according to the given formats, which specify what to read. For each format, the function returns a String) with the characters read, or `nil` if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line.",
     returns = "(String)",
     type = "method",
     valuetype = "string"
@@ -549,6 +552,7 @@ do return {
  _GradientPaint = {
   childs = {},
   description = "A gradient paint creates a linear progression from one color to another.",
+  inherits = "_Paint",
   type = "class"
  },
  _GroupObject = {
@@ -575,6 +579,7 @@ do return {
    }
   },
   description = "Group objects are a special type of display object. You can add other display objects as children of a group object. You can also remove them. Even if an object is not visible, it remains in the group object until explicitly removed. Thus, to minimize memory consumption, you should explicitly remove any object that will no longer be used.",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _ImageSheet = {
@@ -583,38 +588,44 @@ do return {
   type = "class"
  },
  _ImageSheetPaint = {
-  childs = {},
+  childs = {
+   frame = {
+    description = "Defines the image sheet.",
+    type = "value"
+   }
+  },
   description = "An image sheet paint is a special kind of BitmapPaint frame.",
+  inherits = "_Paint",
   type = "class"
  },
  _InputAxis = {
   childs = {
    accuracy = {
-    description = "The +/- accuracy of the data provided by the axis input. This value will always be greater than or equal to zero.",
+    description = "The +/- accuracy of the data provided by the axis input. This value will always be greater than or equal to `0`. For example, if the accuracy is `0.01`, an axis value of `0.5` is accurate between `0.49` and `0.51`.",
     type = "value"
    },
    descriptor = {
-    description = "Provides a human readable string assigned by Corona used to uniquely identify one axis input belonging to one device. This descriptor string is intended to be used by applications that set up key and axis bindings with a particular device, such as the first joystick connected to the system.",
+    description = "Provides a human-readable string (assigned by Corona) which can be used to uniquely identify one axis input belonging to one device. This descriptor string is intended to be used by applications that set up key and axis bindings with a particular device, such as the first joystick connected to the system.",
     type = "value"
    },
    maxValue = {
-    description = "Indicates the maximum value that an axis input event will provide. This property and the minValue property are needed to make sense of the raw data received by an axis, because it will indicate how far that axis has been moved relative to its range.",
+    description = "Indicates the maximum value that an axis input event will provide. This property and the object.minValue property are needed to make sense of the raw data received by an axis because it will indicate how far that axis has been moved relative to its range.",
     type = "value"
    },
    minValue = {
-    description = "Indicates the minimum value that an axis input event will provide. This property and the maxValue property are needed to make sense of the raw data received by an axis, because it will indicate how far that axis has been moved relative to its range.",
+    description = "Indicates the minimum value that an axis input event will provide. This property and the object.maxValue property are needed to make sense of the raw data received by an axis because it will indicate how far that axis has been moved relative to its range.",
     type = "value"
    },
    number = {
-    description = "The number assigned to an input device's axis. This number is based on the number of axes found on one input device. For example, if an input device has 4 axes, then they will be assigned numbers 1, 2, 3, and 4 in the order that they were found. You can use this number to uniquely identify an axis belonging to one input device.",
+    description = "The number assigned to an input device's axis. This number is based on the number of axes found on one input device. For example, if an input device has 4 axes, then they will be assigned numbers `1`, `2`, `3`, and `4` in the order that they were found. You can use this number to uniquely identify an axis belonging to one input device. This axis number can be used as an index with the array returned by its input device's getAxes() function.",
     type = "value"
    },
    type = {
-    description = "A string describing the type of axis input the device has, such as \"x\" or \"y\" for a joystick's x-axis or y-axis input. This is informational only and should not be used to identify the type of data provided by the axis input. See the \"Gotchas\" section below for the reason why.",
+    description = "A string describing the type of axis input that an InputDevice(#names) below for a complete list of values.",
     type = "value"
    }
   },
-  description = "Provides information about one analog axis input belonging to an InputDevice, such as an x-axis or y-axis of a joystick, a gamepad's left analog trigger, a gamepad's right analog trigger, etc. The main usage of this object is to acquire the min and max values that the axis can provide in order to make sense of its data.",
+  description = "Provides information about one analog axis input belonging to an InputDevice, such as an <nobr>__x__-axis</nobr> or <nobr>__y__-axis</nobr> of a joystick, a gamepad's left or right analog trigger, etc. The main usage of this object is to acquire the minimum and maximum values that the axis can provide in order to make sense of its data.",
   type = "class"
  },
  _InputDevice = {
@@ -664,7 +675,7 @@ do return {
     type = "method"
    }
   },
-  description = "An object of this type respresent one input device such as a keyboard, mouse, touchscreen, gamepad, etc. This object provides access to the input device's information and its current connection status.",
+  description = "An object of this type respresents one input device such as a keyboard, mouse, touchscreen, gamepad, etc. This object provides access to the input device's information and its current connection status.",
   type = "class"
  },
  _Joint = {
@@ -889,6 +900,7 @@ do return {
    }
   },
   description = "Line objects are created using display.newLine().",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _Map = {
@@ -973,8 +985,22 @@ do return {
   type = "class"
  },
  _NativeDisplayObject = {
-  childs = {},
+  childs = {
+   getNativeProperty = {
+    args = "( property )",
+    description = "This function allows you to __get__ properties of the underlying native object created by the native on iOS, you can access the <nobr>Obj-C</nobr> properties of the corresponding `UIWebView`.",
+    returns = "()",
+    type = "method"
+   },
+   setNativeProperty = {
+    args = "( property, value )",
+    description = "This function allows you to __set__ properties of the underlying native object created by the native on iOS, you can set the Obj-C properties of the corresponding `UIWebView`.",
+    returns = "()",
+    type = "method"
+   }
+  },
   description = "Native display objects are separate from Corona's OpenGL drawing canvas and always appear in front of normal display objects.",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _Paint = {
@@ -1101,6 +1127,7 @@ do return {
    }
   },
   description = "Particle system objects are created using physics.newParticleSystem().",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _Path = {
@@ -1111,23 +1138,23 @@ do return {
  _PhysicsContact = {
   childs = {
    bounce = {
-    description = "Overrides the bounciness (\"restitution\" in Box2D terms) of the contact. This can be set inside the preCollision event listener.",
+    description = "Overrides the normal bounce/restitution of the PhysicsContact event listener.",
     type = "value"
    },
    friction = {
-    description = "Overrides the default friction of the contact. This can be set inside the preCollision event listener.",
+    description = "Overrides the normal friction of the PhysicsContact event listener.",
     type = "value"
    },
    isEnabled = {
-    description = "Enable/disable the contact. This can be used inside the preCollision event listener. The contact is only disabled for the current time step.",
+    description = "Enable or disable the collision associated with this contact. This is typically used inside a preCollision event listener and may be used to construct <nobr>one-sided</nobr> platforms that the character can jump vertically through, but only from below.",
     type = "value"
    },
    isTouching = {
-    description = "Indicates whether this contact is touching.",
+    description = "Boolean property (read-only) indicating whether the two objects associated with this PhysicsContact are touching.",
     type = "value"
    }
   },
-  description = "Physics contact objects are created by Box2D to manage collisions. ",
+  description = "Physics contacts are created by Box2D to manage/override collision behavior in special cases.",
   type = "class"
  },
  _PickerWidget = {
@@ -1140,6 +1167,7 @@ do return {
    }
   },
   description = "PickerWheel objects are created using widget.newPickerWheel().",
+  inherits = "_EventListener",
   type = "class"
  },
  _ProgressViewWidget = {
@@ -1158,6 +1186,7 @@ do return {
    }
   },
   description = "ProgressView objects are created using widget.newProgressView().",
+  inherits = "_EventListener",
   type = "class"
  },
  _Recording = {
@@ -1198,12 +1227,14 @@ do return {
  },
  _RectPath = {
   childs = {},
-  description = "The rectangle path specifies the geometry of the corresponding shape object.",
+  description = "The rectangle path specifies the geometry of the corresponding rectangle object.",
+  inherits = "_Path",
   type = "class"
  },
  _RoundedRectPath = {
   childs = {},
-  description = "The rounded rectangle path specifies the geometry of the corresponding shape object.",
+  description = "The rounded rectangle path specifies the geometry of the corresponding rounded rectangle object.",
+  inherits = "_Path",
   type = "class"
  },
  _Runtime = {
@@ -1215,18 +1246,20 @@ do return {
     type = "method"
    },
    hideErrorAlerts = {
-    args = "( )",
-    description = "Disables the runtime error alert that appears if the application hits an error condition.  It's a shorthand for defining your own `unhandledError` listener and returning `true`.",
+    args = "()",
+    description = "Disables the runtime error alert that appears if the application hits an error condition. This is shorthand for defining your own unhandledError listener and returning `true`.",
     returns = "()",
     type = "method"
    }
   },
-  description = "The `Runtime` class inherits from EventListener.",
+  description = "The `Runtime` class inherits from EventListener. It is a singleton class, meaning there is only one instance, accessible via the global `Runtime`.",
+  inherits = "_EventListener",
   type = "class"
  },
  _Scene = {
   childs = {},
   description = "Scene objects are the focal point of the Composer.",
+  inherits = "_EventListener",
   type = "class"
  },
  _ScrollViewWidget = {
@@ -1263,13 +1296,13 @@ do return {
    },
    setScrollHeight = {
     args = "( newHeight )",
-    description = "Updates the scrollable content height of a ScrollView.",
+    description = "Updates the scrollable content height of a ScrollView, meaning the total amount that the user can scroll the view in the vertical direction.",
     returns = "(Number)",
     type = "method"
    },
    setScrollWidth = {
     args = "( newWidth )",
-    description = "Updates the scrollable content width of a ScrollView.",
+    description = "Updates the scrollable content width of a ScrollView, meaning the total amount that the user can scroll the view in the horizontal direction.",
     returns = "(Number)",
     type = "method"
    },
@@ -1301,6 +1334,7 @@ do return {
    }
   },
   description = "SegmentedControl objects are created using widget.newSegmentedControl().",
+  inherits = "_EventListener",
   type = "class"
  },
  _ShapeObject = {
@@ -1335,6 +1369,7 @@ do return {
    }
   },
   description = "Vector display objects are objects created without the use of images, such as rectangles, circles, rounded rectangles, and lines.",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _SliderWidget = {
@@ -1351,6 +1386,7 @@ do return {
    }
   },
   description = "Slider objects are created using widget.newSlider().",
+  inherits = "_EventListener",
   type = "class"
  },
  _SnapshotObject = {
@@ -1391,6 +1427,7 @@ do return {
    }
   },
   description = "Snapshot objects let you capture a group of display objects and render them into a flattened image. ",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _SpinnerWidget = {
@@ -1409,6 +1446,7 @@ do return {
    }
   },
   description = "Spinner objects are created using widget.newSpinner().",
+  inherits = "_EventListener",
   type = "class"
  },
  _SpriteObject = {
@@ -1459,6 +1497,7 @@ do return {
    }
   },
   description = "Sprite objects are created using display.newSprite().",
+  inherits = "_DisplayObject",
   type = "class"
  },
  _StageObject = {
@@ -1471,6 +1510,7 @@ do return {
    }
   },
   description = "This object is the current \"stage\" object, which is the parent group for all display objects and child groups. This global stage object can be retrieved at any time via display.getCurrentStage().",
+  inherits = "_GroupObject",
   type = "class"
  },
  _StepperWidget = {
@@ -1501,6 +1541,7 @@ do return {
    }
   },
   description = "Stepper.",
+  inherits = "_EventListener",
   type = "class"
  },
  _SwitchWidget = {
@@ -1517,6 +1558,7 @@ do return {
    }
   },
   description = "Switch objects are created using widget.newSwitch().",
+  inherits = "_EventListener",
   type = "class"
  },
  _TabBarWidget = {
@@ -1529,6 +1571,7 @@ do return {
    }
   },
   description = "TabBar objects are created using widget.newTabBar().",
+  inherits = "_EventListener",
   type = "class"
  },
  _TableViewWidget = {
@@ -1542,6 +1585,12 @@ do return {
    deleteRow = {
     args = "( rowIndex )",
     description = "This method is used to delete a row contained inside a TableView.",
+    returns = "()",
+    type = "method"
+   },
+   deleteRows = {
+    args = "( rowArray [, animationOptions] )",
+    description = "This method is used to delete rows contained inside a TableView.",
     returns = "()",
     type = "method"
    },
@@ -1652,6 +1701,7 @@ do return {
    }
   },
   description = "A native text box is a scrollable, multi-line input field for displaying <nobr>text-based</nobr> content. See native.newTextBox() for more details.",
+  inherits = "_NativeDisplayObject",
   type = "class"
  },
  _TextField = {
@@ -1732,6 +1782,7 @@ do return {
    }
   },
   description = "A native text field is a single-line input field for displaying <nobr>text-based</nobr> content. See native.newTextField() for more details.",
+  inherits = "_NativeDisplayObject",
   type = "class"
  },
  _TextObject = {
@@ -1752,6 +1803,52 @@ do return {
    }
   },
   description = "Text objects are created using the display.newText() function.",
+  inherits = "_DisplayObject",
+  type = "class"
+ },
+ _TextureResource = {
+  childs = {
+   baseDir = {
+    description = "Use this property instead of the real directory constant to create display objects, fills, and use in other places where a real directory constant is expected. In these instances, you must also pass texture.filename as a parameter - see the examples below for reference.",
+    type = "value"
+   },
+   filename = {
+    description = "Use this property instead of the real file name to create display objects, fills, and use in other places where a real image file name is expected. In these instances, you must also pass texture.baseDir as a parameter - see the examples below for reference.",
+    type = "value"
+   },
+   releaseSelf = {
+    args = "()",
+    description = "The graphics.newTexture() object and restore automatic management for the texture, you must release it by calling `texture:releaseSelf()`.",
+    returns = "()",
+    type = "method"
+   },
+   type = {
+    description = "This property indicates the type of texture.",
+    type = "value"
+   }
+  },
+  description = "The base class for all textures created by graphics.newTexture(). Objects of this type provide a handle to manually manage and access information about textures.",
+  type = "class"
+ },
+ _TextureResourceBitmap = {
+  childs = {
+   preload = {
+    args = "()",
+    description = "When an image texture is created, the bitmap is read from the file system and loaded into memory. At the first point a display object is created which utilizes the texture, it is scheduled to load to the GPU.",
+    returns = "()",
+    type = "method"
+   },
+   wrapX = {
+    description = "Indicates the horizontal wrap mode for a texture: `\"clampToEdge\"`, `\"repeat\"` or `\"mirroredRepeat\"`.",
+    type = "value"
+   },
+   wrapY = {
+    description = "Indicates the vertical wrap mode for a texture: `\"clampToEdge\"`, `\"repeat\"` or `\"mirroredRepeat\"`.",
+    type = "value"
+   }
+  },
+  description = "The object created by graphics.newTexture()",
+  inherits = "_TextureResource",
   type = "class"
  },
  _Video = {
@@ -1794,6 +1891,7 @@ do return {
    }
   },
   description = "A video object is a native display object.",
+  inherits = "_NativeDisplayObject",
   type = "class"
  },
  _WebView = {
@@ -1814,7 +1912,7 @@ do return {
    },
    deleteCookies = {
     args = "()",
-    description = "Deletes cookies for all the WebViews.",
+    description = "Deletes cookies for the WebView.",
     returns = "()",
     type = "method"
    },
@@ -1848,6 +1946,7 @@ do return {
    }
   },
   description = "A web view object is a native display object.",
+  inherits = "_NativeDisplayObject",
   type = "class"
  },
  ads = {
@@ -2096,7 +2195,7 @@ do return {
     type = "value"
    },
    recycleOnSceneChange = {
-    description = "By default, when changing scenes, Composer keeps the current scene's view in memory, which can improve performance if you access the same scenes frequently. If you wish to recycle the current scene when changing to a new scene (remove the current scene's `self.view`) set `composer.recycleOnSceneChange` to `true`. The default value is `false`.",
+    description = "By default, when changing scenes, Composer keeps the current scene's view (`self.view`) in memory, which can improve performance if you access the same scenes frequently. If you set `composer.recycleOnSceneChange` to `true`, the scene's `self.view` display group will be removed, but its scene object will remain in memory. The default value is `false`.",
     type = "value"
    },
    removeHidden = {
@@ -2217,15 +2316,15 @@ do return {
     type = "function"
    },
    contentCenterX = {
-    description = "Equivalent to `display.contentWidth * 0.5`.",
+    description = "The center of the content area along the __x__ axis. Equivalent to `display.contentWidth * 0.5`.",
     type = "value"
    },
    contentCenterY = {
-    description = "Equivalent to `display.contentHeight * 0.5`.",
+    description = "The center of the content area along the __y__ axis. Equivalent to `display.contentHeight * 0.5`.",
     type = "value"
    },
    contentHeight = {
-    description = "A read-only property representing the original height of the content in pixels. This will default to the screen height, but may be another value if you are using content scaling in `config.lua`.",
+    description = "A read-only property representing the height of the content area in pixels. This will default to the screen height, but may be another value if you are using content scaling in `config.lua`.",
     type = "value"
    },
    contentScaleX = {
@@ -2237,7 +2336,7 @@ do return {
     type = "value"
    },
    contentWidth = {
-    description = "A read-only property representing the original width of the content in pixels. This will default to the screen width, but may be another value if you are using content scaling in `config.lua`.",
+    description = "A read-only property representing the width of the content area in pixels. This will default to the screen width, but may be another value if you are using content scaling in `config.lua`.",
     type = "value"
    },
    currentStage = {
@@ -2306,14 +2405,14 @@ do return {
     valuetype = "_GroupObject"
    },
    newImage = {
-    args = "( [parent,] filename [,baseDir] [,x,y] [,isFullResolution])",
+    args = "()",
     description = "Displays an image on the screen from a file (supports tinting via object:setFillColor is initialized to this local origin.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
    },
    newImageRect = {
-    args = "( [parentGroup,] filename, [baseDir,] width, height )",
+    args = "()",
     description = "Displays an image on the screen from a file (supports tinting via object:setFillColor is initialized to this local origin.",
     returns = "(DisplayObject)",
     type = "function",
@@ -2384,7 +2483,7 @@ do return {
    },
    save = {
     args = "( displayObject, options )",
-    description = "Renders the display object referenced by first argument into a JPEG or PNG image and saves it as a new file. The display object must currently be in the display hierarchy or no image will be saved. If the object is a display group, all children are also rendered. The object to be saved must be on the screen and fully within the screen boundaries.",
+    description = "Renders the display object referenced by first argument into a JPEG or PNG image and saves it as a new file. The display object must currently be in the display hierarchy or no image will be saved. If the object is a display group, all children are also rendered.",
     returns = "()",
     type = "function"
    },
@@ -2450,6 +2549,12 @@ do return {
  },
  graphics = {
   childs = {
+   defineEffect = {
+    args = "( effect )",
+    description = "This function allows you to extend Corona and define a custom shader effect. Your custom effect can define either a vertex kernel or a fragment kernel (or both). These kernels are similar to shaders, except that they must define functions with a specific name and which conform to specific function signatures. ",
+    returns = "()",
+    type = "function"
+   },
    newImageSheet = {
     args = "( filename, [baseDir, ] options )",
     description = "ImageSheet.",
@@ -2469,6 +2574,20 @@ do return {
     description = "This function produces the outline of the shape obtained from an image file or a frame within an ImageSheet. A shape is recognized by the image's <nobr>non-transparent</nobr> alpha value. Generally, simpler images produce better outlines.",
     returns = "(Table)",
     type = "function"
+   },
+   newTexture = {
+    args = "( params )",
+    description = "Creates a TextureResource object which allows you to access and manage textures. This can be used to <nobr>pre-load</nobr> a texture/image and prevent it from being disposed when there is no display object using it.",
+    returns = "(TextureResource)",
+    type = "function",
+    valuetype = "_TextureResource"
+   },
+   releaseTextures = {
+    args = "( params )",
+    description = "This convenience function disposes/releases all TextureResource.",
+    returns = "(TextureResource)",
+    type = "function",
+    valuetype = "_TextureResource"
    }
   },
   type = "lib"
@@ -2808,7 +2927,7 @@ do return {
    },
    hasSource = {
     args = "( mediaSource )",
-    description = "Determines if the given media source, such as a camera or photo library, is available on the platform. This function should be called before calling media.show() to determine if that media service is available. Returns `true` if the media source is available on the platform/device. Returns `false` if not.",
+    description = "Determines if the given media source, such as a camera or photo library, is available on the platform. This function should be called before calling media.selectPhoto() to determine if that media service is available. Returns `true` if the media source is available on the platform/device. Returns `false` if not.",
     returns = "(Boolean)",
     type = "function"
    },
@@ -2934,14 +3053,14 @@ do return {
    },
    newMapView = {
     args = "( centerX, centerY, width, height )",
-    description = "Renders a map view within the specified boundaries and returns a display object wrapper.",
+    description = "Renders a map view within the specified boundaries and returns a display object wrapper. On the map view, touch events are available when you add a mapLocation event listener.",
     returns = "(Map)",
     type = "function",
     valuetype = "_Map"
    },
    newTextBox = {
     args = "( centerX, centerY, width, height )",
-    description = "Creates a scrollable, multi-line text box for displaying text-based content. Text boxes can also be used for text input (and multi-line text input) by setting the `isEditable` property to `true`.",
+    description = "Creates a scrollable, __multi-line__ text box for text input. For <nobr>single-line</nobr> text input, see native.newTextField().",
     returns = "(TextBox)",
     type = "function",
     valuetype = "_TextBox"
@@ -3010,17 +3129,17 @@ do return {
     type = "function"
    },
    showWebPopup = {
-    args = "( url [, options] )",
+    args = "( [x, y, width, height,] url, [options] )",
     description = "Creates a web popup that loads a local or remote web page.",
     returns = "()",
     type = "function"
    },
    systemFont = {
-    description = "Native system font for display.newText().",
+    description = "The native system font used by default for display.newText().",
     type = "value"
    },
    systemFontBold = {
-    description = "Native \"bold\" system font for display.newText().",
+    description = "The native \"bold\" system font used by default for display.newText().",
     type = "value"
    }
   },
@@ -3030,7 +3149,7 @@ do return {
  network = {
   childs = {
    canDetectNetworkStatusChanges = {
-    description = "Returns `true` if network status APIs are supported on the current platform.",
+    description = "Returns `true` if network reachability events are supported on the current platform.",
     type = "value"
    },
    cancel = {
@@ -3095,20 +3214,20 @@ do return {
    },
    exit = {
     args = "( [ exit ] )",
-    description = "Calls the C function `exit()`, with an optional code, to terminate the host program. The default value for code is the success code.",
+    description = "<div class=\"guide-notebox-imp\">",
     returns = "()",
     type = "function"
    },
    remove = {
     args = "( file )",
-    description = "Deletes a file or directory. It returns the two possible values:",
+    description = "Deletes a file or directory and returns two possible values:",
     returns = "(String)",
     type = "function",
     valuetype = "string"
    },
    rename = {
     args = "( oldname, newname )",
-    description = "Renames a file or directory.",
+    description = "Renames a file or directory and returns two possible values:",
     returns = "(Boolean)",
     type = "function"
    },
@@ -3227,13 +3346,13 @@ do return {
     type = "function"
    },
    rayCast = {
-    args = "( from_x, from_y, to_x, to_y, behavior )",
+    args = "( fromX, fromY, toX, toY, behavior )",
     description = "This function is used to find the objects that collide with a line, and the collision points along that line.",
     returns = "()",
     type = "function"
    },
    reflectRay = {
-    args = "( from_x, from_y, hit )",
+    args = "( fromX, fromY, hit )",
     description = "This function is used to reflect a vector as returned by physics.rayCast().",
     returns = "()",
     type = "function"
@@ -3282,7 +3401,7 @@ do return {
    },
    setPositionIterations = {
     args = "( value )",
-    description = "Sets the accuracy of the engine's position calculations. The default value is `8`.",
+    description = "Sets the accuracy of the engine's position calculations. The default value is `3`.",
     returns = "()",
     type = "function"
    },
@@ -3300,13 +3419,13 @@ do return {
    },
    setTimeStep = {
     args = "( dt )",
-    description = "Specifies either a frame-based (approximated) physics simulation or a time-based simulation.",
+    description = "Specifies either a frame-based (approximated) physics simulation or a <nobr>time-based</nobr> simulation.",
     returns = "()",
     type = "function"
    },
    setVelocityIterations = {
     args = "( value )",
-    description = "Sets the accuracy of the engine's velocity calculations. The default value is `3`.",
+    description = "Sets the accuracy of the engine's velocity calculations. The default value is `8`.",
     returns = "()",
     type = "function"
    },
@@ -3318,7 +3437,7 @@ do return {
    },
    stop = {
     args = "()",
-    description = "Stops the physics engine. This function will return `false` and display a warning message in the Corona Simulator if the API cannot be processed.",
+    description = "Stops the physics engine. This function will return `false` and display a warning message if the API cannot be processed.",
     returns = "(Boolean)",
     type = "function"
    },
@@ -3350,22 +3469,16 @@ do return {
  store = {
   childs = {
    availableStores = {
-    args = "()",
-    description = "Returns an array of store names for which Corona supports <nobr>in-app</nobr> purchases on the current device. This can also be used in conjunction with <nobr>`native.showPopup( \"appStore\" )`</nobr> \\(reference\\).",
-    returns = "(Array)",
-    type = "function"
+    description = "Array of store names for which Corona supports <nobr>in-app</nobr> purchases on the current device. This can also be used in conjunction with <nobr>`native.showPopup( \"appStore\" )`</nobr> \\(reference\\).",
+    type = "value"
    },
    canLoadProducts = {
-    args = "()",
-    description = "This should be called before store.loadProducts().",
-    returns = "(Boolean)",
-    type = "function"
+    description = "This property will be `true` if the initialized store supports the loading of products. Following this check, the store.loadProducts() function will retrieve information about items available for sale. This includes the title, description, product identifier, type, and other details.",
+    type = "value"
    },
    canMakePurchases = {
-    args = "()",
     description = "This property is `true` if purchases are allowed, `false` otherwise.",
-    returns = "(Boolean)",
-    type = "function"
+    type = "value"
    },
    finishTransaction = {
     args = "( transaction )",
@@ -3380,14 +3493,12 @@ do return {
     type = "function"
    },
    isActive = {
-    args = "()",
-    description = "To confirm that a store is properly initialized after calling store.init(), use the `store.isActive()` function. This returns `true` if the store has successfully initialized. Currently, it will return `false` on a Corona app built for Amazon or Nook.",
-    returns = "(Boolean)",
-    type = "function"
+    description = "To confirm that a store is properly initialized after calling store.init(), check the `store.isActive()` property. This will be `true` if the store has successfully initialized. Currently, it will be `false` on a Corona app built for Amazon or Nook.",
+    type = "value"
    },
    loadProducts = {
     args = "( productIdentifiers, listener )",
-    description = "iOS and the Google Play Marketplace support loading of product information that you've entered into iTunes Connect(https://itunesconnect.apple.com/) or into the developer's console. Corona provides the `store.canLoadProducts` function which returns `true` if the initialized store supports the loading of products. Following this check, the `store.loadProducts()` function will retrieve information about items available for sale. This includes the title, description, localized price, product identifier, and type.",
+    description = "iOS and the Google Play Marketplace support loading of product information that you've entered into iTunes Connect(https://itunesconnect.apple.com/) or the Google Play Developer Console(https://play.google.com/apps/publish/). Corona provides the store.canLoadProducts property which will be `true` if the initialized store supports the loading of products. Following this check, the `store.loadProducts()` function will retrieve information about items available for sale. This includes the title, description, product identifier, type, and other details.",
     returns = "()",
     type = "function"
    },
@@ -3404,11 +3515,8 @@ do return {
     type = "function"
    },
    target = {
-    args = "()",
-    description = "Returns the store that the app was built for.  It will return one of the following strings:",
-    returns = "(String)",
-    type = "function",
-    valuetype = "string"
+    description = "Indicates the store that the app was built for. It will yield one of the following strings:",
+    type = "value"
    }
   },
   description = "This feature allows you to support in-app purchases. Currently, only the Apple iTunes Store and the Google Play Marketplace are supported. In the future, other storefronts may be added.",
@@ -3444,8 +3552,8 @@ do return {
    },
    gmatch = {
     args = "( s, pattern )",
-    description = "Returns a pattern finding iterator.",
-    returns = "(TYPE)",
+    description = "Returns a pattern-finding iterator. See Lua String Manipulation for more information.",
+    returns = "()",
     type = "function"
    },
    gsub = {
@@ -3518,7 +3626,7 @@ do return {
     type = "value"
    },
    ResourceDirectory = {
-    description = "Used with system.pathForFile() to create a path for retrieving files where all the application assets exist (e.g., image and sound files). This often called the \"app bundle.\"",
+    description = "Used with system.pathForFile() to create a path for retrieving files where all the application assets exist (for example, image and sound files). This is often called the \"app bundle.\"",
     type = "value"
    },
    TemporaryDirectory = {
@@ -3537,7 +3645,7 @@ do return {
     type = "function"
    },
    deactivate = {
-    args = "()",
+    args = "( feature )",
     description = "Deactivates a system level feature, such as `\"multitouch\"`.",
     returns = "()",
     type = "function"
@@ -3556,7 +3664,7 @@ do return {
    },
    getInputDevices = {
     args = "()",
-    description = "Fetches all input devices that are currenty connected to the system, such as a touchscreen, keyboard, mouse, joystick, etc. Input devices that were once connected but later disconnected will not be returned by this function.",
+    description = "Returns an array of InputDevice devices that are currently connected to the system, such as a touchscreen, keyboard, mouse, joystick, etc. Alternatively returns an empty array if no input devices are found. Note that input devices which were once connected but were later disconnected will not be returned by this function.",
     returns = "(InputDevice)",
     type = "function",
     valuetype = "_InputDevice"
@@ -3587,11 +3695,8 @@ do return {
     type = "function"
    },
    orientation = {
-    args = "()",
-    description = "Returns a string identifying the orientation of the device:",
-    returns = "(String)",
-    type = "function",
-    valuetype = "string"
+    description = "String value identifying the orientation of the device:",
+    type = "value"
    },
    pathForFile = {
     args = "( filename [, baseDirectory] )",
