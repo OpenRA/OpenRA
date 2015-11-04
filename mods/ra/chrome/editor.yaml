@@ -351,9 +351,15 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: escape
+		Button@COPYPASTE_BUTTON:
+			X: 170
+			Width: 90
+			Height: 25
+			Text: Copy/Paste
+			Font: Bold
 		Button@GRID_BUTTON:
-			X: 180
-			Width: 160
+			X: 270
+			Width: 70
 			Height: 25
 			Text: Grid
 			TooltipTemplate: BUTTON_TOOLTIP

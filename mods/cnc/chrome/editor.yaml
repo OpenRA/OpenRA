@@ -362,7 +362,7 @@ Container@EDITOR_WORLD_ROOT:
 					Text: Actors
 					Font: Bold
 		Button@GRID_BUTTON:
-			X: WINDOW_RIGHT - 420
+			X: WINDOW_RIGHT - 500
 			Y: 5
 			Width: 100
 			Height: 25
@@ -373,7 +373,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Toggle the terrain grid
 			TooltipContainer: TOOLTIP_CONTAINER
 		Label@ZOOM_LABEL:
-			X: WINDOW_RIGHT - 500 - 55
+			X: WINDOW_RIGHT - 580 - 55
 			Y: 5
 			Width: 50
 			Height: 25
@@ -382,11 +382,17 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		DropDownButton@ZOOM_BUTTON:
-			X: WINDOW_RIGHT - 500
+			X: WINDOW_RIGHT - 580
 			Y: 5
 			Width: 70
 			Height: 25
 			Font: Bold
+		Button@COPYPASTE_BUTTON:
+			X: WINDOW_RIGHT-390
+			Y: 5
+			Width: 96
+			Height: 25
+			Text: Copy/Paste
 		Label@COORDINATE_LABEL:
 			X: 10
 			Width: 50
