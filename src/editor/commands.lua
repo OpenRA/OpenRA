@@ -238,8 +238,8 @@ function ActivateFile(filename)
   return opened
 end
 
-local function getExtsString()
-  local exts = ide:GetKnownExtensions()
+local function getExtsString(ed)
+  local exts = ed and ed.spec and ed.spec.exts or {}
   local knownexts = #exts > 0 and "*."..table.concat(exts, ";*.") or nil
   return (knownexts and TR("Known Files").." ("..knownexts..")|"..knownexts.."|" or "")
   .. TR("All files").." (*)|*"
@@ -255,7 +255,7 @@ function OpenFile(event)
   local fileDialog = wx.wxFileDialog(ide.frame, TR("Open file"),
     (path and GetPathWithSep(path) or FileTreeGetDir() or ""),
     "",
-    getExtsString(),
+    getExtsString(editor),
     wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST + wx.wxFD_MULTIPLE)
   if fileDialog:ShowModal() == wx.wxID_OK then
     for _, path in ipairs(fileDialog:GetPaths()) do
@@ -344,7 +344,7 @@ function SaveFileAs(editor)
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
     -- specify the current extension plus all other extensions based on specs
-    (ext and #ext > 0 and "*."..ext.."|*."..ext.."|" or "")..getExtsString(),
+    (ext and #ext > 0 and "*."..ext.."|*."..ext.."|" or "")..getExtsString(editor),
     wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
