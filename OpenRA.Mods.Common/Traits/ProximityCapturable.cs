@@ -18,10 +18,21 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor can be captured by units in a specified proximity.")]
 	public class ProximityCapturableInfo : ITraitInfo
 	{
+		[Desc("If set, the actor can only be captured via this logic once.")]
 		public readonly bool Permanent = false;
+
+		[Desc("Maximum range at a ProximityCaptor actor can initiate the capture.")]
 		public readonly WDist Range = WDist.FromCells(5);
+
+		[Desc("If set, the capturing process stops immediately after",
+			"another player reaches below Range.")]
 		public readonly bool MustBeClear = false;
+
+		[Desc("Allowed ProximityCaptor actors to capture this actor.")]
 		public readonly HashSet<string> CaptorTypes = new HashSet<string> { "Vehicle", "Tank", "Infantry" };
+
+		[Desc("If set, the presence of the player is only required to initiate the capturing process.")]
+		public readonly bool Influenced = false;
 
 		public object Create(ActorInitializer init) { return new ProximityCapturable(init.Self, this); }
 	}
@@ -77,8 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 				}
 
-				// Revert Ownership otherwise
-				ChangeOwnership(self, OriginalOwner.PlayerActor);
+				// If Influenced isn't set, revert ownership
+				if (!Info.Influenced)
+					ChangeOwnership(self, OriginalOwner.PlayerActor);
 			}
 		}
 
