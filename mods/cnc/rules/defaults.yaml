@@ -401,7 +401,6 @@
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
-		MaximumPitch: 56
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
