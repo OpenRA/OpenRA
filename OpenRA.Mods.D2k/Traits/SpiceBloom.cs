@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string Weapon = "SpiceExplosion";
 
 		[Desc("The amount of spice to expel.")]
-		public readonly int[] Pieces = { 3, 10 };
+		public readonly int[] Pieces = { 2, 12 };
 
 		[Desc("The maximum distance in cells that spice may be expelled.")]
 		public readonly int Range = 5;
@@ -92,6 +92,9 @@ namespace OpenRA.Mods.D2k.Traits
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
+			if (pieces < info.Pieces[0])
+				pieces = info.Pieces[0];
+
 			for (var i = 0; pieces > i; i++)
 			{
 				var cells = OpenRA.Traits.Util.RandomWalk(self.Location, self.World.SharedRandom);
