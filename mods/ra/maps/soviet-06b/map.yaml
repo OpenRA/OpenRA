@@ -32,6 +32,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 11500
 	ConfigurableStartingUnits: False
+	Difficulties: Easy, Normal, Hard
 	ShortGame: False
 
 Players:
@@ -325,9 +326,6 @@ Actors:
 		Location: 61,48
 		Owner: Greece
 		Facing: 160
-	Actor95: dome
-		Location: 67,49
-		Owner: Greece
 	Actor103: 2tnk
 		Location: 76,30
 		Owner: Greece
@@ -429,6 +427,9 @@ Actors:
 	Actor147: silo
 		Owner: Greece
 		Location: 73,49
+	Actor148: sbag
+		Owner: Greece
+		Location: 65,51
 	waypoint69: waypoint
 		Location: 21,28
 		Owner: Neutral
@@ -450,6 +451,10 @@ Actors:
 	waypoint94: waypoint
 		Location: 49,16
 		Owner: Neutral
+	AGun: agun
+		Owner: Greece
+		Location: 69,48
+		TurretFacing: 92
 	APCWaypoint1: waypoint
 		Location: 39,62
 		Owner: Neutral
@@ -480,6 +485,21 @@ Actors:
 	CYardLocation: waypoint
 		Owner: Neutral
 		Location: 71,49
+	Dome: dome
+		Location: 67,49
+		Owner: Greece
+	EnemyEntry1: waypoint
+		Owner: Neutral
+		Location: 53,10
+	EnemyEntry2: waypoint
+		Owner: Neutral
+		Location: 18,62
+	EnemyRally1: waypoint
+		Owner: Neutral
+		Location: 53,31
+	EnemyRally2: waypoint
+		Owner: Neutral
+		Location: 25,62
 	Harvester: harv
 		Location: 77,39
 		Owner: Greece
@@ -532,7 +552,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
-			Scripts: soviet06b.lua, soviet06b-AI.lua
+			Scripts: soviet06b.lua, soviet06b-AI.lua, soviet06b-reinforcements_teams.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Building:

@@ -76,11 +76,17 @@ Trigger.OnKilled(Apwr2, function(building)
 	BaseApwr2.exists = false
 end)
 
+Trigger.OnKilled(Dome, function()
+	player.MarkCompletedObjective(sovietObjective2)
+	Media.PlaySpeechNotification(player, "ObjectiveMet")
+end)
+
 -- Activate the AI once the player deployed the Mcv
 Trigger.OnRemovedFromWorld(Mcv, function()
 	if not mcvDeployed then
 		mcvDeployed = true
 		BuildBase()
+		SendEnemies()
 		Trigger.AfterDelay(DateTime.Minutes(1), ProduceInfantry)
 		Trigger.AfterDelay(DateTime.Minutes(2), ProduceArmor)
 		Trigger.AfterDelay(DateTime.Minutes(2), function()
@@ -128,6 +134,7 @@ WorldLoaded = function()
 	end)
 	alliedObjective = enemy.AddPrimaryObjective("Destroy all Soviet troops.")
 	sovietObjective = player.AddPrimaryObjective("Escort the Convoy.")
+	sovietObjective2 = player.AddSecondaryObjective("Destroy the Allied radar dome to stop enemy\nreinforcements.")
 end
 
 Tick = function()
