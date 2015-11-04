@@ -30,7 +30,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int[] RespawnDelay = { 1500, 2500 };
 
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow.")]
-		public readonly int[] GrowthDelay = { 1000, 1500 };
+		public readonly int[] GrowthDelay = { 1000, 3000 };
 
 		public readonly string ResourceType = "Spice";
 
