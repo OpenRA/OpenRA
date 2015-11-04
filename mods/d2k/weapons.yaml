@@ -790,7 +790,7 @@ SpiceExplosion:
 		AffectsParent: true
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
-		Size: 2,2
+		Size: 1
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 
