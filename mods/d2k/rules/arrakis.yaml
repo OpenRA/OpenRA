@@ -1,3 +1,25 @@
+spicebloom.spawnpoint:
+	HiddenUnderShroud:
+		Type: CenterPosition
+	BodyOrientation:
+		QuantizedFacings: 1
+	RenderSprites:
+		Image: spicebloom
+	SpiceBloom:
+		GrowthTerrainTypes: Sand
+		SpawnActor: spicebloom
+		GrowthSequences: grow0
+		GrowthDelay: 250, 750
+		RespawnDelay: 1, 2
+	Explodes:
+		Weapon: BloomSpawn
+		EmptyWeapon: BloomSpawn
+	Health:
+		HP: 9999
+		Radius: 1
+	Immobile:
+		OccupiesSpace: false
+
 spicebloom:
 	HiddenUnderShroud:
 	BodyOrientation:
