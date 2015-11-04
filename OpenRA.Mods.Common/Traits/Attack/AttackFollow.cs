@@ -96,8 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (move != null)
 						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
+					if (target.IsInRange(self.CenterPosition, weapon.MaxRange()) && !target.IsInRange(self.CenterPosition, weapon.Weapon.MinRange))
+						return this;
 				}
 
+				attack.Target = Target.Invalid;
 				return NextActivity;
 			}
 		}
