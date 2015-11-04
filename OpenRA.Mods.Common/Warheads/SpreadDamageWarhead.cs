@@ -62,9 +62,6 @@ namespace OpenRA.Mods.Common.Warheads
 
 			foreach (var victim in hitActors)
 			{
-				if (!IsValidAgainst(victim, firedBy))
-					continue;
-
 				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;

@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!IsValidAgainst(victim, firedBy))
+				return;
+
 			var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return;
