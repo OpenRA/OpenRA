@@ -59,11 +59,13 @@ namespace OpenRA.Traits
 	{
 		None = 0,
 		Ground = 1,
-		Water = 2,
-		Air = 4,
-		GroundHit = 8,
-		WaterHit = 16,
-		AirHit = 32
+		GroundHit = 2,
+		Water = 4,
+		WaterHit = 8,
+		Air = 16,
+		AirHit = 32,
+		TargetTerrain = 64,
+		TargetHit = 128
 	}
 
 	public class AttackInfo

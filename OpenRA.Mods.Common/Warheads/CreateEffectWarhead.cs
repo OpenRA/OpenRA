@@ -35,15 +35,19 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
 
-		public static ImpactType GetImpactType(World world, CPos cell, WPos pos)
+		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
 			// Missiles need a margin because they sometimes explode a little above ground
 			// due to their explosion check triggering slightly too early (because of CloseEnough).
 			// TODO: Base ImpactType on target altitude instead of explosion altitude.
 			var airMargin = new WDist(128);
 
+			// Matching target actor
+			if (ValidImpactTypes.HasFlag(ImpactType.TargetHit) && GetDirectHit(world, cell, pos, firedBy, true))
+				return ImpactType.TargetHit;
+
 			var dat = world.Map.DistanceAboveTerrain(pos);
-			var isDirectHit = GetDirectHit(world, cell, pos);
+			var isDirectHit = GetDirectHit(world, cell, pos, firedBy);
 
 			if (dat.Length > airMargin.Length)
 				return isDirectHit ? ImpactType.AirHit : ImpactType.Air;
@@ -54,13 +58,21 @@ namespace OpenRA.Mods.Common.Warheads
 			if (isDirectHit)
 				return ImpactType.GroundHit;
 
+			// Matching target terrain
+			if (ValidImpactTypes.HasFlag(ImpactType.TargetTerrain)
+				&& IsValidTarget(world.Map.GetTerrainInfo(cell).TargetTypes))
+				return ImpactType.TargetTerrain;
+
 			return ImpactType.Ground;
 		}
 
-		public static bool GetDirectHit(World world, CPos cell, WPos pos)
+		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
 			foreach (var unit in world.ActorMap.GetActorsAt(cell))
 			{
+				if (checkTargetType && !IsValidAgainst(unit, firedBy))
+					continue;
+
 				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
@@ -101,7 +113,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!world.Map.Contains(targetTile))
 				return false;
 
-			var impactType = GetImpactType(world, targetTile, pos);
+			var impactType = GetImpactType(world, targetTile, pos, firedBy);
 			if (!ValidImpactTypes.HasFlag(impactType) || InvalidImpactTypes.HasFlag(impactType))
 				return false;
 
