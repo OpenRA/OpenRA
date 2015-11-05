@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Health level at which actor will explode.")]
 		public readonly int DamageThreshold = 0;
 
-		[Desc("DeathType(s) to apply upon explosion.")]
+		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
 		public readonly HashSet<string> DeathType = new HashSet<string>();
 
 		public WeaponInfo WeaponInfo { get; private set; }
