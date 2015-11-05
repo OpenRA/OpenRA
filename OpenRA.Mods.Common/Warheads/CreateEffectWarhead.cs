@@ -43,19 +43,15 @@ namespace OpenRA.Mods.Common.Warheads
 			var airMargin = new WDist(128);
 
 			var dat = world.Map.DistanceAboveTerrain(pos);
-			var isAir = dat.Length > airMargin.Length;
-			var isWater = dat.Length <= 0 && world.Map.GetTerrainInfo(cell).IsWater;
 			var isDirectHit = GetDirectHit(world, cell, pos);
 
-			if (isAir && !isDirectHit)
-				return ImpactType.Air;
-			else if (isWater && !isDirectHit)
-				return ImpactType.Water;
-			else if (isAir && isDirectHit)
-				return ImpactType.AirHit;
-			else if (isWater && isDirectHit)
-				return ImpactType.WaterHit;
-			else if (isDirectHit)
+			if (dat.Length > airMargin.Length)
+				return isDirectHit ? ImpactType.AirHit : ImpactType.Air;
+
+			if (dat.Length <= 0 && world.Map.GetTerrainInfo(cell).IsWater)
+				return isDirectHit ? ImpactType.WaterHit : ImpactType.Water;
+
+			if (isDirectHit)
 				return ImpactType.GroundHit;
 
 			return ImpactType.Ground;
