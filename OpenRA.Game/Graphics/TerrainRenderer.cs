@@ -18,11 +18,13 @@ namespace OpenRA.Graphics
 		readonly TerrainSpriteLayer terrain;
 		readonly Theater theater;
 		readonly CellLayer<TerrainTile> mapTiles;
+		readonly CellLayer<byte> mapHeight;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
 			theater = wr.Theater;
 			mapTiles = world.Map.MapTiles.Value;
+			mapHeight = world.Map.MapHeight.Value;
 
 			terrain = new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha,
 				wr.Palette("terrain"), wr.World.Type != WorldType.Editor);
@@ -30,8 +32,8 @@ namespace OpenRA.Graphics
 			foreach (var cell in world.Map.AllCells)
 				UpdateCell(cell);
 
-			world.Map.MapTiles.Value.CellEntryChanged += UpdateCell;
-			world.Map.MapHeight.Value.CellEntryChanged += UpdateCell;
+			mapTiles.CellEntryChanged += UpdateCell;
+			mapHeight.CellEntryChanged += UpdateCell;
 		}
 
 		public void UpdateCell(CPos cell)
@@ -48,6 +50,8 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
+			mapTiles.CellEntryChanged -= UpdateCell;
+			mapHeight.CellEntryChanged -= UpdateCell;
 			terrain.Dispose();
 		}
 	}

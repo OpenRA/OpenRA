@@ -442,5 +442,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var v = (int)((p.Y - mapRect.Y) / previewScale) + world.Map.Bounds.Top;
 			return new MPos(u, v).ToCPos(world.Map);
 		}
+
+		public override void Removed()
+		{
+			base.Removed();
+			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
+			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
+		}
 	}
 }
