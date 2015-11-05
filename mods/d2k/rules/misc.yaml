@@ -28,77 +28,90 @@ crate:
 	RevealMapCrateAction:
 		SelectionShares: 2
 		Effect: reveal-map
-	GiveUnitCrateAction@Trike:
-		SelectionShares: 20
-		Units: trike
-		Prerequisites: techlevel.low, Light
-	GiveUnitCrateAction@Raider:
+	GiveUnitCrateAction@LightInfantry:
 		SelectionShares: 15
+		Units: light_inf, light_inf, light_inf, light_inf, light_inf
+		Prerequisites: techlevel.low, barracks
+	GiveUnitCrateAction@Trooper:
+		SelectionShares: 10
+		Units: trooper, trooper, trooper, trooper
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Engineer:
+		SelectionShares: 10
+		Units: engineer
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 25
+		Units: trike
+		ValidFactions: atreides, harkonnen
+		Prerequisites: techlevel.low, light_factory
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 25
 		Units: raider
 		ValidFactions: ordos
-		Prerequisites: techlevel.low, Light
+		Prerequisites: techlevel.low, light_factory
 	GiveUnitCrateAction@Quad:
-		SelectionShares: 40
+		SelectionShares: 20
 		Units: quad
-		Prerequisites: techlevel.medium, Light, Outpost
+		Prerequisites: techlevel.medium, light_factory, upgrade.light
 	GiveUnitCrateAction@CombatA:
-		SelectionShares: 10
+		SelectionShares: 15
 		Units: combat_tank_a
 		ValidFactions: atreides
-		Prerequisites: techlevel.low, Heavy
+		Prerequisites: techlevel.low, heavy_factory
 	GiveUnitCrateAction@CombatH:
-		SelectionShares: 10
+		SelectionShares: 15
 		Units: combat_tank_h
 		ValidFactions: harkonnen
-		Prerequisites: techlevel.low, Heavy
+		Prerequisites: techlevel.low, heavy_factory
 	GiveUnitCrateAction@CombatO:
-		SelectionShares: 10
+		SelectionShares: 15
 		Units: combat_tank_o
 		ValidFactions: ordos
-		Prerequisites: techlevel.low, Heavy
+		Prerequisites: techlevel.low, heavy_factory
 	GiveUnitCrateAction@SiegeTank:
-		SelectionShares: 10
+		SelectionShares: 12
 		Units: siege_tank
-		Prerequisites: techlevel.medium, Heavy, Outpost
+		Prerequisites: techlevel.medium, heavy_factory, upgrade.heavy
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
 		Units: missile_tank
-		Prerequisites: techlevel.high, Hitech
+		Prerequisites: techlevel.high, heavy_factory, research_centre
 	GiveUnitCrateAction@StealthRaider:
-		SelectionShares: 7
+		SelectionShares: 8
 		Units: stealth_raider
 		ValidFactions: ordos
-		Prerequisites: techlevel.medium, Hitech
+		Prerequisites: techlevel.medium, light_factory, upgrade.light, high_tech_factory
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
-		Units: fremen,fremen
+		Units: fremen, fremen
 		ValidFactions: atreides
-		Prerequisites: techlevel.high, Palace
+		Prerequisites: techlevel.high, palace
 	GiveUnitCrateAction@Sardaukar:
-		SelectionShares: 8
-		Units: sardaukar,sardaukar
+		SelectionShares: 5
+		Units: sardaukar, sardaukar, sardaukar
 		ValidFactions: harkonnen
-		Prerequisites: techlevel.high, Palace
+		Prerequisites: techlevel.high, palace
 	GiveUnitCrateAction@Saboteur:
-		SelectionShares: 3
-		Units: saboteur,saboteur
+		SelectionShares: 5
+		Units: saboteur
 		ValidFactions: ordos
-		Prerequisites: techlevel.high, Palace
+		Prerequisites: techlevel.high, palace
 	GiveUnitCrateAction@SonicTank:
 		SelectionShares: 5
 		Units: sonic_tank
 		ValidFactions: atreides
-		Prerequisites: techlevel.high, Research
+		Prerequisites: techlevel.high, research_centre
 	GiveUnitCrateAction@Devast:
-		SelectionShares: 2
+		SelectionShares: 5
 		Units: devastator
 		ValidFactions: harkonnen
-		Prerequisites: techlevel.high, Research
+		Prerequisites: techlevel.high, research_centre
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 5
 		Units: deviator
 		ValidFactions: ordos
-		Prerequisites: techlevel.high, Research
+		Prerequisites: techlevel.high, research_centre
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001

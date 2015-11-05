@@ -658,7 +658,7 @@ CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 200
+		Damage: 500
 		Versus:
 			none: 90
 			wall: 5
