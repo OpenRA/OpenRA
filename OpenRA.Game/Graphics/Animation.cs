@@ -26,6 +26,7 @@ namespace OpenRA.Graphics
 
 		int frame = 0;
 		bool backwards = false;
+		bool rendered = false;
 
 		string name;
 
@@ -54,6 +55,7 @@ namespace OpenRA.Graphics
 
 		public IEnumerable<IRenderable> Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
+			rendered = true;
 			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration);
 
 			if (CurrentSequence.ShadowStart >= 0)
@@ -80,6 +82,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = false;
+			rendered = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 
@@ -101,6 +104,7 @@ namespace OpenRA.Graphics
 			var tick = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 			timeUntilNextFrame = Math.Min(tick, timeUntilNextFrame);
 			frame %= CurrentSequence.Length;
+			rendered = false;
 			return true;
 		}
 
@@ -112,6 +116,7 @@ namespace OpenRA.Graphics
 			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 
 			frame = 0;
+			rendered = false;
 			tickFunc = () =>
 			{
 				++frame;
@@ -134,6 +139,7 @@ namespace OpenRA.Graphics
 		{
 			backwards = false;
 			tickAlways = true;
+			rendered = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 
@@ -144,6 +150,7 @@ namespace OpenRA.Graphics
 		public void PlayFetchDirection(string sequenceName, Func<int> direction)
 		{
 			tickAlways = false;
+			rendered = false;
 			CurrentSequence = sequenceProvider.GetSequence(name, sequenceName);
 			timeUntilNextFrame = CurrentSequence != null ? CurrentSequence.Tick : defaultTick;
 
@@ -172,7 +179,9 @@ namespace OpenRA.Graphics
 
 		public void Tick(int t)
 		{
-			if (tickAlways)
+			if (!rendered)
+				return;
+			else if (tickAlways)
 				tickFunc();
 			else
 			{
