@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageThreshold = 0;
 
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
-		public readonly HashSet<string> DeathType = new HashSet<string>();
+		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var warhead = e.Warhead as DamageWarhead;
-			if (info.DeathType.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathType))
+			if (info.DeathTypes.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
 			var weapon = ChooseWeaponForExplosion(self);
