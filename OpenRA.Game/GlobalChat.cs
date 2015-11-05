@@ -150,7 +150,7 @@ namespace OpenRA.Chat
 				}
 
 				client.Listen();
-			}) { Name = "IrcListenThread" }.Start();
+			}) { Name = "IrcListenThread", IsBackground = true }.Start();
 		}
 
 		void AddNotification(string text)
@@ -364,8 +364,19 @@ namespace OpenRA.Chat
 
 		public void Dispose()
 		{
-			if (client.IsConnected)
-				client.Disconnect();
+			// HACK: The IRC library we are using has terrible thread-handling code that relies on Thread.Abort.
+			// There is a thread reading from the network socket which is aborted, however on Windows this is inside
+			// native code so this abort call hangs until the network socket reads something and returns to managed
+			// code where it can then be aborted.
+			//
+			// This means we may hang for several seconds during shutdown (until we receive something over IRC!) before
+			// closing.
+			//
+			// Since our IRC client currently lives forever, the only time we call this Dispose method is during the
+			// shutdown of our process. Therefore, we can work around the problem by just not bothering to disconnect
+			// properly. Since our process is about to die anyway, it's not like anyone will care.
+			////if (client.IsConnected)
+			////	client.Disconnect();
 		}
 	}
 }
