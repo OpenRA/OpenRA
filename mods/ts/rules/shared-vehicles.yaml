@@ -27,7 +27,7 @@ MCV:
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
-		TransformSounds: facbld1.aud
+		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
 	SelectionDecorations:
