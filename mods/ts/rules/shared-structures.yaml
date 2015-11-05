@@ -28,6 +28,7 @@ GACNST:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
+		DeployCursor: undeploy
 	ProductionBar@Building:
 		ProductionType: Building
 	ProductionBar@Defense:
