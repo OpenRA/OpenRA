@@ -1795,7 +1795,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				// SpawnViceroid was replaced by SpawnActorOnDeath
 				// And LeavesHusk was renamed to SpawnActorOnDeath
-				if (engineVersion < 20150809)
+				if (engineVersion < 20150920)
 				{
 					if (node.Key == "SpawnViceroid")
 					{
@@ -1844,13 +1844,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150810)
+				if (engineVersion < 20150920)
 				{
 					if (depth == 2 && parentKey == "RallyPoint" && node.Key == "RallyPoint")
 						node.Key = "Offset";
 				}
 
-				if (engineVersion < 20150811)
+				if (engineVersion < 20150920)
 				{
 					if (node.Key.StartsWith("ProductionQueue"))
 					{
@@ -1874,7 +1874,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150816)
+				if (engineVersion < 20150920)
 				{
 					// Rename RenderSprites.RaceImages
 					if (depth == 2 && node.Key == "RaceImages")
@@ -1888,7 +1888,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ValidFactions";
 				}
 
-				if (engineVersion < 20150823)
+				if (engineVersion < 20150920)
 				{
 					// Introduce QuantizeFacingsFromSequence
 					// This will only do roughly the right thing and probably require the modder to do some manual cleanup
@@ -1916,7 +1916,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150826)
+				if (engineVersion < 20150920)
 				{
 					// Replaced RenderBuildingCharge with RenderSprites + WithSpriteBody + WithChargeAnimation (+AutoSelectionSize)
 					if (depth == 0)
@@ -2037,7 +2037,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150828)
+				if (engineVersion < 20150920)
 				{
 					// Replaced RenderBuilding with RenderSprites + WithSpriteBody (+AutoSelectionSize)
 					if (depth == 0)
@@ -2071,7 +2071,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20150902)
+				if (engineVersion < 20150920)
 				{
 					if (depth == 1)
 					{
@@ -2160,14 +2160,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// WaterPaletteRotation renamed to RotationPaletteEffect
-				if (engineVersion < 20150903)
+				if (engineVersion < 20150920)
 				{
 					if (depth == 1 && node.Key == "WaterPaletteRotation")
 						node.Key = "RotationPaletteEffect";
 				}
 
 				// Replace RenderSimple with RenderSprites + WithSpriteBody + AutoSelectionSize
-				if (engineVersion < 20150909)
+				if (engineVersion < 20150920)
 				{
 					if (depth == 0)
 					{
@@ -2193,11 +2193,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Rename D2k actors to match the original game.
-				if (engineVersion < 20150910 && Game.ModData.Manifest.Mod.Id == "d2k")
+				if (engineVersion < 20150920 && Game.ModData.Manifest.Mod.Id == "d2k")
 					node.Key = RenameD2kActors(node.Key);
 
 				// Make Range WDist for all traits with circular ranges.
-				if (engineVersion < 20150917 && depth == 2 && node.Key == "Range")
+				if (engineVersion < 20150920 && depth == 2 && node.Key == "Range")
 				{
 					if (parentKey == "DetectCloaked"
 							|| parentKey == "JamsMissiles"
