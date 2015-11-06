@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Displays a helicopter rotor overlay.")]
-	public class WithSpriteRotorOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithRotorSpriteOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use when flying")]
 		[SequenceReference] public readonly string Sequence = "rotor";
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public object Create(ActorInitializer init) { return new WithSpriteRotorOverlay(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithRotorSpriteOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -43,13 +43,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithSpriteRotorOverlay : ITick
+	public class WithRotorSpriteOverlay : ITick
 	{
-		readonly WithSpriteRotorOverlayInfo info;
+		readonly WithRotorSpriteOverlayInfo info;
 		readonly Animation rotorAnim;
 		readonly IMove movement;
 
-		public WithSpriteRotorOverlay(Actor self, WithSpriteRotorOverlayInfo info)
+		public WithRotorSpriteOverlay(Actor self, WithRotorSpriteOverlayInfo info)
 		{
 			this.info = info;
 			var rs = self.Trait<RenderSprites>();

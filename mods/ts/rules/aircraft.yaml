@@ -290,7 +290,7 @@ APACHE:
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
-	WithSpriteRotorOverlay:
+	WithRotorSpriteOverlay:
 		Offset: 85,0,384
 	RenderSprites:
 	Hovers@AIRBORNE:
