@@ -436,7 +436,7 @@
     <Compile Include="Traits\Render\WithRepairAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
-    <Compile Include="Traits\Render\WithSpriteRotorOverlay.cs" />
+    <Compile Include="Traits\Render\WithRotorSpriteOverlay.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
