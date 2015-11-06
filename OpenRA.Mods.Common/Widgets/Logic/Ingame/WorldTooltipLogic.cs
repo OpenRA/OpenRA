@@ -11,17 +11,26 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	public interface IWorldTooltipInfo
+	{
+		string Label { get; }
+		string Extra { get; }
+		IPlayerSummary Owner { get; }
+		bool ShowOwner { get; }
+	}
+
 	public class WorldTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
+		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, IWorldTooltipInfo info)
 		{
-			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
+			widget.IsVisible = () => info.Label != null;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
@@ -44,53 +53,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
+				if (info == null || info.Label == null)
 					return;
 
-				var index = 0;
-				extraText = "";
-				showOwner = false;
-
-				Player o = null;
-				switch (viewport.TooltipType)
-				{
-					case WorldTooltipType.Unexplored:
-						labelText = "Unexplored Terrain";
-						break;
-					case WorldTooltipType.Actor:
-						{
-							o = viewport.ActorTooltip.Owner;
-							showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
-
-							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
-							labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-							break;
-						}
-
-					case WorldTooltipType.FrozenActor:
-						{
-							o = viewport.FrozenActorTooltip.TooltipOwner;
-							showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
-
-							var stance = o == null || world.RenderPlayer == null ? Stance.None : o.Stances[world.RenderPlayer];
-							labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-							break;
-						}
-				}
-
-				if (viewport.ActorTooltipExtra != null)
-				{
-					foreach (var info in viewport.ActorTooltipExtra)
-					{
-						if (info.IsTooltipVisible(world.LocalPlayer))
-						{
-							if (index != 0)
-								extraText += "\n";
-							extraText += info.TooltipText;
-							index++;
-						}
-					}
-				}
+				var index = string.IsNullOrEmpty(info.Extra) ? 0 : info.Extra.Count(c => c == '\n') + 1;
+				extraText = info.Extra != null ? info.Extra : "";
+				showOwner = info.ShowOwner;
+				labelText = info.Label;
 
 				var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
 
@@ -102,9 +71,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (showOwner)
 				{
-					flagFaction = o.Faction.InternalName;
-					ownerName = o.PlayerName;
-					ownerColor = o.Color.RGB;
+					flagFaction = info.Owner.GetInternalFactionName();
+					ownerName = info.Owner.GetPlayerName();
+					ownerColor = info.Owner.GetColor().RGB;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
@@ -113,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 					widget.Bounds.Height = singleHeight;
 
-				if (extraText != "")
+				if (!string.IsNullOrEmpty(extraText))
 				{
 					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
 					if (showOwner)

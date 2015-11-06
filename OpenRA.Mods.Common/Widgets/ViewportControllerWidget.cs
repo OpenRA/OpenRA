@@ -12,24 +12,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor }
-
-	public class ViewportControllerWidget : Widget
+	public class ViewportControllerWidget : Widget, IWorldTooltipInfo
 	{
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
+		readonly Dictionary<int, ResourceType> resources;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
-		public WorldTooltipType TooltipType { get; private set; }
-		public ITooltip ActorTooltip { get; private set; }
-		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
-		public FrozenActor FrozenActorTooltip { get; private set; }
+		public string Label { get; private set; }
+		public string Extra { get; private set; }
+		public IPlayerSummary Owner { get; private set; }
+		public bool ShowOwner { get; private set; }
 
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
@@ -80,6 +80,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+			resources = world.WorldActor.TraitsImplementing<ResourceType>()
+				.ToDictionary(r => r.Info.ResourceType, r => r);
 		}
 
 		public override void MouseEntered()
@@ -88,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", world }, { "viewport", this } });
+				new WidgetArgs() { { "info", this as IWorldTooltipInfo } });
 		}
 
 		public override void MouseExited()
@@ -116,45 +118,80 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void UpdateMouseover()
 		{
-			TooltipType = WorldTooltipType.None;
-			ActorTooltipExtra = null;
+			Label = null;
+			Extra = null;
+			Owner = null;
+			ShowOwner = false;
+			IEnumerable<IProvideTooltipInfo> extras = null;
+
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.Contains(cell))
 				return;
 
 			if (world.ShroudObscures(cell))
 			{
-				TooltipType = WorldTooltipType.Unexplored;
+				// Case unexplored terrain
+				Label = "Unexplored Terrain";
 				return;
 			}
 
+			ITooltipInfo tooltipInfo = null;
+			Player owner = null;
 			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
 				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITooltipInfo>())
 				.WithHighestSelectionPriority();
 
 			if (underCursor != null)
 			{
-				ActorTooltip = underCursor.TraitsImplementing<ITooltip>().First();
-				ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-				TooltipType = WorldTooltipType.Actor;
-				return;
+				// Case actor
+				extras = underCursor.TraitsImplementing<IProvideTooltipInfo>();
+				var tooltip = underCursor.TraitsImplementing<ITooltip>().FirstOrDefault();
+				if (tooltip != null)
+				{
+					tooltipInfo = tooltip.TooltipInfo;
+					owner = tooltip.Owner;
+				}
 			}
-
-			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
-				.Where(a => a.TooltipInfo != null && a.IsValid)
-				.WithHighestSelectionPriority();
-
-			if (frozen != null)
+			else
 			{
-				var actor = frozen.Actor;
-				if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(actor, world.RenderPlayer)))
-					return;
+				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
+					.Where(a => a.TooltipInfo != null && a.IsValid)
+					.WithHighestSelectionPriority();
 
-				FrozenActorTooltip = frozen;
-				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-				TooltipType = WorldTooltipType.FrozenActor;
+				if (frozen != null)
+				{
+					// Case frozen actor
+					var actor = frozen.Actor;
+					if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(actor, world.RenderPlayer)))
+						return;
+
+					var tooltip = actor.TraitsImplementing<ITooltip>().FirstOrDefault();
+					if (tooltip != null)
+						tooltipInfo = tooltip.TooltipInfo;
+					owner = frozen.Owner;
+					if (actor != null)
+						extras = actor.TraitsImplementing<IProvideTooltipInfo>();
+				}
+				else
+				{
+					// Case resource type or nothing
+					ResourceType type;
+					var mapResources = world.Map.MapResources.Value;
+					if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
+						Label = type.Info.Name;
+
+					return;
+				}
 			}
+
+			var stance = owner == null || world.RenderPlayer == null ? Stance.None : owner.Stances[world.RenderPlayer];
+			Label = tooltipInfo.TooltipForPlayerStance(stance);
+
+			Owner = owner;
+			ShowOwner = owner != null && !owner.NonCombatant && tooltipInfo.IsOwnerRowVisible;
+
+			if (extras != null && extras.Any())
+				Extra = string.Join("\n", extras.Where(i => i.IsTooltipVisible(world.LocalPlayer)));
 		}
 
 		public override string GetCursor(int2 pos)
