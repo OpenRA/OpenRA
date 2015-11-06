@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.IsVisible = () => true;
 
 					var tooltip = actor.TraitInfoOrDefault<TooltipInfo>();
-					item.GetTooltipText = () => tooltip == null ? actor.Name : tooltip.Name + " (" + actor.Name + ")";
+					item.GetTooltipText = () => (tooltip == null ? "\nType: " : tooltip.Name + "\nType: ") + actor.Name;
 
 					panel.AddChild(item);
 				}
