@@ -9,6 +9,23 @@ Background@SIMPLE_TOOLTIP:
 			Height: 23
 			Font: Bold
 
+Background@TWO_LINE_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: dialog4
+	Height: 52
+	Children:
+		Label@LABEL:
+			X: 7
+			Y: 2
+			Height: 46
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: dialog4
