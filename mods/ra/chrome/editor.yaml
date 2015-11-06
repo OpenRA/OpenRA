@@ -202,7 +202,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: SIMPLE_TOOLTIP
+			TooltipTemplate: WORLD_TOOLTIP
 			Children:
 				ActorPreview@DRAG_ACTOR_PREVIEW:
 					Visible: false

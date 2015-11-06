@@ -67,11 +67,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var mapResources = world.Map.MapResources.Value;
 			ResourceType type;
 			if (underCursor != null)
-				editorWidget.SetTooltip(underCursor.Tooltip);
+				editorWidget.SetTooltip(underCursor);
 			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
 				editorWidget.SetTooltip(type.Info.Name);
 			else
-				editorWidget.SetTooltip(null);
+				editorWidget.RemoveTooltip();
 
 			// Finished with mouse move events, so let them bubble up the widget tree
 			if (mi.Event == MouseInputEvent.Move)
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Right)
 			{
-				editorWidget.SetTooltip(null);
+				editorWidget.RemoveTooltip();
 
 				if (underCursor != null)
 					editorLayer.Remove(underCursor);
