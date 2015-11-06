@@ -2269,11 +2269,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (engineVersion < 20151004)
 				{
-					if (depth == 1 && node.Key == "WithRotor")
+					// Rename WithRotor to WithSpriteRotorOverlay
+					if (depth == 1 && node.Key.StartsWith("WithRotor"))
+					{
+						var parts = node.Key.Split('@');
 						node.Key = "WithSpriteRotorOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 
-					if (depth == 1 && node.Key == "-WithRotor")
+					if (depth == 1 && node.Key.StartsWith("-WithRotor"))
+					{
+						var parts = node.Key.Split('@');
 						node.Key = "-WithSpriteRotorOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
 				}
 
 				if (engineVersion < 20151005)
