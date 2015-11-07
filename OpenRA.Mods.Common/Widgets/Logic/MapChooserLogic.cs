@@ -235,7 +235,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
-				titleLabel.GetText = () => preview.Title;
+				if (titleLabel != null)
+				{
+					var font = Game.Renderer.Fonts[titleLabel.Font];
+					var title = WidgetUtils.TruncateText(preview.Title, titleLabel.Bounds.Width, font);
+					titleLabel.GetText = () => title;
+				}
 
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
 				previewWidget.Preview = () => preview;
@@ -246,7 +251,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
-					authorWidget.GetText = () => "Created by {0}".F(preview.Author);
+				{
+					var font = Game.Renderer.Fonts[authorWidget.Font];
+					var author = WidgetUtils.TruncateText("Created by {0}".F(preview.Author), authorWidget.Bounds.Width, font);
+					authorWidget.GetText = () => author;
+				}
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
