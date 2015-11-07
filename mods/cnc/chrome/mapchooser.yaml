@@ -89,25 +89,25 @@ Container@MAPCHOOSER_PANEL:
 							IgnoreMouseOver: true
 							IgnoreMouseInput: true
 						Label@TITLE:
-							X: 2
+							X: 4
 							Y: PARENT_BOTTOM-48
-							Width: PARENT_RIGHT-4
+							Width: PARENT_RIGHT-8
 							Align: Center
 						Label@DETAILS:
-							Width: PARENT_RIGHT-4
-							X: 2
+							Width: PARENT_RIGHT-8
+							X: 4
 							Y: PARENT_BOTTOM-34
 							Align: Center
 							Font: Tiny
 						Label@AUTHOR:
-							Width: PARENT_RIGHT-4
-							X: 2
+							Width: PARENT_RIGHT-8
+							X: 4
 							Y: PARENT_BOTTOM-22
 							Align: Center
 							Font: Tiny
 						Label@SIZE:
-							Width: PARENT_RIGHT-4
-							X: 2
+							Width: PARENT_RIGHT-8
+							X: 4
 							Y: PARENT_BOTTOM-10
 							Align: Center
 							Font: Tiny

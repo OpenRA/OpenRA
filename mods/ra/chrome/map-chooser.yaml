@@ -60,25 +60,25 @@ Background@MAPCHOOSER_PANEL:
 					IgnoreMouseOver: true
 					IgnoreMouseInput: true
 				Label@TITLE:
-					X: 2
+					X: 4
 					Y: PARENT_BOTTOM-53
-					Width: PARENT_RIGHT-4
+					Width: PARENT_RIGHT-8
 					Align: Center
 				Label@DETAILS:
-					Width: PARENT_RIGHT-4
-					X: 2
+					Width: PARENT_RIGHT-8
+					X: 4
 					Y: PARENT_BOTTOM-37
 					Align: Center
 					Font: Tiny
 				Label@AUTHOR:
-					Width: PARENT_RIGHT-4
-					X: 2
+					Width: PARENT_RIGHT-8
+					X: 4
 					Y: PARENT_BOTTOM-25
 					Align: Center
 					Font: Tiny
 				Label@SIZE:
-					Width: PARENT_RIGHT-4
-					X: 2
+					Width: PARENT_RIGHT-8
+					X: 4
 					Y: PARENT_BOTTOM-13
 					Align: Center
 					Font: Tiny
