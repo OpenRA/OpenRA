@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
 
+		// Update news once per game launch
+		static bool fetchedNews;
+
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
 		{
@@ -207,11 +210,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (newsButton != null)
 				{
-					// Only query for news once per day.
-					var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
-					if (!cacheValid)
+					if (!fetchedNews)
 						new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
-							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
+							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews,
+							() => newsButton.AttachPanel(newsPanel)));
 
 					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 				}
@@ -292,6 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 				}
 
+				fetchedNews = true;
 				var newNews = ParseNews(cacheFile);
 				if (newNews == null)
 					return;
@@ -300,9 +303,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
 					onNewsDownloaded();
-
-				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
-				Game.Settings.Save();
 			});
 		}
 
