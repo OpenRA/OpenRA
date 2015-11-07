@@ -23,12 +23,12 @@ Container@GLOBALCHAT_PANEL:
 					Y: 20
 					Width: 582
 					Height: PARENT_BOTTOM - 50
-					ItemSpacing: 5
+					TopBottomSpacing: 4
+					ItemSpacing: 4
 					Children:
 						Label@HISTORY_TEMPLATE:
 							X: 5
 							Width: 530
-							Height: 25
 							WordWrap: True
 				TextField@CHAT_TEXTFIELD:
 					Y: PARENT_BOTTOM - 25
