@@ -54,6 +54,7 @@ Player:
 		AdviceInterval: 650
 	AllyRepair:
 	PlayerResources:
+		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		AdviceInterval: 650
 	ActorGroupProxy:
 	DeveloperMode:
