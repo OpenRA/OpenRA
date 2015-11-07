@@ -922,6 +922,8 @@ local function closeWindow(event)
   for _, timer in pairs(ide.timers) do timer:Stop() end
 
   event:Skip()
+
+  PackageEventHandle("onAppDone")
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
