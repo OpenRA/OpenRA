@@ -42,7 +42,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-		Enemies: GDI, Nod
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
