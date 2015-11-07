@@ -30,7 +30,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int[] RespawnDelay = { 1500, 2500 };
 
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow.")]
-		public readonly int[] GrowthDelay = { 1000, 1500 };
+		public readonly int[] GrowthDelay = { 1000, 3000 };
 
 		public readonly string ResourceType = "Spice";
 
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string Weapon = "SpiceExplosion";
 
 		[Desc("The amount of spice to expel.")]
-		public readonly int[] Pieces = { 3, 10 };
+		public readonly int[] Pieces = { 2, 12 };
 
 		[Desc("The maximum distance in cells that spice may be expelled.")]
 		public readonly int Range = 5;
@@ -91,22 +91,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var args = new ProjectileArgs
-			{
-				Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
-				Facing = 0,
-
-				DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
-					.Select(a => a.GetFirepowerModifier()).ToArray(),
-
-				InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
-					.Select(a => a.GetInaccuracyModifier()).ToArray(),
-
-				Source = self.CenterPosition,
-				SourceActor = self,
-			};
-
 			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
+			if (pieces < info.Pieces[0])
+				pieces = info.Pieces[0];
+
 			for (var i = 0; pieces > i; i++)
 			{
 				var cells = OpenRA.Traits.Util.RandomWalk(self.Location, self.World.SharedRandom);
@@ -114,7 +102,21 @@ namespace OpenRA.Mods.D2k.Traits
 				if (cell == null)
 					cell = cells.Take(info.Range).Random(self.World.SharedRandom);
 
-				args.PassiveTarget = self.World.Map.CenterOfCell(cell.Value);
+				var args = new ProjectileArgs
+				{
+					Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
+					Facing = 0,
+
+					DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
+						.Select(a => a.GetFirepowerModifier()).ToArray(),
+
+					InaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>()
+						.Select(a => a.GetInaccuracyModifier()).ToArray(),
+
+					Source = self.CenterPosition,
+					SourceActor = self,
+					PassiveTarget = self.World.Map.CenterOfCell(cell.Value)
+				};
 
 				self.World.AddFrameEndTask(_ =>
 				{

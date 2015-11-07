@@ -768,13 +768,12 @@ SardDeath:
 		ImpactSound: EXPLSML2.WAV
 
 SpiceExplosion:
-	Report: EXPLMD1.WAV
 	Projectile: Bullet
 		Speed: 50, 75
-		High: true
-		Angle: 91, 264
+		Blockable: false
+		Angle: 60, 90
 		Trail: large_trail
-		Image: null
+		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
@@ -793,7 +792,31 @@ SpiceExplosion:
 		AffectsParent: true
 	Warhead@2Res: CreateResource
 		AddsResourceType: Spice
-		Size: 2,2
+		Size: 1
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
+
+BloomExplosion:
+	Report: EXPLMD1.WAV
+	Range: 0c8
+	Projectile: Bullet
+		Speed: 1c0
+		Blockable: false
+		Image: null
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
+		Damage: 750
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		AffectsParent: true
 

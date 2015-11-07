@@ -10,6 +10,9 @@ spicebloom:
 		Name: Spice Bloom
 	SpiceBloom:
 		Weapon: SpiceExplosion
+	Explodes:
+		Weapon: BloomExplosion
+		EmptyWeapon: BloomExplosion
 	Crushable:
 		CrushClasses: spicebloom
 		CrushedByFriendlies: true
