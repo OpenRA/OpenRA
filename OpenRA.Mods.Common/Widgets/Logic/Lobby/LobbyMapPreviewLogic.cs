@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -28,17 +29,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
 				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
-				var title = available.GetOrNull<LabelWidget>("MAP_TITLE");
-				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+				var titleLabel = available.GetOrNull<LabelWidget>("MAP_TITLE");
+				if (titleLabel != null)
+				{
+					var font = Game.Renderer.Fonts[titleLabel.Font];
+					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+					titleLabel.GetText = () => title.Update(lobby.Map);
+				}
 
-				var type = available.GetOrNull<LabelWidget>("MAP_TYPE");
-				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+				var typeLabel = available.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (typeLabel != null)
+					typeLabel.GetText = () => lobby.Map.Type;
 
-				var author = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
-				if (author != null)
-					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+				var authorLabel = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
+				if (authorLabel != null)
+				{
+					var font = Game.Renderer.Fonts[authorLabel.Font];
+					var author = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText("Created by {0}".F(lobby.Map.Author), authorLabel.Bounds.Width, font));
+					authorLabel.GetText = () => author.Update(lobby.Map);
+				}
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
