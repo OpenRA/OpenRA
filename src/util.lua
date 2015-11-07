@@ -337,6 +337,11 @@ function FileRead(fname, length, callback)
   return content, wx.wxSysErrorMsg()
 end
 
+function FileRemove(file)
+  local _ = wx.wxLogNull() -- disable error reporting; will report as needed
+  return wx.wxRemoveFile(file), wx.wxSysErrorMsg()
+end
+
 function FileRename(file1, file2)
   local _ = wx.wxLogNull() -- disable error reporting; will report as needed
   return wx.wxRenameFile(file1, file2), wx.wxSysErrorMsg()
