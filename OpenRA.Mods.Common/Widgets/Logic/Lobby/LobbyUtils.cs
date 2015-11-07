@@ -291,7 +291,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			var name = parent.Get<LabelWidget>("NAME");
-			name.GetText = () => c.Name;
+			var font = Game.Renderer.Fonts[name.Font];
+			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
+			name.GetText = () => label;
 		}
 
 		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Ruleset rules)
