@@ -71,9 +71,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			preview.SpawnOccupants = () => selectedSpawns;
 			preview.Preview = () => selectedReplay != null ? selectedReplay.GameInfo.MapPreview : null;
 
-			var title = panel.GetOrNull<LabelWidget>("MAP_TITLE");
-			if (title != null)
-				title.GetText = () => selectedReplay != null ? selectedReplay.GameInfo.MapPreview.Title : null;
+			var titleLabel = panel.GetOrNull<LabelWidget>("MAP_TITLE");
+			if (titleLabel != null)
+			{
+				titleLabel.IsVisible = () => selectedReplay != null;
+
+				var font = Game.Renderer.Fonts[titleLabel.Font];
+				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+				titleLabel.GetText = () => title.Update(selectedReplay.GameInfo.MapPreview);
+			}
 
 			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
 			if (type != null)
