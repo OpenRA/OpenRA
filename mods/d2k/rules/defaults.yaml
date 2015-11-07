@@ -80,7 +80,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	Repairable:
-		RepairBuildings: repair
+		RepairBuildings: repair_pad
 	Guard:
 		Voice: Guard
 	Guardable:
