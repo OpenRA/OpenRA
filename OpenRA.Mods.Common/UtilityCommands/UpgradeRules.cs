@@ -2360,6 +2360,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						TryUpdateColors(ref node.Value.Value);
 				}
 
+				if (engineVersion < 20151107 && depth == 2)
+				{
+					if (node.Key == "PaticleSize")
+						node.Key = "ParticleSize";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
