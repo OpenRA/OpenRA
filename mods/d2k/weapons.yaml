@@ -197,12 +197,14 @@ HMG_muzzle:
 	Range: 3c0
 	Burst: 3
 	BurstDelay: 2
+	Warhead@TargetValidation: SpreadDamage
 
 HMGo_muzzle:
 	ReloadDelay: 14
 	Range: 3c0
 	Burst: 3
 	BurstDelay: 2
+	Warhead@TargetValidation: SpreadDamage
 
 Rocket:
 	ReloadDelay: 30
