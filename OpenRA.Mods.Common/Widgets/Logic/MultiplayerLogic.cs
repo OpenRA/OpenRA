@@ -366,7 +366,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var title = item.GetOrNull<LabelWidget>("TITLE");
 					if (title != null)
 					{
-						title.GetText = () => game.Name;
+						var font = Game.Renderer.Fonts[title.Font];
+						var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
+						title.GetText = () => label;
 						title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
 					}
 
