@@ -662,8 +662,8 @@ repair_pad:
 		VisualBounds: 96,80
 	Reservable:
 	RepairsUnits:
-		Interval: 15
-		ValuePercentage: 50
+		Interval: 10
+		HpPerStep: 80
 		FinishRepairingNotification: UnitRepaired
 	RallyPoint:
 		Offset: 1,3
