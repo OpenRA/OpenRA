@@ -179,7 +179,6 @@ namespace OpenRA
 
 		public bool FetchNews = true;
 		public string NewsUrl = "http://www.openra.net/gamenews";
-		public DateTime NewsFetchedDate;
 	}
 
 	public class KeySettings
