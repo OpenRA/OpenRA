@@ -668,7 +668,7 @@ Rules:
 			WindTick: 150, 550
 			InstantWindChanges: false
 			UseSquares: true
-			PaticleSize: 1, 3
+			ParticleSize: 1, 3
 			ScatterDirection: -1, 1
 			Gravity: 1.00, 2.00
 			SwingOffset: 1.0, 1.5

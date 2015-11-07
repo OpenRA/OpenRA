@@ -508,7 +508,7 @@ Rules:
 			WindTick: 150, 550
 			InstantWindChanges: false
 			UseSquares: false
-			PaticleSize: 0, 0
+			ParticleSize: 0, 0
 			ScatterDirection: 0, 0
 			Gravity: 8.00, 12.00
 			SwingOffset: 0, 0
