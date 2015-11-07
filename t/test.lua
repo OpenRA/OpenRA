@@ -65,5 +65,10 @@ package {
       G.DisplayOutputLn(s:match("ok %d") and (" -- %.3fs"):format(G.TimeGet()-start) or "")
     end
     runtests()
-  end
+  end,
+  onIdleOnce = function() G.ide:GetOutput():GotoLine(G.ide:GetOutput():GetLineCount()-1) end,
+  onAppDone = function()
+    local ini = G.ide.config.ini
+    if ini then G.FileRemove(ini) end
+  end,
 }
