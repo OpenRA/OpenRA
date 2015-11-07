@@ -227,6 +227,22 @@ namespace OpenRA.Widgets
 			return text;
 		}
 
+		public static string TruncateText(string text, int width, SpriteFont font)
+		{
+			var trimmedWidth = font.Measure(text).X;
+			if (trimmedWidth <= width)
+				return text;
+
+			var trimmed = text;
+			while (trimmedWidth > width && trimmed.Length > 3)
+			{
+				trimmed = text.Substring(0, trimmed.Length - 4) + "...";
+				trimmedWidth = font.Measure(trimmed).X;
+			}
+
+			return trimmed;
+		}
+
 		public static Action Once(Action a) { return () => { if (a != null) { a(); a = null; } }; }
 
 		public static string ChooseInitialMap(string initialUid)
@@ -239,6 +255,32 @@ namespace OpenRA.Widgets
 			}
 
 			return initialUid;
+		}
+	}
+
+	public class CachedTransform<T, U>
+	{
+		readonly Func<T, U> transform;
+
+		bool initialized;
+		T lastInput;
+		U lastOutput;
+
+		public CachedTransform(Func<T, U> transform)
+		{
+			this.transform = transform;
+		}
+
+		public U Update(T input)
+		{
+			if (initialized && ((input == null && lastInput == null) || input.Equals(lastInput)))
+				return lastOutput;
+
+			lastInput = input;
+			lastOutput = transform(input);
+			initialized = true;
+
+			return lastOutput;
 		}
 	}
 
