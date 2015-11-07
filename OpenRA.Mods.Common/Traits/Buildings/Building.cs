@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			BuildComplete = true;
-			Locked = false;
+			Unlock();
 
 			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
 				notify.BuildingComplete(self);
