@@ -479,8 +479,8 @@ Player:
 				TargetMetric: Value
 				CheckRadius: 7c0
 
-	HackyAI@CancerAI:
-		Name: Cancer AI
+	HackyAI@GrowthAI:
+		Name: Growth AI
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
