@@ -30,7 +30,8 @@ end
 -- ----------------------------------------------------------------------------
 local function createFrame()
   local frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"),
-    wx.wxDefaultPosition, wx.wxSize(1000, 700))
+    wx.wxDefaultPosition, wx.wxSize(1100, 700))
+  frame:Center()
   -- wrap into protected call as DragAcceptFiles fails on MacOS with
   -- wxwidgets 2.8.12 even though it should work according to change notes
   -- for 2.8.10: "Implemented wxWindow::DragAcceptFiles() on all platforms."

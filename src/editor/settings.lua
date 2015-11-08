@@ -50,16 +50,14 @@ function SettingsRestoreFramePosition(window, windowName)
   local path = settings:GetPath()
   settings:SetPath("/"..windowName)
 
-  local s = -1
-  s = tonumber(select(2,settings:Read("s", -1)))
+  local s = tonumber(select(2,settings:Read("s", -1)))
   local x = tonumber(select(2,settings:Read("x", 0)))
   local y = tonumber(select(2,settings:Read("y", 0)))
-  local w = tonumber(select(2,settings:Read("w", 1000)))
+  local w = tonumber(select(2,settings:Read("w", 1100)))
   local h = tonumber(select(2,settings:Read("h", 700)))
 
   if (s ~= -1) and (s ~= 1) and (s ~= 2) then
-    local clientX, clientY, clientWidth, clientHeight
-    clientX, clientY, clientWidth, clientHeight = wx.wxClientDisplayRect()
+    local clientX, clientY, clientWidth, clientHeight = wx.wxClientDisplayRect()
 
     if x < clientX then x = clientX end
     if y < clientY then y = clientY end
