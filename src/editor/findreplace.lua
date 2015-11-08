@@ -19,6 +19,7 @@ ide.findReplace = {
   scopeText = nil,
   foundString = false, -- was the string found for the last search
   curfilename = "", -- for search in files
+  inselection = false,
   occurrences = 0,
   files = 0,
 
@@ -66,35 +67,23 @@ local function setSearchFlags(editor)
   editor:SetSearchFlags(flags)
 end
 
-local function setTarget(editor, fDown, fAll, fWrap)
-  local selStart = editor:GetSelectionStart()
-  local selEnd = editor:GetSelectionEnd()
+local function setTarget(editor, flags)
+  flags = flags or {}
+  local fDown, fAll, fWrap = flags.Down, flags.All, flags.Wrap
   local len = editor:GetLength()
+  local selStart, selEnd = editor:GetSelectionStart(), editor:GetSelectionEnd()
   local s, e
   if fDown then
-    s = iff(fAll, selStart, selEnd)
-    e = len
-  else
-    s = 0
-    e = iff(fAll, selEnd, selStart)
+    e = flags.EndPos or len
+    s = math.min(e, math.max(flags.StartPos or 0, iff(fAll, selStart, selEnd)))
+  else -- reverse the range for the backward search
+    e = flags.StartPos or 0
+    s = math.max(e, math.min(flags.EndPos or len, iff(fAll, selEnd, selStart)))
   end
-  -- if going up and not search/replace All, then switch the range to
-  -- allow the next match to be properly marked
-  if not fDown and not fAll then s, e = e, s end
   -- if wrap around and search all requested, then search the entire document
   if fAll and fWrap then s, e = 0, len end
   editor:SetTargetStart(s)
   editor:SetTargetEnd(e)
-  return e
-end
-
-local function setTargetAll(editor)
-  local s = 0
-  local e = editor:GetLength()
-
-  editor:SetTargetStart(s)
-  editor:SetTargetEnd(e)
-
   return e
 end
 
@@ -202,14 +191,18 @@ function findReplace:Find(reverse)
   local editor = self:GetEditor()
   if editor and self:HasText() then
     local fDown = iff(reverse, not self:GetFlags().Down, self:GetFlags().Down)
+    local bf = self.inselection and self.backfocus or {}
     setSearchFlags(editor)
-    setTarget(editor, fDown)
+    setTarget(editor, {Down = fDown, StartPos = bf.spos, EndPos = bf.epos})
     local posFind = editor:SearchInTarget(findText)
     if (posFind == NOTFOUND) and self:GetFlags().Wrap then
-      editor:SetTargetStart(iff(fDown, 0, editor:GetLength()))
-      editor:SetTargetEnd(iff(fDown, editor:GetLength(), 0))
+      editor:SetTargetStart(iff(fDown, bf.spos or 0, bf.epos or editor:GetLength()))
+      editor:SetTargetEnd(iff(fDown, bf.epos or editor:GetLength(), bf.spos or 0))
       posFind = editor:SearchInTarget(findText)
-      msg = TR("Reached end of text and wrapped around.")
+      msg = (self.inselection
+        and TR("Reached end of selection and wrapped around.")
+        or TR("Reached end of text and wrapped around.")
+      )
     end
     if posFind == NOTFOUND then
       self.foundString = false
@@ -237,7 +230,7 @@ function findReplace:FindAll(inFileRegister)
   local found = false
   local editor = self:GetEditor()
   if editor and self:HasText() then
-    local e = setTargetAll(editor)
+    local e = setTarget(editor, {All = true, Wrap = true})
 
     setSearchFlags(editor)
     while true do
@@ -275,8 +268,14 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       return false
     end
 
-    local endTarget = resultsEditor and setTargetAll(editor) or
-      setTarget(editor, self:GetFlags().Down, fReplaceAll, self:GetFlags().Wrap)
+    -- in the preview results always replace in the entire file
+    local bf = self.inselection and self.backfocus
+    local endTarget = (resultsEditor and setTarget(editor, {All = true, Wrap = true})
+      -- when selection is marked, only replace in the selection
+      or (bf and setTarget(editor, {Down = self:GetFlags().Down, All = fReplaceAll, StartPos = bf.spos, EndPos = bf.epos}))
+      -- in all other cases, replace as selected
+      or setTarget(editor, {Down = self:GetFlags().Down, All = fReplaceAll, Wrap = self:GetFlags().Wrap})
+    )
 
     if fReplaceAll then
       if resultsEditor then editor:SetIndicatorCurrent(indicator.SEARCHMATCH) end
@@ -309,7 +308,10 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           editor:SetTargetStart(editor:GetTargetEnd())
           -- adjust the endTarget as the position could have changed;
           -- can't simply subtract text length as it could be a regexp
-          endTarget = endTarget + (editor:GetLength() - length)
+          local adjusted = editor:GetLength() - length
+          endTarget = endTarget + adjusted
+          -- also adjust the selection as the end marker can move after replacement
+          if bf and bf.epos then bf.epos = bf.epos + adjusted end
           editor:SetTargetEnd(endTarget)
           posFind = editor:SearchInTarget(findText)
         end
@@ -325,10 +327,13 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
       and editor:SearchInTarget(findText) ~= NOTFOUND then
+        local length = editor:GetLength()
         local start = editor:GetSelectionStart()
         local replaced = self:GetFlags().RegularExpr
           and editor:ReplaceTargetRE(replaceText)
           or editor:ReplaceTarget(replaceText)
+        local adjusted = editor:GetLength() - length
+        if bf and bf.epos then bf.epos = bf.epos + adjusted end
 
         editor:SetSelection(start, start + replaced)
         self.foundString = false
@@ -662,7 +667,7 @@ local icons = {
   find = {
     internal = {
       ID_FINDNEXT, ID_SEPARATOR,
-      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND,
+      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND, ID_FINDOPTSELECTION,
       ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -677,7 +682,7 @@ local icons = {
   replace = {
     internal = {
       ID_FINDNEXT, ID_FINDREPLACENEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
-      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND,
+      ID_FINDOPTDIRECTION, ID_FINDOPTWRAPWROUND, ID_FINDOPTSELECTION,
       ID_FINDOPTWORD, ID_FINDOPTCASE, ID_FINDOPTREGEX,
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
@@ -742,6 +747,18 @@ function findReplace:createToolbar()
           tb:Refresh()
         end)
     end
+  end
+
+  local optseltool = tb:FindTool(ID_FINDOPTSELECTION)
+  if optseltool then
+    optseltool:SetSticky(self.inselection)
+    tb:EnableTool(ID_FINDOPTSELECTION, self.inselection)
+    ctrl:Connect(ID_FINDOPTSELECTION, wx.wxEVT_COMMAND_MENU_SELECTED,
+      function (event)
+        self.inselection = not self.inselection
+        tb:FindTool(event:GetId()):SetSticky(self.inselection)
+        tb:Refresh()
+      end)
   end
 
   tb:SetToolDropDown(ID_FINDSETDIR, true)
@@ -913,7 +930,10 @@ function findReplace:createPanel()
   end
 
   local function findIncremental(event)
-    if not self.infiles and self.backfocus then
+    -- don't do any incremental search when search in selection
+    if self.inselection then return end
+
+    if not self.infiles and self.backfocus and self.backfocus.position then
       self:GetEditor():SetSelection(self.backfocus.position, self.backfocus.position)
     end
     -- don't search when used with "infiles", but still trigger autocomplete
@@ -984,23 +1004,39 @@ function findReplace:createPanel()
   end
 
   -- remember the current position in the editor when setting focus on find
+  local function refreshEditorInfo()
+    local ed = self:GetEditor()
+    if ed and ed ~= self.oveditor then
+      local spos, epos = ed:GetSelectionStart(), ed:GetSelectionEnd()
+      if not self.backfocus or self.backfocus.editor ~= ed then
+        self.backfocus = { editor = ed, spos = spos, epos = epos }
+      end
+      local bf = self.backfocus
+      bf.position = spos == epos and ed:GetCurrentPos() or spos
+      local inselection = ed:LineFromPosition(spos) ~= ed:LineFromPosition(epos)
+
+      -- when the focus is changed, don't remove current "inselection" status as the
+      -- selection may change to highlight the match; not doing this makes it difficult
+      -- to switch between searching and replacing without losing the current match
+      if inselection and (not self.inselection or bf.spos ~= spos or bf.epos ~= epos) then
+        bf.spos = spos
+        bf.epos = epos
+        self.inselection = inselection
+        self:refreshToolbar()
+      end
+    end
+  end
   findCtrl:Connect(wx.wxEVT_SET_FOCUS,
     function(event)
       event:Skip()
-      local ed = self:GetEditor()
-      if ed and ed ~= self.oveditor then
-        self.backfocus = {
-          editor = ed,
-          position = (ed:GetSelectionStart() == ed:GetSelectionEnd()
-            and ed:GetCurrentPos() or ed:GetSelectionStart())
-        }
-      end
+      refreshEditorInfo()
     end)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, findIncremental)
   findCtrl:Connect(wx.wxEVT_CHAR, charHandle)
   replaceCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
       event:Skip()
+      refreshEditorInfo()
       -- hide the replace hint; should be done with SetHint method,
       -- but it's not yet available in wxlua 2.8.12
       if replaceCtrl:GetValue() == replaceHintText then replaceCtrl:ChangeValue('') end
@@ -1079,6 +1115,11 @@ function findReplace:refreshPanel(replace, infiles)
     value = (proj and self:GetScopeMRU(proj..sep) or
       self:SetScope(proj or wx.wxGetCwd(), '*.'..(#ext > 0 and ext or '*')))
   end
+  if ed then -- check if there is any selection
+    self.backfocus = nil
+    self.inselection = ed:LineFromPosition(ed:GetSelectionStart()) ~=
+      ed:LineFromPosition(ed:GetSelectionEnd())
+  end
   self:refreshToolbar(value)
 
   local mgr = ide:GetUIManager()
@@ -1118,7 +1159,7 @@ function findReplace:Hide(restorepos)
     local editor = self.backfocus.editor
     -- restore original position for Shift-Esc or failed search
     if restorepos or self.foundString == false then
-      editor:GotoPos(self.backfocus.position)
+      editor:SetSelection(self.backfocus.spos, self.backfocus.epos)
     end
     editor:SetFocus()
   elseif self:IsPreview(self.reseditor) then -- there is a preview, go there

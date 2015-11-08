@@ -76,6 +76,15 @@ findReplace:Replace(true, editor)
 ok(editor:GetText():find("923") ~= nil, "Replace in preview replaces matched text.")
 ok(editor:GetText():find("^1:") ~= nil, "Replace in preview doesn't replace line numbers.")
 
+editor:SetText("pos pos pos pos")
+findReplace:SetFind("pos")
+findReplace:SetReplace("POS")
+findReplace.backfocus = { spos = 3, epos = 11 }
+findReplace.inselection = true
+findReplace:Replace(true)
+findReplace.inselection = false
+is(editor:GetText(), "pos POS POS pos", "Replace in selection only replaces inside selection.")
+
 editor:SetText("")
 editor:AppendText([[
 t/1-findreplace.lua
