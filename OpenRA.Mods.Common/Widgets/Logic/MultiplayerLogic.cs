@@ -198,7 +198,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var mapTitle = widget.GetOrNull<LabelWidget>("SELECTED_MAP");
 			if (mapTitle != null)
-				mapTitle.GetText = () => currentMap != null ? currentMap.Title : "No Server Selected";
+			{
+				var font = Game.Renderer.Fonts[mapTitle.Font];
+				var title = new CachedTransform<MapPreview, string>(m => m == null ? "No Server Selected" :
+					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
+				mapTitle.GetText = () => title.Update(currentMap);
+			}
 
 			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
 			if (ip != null)
@@ -219,8 +224,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (modVersion != null)
 			{
 				modVersion.IsVisible = () => currentServer != null;
-				modVersion.GetText = () => currentServer.ModLabel;
 				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
+
+				var font = Game.Renderer.Fonts[modVersion.Font];
+				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, mapTitle.Bounds.Width, font));
+				modVersion.GetText = () => version.Update(currentServer);
 			}
 
 			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
@@ -358,7 +366,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var title = item.GetOrNull<LabelWidget>("TITLE");
 					if (title != null)
 					{
-						title.GetText = () => game.Name;
+						var font = Game.Renderer.Fonts[title.Font];
+						var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
+						title.GetText = () => label;
 						title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
 					}
 
