@@ -76,8 +76,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var mapDirectory = map.Path != null ? Platform.UnresolvePath(Path.GetDirectoryName(map.Path)) : null;
 				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
 
+				// Prioritize MapClassification.User directories over system directories
 				if (initialDirectory == null)
-					initialDirectory = mapDirectories.Keys.First();
+					initialDirectory = mapDirectories.OrderByDescending(kv => kv.Value).First().Key;
 
 				directoryDropdown.Text = initialDirectory;
 				directoryDropdown.OnClick = () =>
