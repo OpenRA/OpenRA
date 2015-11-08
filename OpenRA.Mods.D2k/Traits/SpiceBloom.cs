@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]
-		public readonly string Weapon = "SpiceExplosion";
+		public readonly string Weapon = null;
 
 		[Desc("The amount of spice to expel.")]
 		public readonly int[] Pieces = { 2, 12 };
@@ -98,18 +98,19 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void SeedResources(Actor self)
 		{
 			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
 			if (pieces < info.Pieces[0])
 				pieces = info.Pieces[0];
 
-			for (var i = 0; pieces > i; i++)
+			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range);
+
+			for (var i = 0; i < pieces; i++)
 			{
-				var cells = OpenRA.Traits.Util.RandomWalk(self.Location, self.World.SharedRandom);
-				var cell = cells.Take(info.Range).SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
+				var cell = cells.SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
 				if (cell == null)
-					cell = cells.Take(info.Range).Random(self.World.SharedRandom);
+					cell = cells.Random(self.World.SharedRandom);
 
 				var args = new ProjectileArgs
 				{
@@ -140,6 +141,12 @@ namespace OpenRA.Mods.D2k.Traits
 					}
 				});
 			}
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			if (!string.IsNullOrEmpty(info.Weapon))
+				SeedResources(self);
 
 			self.World.AddFrameEndTask(t => t.Add(new DelayedAction(respawnTicks, () =>
 			{
