@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActorLayer editorLayer;
 		readonly Dictionary<int, ResourceType> resources;
+		int2 worldPixel;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
 		{
@@ -51,6 +52,18 @@ namespace OpenRA.Mods.Common.Widgets
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 		}
 
+		long CalculateActorSelectionPriority(EditorActorPreview actor)
+		{
+			var centerPixel = new int2(actor.Bounds.X, actor.Bounds.Y);
+			var pixelDistance = (centerPixel - worldPixel).Length;
+
+			// If 2+ actors have the same pixel position, then the highest appears on top.
+			var worldZPosition = actor.CenterPosition.Z;
+
+			// Sort by pixel distance then in world z position.
+			return ((long)pixelDistance << 32) + worldZPosition;
+		}
+
 		public bool HandleMouseInput(MouseInput mi)
 		{
 			// Exclusively uses mouse wheel and right mouse buttons, but nothing else
@@ -59,10 +72,10 @@ namespace OpenRA.Mods.Common.Widgets
 				mi.Event == MouseInputEvent.Down)
 				return false;
 
+			worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
-			var underCursor = editorLayer.PreviewsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location))
-				.FirstOrDefault();
+			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
 
 			var mapResources = world.Map.MapResources.Value;
 			ResourceType type;
