@@ -89,8 +89,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Right)
 			{
-				editorWidget.ClearBrush();
-				return true;
+				if (mi.Event == MouseInputEvent.Up)
+				{
+					editorWidget.ClearBrush();
+					return true;
+				}
+
+				return false;
 			}
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);

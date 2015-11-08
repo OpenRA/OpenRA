@@ -64,8 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Right)
 			{
-				editorWidget.ClearBrush();
-				return true;
+				if (mi.Event == MouseInputEvent.Up)
+				{
+					editorWidget.ClearBrush();
+					return true;
+				}
+
+				return false;
 			}
 
 			if (mi.Button == MouseButton.Left)
