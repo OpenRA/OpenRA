@@ -48,6 +48,11 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
+	PlayerReference@Civilians:
+		Name: Civilians
+		NonCombatant: True
+		Faction: gdi
+		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True
@@ -60,7 +65,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: Nod
-		Enemies: GDI
+		Enemies: GDI, Civilians
 
 Actors:
 	Actor0: sbag
@@ -224,28 +229,28 @@ Actors:
 		Owner: Neutral
 	Actor65: v24
 		Location: 18,38
-		Owner: Neutral
+		Owner: Civilians
 	Actor66: v32
 		Location: 19,41
-		Owner: Neutral
+		Owner: Civilians
 	Actor67: v30
 		Location: 15,40
-		Owner: Neutral
+		Owner: Civilians
 	Actor68: v29
 		Location: 17,40
-		Owner: Neutral
+		Owner: Civilians
 	Actor69: v28
 		Location: 23,38
-		Owner: Neutral
+		Owner: Civilians
 	Actor70: v27
 		Location: 23,36
-		Owner: Neutral
+		Owner: Civilians
 	Actor71: v27
 		Location: 22,36
-		Owner: Neutral
+		Owner: Civilians
 	Actor72: v26
 		Location: 16,37
-		Owner: Neutral
+		Owner: Civilians
 	Actor82: mtnk
 		Location: 21,21
 		Owner: GDI
@@ -429,6 +434,14 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+	^Wall:
+		Tooltip:
+			ShowOwnerRow: false
+	^Husk:
+		Tooltip:
+			GenericVisibility: Enemy, Ally, Neutral
+			GenericStancePrefix: false
+			ShowOwnerRow: false
 	NUK2:
 		Buildable:
 			Prerequisites: ~disabled
@@ -486,6 +499,8 @@ Rules:
 	HARV:
 		Buildable:
 			Prerequisites: ~disabled
+		Harvester:
+			SearchFromOrderRadius: 24
 	FTNK:
 		Buildable:
 			Prerequisites: ~disabled
@@ -493,9 +508,6 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	ARTY:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
 		Buildable:
 			Prerequisites: ~disabled
 	MTNK:
@@ -510,6 +522,13 @@ Rules:
 	MSAM:
 		Buildable:
 			Prerequisites: ~disabled
+	SBAG:
+		Buildable:
+			Queue: Defence.GDI, Defence.Nod
+	HQ:
+		AirstrikePower:
+			Prerequisites: gdi
+			SquadSize: 1
 	A10:
 		Targetable:
 

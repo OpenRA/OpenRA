@@ -319,6 +319,11 @@ end
 searches = 0
 getAirstrikeTarget = function()
 	local list = player.GetGroundAttackers()
+
+	if #list == 0 then
+		return
+	end
+
 	local target = list[DateTime.GameTime % #list + 1].CenterPosition
 
 	local sams = Map.ActorsInCircle(target, WDist.New(8 * 1024), function(actor)
