@@ -304,7 +304,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, IDeathActorInitModifier,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -792,6 +793,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			var facing = Util.GetFacing(toPos - fromPos, Facing);
 			return Util.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
+		}
+
+		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		{
+			init.Add(new FacingInit(facing));
+
+			// Allows the husk to drag to its final position
+			if (CanEnterCell(self.Location, self, false))
+				init.Add(new HuskSpeedInit(MovementSpeedForCell(self, self.Location)));
 		}
 	}
 }

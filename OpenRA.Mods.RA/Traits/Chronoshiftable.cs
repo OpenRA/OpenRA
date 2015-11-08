@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ITick, ISync, ISelectionBar
+	public class Chronoshiftable : ITick, ISync, ISelectionBar, IDeathActorInitModifier
 	{
 		readonly ChronoshiftableInfo info;
 		readonly Actor self;
@@ -46,6 +47,9 @@ namespace OpenRA.Mods.RA.Traits
 
 			if (init.Contains<ChronoshiftOriginInit>())
 				Origin = init.Get<ChronoshiftOriginInit, CPos>();
+
+			if (init.Contains<ChronoshiftChronosphereInit>())
+				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
 		}
 
 		public void Tick(Actor self)
@@ -107,6 +111,16 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		public Color GetColor() { return Color.White; }
+
+		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		{
+			if (ReturnTicks <= 0)
+				return;
+			init.Add(new ChronoshiftOriginInit(Origin));
+			init.Add(new ChronoshiftReturnInit(ReturnTicks));
+			if (chronosphere != self)
+				init.Add(new ChronoshiftChronosphereInit(chronosphere));
+		}
 	}
 
 	public class ChronoshiftReturnInit : IActorInit<int>
@@ -122,5 +136,12 @@ namespace OpenRA.Mods.RA.Traits
 		[FieldFromYamlKey] readonly CPos value;
 		public ChronoshiftOriginInit(CPos init) { value = init; }
 		public CPos Value(World world) { return value; }
+	}
+
+	public class ChronoshiftChronosphereInit : IActorInit<Actor>
+	{
+		readonly Actor value;
+		public ChronoshiftChronosphereInit(Actor init) { value = init; }
+		public Actor Value(World world) { return value; }
 	}
 }

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, INotifyCreated
+	public class Turreted : ITick, ISync, INotifyCreated, IDeathActorInitModifier
 	{
 		readonly TurretedInfo info;
 		AttackTurreted attack;
@@ -134,6 +135,18 @@ namespace OpenRA.Mods.Common.Traits
 			// Implies no pitch or yaw
 			var facing = Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
+		}
+
+		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		{
+			var facings = init.GetOrDefault<TurretFacingsInit>();
+			if (facings == null)
+			{
+				facings = new TurretFacingsInit();
+				init.Add(facings);
+			}
+
+			facings.Value(self.World).Add(Name, facing.Facing);
 		}
 	}
 

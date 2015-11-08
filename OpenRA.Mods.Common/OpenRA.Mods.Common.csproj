@@ -701,6 +701,7 @@
     <Compile Include="Lint\CheckRevealFootprint.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
+    <Compile Include="Traits\SpawnActorOnDeath.cs" />
     <Compile Include="Scripting\Global\LightingGlobal.cs" />
     <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
     <Compile Include="Widgets\Logic\GlobalChatLogic.cs" />
