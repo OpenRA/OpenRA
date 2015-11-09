@@ -5,7 +5,7 @@ Player:
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyard
+			ConstructionYard: construction_yard
 			Refinery: refinery
 			Power: wind_trap
 			VehiclesFactory: light_factory, heavy_factory, starport
@@ -23,6 +23,7 @@ Player:
 			outpost: 1
 			high_tech_factory: 1
 			palace: 1
+			upgrade.conyard: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
 			upgrade.heavy: 1
@@ -40,6 +41,7 @@ Player:
 			medium_gun_turret: 8%
 			large_gun_turret: 6%
 			wind_trap: 10%
+			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
@@ -119,7 +121,7 @@ Player:
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyard
+			ConstructionYard: construction_yard
 			Refinery: refinery
 			Power: wind_trap
 			VehiclesFactory: light_factory, heavy_factory, starport
@@ -137,6 +139,7 @@ Player:
 			outpost: 1
 			high_tech_factory: 1
 			palace: 1
+			upgrade.conyard: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
 			upgrade.heavy: 1
@@ -154,6 +157,7 @@ Player:
 			medium_gun_turret: 5%
 			large_gun_turret: 10%
 			wind_trap: 12%
+			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
@@ -233,7 +237,7 @@ Player:
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		BuildingCommonNames:
-			ConstructionYard: conyard
+			ConstructionYard: construction_yard
 			Refinery: refinery
 			Power: wind_trap
 			VehiclesFactory: light_factory, heavy_factory, starport
@@ -251,6 +255,7 @@ Player:
 			outpost: 1
 			high_tech_factory: 1
 			palace: 1
+			upgrade.conyard: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
 			upgrade.heavy: 1
@@ -268,6 +273,7 @@ Player:
 			medium_gun_turret: 4%
 			large_gun_turret: 12%
 			wind_trap: 10%
+			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
 			upgrade.heavy: 0.1%
