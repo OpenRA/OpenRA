@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (actionFunc != null)
 			{
-				var playerIndex = Self.Owner.ClientIndex;
+				var player = Self.Owner;
 				var squadSize = actorTypes.Length;
 				var squad = new List<Actor>();
 				var func = actionFunc.CopyReference() as LuaFunction;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Scripting
 				Action<Actor, Actor> productionHandler = (_, __) => { };
 				productionHandler = (factory, unit) =>
 				{
-					if (playerIndex != factory.Owner.ClientIndex)
+					if (player != factory.Owner)
 					{
 						triggers.OnProducedInternal -= productionHandler;
 						return;
