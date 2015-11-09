@@ -78,6 +78,7 @@ ORCA:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
+		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
@@ -122,6 +123,7 @@ ORCAB:
 		ROT: 3
 		Speed: 96
 		AirborneUpgrades: airborne
+		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
@@ -204,6 +206,7 @@ TRNSPORT:
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
+		MoveIntoShroud: false
 	Health:
 		HP: 175
 	Armor:
@@ -238,6 +241,7 @@ SCRIN:
 		ROT: 3
 		Speed: 168
 		AirborneUpgrades: airborne
+		MoveIntoShroud: false
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 	Health:
@@ -278,6 +282,7 @@ APACHE:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
+		MoveIntoShroud: false
 	Health:
 		HP: 225
 	Armor:
