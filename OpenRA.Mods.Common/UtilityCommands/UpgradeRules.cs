@@ -2377,6 +2377,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ParticleSize";
 				}
 
+				// DeathType on Explodes was renamed to DeathTypes
+				if (engineVersion < 20151110)
+				{
+					if (node.Key == "Explodes")
+					{
+						var dt = node.Value.Nodes.FirstOrDefault(n => n.Key == "DeathType");
+						if (dt != null)
+							dt.Key = "DeathTypes";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
