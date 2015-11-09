@@ -15,7 +15,7 @@ DPOD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5c0
+		Range: 0
 		Type: CenterPosition
 	Cargo:
 		Types: Infantry
@@ -85,7 +85,7 @@ ORCA:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 2c0
 		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
