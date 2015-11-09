@@ -6,31 +6,38 @@ local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
 local unpack = table.unpack or unpack
 local q = EscapeMagic
 
-function PackageEventHandle(event, ...)
+local function eventHandle(handlers, event, ...)
   local success
-  for _, package in pairs(ide.packages) do
-    if type(package[event]) == 'function' then
-      local ok, res = pcall(package[event], package, ...)
-      if ok then
-        if res == false then success = false end
-      else
-        DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
-      end
+  for package, handler in pairs(handlers) do
+    local ok, res = pcall(handler, package, ...)
+    if ok then
+      if res == false then success = false end
+    else
+      DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
     end
   end
   return success
 end
 
+local function getEventHandlers(packages, event)
+  local handlers = {}
+  for _, package in pairs(packages) do
+    if package[event] then handlers[package] = package[event] end
+  end
+  return handlers
+end
+
+function PackageEventHandle(event, ...)
+  return eventHandle(getEventHandlers(ide.packages, event), event, ...)
+end
+
 function PackageEventHandleOnce(event, ...)
-  local success = PackageEventHandle(event, ...)
+  -- copy packages as the event that is handled only once needs to be removed
+  local handlers = getEventHandlers(ide.packages, event)
   -- remove all handlers as they need to be called only once
   -- this allows them to be re-installed if needed
-  for _, package in pairs(ide.packages) do
-    if type(package[event]) == 'function' then
-      package[event] = nil
-    end
-  end
-  return success
+  for _, package in pairs(ide.packages) do package[event] = nil end
+  return eventHandle(handlers, event, ...)
 end
 
 local function PackageEventHandleOne(file, event, ...)
