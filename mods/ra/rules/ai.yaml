@@ -478,7 +478,6 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
-
 	HackyAI@GrowthAI:
 		Name: Growth AI
 		MinimumExcessPower: 60
