@@ -639,7 +639,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
 
 						var label = item.Get<LabelWidget>("LABEL");
-						label.GetText = () => o.Name;
+						var font = Game.Renderer.Fonts[label.Font];
+						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						label.GetText = () => name;
 						label.GetColor = () => color;
 
 						var flag = item.Get<ImageWidget>("FLAG");
