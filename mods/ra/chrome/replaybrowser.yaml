@@ -262,7 +262,7 @@ Background@REPLAYBROWSER_PANEL:
 									Height: 16
 								Label@LABEL:
 									X: 40
-									Width: 60
+									Width: PARENT_RIGHT-50
 									Height: 25
 								Label@NOFLAG_LABEL:
 									X: 5
