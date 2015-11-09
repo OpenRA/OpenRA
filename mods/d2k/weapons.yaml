@@ -583,7 +583,7 @@ OrniBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 400
+		Damage: 1000 #400 in original, reduce when bombers can do multiple passes
 		Versus:
 			none: 90
 			wall: 50
