@@ -582,6 +582,7 @@ namespace OpenRA.Mods.Common.AI
 			if (leastLikedEnemies.Count() > 1)
 				aggro[enemy].Aggro++;
 
+			BotDebug ("Bot {0} has chosen target {1)", Player.PlayerName, target.ActorID);
 			return target;
 		}
 
@@ -773,6 +774,7 @@ namespace OpenRA.Mods.Common.AI
 					foreach (var a3 in ownUnits)
 						rush.Units.Add(a3);
 
+					BotDebug ("Bot {0} is going to rush attack {1} with squad made of {2} units", this.Player.PlayerName, target.Owner.PlayerName, rush.Units.Count.ToString ());
 					return;
 				}
 			}
@@ -796,6 +798,9 @@ namespace OpenRA.Mods.Common.AI
 				foreach (var a in ownUnits)
 					protectSq.Units.Add(a);
 			}
+			BotDebug ("Bot {0}:{1} decided to protect his own against enemy {2}:{3} with a protection squad made of {4} units", 
+				this.Player.PlayerName, this.Player.ClientIndex.ToString (), attacker.Owner.PlayerName, attacker.Owner.ClientIndex.ToString (),
+				protectSq.Units.Count.ToString ());
 		}
 
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
@@ -1008,13 +1013,17 @@ namespace OpenRA.Mods.Common.AI
 		void ProductionUnits(Actor self)
 		{
 			// Stop building until economy is restored
-			if (!HasAdequateProc())
+			if (!HasAdequateProc ()) {
+				BotDebug ("Economy is not good for bot {0}:{1} to build more units", this.Player.PlayerName, this.Player.ClientIndex.ToString ());
 				return;
+			}
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
-					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
-				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
+			if (!HasAdequateFact () && !self.World.ActorsHavingTrait<BaseBuilding> ()
+					.Any (a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo> ())) {
+				BotDebug("Bot {0}:{1} is building a new MCV", this.Player.PlayerName, this.Player.ClientIndex.ToString ());
+				BuildUnit ("Vehicle", GetUnitInfoByCommonName ("Mcv", Player).Name);
+			}
 
 			foreach (var q in Info.UnitQueues)
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
@@ -1055,6 +1064,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (Map.Rules.Actors[name] != null)
 				QueueOrder(Order.StartProduction(queue.Actor, name, 1));
+			BotDebug ("AI Bot {0} decided to build {1}", name, category);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
