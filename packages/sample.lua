@@ -60,8 +60,9 @@ local events = {
 }
 
 --[[ Uncomment this to see event names printed in the Output window
+  local skipEvents = {onIdle = true, onEditorPainted = true, onEditorUpdateUI = true}
   for k in pairs(events) do
-    if k:find("^on") then
+    if not skipEvents[k] then
       P[k] = k:find("^onEditor")
         and function(self, ed)
           -- document can be empty for newly added documents
@@ -115,11 +116,11 @@ local events = {
   end
 
   P.onEditorPreSave = function(self, editor, filepath)
-    if filepath:find("%.txt$") then
+    if filepath and filepath:find("%.txt$") then
       DisplayOutputLn(self:GetFileName(), "onEditorPreSave", "Aborted saving a .txt file")
       return false
     else
-      DisplayOutputLn(self:GetFileName(), "onEditorPreSave", filepath)
+      DisplayOutputLn(self:GetFileName(), "onEditorPreSave", filepath or "New file")
     end
   end
 
