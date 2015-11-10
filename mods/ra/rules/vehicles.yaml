@@ -563,7 +563,7 @@ TTNK:
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
-	AttackFrontal:
+	AttackOmni:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
