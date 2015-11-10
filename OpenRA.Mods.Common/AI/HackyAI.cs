@@ -999,7 +999,8 @@ namespace OpenRA.Mods.Common.AI
 					bestLocation = new CPos(x, y);
 				}
 			}
-			BotDebug ("Bot {0}:{1} found a target with attractiveness of {2} to attack", this.Player.PlayerName, this.Player.ClientIndex.ToString(), bestAttractiveness.ToString());
+
+			BotDebug("Bot {0}:{1} found a target with attractiveness of {2} to attack", this.Player.PlayerName, this.Player.ClientIndex.ToString(), bestAttractiveness.ToString());
 			return bestLocation;
 		}
 
