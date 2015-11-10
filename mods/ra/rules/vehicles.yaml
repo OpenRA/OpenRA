@@ -672,6 +672,7 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
+		ChargeDelay: 300
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
