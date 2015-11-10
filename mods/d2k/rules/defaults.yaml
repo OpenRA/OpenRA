@@ -106,7 +106,7 @@
 	Health:
 		HP: 75
 	Armor:
-		Type: Light
+		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
@@ -141,7 +141,7 @@
 	Health:
 		HP: 125
 	Armor:
-		Type: Concrete
+		Type: concrete
 	Husk:
 	AppearsOnRadar:
 	HiddenUnderFog:
@@ -158,7 +158,7 @@
 	Health:
 		Radius: 96
 	Armor:
-		Type: None
+		Type: none
 	RevealsShroud:
 		Range: 3c768
 	Mobile:

@@ -26,7 +26,7 @@ spicebloom:
 		TargetTypes: Ground
 		RequiresForceFire: yes
 	Armor:
-		Type: None
+		Type: none
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -37,7 +37,7 @@ sandworm:
 		HP: 9990
 		Radius: 256
 	Armor:
-		Type: None
+		Type: heavy
 	Mobile:
 		Speed: 42
 		TerrainSpeeds:
@@ -73,9 +73,9 @@ sietch:
 		Dimensions: 2,2
 		TerrainTypes: Cliff
 	Health:
-		HP: 400
+		HP: 6000
 	Armor:
-		Type: Concrete
+		Type: wood
 	RevealsShroud:
 		Range: 10c0
 	-DamagedWithoutFoundation:
