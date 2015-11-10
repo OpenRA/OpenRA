@@ -240,6 +240,12 @@ overlay:
 	target-invalid:
 		Start: 1
 
+editor-overlay:
+	copy: overlay
+		Start: 0
+	paste: overlay
+		Start: 1
+
 poweroff:
 	offline:
 		Length: *

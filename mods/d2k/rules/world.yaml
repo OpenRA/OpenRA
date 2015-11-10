@@ -148,4 +148,5 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	D2kEditorResourceLayer:
+	EditorSelectionLayer:
 

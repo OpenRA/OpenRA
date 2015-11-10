@@ -24,13 +24,13 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public interface IEditorBrush
+	public interface IEditorBrush : IDisposable
 	{
 		bool HandleMouseInput(MouseInput mi);
 		void Tick();
 	}
 
-	public class EditorDefaultBrush : IEditorBrush
+	public sealed class EditorDefaultBrush : IEditorBrush
 	{
 		public readonly ActorInfo Actor;
 
@@ -110,5 +110,6 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Tick() { }
+		public void Dispose() { }
 	}
 }

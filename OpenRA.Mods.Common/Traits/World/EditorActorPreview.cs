@@ -161,5 +161,10 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
 		}
+
+		public ActorReference Export()
+		{
+			return new ActorReference(actor.Type, actor.Save().ToDictionary());
+		}
 	}
 }
