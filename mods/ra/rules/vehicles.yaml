@@ -719,10 +719,10 @@ STNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 113
+		Speed: 142
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -735,8 +735,8 @@ STNK:
 	WithTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 3
-		PipCount: 3
+		MaxWeight: 4
+		PipCount: 4
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250
@@ -744,7 +744,7 @@ STNK:
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
 	DetectCloaked:
-		Range: 6c0
+		Range: 7c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
