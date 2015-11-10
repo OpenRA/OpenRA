@@ -546,6 +546,7 @@ namespace OpenRA.Mods.Common.AI
 				World.IssueOrder(orders.Dequeue());
 		}
 
+		//TODO: Investigate why there are no references for this method?
 		internal Actor ChooseEnemyTarget()
 		{
 			if (Player.WinState != WinState.Undefined)
@@ -582,7 +583,7 @@ namespace OpenRA.Mods.Common.AI
 			if (leastLikedEnemies.Count() > 1)
 				aggro[enemy].Aggro++;
 
-			BotDebug("Bot {0} has chosen target {1)", Player.PlayerName, target.ActorID);
+			BotDebug("Bot {0}({1}) has chosen target {2}({3})", Player.PlayerName, Player.ClientIndex, target.Owner.PlayerName, target.Owner.ClientIndex);
 			return target;
 		}
 
@@ -756,8 +757,17 @@ namespace OpenRA.Mods.Common.AI
 			var ownUnits = activeUnits
 				.Where(unit => unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && unit.IsIdle).ToList();
 
-			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
+			if (!allEnemyBaseBuilder.Any ()) {
+				BotDebug("Bot {0}({1}) considered rush attack but couldn't find any enemy contrcuction yards",
+					this.Player.PlayerName, this.Player.ClientIndex);
 				return;
+			}
+
+			if (ownUnits.Count < Info.SquadSize) {
+				BotDebug("Bot {0}({1}) considered rush attack but current unit count({2}) is lower than the rush squad limit({3})",
+					this.Player.PlayerName, this.Player.ClientIndex, ownUnits.Count, Info.SquadSize);
+				return;
+			}
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
@@ -1015,15 +1025,15 @@ namespace OpenRA.Mods.Common.AI
 		{
 			// Stop building until economy is restored
 			if (!HasAdequateProc()) {
-				BotDebug("Economy is not good for bot {0}:{1} to build more units", this.Player.PlayerName, this.Player.ClientIndex.ToString());
+				BotDebug("Bot {0}({1}) is trying to build units but have no funds", this.Player.PlayerName, this.Player.ClientIndex.ToString());
 				return;
-			}
+			} 
 
 			// No construction yards - Build a new MCV
 			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
 					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
 			{
-				BotDebug("Bot {0}:{1} is building a new MCV", this.Player.PlayerName, this.Player.ClientIndex.ToString());
+				BotDebug("Bot {0}({1}) is building a new MCV", this.Player.PlayerName, this.Player.ClientIndex.ToString());
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
 			}
 
@@ -1051,11 +1061,19 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			if (Info.UnitLimits != null &&
-				Info.UnitLimits.ContainsKey(name) &&
-				World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name])
+			    Info.UnitLimits.ContainsKey (name) &&
+			    World.Actors.Count (a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits [name]) {
+
+				BotDebug("Bot {0}({1}) reached limit for building {2} units", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 				return;
 
+			}
+
+				
+
 			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
+
+			BotDebug("Bot {0}({1}) is building a {2} unit", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 		}
 
 		void BuildUnit(string category, string name)
@@ -1066,7 +1084,6 @@ namespace OpenRA.Mods.Common.AI
 
 			if (Map.Rules.Actors[name] != null)
 				QueueOrder(Order.StartProduction(queue.Actor, name, 1));
-			BotDebug("AI Bot {0} decided to build {1}", name, category);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
