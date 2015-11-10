@@ -979,7 +979,7 @@ function findReplace:createPanel()
   ctrl:Connect(wx.wxEVT_ERASE_BACKGROUND, function() end)
 
   local taborder = {findCtrl, replaceCtrl, scope}
-  local function charHandle(event)
+  local function keyHandle(event)
     local keycode = event:GetKeyCode()
     self.ac[event:GetEventObject():DynamicCast('wxTextCtrl'):GetId()].lastkeycode = keycode
     if keycode == wx.WXK_ESCAPE then
@@ -1033,7 +1033,7 @@ function findReplace:createPanel()
     end)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
   findCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, findIncremental)
-  findCtrl:Connect(wx.wxEVT_CHAR, charHandle)
+  findCtrl:Connect(wx.wxEVT_KEY_DOWN, keyHandle)
   replaceCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
       event:Skip()
       refreshEditorInfo()
@@ -1045,7 +1045,7 @@ function findReplace:createPanel()
   replaceCtrl:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)
       self.ac[event:GetEventObject():DynamicCast('wxTextCtrl'):GetId()].needautocomplete = true
     end)
-  replaceCtrl:Connect(wx.wxEVT_CHAR, charHandle)
+  replaceCtrl:Connect(wx.wxEVT_KEY_DOWN, keyHandle)
 
   -- autocomplete for find/replace can be done from TEXT_UPDATED event,
   -- but SetSelection doesn't work from TEXT_UPDATED event on Linux,
@@ -1055,7 +1055,7 @@ function findReplace:createPanel()
   replaceCtrl:Connect(wx.wxEVT_IDLE, autoComplete)
 
   scope:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, findNext)
-  scope:Connect(wx.wxEVT_CHAR, charHandle)
+  scope:Connect(wx.wxEVT_KEY_DOWN, keyHandle)
 
   local function notSearching(event) event:Enable(not self.oveditor) end
   ctrl:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, notSearching)
