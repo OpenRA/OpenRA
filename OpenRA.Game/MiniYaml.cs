@@ -160,15 +160,15 @@ namespace OpenRA
 					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
 				if (line.Length == 0)
 					continue;
-				var cp = 0;
+				var charPosition = 0;
 				var level = 0;
 				var spaces = 0;
 				var textStart = false;
-				var c = line[cp];
-				while (!(c == '\n' || c == '\r') && cp < line.Length && !textStart)
+				var currChar = line[charPosition];
+				while (!(currChar == '\n' || currChar == '\r') && charPosition < line.Length && !textStart)
 				{
-					c = line[cp];
-					switch (c)
+					currChar = line[charPosition];
+					switch (currChar)
 					{
 					    case ' ':
 							spaces++;
@@ -178,11 +178,11 @@ namespace OpenRA
 								level++;
 							}
 
-							cp++;
+							charPosition++;
 							break;
 						case '\t':
 							level++;
-							cp++;
+							charPosition++;
 							break;
 						default:
 							textStart = true;
@@ -190,8 +190,8 @@ namespace OpenRA
 					}
 				}
 
-				var t = line.Substring(cp);
-				if (t.Length == 0)
+				var realText = line.Substring(charPosition);
+				if (realText.Length == 0)
 					continue;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
@@ -201,8 +201,8 @@ namespace OpenRA
 					levels.RemoveAt(levels.Count - 1);
 
 				var d = new List<MiniYamlNode>();
-				var rhs = SplitAtColon(ref t);
-				levels[level].Add(new MiniYamlNode(t, rhs, d, location));
+				var rhs = SplitAtColon(ref realText);
+				levels[level].Add(new MiniYamlNode(realText, rhs, d, location));
 
 				levels.Add(d);
 			}
@@ -210,15 +210,15 @@ namespace OpenRA
 			return levels[0];
 		}
 
-		static string SplitAtColon(ref string t)
+		static string SplitAtColon(ref string realText)
 		{
-			var colon = t.IndexOf(':');
+			var colon = realText.IndexOf(':');
 			if (colon == -1)
 				return null;
-			var ret = t.Substring(colon + 1).Trim();
+			var ret = realText.Substring(colon + 1).Trim();
 			if (ret.Length == 0)
 				ret = null;
-			t = t.Substring(0, colon).Trim();
+			realText = realText.Substring(0, colon).Trim();
 			return ret;
 		}
 
