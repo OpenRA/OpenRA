@@ -36,6 +36,7 @@ namespace OpenRA
 			{
 				foreach (var line in kv.Value.ToLines(kv.Key))
 					yield return line;
+
 				if (lowest)
 					yield return "";
 			}
@@ -158,13 +159,16 @@ namespace OpenRA
 				var commentIndex = line.IndexOf('#');
 				if (commentIndex != -1)
 					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
+
 				if (line.Length == 0)
 					continue;
+
 				var charPosition = 0;
 				var level = 0;
 				var spaces = 0;
 				var textStart = false;
 				var currChar = line[charPosition];
+
 				while (!(currChar == '\n' || currChar == '\r') && charPosition < line.Length && !textStart)
 				{
 					currChar = line[charPosition];
@@ -193,10 +197,12 @@ namespace OpenRA
 				var realText = line.Substring(charPosition);
 				if (realText.Length == 0)
 					continue;
+
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (levels.Count <= level)
 					throw new YamlException("Bad indent in miniyaml at {0}".F(location));
+
 				while (levels.Count > level + 1)
 					levels.RemoveAt(levels.Count - 1);
 
@@ -215,9 +221,11 @@ namespace OpenRA
 			var colon = realText.IndexOf(':');
 			if (colon == -1)
 				return null;
+
 			var ret = realText.Substring(colon + 1).Trim();
 			if (ret.Length == 0)
 				ret = null;
+
 			realText = realText.Substring(0, colon).Trim();
 			return ret;
 		}
@@ -268,6 +276,7 @@ namespace OpenRA
 		{
 			if (a.Count == 0)
 				return b;
+
 			if (b.Count == 0)
 				return a;
 
@@ -332,6 +341,7 @@ namespace OpenRA
 		{
 			if (a == null)
 				return b;
+
 			if (b == null)
 				return a;
 
@@ -341,6 +351,7 @@ namespace OpenRA
 		public IEnumerable<string> ToLines(string name)
 		{
 			yield return name + ": " + Value;
+
 			if (Nodes != null)
 				foreach (var line in Nodes.ToLines(false))
 					yield return "\t" + line;
