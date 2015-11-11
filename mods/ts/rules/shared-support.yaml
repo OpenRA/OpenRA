@@ -54,6 +54,7 @@ NAPULS:
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
+		Name: superweapon
 	WithTurret:
 		Sequence: turret
 	Power:
@@ -65,4 +66,20 @@ NAPULS:
 		FactionImages:
 			gdi: napuls.gdi
 			nod: napuls.nod
+	FireArmamentPower:
+		Icon: empcannon
+		ChargeTime: 270
+		Description: EMP Cannon
+		LongDesc: Launches an electromagnetic\npulse at a target location.
+		BeginChargeSound:
+		EndChargeSound: 00-i158.aud
+		SelectTargetSound: 00-i042.aud
+		InsufficientPowerSound:
+		IncomingSound:
+		LaunchSound:
+		DisplayTimer: False
+		DisplayBeacon: False
+		DisplayRadarPing: False
+		BeaconPoster:
+		CameraActor: camera
 
