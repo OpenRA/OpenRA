@@ -10,7 +10,8 @@ MINV:
 
 CRATE:
 	Inherits: ^Crate
-	GiveCashCrateAction:
+	GiveResourcesCrateAction:
+		ResourceType: cash
 		Amount: 1000
 		SelectionShares: 50
 		UseCashTick: true
@@ -101,7 +102,8 @@ MONEYCRATE:
 	Inherits: ^Crate
 	Tooltip:
 		Name: Money Crate
-	GiveCashCrateAction:
+	GiveResourcesCrateAction:
+		ResourceType: cash
 		Amount: 500
 		SelectionShares: 1
 		UseCashTick: true

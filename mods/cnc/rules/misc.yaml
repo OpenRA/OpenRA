@@ -6,7 +6,8 @@ CRATE:
 	Inherits: ^Crate
 	Crate:
 		Lifetime: 240
-	GiveCashCrateAction:
+	GiveResourcesCrateAction:
+		ResourceType: cash
 		Amount: 1000
 		SelectionShares: 20
 		UseCashTick: yes

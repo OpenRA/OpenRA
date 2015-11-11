@@ -297,14 +297,12 @@
     <Compile Include="Traits\CaptureNotification.cs" />
     <Compile Include="Traits\Captures.cs" />
     <Compile Include="Traits\Cargo.cs" />
-    <Compile Include="Traits\CashTrickler.cs" />
     <Compile Include="Traits\Cloak.cs" />
     <Compile Include="Traits\CombatDebugOverlay.cs" />
     <Compile Include="Traits\Crates\Crate.cs" />
     <Compile Include="Traits\Crates\CrateAction.cs" />
     <Compile Include="Traits\Crates\DuplicateUnitCrateAction.cs" />
     <Compile Include="Traits\Crates\ExplodeCrateAction.cs" />
-    <Compile Include="Traits\Crates\GiveCashCrateAction.cs" />
     <Compile Include="Traits\Crates\GiveMcvCrateAction.cs" />
     <Compile Include="Traits\Crates\GiveUnitCrateAction.cs" />
     <Compile Include="Traits\Crates\GrantUpgradeCrateAction.cs" />
@@ -710,6 +708,8 @@
     <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
     <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
     <Compile Include="Traits\World\EditorSelectionLayer.cs" />
+    <Compile Include="Traits\ResourceTrickler.cs" />
+    <Compile Include="Traits\Crates\GiveResourcesCrateAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

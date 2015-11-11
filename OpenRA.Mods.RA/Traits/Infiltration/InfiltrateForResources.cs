@@ -14,21 +14,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	[Desc("This structure can be infiltrated causing funds to be stolen.")]
-	class InfiltrateForCashInfo : ITraitInfo
+	[Desc("This structure can be infiltrated causing resources to be stolen.")]
+	class InfiltrateForResourcesInfo : ITraitInfo
 	{
+		[Desc("Resource to steal.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
 		public readonly int Percentage = 50;
 		public readonly int Minimum = 500;
 		public readonly string SoundToVictim = "credit1.aud";
 
-		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
+		public object Create(ActorInitializer init) { return new InfiltrateForResources(this); }
 	}
 
-	class InfiltrateForCash : INotifyInfiltrated
+	class InfiltrateForResources : INotifyInfiltrated
 	{
-		readonly InfiltrateForCashInfo info;
+		readonly InfiltrateForResourcesInfo info;
 
-		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
+		public InfiltrateForResources(InfiltrateForResourcesInfo info) { this.info = info; }
 
 		public void Infiltrated(Actor self, Actor infiltrator)
 		{
@@ -38,8 +42,8 @@ namespace OpenRA.Mods.RA.Traits
 			var toTake = (targetResources.Cash + targetResources.Resources) * info.Percentage / 100;
 			var toGive = Math.Max(toTake, info.Minimum);
 
-			targetResources.TakeCash(toTake);
-			spyResources.GiveCash(toGive);
+			targetResources.TakeResource(info.ResourceType, toTake);
+			spyResources.GiveResource(info.ResourceType, toGive);
 
 			Game.Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 

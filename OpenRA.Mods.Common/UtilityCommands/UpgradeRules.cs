@@ -2399,6 +2399,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Moved to different resource names
+				if (engineVersion < 20151123)
+				{
+					if (node.Key == "GiveCashCrateAction")
+						node.Key = "GiveResourcesCrateAction";
+					if (node.Key == "CashTrickler")
+						node.Key = "ResourceTrickler";
+					if (node.Key == "InfiltrateForCash")
+						node.Key = "InfiltrateForResources";
+
+					if (node.Key == "Refinery" || node.Key == "StoresResources")
+						node.Value.Nodes.Add(new MiniYamlNode("ResourceType", "resources"));
+
+				    if (node.Key == "GiveResourcesCrateAction" || node.Key == "ResourceTrickler" ||
+						node.Key == "InfiltrateForResources" || node.Key == "SupplyTruck" ||
+						node.Key == "GivesBounty")
+						node.Value.Nodes.Add(new MiniYamlNode("ResourceType", "cash"));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

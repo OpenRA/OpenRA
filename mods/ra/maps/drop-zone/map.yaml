@@ -214,12 +214,15 @@ Rules:
 			TerrainTypes: Clear, Road, Ore, Beach
 	^Infantry:
 		GivesBounty:
+			ResourceType: cash
 			Percentage: 0
 	^Tank:
 		GivesBounty:
+			ResourceType: cash
 			Percentage: 0
 	^Vehicle:
 		GivesBounty:
+			ResourceType: cash
 			Percentage: 0
 	APC:
 		Health:

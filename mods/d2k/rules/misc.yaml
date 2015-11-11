@@ -5,15 +5,18 @@ crate:
 	Crate:
 		Lifetime: 120
 		TerrainTypes: Sand, Dune, Rock, SpiceSand
-	GiveCashCrateAction@1:
+	GiveResourcesCrateAction@1:
+		ResourceType: cash
 		Amount: 750
 		SelectionShares: 25
 		UseCashTick: yes
-	GiveCashCrateAction@2:
+	GiveResourcesCrateAction@2:
+		ResourceType: cash
 		Amount: 1000
 		SelectionShares: 50
 		UseCashTick: yes
-	GiveCashCrateAction@3:
+	GiveResourcesCrateAction@3:
+		ResourceType: cash
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes

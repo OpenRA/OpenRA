@@ -1,6 +1,7 @@
 V19:
 	Inherits: ^TechBuilding
-	CashTrickler:
+	ResourceTrickler:
+		ResourceType: cash
 	Building:
 		Footprint: x
 		Dimensions: 1,1

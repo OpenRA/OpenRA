@@ -77,7 +77,9 @@ namespace OpenRA.Traits
 							self.Owner.Shroud.ExploreAll(self.World);
 
 							var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
-							self.Trait<PlayerResources>().GiveCash(amount);
+							var resources = self.Trait<PlayerResources>();
+							foreach (var type in resources.ResourceTypes)
+								resources.GiveResource(type, amount);
 						}
 						else
 						{
@@ -112,7 +114,9 @@ namespace OpenRA.Traits
 				case "DevGiveCash":
 					{
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
-						self.Trait<PlayerResources>().GiveCash(amount);
+						var resources = self.Trait<PlayerResources>();
+						foreach (var type in resources.ResourceTypes)
+							resources.GiveResource(type, amount);
 						break;
 					}
 

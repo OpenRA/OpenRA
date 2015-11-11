@@ -836,7 +836,8 @@ Rules:
 			IntoActor: ftur
 			Offset: 0,0
 			Facing: 96
-		CashTrickler:
+		ResourceTrickler:
+			ResourceType: cash
 			Period: 150
 			Amount: 20
 		RenderSprites:
@@ -850,7 +851,8 @@ Rules:
 			Facing: 96
 		MustBeDestroyed:
 			RequiredForShortGame: true
-		CashTrickler:
+		ResourceTrickler:
+			ResourceType: cash
 			Period: 150
 			Amount: 30
 		ChronoshiftPower:

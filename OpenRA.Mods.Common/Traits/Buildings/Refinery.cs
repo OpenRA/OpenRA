@@ -20,6 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>
 	{
+		[Desc("Resource produced by this refinery.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
 		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
 		public readonly int DockAngle = 0;
 
@@ -84,11 +88,11 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount) { return playerResources.CanGiveResource(info.ResourceType, amount); }
 
 		public void GiveResource(int amount)
 		{
-			playerResources.GiveResources(amount);
+			playerResources.GiveResource(info.ResourceType, amount);
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}

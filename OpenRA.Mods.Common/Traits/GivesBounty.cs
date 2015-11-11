@@ -18,6 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("You get money for playing this actor.")]
 	class GivesBountyInfo : TraitInfo<GivesBounty>
 	{
+		[Desc("Type of resource to give.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
 		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
 		public readonly int Percentage = 10;
 		[Desc("Higher ranked units give higher bounties.")]
@@ -56,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(bounty), 30)));
 
-			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
+			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveResource(info.ResourceType, bounty);
 		}
 	}
 }

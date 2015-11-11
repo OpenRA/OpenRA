@@ -8,27 +8,32 @@
  */
 #endregion
 
+using OpenRA;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Gives cash to the collector.")]
-	class GiveCashCrateActionInfo : CrateActionInfo
+	[Desc("Gives resources to the collector.")]
+	class GiveResourcesCrateActionInfo : CrateActionInfo
 	{
+		[Desc("Type of resource to give.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
 		[Desc("Amount of cash to give.")]
-		public int Amount = 2000;
+		public readonly int Amount = 2000;
 
 		[Desc("Should the collected amount be displayed as a cash tick?")]
-		public bool UseCashTick = false;
+		public readonly bool UseCashTick = false;
 
-		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GiveResourcesCrateAction(init.Self, this); }
 	}
 
-	class GiveCashCrateAction : CrateAction
+	class GiveResourcesCrateAction : CrateAction
 	{
-		readonly GiveCashCrateActionInfo info;
-		public GiveCashCrateAction(Actor self, GiveCashCrateActionInfo info)
+		readonly GiveResourcesCrateActionInfo info;
+		public GiveResourcesCrateAction(Actor self, GiveResourcesCrateActionInfo info)
 			: base(self, info)
 		{
 			this.info = info;
@@ -38,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			collector.World.AddFrameEndTask(w =>
 			{
-				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
+				collector.Owner.PlayerActor.Trait<PlayerResources>().GiveResource(info.ResourceType, info.Amount);
 
 				if (info.UseCashTick)
 					w.Add(new FloatingText(collector.CenterPosition, collector.Owner.Color.RGB, FloatingText.FormatCashTick(info.Amount), 30));

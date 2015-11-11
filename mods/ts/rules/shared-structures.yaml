@@ -74,9 +74,11 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 	TiberianSunRefinery:
+		ResourceType: resources
 		DockAngle: 160
 		DockOffset: 2,1
 	StoresResources:
+		ResourceType: resources
 		PipColor: Green
 		PipCount: 15
 		Capacity: 3000
@@ -139,6 +141,7 @@ GASILO:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	StoresResources:
+		ResourceType: resources
 		PipCount: 5
 		Capacity: 1500
 	Power:

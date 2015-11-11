@@ -15,12 +15,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Used for silos.")]
+	[Desc("Stores resources, allowing for an increased capacity.")]
 	class StoresResourcesInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Number of little squares used to display how filled unit is.")]
 		public readonly int PipCount = 0;
+
+		[Desc("Resource stored.")]
+		[FieldLoader.Require]
+		public string ResourceType;
+
 		public readonly PipType PipColor = PipType.Yellow;
 		[FieldLoader.Require]
 		public readonly int Capacity = 0;
@@ -50,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var resources = Stored;
-			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
-			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
+			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResource(info.ResourceType, resources);
+			newOwner.PlayerActor.Trait<PlayerResources>().GiveResource(info.ResourceType, resources);
 		}
 
 		bool disposed;
@@ -60,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
-			player.TakeResources(Stored); // lose the stored resources
+			player.TakeResource(info.ResourceType, Stored); // lose the stored resources
 			disposed = true;
 		}
 

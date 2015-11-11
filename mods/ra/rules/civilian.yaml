@@ -350,7 +350,8 @@ OILB:
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
-	CashTrickler:
+	ResourceTrickler:
+		ResourceType: cash
 		Period: 375
 		Amount: 100
 		CaptureAmount: 100

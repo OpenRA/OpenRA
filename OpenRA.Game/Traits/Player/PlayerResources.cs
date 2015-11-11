@@ -49,81 +49,103 @@ namespace OpenRA.Traits
 		public int Earned;
 		public int Spent;
 
-		public bool CanGiveResources(int amount)
+		public readonly string[] ResourceTypes = {
+			"cash",
+			"resources",
+		};
+
+		public bool CanGiveResource(string resource, int amount)
 		{
-			return Resources + amount <= ResourceCapacity;
+			if (!ResourceTypes.Contains(resource))
+				throw new InvalidOperationException("Invalid resource type {0}!".F(resource));
+
+			if (resource == "cash")
+				return true;
+			else
+				return Resources + amount <= ResourceCapacity;
 		}
 
-		public void GiveResources(int num)
+		public void GiveResource(string resource, int num)
 		{
-			Resources += num;
-			Earned += num;
+			if (!ResourceTypes.Contains(resource))
+				throw new InvalidOperationException("Invalid resource type {0}!".F(resource));
 
-			if (Resources > ResourceCapacity)
+			if (resource == "cash")
 			{
-				nextSiloAdviceTime = 0;
-
-				Earned -= Resources - ResourceCapacity;
-				Resources = ResourceCapacity;
-			}
-		}
-
-		public bool TakeResources(int num)
-		{
-			if (Resources < num) return false;
-			Resources -= num;
-			Spent += num;
-
-			return true;
-		}
-
-		public void GiveCash(int num)
-		{
-			if (Cash < int.MaxValue)
-			{
-				try
+				if (Cash < int.MaxValue)
 				{
-					checked
+					try
 					{
-						Cash += num;
+						checked
+						{
+							Cash += num;
+						}
+					}
+					catch (OverflowException)
+					{
+						Cash = int.MaxValue;
 					}
 				}
-				catch (OverflowException)
-				{
-					Cash = int.MaxValue;
-				}
-			}
 
-			if (Earned < int.MaxValue)
-			{
-				try
+				if (Earned < int.MaxValue)
 				{
-					checked
+					try
 					{
-						Earned += num;
+						checked
+						{
+							Earned += num;
+						}
+					}
+					catch (OverflowException)
+					{
+						Earned = int.MaxValue;
 					}
 				}
-				catch (OverflowException)
+			}
+			else
+			{
+				Resources += num;
+				Earned += num;
+
+				if (Resources > ResourceCapacity)
 				{
-					Earned = int.MaxValue;
+					nextSiloAdviceTime = 0;
+
+					Earned -= Resources - ResourceCapacity;
+					Resources = ResourceCapacity;
 				}
 			}
 		}
 
-		public bool TakeCash(int num)
+		public bool TakeResource(string resource, int num)
 		{
-			if (Cash + Resources < num) return false;
+			if (!ResourceTypes.Contains(resource))
+				throw new InvalidOperationException("Invalid resource type {0}!".F(resource));
 
-			// Spend ore before cash
-			Resources -= num;
-			Spent += num;
-			if (Resources < 0)
+			if (resource == "cash")
 			{
-				Cash += Resources;
-				Resources = 0;
-			}
+				if (Cash + Resources < num) return false;
 
-			return true;
+				// Spend ore before cash
+				Resources -= num;
+				Spent += num;
+				if (Resources < 0)
+				{
+					Cash += Resources;
+					Resources = 0;
+				}
+
+				return true;
+			}
+			else
+			{
+				if (Resources < num)
+					return false;
+				Resources -= num;
+				Spent += num;
+
+				return true;
+			}
 		}
 
 		int nextSiloAdviceTime = 0;

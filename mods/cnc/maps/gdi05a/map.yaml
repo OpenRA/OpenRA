@@ -913,7 +913,8 @@ Rules:
 			Prerequisites: ~disabled
 	MoneyCrate:
 		Inherits: ^Crate
-		GiveCashCrateAction:
+		GiveResourcesCrateAction:
+			ResourceType: cash
 			Amount: 500
 			UseCashTick: yes
 	airstrike.proxy:

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.StartRepairingNotification, self.Owner.Faction.InternalName);
 				}
 
-				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeCash(cost))
+				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeResource("cash", cost))
 				{
 					remainingTicks = 1;
 					return this;

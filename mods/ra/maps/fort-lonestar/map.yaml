@@ -539,7 +539,8 @@ Rules:
 			SelectionShares: 30
 			Notification: heal2.aud
 			Effect: heal
-		GiveCashCrateAction:
+		GiveResourcesCrateAction:
+			ResourceType: cash
 			Amount: 400
 			UseCashTick: true
 			SelectionShares: 30
@@ -560,7 +561,8 @@ Rules:
 		Bib:
 		RevealsShroud:
 			Range: 3c0
-		CashTrickler:
+		ResourceTrickler:
+			ResourceType: cash
 			Period: 250
 			Amount: 50
 	TENT:

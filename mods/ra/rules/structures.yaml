@@ -934,9 +934,11 @@ PROC:
 		Range: 6c0
 	Bib:
 	Refinery:
+		ResourceType: resources
 		DockAngle: 64
 		DockOffset: 1,2
 	StoresResources:
+		ResourceType: resources
 		PipCount: 17
 		Capacity: 2000
 	DrawLineToTarget:
@@ -946,7 +948,8 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 1,2
 		Facing: 64
-	InfiltrateForCash:
+	InfiltrateForResources:
+		ResourceType: cash
 		Percentage: 50
 		Minimum: 500
 		SoundToVictim: credit1.aud
@@ -984,6 +987,7 @@ SILO:
 		HasMinibib: Yes
 	WithSiloAnimation:
 	StoresResources:
+		ResourceType: resources
 		PipCount: 5
 		Capacity: 1500
 	-EmitInfantryOnSell:

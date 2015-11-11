@@ -19,7 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Donate money to actors with the `AcceptSupplies` trait.")]
 	class SupplyTruckInfo : ITraitInfo
 	{
-		[Desc("The amount of cash the owner receives.")]
+		[Desc("The type of resource the owner receives.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
+		[Desc("The amount of resources the owner recieves.")]
 		public readonly int Payload = 500;
 
 		[VoiceReference] public readonly string Voice = "Action";
@@ -70,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new DonateSupplies(self, target.Actor, info.Payload));
+			self.QueueActivity(new DonateSupplies(self, target.Actor, info.ResourceType, info.Payload));
 		}
 
 		class SupplyTruckOrderTargeter : UnitOrderTargeter

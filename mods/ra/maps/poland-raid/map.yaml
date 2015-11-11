@@ -787,7 +787,8 @@ Smudges:
 
 Rules:
 	OILB:
-		CashTrickler:
+		ResourceTrickler:
+			ResourceType: cash
 			Period: 250
 			Amount: 100
 	FACT:

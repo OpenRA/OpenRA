@@ -633,7 +633,8 @@ Rules:
 		Explodes:
 			Weapon: MissionBarrelExplode
 	MONEYCRATE:
-		GiveCashCrateAction:
+		GiveResourcesCrateAction:
+			ResourceType: cash
 			Amount: 2000
 	powerproxy.paratroopers:
 		ParatroopersPower:

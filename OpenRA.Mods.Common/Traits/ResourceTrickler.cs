@@ -13,9 +13,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Lets the actor generate cash in a set periodic time.")]
-	class CashTricklerInfo : ITraitInfo
+	[Desc("Lets the actor generate resources in a set periodic time.")]
+	class ResourceTricklerInfo : ITraitInfo
 	{
+		[Desc("Resource provided.")]
+		[FieldLoader.Require]
+		public readonly string ResourceType;
+
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Period = 50;
 		[Desc("Amount of money to give each time.")]
@@ -25,14 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of money awarded for capturing the actor.")]
 		public readonly int CaptureAmount = 0;
 
-		public object Create(ActorInitializer init) { return new CashTrickler(this); }
+		public object Create(ActorInitializer init) { return new ResourceTrickler(this); }
 	}
 
-	class CashTrickler : ITick, ISync, INotifyCapture
+	class ResourceTrickler : ITick, ISync, INotifyCapture
 	{
-		readonly CashTricklerInfo info;
+		readonly ResourceTricklerInfo info;
 		[Sync] int ticks;
-		public CashTrickler(CashTricklerInfo info)
+		public ResourceTrickler(ResourceTricklerInfo info)
 		{
 			this.info = info;
 		}
@@ -42,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks < 0)
 			{
 				ticks = info.Period;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
+				self.Owner.PlayerActor.Trait<PlayerResources>().GiveResource(info.ResourceType, info.Amount);
 				MaybeAddCashTick(self, info.Amount);
 			}
 		}
@@ -51,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (info.CaptureAmount > 0)
 			{
-				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(info.CaptureAmount);
+				newOwner.PlayerActor.Trait<PlayerResources>().GiveResource(info.ResourceType, info.CaptureAmount);
 				MaybeAddCashTick(self, info.CaptureAmount);
 			}
 		}

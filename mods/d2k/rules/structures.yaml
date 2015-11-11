@@ -203,10 +203,12 @@ refinery:
 	RevealsShroud:
 		Range: 4c768
 	Refinery:
+		ResourceType: resources
 		DockAngle: 160
 		DockOffset: 2,1
 		TickRate: 20
 	StoresResources:
+		ResourceType: resources
 		PipColor: green
 		PipCount: 10
 		Capacity: 2000
@@ -262,6 +264,7 @@ silo:
 	WithSpriteBody:
 	WithSiloAnimation:
 	StoresResources:
+		ResourceType: resources
 		PipColor: green
 		PipCount: 5
 		Capacity: 2000

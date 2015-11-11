@@ -164,6 +164,7 @@ PROC:
 		Range: 6c0
 	Bib:
 	Refinery:
+		ResourceType: resources
 		DockAngle: 112
 		DockOffset: 0,2
 		IsDragRequired: True
@@ -171,6 +172,7 @@ PROC:
 		DragLength: 12
 		TickRate: 15
 	StoresResources:
+		ResourceType: resources
 		PipColor: Green
 		PipCount: 10
 		Capacity: 2000
@@ -215,6 +217,7 @@ SILO:
 	AutoSelectionSize:
 	WithSiloAnimation:
 	StoresResources:
+		ResourceType: resources
 		PipCount: 10
 		PipColor: Green
 		Capacity: 2000

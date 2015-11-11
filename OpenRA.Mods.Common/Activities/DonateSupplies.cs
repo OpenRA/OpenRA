@@ -17,12 +17,14 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor target;
 		readonly int payload;
+		readonly string resourceType;
 
-		public DonateSupplies(Actor self, Actor target, int payload)
+		public DonateSupplies(Actor self, Actor target, string resourceType, int payload)
 			: base(self, target)
 		{
 			this.target = target;
 			this.payload = payload;
+			this.resourceType = resourceType;
 		}
 
 		protected override void OnInside(Actor self)
@@ -30,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (target.IsDead)
 				return;
 
-			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+			target.Owner.PlayerActor.Trait<PlayerResources>().GiveResource(resourceType, payload);
 			self.Dispose();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
