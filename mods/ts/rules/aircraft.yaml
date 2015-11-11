@@ -78,6 +78,8 @@ ORCA:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -120,6 +122,8 @@ ORCAB:
 		ROT: 3
 		Speed: 96
 		AirborneUpgrades: airborne
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 260
 	Armor:
@@ -162,8 +166,8 @@ ORCATRAN:
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -234,6 +238,8 @@ SCRIN:
 		ROT: 3
 		Speed: 168
 		AirborneUpgrades: airborne
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 280
 	Armor:
