@@ -174,7 +174,7 @@ namespace OpenRA
 					currChar = line[charPosition];
 					switch (currChar)
 					{
-					    case ' ':
+						case ' ':
 							spaces++;
 							if (spaces >= SpacesPerLevel)
 							{
