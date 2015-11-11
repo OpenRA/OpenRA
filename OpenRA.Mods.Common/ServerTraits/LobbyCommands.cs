@@ -135,6 +135,10 @@ namespace OpenRA.Mods.Common.Server
 
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
+
+						var validatedColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index, conn);
+						client.PreferredColor = client.Color = validatedColor;
+
 						server.SyncLobbyClients();
 						CheckAutoStart(server);
 
