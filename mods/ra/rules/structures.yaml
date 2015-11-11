@@ -1297,7 +1297,7 @@ BARR:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -170,810,0
-		ExitCell: 0,2
+		ExitCell: 1,2
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
@@ -1398,7 +1398,7 @@ TENT:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -42,810,0
-		ExitCell: 0,2
+		ExitCell: 1,2
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
