@@ -187,7 +187,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Modifiers.Alt))
+			if (mi.Event == MouseInputEvent.Scroll &&
+				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
 				Zoom(mi.ScrollDelta);
 				return true;
