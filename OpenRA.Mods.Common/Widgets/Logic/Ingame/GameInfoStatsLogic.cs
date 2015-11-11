@@ -10,7 +10,10 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -50,11 +53,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = playerTemplate.Clone();
 				var nameLabel = item.Get<LabelWidget>("NAME");
+				var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+
+				var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
+				var name = new CachedTransform<Pair<string, int>, string>(c =>
+					WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+
 				nameLabel.GetText = () =>
 				{
+					var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
 					if (client != null && client.State == Network.Session.ClientState.Disconnected)
-						return pp.PlayerName + " (Gone)";
-					return pp.PlayerName + (pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")");
+						suffix = " (Gone)";
+
+					var sl = suffixLength.Update(suffix);
+					return name.Update(Pair.New(pp.PlayerName, sl)) + suffix;
 				};
 				nameLabel.GetColor = () => pp.Color.RGB;
 
