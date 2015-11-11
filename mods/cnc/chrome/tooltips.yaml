@@ -19,7 +19,7 @@ Background@TWO_LINE_TOOLTIP:
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			TextColor: FFFF00
+			TextColor: 255,255,0
 			Height: 23
 			Font: Bold
 
