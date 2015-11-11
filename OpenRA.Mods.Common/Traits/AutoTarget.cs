@@ -168,7 +168,8 @@ namespace OpenRA.Mods.Common.Traits
 		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
 		{
 			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range)
-				.Where(a => !a.Info.HasTraitInfo<AutoTargetIgnoreInfo>());
+				.Where(a =>
+					!a.TraitsImplementing<IPreventsAutoTarget>().Any(t => t.PreventsAutoTarget(a, self)));
 
 			// Armaments are enumerated in attack.Armaments in construct order
 			// When autotargeting, first choose targets according to the used armament construct order
@@ -207,7 +208,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
-	class AutoTargetIgnore { }
+	class AutoTargetIgnore : IPreventsAutoTarget
+	{
+		public bool PreventsAutoTarget(Actor self, Actor attacker)
+		{
+			return true;
+		}
+	}
 
 	public class StanceInit : IActorInit<UnitStance>
 	{

@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
+		[Desc("Whether to prevent autotargeting this actor while it is being captured by an ally.")]
+		public readonly bool PreventsAutoTarget = true;
+
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick, ISync
+	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
@@ -90,6 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 				CaptureProgressTime = 0;
 			else
 				CaptureProgressTime++;
+		}
+
+		public bool PreventsAutoTarget(Actor self, Actor attacker)
+		{
+			return Info.PreventsAutoTarget && Captor != null && attacker.AppearsFriendlyTo(Captor);
 		}
 	}
 }

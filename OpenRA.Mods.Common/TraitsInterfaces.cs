@@ -121,4 +121,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void ModifyDeathActorInit(Actor self, TypeDictionary init);
 	}
+
+	public interface IPreventsAutoTarget
+	{
+		bool PreventsAutoTarget(Actor self, Actor attacker);
+	}
 }
