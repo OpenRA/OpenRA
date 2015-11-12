@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Seeds resources by explosive eruptions after accumulation times.")]
-	public class SpiceBloomInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class SpiceBloomInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
@@ -45,6 +46,14 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int Range = 5;
 
 		public object Create(ActorInitializer init) { return new SpiceBloom(init, this); }
+
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			var anim = new Animation(init.World, image);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), GrowthSequences[0]));
+
+			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
 	}
 
 	public class SpiceBloom : ITick, INotifyKilled
