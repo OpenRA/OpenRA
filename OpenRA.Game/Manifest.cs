@@ -189,6 +189,9 @@ namespace OpenRA
 			var ret = new Dictionary<string, Manifest>();
 			foreach (var mod in mods)
 			{
+				if (!File.Exists(Platform.ResolvePath(".", "mods", mod, "mod.yaml")))
+					continue;
+
 				try
 				{
 					var manifest = new Manifest(mod);
