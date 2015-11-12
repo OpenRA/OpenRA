@@ -19,12 +19,6 @@ BaseWeaponsFactory = { type = "weap", pos = CVec.New(-12, -1), cost = 2000, exis
 BaseBuildings = { BasePower, BaseBarracks, BaseProc, BaseWeaponsFactory }
 
 BuildBase = function()
-	if CYard.IsDead or CYard.Owner ~= Greece then
-		return
-	elseif Harvester.IsDead and Greece.Resources <= 299 then
-		return
-	end
-
 	for i,v in ipairs(BaseBuildings) do
 		if not v.exists then
 			BuildBuilding(v)
@@ -37,6 +31,12 @@ end
 
 BuildBuilding = function(building)
 	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
+		if CYard.IsDead or CYard.Owner ~= Greece then
+			return
+		elseif Harvester.IsDead and Greece.Resources <= 299 then
+			return
+		end
+
 		local actor = Actor.Create(building.type, true, { Owner = Greece, Location = GreeceCYard.Location + building.pos })
 		Greece.Cash = Greece.Cash - building.cost
 
