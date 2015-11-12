@@ -546,7 +546,7 @@ namespace OpenRA.Mods.Common.AI
 				World.IssueOrder(orders.Dequeue());
 		}
 
-		//TODO: Investigate why there are no references for this method?
+		// TODO: Investigate why there are no references for this method?
 		internal Actor ChooseEnemyTarget()
 		{
 			if (Player.WinState != WinState.Undefined)
@@ -757,7 +757,8 @@ namespace OpenRA.Mods.Common.AI
 			var ownUnits = activeUnits
 				.Where(unit => unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && unit.IsIdle).ToList();
 
-			if (!allEnemyBaseBuilder.Any ()) {
+			// todo: bug, no rush attack is done if there is no enemy construction yard
+			if (!allEnemyBaseBuilder.Any()) {
 				BotDebug("Bot {0}({1}) considered rush attack but couldn't find any enemy contrcuction yards",
 					this.Player.PlayerName, this.Player.ClientIndex);
 				return;
@@ -1027,7 +1028,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!HasAdequateProc()) {
 				BotDebug("Bot {0}({1}) is trying to build units but have no funds", this.Player.PlayerName, this.Player.ClientIndex.ToString());
 				return;
-			} 
+			}
 
 			// No construction yards - Build a new MCV
 			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
@@ -1061,18 +1062,13 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			if (Info.UnitLimits != null &&
-			    Info.UnitLimits.ContainsKey (name) &&
-			    World.Actors.Count (a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits [name]) {
-
+			    Info.UnitLimits.ContainsKey(name) &&
+			    World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name]) {
 				BotDebug("Bot {0}({1}) reached limit for building {2} units", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 				return;
-
 			}
 
-				
-
 			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
-
 			BotDebug("Bot {0}({1}) is building a {2} unit", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 		}
 
