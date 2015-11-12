@@ -23,7 +23,7 @@ Background@TWO_LINE_TOOLTIP:
 			Visible: false
 			Y: 2
 			Height: 23
-			TextColor: FFFF00
+			TextColor: 255,255,0
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
