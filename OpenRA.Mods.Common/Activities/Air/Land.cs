@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft plane;
+		bool playedSound;
 
 		public Land(Actor self, Target t)
 		{
@@ -41,6 +42,12 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				plane.SetPosition(self, target.CenterPosition);
 				return NextActivity;
+			}
+
+			if (!playedSound && plane.Info.LandingSound != null && !self.IsAtGroundLevel())
+			{
+				Game.Sound.Play(plane.Info.LandingSound);
+				playedSound = true;
 			}
 
 			var desiredFacing = Util.GetFacing(d, plane.Facing);

@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
+		bool playedSound;
 
 		public TakeOff(Actor self)
 		{
@@ -29,6 +30,12 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (NextActivity == null)
 				self.CancelActivity();
+
+			if (!playedSound && aircraft.Info.TakeoffSound != null && self.IsAtGroundLevel())
+			{
+				Game.Sound.Play(aircraft.Info.TakeoffSound);
+				playedSound = true;
+			}
 
 			var reservation = aircraft.Reservation;
 			if (reservation != null)
