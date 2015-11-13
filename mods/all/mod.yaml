@@ -5,6 +5,8 @@ Metadata:
 	Hidden: true
 	Description: Depending on all DLLs.
 
+RequiresMods:
+
 Folders:
 	.
 
