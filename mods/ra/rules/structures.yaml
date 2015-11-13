@@ -86,6 +86,8 @@ GAP:
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 SPEN:
 	Inherits: ^Building
@@ -414,6 +416,8 @@ TSLA:
 	DetectCloaked:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 AGUN:
 	Inherits: ^Defense
@@ -461,6 +465,8 @@ AGUN:
 		Amount: -50
 	DetectCloaked:
 		Range: 6c0
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 DOME:
 	Inherits: ^Building
@@ -539,6 +545,8 @@ PBOX:
 		Amount: -15
 	DetectCloaked:
 		Range: 6c0
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 HBOX:
 	Inherits: ^Defense
@@ -585,6 +593,8 @@ HBOX:
 	Power:
 		Amount: -15
 	-MustBeDestroyed:
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 GUN:
 	Inherits: ^Defense
@@ -621,6 +631,8 @@ GUN:
 		Amount: -40
 	DetectCloaked:
 		Range: 7c0
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 FTUR:
 	Inherits: ^Defense
@@ -657,6 +669,8 @@ FTUR:
 	DetectCloaked:
 		Range: 6c0
 	ProvidesPrerequisite@buildingname:
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 SAM:
 	Inherits: ^Defense
@@ -989,6 +1003,8 @@ SILO:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 HPAD:
 	Inherits: ^Building
@@ -1373,6 +1389,8 @@ KENN:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
+	WithBuildingExplosion:
+		Sequences: building, napalm, large_explosion, self_destruct
 
 TENT:
 	Inherits: ^Building
