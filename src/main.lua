@@ -322,6 +322,12 @@ local function setLuaPaths(mainpath, osname)
   wx.wxSetEnv("LUA_CPATH",
     (os.getenv("LUA_CPATH") or ';') .. ';' .. ide.osclibs
     .. (luadev_cpath and (';' .. luadev_cpath) or ''))
+
+  -- on some OSX versions, PATH is sanitized to not include even /usr/local/bin; add it
+  if osname == "Macintosh" then
+    local ok, path = wx.wxGetEnv("PATH")
+    if ok then wx.wxSetEnv("PATH", (#path > 0 and path..":" or "").."/usr/local/bin") end
+  end
 end
 
 ide.test.setLuaPaths = setLuaPaths
