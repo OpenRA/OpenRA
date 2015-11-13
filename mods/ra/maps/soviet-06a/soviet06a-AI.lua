@@ -20,12 +20,6 @@ BaseApwr2 = { type = "apwr", pos = CVec.New(-4, 1), cost = 500, exists = true }
 BaseBuildings = { BaseApwr, BaseTent, BaseProc, BaseWeap, BaseApwr2 }
 
 BuildBase = function()
-	if CYard.IsDead or CYard.Owner ~= enemy then
-		return
-	elseif Harvester.IsDead and enemy.Resources <= 299 then
-		return
-	end
-
 	for i,v in ipairs(BaseBuildings) do
 		if not v.exists then
 			BuildBuilding(v)
@@ -38,6 +32,12 @@ end
 
 BuildBuilding = function(building)
 	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
+		if CYard.IsDead or CYard.Owner ~= enemy then
+			return
+		elseif Harvester.IsDead and enemy.Resources <= 299 then
+			return
+		end
+
 		local actor = Actor.Create(building.type, true, { Owner = enemy, Location = CYardLocation.Location + building.pos })
 		enemy.Cash = enemy.Cash - building.cost
 
