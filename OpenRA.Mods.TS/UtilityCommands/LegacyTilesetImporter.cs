@@ -125,8 +125,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 								if (rampType != 0)
 									Console.WriteLine("\t\t\t\tRampType: {0}", rampType);
 
-								Console.WriteLine("\t\t\t\tLeftColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
-								Console.WriteLine("\t\t\t\tRightColor: {0},{1},{2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								Console.WriteLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								Console.WriteLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
 							}
 						}
 					}
