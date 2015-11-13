@@ -87,7 +87,7 @@ GAP:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 SPEN:
 	Inherits: ^Building
@@ -417,7 +417,7 @@ TSLA:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 AGUN:
 	Inherits: ^Defense
@@ -466,7 +466,7 @@ AGUN:
 	DetectCloaked:
 		Range: 6c0
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 DOME:
 	Inherits: ^Building
@@ -546,7 +546,7 @@ PBOX:
 	DetectCloaked:
 		Range: 6c0
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 HBOX:
 	Inherits: ^Defense
@@ -594,7 +594,7 @@ HBOX:
 		Amount: -15
 	-MustBeDestroyed:
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 GUN:
 	Inherits: ^Defense
@@ -632,7 +632,7 @@ GUN:
 	DetectCloaked:
 		Range: 7c0
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 FTUR:
 	Inherits: ^Defense
@@ -670,7 +670,7 @@ FTUR:
 		Range: 6c0
 	ProvidesPrerequisite@buildingname:
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 SAM:
 	Inherits: ^Defense
@@ -1004,7 +1004,7 @@ SILO:
 	Power:
 		Amount: -10
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 HPAD:
 	Inherits: ^Building
@@ -1390,7 +1390,7 @@ KENN:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
 	WithBuildingExplosion:
-		Sequences: building, napalm, large_explosion, self_destruct
+		Sequences: building, building_napalm, large_explosion, self_destruct
 
 TENT:
 	Inherits: ^Building

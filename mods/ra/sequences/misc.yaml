@@ -25,6 +25,8 @@ explosion:
 	med_explosion_air: veh-hit1
 	large_splash: h2o_exp1
 	napalm: napalm2
+	building_napalm: napalm2
+		FlipX: true
 	nuke: atomsfx
 	med_splash: h2o_exp2
 	self_destruct: art-exp1
