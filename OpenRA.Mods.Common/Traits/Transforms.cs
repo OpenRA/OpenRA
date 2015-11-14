@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -95,9 +96,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void DeployTransform(bool queued)
 		{
-			var building = self.TraitOrDefault<Building>();
-			if (!CanDeploy() || (building != null && !building.Lock()))
+			if (!queued && !CanDeploy())
 			{
+				// Only play the "Cannot deploy here" audio
+				// for non-queued orders
 				foreach (var s in info.NoTransformSounds)
 					Game.Sound.PlayToPlayer(self.Owner, s);
 
@@ -115,23 +117,31 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Info.HasTraitInfo<AircraftInfo>())
 				self.QueueActivity(new HeliLand(self, true));
 
-			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
-				nt.BeforeTransform(self);
-
-			var transform = new Transform(self, info.IntoActor)
+			self.QueueActivity(new CallFunc(() =>
 			{
-				Offset = info.Offset,
-				Facing = info.Facing,
-				Sounds = info.TransformSounds,
-				Notification = info.TransformNotification,
-				Faction = faction
-			};
+				// Prevent deployment in bogus locations
+				var building = self.TraitOrDefault<Building>();
+				if (!CanDeploy() || (building != null && !building.Lock()))
+					return;
 
-			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
-			if (makeAnimation != null)
-				makeAnimation.Reverse(self, transform);
-			else
-				self.QueueActivity(transform);
+				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+					nt.BeforeTransform(self);
+
+				var transform = new Transform(self, info.IntoActor)
+				{
+					Offset = info.Offset,
+					Facing = info.Facing,
+					Sounds = info.TransformSounds,
+					Notification = info.TransformNotification,
+					Faction = faction
+				};
+
+				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+				if (makeAnimation != null)
+					makeAnimation.Reverse(self, transform);
+				else
+					self.QueueActivity(transform);
+			}));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
