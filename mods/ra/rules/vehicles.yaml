@@ -596,8 +596,13 @@ FTRK:
 	Turreted:
 		ROT: 10
 		Offset: -298,0,298
-	Armament:
-		Weapon: FLAK-23
+	Armament@AA:
+		Weapon: FLAK-23-AA
+		Recoil: 85
+		LocalOffset: 512,0,192
+		MuzzleSequence: muzzle
+	Armament@AG:
+		Weapon: FLAK-23-AG
 		Recoil: 85
 		LocalOffset: 512,0,192
 		MuzzleSequence: muzzle

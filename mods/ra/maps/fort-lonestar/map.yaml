@@ -672,6 +672,14 @@ Rules:
 			Prerequisites: barracks
 		Valued:
 			Cost: 300
+	FTRK:
+		-Armament@AA:
+		-Armament@AG:
+		Armament:
+			Weapon: FLAK-23
+			Recoil: 85
+			LocalOffset: 512,0,192
+			MuzzleSequence: muzzle
 	ARTY:
 		Inherits: ^Tank
 		Valued:
