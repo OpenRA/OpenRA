@@ -45,7 +45,7 @@
 HARV.FullHusk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Harvester)
+		Name: Husk (Ore Truck)
 	TransformOnCapture:
 		IntoActor: harv
 	RenderSprites:
@@ -54,7 +54,7 @@ HARV.FullHusk:
 HARV.EmptyHusk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Harvester)
+		Name: Husk (Ore Truck)
 	TransformOnCapture:
 		IntoActor: harv
 	RenderSprites:
@@ -63,7 +63,7 @@ HARV.EmptyHusk:
 MCV.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (MCV)
+		Name: Husk (Mobile Construction Vehicle)
 	TransformOnCapture:
 		IntoActor: mcv
 	RenderSprites:
