@@ -199,6 +199,15 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.AddChatLine(c, prefix, text);
 		}
 
+		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
+		public void Debug(string text)
+		{
+			if (string.IsNullOrEmpty(text) || !Game.Settings.Debug.LuaDebug)
+				return;
+
+			Game.Debug(text);
+		}
+
 		[Desc("Display a text message at the specified location.")]
 		public void FloatingText(string text, WPos position, int duration = 30, HSLColor? color = null)
 		{
