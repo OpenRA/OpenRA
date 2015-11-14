@@ -305,15 +305,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
+			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
 			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
 
-			// Update volume immediately
-			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
-			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
-			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
+			var muteCheckbox = panel.Get<CheckboxWidget>("MUTE_SOUND");
+			var muteCheckboxOnClick = muteCheckbox.OnClick;
+			muteCheckbox.OnClick = () =>
+			{
+				muteCheckboxOnClick();
+
+				if (ss.Mute)
+					Game.Sound.MuteAudio();
+				else
+					Game.Sound.UnmuteAudio();
+			};
+
+			if (!ss.Mute)
+			{
+				panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
+				panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
+				panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
+			}
 
 			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
@@ -339,6 +354,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
 				ss.CashTicks = dss.CashTicks;
+				ss.Mute = dss.Mute;
 				ss.Device = dss.Device;
 				ss.Engine = dss.Engine;
 
@@ -348,6 +364,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
 				Game.Sound.VideoVolume = ss.VideoVolume;
+				Game.Sound.UnmuteAudio();
 				soundDevice = Game.Sound.AvailableDevices().First();
 			};
 		}
@@ -414,6 +431,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+					{ "ToggleMuteKey", "Toggle audio mute" },
 
 					{ "MapScrollUp", "Map scroll up" },
 					{ "MapScrollDown", "Map scroll down" },

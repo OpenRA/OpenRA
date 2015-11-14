@@ -127,6 +127,7 @@ namespace OpenRA
 		public string Device = null;
 
 		public bool CashTicks = true;
+		public bool Mute = false;
 	}
 
 	public class PlayerSettings
@@ -204,6 +205,7 @@ namespace OpenRA
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
 		public Hotkey HideUserInterfaceKey = new Hotkey(Keycode.H, Modifiers.Ctrl | Modifiers.Shift);
 		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
+		public Hotkey ToggleMuteKey = new Hotkey(Keycode.M, Modifiers.None);
 
 		public Hotkey Production01Key = new Hotkey(Keycode.F1, Modifiers.None);
 		public Hotkey Production02Key = new Hotkey(Keycode.F2, Modifiers.None);

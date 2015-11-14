@@ -199,6 +199,9 @@ namespace OpenRA.Platforms.Default
 			if (source == -1)
 				return null;
 
+			if (Game.Settings.Sound.Mute)
+				Game.Sound.MuteAudio();
+
 			var slot = sourcePool[source];
 			slot.Pos = pos;
 			slot.FrameStarted = currFrame;
