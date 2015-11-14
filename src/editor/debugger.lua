@@ -746,8 +746,9 @@ debugger.listen = function(start)
         end
       end
 
+      -- request attention if the debugging is stopped
+      if not debugger.running then RequestAttention() end
       -- refresh toolbar and menus in case the main app is not active
-      if ide.config.debugger.requestattention then RequestAttention() end
       ide:GetMainFrame():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
       ide:GetToolBar():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
     end)

@@ -75,7 +75,6 @@ ide = {
       port = nil,
       runonstart = nil,
       redirect = nil,
-      requestattention = true,
       maxdatalength = 400,
       maxdatanum = 400,
       maxdatalevel = 3,
