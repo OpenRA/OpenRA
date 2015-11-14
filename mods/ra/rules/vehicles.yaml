@@ -563,7 +563,8 @@ TTNK:
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
-	AttackFrontal:
+	AttackTurreted:
+	Turreted:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
@@ -595,8 +596,13 @@ FTRK:
 	Turreted:
 		ROT: 10
 		Offset: -298,0,298
-	Armament:
-		Weapon: FLAK-23
+	Armament@AA:
+		Weapon: FLAK-23-AA
+		Recoil: 85
+		LocalOffset: 512,0,192
+		MuzzleSequence: muzzle
+	Armament@AG:
+		Weapon: FLAK-23-AG
 		Recoil: 85
 		LocalOffset: 512,0,192
 		MuzzleSequence: muzzle
@@ -672,6 +678,7 @@ CTNK:
 		LocalYaw: -100
 	AttackFrontal:
 	PortableChrono:
+		ChargeDelay: 300
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -718,10 +725,10 @@ STNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 113
+		Speed: 142
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -734,8 +741,8 @@ STNK:
 	WithTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 3
-		PipCount: 3
+		MaxWeight: 4
+		PipCount: 4
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250
@@ -743,7 +750,7 @@ STNK:
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
 	DetectCloaked:
-		Range: 6c0
+		Range: 7c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
