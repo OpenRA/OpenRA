@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
-	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged
+	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged, INotifyCreated
 	{
 		[Sync] public CPos Location;
 		public RallyPointInfo Info;
@@ -48,7 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			ResetLocation(self);
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
-			self.World.Add(new RallyPointIndicator(self, this));
+		}
+
+		public void Created(Actor self)
+		{
+			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
