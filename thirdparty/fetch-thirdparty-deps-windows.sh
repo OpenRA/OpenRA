@@ -46,5 +46,5 @@ if [ ! -f soft_oal.dll ]; then
 fi
 
 if [ ! -f ../NsProcess.zip ]; then
-	curl -s -L -o ../NsProcess.zip http://nsis.sourceforge.net/mediawiki/images/archive/1/18/20140806212030!NsProcess.zip
+	curl -s -L -o ../NsProcess.zip https://build.opensuse.org/source/windows:mingw:win32/mingw32-cross-nsis-plugin-nsprocess/20140806212030!NsProcess.zip?rev=3319b671b847e6545d6d8a3f3834f82a
 fi
