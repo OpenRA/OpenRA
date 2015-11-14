@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class InfiltrateForPowerOutageInfo : ITraitInfo
 	{
-		public readonly int Duration = 25 * 30;
+		public readonly int Duration = 25 * 20;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForPowerOutage(init.Self, this); }
 	}
