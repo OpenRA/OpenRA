@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -20,9 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class DeployToUpgradeInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant while the actor is undeployed.")]
+		public readonly string[] UndeployedUpgrades = { };
+
 		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant when deploying and revoke when undeploying.")]
-		public readonly string[] Upgrades = { };
+		[Desc("The upgrades to grant after deploying and revoke before undeploying.")]
+		public readonly string[] DeployedUpgrades = { };
 
 		[Desc("The terrain types that this actor can deploy on to receive these upgrades. " +
 			"Leave empty to allow any.")]
@@ -52,8 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new DeployToUpgrade(init.Self, this); }
 	}
 
-	public class DeployToUpgrade : IResolveOrder, IIssueOrder
+	public class DeployToUpgrade : IResolveOrder, IIssueOrder, INotifyCreated
 	{
+		enum DeployState { Undeployed, Deploying, Deployed }
+
 		readonly Actor self;
 		readonly DeployToUpgradeInfo info;
 		readonly UpgradeManager manager;
@@ -61,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool canTurn;
 		readonly Lazy<ISpriteBody> body;
 
-		bool isUpgraded;
+		DeployState deployState;
 
 		public DeployToUpgrade(Actor self, DeployToUpgradeInfo info)
 		{
@@ -71,6 +76,11 @@ namespace OpenRA.Mods.Common.Traits
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
+		}
+
+		public void Created(Actor self)
+		{
+			OnUndeployCompleted();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -89,59 +99,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeployToUpgrade")
+			if (order.OrderString != "DeployToUpgrade" || deployState == DeployState.Deploying)
 				return;
 
-			if (!IsOnValidTerrain())
-				return;
-
-			if (isUpgraded)
-			{
-				// Play undeploy animation and after that revoke the upgrades
-				self.QueueActivity(false, new CallFunc(() =>
-				{
-					if (!string.IsNullOrEmpty(info.UndeploySound))
-						Game.Sound.Play(info.UndeploySound, self.CenterPosition);
-
-					if (string.IsNullOrEmpty(info.DeployAnimation))
-					{
-						RevokeUpgrades();
-						return;
-					}
-
-					if (body.Value != null)
-						body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, RevokeUpgrades);
-					else
-						RevokeUpgrades();
-				}));
-			}
-			else
-			{
+			if (!order.Queued)
 				self.CancelActivity();
 
-				// Turn
+			if (deployState == DeployState.Deployed)
+			{
+				self.QueueActivity(new CallFunc(Undeploy));
+			}
+			else if (deployState == DeployState.Undeployed)
+			{
+				// Turn to the required facing.
 				if (info.Facing != -1 && canTurn)
 					self.QueueActivity(new Turn(self, info.Facing));
 
-				// Grant the upgrade
-				self.QueueActivity(new CallFunc(GrantUpgrades));
-
-				// Play deploy sound and animation
-				self.QueueActivity(new CallFunc(() =>
-				{
-					if (!string.IsNullOrEmpty(info.DeploySound))
-						Game.Sound.Play(info.DeploySound, self.CenterPosition);
-
-					if (string.IsNullOrEmpty(info.DeployAnimation))
-						return;
-
-					if (body.Value != null)
-						body.Value.PlayCustomAnimation(self, info.DeployAnimation,
-							() => body.Value.PlayCustomAnimationRepeating(self, "idle"));
-				}));
+				self.QueueActivity(new CallFunc(Deploy));
 			}
-
-			isUpgraded = !isUpgraded;
 		}
 
 		bool IsOnValidTerrain()
@@ -181,16 +156,80 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
-		void GrantUpgrades()
+		/// <summary>Play deploy sound and animation.</summary>
+		void Deploy()
 		{
-			foreach (var up in info.Upgrades)
-				manager.GrantUpgrade(self, up, this);
+			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
+			if (deployState != DeployState.Undeployed)
+				return;
+
+			if (!IsOnValidTerrain())
+				return;
+
+			if (!string.IsNullOrEmpty(info.DeploySound))
+				Game.Sound.Play(info.DeploySound, self.CenterPosition);
+
+			// Revoke upgrades that are used while undeployed.
+			OnDeployStarted();
+
+			// If there is no animation to play just grant the upgrades that are used while deployed.
+			// Alternatively, play the deploy animation and then grant the upgrades.
+			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+				OnDeployCompleted();
+			else
+				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
 		}
 
-		void RevokeUpgrades()
+		/// <summary>Play undeploy sound and animation and after that revoke the upgrades.</summary>
+		void Undeploy()
 		{
-			foreach (var up in info.Upgrades)
+			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
+			if (deployState != DeployState.Deployed)
+				return;
+
+			if (!string.IsNullOrEmpty(info.UndeploySound))
+				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
+
+			OnUndeployStarted();
+
+			// If there is no animation to play just grant the upgrades that are used while undeployed.
+			// Alternatively, play the undeploy animation and then grant the upgrades.
+			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+				OnUndeployCompleted();
+			else
+				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
+		}
+
+		void OnDeployStarted()
+		{
+			foreach (var up in info.UndeployedUpgrades)
 				manager.RevokeUpgrade(self, up, this);
+
+			deployState = DeployState.Deploying;
+		}
+
+		void OnDeployCompleted()
+		{
+			foreach (var up in info.DeployedUpgrades)
+				manager.GrantUpgrade(self, up, this);
+
+			deployState = DeployState.Deployed;
+		}
+
+		void OnUndeployStarted()
+		{
+			foreach (var up in info.DeployedUpgrades)
+				manager.RevokeUpgrade(self, up, this);
+
+			deployState = DeployState.Deploying;
+		}
+
+		void OnUndeployCompleted()
+		{
+			foreach (var up in info.UndeployedUpgrades)
+				manager.GrantUpgrade(self, up, this);
+
+			deployState = DeployState.Undeployed;
 		}
 	}
 }
