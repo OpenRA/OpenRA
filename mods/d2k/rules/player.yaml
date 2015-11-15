@@ -8,6 +8,7 @@ Player:
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	ClassicProductionQueue@Upgrade:
 		Type: Upgrade
 		BuildSpeed: 1.0
@@ -15,23 +16,27 @@ Player:
 		QueuedAudio: Upgrading
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	ClassicProductionQueue@Armor:
 		Type: Armor
 		BuildSpeed: 1.0
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	ClassicProductionQueue@Starport:
 		Type: Starport
 		BuildSpeed: 0.85
@@ -45,6 +50,7 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
+		SpeedUp: true
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:
