@@ -273,7 +273,7 @@ namespace OpenRA.Widgets
 
 		public U Update(T input)
 		{
-			if (initialized && ((input == null && lastInput == null) || input.Equals(lastInput)))
+			if (initialized && ((input == null && lastInput == null) || (input != null && input.Equals(lastInput))))
 				return lastOutput;
 
 			lastInput = input;
