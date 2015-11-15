@@ -271,7 +271,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Initializes a new map created by the editor or importer.
-		/// The map will not recieve a valid UID until after it has been saved and reloaded.
+		/// The map will not receive a valid UID until after it has been saved and reloaded.
 		/// </summary>
 		public Map(TileSet tileset, int width, int height)
 		{
