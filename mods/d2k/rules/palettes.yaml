@@ -60,7 +60,6 @@
 		Name: shroud
 		Filename: DATA.R8
 		Offset: 12007
-		InvertColor: true
 	FogPaletteFromR8@fog:
 		Name: fog
 		Filename: DATA.R8

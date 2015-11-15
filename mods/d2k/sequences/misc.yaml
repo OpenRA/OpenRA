@@ -362,28 +362,37 @@ resources:
 		Offset: -16,-16
 
 shroud:
-	typea: DATA.R8
+	Defaults:
+		BlendMode: Subtractive
+		Offset: -16,-16
+		Length: 14
+	shrouda: DATA.R8
 		Start: 40
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typeb: DATA.R8
+	shroudb: DATA.R8
 		Start: 56
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typec: DATA.R8
+	shroudc: DATA.R8
 		Start: 72
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typed: DATA.R8
+	shroudd: DATA.R8
 		Start: 88
-		Length: 14
-		Offset: -16,-16
+	shroudfull: fullshroud.shp
+		Offset: 0,0
+		Length: 1
+	foga: DATA.R8
 		BlendMode: Multiply
-	full: fullshroud.shp
+		Start: 40
+	fogb: DATA.R8
 		BlendMode: Multiply
+		Start: 56
+	fogc: DATA.R8
+		BlendMode: Multiply
+		Start: 72
+	fogd: DATA.R8
+		BlendMode: Multiply
+		Start: 88
+	fogfull: fullshroud.shp
+		BlendMode: Multiply
+		Offset: 0,0
+		Length: 1
 
 rockcraters:
 	rockcrater1: DATA.R8
