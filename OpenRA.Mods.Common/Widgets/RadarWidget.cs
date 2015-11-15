@@ -219,7 +219,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return null;
 
 			var cell = MinimapPixelToCell(pos);
-			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell)));
+			var worldPixel = worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell));
+			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel);
 
 			var mi = new MouseInput
 			{
@@ -228,7 +229,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Modifiers = Game.GetModifierKeys()
 			};
 
-			var cursor = world.OrderGenerator.GetCursor(world, cell, mi);
+			var cursor = world.OrderGenerator.GetCursor(world, cell, worldPixel, mi);
 			if (cursor == null)
 				return "default";
 

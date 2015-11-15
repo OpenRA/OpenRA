@@ -144,7 +144,7 @@ namespace OpenRA.Mods.RA.Traits
 				tileBlocked = self.World.Map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 				{
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.Traits
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)
 				{
 					minelayer.World.CancelInputMode();
-					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = xy };
+					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = cell };
 				}
 			}
 
@@ -190,7 +190,10 @@ namespace OpenRA.Mods.RA.Traits
 				}
 			}
 
-			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* TODO */
+			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			{
+				lastMousePos = cell; return "ability";	/* TODO */
+			}
 		}
 
 		class BeginMinefieldOrderTargeter : IOrderTargeter

@@ -37,23 +37,26 @@ namespace OpenRA.Orders
 		public GenericSelectTarget(Actor subject, string order, string cursor, MouseButton button)
 			: this(new Actor[] { subject }, order, cursor, button) { }
 
-		public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button != ExpectedButton)
 				world.CancelInputMode();
-			return OrderInner(world, xy, mi);
+			return OrderInner(world, cell, mi);
 		}
 
-		protected virtual IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
+		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
 		{
-			if (mi.Button == ExpectedButton && world.Map.Contains(xy))
+			if (mi.Button == ExpectedButton && world.Map.Contains(cell))
 			{
 				world.CancelInputMode();
 				foreach (var subject in Subjects)
-					yield return new Order(OrderName, subject, false) { TargetLocation = xy };
+					yield return new Order(OrderName, subject, false) { TargetLocation = cell };
 			}
 		}
 
-		public override string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.Contains(xy) ? Cursor : "generic-blocked"; }
+		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			return world.Map.Contains(cell) ? Cursor : "generic-blocked";
+		}
 	}
 }

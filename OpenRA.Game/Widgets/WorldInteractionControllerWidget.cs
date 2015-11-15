@@ -114,7 +114,7 @@ namespace OpenRA.Widgets
 					if (multiClick)
 					{
 						var unit = World.ScreenMap.ActorsAt(xy)
-							.WithHighestSelectionPriority();
+							.WithHighestSelectionPriority(xy);
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
 						{
@@ -193,7 +193,8 @@ namespace OpenRA.Widgets
 				return;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			var orders = world.OrderGenerator.Order(world, cell, mi).ToArray();
+			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			var orders = world.OrderGenerator.Order(world, cell, worldPixel, mi).ToArray();
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
@@ -231,6 +232,7 @@ namespace OpenRA.Widgets
 					return null;
 
 				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
+				var worldPixel = worldRenderer.Viewport.ViewToWorldPx(screenPos);
 
 				var mi = new MouseInput
 				{
@@ -239,7 +241,7 @@ namespace OpenRA.Widgets
 					Modifiers = Game.GetModifierKeys()
 				};
 
-				return World.OrderGenerator.GetCursor(World, cell, mi);
+				return World.OrderGenerator.GetCursor(World, cell, worldPixel, mi);
 			});
 		}
 

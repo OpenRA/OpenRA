@@ -115,11 +115,11 @@ namespace OpenRA.Mods.RA.Traits
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left)
-					world.OrderGenerator = new SelectDestination(world, order, manager, power, xy);
+					world.OrderGenerator = new SelectDestination(world, order, manager, power, cell);
 
 				yield break;
 			}
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Traits
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
-			public string GetCursor(World world, CPos xy, MouseInput mi)
+			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				return "chrono-select";
 			}
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.Traits
 				sourceTile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
 				{
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.RA.Traits
 					yield break;
 				}
 
-				var ret = OrderInner(xy).FirstOrDefault();
+				var ret = OrderInner(cell).FirstOrDefault();
 				if (ret == null)
 					yield break;
 
@@ -281,9 +281,9 @@ namespace OpenRA.Mods.RA.Traits
 				return canTeleport;
 			}
 
-			public string GetCursor(World world, CPos xy, MouseInput mi)
+			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return IsValidTarget(xy) ? "chrono-target" : "move-blocked";
+				return IsValidTarget(cell) ? "chrono-target" : "move-blocked";
 			}
 		}
 	}

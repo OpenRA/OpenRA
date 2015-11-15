@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				world.CancelInputMode();
 		}
 
-		public override string GetCursor(World world, CPos xy, MouseInput mi)
+		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (!Subjects.Any())
 				return null;

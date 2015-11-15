@@ -125,11 +125,11 @@ namespace OpenRA.Mods.Common.Traits
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
-				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
-					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				if (mi.Button == MouseButton.Left && power.UnitsInRange(cell).Any())
+					yield return new Order(order, manager.Self, false) { TargetLocation = cell, SuppressVisualFeedback = true };
 			}
 
 			public void Tick(World world)
@@ -155,9 +155,9 @@ namespace OpenRA.Mods.Common.Traits
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
-			public string GetCursor(World world, CPos xy, MouseInput mi)
+			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return power.UnitsInRange(xy).Any() ? "ability" : "move-blocked";
+				return power.UnitsInRange(cell).Any() ? "ability" : "move-blocked";
 			}
 		}
 	}
