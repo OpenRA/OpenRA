@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Range = 1;
 		public readonly string GrantUpgradeSound = "ironcur9.aud";
 
-		[Desc("Sequence to play for granting actor when activated."), SequenceReference]
+		[SequenceReference, Desc("Sequence to play for granting actor when activated.",
+			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string GrantUpgradeSequence = "active";
 
 		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.Self, this); }
@@ -56,7 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Activate(self, order, manager);
 
-			self.Trait<WithSpriteBody>().PlayCustomAnimation(self, info.GrantUpgradeSequence);
+			var wsb = self.TraitOrDefault<WithSpriteBody>();
+			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.GrantUpgradeSequence))
+				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence);
 
 			Game.Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
