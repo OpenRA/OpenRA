@@ -126,7 +126,8 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	DeployToUpgrade:
-		Upgrades: deployed
+		DeployedUpgrades: deployed
+		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
@@ -134,15 +135,15 @@ LPST:
 		UndeploySound: clicky1.aud
 	WithVoxelBody:
 		Image: lpst
-		UpgradeTypes: deployed
-		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
 	WithSpriteBody@deployed:
 		StartSequence: make
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
 	DisableOnUpgrade:
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
 	DetectCloaked:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
