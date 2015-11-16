@@ -243,6 +243,7 @@ BoatMissile:
 	Burst: 2
 	BurstDelay: 7
 	Report: ROCKET2.AUD
+	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
 		Blockable: false
@@ -256,6 +257,7 @@ BoatMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
+		ValidTargets: Ground, Air
 		Versus:
 			None: 90
 			Wood: 75
