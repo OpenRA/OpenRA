@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
 
-					var tooltip = actor.TraitInfoOrDefault<TooltipInfo>();
+					var tooltip = actor.TraitInfoOrDefault<EditorOnlyTooltipInfo>() as TooltipInfoBase ?? actor.TraitInfoOrDefault<TooltipInfo>();
 					item.GetTooltipText = () => (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + actor.Name;
 
 					panel.AddChild(item);
