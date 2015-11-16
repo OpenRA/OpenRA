@@ -120,7 +120,7 @@ OrcaAAMissiles:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			Light: 75
 			Heavy: 50
@@ -320,11 +320,8 @@ SAMMissile:
 		ContrailLength: 8
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
 			Heavy: 75
 		Damage: 30
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
@@ -379,7 +376,7 @@ Patriot:
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			Heavy: 75
 		Damage: 50

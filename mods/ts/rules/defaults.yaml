@@ -459,11 +459,11 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	Targetable@GROUND:
-		TargetTypes: Ground
+		TargetTypes: Ground, Aircraft
 		UpgradeTypes: airborne
 		UpgradeMaxEnabledLevel: 0
 	Targetable@AIRBORNE:
-		TargetTypes: Air
+		TargetTypes: Air, Aircraft
 		UpgradeTypes: airborne
 		UpgradeMinEnabledLevel: 1
 	Selectable:
