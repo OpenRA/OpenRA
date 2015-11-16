@@ -518,6 +518,7 @@ function ide:RemoveIndicator(indic) indicators[indic] = nil end
 local configcache = {}
 function ide:AddConfig(name, files)
   if not name or configcache[name] then return end -- don't overwrite existing slots
+  if type(files) ~= "table" then files = {files} end -- allow to pass one value
   configcache[name] = require('mobdebug').dump(self.config, {nocode = true})
   for _, file in pairs(files) do LoadLuaConfig(MergeFullPath(name, file)) end
   ReApplySpecAndStyles() -- apply current config to the UI
