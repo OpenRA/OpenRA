@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get; private set; }
 			public bool OverrideSelection { get { return true; } }
 
-			bool CanTargetActor(Actor self, Target target, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
@@ -326,13 +326,13 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				switch (target.Type)
 				{
 					case TargetType.Actor:
 					case TargetType.FrozenActor:
-						return CanTargetActor(self, target, modifiers, ref cursor);
+						return CanTargetActor(self, target, ref modifiers, ref cursor);
 					case TargetType.Terrain:
 						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
 					default:
