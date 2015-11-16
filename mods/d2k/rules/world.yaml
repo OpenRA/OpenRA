@@ -8,11 +8,11 @@
 		DefeatMusic: score
 	TerrainGeometryOverlay:
 	ShroudRenderer:
-		ShroudVariants: typea, typeb, typec, typed
-		FogVariants: typea, typeb, typec, typed
+		ShroudVariants: shrouda, shroudb, shroudc, shroudd
+		FogVariants: foga, fogb, fogc, fogd
 		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
-		OverrideFullShroud: full
-		OverrideFullFog: full
+		OverrideFullShroud: shroudfull
+		OverrideFullFog: fogfull
 		ShroudBlend: Multiply
 	Faction@Random:
 		Name: Any
