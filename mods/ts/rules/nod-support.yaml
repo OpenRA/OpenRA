@@ -25,6 +25,24 @@ NAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+NAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: nahand, ~structures.nod
+	Tooltip:
+		Name: Nod Gate
+
+NAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: nahand, ~structures.nod
+	Tooltip:
+		Name: Nod Gate
+
 NALASR:
 	Inherits: ^Defense
 	Valued:

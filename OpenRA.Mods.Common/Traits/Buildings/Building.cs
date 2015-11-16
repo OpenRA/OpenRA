@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
-		public object Create(ActorInitializer init) { return new Building(init, this); }
+		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
 
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				NotifyBuildingComplete(self);
 		}
 
-		public void AddedToWorld(Actor self)
+		public virtual void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);

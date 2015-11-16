@@ -240,6 +240,11 @@ namespace OpenRA.Mods.Common.Traits
 				IsMovingInMyDirection(self, otherActor))
 				return false;
 
+			// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
+			var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
+			if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, self))
+				return false;
+
 			// If we cannot crush the other actor in our way, we are blocked.
 			if (self == null || Crushes == null || Crushes.Count == 0)
 				return true;
