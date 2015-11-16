@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 0; } }
 			public bool OverrideSelection { get { return true; } }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;
