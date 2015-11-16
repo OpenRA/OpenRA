@@ -68,11 +68,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class WithWallSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, ITick
+	class WithWallSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, IWallConnector, ITick
 	{
 		readonly WithWallSpriteBodyInfo wallInfo;
 		int adjacent = 0;
 		bool dirty = true;
+
+		bool IWallConnector.AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType)
+		{
+			return wallInfo.Type == wallType;
+		}
+
+		void IWallConnector.SetDirty() { dirty = true; }
 
 		public WithWallSpriteBody(ActorInitializer init, WithWallSpriteBodyInfo info)
 			: base(init, info, () => 0)
@@ -97,8 +104,8 @@ namespace OpenRA.Mods.Common.Traits
 			adjacent = 0;
 			foreach (var a in adjacentActors)
 			{
-				var rb = a.TraitOrDefault<WithWallSpriteBody>();
-				if (rb == null || rb.wallInfo.Type != wallInfo.Type)
+				var rb = a.TraitOrDefault<IWallConnector>();
+				if (rb == null || !rb.AdjacentWallCanConnect(self, self.Location, wallInfo.Type))
 					continue;
 
 				var location = self.Location;
@@ -127,11 +134,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var adjacentActors = CVec.Directions.SelectMany(dir =>
 					self.World.ActorMap.GetActorsAt(self.Location + dir))
-				.Select(a => a.TraitOrDefault<WithWallSpriteBody>())
+				.Select(a => a.TraitOrDefault<IWallConnector>())
 				.Where(a => a != null);
 
 			foreach (var rb in adjacentActors)
-				rb.dirty = true;
+				rb.SetDirty();
 		}
 
 		public void RemovedFromWorld(Actor self)
