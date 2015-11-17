@@ -217,6 +217,7 @@ function ide:CreateStyledTextCtrl(...)
   end
 
   -- map all `GetTextDyn` to `GetText` or `GetTextRaw` if `*Raw` methods are present
+  editor.useraw = useraw
   for _, m in ipairs(rawMethods) do
     -- some `*Raw` methods return `nil` instead of `""` as their "normal" calls do
     -- (for example, `GetLineRaw` and `GetTextRangeRaw` for parameters outside of text)

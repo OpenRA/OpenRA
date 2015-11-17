@@ -68,7 +68,7 @@ function DisplayOutputNoMarker(...)
   local insertedAt = promptLine == -1 and errorlog:GetLength() or errorlog:PositionFromLine(promptLine) + inputBound
   local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
-  errorlog:InsertTextDyn(insertedAt, FixUTF8(message, "\022"))
+  errorlog:InsertTextDyn(insertedAt, errorlog.useraw and message or FixUTF8(message, "\022"))
   errorlog:EmptyUndoBuffer()
   errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
