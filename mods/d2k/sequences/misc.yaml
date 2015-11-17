@@ -290,6 +290,10 @@ waypoint:
 	idle: waypoint.shp
 		Length: *
 
+camera:
+	idle: camera.shp
+		Length: *
+
 wormspawner:
 	idle: wormspawner.shp
 		Length: *
