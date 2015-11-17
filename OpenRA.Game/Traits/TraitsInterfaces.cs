@@ -189,7 +189,12 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibilityInfo : ITraitInfo { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
-	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
+
+	public interface IFogVisibilityModifier
+	{
+		bool IsVisible(Actor actor);
+		bool HasFogVisibility(Player byPlayer);
+	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 

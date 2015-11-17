@@ -80,6 +80,15 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			return Granted || GrantedAllies;
 		}
+
+		public bool IsVisible(Actor actor)
+		{
+			var gpsDot = actor.TraitOrDefault<GpsDot>();
+			if (gpsDot == null)
+				return false;
+
+			return gpsDot.IsDotVisible(Owner);
+		}
 	}
 
 	class GpsPowerInfo : SupportPowerInfo
