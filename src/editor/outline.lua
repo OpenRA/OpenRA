@@ -81,7 +81,7 @@ local function outlineRefresh(editor, force)
     elseif op == 'Function' then
       local depth = token.context['function'] or 1
       local name, pos = token.name, token.fpos
-      text = text or editor:GetText()
+      text = text or editor:GetTextDyn()
       local _, _, rname, params = text:find('([^%(]*)(%b())', pos)
       if name and rname:find(token.name, 1, true) ~= 1 then
         name = rname:gsub("%s+$","")
@@ -238,7 +238,7 @@ local function indexFromQueue()
     if content then
       local editor = ide:CreateBareEditor()
       editor:SetupKeywords(GetFileExt(fname))
-      editor:SetText(content)
+      editor:SetTextDyn(content)
       editor:Colourise(0, -1)
       editor:ResetTokenList()
       while IndicateAll(editor) do end

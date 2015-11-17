@@ -45,7 +45,7 @@ local function getInputLine()
   return errorlog:MarkerPrevious(errorlog:GetLineCount()+1, PROMPT_MARKER_VALUE)
 end
 local function getInputText(bound)
-  return errorlog:GetTextRange(
+  return errorlog:GetTextRangeDyn(
     errorlog:PositionFromLine(getInputLine())+(bound or 0), errorlog:GetLength())
 end
 local function updateInputMarker()
@@ -68,7 +68,7 @@ function DisplayOutputNoMarker(...)
   local insertedAt = promptLine == -1 and errorlog:GetLength() or errorlog:PositionFromLine(promptLine) + inputBound
   local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
-  errorlog:InsertText(insertedAt, FixUTF8(message, "\022"))
+  errorlog:InsertTextDyn(insertedAt, FixUTF8(message, "\022"))
   errorlog:EmptyUndoBuffer()
   errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
@@ -350,7 +350,7 @@ local jumptopatterns = {
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
   function(event)
     local line = errorlog:GetCurrentLine()
-    local linetx = errorlog:GetLine(line)
+    local linetx = errorlog:GetLineDyn(line)
 
     -- try to detect a filename and line in linetx
     local fname, jumpline, jumplinepos

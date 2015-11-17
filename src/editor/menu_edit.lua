@@ -112,9 +112,9 @@ local function onEditMenu(event)
   if (menu_id == ID_CUT or menu_id == ID_COPY)
   and ide.wxver >= "2.9.5" and editor:GetSelections() > 1 then
     local main = editor:GetMainSelection()
-    copytext = editor:GetTextRange(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
+    copytext = editor:GetTextRangeDyn(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
     for s = 0, editor:GetSelections()-1 do
-      if copytext ~= editor:GetTextRange(editor:GetSelectionNStart(s), editor:GetSelectionNEnd(s)) then
+      if copytext ~= editor:GetTextRangeDyn(editor:GetSelectionNStart(s), editor:GetSelectionNEnd(s)) then
         copytext = nil
         break
       end
@@ -179,14 +179,14 @@ frame:Connect(ID_PREFERENCESSYSTEM, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = LoadFile(ide.configs.system)
     if editor and editor:GetLength() == 0 then
-      editor:AddText(generateConfigMessage("System")) end
+      editor:AddTextDyn(generateConfigMessage("System")) end
   end)
 
 frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = LoadFile(ide.configs.user)
     if editor and editor:GetLength() == 0 then
-      editor:AddText(generateConfigMessage("User")) end
+      editor:AddTextDyn(generateConfigMessage("User")) end
   end)
 frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_UPDATE_UI,
   function (event) event:Enable(ide.configs.user ~= nil) end)
@@ -232,7 +232,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     for line = sline, eline do
       local pos = sel and (sline == eline or rect)
         and ssel-editor:PositionFromLine(sline)+1 or 1
-      local text = editor:GetLine(line)
+      local text = editor:GetLineDyn(line)
       local _, cpos = text:find("^%s*"..qlc, pos)
       if not cpos and text:find("%S")
       -- ignore last line when the end of selection is at the first position
@@ -247,7 +247,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     -- by text changes
     for line = eline, sline, -1 do
       local pos = sel and (sline == eline or rect) and ssel-editor:PositionFromLine(sline)+1 or 1
-      local text = editor:GetLine(line)
+      local text = editor:GetLineDyn(line)
       local validline = (line == sline or line < eline or esel-editor:PositionFromLine(line) > 0)
       local _, cpos = text:find("^%s*"..qlc, pos)
       if not comment and cpos and validline then
@@ -306,7 +306,7 @@ local function reIndent(editor, buf)
   -- find the last non-empty line in the previous block (if any)
   for n = edline-1, 1, -1 do
     indent = editor:GetLineIndentation(n)
-    text = editor:GetLine(n)
+    text = editor:GetLineDyn(n)
     if text:match('[^\r\n]') then break end
   end
 

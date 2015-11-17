@@ -215,7 +215,7 @@ local function analyzeProgram(editor)
   DisplayOutput("Analyzing the source code")
   frame:Update()
 
-  local editorText = editor:GetText()
+  local editorText = editor:GetTextDyn()
   local doc = ide:GetDocument(editor)
   local filePath = doc:GetFilePath() or doc:GetFileName()
   local warn, err = M.warnings_from_string(editorText, filePath)

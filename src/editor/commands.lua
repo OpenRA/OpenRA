@@ -70,7 +70,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:SetupKeywords(GetFileExt(filePath))
   editor:MarkerDeleteAll(-1)
   if filesize then editor:Allocate(filesize) end
-  editor:SetText("")
+  editor:SetTextDyn("")
   editor.bom = string.char(0xEF,0xBB,0xBF)
 
   local inputfilter = GetConfigIOFilter("input")
@@ -89,7 +89,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
       end
       if inputfilter then s = inputfilter(filePath, s) end
       local expected = editor:GetLength() + #s
-      editor:AppendText(s)
+      editor:AppendTextDyn(s)
       -- if the length is not as expected, then either it's a binary file or invalid UTF8
       if editor:GetLength() ~= expected then
         -- skip binary files with unknown extensions as they may have any sequences
@@ -106,7 +106,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
         local replacement, invalid = "\022"
         s, invalid = FixUTF8(s, replacement)
         if #invalid > 0 then
-          editor:AppendText(s)
+          editor:AppendTextDyn(s)
           local lastline = nil
           for _, n in ipairs(invalid) do
             local line = editor:LineFromPosition(n)
@@ -188,7 +188,7 @@ function ReLoadFile(filePath, editor, ...)
   local markers = {}
   local line = editor:MarkerNext(0, maskany)
   while line > -1 do
-    table.insert(markers, {line, editor:MarkerGet(line), editor:GetLine(line)})
+    table.insert(markers, {line, editor:MarkerGet(line), editor:GetLineDyn(line)})
     line = editor:MarkerNext(line + 1, maskany)
   end
   local lines = editor:GetLineCount()
@@ -207,7 +207,7 @@ function ReLoadFile(filePath, editor, ...)
       else
         -- find matching line in the surrounding area and restore marker there
         for _, l in ipairs({line, line-1, line-2, line+1, line+2}) do
-          if text == editor:GetLine(l) then
+          if text == editor:GetLineDyn(l) then
             editor:MarkerAddSet(l, mask)
             break
           end
@@ -288,7 +288,7 @@ function SaveFile(editor, filePath)
     end
 
     local st = ((editor:GetCodePage() == wxstc.wxSTC_CP_UTF8 and editor.bom or "")
-      .. editor:GetText())
+      .. editor:GetTextDyn())
     if GetConfigIOFilter("output") then
       st = GetConfigIOFilter("output")(filePath,st)
     end
@@ -566,7 +566,7 @@ function CompileProgram(editor, params)
   }
   local doc = ide:GetDocument(editor)
   local filePath = doc:GetFilePath() or doc:GetFileName()
-  local func, err = loadstring(StripShebang(editor:GetText()), '@'..filePath)
+  local func, err = loadstring(StripShebang(editor:GetTextDyn()), '@'..filePath)
   local line = not func and tonumber(err:match(":(%d+)%s*:")) or nil
 
   if not params.keepoutput then ClearOutput() end
@@ -584,7 +584,7 @@ function CompileProgram(editor, params)
     DisplayOutputLn((err:gsub("\n$", "")))
     -- check for escapes invalid in LuaJIT/Lua 5.2 that are allowed in Lua 5.1
     if err:find('invalid escape sequence') then
-      local s = editor:GetLine(line-1)
+      local s = editor:GetLineDyn(line-1)
       local cleaned = s
         :gsub('\\[abfnrtv\\"\']', '  ')
         :gsub('(\\x[0-9a-fA-F][0-9a-fA-F])', function(s) return string.rep(' ', #s) end)
@@ -725,7 +725,7 @@ function SetOpenTabs(params)
         or findUnusedEditor() or NewFile(doc.filename))
       local opendoc = ide:GetDocument(editor)
       if doc.content then
-        editor:SetText(doc.content)
+        editor:SetTextDyn(doc.content)
         if doc.filepath and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
           DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
             :format(doc.filepath, opendoc:GetTabText()))
@@ -748,7 +748,7 @@ local function getOpenTabs()
       filepath = document:GetFilePath(),
       tabname = document:GetTabText(),
       modified = document:GetModTime() and document:GetModTime():GetTicks(), -- get number of seconds
-      content = document:IsModified() and editor:GetText() or nil,
+      content = document:IsModified() and editor:GetTextDyn() or nil,
       id = document:GetTabIndex(),
       cursorpos = editor:GetCurrentPos()})
   end

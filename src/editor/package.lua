@@ -200,8 +200,30 @@ function ide:PushStatus(text, field) self:GetStatusBar():PushStatusText(text, fi
 function ide:PopStatus(field) self:GetStatusBar():PopStatusText(field or 0) end
 function ide:Yield() wx.wxYield() end
 function ide:CreateBareEditor() return CreateEditor(true) end
+
+local rawMethods = {"AddTextDyn", "InsertTextDyn", "AppendTextDyn", "SetTextDyn",
+  "GetTextDyn", "GetLineDyn", "GetSelectedTextDyn", "GetTextRangeDyn"}
+local useraw = nil
+
 function ide:CreateStyledTextCtrl(...)
   local editor = wxstc.wxStyledTextCtrl(...)
+  if not editor then return end
+
+  if useraw == nil then
+    useraw = true
+    for _, m in ipairs(rawMethods) do
+      if not pcall(function() return editor[m:gsub("Dyn", "Raw")] end) then useraw = false; break end
+    end
+  end
+
+  -- map all `GetTextDyn` to `GetText` or `GetTextRaw` if `*Raw` methods are present
+  for _, m in ipairs(rawMethods) do
+    -- some `*Raw` methods return `nil` instead of `""` as their "normal" calls do
+    -- (for example, `GetLineRaw` and `GetTextRangeRaw` for parameters outside of text)
+    local def = m:find("^Get") and "" or nil
+    editor[m] = function(...) return editor[m:gsub("Dyn", useraw and "Raw" or "")](...) or def end
+  end
+
   function editor:GotoPosEnforcePolicy(pos)
     self:GotoPos(pos)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
@@ -279,7 +301,7 @@ function ide:CreateStyledTextCtrl(...)
     -- skip the rest if line wrapping is on
     if editor:GetWrapMode() ~= wxstc.wxSTC_WRAP_NONE then return end
     local xwidth = self:GetClientSize():GetWidth() - getMarginWidth(self)
-    local xoffset = self:GetTextExtent(self:GetLine(line):sub(1, pos-self:PositionFromLine(line)+1))
+    local xoffset = self:GetTextExtent(self:GetLineDyn(line):sub(1, pos-self:PositionFromLine(line)+1))
     self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
   end
 

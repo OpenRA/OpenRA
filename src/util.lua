@@ -607,7 +607,7 @@ function ExpandPlaceholders(msg, ph)
     S = doc and doc:GetFileName() or "",
     F = doc and doc:GetFilePath() or "",
     n = editor and editor:GetCurrentLine()+1 or 0,
-    c = editor and editor:GetLine(editor:GetCurrentLine()) or "",
+    c = editor and editor:GetLineDyn(editor:GetCurrentLine()) or "",
     T = GetIDEString("editor") or "",
     v = ide.VERSION,
     t = editor and nb:GetPageText(nb:GetPageIndex(editor)) or "",

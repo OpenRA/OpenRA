@@ -55,7 +55,7 @@ function MarkupHotspotClick(pos, editor)
     return
   end
   local line = editor:LineFromPosition(pos)
-  local tx = editor:GetLine(line)
+  local tx = editor:GetLineDyn(line)
   pos = pos + #MD_MARK_LINK - editor:PositionFromLine(line) -- turn into relative position
 
   -- extract the URL/command on the right side of the separator
@@ -155,7 +155,7 @@ function MarkupStyle(editor, lines, linee)
   local needfix = false
 
   for line=lines,linee do
-    local tx = editor:GetLine(line)
+    local tx = editor:GetLineDyn(line)
     local ls = editor:PositionFromLine(line)
 
     local from = 1

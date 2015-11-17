@@ -180,7 +180,7 @@ local function navigateTo(default, selected)
             local isfunc = methods.desc[method][1]:find(q(method).."%s*%(")
             local text = method .. (isfunc and "()" or "")
             local pos = ed:GetCurrentPos()
-            ed:InsertText(pos, text)
+            ed:InsertTextDyn(pos, text)
             ed:EnsureVisibleEnforcePolicy(ed:LineFromPosition(pos))
             ed:GotoPos(pos + #method + (isfunc and 1 or 0))
             if isfunc then -- show the tooltip
