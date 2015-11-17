@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -36,14 +37,14 @@ namespace OpenRA.Mods.RA.Effects
 		readonly GpsDotInfo info;
 		readonly Animation anim;
 
+		readonly Dictionary<Player, bool> showToPlayer = new Dictionary<Player, bool>();
+
 		Lazy<HiddenUnderFog> huf;
 		Lazy<FrozenUnderFog> fuf;
 		Lazy<Disguise> disguise;
 		Lazy<Cloak> cloak;
 		Cache<Player, GpsWatcher> watcher;
 		Cache<Player, FrozenActorLayer> frozen;
-
-		bool show = false;
 
 		public GpsDot(Actor self, GpsDotInfo info)
 		{
@@ -61,9 +62,16 @@ namespace OpenRA.Mods.RA.Effects
 
 			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
+
+			showToPlayer = self.World.Players.ToDictionary(x => x, x => false);
 		}
 
-		bool ShouldShowIndicator()
+		public bool IsDotVisible(Player toPlayer)
+		{
+			return showToPlayer[toPlayer];
+		}
+
+		bool ShouldShowIndicator(Player toPlayer)
 		{
 			if (cloak.Value != null && cloak.Value.Cloaked)
 				return false;
@@ -71,13 +79,13 @@ namespace OpenRA.Mods.RA.Effects
 			if (disguise.Value != null && disguise.Value.Disguised)
 				return false;
 
-			if (huf.Value != null && !huf.Value.IsVisible(self, self.World.RenderPlayer))
+			if (huf.Value != null && !huf.Value.IsVisible(self, toPlayer))
 				return true;
 
 			if (fuf.Value == null)
 				return false;
 
-			var f = frozen[self.World.RenderPlayer].FromID(self.ActorID);
+			var f = frozen[toPlayer].FromID(self.ActorID);
 			if (f == null)
 				return false;
 
@@ -92,17 +100,19 @@ namespace OpenRA.Mods.RA.Effects
 			if (self.Disposed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			show = false;
-			if (!self.IsInWorld || self.IsDead || self.World.RenderPlayer == null)
+			if (!self.IsInWorld || self.IsDead)
 				return;
 
-			var gps = watcher[self.World.RenderPlayer];
-			show = (gps.Granted || gps.GrantedAllies) && ShouldShowIndicator();
+			foreach (var player in self.World.Players)
+			{
+				var gps = watcher[player];
+				showToPlayer[player] = (gps.Granted || gps.GrantedAllies) && ShouldShowIndicator(player);
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!show || self.Disposed)
+			if (self.World.RenderPlayer == null || !showToPlayer[self.World.RenderPlayer] || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);
