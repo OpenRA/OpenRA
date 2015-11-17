@@ -358,7 +358,7 @@ namespace OpenRA
 			{
 				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
 				Settings.Save();
-				CreateServer(new ServerSettings(Settings.Server));
+				CreateServer(Settings.Server.Clone());
 
 				while (true)
 				{

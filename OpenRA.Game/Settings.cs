@@ -74,27 +74,9 @@ namespace OpenRA
 
 		public string TimestampFormat = "s";
 
-		public ServerSettings() { }
-
-		public ServerSettings(ServerSettings other)
+		public ServerSettings Clone()
 		{
-			Name = other.Name;
-			ListenPort = other.ListenPort;
-			ExternalPort = other.ExternalPort;
-			AdvertiseOnline = other.AdvertiseOnline;
-			Password = other.Password;
-			MasterServer = other.MasterServer;
-			DiscoverNatDevices = other.DiscoverNatDevices;
-			AllowPortForward = other.AllowPortForward;
-			NatDeviceAvailable = other.NatDeviceAvailable;
-			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
-			VerboseNatDiscovery = other.VerboseNatDiscovery;
-			Map = other.Map;
-			Ban = other.Ban;
-			TimeOut = other.TimeOut;
-			Dedicated = other.Dedicated;
-			DedicatedLoop = other.DedicatedLoop;
-			LockBots = other.LockBots;
+			return (ServerSettings)MemberwiseClone();
 		}
 	}
 

@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.Settings.Save();
 
 			// Take a copy so that subsequent changes don't affect the server
-			var settings = new ServerSettings(Game.Settings.Server);
+			var settings = Game.Settings.Server.Clone();
 
 			// Create and join the server
 			try
