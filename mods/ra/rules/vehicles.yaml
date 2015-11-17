@@ -475,7 +475,7 @@ TRUK:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
-		Range: 3c0
+		Range: 4c0
 	SupplyTruck:
 		Payload: 500
 	SpawnActorOnDeath:
@@ -627,7 +627,7 @@ DTRK:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 3c0
+		Range: 4c0
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
