@@ -202,6 +202,10 @@ waypoint:
 	idle:
 		Length: *
 
+camera:
+	idle:
+		Length: *
+
 clock:
 	idle: hclock
 		Length: *
