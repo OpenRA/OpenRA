@@ -79,7 +79,8 @@ namespace OpenRA.Mods.RA.Effects
 			if (disguise.Value != null && disguise.Value.Disguised)
 				return false;
 
-			if (huf.Value != null && !huf.Value.IsVisible(self, toPlayer))
+			if (huf.Value != null && !huf.Value.IsVisible(self, toPlayer)
+				&& toPlayer.Shroud.IsExplored(self.CenterPosition))
 				return true;
 
 			if (fuf.Value == null)
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (f.HasRenderables || f.NeedRenderables)
 				return false;
 
-			return f.Visible;
+			return f.Visible && !f.Shrouded;
 		}
 
 		public void Tick(World world)

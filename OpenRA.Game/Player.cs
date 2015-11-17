@@ -159,7 +159,7 @@ namespace OpenRA
 
 		public bool CanTargetActor(Actor a)
 		{
-			if (HasFogVisibility)
+			if (HasFogVisibility && fogVisibilities.Any(f => f.IsVisible(a)))
 				return true;
 
 			return CanViewActor(a);
