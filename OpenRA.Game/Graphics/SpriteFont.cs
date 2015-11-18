@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 						throw new InvalidOperationException();
 		}
 
-		public void DrawText(string text, float2 location, Color c)
+		public void DrawText(string text, float2 location, Color c, int lineSpacing = 0)
 		{
 			location.Y += size;	// baseline vs top
 
@@ -65,7 +65,7 @@ namespace OpenRA.Graphics
 			{
 				if (s == '\n')
 				{
-					location.Y += size;
+					location.Y += size + lineSpacing;
 					p = location;
 					continue;
 				}
@@ -79,26 +79,26 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
+		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset, int lineSpacing = 0)
 		{
 			if (offset > 0)
 			{
-				DrawText(text, location + new float2(-offset, 0), bg);
-				DrawText(text, location + new float2(offset, 0), bg);
-				DrawText(text, location + new float2(0, -offset), bg);
-				DrawText(text, location + new float2(0, offset), bg);
+				DrawText(text, location + new float2(-offset, 0), bg, lineSpacing);
+				DrawText(text, location + new float2(offset, 0), bg, lineSpacing);
+				DrawText(text, location + new float2(0, -offset), bg, lineSpacing);
+				DrawText(text, location + new float2(0, offset), bg, lineSpacing);
 			}
 
-			DrawText(text, location, fg);
+			DrawText(text, location, fg, lineSpacing);
 		}
 
-		public int2 Measure(string text)
+		public int2 Measure(string text, int lineSpacing = 0)
 		{
 			if (string.IsNullOrEmpty(text))
 				return new int2(0, size);
 
 			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
+			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * (size + lineSpacing) - lineSpacing);
 		}
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
