@@ -5,22 +5,8 @@ Background@SIMPLE_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Height: 23
-			Font: Bold
-
-Background@TWO_LINE_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: panel-black
-	Height: 48
-	Children:
-		Label@LABEL:
-			X: 5
-			Height: 46
-			Font: Bold
-		Label@HOTKEY:
-			Visible: false
-			TextColor: FFFF00
-			Height: 23
+			Y: 4
+			Height: 14
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
@@ -30,12 +16,14 @@ Background@BUTTON_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Height: 23
+			Y: 4
+			Height: 14
 			Font: Bold
 		Label@HOTKEY:
+			Y: 4
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			Height: 14
 			Font: Bold
 
 Background@WORLD_TOOLTIP:
