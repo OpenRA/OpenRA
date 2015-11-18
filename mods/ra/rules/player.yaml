@@ -69,4 +69,5 @@ Player:
 		Offset: 2, 2
 		Image: iconchevrons
 		Sequence: veteran
+    PlayerExperience:
 

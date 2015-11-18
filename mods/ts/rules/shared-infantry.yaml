@@ -6,6 +6,8 @@ E1:
 		Prerequisites: ~barracks
 	Valued:
 		Cost: 120
+    GivesExperience:
+        Experience: 1200
 	Tooltip:
 		Name: Light Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
@@ -38,6 +40,8 @@ ENGINEER:
 	Inherits: ^Soldier
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Unarmed

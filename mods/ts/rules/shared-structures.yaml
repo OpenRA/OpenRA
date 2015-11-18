@@ -18,6 +18,8 @@ GACNST:
 		Produces: Building,Defense
 	Valued:
 		Cost: 2500
+    GivesExperience:
+        Experience: 2500
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds base structures.
@@ -57,6 +59,8 @@ PROC:
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Tiberium Refinery
 		Description: Processes raw Tiberium\ninto useable resources.
@@ -112,6 +116,8 @@ GASILO:
 		Prerequisites: proc
 	Valued:
 		Cost: 150
+    GivesExperience:
+        Experience: 150
 	Tooltip:
 		Name: Silo
 		Description: Stores excess Tiberium.

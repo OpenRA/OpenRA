@@ -2,6 +2,8 @@ BOAT:
 	Inherits: ^Ship
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Gunboat
 	Health:
@@ -40,6 +42,8 @@ LST:
 	Inherits: ^Ship
 	Valued:
 		Cost: 300
+    GivesExperience:
+        Experience: 300
 	Tooltip:
 		Name: Landing Craft
 	Buildable:

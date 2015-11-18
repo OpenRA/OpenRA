@@ -41,14 +41,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 
-			// Default experience is 100 times our value
 			var exp = info.Experience >= 0
 				? info.Experience
-				: valued != null ? valued.Cost * 100 : 0;
+				: valued != null ? valued.Cost : 0;
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
 				killer.GiveExperience(exp);
+
+			if (info.Experience > 0)
+				e.Attacker.Owner.PlayerActor.Trait<PlayerExperience>().GivePlayerExperience(info.Experience);
 		}
 	}
 }

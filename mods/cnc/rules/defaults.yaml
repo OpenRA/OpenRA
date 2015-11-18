@@ -16,10 +16,10 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			200: firepower, damage, speed, reload, inaccuracy, rank
-			400: firepower, damage, speed, reload, inaccuracy, rank
-			800: firepower, damage, speed, reload, inaccuracy, rank
-			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
+			2: firepower, damage, speed, reload, inaccuracy, rank
+			4: firepower, damage, speed, reload, inaccuracy, rank
+			8: firepower, damage, speed, reload, inaccuracy, rank
+			16: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
 		Modifier: 105, 110, 120, 130
@@ -332,6 +332,8 @@
 	DeathSounds:
 	Voiced:
 		VoiceSet: DinoVoice
+	GivesExperience:
+		Experience: 1000
 
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
@@ -385,6 +387,8 @@
 		Weapon: Heal
 	Voiced:
 		VoiceSet: DinoVoice
+	GivesExperience:
+		Experience: 1000
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -401,6 +405,8 @@
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
+	GivesExperience:
+		GivesPlayerExperience: true
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld

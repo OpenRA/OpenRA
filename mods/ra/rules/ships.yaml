@@ -7,6 +7,8 @@ SS:
 		Prerequisites: ~spen, ~techlevel.medium
 	Valued:
 		Cost: 950
+    GivesExperience:
+        Experience: 950
 	Tooltip:
 		Name: Submarine
 		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
@@ -63,6 +65,8 @@ MSUB:
 		Prerequisites: ~spen, stek, ~techlevel.unrestricted
 	Valued:
 		Cost: 2400
+    GivesExperience:
+        Experience: 2400
 	Tooltip:
 		Name: Missile Submarine
 		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
@@ -119,6 +123,8 @@ DD:
 		Prerequisites: ~syrd, dome, ~techlevel.medium
 	Valued:
 		Cost: 1000
+    GivesExperience:
+        Experience: 1000
 	Tooltip:
 		Name: Destroyer
 		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks

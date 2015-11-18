@@ -17,8 +17,8 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			500: rank, firepower, damage, speed, reload
-			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
+			5: rank, firepower, damage, speed, reload
+			10: rank, firepower, damage, speed, reload, selfheal, eliteweapon
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
 		Modifier: 110, 130

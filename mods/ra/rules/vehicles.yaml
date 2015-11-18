@@ -6,6 +6,8 @@ V2RL:
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
 	Valued:
 		Cost: 900
+    GivesExperience:
+        Experience: 900
 	Tooltip:
 		Name: V2 Rocket
 		Description: Long-range rocket artillery.\n  Strong vs Infantry, Light armor, Buildings\n  Weak vs Tanks, Aircraft
@@ -39,6 +41,8 @@ V2RL:
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 	Valued:
 		Cost: 700
+    GivesExperience:
+        Experience: 700
 	Tooltip:
 		Name: Light Tank
 		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
@@ -76,6 +80,8 @@ V2RL:
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 	Valued:
 		Cost: 850
+    GivesExperience:
+        Experience: 850
 	Tooltip:
 		Name: Medium Tank
 		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -115,6 +121,8 @@ V2RL:
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 	Valued:
 		Cost: 1150
+    GivesExperience:
+        Experience: 1150
 	Tooltip:
 		Name: Heavy Tank
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -154,6 +162,8 @@ V2RL:
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	CustomBuildTimeValue:
 		Value: 2500
 	Tooltip:
@@ -207,6 +217,8 @@ ARTY:
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Artillery
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
@@ -242,6 +254,8 @@ HARV:
 		InitialActivity: FindResources
 	Valued:
 		Cost: 1100
+    GivesExperience:
+        Experience: 1100
 	Tooltip:
 		Name: Ore Truck
 		GenericName: Harvester
@@ -288,6 +302,8 @@ MCV:
 		Value: 2000
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
@@ -324,6 +340,8 @@ JEEP:
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Ranger
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
@@ -361,6 +379,8 @@ APC:
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 850
+    GivesExperience:
+        Experience: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
 		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
@@ -395,6 +415,8 @@ MNLY.AP:
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Minelayer
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
@@ -430,6 +452,8 @@ MNLY.AT:
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Minelayer
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
@@ -465,6 +489,8 @@ TRUK:
 		Prerequisites: weap, ~techlevel.low
 	Valued:
 		Cost: 500
+    GivesExperience:
+        Experience: 500
 	Tooltip:
 		Name: Supply Truck
 		Description: Transports cash to other players.\n  Unarmed
@@ -489,6 +515,8 @@ MGG:
 		Prerequisites: atek, ~vehicles.france, ~techlevel.unrestricted
 	Valued:
 		Cost: 1200
+    GivesExperience:
+        Experience: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
@@ -513,6 +541,8 @@ MRJ:
 	Inherits: ^Vehicle
 	Valued:
 		Cost: 800
+    GivesExperience:
+        Experience: 800
 	Tooltip:
 		Name: Mobile Radar Jammer
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
@@ -548,6 +578,8 @@ TTNK:
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
+    GivesExperience:
+        Experience: 1350
 	Tooltip:
 		Name: Tesla Tank
 		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
@@ -581,6 +613,8 @@ FTRK:
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
 	Valued:
 		Cost: 600
+    GivesExperience:
+        Experience: 600
 	Tooltip:
 		Name: Mobile Flak
 		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
@@ -623,6 +657,8 @@ DTRK:
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.unrestricted
 	Valued:
 		Cost: 2500
+    GivesExperience:
+        Experience: 2500
 	Tooltip:
 		Name: Demolition Truck
 		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
@@ -653,6 +689,8 @@ CTNK:
 		Prerequisites: atek, pdox, ~vehicles.germany, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
+    GivesExperience:
+        Experience: 1350
 	Tooltip:
 		Name: Chrono Tank
 		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
@@ -690,6 +728,8 @@ QTNK:
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.unrestricted
 	Valued:
 		Cost: 2000
+    GivesExperience:
+        Experience: 2000
 	Tooltip:
 		Name: MAD Tank
 		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
@@ -717,6 +757,8 @@ STNK:
 		Prerequisites: atek, ~vehicles.england, ~techlevel.unrestricted
 	Valued:
 		Cost: 1350
+    GivesExperience:
+        Experience: 1350
 	Tooltip:
 		Name: Phase Transport
 		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
