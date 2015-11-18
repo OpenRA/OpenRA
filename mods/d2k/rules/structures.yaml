@@ -60,8 +60,7 @@ construction_yard:
 	RevealsShroud:
 		Range: 5c768
 	Production:
-		Produces: Building, Upgrade
-	Exit:
+		Produces: Building
 	Valued:
 		Cost: 2000
 	Tooltip:
