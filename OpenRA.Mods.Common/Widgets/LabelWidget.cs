@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
 		public bool WordWrap = false;
+		public int LineSpacing = 3;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (text == null)
 				return;
 
-			var textSize = font.Measure(text);
+			var textSize = font.Measure(text, LineSpacing);
 			var position = RenderOrigin;
 
 			if (VAlign == TextVAlign.Middle)
@@ -85,9 +86,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var color = GetColor();
 			var contrast = GetContrastColor();
 			if (Contrast)
-				font.DrawTextWithContrast(text, position, color, contrast, 2);
+				font.DrawTextWithContrast(text, position, color, contrast, 2, LineSpacing);
 			else
-				font.DrawText(text, position, color);
+				font.DrawText(text, position, color, LineSpacing);
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }

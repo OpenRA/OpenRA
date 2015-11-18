@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				labelText = getText();
-				var textDim = font.Measure(labelText);
+				var textDim = font.Measure(labelText, label.LineSpacing);
 				if (textDim.X != cachedWidth || textDim.Y != cachedHeight)
 				{
 					label.Bounds.Width = textDim.X;
