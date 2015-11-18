@@ -49,12 +49,14 @@ namespace OpenRA
 		public readonly Dictionary<string, string> RequiresMods;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
+		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
 
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SpriteFormats", "RequiresMods" };
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
+			"RequiresMods" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -112,6 +114,9 @@ namespace OpenRA
 					compat.Add(c.Trim());
 
 			MapCompatibility = compat.ToArray();
+
+			if (yaml.ContainsKey("SoundFormats"))
+				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", yaml["SoundFormats"].Value);
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);

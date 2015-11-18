@@ -72,7 +72,7 @@ namespace OpenRA.Graphics
 					if (loader.TryParseSprite(stream, out frames))
 						return frames;
 
-				throw new InvalidDataException(filename + " is not a valid sprite file");
+				throw new InvalidDataException(filename + " is not a valid sprite file!");
 			}
 		}
 	}

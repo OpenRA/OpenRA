@@ -25,6 +25,7 @@ namespace OpenRA
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
+		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly RulesetCache RulesetCache;
@@ -59,6 +60,18 @@ namespace OpenRA
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
+
+			var soundLoaders = new List<ISoundLoader>();
+			foreach (var format in Manifest.SoundFormats)
+			{
+				var loader = ObjectCreator.FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(ISoundLoader)))
+					throw new InvalidOperationException("Unable to find a sound loader for type '{0}'.".F(format));
+
+				soundLoaders.Add((ISoundLoader)ObjectCreator.CreateBasic(loader));
+			}
+
+			SoundLoaders = soundLoaders.ToArray();
 
 			var spriteLoaders = new List<ISpriteLoader>();
 			foreach (var format in Manifest.SpriteFormats)
