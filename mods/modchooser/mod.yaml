@@ -54,6 +54,8 @@ Fonts:
 
 LobbyDefaults:
 
+SoundFormats:
+
 SpriteFormats: ShpTD
 
 SpriteSequenceFormat: DefaultSpriteSequence

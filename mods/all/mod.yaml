@@ -33,6 +33,8 @@ Fonts:
 
 LobbyDefaults:
 
+SoundFormats:
+
 SpriteFormats:
 
 SpriteSequenceFormat: DefaultSpriteSequence

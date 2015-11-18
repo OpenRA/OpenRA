@@ -251,6 +251,8 @@ Fonts:
 
 SupportsMapsFrom: ts
 
+SoundFormats: Aud, Wav
+
 SpriteFormats: ShpTS, TmpTS, ShpTD
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
