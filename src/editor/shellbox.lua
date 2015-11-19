@@ -52,9 +52,10 @@ end
 
 local function setPromptText(text)
   local length = out:GetLength()
-  out:SetTargetStart(length - string.len(getPromptText()))
-  out:SetTargetEnd(length)
-  out:ReplaceTarget(text)
+  out:SetSelectionStart(length - string.len(getPromptText()))
+  out:SetSelectionEnd(length)
+  out:ClearAny()
+  out:AddTextDyn(text)
   -- refresh the output window to force recalculation of wrapped lines;
   -- otherwise a wrapped part of the last line may not be visible.
   out:Update(); out:Refresh()
