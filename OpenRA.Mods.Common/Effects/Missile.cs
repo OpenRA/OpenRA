@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly bool Shadow = false;
 
 		[Desc("Minimum vertical launch angle (pitch).")]
-		public readonly WAngle MinimumLaunchAngle = WAngle.Zero;
+		public readonly WAngle MinimumLaunchAngle = new WAngle(-64);
 
 		[Desc("Maximum vertical launch angle (pitch).")]
-		public readonly WAngle MaximumLaunchAngle = new WAngle(64);
+		public readonly WAngle MaximumLaunchAngle = new WAngle(128);
 
 		[Desc("Minimum launch speed in WDist / tick")]
 		public readonly WDist MinimumLaunchSpeed = new WDist(75);
