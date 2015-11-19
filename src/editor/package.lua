@@ -321,6 +321,19 @@ function ide:CreateStyledTextCtrl(...)
     end
   end
 
+  editor:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local keycode = event:GetKeyCode()
+      local mod = event:GetModifiers()
+      if (keycode == wx.WXK_DELETE and mod == wx.wxMOD_SHIFT)
+      or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_CONTROL)
+      or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_SHIFT) then
+        local id = keycode == wx.WXK_DELETE and ID.CUT or mod == wx.wxMOD_SHIFT and ID.PASTE or ID.COPY
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+      else
+        event:Skip()
+      end
+    end)
   return editor
 end
 
