@@ -5,8 +5,8 @@ Background@SIMPLE_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Y: 5
-			Height: 14
+			Y: 3
+			Height: 18
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
@@ -16,13 +16,13 @@ Background@BUTTON_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Y: 5
-			Height: 14
+			Y: 3
+			Height: 18
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			Y: 5
-			Height: 14
+			Y: 3
+			Height: 18
 			TextColor: FFFF00
 			Font: Bold
 

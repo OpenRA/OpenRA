@@ -1,12 +1,12 @@
 Background@SIMPLE_TOOLTIP:
 	Logic: SimpleTooltipLogic
 	Background: dialog4
-	Height: 32
+	Height: 29
 	Children:
 		Label@LABEL:
 			X: 7
-			Y: 6
-			Height: 14
+			Y: 3
+			Height: 18
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
@@ -16,13 +16,13 @@ Background@BUTTON_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 7
-			Y: 6
-			Height: 14
+			Y: 3
+			Height: 18
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			Y: 6
-			Height: 14
+			Y: 3
+			Height: 18
 			TextColor: FFFF00
 			Font: Bold
 

@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
 
-			var font = Game.Renderer.Fonts[label.Font];
 			var cachedWidth = 0;
 			var cachedHeight = 0;
 			var horizontalPadding = widget.Bounds.Width - label.Bounds.Width;
@@ -28,20 +27,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				horizontalPadding = 2 * label.Bounds.X;
 			var verticalPadding = widget.Bounds.Height - label.Bounds.Height;
 			if (verticalPadding <= 0 || label.Bounds.Height <= 0)
-				verticalPadding = 2 * label.Bounds.Y + 2 * font.Size / 5; // With hang space
+				verticalPadding = 2 * label.Bounds.Y
+					+ System.Math.Max(label.LineSpacing, 2 * label.FontSize / 5); // With hang space
 			var labelText = "";
 			tooltipContainer.BeforeRender = () =>
 			{
 				labelText = getText();
-				var textDim = font.Measure(labelText, label.LineSpacing);
-				if (textDim.X != cachedWidth || textDim.Y != cachedHeight)
+				var textSize = label.MeasureText(labelText);
+				if (label.LineVAlign != LineVAlign.Collapsed)
+					textSize += new int2(0, label.LineSpacing);
+
+				if (textSize.X != cachedWidth || textSize.Y != cachedHeight)
 				{
-					label.Bounds.Width = textDim.X;
-					widget.Bounds.Width = horizontalPadding + textDim.X;
-					label.Bounds.Height = textDim.Y;
-					widget.Bounds.Height = verticalPadding + textDim.Y;
-					cachedWidth = textDim.X;
-					cachedHeight = textDim.Y;
+					label.Bounds.Width = textSize.X;
+					widget.Bounds.Width = horizontalPadding + textSize.X;
+					label.Bounds.Height = textSize.Y;
+					widget.Bounds.Height = verticalPadding + textSize.Y;
+					cachedWidth = textSize.X;
+					cachedHeight = textSize.Y;
 				}
 			};
 
