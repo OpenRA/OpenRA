@@ -708,7 +708,7 @@ end
 
 function SetOpenTabs(params)
   local recovery, nametab = LoadSafe("return "..params.recovery)
-  if not recovery then
+  if not recovery or not nametab then
     DisplayOutputLn(TR("Can't process auto-recovery record; invalid format: %s."):format(nametab))
     return
   end
