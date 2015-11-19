@@ -517,8 +517,9 @@
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
-	Selectable:
-		Priority: 0
+	-Selectable:
+	CustomSelectionSize:
+		CustomBounds: 24,24
 	Health:
 		HP: 10
 	Explodes:
