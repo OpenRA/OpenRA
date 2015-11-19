@@ -8,6 +8,7 @@
 #define _WIN32_WINNT 0x0502
 #endif
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winbase.h>
 #include <stdlib.h>
@@ -157,17 +158,6 @@ int main (int argc, char *argv[])
   if (file!=NULL) *file = 0; // finish the string, don't need the appname
 
   SetCurrentDirectory(buffer);
-
-  // set the application as DPI aware
-  typedef enum _Process_DPI_Awareness {
-    Process_DPI_Unaware            = 0,
-    Process_System_DPI_Aware       = 1,
-    Process_Per_Monitor_DPI_Aware  = 2
-  } Process_DPI_Awareness;
-  typedef BOOL (WINAPI *SetProcessDPIAwareness_t)(Process_DPI_Awareness);
-  SetProcessDPIAwareness_t pfnSetProcessDPIAwareness = (SetProcessDPIAwareness_t)
-    GetProcAddress(GetModuleHandle(TEXT("user32.dll")), "SetProcessDPIAware");
-  if (NULL != pfnSetProcessDPIAwareness) pfnSetProcessDPIAwareness(Process_System_DPI_Aware);
 
   hinstLib = LoadLibrary(".\\bin\\lua51.dll");
   if (hinstLib != NULL)
