@@ -13,7 +13,7 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: PALETTE.BIN
-		ShadowIndex: 4
+		ShadowIndex: 1
 		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker

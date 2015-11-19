@@ -152,6 +152,10 @@ waypoint:
 
 camera:
 	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
 	Immobile:
 		OccupiesSpace: false
 	Health:
