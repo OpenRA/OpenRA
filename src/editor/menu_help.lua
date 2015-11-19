@@ -62,7 +62,7 @@ local function displayAbout(event)
 	  </tr>
 	  <tr>
 		<td>
-		<b>Based on wxLua editor (%s)</b><br>
+		<b>Based on wxLua editor</b><br>
 		<b>Copyright &copy; 2002-2005 Lomtick Software</b><br>
 		J. Winwood, John Labenski<br>
 		Licensed under wxWindows Library License, v3.
@@ -70,7 +70,7 @@ local function displayAbout(event)
 	  </tr>
 	  <tr>
 		<td>
-                <b>Built with %s</b>
+                <b>Built with %s, %s</b>
 		</td>
 	  </tr>
 	</table>
@@ -78,7 +78,7 @@ local function displayAbout(event)
       </body>
     </html>]])
   :format(logoimg, ide.VERSION, mobdebug._VERSION, ide:GetAppName(),
-    wxlua.wxLUA_VERSION_STRING, wx.wxVERSION_STRING)
+    wx.wxVERSION_STRING, wxlua.wxLUA_VERSION_STRING)
 
   local dlg = wx.wxDialog(frame, wx.wxID_ANY, TR("About %s"):format(GetIDEString("editor")))
 
