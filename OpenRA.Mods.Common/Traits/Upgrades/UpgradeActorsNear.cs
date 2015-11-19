@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ActorEntered(Actor a)
 		{
-			if (a.Disposed)
+			if (a.Disposed || self.Disposed)
 				return;
 
 			if (a == self && !info.AffectsParent)
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ActorExited(Actor a)
 		{
-			if (a == self || a.Disposed)
+			if (a == self || a.Disposed || self.Disposed)
 				return;
 
 			var stance = self.Owner.Stances[a.Owner];
