@@ -123,7 +123,7 @@ local function onEditMenu(event)
 
   local spos, epos = editor:GetSelectionStart(), editor:GetSelectionEnd()
   if menu_id == ID_CUT then
-    if spos == epos then editor:LineCopy() else editor:Copy() end
+    if spos == epos then editor:LineCopy() else editor:CopyDyn() end
     if spos == epos then
       local line = editor:LineFromPosition(spos)
       spos, epos = editor:PositionFromLine(line), editor:PositionFromLine(line+1)
@@ -132,11 +132,11 @@ local function onEditMenu(event)
     end
     if spos ~= epos then editor:ClearAny() end
   elseif menu_id == ID_COPY then
-    if spos == epos then editor:LineCopy() else editor:Copy() end
+    if spos == epos then editor:LineCopy() else editor:CopyDyn() end
   elseif menu_id == ID_PASTE then
     -- first clear the text in case there is any hidden markup
     if spos ~= epos then editor:ClearAny() end
-    editor:Paste()
+    editor:PasteDyn()
   elseif menu_id == ID_SELECTALL then editor:SelectAll()
   elseif menu_id == ID_UNDO then editor:Undo()
   elseif menu_id == ID_REDO then editor:Redo()

@@ -225,6 +225,33 @@ function ide:CreateStyledTextCtrl(...)
     editor[m] = function(...) return editor[m:gsub("Dyn", useraw and "Raw" or "")](...) or def end
   end
 
+  function editor:CopyDyn()
+    if not self.useraw then return self:Copy() end
+    -- check if selected fragment is a valid UTF-8 sequence
+    local text = self:GetSelectedTextRaw()
+    if FixUTF8(text) then return self:Copy() end
+    local tdo = wx.wxTextDataObject()
+    -- append "\0" character as wxwidgets (3.1+) truncate last char for odd-length strings
+    tdo:SetData(wx.wxDataFormat(wx.wxDF_TEXT), text.."\0")
+    local clip = wx.wxClipboard.Get()
+    clip:Open()
+    clip:SetData(tdo)
+    clip:Close()
+  end
+
+  function editor:PasteDyn()
+    if not self.useraw then return self:Paste() end
+    local tdo = wx.wxTextDataObject()
+    local clip = wx.wxClipboard.Get()
+    clip:Open()
+    clip:GetData(tdo)
+    clip:Close()
+    local ok, text = tdo:GetDataHere()
+    -- check if the fragment being pasted is a valid UTF-8 sequence
+    if not ok or FixUTF8(text) then return self:Paste() end
+    self:AddTextRaw(text)
+  end
+
   function editor:GotoPosEnforcePolicy(pos)
     self:GotoPos(pos)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
