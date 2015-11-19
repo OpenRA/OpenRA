@@ -65,6 +65,7 @@ sandworm:
 		TerrainSpeeds:
 			Sand: 100
 			Dune: 100
+			SpiceSand: 100
 			Spice: 100
 	Targetable:
 		TargetTypes: Ground

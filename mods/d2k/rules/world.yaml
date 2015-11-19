@@ -44,7 +44,7 @@
 		ValuePerUnit: 25
 		Name: Spice
 		PipColor: green
-		AllowedTerrainTypes: Sand
+		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
 	LoadWidgetAtGameStart:
 
