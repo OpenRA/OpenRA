@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Traits
 				Owner.Shroud.ExploreAll(Owner.World);
 		}
 
-		public bool HasFogVisibility(Player byPlayer)
+		public bool HasFogVisibility()
 		{
 			return Granted || GrantedAllies;
 		}
