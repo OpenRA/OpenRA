@@ -31,7 +31,7 @@ namespace OpenRA
 		readonly TypeDictionary traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
 
-		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		public ActorInfo(ObjectCreator creator, string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
 			try
 			{
@@ -48,7 +48,7 @@ namespace OpenRA
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
 						try
 						{
-							traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+							traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
 						}
 						catch (FieldLoader.MissingFieldsException e)
 						{
@@ -99,12 +99,12 @@ namespace OpenRA
 			return node;
 		}
 
-		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
+		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
 				.F(my.Value, traitName));
-			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
+			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
 			try
 			{
 				FieldLoader.Load(info, my);

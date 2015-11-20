@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -38,7 +39,12 @@ namespace OpenRA
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
-			ObjectCreator = new ObjectCreator(Manifest);
+
+			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
+			var assemblies =
+				new[] { typeof(Game).Assembly }.Concat(
+					Manifest.Assemblies.Select(path => Assembly.LoadFrom(Platform.ResolvePath(path))));
+			ObjectCreator = new ObjectCreator(assemblies);
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)

@@ -22,24 +22,11 @@ namespace OpenRA
 		readonly Cache<Type, ConstructorInfo> ctorCache;
 		readonly Pair<Assembly, string>[] assemblies;
 
-		public ObjectCreator(Manifest manifest)
+		public ObjectCreator(IEnumerable<Assembly> sourceAssemblies)
 		{
 			typeCache = new Cache<string, Type>(FindType);
 			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
-
-			// All the core namespaces
-			var asms = typeof(Game).Assembly.GetNamespaces() // Game
-				.Select(c => Pair.New(typeof(Game).Assembly, c))
-				.ToList();
-
-			// Namespaces from each mod assembly
-			foreach (var a in manifest.Assemblies)
-			{
-				var asm = Assembly.LoadFile(Platform.ResolvePath(a));
-				asms.AddRange(asm.GetNamespaces().Select(ns => Pair.New(asm, ns)));
-			}
-
-			assemblies = asms.ToArray();
+			assemblies = sourceAssemblies.SelectMany(asm => asm.GetNamespaces().Select(ns => Pair.New(asm, ns))).ToArray();
 		}
 
 		public static Action<string> MissingTypeAction =

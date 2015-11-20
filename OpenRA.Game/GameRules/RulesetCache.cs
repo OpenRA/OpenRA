@@ -61,7 +61,7 @@ namespace OpenRA
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(actorCache, m.Rules,
 					map != null ? map.RuleDefinitions : NoMapRules,
-					(k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+					(k, y) => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value, y));
 
 			using (new PerfTimer("Weapons"))
 				weapons = LoadYamlRules(weaponCache, m.Weapons,
