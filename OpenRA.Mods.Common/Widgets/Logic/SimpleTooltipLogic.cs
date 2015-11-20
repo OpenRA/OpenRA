@@ -27,21 +27,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				horizontalPadding = 2 * label.Bounds.X;
 			var verticalPadding = widget.Bounds.Height - label.Bounds.Height;
 			if (verticalPadding <= 0 || label.Bounds.Height <= 0)
-				verticalPadding = 2 * label.Bounds.Y
-					+ System.Math.Max(label.LineSpacing, 2 * label.FontSize / 5); // With hang space
+				verticalPadding = 2 * label.Bounds.Y + label.LinePixelSpacing; // With hang space
 			var labelText = "";
 			tooltipContainer.BeforeRender = () =>
 			{
 				labelText = getText();
-				var textSize = label.MeasureText(labelText);
-				if (label.LineVAlign != LineVAlign.Collapsed)
-					textSize += new int2(0, label.LineSpacing);
+				var textSize = label.ResizeToText(labelText);
 
 				if (textSize.X != cachedWidth || textSize.Y != cachedHeight)
 				{
-					label.Bounds.Width = textSize.X;
 					widget.Bounds.Width = horizontalPadding + textSize.X;
-					label.Bounds.Height = textSize.Y;
 					widget.Bounds.Height = verticalPadding + textSize.Y;
 					cachedWidth = textSize.X;
 					cachedHeight = textSize.Y;

@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public enum TextAlign { Left, Center, Right }
 	public enum TextVAlign { Top, Middle, Bottom }
 	public enum LineVAlign { Top, Middle, Bottom, Collapsed }
+	public enum LineSpacingType { Percentage, FixedMargin, FixedHeight }
 
 	public class LabelWidget : Widget
 	{
@@ -29,12 +30,21 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
 		public bool WordWrap = false;
-		public int LineSpacing = 4;
+
+		[Desc("Space between lines as a percentage (default) of line height or fixed pixel amount.")]
+		public int LineSpacing = 140;
+
+		[Desc("Percentage: line height = LineSpacing% * font size.",
+			"FixedMargin: line height = font size + LineSpacing.",
+			"FixedHeight: line height = LineSpacing.")]
+		public LineSpacingType LineSpacingType = LineSpacingType.Percentage;
 		public LineVAlign LineVAlign = LineVAlign.Middle;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
 		public int FontSize { get { return font.Value.Size; } }
+		public int LinePixelSpacing { get { return linePixelSpacing.Value; } }
+		Lazy<int> linePixelSpacing;
 		Lazy<SpriteFont> font;
 
 		SpriteFont GetFont()
@@ -45,11 +55,26 @@ namespace OpenRA.Mods.Common.Widgets
 			return font;
 		}
 
+		int GetLinePixelSpacing()
+		{
+			switch (LineSpacingType)
+			{
+				case LineSpacingType.Percentage:
+					return (LineSpacing - 100) * FontSize / 100;
+				case LineSpacingType.FixedHeight:
+					return LineSpacing - FontSize;
+				case LineSpacingType.FixedMargin:
+				default:
+					return LineSpacing;
+			}
+		}
+
 		public LabelWidget()
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColor = () => ContrastColor;
+			linePixelSpacing = new Lazy<int>(GetLinePixelSpacing);
 			font = new Lazy<SpriteFont>(GetFont);
 		}
 
@@ -66,15 +91,24 @@ namespace OpenRA.Mods.Common.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			linePixelSpacing = other.linePixelSpacing;
 			font = other.font;
 		}
 
 		public int2 MeasureText(string text)
 		{
-			var textSize = font.Value.Measure(text, LineSpacing);
+			var textSize = font.Value.Measure(text, linePixelSpacing.Value);
 			if (LineVAlign != LineVAlign.Collapsed)
-				textSize += new int2(0, LineSpacing);
+				textSize += new int2(0, linePixelSpacing.Value);
 			return textSize;
+		}
+
+		public int2 ResizeToText(string text)
+		{
+			var size = MeasureText(text);
+			Bounds.Width = size.X;
+			Bounds.Height = size.Y;
+			return size;
 		}
 
 		public override void Draw()
@@ -85,6 +119,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var textSize = MeasureText(text);
 			var position = RenderOrigin;
+			var lineSpacing = linePixelSpacing.Value;
 
 			if (VAlign == TextVAlign.Middle)
 				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
@@ -99,10 +134,10 @@ namespace OpenRA.Mods.Common.Widgets
 				position += new int2(Bounds.Width - textSize.X, 0);
 
 			if (LineVAlign == LineVAlign.Middle)
-				position += new int2(0, LineSpacing / 2);
+				position += new int2(0, lineSpacing / 2);
 
 			if (LineVAlign == LineVAlign.Bottom)
-				position += new int2(0, LineSpacing);
+				position += new int2(0, lineSpacing);
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font.Value);
@@ -110,9 +145,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var color = GetColor();
 			var contrast = GetContrastColor();
 			if (Contrast)
-				font.Value.DrawTextWithContrast(text, position, color, contrast, 2, LineSpacing);
+				font.Value.DrawTextWithContrast(text, position, color, contrast, 2, lineSpacing);
 			else
-				font.Value.DrawText(text, position, color, LineSpacing);
+				font.Value.DrawText(text, position, color, lineSpacing);
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
