@@ -8,6 +8,10 @@ The plugin is maintained by
    > DetonateWeaponPower
    > FireClusterWarhead
    > HealthPercentageFirepowerMultiplier
+   > ChronoResourceTeleport
+
+ * scshunt (coppro)
+   > ChronoResourceDelivery
 
 The project owes thanks for OpenRA for it's modularity
 which allows this project to exist in the first place.
