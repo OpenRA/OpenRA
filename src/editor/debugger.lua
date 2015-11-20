@@ -864,7 +864,12 @@ debugger.handleDirect = function(command)
 end
 
 debugger.loadfile = function(file)
-  return debugger.handle("load " .. file)
+  local f, l, err = debugger.handle("load " .. file)
+  if not f and wx.wxFileExists(file) and err and err:find("Cannot open file") then
+    local content = FileRead(file)
+    if content then return debugger.loadstring(file, content) end
+  end
+  return f, l, err
 end
 debugger.loadstring = function(file, string)
   return debugger.handle("loadstring '" .. file .. "' " .. string)
