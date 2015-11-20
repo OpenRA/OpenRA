@@ -28,6 +28,7 @@ APC:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 	-WithVoxelBody:
 	WithVoxelWaterBody:
 	LeavesTrails:

@@ -227,6 +227,7 @@ SAPC:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 SUBTANK:
 	Inherits: ^VoxelTank

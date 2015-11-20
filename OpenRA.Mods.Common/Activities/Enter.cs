@@ -273,6 +273,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Run inner activity/InsideTick
 			inner = inner == this ? InsideTick(self) : Util.RunActivity(self, inner);
+
+			// If we are finished, move on to next activity
+			if (inner == null && nextState == State.Done)
+				return NextActivity;
+
 			return this;
 		}
 	}

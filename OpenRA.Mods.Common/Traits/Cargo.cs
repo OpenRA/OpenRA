@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When this actor is sold should all of its passengers be unloaded?")]
 		public readonly bool EjectOnSell = true;
 
+		[Desc("When this actor dies should all of its passengers be unloaded?")]
+		public readonly bool EjectOnDeath = false;
+
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
 		public readonly HashSet<string> UnloadTerrainTypes = new HashSet<string>();
 
@@ -317,6 +320,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (Info.EjectOnDeath)
+				while (!IsEmpty(self) && CanUnload())
+				{
+					var passenger = Unload(self);
+					var cp = self.CenterPosition;
+					var inAir = self.World.Map.DistanceAboveTerrain(cp).Length != 0;
+					var positionable = passenger.Trait<IPositionable>();
+					positionable.SetPosition(passenger, self.Location);
+
+					if (!inAir && positionable.CanEnterCell(self.Location, self, false))
+					{
+						self.World.AddFrameEndTask(w => w.Add(passenger));
+						var nbm = passenger.TraitOrDefault<INotifyBlockingMove>();
+						if (nbm != null)
+							nbm.OnNotifyBlockingMove(passenger, passenger);
+					}
+					else
+						passenger.Kill(e.Attacker);
+				}
+
 			foreach (var c in cargo)
 				c.Kill(e.Attacker);
 
