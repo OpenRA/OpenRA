@@ -24,6 +24,7 @@ namespace OpenRA.GameRules
 		public int[] RangeModifiers;
 		public int Facing;
 		public WPos Source;
+		public Func<WPos> CurrentSource;
 		public Actor SourceActor;
 		public WPos PassiveTarget;
 		public Target GuidedTarget;
