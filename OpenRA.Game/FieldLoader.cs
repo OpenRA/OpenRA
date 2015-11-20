@@ -373,6 +373,28 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
+			else if (fieldType == typeof(CVec[]))
+			{
+				if (value != null)
+				{
+					var parts = value.Split(',');
+
+					if (parts.Length % 2 != 0)
+						return InvalidValueAction(value, fieldType, fieldName);
+
+					var vecs = new CVec[parts.Length / 2];
+					for (var i = 0; i < vecs.Length; i++)
+					{
+						int rx, ry;
+						if (int.TryParse(parts[2 * i], out rx) && int.TryParse(parts[2 * i + 1], out ry))
+							vecs[i] = new CVec(rx, ry);
+					}
+
+					return vecs;
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
 			else if (fieldType.IsEnum)
 			{
 				try
