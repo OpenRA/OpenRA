@@ -253,6 +253,7 @@ function ide:CreateStyledTextCtrl(...)
     if not ok or FixUTF8(text) then return self:Paste() end
     if ide.osname == "Windows" then text = text:gsub(suffix.."+$","") end
     self:AddTextRaw(text)
+    self:GotoPos(self:GetCurrentPos())
   end
 
   function editor:GotoPosEnforcePolicy(pos)
