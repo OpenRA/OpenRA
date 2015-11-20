@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -74,9 +75,10 @@ namespace OpenRA.Mods.Common.Traits
 		int adjacent = 0;
 		bool dirty = true;
 
-		bool IWallConnector.AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType)
+		bool IWallConnector.AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType, out CVec facing)
 		{
-			return wallInfo.Type == wallType;
+			facing = wallLocation - self.Location;
+			return wallInfo.Type == wallType && Math.Abs(facing.X) + Math.Abs(facing.Y) == 1;
 		}
 
 		void IWallConnector.SetDirty() { dirty = true; }
@@ -104,20 +106,18 @@ namespace OpenRA.Mods.Common.Traits
 			adjacent = 0;
 			foreach (var a in adjacentActors)
 			{
-				var rb = a.TraitOrDefault<IWallConnector>();
-				if (rb == null || !rb.AdjacentWallCanConnect(self, self.Location, wallInfo.Type))
+				CVec facing;
+				var wc = a.TraitOrDefault<IWallConnector>();
+				if (wc == null || !wc.AdjacentWallCanConnect(a, self.Location, wallInfo.Type, out facing))
 					continue;
 
-				var location = self.Location;
-				var otherLocation = a.Location;
-
-				if (otherLocation == location + new CVec(0, -1))
+				if (facing.Y > 0)
 					adjacent |= 1;
-				else if (otherLocation == location + new CVec(+1, 0))
+				else if (facing.X < 0)
 					adjacent |= 2;
-				else if (otherLocation == location + new CVec(0, +1))
+				else if (facing.Y < 0)
 					adjacent |= 4;
-				else if (otherLocation == location + new CVec(-1, 0))
+				else if (facing.X > 0)
 					adjacent |= 8;
 			}
 
