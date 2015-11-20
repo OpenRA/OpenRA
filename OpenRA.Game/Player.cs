@@ -165,7 +165,7 @@ namespace OpenRA
 			return CanViewActor(a);
 		}
 
-		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility(this)); } }
+		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility()); } }
 
 		#region Scripting interface
 
