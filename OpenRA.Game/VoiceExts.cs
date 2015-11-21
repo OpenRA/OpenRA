@@ -27,7 +27,12 @@ namespace OpenRA
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
 
-				voiced.PlayVoice(self, phrase, self.Owner.Faction.InternalName);
+				var faction = self.Owner.Faction.InternalName;
+
+				if (!string.IsNullOrEmpty(voiced.Faction))
+					faction = voiced.Faction.ToLower();
+
+				voiced.PlayVoice(self, phrase, faction);
 			}
 		}
 
@@ -41,7 +46,12 @@ namespace OpenRA
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
 
-				voiced.PlayVoiceLocal(self, phrase, self.Owner.Faction.InternalName, volume);
+				var faction = self.Owner.Faction.InternalName;
+
+				if (!string.IsNullOrEmpty(voiced.Faction))
+					faction = voiced.Faction.ToLower();
+
+					voiced.PlayVoiceLocal(self, phrase, faction, volume);
 			}
 		}
 
@@ -65,8 +75,12 @@ namespace OpenRA
 				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
 					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
 					{
-						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
-							orderSubject.Owner.Faction.InternalName))
+						var faction = orderSubject.Owner.Faction.InternalName;
+
+						if (!string.IsNullOrEmpty(voice.Faction))
+							faction = voice.Faction.ToLower();
+
+						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o), faction))
 							return;
 					}
 			}
