@@ -78,6 +78,16 @@ if [ ! -f nunit.framework.dll ]; then
 	rm -rf NUnit
 fi
 
+if [ ! -f nunit-console.exe ]; then
+	echo "Fetching NUnit.Runners from NuGet"
+	get NUnit.Runners 2.6.4
+	cp ./NUnit.Runners/tools/nunit-console.exe .
+	chmod +x nunit-console.exe
+	cp ./NUnit.Runners/tools/nunit-console.exe.config .
+	cp -R ./NUnit.Runners/tools/lib .
+	rm -rf NUnit.Runners
+fi
+
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from NuGet"
 	get Mono.Nat 1.2.21
