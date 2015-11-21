@@ -2388,6 +2388,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Upgrades on DeployToUpgrade were renamed to DeployedUpgrades
+				if (engineVersion < 20151122)
+				{
+					if (node.Key == "DeployToUpgrade")
+					{
+						var u = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (u != null)
+							u.Key = "DeployedUpgrades";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
