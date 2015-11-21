@@ -535,6 +535,8 @@ Rules:
 		-WithRoof:
 		-Selectable:
 		RejectsOrders:
+		Cargo:
+			Types: disabled
 
 Sequences:
 	oldlst:
