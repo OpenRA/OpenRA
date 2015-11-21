@@ -804,6 +804,8 @@ Rules:
 		-WithRoof:
 		-Selectable:
 		RejectsOrders:
+		Cargo:
+			Types: disabled
 	airstrike.proxy:
 		AlwaysVisible:
 		AirstrikePower:

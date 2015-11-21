@@ -488,6 +488,8 @@ Rules:
 		-WithRoof:
 		-Selectable:
 		RejectsOrders:
+		Cargo:
+			Types: disabled
 	TREX:
 		Health:
 			HP: 750
