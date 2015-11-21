@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 				init.Add(facings);
 			}
 
-			facings.Value(self.World).Add(Name, facing.Facing);
+			facings.Value(self.World).Add(Name, TurretFacing);
 		}
 	}
 
