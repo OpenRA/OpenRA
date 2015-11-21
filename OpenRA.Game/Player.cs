@@ -159,13 +159,13 @@ namespace OpenRA
 
 		public bool CanTargetActor(Actor a)
 		{
-			if (HasFogVisibility)
+			if (HasFogVisibility && fogVisibilities.Any(f => f.IsVisible(a)))
 				return true;
 
 			return CanViewActor(a);
 		}
 
-		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility(this)); } }
+		public bool HasFogVisibility { get { return fogVisibilities.Any(f => f.HasFogVisibility()); } }
 
 		#region Scripting interface
 

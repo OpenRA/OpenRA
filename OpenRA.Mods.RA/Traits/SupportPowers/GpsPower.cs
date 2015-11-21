@@ -76,9 +76,18 @@ namespace OpenRA.Mods.RA.Traits
 				Owner.Shroud.ExploreAll(Owner.World);
 		}
 
-		public bool HasFogVisibility(Player byPlayer)
+		public bool HasFogVisibility()
 		{
 			return Granted || GrantedAllies;
+		}
+
+		public bool IsVisible(Actor actor)
+		{
+			var gpsDot = actor.TraitOrDefault<GpsDot>();
+			if (gpsDot == null)
+				return false;
+
+			return gpsDot.IsDotVisible(Owner);
 		}
 	}
 
