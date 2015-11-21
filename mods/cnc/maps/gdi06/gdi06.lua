@@ -125,14 +125,18 @@ WorldLoaded = function()
 
 	Trigger.OnKilled(AttackTrigger2, function()
 		Utils.Do(FlameSquad, function(unit)
-			unit.Patrol(FlameSquadRoute, false)
+			if not unit.IsDead then
+				unit.Patrol(FlameSquadRoute, false)
+			end
 		end)
 	end)
 
 	Trigger.OnEnteredFootprint(AttackCellTriggerActivator, function(a, id)
 		if a.Owner == player then
 			Utils.Do(AttackUnits, function(unit)
-				unit.AttackMove(waypoint10.Location)
+				if not unit.IsDead then
+					unit.AttackMove(waypoint10.Location)
+				end
 			end)
 			Trigger.RemoveFootprintTrigger(id)
 		end
