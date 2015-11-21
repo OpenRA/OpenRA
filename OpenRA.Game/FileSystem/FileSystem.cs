@@ -28,14 +28,14 @@ namespace OpenRA.FileSystem
 		Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 		Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 
-		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
+		public IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(filename, order, content);
+				return new MixFile(this, filename, order, content);
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(filename, order, content);
+				return new ZipFile(this, filename, order, content);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(filename, order, content);
+				return new ZipFile(this, filename, order, content);
 			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
 				throw new NotImplementedException("The creation of .RS archives is unimplemented");
 			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
@@ -50,7 +50,7 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order, content);
 		}
 
-		public static IFolder OpenPackage(string filename, string annotation, int order)
+		public IFolder OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 			{
@@ -58,25 +58,25 @@ namespace OpenRA.FileSystem
 					? PackageHashType.Classic
 					: FieldLoader.GetValue<PackageHashType>("(value)", annotation);
 
-				return new MixFile(filename, type, order);
+				return new MixFile(this, filename, type, order);
 			}
 
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(filename, order);
+				return new ZipFile(this, filename, order);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(filename, order);
+				return new ZipFile(this, filename, order);
 			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				return new D2kSoundResources(filename, order);
+				return new D2kSoundResources(this, filename, order);
 			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldPackage(filename, order);
+				return new InstallShieldPackage(this, filename, order);
 			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				return new PakFile(filename, order);
+				return new PakFile(this, filename, order);
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
-				return new BigFile(filename, order);
+				return new BigFile(this, filename, order);
 			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
-				return new BagFile(filename, order);
+				return new BagFile(this, filename, order);
 			if (filename.EndsWith(".hdr", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldCABExtractor(filename, order);
+				return new InstallShieldCABExtractor(this, filename, order);
 
 			return new Folder(filename, order);
 		}

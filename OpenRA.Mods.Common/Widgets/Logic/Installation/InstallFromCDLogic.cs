@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			new Thread(() =>
 			{
-				using (var cabExtractor = new InstallShieldCABExtractor(source))
+				using (var cabExtractor = new InstallShieldCABExtractor(Game.ModData.ModFiles, source))
 				{
 					var denom = installData.InstallShieldCABFileIds.Count;
 					var extractFiles = installData.ExtractFilesFromCD;

@@ -186,6 +186,7 @@ namespace OpenRA.FileSystem
 
 		class CabReader : IDisposable
 		{
+			readonly FileSystem context;
 			readonly FileDescriptor fileDes;
 			public uint RemainingArchiveStream;
 			public uint RemainingFileStream;
@@ -194,11 +195,12 @@ namespace OpenRA.FileSystem
 			ushort volumeNumber;
 			Stream cabFile;
 
-			public CabReader(FileDescriptor fileDes, uint index, string commonName)
+			public CabReader(FileSystem context, FileDescriptor fileDes, uint index, string commonName)
 			{
 				this.fileDes = fileDes;
 				this.index = index;
 				this.commonName = commonName;
+				this.context = context;
 				volumeNumber = (ushort)((uint)fileDes.Volume - 1u);
 				RemainingArchiveStream = 0;
 				if ((fileDes.Flags & FileCompressed) > 0)
@@ -207,7 +209,7 @@ namespace OpenRA.FileSystem
 					RemainingFileStream = fileDes.ExpandedSize;
 
 				cabFile = null;
-				NextFile();
+				NextFile(context);
 			}
 
 			public void CopyTo(Stream dest)
@@ -257,7 +259,7 @@ namespace OpenRA.FileSystem
 					var read = cabFile.Read(outArray, 0, (int)RemainingArchiveStream);
 					if (RemainingFileStream > RemainingArchiveStream)
 					{
-						NextFile();
+						NextFile(context);
 						RemainingArchiveStream -= (uint)cabFile.Read(outArray, read, (int)count - read);
 					}
 
@@ -270,13 +272,13 @@ namespace OpenRA.FileSystem
 				cabFile.Dispose();
 			}
 
-			public void NextFile()
+			void NextFile(FileSystem context)
 			{
 				if (cabFile != null)
 					cabFile.Dispose();
 
 				++volumeNumber;
-				cabFile = Game.ModData.ModFiles.Open("{0}{1}.cab".F(commonName, volumeNumber));
+				cabFile = context.Open("{0}{1}.cab".F(commonName, volumeNumber));
 				if (cabFile.ReadUInt32() != 0x28635349)
 					throw new InvalidDataException("Not an Installshield CAB package");
 
@@ -328,19 +330,21 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<uint, string> directoryNames = new Dictionary<uint, string>();
 		readonly Dictionary<uint, FileDescriptor> fileDescriptors = new Dictionary<uint, FileDescriptor>();
 		readonly Dictionary<string, uint> fileLookup = new Dictionary<string, uint>();
+		readonly FileSystem context;
 		int priority;
 		string commonName;
 		public int Priority { get { return priority; } }
 
 		public string Name { get { return commonName; } }
 
-		public InstallShieldCABExtractor(string hdrFilename, int priority = -1)
+		public InstallShieldCABExtractor(FileSystem context, string hdrFilename, int priority = -1)
 		{
 			var fileGroups = new List<FileGroup>();
 			var fileGroupOffsets = new List<uint>();
 
+			hdrFile = context.Open(hdrFilename);
 			this.priority = priority;
-			hdrFile = Game.ModData.ModFiles.Open(hdrFilename);
+			this.context = context;
 
 			// Strips archive number AND file extension
 			commonName = Regex.Replace(hdrFilename, @"\d*\.[^\.]*$", "");
@@ -471,7 +475,7 @@ namespace OpenRA.FileSystem
 
 			var output = new MemoryStream((int)fileDes.ExpandedSize);
 
-			using (var reader = new CabReader(fileDes, index, commonName))
+			using (var reader = new CabReader(context, fileDes, index, commonName))
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
@@ -496,7 +500,7 @@ namespace OpenRA.FileSystem
 			if ((fileDes.Flags & FileObfuscated) != 0)
 				throw new NotImplementedException("Haven't implemented obfuscated files");
 
-			using (var reader = new CabReader(fileDes, index, commonName))
+			using (var reader = new CabReader(context, fileDes, index, commonName))
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
