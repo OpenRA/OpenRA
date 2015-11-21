@@ -9,7 +9,6 @@ Player:
 			Barracks: barr,tent
 			VehiclesFactory: weap
 			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
