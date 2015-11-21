@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetContrastColor;
 		public int FontSize { get { return font.Value.Size; } }
 		public int LinePixelSpacing { get { return linePixelSpacing.Value; } }
+		public SpriteFont SpriteFont { get { return font.Value; } }
 		Lazy<int> linePixelSpacing;
 		Lazy<SpriteFont> font;
 
@@ -101,6 +102,16 @@ namespace OpenRA.Mods.Common.Widgets
 			if (LineVAlign != LineVAlign.Collapsed)
 				textSize += new int2(0, linePixelSpacing.Value);
 			return textSize;
+		}
+
+		public string WrapText(string text)
+		{
+			return WidgetUtils.WrapText(text, Bounds.Width, font.Value);
+		}
+
+		public string TruncateText(string text)
+		{
+			return WidgetUtils.TruncateText(text, Bounds.Width, font.Value);
 		}
 
 		public int2 ResizeToText(string text)

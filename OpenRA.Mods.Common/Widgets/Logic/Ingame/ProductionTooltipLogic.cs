@@ -40,9 +40,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var iconMargin = timeIcon.Bounds.X;
 
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
-			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
 			ActorInfo lastActor = null;
 
 			tooltipContainer.BeforeRender = () =>
@@ -61,9 +58,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nameLabel.GetText = () => tooltip.Name;
 
 				var hotkey = palette.TooltipIcon.Hotkey;
-				var nameWidth = font.Measure(tooltip.Name).X;
+				var nameWidth = nameLabel.MeasureText(tooltip.Name).X;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				var hotkeyWidth = hotkey.IsValid() ? hotkeyLabel.MeasureText(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
 				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
 				hotkeyLabel.Visible = hotkey.IsValid();
@@ -95,15 +92,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var descString = tooltip.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
-				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
-				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
+				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresLabel.MeasureText(requiresString).X, descLabel.MeasureText(descString).X }.Aggregate(Math.Max);
+				var rightWidth = new[] { powerLabel.MeasureText(powerString).X, timeLabel.MeasureText(timeString).X, costLabel.MeasureText(costString).X }.Aggregate(Math.Max);
 
 				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
-				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
+				var leftHeight = nameLabel.MeasureText(tooltip.Name).Y + requiresLabel.MeasureText(requiresString).Y + descLabel.MeasureText(descString).Y;
+				var rightHeight = powerLabel.MeasureText(powerString).Y + timeLabel.MeasureText(timeString).Y + costLabel.MeasureText(costString).Y;
 				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
 
 				lastActor = actor;

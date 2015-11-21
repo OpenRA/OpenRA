@@ -27,8 +27,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var owner = widget.Get<LabelWidget>("OWNER");
 			var extras = widget.Get<LabelWidget>("EXTRA");
 
-			var font = Game.Renderer.Fonts[label.Font];
-			var ownerFont = Game.Renderer.Fonts[owner.Font];
 			var cachedWidth = 0;
 			var labelText = "";
 			var showOwner = false;
@@ -92,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
+				var textWidth = Math.Max(label.MeasureText(labelText).X, extras.MeasureText(extraText).X);
 
 				if (textWidth != cachedWidth)
 				{
@@ -107,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ownerColor = o.Color.RGB;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+						owner.Bounds.X + owner.MeasureText(ownerName).X + label.Bounds.X);
 					index++;
 				}
 				else
@@ -115,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (extraText != "")
 				{
-					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
+					widget.Bounds.Height += extras.MeasureText(extraText).Y + extras.Bounds.Height;
 					if (showOwner)
 						extras.Bounds.Y = extraHeightOnDouble;
 					else

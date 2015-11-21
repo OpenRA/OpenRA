@@ -23,8 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var header = widget.Get<LabelWidget>("HEADER");
 			var headerLine = lines[0];
-			var headerFont = Game.Renderer.Fonts[header.Font];
-			var headerSize = headerFont.Measure(headerLine);
+			var headerSize = header.MeasureText(headerLine);
 			header.Bounds.Width += headerSize.X;
 			header.Bounds.Height += headerSize.Y;
 			header.GetText = () => headerLine;
@@ -33,11 +32,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var description = widget.Get<LabelWidget>("DESCRIPTION");
 				var descriptionLines = lines.Skip(1).ToArray();
-				var descriptionFont = Game.Renderer.Fonts[description.Font];
 				description.Bounds.Y += header.Bounds.Y + header.Bounds.Height;
-				description.Bounds.Width += descriptionLines.Select(l => descriptionFont.Measure(l).X).Max();
-				description.Bounds.Height += descriptionFont.Measure(descriptionLines.First()).Y * descriptionLines.Length;
-				description.GetText = () => string.Join("\n", descriptionLines);
+				description.Text = string.Join("\n", descriptionLines);
+				var descriptionSize = description.MeasureText(description.Text);
+				description.Bounds.Width += descriptionSize.X;
+				description.Bounds.Height += descriptionSize.Y;
 
 				widget.Bounds.Width = Math.Max(header.Bounds.X + header.Bounds.Width, description.Bounds.X + description.Bounds.Width);
 				widget.Bounds.Height = description.Bounds.Y + description.Bounds.Height;
