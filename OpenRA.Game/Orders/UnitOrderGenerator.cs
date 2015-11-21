@@ -130,7 +130,7 @@ namespace OpenRA.Orders
 						modifiers |= TargetModifiers.ForceMove;
 
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, modifiers, ref cursor))
+					if (o.Order.CanTarget(self, target, actorsAt, ref modifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
 			}

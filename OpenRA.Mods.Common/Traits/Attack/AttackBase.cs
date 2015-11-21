@@ -282,12 +282,20 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get; private set; }
 			public bool OverrideSelection { get { return true; } }
 
-			bool CanTargetActor(Actor self, Target target, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
+
+				// Disguised actors are revealed by the attack cursor
+				// HACK: works around limitations in the targeting code that force the
+				// targeting and attacking logic (which should be logically separate)
+				// to use the same code
+				if (target.Type == TargetType.Actor && target.Actor.EffectiveOwner != null &&
+						target.Actor.EffectiveOwner.Disguised && self.Owner.Stances[target.Actor.Owner] == Stance.Enemy)
+					modifiers |= TargetModifiers.ForceAttack;
 
 				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
 				var a = ab.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
@@ -329,13 +337,13 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				switch (target.Type)
 				{
 					case TargetType.Actor:
 					case TargetType.FrozenActor:
-						return CanTargetActor(self, target, modifiers, ref cursor);
+						return CanTargetActor(self, target, ref modifiers, ref cursor);
 					case TargetType.Terrain:
 						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
 					default:
