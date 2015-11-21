@@ -2115,6 +2115,9 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 		AnnounceOnSeen:
+	^TechBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
