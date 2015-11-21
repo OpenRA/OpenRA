@@ -1115,6 +1115,8 @@ Rules:
 		-WithRoof:
 		-Selectable:
 		RejectsOrders:
+		Cargo:
+			Types: disabled
 	SAM:
 		SpawnActorOnDeath:
 			Actor: e1
