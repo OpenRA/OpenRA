@@ -8,21 +8,6 @@ Background@SIMPLE_TOOLTIP:
 			Height: 23
 			Font: Bold
 
-Background@TWO_LINE_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: panel-black
-	Height: 48
-	Children:
-		Label@LABEL:
-			X: 5
-			Height: 46
-			Font: Bold
-		Label@HOTKEY:
-			Visible: false
-			TextColor: 255,255,0
-			Height: 23
-			Font: Bold
-
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: panel-black
