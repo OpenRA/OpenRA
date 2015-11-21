@@ -377,6 +377,8 @@ DELPHI:
 
 CHAN:
 	Inherits: ^CivInfantry
+	Valued:
+		Cost: 500
 	Selectable:
 		Class: CHAN
 	Tooltip:
