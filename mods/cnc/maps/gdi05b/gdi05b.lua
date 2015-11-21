@@ -6,7 +6,7 @@ AllToHuntTrigger =
 AtkRoute1 = { waypoint4.Location, waypoint5.Location, waypoint6.Location, waypoint7.Location, waypoint8.Location }
 AtkRoute2 = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location }
 
-AutoCreateTeams = 
+AutoCreateTeams =
 {
 	{ types = { e1 = 1, e3 = 3 }, route = AtkRoute2 },
 	{ types = { e1 = 3, e3 = 1 }, route = AtkRoute2 },
@@ -70,7 +70,6 @@ DiscoverGdiBase = function(actor, discoverer)
 	Utils.Do(GdiBase, function(actor)
 		actor.Owner = player
 	end)
-	GdiHarv.FindResources()
 
 	baseDiscovered = true
 
@@ -140,7 +139,7 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
-	
+
 	Utils.Do(Map.NamedActors, function(actor)
 		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
@@ -177,9 +176,9 @@ WorldLoaded = function()
 		player.MarkCompletedObjective(gdiObjective2)
 		Actor.Create("airstrike.proxy", true, { Owner = player })
 	end)
-	
+
 	Camera.Position = UnitsRally.CenterPosition
-	
+
 	InsertGdiUnits()
 end
 

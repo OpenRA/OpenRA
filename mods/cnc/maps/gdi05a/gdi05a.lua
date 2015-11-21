@@ -128,13 +128,12 @@ DiscoverGdiBase = function(actor, discoverer)
 	Utils.Do(GdiBase, function(actor)
 		actor.Owner = player
 	end)
-	GdiHarv.FindResources()
 
 	baseDiscovered = true
 
 	gdiObjective3 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
 	player.MarkCompletedObjective(gdiObjective1)
-	
+
 	Attack()
 end
 
