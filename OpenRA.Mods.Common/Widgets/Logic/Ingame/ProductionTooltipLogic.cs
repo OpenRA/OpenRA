@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var hotkey = palette.TooltipIcon.Hotkey;
 				var nameWidth = nameLabel.MeasureText(tooltip.Name).X;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? hotkeyLabel.MeasureText(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				var hotkeyWidth = hotkey.IsValid() ? hotkeyLabel.ResizeToText(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
 				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
 				hotkeyLabel.Visible = hotkey.IsValid();
@@ -92,19 +92,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var descString = tooltip.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
-				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresLabel.MeasureText(requiresString).X, descLabel.MeasureText(descString).X }.Aggregate(Math.Max);
-				var rightWidth = new[] { powerLabel.MeasureText(powerString).X, timeLabel.MeasureText(timeString).X, costLabel.MeasureText(costString).X }.Aggregate(Math.Max);
+				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresLabel.ResizeToText(requiresString).X, descLabel.ResizeToText(descString).X }.Aggregate(Math.Max);
+				var rightWidth = new[] { powerLabel.ResizeToText(powerString).X, timeLabel.ResizeToText(timeString).X, costLabel.ResizeToText(costString).X }.Aggregate(Math.Max);
 
 				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = nameLabel.MeasureText(tooltip.Name).Y + requiresLabel.MeasureText(requiresString).Y + descLabel.MeasureText(descString).Y;
-				var rightHeight = powerLabel.MeasureText(powerString).Y + timeLabel.MeasureText(timeString).Y + costLabel.MeasureText(costString).Y;
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
+				var nameBottom = nameLabel.Bounds.Bottom + nameLabel.LinePixelSpacing;
+				var requiresBottom = requiresLabel.Bounds.Bottom + requiresLabel.LinePixelSpacing;
+				var descBottom = descLabel.Bounds.Bottom + descLabel.LinePixelSpacing;
+				var leftBottom = Math.Max(Math.Max(nameBottom, requiresBottom), descBottom);
+
+				var costBottom = IconLabelPairBottom(costIcon, costLabel);
+				var timeBottom = IconLabelPairBottom(timeIcon, timeLabel);
+				var powerBottom = powerIcon.IsVisible() ? IconLabelPairBottom(powerIcon, powerLabel) : 0;
+				var rightBottom = Math.Max(Math.Max(costBottom, timeBottom), powerBottom);
+
+				widget.Bounds.Height = Math.Max(leftBottom, rightBottom) + 2 * nameLabel.Bounds.Y;
 
 				lastActor = actor;
 			};
+		}
+
+		static int IconLabelPairBottom(ImageWidget icon, LabelWidget label)
+		{
+			var iconBottom = icon.Bounds.Height != 0 ? icon.Bounds.Bottom : icon.Bounds.Y + icon.Bounds.Width;
+			return Math.Max(iconBottom + label.LinePixelSpacing, label.Bounds.Bottom);
 		}
 
 		static string ActorName(Ruleset rules, string a)
