@@ -89,6 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDisabled())
 				return false;
 
+			if (target.Type == TargetType.Actor && !self.Owner.CanTargetActor(target.Actor))
+				return false;
+
 			return true;
 		}
 
