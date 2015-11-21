@@ -1,7 +1,7 @@
 Background@SIMPLE_TOOLTIP:
 	Logic: SimpleTooltipLogic
 	Background: panel-black
-	Height: 27
+	Height: 25
 	Children:
 		Label@LABEL:
 			X: 5

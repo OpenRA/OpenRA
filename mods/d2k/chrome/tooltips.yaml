@@ -1,7 +1,7 @@
 Background@SIMPLE_TOOLTIP:
 	Logic: SimpleTooltipLogic
 	Background: dialog3
-	Height: 34
+	Height: 31
 	Children:
 		Label@LABEL:
 			X: 5
