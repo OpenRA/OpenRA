@@ -86,6 +86,8 @@ sandworm:
 	AnnounceOnSeen:
 		Notification: WormSign
 		PingRadar: True
+	RevealsShroud:
+		Range: 5c0
 
 sietch:
 	Inherits: ^Building
