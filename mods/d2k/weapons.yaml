@@ -820,3 +820,12 @@ BloomExplosion:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		AffectsParent: true
 
+BloomSpawn:
+	Range: 0c1
+	Projectile: Bullet
+		Speed: 1c0
+		Blockable: false
+		Image: null
+	Warhead@1Eff: CreateEffect
+		Explosion: bloomspawn
+

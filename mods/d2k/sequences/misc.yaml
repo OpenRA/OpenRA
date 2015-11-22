@@ -46,6 +46,11 @@ explosion:
 		BlendMode: Alpha
 		Offset: 12, -10
 		Tick: 120
+	bloomspawn: DATA.R8
+		Start: 3980
+		Length: 8
+		Tick: 120
+		Offset: 0, -16
 	corpse: DATA.R8
 		Start: 430
 		Length: 12
@@ -336,6 +341,11 @@ crate:
 		Offset: -16,-16
 
 spicebloom:
+	grow0: DATA.R8
+		Start: 106
+		Length: 1
+		ZOffset: -1023
+		Offset: -16,-16
 	grow1: DATA.R8
 		Start: 107
 		Length: 1

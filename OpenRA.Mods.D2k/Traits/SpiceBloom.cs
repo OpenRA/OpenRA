@@ -24,6 +24,9 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Seeds resources by explosive eruptions after accumulation times.")]
 	public class SpiceBloomInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
+		[ActorReference]
+		public readonly string SpawnActor = "spicebloom.spawnpoint";
+
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
 
@@ -35,9 +38,12 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public readonly string ResourceType = "Spice";
 
+		[Desc("Spice blooms only grow on these terrain types.")]
+		public readonly HashSet<string> GrowthTerrainTypes = new HashSet<string>();
+
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]
-		public readonly string Weapon = "SpiceExplosion";
+		public readonly string Weapon = null;
 
 		[Desc("The amount of spice to expel.")]
 		public readonly int[] Pieces = { 2, 12 };
@@ -87,6 +93,12 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void Tick(Actor self)
 		{
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
+			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type))
+				return;
+
 			ticks++;
 
 			if (ticks >= growTicks)
@@ -98,18 +110,19 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void SeedResources(Actor self)
 		{
 			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
 			if (pieces < info.Pieces[0])
 				pieces = info.Pieces[0];
 
-			for (var i = 0; pieces > i; i++)
+			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range);
+
+			for (var i = 0; i < pieces; i++)
 			{
-				var cells = OpenRA.Traits.Util.RandomWalk(self.Location, self.World.SharedRandom);
-				var cell = cells.Take(info.Range).SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
+				var cell = cells.SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
 				if (cell == null)
-					cell = cells.Take(info.Range).Random(self.World.SharedRandom);
+					cell = cells.Random(self.World.SharedRandom);
 
 				var args = new ProjectileArgs
 				{
@@ -140,6 +153,12 @@ namespace OpenRA.Mods.D2k.Traits
 					}
 				});
 			}
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			if (!string.IsNullOrEmpty(info.Weapon))
+				SeedResources(self);
 
 			self.World.AddFrameEndTask(t => t.Add(new DelayedAction(respawnTicks, () =>
 			{
@@ -152,7 +171,7 @@ namespace OpenRA.Mods.D2k.Traits
 					new FactionInit(self.Owner.Faction.InternalName),
 					new SkipMakeAnimsInit()
 				};
-				self.World.CreateActor(self.Info.Name, td);
+				self.World.CreateActor(info.SpawnActor, td);
 			})));
 		}
 	}
