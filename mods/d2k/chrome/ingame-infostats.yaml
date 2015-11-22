@@ -82,6 +82,12 @@ Container@SKIRMISH_STATS:
 							X: 10
 							Width: 150
 							Height: 25
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: INGAME_CLIENT_TOOLTIP
+							X: 10
+							Width: 150
+							Height: 25
 						Image@FACTIONFLAG:
 							X: 159
 							Y: 3

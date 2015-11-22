@@ -237,13 +237,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupClientWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
 		{
-			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;
-			var block = parent.Get("LATENCY");
-			block.IsVisible = () => visible;
+			var adminIndicator = parent.GetOrNull("ADMIN_INDICATOR");
+			if (adminIndicator != null)
+				adminIndicator.IsVisible = () => c.IsAdmin;
 
-			if (visible)
-				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
-					orderManager.LobbyInfo.PingFromClient(c));
+			var block = parent.GetOrNull("LATENCY");
+			if (block != null)
+			{
+				block.IsVisible = () => visible;
+
+				if (visible)
+					block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
+						orderManager.LobbyInfo.PingFromClient(c));
+			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
 			tooltip.IsVisible = () => visible;

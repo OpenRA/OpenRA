@@ -204,6 +204,30 @@ Background@CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 
+Background@INGAME_CLIENT_TOOLTIP:
+	Logic: ClientTooltipLogic
+	Background: panel-black
+	Height: 35
+	Width: 5
+	Children:
+		Label@ADMIN:
+			Y: 2
+			Height: 18
+			Font: Bold
+			Text: Game Admin
+			Align: Center
+		Label@IP:
+			Y: 5
+			Width: 5
+			Height: 10
+			Font: TinyBold
+			Align: Center
+		Label@LOCATION:
+			Y: 17
+			Height: 10
+			Font: TinyBold
+			Align: Center
+
 Background@FACTION_DESCRIPTION_TOOLTIP:
 	Logic: FactionTooltipLogic
 	Background: panel-black
