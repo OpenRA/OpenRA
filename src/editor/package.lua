@@ -230,9 +230,9 @@ function ide:CreateStyledTextCtrl(...)
     if not self.useraw then return self:Copy() end
     -- check if selected fragment is a valid UTF-8 sequence
     local text = self:GetSelectedTextRaw()
-    if FixUTF8(text) then return self:Copy() end
+    if text == "" or wx.wxString.FromUTF8(text) ~= "" then return self:Copy() end
     local tdo = wx.wxTextDataObject()
-    -- append "\0" char as wxwidgets (3.1+ on Windows) truncate last char for odd-length strings
+    -- append suffix as wxwidgets (3.1+ on Windows) truncate last char for odd-length strings
     local workaround = ide.osname == "Windows" and (#text % 2 > 0) and suffix or ""
     tdo:SetData(wx.wxDataFormat(wx.wxDF_TEXT), text..workaround)
     local clip = wx.wxClipboard.Get()
@@ -250,7 +250,7 @@ function ide:CreateStyledTextCtrl(...)
     clip:Close()
     local ok, text = tdo:GetDataHere(wx.wxDataFormat(wx.wxDF_TEXT))
     -- check if the fragment being pasted is a valid UTF-8 sequence
-    if not ok or FixUTF8(text) then return self:Paste() end
+    if not ok or text == "" or wx.wxString.FromUTF8(text) ~= "" then return self:Paste() end
     if ide.osname == "Windows" then text = text:gsub(suffix.."+$","") end
     self:AddTextRaw(text)
     self:GotoPos(self:GetCurrentPos())
