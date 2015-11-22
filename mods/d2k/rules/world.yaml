@@ -64,7 +64,7 @@ World:
 		Maximum: 2
 		SpawnInterval: 1500
 		WaterChance: 0
-		ValidGround: Sand, Dune, Rock
+		ValidGround: Sand, Dune, Rock, SpiceSand
 		InitialSpawnDelay: 1500
 	DomainIndex:
 	PathfinderDebugOverlay:

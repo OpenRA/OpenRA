@@ -97,7 +97,7 @@ thumper:
 	DeployToUpgrade:
 		DeployedUpgrades: deployed
 		Facing: 128
-		AllowedTerrainTypes: Sand, Spice, Dune
+		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
 		UpgradeTypes: deployed
 		UpgradeMaxEnabledLevel: 0

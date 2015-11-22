@@ -16,7 +16,7 @@ carryall.reinforce:
 		InitialFacing: 0
 		ROT: 4
 		Speed: 144 # 112 * ~1.3 for balance reasons
-		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
 		RepairBuildings: repair_pad
 		RearmBuildings:
 		Repulsable: False

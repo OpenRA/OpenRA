@@ -6,7 +6,7 @@ spicebloom.spawnpoint:
 	RenderSprites:
 		Image: spicebloom
 	SpiceBloom:
-		GrowthTerrainTypes: Sand
+		GrowthTerrainTypes: SpiceSand
 		SpawnActor: spicebloom
 		GrowthSequences: grow0
 		GrowthDelay: 250, 750
