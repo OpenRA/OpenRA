@@ -74,7 +74,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 		Checkbox@WAITING_FOR_PLAYERS:
 			X: 5
 			Y: 5
-			Width: 137
+			Width: PARENT_RIGHT-29
 			Height: 20
 			Text: Waiting
 			TextColor: 32CD32
@@ -82,14 +82,14 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 		Checkbox@EMPTY:
 			X: 5
 			Y: 30
-			Width: 137
+			Width: PARENT_RIGHT-29
 			Height: 20
 			Text: Empty
 			Font: Regular
 		Checkbox@PASSWORD_PROTECTED:
 			X: 5
 			Y: 55
-			Width: 137
+			Width: PARENT_RIGHT-29
 			Height: 20
 			Text: Protected
 			TextColor: FF0000
@@ -97,7 +97,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 		Checkbox@ALREADY_STARTED:
 			X: 5
 			Y: 80
-			Width: 137
+			Width: PARENT_RIGHT-29
 			Height: 20
 			Text: Started
 			TextColor: FFA500
@@ -105,7 +105,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 		Checkbox@INCOMPATIBLE_VERSION:
 			X: 5
 			Y: 105
-			Width: 137
+			Width: PARENT_RIGHT-29
 			Height: 20
 			Text: Incompatible
 			TextColor: BEBEBE
