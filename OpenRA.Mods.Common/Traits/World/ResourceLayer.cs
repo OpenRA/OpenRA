@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (t.Density > 0)
 			{
 				var sprites = t.Type.Variants[t.Variant];
-				var frame = int2.Lerp(0, sprites.Length - 1, t.Density - 1, t.Type.Info.MaxDensity);
+				var frame = int2.Lerp(0, sprites.Length - 1, t.Density, t.Type.Info.MaxDensity);
 				t.Sprite = sprites[frame];
 			}
 			else
