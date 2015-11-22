@@ -394,7 +394,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleBaseKey", "Jump to base" },
 					{ "ToLastEventKey", "Jump to last radar event" },
 					{ "ToSelectionKey", "Jump to selection" },
-					{ "SelectAllUnitsKey", "Select all units on screen" },
+					{ "SelectAllUnitsKey", "Select all combat units" },
 					{ "SelectUnitsByTypeKey", "Select units by type" },
 
 					{ "PlaceBeaconKey", "Place beacon" },

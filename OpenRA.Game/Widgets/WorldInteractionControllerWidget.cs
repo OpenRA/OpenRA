@@ -235,11 +235,25 @@ namespace OpenRA.Widgets
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
-					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority();
+					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
+
+					// Check if selecting actors on the screen has selected new units
+					if (ownUnitsOnScreen.Count > World.Selection.Actors.Count())
+						Game.Debug("Selected across screen");
+					else
+					{
+						// Select actors in the world that have highest selection priority
+						ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
+						Game.Debug("Selected across map");
+					}
+
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
 				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && !World.IsGameOver)
 				{
+					if (!World.Selection.Actors.Any())
+						return false;
+
 					// Get all the selected actors' selection classes
 					var selectedClasses = World.Selection.Actors
 						.Where(x => !x.IsDead && x.Owner == player)
@@ -250,7 +264,7 @@ namespace OpenRA.Widgets
 					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
 
 					// Check if selecting actors on the screen has selected new units
-					if (newSelection.Count() > World.Selection.Actors.Count())
+					if (newSelection.Count > World.Selection.Actors.Count())
 						Game.Debug("Selected across screen");
 					else
 					{
