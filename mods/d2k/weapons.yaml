@@ -455,24 +455,22 @@ DeviatorMissile:
 	ReloadDelay: 160
 	Range: 5c0
 	Report: MISSLE1.WAV
-	InvalidTargets: Infantry, Structure
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
 		RangeLimit: 40
+		HorizontalRateOfTurn: 3
 		Blockable: false
 		Shadow: yes
-		RateofTurn: 1
-		Inaccuracy: 256
+		Inaccuracy: 768
 		Image: MISSILE
 		TrailImage: deviator_trail
 		TrailPalette: deviatorgas
 		TrailUsePlayerPalette: true
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		InvalidTargets: Infantry, Structure
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 5
+		Damage: 500
 		Versus:
 			none: 20
 			wall: 20
@@ -493,7 +491,8 @@ DeviatorMissile:
 		ImpactSound: EXPLSML1.WAV
 	Warhead@4OwnerChange: ChangeOwner
 		Range: 256
-		Duration: 750
+		Duration: 375
+		InvalidTargets: Infantry, Structure
 
 155mm:
 	ReloadDelay: 80
