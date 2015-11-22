@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"only contain alive actors.")]
 		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
 		{
-			if (triggers.Triggers[Trigger.OnProduction].Any())
+			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return false;
 
 			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"Note: it does not check whether this particular type of actor is being produced.")]
 		public bool IsProducing(string actorType)
 		{
-			if (triggers.Triggers[Trigger.OnProduction].Any())
+			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return true;
 
 			return queues.Where(q => GetBuildableInfo(actorType).Queue.Contains(q.Info.Type))
