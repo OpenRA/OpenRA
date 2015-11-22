@@ -61,9 +61,7 @@ namespace OpenRA.Mods.Common.Lint
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 				var ownerInit = actorReference.InitDict.GetOrDefault<OwnerInit>();
 				if (ownerInit == null)
-				{
 					emitError("Actor {0} is not owned by any player.".F(kv.Key));
-				}
 				else
 				{
 					var ownerName = ownerInit.PlayerName;
