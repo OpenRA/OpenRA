@@ -119,7 +119,7 @@
 ^VehicleHusk:
 	Inherits: ^Husk
 	Husk:
-		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceBlobs, Dune
+		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 	Burns:
 		Interval: 4
 	Targetable:
