@@ -218,7 +218,7 @@ Rocket:
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 		MaximumLaunchSpeed: 343
-		RangeLimit: 40
+		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 50, 25, 0
@@ -423,6 +423,7 @@ mtank_pri:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		MaximumLaunchSpeed: 281
+		RangeLimit: 50
 		HorizontalRateOfTurn: 3
 		Blockable: false
 		Shadow: yes
