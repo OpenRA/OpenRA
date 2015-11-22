@@ -486,7 +486,7 @@ end
 -- process config
 
 -- set ide.config environment
-setmetatable(ide.config, {__index = {os = os, wxstc = wxstc, wx = wx, ID = ID}})
+setmetatable(ide.config, {__index = _G or _ENV})
 ide.config.load = {interpreters = loadInterpreters, specs = loadSpecs, tools = loadTools}
 do
   ide.configs = {
