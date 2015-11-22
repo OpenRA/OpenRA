@@ -495,13 +495,17 @@ do
   }
 
   local num = 0
-  ide.config.package = function(p)
-    if p then
-      num = num + 1
-      local name = 'config'..num..'package'
-      ide.packages[name] = setmetatable(p, ide.proto.Plugin)
-    end
-  end
+  ide.config.package = setmetatable({}, {
+      __index = function(_,k) return package[k] end,
+      __newindex = function(_,k,v) package[k] = v end,
+      __call = function(_,p)
+        if p then
+          num = num + 1
+          local name = 'config'..num..'package'
+          ide.packages[name] = setmetatable(p, ide.proto.Plugin)
+        end
+      end,
+    })
 
   local includes = {}
   ide.config.include = function(c)
