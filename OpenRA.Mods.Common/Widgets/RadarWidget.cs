@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var mi = new MouseInput
 			{
 				Location = location,
-				Button = MouseButton.Right,
+				Button = Game.Settings.Game.MouseButtonPreference.Action,
 				Modifiers = Game.GetModifierKeys()
 			};
 
@@ -243,17 +243,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cell = MinimapPixelToCell(mi.Location);
 			var pos = world.Map.CenterOfCell(cell);
-			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
+			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move)
+				&& mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
+			{
 				worldRenderer.Viewport.Center(pos);
+			}
 
-			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 			{
 				// fake a mousedown/mouseup here
 				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
 				var fakemi = new MouseInput
 				{
 					Event = MouseInputEvent.Down,
-					Button = MouseButton.Right,
+					Button = Game.Settings.Game.MouseButtonPreference.Action,
 					Modifiers = mi.Modifiers,
 					Location = location
 				};
