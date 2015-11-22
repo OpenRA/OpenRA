@@ -1,7 +1,7 @@
 WEEDGUY:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Chem Spray Infantry
 	Voiced:
@@ -21,7 +21,7 @@ WEEDGUY:
 UMAGON:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 400
+		cash: 400
 	Tooltip:
 		Name: Umagon
 	Voiced:
@@ -47,7 +47,7 @@ UMAGON:
 CHAMSPY:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 700
+		cash: 700
 	DisguiseToolTip:
 		Name: Chameleon Spy
 	Voiced:
@@ -79,7 +79,7 @@ CHAMSPY:
 MUTANT:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Mutant
 	Voiced:
@@ -104,7 +104,7 @@ MUTANT:
 MWMN:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Mutant Soldier
 	Voiced:
@@ -129,7 +129,7 @@ MWMN:
 MUTANT3:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Mutant Sergeant
 	Voiced:
@@ -154,7 +154,7 @@ MUTANT3:
 TRATOS:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Tratos
 	Voiced:
@@ -174,7 +174,7 @@ TRATOS:
 OXANNA:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Oxanna
 	Voiced:
@@ -192,7 +192,7 @@ OXANNA:
 SLAV:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Slavick
 	Voiced:
@@ -217,7 +217,7 @@ DOGGIE:
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Valued:
-		Cost: 100
+		cash: 100
 	Armor:
 		Type: Light
 	-RevealsShroud:

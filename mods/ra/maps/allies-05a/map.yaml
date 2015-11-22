@@ -1714,7 +1714,7 @@ Rules:
 		AutoTargetIgnore:
 		Inherits: ^Defense
 		Valued:
-			Cost: 800
+			cash: 800
 		Building:
 			Footprint: _ x
 			Dimensions: 1,2

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.Traits
@@ -65,6 +66,11 @@ namespace OpenRA.Traits
 				return Resources + amount <= ResourceCapacity;
 		}
 
+		public bool CanGiveResources(IReadOnlyDictionary<string, int> resources)
+		{
+			return resources.All(p => CanGiveResource(p.Key, p.Value));
+		}
+
 		public void GiveResource(string resource, int num)
 		{
 			if (!ResourceTypes.Contains(resource))
@@ -117,6 +123,12 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public void GiveResources(IReadOnlyDictionary<string, int> resources)
+		{
+			foreach (var p in resources)
+				GiveResource(p.Key, p.Value);
+		}
+
 		public bool TakeResource(string resource, int num)
 		{
 			if (!ResourceTypes.Contains(resource))
@@ -146,6 +158,25 @@ namespace OpenRA.Traits
 
 				return true;
 			}
+		}
+
+		public bool TakeResources(IReadOnlyDictionary<string, int> resources)
+		{
+			Dictionary<string, int> done = new Dictionary<string, int>();
+			foreach (var p in resources)
+			{
+				if (!TakeResource(p.Key, p.Value))
+				{
+					foreach (var q in done)
+						GiveResource(q.Key, q.Value);
+
+					return false;
+				}
+
+				done.Add(p.Key, p.Value);
+			}
+
+			return true;
 		}
 
 		int nextSiloAdviceTime = 0;

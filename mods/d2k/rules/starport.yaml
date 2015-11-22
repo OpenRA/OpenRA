@@ -4,7 +4,7 @@ mcv.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 2500
+		cash: 2500
 	RenderSprites:
 		Image: mcv
 
@@ -14,7 +14,7 @@ harvester.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 1500
+		cash: 1500
 	RenderSprites:
 		Image: harvester
 
@@ -24,7 +24,7 @@ trike.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 315
+		cash: 315
 	RenderSprites:
 		Image: trike
 
@@ -34,7 +34,7 @@ quad.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 500
+		cash: 500
 	RenderSprites:
 		Image: quad
 
@@ -44,7 +44,7 @@ siege_tank.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 1075
+		cash: 1075
 	RenderSprites:
 		Image: siege_tank
 
@@ -54,7 +54,7 @@ missile_tank.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 1250
+		cash: 1250
 	RenderSprites:
 		Image: missile_tank
 
@@ -64,7 +64,7 @@ combat_tank_a.starport:
 		Prerequisites: ~starport.atreides
 		Queue: Starport
 	Valued:
-		Cost: 875
+		cash: 875
 	RenderSprites:
 		Image: combat_tank_a
 
@@ -74,7 +74,7 @@ combat_tank_h.starport:
 		Prerequisites: ~starport.harkonnen
 		Queue: Starport
 	Valued:
-		Cost: 875
+		cash: 875
 	RenderSprites:
 		Image: combat_tank_h
 
@@ -84,7 +84,7 @@ combat_tank_o.starport:
 		Prerequisites: ~starport.ordos
 		Queue: Starport
 	Valued:
-		Cost: 875
+		cash: 875
 	RenderSprites:
 		Image: combat_tank_o
 
@@ -94,5 +94,5 @@ carryall.starport:
 		Prerequisites: starport
 		Queue: Starport
 	Valued:
-		Cost: 1500
+		cash: 1500
 

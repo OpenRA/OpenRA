@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Sound.Play(TabClick);
 
-			if (item.Paused || item.Done || item.TotalCost == item.RemainingCost)
+			if (item.Paused || item.Done || item.TotalCosts.Except(item.RemainingCosts).Any())
 			{
 				// Instant cancel of things we have not started yet and things that are finished
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);

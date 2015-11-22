@@ -1,7 +1,7 @@
 MSLO:
 	Inherits: ^Building
 	Valued:
-		Cost: 2500
+		cash: 2500
 	Tooltip:
 		Name: Missile Silo
 		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
@@ -51,7 +51,7 @@ MSLO:
 GAP:
 	Inherits: ^Building
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Gap Generator
 		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
@@ -92,7 +92,7 @@ SPEN:
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Sub Pen
 		Description: Produces and repairs\nsubmarines and transports.
@@ -177,7 +177,7 @@ SYRD:
 		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
@@ -263,7 +263,7 @@ IRON:
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Iron Curtain
 		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
@@ -311,7 +311,7 @@ PDOX:
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Chronosphere
 		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
@@ -379,7 +379,7 @@ TSLA:
 		BuildPaletteOrder: 80
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
 	Valued:
-		Cost: 1200
+		cash: 1200
 	Tooltip:
 		Name: Tesla Coil
 		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
@@ -422,7 +422,7 @@ AGUN:
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -469,7 +469,7 @@ DOME:
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
 	Valued:
-		Cost: 1800
+		cash: 1800
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
@@ -508,7 +508,7 @@ PBOX:
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
 	Valued:
-		Cost: 400
+		cash: 400
 	Health:
 		HP: 400
 	Armor:
@@ -551,7 +551,7 @@ HBOX:
 		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 	Valued:
-		Cost: 600
+		cash: 600
 	Health:
 		HP: 600
 	Armor:
@@ -593,7 +593,7 @@ GUN:
 		BuildPaletteOrder: 70
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Turret
 		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -629,7 +629,7 @@ FTUR:
 		BuildPaletteOrder: 60
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Flame Tower
 		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
@@ -665,7 +665,7 @@ SAM:
 		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 	Valued:
-		Cost: 750
+		cash: 750
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -707,7 +707,7 @@ ATEK:
 		BuildPaletteOrder: 140
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Allied Tech Center
 		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
@@ -746,7 +746,7 @@ WEAP:
 		BuildPaletteOrder: 80
 		Prerequisites: proc, ~techlevel.low
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: War Factory
 		Description: Produces vehicles.
@@ -878,12 +878,12 @@ FACT:
 	Production:
 		Produces: Building,Defense
 	Valued:
-		Cost: 2500
+		cash: 2500
 	Tooltip:
 		Name: Construction Yard
 		Description: Produces structures.
 	CustomSellValue:
-		Value: 2500
+		cash: 2500
 	BaseBuilding:
 	Transforms:
 		IntoActor: mcv
@@ -913,7 +913,7 @@ PROC:
 		BuildPaletteOrder: 60
 		Prerequisites: anypower, ~techlevel.infonly
 	Valued:
-		Cost: 1400
+		cash: 1400
 	Tooltip:
 		Name: Ore Refinery
 		Description: Refines Ore and Gems\ninto credits.
@@ -943,7 +943,7 @@ PROC:
 		Capacity: 2000
 	DrawLineToTarget:
 	CustomSellValue:
-		Value: 600
+		cash: 600
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
@@ -971,7 +971,7 @@ SILO:
 		BuildPaletteOrder: 35
 		Prerequisites: proc, ~techlevel.infonly
 	Valued:
-		Cost: 150
+		cash: 150
 	Tooltip:
 		Name: Silo
 		Description: Stores excess refined\nOre and Gems.
@@ -1001,7 +1001,7 @@ HPAD:
 		BuildPaletteOrder: 120
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads\nhelicopters.
@@ -1070,7 +1070,7 @@ AFLD:
 		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Airfield
 		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
@@ -1179,7 +1179,7 @@ POWR:
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.infonly
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Power Plant
 		Description: Provides power for other structures.
@@ -1216,7 +1216,7 @@ APWR:
 		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides double the power of a\nstandard Power Plant.
@@ -1257,7 +1257,7 @@ STEK:
 		BuildPaletteOrder: 150
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Soviet Tech Center
 		Description: Provides Soviet advanced technologies.
@@ -1284,7 +1284,7 @@ BARR:
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
-		Cost: 400
+		cash: 400
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Trains infantry.
@@ -1350,7 +1350,7 @@ KENN:
 		BuildPaletteOrder: 25
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Kennel
 		Description: Trains Attack Dogs.
@@ -1385,7 +1385,7 @@ TENT:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 	Valued:
-		Cost: 400
+		cash: 400
 	Tooltip:
 		Name: Allied Barracks
 		Description: Trains infantry.
@@ -1457,7 +1457,7 @@ FIX:
 		BuildPaletteOrder: 100
 		Prerequisites: weap, ~techlevel.medium
 	Valued:
-		Cost: 1200
+		cash: 1200
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles for credits.
@@ -1493,9 +1493,9 @@ SBAG:
 		BuildPaletteOrder: 10
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 	Valued:
-		Cost: 25
+		cash: 25
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Sandbag Wall
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
@@ -1518,9 +1518,9 @@ FENC:
 		BuildPaletteOrder: 20
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 	Valued:
-		Cost: 25
+		cash: 25
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Wire Fence
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
@@ -1543,9 +1543,9 @@ BRIK:
 		BuildPaletteOrder: 30
 		Prerequisites: fact, ~techlevel.medium
 	Valued:
-		Cost: 100
+		cash: 100
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.

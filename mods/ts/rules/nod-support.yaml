@@ -8,9 +8,9 @@ NAWALL:
 		DamagedSounds:
 		DestroyedSounds:
 	Valued:
-		Cost: 50
+		cash: 50
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
@@ -28,7 +28,7 @@ NAWALL:
 NALASR:
 	Inherits: ^Defense
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Laser Turret
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -67,7 +67,7 @@ NALASR:
 NAOBEL:
 	Inherits: ^Defense
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Obelisk of Light
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -109,7 +109,7 @@ NAOBEL:
 NASAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: S.A.M. Site
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -147,7 +147,7 @@ NASAM:
 GATICK:
 	Inherits: ^DeployedVehicle
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Deployed Tick Tank
 	Health:
@@ -190,7 +190,7 @@ GATICK:
 GAARTY:
 	Inherits@1: ^DeployedVehicle
 	Valued:
-		Cost: 975
+		cash: 975
 	Tooltip:
 		Name: Deployed Artillery
 	Health:
@@ -230,7 +230,7 @@ NAMISL:
 		Prerequisites: natech, ~structures.nod
 		BuildLimit: 1
 	Valued:
-		Cost: 1300
+		cash: 1300
 	Tooltip:
 		Name: Nod Missile Silo
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.

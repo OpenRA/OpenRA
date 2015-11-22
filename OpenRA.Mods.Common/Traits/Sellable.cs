@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var sellValue = self.GetSellValue() * info.RefundPercent / 100;
+				var sellValue = self.GetTotalSellValue() * info.RefundPercent / 100;
 				if (health.Value != null)
 				{
 					sellValue *= health.Value.HP;

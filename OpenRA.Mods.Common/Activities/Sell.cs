@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -30,16 +31,15 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var cost = self.GetSellValue();
+			var refunds = self.GetModifiedSellValues(c => (c * sellableInfo.RefundPercent * (health == null ? 1 : health.HP)) / (100 * (health == null ? 1 : health.MaxHP)));
 
-			var refund = (cost * sellableInfo.RefundPercent * (health == null ? 1 : health.HP)) / (100 * (health == null ? 1 : health.MaxHP));
-			playerResources.GiveResource("cash", refund);
+			playerResources.GiveResources(refunds);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
 
-			if (refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(refund), 30)));
+			if (refunds.Values.Any(c => c > 0) && self.Owner.IsAlliedWith(self.World.RenderPlayer))
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(refunds.Values.Sum()), 30)));
 
 			self.Dispose();
 			return this;

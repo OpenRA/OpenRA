@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var assets = template.Get<LabelWidget>("ASSETS");
 			assets.GetText = () => "$" + world.ActorsHavingTrait<Valued>()
 				.Where(a => a.Owner == player && !a.IsDead)
-				.Sum(a => a.Info.TraitInfos<ValuedInfo>().First().Cost);
+				.Sum(a => a.Info.TraitInfos<ValuedInfo>().First().TotalCost);
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.ActorsHavingTrait<Harvester>().Count(a => a.Owner == player && !a.IsDead).ToString();

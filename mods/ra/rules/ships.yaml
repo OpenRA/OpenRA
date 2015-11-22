@@ -6,7 +6,7 @@ SS:
 		BuildPaletteOrder: 30
 		Prerequisites: ~spen, ~techlevel.medium
 	Valued:
-		Cost: 950
+		cash: 950
 	Tooltip:
 		Name: Submarine
 		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
@@ -62,7 +62,7 @@ MSUB:
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.unrestricted
 	Valued:
-		Cost: 2400
+		cash: 2400
 	Tooltip:
 		Name: Missile Submarine
 		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
@@ -118,7 +118,7 @@ DD:
 		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Destroyer
 		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks
@@ -164,7 +164,7 @@ CA:
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
 	Valued:
-		Cost: 2400
+		cash: 2400
 	Tooltip:
 		Name: Cruiser
 		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
@@ -217,7 +217,7 @@ LST:
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.low
 	Valued:
-		Cost: 700
+		cash: 700
 	Tooltip:
 		Name: Transport
 		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
@@ -249,7 +249,7 @@ PT:
 		BuildPaletteOrder: 20
 		Prerequisites: ~syrd, ~techlevel.medium
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Gunboat
 		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft

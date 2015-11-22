@@ -8,7 +8,11 @@
  */
 #endregion
 
+using OpenRA;
 using OpenRA.Traits;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -16,8 +20,25 @@ namespace OpenRA.Mods.Common.Traits
 	public class ValuedInfo : TraitInfo<Valued>
 	{
 		[FieldLoader.Require]
-		[Desc("Used in production, but also for bounties so remember to set it > 0 even for NPCs.")]
-		public readonly int Cost = 0;
+		[DictionaryFromYamlKey]
+		[Desc("The costs, listed separately for each resource type.",
+		      "Used in production, but also for bounties so remember to set it even for NPCs.")]
+		public Dictionary<string, int> Costs;
+
+		public int TotalCost
+		{
+			get { return Costs.Values.Sum(); }
+		}
+
+		public IReadOnlyDictionary<string, int> GetModifiedCosts(Func<int, int> fn)
+		{
+			var modified = new Dictionary<string, int>();
+
+			foreach (var p in Costs)
+				modified.Add(p.Key, fn(p.Value));
+
+			return modified.AsReadOnly();
+		}
 	}
 
 	public class Valued { }

@@ -579,14 +579,14 @@ Rules:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 400
+			cash: 400
 		Power:
 			Amount: 0
 	PBOX:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 400
+			cash: 400
 		Health:
 			HP: 200
 		Armor:
@@ -597,17 +597,17 @@ Rules:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 20
+			cash: 20
 	E1:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 20
+			cash: 20
 	E2:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 40
+			cash: 40
 		Explodes:
 			Weapon: UnitExplodeSmall
 			Chance: 20
@@ -615,22 +615,22 @@ Rules:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 60
+			cash: 60
 	E4:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 100
+			cash: 100
 	E6:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 100
+			cash: 100
 	E7:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 750
+			cash: 750
 	3TNK:
 		Inherits: ^Tank
 		Armament:
@@ -642,15 +642,15 @@ Rules:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 100
+			cash: 100
 	SHOK:
 		Buildable:
 			Prerequisites: barracks
 		Valued:
-			Cost: 150
+			cash: 150
 	SNIPER:
 		Valued:
-			Cost: 200
+			cash: 200
 		Buildable:
 			Prerequisites: barracks
 		Health:
@@ -673,7 +673,7 @@ Rules:
 			BuildPaletteOrder: 60
 			Prerequisites: barracks
 		Valued:
-			Cost: 300
+			cash: 300
 	FTRK:
 		-Armament@AA:
 		-Armament@AG:
@@ -685,7 +685,7 @@ Rules:
 	ARTY:
 		Inherits: ^Tank
 		Valued:
-			Cost: 600
+			cash: 600
 		Health:
 			HP: 75
 		RevealsShroud:

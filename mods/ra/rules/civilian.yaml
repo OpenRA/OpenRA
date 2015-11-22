@@ -62,7 +62,7 @@ FCOM:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Health:
 		HP: 400
 	Armor:
@@ -300,7 +300,7 @@ MISS:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Health:
 		HP: 400
 	RevealsShroud:

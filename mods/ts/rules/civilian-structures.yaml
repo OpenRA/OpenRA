@@ -1233,9 +1233,9 @@ GASAND:
 		DamagedSounds: sandbag1.aud
 		DestroyedSounds: sandbag1.aud
 	Valued:
-		Cost: 25
+		cash: 25
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Sandbags
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
@@ -1256,7 +1256,7 @@ GASPOT:
 		Queue: Defense
 		Prerequisites: ~disabled
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Light Tower
 	Building:
@@ -1280,7 +1280,7 @@ GASPOT:
 GALITE:
 	Inherits: ^Building
 	Valued:
-		Cost: 200
+		cash: 200
 	Tooltip:
 		Name: Light Post
 	RenderSprites:
@@ -1310,7 +1310,7 @@ GALITE:
 GAICBM:
 	Inherits: ^Building
 	Valued:
-		Cost: 800
+		cash: 800
 	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed ICBM

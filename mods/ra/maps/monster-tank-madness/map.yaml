@@ -2179,7 +2179,7 @@ Rules:
 	5TNK:
 		Inherits: ^Tank
 		Valued:
-			Cost: 10000
+			cash: 10000
 		Tooltip:
 			Name: Super Tank
 			GenericName: Super Tank

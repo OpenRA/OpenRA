@@ -18,7 +18,7 @@ FACF:
 	RenderSprites:
 		Image: FACT
 	Valued:
-		Cost: 250
+		cash: 250
 	Health:
 		HP: 1500
 	Armor:
@@ -46,7 +46,7 @@ WEAF:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	Valued:
-		Cost: 200
+		cash: 200
 	Health:
 		HP: 1500
 	Armor:
@@ -75,7 +75,7 @@ SYRF:
 	RenderSprites:
 		Image: SYRD
 	Valued:
-		Cost: 100
+		cash: 100
 	Health:
 		HP: 1000
 	Armor:
@@ -106,7 +106,7 @@ SPEF:
 	RenderSprites:
 		Image: SPEN
 	Valued:
-		Cost: 100
+		cash: 100
 	Health:
 		HP: 1000
 	Armor:
@@ -134,7 +134,7 @@ DOMF:
 	RenderSprites:
 		Image: DOME
 	Valued:
-		Cost: 180
+		cash: 180
 	Health:
 		HP: 1000
 	Armor:
@@ -162,7 +162,7 @@ ATEF:
 	RenderSprites:
 		Image: ATEK
 	Valued:
-		Cost: 150
+		cash: 150
 	Health:
 		HP: 400
 	Armor:
@@ -192,7 +192,7 @@ PDOF:
 	Bib:
 		HasMinibib: Yes
 	Valued:
-		Cost: 150
+		cash: 150
 	Health:
 		HP: 1000
 	Armor:
@@ -222,7 +222,7 @@ MSLF:
 	RenderSprites:
 		Image: MSLO
 	Valued:
-		Cost: 250
+		cash: 250
 	Health:
 		HP: 1000
 	Armor:

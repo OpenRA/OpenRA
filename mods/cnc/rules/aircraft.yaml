@@ -1,7 +1,7 @@
 TRAN:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 750
+		cash: 750
 	Tooltip:
 		Name: Chinook Transport
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
@@ -44,7 +44,7 @@ TRAN:
 HELI:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		cash: 1200
 	Tooltip:
 		Name: Apache Longbow
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
@@ -95,7 +95,7 @@ HELI:
 ORCA:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		cash: 1200
 	Tooltip:
 		Name: Orca
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
@@ -147,7 +147,7 @@ C17:
 		Name: Supply Aircraft
 		Description: Drops vehicle reinforcements on Airstrips
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Aircraft:
 		ROT: 5
 		Speed: 326
@@ -185,7 +185,7 @@ A10:
 		Name: A10 Bomber
 		Description: Used to deliver air strikes.
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Aircraft:
 		ROT: 4
 		Speed: 373

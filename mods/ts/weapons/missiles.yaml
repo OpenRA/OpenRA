@@ -124,7 +124,7 @@ MammothTusk:
 
 BikeMissile:
 	ReloadDelay: 60
-	Burst: 2 # to make bike alternate between left and right launcher, change in dmg/s compared to original TS
+	Burst: 2
 	BurstDelay: 60
 	Range: 5c0
 	Report: MISL1.AUD

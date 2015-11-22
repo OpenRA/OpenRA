@@ -91,8 +91,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.MaxDuplicateValue > 0)
 			{
 				var vi = collector.Info.TraitInfoOrDefault<ValuedInfo>();
-				if (vi != null && vi.Cost > 0)
-					duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.Cost);
+				if (vi != null && vi.TotalCost > 0)
+					duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.TotalCost);
 			}
 
 			for (var i = 0; i < duplicates; i++)

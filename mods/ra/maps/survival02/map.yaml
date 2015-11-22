@@ -1078,10 +1078,10 @@ Rules:
 			Range: 7c0
 	ARTY:
 		Valued:
-			Cost: 1000
+			cash: 1000
 	GUN:
 		Valued:
-			Cost: 1000
+			cash: 1000
 	E7:
 		Buildable:
 			Prerequisites: ~disabled

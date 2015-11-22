@@ -17,12 +17,12 @@ GACNST:
 	Production:
 		Produces: Building,Defense
 	Valued:
-		Cost: 2500
+		cash: 2500
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds base structures.
 	CustomSellValue:
-		Value: 2500
+		cash: 2500
 	BaseBuilding:
 	Transforms:
 		IntoActor: mcv
@@ -56,7 +56,7 @@ GACNST:
 PROC:
 	Inherits: ^Building
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Tiberium Refinery
 		Description: Processes raw Tiberium\ninto useable resources.
@@ -83,7 +83,7 @@ PROC:
 		PipCount: 15
 		Capacity: 3000
 	CustomSellValue:
-		Value: 600
+		cash: 600
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 3,1
@@ -113,7 +113,7 @@ GASILO:
 		BuildPaletteOrder: 70
 		Prerequisites: proc
 	Valued:
-		Cost: 150
+		cash: 150
 	Tooltip:
 		Name: Silo
 		Description: Stores excess Tiberium.

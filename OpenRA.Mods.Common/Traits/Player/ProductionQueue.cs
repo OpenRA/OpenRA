@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -82,7 +83,10 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Actor { get { return self; } }
 
 		[Sync] public int QueueLength { get { return queue.Count; } }
-		[Sync] public int CurrentRemainingCost { get { return QueueLength == 0 ? 0 : queue[0].RemainingCost; } }
+		[Sync] public ReadOnlyDictionary<string, int> CurrentRemainingCosts
+		{
+			get { return QueueLength == 0 ? new ReadOnlyDictionary<string, int>() : new ReadOnlyDictionary<string, int>(queue[0].RemainingCosts); }
+		}
 		[Sync] public int CurrentRemainingTime { get { return QueueLength == 0 ? 0 : queue[0].RemainingTime; } }
 		[Sync] public int CurrentSlowdown { get { return QueueLength == 0 ? 0 : queue[0].Slowdown; } }
 		[Sync] public bool CurrentPaused { get { return QueueLength != 0 && queue[0].Paused; } }
@@ -112,8 +116,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (queue.Count == 0)
 				return;
 
+			var refunds = new Dictionary<string, int>();
+			foreach (var p in queue[0].TotalCosts)
+				refunds.Add(p.Key, p.Value - queue[0].RemainingCosts[p.Key]);
+
 			// Refund the current item
-			playerResources.GiveResource("cash", queue[0].TotalCost - queue[0].RemainingCost);
+			playerResources.GiveResources(new ReadOnlyDictionary<string, int>(refunds));
 			queue.Clear();
 		}
 
@@ -232,7 +240,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
-				playerResources.GiveResource("cash", queue[0].TotalCost - queue[0].RemainingCost); // refund what's been paid so far.
+				var refunds = new Dictionary<string, int>();
+				foreach (var p in queue[0].TotalCosts)
+					refunds.Add(p.Key, p.Value - queue[0].RemainingCosts[p.Key]);
+				playerResources.GiveResources(refunds.AsReadOnly()); // refund what's been paid so far.
+
 				FinishProduction();
 			}
 
@@ -255,7 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (!bi.Queue.Contains(Info.Type))
 							return; /* Not built by this queue */
 
-						var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
+						var costs = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Costs : new Dictionary<string, int>();
 						var time = GetBuildTime(order.TargetString);
 
 						if (BuildableItems().All(b => b.Name != order.TargetString))
@@ -277,7 +289,7 @@ namespace OpenRA.Mods.Common.Traits
 						for (var n = 0; n < amountToBuild; n++)
 						{
 							var hasPlayedSound = false;
-							BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+							BeginProduction(new ProductionItem(this, order.TargetString, costs, playerPower, () => self.World.AddFrameEndTask(_ =>
 							{
 								var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 
@@ -340,8 +352,11 @@ namespace OpenRA.Mods.Common.Traits
 				queue.RemoveAt(lastIndex);
 			else if (lastIndex == 0)
 			{
-				var item = queue[0];
-				playerResources.GiveResource("cash", item.TotalCost - item.RemainingCost);	// refund what has been paid
+				var refunds = new Dictionary<string, int>();
+				foreach (var p in queue[0].TotalCosts)
+					refunds.Add(p.Key, p.Value - queue[0].RemainingCosts[p.Key]);
+
+				playerResources.GiveResources(refunds.AsReadOnly()); // refund what has been paid
 				FinishProduction();
 			}
 		}
@@ -396,12 +411,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Item;
 		public readonly ProductionQueue Queue;
-		public readonly int TotalCost;
+		public readonly ReadOnlyDictionary<string, int> TotalCosts;
 		public readonly Action OnComplete;
 
 		public int TotalTime { get; private set; }
 		public int RemainingTime { get; private set; }
-		public int RemainingCost { get; private set; }
+		public Dictionary<string, int> RemainingCosts { get; private set; }
 		public int RemainingTimeActual
 		{
 			get
@@ -418,11 +433,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly PowerManager pm;
 
-		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
+		public ProductionItem(ProductionQueue queue, string item, IDictionary<string, int> costs, PowerManager pm, Action onComplete)
 		{
 			Item = item;
 			RemainingTime = TotalTime = 1;
-			RemainingCost = TotalCost = cost;
+			TotalCosts = new ReadOnlyDictionary<string, int>(costs);
+			RemainingCosts = new Dictionary<string, int>(costs);
 			OnComplete = onComplete;
 			Queue = queue;
 			this.pm = pm;
@@ -458,11 +474,16 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !pr.TakeResource("cash", costThisFrame))
+			var costsThisFrame = new Dictionary<string, int>();
+			foreach (var p in RemainingCosts)
+				costsThisFrame.Add(p.Key, p.Value / RemainingTime);
+
+			if (!pr.TakeResources(costsThisFrame.AsReadOnly()))
 				return;
 
-			RemainingCost -= costThisFrame;
+			foreach (var p in costsThisFrame)
+				RemainingCosts[p.Key] -= p.Value;
+
 			RemainingTime -= 1;
 			if (RemainingTime > 0)
 				return;

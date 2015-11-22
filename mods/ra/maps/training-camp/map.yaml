@@ -836,7 +836,7 @@ Rules:
 		Health:
 			HP: 10000
 		Valued:
-			Cost: 2000
+			cash: 2000
 		Power:
 			Amount: 0
 	FTUR:
@@ -870,32 +870,32 @@ Rules:
 		Buildable:
 			Prerequisites: afld
 		Valued:
-			Cost: 2000
+			cash: 2000
 	YAK:
 		Buildable:
 			Prerequisites: afld
 		Valued:
-			Cost: 150
+			cash: 150
 	TRAN:
 		Buildable:
 			Prerequisites: hpad
 		Valued:
-			Cost: 150
+			cash: 150
 	HIND:
 		Buildable:
 			Prerequisites: hpad
 		Valued:
-			Cost: 200
+			cash: 200
 	HELI:
 		Buildable:
 			Prerequisites: hpad
 		Valued:
-			Cost: 200
+			cash: 200
 	HPAD:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 200
+			cash: 200
 		Power:
 			Amount: 0
 	FENC:
@@ -903,69 +903,69 @@ Rules:
 			Queue: Building
 			Prerequisites: barr
 		Valued:
-			Cost: 10
+			cash: 10
 	AFLD:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 200
+			cash: 200
 		Power:
 			Amount: 0
 	DOG:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 20
+			cash: 20
 	E1:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 20
+			cash: 20
 	E2:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 32
+			cash: 32
 	E3:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 60
+			cash: 60
 	E4:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 60
+			cash: 60
 	E6:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 100
+			cash: 100
 	SPY:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 100
+			cash: 100
 	E7:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 400
+			cash: 400
 	MEDI:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 60
+			cash: 60
 	SHOK:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 200
+			cash: 200
 	SNIPER:
 		Buildable:
 			Prerequisites: barr
 		Valued:
-			Cost: 200
+			cash: 200
 	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
@@ -973,32 +973,32 @@ Rules:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 1250
+			cash: 1250
 	1TNK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 125
+			cash: 125
 	2TNK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 175
+			cash: 175
 	3TNK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 250
+			cash: 250
 	4TNK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 500
+			cash: 500
 	ARTY:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 1000
+			cash: 1000
 	HARV:
 		Buildable:
 			Prerequisites: ~disabled
@@ -1030,28 +1030,28 @@ Rules:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 50
+			cash: 50
 	APC:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 250
+			cash: 250
 	TTNK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 200
+			cash: 200
 	FTRK:
 		Buildable:
 			Prerequisites: weap
 		Valued:
-			Cost: 150
+			cash: 150
 	DTRK:
 		Buildable:
 			BuildPaletteOrder: 10
 			Prerequisites: weap
 		Valued:
-			Cost: 150
+			cash: 150
 
 Sequences:
 

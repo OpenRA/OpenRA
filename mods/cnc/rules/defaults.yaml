@@ -256,7 +256,7 @@
 ^CivInfantry:
 	Inherits: ^Infantry
 	Valued:
-		Cost: 70
+		cash: 70
 	Tooltip:
 		Name: Civilian
 		GenericVisibility: None
@@ -292,7 +292,7 @@
 		Queue: Biolab
 		BuildPaletteOrder: 50
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Dinosaur
 	RevealsShroud:
@@ -365,7 +365,7 @@
 	DrawLineToTarget:
 	HiddenUnderFog:
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Visceroid
 	Armament:

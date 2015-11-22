@@ -45,9 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (remainingTicks == 0)
 			{
-				var unitCost = self.Info.TraitInfo<ValuedInfo>().Cost;
 				var hpToRepair = repairsUnits.HpPerStep;
-				var cost = Math.Max(1, (hpToRepair * unitCost * repairsUnits.ValuePercentage) / (health.MaxHP * 100));
+				var costs = self.Info.TraitInfo<ValuedInfo>().GetModifiedCosts(c => (Math.Max(1, (hpToRepair * c * repairsUnits.ValuePercentage) / (health.MaxHP * 100))));
 
 				if (!played)
 				{
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.StartRepairingNotification, self.Owner.Faction.InternalName);
 				}
 
-				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeResource("cash", cost))
+				if (!self.Owner.PlayerActor.Trait<PlayerResources>().TakeResources(costs))
 				{
 					remainingTicks = 1;
 					return this;

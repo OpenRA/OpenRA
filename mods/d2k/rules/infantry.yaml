@@ -4,7 +4,7 @@ light_inf:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 	Valued:
-		Cost: 50
+		cash: 50
 	CustomBuildTimeValue:
 		Value: 54
 	Tooltip:
@@ -27,7 +27,7 @@ engineer:
 		BuildPaletteOrder: 50
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 400
+		cash: 400
 	CustomBuildTimeValue:
 		Value: 108
 	Tooltip:
@@ -55,7 +55,7 @@ trooper:
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 	Valued:
-		Cost: 90
+		cash: 90
 	CustomBuildTimeValue:
 		Value: 73
 	Tooltip:
@@ -82,7 +82,7 @@ thumper:
 		BuildPaletteOrder: 60
 		Prerequisites: upgrade.barracks, ~techlevel.high
 	Valued:
-		Cost: 200
+		cash: 200
 	CustomBuildTimeValue:
 		Value: 108
 	Tooltip:
@@ -139,7 +139,7 @@ fremen:
 	Mobile:
 		Speed: 43
 	Valued:
-		Cost: 200	## actually 0, but spawns from support power at Palace
+		cash: 200
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -172,9 +172,9 @@ grenadier:
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
 	Valued:
-		Cost: 80
+		cash: 80
 	CustomBuildTimeValue:
-		Value: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
+		Value: 81
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
@@ -201,7 +201,7 @@ sardaukar:
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
 	Valued:
-		Cost: 200
+		cash: 200
 	CustomBuildTimeValue:
 		Value: 81
 	Tooltip:
@@ -234,7 +234,7 @@ saboteur:
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
 	Valued:
-		Cost: 300	## actually 0, but spawns from support power at Palace
+		cash: 300
 	Tooltip:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings

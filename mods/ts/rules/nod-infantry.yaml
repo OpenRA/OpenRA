@@ -5,7 +5,7 @@ E3:
 		BuildPaletteOrder: 20
 		Prerequisites: ~nahand
 	Valued:
-		Cost: 250
+		cash: 250
 	Tooltip:
 		Name: Rocket Infantry
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
@@ -30,7 +30,7 @@ CYBORG:
 	Armor:
 		Type: Light
 	Valued:
-		Cost: 650
+		cash: 650
 	Tooltip:
 		Name: Cyborg Infantry
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
@@ -63,7 +63,7 @@ CYC2:
 	Armor:
 		Type: Heavy
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Cyborg Commando
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
@@ -100,7 +100,7 @@ MHIJACK:
 		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, natmpl
 	Valued:
-		Cost: 1850
+		cash: 1850
 	Tooltip:
 		Name: Mutant Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed

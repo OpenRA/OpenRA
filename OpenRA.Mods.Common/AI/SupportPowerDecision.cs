@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.AI
 					{
 						case DecisionMetric.Value:
 							var valueInfo = a.Info.TraitInfoOrDefault<ValuedInfo>();
-							return (valueInfo != null) ? valueInfo.Cost * Attractiveness : 0;
+							return (valueInfo != null) ? valueInfo.TotalCost * Attractiveness : 0;
 
 						case DecisionMetric.Health:
 							var health = a.TraitOrDefault<Health>();

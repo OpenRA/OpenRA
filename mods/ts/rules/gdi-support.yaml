@@ -8,9 +8,9 @@ GAWALL:
 		DamagedSounds:
 		DestroyedSounds:
 	Valued:
-		Cost: 50
+		cash: 50
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
@@ -31,7 +31,7 @@ GACTWR:
 	WithWallSpriteBody:
 		Type: wall
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Component Tower
 		Description: Modular tower for base defenses.
@@ -131,7 +131,7 @@ GACTWR:
 GAVULC:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 150
+		cash: 150
 	Tooltip:
 		Name: Vulcan Tower
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
@@ -147,7 +147,7 @@ GAVULC:
 GAROCK:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: RPG Upgrade
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
@@ -163,7 +163,7 @@ GAROCK:
 GACSAM:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: SAM Upgrade
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -179,7 +179,7 @@ GACSAM:
 GAPOWRUP:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 150
+		cash: 150
 	Tooltip:
 		Name: Power Turbine
 		Description: Provides extra power generation.
@@ -195,7 +195,7 @@ GAPOWRUP:
 GAPLUG2:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Seeker Control
 		Description: Enables use of the hunter-seeker droid.
@@ -211,7 +211,7 @@ GAPLUG2:
 GAPLUG3:
 	Inherits: ^BuildingPlug
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Ion Cannon Uplink
 		Description: Enables use of the Ion Cannon.

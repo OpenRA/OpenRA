@@ -1,7 +1,7 @@
 carryall.reinforce:
 	Inherits: ^Plane
 	Valued:
-		Cost: 1100
+		cash: 1100
 	CustomBuildTimeValue:
 		Value: 648
 	Tooltip:
@@ -15,7 +15,7 @@ carryall.reinforce:
 		CruiseAltitude: 2100
 		InitialFacing: 0
 		ROT: 4
-		Speed: 144 # 112 * ~1.3 for balance reasons
+		Speed: 144
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repair_pad
 		RearmBuildings:
@@ -60,7 +60,7 @@ frigate:
 		Description: Supply spacecraft
 	Aircraft:
 		ROT: 1
-		Speed: 189 # 126 * ~1.5 for balance reasons
+		Speed: 189
 		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False
@@ -84,7 +84,7 @@ ornithopter:
 		Type: light
 	Aircraft:
 		ROT: 2
-		Speed: 224 # 189 * ~1.2 for balance reasons
+		Speed: 224
 		RepairBuildings:
 		RearmBuildings:
 		Repulsable: False

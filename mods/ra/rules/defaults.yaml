@@ -97,7 +97,6 @@
 	ProximityCaptor:
 		Types: Vehicle
 	GivesBounty:
-		ResourceType: cash
 	GpsDot:
 		String: Vehicle
 	WithSmoke:
@@ -209,7 +208,6 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	GivesBounty:
-		ResourceType: cash
 	GpsDot:
 		String: Infantry
 	Crushable:
@@ -278,7 +276,7 @@
 	Selectable:
 		Class: CivInfantry
 	Valued:
-		Cost: 10
+		cash: 10
 	Tooltip:
 		Name: Civilian
 		GenericVisibility: None
@@ -320,7 +318,6 @@
 	ProximityCaptor:
 		Types: Ship
 	GivesBounty:
-		ResourceType: cash
 	Chronoshiftable:
 	RepairableNear:
 	GpsDot:
@@ -376,7 +373,6 @@
 		EjectInAir: true
 		AllowUnsuitableCell: true
 	GivesBounty:
-		ResourceType: cash
 	GpsDot:
 		String: Plane
 	Tooltip:
@@ -419,7 +415,6 @@
 	ProximityCaptor:
 		Types: Building
 	GivesBounty:
-		ResourceType: cash
 	Guardable:
 		Range: 3c0
 	FrozenUnderFog:

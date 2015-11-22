@@ -188,7 +188,7 @@ upgrade.conyard:
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 590
 	RenderSprites:
@@ -210,7 +210,7 @@ upgrade.barracks:
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
-		Cost: 500
+		cash: 500
 	CustomBuildTimeValue:
 		Value: 290
 	RenderSprites:
@@ -231,7 +231,7 @@ upgrade.light:
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
-		Cost: 400
+		cash: 400
 	CustomBuildTimeValue:
 		Value: 215
 	RenderSprites:
@@ -252,7 +252,7 @@ upgrade.heavy:
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
-		Cost: 800
+		cash: 800
 	CustomBuildTimeValue:
 		Value: 380
 	RenderSprites:
@@ -274,7 +274,7 @@ upgrade.hightech:
 		Queue: Upgrade
 		BuildLimit: 1
 	Valued:
-		Cost: 1500
+		cash: 1500
 	CustomBuildTimeValue:
 		Value: 720
 	RenderSprites:

@@ -1,7 +1,7 @@
 GADPSA:
 	Inherits: ^DeployedVehicle
 	Valued:
-		Cost: 950
+		cash: 950
 	Tooltip:
 		Name: Deployed Sensor Array
 	Health:
@@ -27,7 +27,7 @@ GADPSA:
 NAPULS:
 	Inherits: ^Defense
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: EMP Cannon
 		Description: Disables vehicles.\nRequires power to operate.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft

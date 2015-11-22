@@ -6,7 +6,7 @@ Container@NEW_MAP_BG:
 	Height: 125
 	Children:
 		Label@TITLE:
-			Text:New Map
+			Text: New Map
 			Width: PARENT_RIGHT
 			Y: 0-25
 			Font: BigBold
@@ -72,7 +72,6 @@ Container@NEW_MAP_BG:
 			Text: Create
 			Font: Bold
 			Key: return
-
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
@@ -407,3 +406,4 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+

@@ -1,7 +1,7 @@
 4TNK:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 1700
+		cash: 1700
 	Tooltip:
 		Name: Mammoth Tank
 	Mobile:
@@ -37,7 +37,7 @@
 ^TRUCK:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Truck
 	Health:
@@ -58,7 +58,7 @@ TRUCKB:
 ICBM:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 1400
+		cash: 1400
 	Tooltip:
 		Name: Ballistic Missile Launcher
 	Health:
@@ -81,7 +81,7 @@ ICBM:
 BUS:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: School Bus
 	Mobile:
@@ -102,7 +102,7 @@ BUS:
 PICK:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Pickup
 	Mobile:
@@ -123,7 +123,7 @@ PICK:
 CAR:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Automobile
 	Mobile:
@@ -144,7 +144,7 @@ CAR:
 WINI:
 	Inherits: ^CivilianVoxelVehicle
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Recreational Vehicle
 	Mobile:
@@ -165,7 +165,7 @@ WINI:
 LOCOMOTIVE:
 	Inherits: ^Train
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Train Locomotive
 	Cargo:
@@ -177,7 +177,7 @@ LOCOMOTIVE:
 TRAINCAR:
 	Inherits: ^Train
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Passenger Car
 	Cargo:
@@ -189,7 +189,7 @@ TRAINCAR:
 CARGOCAR:
 	Inherits: ^Train
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Cargo Car
 	Cargo:

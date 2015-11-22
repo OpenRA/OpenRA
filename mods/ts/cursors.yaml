@@ -66,7 +66,7 @@ Cursors:
 		attack:
 			Start: 53
 			Length: 5
-		attack-blocked: # TODO: unused
+		attack-blocked:
 			Start: 41
 			Length: 1
 		attack-minimap:
@@ -137,13 +137,13 @@ Cursors:
 		deploy-blocked:
 			Start: 119
 			Length: 1
-		undeploy: #TODO: unused
+		undeploy:
 			Start: 120
 			Length: 9
 		goldwrench:
 			Start: 170
 			Length: 24
-		goldwrench-blocked: #TODO
+		goldwrench-blocked:
 			Start: 213
 			Length: 1
 		ioncannon:
@@ -155,7 +155,7 @@ Cursors:
 		sell:
 			Start: 129
 			Length: 10
-		sell-minimap: #TODO: unused
+		sell-minimap:
 			Start: 139
 			Length: 10
 		sell-blocked:

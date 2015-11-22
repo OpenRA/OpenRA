@@ -54,3 +54,4 @@ Container@GAME_INFO_PANEL:
 				Container@DEBUG_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
+

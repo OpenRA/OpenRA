@@ -1,7 +1,7 @@
 BOAT:
 	Inherits: ^Ship
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Gunboat
 	Health:
@@ -26,7 +26,7 @@ BOAT:
 	BodyOrientation:
 		QuantizedFacings: 2
 	WithGunboatBody:
-		Sequence: left # Just a work-around to avoid crash
+		Sequence: left
 	Selectable:
 		Bounds: 42,24
 	AutoTarget:
@@ -39,7 +39,7 @@ BOAT:
 LST:
 	Inherits: ^Ship
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Landing Craft
 	Buildable:

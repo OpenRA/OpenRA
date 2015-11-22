@@ -5,7 +5,7 @@ MCV:
 		BuildPaletteOrder: 110
 		Prerequisites: ~factory, tech
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
@@ -41,7 +41,7 @@ MCV:
 HARV:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 1400
+		cash: 1400
 	Tooltip:
 		Name: Harvester
 		Description: Collects Tiberium for processing.\n  Unarmed
@@ -107,7 +107,7 @@ LPST:
 		BuildPaletteOrder: 100
 		Prerequisites: ~factory, radar
 	Valued:
-		Cost: 950
+		cash: 950
 	Tooltip:
 		Name: Mobile Sensor Array
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed

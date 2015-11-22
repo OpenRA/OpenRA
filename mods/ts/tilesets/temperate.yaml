@@ -65,7 +65,6 @@ Terrain:
 		TargetTypes: Ground
 		Color: 44443C
 
-# Automatically generated. DO NOT EDIT!
 Templates:
 	Template@0:
 		Category: Clear

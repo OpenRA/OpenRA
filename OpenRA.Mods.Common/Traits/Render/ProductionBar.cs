@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Tick(Actor self)
 		{
 			var current = queue.CurrentItem();
-			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
+			value = current != null ? 1 - (float)current.RemainingCosts.Values.Sum() / current.TotalCosts.Values.Sum() : 0;
 		}
 
 		public float GetValue()

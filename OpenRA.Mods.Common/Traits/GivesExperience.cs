@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Default experience is 100 times our value
 			var exp = info.Experience >= 0
 				? info.Experience
-				: valued != null ? valued.Cost * 100 : 0;
+				: valued != null ? valued.TotalCost * 100 : 0;
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)

@@ -863,7 +863,7 @@ Rules:
 			Weapon: FireballLauncherInterior
 			LocalOffset: 512,0,0
 		Valued:
-			Cost: 0
+			cash: 0
 		Power:
 			Amount: 0
 		-Sellable:

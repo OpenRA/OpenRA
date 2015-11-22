@@ -537,7 +537,7 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 100, 0
-		Damage: 500	#80 D2k but damages through all in path
+		Damage: 500
 		Versus:
 			wall: 50
 			building: 60
@@ -583,7 +583,7 @@ OrniBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 1000 #400 in original, reduce when bombers can do multiple passes
+		Damage: 1000
 		Versus:
 			none: 90
 			wall: 50
@@ -619,7 +619,7 @@ Atomic:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
 		Falloff: 200, 100, 50, 25, 12, 0
-		Damage: 2700	##225 in vanilla but of course is a cluster bomb instead, so damage spread out
+		Damage: 2700
 		Versus:
 			none: 90
 			wall: 50

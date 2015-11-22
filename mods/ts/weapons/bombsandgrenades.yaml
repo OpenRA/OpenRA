@@ -1,7 +1,7 @@
 Grenade:
 	ReloadDelay: 60
 	Range: 4c512
-	Projectile: Bullet # TODO: Add bounce effect
+	Projectile: Bullet
 		Speed: 85
 		Blockable: false
 		Shadow: true

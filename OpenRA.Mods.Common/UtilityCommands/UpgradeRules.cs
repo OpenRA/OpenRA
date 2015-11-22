@@ -2418,6 +2418,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.Add(new MiniYamlNode("ResourceType", "cash"));
 				}
 
+				if (engineVersion < 20151124)
+				{
+					if (node.Key == "Valued")
+					{
+						var c = node.Value.Nodes.FirstOrDefault(n => n.Key == "Cost");
+						if (c != null)
+							c.Key = "cash";
+					}
+					if (node.Key == "CustomSellValue")
+					{
+						var c = node.Value.Nodes.FirstOrDefault(n => n.Key == "Value");
+						if (c != null)
+							c.Key = "cash";
+					}
+					if (node.Key == "GivesBounty")
+						node.Value.Nodes.RemoveAll(n => n.Key == "ResourceType");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

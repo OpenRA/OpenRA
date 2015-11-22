@@ -232,7 +232,7 @@
 	Armor:
 		Type: None
 	Valued:
-		Cost: 10
+		cash: 10
 	RevealsShroud:
 		Range: 2c0
 	Mobile:
@@ -292,7 +292,7 @@
 		Probability: 10
 		OwnerType: InternalName
 		InternalOwner: Creeps
-		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
+		DeathType: EnergyDeath
 		RequiresLobbyCreeps: true
 	Guard:
 		Voice: Move

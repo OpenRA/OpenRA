@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tooltip = actor.TraitInfo<TooltipInfo>();
 				var buildable = actor.TraitInfo<BuildableInfo>();
-				var cost = actor.TraitInfo<ValuedInfo>().Cost;
+				var cost = actor.TraitInfo<ValuedInfo>().TotalCost;
 
 				nameLabel.GetText = () => tooltip.Name;
 

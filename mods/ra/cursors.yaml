@@ -142,7 +142,6 @@ Cursors:
 			Start: 130
 		joystick-tl-blocked:
 			Start: 131
-# Cursors that need minimap variants
 		deploy:
 			Start: 59
 			Length: 9

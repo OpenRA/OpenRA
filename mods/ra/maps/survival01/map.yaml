@@ -1286,7 +1286,7 @@ Rules:
 			Image: ATEK
 	GUN:
 		Valued:
-			Cost: 1000
+			cash: 1000
 	E7:
 		Buildable:
 			Prerequisites: ~disabled

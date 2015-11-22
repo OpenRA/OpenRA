@@ -5,7 +5,7 @@ mcv:
 		Queue: Armor
 		BuildPaletteOrder: 110
 	Valued:
-		Cost: 2000
+		cash: 2000
 	CustomBuildTimeValue:
 		Value: 648
 	Tooltip:
@@ -54,7 +54,7 @@ harvester:
 		BuildPaletteOrder: 10
 		InitialActivity: FindResources
 	Valued:
-		Cost: 1200
+		cash: 1200
 	CustomBuildTimeValue:
 		Value: 540
 	Tooltip:
@@ -104,7 +104,7 @@ trike:
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.regulartrikes
 	Valued:
-		Cost: 300
+		cash: 300
 	CustomBuildTimeValue:
 		Value: 194
 	Tooltip:
@@ -144,7 +144,7 @@ quad:
 		Prerequisites: upgrade.light, ~techlevel.medium
 		BuildPaletteOrder: 20
 	Valued:
-		Cost: 400
+		cash: 400
 	CustomBuildTimeValue:
 		Value: 277
 	Tooltip:
@@ -179,7 +179,7 @@ siege_tank:
 		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
 	Valued:
-		Cost: 700
+		cash: 700
 	CustomBuildTimeValue:
 		Value: 324
 	Tooltip:
@@ -228,7 +228,7 @@ missile_tank:
 		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
 		BuildPaletteOrder: 60
 	Valued:
-		Cost: 900
+		cash: 900
 	CustomBuildTimeValue:
 		Value: 441
 	Mobile:
@@ -263,7 +263,7 @@ sonic_tank:
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 486
 	Tooltip:
@@ -298,7 +298,7 @@ devastator:
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 	Valued:
-		Cost: 1050
+		cash: 1050
 	CustomBuildTimeValue:
 		Value: 540
 	Tooltip:
@@ -343,7 +343,7 @@ raider:
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.ordos
 	Valued:
-		Cost: 350
+		cash: 350
 	CustomBuildTimeValue:
 		Value: 194
 	Tooltip:
@@ -380,9 +380,9 @@ stealth_raider:
 		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
 	Valued:
-		Cost: 400
+		cash: 400
 	CustomBuildTimeValue:
-		Value: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
+		Value: 194
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
@@ -400,7 +400,7 @@ stealth_raider:
 deviator:
 	Inherits: ^Tank
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 486
 	Tooltip:
@@ -439,7 +439,7 @@ deviator:
 		Queue: Armor
 		BuildPaletteOrder: 40
 	Valued:
-		Cost: 700
+		cash: 700
 	CustomBuildTimeValue:
 		Value: 373
 	Tooltip:

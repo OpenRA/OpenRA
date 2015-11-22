@@ -47,6 +47,7 @@ namespace OpenRA
 			{ typeof(Actor), ((Func<Actor, int>)HashActor).Method },
 			{ typeof(Player), ((Func<Player, int>)HashPlayer).Method },
 			{ typeof(Target), ((Func<Target, int>)HashTarget).Method },
+			{ typeof(ReadOnlyDictionary<string, int>), ((Func<IDictionary<string, int>, int>)HashDict<string, int>).Method },
 		};
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
@@ -158,6 +159,14 @@ namespace OpenRA
 				case TargetType.Invalid:
 					return 0;
 			}
+		}
+
+		public static int HashDict<K, V>(IDictionary<K, V> dict)
+		{
+			var ret = 0;
+			foreach (var p in dict)
+				ret += Hash<K>(p.Key) ^ Hash<V>(p.Value);
+			return ret;
 		}
 
 		public static int Hash<T>(T t)

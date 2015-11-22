@@ -2288,7 +2288,7 @@ Rules:
 		Buildable:
 			Prerequisites: ~hpad
 		Valued:
-			Cost: 1500
+			cash: 1500
 	SAM:
 		RevealsShroud:
 			Range: 7c0

@@ -1,7 +1,7 @@
 DPOD:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 10
+		cash: 10
 	Tooltip:
 		Name: Drop Pod
 	Aircraft:
@@ -36,7 +36,7 @@ DPOD:
 DSHP:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Dropship
 	Aircraft:
@@ -64,7 +64,7 @@ DSHP:
 ORCA:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Orca Fighter
 		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
@@ -106,7 +106,7 @@ ORCA:
 ORCAB:
 	Inherits: ^Plane
 	Valued:
-		Cost: 1600
+		cash: 1600
 	Tooltip:
 		Name: Orca Bomber
 		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
@@ -152,7 +152,7 @@ ORCAB:
 ORCATRAN:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1200
+		cash: 1200
 	Tooltip:
 		Name: Orca Transport
 	Buildable:
@@ -187,7 +187,7 @@ ORCATRAN:
 TRNSPORT:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 750
+		cash: 750
 	Tooltip:
 		Name: Carryall
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
@@ -221,7 +221,7 @@ TRNSPORT:
 SCRIN:
 	Inherits: ^Plane
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Banshee Fighter
 		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
@@ -264,7 +264,7 @@ SCRIN:
 APACHE:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Harpy
 		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
@@ -307,7 +307,7 @@ HUNTER:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Hunter-Seeker Droid
 	Health:

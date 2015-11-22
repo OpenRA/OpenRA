@@ -5,7 +5,7 @@ E2:
 		BuildPaletteOrder: 20
 		Prerequisites: ~gapile
 	Valued:
-		Cost: 200
+		cash: 200
 	Tooltip:
 		Name: Disc Thrower
 		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
@@ -27,7 +27,7 @@ E2:
 MEDIC:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Unarmed
@@ -58,7 +58,7 @@ MEDIC:
 JUMPJET:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Jumpjet Infantry
 		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
@@ -92,7 +92,7 @@ JUMPJET:
 GHOST:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 1750
+		cash: 1750
 	Tooltip:
 		Name: Ghost Stalker
 		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.

@@ -25,7 +25,7 @@ concretea:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Valued:
-		Cost: 20
+		cash: 20
 	CustomBuildTimeValue:
 		Value: 54
 
@@ -35,7 +35,7 @@ concreteb:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Valued:
-		Cost: 50
+		cash: 50
 	CustomBuildTimeValue:
 		Value: 81
 	Buildable:
@@ -63,11 +63,11 @@ construction_yard:
 		Produces: Building, Upgrade
 	Exit:
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Construction Yard
 	CustomSellValue:
-		Value: 2000
+		cash: 2000
 	EmitInfantryOnSell:
 		ActorTypes: light_inf, light_inf, engineer
 	BaseBuilding:
@@ -94,7 +94,7 @@ wind_trap:
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 225
+		cash: 225
 	CustomBuildTimeValue:
 		Value: 180
 	Tooltip:
@@ -131,7 +131,7 @@ barracks:
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 225
+		cash: 225
 	CustomBuildTimeValue:
 		Value: 231
 	Tooltip:
@@ -186,7 +186,7 @@ refinery:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1500
+		cash: 1500
 	CustomBuildTimeValue:
 		Value: 540
 	Tooltip:
@@ -213,7 +213,7 @@ refinery:
 		PipCount: 10
 		Capacity: 2000
 	CustomSellValue:
-		Value: 500
+		cash: 500
 	FreeActorWithDelivery:
 		Actor: harvester
 		DeliveryOffset: 2,2
@@ -241,7 +241,7 @@ silo:
 	Selectable:
 		Bounds: 32,32
 	Valued:
-		Cost: 120
+		cash: 120
 	CustomBuildTimeValue:
 		Value: 135
 	Tooltip:
@@ -287,7 +287,7 @@ light_factory:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 500
+		cash: 500
 	CustomBuildTimeValue:
 		Value: 277
 	Tooltip:
@@ -346,7 +346,7 @@ heavy_factory:
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 648
 	Tooltip:
@@ -411,7 +411,7 @@ outpost:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 750
+		cash: 750
 	CustomBuildTimeValue:
 		Value: 270
 	Tooltip:
@@ -450,7 +450,7 @@ starport:
 		Queue: Building
 		BuildPaletteOrder: 80
 	Valued:
-		Cost: 1500
+		cash: 1500
 	CustomBuildTimeValue:
 		Value: 540
 	Building:
@@ -513,11 +513,11 @@ wall:
 		DamagedSounds:
 		DestroyedSounds: EXPLSML4.WAV
 	Valued:
-		Cost: 20
+		cash: 20
 	CustomBuildTimeValue:
 		Value: 54
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
@@ -559,7 +559,7 @@ medium_gun_turret:
 		Prerequisites: construction_yard, barracks
 		BuildPaletteOrder: 90
 	Valued:
-		Cost: 550
+		cash: 550
 	CustomBuildTimeValue:
 		Value: 231
 	Tooltip:
@@ -601,7 +601,7 @@ large_gun_turret:
 		Prerequisites: construction_yard, outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
-		Cost: 750
+		cash: 750
 	CustomBuildTimeValue:
 		Value: 270
 	Tooltip:
@@ -644,7 +644,7 @@ repair_pad:
 		Prerequisites: construction_yard, heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 130
 	Valued:
-		Cost: 800
+		cash: 800
 	CustomBuildTimeValue:
 		Value: 324
 	Tooltip:
@@ -690,7 +690,7 @@ high_tech_factory:
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
-		Cost: 1150
+		cash: 1150
 	CustomBuildTimeValue:
 		Value: 405
 	Tooltip:
@@ -747,7 +747,7 @@ research_centre:
 	Selectable:
 		Bounds: 96,64,0,16
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 270
 	Tooltip:
@@ -785,7 +785,7 @@ palace:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 1600
+		cash: 1600
 	CustomBuildTimeValue:
 		Value: 810
 	Tooltip:

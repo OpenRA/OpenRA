@@ -361,7 +361,7 @@ Actors:
 		Location: 21,15
 		Owner: Civilian
 	Actor117: v06
-		Owner: Neutral # TREX can't attack it
+		Owner: Neutral
 		Location: 21,8
 	Actor100: v07
 		Location: 12,12

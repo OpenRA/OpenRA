@@ -21,7 +21,7 @@ LtRail:
 MechRailgun:
 	ReloadDelay: 60
 	Range: 8c0
-	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
+	Burst: 2
 	BurstDelay: 60
 	Report: RAILUSE5.AUD
 	Projectile: LaserZap

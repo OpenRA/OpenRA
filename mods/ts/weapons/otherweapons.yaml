@@ -65,5 +65,5 @@ Tiberium:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
-		DamageTypes: EnergyDeath # TODO: FIX ME!
+		DamageTypes: EnergyDeath
 

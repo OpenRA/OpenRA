@@ -1,7 +1,7 @@
 FACT:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
@@ -97,7 +97,7 @@ FACT.NOD:
 NUKE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Power Plant
 		Description: Generates power
@@ -122,7 +122,7 @@ NUKE:
 NUK2:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides more power, cheaper than the\nstandard Power Plant
@@ -147,7 +147,7 @@ NUK2:
 PROC:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1500
+		cash: 1500
 	Tooltip:
 		Name: Tiberium Refinery
 		Description: Processes raw Tiberium\ninto useable resources
@@ -179,7 +179,7 @@ PROC:
 	Selectable:
 		Bounds: 72,56,0,12
 	CustomSellValue:
-		Value: 500
+		cash: 500
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
@@ -194,7 +194,7 @@ PROC:
 SILO:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Tiberium Silo
 		Description: Stores processed Tiberium
@@ -232,7 +232,7 @@ SILO:
 PYLE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -273,7 +273,7 @@ PYLE:
 HAND:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Hand of Nod
 		Description: Trains infantry
@@ -313,7 +313,7 @@ HAND:
 AFLD:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Airstrip
 		Description: Provides a dropzone\nfor vehicle reinforcements
@@ -356,7 +356,7 @@ AFLD:
 WEAP:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Weapons Factory
 		Description: Produces vehicles
@@ -400,7 +400,7 @@ WEAP:
 HPAD:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
@@ -446,7 +446,7 @@ HPAD:
 HQ:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Communications Center
 		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
@@ -500,7 +500,7 @@ HQ:
 FIX:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Repair Facility
 		Description: Repairs vehicles
@@ -533,7 +533,7 @@ FIX:
 EYE:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 1800
+		cash: 1800
 	Tooltip:
 		Name: Advanced Communications Center
 		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
@@ -584,7 +584,7 @@ EYE:
 TMPL:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		cash: 2000
 	Tooltip:
 		Name: Temple of Nod
 		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
@@ -634,7 +634,7 @@ TMPL:
 GUN:
 	Inherits: ^Defense
 	Valued:
-		Cost: 600
+		cash: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
@@ -673,7 +673,7 @@ GUN:
 SAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 700
+		cash: 700
 	CustomBuildTimeValue:
 		Value: 2000
 	Tooltip:
@@ -713,7 +713,7 @@ SAM:
 OBLI:
 	Inherits: ^Defense
 	Valued:
-		Cost: 1500
+		cash: 1500
 	CustomBuildTimeValue:
 		Value: 3120
 	Tooltip:
@@ -758,7 +758,7 @@ OBLI:
 GTWR:
 	Inherits: ^Defense
 	Valued:
-		Cost: 600
+		cash: 600
 	CustomBuildTimeValue:
 		Value: 1440
 	Tooltip:
@@ -793,7 +793,7 @@ GTWR:
 ATWR:
 	Inherits: ^Defense
 	Valued:
-		Cost: 1000
+		cash: 1000
 	CustomBuildTimeValue:
 		Value: 2880
 	Tooltip:
@@ -842,9 +842,9 @@ ATWR:
 SBAG:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
+		cash: 25
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Sandbag Barrier
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
@@ -867,9 +867,9 @@ SBAG:
 CYCL:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
+		cash: 25
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Chain Link Barrier
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
@@ -892,9 +892,9 @@ CYCL:
 BRIK:
 	Inherits: ^Wall
 	Valued:
-		Cost: 100
+		cash: 100
 	CustomSellValue:
-		Value: 0
+		cash: 0
 	Tooltip:
 		Name: Concrete Barrier
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.

@@ -8,7 +8,11 @@
  */
 #endregion
 
+using OpenRA;
 using OpenRA.Traits;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -16,22 +20,54 @@ namespace OpenRA.Mods.Common.Traits
 	public class CustomSellValueInfo : TraitInfo<CustomSellValue>
 	{
 		[FieldLoader.Require]
-		public readonly int Value = 0;
+		[DictionaryFromYamlKey]
+		[Desc("The values, listed separately for each resource type.")]
+		public Dictionary<string, int> Values;
 	}
 
 	public class CustomSellValue { }
 
 	public static class CustomSellValueExts
 	{
-		public static int GetSellValue(this Actor a)
+		public static IReadOnlyDictionary<string, int> GetSellValues(this Actor a)
 		{
 			var csv = a.Info.TraitInfoOrDefault<CustomSellValueInfo>();
-			if (csv != null) return csv.Value;
+			if (csv != null) return csv.Values.AsReadOnly();
 
 			var valued = a.Info.TraitInfoOrDefault<ValuedInfo>();
-			if (valued != null) return valued.Cost;
+			if (valued != null) return valued.Costs.AsReadOnly();
+
+			return new ReadOnlyDictionary<string, int>();
+		}
+
+		public static int GetTotalSellValue(this Actor a)
+		{
+			var csv = a.Info.TraitInfoOrDefault<CustomSellValueInfo>();
+			if (csv != null) return csv.Values.Values.Sum();
+
+			var valued = a.Info.TraitInfoOrDefault<ValuedInfo>();
+			if (valued != null) return valued.TotalCost;
 
 			return 0;
+		}
+
+		public static IReadOnlyDictionary<string, int> GetModifiedSellValues(this Actor a, Func<int, int> fn)
+		{
+			var csv = a.Info.TraitInfoOrDefault<CustomSellValueInfo>();
+			if (csv != null)
+			{
+				var modified = new Dictionary<string, int>();
+
+				foreach (var p in csv.Values)
+					modified.Add(p.Key, fn(p.Value));
+
+				return modified.AsReadOnly();
+			}
+
+			var valued = a.Info.TraitInfoOrDefault<ValuedInfo>();
+			if (valued != null) return valued.GetModifiedCosts(fn);
+
+			return new ReadOnlyDictionary<string, int>();
 		}
 	}
 }

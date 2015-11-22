@@ -1,7 +1,7 @@
 E1:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 100
+		cash: 100
 	Tooltip:
 		Name: Minigunner
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
@@ -22,7 +22,7 @@ E1:
 E2:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 160
+		cash: 160
 	Tooltip:
 		Name: Grenadier
 		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
@@ -49,7 +49,7 @@ E2:
 E3:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Rocket Soldier
 		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
@@ -73,7 +73,7 @@ E3:
 E4:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 200
+		cash: 200
 	Tooltip:
 		Name: Flamethrower
 		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
@@ -98,7 +98,7 @@ E4:
 E5:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 300
+		cash: 300
 	Tooltip:
 		Name: Chemical Warrior
 		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
@@ -129,7 +129,7 @@ E5:
 E6:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Engineer
 		Description: Damages and captures enemy structures.\n  Unarmed
@@ -152,7 +152,7 @@ E6:
 RMBO:
 	Inherits: ^Soldier
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Commando
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles

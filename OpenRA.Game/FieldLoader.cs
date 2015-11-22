@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using OpenRA;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -424,7 +425,7 @@ namespace OpenRA
 					addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
 				return set;
 			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			else if (fieldType.IsGenericType && (fieldType.GetGenericTypeDefinition() == typeof(Dictionary<,>)))
 			{
 				var dict = Activator.CreateInstance(fieldType);
 				var arguments = fieldType.GetGenericArguments();

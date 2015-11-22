@@ -1266,7 +1266,6 @@ Rules:
 		-StartGameNotification:
 	^Vehicle:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
@@ -1275,7 +1274,6 @@ Rules:
 			Modifier: 0, 0
 	^Tank:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
@@ -1284,7 +1282,6 @@ Rules:
 			Modifier: 0, 0
 	^Infantry:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
@@ -1299,7 +1296,6 @@ Rules:
 			Modifier: 0, 0
 	^Ship:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		GainsExperience:
 			Upgrades:
@@ -1308,14 +1304,12 @@ Rules:
 			Modifier: 0, 0
 	^Plane:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
 	^Building:
 		GivesBounty:
-			ResourceType: cash
 			Percentage: 0
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable

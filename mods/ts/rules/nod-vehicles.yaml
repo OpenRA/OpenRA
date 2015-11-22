@@ -1,7 +1,7 @@
 BGGY:
 	Inherits: ^VoxelVehicle
 	Valued:
-		Cost: 500
+		cash: 500
 	Tooltip:
 		Name: Attack Buggy
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
@@ -31,7 +31,7 @@ BGGY:
 BIKE:
 	Inherits: ^VoxelVehicle
 	Valued:
-		Cost: 600
+		cash: 600
 	Tooltip:
 		Name: Attack Cycle
 		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -66,7 +66,7 @@ BIKE:
 TTNK:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Tick Tank
 		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
@@ -110,7 +110,7 @@ TTNK:
 ART2:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 975
+		cash: 975
 	Tooltip:
 		Name: Artillery
 		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -143,7 +143,7 @@ REPAIR:
 		BuildPaletteOrder: 70
 		Prerequisites: ~naweap
 	Valued:
-		Cost: 1000
+		cash: 1000
 	Tooltip:
 		Name: Mobile Repair Vehicle
 		Description: Repairs nearby vehicles.\n  Unarmed
@@ -166,14 +166,14 @@ REPAIR:
 WEED:
 	Inherits: ^VoxelVehicle
 	Valued:
-		Cost: 1400
+		cash: 1400
 	Tooltip:
 		Name: Weed Eater
 		Description: Collects veins for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~naweap, natech # TODO: natech must be nawast
+		Prerequisites: ~naweap, natech
 	Mobile:
 		Speed: 71
 		ROT: 5
@@ -188,7 +188,7 @@ WEED:
 SAPC:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 800
+		cash: 800
 	Tooltip:
 		Name: Subterranean APC
 		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
@@ -214,7 +214,7 @@ SAPC:
 SUBTANK:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 750
+		cash: 750
 	Tooltip:
 		Name: Devil's Tongue
 		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
@@ -241,7 +241,7 @@ SUBTANK:
 STNK:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 1100
+		cash: 1100
 	Tooltip:
 		Name: Stealth Tank
 		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry

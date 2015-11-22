@@ -815,7 +815,7 @@ Rules:
 			BuildPaletteOrder: 30
 			Prerequisites: fix
 		Valued:
-			Cost: 800
+			cash: 800
 		Tooltip:
 			Name: Bomber
 			Description: Lays mines to destroy unwary enemy units.\n  Unarmed
@@ -892,7 +892,7 @@ Rules:
 			Queue: Building
 			BuildPaletteOrder: 30
 		Valued:
-			Cost: 30
+			cash: 30
 		Health:
 			HP: 200
 		RenderSprites:
