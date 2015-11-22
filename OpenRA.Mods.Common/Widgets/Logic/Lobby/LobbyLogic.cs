@@ -810,7 +810,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != editablePlayerTemplate.Id)
 						template = editablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
 						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
@@ -829,7 +829,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != nonEditablePlayerTemplate.Id)
 						template = nonEditablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupNameWidget(template, slot, client);
 					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
@@ -879,7 +879,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 				}
 
-				LobbyUtils.SetupClientWidget(template, null, c, orderManager, true);
+				LobbyUtils.SetupClientWidget(template, c, orderManager, true);
 				template.IsVisible = () => true;
 
 				if (idx >= players.Children.Count)
