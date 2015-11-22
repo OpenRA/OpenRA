@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class AssetBrowserLogic : ChromeLogic
 	{
-		static readonly string[] AllowedExtensions = { ".shp", ".r8", "tmp", ".tem", ".des", ".sno", ".int", ".jun", ".vqa" };
+		static string[] allowedExtensions;
 
 		readonly World world;
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int currentFrame;
 
 		[ObjectCreator.UseCtor]
-		public AssetBrowserLogic(Widget widget, Action onExit, World world)
+		public AssetBrowserLogic(Widget widget, Action onExit, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
@@ -212,6 +212,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				prevButton.IsVisible = () => !isVideoLoaded;
 			}
 
+			if (logicArgs.ContainsKey("SupportedFormats"))
+				allowedExtensions = FieldLoader.GetValue<string[]>("SupportedFormats", logicArgs["SupportedFormats"].Value);
+			else
+				allowedExtensions = new string[0];
+
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
@@ -359,7 +364,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var files = assetSource.AllFileNames().OrderBy(s => s);
 			foreach (var file in files)
 			{
-				if (AllowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+				if (allowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
 				{
 					AddAsset(assetList, file, template);
 					availableShps.Add(file);

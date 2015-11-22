@@ -1,5 +1,6 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
+		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 700
