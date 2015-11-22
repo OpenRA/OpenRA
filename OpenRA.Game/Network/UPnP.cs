@@ -9,7 +9,7 @@
 #endregion
 
 using System;
-
+using System.Net;
 using Mono.Nat;
 
 namespace OpenRA.Network
@@ -114,6 +114,22 @@ namespace OpenRA.Network
 			{
 				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
 				Game.Settings.Server.AllowPortForward = false;
+			}
+		}
+
+		public static IPAddress GetExternalIP()
+		{
+			if (NatDevice == null)
+				return null;
+
+			try
+			{
+				return NatDevice.GetExternalIP();
+			}
+			catch (Exception e)
+			{
+				Log.Write("server", "Failed to get the external IP from NAT device: {0}", e);
+				return null;
 			}
 		}
 	}
