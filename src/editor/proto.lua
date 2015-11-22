@@ -27,6 +27,8 @@ ide.proto.Document = {__index = {
   SetActive = function(self) SetEditorSelection(self.index) end,
   Save = function(self) return SaveFile(self.editor, self.filePath) end,
   Close = function(self) return ClosePage(self.index) end,
+  CloseAll = function(self) return CloseAllPagesExcept(-1) end,
+  CloseAllExcept = function(self) return CloseAllPagesExcept(self.index) end,
 }}
 
 ide.proto.Plugin = {__index = {
