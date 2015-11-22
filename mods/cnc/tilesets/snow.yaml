@@ -420,9 +420,9 @@ Templates:
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
+			0: Rock
 			1: Rock
-			2: Clear
+			2: Rock
 			3: Rock
 			4: Rock
 			5: Clear
@@ -461,8 +461,8 @@ Templates:
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
-			1: Clear
+			0: Rock
+			1: Rock
 			2: Rock
 			3: Rock
 	Template@30:
@@ -471,8 +471,8 @@ Templates:
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
-			1: Clear
+			0: Rock
+			1: Rock
 			2: Rock
 			3: Rock
 	Template@31:
@@ -481,8 +481,8 @@ Templates:
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
-			1: Clear
+			0: Rock
+			1: Rock
 			2: Rock
 			3: Rock
 	Template@32:
@@ -518,7 +518,7 @@ Templates:
 		Size: 3,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
+			0: Rough
 			1: Rock
 			2: Rock
 			3: Rock
@@ -601,8 +601,8 @@ Templates:
 		Size: 2,2
 		Category: Cliffs
 		Tiles:
-			0: Clear
-			1: Clear
+			0: Rock
+			1: Rock
 			2: Rock
 			3: Rock
 	Template@44:
