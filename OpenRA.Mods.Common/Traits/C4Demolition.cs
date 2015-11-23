@@ -35,6 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of each flash")]
 		public readonly int FlashDuration = 3;
 
+		[Desc("Behaviour when entering the structure.",
+			"Possible values are Exit, Suicide, Dispose.")]
+		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Exit;
+
 		[Desc("Voice string when planting explosive charges.")]
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -83,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Demolish(self,
-				target.Actor, info.C4Delay, info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
+			self.QueueActivity(new Demolish(self, target.Actor, info.EnterBehaviour, info.C4Delay,
+				info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
