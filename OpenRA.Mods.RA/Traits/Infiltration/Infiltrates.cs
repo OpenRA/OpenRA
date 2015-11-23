@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
@@ -27,21 +28,28 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
+		[Desc("Behaviour when entering the structure.",
+			"Possible values are Exit, Suicide, Dispose.")]
+		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
+
+		[Desc("Notification to play when a building is infiltrated.")]
+		public readonly string Notification = "BuildingInfiltrated";
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
 	class Infiltrates : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly InfiltratesInfo Info;
+		readonly InfiltratesInfo info;
 
 		public Infiltrates(InfiltratesInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new InfiltrationOrderTargeter(Info); }
+			get { yield return new InfiltrationOrderTargeter(info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -79,13 +87,13 @@ namespace OpenRA.Mods.RA.Traits
 			else
 				targetTypes = order.TargetActor.GetEnabledTargetTypes();
 
-			return Info.Types.Overlaps(targetTypes);
+			return info.Types.Overlaps(targetTypes);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Infiltrate" && IsValidOrder(self, order)
-				? Info.Voice : null;
+				? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -95,14 +103,14 @@ namespace OpenRA.Mods.RA.Traits
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
 			if (target.Type != TargetType.Actor
-				|| !Info.Types.Overlaps(target.Actor.GetAllTargetTypes()))
+				|| !info.Types.Overlaps(target.Actor.GetAllTargetTypes()))
 				return;
 
 			if (!order.Queued)
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Infiltrate(self, target.Actor));
+			self.QueueActivity(new Infiltrate(self, target.Actor, info.EnterBehaviour, info.ValidStances, info.Notification));
 		}
 	}
 
