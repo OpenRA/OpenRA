@@ -23,16 +23,16 @@ namespace OpenRA.Mods.Common.Traits
 			"Measured in game ticks. Default is 1.8 seconds.")]
 		public readonly int C4Delay = 45;
 
-		[Desc("Number of times to flash the target")]
+		[Desc("Number of times to flash the target.")]
 		public readonly int Flashes = 3;
 
-		[Desc("Delay before the flashing starts")]
+		[Desc("Delay before the flashing starts.")]
 		public readonly int FlashesDelay = 4;
 
-		[Desc("Interval between each flash")]
+		[Desc("Interval between each flash.")]
 		public readonly int FlashInterval = 4;
 
-		[Desc("Duration of each flash")]
+		[Desc("Duration of each flash.")]
 		public readonly int FlashDuration = 3;
 
 		[Desc("Behaviour when entering the structure.",
