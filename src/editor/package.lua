@@ -200,8 +200,62 @@ function ide:PushStatus(text, field) self:GetStatusBar():PushStatusText(text, fi
 function ide:PopStatus(field) self:GetStatusBar():PopStatusText(field or 0) end
 function ide:Yield() wx.wxYield() end
 function ide:CreateBareEditor() return CreateEditor(true) end
+
+local rawMethods = {"AddTextDyn", "InsertTextDyn", "AppendTextDyn", "SetTextDyn",
+  "GetTextDyn", "GetLineDyn", "GetSelectedTextDyn", "GetTextRangeDyn"}
+local useraw = nil
+
 function ide:CreateStyledTextCtrl(...)
   local editor = wxstc.wxStyledTextCtrl(...)
+  if not editor then return end
+
+  if useraw == nil then
+    useraw = true
+    for _, m in ipairs(rawMethods) do
+      if not pcall(function() return editor[m:gsub("Dyn", "Raw")] end) then useraw = false; break end
+    end
+  end
+
+  -- map all `GetTextDyn` to `GetText` or `GetTextRaw` if `*Raw` methods are present
+  editor.useraw = useraw
+  for _, m in ipairs(rawMethods) do
+    -- some `*Raw` methods return `nil` instead of `""` as their "normal" calls do
+    -- (for example, `GetLineRaw` and `GetTextRangeRaw` for parameters outside of text)
+    local def = m:find("^Get") and "" or nil
+    editor[m] = function(...) return editor[m:gsub("Dyn", useraw and "Raw" or "")](...) or def end
+  end
+
+  local suffix = "\1\0"
+  function editor:CopyDyn()
+    if not self.useraw then return self:Copy() end
+    -- check if selected fragment is a valid UTF-8 sequence
+    local text = self:GetSelectedTextRaw()
+    if text == "" or wx.wxString.FromUTF8(text) ~= "" then return self:Copy() end
+    local tdo = wx.wxTextDataObject()
+    -- append suffix as wxwidgets (3.1+ on Windows) truncate last char for odd-length strings
+    local workaround = ide.osname == "Windows" and (#text % 2 > 0) and suffix or ""
+    tdo:SetData(wx.wxDataFormat(wx.wxDF_TEXT), text..workaround)
+    local clip = wx.wxClipboard.Get()
+    clip:Open()
+    clip:SetData(tdo)
+    clip:Close()
+  end
+
+  function editor:PasteDyn()
+    if not self.useraw then return self:Paste() end
+    local tdo = wx.wxTextDataObject()
+    local clip = wx.wxClipboard.Get()
+    clip:Open()
+    clip:GetData(tdo)
+    clip:Close()
+    local ok, text = tdo:GetDataHere(wx.wxDataFormat(wx.wxDF_TEXT))
+    -- check if the fragment being pasted is a valid UTF-8 sequence
+    if not ok or text == "" or wx.wxString.FromUTF8(text) ~= "" then return self:Paste() end
+    if ide.osname == "Windows" then text = text:gsub(suffix.."+$","") end
+    self:AddTextRaw(text)
+    self:GotoPos(self:GetCurrentPos())
+  end
+
   function editor:GotoPosEnforcePolicy(pos)
     self:GotoPos(pos)
     self:EnsureVisibleEnforcePolicy(self:LineFromPosition(pos))
@@ -279,7 +333,7 @@ function ide:CreateStyledTextCtrl(...)
     -- skip the rest if line wrapping is on
     if editor:GetWrapMode() ~= wxstc.wxSTC_WRAP_NONE then return end
     local xwidth = self:GetClientSize():GetWidth() - getMarginWidth(self)
-    local xoffset = self:GetTextExtent(self:GetLine(line):sub(1, pos-self:PositionFromLine(line)+1))
+    local xoffset = self:GetTextExtent(self:GetLineDyn(line):sub(1, pos-self:PositionFromLine(line)+1))
     self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
   end
 
@@ -298,6 +352,19 @@ function ide:CreateStyledTextCtrl(...)
     end
   end
 
+  editor:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local keycode = event:GetKeyCode()
+      local mod = event:GetModifiers()
+      if (keycode == wx.WXK_DELETE and mod == wx.wxMOD_SHIFT)
+      or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_CONTROL)
+      or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_SHIFT) then
+        local id = keycode == wx.WXK_DELETE and ID.CUT or mod == wx.wxMOD_SHIFT and ID.PASTE or ID.COPY
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+      else
+        event:Skip()
+      end
+    end)
   return editor
 end
 

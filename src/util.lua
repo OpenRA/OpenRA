@@ -384,6 +384,7 @@ function FixUTF8(s, repl)
         or s:find("^[\241-\243][\128-\191][\128-\191][\128-\191]", p)
         or s:find(       "^\244[\128-\143][\128-\191][\128-\191]", p) then p = p + 4
     else
+      if not repl then return end -- just signal invalid UTF8 string
       local repl = type(repl) == 'function' and repl(s:sub(p,p)) or repl
       s = s:sub(1, p-1)..repl..s:sub(p+1)
       table.insert(invalid, p)
@@ -607,7 +608,7 @@ function ExpandPlaceholders(msg, ph)
     S = doc and doc:GetFileName() or "",
     F = doc and doc:GetFilePath() or "",
     n = editor and editor:GetCurrentLine()+1 or 0,
-    c = editor and editor:GetLine(editor:GetCurrentLine()) or "",
+    c = editor and editor:GetLineDyn(editor:GetCurrentLine()) or "",
     T = GetIDEString("editor") or "",
     v = ide.VERSION,
     t = editor and nb:GetPageText(nb:GetPageIndex(editor)) or "",

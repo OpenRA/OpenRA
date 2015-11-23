@@ -391,7 +391,7 @@ function DynamicWordsReset ()
 end
 
 local function getEditorLines(editor,line,numlines)
-  return editor:GetTextRange(
+  return editor:GetTextRangeDyn(
     editor:PositionFromLine(line),editor:PositionFromLine(line+numlines+1))
 end
 
@@ -417,7 +417,7 @@ end
 
 function DynamicWordsRemoveAll(editor)
   if ide.config.acandtip.nodynwords then return end
-  DynamicWordsRem(editor,editor:GetText())
+  DynamicWordsRem(editor,editor:GetTextDyn())
 end
 
 ------------

@@ -159,10 +159,10 @@ function findReplace:GetWordAtCaret()
   local editor = self:GetEditor()
   if editor then
     local pos = editor:GetCurrentPos()
-    local text = editor:GetTextRange( -- try to select a word under caret
+    local text = editor:GetTextRangeDyn( -- try to select a word under caret
       editor:WordStartPosition(pos, true), editor:WordEndPosition(pos, true))
     if #text == 0 then
-      editor:GetTextRange( -- try to select a non-word under caret
+      editor:GetTextRangeDyn( -- try to select a non-word under caret
         editor:WordStartPosition(pos, false), editor:WordEndPosition(pos, false))
     end
     return #text > 0 and text or nil
@@ -177,7 +177,7 @@ function findReplace:GetSelection()
     local endSel = editor:GetSelectionEnd()
     if (startSel ~= endSel)
     and (editor:LineFromPosition(startSel) == editor:LineFromPosition(endSel)) then
-      return editor:GetTextRange(startSel, endSel)
+      return editor:GetTextRangeDyn(startSel, endSel)
     end
   end
   return
@@ -292,7 +292,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
           local match = true
           if resultsEditor then
             local line = editor:LineFromPosition(posFind)
-            local _, _, prefix = editor:GetLine(line):find("^(%s*%d+: )")
+            local _, _, prefix = editor:GetLineDyn(line):find("^(%s*%d+: )")
             match = prefix and posFind >= editor:PositionFromLine(line)+#prefix
           end
           if match then
@@ -350,7 +350,7 @@ end
 local oldline
 local FILE_MARKER = ide:GetMarker("searchmatchfile")
 local FILE_MARKER_VALUE = 2^FILE_MARKER
-local function getRawLine(ed, line) return (ed:GetLine(line):gsub("[\n\r]+$","")) end
+local function getRawLine(ed, line) return (ed:GetLineDyn(line):gsub("[\n\r]+$","")) end
 local function onFileRegister(pos, length)
   local editor = findReplace.oveditor
   local reseditor = findReplace.reseditor
@@ -365,7 +365,7 @@ local function onFileRegister(pos, length)
   if oldline ~= posline then
     if posline and not oldline then
       -- show file name and a bookmark marker
-      reseditor:AppendText(findReplace.curfilename.."\n")
+      reseditor:AppendTextDyn(findReplace.curfilename.."\n")
       reseditor:MarkerAdd(lines-1, FILE_MARKER)
       reseditor:SetFoldLevel(lines-1, reseditor:GetFoldLevel(lines-1)
         + wxstc.wxSTC_FOLDLEVELHEADERFLAG)
@@ -402,7 +402,7 @@ local function onFileRegister(pos, length)
     end
     oldline = posline
 
-    reseditor:AppendText(text)
+    reseditor:AppendTextDyn(text)
 
     for line = lines-1, reseditor:GetLineCount()-2 do
       reseditor:SetFoldLevel(line, wxstc.wxSTC_FOLDLEVELBASE + 1)
@@ -454,7 +454,7 @@ function findReplace:ProcInFiles(startdir,mask,subdirs)
         -- read the rest if there is more to read in the file
         if #filetext == firstReadSize then filetext = FileRead(file) end
         if filetext and (not text or filetext:find(text)) then
-          self.oveditor:SetText(filetext)
+          self.oveditor:SetTextDyn(filetext)
 
           if self:FindAll(onFileRegister) then self.files = self.files + 1 end
 
@@ -561,14 +561,14 @@ function findReplace:RunInFiles(replace)
 
           local pos = reseditor:PositionFromPoint(point)
           local line = reseditor:LineFromPosition(pos)
-          local text = reseditor:GetLine(line):gsub("[\n\r]+$","")
+          local text = reseditor:GetLineDyn(line):gsub("[\n\r]+$","")
           -- get line with the line number
           local jumpline = text:match("^%s*(%d+)")
           local file
           if jumpline then
             -- search back to find the file name
             for curline = line-1, 0, -1 do
-              local text = reseditor:GetLine(curline):gsub("[\n\r]+$","")
+              local text = reseditor:GetLineDyn(curline):gsub("[\n\r]+$","")
               if not text:find("^%s") and wx.wxFileExists(text) then
                 file = text
                 break
@@ -605,7 +605,7 @@ function findReplace:RunInFiles(replace)
   reseditor.replace = replace -- keep track of the current status
   reseditor:ShowLines(0, reseditor:GetLineCount()-1)
   reseditor:SetReadOnly(false)
-  reseditor:SetText('')
+  reseditor:SetTextDyn('')
   do -- update the preview name
     local nb = showaseditor and ide:GetEditorNotebook() or nb
     nb:SetPageText(nb:GetPageIndex(reseditor), previewText .. findText)
@@ -632,9 +632,9 @@ function findReplace:RunInFiles(replace)
   -- reseditor may already be closed, so check if it's valid first
   if ide:IsValidCtrl(reseditor) then
     reseditor:GotoPos(reseditor:GetLength())
-    reseditor:AppendText(("Searched for '%s'. "):format(findText))
-    if not completed then reseditor:AppendText("Cancelled by the user. ") end
-    reseditor:AppendText(("Found %d %s on %d %s in %d %s.")
+    reseditor:AppendTextDyn(("Searched for '%s'. "):format(findText))
+    if not completed then reseditor:AppendTextDyn("Cancelled by the user. ") end
+    reseditor:AppendTextDyn(("Found %d %s on %d %s in %d %s.")
       :format(
         self.occurrences, makePlural("instance", self.occurrences),
         self.lines, makePlural("line", self.lines),
@@ -643,7 +643,7 @@ function findReplace:RunInFiles(replace)
     reseditor:SetSavePoint() -- set unmodified status
 
     if completed and replace and self.occurrences > 0 then
-      reseditor:AppendText("\n\n"
+      reseditor:AppendTextDyn("\n\n"
         .."Review the changes and save this preview to apply them.\n"
         .."You can also make other changes; only lines with : will be updated.\n"
         .."Context lines (if any) are used as safety checks during the update.")
@@ -1205,7 +1205,7 @@ local package = ide:AddPackage('core.findreplace', {
             findReplace:SetStatus(GetFileName(fname))
             wx.wxSafeYield()
 
-            oveditor:SetText(filetext)
+            oveditor:SetTextDyn(filetext)
             while true do -- for each line following the file name
               line = line + 1
               local text = getRawLine(editor, line)
@@ -1234,7 +1234,7 @@ local package = ide:AddPackage('core.findreplace', {
             end
             if lines > 0 and not mismatch then -- save the file
               local ok
-              ok, err = FileWrite(fname, oveditor:GetText())
+              ok, err = FileWrite(fname, oveditor:GetTextDyn())
               if ok then files = files + 1 end
             end
           end
@@ -1244,8 +1244,8 @@ local package = ide:AddPackage('core.findreplace', {
           end
         end
         oveditor:Destroy() -- destroy the editor to release its memory
-        if report then editor:AppendText("\n"..report) end
-        editor:AppendText(("\n\nUpdated %d %s in %d %s.")
+        if report then editor:AppendTextDyn("\n"..report) end
+        editor:AppendTextDyn(("\n\nUpdated %d %s in %d %s.")
           :format(
             lines, makePlural("line", lines),
             files, makePlural("file", files)))

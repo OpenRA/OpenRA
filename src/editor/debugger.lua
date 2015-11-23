@@ -312,12 +312,12 @@ local function activateDocument(file, line, activatehow)
     -- when checking for the content remove all newlines as they may be
     -- reported differently from the original by the Lua engine.
     if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath))
-    or content and content:gsub("[\n\r]","") == editor:GetText():gsub("[\n\r]","") then
+    or content and content:gsub("[\n\r]","") == editor:GetTextDyn():gsub("[\n\r]","") then
       ClearAllCurrentLineMarkers()
       if line then
         if line == 0 then -- special case; find the first executable line
           line = math.huge
-          local func = loadstring(editor:GetText())
+          local func = loadstring(editor:GetTextDyn())
           if func then -- .activelines == {[3] = true, [4] = true, ...}
             for l in pairs(debug.getinfo(func, "L").activelines) do
               if l < line then line = l end
@@ -898,7 +898,7 @@ do
       debugger.activate = nil
       if content then
         local editor = NewFile()
-        editor:SetText(content)
+        editor:SetTextDyn(content)
         if not ide.config.debugger.allowediting
         and not (debugger.options or {}).allowediting then
           editor:SetReadOnly(true)
@@ -917,7 +917,7 @@ do
 end
 
 local function isemptyline(editor, line)
-  local text = editor:GetLine(line-1)
+  local text = editor:GetLineDyn(line-1)
   return not text:find("%S")
   or (text:find("^%s*%-%-") ~= nil and text:find("^%s*%-%-%[=*%[") == nil)
 end
@@ -1443,7 +1443,7 @@ function DebuggerRefreshScratchpad()
     and not CompileProgram(scratchpadEditor, { jumponerror = false, reportstats = false })
     then return end
 
-    local code = StripShebang(scratchpadEditor:GetText())
+    local code = StripShebang(scratchpadEditor:GetTextDyn())
     if debugger.scratchpad.running then
       -- break the current execution first
       -- don't try too frequently to avoid overwhelming the debugger
@@ -1569,7 +1569,7 @@ function DebuggerScratchpadOn(editor)
     end
 
     -- find start position and length of the number
-    local text = scratchpadEditor:GetText()
+    local text = scratchpadEditor:GetTextDyn()
 
     local nstart = pos
     while nstart >= 0
@@ -1582,12 +1582,12 @@ function DebuggerScratchpadOn(editor)
       do nend = nend + 1 end
 
     -- check if there is minus sign right before the number and include it
-    if nstart >= 0 and scratchpadEditor:GetTextRange(nstart,nstart+1) == '-' then 
+    if nstart >= 0 and scratchpadEditor:GetTextRangeDyn(nstart,nstart+1) == '-' then 
       nstart = nstart - 1
     end
     scratchpad.start = nstart + 1
     scratchpad.length = nend - nstart - 1
-    scratchpad.origin = scratchpadEditor:GetTextRange(nstart+1,nend)
+    scratchpad.origin = scratchpadEditor:GetTextRangeDyn(nstart+1,nend)
     if tonumber(scratchpad.origin) then
       scratchpad.point = point
       scratchpadEditor:CaptureMouse()

@@ -47,14 +47,15 @@ end
 
 local function getPromptText()
   local prompt = getPromptLine()
-  return out:GetTextRange(out:PositionFromLine(prompt), out:GetLength())
+  return out:GetTextRangeDyn(out:PositionFromLine(prompt), out:GetLength())
 end
 
 local function setPromptText(text)
   local length = out:GetLength()
-  out:SetTargetStart(length - string.len(getPromptText()))
-  out:SetTargetEnd(length)
-  out:ReplaceTarget(text)
+  out:SetSelectionStart(length - string.len(getPromptText()))
+  out:SetSelectionEnd(length)
+  out:ClearAny()
+  out:AddTextDyn(text)
   -- refresh the output window to force recalculation of wrapped lines;
   -- otherwise a wrapped part of the last line may not be visible.
   out:Update(); out:Refresh()
@@ -82,8 +83,8 @@ local function getInput(line)
   repeat -- check until we find at least some marker
     nextMarker = nextMarker+1
   until out:MarkerGet(nextMarker) > 0 or nextMarker > count-1
-  return chomp(out:GetTextRange(out:PositionFromLine(line),
-                                out:PositionFromLine(nextMarker)))
+  return chomp(out:GetTextRangeDyn(
+    out:PositionFromLine(line), out:PositionFromLine(nextMarker)))
 end
 
 function ConsoleSelectCommand(point)
@@ -178,7 +179,7 @@ local function shellPrint(marker, ...)
   local promptLine = isPrompt and getPromptLine() or nil
   local insertLineAt = isPrompt and getPromptLine() or out:GetLineCount()-1
   local insertAt = isPrompt and out:PositionFromLine(getPromptLine()) or out:GetLength()
-  out:InsertText(insertAt, FixUTF8(text, function (s) return '\\'..string.byte(s) end))
+  out:InsertTextDyn(insertAt, out.useraw and text or FixUTF8(text, function (s) return '\\'..string.byte(s) end))
   local linesAdded = out:GetLineCount() - lines
 
   if marker then

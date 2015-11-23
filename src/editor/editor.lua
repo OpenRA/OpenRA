@@ -218,7 +218,7 @@ function EditorAutoComplete(editor)
 
   -- retrieve the current line and get a string to the current cursor position in the line
   local line = editor:GetCurrentLine()
-  local linetx = editor:GetLine(line)
+  local linetx = editor:GetLineDyn(line)
   local linestart = editor:PositionFromLine(line)
   local localpos = pos-linestart
 
@@ -247,7 +247,7 @@ end
 local ident = "([a-zA-Z_][a-zA-Z_0-9%.%:]*)"
 local function getValAtPosition(editor, pos)
   local line = editor:LineFromPosition(pos)
-  local linetx = editor:GetLine(line)
+  local linetx = editor:GetLineDyn(line)
   local linestart = editor:PositionFromLine(line)
   local localpos = pos-linestart
 
@@ -266,7 +266,7 @@ local function getValAtPosition(editor, pos)
   local var = selected
     -- GetSelectedText() returns concatenated text when multiple instances
     -- are selected, so get the selected text based on start/end
-    and editor:GetTextRange(editor:GetSelectionStart(), editor:GetSelectionEnd())
+    and editor:GetTextRangeDyn(editor:GetSelectionStart(), editor:GetSelectionEnd())
     or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
 
   -- since this function can be called in different contexts, we need
@@ -429,7 +429,7 @@ function IndicateFunctionsOnly(editor, lines, linee)
 
   editor:SetIndicatorCurrent(indicator.FNCALL)
   for line=lines,linee do
-    local tx = editor:GetLine(line)
+    local tx = editor:GetLineDyn(line)
     local ls = editor:PositionFromLine(line)
     editor:IndicatorClearRange(ls, #tx)
 
@@ -582,7 +582,7 @@ function IndicateAll(editor, lines)
 
   local s = TimeGet()
   local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
-  local f = editor.spec.marksymbols(editor:GetText(), pos, vars)
+  local f = editor.spec.marksymbols(editor:GetTextDyn(), pos, vars)
   while true do
     local op, name, lineinfo, vars, at, nobreak = f()
     if not op then break end
@@ -891,7 +891,7 @@ function CreateEditor(bare)
       -- only required to track changes
 
       if beforeDeleted then
-        local text = editor:GetTextRange(pos, pos+event:GetLength())
+        local text = editor:GetTextRangeDyn(pos, pos+event:GetLength())
         local _, numlines = text:gsub("\r?\n","%1")
         DynamicWordsRem(editor,nil,firstLine, numlines)
       end
@@ -906,7 +906,7 @@ function CreateEditor(bare)
       local ch = event:GetKey()
       local pos = editor:GetCurrentPos()
       local line = editor:GetCurrentLine()
-      local linetx = editor:GetLine(line)
+      local linetx = editor:GetLineDyn(line)
       local linestart = editor:PositionFromLine(line)
       local localpos = pos-linestart
       local linetxtopos = linetx:sub(1,localpos)
@@ -917,7 +917,7 @@ function CreateEditor(bare)
         -- auto-indent
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
-          local linedone = editor:GetLine(line - 1)
+          local linedone = editor:GetLineDyn(line - 1)
 
           -- if the indentation is 0 and the current line is not empty,
           -- but the previous line is empty, then take indentation from the
@@ -1027,7 +1027,7 @@ function CreateEditor(bare)
   local function addOneLine(editor, adj)
     local pos = editor:GetLineEndPosition(editor:LineFromPosition(editor:GetCurrentPos())+(adj or 0))
     local added = eol[editor:GetEOLMode()] or "\n"
-    editor:InsertText(pos, added)
+    editor:InsertTextDyn(pos, added)
     editor:SetCurrentPos(pos+#added)
 
     local ev = wxstc.wxStyledTextEvent(wxstc.wxEVT_STC_CHARADDED)
@@ -1277,7 +1277,7 @@ function CreateEditor(bare)
             if edcfg.backspaceunindent and keycode == wx.WXK_BACK and not editor:GetUseTabs() then
               -- get the line number from the *current* position of the cursor
               local line = editor:LineFromPosition(pos+1)
-              local text = editor:GetLine(line):sub(1, pos-editor:PositionFromLine(line)+1)
+              local text = editor:GetLineDyn(line):sub(1, pos-editor:PositionFromLine(line)+1)
               local tw = editor:GetIndent()
               -- if on the tab stop position and only white spaces on the left
               if text:find('^%s+$') and #text % tw == 0 then
@@ -1298,10 +1298,6 @@ function CreateEditor(bare)
         -- if no "jump back" is needed, then do normal processing as this
         -- combination can be mapped to some action
         if not navigateBack(editor) then event:Skip() end
-      elseif (keycode == wx.WXK_DELETE and mod == wx.wxMOD_SHIFT)
-          or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_CONTROL) then
-        ide.frame:AddPendingEvent(wx.wxCommandEvent(
-          wx.wxEVT_COMMAND_MENU_SELECTED, keycode == wx.WXK_INSERT and ID_COPY or ID_CUT))
       elseif (keycode == wx.WXK_RETURN or keycode == wx.WXK_NUMPAD_ENTER)
       and (mod == wx.wxMOD_CONTROL or mod == (wx.wxMOD_CONTROL + wx.wxMOD_SHIFT)) then
         addOneLine(editor, mod == (wx.wxMOD_CONTROL + wx.wxMOD_SHIFT) and -1 or 0)
@@ -1465,7 +1461,7 @@ function CreateEditor(bare)
       local text = wx.wxGetTextFromUser(
         TR("Enter replacement text"),
         TR("Replace All Selections"),
-        editor:GetTextRange(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
+        editor:GetTextRangeDyn(editor:GetSelectionNStart(main), editor:GetSelectionNEnd(main))
       )
       if not text or text == "" then return end
 
