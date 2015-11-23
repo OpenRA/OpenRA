@@ -364,3 +364,45 @@ NASTLH:
 	SelectionDecorations:
 		VisualBounds: 106, 60, 8, -15
 
+NAWAST:
+	Inherits: ^Building
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: Waste Refinery
+		Description: Processes Veins\ninto useable resources.
+	Buildable:
+		BuildPaletteOrder: 110
+		Prerequisites: namisl
+		Queue: Building
+		BuildLimit: 1
+	Building:
+		Footprint: =x= xx= =x=
+		Dimensions: 3,3
+	Selectable:
+		Bounds: 100, 60, 5, -5
+	Health:
+		HP: 400
+	RevealsShroud:
+		Range: 6c0
+	TiberianSunRefinery:
+		DockAngle: 160
+		DockOffset: 2,1
+	StoresResources:
+		PipColor: Red
+		PipCount: 15
+		Capacity: 56
+	FreeActor:
+		Actor: WEED
+		SpawnOffset: 3,1
+		Facing: 160
+	WithIdleOverlay@GLOW:
+		Sequence: idle-glow
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 100, 60, 5, -5
+	RenderSprites:

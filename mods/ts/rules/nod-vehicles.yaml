@@ -164,7 +164,7 @@ REPAIR:
 		Voice: Attack
 
 WEED:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -172,17 +172,33 @@ WEED:
 		Description: Collects veins for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 10
-		Prerequisites: ~naweap, natech # TODO: natech must be nawast
+		BuildPaletteOrder: 100
+		Prerequisites: ~naweap, nawast
+	Harvester:
+		DeliveryBuildings: nawast
+		Capacity: 7
+		Resources: Veins
+		UnloadTicksPerBale: 20
+		LoadTicksPerBale: 40
+		SearchFromProcRadius: 72
+		SearchFromOrderRadius: 36
+		HarvestVoice: Attack
+		DeliverVoice: Move
 	Mobile:
 		Speed: 71
 		ROT: 5
 	Health:
 		HP: 600
+	SelfHealing:
+		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
+	-WithVoxelBody:
+	WithVoxelUnloadBody:
 	-GainsExperience:
 
 SAPC:
