@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
 {
-	public class FireClusterWarhead : Warhead
+	public class FireClusterWarhead : Warhead, IRulesetLoaded<WeaponInfo>
 	{
 		[WeaponReference, FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
@@ -29,11 +29,17 @@ namespace OpenRA.Mods.AS.Warheads
 		[Desc("The range of the cells where the weapon should be fired.")]
 		public readonly int Range = 1;
 
+		WeaponInfo weapon;
+
+		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
+		{
+			weapon = rules.Weapons[Weapon.ToLowerInvariant()];
+		}
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var map = firedBy.World.Map;
 			var targetCells = map.FindTilesInCircle(map.CellContaining(target.CenterPosition), Range);
-			var weapon = map.Rules.Weapons[Weapon.ToLowerInvariant()];
 
 			foreach (var cell in targetCells)
 			{
@@ -66,12 +72,22 @@ namespace OpenRA.Mods.AS.Warheads
 				{
 					var projectile = args.Weapon.Projectile.Create(args);
 					if (projectile != null)
-						firedBy.World.Add(projectile);
+						firedBy.World.AddFrameEndTask(w => w.Add(projectile));
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
 						Game.Sound.Play(args.Weapon.Report.Random(firedBy.World.SharedRandom), target.CenterPosition);
 				}
 			}
+		}
+
+		public override bool IsValidAgainst(Actor victim, Actor firedBy)
+		{
+			return weapon.IsValidAgainst(victim, firedBy);
+		}
+
+		new public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
+		{
+			return weapon.IsValidAgainst(victim, firedBy);
 		}
 	}
 }
