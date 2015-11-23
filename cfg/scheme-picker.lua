@@ -19,8 +19,7 @@
 2. Add the following code with the scheme you selected to `cfg/user.lua`.
 --]]
 
-local G = ...
-styles = G.loadfile('cfg/tomorrow.lua')('TomorrowNightBlue')
+styles = loadfile('cfg/tomorrow.lua')('TomorrowNightBlue')
 stylesoutshell = styles -- apply the same scheme to Output/Console windows
 styles.auxwindow = styles.text -- apply text colors to auxiliary windows
 styles.calltip = styles.text -- apply text colors to tooltips

@@ -10,8 +10,8 @@ See [configuration](http://studio.zerobrane.com/doc-configuration.html) page for
 --]]--
 
 -- to modify loaded configuration for recognized extensions for lua files
-local G = ... -- this now points to the global environment in the script
-local luaspec = G.ide.specs['lua']
+-- (no longer needed in v1.21+) local G = ... -- this now points to the global environment
+local luaspec = ide.specs['lua']
 luaspec.exts[#luaspec.exts+1] = "luaz"
 luaspec.keywords[1] = luaspec.keywords[1] .. ' foo'
 
@@ -82,8 +82,8 @@ styles.text = {bg = {240,240,220}}
 
 -- to change the default color scheme; check tomorrow.lua for the list
 -- of supported schemes or use cfg/scheme-picker.lua to pick a scheme.
-local G = ...
-styles = G.loadfile('cfg/tomorrow.lua')('Tomorrow')
+-- (no longer needed in v1.21+) local G = ... -- this now points to the global environment
+styles = loadfile('cfg/tomorrow.lua')('Tomorrow')
 -- also apply the same scheme to Output and Console windows
 stylesoutshell = styles
 
@@ -95,7 +95,7 @@ styles.marker.prompt = {ch = wxstc.wxSTC_MARK_CHARACTER+('>'):byte(), fg = {0, 0
 stylesoutshell = styles
 
 -- to disable indicators (underlining) on function calls
-styles.indicator.fncall = nil
+-- styles.indicator.fncall = nil
 
 -- to change the color of the indicator used for function calls
 styles.indicator.fncall.fg = {240,0,0}
@@ -142,8 +142,8 @@ editor.nomousezoom = true
 corona = { skin = "iPad" }
 
 -- to style individual keywords; `return` and `break` are shown in red
-local G = ... -- this now points to the global environment in the script
-local luaspec = G.ide.specs.lua
+-- (no longer needed in v1.21+) local G = ... -- this now points to the global environment
+local luaspec = ide.specs.lua
 
 local num = #luaspec.keywords
 -- take a new slot in the list of keywords (starting from 1)
