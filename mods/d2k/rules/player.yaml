@@ -83,4 +83,5 @@ Player:
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 	EnemyWatcher:
 	HarvesterInsurance:
+	GlobalUpgradeManager:
 
