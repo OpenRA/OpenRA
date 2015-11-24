@@ -84,6 +84,17 @@ construction_yard:
 		Palette: d2k
 	PrimaryBuilding:
 	ProvidesPrerequisite@buildingname:
+	GlobalUpgradable:
+		Prerequisites: upgrade.conyard
+		Upgrades: stardecoration
+	WithDecoration@upgraded:
+		SelectionDecoration: true
+		Image: pips
+		Sequence: tag-upgraded
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: stardecoration
+		UpgradeMinEnabledLevel: 1
 
 wind_trap:
 	Inherits: ^Building
@@ -176,6 +187,17 @@ barracks:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
 	ProvidesPrerequisite@buildingname:
+	GlobalUpgradable:
+		Prerequisites: upgrade.barracks
+		Upgrades: stardecoration
+	WithDecoration@upgraded:
+		SelectionDecoration: true
+		Image: pips
+		Sequence: tag-upgraded
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: stardecoration
+		UpgradeMinEnabledLevel: 1
 
 refinery:
 	Inherits: ^Building
@@ -333,6 +355,17 @@ light_factory:
 		Sequence: idle-top
 	Power:
 		Amount: -125
+	GlobalUpgradable:
+		Prerequisites: upgrade.light
+		Upgrades: stardecoration
+	WithDecoration@upgraded:
+		SelectionDecoration: true
+		Image: pips
+		Sequence: tag-upgraded
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: stardecoration
+		UpgradeMinEnabledLevel: 1
 
 heavy_factory:
 	Inherits: ^Building
@@ -395,6 +428,17 @@ heavy_factory:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
+	GlobalUpgradable:
+		Prerequisites: upgrade.heavy
+		Upgrades: stardecoration
+	WithDecoration@upgraded:
+		SelectionDecoration: true
+		Image: pips
+		Sequence: tag-upgraded
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: stardecoration
+		UpgradeMinEnabledLevel: 1
 
 outpost:
 	Inherits: ^Building
@@ -734,6 +778,17 @@ high_tech_factory:
 		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
+	GlobalUpgradable:
+		Prerequisites: upgrade.hightech
+		Upgrades: stardecoration
+	WithDecoration@upgraded:
+		SelectionDecoration: true
+		Image: pips
+		Sequence: tag-upgraded
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: stardecoration
+		UpgradeMinEnabledLevel: 1
 
 research_centre:
 	Inherits: ^Building
