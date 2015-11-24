@@ -406,7 +406,7 @@ outpost:
 		Queue: Building
 		BuildPaletteOrder: 50
 	Selectable:
-		Bounds: 96,64
+		Bounds: 96,72,0,-8
 	Valued:
 		Cost: 750
 	CustomBuildTimeValue:
