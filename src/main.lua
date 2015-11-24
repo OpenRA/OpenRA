@@ -493,6 +493,7 @@ do
     system = MergeFullPath("cfg", "user.lua"),
     user = ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/user.lua"),
   }
+  ide.configqueue = {}
 
   local num = 0
   ide.config.package = setmetatable({}, {
@@ -510,7 +511,7 @@ do
   local includes = {}
   ide.config.include = function(c)
     if c then
-      for _, config in ipairs({ide.configs.system, ide.configs.user}) do
+      for _, config in ipairs({ide.configqueue[#ide.configqueue], ide.configs.user, ide.configs.system}) do
         local p = config and MergeFullPath(config.."/../", c)
         includes[p] = (includes[p] or 0) + 1
         if includes[p] > 1 or LoadLuaConfig(p) then return end

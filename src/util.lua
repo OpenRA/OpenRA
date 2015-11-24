@@ -518,7 +518,9 @@ function LoadLuaConfig(filename,isstring)
     report(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
     setfenv(cfgfn,ide.config)
+    table.insert(ide.configqueue, filename)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
+    table.remove(ide.configqueue)
     if err then
       report(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
