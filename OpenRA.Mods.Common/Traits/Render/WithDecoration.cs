@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -59,19 +60,24 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should this be visible to enemy players?")]
 		public readonly bool ShowToEnemies = false;
 
+		[Desc("Should this be visible only when selected?")]
+		public readonly bool SelectionDecoration = false;
+
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
-	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, IRender
+	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, IRender, IPostRenderSelection
 	{
 		readonly WithDecorationInfo info;
 		readonly string image;
 		readonly Animation anim;
+		readonly Actor self;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
 			: base(info)
 		{
 			this.info = info;
+			this.self = self;
 			image = info.Image ?? self.Info.Name;
 			anim = new Animation(self.World, image);
 			anim.Paused = () => self.World.Paused;
@@ -86,6 +92,16 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual bool ShouldRender(Actor self) { return true; }
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		{
+			return !info.SelectionDecoration ? RenderInner(self, wr, self.Bounds) : Enumerable.Empty<IRenderable>();
+		}
+
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		{
+			return info.SelectionDecoration ? RenderInner(self, wr, self.VisualBounds) : Enumerable.Empty<IRenderable>();
+		}
+
+		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr, Rectangle actorBounds)
 		{
 			if (IsTraitDisabled)
 				return Enumerable.Empty<IRenderable>();
@@ -111,7 +127,6 @@ namespace OpenRA.Mods.Common.Traits
 				return Enumerable.Empty<IRenderable>();
 
 			var pxPos = wr.ScreenPxPosition(self.CenterPosition);
-			var actorBounds = self.Bounds;
 			actorBounds.Offset(pxPos.X, pxPos.Y);
 
 			var img = anim.Image;
