@@ -1362,9 +1362,12 @@ KENN:
 		HasMinibib: True
 	RallyPoint:
 		Offset: 0,2
-	Exit:
+	Exit@1:
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
+	Exit@2:
+		SpawnOffset: -280,400,0
+		ExitCell: -1,0
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
