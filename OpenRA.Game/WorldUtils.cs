@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -41,6 +41,38 @@ namespace OpenRA
 			}
 		}
 
+		public static IEnumerable<Actor> SelectActorsOnScreen(World world, Viewport viewport, IEnumerable<string> selectionClasses, Player player)
+		{
+			return SelectActorsByOwnerAndSelectionClass(world.ScreenMap.ActorsInBox(viewport.TopLeft, viewport.BottomRight), player, selectionClasses);
+		}
+
+		public static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
+		{
+			return SelectActorsByOwnerAndSelectionClass(world.ActorMap.ActorsInWorld(), player, selectionClasses);
+		}
+
+		public static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)
+		{
+			return actors.Where(a =>
+			{
+				if (a.Owner != owner)
+					return false;
+
+				var s = a.TraitOrDefault<Selectable>();
+
+				// selectionClasses == null means that units, that meet all other criteria, get selected
+				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
+			});
+		}
+
+		public static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b)
+		{
+			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
+				return world.ScreenMap.ActorsAt(a).Where(x => IsSelectable(x)).SubsetWithHighestSelectionPriority();
+
+			return world.ScreenMap.ActorsInBox(a, b).Where(x => IsSelectable(x)).SubsetWithHighestSelectionPriority();
+		}
+
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
 			// Note - manual enumeration here for performance due to high call volume.
@@ -67,6 +99,12 @@ namespace OpenRA
 		{
 			return a.Stances[b] == Stance.Ally &&
 				b.Stances[a] == Stance.Ally;
+		}
+
+		public static bool IsSelectable(Actor a)
+		{
+			return a.IsInWorld && a.Info.HasTraitInfo<SelectableInfo>() &&
+				(a.Owner.IsAlliedWith(a.World.RenderPlayer) || !a.World.FogObscures(a));
 		}
 	}
 }
