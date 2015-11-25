@@ -106,12 +106,14 @@ pips:
 		Length: 10
 	pickup-indicator: DATA.R8
 		Start: 112
-	tag-primary: DATA.R8
-		Start: 110
+	tag-primary: primary.shp
 	pip-empty: DATA.R8
 		Start: 15
 	pip-green: DATA.R8
 		Start: 16
+	tag-upgraded: DATA.R8
+		Start: 110
+		Offset: -8,-8
 
 clock:
 	idle: clock.shp
