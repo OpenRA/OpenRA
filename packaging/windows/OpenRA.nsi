@@ -70,6 +70,8 @@ Section "-Reg" Reg
 SectionEnd
 
 Section "Game" GAME
+	SectionIn RO
+
 	RMDir /r "$INSTDIR\mods"
 	SetOutPath "$INSTDIR\mods"
 	File /r "${SRCDIR}\mods\common"
