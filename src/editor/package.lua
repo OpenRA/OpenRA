@@ -361,6 +361,8 @@ function ide:CreateStyledTextCtrl(...)
       or (keycode == wx.WXK_INSERT and mod == wx.wxMOD_SHIFT) then
         local id = keycode == wx.WXK_DELETE and ID.CUT or mod == wx.wxMOD_SHIFT and ID.PASTE or ID.COPY
         ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, id))
+      elseif keycode == wx.WXK_CAPITAL and mod == wx.wxMOD_CONTROL then
+        -- ignore Ctrl+CapsLock
       else
         event:Skip()
       end
