@@ -72,99 +72,108 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
-
-			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
-
 			var multiClick = mi.MultiTapCount >= 2;
 
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
 			{
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragOrigin = xy;
-				isDragging = true;
-
-				// Place buildings, use support powers, and other non-unit things
-				if (!(World.OrderGenerator is UnitOrderGenerator))
+				if (World.OrderGenerator is UnitOrderGenerator)
 				{
-					ApplyOrders(World, mi);
+					dragOrigin = xy;
+					isDragging = true;
+				}
+				else
+				{
+					// Place buildings, use support powers, and other non-unit things
+					ApplyMouseOrders(World, mi);
 					isDragging = false;
 					YieldMouseFocus(mi);
-					lastMousePosition = xy;
-					return true;
 				}
 			}
 
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
+			if (mi.Event == MouseInputEvent.Up)
 			{
-				if (World.OrderGenerator is UnitOrderGenerator)
-				{
-					if (useClassicMouseStyle && HasMouseFocus)
-					{
-						if (!isDragging && World.Selection.Actors.Any() && !multiClick)
-						{
-							if (!(World.ScreenMap.ActorsAt(xy).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
-								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))) && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
-								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
-							{
-								// Order units instead of selecting
-								ApplyOrders(World, mi);
-								isDragging = false;
-								YieldMouseFocus(mi);
-								lastMousePosition = xy;
-								return true;
-							}
-						}
-					}
-
-					if (multiClick)
-					{
-						var unit = World.ScreenMap.ActorsAt(xy)
-							.WithHighestSelectionPriority();
-
-						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
-						{
-							var s = unit.TraitOrDefault<Selectable>();
-							if (s != null)
-							{
-								// Select actors on the screen that have the same selection class as the actor under the mouse cursor
-								var newSelection = WorldUtils.SelectActorsOnScreen(World, worldRenderer.Viewport, new HashSet<string> { s.Class }, unit.Owner);
-
-								World.Selection.Combine(World, newSelection, true, false);
-							}
-						}
-					}
-					else if (isDragging)
-					{
-						// Select actors in the dragbox
-						var newSelection = WorldUtils.SelectActorsInBoxWithDeadzone(World, dragOrigin, xy);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragOrigin == xy);
-					}
-				}
+				if (Game.Settings.Game.UseClassicMouseStyle)
+					MouseClassic(mi, xy, multiClick);
+				else
+					MouseModern(mi, xy, multiClick);
 
 				isDragging = false;
 				YieldMouseFocus(mi);
 			}
 
-			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
-			{
-				// Don't do anything while selecting
-				if (!isDragging)
-				{
-					if (useClassicMouseStyle)
-						World.Selection.Clear();
-
-					ApplyOrders(World, mi);
-				}
-			}
-
 			lastMousePosition = xy;
-
 			return true;
 		}
 
-		void ApplyOrders(World world, MouseInput mi)
+		void MouseModern(MouseInput mi, int2 xy, bool multiClick)
+		{
+			if (mi.Button == MouseButton.Left && World.OrderGenerator is UnitOrderGenerator)
+				MouseSelect(mi, xy, multiClick);
+
+			if (mi.Button == MouseButton.Right && !isDragging)
+				ApplyMouseOrders(World, mi);
+		}
+
+		void MouseClassic(MouseInput mi, int2 xy, bool multiClick)
+		{
+			if (mi.Button == MouseButton.Left && World.OrderGenerator is UnitOrderGenerator)
+			{
+				if (!multiClick && !isDragging && World.Selection.Actors.Any())
+				{
+					var usingModifiers = mi.Modifiers.HasModifier(Modifiers.Ctrl) || mi.Modifiers.HasModifier(Modifiers.Alt);
+					var selectableActors = World.ScreenMap.ActorsAt(xy).Any(a => WorldUtils.IsSelectable(a));
+
+					if (usingModifiers || !selectableActors || !UnitOrderGenerator.InputOverridesSelection(World, xy, mi))
+					{
+						// Order units instead of selecting
+						ApplyMouseOrders(World, mi);
+						return;
+					}
+				}
+
+				MouseSelect(mi, xy, multiClick);
+			}
+
+			if (mi.Button == MouseButton.Right && !isDragging)
+			{
+				World.Selection.Clear();
+				ApplyMouseOrders(World, mi);
+			}
+		}
+
+		void MouseSelect(MouseInput mi, int2 xy, bool multiClick)
+		{
+			if (multiClick)
+			{
+				var player = World.RenderPlayer ?? World.LocalPlayer;
+
+				var unit = World.ScreenMap.ActorsAt(xy)
+					.WithHighestSelectionPriority();
+
+				if (unit != null && unit.Owner == player)
+				{
+					var s = unit.TraitOrDefault<Selectable>();
+					if (s != null)
+					{
+						// Select actors on the screen that have the same selection class as the actor under the mouse cursor
+						var newSelection = WorldUtils.SelectActorsOnScreen(World, worldRenderer.Viewport, new HashSet<string> { s.Class }, unit.Owner);
+
+						World.Selection.Combine(World, newSelection, true, false);
+					}
+				}
+			}
+			else if (isDragging)
+			{
+				// Select actors in the dragbox
+				var newSelection = WorldUtils.SelectActorsInBoxWithDeadzone(World, dragOrigin, xy);
+				World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragOrigin == xy);
+			}
+		}
+
+		void ApplyMouseOrders(World world, MouseInput mi)
 		{
 			if (world.OrderGenerator == null)
 				return;
