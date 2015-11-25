@@ -68,9 +68,11 @@ explosion:
 	med_frag: frag1 # Fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
 	big_frag: frag3 # Same as med_frag, except fire hangs around longer.
 	small_poof: veh-hit2 # For Grenades, tower missiles, boat missiles and APC AA gun.
-	poof: art-exp1 # For UnitExplode (artillery), artillery shell hit and GrenadierExplode
-	small_building: veh-hit1 # Like "building' explosion, but much smaller. (Used for heli-explosion in C&C Gold?)
+	poof: art-exp1 # For UnitExplode (artillery), artillery shell hit, building explosion and GrenadierExplode
+	small_building: veh-hit1 # Used for heli-explosion in C&C Gold?
 	building: fball1
+	building_napalm: napalm2
+		FlipX: true
 
 rank:
 	rank:

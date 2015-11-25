@@ -441,6 +441,7 @@
 		DestroyedSounds: crumble.aud
 	WithSpriteBody:
 	WithBuildingExplosion:
+		Sequences: building, building_napalm, med_frag, poof, small_building
 		Delay: 1
 	CaptureNotification:
 		Notification: BuildingCaptured
