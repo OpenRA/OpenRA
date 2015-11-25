@@ -128,13 +128,11 @@ Section "Game" GAME
 	File "${SRCDIR}\glsl\*.vert"
 SectionEnd
 
-SectionGroup /e "Settings"
-	Section "Desktop Shortcut" DESKTOPSHORTCUT
-		SetOutPath "$INSTDIR"
-		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.exe "" \
-			"$INSTDIR\OpenRA.exe" "" "" "" ""
-	SectionEnd
-SectionGroupEnd
+Section "Desktop Shortcut" DESKTOPSHORTCUT
+	SetOutPath "$INSTDIR"
+	CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.exe "" \
+		"$INSTDIR\OpenRA.exe" "" "" "" ""
+SectionEnd
 
 ;***************************
 ;Dependency Sections
