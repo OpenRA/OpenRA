@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Orders;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Widgets
@@ -23,8 +22,8 @@ namespace OpenRA.Widgets
 	{
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
-		int2? dragStart, dragEnd;
-		int2 lastMousePosition;
+		int2 lastMousePosition, dragOrigin;
+		bool isDragging = false;
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
@@ -35,20 +34,18 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
-			if (!IsDragging)
+			if (isDragging)
+			{
+				Game.Renderer.WorldLineRenderer.DrawRect(dragOrigin.ToFloat2(), lastMousePosition.ToFloat2(), Color.White);
+				foreach (var u in WorldUtils.SelectActorsInBoxWithDeadzone(World, dragOrigin, lastMousePosition))
+					worldRenderer.DrawRollover(u);
+			}
+			else
 			{
 				// Render actors under the mouse pointer
 				foreach (var u in WorldUtils.SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
 					worldRenderer.DrawRollover(u);
-
-				return;
 			}
-
-			// Render actors in the dragbox
-			var selbox = SelectionBox;
-			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in WorldUtils.SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
-				worldRenderer.DrawRollover(u);
 		}
 
 		public override string GetCursor(int2 screenPos)
@@ -56,7 +53,7 @@ namespace OpenRA.Widgets
 			return Sync.CheckSyncUnchanged(World, () =>
 			{
 				// Always show an arrow while selecting
-				if (SelectionBox != null)
+				if (isDragging)
 					return null;
 
 				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
@@ -78,7 +75,6 @@ namespace OpenRA.Widgets
 
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
-			var hasBox = SelectionBox != null;
 			var multiClick = mi.MultiTapCount >= 2;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
@@ -86,21 +82,19 @@ namespace OpenRA.Widgets
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragStart = xy;
+				dragOrigin = xy;
+				isDragging = true;
 
 				// Place buildings, use support powers, and other non-unit things
 				if (!(World.OrderGenerator is UnitOrderGenerator))
 				{
 					ApplyOrders(World, mi);
-					dragStart = dragEnd = null;
+					isDragging = false;
 					YieldMouseFocus(mi);
 					lastMousePosition = xy;
 					return true;
 				}
 			}
-
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move && dragStart.HasValue)
-				dragEnd = xy;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
@@ -108,7 +102,7 @@ namespace OpenRA.Widgets
 				{
 					if (useClassicMouseStyle && HasMouseFocus)
 					{
-						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
+						if (!isDragging && World.Selection.Actors.Any() && !multiClick)
 						{
 							if (!(World.ScreenMap.ActorsAt(xy).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
 								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))) && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
@@ -116,7 +110,7 @@ namespace OpenRA.Widgets
 							{
 								// Order units instead of selecting
 								ApplyOrders(World, mi);
-								dragStart = dragEnd = null;
+								isDragging = false;
 								YieldMouseFocus(mi);
 								lastMousePosition = xy;
 								return true;
@@ -141,22 +135,22 @@ namespace OpenRA.Widgets
 							}
 						}
 					}
-					else if (dragStart.HasValue)
+					else if (isDragging)
 					{
 						// Select actors in the dragbox
-						var newSelection = WorldUtils.SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						var newSelection = WorldUtils.SelectActorsInBoxWithDeadzone(World, dragOrigin, xy);
+						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragOrigin == xy);
 					}
 				}
 
-				dragStart = dragEnd = null;
+				isDragging = false;
 				YieldMouseFocus(mi);
 			}
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
 			{
 				// Don't do anything while selecting
-				if (!hasBox)
+				if (!isDragging)
 				{
 					if (useClassicMouseStyle)
 						World.Selection.Clear();
@@ -168,23 +162,6 @@ namespace OpenRA.Widgets
 			lastMousePosition = xy;
 
 			return true;
-		}
-
-		bool IsDragging
-		{
-			get
-			{
-				return dragStart.HasValue && dragEnd.HasValue && (dragStart.Value - dragEnd.Value).Length > Game.Settings.Game.SelectionDeadzone;
-			}
-		}
-
-		public Pair<int2, int2>? SelectionBox
-		{
-			get
-			{
-				if (!IsDragging) return null;
-				return Pair.New(dragStart.Value, dragEnd.Value);
-			}
 		}
 
 		void ApplyOrders(World world, MouseInput mi)
