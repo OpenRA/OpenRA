@@ -38,7 +38,7 @@ namespace OpenRA.Widgets
 			if (!IsDragging)
 			{
 				// Render actors under the mouse pointer
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
+				foreach (var u in WorldUtils.SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
 					worldRenderer.DrawRollover(u);
 
 				return;
@@ -47,8 +47,29 @@ namespace OpenRA.Widgets
 			// Render actors in the dragbox
 			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
+			foreach (var u in WorldUtils.SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
 				worldRenderer.DrawRollover(u);
+		}
+
+		public override string GetCursor(int2 screenPos)
+		{
+			return Sync.CheckSyncUnchanged(World, () =>
+			{
+				// Always show an arrow while selecting
+				if (SelectionBox != null)
+					return null;
+
+				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
+
+				var mi = new MouseInput
+				{
+					Location = screenPos,
+					Button = Game.Settings.Game.MouseButtonPreference.Action,
+					Modifiers = Game.GetModifierKeys()
+				};
+
+				return World.OrderGenerator.GetCursor(World, cell, mi);
+			});
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -114,7 +135,7 @@ namespace OpenRA.Widgets
 							if (s != null)
 							{
 								// Select actors on the screen that have the same selection class as the actor under the mouse cursor
-								var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, unit.Owner);
+								var newSelection = WorldUtils.SelectActorsOnScreen(World, worldRenderer.Viewport, new HashSet<string> { s.Class }, unit.Owner);
 
 								World.Selection.Combine(World, newSelection, true, false);
 							}
@@ -123,7 +144,7 @@ namespace OpenRA.Widgets
 					else if (dragStart.HasValue)
 					{
 						// Select actors in the dragbox
-						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
+						var newSelection = WorldUtils.SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
@@ -201,27 +222,6 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 screenPos)
-		{
-			return Sync.CheckSyncUnchanged(World, () =>
-			{
-				// Always show an arrow while selecting
-				if (SelectionBox != null)
-					return null;
-
-				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
-
-				var mi = new MouseInput
-				{
-					Location = screenPos,
-					Button = Game.Settings.Game.MouseButtonPreference.Action,
-					Modifiers = Game.GetModifierKeys()
-				};
-
-				return World.OrderGenerator.GetCursor(World, cell, mi);
-			});
-		}
-
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			var player = World.RenderPlayer ?? World.LocalPlayer;
@@ -235,7 +235,7 @@ namespace OpenRA.Widgets
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
-					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
+					var ownUnitsOnScreen = WorldUtils.SelectActorsOnScreen(World, worldRenderer.Viewport, null, player).SubsetWithHighestSelectionPriority().ToList();
 
 					// Check if selecting actors on the screen has selected new units
 					if (ownUnitsOnScreen.Count > World.Selection.Actors.Count())
@@ -243,7 +243,7 @@ namespace OpenRA.Widgets
 					else
 					{
 						// Select actors in the world that have highest selection priority
-						ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
+						ownUnitsOnScreen = WorldUtils.SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
 						Game.Debug("Selected across map");
 					}
 
@@ -261,7 +261,7 @@ namespace OpenRA.Widgets
 						.ToHashSet();
 
 					// Select actors on the screen that have the same selection class as one of the already selected actors
-					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
+					var newSelection = WorldUtils.SelectActorsOnScreen(World, worldRenderer.Viewport, selectedClasses, player).ToList();
 
 					// Check if selecting actors on the screen has selected new units
 					if (newSelection.Count > World.Selection.Actors.Count())
@@ -269,7 +269,7 @@ namespace OpenRA.Widgets
 					else
 					{
 						// Select actors in the world that have the same selection class as one of the already selected actors
-						newSelection = SelectActorsInWorld(World, selectedClasses, player).ToList();
+						newSelection = WorldUtils.SelectActorsInWorld(World, selectedClasses, player).ToList();
 						Game.Debug("Selected across map");
 					}
 
@@ -282,41 +282,6 @@ namespace OpenRA.Widgets
 			}
 
 			return false;
-		}
-
-		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, Player player)
-		{
-			return SelectActorsByOwnerAndSelectionClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), player, selectionClasses);
-		}
-
-		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
-		{
-			return SelectActorsByOwnerAndSelectionClass(world.ActorMap.ActorsInWorld(), player, selectionClasses);
-		}
-
-		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)
-		{
-			return actors.Where(a =>
-			{
-				if (a.Owner != owner)
-					return false;
-
-				var s = a.TraitOrDefault<Selectable>();
-
-				// selectionClasses == null means that units, that meet all other criteria, get selected
-				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
-			});
-		}
-
-		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b)
-		{
-			// For dragboxes that are too small, shrink the dragbox to a single point (point b)
-			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
-				a = b;
-
-			return world.ScreenMap.ActorsInBox(a, b)
-				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
-				.SubsetWithHighestSelectionPriority();
 		}
 
 		bool ToggleStatusBars()
