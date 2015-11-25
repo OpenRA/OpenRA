@@ -142,7 +142,7 @@ test_dll_TARGET = OpenRA.Test.dll
 test_dll_KIND = library
 test_dll_DEPS = $(game_TARGET)
 test_dll_FLAGS = -warn:1
-test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(NUNIT_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(NUNIT_LIBS)
 PROGRAMS += test_dll
 test_dll: $(test_dll_TARGET)
 
