@@ -39,8 +39,9 @@ namespace OpenRA.Orders
 		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var target = TargetForInput(world, xy, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, mi))
 				.Where(o => o != null)
 				.ToList();
 
@@ -65,12 +66,14 @@ namespace OpenRA.Orders
 		{
 			var useSelect = false;
 			var target = TargetForInput(world, xy, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
+
 			if (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
 					(mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 				useSelect = true;
 
 			var ordersWithCursor = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, mi))
 				.Where(o => o != null && o.Cursor != null);
 
 			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
@@ -81,17 +84,23 @@ namespace OpenRA.Orders
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
 		public static bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
-			var target = Target.FromActor(world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority());
+			var actor = world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority();
+			if (actor == null)
+				return true;
+
+			var target = Target.FromActor(actor);
+			var cell = world.Map.CellContaining(target.CenterPosition);
+			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
 
-			var o = OrderForUnit(underCursor, target, mi);
+			var o = OrderForUnit(underCursor, target, actorsAt, mi);
 			if (o != null && o.Order.OverrideSelection)
 				return false;
 
 			return true;
 		}
 
-		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
+		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, MouseInput mi)
 		{
 			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
 				return null;
@@ -112,8 +121,6 @@ namespace OpenRA.Orders
 				modifiers |= TargetModifiers.ForceQueue;
 			if (mi.Modifiers.HasModifier(Modifiers.Alt))
 				modifiers |= TargetModifiers.ForceMove;
-
-			var actorsAt = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(target.CenterPosition)).ToList();
 
 			foreach (var o in self.TraitsImplementing<IIssueOrder>()
 				.SelectMany(trait => trait.Orders
