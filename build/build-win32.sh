@@ -226,6 +226,10 @@ if [ $BUILD_WXLUA ]; then
   # (temporary) fix for compilation issue in wxlua in Windows using mingw (r184)
   sed -i 's/defined(__MINGW32__) || defined(__GNUWIN32__)/0/' modules/wxbind/src/wxcore_bind.cpp
 
+  # remove "Unable to call an unknown method..." error as it leads to a leak
+  # see http://sourceforge.net/p/wxlua/mailman/message/34629522/ for details
+  sed -i '/Unable to call an unknown method/{N;s/.*/    \/\/ removed by ZBS build process/}' modules/wxlua/wxlbind.cpp
+
   [ -f "$INSTALL_DIR/lib/libwxscintilla-3.0.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-3.0.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-3.0.a"
   [ -f "$INSTALL_DIR/lib/libwxscintilla-3.1.a" ] && cp "$INSTALL_DIR/lib/libwxscintilla-3.1.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-3.1.a"
 
