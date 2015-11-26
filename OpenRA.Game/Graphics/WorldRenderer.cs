@@ -94,10 +94,7 @@ namespace OpenRA.Graphics
 
 		List<IFinalizedRenderable> GenerateRenderables()
 		{
-			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-				.Append(World.WorldActor);
-
-			// Include player actor for the rendered player
+			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight).Append(World.WorldActor);
 			if (World.RenderPlayer != null)
 				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
@@ -105,19 +102,14 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
+			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			// Effects are drawn on top of all actors
-			// HACK: Effects aren't interleaved with actors.
-			var effectRenderables = World.Effects
-				.SelectMany(e => e.Render(this));
-
 			if (World.OrderGenerator != null)
-				effectRenderables = effectRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
+				worldRenderables = worldRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			var renderables = worldRenderables.Concat(effectRenderables)
-				.Select(r => r.PrepareRender(this)).ToList();
+			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			return renderables;
