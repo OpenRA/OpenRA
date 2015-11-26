@@ -37,14 +37,22 @@ namespace OpenRA.Mods.RA.Effects
 		readonly GpsDotInfo info;
 		readonly Animation anim;
 
-		readonly Dictionary<Player, bool> showToPlayer = new Dictionary<Player, bool>();
+		readonly Dictionary<Player, DotState> stateByPlayer = new Dictionary<Player, DotState>();
+		readonly Lazy<HiddenUnderFog> huf;
+		readonly Lazy<FrozenUnderFog> fuf;
+		readonly Lazy<Disguise> disguise;
+		readonly Lazy<Cloak> cloak;
+		readonly Cache<Player, FrozenActorLayer> frozen;
 
-		Lazy<HiddenUnderFog> huf;
-		Lazy<FrozenUnderFog> fuf;
-		Lazy<Disguise> disguise;
-		Lazy<Cloak> cloak;
-		Cache<Player, GpsWatcher> watcher;
-		Cache<Player, FrozenActorLayer> frozen;
+		class DotState
+		{
+			public readonly GpsWatcher Gps;
+			public bool IsVisible;
+			public DotState(GpsWatcher gps)
+			{
+				Gps = gps;
+			}
+		}
 
 		public GpsDot(Actor self, GpsDotInfo info)
 		{
@@ -60,15 +68,14 @@ namespace OpenRA.Mods.RA.Effects
 			disguise = Exts.Lazy(() => self.TraitOrDefault<Disguise>());
 			cloak = Exts.Lazy(() => self.TraitOrDefault<Cloak>());
 
-			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
 
-			showToPlayer = self.World.Players.ToDictionary(x => x, x => false);
+			stateByPlayer = self.World.Players.ToDictionary(p => p, p => new DotState(p.PlayerActor.Trait<GpsWatcher>()));
 		}
 
 		public bool IsDotVisible(Player toPlayer)
 		{
-			return showToPlayer[toPlayer];
+			return stateByPlayer[toPlayer].IsVisible;
 		}
 
 		bool ShouldShowIndicator(Player toPlayer)
@@ -106,14 +113,14 @@ namespace OpenRA.Mods.RA.Effects
 
 			foreach (var player in self.World.Players)
 			{
-				var gps = watcher[player];
-				showToPlayer[player] = (gps.Granted || gps.GrantedAllies) && ShouldShowIndicator(player);
+				var state = stateByPlayer[player];
+				state.IsVisible = (state.Gps.Granted || state.Gps.GrantedAllies) && ShouldShowIndicator(player);
 			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (self.World.RenderPlayer == null || !showToPlayer[self.World.RenderPlayer] || self.Disposed)
+			if (self.World.RenderPlayer == null || !IsDotVisible(self.World.RenderPlayer) || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);
