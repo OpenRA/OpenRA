@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
 					{
-						var rb = init.World.Map.Rules.Actors[n].TraitInfoOrDefault<WithWallSpriteBodyInfo>();
+						var rb = init.World.Map.Rules.Actors[n].TraitInfos<WithWallSpriteBodyInfo>().FirstOrDefault(Exts.IsTraitEnabled);
 						if (rb != null && rb.Type == Type)
 						{
 							haveNeighbour = true;
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var a in adjacentActors)
 			{
 				CVec facing;
-				var wc = a.TraitOrDefault<IWallConnector>();
+				var wc = a.TraitsImplementing<IWallConnector>().FirstOrDefault(Exts.IsTraitEnabled);
 				if (wc == null || !wc.AdjacentWallCanConnect(a, self.Location, wallInfo.Type, out facing))
 					continue;
 
@@ -132,13 +132,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		static void UpdateNeighbours(Actor self)
 		{
-			var adjacentActors = CVec.Directions.SelectMany(dir =>
+			var adjacentActorTraits = CVec.Directions.SelectMany(dir =>
 					self.World.ActorMap.GetActorsAt(self.Location + dir))
-				.Select(a => a.TraitOrDefault<IWallConnector>())
-				.Where(a => a != null);
+				.SelectMany(a => a.TraitsImplementing<IWallConnector>());
 
-			foreach (var rb in adjacentActors)
-				rb.SetDirty();
+			foreach (var aat in adjacentActorTraits)
+				aat.SetDirty();
 		}
 
 		public void RemovedFromWorld(Actor self)

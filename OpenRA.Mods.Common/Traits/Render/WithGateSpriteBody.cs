@@ -73,8 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 			var adjacentActorTraits = adjacent.SelectMany(self.World.ActorMap.GetActorsAt)
 				.SelectMany(a => a.TraitsImplementing<IWallConnector>());
 
-			foreach (var aat in adjacentActorTraits)
-				aat.SetDirty();
+			foreach (var rb in adjacentActorTraits)
+				rb.SetDirty();
 		}
 
 		public void RemovedFromWorld(Actor self)
