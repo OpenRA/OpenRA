@@ -41,7 +41,7 @@ namespace OpenRA.Orders
 			var target = TargetForInput(world, xy, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
 				.Where(o => o != null)
 				.ToList();
 
@@ -73,7 +73,7 @@ namespace OpenRA.Orders
 				useSelect = true;
 
 			var ordersWithCursor = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
 				.Where(o => o != null && o.Cursor != null);
 
 			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
@@ -93,14 +93,19 @@ namespace OpenRA.Orders
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
 
-			var o = OrderForUnit(underCursor, target, actorsAt, mi);
+			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null && o.Order.OverrideSelection)
 				return false;
 
 			return true;
 		}
 
-		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, MouseInput mi)
+		/// <summary>
+		/// Returns the most appropriate order for a given actor and target.
+		/// First priority is given to orders that interact with the given actors.
+		/// Second priority is given to actors in the given cell.
+		/// </summary>
+		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, CPos xy, MouseInput mi)
 		{
 			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
 				return null;
@@ -122,15 +127,22 @@ namespace OpenRA.Orders
 			if (mi.Modifiers.HasModifier(Modifiers.Alt))
 				modifiers |= TargetModifiers.ForceMove;
 
-			foreach (var o in self.TraitsImplementing<IIssueOrder>()
-				.SelectMany(trait => trait.Orders
-					.Select(x => new { Trait = trait, Order = x }))
-				.OrderByDescending(x => x.Order.OrderPriority))
+			var orders = self.TraitsImplementing<IIssueOrder>()
+				.SelectMany(trait => trait.Orders.Select(x => new { Trait = trait, Order = x }))
+				.OrderByDescending(x => x.Order.OrderPriority);
+
+			for (var i = 0; i < 2; i++)
 			{
-				var localModifiers = modifiers;
-				string cursor = null;
-				if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
-					return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
+				foreach (var o in orders)
+				{
+					var localModifiers = modifiers;
+					string cursor = null;
+					if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
+						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
+				}
+
+				// No valid orders, so check for orders against the cell
+				target = Target.FromCell(self.World, xy);
 			}
 
 			return null;
