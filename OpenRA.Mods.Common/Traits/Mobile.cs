@@ -709,7 +709,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (rejectMove || !target.IsValidFor(self))
+				if (rejectMove || target.Type != TargetType.Terrain)
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
