@@ -1,5 +1,6 @@
--- If you have used Estrela before, please copy this content
--- to your user.lua file in the cfg/ directory
+-- If you have used Estrela for graphics shader authoring or luxinia,
+-- create/modify the `user.lua` file in the current folder
+-- and add `include "estrela.lua"` (1.20+) to load all tools and specifications by default again.
 
 -- load all tools, specs, and interpreters
 local all = function() return true end
@@ -9,8 +10,6 @@ load.interpreters(all)
 
 -- this flag means that toggling between projects, will not affect the 
 -- list of opened files (old estrela default).
--- zbstudio defaults here to true, meaning that you get 
--- per-project list of openend files
 projectautoopen = false
 
 -- default search paths for luxinia
