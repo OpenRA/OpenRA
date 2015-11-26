@@ -102,12 +102,9 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Where is Estrela?
 
-The Estrela project has been merged into ZeroBrane Studio.
-To keep your history of files and projects copy the contents of the `EstrelaEditor.ini`
-in your HOME directory to `ZeroBraneStudio.ini`.
-If you have used Estrela for graphics shader authoring or luxinia, create/modify
-the `cfg/user.lua` and add `include "estrela.lua"` (1.20+) to load all tools
-and specifications by default again.
+The Estrela project has been merged into ZeroBrane Studio. If you have used Estrela
+for graphics shader authoring or luxinia, create/modify the `cfg/user.lua` and
+add `include "estrela.lua"` (1.20+) to load all tools and specifications by default again.
   
 ## License
 
