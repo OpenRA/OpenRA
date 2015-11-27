@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Holding)
 				{
-					// Hah! We met ths critical owned condition
+					// Hah! We met this critical owned condition
 					if (--TicksLeft == 0)
 						mo.MarkCompleted(player, objectiveID);
 				}

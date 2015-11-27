@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class ColorValidator : ServerTrait, IClientJoined
 	{
-		// The bigger the color threshold, the less permitive is the algorithm
+		// The bigger the color threshold, the less permissive is the algorithm
 		const int ColorThreshold = 0x70;
 		const byte ColorLowerBound = 0x80;
 		const byte ColorHigherBound = 0xFF;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Server
 			// Reduce vector by it's biggest value (more calculations, but more accuracy too)
 			var vectorMax = vector.Max(vv => Math.Abs(vv));
 			if (vectorMax == 0)
-				vectorMax = 1;	// Avoid divison by 0
+				vectorMax = 1;	// Avoid division by 0
 
 			vector[0] /= vectorMax;
 			vector[1] /= vectorMax;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Server
 				alternativeColor[1] = forbiddenColor.G + (int)(vector[1] * weightVector[1] * ii);
 				alternativeColor[2] = forbiddenColor.B + (int)(vector[2] * weightVector[2] * ii);
 
-				// Be sure it doesnt go out of bounds (0x33 is the lower limit for HSL picker)
+				// Be sure it doesn't go out of bounds (0x33 is the lower limit for HSL picker)
 				alternativeColor[0] = alternativeColor[0].Clamp(ColorLowerBound, ColorHigherBound);
 				alternativeColor[1] = alternativeColor[1].Clamp(ColorLowerBound, ColorHigherBound);
 				alternativeColor[2] = alternativeColor[2].Clamp(ColorLowerBound, ColorHigherBound);

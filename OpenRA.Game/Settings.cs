@@ -48,7 +48,7 @@ namespace OpenRA
 
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
 
-		[Desc("Time in miliseconds to search for UPnP enabled NAT devices.")]
+		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
 		public int NatDiscoveryTimeout = 1000;
 
 		[Desc("Print very detailed logs for debugging issues with routers.")]
@@ -60,7 +60,7 @@ namespace OpenRA
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
 		public string[] Ban = { };
 
-		[Desc("Value in miliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
+		[Desc("Value in milliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
 		public int TimeOut = 0;
 
 		[Desc("Run in headless mode with an empty renderer and without sound output.")]

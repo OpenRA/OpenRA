@@ -65,7 +65,7 @@ namespace OpenRA.FileFormats
 			var coded = br.ReadBits(8);
 
 			if (coded < 0 || coded > 1)
-				throw new NotImplementedException("Invalid datastream");
+				throw new NotImplementedException("Invalid data stream");
 			var encodedLiterals = coded == 1;
 
 			// log2(dictionary size) - 6
@@ -160,7 +160,7 @@ namespace OpenRA.FileFormats
 			return ms.ToArray();
 		}
 
-		// Decode a code using huffman table h.
+		// Decode a code using Huffman table h.
 		static int Decode(Huffman h, BitReader br)
 		{
 			var code = 0; // len bits being decoded

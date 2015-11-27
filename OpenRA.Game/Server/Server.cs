@@ -242,7 +242,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				/* TODO: Could have an exception here when listener 'goes away' when calling AcceptConnection! */
-				/* Alternative would be to use locking but the listener doesnt go away without a reason. */
+				/* Alternative would be to use locking but the listener doesn't go away without a reason. */
 				Log.Write("server", "Accepting the connection failed.", e);
 				return;
 			}

@@ -412,7 +412,7 @@ namespace OpenRA
 		public static event Action OnQuit = () => { };
 
 		// Note: These delayed actions should only be used by widgets or disposing objects
-		// - things that depend on a particular world should be queuing them on the worldactor.
+		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, Game.RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, Game.RunTime + delayMilliseconds); }

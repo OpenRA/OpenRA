@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SpeedUp = false;
 
 		[Desc("Every time another production building of the same queue is",
-			"contructed, the build times of all actors in the queue",
+			"constructed, the build times of all actors in the queue",
 			"decreased by a percentage of the original time.")]
 		public readonly int[] BuildTimeSpeedReduction = { 100, 85, 75, 65, 60, 55, 50 };
 

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = null;
 		[Desc("Map listed indices to shadow.")]
 		public readonly int[] ShadowIndex = { };
-		[Desc("Apply palette rotatotors or not.")]
+		[Desc("Apply palette rotators or not.")]
 		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.World, this); }

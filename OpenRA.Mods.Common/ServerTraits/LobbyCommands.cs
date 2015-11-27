@@ -367,7 +367,7 @@ namespace OpenRA.Mods.Common.Server
 
 						foreach (var c in server.LobbyInfo.Clients)
 						{
-							// Validate if color is allowed and get an alternative it it isn't
+							// Validate if color is allowed and get an alternative it isn't
 							c.Color = c.PreferredColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, c.Color, c.Index, conn);
 						}
 
@@ -730,7 +730,7 @@ namespace OpenRA.Mods.Common.Server
 						var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
 						if (kickConn == null)
 						{
-							server.SendOrderTo(conn, "Message", "Noone in that slot.");
+							server.SendOrderTo(conn, "Message", "No-one in that slot.");
 							return true;
 						}
 
@@ -869,7 +869,7 @@ namespace OpenRA.Mods.Common.Server
 
 						var newHslColor = FieldLoader.GetValue<HSLColor>("(value)", parts[1]);
 
-						// Validate if color is allowed and get an alternative it it isn't
+						// Validate if color is allowed and get an alternative it isn't
 						var altHslColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, newHslColor, targetClient.Index, conn);
 
 						targetClient.Color = altHslColor;

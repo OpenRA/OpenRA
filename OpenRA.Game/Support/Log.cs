@@ -65,7 +65,7 @@ namespace OpenRA
 		{
 			ChannelInfo info;
 			if (!Channels.TryGetValue(channel, out info))
-				throw new Exception("Tried logging to non-existant channel " + channel);
+				throw new Exception("Tried logging to non-existent channel " + channel);
 
 			if (info.Writer == null)
 				return;
@@ -77,7 +77,7 @@ namespace OpenRA
 		{
 			ChannelInfo info;
 			if (!Channels.TryGetValue(channel, out info))
-				throw new Exception("Tried logging to non-existant channel " + channel);
+				throw new Exception("Tried logging to non-existent channel " + channel);
 
 			if (info.Writer == null)
 				return;

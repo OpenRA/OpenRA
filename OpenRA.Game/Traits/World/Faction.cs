@@ -21,7 +21,7 @@ namespace OpenRA.Traits
 		[Desc("This is the internal name for owner checks.")]
 		public readonly string InternalName = null;
 
-		[Desc("Pick a random faction as the player's facton out of this list.")]
+		[Desc("Pick a random faction as the player's faction out of this list.")]
 		public readonly HashSet<string> RandomFactionMembers = new HashSet<string>();
 
 		[Desc("The side that the faction belongs to. For example, England belongs to the 'Allies' side.")]

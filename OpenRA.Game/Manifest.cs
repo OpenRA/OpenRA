@@ -199,7 +199,7 @@ namespace OpenRA
 				}
 				catch (Exception ex)
 				{
-					Log.Write("debug", "An exception occured while trying to load mod {0}:", mod);
+					Log.Write("debug", "An exception occurred while trying to load mod {0}:", mod);
 					Log.Write("debug", ex.ToString());
 				}
 			}

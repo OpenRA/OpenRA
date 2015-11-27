@@ -25,7 +25,7 @@ namespace OpenRA
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
 		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
 		/// that can be inherited by others (using Inherits:) and not a real unit.
-		/// You can remove inherited traits by adding a - infront of them as in -TraitName: to inherit everything, but this trait.
+		/// You can remove inherited traits by adding a - in front of them as in -TraitName: to inherit everything, but this trait.
 		/// </summary>
 		public readonly string Name;
 		readonly TypeDictionary traits = new TypeDictionary();

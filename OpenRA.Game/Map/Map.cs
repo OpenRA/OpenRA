@@ -1222,7 +1222,7 @@ namespace OpenRA
 						return result;
 
 					// If the lengths are equal, use other means to sort them.
-					// Try the hashcode first because it gives more
+					// Try the hash code first because it gives more
 					// random-appearing results than X or Y that would always
 					// prefer the leftmost/topmost position.
 					result = a.GetHashCode().CompareTo(b.GetHashCode());
