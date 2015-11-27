@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Dictionary<Player, FrozenState> stateByPlayer = new Dictionary<Player, FrozenState>();
 
+		FrozenState[] stateByPlayerIndex;
 		ITooltip tooltip;
 		Health health;
 		bool initialized;
@@ -87,34 +88,40 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			VisibilityHash = 0;
+			var players = self.World.Players;
 
 			if (!initialized)
 			{
+				// The world players never change, so we can safely index this collection.
+				stateByPlayerIndex = new FrozenState[players.Length];
 				tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
 				health = self.TraitOrDefault<Health>();
 			}
 
-			foreach (var player in self.World.Players)
+			for (var i = 0; i < players.Length; i++)
 			{
 				FrozenActor frozenActor;
 				bool isVisible;
 				if (!initialized)
 				{
+					var player = players[i];
 					frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
 					isVisible = startsRevealed;
-					stateByPlayer.Add(player, new FrozenState(frozenActor) { IsVisible = isVisible });
+					var state = new FrozenState(frozenActor) { IsVisible = isVisible };
+					stateByPlayer.Add(player, state);
+					stateByPlayerIndex[i] = state;
 					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 				}
 				else
 				{
-					var state = stateByPlayer[player];
+					var state = stateByPlayerIndex[i];
 					frozenActor = state.FrozenActor;
 					isVisible = !frozenActor.Visible;
 					state.IsVisible = isVisible;
 				}
 
 				if (isVisible)
-					VisibilityHash += player.ClientIndex;
+					VisibilityHash |= 1 << (i % 32);
 				else
 					continue;
 
