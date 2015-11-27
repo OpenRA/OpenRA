@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Demolish the target actor.")]
 		public void Demolish(Actor target)
 		{
-			Self.QueueActivity(new Demolish(Self, target, info.C4Delay, info.Flashes,
-				info.FlashesDelay, info.FlashInterval, info.FlashDuration));
+			Self.QueueActivity(new Demolish(Self, target, info.EnterBehaviour, info.C4Delay,
+				info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
 		}
 	}
 }

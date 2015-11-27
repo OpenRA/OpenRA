@@ -243,7 +243,9 @@ saboteur:
 	Mobile:
 		Speed: 43
 	C4Demolition:
-		C4Delay: 45
+		C4Delay: 0
+		Flashes: 0
+		EnterBehaviour: Suicide
 	-AutoTarget:
 	Cloak:
 		InitialDelay: 85
