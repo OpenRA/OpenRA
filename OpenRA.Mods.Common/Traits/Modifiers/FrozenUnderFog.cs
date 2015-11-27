@@ -35,11 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool startsRevealed;
 		readonly PPos[] footprint;
 
-		readonly Lazy<ITooltip> tooltip;
-		readonly Lazy<Health> health;
-
 		readonly Dictionary<Player, FrozenState> stateByPlayer = new Dictionary<Player, FrozenState>();
 
+		ITooltip tooltip;
+		Health health;
 		bool initialized;
 
 		class FrozenState
@@ -62,8 +61,6 @@ namespace OpenRA.Mods.Common.Traits
 			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
 			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
-			tooltip = Exts.Lazy(() => init.Self.TraitsImplementing<ITooltip>().FirstOrDefault());
-			health = Exts.Lazy(() => init.Self.TraitOrDefault<Health>());
 		}
 
 		bool IsVisibleInner(Actor self, Player byPlayer)
@@ -90,6 +87,13 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			VisibilityHash = 0;
+
+			if (!initialized)
+			{
+				tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+				health = self.TraitOrDefault<Health>();
+			}
+
 			foreach (var player in self.World.Players)
 			{
 				FrozenActor frozenActor;
@@ -116,16 +120,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				frozenActor.Owner = self.Owner;
 
-				if (health.Value != null)
+				if (health != null)
 				{
-					frozenActor.HP = health.Value.HP;
-					frozenActor.DamageState = health.Value.DamageState;
+					frozenActor.HP = health.HP;
+					frozenActor.DamageState = health.DamageState;
 				}
 
-				if (tooltip.Value != null)
+				if (tooltip != null)
 				{
-					frozenActor.TooltipInfo = tooltip.Value.TooltipInfo;
-					frozenActor.TooltipOwner = tooltip.Value.Owner;
+					frozenActor.TooltipInfo = tooltip.TooltipInfo;
+					frozenActor.TooltipOwner = tooltip.Owner;
 				}
 			}
 
