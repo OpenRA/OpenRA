@@ -1908,25 +1908,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					// This will only do roughly the right thing and probably require the modder to do some manual cleanup
 					if (depth == 0)
 					{
-						var inftraits = node.Value.Nodes.FirstOrDefault(n =>
-							n.Key.StartsWith("WithInfantryBody")
-							|| n.Key.StartsWith("WithDisguisingInfantryBody"));
-						if (inftraits != null)
+						// Check if the upgrade rule ran already before
+						var qffs = node.Value.Nodes.FirstOrDefault(n => n.Key == "QuantizeFacingsFromSequence");
+						if (qffs == null)
 						{
-							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
+							var inftraits = node.Value.Nodes.FirstOrDefault(n =>
+								n.Key.StartsWith("WithInfantryBody")
+								|| n.Key.StartsWith("WithDisguisingInfantryBody"));
+							if (inftraits != null)
 							{
-								new MiniYamlNode("Sequence", "stand"),
-							}));
-						}
+								node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
+								{
+									new MiniYamlNode("Sequence", "stand"),
+								}));
+							}
 
-						var other = node.Value.Nodes.FirstOrDefault(x =>
-							x.Key.StartsWith("RenderBuilding")
-							|| x.Key.StartsWith("RenderSimple")
-							|| x.Key.StartsWith("WithCrateBody")
-							|| x.Key.StartsWith("WithSpriteBody")
-							|| x.Key.StartsWith("WithFacingSpriteBody"));
-						if (other != null)
-							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", ""));
+							var other = node.Value.Nodes.FirstOrDefault(x =>
+								x.Key.StartsWith("RenderBuilding")
+								|| x.Key.StartsWith("RenderSimple")
+								|| x.Key.StartsWith("WithCrateBody")
+								|| x.Key.StartsWith("WithSpriteBody")
+								|| x.Key.StartsWith("WithFacingSpriteBody"));
+							if (other != null)
+								node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", ""));
+						}
 					}
 				}
 
@@ -2123,7 +2128,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						// Add `WhileCloakedUpgrades: underwater` to Cloak trait if `CloakTypes: Underwater`
 						var cloak = node.Value.Nodes.FirstOrDefault(n => (n.Key == "Cloak" || n.Key.StartsWith("Cloak@"))
 							&& n.Value.Nodes.Any(p => p.Key == "CloakTypes" && p.Value.Value == "Underwater"));
-						if (cloak != null)
+						if (cloak != null && !cloak.Value.Nodes.Any(n => n.Key == "WhileCloakedUpgrades"))
 							cloak.Value.Nodes.Add(new MiniYamlNode("WhileCloakedUpgrades", "underwater"));
 
 						// Remove split traits if TargetableSubmarine was removed
@@ -2213,12 +2218,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Make Range WDist for all traits with circular ranges.
 				if (engineVersion < 20150920 && depth == 2 && node.Key == "Range")
 				{
-					if (parentKey == "DetectCloaked"
+					if ((parentKey == "DetectCloaked"
 							|| parentKey == "JamsMissiles"
 							|| parentKey == "JamsRadar"
 							|| parentKey == "Guardable"
 							|| parentKey == "BaseProvider"
 							|| parentKey == "ProximityCapturable")
+							&& !node.Value.Value.Contains("c0"))
 						node.Value.Value = node.Value.Value + "c0";
 				}
 
@@ -2401,7 +2407,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 1 && node.Key == "AutoTarget")
 					{
 						var stance = node.Value.Nodes.FirstOrDefault(n => n.Key == "InitialStance");
-						if (stance != null)
+						var aiStance = node.Value.Nodes.FirstOrDefault(n => n.Key == "InitialStanceAI");
+						if (stance != null && aiStance == null)
 							node.Value.Nodes.Add(new MiniYamlNode("InitialStanceAI", stance.Value.Value));
 					}
 				}
