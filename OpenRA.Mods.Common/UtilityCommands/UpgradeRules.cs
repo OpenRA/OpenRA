@@ -1679,7 +1679,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 						var otherNodes = nodes;
 						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
-								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+							.Any(inh =>
+							{
+								var otherNode = otherNodes.FirstOrDefault(n => n.Key.StartsWith(inh.Value.Value));
+
+								if (otherNode == null)
+									return false;
+
+								return otherNode.Value.Nodes.Any(n => n.Key.StartsWith(traitName));
+							}));
 
 						// For actors that have or inherit a TargetableUnit, disable the trait while parachuting
 						var tu = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("TargetableUnit"));
@@ -2295,7 +2303,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						var otherNodes = nodes;
 						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
-								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+							.Any(inh =>
+							{
+								var otherNode = otherNodes.FirstOrDefault(n => n.Key.StartsWith(inh.Value.Value));
+
+								if (otherNode == null)
+									return false;
+
+								return otherNode.Value.Nodes.Any(n => n.Key.StartsWith(traitName));
+							}));
 
 						var target = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-AutoTarget"));
 						if (target != null)
