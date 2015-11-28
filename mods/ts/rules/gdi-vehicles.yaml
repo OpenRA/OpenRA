@@ -34,6 +34,8 @@ APC:
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
+		StationaryInterval: 18
+		MovingInterval: 6
 
 HVR:
 	Inherits: ^VoxelVehicle
@@ -79,6 +81,9 @@ HVR:
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
+		TrailWhileStationary: True
+		StationaryInterval: 18
+		MovingInterval: 6
 
 SMECH:
 	Inherits: ^Tank

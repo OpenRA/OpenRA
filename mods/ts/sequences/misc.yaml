@@ -266,7 +266,7 @@ wake:
 	idle: wake2
 		Length: *
 		Tick: 180
-		ZOffset: 2047
+		ZOffset: -512
 
 resources:
 	Defaults:
