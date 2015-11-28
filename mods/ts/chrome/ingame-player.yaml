@@ -19,8 +19,8 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							X:0-2
-							Y:0-2
+							X: 0-2
+							Y: 0-2
 							Width: 64
 							Height: 48
 							IgnoreMouseOver: true
@@ -390,3 +390,4 @@ Container@PLAYER_WIDGETS:
 							Background: scrolldown-buttons
 							TooltipText: Scroll down
 							TooltipContainer: TOOLTIP_CONTAINER
+

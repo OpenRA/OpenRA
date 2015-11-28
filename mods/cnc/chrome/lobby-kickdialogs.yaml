@@ -45,6 +45,7 @@ Background@KICK_CLIENT_DIALOG:
 			Height: 25
 			Text: Cancel
 			Font: Bold
+
 Background@KICK_SPECTATORS_DIALOG:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
@@ -78,6 +79,7 @@ Background@KICK_SPECTATORS_DIALOG:
 			Height: 25
 			Text: Cancel
 			Font: Bold
+
 Background@FORCE_START_DIALOG:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
@@ -137,3 +139,4 @@ Background@FORCE_START_DIALOG:
 			Height: 25
 			Text: Cancel
 			Font: Bold
+
