@@ -2547,8 +2547,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									oldNodeAtName = "_" + curNode.Key.Split('@')[1];
 
 								// Per Cell Damage Model
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
-										n.Value.Value.Contains("PerCell")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DamageModel") &&
+									n.Value.Value.Contains("PerCell")))
 								{
 									warheadCounter++;
 
@@ -2583,14 +2583,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// HealthPercentage damage model
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
-										n.Value.Value.Contains("HealthPercentage")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DamageModel") &&
+									n.Value.Value.Contains("HealthPercentage")))
 								{
 									warheadCounter++;
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New HealthPercentage warhead allows 2 spreads, as opposed to 1 size
+									// New HealthPercentage warhead allows 2 spreads, as opposed to 1 size
+									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
 									if (temp != null)
 									{
 										var newValue = temp.Value.Value.Split(',').First() + "c0";
@@ -2619,7 +2620,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// SpreadDamage
-								{ // Always occurs, since by definition all warheads were SpreadDamage warheads before
+								// Always occurs, since by definition all warheads were SpreadDamage warheads before
+								{
 									warheadCounter++;
 
 									var newYaml = new List<MiniYamlNode>();
@@ -2646,8 +2648,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// DestroyResource
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DestroyResources") ||
-										n.Key.Contains("Ore")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DestroyResources") ||
+									n.Key.Contains("Ore")))
 								{
 									warheadCounter++;
 
@@ -2665,7 +2667,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateResource
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("AddsResourceType")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("AddsResourceType")))
 								{
 									warheadCounter++;
 
@@ -2684,7 +2686,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// LeaveSmudge
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("SmudgeType")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("SmudgeType")))
 								{
 									warheadCounter++;
 
@@ -2703,8 +2705,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateEffect - Explosion
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("Explosion") ||
-										n.Key.Contains("ImpactSound")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("Explosion") ||
+									n.Key.Contains("ImpactSound")))
 								{
 									warheadCounter++;
 
@@ -2725,8 +2727,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateEffect - Water Explosion
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("WaterExplosion") ||
-										n.Key.Contains("WaterImpactSound")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("WaterExplosion") ||
+									n.Key.Contains("WaterImpactSound")))
 								{
 									warheadCounter++;
 
