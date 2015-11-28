@@ -1850,6 +1850,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (actor != null)
 							actor.Key = "Actor";
 					}
+
+					if (node.Key == "-SpawnViceroid")
+						node.Key = "-SpawnActorOnDeath";
+
+					if (node.Key == "-LeavesHusk")
+						node.Key = "-SpawnActorOnDeath";
 				}
 
 				if (engineVersion < 20150920)
@@ -2272,6 +2278,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						node.Key = "Aircraft";
 						node.Value.Nodes.Add(new MiniYamlNode("CanHover", "True"));
+					}
+
+					var mplane = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Plane");
+					if (mplane != null)
+					{
+						// Check if a Helicopter trait was renamed to Aircraft
+						// In that case, we don't want to straight negate it with -Aircraft again
+						if (node.Value.Nodes.Any(n => n.Key == "Aircraft" || n.Key == "Helicopter"))
+						{
+							Console.WriteLine("Warning: Removed '-Plane:', this can introduce side effects with inherited 'Aircraft' definitions.");
+							node.Value.Nodes.Remove(mplane);
+						}
+						else
+							mplane.Key = "-Aircraft";
+					}
+
+					var mheli = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Helicopter");
+					if (mheli != null)
+					{
+						// Check if a Plane trait was renamed to Aircraft
+						// In that case, we don't want to straight negate it with -Aircraft again
+						if (node.Value.Nodes.Any(n => n.Key == "Aircraft" || n.Key == "Plane"))
+						{
+							Console.WriteLine("Warning: Removed '-Helicopter:', this can introduce side effects with inherited 'Aircraft' definitions.");
+							node.Value.Nodes.Remove(mheli);
+						}
+						else
+							mheli.Key = "-Aircraft";
 					}
 				}
 
