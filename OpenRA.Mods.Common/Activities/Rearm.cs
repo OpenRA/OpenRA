@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				var wsb = hostBuilding.Trait<WithSpriteBody>();
 				if (wsb.DefaultAnimation.HasSequence("active"))
-					wsb.PlayCustomAnimation(hostBuilding, "active");
+					wsb.PlayCustomAnimation(hostBuilding, "active", () => wsb.CancelCustomAnimation(self));
 
 				var sound = pool.Info.RearmSound;
 				if (sound != null)

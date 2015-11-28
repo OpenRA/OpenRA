@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Charging(Actor self, Target target)
 		{
-			wsb.PlayCustomAnimation(self, info.ChargeSequence);
+			wsb.PlayCustomAnimation(self, info.ChargeSequence, () => wsb.CancelCustomAnimation(self));
 		}
 	}
 }

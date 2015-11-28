@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
 			{
-				wsb.PlayCustomAnimation(self, wsb.Info.Sequence);
+				wsb.CancelCustomAnimation(self);
 				dockedHarv = null;
 			}
 

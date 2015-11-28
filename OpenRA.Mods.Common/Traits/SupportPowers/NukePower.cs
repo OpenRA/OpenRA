@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(info.ActivationSequence))
 			{
 				var wsb = self.Trait<WithSpriteBody>();
-				wsb.PlayCustomAnimation(self, info.ActivationSequence);
+				wsb.PlayCustomAnimation(self, info.ActivationSequence, () => wsb.CancelCustomAnimation(self));
 			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);

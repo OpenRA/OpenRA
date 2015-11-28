@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.GrantUpgradeSequence))
-				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence);
+				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence, () => wsb.CancelCustomAnimation(self));
 
 			Game.Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
