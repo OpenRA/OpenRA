@@ -202,7 +202,7 @@ Container@OBSERVER_WIDGETS:
 			Logic: ObserverShroudSelectorLogic
 			X: WINDOW_RIGHT-WIDTH-5
 			Y: 260
-			Width:256
+			Width: 256
 			Height: 25
 			Font: Bold
 			Children:
@@ -467,6 +467,7 @@ Container@PLAYER_WIDGETS:
 			Y: 268
 			Width: 194
 			Height: 20
+
 Background@FMVPLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM

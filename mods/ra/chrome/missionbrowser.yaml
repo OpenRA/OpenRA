@@ -94,7 +94,6 @@ Background@MISSIONBROWSER_PANEL:
 					Width: 120
 					Height: 25
 					Font: Regular
-
 		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
@@ -150,6 +149,7 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+
 Background@FULLSCREEN_PLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
@@ -161,3 +161,4 @@ Background@FULLSCREEN_PLAYER:
 			Y: 0
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
+
