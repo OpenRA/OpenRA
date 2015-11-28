@@ -36,19 +36,14 @@ namespace OpenRA
 
 	class TraitDictionary
 	{
-		// construct this delegate once.
-		static Func<Type, ITraitContainer> doCreateTraitContainer = CreateTraitContainer;
-		static ITraitContainer CreateTraitContainer(Type t)
-		{
-			return (ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t)
-				.GetConstructor(Type.EmptyTypes).Invoke(null);
-		}
+		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
+			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
+		readonly Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
 
 		ITraitContainer InnerGet(Type t)
 		{
-			return traits.GetOrAdd(t, doCreateTraitContainer);
+			return traits.GetOrAdd(t, CreateTraitContainer);
 		}
 
 		TraitContainer<T> InnerGet<T>()
