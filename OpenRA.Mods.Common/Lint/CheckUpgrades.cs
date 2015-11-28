@@ -109,20 +109,6 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 			}
-
-			// TODO: HACK because GainsExperience grants upgrades differently to most other sources.
-			var gainsExperience = rules.Actors.SelectMany(x => x.Value.TraitInfos<GainsExperienceInfo>()
-				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
-
-			foreach (var upgrade in gainsExperience)
-				yield return upgrade;
-
-			// TODO: HACK because Pluggable grants upgrades differently to most other sources.
-			var pluggable = rules.Actors.SelectMany(x => x.Value.TraitInfos<PluggableInfo>()
-				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
-
-			foreach (var upgrade in pluggable)
-				yield return upgrade;
 		}
 
 		static IEnumerable<string> GetAllUsedUpgrades(Action<string> emitError, Ruleset rules)
@@ -140,14 +126,6 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 			}
-
-			// TODO: HACK because GainsExperience and GainsStatUpgrades do not play by the rules...
-			// We assume everything GainsExperience grants is used by GainsStatUpgrade
-			var gainsExperience = rules.Actors.SelectMany(x => x.Value.TraitInfos<GainsExperienceInfo>()
-				.SelectMany(y => y.Upgrades.SelectMany(z => z.Value)));
-
-			foreach (var upgrade in gainsExperience)
-				yield return upgrade;
 		}
 	}
 }

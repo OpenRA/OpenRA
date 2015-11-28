@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace OpenRA.Mods.Common.Lint
@@ -19,17 +21,44 @@ namespace OpenRA.Mods.Common.Lint
 		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
 		{
 			var type = fieldInfo.FieldType;
+			var value = fieldInfo.GetValue(ruleInfo);
+
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			{
+				var getValues = type.GetProperty("Values").GetGetMethod();
+				type = type.GetGenericArguments()[1];
+				var errorFree = true;
+				Action<string> emitCustomError = message =>
+				{
+					emitError("Bad type for reference values on {0}.{1}. {2}".F(ruleInfo.GetType().Name, fieldInfo.Name, message));
+					errorFree = false;
+				};
+
+				foreach (var v in getValues.Invoke(value, null) as IEnumerable)
+					if (v != null && errorFree)
+						foreach (var s in GetStringsFromValue(v, type, emitCustomError))
+							yield return s;
+			}
+			else
+			{
+				Action<string> emitCustomError = message =>
+					emitError("Bad type for reference on {0}.{1}. {2}".F(ruleInfo.GetType().Name, fieldInfo.Name, message));
+				foreach (var s in GetStringsFromValue(value, type, emitCustomError))
+					yield return s;
+			}
+		}
+
+		public static IEnumerable<string> GetStringsFromValue(object value, Type type, Action<string> emitError)
+		{
 			if (type == typeof(string))
-				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
+				return new[] { (string)value };
 			if (type == typeof(string[]))
-				return (string[])fieldInfo.GetValue(ruleInfo);
+				return (string[])value;
 			if (type == typeof(HashSet<string>))
-				return (HashSet<string>)fieldInfo.GetValue(ruleInfo);
+				return (HashSet<string>)value;
 
-			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[], HashSet<string>"
-				.F(ruleInfo.GetType().Name, fieldInfo.Name));
-
-			return new string[] { };
+			emitError("Supported types: string, string[], HashSet<string>");
+			return Enumerable.Empty<string>();
 		}
 	}
 }

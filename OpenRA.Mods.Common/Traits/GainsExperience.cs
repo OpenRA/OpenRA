@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor's experience increases when it has killed a GivesExperience actor.")]
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>, Requires<UpgradeManagerInfo>
 	{
-		[FieldLoader.Require]
+		[FieldLoader.Require, UpgradeGrantedReference, UpgradeUsedReference] // HACK: Treat upgrades as used
 		[Desc("Upgrades to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is a list of the upgrade types to grant")]
