@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks to wait before decreasing the effective move radius.")]
 		public readonly int TicksToWaitBeforeReducingMoveRadius = 5;
 
-		[Desc("Mimimum ammount of ticks the actor will sit idly before starting to wander.")]
+		[Desc("Minimum amount of ticks the actor will sit idly before starting to wander.")]
 		public readonly int MinMoveDelayInTicks = 0;
 
-		[Desc("Maximum ammount of ticks the actor will sit idly before starting to wander.")]
+		[Desc("Maximum amount of ticks the actor will sit idly before starting to wander.")]
 		public readonly int MaxMoveDelayInTicks = 0;
 
 		public abstract object Create(ActorInitializer init);

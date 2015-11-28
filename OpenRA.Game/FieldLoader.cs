@@ -704,7 +704,7 @@ namespace OpenRA
 		}
 	}
 
-	// mirrors DescriptionAttribute from System.ComponentModel but we dont want to have to use that everywhere.
+	// Mirrors DescriptionAttribute from System.ComponentModel but we don't want to have to use that everywhere.
 	[AttributeUsage(AttributeTargets.All)]
 	public sealed class DescAttribute : Attribute
 	{

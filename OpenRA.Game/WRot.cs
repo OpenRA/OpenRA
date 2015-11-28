@@ -70,7 +70,7 @@ namespace OpenRA
 			// Theoretically 1024 *  * 2, but may differ slightly due to rounding
 			var lsq = q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3];
 
-			// Quarternion components use 10 bits, so there's no risk of overflow
+			// Quaternion components use 10 bits, so there's no risk of overflow
 			var mtx = new int[16];
 			mtx[0] = lsq - 2 * (q[1] * q[1] + q[2] * q[2]);
 			mtx[1] = 2 * (q[0] * q[1] + q[2] * q[3]);

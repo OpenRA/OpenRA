@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Effects
 			// Also, never change horizontal facing and never travel backwards
 			// Possible techniques to avoid close cliffs are deceleration, turning
 			// as sharply as possible to travel directly upwards and then returning
-			// to zero vertical facing as low as possible while still not hittin the
+			// to zero vertical facing as low as possible while still not hitting the
 			// high terrain. A last technique (and the preferred one, normally used when
 			// the missile hasn't been fired near a cliff) is simply finding the smallest
 			// vertical facing that allows for a smooth climb to the new terrain's height

@@ -159,7 +159,7 @@ namespace OpenRA
 
 			LoadTranslations(map);
 
-			// Reinit all our assets
+			// Reinitialize all our assets
 			InitializeLoaders();
 			GlobalFileSystem.LoadFromManifest(Manifest);
 

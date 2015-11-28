@@ -69,10 +69,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		// A list of things we could possibly build
-		readonly Dictionary<ActorInfo, ProductionState> produceable = new Dictionary<ActorInfo, ProductionState>();
+		readonly Dictionary<ActorInfo, ProductionState> producible = new Dictionary<ActorInfo, ProductionState>();
 		readonly List<ProductionItem> queue = new List<ProductionItem>();
-		readonly IEnumerable<ActorInfo> allProduceables;
-		readonly IEnumerable<ActorInfo> buildableProduceables;
+		readonly IEnumerable<ActorInfo> allProducibles;
+		readonly IEnumerable<ActorInfo> buildableProducibles;
 
 		// Will change if the owner changes
 		PowerManager playerPower;
@@ -102,9 +102,9 @@ namespace OpenRA.Mods.Common.Traits
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 			Enabled = !info.Factions.Any() || info.Factions.Contains(Faction);
 
-			CacheProduceables(playerActor);
-			allProduceables = produceable.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
-			buildableProduceables = produceable.Where(a => a.Value.Buildable).Select(a => a.Key);
+			CacheProducibles(playerActor);
+			allProducibles = producible.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
+			buildableProducibles = producible.Where(a => a.Value.Buildable).Select(a => a.Key);
 		}
 
 		void ClearQueue()
@@ -131,9 +131,9 @@ namespace OpenRA.Mods.Common.Traits
 				Enabled = !Info.Factions.Any() || Info.Factions.Contains(Faction);
 			}
 
-			// Regenerate the produceables and tech tree state
+			// Regenerate the producibles and tech tree state
 			oldOwner.PlayerActor.Trait<TechTree>().Remove(this);
-			CacheProduceables(newOwner.PlayerActor);
+			CacheProducibles(newOwner.PlayerActor);
 			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
 
@@ -145,9 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
 
-		void CacheProduceables(Actor playerActor)
+		void CacheProducibles(Actor playerActor)
 		{
-			produceable.Clear();
+			producible.Clear();
 			if (!Enabled)
 				return;
 
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var bi = a.TraitInfo<BuildableInfo>();
 
-				produceable.Add(a, new ProductionState());
+				producible.Add(a, new ProductionState());
 				ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
 			}
 		}
@@ -173,22 +173,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesAvailable(string key)
 		{
-			produceable[self.World.Map.Rules.Actors[key]].Buildable = true;
+			producible[self.World.Map.Rules.Actors[key]].Buildable = true;
 		}
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			produceable[self.World.Map.Rules.Actors[key]].Buildable = false;
+			producible[self.World.Map.Rules.Actors[key]].Buildable = false;
 		}
 
 		public void PrerequisitesItemHidden(string key)
 		{
-			produceable[self.World.Map.Rules.Actors[key]].Visible = false;
+			producible[self.World.Map.Rules.Actors[key]].Visible = false;
 		}
 
 		public void PrerequisitesItemVisible(string key)
 		{
-			produceable[self.World.Map.Rules.Actors[key]].Visible = true;
+			producible[self.World.Map.Rules.Actors[key]].Visible = true;
 		}
 
 		public ProductionItem CurrentItem()
@@ -204,9 +204,9 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
 			if (self.World.AllowDevCommands && developerMode.AllTech)
-				return produceable.Keys;
+				return producible.Keys;
 
-			return allProduceables;
+			return allProducibles;
 		}
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
@@ -214,15 +214,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
 			if (self.World.AllowDevCommands && developerMode.AllTech)
-				return produceable.Keys;
+				return producible.Keys;
 
-			return buildableProduceables;
+			return buildableProducibles;
 		}
 
 		public bool CanBuild(ActorInfo actor)
 		{
 			ProductionState ps;
-			if (!produceable.TryGetValue(actor, out ps))
+			if (!producible.TryGetValue(actor, out ps))
 				return false;
 
 			return ps.Buildable || (self.World.AllowDevCommands && developerMode.AllTech);
@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns false if the unit can't be built
 		protected virtual bool BuildUnit(string name)
 		{
-			// Cannot produce if i'm dead
+			// Cannot produce if I'm dead
 			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(name, 1);

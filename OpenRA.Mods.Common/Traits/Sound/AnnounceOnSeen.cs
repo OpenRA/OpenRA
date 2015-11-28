@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (discoverer != null && !string.IsNullOrEmpty(Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Faction.InternalName);
 
-			// Radar notificaion
+			// Radar notification
 			if (Info.PingRadar && radarPings.Value != null)
 				radarPings.Value.Add(() => true, self.CenterPosition, Color.Red, 50);
 		}

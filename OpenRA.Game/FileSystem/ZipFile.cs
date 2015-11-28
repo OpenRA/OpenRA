@@ -34,7 +34,7 @@ namespace OpenRA.FileSystem
 			this.priority = priority;
 			try
 			{
-				// pull the file into memory, dont keep it open.
+				// Pull the file into memory, don't keep it open.
 				pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
 			}
 			catch (ZipException e)
@@ -43,7 +43,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		// Create a new zip with the specified contents
+		// Create a new zip with the specified contents.
 		public ZipFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.priority = priority;

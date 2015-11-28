@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 					WorldUtils.AreMutualAllies(a.Owner, currentOwner) || !CanBeCapturedBy(a));
 		}
 
-		// TODO exclude other NeutralActor that arent permanent
+		// TODO exclude other NeutralActor that aren't permanent
 		bool IsStillInRange(Actor self)
 		{
 			return UnitsInRange().Any(a => a.Owner == self.Owner && CanBeCapturedBy(a));
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Owner != OriginalOwner && CanBeCapturedBy(a));
 		}
 
-		// TODO exclude other NeutralActor that arent permanent
+		// TODO exclude other NeutralActor that aren't permanent
 		Actor GetInRange(Actor self)
 		{
 			return CaptorsInRange(self).ClosestTo(self);

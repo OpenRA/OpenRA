@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			reservedFor = forActor;
 			reservedForAircraft = forAircraft;
 
-			// NOTE: we really dont care about the GC eating DisposableActions that apply to a world *other* than
+			// NOTE: we really don't care about the GC eating DisposableActions that apply to a world *other* than
 			// the one we're playing in.
 			return new DisposableAction(
 				() => { reservedFor = null; reservedForAircraft = null; },

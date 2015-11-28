@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// AttackMove was generalized to support all moveable actor types
+				// AttackMove was generalized to support all movable actor types
 				if (engineVersion < 20140116)
 				{
 					if (depth == 1 && node.Key == "AttackMove")

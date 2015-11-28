@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			// TODO: HACK: This is a hack until we can properly distinquish between airplane and helicopter!
+			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
 			// Or until the activities get unified enough so that it doesn't matter.
 			IsPlane = !info.CanHover;
 		}

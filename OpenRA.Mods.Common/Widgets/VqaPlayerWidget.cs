@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
 				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
 
-			// Round size to integer pixels. Round up to be consistent with the scale calcuation.
+			// Round size to integer pixels. Round up to be consistent with the scale calculation.
 			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
 
 			if (!DrawOverlay)

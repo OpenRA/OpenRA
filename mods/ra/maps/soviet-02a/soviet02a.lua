@@ -57,7 +57,7 @@ WorldLoaded = function()
 	end)
 
 	-- Discover the area around the bridge exposing the two german soldiers
-	-- When the two infantry near the bridge are discovered move them accross the bridge to waypoint4
+	-- When the two infantry near the bridge are discovered move them across the bridge to waypoint4
 	-- in the meanwhile one USSR soldier hunts them down
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		Actor.Create("camera", true, { Owner = player, Location = waypoint23.Location })
@@ -89,7 +89,7 @@ WorldLoaded = function()
 				return
 			end
 
-			-- Don't "shoot" at the barrels if there is noone to shoot
+			-- Don't "shoot" at the barrels if there is no-one to shoot
 			if not FleeingUnits[1].IsDead then
 				FleeingUnits[1].Attack(Barrel, true, true)
 			elseif not FleeingUnits[2].IsDead then

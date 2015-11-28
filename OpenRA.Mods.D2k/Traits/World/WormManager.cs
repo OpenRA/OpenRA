@@ -59,7 +59,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!spawnPointActors.Value.Any())
 				return;
 
-			// Apparantly someone doesn't want worms or the maximum number of worms has been reached
+			// Apparently someone doesn't want worms or the maximum number of worms has been reached
 			if (info.Maximum < 1 || wormsPresent >= info.Maximum)
 				return;
 

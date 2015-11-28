@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in dirtyCells)
 			{
-				// Select all neighbors inside the map boundries
+				// Select all neighbors inside the map boundaries
 				var thisCell = cell;	// benign closure hazard
 				var neighbors = CVec.Directions.Select(d => d + thisCell)
 					.Where(c => map.Contains(c));

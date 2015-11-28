@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly bool ExplodeInstead = false;
 		public readonly string ChronoshiftSound = "chrono2.aud";
 
-		[Desc("Should the actor return to its previous location after the chronoshift weared out?")]
+		[Desc("Should the actor return to its previous location after the chronoshift wore out?")]
 		public readonly bool ReturnToOrigin = true;
 
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]

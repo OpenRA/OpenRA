@@ -73,7 +73,7 @@ Root2:
 
 			// Merge order should not matter
 			// Note: All the Merge* variants are different plumbing over the same
-			// internal logic.  Testing only MergeStrict is sufficent.
+			// internal logic.  Testing only MergeStrict is sufficient.
 			TestMixedMerge(MiniYaml.MergeStrict(a, b).First().Value);
 			TestMixedMerge(MiniYaml.MergeStrict(b, a).First().Value);
 		}
