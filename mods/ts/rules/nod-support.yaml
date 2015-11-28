@@ -255,6 +255,7 @@ NAMISL:
 		IndicatorPalette: mouse
 	RequiresPower:
 	DisabledOverlay:
+	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
 		Cursor: nuke

@@ -54,6 +54,7 @@ HARV:
 		Priority: 7
 		Bounds: 36,36
 	Harvester:
+		DeliveryBuildings: proc
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
 		UnloadTicksPerBale: 1
