@@ -559,10 +559,5 @@ namespace OpenRA.Traits
 				}
 			}
 		}
-
-		public IEnumerable<Actor> ActorsInWorld()
-		{
-			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
-		}
 	}
 }
