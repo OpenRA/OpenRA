@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			yield return trail;
+			return new IRenderable[] { trail };
 		}
 	}
 }

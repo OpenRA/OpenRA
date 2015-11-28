@@ -103,10 +103,10 @@ namespace OpenRA.Mods.Common.Traits
 				initializePalettes = false;
 			}
 
-			yield return new VoxelRenderable(
+			return new IRenderable[] { new VoxelRenderable(
 				components, self.CenterPosition, 0, camera, info.Scale,
 				lightSource, info.LightAmbientColor, info.LightDiffuseColor,
-				colorPalette, normalsPalette, shadowPalette);
+				colorPalette, normalsPalette, shadowPalette) };
 		}
 
 		public string Image { get { return info.Image ?? self.Info.Name; } }
