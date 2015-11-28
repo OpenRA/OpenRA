@@ -573,19 +573,6 @@ gaicbm:
 		Length: 30
 		ShadowStart: 30
 
-gadpsa:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	make: gadpsamk
-		Length: 36
-		ShadowStart: 36
-
 gaarty:
 	Defaults:
 		Offset: 0, -12

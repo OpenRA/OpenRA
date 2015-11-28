@@ -139,7 +139,6 @@ LPST:
 		UpgradeTypes: undeployed
 		UpgradeMinEnabledLevel: 1
 	WithSpriteBody@deployed:
-		StartSequence: make
 		UpgradeTypes: undeployed
 		UpgradeMaxEnabledLevel: 0
 	DisableOnUpgrade:
