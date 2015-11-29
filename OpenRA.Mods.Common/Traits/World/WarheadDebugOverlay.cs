@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -66,7 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 				var alpha = 255.0f * i.Time / info.DisplayDuration;
 				var rangeStep = alpha / i.Range.Length;
 
-				wr.DrawRangeCircle(i.CenterPosition, i.OuterRange, Color.FromArgb((int)alpha, i.Color));
+				RangeCircleRenderable.DrawRangeCircle(wr, i.CenterPosition, i.OuterRange,
+					1, Color.FromArgb((int)alpha, i.Color), 0, i.Color);
 
 				foreach (var r in i.Range)
 				{
