@@ -146,5 +146,5 @@ LPST:
 		UpgradeMinEnabledLevel: 1
 		Range: 18c0
 	RenderDetectionCircle:
-		DrawUpdateLine: true
+		TrailCount: 3
 
