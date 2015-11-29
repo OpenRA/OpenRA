@@ -204,7 +204,6 @@
     <Compile Include="Pathfinder\CellInfo.cs" />
     <Compile Include="PlayerExtensions.cs" />
     <Compile Include="Scripting\Properties\AircraftProperties.cs" />
-    <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
@@ -487,6 +486,7 @@
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
+    <Compile Include="Traits\Upgrades\UpgradesCache.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />

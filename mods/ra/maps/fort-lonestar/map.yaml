@@ -527,8 +527,8 @@ Rules:
 			Type: LightningStrike
 		LuaScript:
 			Scripts: fort-lonestar.lua
-		ScriptUpgradesCache:
-			Upgrades: unkillable
+		UpgradesCache:
+			Scriptable: unkillable
 	FORTCRATE:
 		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:

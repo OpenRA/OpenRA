@@ -1261,8 +1261,8 @@ Rules:
 			ValuePerUnit: 0
 		LuaScript:
 			Scripts: desert-shellmap.lua
-		ScriptUpgradesCache:
-			Upgrades: unkillable
+		UpgradesCache:
+			Scriptable: unkillable
 		-StartGameNotification:
 	^Vehicle:
 		GivesBounty:

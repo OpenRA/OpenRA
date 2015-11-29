@@ -2683,6 +2683,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename ScriptUpgradesCache => UpgradesCache with Upgrades => Scriptable
+				if (engineVersion < 20151128 && depth == 1)
+				{
+					if (node.Key == "ScriptUpgradesCache")
+					{
+						node.Key = "UpgradesCache";
+						var u = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (u != null)
+							u.Key = "Scriptable";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
