@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 					var br = wr.ScreenPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
 					var rect = RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
-					Game.Renderer.WorldLineRenderer.FillEllipse(rect, Color.FromArgb((int)alpha, i.Color));
+					Game.Renderer.WorldRgbaColorRenderer.FillEllipse(rect, Color.FromArgb((int)alpha, i.Color));
 
 					alpha -= rangeStep;
 				}
