@@ -26,7 +26,9 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void CheckUpgradesValidity(Action<string> emitError, Ruleset rules)
 		{
-			var upgradesGranted = GetAllGrantedUpgrades(emitError, rules).ToHashSet();
+			var upgradesGranted = LintExts.GetAllActorTraitValuesHavingAttribute<UpgradeGrantedReferenceAttribute>(emitError, rules)
+				.Concat(LintExts.GetAllWarheadValuesHavingAttribute<UpgradeGrantedReferenceAttribute>(emitError, rules))
+				.ToHashSet();
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void CheckUpgradesUsage(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			var upgradesUsed = GetAllUsedUpgrades(emitError, rules).ToHashSet();
+			var upgradesUsed = LintExts.GetAllActorTraitValuesHavingAttribute<UpgradeUsedReferenceAttribute>(emitError, rules).ToHashSet();
 
 			// Check all upgrades granted by traits.
 			foreach (var actorInfo in rules.Actors)
@@ -73,56 +75,6 @@ namespace OpenRA.Mods.Common.Lint
 						var values = LintExts.GetFieldValues(warhead, field, emitError);
 						foreach (var value in values.Where(x => !upgradesUsed.Contains(x)))
 							emitWarning("Weapon type `{0}` grants upgrade `{1}` that is not used by anything!".F(weapon.Key, value));
-					}
-				}
-			}
-		}
-
-		static IEnumerable<string> GetAllGrantedUpgrades(Action<string> emitError, Ruleset rules)
-		{
-			// Get all upgrades granted by traits.
-			foreach (var actorInfo in rules.Actors)
-			{
-				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
-				{
-					var fields = trait.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeGrantedReferenceAttribute>()))
-					{
-						var values = LintExts.GetFieldValues(trait, field, emitError);
-						foreach (var value in values)
-							yield return value;
-					}
-				}
-			}
-
-			// Get all upgrades granted by warheads.
-			foreach (var weapon in rules.Weapons)
-			{
-				foreach (var warhead in weapon.Value.Warheads)
-				{
-					var fields = warhead.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeGrantedReferenceAttribute>()))
-					{
-						var values = LintExts.GetFieldValues(warhead, field, emitError);
-						foreach (var value in values)
-							yield return value;
-					}
-				}
-			}
-		}
-
-		static IEnumerable<string> GetAllUsedUpgrades(Action<string> emitError, Ruleset rules)
-		{
-			foreach (var actorInfo in rules.Actors)
-			{
-				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
-				{
-					var fields = trait.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeUsedReferenceAttribute>()))
-					{
-						var values = LintExts.GetFieldValues(trait, field, emitError);
-						foreach (var value in values)
-							yield return value;
 					}
 				}
 			}
