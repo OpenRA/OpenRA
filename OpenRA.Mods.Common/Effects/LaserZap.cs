@@ -21,7 +21,11 @@ namespace OpenRA.Mods.Common.Effects
 	[Desc("Not a sprite, but an engine effect.")]
 	class LaserZapInfo : IProjectileInfo
 	{
-		public readonly int BeamWidth = 2;
+		[Desc("The width of the zap.")]
+		public readonly WDist Width = new WDist(86);
+
+		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
+		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
 
 		public readonly int BeamDuration = 10;
 
@@ -98,7 +102,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
-				yield return new BeamRenderable(args.Source, 0, target - args.Source, info.BeamWidth, rc);
+				yield return new BeamRenderable(args.Source, 0, target - args.Source, info.Shape, info.Width, rc);
 			}
 
 			if (hitanim != null)

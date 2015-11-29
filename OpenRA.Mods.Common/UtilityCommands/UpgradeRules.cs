@@ -3178,6 +3178,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						TryUpdateColor(ref node.Value.Value);
 				}
 
+				if (engineVersion < 20151129)
+				{
+					if (node.Key == "BeamWidth" && parent.Value.Value == "LaserZap")
+					{
+						node.Key = "Width";
+						ConvertPxToRange(ref node.Value.Value);
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
