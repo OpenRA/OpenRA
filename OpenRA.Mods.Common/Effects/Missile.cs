@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly WDist MaximumSpeed = new WDist(384);
 
 		[Desc("Projectile acceleration when propulsion activated.")]
-		public readonly WDist Acceleration = new WDist(5);
+		public readonly WDist Acceleration = WDist.Zero;
 
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
