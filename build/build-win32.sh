@@ -14,7 +14,7 @@ BUILD_FLAGS="-O2 -shared -s -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
 
 # paths configuration
 WXWIDGETS_BASENAME="wxWidgets"
-WXWIDGETS_URL="https://github.com/wxWidgets/wxWidgets.git"
+WXWIDGETS_URL="https://github.com/pkulchenko/wxWidgets.git"
 
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"

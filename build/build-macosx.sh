@@ -24,7 +24,7 @@ BUILD_FLAGS="-O2 -arch x86_64 -dynamiclib -undefined dynamic_lookup $MACOSX_FLAG
 
 # paths configuration
 WXWIDGETS_BASENAME="wxWidgets"
-WXWIDGETS_URL="https://github.com/wxWidgets/wxWidgets.git"
+WXWIDGETS_URL="https://github.com/pkulchenko/wxWidgets.git"
 
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"
