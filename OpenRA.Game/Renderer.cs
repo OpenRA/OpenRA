@@ -22,7 +22,6 @@ namespace OpenRA
 	{
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
-		public QuadRenderer WorldQuadRenderer { get; private set; }
 		public LineRenderer WorldLineRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
 		public VoxelRenderer WorldVoxelRenderer { get; private set; }
@@ -69,7 +68,6 @@ namespace OpenRA
 			WorldVoxelRenderer = new VoxelRenderer(this, Device.CreateShader("vxl"));
 			LineRenderer = new LineRenderer(this, Device.CreateShader("color"));
 			RgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
-			WorldQuadRenderer = new QuadRenderer(this, Device.CreateShader("color"));
 			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 
@@ -135,7 +133,6 @@ namespace OpenRA
 				WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldLineRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldRgbaColorRenderer.SetViewportParams(Resolution, zoom, scroll);
-				WorldQuadRenderer.SetViewportParams(Resolution, zoom, scroll);
 			}
 		}
 
