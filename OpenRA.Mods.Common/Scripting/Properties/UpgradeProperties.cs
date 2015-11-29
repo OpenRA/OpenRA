@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 			: base(context, self)
 		{
 			um = self.Trait<UpgradeManager>();
-			validUpgrades = self.World.WorldActor.TraitOrDefault<UpgradesCache>();
+			validUpgrades = self.TraitOrDefault<UpgradesCache>();
 		}
 
 		[Desc("Grant an upgrade to this actor.")]
