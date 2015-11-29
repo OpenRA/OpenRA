@@ -186,6 +186,10 @@ namespace OpenRA.Mods.Common.Traits
 				Players.Players.Add(pr.Name, pr);
 				worldRenderer.UpdatePalettesForPlayer(pr.Name, pr.Color, true);
 			}
+
+			var creeps = Players.Players.Keys.FirstOrDefault(p => p == "Creeps");
+			if (!string.IsNullOrEmpty(creeps))
+				Players.Players[creeps].Enemies = Players.Players.Keys.Where(p => !Players.Players[p].NonCombatant).ToArray();
 		}
 
 		void UpdateNeighbours(IReadOnlyDictionary<CPos, SubCell> footprint)
