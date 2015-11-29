@@ -19,6 +19,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
+	public sealed class RequireExplicitImplementationAttribute : Attribute { }
+
 	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
 
 	public interface IHealth
@@ -249,6 +251,8 @@ namespace OpenRA.Traits
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
+
+	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
 	public interface IPositionableInfo : ITraitInfoInterface { }
