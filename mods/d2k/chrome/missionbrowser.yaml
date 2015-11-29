@@ -152,6 +152,7 @@ Background@MISSIONBROWSER_PANEL:
 					Height: 480
 					AspectRatio: 1.2
 					DrawOverlay: False
+
 Background@FULLSCREEN_PLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
@@ -163,3 +164,4 @@ Background@FULLSCREEN_PLAYER:
 			Y: 0
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
+

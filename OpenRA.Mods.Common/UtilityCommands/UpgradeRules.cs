@@ -1679,7 +1679,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 						var otherNodes = nodes;
 						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
-								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+							.Any(inh =>
+							{
+								var otherNode = otherNodes.FirstOrDefault(n => n.Key.StartsWith(inh.Value.Value));
+
+								if (otherNode == null)
+									return false;
+
+								return otherNode.Value.Nodes.Any(n => n.Key.StartsWith(traitName));
+							}));
 
 						// For actors that have or inherit a TargetableUnit, disable the trait while parachuting
 						var tu = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("TargetableUnit"));
@@ -1842,6 +1850,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (actor != null)
 							actor.Key = "Actor";
 					}
+
+					if (node.Key == "-SpawnViceroid")
+						node.Key = "-SpawnActorOnDeath";
+
+					if (node.Key == "-LeavesHusk")
+						node.Key = "-SpawnActorOnDeath";
 				}
 
 				if (engineVersion < 20150920)
@@ -1894,25 +1908,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					// This will only do roughly the right thing and probably require the modder to do some manual cleanup
 					if (depth == 0)
 					{
-						var inftraits = node.Value.Nodes.FirstOrDefault(n =>
-							n.Key.StartsWith("WithInfantryBody")
-							|| n.Key.StartsWith("WithDisguisingInfantryBody"));
-						if (inftraits != null)
+						// Check if the upgrade rule ran already before
+						var qffs = node.Value.Nodes.FirstOrDefault(n => n.Key == "QuantizeFacingsFromSequence");
+						if (qffs == null)
 						{
-							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
+							var inftraits = node.Value.Nodes.FirstOrDefault(n =>
+								n.Key.StartsWith("WithInfantryBody")
+								|| n.Key.StartsWith("WithDisguisingInfantryBody"));
+							if (inftraits != null)
 							{
-								new MiniYamlNode("Sequence", "stand"),
-							}));
-						}
+								node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", null, new List<MiniYamlNode>
+								{
+									new MiniYamlNode("Sequence", "stand"),
+								}));
+							}
 
-						var other = node.Value.Nodes.FirstOrDefault(x =>
-							x.Key.StartsWith("RenderBuilding")
-							|| x.Key.StartsWith("RenderSimple")
-							|| x.Key.StartsWith("WithCrateBody")
-							|| x.Key.StartsWith("WithSpriteBody")
-							|| x.Key.StartsWith("WithFacingSpriteBody"));
-						if (other != null)
-							node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", ""));
+							var other = node.Value.Nodes.FirstOrDefault(x =>
+								x.Key.StartsWith("RenderBuilding")
+								|| x.Key.StartsWith("RenderSimple")
+								|| x.Key.StartsWith("WithCrateBody")
+								|| x.Key.StartsWith("WithSpriteBody")
+								|| x.Key.StartsWith("WithFacingSpriteBody"));
+							if (other != null)
+								node.Value.Nodes.Add(new MiniYamlNode("QuantizeFacingsFromSequence", ""));
+						}
 					}
 				}
 
@@ -2109,7 +2128,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						// Add `WhileCloakedUpgrades: underwater` to Cloak trait if `CloakTypes: Underwater`
 						var cloak = node.Value.Nodes.FirstOrDefault(n => (n.Key == "Cloak" || n.Key.StartsWith("Cloak@"))
 							&& n.Value.Nodes.Any(p => p.Key == "CloakTypes" && p.Value.Value == "Underwater"));
-						if (cloak != null)
+						if (cloak != null && !cloak.Value.Nodes.Any(n => n.Key == "WhileCloakedUpgrades"))
 							cloak.Value.Nodes.Add(new MiniYamlNode("WhileCloakedUpgrades", "underwater"));
 
 						// Remove split traits if TargetableSubmarine was removed
@@ -2199,12 +2218,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Make Range WDist for all traits with circular ranges.
 				if (engineVersion < 20150920 && depth == 2 && node.Key == "Range")
 				{
-					if (parentKey == "DetectCloaked"
+					if ((parentKey == "DetectCloaked"
 							|| parentKey == "JamsMissiles"
 							|| parentKey == "JamsRadar"
 							|| parentKey == "Guardable"
 							|| parentKey == "BaseProvider"
 							|| parentKey == "ProximityCapturable")
+							&& !node.Value.Value.Contains("c0"))
 						node.Value.Value = node.Value.Value + "c0";
 				}
 
@@ -2265,6 +2285,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Aircraft";
 						node.Value.Nodes.Add(new MiniYamlNode("CanHover", "True"));
 					}
+
+					var mplane = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Plane");
+					if (mplane != null)
+					{
+						// Check if a Helicopter trait was renamed to Aircraft
+						// In that case, we don't want to straight negate it with -Aircraft again
+						if (node.Value.Nodes.Any(n => n.Key == "Aircraft" || n.Key == "Helicopter"))
+						{
+							Console.WriteLine("Warning: Removed '-Plane:', this can introduce side effects with inherited 'Aircraft' definitions.");
+							node.Value.Nodes.Remove(mplane);
+						}
+						else
+							mplane.Key = "-Aircraft";
+					}
+
+					var mheli = node.Value.Nodes.FirstOrDefault(n => n.Key == "-Helicopter");
+					if (mheli != null)
+					{
+						// Check if a Plane trait was renamed to Aircraft
+						// In that case, we don't want to straight negate it with -Aircraft again
+						if (node.Value.Nodes.Any(n => n.Key == "Aircraft" || n.Key == "Plane"))
+						{
+							Console.WriteLine("Warning: Removed '-Helicopter:', this can introduce side effects with inherited 'Aircraft' definitions.");
+							node.Value.Nodes.Remove(mheli);
+						}
+						else
+							mheli.Key = "-Aircraft";
+					}
 				}
 
 				if (engineVersion < 20151004)
@@ -2295,7 +2343,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						var otherNodes = nodes;
 						var inherits = new Func<string, bool>(traitName => node.Value.Nodes.Where(n => n.Key.StartsWith("Inherits"))
-								.Any(inh => otherNodes.First(n => n.Key.StartsWith(inh.Value.Value)).Value.Nodes.Any(n => n.Key.StartsWith(traitName))));
+							.Any(inh =>
+							{
+								var otherNode = otherNodes.FirstOrDefault(n => n.Key.StartsWith(inh.Value.Value));
+
+								if (otherNode == null)
+									return false;
+
+								return otherNode.Value.Nodes.Any(n => n.Key.StartsWith(traitName));
+							}));
 
 						var target = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("-AutoTarget"));
 						if (target != null)
@@ -2351,7 +2407,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (depth == 1 && node.Key == "AutoTarget")
 					{
 						var stance = node.Value.Nodes.FirstOrDefault(n => n.Key == "InitialStance");
-						if (stance != null)
+						var aiStance = node.Value.Nodes.FirstOrDefault(n => n.Key == "InitialStanceAI");
+						if (stance != null && aiStance == null)
 							node.Value.Nodes.Add(new MiniYamlNode("InitialStanceAI", stance.Value.Value));
 					}
 				}
@@ -2490,8 +2547,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									oldNodeAtName = "_" + curNode.Key.Split('@')[1];
 
 								// Per Cell Damage Model
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
-										n.Value.Value.Contains("PerCell")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DamageModel") &&
+									n.Value.Value.Contains("PerCell")))
 								{
 									warheadCounter++;
 
@@ -2526,14 +2583,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// HealthPercentage damage model
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DamageModel") &&
-										n.Value.Value.Contains("HealthPercentage")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DamageModel") &&
+									n.Value.Value.Contains("HealthPercentage")))
 								{
 									warheadCounter++;
 
 									var newYaml = new List<MiniYamlNode>();
 
-									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size"); // New HealthPercentage warhead allows 2 spreads, as opposed to 1 size
+									// New HealthPercentage warhead allows 2 spreads, as opposed to 1 size
+									var temp = curNode.Value.Nodes.FirstOrDefault(n => n.Key == "Size");
 									if (temp != null)
 									{
 										var newValue = temp.Value.Value.Split(',').First() + "c0";
@@ -2562,7 +2620,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// SpreadDamage
-								{ // Always occurs, since by definition all warheads were SpreadDamage warheads before
+								// Always occurs, since by definition all warheads were SpreadDamage warheads before
+								{
 									warheadCounter++;
 
 									var newYaml = new List<MiniYamlNode>();
@@ -2589,8 +2648,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// DestroyResource
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("DestroyResources") ||
-										n.Key.Contains("Ore")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("DestroyResources") ||
+									n.Key.Contains("Ore")))
 								{
 									warheadCounter++;
 
@@ -2608,7 +2667,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateResource
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("AddsResourceType")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("AddsResourceType")))
 								{
 									warheadCounter++;
 
@@ -2627,7 +2686,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// LeaveSmudge
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("SmudgeType")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("SmudgeType")))
 								{
 									warheadCounter++;
 
@@ -2646,8 +2705,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateEffect - Explosion
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("Explosion") ||
-										n.Key.Contains("ImpactSound")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("Explosion") ||
+									n.Key.Contains("ImpactSound")))
 								{
 									warheadCounter++;
 
@@ -2668,8 +2727,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								}
 
 								// CreateEffect - Water Explosion
-								if (curNode.Value.Nodes.Where(n => n.Key.Contains("WaterExplosion") ||
-										n.Key.Contains("WaterImpactSound")).Any())
+								if (curNode.Value.Nodes.Any(n => n.Key.Contains("WaterExplosion") ||
+									n.Key.Contains("WaterImpactSound")))
 								{
 									warheadCounter++;
 

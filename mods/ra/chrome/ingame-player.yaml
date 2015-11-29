@@ -18,8 +18,8 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							X:0-2
-							Y:0-2
+							X: 0-2
+							Y: 0-2
 							Width: 62
 							Height: 46
 							IgnoreMouseOver: true
@@ -381,3 +381,4 @@ Container@PLAYER_WIDGETS:
 									Y: 3
 									ImageCollection: scrollbar
 									ImageName: down_arrow
+

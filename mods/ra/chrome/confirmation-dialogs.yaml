@@ -58,7 +58,7 @@ Background@CANCEL_PROMPT:
 			Height: 25
 			Text: Cancel
 			Font: Bold
-			Key: escape 
+			Key: escape
 
 Background@TEXT_INPUT_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
@@ -99,3 +99,4 @@ Background@TEXT_INPUT_PROMPT:
 			Text: Cancel
 			Font: Bold
 			Key: escape
+
