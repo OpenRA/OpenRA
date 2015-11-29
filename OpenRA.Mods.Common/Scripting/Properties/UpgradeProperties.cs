@@ -21,55 +21,44 @@ namespace OpenRA.Mods.Common.Scripting
 	public class UpgradeProperties : ScriptActorProperties, Requires<UpgradeManagerInfo>
 	{
 		readonly UpgradeManager um;
-		readonly UpgradesCache validUpgrades;
 
 		public UpgradeProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			um = self.Trait<UpgradeManager>();
-			validUpgrades = self.TraitOrDefault<UpgradesCache>();
 		}
 
 		[Desc("Grant an upgrade to this actor.")]
 		public void GrantUpgrade(string upgrade)
 		{
-			if (validUpgrades == null)
-				throw new InvalidOperationException("Can not grant upgrades because there is no UpgradesCache defined!");
-
-			if (validUpgrades.Info.Scriptable.Contains(upgrade))
+			if (um.Info.Scriptable.Contains(upgrade))
 				um.GrantUpgrade(Self, upgrade, this);
 			else
-				throw new InvalidDataException("The UpgradesCache does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
+				throw new InvalidDataException("The UpgradeManager does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
 		}
 
 		[Desc("Revoke an upgrade that was previously granted using GrantUpgrade.")]
 		public void RevokeUpgrade(string upgrade)
 		{
-			if (validUpgrades == null)
-				throw new InvalidOperationException("Can not grant upgrades because there is no UpgradesCache defined!");
-
-			if (validUpgrades.Info.Scriptable.Contains(upgrade))
+			if (um.Info.Scriptable.Contains(upgrade))
 				um.RevokeUpgrade(Self, upgrade, this);
 			else
-				throw new InvalidDataException("The UpgradesCache does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
+				throw new InvalidDataException("The UpgradeManager does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
 		}
 
 		[Desc("Grant a limited-time upgrade to this actor.")]
 		public void GrantTimedUpgrade(string upgrade, int duration)
 		{
-			if (validUpgrades == null)
-				throw new InvalidOperationException("Can not grant upgrades because there is no UpgradesCache defined!");
-
-			if (validUpgrades.Info.Scriptable.Contains(upgrade))
+			if (um.Info.Scriptable.Contains(upgrade))
 				um.GrantTimedUpgrade(Self, upgrade, duration);
 			else
-				throw new InvalidDataException("The UpgradesCache does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
+				throw new InvalidDataException("The UpgradeManager does not allow scripts to grant/revoke upgrade `{0}`".F(upgrade));
 		}
 
 		[Desc("Check whether this actor accepts a specific upgrade.")]
 		public bool AcceptsUpgrade(string upgrade)
 		{
-			return validUpgrades != null && validUpgrades.Info.Scriptable.Contains(upgrade) && um.AcceptsUpgrade(Self, upgrade);
+			return um.Info.Scriptable.Contains(upgrade) && um.AcceptsUpgrade(Self, upgrade);
 		}
 	}
 }

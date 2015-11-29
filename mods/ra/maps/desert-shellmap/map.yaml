@@ -1270,7 +1270,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	^Tank:
 		GivesBounty:
@@ -1280,7 +1280,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	^Infantry:
 		GivesBounty:
@@ -1296,7 +1296,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	^Ship:
 		GivesBounty:
@@ -1306,7 +1306,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	^Plane:
 		GivesBounty:
@@ -1314,7 +1314,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	^Building:
 		GivesBounty:
@@ -1322,7 +1322,7 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
-		UpgradesCache:
+		UpgradeManager:
 			Scriptable: unkillable
 	OILB:
 		CashTrickler:

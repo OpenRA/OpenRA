@@ -21,7 +21,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
 	public class UpgradeManagerInfo : ITraitInfo, Requires<IUpgradableInfo>
 	{
-		public object Create(ActorInitializer init) { return new UpgradeManager(init); }
+		[UpgradeGrantedReference]
+		[Desc("Upgrades that can be granted/revoked from Lua scripts.")]
+		public readonly HashSet<string> Scriptable = new HashSet<string>();
+
+		[UpgradeUsedReference]
+		[Desc("Upgrades not to check whether used.")]
+		public readonly HashSet<string> IgnoredAsUnused = new HashSet<string>();
+
+		[UpgradeGrantedReference]
+		[Desc("Upgrades not to check whether granted.")]
+		public readonly HashSet<string> IgnoredAsNotGranted = new HashSet<string>();
+
+		public object Create(ActorInitializer init) { return new UpgradeManager(init, this); }
 	}
 
 	public class UpgradeManager : ITick
@@ -68,12 +80,14 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly List<Action<int, int>> Watchers = new List<Action<int, int>>();
 		}
 
+		public readonly UpgradeManagerInfo Info;
 		readonly List<TimedUpgrade> timedUpgrades = new List<TimedUpgrade>();
 		readonly Lazy<Dictionary<string, UpgradeState>> upgrades;
 		readonly Dictionary<IUpgradable, int> levels = new Dictionary<IUpgradable, int>();
 
-		public UpgradeManager(ActorInitializer init)
+		public UpgradeManager(ActorInitializer init, UpgradeManagerInfo info)
 		{
+			Info = info;
 			upgrades = Exts.Lazy(() =>
 			{
 				var ret = new Dictionary<string, UpgradeState>();

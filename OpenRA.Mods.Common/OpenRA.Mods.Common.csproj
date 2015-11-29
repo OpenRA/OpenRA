@@ -486,7 +486,6 @@
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
-    <Compile Include="Traits\Upgrades\UpgradesCache.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />

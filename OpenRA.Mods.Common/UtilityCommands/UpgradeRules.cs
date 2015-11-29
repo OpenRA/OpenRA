@@ -2683,18 +2683,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Replace ScriptUpgradesCache in world with UpgradesCache in actors
+				// Replace ScriptUpgradesCache in world with UpgradeManager in actors
 				if (engineVersion < 20151205 && depth == 1)
 				{
 					if (node.Key == "ScriptUpgradesCache")
 					{
-						node.Key = "UpgradesCache";
 						var u = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
 						if (u != null)
 						{
-							Console.WriteLine("ScriptUpgradesCache has been removed. Add "
+							Console.WriteLine("ScriptUpgradesCache has been removed. Add `"
 								+ u.Value.Value
-								+ " to the Scriptable property of the UpgradesCache trait of applicable actors.");
+								+ "` to the Scriptable property of the UpgradeManager trait of applicable actors.");
 						}
 
 						parent.Value.Nodes.Remove(node);

@@ -19,7 +19,7 @@
 		Upgrades:
 			500: rank, firepower, damage, speed, reload
 			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
-	UpgradesCache:
+	UpgradeManager:
 		IgnoredAsUnused: eliteweapon
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
