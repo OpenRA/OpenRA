@@ -189,12 +189,18 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		void Zoom(int amount)
+		void Zoom(int direction)
 		{
 			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
 			var currentZoom = worldRenderer.Viewport.Zoom;
 			float zoom;
-			int nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
+			int nextIndex = zoomSteps.IndexOf(currentZoom);
+
+			if (direction < 0)
+				nextIndex++;
+			else
+				nextIndex--;
+
 			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
 			{
 				return;
