@@ -52,12 +52,13 @@ namespace OpenRA.Graphics
 
 		ProjectedCellRegion allCells;
 		bool allCellsDirty = true;
+		readonly float[] availableZoomSteps = new[] { 2f, 1f, 0.5f, 0.25f };
 
 		float zoom = 1f;
 
 		public float[] AvailableZoomSteps
 		{
-			get { return new[] { 2f, 1f, 0.5f, 0.25f }; }
+			get { return availableZoomSteps; }
 		}
 
 		public float Zoom
@@ -69,7 +70,7 @@ namespace OpenRA.Graphics
 
 			set
 			{
-				float new_value = this.ClosestTo(AvailableZoomSteps, value);
+				float new_value = ClosestTo(AvailableZoomSteps, value);
 				zoom = new_value;
 				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
 				cellsDirty = true;
@@ -80,17 +81,17 @@ namespace OpenRA.Graphics
 		public static int TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
 
-		float ClosestTo(IEnumerable<float> collection, float target)
+		float ClosestTo(float[] collection, float target)
 		{
-			float closest_value = collection.First();
-			float subtract_result = Math.Abs(closest_value - target);
+			var closest_value = collection.First();
+			var subtract_result = Math.Abs(closest_value - target);
 
-			for (int i = 1; i < collection.Count(); i++)
+			foreach (var element in collection)
 			{
-				if (Math.Abs(collection.ElementAt(i) - target) < subtract_result)
+				if (Math.Abs(element - target) < subtract_result)
 				{
-					subtract_result = Math.Abs(collection.ElementAt(i) - target);
-					closest_value = collection.ElementAt(i);
+					subtract_result = Math.Abs(element - target);
+					closest_value = element;
 				}
 			}
 

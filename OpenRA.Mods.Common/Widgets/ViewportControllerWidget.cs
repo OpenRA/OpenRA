@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void Zoom(int amount)
 		{
 			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
-			float currentZoom = worldRenderer.Viewport.Zoom;
+			var currentZoom = worldRenderer.Viewport.Zoom;
 			float zoom;
 			int nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
 			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
