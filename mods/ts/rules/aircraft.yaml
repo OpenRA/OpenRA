@@ -260,6 +260,7 @@ SCRIN:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
+	DeathSounds:
 
 APACHE:
 	Inherits: ^Helicopter
