@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panelRoot;
 
 		public string PanelRoot;
-		public object SelectedItem;
+		public string SelectedItem;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(Ruleset modRules)

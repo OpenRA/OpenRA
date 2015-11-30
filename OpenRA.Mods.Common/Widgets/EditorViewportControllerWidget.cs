@@ -82,14 +82,14 @@ namespace OpenRA.Mods.Common.Widgets
 		void Zoom(int amount)
 		{
 			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
-			float currentZoom = worldRenderer.Viewport.Zoom;
+			var currentZoom = worldRenderer.Viewport.Zoom;
+
 			int nextIndex = zoomSteps.IndexOf(currentZoom) - amount;
 			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
-			{
 				return;
-			}
-			float zoom = zoomSteps.ElementAt(nextIndex);
-			this.Parent.Get<DropDownButtonWidget>("ZOOM_BUTTON").SelectedItem = zoom;
+
+			var zoom = zoomSteps.ElementAt(nextIndex);
+			Parent.Get<DropDownButtonWidget>("ZOOM_BUTTON").SelectedItem = zoom.ToString();
 			worldRenderer.Viewport.Zoom = zoom;
 		}
 
