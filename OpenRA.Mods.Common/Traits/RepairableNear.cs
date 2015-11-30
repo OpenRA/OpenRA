@@ -20,12 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
 		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
-		public readonly int CloseEnough = 4;	/* cells */
+		public readonly int CloseEnough = 4;
+		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
 	}
 
-	class RepairableNear : IIssueOrder, IResolveOrder
+	class RepairableNear : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
 		readonly RepairableNearInfo info;
@@ -63,6 +64,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool ShouldRepair()
 		{
 			return self.GetDamageState() > DamageState.Undamaged;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return (order.OrderString == "RepairNear" && ShouldRepair()) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
