@@ -78,6 +78,8 @@ ORCA:
 		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -97,7 +99,9 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers:
+	Hovers@AIRBORNE:
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 
 ORCAB:
 	Inherits: ^Plane
@@ -118,6 +122,8 @@ ORCAB:
 		ROT: 3
 		Speed: 96
 		AirborneUpgrades: airborne
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 260
 	Armor:
@@ -139,7 +145,9 @@ ORCAB:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers:
+	Hovers@AIRBORNE:
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -158,8 +166,8 @@ ORCATRAN:
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSound: orcaup1.aud
+		LandingSound: orcadwn1.aud
 	Health:
 		HP: 200
 	Armor:
@@ -172,7 +180,9 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers:
+	Hovers@AIRBORNE:
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -202,7 +212,9 @@ TRNSPORT:
 		Range: 2c0
 		Type: CenterPosition
 	RenderSprites:
-	Hovers:
+	Hovers@AIRBORNE:
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	Selectable:
 		Bounds: 44,32,0,-8
 
@@ -226,6 +238,8 @@ SCRIN:
 		ROT: 3
 		Speed: 168
 		AirborneUpgrades: airborne
+		TakeoffSound: dropup1.aud
+		LandingSound: dropdwn1.aud
 	Health:
 		HP: 280
 	Armor:
@@ -285,7 +299,9 @@ APACHE:
 	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
-	Hovers:
+	Hovers@AIRBORNE:
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 
 HUNTER:
 	Inherits@1: ^GainsExperience
@@ -328,3 +344,4 @@ HUNTER:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
+

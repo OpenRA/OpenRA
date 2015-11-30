@@ -12,7 +12,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class InstallLogic : Widget
+	public class InstallLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public InstallLogic(Widget widget, string mirrorListUrl, string modId)

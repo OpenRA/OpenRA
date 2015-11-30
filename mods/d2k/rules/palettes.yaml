@@ -13,7 +13,7 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: PALETTE.BIN
-		ShadowIndex: 4
+		ShadowIndex: 1
 		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
@@ -51,11 +51,6 @@
 		Name: effect50alpha
 		BasePalette: effect
 		Alpha: 0.5
-	PaletteFromPaletteWithAlpha@effectAdditive:
-		Name: effectAdditive
-		BasePalette: effect
-		Alpha: 0
-		Premultiply: false
 	PaletteFromScaledPalette@starportlights:
 		Name: starportlights
 		BasePalette: d2k
@@ -65,7 +60,6 @@
 		Name: shroud
 		Filename: DATA.R8
 		Offset: 12007
-		InvertColor: true
 	FogPaletteFromR8@fog:
 		Name: fog
 		Filename: DATA.R8

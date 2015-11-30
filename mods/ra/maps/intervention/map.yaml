@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -41,7 +41,7 @@ Players:
 		Name: Civilians
 		NonCombatant: True
 		Faction: allies
-		ColorRamp: 0,0,0
+		Color: 000000
 		Allies: Allies
 	PlayerReference@Allies:
 		Name: Allies
@@ -51,7 +51,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Allies: Civilians
@@ -59,7 +59,7 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Civilians, Allies
 
 Actors:
@@ -2053,26 +2053,32 @@ Actors:
 		Location: 17,92
 		Owner: Soviets
 		Facing: 128
+		Stance: Defend
 	Uboat2: ss
 		Location: 20,91
 		Owner: Soviets
 		Facing: 128
+		Stance: Defend
 	Uboat3: ss
 		Location: 17,112
 		Owner: Soviets
 		Facing: 192
+		Stance: Defend
 	Uboat4: ss
 		Location: 34,120
 		Owner: Soviets
 		Facing: 160
+		Stance: Defend
 	Uboat5: ss
 		Location: 24,126
 		Owner: Soviets
 		Facing: 160
+		Stance: Defend
 	Uboat6: ss
 		Location: 29,131
 		Owner: Soviets
 		Facing: 192
+		Stance: Defend
 	WarFactory: weap
 		Location: 70,72
 		Owner: Soviets
@@ -2409,6 +2415,8 @@ Weapons:
 			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 
 Voices:
+
+Music:
 
 Notifications:
 

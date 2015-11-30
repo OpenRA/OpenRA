@@ -8,10 +8,9 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The power usage/output of this actor is multiplied based on upgrade level if specified.")]
 	public class PowerMultiplierInfo : UpgradeMultiplierTraitInfo

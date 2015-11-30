@@ -149,27 +149,29 @@ dialog4: dialog.png
 	corner-bl: 512,446,6,6
 	corner-br: 571,446,6,6
 
-lobby-bits: spawnpoints.png
-	spawn-unclaimed: 37,5,22,22
-	spawn-claimed: 5,5,22,22
-	admin: 64,5,7,5
-	colorpicker: 5,5,22,22
-	huepicker: 71,0,7,15
-	
-strategic: strategic.png
-	unowned: 0,0,32,32
-	critical_unowned: 0,32,32,32
-	enemy_owned: 32,32,32,32
-	player_owned: 96,0,32,32
+lobby-bits: buttons.png
+	spawn-unclaimed: 159,5,23,22
+	spawn-claimed: 127,5,23,22
+	admin: 187,5,7,5
+	colorpicker: 127,5,23,22
+	huepicker: 194,0,7,15
+	protected: 202,0,10,13
+	protected-disabled: 213,0,10,13
 
-music: musicplayer.png
-	pause: 0,0,25,25
-	stop: 28,0,25,25
-	play: 56,0,25,25
-	next: 84,0,25,25
-	prev: 112,0,25,25
-	fastforward: 140,0,25,25
-	slowmo: 168,0,25,25
+strategic: buttons.png
+	unowned: 127,5,23,22
+	critical_unowned: 127,27,23,22
+	enemy_owned: 159,27,23,22
+	player_owned: 159,49,23,22
+
+music: buttons.png
+	pause: 0,193,25,25
+	stop: 25,193,25,25
+	play: 55,193,25,25
+	next: 82,193,25,25
+	prev: 110,193,25,25
+	fastforward: 131,193,25,25
+	slowmo: 159,193,25,25
 
 scrollbar: buttons.png
 	down_arrow: 16,140,16,16

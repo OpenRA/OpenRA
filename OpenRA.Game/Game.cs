@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using OpenRA.Chat;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -44,6 +45,8 @@ namespace OpenRA
 		public static Renderer Renderer;
 		public static Sound Sound;
 		public static bool HasInputFocus = false;
+
+		public static GlobalChat GlobalChat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -204,6 +207,7 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
+			Log.AddChannel("irc", "irc.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();
@@ -237,6 +241,8 @@ namespace OpenRA
 
 			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
 
+			GlobalChat = new GlobalChat();
+
 			Console.WriteLine("Available mods:");
 			foreach (var mod in ModMetadata.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
@@ -245,6 +251,13 @@ namespace OpenRA
 
 			if (Settings.Server.DiscoverNatDevices)
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
+		}
+
+		public static bool IsModInstalled(string modId)
+		{
+			return Manifest.AllMods[modId].RequiresMods.All(mod => ModMetadata.AllMods.ContainsKey(mod.Key)
+				&& ModMetadata.AllMods[mod.Key].Version == mod.Value
+				&& IsModInstalled(mod.Key));
 		}
 
 		public static void InitializeMod(string mod, Arguments args)
@@ -270,8 +283,8 @@ namespace OpenRA
 				ModData.Dispose();
 			ModData = null;
 
-			// Fall back to default if the mod doesn't exist
-			if (!ModMetadata.AllMods.ContainsKey(mod))
+			// Fall back to default if the mod doesn't exist or has missing prerequisites.
+			if (!ModMetadata.AllMods.ContainsKey(mod) || !IsModInstalled(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);
@@ -345,7 +358,7 @@ namespace OpenRA
 			{
 				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
 				Settings.Save();
-				CreateServer(new ServerSettings(Settings.Server));
+				CreateServer(Settings.Server.Clone());
 
 				while (true)
 				{
@@ -399,7 +412,7 @@ namespace OpenRA
 		public static event Action OnQuit = () => { };
 
 		// Note: These delayed actions should only be used by widgets or disposing objects
-		// - things that depend on a particular world should be queuing them on the worldactor.
+		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, Game.RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, Game.RunTime + delayMilliseconds); }
@@ -688,6 +701,8 @@ namespace OpenRA
 				worldRenderer.Dispose();
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
+
+			GlobalChat.Dispose();
 			Sound.Dispose();
 			Renderer.Dispose();
 
@@ -759,7 +774,7 @@ namespace OpenRA
 
 		public static bool IsCurrentWorld(World world)
 		{
-			return OrderManager != null && OrderManager.World == world;
+			return OrderManager != null && OrderManager.World == world && !world.Disposing;
 		}
 	}
 }

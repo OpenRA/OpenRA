@@ -78,7 +78,7 @@ namespace OpenRA
 		// 1 sample produces a rectangular probability
 		// 2 samples produces a triangular probability
 		// ...
-		// N samples approximates a true gaussian
+		// N samples approximates a true Gaussian
 		public static WVec FromPDF(MersenneTwister r, int samples)
 		{
 			return new WVec(WDist.FromPDF(r, samples), WDist.FromPDF(r, samples), WDist.Zero);

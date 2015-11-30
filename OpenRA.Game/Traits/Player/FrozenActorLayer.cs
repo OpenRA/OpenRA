@@ -41,6 +41,7 @@ namespace OpenRA.Traits
 		public DamageState DamageState;
 
 		public bool Visible = true;
+		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; private set; }
 		public bool IsRendering { get; private set; }
 
@@ -84,6 +85,7 @@ namespace OpenRA.Traits
 		void UpdateVisibility()
 		{
 			var wasVisible = Visible;
+			Shrouded = true;
 
 			// We are doing the following LINQ manually for performance since this is a hot path.
 			// Visible = !Footprint.Any(shroud.IsVisible);
@@ -93,8 +95,12 @@ namespace OpenRA.Traits
 				if (shroud.IsVisible(puv))
 				{
 					Visible = false;
+					Shrouded = false;
 					break;
 				}
+
+				if (Shrouded && shroud.IsExplored(puv))
+					Shrouded = false;
 			}
 
 			if (Visible && !wasVisible)
@@ -119,6 +125,9 @@ namespace OpenRA.Traits
 				}
 			}
 
+			if (Shrouded)
+				return NoRenderables;
+
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
@@ -129,7 +138,7 @@ namespace OpenRA.Traits
 			return renderables;
 		}
 
-		public bool HasRenderables { get { return renderables.Any(); } }
+		public bool HasRenderables { get { return !Shrouded && renderables.Any(); } }
 
 		public bool ShouldBeRemoved(Player owner)
 		{
@@ -175,6 +184,8 @@ namespace OpenRA.Traits
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
+			// TODO: Track shroud updates using Shroud.CellsChanged
+			// and then only tick FrozenActors that might have changed
 			foreach (var kvp in frozen)
 			{
 				var hash = (int)kvp.Key;

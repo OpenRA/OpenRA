@@ -20,13 +20,13 @@ namespace OpenRA.Mods.D2k.Traits
 	class WormManagerInfo : ITraitInfo
 	{
 		[Desc("Minimum number of worms")]
-		public readonly int Minimum = 2;
+		public readonly int Minimum = 0;
 
 		[Desc("Maximum number of worms")]
 		public readonly int Maximum = 4;
 
 		[Desc("Time (in ticks) between worm spawn.")]
-		public readonly int SpawnInterval = 3000;
+		public readonly int SpawnInterval = 6000;
 
 		[Desc("Name of the actor that will be spawned.")]
 		public readonly string WormSignature = "sandworm";
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public WormManager(Actor self, WormManagerInfo info)
 		{
 			this.info = info;
-			spawnPointActors = Exts.Lazy(() => self.World.ActorsWithTrait<WormSpawner>().Select(x => x.Actor).ToArray());
+			spawnPointActors = Exts.Lazy(() => self.World.ActorsHavingTrait<WormSpawner>().ToArray());
 		}
 
 		public void Tick(Actor self)
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!spawnPointActors.Value.Any())
 				return;
 
-			// Apparantly someone doesn't want worms or the maximum number of worms has been reached
+			// Apparently someone doesn't want worms or the maximum number of worms has been reached
 			if (info.Maximum < 1 || wormsPresent >= info.Maximum)
 				return;
 

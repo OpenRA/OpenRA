@@ -267,5 +267,10 @@ namespace OpenRA
 		{
 			return Device.GetClipboardText();
 		}
+
+		public bool SetClipboardText(string text)
+		{
+			return Device.SetClipboardText(text);
+		}
 	}
 }

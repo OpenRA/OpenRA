@@ -29,7 +29,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
@@ -73,7 +73,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !a.Footprint.All(world.ShroudObscures))
+					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
 					.WithHighestSelectionPriority();
 				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
 			}
@@ -119,7 +119,7 @@ namespace OpenRA.Orders
 						.Select(x => new { Trait = trait, Order = x }))
 					.OrderByDescending(x => x.Order.OrderPriority))
 				{
-					var actorsAt = self.World.ActorMap.GetUnitsAt(self.World.Map.CellContaining(target.CenterPosition)).ToList();
+					var actorsAt = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(target.CenterPosition)).ToList();
 
 					var modifiers = TargetModifiers.None;
 					if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
@@ -130,7 +130,7 @@ namespace OpenRA.Orders
 						modifiers |= TargetModifiers.ForceMove;
 
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, modifiers, ref cursor))
+					if (o.Order.CanTarget(self, target, actorsAt, ref modifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
 			}

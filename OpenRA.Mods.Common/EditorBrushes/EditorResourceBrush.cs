@@ -24,7 +24,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class EditorResourceBrush : IEditorBrush
+	public sealed class EditorResourceBrush : IEditorBrush
 	{
 		public readonly ResourceTypeInfo ResourceType;
 
@@ -64,8 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Right)
 			{
-				editorWidget.ClearBrush();
-				return true;
+				if (mi.Event == MouseInputEvent.Up)
+				{
+					editorWidget.ClearBrush();
+					return true;
+				}
+
+				return false;
 			}
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
@@ -114,5 +119,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.Bounds.X = cellScreenPixel.X;
 			preview.Bounds.Y = cellScreenPixel.Y;
 		}
+
+		public void Dispose() { }
 	}
 }

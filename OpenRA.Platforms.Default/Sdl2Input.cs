@@ -20,6 +20,7 @@ namespace OpenRA.Platforms.Default
 		MouseButton lastButtonBits = (MouseButton)0;
 
 		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
+		public bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }
 
 		static MouseButton MakeButton(byte b)
 		{

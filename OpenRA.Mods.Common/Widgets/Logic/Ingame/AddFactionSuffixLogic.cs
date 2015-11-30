@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class AddFactionSuffixLogic
+	public class AddFactionSuffixLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public AddFactionSuffixLogic(Widget widget, World world)

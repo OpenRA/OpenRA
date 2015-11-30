@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
@@ -179,9 +180,10 @@ namespace OpenRA.FileSystem
 			if (!index.TryGetValue(hash, out e))
 				return null;
 
-			s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
-			var data = s.ReadBytes((int)e.Length);
-			return new MemoryStream(data);
+			Stream parentStream;
+			var offset = dataStart + e.Offset + SegmentStream.GetOverallNestedOffset(s, out parentStream);
+			var path = ((FileStream)parentStream).Name;
+			return new SegmentStream(File.OpenRead(path), offset, e.Length);
 		}
 
 		public Stream GetContent(string filename)

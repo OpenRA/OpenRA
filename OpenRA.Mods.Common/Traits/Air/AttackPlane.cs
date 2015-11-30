@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			// dont fire while landed or when outside the map
+			// Don't fire while landed or when outside the map.
 			return base.CanAttack(self, target) && self.CenterPosition.Z > 0 && self.World.Map.Contains(self.Location);
 		}
 	}

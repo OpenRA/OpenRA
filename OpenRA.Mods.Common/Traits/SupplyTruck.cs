@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Donate money to actors with the `AcceptSupplies` trait.")]
 	class SupplyTruckInfo : ITraitInfo
 	{
-		[Desc("The amount of cash the owner recieves.")]
+		[Desc("The amount of cash the owner receives.")]
 		public readonly int Payload = 500;
 
 		[VoiceReference] public readonly string Voice = "Action";

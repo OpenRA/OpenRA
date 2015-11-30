@@ -24,7 +24,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class EditorTileBrush : IEditorBrush
+	public sealed class EditorTileBrush : IEditorBrush
 	{
 		public readonly ushort Template;
 
@@ -64,8 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Right)
 			{
-				editorWidget.ClearBrush();
-				return true;
+				if (mi.Event == MouseInputEvent.Up)
+				{
+					editorWidget.ClearBrush();
+					return true;
+				}
+
+				return false;
 			}
 
 			if (mi.Button == MouseButton.Left)
@@ -151,5 +156,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.Bounds.Width = (int)(zoom * bounds.Width);
 			preview.Bounds.Height = (int)(zoom * bounds.Height);
 		}
+
+		public void Dispose() { }
 	}
 }

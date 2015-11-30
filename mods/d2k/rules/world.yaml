@@ -8,11 +8,11 @@
 		DefeatMusic: score
 	TerrainGeometryOverlay:
 	ShroudRenderer:
-		ShroudVariants: typea, typeb, typec, typed
-		FogVariants: typea, typeb, typec, typed
+		ShroudVariants: shrouda, shroudb, shroudc, shroudd
+		FogVariants: foga, fogb, fogc, fogd
 		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
-		OverrideFullShroud: full
-		OverrideFullFog: full
+		OverrideFullShroud: shroudfull
+		OverrideFullFog: fogfull
 		ShroudBlend: Multiply
 	Faction@Random:
 		Name: Any
@@ -44,7 +44,7 @@
 		ValuePerUnit: 25
 		Name: Spice
 		PipColor: green
-		AllowedTerrainTypes: Sand
+		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
 	LoadWidgetAtGameStart:
 
@@ -64,7 +64,8 @@ World:
 		Maximum: 2
 		SpawnInterval: 1500
 		WaterChance: 0
-		ValidGround: Sand, Dune, Rock
+		ValidGround: Sand, Dune, Rock, SpiceSand
+		InitialSpawnDelay: 1500
 	DomainIndex:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
@@ -147,3 +148,5 @@ EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	D2kEditorResourceLayer:
+	EditorSelectionLayer:
+

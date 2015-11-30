@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -163,6 +164,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (t == typeof(WVec))
 				return "3D World Vector";
+
+			if (t == typeof(HSLColor))
+				return "Color";
 
 			return t.Name;
 		}

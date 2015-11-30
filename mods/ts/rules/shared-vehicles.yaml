@@ -27,7 +27,7 @@ MCV:
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
-		TransformSounds: facbld1.aud
+		TransformSounds: place2.aud
 		NoTransformSounds:
 		Voice: Move
 	SelectionDecorations:
@@ -54,6 +54,7 @@ HARV:
 		Priority: 7
 		Bounds: 36,36
 	Harvester:
+		DeliveryBuildings: proc
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
 		UnloadTicksPerBale: 1
@@ -126,7 +127,8 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	DeployToUpgrade:
-		Upgrades: deployed
+		DeployedUpgrades: deployed
+		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
@@ -134,17 +136,18 @@ LPST:
 		UndeploySound: clicky1.aud
 	WithVoxelBody:
 		Image: lpst
-		UpgradeTypes: deployed
-		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
 	WithSpriteBody@deployed:
-		StartSequence: make
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
 	DisableOnUpgrade:
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
 	DetectCloaked:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
-		Range: 18
+		Range: 18c0
 	RenderDetectionCircle:
+		DrawUpdateLine: true
+

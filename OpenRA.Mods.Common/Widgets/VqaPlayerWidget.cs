@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var size = Math.Max(video.Width, video.Height);
 			var textureSize = Exts.NextPowerOf2(size);
-			var videoSheet = new Sheet(new Size(textureSize, textureSize));
+			var videoSheet = new Sheet(SheetType.BGRA, new Size(textureSize, textureSize));
 
 			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 			videoSheet.GetTexture().SetData(video.FrameData);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
 				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
 
-			// Round size to integer pixels. Round up to be consistent with the scale calcuation.
+			// Round size to integer pixels. Round up to be consistent with the scale calculation.
 			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
 
 			if (!DrawOverlay)
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets
 			for (var y = 0; y < scaledHeight; y += 2)
 				overlay[y, 0] = black;
 
-			var overlaySheet = new Sheet(new Size(1, Exts.NextPowerOf2(scaledHeight)));
+			var overlaySheet = new Sheet(SheetType.BGRA, new Size(1, Exts.NextPowerOf2(scaledHeight)));
 			overlaySheet.GetTexture().SetData(overlay);
 			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.Alpha);
 		}

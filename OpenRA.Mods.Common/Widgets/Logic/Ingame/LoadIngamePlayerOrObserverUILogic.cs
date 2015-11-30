@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LoadIngamePlayerOrObserverUILogic
+	public class LoadIngamePlayerOrObserverUILogic : ChromeLogic
 	{
 		bool loadingObserverWidgets = false;
 
@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						loadingObserverWidgets = true;
 						Game.RunAfterDelay(objectives != null ? objectives.GameOverDelay : 0, () =>
 						{
+							if (!Game.IsCurrentWorld(world))
+								return;
+
 							playerRoot.RemoveChildren();
 							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
 						});

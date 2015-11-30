@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var spawnSize = new float2(ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Bounds.Size);
 			var selectedSpawn = preview.SpawnPoints
-				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp), i))
+				.Select((sp, i) => Pair.New(mapPreview.ConvertToPreview(sp, preview.GridType), i))
 				.Where(a => ((a.First - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();
@@ -291,7 +291,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			var name = parent.Get<LabelWidget>("NAME");
-			name.GetText = () => c.Name;
+			var font = Game.Renderer.Fonts[name.Font];
+			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
+			name.GetText = () => label;
 		}
 
 		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Ruleset rules)
@@ -472,14 +474,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 				flag.GetImageName = () => player.Faction.InternalName;
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
 			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
+			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
+			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
+			var name = new CachedTransform<Pair<string, int>, string>(c =>
+				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
+
 			playerName.GetText = () =>
 			{
+				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
 				if (client != null && client.State == Network.Session.ClientState.Disconnected)
-					return player.PlayerName + " (Gone)";
-				return player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
+					suffix = " (Gone)";
+
+				var sl = suffixLength.Update(suffix);
+				return name.Update(Pair.New(player.PlayerName, sl)) + suffix;
 			};
+
 			playerName.GetColor = () => player.Color.RGB;
 		}
 

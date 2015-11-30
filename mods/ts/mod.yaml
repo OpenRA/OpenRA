@@ -4,15 +4,15 @@ Metadata:
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
 
+RequiresMods:
+	modchooser: {DEV_VERSION}
+
 Folders:
 	.
-# Tiberian Sun
 	./mods/ts
 	./mods/ts/bits
 	./mods/ts/uibits
 	~^Content/ts
-# Red Alert
-	./mods/ra/uibits
 
 MapFolders:
 	./mods/ts/maps: System
@@ -113,7 +113,7 @@ TileSets:
 
 MapGrid:
 	TileSize: 48,24
-	Type: Diamond
+	Type: RectangularIsometric
 	MaximumTerrainHeight: 16
 	SubCellOffsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
 	SubCellDefaultIndex: 2
@@ -145,7 +145,7 @@ ChromeLayout:
 	./mods/ts/chrome/ingame-observerstats.yaml
 	./mods/ts/chrome/ingame-player.yaml
 	./mods/ra/chrome/ingame-perf.yaml
-	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ts/chrome/ingame-debug.yaml
 	./mods/ra/chrome/mainmenu.yaml
 	./mods/ra/chrome/settings.yaml
 	./mods/ra/chrome/credits.yaml
@@ -155,12 +155,15 @@ ChromeLayout:
 	./mods/ra/chrome/lobby-options.yaml
 	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
+	./mods/ra/chrome/lobby-globalchat.yaml
 	./mods/ts/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
-	./mods/ra/chrome/create-server.yaml
-	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/multiplayer.yaml
+	./mods/ra/chrome/multiplayer-browser.yaml
+	./mods/ra/chrome/multiplayer-createserver.yaml
+	./mods/ra/chrome/multiplayer-directconnect.yaml
+	./mods/ra/chrome/multiplayer-globalchat.yaml
 	./mods/ra/chrome/connection.yaml
-	./mods/ra/chrome/directconnect.yaml
 	./mods/ra/chrome/replaybrowser.yaml
 	./mods/ts/chrome/dropdowns.yaml
 	./mods/ra/chrome/musicplayer.yaml
@@ -169,7 +172,6 @@ ChromeLayout:
 	./mods/ra/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
-	./mods/ra/chrome/irc.yaml
 
 Voices:
 	./mods/ts/audio/voices.yaml

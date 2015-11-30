@@ -21,7 +21,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LobbyLogic
+	public class LobbyLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
 
@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum PanelType { Players, Options, Music, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
+		enum ChatPanelType { Lobby, Global }
+		ChatPanelType chatPanel = ChatPanelType.Lobby;
+
 		readonly Widget lobby;
 		readonly Widget editablePlayerTemplate;
 		readonly Widget nonEditablePlayerTemplate;
@@ -45,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget nonEditableSpectatorTemplate;
 		readonly Widget newSpectatorTemplate;
 
-		readonly ScrollPanelWidget chatPanel;
+		readonly ScrollPanelWidget lobbyChatPanel;
 		readonly Widget chatTemplate;
 
 		readonly ScrollPanelWidget players;
@@ -58,6 +61,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly LabelWidget chatLabel;
 		bool teamChat;
+
+		int lobbyChatUnreadMessages;
+		int globalChatLastReadMessages;
+		int globalChatUnreadMessages;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -293,7 +300,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playersTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			playersTab.OnClick = () => panel = PanelType.Players;
 
-			var musicTab = lobby.GetOrNull<ButtonWidget>("MUSIC_TAB");
+			var musicTab = lobby.Get<ButtonWidget>("MUSIC_TAB");
 			musicTab.IsHighlighted = () => panel == PanelType.Music;
 			musicTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			musicTab.OnClick = () => panel = PanelType.Music;
@@ -567,6 +574,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
+			var globalChat = Game.LoadWidget(null, "LOBBY_GLOBALCHAT_PANEL", lobby.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
+			var globalChatInput = globalChat.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+
+			globalChat.IsVisible = () => chatPanel == ChatPanelType.Global;
+
+			var globalChatTab = lobby.Get<ButtonWidget>("GLOBALCHAT_TAB");
+			globalChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Global;
+			globalChatTab.OnClick = () =>
+			{
+				chatPanel = ChatPanelType.Global;
+				globalChatInput.TakeKeyboardFocus();
+			};
+
+			var globalChatLabel = globalChatTab.Text;
+			globalChatTab.GetText = () =>
+			{
+				if (globalChatUnreadMessages == 0)
+					return globalChatLabel;
+
+				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
+			};
+
+			globalChatLastReadMessages = Game.GlobalChat.History.Count;
+
+			var lobbyChat = lobby.Get("LOBBYCHAT");
+			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
+
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatTextField.TakeKeyboardFocus();
@@ -576,7 +610,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 
 				// Always scroll to bottom when we've typed something
-				chatPanel.ScrollToBottom();
+				lobbyChatPanel.ScrollToBottom();
 
 				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text));
 				chatTextField.Text = "";
@@ -597,9 +631,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
 
-			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
-			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
-			chatPanel.RemoveChildren();
+			var lobbyChatTab = lobby.Get<ButtonWidget>("LOBBYCHAT_TAB");
+			lobbyChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Lobby;
+			lobbyChatTab.OnClick = () =>
+			{
+				chatPanel = ChatPanelType.Lobby;
+				chatTextField.TakeKeyboardFocus();
+			};
+
+			var lobbyChatLabel = lobbyChatTab.Text;
+			lobbyChatTab.GetText = () =>
+			{
+				if (lobbyChatUnreadMessages == 0)
+					return lobbyChatLabel;
+
+				return lobbyChatLabel + " ({0})".F(lobbyChatUnreadMessages);
+			};
+
+			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
+			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
+			lobbyChatPanel.RemoveChildren();
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
@@ -625,8 +676,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		public override void Tick()
+		{
+			var newMessages = Game.GlobalChat.History.Count;
+			globalChatUnreadMessages += newMessages - globalChatLastReadMessages;
+			globalChatLastReadMessages = newMessages;
+
+			if (chatPanel == ChatPanelType.Lobby)
+				lobbyChatUnreadMessages = 0;
+
+			if (chatPanel == ChatPanelType.Global)
+				globalChatUnreadMessages = 0;
+		}
+
 		void AddChatLine(Color c, string from, string text)
 		{
+			lobbyChatUnreadMessages += 1;
+
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var timeLabel = template.Get<LabelWidget>("TIME");
@@ -655,10 +721,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				template.Bounds.Height += dh;
 			}
 
-			var scrolledToBottom = chatPanel.ScrolledToBottom;
-			chatPanel.AddChild(template);
+			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
+			lobbyChatPanel.AddChild(template);
 			if (scrolledToBottom)
-				chatPanel.ScrollToBottom(smooth: true);
+				lobbyChatPanel.ScrollToBottom(smooth: true);
 
 			Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}

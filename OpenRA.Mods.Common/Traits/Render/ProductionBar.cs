@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
-	class ProductionBarInfo : ITraitInfo
+	class ProductionBarInfo : ITraitInfo, Requires<ProductionInfo>
 	{
 		[Desc("Production queue type, for actors with multiple queues.")]
 		public readonly string ProductionType = null;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
 	}
 
-	class ProductionBar : ISelectionBar, ITick
+	class ProductionBar : ISelectionBar, ITick, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly ProductionBarInfo info;
 		readonly Actor self;
@@ -39,28 +39,33 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void FindQueue()
 		{
+			var type = info.ProductionType ?? self.Info.TraitInfo<ProductionInfo>().Produces.First();
+
+			// Per-actor queue
+			// Note: this includes disabled queues, as each bar must bind to exactly one queue.
+			queue = self.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => type == null || type == q.Info.Type);
+
 			if (queue == null)
 			{
-				var type = info.ProductionType ?? self.Info.TraitInfo<ProductionInfo>().Produces.First();
-
-				// Per-actor queue
-				// Note: this includes disabled queues, as each bar must bind to exactly one queue.
-				queue = self.TraitsImplementing<ProductionQueue>()
+				// No queues available - check for classic production queues
+				queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
 					.FirstOrDefault(q => type == null || type == q.Info.Type);
-
-				if (queue == null)
-				{
-					// No queues available - check for classic production queues
-					queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-						.FirstOrDefault(q => type == null || type == q.Info.Type);
-				}
-
-				if (queue == null)
-					throw new InvalidOperationException("No queues available for production type '{0}'".F(type));
 			}
 
+			if (queue == null)
+				throw new InvalidOperationException("No queues available for production type '{0}'".F(type));
+		}
+
+		public void Created(Actor self)
+		{
+			FindQueue();
+		}
+
+		public void Tick(Actor self)
+		{
 			var current = queue.CurrentItem();
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
 		}
@@ -75,5 +80,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Color GetColor() { return info.Color; }
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			FindQueue();
+		}
 	}
 }

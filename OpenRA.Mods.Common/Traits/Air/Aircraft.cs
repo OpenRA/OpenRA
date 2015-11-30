@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice,
+	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			// TODO: HACK: This is a hack until we can properly distinquish between airplane and helicopter!
+			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
 			// Or until the activities get unified enough so that it doesn't matter.
 			IsPlane = !info.CanHover;
 		}
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 				return WVec.Zero;
 
 			// Repulsion only applies when we're flying!
-			var altitude = CenterPosition.Z;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition).Length;
 			if (altitude != Info.CruiseAltitude.Length)
 				return WVec.Zero;
 
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length != 0)
 				return null; // not on the ground.
 
-			return self.World.ActorMap.GetUnitsAt(self.Location)
+			return self.World.ActorMap.GetActorsAt(self.Location)
 				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
 		}
 
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.World.Map.Contains(cell))
 				return false;
 
-			if (self.World.ActorMap.AnyUnitsAt(cell))
+			if (self.World.ActorMap.AnyActorsAt(cell))
 				return false;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
@@ -326,6 +326,11 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
 				yield return new Repair(a);
+		}
+
+		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		{
+			init.Add(new FacingInit(Facing));
 		}
 
 		#region Implement IPositionable
@@ -441,11 +446,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public bool IsMoving { get { return self.CenterPosition.Z > 0; } set { } }
+		public bool IsMoving { get { return self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
-			if (target.Positions.Any(p => self.World.ActorMap.GetUnitsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
+			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
 				return false;
 
 			var res = target.Actor.TraitOrDefault<Reservable>();

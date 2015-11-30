@@ -20,16 +20,18 @@ namespace OpenRA.Mods.Common.Effects
 	{
 		readonly Actor building;
 		readonly RallyPoint rp;
-		readonly string paletteName;
 		readonly Animation flag;
 		readonly Animation circles;
+		readonly ExitInfo[] exits;
 
-		public RallyPointIndicator(Actor building, string paletteName)
+		readonly WPos[] targetLine = new WPos[2];
+		CPos cachedLocation;
+
+		public RallyPointIndicator(Actor building, RallyPoint rp, ExitInfo[] exits)
 		{
 			this.building = building;
-			this.paletteName = paletteName;
-
-			rp = building.Trait<RallyPoint>();
+			this.rp = rp;
+			this.exits = exits;
 
 			flag = new Animation(building.World, rp.Info.Image);
 			flag.PlayRepeating(rp.Info.FlagSequence);
@@ -38,7 +40,6 @@ namespace OpenRA.Mods.Common.Effects
 			circles.Play(rp.Info.CirclesSequence);
 		}
 
-		CPos cachedLocation;
 		public void Tick(World world)
 		{
 			flag.Tick();
@@ -47,6 +48,26 @@ namespace OpenRA.Mods.Common.Effects
 			if (cachedLocation != rp.Location)
 			{
 				cachedLocation = rp.Location;
+
+				var rallyPos = world.Map.CenterOfCell(cachedLocation);
+				var exitPos = building.CenterPosition;
+
+				// Find closest exit
+				var dist = int.MaxValue;
+				foreach (var exit in exits)
+				{
+					var ep = building.CenterPosition + exit.SpawnOffset;
+					var len = (rallyPos - ep).Length;
+					if (len < dist)
+					{
+						dist = len;
+						exitPos = ep;
+					}
+				}
+
+				targetLine[0] = exitPos;
+				targetLine[1] = rallyPos;
+
 				circles.Play(rp.Info.CirclesSequence);
 			}
 
@@ -56,15 +77,27 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Owner != building.World.LocalPlayer)
+			if (!building.IsInWorld || !building.Owner.IsAlliedWith(building.World.LocalPlayer))
 				return SpriteRenderable.None;
 
-			if (!building.IsInWorld || !building.World.Selection.Actors.Contains(building))
+			if (!building.World.Selection.Actors.Contains(building))
 				return SpriteRenderable.None;
 
-			var pos = wr.World.Map.CenterOfCell(cachedLocation);
-			var palette = wr.Palette(paletteName);
-			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
+			return RenderInner(wr);
+		}
+
+		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
+		{
+			var palette = wr.Palette(rp.PaletteName);
+
+			if (Game.Settings.Game.DrawTargetLine)
+				yield return new TargetLineRenderable(targetLine, building.Owner.Color.RGB);
+
+			foreach (var r in circles.Render(targetLine[1], palette))
+				yield return r;
+
+			foreach (var r in flag.Render(targetLine[1], palette))
+				yield return r;
 		}
 	}
 }

@@ -71,7 +71,22 @@ Cursors:
 		c4-minimap:
 			Start: 127
 			Length: 3
-
+		joystick-t-blocked:
+			Start: 130
+		joystick-tr-blocked:
+			Start: 131
+		joystick-r-blocked:
+			Start: 132
+		joystick-br-blocked:
+			Start: 133
+		joystick-b-blocked:
+			Start: 134
+		joystick-bl-blocked:
+			Start: 135
+		joystick-l-blocked:
+			Start: 136
+		joystick-tl-blocked:
+			Start: 137
 # Cursors that need minimap variants
 		deploy:
 			Start: 53
@@ -105,6 +120,10 @@ Cursors:
 			Start: 0
 			X: -16
 			Y: -12
+		joystick-all:
+			Start: 0
+			X: -16
+			Y: -12
 		deploy-blocked:
 			Start: 1
 			Length: 1
@@ -130,7 +149,6 @@ Cursors:
 		move-blocked-minimap:
 			Start: 25
 			Length: 1
-
 	mouse5.shp: cursor
 		guard:
 			Start: 0
@@ -138,7 +156,6 @@ Cursors:
 		guard-minimap:
 			Start: 8
 			Length: 8
-
 	mouse6.shp: cursor
 		goldwrench:
 			Start: 0
@@ -170,7 +187,6 @@ Cursors:
 		enter-blocked-minimap:
 			Start: 17
 			Length: 1
-
 	mouse7.shp: cursor
 		attackoutsiderange:
 			Start: 0

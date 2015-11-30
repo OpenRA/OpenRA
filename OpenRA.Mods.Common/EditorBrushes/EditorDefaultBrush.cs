@@ -24,13 +24,13 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public interface IEditorBrush
+	public interface IEditorBrush : IDisposable
 	{
 		bool HandleMouseInput(MouseInput mi);
 		void Tick();
 	}
 
-	public class EditorDefaultBrush : IEditorBrush
+	public sealed class EditorDefaultBrush : IEditorBrush
 	{
 		public readonly ActorInfo Actor;
 
@@ -55,12 +55,11 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			// Exclusively uses mouse wheel and right mouse buttons, but nothing else
 			// Mouse move events are important for tooltips, so we always allow these through
-			if (mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll)
+			if ((mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
+				mi.Event == MouseInputEvent.Down)
 				return false;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			if (mi.Event == MouseInputEvent.Up)
-				return true;
 
 			var underCursor = editorLayer.PreviewsAt(worldRenderer.Viewport.ViewToWorldPx(mi.Location))
 				.FirstOrDefault();
@@ -111,5 +110,6 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Tick() { }
+		public void Dispose() { }
 	}
 }

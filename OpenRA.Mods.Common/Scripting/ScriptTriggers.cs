@@ -28,13 +28,14 @@ namespace OpenRA.Mods.Common.Scripting
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
 	public class ScriptTriggersInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new ScriptTriggers(init.World); }
+		public object Create(ActorInitializer init) { return new ScriptTriggers(init.World, init.Self); }
 	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
-		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisposable, INotifyDiscovered
+		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing
 	{
 		readonly World world;
+		readonly Actor self;
 
 		public event Action<Actor> OnKilledInternal = _ => { };
 		public event Action<Actor> OnCapturedInternal = _ => { };
@@ -42,19 +43,44 @@ namespace OpenRA.Mods.Common.Scripting
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
-		public Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>> Triggers = new Dictionary<Trigger, List<Pair<LuaFunction, ScriptContext>>>();
+		readonly Dictionary<Trigger, List<Triggerable>> triggers = new Dictionary<Trigger, List<Triggerable>>();
 
-		public ScriptTriggers(World world)
+		struct Triggerable : IDisposable
+		{
+			public readonly LuaFunction Function;
+			public readonly ScriptContext Context;
+			public readonly LuaValue Self;
+			public Triggerable(LuaFunction function, ScriptContext context, Actor self)
+			{
+				Function = (LuaFunction)function.CopyReference();
+				Context = context;
+				Self = self.ToLuaValue(Context);
+			}
+
+			public void Dispose()
+			{
+				Function.Dispose();
+				Self.Dispose();
+			}
+		}
+
+		public ScriptTriggers(World world, Actor self)
 		{
 			this.world = world;
+			this.self = self;
 
 			foreach (Trigger t in Enum.GetValues(typeof(Trigger)))
-				Triggers.Add(t, new List<Pair<LuaFunction, ScriptContext>>());
+				triggers.Add(t, new List<Triggerable>());
 		}
 
 		public void RegisterCallback(Trigger trigger, LuaFunction func, ScriptContext context)
 		{
-			Triggers[trigger].Add(Pair.New((LuaFunction)func.CopyReference(), context));
+			triggers[trigger].Add(new Triggerable(func, context, self));
+		}
+
+		public bool HasAnyCallbacksFor(Trigger trigger)
+		{
+			return triggers[trigger].Count > 0;
 		}
 
 		public void TickIdle(Actor self)
@@ -62,16 +88,15 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnIdle])
+			foreach (var f in triggers[Trigger.OnIdle])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-						f.First.Call(a).Dispose();
+					f.Function.Call(f.Self).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -82,17 +107,16 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnDamaged])
+			foreach (var f in triggers[Trigger.OnDamaged])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = e.Attacker.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var b = e.Attacker.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -104,17 +128,16 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in Triggers[Trigger.OnKilled])
+			foreach (var f in triggers[Trigger.OnKilled])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = e.Attacker.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var b = e.Attacker.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -129,17 +152,16 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in Triggers[Trigger.OnProduction])
+			foreach (var f in triggers[Trigger.OnProduction])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = other.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var b = other.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -153,16 +175,16 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnPlayerWon])
+			foreach (var f in triggers[Trigger.OnPlayerWon])
 			{
 				try
 				{
-					using (var a = player.ToLuaValue(f.Second))
-						f.First.Call(a).Dispose();
+					using (var a = player.ToLuaValue(f.Context))
+						f.Function.Call(a).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -173,16 +195,16 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnPlayerLost])
+			foreach (var f in triggers[Trigger.OnPlayerLost])
 			{
 				try
 				{
-					using (var a = player.ToLuaValue(f.Second))
-						f.First.Call(a).Dispose();
+					using (var a = player.ToLuaValue(f.Context))
+						f.Function.Call(a).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -193,17 +215,17 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnObjectiveAdded])
+			foreach (var f in triggers[Trigger.OnObjectiveAdded])
 			{
 				try
 				{
-					using (var a = player.ToLuaValue(f.Second))
-					using (var b = id.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var a = player.ToLuaValue(f.Context))
+					using (var b = id.ToLuaValue(f.Context))
+						f.Function.Call(a, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -214,17 +236,17 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnObjectiveCompleted])
+			foreach (var f in triggers[Trigger.OnObjectiveCompleted])
 			{
 				try
 				{
-					using (var a = player.ToLuaValue(f.Second))
-					using (var b = id.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var a = player.ToLuaValue(f.Context))
+					using (var b = id.ToLuaValue(f.Context))
+						f.Function.Call(a, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -235,17 +257,17 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnObjectiveFailed])
+			foreach (var f in triggers[Trigger.OnObjectiveFailed])
 			{
 				try
 				{
-					using (var a = player.ToLuaValue(f.Second))
-					using (var b = id.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var a = player.ToLuaValue(f.Context))
+					using (var b = id.ToLuaValue(f.Context))
+						f.Function.Call(a, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -256,19 +278,18 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnCapture])
+			foreach (var f in triggers[Trigger.OnCapture])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = captor.ToLuaValue(f.Second))
-					using (var c = oldOwner.ToLuaValue(f.Second))
-					using (var d = newOwner.ToLuaValue(f.Second))
-						f.First.Call(a, b, c, d).Dispose();
+					using (var b = captor.ToLuaValue(f.Context))
+					using (var c = oldOwner.ToLuaValue(f.Context))
+					using (var d = newOwner.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b, c, d).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -282,17 +303,16 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnInfiltrated])
+			foreach (var f in triggers[Trigger.OnInfiltrated])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = infiltrator.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var b = infiltrator.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -303,16 +323,15 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnAddedToWorld])
+			foreach (var f in triggers[Trigger.OnAddedToWorld])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-						f.First.Call(a).Dispose();
+					f.Function.Call(f.Self).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -324,16 +343,15 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in Triggers[Trigger.OnRemovedFromWorld])
+			foreach (var f in triggers[Trigger.OnRemovedFromWorld])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-						f.First.Call(a).Dispose();
+					f.Function.Call(f.Self).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -348,17 +366,17 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in Triggers[Trigger.OnOtherProduction])
+			foreach (var f in triggers[Trigger.OnOtherProduction])
 			{
 				try
 				{
-					using (var a = producee.ToLuaValue(f.Second))
-					using (var b = produced.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var a = producee.ToLuaValue(f.Context))
+					using (var b = produced.ToLuaValue(f.Context))
+						f.Function.Call(a, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -372,33 +390,31 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in Triggers[Trigger.OnDiscovered])
+			foreach (var f in triggers[Trigger.OnDiscovered])
 			{
 				try
 				{
-					using (var a = self.ToLuaValue(f.Second))
-					using (var b = discoverer.ToLuaValue(f.Second))
-						f.First.Call(a, b).Dispose();
+					using (var b = discoverer.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, b).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
 
-			foreach (var f in Triggers[Trigger.OnPlayerDiscovered])
+			foreach (var f in triggers[Trigger.OnPlayerDiscovered])
 			{
 				try
 				{
-					using (var a = self.Owner.ToLuaValue(f.Second))
-					using (var b = discoverer.ToLuaValue(f.Second))
-					using (var c = self.ToLuaValue(f.Second))
-						f.First.Call(a, b, c).Dispose();
+					using (var a = self.Owner.ToLuaValue(f.Context))
+					using (var b = discoverer.ToLuaValue(f.Context))
+						f.Function.Call(a, b, f.Self).Dispose();
 				}
 				catch (Exception ex)
 				{
-					f.Second.FatalError(ex.Message);
+					f.Context.FatalError(ex.Message);
 					return;
 				}
 			}
@@ -408,8 +424,10 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			world.AddFrameEndTask(w =>
 			{
-				Triggers[trigger].Select(p => p.First).Do(f => f.Dispose());
-				Triggers[trigger].Clear();
+				var triggerables = triggers[trigger];
+				foreach (var f in triggerables)
+					f.Dispose();
+				triggerables.Clear();
 			});
 		}
 
@@ -419,7 +437,7 @@ namespace OpenRA.Mods.Common.Scripting
 				Clear(t);
 		}
 
-		public void Dispose()
+		public void Disposing(Actor self)
 		{
 			ClearAll();
 		}

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
@@ -26,6 +26,8 @@ namespace OpenRA.Mods.TS.Traits
 	{
 		WithVoxelWalkerBodyInfo info;
 		IMove movement;
+		IFacing facing;
+		int oldFacing;
 		int2 size;
 		uint tick, frame, frames;
 
@@ -33,6 +35,7 @@ namespace OpenRA.Mods.TS.Traits
 		{
 			this.info = info;
 			movement = self.Trait<IMove>();
+			facing = self.Trait<IFacing>();
 
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
@@ -53,8 +56,9 @@ namespace OpenRA.Mods.TS.Traits
 
 		public void Tick(Actor self)
 		{
-			if (movement.IsMoving)
+			if (movement.IsMoving || facing.Facing != oldFacing)
 				tick++;
+			oldFacing = facing.Facing;
 
 			if (tick < info.TickRate)
 				return;

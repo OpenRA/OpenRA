@@ -70,7 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var tooltip = Info.TraitInfoOrDefault<TooltipInfo>();
-			Tooltip = tooltip == null ? ID + ": " + Info.Name : ID + ": " + tooltip.Name + " (" + Info.Name + ")";
+			Tooltip = (tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + owner.Name + " (" + owner.Faction + ")"
+				+ "\nID: " + ID + "\nType: " + Info.Name;
 
 			GeneratePreviews();
 
@@ -159,6 +160,11 @@ namespace OpenRA.Mods.Common.Traits
 			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
+		}
+
+		public ActorReference Export()
+		{
+			return new ActorReference(actor.Type, actor.Save().ToDictionary());
 		}
 	}
 }

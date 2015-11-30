@@ -8,9 +8,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Graphics
 		IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos);
 	}
 
-	public class ActorPreviewInitializer
+	public class ActorPreviewInitializer : IActorInitializer
 	{
 		public readonly ActorInfo Actor;
 		public readonly WorldRenderer WorldRenderer;

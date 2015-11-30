@@ -148,6 +148,17 @@ namespace OpenRA.Platforms.Default
 				textures[texUnit] = t;
 		}
 
+		public void SetBool(string name, bool value)
+		{
+			VerifyThreadAffinity();
+			GL.UseProgram(program);
+			ErrorHandler.CheckGlError();
+			var param = GL.GetUniformLocation(program, name);
+			ErrorHandler.CheckGlError();
+			GL.Uniform1(param, value ? 1 : 0);
+			ErrorHandler.CheckGlError();
+		}
+
 		public void SetVec(string name, float x)
 		{
 			VerifyThreadAffinity();

@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SettingsLogic
+	public class SettingsLogic : ChromeLogic
 	{
 		enum PanelType { Display, Audio, Input, Advanced }
 		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleBaseKey", "Jump to base" },
 					{ "ToLastEventKey", "Jump to last radar event" },
 					{ "ToSelectionKey", "Jump to selection" },
-					{ "SelectAllUnitsKey", "Select all units on screen" },
+					{ "SelectAllUnitsKey", "Select all combat units" },
 					{ "SelectUnitsByTypeKey", "Select units by type" },
 
 					{ "PlaceBeaconKey", "Place beacon" },
@@ -571,6 +571,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
+			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
 
 			return () => { };
 		}
@@ -590,6 +591,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.PerfGraph = dds.PerfGraph;
 				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
 				ds.BotDebug = dds.BotDebug;
+				ds.LuaDebug = dds.LuaDebug;
 			};
 		}
 

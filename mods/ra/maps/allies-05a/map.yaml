@@ -1,8 +1,8 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
-Title: Allies 05a: Tanya's Tale
+Title: 05a: Tanya's Tale
 
 Description: Rescue Tanya.\n\nYour spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet Base where he will hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island and a Chinook will arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
 
@@ -45,7 +45,7 @@ Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
@@ -54,7 +54,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Enemies: USSR
 
 Actors:
@@ -1592,7 +1592,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		LuaScript:
-			Scripts: allies05a.lua, AI.lua
+			Scripts: allies05a.lua, allies05a-AI.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
 	^Infantry:
@@ -1838,6 +1838,8 @@ Weapons:
 			InvalidImpactTypes: Water
 
 Voices:
+
+Music:
 
 Notifications:
 	Sounds:

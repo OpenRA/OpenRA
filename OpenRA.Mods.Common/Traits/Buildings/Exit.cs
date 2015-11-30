@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset at which that the exiting actor is spawned relative to the center of the producing actor.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
 
-		[Desc("Cell offset where the exiting actor enters the ActorMap relative to the topleft cell of the producting actor.")]
+		[Desc("Cell offset where the exiting actor enters the ActorMap relative to the topleft cell of the producing actor.")]
 		public readonly CVec ExitCell = CVec.Zero;
 		public readonly int Facing = -1;
 

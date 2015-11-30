@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -81,7 +81,7 @@ Players:
 		Faction: soviet
 		LockTeam: True
 		Team: 2
-		ColorRamp: 0,255,128
+		Color: FF0101
 		Enemies: Multi0, Multi1, Multi2, Multi3
 
 Actors:
@@ -508,13 +508,13 @@ Rules:
 			WindTick: 150, 550
 			InstantWindChanges: false
 			UseSquares: false
-			PaticleSize: 0, 0
+			ParticleSize: 0, 0
 			ScatterDirection: 0, 0
 			Gravity: 8.00, 12.00
 			SwingOffset: 0, 0
 			SwingSpeed: 0, 0
 			SwingAmplitude: 0, 0
-			ParticleColors: 255,48,64,116, 255,40,56,108, 255,32,44,96, 255,24,44,84
+			ParticleColors: 304074, 28386C, 202C60, 182C54
 			LineTailAlphaValue: 150
 		GlobalLightingPaletteEffect:
 			Red: 0.75
@@ -654,7 +654,7 @@ Rules:
 		Health:
 			HP: 200
 		AutoTarget:
-			InitialStance: Defend
+			InitialStanceAI: Defend
 	SNIPER.soviets:
 		Inherits: SNIPER
 		Buildable:
@@ -672,6 +672,14 @@ Rules:
 			Prerequisites: barracks
 		Valued:
 			Cost: 300
+	FTRK:
+		-Armament@AA:
+		-Armament@AG:
+		Armament:
+			Weapon: FLAK-23
+			Recoil: 85
+			LocalOffset: 512,0,192
+			MuzzleSequence: muzzle
 	ARTY:
 		Inherits: ^Tank
 		Valued:
@@ -999,6 +1007,10 @@ Weapons:
 			Explosion: piffs
 
 Voices:
+
+Music:
+	rain: Rain (ambient)
+		Hidden: true
 
 Notifications:
 

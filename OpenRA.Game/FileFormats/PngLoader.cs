@@ -187,7 +187,7 @@ namespace OpenRA.FileFormats
 			if (bitDepth == 8 && colorType == (PngColorType.Indexed | PngColorType.Color))
 				return PixelFormat.Format8bppIndexed;
 
-			throw new InvalidDataException("Unknown pixelformat");
+			throw new InvalidDataException("Unknown pixel format");
 		}
 	}
 }

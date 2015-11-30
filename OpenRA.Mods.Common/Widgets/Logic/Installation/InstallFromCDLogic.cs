@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class InstallFromCDLogic
+	public class InstallFromCDLogic : ChromeLogic
 	{
 		readonly string modId;
 		readonly Widget panel;

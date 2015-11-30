@@ -1,8 +1,8 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
-Title: Soviet 02a: The thin red line
+Title: 02a: The thin red line
 
 Description: Tomorrow, the attack on Germany begins, but today, we must protect our facility from Allied attacks.\n\nKeep the Command Center intact at all costs, and destroy any Allied fortification you might find.
 
@@ -43,14 +43,14 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Enemies: Germany
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Enemies: USSR
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -707,6 +707,8 @@ VoxelSequences:
 Weapons:
 
 Voices:
+
+Music:
 
 Notifications:
 

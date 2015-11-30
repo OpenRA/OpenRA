@@ -78,6 +78,16 @@ if [ ! -f nunit.framework.dll ]; then
 	rm -rf NUnit
 fi
 
+if [ ! -f nunit-console.exe ]; then
+	echo "Fetching NUnit.Runners from NuGet"
+	get NUnit.Runners 2.6.4
+	cp ./NUnit.Runners/tools/nunit-console.exe .
+	chmod +x nunit-console.exe
+	cp ./NUnit.Runners/tools/nunit-console.exe.config .
+	cp -R ./NUnit.Runners/tools/lib .
+	rm -rf NUnit.Runners
+fi
+
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from NuGet"
 	get Mono.Nat 1.2.21
@@ -99,7 +109,7 @@ fi
 
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
-	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20140425/Eluant.dll
+	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20151127/Eluant.dll
 fi
 
 if [ ! -f SmarIrc4net.dll ]; then

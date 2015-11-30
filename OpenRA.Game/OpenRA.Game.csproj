@@ -84,6 +84,10 @@
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SmarIrc4net">
+      <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Activity.cs" />
@@ -150,6 +154,7 @@
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
+    <Compile Include="Primitives\SegmentStream.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
     <Compile Include="SelectableExts.cs" />
@@ -168,7 +173,6 @@
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Traits\EditorTilesetFilter.cs" />
-    <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
@@ -246,6 +250,8 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="GameSpeed.cs" />
+    <Compile Include="GlobalChat.cs" />
+    <Compile Include="Primitives\ObservableList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

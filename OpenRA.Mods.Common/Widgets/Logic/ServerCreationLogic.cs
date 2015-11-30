@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ServerCreationLogic
+	public class ServerCreationLogic : ChromeLogic
 	{
 		Widget panel;
 		Action onCreate;
@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var settings = Game.Settings;
 			preview = Game.ModData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
 
-			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
 			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
@@ -53,7 +52,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => preview;
-				panel.Get<LabelWidget>("MAP_NAME").GetText = () => preview.Title;
+
+				var mapTitle = panel.Get<LabelWidget>("MAP_NAME");
+				if (mapTitle != null)
+				{
+					var font = Game.Renderer.Fonts[mapTitle.Font];
+					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
+					mapTitle.GetText = () => title.Update(preview);
+				}
 			}
 
 			var serverName = panel.Get<TextFieldWidget>("SERVER_NAME");
@@ -112,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.Settings.Save();
 
 			// Take a copy so that subsequent changes don't affect the server
-			var settings = new ServerSettings(Game.Settings.Server);
+			var settings = Game.Settings.Server.Clone();
 
 			// Create and join the server
 			try
@@ -132,7 +138,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 			}
 
-			Ui.CloseWindow();
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}

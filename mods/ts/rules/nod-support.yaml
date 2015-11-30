@@ -19,6 +19,7 @@ NAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
+		Height: 640
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -54,7 +55,8 @@ NALASR:
 		Offset: 298,-171,0
 	AttackTurreted:
 	Armament:
-		Weapon: LaserFire2
+		Weapon: TurretLaserFire
+		LocalOffset: 0, 0, 200
 	RenderVoxels:
 	WithVoxelTurret:
 	Power:
@@ -87,8 +89,8 @@ NAOBEL:
 	RevealsShroud:
 		Range: 8c0
 	Armament:
-		Weapon: LaserFire
-		LocalOffset: 1400,200,1250
+		Weapon: ObeliskLaserFire
+		LocalOffset: 1400,210,800
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
 		ReloadTime: 50
@@ -253,6 +255,7 @@ NAMISL:
 		IndicatorPalette: mouse
 	RequiresPower:
 	DisabledOverlay:
+	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
 		Cursor: nuke

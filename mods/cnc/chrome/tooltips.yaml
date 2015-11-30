@@ -1,10 +1,25 @@
 Background@SIMPLE_TOOLTIP:
 	Logic: SimpleTooltipLogic
 	Background: panel-black
-	Height: 25
+	Height: 27
 	Children:
 		Label@LABEL:
 			X: 5
+			Height: 23
+			Font: Bold
+
+Background@TWO_LINE_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: panel-black
+	Height: 48
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 46
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 
@@ -19,7 +34,7 @@ Background@BUTTON_TOOLTIP:
 			Font: Bold
 		Label@HOTKEY:
 			Visible: false
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Height: 23
 			Font: Bold
 
@@ -64,7 +79,7 @@ Background@PRODUCTION_TOOLTIP:
 		Label@HOTKEY:
 			Visible: false
 			Height: 23
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@REQUIRES:
 			X: 5
@@ -119,7 +134,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 		Label@HOTKEY:
 			Visible: false
 			Height: 20
-			TextColor: 255,255,0
+			TextColor: FFFF00
 			Font: Bold
 		Label@TIME:
 			Y: 6
@@ -207,3 +222,4 @@ Background@FACTION_DESCRIPTION_TOOLTIP:
 			Height: 14
 			Font: TinyBold
 			VAlign: Top
+

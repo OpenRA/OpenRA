@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngamePowerBarLogic
+	public class IngamePowerBarLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public IngamePowerBarLogic(Widget widget, World world)

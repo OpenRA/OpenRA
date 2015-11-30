@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: cnc
 
@@ -215,7 +215,6 @@ Rules:
 			Maximum: 4
 			SpawnInterval: 125
 			CrateActors: unitcrate
-			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
 	UNITCRATE:
@@ -251,6 +250,8 @@ VoxelSequences:
 Weapons:
 
 Voices:
+
+Music:
 
 Notifications:
 

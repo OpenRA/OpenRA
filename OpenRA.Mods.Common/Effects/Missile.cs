@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly bool Shadow = false;
 
 		[Desc("Minimum vertical launch angle (pitch).")]
-		public readonly WAngle MinimumLaunchAngle = WAngle.Zero;
+		public readonly WAngle MinimumLaunchAngle = new WAngle(-64);
 
 		[Desc("Maximum vertical launch angle (pitch).")]
-		public readonly WAngle MaximumLaunchAngle = new WAngle(64);
+		public readonly WAngle MaximumLaunchAngle = new WAngle(128);
 
 		[Desc("Minimum launch speed in WDist / tick")]
 		public readonly WDist MinimumLaunchSpeed = new WDist(75);
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Effects
 			var diffClfMslHgt = predClfHgt - pos.Z;
 
 			// Incline coming up
-			if (diffClfMslHgt >= 0)
+			if (diffClfMslHgt >= 0 && predClfDist > 0)
 				DetermineLaunchSpeedAndAngleForIncline(predClfDist, diffClfMslHgt, relTarHorDist, out speed, out vFacing);
 			else if (lastHt != 0)
 			{
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Effects
 			// Also, never change horizontal facing and never travel backwards
 			// Possible techniques to avoid close cliffs are deceleration, turning
 			// as sharply as possible to travel directly upwards and then returning
-			// to zero vertical facing as low as possible while still not hittin the
+			// to zero vertical facing as low as possible while still not hitting the
 			// high terrain. A last technique (and the preferred one, normally used when
 			// the missile hasn't been fired near a cliff) is simply finding the smallest
 			// vertical facing that allows for a smooth climb to the new terrain's height
@@ -788,7 +788,7 @@ namespace OpenRA.Mods.Common.Effects
 			// NOTE: High speeds might cause the missile to miss the target or fly through obstacles
 			//       In that case, big moves should probably be decomposed into multiple smaller ones with hit checks
 			var height = world.Map.DistanceAboveTerrain(pos);
-			var shouldExplode = (height.Length <= 0) // Hit the ground
+			var shouldExplode = (height.Length < 0) // Hit the ground
 				|| (relTarDist < info.CloseEnough.Length) // Within range
 				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)) // Hit a wall or other blocking obstacle

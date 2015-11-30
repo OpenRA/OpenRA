@@ -160,13 +160,6 @@ litning:
 		Start: 4
 		Length: 4
 
-litningupg:
-	bright:
-		Length: 4
-	dim: litning
-		Start: 4
-		Length: 4
-
 fb1:
 	idle: 
 		Length: *
@@ -479,6 +472,12 @@ overlay:
 		Start: 2
 	target-valid-temperat:
 	target-invalid:
+		Start: 1
+
+editor-overlay:
+	copy: overlay
+		Start: 0
+	paste: overlay
 		Start: 1
 
 resources:

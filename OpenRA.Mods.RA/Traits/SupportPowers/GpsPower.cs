@@ -70,15 +70,24 @@ namespace OpenRA.Mods.RA.Traits
 		void RefreshGranted()
 		{
 			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = Owner.World.ActorsWithTrait<GpsWatcher>().Any(p => p.Actor.Owner.IsAlliedWith(Owner) && p.Trait.Granted);
+			GrantedAllies = Owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(Owner));
 
 			if (Granted || GrantedAllies)
 				Owner.Shroud.ExploreAll(Owner.World);
 		}
 
-		public bool HasFogVisibility(Player byPlayer)
+		public bool HasFogVisibility()
 		{
 			return Granted || GrantedAllies;
+		}
+
+		public bool IsVisible(Actor actor)
+		{
+			var gpsDot = actor.TraitOrDefault<GpsDot>();
+			if (gpsDot == null)
+				return false;
+
+			return gpsDot.IsDotVisible(Owner);
 		}
 	}
 

@@ -31,6 +31,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			  "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]
 		public void Run(ModData modData, string[] args)
 		{
+			// HACK: The engine code assumes that Game.modData is set.
+			Game.ModData = modData;
+			Game.ModData.MountFiles();
+
 			var src = args[1];
 			var shadowIndex = new int[] { };
 			if (args.Contains("--noshadow"))

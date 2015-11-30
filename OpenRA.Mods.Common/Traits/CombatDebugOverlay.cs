@@ -27,12 +27,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeveloperMode devMode;
 
 		readonly HealthInfo healthInfo;
+		readonly BlocksProjectilesInfo blockInfo;
 		Lazy<AttackBase> attack;
 		Lazy<BodyOrientation> coords;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
+			blockInfo = self.Info.TraitInfoOrDefault<BlocksProjectilesInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 
@@ -48,11 +50,23 @@ namespace OpenRA.Mods.Common.Traits
 			if (healthInfo != null)
 				wr.DrawRangeCircle(self.CenterPosition, healthInfo.Radius, Color.Red);
 
+			var wlr = Game.Renderer.WorldLineRenderer;
+
+			if (blockInfo != null)
+			{
+				var hc = Color.Orange;
+				var height = new WVec(0, 0, blockInfo.Height.Length);
+				var ha = wr.ScreenPosition(self.CenterPosition);
+				var hb = wr.ScreenPosition(self.CenterPosition + height);
+				wlr.DrawLine(ha, hb, hc);
+				wr.DrawTargetMarker(hc, ha);
+				wr.DrawTargetMarker(hc, hb);
+			}
+
 			// No armaments to draw
 			if (attack.Value == null)
 				return;
 
-			var wlr = Game.Renderer.WorldLineRenderer;
 			var c = Color.White;
 
 			// Fire ports on garrisonable structures

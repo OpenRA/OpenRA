@@ -468,7 +468,7 @@ namespace OpenRA.FileSystem
 				return GetContentById(fileDes.LinkToPrevious);
 
 			if ((fileDes.Flags & FileObfuscated) != 0)
-				throw new NotImplementedException("Haven't implemented obfustcated files");
+				throw new NotImplementedException("Haven't implemented obfuscated files");
 
 			var output = new MemoryStream((int)fileDes.ExpandedSize);
 
@@ -495,7 +495,7 @@ namespace OpenRA.FileSystem
 			}
 
 			if ((fileDes.Flags & FileObfuscated) != 0)
-				throw new NotImplementedException("Haven't implemented obfustcated files");
+				throw new NotImplementedException("Haven't implemented obfuscated files");
 
 			using (var reader = new CabReader(fileDes, index, commonName))
 				reader.CopyTo(output);

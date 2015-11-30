@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class TileSelectorLogic
+	public class TileSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
 		readonly ScrollPanelWidget panel;

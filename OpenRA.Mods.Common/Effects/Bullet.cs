@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
-		[Desc("Delay in ticks until trail animaion is spawned.")]
+		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
 		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
 				return false;
 
-			if (!bi.AllowInvalidPlacement && world.ActorMap.GetUnitsAt(cell).Any(a => a != toIgnore))
+			if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
 				return false;
 
 			var tile = world.Map.MapTiles.Value[cell];
@@ -72,10 +72,9 @@ namespace OpenRA.Mods.Common.Traits
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?
-					if (world.ActorsWithTrait<LineBuildNode>().Any(a =>
-					(a.Actor.Location == cell &&
-						a.Actor.Info.TraitInfo<LineBuildNodeInfo>()
-						.Types.Overlaps(lbi.NodeTypes))))
+					if (world.ActorsHavingTrait<LineBuildNode>()
+						.Any(a => a.Location == cell
+							&& a.Info.TraitInfo<LineBuildNodeInfo>().Types.Overlaps(lbi.NodeTypes)))
 						dirs[d] = i; // Cell contains actor of correct type
 					else
 						dirs[d] = -1; // Cell is blocked by another actor type

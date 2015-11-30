@@ -70,6 +70,8 @@ Section "-Reg" Reg
 SectionEnd
 
 Section "Game" GAME
+	SectionIn RO
+
 	RMDir /r "$INSTDIR\mods"
 	SetOutPath "$INSTDIR\mods"
 	File /r "${SRCDIR}\mods\common"
@@ -126,13 +128,11 @@ Section "Game" GAME
 	File "${SRCDIR}\glsl\*.vert"
 SectionEnd
 
-SectionGroup /e "Settings"
-	Section "Desktop Shortcut" DESKTOPSHORTCUT
-		SetOutPath "$INSTDIR"
-		CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.exe "" \
-			"$INSTDIR\OpenRA.exe" "" "" "" ""
-	SectionEnd
-SectionGroupEnd
+Section "Desktop Shortcut" DESKTOPSHORTCUT
+	SetOutPath "$INSTDIR"
+	CreateShortCut "$DESKTOP\OpenRA.lnk" $INSTDIR\OpenRA.exe "" \
+		"$INSTDIR\OpenRA.exe" "" "" "" ""
+SectionEnd
 
 ;***************************
 ;Dependency Sections

@@ -153,6 +153,7 @@ C17:
 		Speed: 326
 		Repulsable: False
 		AirborneUpgrades: airborne
+		MaximumPitch: 36
 	Health:
 		HP: 25
 	Armor:

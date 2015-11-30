@@ -31,15 +31,15 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void TryActivate()
 		{
-			var harvesters = self.World.ActorsWithTrait<Harvester>().Where(x => x.Actor.Owner == self.Owner);
+			var harvesters = self.World.ActorsHavingTrait<Harvester>().Where(x => x.Owner == self.Owner);
 			if (harvesters.Any())
 				return;
 
-			var refineries = self.World.ActorsWithTrait<Refinery>().Where(x => x.Actor.Owner == self.Owner);
+			var refineries = self.World.ActorsHavingTrait<Refinery>().Where(x => x.Owner == self.Owner);
 			if (!refineries.Any())
 				return;
 
-			var refinery = refineries.First().Actor;
+			var refinery = refineries.First();
 			var delivery = refinery.Trait<FreeActorWithDelivery>();
 			delivery.DoDelivery(refinery.Location + delivery.Info.DeliveryOffset, delivery.Info.Actor,
 				delivery.Info.DeliveringActor);

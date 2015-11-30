@@ -307,6 +307,7 @@ Container@EDITOR_WORLD_ROOT:
 									Visible: false
 									Width: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: TWO_LINE_TOOLTIP
 									IgnoreChildMouseOver: true
 									Children:
 										ActorPreview@ACTOR_PREVIEW:
@@ -350,9 +351,15 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: escape
+		Button@COPYPASTE_BUTTON:
+			X: 170
+			Width: 90
+			Height: 25
+			Text: Copy/Paste
+			Font: Bold
 		Button@GRID_BUTTON:
-			X: 180
-			Width: 160
+			X: 270
+			Width: 70
 			Height: 25
 			Text: Grid
 			TooltipTemplate: BUTTON_TOOLTIP

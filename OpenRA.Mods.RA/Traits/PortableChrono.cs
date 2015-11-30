@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Traits
 {
 	class PortableChronoInfo : ITraitInfo
 	{
-		[Desc("Cooldown in seconds until the unit can teleport.")]
-		public readonly int ChargeTime = 20;
+		[Desc("Cooldown in ticks until the unit can teleport.")]
+		public readonly int ChargeDelay = 500;
 
 		[Desc("Can the unit teleport only a certain distance?")]
 		public readonly bool HasDistanceLimit = true;
@@ -31,9 +31,6 @@ namespace OpenRA.Mods.RA.Traits
 
 		[Desc("Sound to play when teleporting.")]
 		public readonly string ChronoshiftSound = "chrotnk1.aud";
-
-		[Desc("Display rectangles indicating the current charge status")]
-		public readonly int Pips = 2;
 
 		[Desc("Cursor to display when able to deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
@@ -46,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
-	class PortableChrono : IIssueOrder, IResolveOrder, ITick, IPips, IOrderVoice, ISync
+	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		[Sync] int chargeTick = 0;
 		public readonly PortableChronoInfo Info;
@@ -100,7 +97,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void ResetChargeTime()
 		{
-			chargeTick = 25 * Info.ChargeTime;
+			chargeTick = Info.ChargeDelay;
 		}
 
 		public bool CanTeleport
@@ -108,19 +105,12 @@ namespace OpenRA.Mods.RA.Traits
 			get { return chargeTick <= 0; }
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
+		public float GetValue()
 		{
-			for (var i = 0; i < Info.Pips; i++)
-			{
-				if ((1 - chargeTick * 1.0f / (25 * Info.ChargeTime)) * Info.Pips < i + 1)
-				{
-					yield return PipType.Transparent;
-					continue;
-				}
-
-				yield return PipType.Blue;
-			}
+			return (float)(Info.ChargeDelay - chargeTick) / Info.ChargeDelay;
 		}
+
+		public Color GetColor() { return Color.Magenta; }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
@@ -130,7 +120,7 @@ namespace OpenRA.Mods.RA.Traits
 		public bool IsQueued { get; protected set; }
 		public bool OverrideSelection { get { return true; } }
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
 			// TODO: When target modifiers are configurable this needs to be revisited
 			if (modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue))

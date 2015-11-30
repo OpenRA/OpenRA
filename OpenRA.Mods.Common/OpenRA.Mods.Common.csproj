@@ -78,9 +78,6 @@
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SmarIrc4net">
-      <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -294,6 +291,7 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
+    <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
     <Compile Include="Traits\CaptureNotification.cs" />
@@ -545,6 +543,7 @@
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
+    <Compile Include="UtilityCommands\Rgba2Hex.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DamageWarhead.cs" />
@@ -568,7 +567,6 @@
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
     <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
-    <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\AddFactionSuffixLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ClassicProductionLogic.cs" />
@@ -599,10 +597,9 @@
     <Compile Include="Widgets\Logic\Ingame\WorldTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\DownloadPackagesLogic.cs" />
+    <Compile Include="Widgets\Logic\Installation\InstallModLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallMusicLogic.cs" />
-    <Compile Include="Widgets\Logic\IrcLogic.cs" />
-    <Compile Include="Irc.cs" />
     <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
@@ -624,7 +621,6 @@
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ServerBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\Logic\SettingsLogic.cs" />
     <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
@@ -705,8 +701,15 @@
     <Compile Include="Lint\CheckRevealFootprint.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
+    <Compile Include="Traits\SpawnActorOnDeath.cs" />
     <Compile Include="Scripting\Global\LightingGlobal.cs" />
     <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
+    <Compile Include="Widgets\Logic\GlobalChatLogic.cs" />
+    <Compile Include="Lint\CheckChromeLogic.cs" />
+    <Compile Include="Lint\CheckMapMetadata.cs" />
+    <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
+    <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
+    <Compile Include="Traits\World\EditorSelectionLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

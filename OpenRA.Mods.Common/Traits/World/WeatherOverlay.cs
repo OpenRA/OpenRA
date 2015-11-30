@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Hard or soft fading between the WindLevels.")]
 		public readonly bool InstantWindChanges = false;
 
-		[Desc("Particles are drawn in squares when enabled, else with lines.")]
+		[Desc("Particles are drawn in squares when enabled, otherwise with lines.")]
 		public readonly bool UseSquares = true;
 
 		[Desc("Works only with squares enabled. Size min. and max. value in pixels.")]
-		public readonly int[] PaticleSize = { 1, 3 };
+		public readonly int[] ParticleSize = { 1, 3 };
 
 		[Desc("Scatters falling direction on the x-axis. Scatter min. and max. value in px/tick.")]
 		public readonly int[] ScatterDirection = { -1, 1 };
@@ -56,15 +56,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The value range that can be swung to the left or right. SwingAmplitude min. and max. value in px/tick.")]
 		public readonly float[] SwingAmplitude = { 1.0f, 1.5f };
 
-		[Desc("The randomly selected ArgbColors for the particles. Use this order: a,r,g,b,  a,r,g,b, a,...")]
+		[Desc("The randomly selected rgb(a) hex colors for the particles. Use this order: rrggbb[aa], rrggbb[aa], ...")]
 		public readonly Color[] ParticleColors = {
-			Color.FromArgb(255, 236, 236, 236),
-			Color.FromArgb(255, 228, 228, 228),
-			Color.FromArgb(255, 208, 208, 208),
-			Color.FromArgb(255, 188, 188, 188)
+			Color.FromArgb(236, 236, 236),
+			Color.FromArgb(228, 228, 228),
+			Color.FromArgb(208, 208, 208),
+			Color.FromArgb(188, 188, 188)
 		};
 
-		[Desc("Works only with line enabled and can get used to fade out the tail of the line like a contrail.")]
+		[Desc("Works only with line enabled and can be used to fade out the tail of the line like a contrail.")]
 		public readonly byte LineTailAlphaValue = 200;
 
 		public object Create(ActorInitializer init) { return new WeatherOverlay(init.World, this); }
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							PosX = Game.CosmeticRandom.Next(Game.Renderer.Resolution.Width),
 							PosY = Game.CosmeticRandom.Next(rangeY),
-							Size = Game.CosmeticRandom.Next(info.PaticleSize[0], info.PaticleSize[1] + 1),
+							Size = Game.CosmeticRandom.Next(info.ParticleSize[0], info.ParticleSize[1] + 1),
 							DirectionScatterX = info.ScatterDirection[0] + Game.CosmeticRandom.Next(info.ScatterDirection[1] - info.ScatterDirection[0]),
 							Gravity = float2.Lerp(info.Gravity[0], info.Gravity[1], Game.CosmeticRandom.NextFloat()),
 							SwingOffset = float2.Lerp(info.SwingOffset[0], info.SwingOffset[1], Game.CosmeticRandom.NextFloat()),

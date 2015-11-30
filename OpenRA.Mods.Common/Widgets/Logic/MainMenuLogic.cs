@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MainMenuLogic
+	public class MainMenuLogic : ChromeLogic
 	{
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, None }
 
@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget newsPanel;
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
+
+		// Update news once per game launch
+		static bool fetchedNews;
 
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () =>
 			{
 				menuType = MenuType.None;
-				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
+				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 				{
 					{ "onStart", RemoveShellmapUI },
 					{ "onExit", () => menuType = MenuType.Main },
@@ -207,27 +210,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (newsButton != null)
 				{
-					// Only query for news once per day.
-					var cacheValid = currentNews != null && DateTime.Today.ToUniversalTime() <= Game.Settings.Game.NewsFetchedDate;
-					if (!cacheValid)
+					if (!fetchedNews)
 						new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
-							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews, () => newsButton.AttachPanel(newsPanel)));
+							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews,
+							() => newsButton.AttachPanel(newsPanel)));
 
 					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 				}
 			}
 
-			Game.OnRemoteDirectConnect += (host, port) =>
+			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
+		}
+
+		void OnRemoteDirectConnect(string host, int port)
+		{
+			menuType = MenuType.None;
+			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
-				menuType = MenuType.None;
-				Ui.OpenWindow("SERVERBROWSER_PANEL", new WidgetArgs
-				{
-					{ "onStart", RemoveShellmapUI },
-					{ "onExit", () => menuType = MenuType.Main },
-					{ "directConnectHost", host },
-					{ "directConnectPort", port },
-				});
-			};
+				{ "onStart", RemoveShellmapUI },
+				{ "onExit", () => menuType = MenuType.Main },
+				{ "directConnectHost", host },
+				{ "directConnectPort", port },
+			});
 		}
 
 		void LoadMapIntoEditor(Map map)
@@ -290,6 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 				}
 
+				fetchedNews = true;
 				var newNews = ParseNews(cacheFile);
 				if (newNews == null)
 					return;
@@ -298,9 +303,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (oldNews == null || newNews.Any(n => !oldNews.Select(c => c.DateTime).Contains(n.DateTime)))
 					onNewsDownloaded();
-
-				Game.Settings.Game.NewsFetchedDate = DateTime.Today.ToUniversalTime();
-				Game.Settings.Save();
 			});
 		}
 
@@ -361,6 +363,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"",
 				OpenSkirmishLobbyPanel,
 				() => { Game.CloseServer(); menuType = MenuType.Main; });
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				Game.OnRemoteDirectConnect -= OnRemoteDirectConnect;
+			base.Dispose(disposing);
 		}
 	}
 }

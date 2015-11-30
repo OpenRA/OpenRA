@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			return level < info.Modifier.Length + info.BaseLevel;
 		}
 
-		// Override to recieve notice of level change.
+		// Override to receive notice of level change.
 		protected virtual void Update(Actor self) { }
 
 		public void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)

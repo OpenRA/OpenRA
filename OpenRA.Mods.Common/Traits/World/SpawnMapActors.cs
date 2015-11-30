@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 
-				// if there is no real player associated, dont spawn it.
+				// If there is no real player associated, don't spawn it.
 				var ownerName = actorReference.InitDict.Get<OwnerInit>().PlayerName;
 				if (!world.Players.Any(p => p.InternalName == ownerName))
 					continue;

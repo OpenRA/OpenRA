@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
@@ -296,7 +296,6 @@ Rules:
 			Maximum: 3
 			SpawnInterval: 125
 			CrateActors: unitcrate
-			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
 	UNITCRATE:
@@ -368,6 +367,8 @@ Weapons:
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
 
 Voices:
+
+Music:
 
 Notifications:
 

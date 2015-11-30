@@ -48,7 +48,7 @@ namespace OpenRA
 		// 1 sample produces a rectangular probability
 		// 2 samples produces a triangular probability
 		// ...
-		// N samples approximates a true gaussian
+		// N samples approximates a true Gaussian
 		public static WDist FromPDF(MersenneTwister r, int samples)
 		{
 			return new WDist(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))

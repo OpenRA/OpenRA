@@ -1,10 +1,10 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: d2k
 
 Title: Atreides 02a
 
-Description: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when minig the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
+Description: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
 
 Author: Westwood Studios
 
@@ -42,21 +42,22 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
+		Enemies: Atreides, Harkonnen
 	PlayerReference@Atreides:
 		Name: Atreides
 		Playable: True
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		ColorRamp: 170,255,200
-		Enemies: Harkonnen
+		Color: 9191FF
+		Enemies: Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		ColorRamp: 0,255,127
-		Enemies: Atreides
+		Color: FE0000
+		Enemies: Atreides, Creeps
 
 Actors:
 	Actor0: spicebloom
@@ -230,6 +231,8 @@ VoxelSequences:
 Weapons:
 
 Voices:
+
+Music:
 
 Notifications:
 

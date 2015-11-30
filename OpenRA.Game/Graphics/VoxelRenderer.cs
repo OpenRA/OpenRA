@@ -154,7 +154,7 @@ namespace OpenRA.Graphics
 				screenCorners[j] = new float2(corners[j][0], corners[j][1]);
 			}
 
-			// Shadows are rendered at twice the resolution to reduce artefacts
+			// Shadows are rendered at twice the resolution to reduce artifacts
 			Size spriteSize, shadowSpriteSize;
 			int2 spriteOffset, shadowSpriteOffset;
 			CalculateSpriteGeometry(tl, br, 1, out spriteSize, out spriteOffset);
@@ -331,7 +331,7 @@ namespace OpenRA.Graphics
 
 			var size = new Size(renderer.SheetSize, renderer.SheetSize);
 			var framebuffer = renderer.Device.CreateFrameBuffer(size);
-			var sheet = new Sheet(framebuffer.Texture);
+			var sheet = new Sheet(SheetType.DualIndexed, framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 
 			return sheet;

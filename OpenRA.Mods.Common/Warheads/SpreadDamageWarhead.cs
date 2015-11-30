@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly WDist Spread = new WDist(43);
 
 		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Damage percentage at each range step")]
-		public readonly int[] Falloff = { 100, 37, 14, 5, 2, 1, 0 };
+		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Warheads
 			if (Range != null)
 			{
 				if (Range.Length != 1 && Range.Length != Falloff.Length)
-					throw new InvalidOperationException("Number of range values must be 1 or equal to the number of Falloff values.");
+					throw new YamlException("Number of range values must be 1 or equal to the number of Falloff values.");
 
 				for (var i = 0; i < Range.Length - 1; i++)
 					if (Range[i] > Range[i + 1])
-						throw new InvalidOperationException("Range values must be specified in an increasing order.");
+						throw new YamlException("Range values must be specified in an increasing order.");
 			}
 			else
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
@@ -62,16 +62,13 @@ namespace OpenRA.Mods.Common.Warheads
 
 			foreach (var victim in hitActors)
 			{
-				if (!IsValidAgainst(victim, firedBy))
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
+				if (healthInfo == null)
 					continue;
 
 				var localModifiers = damageModifiers;
-				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo != null)
-				{
-					var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
-					localModifiers = localModifiers.Append(GetDamageFalloff(distance));
-				}
+				var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
+				localModifiers = localModifiers.Append(GetDamageFalloff(distance));
 
 				DoImpact(victim, firedBy, localModifiers);
 			}

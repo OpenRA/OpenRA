@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class FactionTooltipLogic
+	public class FactionTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public FactionTooltipLogic(Widget widget, ButtonWidget button)

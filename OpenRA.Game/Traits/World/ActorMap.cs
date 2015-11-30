@@ -68,7 +68,7 @@ namespace OpenRA.Traits
 					return;
 
 				var oldActors = currentActors;
-				currentActors = Footprint.SelectMany(actorMap.GetUnitsAt).ToList();
+				currentActors = Footprint.SelectMany(actorMap.GetActorsAt).ToList();
 
 				var entered = currentActors.Except(oldActors);
 				var exited = oldActors.Except(currentActors);
@@ -187,10 +187,10 @@ namespace OpenRA.Traits
 			actorShouldBeRemoved = removeActorPosition.Contains;
 		}
 
-		sealed class UnitsAtEnumerator : IEnumerator<Actor>
+		sealed class ActorsAtEnumerator : IEnumerator<Actor>
 		{
 			InfluenceNode node;
-			public UnitsAtEnumerator(InfluenceNode node) { this.node = node; }
+			public ActorsAtEnumerator(InfluenceNode node) { this.node = node; }
 			public void Reset() { throw new NotSupportedException(); }
 			public Actor Current { get; private set; }
 			object IEnumerator.Current { get { return Current; } }
@@ -209,23 +209,23 @@ namespace OpenRA.Traits
 			}
 		}
 
-		sealed class UnitsAtEnumerable : IEnumerable<Actor>
+		sealed class ActorsAtEnumerable : IEnumerable<Actor>
 		{
 			readonly InfluenceNode node;
-			public UnitsAtEnumerable(InfluenceNode node) { this.node = node; }
-			public IEnumerator<Actor> GetEnumerator() { return new UnitsAtEnumerator(node); }
+			public ActorsAtEnumerable(InfluenceNode node) { this.node = node; }
+			public IEnumerator<Actor> GetEnumerator() { return new ActorsAtEnumerator(node); }
 			IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 		}
 
-		public IEnumerable<Actor> GetUnitsAt(CPos a)
+		public IEnumerable<Actor> GetActorsAt(CPos a)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
 				return Enumerable.Empty<Actor>();
-			return new UnitsAtEnumerable(influence[uv]);
+			return new ActorsAtEnumerable(influence[uv]);
 		}
 
-		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
+		public IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
@@ -243,14 +243,14 @@ namespace OpenRA.Traits
 
 		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, bool checkTransient = true)
 		{
-			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(cell, preferredSubCell, checkTransient))
+			if (preferredSubCell > SubCell.Any && !AnyActorsAt(cell, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
-			if (!AnyUnitsAt(cell))
+			if (!AnyActorsAt(cell))
 				return map.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyUnitsAt(cell, (SubCell)i, checkTransient))
+				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
 
 			return SubCell.Invalid;
@@ -258,20 +258,20 @@ namespace OpenRA.Traits
 
 		public SubCell FreeSubCell(CPos cell, SubCell preferredSubCell, Func<Actor, bool> checkIfBlocker)
 		{
-			if (preferredSubCell > SubCell.Any && !AnyUnitsAt(cell, preferredSubCell, checkIfBlocker))
+			if (preferredSubCell > SubCell.Any && !AnyActorsAt(cell, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
-			if (!AnyUnitsAt(cell))
+			if (!AnyActorsAt(cell))
 				return map.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyUnitsAt(cell, (SubCell)i, checkIfBlocker))
+				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 			return SubCell.Invalid;
 		}
 
 		// NOTE: always includes transients with influence
-		public bool AnyUnitsAt(CPos a)
+		public bool AnyActorsAt(CPos a)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
@@ -281,7 +281,7 @@ namespace OpenRA.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyUnitsAt(CPos a, SubCell sub, bool checkTransient = true)
+		public bool AnyActorsAt(CPos a, SubCell sub, bool checkTransient = true)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
@@ -305,7 +305,7 @@ namespace OpenRA.Traits
 		}
 
 		// NOTE: can not check aircraft
-		public bool AnyUnitsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
+		public bool AnyActorsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition)
 		{
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))

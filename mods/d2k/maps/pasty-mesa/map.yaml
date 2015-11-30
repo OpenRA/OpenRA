@@ -1,4 +1,4 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: d2k
 
@@ -98,6 +98,8 @@ VoxelSequences:
 Weapons:
 
 Voices:
+
+Music:
 
 Notifications:
 

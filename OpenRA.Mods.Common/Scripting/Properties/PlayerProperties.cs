@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public PlayerProperties(ScriptContext context, Player player)
 			: base(context, player) { }
 
+		[Desc("The player's internal name.")]
+		public string InternalName { get { return Player.InternalName; } }
+
 		[Desc("The player's name.")]
 		public string Name { get { return Player.PlayerName; } }
 
@@ -52,10 +55,16 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns true if the player is a bot.")]
 		public bool IsBot { get { return Player.IsBot; } }
 
+		[Desc("Returns true if the player is non combatant.")]
+		public bool IsNonCombatant { get { return Player.NonCombatant; } }
+
+		[Desc("Returns true if the player is the local player.")]
+		public bool IsLocalPlayer { get { return Player == (Player.World.RenderPlayer ?? Player.World.LocalPlayer); }	}
+
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
 		public Actor[] GetGroundAttackers()
 		{
-			return Player.World.ActorsWithTrait<AttackBase>().Select(a => a.Actor)
+			return Player.World.ActorsHavingTrait<AttackBase>()
 				.Where(a => a.Owner == Player && !a.IsDead && a.IsInWorld && a.Info.HasTraitInfo<MobileInfo>())
 				.ToArray();
 		}

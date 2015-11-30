@@ -193,16 +193,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 
-			var bases = world.ActorsWithTrait<BaseBuilding>()
-				.Where(a => a.Actor.Owner == player)
-				.Select(b => b.Actor)
+			var bases = world.ActorsHavingTrait<BaseBuilding>()
+				.Where(a => a.Owner == player)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
 			if (!bases.Any())
 			{
-				var building = world.ActorsWithTrait<Building>()
-					.Select(b => b.Actor)
+				var building = world.ActorsHavingTrait<Building>()
 					.FirstOrDefault(a => a.Owner == player && a.Info.HasTraitInfo<SelectableInfo>());
 
 				// No buildings left
@@ -230,10 +228,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 
-			var facilities = world.ActorsWithTrait<Production>()
-				.Where(a => a.Actor.Owner == player && !a.Actor.Info.HasTraitInfo<BaseBuildingInfo>())
-				.OrderBy(f => f.Actor.Info.TraitInfo<ProductionInfo>().Produces.First())
-				.Select(b => b.Actor)
+			var facilities = world.ActorsHavingTrait<Production>()
+				.Where(a => a.Owner == player && !a.Info.HasTraitInfo<BaseBuildingInfo>())
+				.OrderBy(f => f.Info.TraitInfo<ProductionInfo>().Produces.First())
 				.ToList();
 
 			if (!facilities.Any())

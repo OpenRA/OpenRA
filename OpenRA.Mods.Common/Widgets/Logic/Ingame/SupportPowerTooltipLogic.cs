@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SupportPowerTooltipLogic
+	public class SupportPowerTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette, World world)

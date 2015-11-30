@@ -242,7 +242,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				/* TODO: Could have an exception here when listener 'goes away' when calling AcceptConnection! */
-				/* Alternative would be to use locking but the listener doesnt go away without a reason. */
+				/* Alternative would be to use locking but the listener doesn't go away without a reason. */
 				Log.Write("server", "Accepting the connection failed.", e);
 				return;
 			}
@@ -372,6 +372,9 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 
+				Log.Write("server", "{0} ({1}) has joined the game.",
+					client.Name, newConn.Socket.RemoteEndPoint);
+
 				if (!LobbyInfo.IsSinglePlayer)
 					SendMessage("{0} has joined the game.".F(client.Name));
 
@@ -408,7 +411,19 @@ namespace OpenRA.Server
 
 		void SetOrderLag()
 		{
-			LobbyInfo.GlobalSettings.OrderLatency = LobbyInfo.IsSinglePlayer ? 1 : 3;
+			int latency = 1;
+			if (!LobbyInfo.IsSinglePlayer)
+			{
+				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				GameSpeed speed;
+				if (gameSpeeds.Speeds.TryGetValue(LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+					latency = speed.OrderLatency;
+				else
+					latency = 3;
+			}
+
+			LobbyInfo.GlobalSettings.OrderLatency = latency;
+
 			SyncLobbyGlobalSettings();
 		}
 

@@ -14,6 +14,7 @@ using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -114,5 +115,15 @@ namespace OpenRA.Mods.Common.Traits
 		bool WantsTransport { get; set; }
 		void MovementCancelled(Actor self);
 		void RequestTransport(CPos destination, Activity afterLandActivity);
+	}
+
+	public interface IDeathActorInitModifier
+	{
+		void ModifyDeathActorInit(Actor self, TypeDictionary init);
+	}
+
+	public interface IPreventsAutoTarget
+	{
+		bool PreventsAutoTarget(Actor self, Actor attacker);
 	}
 }

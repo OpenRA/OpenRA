@@ -94,6 +94,7 @@ repair:
 
 weed:
 	idle:
+	unload:
 
 bus:
 	idle:

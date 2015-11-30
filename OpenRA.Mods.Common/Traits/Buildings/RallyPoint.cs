@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -32,17 +33,35 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
-	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
+	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged, INotifyCreated
 	{
 		[Sync] public CPos Location;
 		public RallyPointInfo Info;
+		public string PaletteName { get; private set; }
+
+		public void ResetLocation(Actor self)
+		{
+			Location = self.Location + Info.Offset;
+		}
 
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Info = info;
-			Location = self.Location + info.Offset;
-			var palette = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
-			self.World.AddFrameEndTask(w => w.Add(new RallyPointIndicator(self, palette)));
+			ResetLocation(self);
+			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
+		}
+
+		public void Created(Actor self)
+		{
+			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
+		}
+
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			if (Info.IsPlayerPalette)
+				PaletteName = Info.Palette + newOwner.InternalName;
+
+			ResetLocation(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -70,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 0; } }
 			public bool OverrideSelection { get { return true; } }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;

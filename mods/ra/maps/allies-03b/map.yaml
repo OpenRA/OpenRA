@@ -1,8 +1,8 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
-Title: Allies 03b: Dead End
+Title: 03b: Dead End
 
 Description: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nINTELLIGENCE RECON SHOWS HEAVY\nSOVIET MOVEMENT IN YOUR AREA.\nNEARBY BRIDGES ARE KEY TO SOVIET\nADVANCEMENT. DESTROY ALL BRIDGES\nASAP. TANYA WILL ASSIST. KEEP HER\nALIVE AT ALL COSTS.\n\nCONFIRMATION CODE 1612.\n\nTRANSMISSION ENDS.\n
 
@@ -43,7 +43,7 @@ Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Greece
 	PlayerReference@Greece:
 		Name: Greece
@@ -52,7 +52,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Enemies: USSR
 
 Actors:
@@ -1438,6 +1438,8 @@ Weapons:
 			ValidTargets: Ground, Prisoner
 
 Voices:
+
+Music:
 
 Notifications:
 

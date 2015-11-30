@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ClientTooltipLogic
+	public class ClientTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ClientTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, int clientIndex)

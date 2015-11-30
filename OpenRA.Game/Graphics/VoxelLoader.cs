@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
-				return SheetBuilder.AllocateSheet(Game.Settings.Graphics.SheetSize);
+				return SheetBuilder.AllocateSheet(SheetType.DualIndexed, Game.Settings.Graphics.SheetSize);
 			};
 
 			return new SheetBuilder(SheetType.DualIndexed, allocate);
@@ -220,7 +220,7 @@ namespace OpenRA.Graphics
 			using (var s = GlobalFileSystem.Open(files.First + ".vxl"))
 				vxl = new VxlReader(s);
 			using (var s = GlobalFileSystem.Open(files.Second + ".hva"))
-				hva = new HvaReader(s);
+				hva = new HvaReader(s, files.Second + ".hva");
 			return new Voxel(this, vxl, hva);
 		}
 

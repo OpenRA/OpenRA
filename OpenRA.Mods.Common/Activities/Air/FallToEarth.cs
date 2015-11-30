@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (self.CenterPosition.Z <= 0)
+			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length <= 0)
 			{
 				if (info.ExplosionWeapon != null)
 				{

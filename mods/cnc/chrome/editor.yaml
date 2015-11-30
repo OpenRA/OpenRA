@@ -6,7 +6,7 @@ Container@NEW_MAP_BG:
 	Height: 125
 	Children:
 		Label@TITLE:
-			Text:New Map
+			Text: New Map
 			Width: PARENT_RIGHT
 			Y: 0-25
 			Font: BigBold
@@ -72,7 +72,6 @@ Container@NEW_MAP_BG:
 			Text: Create
 			Font: Bold
 			Key: return
-
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
@@ -329,6 +328,7 @@ Container@EDITOR_WORLD_ROOT:
 									Visible: false
 									Width: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: TWO_LINE_TOOLTIP
 									IgnoreChildMouseOver: true
 									Children:
 										ActorPreview@ACTOR_PREVIEW:
@@ -361,7 +361,7 @@ Container@EDITOR_WORLD_ROOT:
 					Text: Actors
 					Font: Bold
 		Button@GRID_BUTTON:
-			X: WINDOW_RIGHT - 420
+			X: WINDOW_RIGHT - 500
 			Y: 5
 			Width: 100
 			Height: 25
@@ -372,7 +372,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Toggle the terrain grid
 			TooltipContainer: TOOLTIP_CONTAINER
 		Label@ZOOM_LABEL:
-			X: WINDOW_RIGHT - 500 - 55
+			X: WINDOW_RIGHT - 580 - 55
 			Y: 5
 			Width: 50
 			Height: 25
@@ -381,11 +381,17 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		DropDownButton@ZOOM_BUTTON:
-			X: WINDOW_RIGHT - 500
+			X: WINDOW_RIGHT - 580
 			Y: 5
 			Width: 70
 			Height: 25
 			Font: Bold
+		Button@COPYPASTE_BUTTON:
+			X: WINDOW_RIGHT-390
+			Y: 5
+			Width: 96
+			Height: 25
+			Text: Copy/Paste
 		Label@COORDINATE_LABEL:
 			X: 10
 			Width: 50
@@ -400,3 +406,4 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+

@@ -23,7 +23,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ActorSelectorLogic
+	public class ActorSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
 		readonly DropDownButtonWidget ownersDropDown;
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.IsVisible = () => true;
 
 					var tooltip = actor.TraitInfoOrDefault<TooltipInfo>();
-					item.GetTooltipText = () => tooltip == null ? actor.Name : tooltip.Name + " (" + actor.Name + ")";
+					item.GetTooltipText = () => (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + actor.Name;
 
 					panel.AddChild(item);
 				}

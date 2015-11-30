@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SimpleTooltipLogic
+	public class SimpleTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<string> getText)
@@ -22,15 +22,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var cachedWidth = 0;
+			var cachedHeight = 0;
+			var horizontalPadding = label.Bounds.Width - widget.Bounds.Width;
+			if (horizontalPadding <= 0)
+				horizontalPadding = 2 * label.Bounds.X;
+			var vertcalPadding = widget.Bounds.Height - label.Bounds.Height;
+			if (vertcalPadding <= 0)
+				vertcalPadding = 2 * label.Bounds.Y;
 			var labelText = "";
 			tooltipContainer.BeforeRender = () =>
 			{
 				labelText = getText();
-				var textWidth = font.Measure(labelText).X;
-				if (textWidth != cachedWidth)
+				var textDim = font.Measure(labelText);
+				if (textDim.X != cachedWidth || textDim.Y != cachedHeight)
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					label.Bounds.Width = textDim.X;
+					widget.Bounds.Width = horizontalPadding + textDim.X;
+					label.Bounds.Height = textDim.Y;
+					widget.Bounds.Height = vertcalPadding + textDim.Y;
+					cachedWidth = textDim.X;
+					cachedHeight = textDim.Y;
 				}
 			};
 

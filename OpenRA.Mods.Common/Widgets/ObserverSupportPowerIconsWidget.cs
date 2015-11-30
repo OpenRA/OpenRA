@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var powers = player.PlayerActor.Trait<SupportPowerManager>().Powers
-				.Select((a, i) => new { a, i });
+				.Where(x => !x.Value.Disabled).Select((a, i) => new { a, i });
 			foreach (var power in powers)
 			{
 				if (!clocks.ContainsKey(power.a.Key))

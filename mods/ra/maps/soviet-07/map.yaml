@@ -1,8 +1,8 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
-Title: Soviet 07: Core of the matter
+Title: 07:   Core of the matter
 
 Description: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
 
@@ -48,9 +48,9 @@ Players:
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
-		ColorRamp: 161,134,236
+		Color: E2E6F5
 		Allies: Soviet
-		Enemies: USSR
+		Enemies: USSR, Creeps
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -59,7 +59,7 @@ Players:
 		LockFaction: True
 		Faction: soviet
 		LockColor: True
-		ColorRamp: 3,255,127
+		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
 		Allies: Soviet
@@ -67,12 +67,12 @@ Players:
 	PlayerReference@Soviet:
 		Name: Soviet
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Allies: USSR, Greece
 	PlayerReference@Spain:
 		Name: Spain
 		Faction: allies
-		ColorRamp: 100,222,100
+		Color: 0CBB4A
 
 Actors:
 	Actor0: boxes01
@@ -943,6 +943,8 @@ Weapons:
 			Delay: 5
 
 Voices:
+
+Music:
 
 Notifications:
 

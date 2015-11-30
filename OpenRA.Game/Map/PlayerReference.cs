@@ -28,10 +28,8 @@ namespace OpenRA
 		public bool LockFaction = false;
 		public string Faction;
 
-		// ColorRamp naming retained for backward compatibility
 		public bool LockColor = false;
-		public HSLColor ColorRamp = new HSLColor(0, 0, 238);
-		public HSLColor Color { get { return ColorRamp; } set { ColorRamp = value; } }
+		public HSLColor Color = new HSLColor(0, 0, 238);
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;

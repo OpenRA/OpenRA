@@ -74,7 +74,7 @@ namespace OpenRA.Graphics
 			wlr.DrawLine(start + r, z + r, barColor2);
 		}
 
-		Color GetHealthColor(Health health)
+		Color GetHealthColor(IHealth health)
 		{
 			var player = actor.World.RenderPlayer ?? actor.World.LocalPlayer;
 
@@ -104,7 +104,7 @@ namespace OpenRA.Graphics
 					health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
 		}
 
-		void DrawHealthBar(WorldRenderer wr, Health health, float2 start, float2 end)
+		void DrawHealthBar(WorldRenderer wr, IHealth health, float2 start, float2 end)
 		{
 			if (health == null || health.IsDead)
 				return;
@@ -133,7 +133,7 @@ namespace OpenRA.Graphics
 			wlr.DrawLine(start + q, z + q, healthColor);
 			wlr.DrawLine(start + r, z + r, healthColor2);
 
-			if (health.DisplayHp != health.HP)
+			if (health.DisplayHP != health.HP)
 			{
 				var deltaColor = Color.OrangeRed;
 				var deltaColor2 = Color.FromArgb(
@@ -141,7 +141,7 @@ namespace OpenRA.Graphics
 					deltaColor.R / 2,
 					deltaColor.G / 2,
 					deltaColor.B / 2);
-				var zz = float2.Lerp(start, end, (float)health.DisplayHp / health.MaxHP);
+				var zz = float2.Lerp(start, end, (float)health.DisplayHP / health.MaxHP);
 
 				wlr.DrawLine(z + p, zz + p, deltaColor2);
 				wlr.DrawLine(z + q, zz + q, deltaColor);
@@ -155,7 +155,7 @@ namespace OpenRA.Graphics
 			if (!actor.IsInWorld || actor.IsDead)
 				return;
 
-			var health = actor.TraitOrDefault<Health>();
+			var health = actor.TraitOrDefault<IHealth>();
 
 			var screenPos = wr.ScreenPxPosition(pos);
 			var bounds = actor.VisualBounds;

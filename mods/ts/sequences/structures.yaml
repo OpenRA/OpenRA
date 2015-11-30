@@ -573,19 +573,6 @@ gaicbm:
 		Length: 30
 		ShadowStart: 30
 
-gadpsa:
-	Defaults:
-		Offset: 0, -12
-		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	make: gadpsamk
-		Length: 36
-		ShadowStart: 36
-
 gaarty:
 	Defaults:
 		Offset: 0, -12
@@ -965,6 +952,47 @@ proc.nod:
 		Start: 1
 		ZOffset: -1024
 	icon: sidec02.mix:reficon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+nawast:
+	Defaults: ntwast
+		Offset: 0, -36
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	make: ntwastmk
+		Length: 19
+		ShadowStart: 19
+	idle-glow: ntwast_a
+		Length: 20
+		ShadowStart: 40
+		Tick: 120
+	damaged-idle-glow: ntwast_a
+		Start: 20
+		Length: 20
+		ShadowStart: 60
+		Tick: 120
+	idle-lights: ntwast_b
+		Length: 16
+		Tick: 120
+	damaged-idle-lights: ntwast_b
+		Start: 16
+		Length: 16
+		Tick: 120
+	bib: ntwastbb
+		ZOffset: -1024
+	damaged-bib: ntwastbb
+		Start: 1
+		ZOffset: -1024
+	icon: wasticon
 		Offset: 0, 0
 		UseTilesetCode: false
 

@@ -57,7 +57,7 @@ namespace OpenRA
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("An exception occured when trying to load ModMetadata for `{0}`:".F(m));
+					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(m));
 					Console.WriteLine(ex.Message);
 				}
 			}

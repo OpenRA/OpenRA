@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class CreditsLogic
+	public class CreditsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public CreditsLogic(Widget widget, Action onExit)

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<int> GetPercentage;
 		public Func<bool> IsIndeterminate;
 
-		// Indeterminant bar properties
+		// Indeterminate bar properties
 		float offset = 0f;
 		float tickStep = 0.04f;
 

@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class SaveMapLogic
+	public class SaveMapLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, Action<string> onSave, Action onExit, Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
@@ -76,8 +76,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var mapDirectory = map.Path != null ? Platform.UnresolvePath(Path.GetDirectoryName(map.Path)) : null;
 				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
 
+				// Prioritize MapClassification.User directories over system directories
 				if (initialDirectory == null)
-					initialDirectory = mapDirectories.Keys.First();
+					initialDirectory = mapDirectories.OrderByDescending(kv => kv.Value).First().Key;
 
 				directoryDropdown.Text = initialDirectory;
 				directoryDropdown.OnClick = () =>
@@ -144,9 +145,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.ModData.MapCache[map.Uid].Invalidate();
 
 				map.Save(combinedPath);
-
-				// Reload map to calculate new UID
-				map = new Map(combinedPath);
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];

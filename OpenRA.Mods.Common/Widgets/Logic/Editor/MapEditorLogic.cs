@@ -16,11 +16,13 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MapEditorLogic
+	public class MapEditorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
+			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+
 			var gridButton = widget.GetOrNull<ButtonWidget>("GRID_BUTTON");
 			var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 
@@ -73,6 +75,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					worldRenderer.Viewport.Zoom = selectedZoom = options[selected];
 					selectedLabel = selectedZoom.ToString();
 				};
+			}
+
+			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");
+			if (copypasteButton != null)
+			{
+				copypasteButton.OnClick = () => editorViewport.SetBrush(new EditorCopyPasteBrush(editorViewport, worldRenderer));
+				copypasteButton.IsHighlighted = () => editorViewport.CurrentBrush is EditorCopyPasteBrush;
 			}
 
 			var coordinateLabel = widget.GetOrNull<LabelWidget>("COORDINATE_LABEL");

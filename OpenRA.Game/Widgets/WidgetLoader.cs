@@ -67,7 +67,14 @@ namespace OpenRA
 					foreach (var c in child.Value.Nodes)
 						LoadWidget(args, widget, c);
 
+			var logicNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Logic");
+			var logic = logicNode == null ? null : logicNode.Value.ToDictionary();
+			args.Add("logicArgs", logic);
+
 			widget.PostInit(args);
+
+			args.Remove("logicArgs");
+
 			return widget;
 		}
 

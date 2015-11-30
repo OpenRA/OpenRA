@@ -31,7 +31,6 @@ mpspawn:
 		OccupiesSpace: false
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
-		Palette: chrome
 	BodyOrientation:
 		QuantizedFacings: 1
 
@@ -41,7 +40,6 @@ waypoint:
 		OccupiesSpace: false
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
-		Palette: chrome
 	BodyOrientation:
 		QuantizedFacings: 1
 
@@ -53,6 +51,10 @@ waypoint:
 
 CAMERA:
 	AlwaysVisible:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
 	Immobile:
 		OccupiesSpace: false
 	Health:
@@ -63,6 +65,11 @@ CAMERA:
 
 CAMERA.small:
 	AlwaysVisible:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Image: camera
+	BodyOrientation:
+		QuantizedFacings: 1
 	Immobile:
 		OccupiesSpace: false
 	Health:

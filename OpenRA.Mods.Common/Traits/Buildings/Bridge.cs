@@ -152,6 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal void AddHut(BridgeHut hut)
 		{
+			// TODO: This method is incomprehensible and fragile, and should be rewritten.
 			if (huts[0] == huts[1])
 				huts[1] = hut;
 			if (Hut == null)
@@ -161,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 					huts[0] = hut; // Set only first time
 				for (var d = 0; d <= 1; d++)
 					for (var b = neighbours[d]; b != null; b = b.Hut == null ? b.neighbours[d] : null)
-						b.huts[1 - d] = hut;
+						b.huts[d] = hut;
 			}
 			else
 				Hut = null;
@@ -205,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 		void KillUnitsOnBridge()
 		{
 			foreach (var c in footprint.Keys)
-				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
+				foreach (var a in self.World.ActorMap.GetActorsAt(c))
 					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
 						a.Kill(self);
 		}

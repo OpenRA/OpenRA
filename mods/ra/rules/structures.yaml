@@ -101,7 +101,7 @@ SPEN:
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 	Targetable:
-		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -182,7 +182,7 @@ SYRD:
 		Name: Shipyard
 		Description: Produces and repairs ships\nand transports.
 	Targetable:
-		TargetTypes: Ground, Water, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -387,9 +387,6 @@ TSLA:
 		Footprint: _ x
 		Dimensions: 1,2
 	RequiresPower:
-		UpgradeTypes: tesla
-		UpgradeMaxEnabledLevel: 2
-		UpgradeMaxAcceptedLevel: 3
 	Selectable:
 		Bounds: 24,24,0,16
 	SelectionDecorations:
@@ -406,16 +403,7 @@ TSLA:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
-		UpgradeTypes: tesla
-		UpgradeMaxEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 3
 		Weapon: TeslaZap
-		LocalOffset: 0,0,427
-	Armament@Upgraded:
-		UpgradeTypes: tesla
-		UpgradeMinEnabledLevel: 2
-		UpgradeMaxAcceptedLevel: 3
-		Weapon: TeslaZap.Upgraded
 		LocalOffset: 0,0,427
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
@@ -426,8 +414,6 @@ TSLA:
 	DetectCloaked:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
-	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, TeslaBoost
 
 AGUN:
 	Inherits: ^Defense
@@ -491,7 +477,7 @@ DOME:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -907,7 +893,7 @@ FACT:
 		ProductionType: Building
 	ProductionBar@Defense:
 		ProductionType: Defense
-		Color: 138,138,138
+		Color: 8A8A8A
 	BaseProvider:
 		Range: 16c0
 	WithBuildingPlacedAnimation:
@@ -939,7 +925,7 @@ PROC:
 	SelectionDecorations:
 		VisualBounds: 72,70,0,-2
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	Health:
 		HP: 900
 	Armor:
@@ -1135,7 +1121,7 @@ AFLD:
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
-		CameraActor: camera
+		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
 		UnitType: u2
 		QuantizedFacings: 8
@@ -1210,7 +1196,7 @@ POWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
@@ -1251,7 +1237,7 @@ APWR:
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	WithDeathAnimation:
@@ -1311,7 +1297,7 @@ BARR:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -170,810,0
-		ExitCell: 0,2
+		ExitCell: 1,2
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
@@ -1376,9 +1362,12 @@ KENN:
 		HasMinibib: True
 	RallyPoint:
 		Offset: 0,2
-	Exit:
+	Exit@1:
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
+	Exit@2:
+		SpawnOffset: -280,400,0
+		ExitCell: -1,0
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
@@ -1412,7 +1401,7 @@ TENT:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -42,810,0
-		ExitCell: 0,2
+		ExitCell: 1,2
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2

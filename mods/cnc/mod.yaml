@@ -4,6 +4,9 @@ Metadata:
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
 
+RequiresMods:
+	modchooser: {DEV_VERSION}
+
 Folders:
 	.
 	./mods/cnc
@@ -91,15 +94,18 @@ Assemblies:
 
 ChromeLayout:
 	./mods/cnc/chrome/mainmenu.yaml
-	./mods/cnc/chrome/serverbrowser.yaml
-	./mods/cnc/chrome/createserver.yaml
-	./mods/cnc/chrome/directconnect.yaml
+	./mods/cnc/chrome/multiplayer.yaml
+	./mods/cnc/chrome/multiplayer-browser.yaml
+	./mods/cnc/chrome/multiplayer-createserver.yaml
+	./mods/cnc/chrome/multiplayer-directconnect.yaml
+	./mods/cnc/chrome/multiplayer-globalchat.yaml
 	./mods/cnc/chrome/lobby.yaml
 	./mods/cnc/chrome/lobby-mappreview.yaml
 	./mods/cnc/chrome/lobby-players.yaml
 	./mods/cnc/chrome/lobby-options.yaml
 	./mods/cnc/chrome/lobby-music.yaml
 	./mods/cnc/chrome/lobby-kickdialogs.yaml
+	./mods/cnc/chrome/lobby-globalchat.yaml
 	./mods/cnc/chrome/connection.yaml
 	./mods/cnc/chrome/color-picker.yaml
 	./mods/cnc/chrome/mapchooser.yaml
@@ -122,7 +128,6 @@ ChromeLayout:
 	./mods/cnc/chrome/assetbrowser.yaml
 	./mods/cnc/chrome/missionbrowser.yaml
 	./mods/cnc/chrome/editor.yaml
-	./mods/cnc/chrome/irc.yaml
 
 Voices:
 	./mods/cnc/audio/voices.yaml
@@ -205,7 +210,7 @@ Missions:
 
 MapGrid:
 	TileSize: 24,24
-	Type: Rectangle
+	Type: Rectangular
 
 SupportsMapsFrom: cnc
 

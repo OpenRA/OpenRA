@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SpawnInterval = 180 * 25;
 
 		[Desc("Delay (in ticks) before the first crate spawns.")]
-		public readonly int InitialSpawnDelay = 300 * 25;
+		public readonly int InitialSpawnDelay = 0;
 
 		[Desc("Which terrain types can we drop on?")]
 		public readonly HashSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" };
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Don't drop on any actors
 				if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(p) != null
-					|| self.World.ActorMap.GetUnitsAt(p).Any())
+					|| self.World.ActorMap.GetActorsAt(p).Any())
 					continue;
 
 				return p;

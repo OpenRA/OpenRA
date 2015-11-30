@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Overrides the IndicatorPalettePrefix.")]
 		[PaletteReference] public readonly string IndicatorPalette = "";
 
-		[Desc("Suffixed by the interal repairing player name.")]
+		[Desc("Suffixed by the internal repairing player name.")]
 		public readonly string IndicatorPalettePrefix = "player";
 
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }

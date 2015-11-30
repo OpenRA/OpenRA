@@ -7,6 +7,13 @@ overlay:
 		Start: 1
 	target-select:
 
+editor-overlay:
+	Defaults: place
+		Offset: 0, -12
+	copy:
+	paste:
+		Start: 1
+
 poweroff:
 	offline:
 		Length: *
@@ -55,11 +62,15 @@ rank:
 		Start: 7
 		Length: 2
 
-mpspawn: # TODO: backfall to RA asset
+mpspawn:
 	idle:
 		Length: *
 
-waypoint: # TODO: backfall to RA asset
+waypoint:
+	idle:
+		Length: *
+
+camera:
 	idle:
 		Length: *
 

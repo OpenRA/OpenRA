@@ -41,12 +41,12 @@ namespace OpenRA
 			return ToCPos(map.Grid.Type);
 		}
 
-		public CPos ToCPos(TileShape shape)
+		public CPos ToCPos(MapGridType gridType)
 		{
-			if (shape == TileShape.Rectangle)
+			if (gridType == MapGridType.Rectangular)
 				return new CPos(U, V);
 
-			// Convert from rectangular map position to diamond cell position
+			// Convert from rectangular map position to RectangularIsometric cell position
 			//  - The staggered rows make this fiddly (hint: draw a diagram!)
 			// (a) Consider the relationships:
 			//  - +1u (even -> odd) adds (1, -1) to (x, y)

@@ -15,6 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
+	public enum EnterBehaviour { Exit, Suicide, Dispose }
+
 	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetCenter = targetCenter;
 		}
 
-		// CanEnter(target) should to be true; othwise, Enter may abort.
+		// CanEnter(target) should to be true; otherwise, Enter may abort.
 		// Tries counter starts at 1 (reset every tick)
 		protected virtual bool TryGetAlternateTarget(Actor self, int tries, ref Target target) { return false; }
 		protected virtual bool CanReserve(Actor self) { return true; }

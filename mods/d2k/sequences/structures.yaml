@@ -313,23 +313,23 @@ barracks.atreides:
 outpost.atreides:
 	idle: DATA.R8
 		Start: 2521
-		Offset: -48,80
+		Offset: -48,64
 	make: DATA.R8
 		Start: 4254
 		Length: 9
-		Offset: -48,80
+		Offset: -48,64
 	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
-		Offset: -48,80
+		Offset: -48,64
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2522
-		Offset: -48,80
+		Offset: -48,64
 	idle-dish: DATA.R8
 		Start: 4522
 		Length: 30
-		Offset: -48,80
+		Offset: -48,64
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -380,6 +380,7 @@ refinery.atreides:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.atreides:
 	idle: DATA.R8
@@ -807,23 +808,23 @@ barracks.harkonnen:
 outpost.harkonnen:
 	idle: DATA.R8
 		Start: 2681
-		Offset: -48,80
+		Offset: -48,64
 	make: DATA.R8
 		Start: 4254
 		Length: 9
-		Offset: -48,80
+		Offset: -48,64
 	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
-		Offset: -48,80
+		Offset: -48,64
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2682
-		Offset: -48,80
+		Offset: -48,64
 	idle-dish: DATA.R8
 		Start: 4553
 		Length: 30
-		Offset: -48,80
+		Offset: -48,64
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -874,6 +875,7 @@ refinery.harkonnen:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.harkonnen:
 	idle: DATA.R8
@@ -1210,23 +1212,23 @@ barracks.ordos:
 outpost.ordos:
 	idle: DATA.R8
 		Start: 2841
-		Offset: -48,80
+		Offset: -48,64
 	make: DATA.R8
 		Start: 4254
 		Length: 9
-		Offset: -48,80
+		Offset: -48,64
 	crumble-overlay: DATA.R8
 		Start: 4263
 		Length: 10
-		Offset: -48,80
+		Offset: -48,64
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2842
-		Offset: -48,80
+		Offset: -48,64
 	idle-dish: DATA.R8
 		Start: 4583
 		Length: 30
-		Offset: -48,80
+		Offset: -48,64
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1277,6 +1279,7 @@ refinery.ordos:
 		Length: 14
 		Offset: 10,-16
 		Tick: 200
+		BlendMode: Additive
 
 silo.ordos:
 	idle: DATA.R8

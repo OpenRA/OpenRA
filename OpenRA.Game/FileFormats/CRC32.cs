@@ -111,11 +111,11 @@ namespace OpenRA.FileFormats
 
 		/// <summary>
 		/// A fast (native) CRC32 implementation that can be used on a pinned byte array using
-		/// default polynomal.
+		/// default polynomial.
 		/// </summary>
 		/// <param name="data">		[in,out] If non-null, the.</param>
-		/// <param name="len">		The length of the data data.</param>
-		/// <param name="polynomial">The polynomal to xor with.</param>
+		/// <param name="len">		The length of the data.</param>
+		/// <param name="polynomial">The polynomial to XOR with.</param>
 		/// <returns>The calculated checksum.</returns>
 		public static unsafe uint Calculate(byte* data, uint len, uint polynomial)
 		{

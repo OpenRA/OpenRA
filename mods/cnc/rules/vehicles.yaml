@@ -150,7 +150,7 @@ ARTY:
 	AttackFrontal:
 	WithMuzzleOverlay:
 	AutoTarget:
-		InitialStance: Defend
+		InitialStanceAI: Defend
 	SpawnActorOnDeath:
 		Actor: ARTY.Husk
 	Explodes:
@@ -182,11 +182,9 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
-		MuzzleSplitFacings: 8
 	AttackFrontal:
 	AutoTarget:
 	WithMuzzleOverlay:
-		SplitFacings: true
 	Explodes:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
@@ -490,7 +488,7 @@ MLRS:
 	WithReloadingTurret:
 		AmmoPoolName: primary
 	AutoTarget:
-		InitialStance: Defend
+		InitialStanceAI: Defend
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
@@ -528,6 +526,7 @@ STNK:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk

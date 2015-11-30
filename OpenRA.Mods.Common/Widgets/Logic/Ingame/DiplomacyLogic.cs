@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class DiplomacyLogic
+	public class DiplomacyLogic : ChromeLogic
 	{
 		readonly World world;
 

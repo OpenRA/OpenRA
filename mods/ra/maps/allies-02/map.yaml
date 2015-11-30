@@ -1,8 +1,8 @@
-MapFormat: 7
+MapFormat: 8
 
 RequiresMod: ra
 
-Title: Allies 02: Five to one
+Title: 02:   Five to one
 
 Description: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
@@ -32,20 +32,20 @@ Options:
 	FragileAlliances: False
 	StartingCash: 5700
 	ConfigurableStartingUnits: False
-	ShortGame: False
 	Difficulties: Easy, Normal, Hard, Real tough guy
+	ShortGame: False
 
 Players:
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
-		ColorRamp: 3,255,127
+		Color: FE1100
 		Enemies: Greece, France
 	PlayerReference@France:
 		Name: France
 		NonCombatant: True
 		Faction: allies
-		ColorRamp: 115,115,143
+		Color: 5CC1A3
 		Allies: Greece
 		Enemies: USSR
 	PlayerReference@Neutral:
@@ -61,7 +61,7 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		ColorRamp: 161,134,200
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Allies: France
@@ -841,6 +841,8 @@ Weapons:
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
 Voices:
+
+Music:
 
 Notifications:
 

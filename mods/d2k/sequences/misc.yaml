@@ -46,6 +46,11 @@ explosion:
 		BlendMode: Alpha
 		Offset: 12, -10
 		Tick: 120
+	bloomspawn: DATA.R8
+		Start: 3980
+		Length: 8
+		Tick: 120
+		Offset: 0, -16
 	corpse: DATA.R8
 		Start: 430
 		Length: 12
@@ -101,12 +106,14 @@ pips:
 		Length: 10
 	pickup-indicator: DATA.R8
 		Start: 112
-	tag-primary: DATA.R8
-		Start: 110
+	tag-primary: primary.shp
 	pip-empty: DATA.R8
 		Start: 15
 	pip-green: DATA.R8
 		Start: 16
+	tag-upgraded: DATA.R8
+		Start: 110
+		Offset: -8,-8
 
 clock:
 	idle: clock.shp
@@ -126,19 +133,23 @@ rank:
 		Length: *
 
 overlay:
-	build-valid-arrakis: DATA.R8
+	Defaults: DATA.R8
 		Offset: -16,-16
-	build-invalid: DATA.R8
+	build-valid-arrakis:
+	build-invalid:
 		Start: 1
-		Offset: -16,-16
-	target-select: DATA.R8
+	target-select:
 		Start: 2
-		Offset: -16,-16
-	target-valid-arrakis: DATA.R8
-		Offset: -16,-16
-	target-invalid: DATA.R8
+	target-valid-arrakis:
+	target-invalid:
 		Start: 1
+
+editor-overlay:
+	Defaults: DATA.R8
 		Offset: -16,-16
+	copy:
+	paste:
+		Start: 1
 
 rallypoint:
 	flag: flagfly.shp
@@ -286,6 +297,10 @@ waypoint:
 	idle: waypoint.shp
 		Length: *
 
+camera:
+	idle: camera.shp
+		Length: *
+
 wormspawner:
 	idle: wormspawner.shp
 		Length: *
@@ -328,6 +343,11 @@ crate:
 		Offset: -16,-16
 
 spicebloom:
+	grow0: DATA.R8
+		Start: 106
+		Length: 1
+		ZOffset: -1023
+		Offset: -16,-16
 	grow1: DATA.R8
 		Start: 107
 		Length: 1
@@ -358,28 +378,37 @@ resources:
 		Offset: -16,-16
 
 shroud:
-	typea: DATA.R8
+	Defaults:
+		BlendMode: Subtractive
+		Offset: -16,-16
+		Length: 14
+	shrouda: DATA.R8
 		Start: 40
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typeb: DATA.R8
+	shroudb: DATA.R8
 		Start: 56
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typec: DATA.R8
+	shroudc: DATA.R8
 		Start: 72
-		Length: 14
-		Offset: -16,-16
-		BlendMode: Multiply
-	typed: DATA.R8
+	shroudd: DATA.R8
 		Start: 88
-		Length: 14
-		Offset: -16,-16
+	shroudfull: fullshroud.shp
+		Offset: 0,0
+		Length: 1
+	foga: DATA.R8
 		BlendMode: Multiply
-	full: fullshroud.shp
+		Start: 40
+	fogb: DATA.R8
 		BlendMode: Multiply
+		Start: 56
+	fogc: DATA.R8
+		BlendMode: Multiply
+		Start: 72
+	fogd: DATA.R8
+		BlendMode: Multiply
+		Start: 88
+	fogfull: fullshroud.shp
+		BlendMode: Multiply
+		Offset: 0,0
+		Length: 1
 
 rockcraters:
 	rockcrater1: DATA.R8

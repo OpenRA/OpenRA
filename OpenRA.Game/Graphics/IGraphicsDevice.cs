@@ -61,6 +61,7 @@ namespace OpenRA
 		Bitmap TakeScreenshot();
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
+		bool SetClipboardText(string text);
 		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
 
 		void SetLineWidth(float width);
@@ -89,6 +90,7 @@ namespace OpenRA
 
 	public interface IShader
 	{
+		void SetBool(string name, bool value);
 		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
 		void SetVec(string name, float[] vec, int length);

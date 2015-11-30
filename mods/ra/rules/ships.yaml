@@ -43,7 +43,8 @@ SS:
 	SelectionDecorations:
 		VisualBounds: 38,38
 	AutoTarget:
-		InitialStance: ReturnFire
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
@@ -98,7 +99,8 @@ MSUB:
 	SelectionDecorations:
 		VisualBounds: 44,44
 	AutoTarget:
-		InitialStance: ReturnFire
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0

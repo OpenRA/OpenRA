@@ -19,6 +19,20 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
+	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
+
+	public interface IHealth
+	{
+		DamageState DamageState { get; }
+		int HP { get; }
+		int MaxHP { get; }
+		int DisplayHP { get; }
+		bool IsDead { get; }
+
+		void InflictDamage(Actor self, Actor attacker, int damage, IWarhead warhead, bool ignoreModifiers);
+		void Kill(Actor self, Actor attacker);
+	}
+
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
 	public enum TagType { None, Fake, Primary }
@@ -45,11 +59,13 @@ namespace OpenRA.Traits
 	{
 		None = 0,
 		Ground = 1,
-		Water = 2,
-		Air = 4,
-		GroundHit = 8,
-		WaterHit = 16,
-		AirHit = 32
+		GroundHit = 2,
+		Water = 4,
+		WaterHit = 8,
+		Air = 16,
+		AirHit = 32,
+		TargetTerrain = 64,
+		TargetHit = 128
 	}
 
 	public class AttackInfo
@@ -83,7 +99,7 @@ namespace OpenRA.Traits
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
-		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor);
+		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
 		bool OverrideSelection { get; }
 	}
@@ -175,7 +191,12 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibilityInfo : ITraitInfo { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
-	public interface IFogVisibilityModifier { bool HasFogVisibility(Player byPlayer); }
+
+	public interface IFogVisibilityModifier
+	{
+		bool IsVisible(Actor actor);
+		bool HasFogVisibility();
+	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 

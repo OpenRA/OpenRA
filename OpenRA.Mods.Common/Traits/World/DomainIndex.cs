@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			domains = new CellLayer<int>(world.Map);
 			transientConnections = new Dictionary<int, HashSet<int>>();
 
-			using (new PerfTimer("BuildDomains: {0}".F(world.Map.Title)))
+			using (new PerfTimer("BuildDomains: {0} for movement class {1}".F(world.Map.Title, movementClass)))
 				BuildDomains(world);
 		}
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var cell in dirtyCells)
 			{
-				// Select all neighbors inside the map boundries
+				// Select all neighbors inside the map boundaries
 				var thisCell = cell;	// benign closure hazard
 				var neighbors = CVec.Directions.Select(d => d + thisCell)
 					.Where(c => map.Contains(c));
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 				domain += 1;
 			}
 
-			Log.Write("debug", "Found {0} domains on map {1}.", domain - 1, map.Title);
+			Log.Write("debug", "Found {0} domains for movement class {1} on map {2}.", domain - 1, movementClass, map.Title);
 		}
 	}
 }

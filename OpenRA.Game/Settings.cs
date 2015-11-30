@@ -48,7 +48,7 @@ namespace OpenRA
 
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
 
-		[Desc("Time in miliseconds to search for UPnP enabled NAT devices.")]
+		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
 		public int NatDiscoveryTimeout = 1000;
 
 		[Desc("Print very detailed logs for debugging issues with routers.")]
@@ -60,7 +60,7 @@ namespace OpenRA
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
 		public string[] Ban = { };
 
-		[Desc("Value in miliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
+		[Desc("Value in milliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
 		public int TimeOut = 0;
 
 		[Desc("Run in headless mode with an empty renderer and without sound output.")]
@@ -74,33 +74,16 @@ namespace OpenRA
 
 		public string TimestampFormat = "s";
 
-		public ServerSettings() { }
-
-		public ServerSettings(ServerSettings other)
+		public ServerSettings Clone()
 		{
-			Name = other.Name;
-			ListenPort = other.ListenPort;
-			ExternalPort = other.ExternalPort;
-			AdvertiseOnline = other.AdvertiseOnline;
-			Password = other.Password;
-			MasterServer = other.MasterServer;
-			DiscoverNatDevices = other.DiscoverNatDevices;
-			AllowPortForward = other.AllowPortForward;
-			NatDeviceAvailable = other.NatDeviceAvailable;
-			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
-			VerboseNatDiscovery = other.VerboseNatDiscovery;
-			Map = other.Map;
-			Ban = other.Ban;
-			TimeOut = other.TimeOut;
-			Dedicated = other.Dedicated;
-			DedicatedLoop = other.DedicatedLoop;
-			LockBots = other.LockBots;
+			return (ServerSettings)MemberwiseClone();
 		}
 	}
 
 	public class DebugSettings
 	{
 		public bool BotDebug = false;
+		public bool LuaDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
 		public float LongTickThresholdMs = 1;
@@ -182,7 +165,6 @@ namespace OpenRA
 
 		public bool FetchNews = true;
 		public string NewsUrl = "http://www.openra.net/gamenews";
-		public DateTime NewsFetchedDate;
 	}
 
 	public class KeySettings
@@ -297,9 +279,9 @@ namespace OpenRA
 		}
 	}
 
-	public class IrcSettings
+	public class ChatSettings
 	{
-		public string[] Hostname = { "irc.openra.net" };
+		public string Hostname = "irc.openra.net";
 		public int Port = 6667;
 		public string Channel = "lobby";
 		public string Nickname = "Newbie";
@@ -319,7 +301,7 @@ namespace OpenRA
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
-		public IrcSettings Irc = new IrcSettings();
+		public ChatSettings Chat = new ChatSettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -335,7 +317,7 @@ namespace OpenRA
 				{ "Server", Server },
 				{ "Debug", Debug },
 				{ "Keys", Keys },
-				{ "Irc", Irc }
+				{ "Chat", Chat }
 			};
 
 			// Override fieldloader to ignore invalid entries

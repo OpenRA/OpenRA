@@ -56,13 +56,13 @@ namespace OpenRA.Mods.Common.Traits
 			mo = self.Trait<MissionObjectives>();
 		}
 
-		public IEnumerable<TraitPair<StrategicPoint>> AllPoints
+		public IEnumerable<Actor> AllPoints
 		{
-			get { return player.World.ActorsWithTrait<StrategicPoint>(); }
+			get { return player.World.ActorsHavingTrait<StrategicPoint>(); }
 		}
 
 		public int Total { get { return AllPoints.Count(); } }
-		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Actor.Owner)); } }
+		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Owner)); } }
 
 		public bool Holding { get { return Owned >= info.RatioRequired * Total; } }
 
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Holding)
 				{
-					// Hah! We met ths critical owned condition
+					// Hah! We met this critical owned condition
 					if (--TicksLeft == 0)
 						mo.MarkCompleted(player, objectiveID);
 				}
@@ -107,22 +107,22 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
 
-			if (player == player.World.LocalPlayer)
+			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
-				Game.RunAfterDelay(info.NotificationDelay, () =>
-				{
-					if (Game.IsCurrentWorld(player.World))
-						Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Faction.InternalName);
-				});
-			}
+				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Lose", player.Faction.InternalName);
+			});
 		}
 
 		public void OnPlayerWon(Player player)
 		{
 			Game.Debug("{0} is victorious.", player.PlayerName);
 
-			if (player == player.World.LocalPlayer)
-				Game.RunAfterDelay(info.NotificationDelay, () => Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Faction.InternalName));
+			Game.RunAfterDelay(info.NotificationDelay, () =>
+			{
+				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", "Win", player.Faction.InternalName);
+			});
 		}
 
 		public void OnObjectiveAdded(Player player, int id) { }

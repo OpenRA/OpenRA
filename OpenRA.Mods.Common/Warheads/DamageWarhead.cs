@@ -65,6 +65,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!IsValidAgainst(victim, firedBy))
+				return;
+
 			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
 			victim.InflictDamage(firedBy, damage, this);
 		}

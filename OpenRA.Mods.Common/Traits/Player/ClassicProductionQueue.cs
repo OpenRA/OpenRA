@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SpeedUp = false;
 
 		[Desc("Every time another production building of the same queue is",
-			"contructed, the build times of all actors in the queue",
+			"constructed, the build times of all actors in the queue",
 			"decreased by a percentage of the original time.")]
 		public readonly int[] BuildTimeSpeedReduction = { 100, 85, 75, 65, 60, 55, 50 };
 
@@ -133,10 +133,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var type = bi.BuildAtProductionType ?? info.Type;
 
-				var selfsameBuildingsCount = self.World.ActorsWithTrait<Production>()
+				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
 					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
 
-				var speedModifier = selfsameBuildingsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
+				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 

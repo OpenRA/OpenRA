@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How long (in ticks) the actor should panic for.")]
 		public readonly int PanicLength = 25 * 10;
 
-		[Desc("Panic movement speed as a precentage of the normal speed.")]
+		[Desc("Panic movement speed as a percentage of the normal speed.")]
 		public readonly int PanicSpeedModifier = 200;
 
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]

@@ -76,7 +76,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been anihilated!", "Mentat")
+		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 end

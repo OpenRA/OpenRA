@@ -12,7 +12,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ButtonTooltipLogic
+	public class ButtonTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ButtonTooltipLogic(Widget widget, ButtonWidget button)

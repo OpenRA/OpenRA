@@ -148,6 +148,7 @@ Container@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: 640
 					Height: 375
+
 Background@FULLSCREEN_PLAYER:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
@@ -159,3 +160,4 @@ Background@FULLSCREEN_PLAYER:
 			Y: 0
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
+

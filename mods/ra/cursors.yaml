@@ -122,7 +122,26 @@ Cursors:
 		ability-minimap:
 			Start: 214
 			Length: 8
-
+		joystick-all:
+			Start: 0
+			X: -16
+			Y: -12
+		joystick-t-blocked:
+			Start: 124
+		joystick-tr-blocked:
+			Start: 125
+		joystick-r-blocked:
+			Start: 126
+		joystick-br-blocked:
+			Start: 127
+		joystick-b-blocked:
+			Start: 128
+		joystick-bl-blocked:
+			Start: 129
+		joystick-l-blocked:
+			Start: 130
+		joystick-tl-blocked:
+			Start: 131
 # Cursors that need minimap variants
 		deploy:
 			Start: 59
@@ -160,7 +179,6 @@ Cursors:
 		sell2:
 			Start: 148
 			Length: 12
-
 	nopower.shp: cursor
 		powerdown-blocked:
 			Start: 0
@@ -168,7 +186,6 @@ Cursors:
 		powerdown:
 			Start: 1
 			Length: 3
-
 	attackmove.shp: cursor
 		attackmove:
 			Start: 0

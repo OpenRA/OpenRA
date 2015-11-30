@@ -13,7 +13,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class InstallMusicLogic
+	public class InstallMusicLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public InstallMusicLogic(Widget widget, string modId)

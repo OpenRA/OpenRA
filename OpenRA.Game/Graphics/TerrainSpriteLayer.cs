@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 		readonly WorldRenderer worldRenderer;
 		readonly Map map;
 
-		float paletteIndex;
+		readonly PaletteReference palette;
 
 		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette, bool restrictToBounds)
 		{
@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 			this.restrictToBounds = restrictToBounds;
 			Sheet = sheet;
 			BlendMode = blendMode;
-			paletteIndex = palette.TextureIndex;
+			this.palette = palette;
 
 			map = world.Map;
 			rowStride = 4 * map.MapSize.X;
@@ -50,21 +50,21 @@ namespace OpenRA.Graphics
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
 			emptySprite = new Sprite(sheet, Rectangle.Empty, TextureChannel.Alpha);
 
-			wr.PaletteInvalidated += () =>
+			wr.PaletteInvalidated += UpdatePaletteIndices;
+		}
+
+		void UpdatePaletteIndices()
+		{
+			// Everything in the layer uses the same palette,
+			// so we can fix the indices in one pass
+			for (var i = 0; i < vertices.Length; i++)
 			{
-				paletteIndex = palette.TextureIndex;
+				var v = vertices[i];
+				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.U, v.V, palette.TextureIndex, v.C);
+			}
 
-				// Everything in the layer uses the same palette,
-				// so we can fix the indices in one pass
-				for (var i = 0; i < vertices.Length; i++)
-				{
-					var v = vertices[i];
-					vertices[i] = new Vertex(v.X, v.Y, v.Z, v.U, v.V, paletteIndex, v.C);
-				}
-
-				for (var row = 0; row < map.MapSize.Y; row++)
-					dirtyRows.Add(row);
-			};
+			for (var row = 0; row < map.MapSize.Y; row++)
+				dirtyRows.Add(row);
 		}
 
 		public void Update(CPos cell, Sprite sprite)
@@ -88,7 +88,7 @@ namespace OpenRA.Graphics
 				sprite = emptySprite;
 
 			var offset = rowStride * uv.V + 4 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, paletteIndex, offset, sprite.Size);
+			Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
 
 			dirtyRows.Add(uv.V);
 		}
@@ -130,6 +130,7 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
+			worldRenderer.PaletteInvalidated -= UpdatePaletteIndices;
 			vertexBuffer.Dispose();
 		}
 	}

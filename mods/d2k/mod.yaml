@@ -4,6 +4,9 @@ Metadata:
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
 
+RequiresMods:
+	modchooser: {DEV_VERSION}
+
 Folders:
 	.
 	./mods/d2k
@@ -11,7 +14,6 @@ Folders:
 	./mods/d2k/bits/tex
 	./mods/d2k/bits/xmas
 	./mods/d2k/uibits
-	./mods/ra/uibits
 	~^Content/d2k
 	~^Content/d2k/GAMESFX
 	~^Content/d2k/Movies
@@ -51,7 +53,7 @@ TileSets:
 
 MapGrid:
 	TileSize: 32,32
-	Type: Rectangle
+	Type: Rectangular
 
 Cursors:
 	./mods/d2k/cursors.yaml
@@ -90,13 +92,15 @@ ChromeLayout:
 	./mods/d2k/chrome/lobby-options.yaml
 	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
+	./mods/ra/chrome/lobby-globalchat.yaml
 	./mods/d2k/chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
-	./mods/ra/chrome/create-server.yaml
-	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/multiplayer.yaml
+	./mods/ra/chrome/multiplayer-browser.yaml
+	./mods/ra/chrome/multiplayer-createserver.yaml
+	./mods/ra/chrome/multiplayer-directconnect.yaml
+	./mods/ra/chrome/multiplayer-globalchat.yaml
 	./mods/ra/chrome/connection.yaml
-	./mods/ra/chrome/directconnect.yaml
-	./mods/ra/chrome/replaybrowser.yaml
 	./mods/d2k/chrome/dropdowns.yaml
 	./mods/ra/chrome/musicplayer.yaml
 	./mods/d2k/chrome/tooltips.yaml
@@ -104,7 +108,7 @@ ChromeLayout:
 	./mods/d2k/chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
-	./mods/ra/chrome/irc.yaml
+	./mods/ra/chrome/replaybrowser.yaml
 
 Weapons:
 	./mods/d2k/weapons.yaml

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
-		readonly bool isDiamond;
+		readonly bool isRectangularIsometric;
 		readonly int cellWidth;
 		readonly int previewWidth;
 		readonly int previewHeight;
@@ -64,11 +64,11 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
 
-			isDiamond = world.Map.Grid.Type == TileShape.Diamond;
-			cellWidth = isDiamond ? 2 : 1;
+			isRectangularIsometric = world.Map.Grid.Type == MapGridType.RectangularIsometric;
+			cellWidth = isRectangularIsometric ? 2 : 1;
 			previewWidth = world.Map.MapSize.X;
 			previewHeight = world.Map.MapSize.Y;
-			if (isDiamond)
+			if (isRectangularIsometric)
 				previewWidth = 2 * previewWidth - 1;
 		}
 
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			// The four layers are stored in a 2x2 grid within a single texture
-			radarSheet = new Sheet(new Size(2 * previewWidth, 2 * previewHeight).NextPowerOf2());
+			radarSheet = new Sheet(SheetType.BGRA, new Size(2 * previewWidth, 2 * previewHeight).NextPowerOf2());
 			radarSheet.CreateBuffer();
 			radarData = radarSheet.GetData();
 
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					if (isDiamond)
+					if (isRectangularIsometric)
 					{
 						// Odd rows are shifted right by 1px
 						var dx = uv.V & 1;
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var colors = (int*)colorBytes;
 					foreach (var uv in world.Map.Unproject(puv))
 					{
-						if (isDiamond)
+						if (isRectangularIsometric)
 						{
 							// Odd rows are shifted right by 1px
 							var dx = uv.V & 1;
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var mi = new MouseInput
 			{
 				Location = location,
-				Button = MouseButton.Right,
+				Button = Game.Settings.Game.MouseButtonPreference.Action,
 				Modifiers = Game.GetModifierKeys()
 			};
 
@@ -243,17 +243,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cell = MinimapPixelToCell(mi.Location);
 			var pos = world.Map.CenterOfCell(cell);
-			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
+			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move)
+				&& mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
+			{
 				worldRenderer.Viewport.Center(pos);
+			}
 
-			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 			{
 				// fake a mousedown/mouseup here
 				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
 				var fakemi = new MouseInput
 				{
 					Event = MouseInputEvent.Down,
-					Button = MouseButton.Right,
+					Button = Game.Settings.Game.MouseButtonPreference.Action,
 					Modifiers = mi.Modifiers,
 					Location = location
 				};
@@ -381,7 +384,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 								var uv = cell.First.ToMPos(world.Map.Grid.Type);
 								var color = cell.Second.ToArgb();
-								if (isDiamond)
+								if (isRectangularIsometric)
 								{
 									// Odd rows are shifted right by 1px
 									var dx = uv.V & 1;
@@ -430,7 +433,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var dy = (int)(previewScale * (uv.V - world.Map.Bounds.Top));
 
 			// Odd rows are shifted right by 1px
-			if (isDiamond && (uv.V & 1) == 1)
+			if (isRectangularIsometric && (uv.V & 1) == 1)
 				dx += 1;
 
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
@@ -441,6 +444,13 @@ namespace OpenRA.Mods.Common.Widgets
 			var u = (int)((p.X - mapRect.X) / (previewScale * cellWidth)) + world.Map.Bounds.Left;
 			var v = (int)((p.Y - mapRect.Y) / previewScale) + world.Map.Bounds.Top;
 			return new MPos(u, v).ToCPos(world.Map);
+		}
+
+		public override void Removed()
+		{
+			base.Removed();
+			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
+			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
 		}
 	}
 }

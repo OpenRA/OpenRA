@@ -46,7 +46,7 @@ namespace OpenRA.Widgets
 		{
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
-				Root.RemoveChild(WindowList.Peek());
+				Root.HideChild(WindowList.Peek());
 			WindowList.Push(window);
 			return window;
 		}
@@ -140,6 +140,13 @@ namespace OpenRA.Widgets
 		}
 	}
 
+	public class ChromeLogic : IDisposable
+	{
+		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+		public virtual void Tick() { }
+		protected virtual void Dispose(bool disposing) { }
+	}
+
 	public abstract class Widget
 	{
 		public readonly List<Widget> Children = new List<Widget>();
@@ -151,7 +158,7 @@ namespace OpenRA.Widgets
 		public string Width = "0";
 		public string Height = "0";
 		public string[] Logic = { };
-		public object[] LogicObjects { get; private set; }
+		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
@@ -244,7 +251,7 @@ namespace OpenRA.Widgets
 
 			args["widget"] = this;
 
-			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<object>(l, args))
+			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
 				.ToArray();
 
 			args.Remove("widget");
@@ -430,6 +437,10 @@ namespace OpenRA.Widgets
 				Tick();
 				foreach (var child in Children)
 					child.TickOuter();
+
+				if (LogicObjects != null)
+					foreach (var l in LogicObjects)
+						l.Tick();
 			}
 		}
 
@@ -448,10 +459,30 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		public virtual void HideChild(Widget child)
+		{
+			if (child != null)
+			{
+				Children.Remove(child);
+				child.Hidden();
+			}
+		}
+
 		public virtual void RemoveChildren()
 		{
 			while (Children.Count > 0)
 				RemoveChild(Children[Children.Count - 1]);
+		}
+
+		public virtual void Hidden()
+		{
+			// Using the forced versions because the widgets
+			// have been removed
+			ForceYieldKeyboardFocus();
+			ForceYieldMouseFocus();
+
+			foreach (var c in Children.OfType<Widget>().Reverse())
+				c.Hidden();
 		}
 
 		public virtual void Removed()
@@ -463,6 +494,10 @@ namespace OpenRA.Widgets
 
 			foreach (var c in Children.OfType<Widget>().Reverse())
 				c.Removed();
+
+			if (LogicObjects != null)
+				foreach (var l in LogicObjects)
+					l.Dispose();
 		}
 
 		public Widget GetOrNull(string id)

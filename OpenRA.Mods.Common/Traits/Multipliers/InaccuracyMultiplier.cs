@@ -12,7 +12,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("The inaccuracy of this actor is multipled based on upgrade level if specified.")]
+	[Desc("The inaccuracy of this actor is multiplied based on upgrade level if specified.")]
 	public class InaccuracyMultiplierInfo : UpgradeMultiplierTraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this, init.Self.Info.Name); }

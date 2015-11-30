@@ -9,15 +9,14 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Support;
@@ -114,6 +113,8 @@ namespace OpenRA
 
 	public class Map
 	{
+		public const int MinimumSupportedMapFormat = 6;
+
 		static readonly int[][] CellCornerHalfHeights = new int[][]
 		{
 			// Flat
@@ -228,6 +229,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> MusicDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
@@ -269,7 +271,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Initializes a new map created by the editor or importer.
-		/// The map will not recieve a valid UID until after it has been saved and reloaded.
+		/// The map will not receive a valid UID until after it has been saved and reloaded.
 		/// </summary>
 		public Map(TileSet tileset, int width, int height)
 		{
@@ -327,7 +329,7 @@ namespace OpenRA
 			// Use release-20110207 to convert older maps to format 4
 			// Use release-20110511 to convert older maps to format 5
 			// Use release-20141029 to convert older maps to format 6
-			if (MapFormat < 6)
+			if (MapFormat < MinimumSupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
 
 			var nd = yaml.ToDictionary();
@@ -340,6 +342,54 @@ namespace OpenRA
 					Visibility = MapVisibility.Shellmap;
 				else if (Type == "Mission" || Type == "Campaign")
 					Visibility = MapVisibility.MissionSelector;
+			}
+
+			// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
+			if (MapFormat < 8)
+			{
+				var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
+				if (players != null)
+				{
+					bool noteHexColors = false;
+					bool noteColorRamp = false;
+					foreach (var player in players.Value.Nodes)
+					{
+						var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
+						if (colorRampNode != null)
+						{
+							Color dummy;
+							var parts = colorRampNode.Value.Value.Split(',');
+							if (parts.Length == 3 || parts.Length == 4)
+							{
+								// Try to convert old normalized HSL value to a rgb hex color
+								try
+								{
+									HSLColor color = new HSLColor(
+										(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
+									colorRampNode.Value.Value = FieldSaver.FormatValue(color);
+									noteHexColors = true;
+								}
+								catch (Exception)
+								{
+									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
+								}
+							}
+							else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
+								throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
+
+							colorRampNode.Key = "Color";
+							noteColorRamp = true;
+						}
+					}
+
+					Console.WriteLine("Converted " + path + " to MapFormat 8.");
+					if (noteHexColors)
+						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
+					else if (noteColorRamp)
+						Console.WriteLine("ColorRamp is now called Color.");
+				}
 			}
 
 			SpawnPoints = Exts.Lazy(() =>
@@ -360,6 +410,7 @@ namespace OpenRA
 			VoxelSequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
 			WeaponDefinitions = MiniYaml.NodesOrEmpty(yaml, "Weapons");
 			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
+			MusicDefinitions = MiniYaml.NodesOrEmpty(yaml, "Music");
 			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
 			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
@@ -386,7 +437,7 @@ namespace OpenRA
 			// The Uid is calculated from the data on-disk, so
 			// format changes must be flushed to disk.
 			// TODO: this isn't very nice
-			if (MapFormat < 7)
+			if (MapFormat < 8)
 				Save(path);
 
 			Uid = ComputeHash();
@@ -423,10 +474,10 @@ namespace OpenRA
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
 
-			var leftDelta = Grid.Type == TileShape.Diamond ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = Grid.Type == TileShape.Diamond ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = Grid.Type == TileShape.Diamond ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = Grid.Type == TileShape.Diamond ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
+			var leftDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
+			var topDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
+			var rightDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
+			var bottomDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
 			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
 			{
 				leftDelta + new WVec(0, 0, 512 * ramp[0]),
@@ -534,7 +585,7 @@ namespace OpenRA
 
 		public void Save(string toPath)
 		{
-			MapFormat = 7;
+			MapFormat = 8;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
@@ -572,6 +623,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));
 			root.Add(new MiniYamlNode("Weapons", null, WeaponDefinitions));
 			root.Add(new MiniYamlNode("Voices", null, VoiceDefinitions));
+			root.Add(new MiniYamlNode("Music", null, MusicDefinitions));
 			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
 			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
 
@@ -603,6 +655,9 @@ namespace OpenRA
 
 			// Update existing package
 			Container.Write(entries);
+
+			// Update UID to match the newly saved data
+			Uid = ComputeHash();
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()
@@ -745,9 +800,9 @@ namespace OpenRA
 		public bool Contains(CPos cell)
 		{
 			// .ToMPos() returns the same result if the X and Y coordinates
-			// are switched. X < Y is invalid in the Diamond coordinate system,
+			// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
 			// so we pre-filter these to avoid returning the wrong result
-			if (Grid.Type == TileShape.Diamond && cell.X < cell.Y)
+			if (Grid.Type == MapGridType.RectangularIsometric && cell.X < cell.Y)
 				return false;
 
 			return Contains(cell.ToMPos(this));
@@ -779,10 +834,10 @@ namespace OpenRA
 
 		public WPos CenterOfCell(CPos cell)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new WPos(1024 * cell.X + 512, 1024 * cell.Y + 512, 0);
 
-			// Convert from diamond cell position (x, y) to world position (u, v):
+			// Convert from isometric cell position (x, y) to world position (u, v):
 			// (a) Consider the relationships:
 			//  - Center of origin cell is (512, 512)
 			//  - +x adds (512, 512) to world pos
@@ -811,10 +866,10 @@ namespace OpenRA
 
 		public CPos CellContaining(WPos pos)
 		{
-			if (Grid.Type == TileShape.Rectangle)
+			if (Grid.Type == MapGridType.Rectangular)
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
-			// Convert from world position to diamond cell position:
+			// Convert from world position to isometric cell position:
 			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
 			// (b) Rotate axes by -pi/4
 			// (c) Divide through by sqrt(2) to bring us to an equivalent world pos aligned with u,v axes
@@ -889,10 +944,10 @@ namespace OpenRA
 			// Directly calculate the projected map corners in world units avoiding unnecessary
 			// conversions.  This abuses the definition that the width of the cell is always
 			// 1024 units, and that the height of two rows is 2048 for classic cells and 1024
-			// for diamond cells.
+			// for isometric cells.
 			var wtop = tl.V * 1024;
 			var wbottom = (br.V + 1) * 1024;
-			if (Grid.Type == TileShape.Diamond)
+			if (Grid.Type == MapGridType.RectangularIsometric)
 			{
 				wtop /= 2;
 				wbottom /= 2;
@@ -1167,7 +1222,7 @@ namespace OpenRA
 						return result;
 
 					// If the lengths are equal, use other means to sort them.
-					// Try the hashcode first because it gives more
+					// Try the hash code first because it gives more
 					// random-appearing results than X or Y that would always
 					// prefer the leftmost/topmost position.
 					result = a.GetHashCode().CompareTo(b.GetHashCode());

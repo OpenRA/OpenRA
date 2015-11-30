@@ -42,6 +42,7 @@ namespace OpenRA.Platforms.Null
 		public Bitmap TakeScreenshot() { return new Bitmap(1, 1); }
 
 		public string GetClipboardText() { return ""; }
+		public bool SetClipboardText(string text) { return false; }
 		public void PumpInput(IInputHandler ih)
 		{
 			Game.HasInputFocus = false;
@@ -63,6 +64,7 @@ namespace OpenRA.Platforms.Null
 
 	public class NullShader : IShader
 	{
+		public void SetBool(string name, bool value) { }
 		public void SetVec(string name, float x) { }
 		public void SetVec(string name, float x, float y) { }
 		public void SetVec(string name, float[] vec, int length) { }
