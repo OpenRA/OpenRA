@@ -20,60 +20,89 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		IList<string> candidates = new List<string>();
 		int currentCandidateIndex = 0;
 		string lastCompleted;
+		public readonly string PrefixOnStart;
+		public readonly string SuffixOnStart;
 		string prefix;
 		string suffix;
 
-		public IList<string> Commands { get; set; }
+		int longestElementLength;
+		IList<string> completions;
+		public IList<string> Completions
+		{
+			get
+			{
+				return completions;
+			}
 
-		public IList<string> Names { get; set; }
+			set
+			{
+				completions = value;
+				longestElementLength = completions.Max(element => element.Length);
+			}
+		}
+
+		public TabCompletionLogic(string prefixOnStart = "", string suffixOnStart = ": ")
+		{
+			this.PrefixOnStart = prefixOnStart;
+			this.SuffixOnStart = suffixOnStart;
+		}
 
 		public string Complete(string text)
 		{
-			if (string.IsNullOrWhiteSpace(text))
+			if (string.IsNullOrEmpty(text) || completions == null)
 				return text;
 
-			if (lastCompleted == text && candidates.Any())
+			// Check if tab is cycled without text modification
+			if (lastCompleted == text)
 			{
+				if (!candidates.Any())
+					return text;
+
 				lastCompleted = prefix + candidates[++currentCandidateIndex % candidates.Count] + suffix;
 				return lastCompleted;
 			}
 
-			var toComplete = "";
-			if (text.StartsWith("/") && Commands != null)
-			{
-				prefix = "/";
-				suffix = "";
-				toComplete = text.Substring(1);
-				candidates = Commands.Where(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase)).ToList();
-			}
-			else if (Names != null)
-			{
-				var oneWord = text.Contains(' ');
-				if (oneWord)
-				{
-					prefix = text.Substring(0, text.LastIndexOf(' ') + 1);
-					suffix = "";
-					toComplete = text.Substring(prefix.Length);
-				}
-				else
-				{
-					prefix = "";
-					suffix = ": ";
-					toComplete = text;
-				}
-
-				candidates = Names.Where(x => x.StartsWith(toComplete, StringComparison.InvariantCultureIgnoreCase)).ToList();
-			}
+			GenerateCompletionCandidates(text);
+			if (candidates.Count == 0)
+				lastCompleted = text;
 			else
-				return text;
+				lastCompleted = prefix + candidates[currentCandidateIndex] + suffix;  // Alternatively, we could fill the shortest common substring of candidates
+			return lastCompleted;
+		}
+
+		void GenerateCompletionCandidates(string text)
+		{
+			suffix = "";
+			candidates = new List<string>();
+			var relevantSubstrings = Enumerable.Range(1, Math.Min(text.Length, longestElementLength)).Select(i => text.Substring(text.Length - i));
+
+			prefix = "";
+			var possibleCandidates = new List<Tuple<string, int>>();
+			foreach (string x in completions)
+			{
+				var firstValid = relevantSubstrings.Take(x.Length).Reverse().FirstOrDefault(e => x.StartsWith(e, StringComparison.InvariantCultureIgnoreCase));
+
+				if (!string.IsNullOrEmpty(firstValid))
+				{
+					possibleCandidates.Add(Tuple.Create(x, firstValid.Length));
+				}
+			}
+
+			if (possibleCandidates.Any())
+			{
+				var maxMatch = possibleCandidates.Max(e => e.Item2);  // Longest common substring length
+				candidates = possibleCandidates.Where(e => e.Item2 == maxMatch).Select(e => e.Item1).ToList();
+				prefix = text.Substring(0, text.Length - maxMatch);
+			}
+
+			// Add prefix/suffix if first word
+			if (prefix == "")
+			{
+				prefix = PrefixOnStart;
+				suffix = SuffixOnStart;
+			}
 
 			currentCandidateIndex = 0;
-
-			if (candidates.Count == 0)
-				return text;
-
-			lastCompleted = prefix + candidates[currentCandidateIndex] + suffix;
-			return lastCompleted;
 		}
 	}
 }

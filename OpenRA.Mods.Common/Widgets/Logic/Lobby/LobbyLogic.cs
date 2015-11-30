@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ColorPreviewManagerWidget colorPreview;
 
-		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletionNames = new TabCompletionLogic();
 
 		readonly LabelWidget chatLabel;
 		bool teamChat;
@@ -620,7 +620,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatTextField.OnTabKey = () =>
 			{
 				var previousText = chatTextField.Text;
-				chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
+				chatTextField.Text = tabCompletionNames.Complete(chatTextField.Text);
 				chatTextField.CursorPosition = chatTextField.Text.Length;
 
 				if (chatTextField.Text == previousText)
@@ -921,7 +921,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
 
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			tabCompletionNames.Completions = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 		}
 
 		void OnGameStart()

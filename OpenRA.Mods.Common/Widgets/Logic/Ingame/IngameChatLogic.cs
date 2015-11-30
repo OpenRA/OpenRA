@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly INotifyChat[] chatTraits;
 
-		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletionNames = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletionCommands = new TabCompletionLogic(prefixOnStart: "/", suffixOnStart: "");
 
 		bool disableTeamChat;
 		bool teamChat;
@@ -50,8 +51,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
 			teamChat = !disableTeamChat;
 
-			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			tabCompletionCommands.Completions = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
+			tabCompletionNames.Completions = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.Get<ContainerWidget>("CHAT_OVERLAY");
@@ -71,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
-					if (!chatText.Text.StartsWith("/"))
+					if (!chatText.Text.StartsWith(tabCompletionCommands.PrefixOnStart))
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else
 						if (chatTraits != null)
@@ -89,7 +90,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatText.OnTabKey = () =>
 			{
 				var previousText = chatText.Text;
-				chatText.Text = tabCompletion.Complete(chatText.Text);
+				if (previousText.StartsWith(tabCompletionCommands.PrefixOnStart))
+					chatText.Text = tabCompletionCommands.Complete(chatText.Text);
+				else
+					chatText.Text = tabCompletionNames.Complete(chatText.Text);
 				chatText.CursorPosition = chatText.Text.Length;
 
 				if (chatText.Text == previousText)
