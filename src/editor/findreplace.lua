@@ -948,7 +948,9 @@ function findReplace:createPanel()
       if findReplace.infiles then
         findReplace:RunInFiles(true)
       else
-        findReplace:Replace()
+        local replaceAll = (wx.wxGetKeyState(wx.WXK_ALT)
+          and not wx.wxGetKeyState(wx.WXK_SHIFT) and not wx.wxGetKeyState(wx.WXK_CONTROL))
+        findReplace:Replace(replaceAll)
       end
     end
   end
