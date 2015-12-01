@@ -49,12 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null)
 				return;
 
-			var res = dest.TraitOrDefault<Reservable>();
-			if (res != null)
-			{
-				plane.UnReserve();
-				plane.Reservation = res.Reserve(dest, self, plane);
-			}
+			plane.MakeReservation(dest);
 
 			var landPos = dest.CenterPosition;
 			var altitude = planeInfo.CruiseAltitude.Length;

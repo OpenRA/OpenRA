@@ -30,12 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (NextActivity == null)
 				self.CancelActivity();
 
-			var reservation = aircraft.Reservation;
-			if (reservation != null)
-			{
-				reservation.Dispose();
-				reservation = null;
-			}
+			aircraft.UnReserve();
 
 			var host = aircraft.GetActorBelow();
 			var hasHost = host != null;

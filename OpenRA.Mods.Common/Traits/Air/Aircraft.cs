@@ -92,11 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		UpgradeManager um;
+		IDisposable reservation;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public IDisposable Reservation;
 		public int ROT { get { return Info.ROT; } }
 
 		bool airborne;
@@ -257,22 +257,24 @@ namespace OpenRA.Mods.Common.Traits
 			if (afld == null)
 				return;
 
-			var res = afld.TraitOrDefault<Reservable>();
+			MakeReservation(afld);
+		}
 
-			if (res != null)
-			{
-				UnReserve();
-				Reservation = res.Reserve(afld, self, this);
-			}
+		public void MakeReservation(Actor target)
+		{
+			UnReserve();
+			var reservable = target.TraitOrDefault<Reservable>();
+			if (reservable != null)
+				reservation = reservable.Reserve(target, self, this);
 		}
 
 		public void UnReserve()
 		{
-			if (Reservation != null)
-			{
-				Reservation.Dispose();
-				Reservation = null;
-			}
+			if (reservation == null)
+				return;
+
+			reservation.Dispose();
+			reservation = null;
 		}
 
 		public bool AircraftCanEnter(Actor a)
@@ -453,12 +455,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != target.Actor)))
 				return false;
 
-			var res = target.Actor.TraitOrDefault<Reservable>();
-			if (res == null)
-				return true;
-
-			UnReserve();
-			Reservation = res.Reserve(target.Actor, self, this);
+			MakeReservation(target.Actor);
 			return true;
 		}
 
@@ -546,9 +543,7 @@ namespace OpenRA.Mods.Common.Traits
 					}
 					else
 					{
-						var res = order.TargetActor.TraitOrDefault<Reservable>();
-						if (res != null)
-							Reservation = res.Reserve(order.TargetActor, self, this);
+						MakeReservation(order.TargetActor);
 
 						Action enter = () =>
 						{
