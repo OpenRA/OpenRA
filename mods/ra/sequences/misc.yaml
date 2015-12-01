@@ -13,46 +13,32 @@ powerdown:
 	idle:
 
 explosion:
+	Defaults:
+		Length: *
 	piff: piff
-		Length: *
 	piffs: piffpiff
-		Length: *
 	water_piff: wpiff
-		Length: *
 	water_piffs: wpifpif
-		Length: *
 	small_explosion: veh-hit3
-		Length: *
 	med_explosion: veh-hit2
-		Length: *
 	small_explosion_air: flak
-		Length: *
 	med_explosion_air: veh-hit1
-		Length: *
 	large_splash: h2o_exp1
-		Length: *
 	napalm: napalm2
-		Length: *
+	building_napalm: napalm2
+		FlipX: true
 	nuke: atomsfx
-		Length: *
 	med_splash: h2o_exp2
-		Length: *
 	self_destruct: art-exp1
-		Length: *
 	artillery_explosion: art-exp1
-		Length: *
 	building: fball1
-		Length: *
 		Offset: 0,-9
 	small_splash: h2o_exp3
-		Length: *
 	large_explosion: frag1
-		Length: *
 		Offset: -2,0
 	small_napalm: napalm1
-		Length: *
+	large_napalm: napalm3
 	corpse: corpse1
-		Length: *
 		Tick: 1600
 		UseTilesetExtension: true
 		TilesetOverrides:

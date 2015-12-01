@@ -410,6 +410,7 @@
 		DestroyedSounds: kaboom22.aud
 	WithSpriteBody:
 	WithBuildingExplosion:
+		Sequences: building, building_napalm, large_explosion, self_destruct, large_napalm
 	CaptureNotification:
 	ShakeOnDeath:
 	ProximityCaptor:
