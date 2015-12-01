@@ -258,6 +258,7 @@
 		DestroyedSounds: EXPLHG1.WAV
 	WithSpriteBody:
 	WithBuildingExplosion:
+		Sequences: building, self_destruct, large_explosion
 	RepairableBuilding:
 	EmitInfantryOnSell:
 		ActorTypes: light_inf

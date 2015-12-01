@@ -55,34 +55,24 @@ patriot:
 		Facings: 32
 
 explosion:
+	Defaults:
+		Length: *
 	nuke_explosion: atomsfx
-		Length: *
 	piff: piff
-		Length: *
 	piffs: piffpiff
-		Length: *
-	chemball: chemball		#same size as small_napalm, but bright green.
-		Length: *
-	small_napalm: napalm1		#not used by much. currently used for flamethrower.
-		Length: *
-	med_napalm: napalm2		#explosion for bomblets
-		Length: *
-	big_napalm: napalm3		#huge; not used. (SSM used this explosion in C&C Gold?)
-		Length: *
-	small_frag: veh-hit3		#the most common weapon-hit explosion. For rockets, tank shells, etc. 
-		Length: *
-	med_frag: frag1			#fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
-		Length: *
-	big_frag: frag3			#Same as med_frag, except fire hangs around longer.
-		Length: *
-	small_poof: veh-hit2		#for Grenades; tower missiles; boat missiles; APC AA gun.
-		Length: *
-	poof: art-exp1			#For UnitExplode (artillery); artillery shell hit; GrenadierExplode, 
-		Length: *
-	small_building: veh-hit1	#like "building' explosion, but much smaller. (Used for heli-explosion in C&C Gold?)
-		Length: *
-	building: fball1		#Large explosion, for when a building explodes. 
-		Length: *
+	chemball: chemball # Same size as small_napalm, but bright green.
+	small_napalm: napalm1 # Not used by much. Currently used for flamethrower.
+	med_napalm: napalm2 # Explosion for bomblets
+	big_napalm: napalm3 # Huge; not used. (SSM used this explosion in C&C Gold?)
+	small_frag: veh-hit3 # The most common weapon-hit explosion. For rockets, tank shells, etc.
+	med_frag: frag1 # Fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
+	big_frag: frag3 # Same as med_frag, except fire hangs around longer.
+	small_poof: veh-hit2 # For Grenades, tower missiles, boat missiles and APC AA gun.
+	poof: art-exp1 # For UnitExplode (artillery), artillery shell hit, building explosion and GrenadierExplode
+	small_building: veh-hit1 # Used for heli-explosion in C&C Gold?
+	building: fball1
+	building_napalm: napalm2
+		FlipX: true
 
 rank:
 	rank:
@@ -142,33 +132,22 @@ xcrated:
 		ZOffset: -511
 
 crate-effects:
+	Defaults:
+		Length: *
 	airstrike: deviator
-		Length: *
 	nuke: missile2
-		Length: *
 	dollar: dollar
-		Length: *
 	reveal-map: radarcrate
-		Length: *
 	hide-map: empulse
-		Length: *
 	heal: healcrate
-		Length: *
 	mine: mine
-		Length: *
 	redskull: rapid
-		Length: *
 	cloak: cloakcrate
-		Length: *
 	levelup: levelup
-		Length: *
 		Tick: 200
 	firepowerup: firepowercrate
-		Length: *
 	armorup: armorcrate
-		Length: *
 	speedup: speedcrate
-		Length: *
 
 atomicup:
 	idle:
@@ -179,10 +158,10 @@ atomicdn:
 		Length: *
 
 atomic:
+	Defaults:
+		Length: *
 	up: atomicup
-		Length: *
 	down: atomicdn
-		Length: *
 
 ionsfx:
 	idle:
@@ -256,12 +235,11 @@ poweroff:
 		Tick: 160
 
 icon:
+	Defaults:
+		AddExtension: False
 	airstrike: bombicnh.tem
-		AddExtension: False
 	ioncannon: ionicnh.tem
-		AddExtension: False
 	abomb: atomicnh.tem
-		AddExtension: False
 
 moveflsh:
 	idle:
