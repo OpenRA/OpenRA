@@ -9,14 +9,14 @@
 #endregion
 
 using System;
-
+using System.Net;
 using Mono.Nat;
 
 namespace OpenRA.Network
 {
 	public static class UPnP
 	{
-		public static INatDevice NatDevice;
+		static INatDevice natDevice;
 
 		public static void TryNatDiscovery()
 		{
@@ -42,7 +42,7 @@ namespace OpenRA.Network
 			Log.Write("server", "Stopping NAT discovery.");
 			NatUtility.StopDiscovery();
 
-			if (NatDevice == null || NatDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
+			if (natDevice == null || natDevice.GetType() != typeof(Mono.Nat.Upnp.UpnpNatDevice))
 			{
 				Log.Write("server",
 					"No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Game.Settings.Server.NatDiscoveryTimeout));
@@ -60,11 +60,11 @@ namespace OpenRA.Network
 
 			try
 			{
-				NatDevice = args.Device;
-				Log.Write("server", "Type: {0}", NatDevice.GetType());
-				Log.Write("server", "Your external IP is: {0}", NatDevice.GetExternalIP());
+				natDevice = args.Device;
+				Log.Write("server", "Type: {0}", natDevice.GetType());
+				Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
 
-				foreach (var mp in NatDevice.GetAllMappings())
+				foreach (var mp in natDevice.GetAllMappings())
 					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
 						mp.Protocol, mp.PublicPort, mp.PrivatePort);
 			}
@@ -82,7 +82,7 @@ namespace OpenRA.Network
 			try
 			{
 				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort, lifetime);
-				NatDevice.CreatePortMap(mapping);
+				natDevice.CreatePortMap(mapping);
 				Log.Write("server", "Create port mapping: protocol = {0}, public = {1}, private = {2}, lifetime = {3} s",
 					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Lifetime);
 			}
@@ -106,7 +106,7 @@ namespace OpenRA.Network
 			try
 			{
 				var mapping = new Mapping(Protocol.Tcp, Game.Settings.Server.ExternalPort, Game.Settings.Server.ListenPort);
-				NatDevice.DeletePortMap(mapping);
+				natDevice.DeletePortMap(mapping);
 				Log.Write("server", "Remove port mapping: protocol = {0}, public = {1}, private = {2}, expiration = {3}",
 					mapping.Protocol, mapping.PublicPort, mapping.PrivatePort, mapping.Expiration);
 			}
@@ -114,6 +114,22 @@ namespace OpenRA.Network
 			{
 				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
 				Game.Settings.Server.AllowPortForward = false;
+			}
+		}
+
+		public static IPAddress GetExternalIP()
+		{
+			if (natDevice == null)
+				return null;
+
+			try
+			{
+				return natDevice.GetExternalIP();
+			}
+			catch (Exception e)
+			{
+				Log.Write("server", "Failed to get the external IP from NAT device: {0}", e);
+				return null;
 			}
 		}
 	}

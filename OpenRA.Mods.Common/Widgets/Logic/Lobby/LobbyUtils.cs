@@ -497,9 +497,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static string GetExternalIP(int clientIndex, OrderManager orderManager)
 		{
 			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if (clientIndex == orderManager.LocalClient.Index && address == IPAddress.Loopback.ToString() && UPnP.NatDevice != null)
+			if (clientIndex == orderManager.LocalClient.Index && address == IPAddress.Loopback.ToString())
 			{
-				var externalIP = UPnP.NatDevice.GetExternalIP();
+				var externalIP = UPnP.GetExternalIP();
 				if (externalIP != null)
 					address = externalIP.ToString();
 			}
