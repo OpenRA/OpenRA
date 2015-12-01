@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class HarvesterDockSequence : Activity
+	public abstract class HarvesterDockSequence : Activity
 	{
 		protected enum State { Wait, Turn, Dock, Loop, Undock, Complete }
 
@@ -91,14 +91,8 @@ namespace OpenRA.Mods.Common.Activities
 			yield return Target.FromActor(Refinery);
 		}
 
-		public virtual Activity OnStateDock(Actor self)
-		{
-			throw new NotImplementedException("Base class HarvesterDockSequence does not implement method OnStateDock!");
-		}
+		public abstract Activity OnStateDock(Actor self);
 
-		public virtual Activity OnStateUndock(Actor self)
-		{
-			throw new NotImplementedException("Base class HarvesterDockSequence does not implement method OnStateUndock!");
-		}
+		public abstract Activity OnStateUndock(Actor self);
 	}
 }
