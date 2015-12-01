@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
-			disableTeamChat = world.LocalPlayer == null || world.LobbyInfo.IsSinglePlayer || !players.Any(p => p.IsAlliedWith(world.LocalPlayer));
+			disableTeamChat = world.IsReplay || world.LobbyInfo.IsSinglePlayer || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			teamChat = !disableTeamChat;
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
@@ -71,15 +71,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
+				{
 					if (!chatText.Text.StartsWith("/"))
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
-					else
-						if (chatTraits != null)
-						{
-							var text = chatText.Text.Trim();
-							foreach (var trait in chatTraits)
-								trait.OnChat(orderManager.LocalClient.Name, text);
-						}
+					else if (chatTraits != null)
+					{
+						var text = chatText.Text.Trim();
+						foreach (var trait in chatTraits)
+							trait.OnChat(orderManager.LocalClient.Name, text);
+					}
+				}
 
 				chatText.Text = "";
 				CloseChat();

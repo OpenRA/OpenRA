@@ -76,19 +76,18 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)",
-										order.TargetString);
+									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)", order.TargetString);
 							}
 							else
 							{
 								var player = world.FindPlayerByClient(client);
-								if (player == null) return;
-
-								if ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost)
+								if (player != null && ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost))
 								{
 									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
 									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 								}
+								else if (orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver)
+									Game.AddChatLine(client.Color.RGB, client.Name + " (Spectators)", order.TargetString);
 							}
 						}
 
