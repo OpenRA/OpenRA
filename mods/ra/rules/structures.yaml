@@ -1,5 +1,5 @@
 MSLO:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -49,7 +49,7 @@ MSLO:
 		RequiredForShortGame: false
 
 GAP:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -258,7 +258,7 @@ SYRD:
 		ExcludeTilesets: INTERIOR
 
 IRON:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -306,7 +306,7 @@ IRON:
 		RequiredForShortGame: false
 
 PDOX:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -715,7 +715,7 @@ SAM:
 		Range: 5c0
 
 ATEK:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
@@ -1263,7 +1263,7 @@ APWR:
 		Delay: 1
 
 STEK:
-	Inherits: ^Building
+	Inherits: ^ScienceBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
