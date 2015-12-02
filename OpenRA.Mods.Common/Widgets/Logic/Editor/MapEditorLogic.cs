@@ -51,7 +51,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							zoomDropdown.SelectedItem = selectedZoom = zoom.ToString();
 							worldRenderer.Viewport.Zoom = float.Parse(selectedZoom);
-							selectedLabel = zoom.ToString();
 						}
 					);
 
@@ -74,7 +73,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;
 					var zoom = options[selected];
 					worldRenderer.Viewport.Zoom = zoom;
-					selectedLabel = selectedZoom = zoom.ToString();
+					selectedZoom = zoom.ToString();
+					zoomDropdown.SelectedItem = zoom.ToString();
 				};
 			}
 
