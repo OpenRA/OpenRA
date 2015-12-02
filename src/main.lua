@@ -384,6 +384,7 @@ local function loadToTab(filter, folder, tab, recursive, proto)
       LoadLuaFileExt(tab, file, proto)
     end
   end
+  return tab
 end
 
 local function loadInterpreters(filter)
@@ -397,25 +398,17 @@ local function loadTools(filter)
 end
 
 -- load packages
-local function loadPackages(filter)
-  loadToTab(filter, "packages", ide.packages, false, ide.proto.Plugin)
-  if ide.oshome then
-    local userpackages = MergeFullPath(ide.oshome, "."..ide.appname.."/packages")
-    if wx.wxDirExists(userpackages) then
-      loadToTab(filter, userpackages, ide.packages, false, ide.proto.Plugin)
-    end
-  end
-
+local function processPackages(packages)
   -- check dependencies and assign file names to each package
   local report = DisplayOutputLn or print
-  local unload = {}
-  for fname, package in pairs(ide.packages) do
+  local skip = {}
+  for fname, package in pairs(packages) do
     if type(package.dependencies) == 'table'
     and package.dependencies.osname
     and not package.dependencies.osname:find(ide.osname, 1, true) then
       report(("Package '%s' not loaded: requires %s platform, but you are running %s.")
         :format(fname, package.dependencies.osname, ide.osname))
-      table.insert(unload, fname)
+      skip[fname] = true
     end
 
     local needsversion = tonumber(package.dependencies)
@@ -425,13 +418,14 @@ local function loadPackages(filter)
     if isversion and needsversion > isversion then
       report(("Package '%s' not loaded: requires version %s, but you are running version %s.")
         :format(fname, needsversion, ide.VERSION))
-      table.insert(unload, fname)
+      skip[fname] = true
     end
     package.fname = fname
   end
 
-  -- remove packages that need to be unloaded
-  for _, fname in ipairs(unload) do ide.packages[fname] = nil end
+  for fname, package in pairs(packages) do
+    if not skip[fname] then ide.packages[fname] = package end
+  end
 end
 
 function UpdateSpecs()
@@ -486,8 +480,6 @@ end
 -- process config
 
 -- set ide.config environment
-setmetatable(ide.config, {__index = _G or _ENV})
-ide.config.load = {interpreters = loadInterpreters, specs = loadSpecs, tools = loadTools}
 do
   ide.configs = {
     system = MergeFullPath("cfg", "user.lua"),
@@ -496,20 +488,34 @@ do
   ide.configqueue = {}
 
   local num = 0
-  ide.config.package = setmetatable({}, {
+  local package = setmetatable({}, {
       __index = function(_,k) return package[k] end,
       __newindex = function(_,k,v) package[k] = v end,
       __call = function(_,p)
-        if p then
+        -- package can be defined inline, like "package {...}"
+        if type(p) == 'table' then
           num = num + 1
           local name = 'config'..num..'package'
           ide.packages[name] = setmetatable(p, ide.proto.Plugin)
+        -- package can be included as "package 'file.lua'" or "package 'folder/'"
+        elseif type(p) == 'string' then
+          local config = ide.configqueue[#ide.configqueue]
+          for _, packagepath in ipairs({'.', 'packages/', '../packages/'}) do
+            local p = config and MergeFullPath(config.."/../"..packagepath, p)
+            if wx.wxDirExists(p) then
+              processPackages(loadToTab(nil, p, {}, false, ide.proto.Plugin))
+            elseif wx.wxFileExists(p) then
+              processPackages(LoadLuaFileExt({}, p, ide.proto.Plugin))
+            end
+          end
+        else
+          print(("Can't load package based on parameter of type '%s'."):format(type(p)))
         end
       end,
     })
 
   local includes = {}
-  ide.config.include = function(c)
+  local include = function(c)
     if c then
       for _, config in ipairs({ide.configqueue[#ide.configqueue], ide.configs.user, ide.configs.system}) do
         local p = config and MergeFullPath(config.."/../", c)
@@ -519,6 +525,14 @@ do
       print(("Can't find configuration file '%s' to process."):format(c))
     end
   end
+
+  setmetatable(ide.config, {
+    __index = setmetatable({
+        load = {interpreters = loadInterpreters, specs = loadSpecs, tools = loadTools},
+        package = package,
+        include = include,
+    }, {__index = _G or _ENV})
+  })
 end
 
 LoadLuaConfig(ide.appname.."/config.lua")
@@ -576,7 +590,13 @@ do
   end
 end
 
-loadPackages()
+processPackages(loadToTab(nil, "packages", {}, false, ide.proto.Plugin))
+if ide.oshome then
+  local userpackages = MergeFullPath(ide.oshome, "."..ide.appname.."/packages")
+  if wx.wxDirExists(userpackages) then
+    processPackages(loadToTab(nil, userpackages, {}, false, ide.proto.Plugin))
+  end
+end
 
 ---------------
 -- Load App

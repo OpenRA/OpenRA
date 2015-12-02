@@ -499,6 +499,7 @@ function LoadLuaFileExt(tab, file, proto)
       end
     end
   end
+  return tab
 end
 
 function LoadLuaConfig(filename,isstring)

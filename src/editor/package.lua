@@ -588,14 +588,34 @@ local configcache = {}
 function ide:AddConfig(name, files)
   if not name or configcache[name] then return end -- don't overwrite existing slots
   if type(files) ~= "table" then files = {files} end -- allow to pass one value
-  configcache[name] = require('mobdebug').dump(self.config, {nocode = true})
+  configcache[name] = {
+    config = require('mobdebug').dump(self.config, {nocode = true}),
+    configmeta = getmetatable(self.config),
+    packages = {},
+  }
+  -- build a list of existing packages
+  local packages = {}
+  for package in pairs(self.packages) do packages[package] = true end
+  -- load config file(s)
   for _, file in pairs(files) do LoadLuaConfig(MergeFullPath(name, file)) end
+  -- register newly added packages (if any)
+  for package in pairs(self.packages) do
+    if not packages[package] then -- this is a newly added package
+      PackageEventHandleOne(package, "onRegister")
+      configcache[name].packages[package] = true
+    end
+  end
   ReApplySpecAndStyles() -- apply current config to the UI
 end
 function ide:RemoveConfig(name)
   if not name or not configcache[name] then return end
-  local ok, res = LoadSafe(configcache[name])
-  if ok then self.config = res
+  -- unregister cached packages
+  for package in pairs(configcache[name].packages) do PackageUnRegister(package) end
+  -- load original config
+  local ok, res = LoadSafe(configcache[name].config)
+  if ok then
+    self.config = res
+    if configcache[name].configmeta then setmetatable(self.config, configcache[name].configmeta) end
   else
     DisplayOutputLn(("Error while restoring configuration: '%s'."):format(res))
   end
