@@ -193,7 +193,6 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
 			var currentZoom = worldRenderer.Viewport.Zoom;
-			float zoom;
 			int nextIndex = zoomSteps.IndexOf(currentZoom);
 
 			if (direction < 0)
@@ -205,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				return;
 			}
-			zoom = zoomSteps.ElementAt(nextIndex);
+			var zoom = zoomSteps.ElementAt(nextIndex);
 			if (!this.world.IsGameOver && zoom < 1.0f)
 			{
 				return;
