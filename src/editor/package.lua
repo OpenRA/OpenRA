@@ -649,6 +649,17 @@ function ide:AddPanel(ctrl, panel, name, conf)
   return mgr:GetPane(panel), notebook
 end
 
+function ide:RemovePanel(panel)
+  local mgr = self.frame.uimgr
+  local pane = mgr:GetPane(panel)
+  if pane:IsOk() then
+    local win = pane.window
+    mgr:DetachPane(win)
+    win:Destroy()
+    mgr:Update()
+  end
+end
+
 function ide:AddPanelDocked(notebook, ctrl, panel, name, conf, activate)
   notebook:AddPage(ctrl, name, activate ~= false)
   panels[name] = {ctrl, panel, name, conf}
