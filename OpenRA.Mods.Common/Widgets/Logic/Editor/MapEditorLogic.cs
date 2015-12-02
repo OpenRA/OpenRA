@@ -36,7 +36,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (zoomDropdown != null)
 			{
 				var selectedZoom = (Game.Settings.Graphics.PixelDouble ? 2f : 1f).ToString();
-				var selectedLabel = selectedZoom.ToString();
 
 				zoomDropdown.SelectedItem = selectedZoom;
 				Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (zoom, itemTemplate) =>
