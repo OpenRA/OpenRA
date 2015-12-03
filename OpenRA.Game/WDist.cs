@@ -103,7 +103,12 @@ namespace OpenRA
 
 		public int CompareTo(WDist other) { return Length.CompareTo(other.Length); }
 
-		public override string ToString() { return Length.ToString(); }
+		public override string ToString()
+		{
+			var absLength = Math.Abs(Length);
+			var absValue = (absLength / 1024).ToString() + "c" + (absLength % 1024).ToString();
+			return Length < 0 ? "-" + absValue : absValue;
+		}
 
 		#region Scripting interface
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
