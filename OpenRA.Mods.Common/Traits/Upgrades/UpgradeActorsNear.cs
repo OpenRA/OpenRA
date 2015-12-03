@@ -106,6 +106,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
 		{
+			// If the produced Actor doesn't occupy space, it can't be in range
+			if (produced.OccupiesSpace == null)
+				return;
+
 			// Work around for actors produced within the region not triggering until the second tick
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.LengthSquared)
 			{
