@@ -216,8 +216,14 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, bool handleMultiple)
+		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, bool handleMultiple, bool toggleAutoQueue)
 		{
+			if (toggleAutoQueue)
+			{
+				World.IssueOrder(Order.ToggleAutoQueue(CurrentQueue.Actor, icon.Name, !CurrentQueue.AutoQueue));
+				return true;
+			}
+
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
 				Game.Sound.Play(TabClick);
@@ -245,16 +251,10 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
-		bool HandleRightClick(ProductionItem item, ProductionIcon icon, bool handleMultiple, bool toggleAutoQueue)
+		bool HandleRightClick(ProductionItem item, ProductionIcon icon, bool handleMultiple)
 		{
 			if (item == null)
 				return false;
-
-			if (toggleAutoQueue)
-			{
-				World.IssueOrder(Order.ToggleAutoQueue(CurrentQueue.Actor, icon.Name, !CurrentQueue.AutoQueue));
-				return true;
-			}
 
 			Game.Sound.Play(TabClick);
 
@@ -278,8 +278,8 @@ namespace OpenRA.Mods.Common.Widgets
 		bool HandleEvent(ProductionIcon icon, bool isLeftClick, bool handleMultiple, bool toggleAutoQueue)
 		{
 			var item = icon.Queued.FirstOrDefault();
-			var handled = isLeftClick ? HandleLeftClick(item, icon, handleMultiple)
-				: HandleRightClick(item, icon, handleMultiple, toggleAutoQueue);
+			var handled = isLeftClick ? HandleLeftClick(item, icon, handleMultiple, toggleAutoQueue)
+				: HandleRightClick(item, icon, handleMultiple);
 
 			if (!handled)
 				Game.Sound.Play(DisabledTabClick);
