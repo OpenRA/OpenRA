@@ -74,6 +74,6 @@ LST:
 	Cargo:
 		Types: Infantry, Vehicle
 		MaxWeight: 5
-		PipCount: 5
+		PipCount: -1
 		PassengerFacing: 0
 

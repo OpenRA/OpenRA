@@ -224,7 +224,7 @@ SAPC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
+		PipCount: -1
 		UnloadVoice: Unload
 
 SUBTANK:

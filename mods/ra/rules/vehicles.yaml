@@ -349,7 +349,7 @@ JEEP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
+		PipCount: -1
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -383,7 +383,7 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
+		PipCount: -1
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -742,7 +742,7 @@ STNK:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
-		PipCount: 4
+		PipCount: -1
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250

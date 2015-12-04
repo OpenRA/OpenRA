@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The maximum sum of Passenger.Weight that this actor can support.")]
 		public readonly int MaxWeight = 0;
 
-		[Desc("Number of pips to display when this actor is selected.")]
+		[Desc("Number of pips to display when this actor is selected.", "0 means no visible pips.", "-1 means same amount as MaxWeight.")]
 		public readonly int PipCount = 0;
 
 		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = Info.PipCount;
+			var numPips = Info.PipCount >= 0 ? Info.PipCount : Info.MaxWeight;
 
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * Info.MaxWeight / Info.PipCount;
+			var n = Info.PipCount >= 0 ? i * Info.MaxWeight / Info.PipCount : i;
 
 			foreach (var c in cargo)
 			{

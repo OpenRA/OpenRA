@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast it can dump it's carryage.")]
 		public readonly int UnloadTicksPerBale = 4;
 
-		[Desc("How many squares to show the fill level.")]
+		[Desc("How many squares to show the fill level.", "0 means no visible pips.", "-1 means same amount as Capacity.")]
 		public readonly int PipCount = 7;
 
 		public readonly int HarvestFacings = 0;
@@ -420,7 +420,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PipType GetPipAt(int i)
 		{
-			var n = i * Info.Capacity / Info.PipCount;
+			var n = Info.PipCount >= 0 ? i * Info.Capacity / Info.PipCount : i;
 
 			foreach (var rt in contents)
 				if (n < rt.Value)
@@ -433,7 +433,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var numPips = Info.PipCount;
+			var numPips = Info.PipCount >= 0 ? Info.PipCount : Info.Capacity;
 
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);

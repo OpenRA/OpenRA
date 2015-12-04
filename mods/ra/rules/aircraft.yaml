@@ -230,7 +230,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
-		PipCount: 8
+		PipCount: -1
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:

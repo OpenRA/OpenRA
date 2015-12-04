@@ -32,7 +32,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
-		PipCount: 10
+		PipCount: -1
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	Explodes:
@@ -124,7 +124,7 @@ ORCA:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 6
-		PipCount: 6
+		PipCount: -1
 		SelfReloads: true
 		ReloadCount: 2
 		SelfReloadTicks: 100
@@ -163,7 +163,7 @@ C17:
 		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10
-		PipCount: 10
+		PipCount: -1
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
 	Contrail@1:
