@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo;
+			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo / -Info.PipCount;
 
 			return Enumerable.Range(0, pips).Select(i =>
 				(CurrentAmmo * pips) / Info.Ammo > i ?

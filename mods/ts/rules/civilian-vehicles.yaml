@@ -96,7 +96,7 @@ BUS:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 20
-		PipCount: 5
+		PipCount: -4
 		UnloadVoice: Unload
 
 PICK:
@@ -117,7 +117,7 @@ PICK:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
-		PipCount: 5
+		PipCount: -1
 		UnloadVoice: Unload
 
 CAR:
@@ -183,7 +183,7 @@ TRAINCAR:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
-		PipCount: 5
+		PipCount: -2
 		UnloadVoice: Unload
 
 CARGOCAR:
@@ -195,6 +195,6 @@ CARGOCAR:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
-		PipCount: 5
+		PipCount: -2
 		UnloadVoice: Unload
 

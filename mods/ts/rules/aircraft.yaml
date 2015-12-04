@@ -138,7 +138,7 @@ ORCAB:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
-		PipCount: 2
+		PipCount: -5
 		ReloadCount: 5
 		ReloadTicks: 200
 		PipType: Ammo
@@ -254,7 +254,7 @@ SCRIN:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 15
-		PipCount: 3
+		PipCount: -5
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
@@ -292,7 +292,7 @@ APACHE:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 12
-		PipCount: 4
+		PipCount: -3
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:

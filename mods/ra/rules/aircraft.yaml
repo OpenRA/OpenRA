@@ -177,7 +177,7 @@ YAK:
 		EnableStances: false
 	AmmoPool:
 		Ammo: 18
-		PipCount: 6
+		PipCount: -3
 		ReloadTicks: 11
 	ReturnOnIdle:
 	SelectionDecorations:
@@ -331,7 +331,7 @@ HIND:
 	WithSpriteRotorOverlay:
 	AmmoPool:
 		Ammo: 24
-		PipCount: 6
+		PipCount: -4
 		ReloadTicks: 8
 	SelectionDecorations:
 		VisualBounds: 38,32

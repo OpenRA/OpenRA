@@ -76,7 +76,7 @@ HELI:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
-		PipCount: 5
+		PipCount: -2
 		SelfReloads: true
 		ReloadCount: 10
 		SelfReloadTicks: 200
