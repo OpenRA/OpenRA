@@ -62,17 +62,17 @@ GACTWR:
 		UpgradeMinEnabledLevel: 1
 	CanPowerDown:
 		IndicatorPalette: mouse
-	WithTurret@VULC:
+	WithSpriteTurret@VULC:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
 		Recoils: no
 		Sequence: turret-vulcan
-	WithTurret@ROCKET:
+	WithSpriteTurret@ROCKET:
 		UpgradeTypes: tower.rocket
 		UpgradeMinEnabledLevel: 1
 		Recoils: no
 		Sequence: turret-rocket
-	WithTurret@SAM:
+	WithSpriteTurret@SAM:
 		UpgradeTypes: tower.sam
 		UpgradeMinEnabledLevel: 1
 		Recoils: no

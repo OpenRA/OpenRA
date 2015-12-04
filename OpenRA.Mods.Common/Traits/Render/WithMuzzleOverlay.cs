@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 							() => info.IgnoreOffset ? WVec.Zero : armClosure.MuzzleOffset(self, barrel),
 							() => IsTraitDisabled || !visible[barrel],
 							() => false,
-							p => WithTurret.ZOffsetFromCenter(self, p, 2)));
+							p => RenderUtils.ZOffsetFromCenter(self, p, 2)));
 				}
 			}
 		}

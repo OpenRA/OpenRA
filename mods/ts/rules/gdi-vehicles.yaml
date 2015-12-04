@@ -145,7 +145,7 @@ MMCH:
 		ROT: 5
 	AttackTurreted:
 		Voice: Attack
-	WithTurret:
+	WithSpriteTurret:
 		Recoils: no
 	Armament:
 		Weapon: 120mm

@@ -28,7 +28,7 @@ NAPULS:
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
-	WithTurret:
+	WithSpriteTurret:
 		Sequence: turret
 	Power:
 		Amount: -150

@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => IsTraitDisabled || !buildComplete,
 				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete,
-				p => WithTurret.ZOffsetFromCenter(self, p, 1));
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}

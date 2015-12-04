@@ -114,7 +114,7 @@ APC:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
@@ -220,7 +220,7 @@ BGGY:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: BGGY.Husk
@@ -290,7 +290,7 @@ JEEP:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: JEEP.Husk
@@ -325,7 +325,7 @@ LTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: LTNK.Husk
@@ -359,7 +359,7 @@ MTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
@@ -387,7 +387,7 @@ HTNK:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
-	WithTurret:
+	WithSpriteTurret:
 	Turreted:
 		ROT: 3
 	Armament@PRIMARY:
@@ -445,7 +445,7 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
-	WithTurret:
+	WithSpriteTurret:
 		AimSequence: aim
 	AutoTarget:
 	SpawnActorOnDeath:
@@ -485,7 +485,7 @@ MLRS:
 		ReloadCount: 1
 		SelfReloadTicks: 100
 	AttackTurreted:
-	WithReloadingTurret:
+	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
 	AutoTarget:
 		InitialStanceAI: Defend
