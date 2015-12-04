@@ -18,6 +18,7 @@ BIGBLUE:
 	SeedsResource:
 		ResourceType: BlueTiberium
 		Interval: 100
+	-WithIdleOverlay:
 
 TREE01:
 	Inherits: ^Tree
