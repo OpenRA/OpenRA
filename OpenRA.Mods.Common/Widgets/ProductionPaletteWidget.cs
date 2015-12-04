@@ -405,9 +405,13 @@ namespace OpenRA.Mods.Common.Widgets
 					var first = icon.Queued[0];
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					var textColor = Color.White;
+					var totalString = total.ToString();
 
 					if (CurrentQueue.AutoQueue)
+					{
 						textColor = Color.Green;
+						totalString = "[" + totalString + "] " + (total - CurrentQueue.CountItemsAutoQueue(icon.Name)).ToString();
+					}
 
 					if (first.Done)
 					{
@@ -427,8 +431,8 @@ namespace OpenRA.Mods.Common.Widgets
 														 textColor, Color.Black, 1);
 					}
 
-					if (total > 1 || waiting)
-						overlayFont.DrawTextWithContrast(total.ToString(),
+					if (total > 1 || waiting || CurrentQueue.AutoQueue)
+						overlayFont.DrawTextWithContrast(totalString,
 														 icon.Pos + queuedOffset,
 														 textColor, Color.Black, 1);
 				}

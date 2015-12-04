@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string Faction { get; private set; }
 		public bool AutoQueue { get; private set; }
+		protected List<string> autoQueueList = new List<string>();
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
@@ -234,7 +235,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Disable AutoQueue when nothing is building
 			if (queue.Count == 0)
+			{
 				AutoQueue = false;
+				autoQueueList.Clear();
+			}
 
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
@@ -255,7 +259,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				case "StartProduction":
 					{
-						StartProduction(order.TargetString, order.ExtraData);
+						var queuePos = queue.Count;
+
+						if (AutoQueue)
+							queuePos = queue.Count - autoQueueList.Count;
+
+						StartProduction(order.TargetString, order.ExtraData, queuePos);
 						break;
 					}
 
@@ -279,6 +288,9 @@ namespace OpenRA.Mods.Common.Traits
 						if (BuildableItems().All(b => b.Name != order.TargetString))
 							return;
 
+						if (AutoQueue == true && order.ExtraData == 0)
+							autoQueueList.Clear();
+
 						AutoQueue = order.ExtraData == 1;
 						break;
 					}
@@ -299,7 +311,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (int)time;
 		}
 
-		protected void StartProduction(string itemName, uint numberToBuild)
+		protected void StartProduction(string itemName, uint numberToBuild, int queuePos)
 		{
 			var rules = self.World.Map.Rules;
 			var unit = rules.Actors[itemName];
@@ -342,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 						else if (!hasPlayedSound && time > 0)
 							hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
 					}
-				})));
+				})), queuePos);
 			}
 		}
 
@@ -357,7 +369,12 @@ namespace OpenRA.Mods.Common.Traits
 			var lastIndex = queue.FindLastIndex(a => a.Item == itemName);
 
 			if (lastIndex > 0)
+			{
 				queue.RemoveAt(lastIndex);
+
+				if (AutoQueue)
+				    autoQueueList.Remove(itemName);
+			}
 			else if (lastIndex == 0)
 			{
 				var item = queue[0];
@@ -368,6 +385,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void RemoveProduction()
 		{
+			if (AutoQueue)
+			    autoQueueList.Remove(queue[0].Item);
+
 			if (queue.Count != 0)
 				queue.RemoveAt(0);
 		}
@@ -375,15 +395,27 @@ namespace OpenRA.Mods.Common.Traits
 		public void FinishProduction()
 		{
 			var item = queue[0].Item;
-			RemoveProduction();
+			if (queue.Count != 0)
+				queue.RemoveAt(0);
 
 			if (AutoQueue)
-				StartProduction(item, 1);
+			{
+				StartProduction(item, 1, queue.Count);
+				autoQueueList.Add(item);
+
+				if (queue.Count <= autoQueueList.Count)
+					autoQueueList.Clear();
+			}
 		}
 
-		protected void BeginProduction(ProductionItem item)
+		protected void BeginProduction(ProductionItem item, int queuePos)
 		{
-			queue.Add(item);
+			queue.Insert(queuePos, item);
+		}
+
+		public long CountItemsAutoQueue(string itemName)
+		{
+			return autoQueueList.Count(pi => pi == itemName);
 		}
 
 		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
