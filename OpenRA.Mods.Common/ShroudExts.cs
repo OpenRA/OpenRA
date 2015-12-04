@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common
 	{
 		public static bool AnyExplored(this Shroud shroud, OccupiedCells cells)
 		{
+			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
 				if (shroud.IsExplored(cell.First))
 					return true;
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common
 
 		public static bool AnyVisible(this Shroud shroud, OccupiedCells cells)
 		{
+			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
 				if (shroud.IsVisible(cell.First))
 					return true;

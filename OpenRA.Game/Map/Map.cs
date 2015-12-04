@@ -1023,7 +1023,7 @@ namespace OpenRA
 			var uv = cell.ToMPos(this);
 			var terrainIndex = cachedTerrainIndexes[uv];
 
-			// Cache terrain indexes per cell on demand.
+			// PERF: Cache terrain indexes per cell on demand.
 			if (terrainIndex == InvalidCachedTerrainIndex)
 			{
 				var custom = CustomTerrain[uv];

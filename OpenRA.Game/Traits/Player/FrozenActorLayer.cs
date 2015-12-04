@@ -86,10 +86,9 @@ namespace OpenRA.Traits
 		{
 			var wasVisible = Visible;
 			Shrouded = true;
-
-			// We are doing the following LINQ manually for performance since this is a hot path.
-			// Visible = !Footprint.Any(shroud.IsVisible);
 			Visible = true;
+
+			// PERF: Avoid LINQ.
 			foreach (var puv in Footprint)
 			{
 				if (shroud.IsVisible(puv))
@@ -142,7 +141,7 @@ namespace OpenRA.Traits
 
 		public bool ShouldBeRemoved(Player owner)
 		{
-			// We use a loop here for performance reasons
+			// PERF: Avoid LINQ.
 			foreach (var rfa in removeFrozenActors)
 				if (rfa.RemoveActor(actor, owner))
 					return true;

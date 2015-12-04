@@ -114,6 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
+					// PERF: Minimize lookup cost by combining all state into one, and using an array rather than a dictionary.
 					var state = stateByPlayerIndex[i];
 					frozenActor = state.FrozenActor;
 					isVisible = !frozenActor.Visible;

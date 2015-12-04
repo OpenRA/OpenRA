@@ -226,6 +226,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void DirtyCells(IEnumerable<PPos> cells)
 		{
+			// PERF: Many cells in the shroud change every tick. We only track the changes here and defer the real work
+			// we need to do until we render. This allows us to avoid wasted work.
 			cellsDirty.UnionWith(cells);
 		}
 

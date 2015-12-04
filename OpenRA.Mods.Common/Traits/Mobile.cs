@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (c & cellCondition) == cellCondition;
 		}
 	}
@@ -132,6 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 			internal readonly TerrainInfo[] TerrainInfos;
 			internal WorldMovementInfo(World world, MobileInfo info)
 			{
+				// PERF: This struct allows us to cache the terrain info for the tileset used by the world.
+				// This allows us to speed up some performance-sensitive pathfinding calculations.
 				World = world;
 				TerrainInfos = info.TilesetTerrainInfo[world.TileSet];
 			}
@@ -217,6 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
+			// PERF: Avoid LINQ.
 			foreach (var otherActor in world.ActorMap.GetActorsAt(cell))
 				if (IsBlockedBy(self, otherActor, ignoreActor, check))
 					return false;
@@ -242,6 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			// If the other actor in our way cannot be crushed, we are blocked.
+			// PERF: Avoid LINQ.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
 			var lacksCrushability = true;
 			foreach (var crushable in crushables)

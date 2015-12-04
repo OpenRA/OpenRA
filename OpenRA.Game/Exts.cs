@@ -113,6 +113,7 @@ namespace OpenRA
 
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (k & mod) == mod;
 		}
 

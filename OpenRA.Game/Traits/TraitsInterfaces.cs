@@ -50,6 +50,7 @@ namespace OpenRA.Traits
 	{
 		public static bool HasStance(this Stance s, Stance stance)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (s & stance) == stance;
 		}
 	}
@@ -92,7 +93,11 @@ namespace OpenRA.Traits
 
 	public static class TargetModifiersExts
 	{
-		public static bool HasModifier(this TargetModifiers self, TargetModifiers m) { return (self & m) == m; }
+		public static bool HasModifier(this TargetModifiers self, TargetModifiers m)
+		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
+			return (self & m) == m;
+		}
 	}
 
 	public interface IOrderTargeter

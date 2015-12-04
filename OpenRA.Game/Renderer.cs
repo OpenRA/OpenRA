@@ -111,6 +111,7 @@ namespace OpenRA
 
 		public void SetViewportParams(int2 scroll, float zoom)
 		{
+			// PERF: Calling SetViewportParams on each renderer is slow. Only call it when things change.
 			var resolutionChanged = lastResolution != Resolution;
 			if (resolutionChanged)
 			{

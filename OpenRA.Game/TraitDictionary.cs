@@ -34,6 +34,9 @@ namespace OpenRA
 		}
 	}
 
+	/// <summary>
+	/// Provides efficient ways to query a set of actors by their traits.
+	/// </summary>
 	class TraitDictionary
 	{
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
@@ -161,6 +164,7 @@ namespace OpenRA
 
 			public IEnumerable<T> GetMultiple(uint actor)
 			{
+				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new MultipleEnumerable(this, actor);
 			}
@@ -197,6 +201,7 @@ namespace OpenRA
 
 			public IEnumerable<TraitPair<T>> All()
 			{
+				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new AllEnumerable(this);
 			}

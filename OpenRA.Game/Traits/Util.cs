@@ -74,10 +74,15 @@ namespace OpenRA.Traits
 
 		public static Activity RunActivity(Actor self, Activity act)
 		{
+			// PERF: If there are no activities we can bail straight away and save ourselves a call to
+			// Stopwatch.GetTimestamp.
 			if (act == null)
 				return act;
 
-			// Note - manual iteration here for performance due to high call volume.
+			// PERF: This is a hot path and must run with minimal added overhead.
+			// Calling Stopwatch.GetTimestamp is a bit expensive, so we enumerate manually to allow us to call it only
+			// once per iteration in the normal case.
+			// See also: DoTimed
 			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
 			var start = Stopwatch.GetTimestamp();
 			while (act != null)

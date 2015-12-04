@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Tick(Actor self)
 		{
+			// PERF: Avoid LINQ.
 			isActive = false;
 			foreach (var x in self.World.ActorsWithTrait<Production>())
 			{

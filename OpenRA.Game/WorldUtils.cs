@@ -43,7 +43,10 @@ namespace OpenRA
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
-			// Note - manual enumeration here for performance due to high call volume.
+			// PERF: This is a hot path and must run with minimal added overhead.
+			// Calling Stopwatch.GetTimestamp is a bit expensive, so we enumerate manually to allow us to call it only
+			// once per iteration in the normal case.
+			// See also: RunActivity
 			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
 			using (var enumerator = e.GetEnumerator())
 			{
