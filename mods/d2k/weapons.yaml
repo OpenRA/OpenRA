@@ -530,25 +530,44 @@ Sound:
 	ReloadDelay: 90
 	Range: 5c0
 	Report: SONIC1.WAV
-	Projectile: LaserZap
-		BeamWidth: 10
-		BeamDuration: 8
-		UsePlayerColor: true
+	Projectile: AreaBeam
+		Speed: 0c128
+		Duration: 4 # Has a length of 0c512
+		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
+		Width: 0c512
+		Falloff: 100, 100, 50
+		Range: 0, 6c0, 11c0
+		BeyondTargetRange: 1c0
+		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 100, 0
-		Damage: 500	#80 D2k but damages through all in path
+		Range: 0, 32
+		Falloff: 100, 100
+		Damage: 150
+		AffectsParent: false
+		ValidStances: Neutral, Enemy
 		Versus:
 			wall: 50
 			building: 60
 			heavy: 60
 			invulnerable: 0
-			cy: 20
-			harvester: 50
+ 			cy: 20
+ 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-	Warhead@3Eff: CreateEffect
-		ImpactSound: SONIC3.WAV
-		Delay: 10
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 50, 50 # Only does half damage to friendly units
+		Damage: 150
+		InvalidTargets: Sonictank # Does not affect friendly sonic tanks at all
+		AffectsParent: false
+		ValidStances: Ally
+		Versus:
+			wall: 50
+			building: 60
+			heavy: 60
+			invulnerable: 0
+ 			cy: 20
+ 			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 
 Heal:
 	ReloadDelay: 160

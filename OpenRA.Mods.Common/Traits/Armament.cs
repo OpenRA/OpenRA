@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			var barrel = Barrels[Burst % Barrels.Length];
-			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
+			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
 
 			var args = new ProjectileArgs
@@ -204,7 +204,8 @@ namespace OpenRA.Mods.Common.Traits
 				RangeModifiers = self.TraitsImplementing<IRangeModifier>()
 					.Select(a => a.GetRangeModifier()).ToArray(),
 
-				Source = muzzlePosition,
+				Source = muzzlePosition(),
+				CurrentSource = muzzlePosition,
 				SourceActor = self,
 				PassiveTarget = target.CenterPosition,
 				GuidedTarget = target

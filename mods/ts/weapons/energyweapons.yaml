@@ -2,14 +2,35 @@ LtRail:
 	ReloadDelay: 60
 	Range: 6c0
 	Report: BIGGGUN1.AUD
-	Projectile: LaserZap
-		Speed: 1c682
-		BeamWidth: 1
-		BeamDuration: 10
+	Projectile: AreaBeam
+		Speed: 20c0
+		Duration: 3
+		DamageInterval: 2
+		Width: 0c128
+		BeyondTargetRange: 0c64
+		Blockable: true
 		Color: 0080FFC8
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
+		Range: 0, 32
+		Falloff: 100, 100
 		Damage: 150
+		InfDeath: 6
+		AffectsParent: false
+		ValidStances: Neutral, Enemy
+		Versus:
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 50, 50 # Only does half damage to friendly units
+		Damage: 150
+		InfDeath: 6
+		AffectsParent: false
+		ValidStances: Ally
 		Versus:
 			None: 100
 			Wood: 130
@@ -24,9 +45,14 @@ MechRailgun:
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
 	BurstDelay: 60
 	Report: RAILUSE5.AUD
-	Projectile: LaserZap
+	Projectile: AreaBeam
+		Speed: 20c0
+		Duration: 3
+		DamageInterval: 2
+		Width: 0c128
+		BeyondTargetRange: 0c64
+		Blockable: true
 		Color: 00FFFFC8
-		BeamWidth: 3
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 200
@@ -39,21 +65,39 @@ MechRailgun:
 		DamageTypes: Prone100Percent, TriggerProne, FireDeath
 
 SonicZap:
-	ReloadDelay: 120
+	ReloadDelay: 180
 	Range: 6c0
 	Charges: yes
 	Report: SONIC4.AUD
-	Projectile: LaserZap
+	Projectile: AreaBeam
+		Speed: 0c128
+		Duration: 90
+		DamageInterval: 5 # Roughly 18 impacts.
+		Width: 0c384
+		BeyondTargetRange: 0c256
+		Blockable: true
 		Color: 00FFFFC8
-		BeamWidth: 12
-		BeamDuration: 50
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 100
+		Range: 0, 32
+		Falloff: 100, 100
+		Damage: 8
+		AffectsParent: false
+		ValidStances: Neutral, Enemy
 		Versus:
 			Heavy: 80
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 50, 50
+		Damage: 8
+		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
+		AffectsParent: false
+		ValidStances: Ally
+		Versus:
+			Heavy: 80
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 
 CyCannon:
 	ReloadDelay: 50

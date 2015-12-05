@@ -40,6 +40,20 @@ namespace OpenRA
 		/// </summary>
 		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
+		/// <summary>
+		/// Returns the linear interpolation between points 'a' and 'b'
+		/// </summary>
+		public static WPos Lerp(WPos a, WPos b, long mul, long div)
+		{
+			// The intermediate variables may need more precision than
+			// an int can provide, so we can't use WPos.
+			var x = (int)(a.X + (b.X - a.X) * mul / div);
+			var y = (int)(a.Y + (b.Y - a.Y) * mul / div);
+			var z = (int)(a.Z + (b.Z - a.Z) * mul / div);
+
+			return new WPos(x, y, z);
+		}
+
 		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)
 		{
 			// Start with a linear lerp between the points

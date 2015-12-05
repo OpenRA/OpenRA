@@ -34,5 +34,31 @@ namespace OpenRA.Mods.Common.Traits
 					.Where(t => t.Info.Height.Length >= dat.Length)
 					.Any(Exts.IsTraitEnabled));
 		}
+
+		public static bool AnyBlockingActorsBetween(World world, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
+		{
+			var actors = world.FindActorsOnLine(start, end, width, overscan);
+			var length = (end - start).Length;
+
+			foreach (var a in actors)
+			{
+				var blockers = a.TraitsImplementing<BlocksProjectiles>()
+					.Where(Exts.IsTraitEnabled).ToList();
+
+				if (!blockers.Any())
+					continue;
+
+				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
+				var dat = world.Map.DistanceAboveTerrain(hitPos);
+				if ((hitPos - start).Length < length && blockers.Any(t => t.Info.Height.Length >= dat.Length))
+				{
+					hit = hitPos;
+					return true;
+				}
+			}
+
+			hit = WPos.Zero;
+			return false;
+		}
 	}
 }
