@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public PaletteReference IconDarkenPalette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
+		public long AutoQueueCount;
 	}
 
 	public class ProductionPaletteWidget : Widget
@@ -190,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
-			return HandleEvent(icon, mi.Button == MouseButton.Left, mi.Modifiers.HasModifier(Modifiers.Shift));
+			return HandleEvent(icon, mi.Button == MouseButton.Left, mi.Modifiers.HasModifier(Modifiers.Shift), mi.Modifiers.HasModifier(Modifiers.Ctrl));
 		}
 
 		protected bool PickUpCompletedBuildingIcon(ProductionIcon icon, ProductionItem item)
@@ -216,8 +217,14 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, bool handleMultiple)
+		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, bool handleMultiple, bool toggleAutoQueue)
 		{
+			if (toggleAutoQueue)
+			{
+				World.IssueOrder(Order.ToggleAutoQueue(CurrentQueue.Actor, icon.Name, !CurrentQueue.AutoQueue));
+				return true;
+			}
+
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
 				Game.Sound.Play(TabClick);
@@ -269,10 +276,10 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		bool HandleEvent(ProductionIcon icon, bool isLeftClick, bool handleMultiple)
+		bool HandleEvent(ProductionIcon icon, bool isLeftClick, bool handleMultiple, bool toggleAutoQueue)
 		{
 			var item = icon.Queued.FirstOrDefault();
-			var handled = isLeftClick ? HandleLeftClick(item, icon, handleMultiple)
+			var handled = isLeftClick ? HandleLeftClick(item, icon, handleMultiple, toggleAutoQueue)
 				: HandleRightClick(item, icon, handleMultiple);
 
 			if (!handled)
@@ -288,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var hotkey = Hotkey.FromKeyInput(e);
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, true, false) : false;
+			return toBuild != null ? HandleEvent(toBuild, true, false, false) : false;
 		}
 
 		public void RefreshIcons()
@@ -335,7 +342,8 @@ namespace OpenRA.Mods.Common.Widgets
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = new float2(rect.Location),
-					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
+					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
+					AutoQueueCount = CurrentQueue.CountItemsAutoQueue(item.Name)
 				};
 
 				icons.Add(rect, pi);
@@ -398,26 +406,37 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					var first = icon.Queued[0];
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
+					var textColor = Color.White;
+					var totalString = total.ToString();
+
+					if (CurrentQueue.AutoQueue)
+					{
+						textColor = Color.Green;
+						totalString = "[" + totalString + "] " + (total - icon.AutoQueueCount).ToString();
+					}
+
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
-							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, Color.White, Color.Black, 1);
+							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, textColor, Color.Black, 1);
 						else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
 							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, ReadyTextAltColor, Color.Black, 1);
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
 														 icon.Pos + holdOffset,
-														 Color.White, Color.Black, 1);
+														 textColor, Color.Black, 1);
 					else if (!waiting)
+					{
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
 														 icon.Pos + timeOffset,
-														 Color.White, Color.Black, 1);
+														 textColor, Color.Black, 1);
+					}
 
-					if (total > 1 || waiting)
-						overlayFont.DrawTextWithContrast(total.ToString(),
+					if (total > 1 || waiting || CurrentQueue.AutoQueue)
+						overlayFont.DrawTextWithContrast(totalString,
 														 icon.Pos + queuedOffset,
-														 Color.White, Color.Black, 1);
+														 textColor, Color.Black, 1);
 				}
 			}
 		}

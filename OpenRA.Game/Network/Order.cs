@@ -152,6 +152,11 @@ namespace OpenRA
 			return new Order("StartProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
+		public static Order ToggleAutoQueue(Actor subject, string item, bool on)
+		{
+			return new Order("ToggleAutoQueue", subject, false) { ExtraData = on ? 1u : 0u, TargetString = item };
+		}
+
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
 			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };
