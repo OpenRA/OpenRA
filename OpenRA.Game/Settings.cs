@@ -96,13 +96,25 @@ namespace OpenRA
 	public class GraphicSettings
 	{
 		public string Renderer = "Default";
+
+		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
+
+		[Desc("Screen resolution in fullscreen mode.")]
 		public int2 FullscreenSize = new int2(0, 0);
+
+		[Desc("Screen resolution in windowed mode.")]
 		public int2 WindowedSize = new int2(1024, 768);
+
 		public bool HardwareCursors = true;
+
 		public bool PixelDouble = false;
 		public bool CursorDouble = false;
+
+		[Desc("Add a frame rate limiter. It is recommended to not disable this.")]
 		public bool CapFramerate = true;
+
+		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
 		public int BatchSize = 8192;
