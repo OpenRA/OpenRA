@@ -12,6 +12,20 @@ ok(ActivateFile(fullpath..':10'), "Load fullpath/file:line.")
 ok(not ActivateFile(fullpath..'/foo.bar:10'), "Doesn't load non-existent fullpath/file:line.")
 ClosePage() -- close activated file
 
+local sep = GetPathSeparator()
+like(FileSysGetRecursive('t', true, 'test.lua', {path = true})[1], "^t"..sep.."test.lua$",
+  "Traversing `t`, including path in the results (1/6)")
+like(FileSysGetRecursive('t/', true, 'test.lua', {path = true})[1], "^t"..sep.."test.lua$",
+  "Traversing `t/`, including path in the results (2/6)")
+like(FileSysGetRecursive('t\\', true, 'test.lua', {path = true})[1], "^t"..sep.."test.lua$",
+  "Traversing `t\\`, including path in the results (3/6)")
+is(FileSysGetRecursive('t', true, 'test.lua', {path = false})[1], "test.lua",
+  "Traversing `t`, not including path in the results (4/6)")
+is(FileSysGetRecursive('t/', true, 'test.lua', {path = false})[1], "test.lua",
+  "Traversing `t/`, not including path in the results (5/6)")
+is(FileSysGetRecursive('t\\', true, 'test.lua', {path = false})[1], "test.lua",
+  "Traversing `t\\`, not including path in the results (6/6)")
+
 local luas = FileSysGetRecursive('t', true, '*.lua')
 local more = FileSysGetRecursive('t', true, '*.lua; *.more')
 cmp_ok(#luas, '>', 0, "List of files is returned for '.lua' extension.")

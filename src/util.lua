@@ -142,8 +142,10 @@ function FileSysGetRecursive(path, recursive, spec, opts)
   local content = {}
   local showhidden = ide.config and ide.config.showhiddenfiles
   local sep = GetPathSeparator()
+  -- trip trailing separator and adjust the separator in the path
+  path = path:gsub("[\\/]$",""):gsub("[\\/]", sep)
   local queue = {path}
-  local pathpatt = "^"..EscapeMagic(path)
+  local pathpatt = "^"..EscapeMagic(path)..sep.."?"
   local optyield = (opts or {}).yield
   local optfolder = (opts or {}).folder ~= false
   local optsort = (opts or {}).sort ~= false
@@ -223,7 +225,7 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     local found, file = dir:GetFirst("*",
       wx.wxDIR_DIRS + ((showhidden == true or showhidden == wx.wxDIR_DIRS) and wx.wxDIR_HIDDEN or 0))
     while found do
-      local fname = wx.wxFileName(path, file):GetFullPath()
+      local fname = path..sep..file
       if optfolder and ismatch(fname..sep, inmasks, exmasks) then
         report((optpath and fname or fname:gsub(pathpatt, ""))..sep)
       end
@@ -241,7 +243,7 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     found, file = dir:GetFirst(spec or "*",
       wx.wxDIR_FILES + ((showhidden == true or showhidden == wx.wxDIR_FILES) and wx.wxDIR_HIDDEN or 0))
     while found do
-      local fname = wx.wxFileName(path, file):GetFullPath()
+      local fname = path..sep..file
       if ismatch(fname, inmasks, exmasks) then
         report(optpath and fname or fname:gsub(pathpatt, ""))
       end
