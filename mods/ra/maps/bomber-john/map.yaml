@@ -899,8 +899,6 @@ Rules:
 		Tooltip:
 			Name: Bomb
 			Description: Bomb (Hotkey B)
-		ProximityCaptor:
-			Types: Mine
 		SelfHealing:
 			Step: -1
 			Ticks: 1

@@ -485,8 +485,6 @@
 		Palette: effect
 	WithWallSpriteBody:
 	AutoTargetIgnore:
-	ProximityCaptor:
-		Types: Wall
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
@@ -502,8 +500,6 @@
 	Tooltip:
 		Name: Civilian Building
 		GenericVisibility: None
-	ProximityCaptor:
-		Types: CivilianBuilding
 	FrozenUnderFog:
 		StartsRevealed: true
 
@@ -552,8 +548,6 @@
 		Name: Field
 	-Targetable:
 	-Demolishable:
-	ProximityCaptor:
-		Types: CivilianField
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
@@ -570,8 +564,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	ProximityCaptor:
-		Types: Tree
 	Health:
 		HP: 500
 	Armor:
@@ -600,8 +592,6 @@
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
 		Damage: 2
-	ProximityCaptor:
-		Types: Husk
 	Capturable:
 		Type: husk
 		AllowAllies: true
@@ -647,8 +637,6 @@
 		CustomBounds: 96,48
 	Health:
 		HP: 1000
-	ProximityCaptor:
-		Types: Bridge
 	Armor:
 		Type: Concrete
 	AutoTargetIgnore:
@@ -667,8 +655,6 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
-	ProximityCaptor:
-		Types: Tree
 	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
