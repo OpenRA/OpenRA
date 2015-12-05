@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "ToggleAutoQueue":
 					{
 						// Toggle it for right queue only
-						if (BuildableItems().All(b => b.Name != order.TargetString))
+						if (AllItems().All(b => b.Name != order.TargetString))
 							return;
 
 						if (AutoQueue == true && order.ExtraData == 0)
@@ -371,9 +371,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (lastIndex > 0)
 			{
 				queue.RemoveAt(lastIndex);
-
-				if (AutoQueue)
-				    autoQueueList.Remove(itemName);
+				AutoQueueRemove(itemName);
 			}
 			else if (lastIndex == 0)
 			{
@@ -385,11 +383,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void RemoveProduction()
 		{
-			if (AutoQueue)
-			    autoQueueList.Remove(queue[0].Item);
-
+			var item = queue[0].Item;
 			if (queue.Count != 0)
 				queue.RemoveAt(0);
+
+			AutoQueueRemove(item);
 		}
 
 		public void FinishProduction()
@@ -411,6 +409,17 @@ namespace OpenRA.Mods.Common.Traits
 		protected void BeginProduction(ProductionItem item, int queuePos)
 		{
 			queue.Insert(queuePos, item);
+		}
+
+		protected void AutoQueueRemove(string itemName)
+		{
+			if (AutoQueue)
+			{
+				autoQueueList.Remove(itemName);
+
+				if (queue.Count <= autoQueueList.Count)
+					autoQueueList.Clear();
+			}
 		}
 
 		public long CountItemsAutoQueue(string itemName)

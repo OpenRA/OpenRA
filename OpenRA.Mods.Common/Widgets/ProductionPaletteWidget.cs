@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public PaletteReference IconDarkenPalette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
+		public long AutoQueueCount;
 	}
 
 	public class ProductionPaletteWidget : Widget
@@ -341,7 +342,8 @@ namespace OpenRA.Mods.Common.Widgets
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = new float2(rect.Location),
-					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
+					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
+					AutoQueueCount = CurrentQueue.CountItemsAutoQueue(item.Name)
 				};
 
 				icons.Add(rect, pi);
@@ -410,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (CurrentQueue.AutoQueue)
 					{
 						textColor = Color.Green;
-						totalString = "[" + totalString + "] " + (total - CurrentQueue.CountItemsAutoQueue(icon.Name)).ToString();
+						totalString = "[" + totalString + "] " + (total - icon.AutoQueueCount).ToString();
 					}
 
 					if (first.Done)
