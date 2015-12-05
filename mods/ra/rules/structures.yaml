@@ -531,7 +531,7 @@ PBOX:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
+		PipCount: -1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
 	AttackGarrisoned:
@@ -578,7 +578,7 @@ HBOX:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
+		PipCount: -1
 		InitialUnits: e1
 	-EmitInfantryOnSell:
 	DetectCloaked:

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Initial ammo the actor is created with. Defaults to Ammo.")]
 		public readonly int InitialAmmo = -1;
 
-		[Desc("Defaults to value in Ammo. 0 means no visible pips.")]
+		[Desc("Defaults to value in Ammo.", "0 means no visible pips.", "-1 means same amount as Ammo.")]
 		public readonly int PipCount = -1;
 
 		[Desc("PipType to use for loaded ammo.")]
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo;
+			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo / -Info.PipCount;
 
 			return Enumerable.Range(0, pips).Select(i =>
 				(CurrentAmmo * pips) / Info.Ammo > i ?

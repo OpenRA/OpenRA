@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 	class StoresResourcesInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
-		[Desc("Number of little squares used to display how filled unit is.")]
+		[Desc("Number of little squares used to display how filled unit is.", "0 means no visible pips.", "-1 means same amount as Capacity",
+			"< -1 means Capacity / -PipCount pips.")]
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
 		[FieldLoader.Require]
@@ -66,8 +67,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
-			return Enumerable.Range(0, info.PipCount).Select(i =>
-				player.Resources * info.PipCount > i * player.ResourceCapacity
+			var numPips = info.PipCount >= 0 ? info.PipCount : info.Capacity / -info.PipCount;
+			return Enumerable.Range(0, numPips).Select(i =>
+				player.Resources * numPips > i * player.ResourceCapacity
 				? info.PipColor : PipType.Transparent);
 		}
 

@@ -20,7 +20,7 @@ DPOD:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
-		PipCount: 1
+		PipCount: -1
 		UnloadVoice: Move
 	Armament:
 		Weapon: Vulcan2
@@ -28,7 +28,7 @@ DPOD:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
+		PipCount: -1
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -57,7 +57,7 @@ DSHP:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
+		PipCount: -1
 		UnloadVoice: Move
 	Hovers:
 
@@ -94,7 +94,7 @@ ORCA:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
-		PipCount: 5
+		PipCount: -1
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -138,7 +138,7 @@ ORCAB:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
-		PipCount: 2
+		PipCount: -5
 		ReloadCount: 5
 		ReloadTicks: 200
 		PipType: Ammo
@@ -178,7 +178,7 @@ ORCATRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
-		PipCount: 5
+		PipCount: -1
 		UnloadVoice: Move
 	Hovers@AIRBORNE:
 		UpgradeTypes: airborne
@@ -254,7 +254,7 @@ SCRIN:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 15
-		PipCount: 3
+		PipCount: -5
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
@@ -292,7 +292,7 @@ APACHE:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 12
-		PipCount: 4
+		PipCount: -3
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:

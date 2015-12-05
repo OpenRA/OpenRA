@@ -177,7 +177,7 @@ YAK:
 		EnableStances: false
 	AmmoPool:
 		Ammo: 18
-		PipCount: 6
+		PipCount: -3
 		ReloadTicks: 11
 	ReturnOnIdle:
 	SelectionDecorations:
@@ -230,7 +230,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
-		PipCount: 8
+		PipCount: -1
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
@@ -331,7 +331,7 @@ HIND:
 	WithSpriteRotorOverlay:
 	AmmoPool:
 		Ammo: 24
-		PipCount: 6
+		PipCount: -4
 		ReloadTicks: 8
 	SelectionDecorations:
 		VisualBounds: 38,32
