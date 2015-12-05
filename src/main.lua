@@ -173,6 +173,7 @@ ide = {
     singleinstance = false,
     singleinstanceport = 0xe493,
     showmemoryusage = false,
+    showhiddenfiles = false,
     hidpi = false, -- HiDPI/Retina display support
     hotexit = false,
     -- file exclusion lists

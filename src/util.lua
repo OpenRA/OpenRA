@@ -140,6 +140,7 @@ end
 
 function FileSysGetRecursive(path, recursive, spec, opts)
   local content = {}
+  local showhidden = ide.config and ide.config.showhiddenfiles
   local sep = GetPathSeparator()
   local queue = {path}
   local pathpatt = "^"..EscapeMagic(path)
@@ -219,7 +220,8 @@ function FileSysGetRecursive(path, recursive, spec, opts)
     -- recursion is done in all folders if requested,
     -- but only those folders that match the spec are returned
     local _ = wx.wxLogNull() -- disable error reporting; will report as needed
-    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
+    local found, file = dir:GetFirst("*",
+      wx.wxDIR_DIRS + ((showhidden == true or showhidden == wx.wxDIR_DIRS) and wx.wxDIR_HIDDEN or 0))
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
       if optfolder and ismatch(fname..sep, inmasks, exmasks) then
@@ -236,7 +238,8 @@ function FileSysGetRecursive(path, recursive, spec, opts)
       end
       found, file = dir:GetNext()
     end
-    found, file = dir:GetFirst(spec or "*", wx.wxDIR_FILES)
+    found, file = dir:GetFirst(spec or "*",
+      wx.wxDIR_FILES + ((showhidden == true or showhidden == wx.wxDIR_FILES) and wx.wxDIR_HIDDEN or 0))
     while found do
       local fname = wx.wxFileName(path, file):GetFullPath()
       if ismatch(fname, inmasks, exmasks) then
