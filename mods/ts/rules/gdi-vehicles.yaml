@@ -27,6 +27,7 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 	-WithVoxelBody:
 	WithVoxelWaterBody:
 	LeavesTrails:

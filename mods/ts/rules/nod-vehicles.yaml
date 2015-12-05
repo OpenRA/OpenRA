@@ -226,6 +226,7 @@ SAPC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 
 SUBTANK:
 	Inherits: ^VoxelTank

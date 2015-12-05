@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
+	public class MobileInfo : UpgradableTraitInfo, IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
+		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
 		static object LoadSpeeds(MiniYaml y)
 		{
@@ -304,8 +304,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync, IDeathActorInitModifier,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
+	public class Mobile : UpgradableTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync,
+		IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -313,7 +313,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
-		public readonly MobileInfo Info;
 		public bool IsMoving { get; set; }
 
 		int facing;
@@ -349,9 +348,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
+			: base(info)
 		{
 			self = init.Self;
-			Info = info;
 
 			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
@@ -438,7 +437,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.Remove(self);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, Info); } }
+		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, this); } }
 
 		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -629,6 +628,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Nudge(Actor self, Actor nudger, bool force)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			/* initial fairly braindead implementation. */
 			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
 				return;		/* don't allow ourselves to be pushed around
@@ -691,16 +693,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		class MoveOrderTargeter : IOrderTargeter
 		{
-			readonly MobileInfo unitType;
+			readonly Mobile mobile;
 			readonly bool rejectMove;
-			readonly IDisableMove[] moveDisablers;
 			public bool OverrideSelection { get { return false; } }
 
-			public MoveOrderTargeter(Actor self, MobileInfo unitType)
+			public MoveOrderTargeter(Actor self, Mobile unit)
 			{
-				this.unitType = unitType;
+				this.mobile = unit;
 				rejectMove = !self.AcceptsOrder("Move");
-				moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 			}
 
 			public string OrderID { get { return "Move"; } }
@@ -717,12 +717,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? unitType.Cursor) : unitType.BlockedCursor;
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
-				if ((!explored && !unitType.MoveIntoShroud)
-					|| (explored && unitType.MovementCostForCell(self.World, location) == int.MaxValue)
-					|| moveDisablers.Any(d => d.MoveDisabled(self)))
-					cursor = unitType.BlockedCursor;
+				if (mobile.IsTraitDisabled
+					|| (!explored && !mobile.Info.MoveIntoShroud)
+					|| (explored && mobile.Info.MovementCostForCell(self.World, location) == int.MaxValue))
+					cursor = mobile.Info.BlockedCursor;
 
 				return true;
 			}

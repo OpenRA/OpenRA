@@ -334,6 +334,8 @@ JEEP:
 	Mobile:
 		ROT: 10
 		Speed: 170
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -350,6 +352,7 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
+		LoadingUpgrades: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -371,6 +374,8 @@ APC:
 	Mobile:
 		Speed: 142
 		Crushes: wall, mine, crate, infantry
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -384,6 +389,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		LoadingUpgrades: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -727,6 +733,8 @@ STNK:
 	Mobile:
 		Speed: 142
 		Crushes: wall, mine, crate, infantry
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 7c0
 	AutoTarget:
@@ -743,6 +751,7 @@ STNK:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 4
+		LoadingUpgrades: notmobile
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250

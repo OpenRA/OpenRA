@@ -127,7 +127,7 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	DeployToUpgrade:
-		DeployedUpgrades: deployed
+		DeployedUpgrades: deployed, notmobile
 		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
@@ -139,9 +139,6 @@ LPST:
 		UpgradeTypes: undeployed
 		UpgradeMinEnabledLevel: 1
 	WithSpriteBody@deployed:
-		UpgradeTypes: undeployed
-		UpgradeMaxEnabledLevel: 0
-	DisableOnUpgrade:
 		UpgradeTypes: undeployed
 		UpgradeMaxEnabledLevel: 0
 	DetectCloaked:

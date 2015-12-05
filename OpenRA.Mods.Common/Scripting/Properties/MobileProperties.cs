@@ -61,5 +61,8 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Self.QueueActivity(new EnterTransport(Self, transport, 1, true));
 		}
+
+		[Desc("Whether the actor can move (false if immobilized).")]
+		public bool IsMobile { get { return !mobile.IsTraitDisabled; } }
 	}
 }

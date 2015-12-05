@@ -2510,6 +2510,179 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Mobile actors immobilized by Carryable, Cargo, DeployToUpgrade, and/or others using upgrade(s)
+				if (engineVersion < 20151204 && depth == 0)
+				{
+					var notMobile = "notmobile";
+
+					var mobileNode = node.Value.Nodes.Find(n => n.Key == "Mobile");
+					var carryableNode = node.Value.Nodes.Find(n => n.Key == "Carryable");
+					var cargoNode = node.Value.Nodes.Find(n => n.Key == "Cargo");
+					var deployToUpgradeNode = node.Value.Nodes.Find(n => n.Key == "DeployToUpgrade");
+					var disableUpgradeNode = node.Value.Nodes.Find(n => n.Key == "DisableUpgrade");
+					var disableMovementOnUpgradeNode = node.Value.Nodes.Find(n => n.Key == "DisableMovementOnUpgrade");
+
+					Action<MiniYamlNode, string> addNotMobileToTraitUpgrades = (trait, upgradesKey) =>
+					{
+						if (trait != null)
+						{
+							var upgrades = trait.Value.Nodes.Find(u => u.Key == upgradesKey);
+							if (upgrades == null)
+								trait.Value.Nodes.Add(new MiniYamlNode(upgradesKey, notMobile));
+							else if (string.IsNullOrEmpty(upgrades.Value.Value))
+								upgrades.Value.Value = notMobile;
+							else if (!upgrades.Value.Value.Contains(notMobile))
+								upgrades.Value.Value += ", " + notMobile;
+						}
+					};
+
+					if (mobileNode != null)
+					{
+						var mobileUpgrades = mobileNode.Value.Nodes.Find(n => n.Key == "UpgradeTypes");
+						var mobileUpgradeMaxEnabledLevel = mobileNode.Value.Nodes.Find(n => n.Key == "UpgradeMaxEnabledLevel");
+						var comma = new char[] { ',' };
+
+						Func<bool> addUpgradeMaxEnabledLevelNode = () =>
+						{
+							if (mobileUpgradeMaxEnabledLevel == null)
+							{
+								mobileUpgradeMaxEnabledLevel = new MiniYamlNode("UpgradeMaxEnabledLevel", "0");
+								mobileNode.Value.Nodes.Add(mobileUpgradeMaxEnabledLevel);
+								return true;
+							}
+							else
+								return mobileUpgradeMaxEnabledLevel.Value.Value == "0";
+						};
+
+						// If exactly one upgrade type is in UpgradeTypes and UpgradeMaxEnabledLevel is/can be 0 , then use it as notmobile
+						if (mobileUpgrades != null && !string.IsNullOrEmpty(mobileUpgrades.Value.Value)
+							&& !mobileUpgrades.Value.Value.Contains(",") && addUpgradeMaxEnabledLevelNode())
+							notMobile = mobileUpgrades.Value.Value;
+
+						if (mobileUpgradeMaxEnabledLevel != null && mobileUpgradeMaxEnabledLevel.Value.Value != "0")
+							Console.WriteLine("\t\t" + node.Key + " actor rules may require manual upgrading for immobilization upgrade logic.");
+						else
+						{
+							Action<string> addImmobilizeUpgradeType = upgradeType =>
+							{
+								if (mobileUpgrades == null)
+								{
+									mobileUpgrades = new MiniYamlNode("UpgradeTypes", upgradeType);
+									mobileNode.Value.Nodes.Add(mobileUpgrades);
+								}
+								else if (string.IsNullOrEmpty(mobileUpgrades.Value.Value))
+									mobileUpgrades.Value.Value = upgradeType;
+								else if (!mobileUpgrades.Value.Value.Split(comma).Contains(upgradeType))
+									mobileUpgrades.Value.Value += ", " + upgradeType;
+							};
+
+							Predicate<string> addImmobilizeUpgradeTypes = upgradeTypes =>
+							{
+								if (string.IsNullOrEmpty(upgradeTypes))
+									return false;
+
+								foreach (var upgradeType in upgradeTypes.Split(comma))
+									addImmobilizeUpgradeType(upgradeType);
+								return true;
+							};
+
+							Predicate<MiniYamlNode> addUpgradeTypeFromTrait = trait =>
+							{
+								var upgradeTypesNode = trait.Value.Nodes.Find(n => n.Key == "UpgradeTypes");
+								if (upgradeTypesNode == null)
+									return false;
+
+								addUpgradeMaxEnabledLevelNode();
+								return addImmobilizeUpgradeTypes(upgradeTypesNode.Value.Value);
+							};
+
+							var noticeWritten = false;
+
+							Action writeNotice = () =>
+							{
+								if (noticeWritten)
+									return;
+								Console.WriteLine("\t\t" + node.Key + " actor rules may require manual upgrading for immobilization upgrade logic.");
+								noticeWritten = true;
+							};
+
+							if (disableUpgradeNode != null && !addUpgradeTypeFromTrait(disableUpgradeNode))
+							{
+								writeNotice();
+								Console.WriteLine("\t\t\tOne or more upgrades may need to be copied from the DisableUpgrade trait to the Mobile trait.");
+							}
+
+							if (disableMovementOnUpgradeNode != null)
+							{
+								if (addUpgradeTypeFromTrait(disableMovementOnUpgradeNode))
+									parent.Value.Nodes.Remove(disableMovementOnUpgradeNode);
+								else
+								{
+									writeNotice();
+									Console.WriteLine("\t\t\tOne or more upgrades may need to be moved from the DisableMovementOnUpgrade trait to the Mobile trait.");
+									Console.WriteLine("\t\t\t\tRemember to remove the DisableMovementOnUpgrade trait.");
+								}
+							}
+
+							if (carryableNode != null || cargoNode != null || deployToUpgradeNode != null)
+							{
+								addUpgradeMaxEnabledLevelNode();
+								addImmobilizeUpgradeTypes(notMobile);
+
+								addNotMobileToTraitUpgrades(carryableNode, "CarryableUpgrades");
+								addNotMobileToTraitUpgrades(cargoNode, "LoadingUpgrades");
+								addNotMobileToTraitUpgrades(deployToUpgradeNode, "DeployedUpgrades");
+							}
+						}
+					}
+					else if (!node.Value.Nodes.Exists(n => n.Key == "Husk" || n.Key == "Building" || n.Key == "Aircraft" || n.Key == "Immobile"))
+					{
+						if (carryableNode != null || cargoNode != null || deployToUpgradeNode != null)
+						{
+							Console.WriteLine("\t\tIf " + node.Key
+								+ " has a Mobile trait then adding the following with <upgrade> substituted by an immobilization upgrade for "
+								+ node.Key + " may be neeeded:");
+
+							if (carryableNode != null)
+							{
+								Console.WriteLine("\t\t\tCarryable:");
+								Console.WriteLine("\t\t\t\tCarryableUpgrades: <upgrade>");
+							}
+
+							if (cargoNode != null)
+							{
+								Console.WriteLine("\t\t\tCargo:");
+								Console.WriteLine("\t\t\t\tLoadingUpgrades: <upgrade>");
+							}
+
+							if (deployToUpgradeNode != null)
+							{
+								Console.WriteLine("\t\t\tDeployToUpgrade:");
+								Console.WriteLine("\t\t\t\tDeployedUpgrades: <upgrade>");
+							}
+						}
+
+						var disableUpgradeUpgradeTypesNode = disableUpgradeNode != null
+							? disableUpgradeNode.Value.Nodes.Find(n => n.Key == "UpgradeTypes")
+							: null;
+						var disableMovementOnUpgradeUpgradeTypesNode = disableMovementOnUpgradeNode != null
+							? disableMovementOnUpgradeNode.Value.Nodes.Find(n => n.Key == "UpgradeTypes")
+							: null;
+
+						if (disableUpgradeUpgradeTypesNode != null || disableMovementOnUpgradeUpgradeTypesNode != null)
+							Console.WriteLine("\t\t" + node.Key + " actor rules may require manual upgrading for immobilization upgrade logic.");
+
+						if (disableUpgradeUpgradeTypesNode != null)
+							Console.WriteLine("\t\t\tDisableUpgrade UpgradeTypes: " + disableUpgradeUpgradeTypesNode.Value.Value);
+
+						if (disableMovementOnUpgradeUpgradeTypesNode != null)
+							Console.WriteLine("\t\t\tDisableMovementOnUpgrade UpgradeTypes: " + disableMovementOnUpgradeUpgradeTypesNode.Value.Value);
+
+						if (disableMovementOnUpgradeNode != null)
+							node.Value.Nodes.Remove(disableMovementOnUpgradeNode);
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

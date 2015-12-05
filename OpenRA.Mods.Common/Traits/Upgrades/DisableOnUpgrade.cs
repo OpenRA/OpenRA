@@ -18,12 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DisableOnUpgrade(this); }
 	}
 
-	public class DisableOnUpgrade : UpgradableTrait<DisableOnUpgradeInfo>, IDisable, IDisableMove
+	public class DisableOnUpgrade : UpgradableTrait<DisableOnUpgradeInfo>, IDisable
 	{
 		public DisableOnUpgrade(DisableOnUpgradeInfo info)
 			: base(info) { }
 
 		public bool Disabled { get { return !IsTraitDisabled; } }
-		public bool MoveDisabled(Actor self) { return !IsTraitDisabled; }
 	}
 }
