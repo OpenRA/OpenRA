@@ -196,16 +196,20 @@ Background@SETTINGS_PANEL:
 							Y: 6
 							Width: PARENT_RIGHT-35
 							Height: PARENT_BOTTOM-12
-				Checkbox@ALWAYS_SHOW_STATUS_BARS_CHECKBOX:
+				Label@STATUS_BARS:
 					X: 310
-					Y: 230
-					Width: 200
-					Height: 20
+					Y: 275
+					Text: Status Bars:
+				DropDownButton@STATUS_BAR_DROPDOWN:
+					X: 400
+					Y: 265
+					Width: 170
+					Height: 25
 					Font: Regular
-					Text: Always Show Status Bars
+					Text: Standard
 				Checkbox@DISPLAY_TARGET_LINES_CHECKBOX:
 					X: 310
-					Y: 265
+					Y: 230
 					Width: 200
 					Height: 20
 					Font: Regular

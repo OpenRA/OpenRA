@@ -153,7 +153,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
-			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
 			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
 
@@ -165,6 +164,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+
+			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
+			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
+			statusBarsDropDown.GetText = () => gs.StatusBars.ToString() == "Standard" ?
+				"Standard" : gs.StatusBars.ToString() == "DamageShow" ? "Show On Damage" : "Always Show";
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
@@ -408,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "PreviousProductionTabKey", "Previous production tab" },
 					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
-					{ "ToggleStatusBarsKey", "Toggle status bars" },
+					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 
 					{ "MapScrollUp", "Map scroll up" },
@@ -666,6 +670,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
+			return true;
+		}
+
+		static bool ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		{
+			var options = new Dictionary<string, StatusBarsType>()
+			{
+				{ "Standard", StatusBarsType.Standard },
+				{ "Show On Damage", StatusBarsType.DamageShow },
+				{ "Always Show", StatusBarsType.AlwaysShow },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.StatusBars == options[o],
+					() => s.StatusBars = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 			return true;
 		}
 

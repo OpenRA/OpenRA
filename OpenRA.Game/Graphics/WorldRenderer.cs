@@ -183,13 +183,26 @@ namespace OpenRA.Graphics
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
-			if (World.Type == WorldType.Regular && Game.Settings.Game.AlwaysShowStatusBars)
+			if (World.Type == WorldType.Regular)
 			{
 				foreach (var g in World.ActorsHavingTrait<Selectable>().Where(a => !a.Disposed
 					&& !World.FogObscures(a)
 					&& !World.Selection.Actors.Contains(a)))
+				{
+					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
+						new SelectionBarsRenderable(g, false, false).Render(this);
 
-					DrawRollover(g);
+					if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
+						new SelectionBarsRenderable(g, true, true).Render(this);
+
+					if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
+					{
+						if (g.GetDamageState() != DamageState.Undamaged)
+							new SelectionBarsRenderable(g, true, true).Render(this);
+						else
+							new SelectionBarsRenderable(g, false, true).Render(this);
+					}
+				}
 			}
 
 			Game.Renderer.Flush();
@@ -198,7 +211,7 @@ namespace OpenRA.Graphics
 		public void DrawRollover(Actor unit)
 		{
 			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit).Render(this);
+				new SelectionBarsRenderable(unit, true, true).Render(this);
 		}
 
 		public void DrawRangeCircle(WPos pos, WDist range, Color c)

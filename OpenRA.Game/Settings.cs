@@ -20,6 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
+	public enum StatusBarsType { Standard, DamageShow, AlwaysShow }
 
 	public class ServerSettings
 	{
@@ -153,7 +154,7 @@ namespace OpenRA
 		public int JoystickScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
-		public bool AlwaysShowStatusBars = false;
+		public StatusBarsType StatusBars = StatusBarsType.Standard;
 		public bool TeamHealthColors = false;
 		public bool DrawTargetLine = true;
 
@@ -197,7 +198,7 @@ namespace OpenRA
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
+		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
