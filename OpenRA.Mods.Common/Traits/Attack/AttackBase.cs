@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AttackBaseInfo : UpgradableTraitInfo, ITraitInfo
+	public abstract class AttackBaseInfo : UpgradableTraitInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
