@@ -865,11 +865,13 @@ function CreateEditor(bare)
       local beforeDeleted = bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0
 
       if (beforeInserted or beforeDeleted) then
-        -- unfold the current line being changed if folded
+        -- unfold the current line being changed if folded, but only if one selection
         local lastLine = editor:LineFromPosition(pos+event:GetLength())
-        if not editor:GetFoldExpanded(firstLine)
-        or not editor:GetLineVisible(firstLine)
-        or not editor:GetLineVisible(lastLine) then
+        local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
+        if (not editor:GetFoldExpanded(firstLine)
+          or not editor:GetLineVisible(firstLine)
+          or not editor:GetLineVisible(lastLine))
+        and selections == 1 then
           editor:ToggleFold(firstLine)
           for line = firstLine, lastLine do
             if not editor:GetLineVisible(line) then editor:ToggleFold(line) end
