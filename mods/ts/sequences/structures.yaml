@@ -606,6 +606,7 @@ naobel:
 	active: ntobel_b
 		Length: 12
 		Tick: 200
+		ZOffset: 2
 	idle-lights: ntobel_a
 		Length: 12
 		Tick: 80
