@@ -42,8 +42,11 @@ namespace OpenRA.Traits
 
 		public bool Visible = true;
 		public bool Shrouded { get; private set; }
-		public bool NeedRenderables { get; private set; }
-		public bool IsRendering { get; private set; }
+		public bool NeedRenderables { get; set; }
+		public IRenderable[] Renderables = NoRenderables;
+		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+
+		int flashTicks;
 
 		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud, bool startsRevealed)
 		{
@@ -68,11 +71,6 @@ namespace OpenRA.Traits
 		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
-
-		static readonly IRenderable[] NoRenderables = new IRenderable[0];
-
-		int flashTicks;
-		IRenderable[] renderables = NoRenderables;
 
 		public void Tick()
 		{
@@ -103,8 +101,7 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
-			if (Visible && !wasVisible)
-				NeedRenderables = true;
+			NeedRenderables = Visible && !wasVisible;
 		}
 
 		public void Flash()
@@ -114,31 +111,20 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (NeedRenderables)
-			{
-				NeedRenderables = false;
-				if (!actor.Disposed)
-				{
-					IsRendering = true;
-					renderables = actor.Render(wr).ToArray();
-					IsRendering = false;
-				}
-			}
-
 			if (Shrouded)
 				return NoRenderables;
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
-				return renderables.Concat(renderables.Where(r => !r.IsDecoration)
+				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
 
-			return renderables;
+			return Renderables;
 		}
 
-		public bool HasRenderables { get { return !Shrouded && renderables.Any(); } }
+		public bool HasRenderables { get { return !Shrouded && Renderables.Any(); } }
 
 		public bool ShouldBeRemoved(Player owner)
 		{
