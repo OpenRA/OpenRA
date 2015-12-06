@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
 
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(atek.World.RenderPlayer))
+			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(Owner))
 				atek.Owner.Shroud.ExploreAll(atek.World);
 		}
 
