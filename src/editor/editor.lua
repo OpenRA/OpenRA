@@ -872,9 +872,8 @@ function CreateEditor(bare)
           or not editor:GetLineVisible(firstLine)
           or not editor:GetLineVisible(lastLine))
         and selections == 1 then
-          editor:ToggleFold(firstLine)
           for line = firstLine, lastLine do
-            if not editor:GetLineVisible(line) then editor:ToggleFold(line) end
+            if not editor:GetLineVisible(line) then editor:ToggleFold(editor:GetFoldParent(line)) end
           end
         end
       end
