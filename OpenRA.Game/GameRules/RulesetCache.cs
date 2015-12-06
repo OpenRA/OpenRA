@@ -61,7 +61,7 @@ namespace OpenRA
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(actorCache, m.Rules,
 					map != null ? map.RuleDefinitions : NoMapRules,
-					(k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
+					(k, y) => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value, y));
 
 			using (new PerfTimer("Weapons"))
 				weapons = LoadYamlRules(weaponCache, m.Weapons,
@@ -99,9 +99,9 @@ namespace OpenRA
 
 			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
 
-			var mergedNodes = files
+			var partial = files
 				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(nodes, MiniYaml.MergeLiberal);
+				.Aggregate(nodes, MiniYaml.MergePartial);
 
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> wrap = (wkv, wyy) =>
 			{
@@ -117,8 +117,8 @@ namespace OpenRA
 				return t;
 			};
 
-			var yy = mergedNodes.ToDictionary(x => x.Key, x => x.Value);
-			var itemSet = mergedNodes.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
+			var yy = partial.ToDictionary(x => x.Key, x => x.Value);
+			var itemSet = partial.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
 
 			RaiseProgress();
 			return itemSet;

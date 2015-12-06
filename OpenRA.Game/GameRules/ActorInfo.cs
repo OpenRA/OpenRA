@@ -31,35 +31,30 @@ namespace OpenRA
 		readonly TypeDictionary traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
 
-		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		public ActorInfo(ObjectCreator creator, string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
 		{
 			try
 			{
+				Name = name;
+
 				var allParents = new HashSet<string>();
 				var abstractActorType = name.StartsWith("^");
 
 				// Guard against circular inheritance
 				allParents.Add(name);
-				var mergedNode = MergeWithParents(node, allUnits, allParents).ToDictionary();
 
-				Name = name;
-
-				foreach (var t in mergedNode)
-				{
-					if (t.Key[0] == '-')
-						throw new YamlException("Bogus trait removal: " + t.Key);
-
+				var partial = MergeWithParents(node, allUnits, allParents);
+				foreach (var t in MiniYaml.ApplyRemovals(partial.Nodes))
 					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
 						try
 						{
-							traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
+							traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
 						}
 						catch (FieldLoader.MissingFieldsException e)
 						{
 							if (!abstractActorType)
 								throw new YamlException(e.Message);
 						}
-				}
 			}
 			catch (YamlException e)
 			{
@@ -98,18 +93,18 @@ namespace OpenRA
 					throw new YamlException(
 						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
 
-				node = MiniYaml.MergeStrict(node, MergeWithParents(kv.Value, allUnits, allParents));
+				node = MiniYaml.MergePartial(node, MergeWithParents(kv.Value, allUnits, allParents));
 			}
 
 			return node;
 		}
 
-		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
+		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
 				.F(my.Value, traitName));
-			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
+			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
 			try
 			{
 				FieldLoader.Load(info, my);
