@@ -47,7 +47,8 @@ namespace OpenRA.Mods.RA.Effects
 		class DotState
 		{
 			public readonly GpsWatcher Gps;
-			public bool IsVisible;
+			public bool IsTargetable;
+			public bool ShouldRender;
 			public DotState(GpsWatcher gps)
 			{
 				Gps = gps;
@@ -75,11 +76,13 @@ namespace OpenRA.Mods.RA.Effects
 
 		public bool IsDotVisible(Player toPlayer)
 		{
-			return stateByPlayer[toPlayer].IsVisible;
+			return stateByPlayer[toPlayer].IsTargetable;
 		}
 
-		bool ShouldShowIndicator(Player toPlayer)
+		bool IsTargetableBy(Player toPlayer, out bool shouldRenderIndicator)
 		{
+			shouldRenderIndicator = false;
+
 			if (cloak.Value != null && cloak.Value.Cloaked)
 				return false;
 
@@ -88,19 +91,27 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (huf.Value != null && !huf.Value.IsVisible(self, toPlayer)
 				&& toPlayer.Shroud.IsExplored(self.CenterPosition))
+			{
+				var f1 = FrozenActorForPlayer(toPlayer);
+				shouldRenderIndicator = f1 == null || !f1.HasRenderables;
 				return true;
+			}
 
 			if (fuf.Value == null)
 				return false;
 
-			var f = frozen[toPlayer].FromID(self.ActorID);
-			if (f == null)
+			var f2 = FrozenActorForPlayer(toPlayer);
+			if (f2 == null)
 				return false;
 
-			if (f.HasRenderables || f.NeedRenderables)
-				return false;
+			shouldRenderIndicator = !f2.HasRenderables;
 
-			return f.Visible && !f.Shrouded;
+			return f2.Visible && !f2.Shrouded;
+		}
+
+		FrozenActor FrozenActorForPlayer(Player player)
+		{
+			return frozen[player].FromID(self.ActorID);
 		}
 
 		public void Tick(World world)
@@ -114,13 +125,16 @@ namespace OpenRA.Mods.RA.Effects
 			foreach (var player in self.World.Players)
 			{
 				var state = stateByPlayer[player];
-				state.IsVisible = (state.Gps.Granted || state.Gps.GrantedAllies) && ShouldShowIndicator(player);
+				var shouldRender = false;
+				var targetable = (state.Gps.Granted || state.Gps.GrantedAllies) && IsTargetableBy(player, out shouldRender);
+				state.IsTargetable = targetable;
+				state.ShouldRender = targetable && shouldRender;
 			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (self.World.RenderPlayer == null || !IsDotVisible(self.World.RenderPlayer) || self.Disposed)
+			if (self.World.RenderPlayer == null || !stateByPlayer[self.World.RenderPlayer].ShouldRender || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);
