@@ -92,6 +92,9 @@ ORCA:
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -136,11 +139,14 @@ ORCAB:
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
+		ReloadTicks: 200
 	AmmoPool:
 		Ammo: 10
 		PipCount: 2
 		ReloadCount: 5
-		ReloadTicks: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -252,6 +258,9 @@ SCRIN:
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 15
 		PipCount: 3
@@ -290,6 +299,9 @@ APACHE:
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4

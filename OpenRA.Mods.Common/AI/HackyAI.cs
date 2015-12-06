@@ -438,9 +438,12 @@ namespace OpenRA.Mods.Common.AI
 			if (aircraftInfo == null)
 				return true;
 
-			var ammoPoolsInfo = actorInfo.TraitInfos<AmmoPoolInfo>();
+			// We assume that UpgradeMinEnabledLevel = 0 means the actor reloads ammo by itself.
+			// To have ReloadAmmo also implies having at least 1 AmmoPool.
+			var buildingReload = actorInfo.TraitInfos<ReloadAmmoInfo>()
+				.Where(x => x.UpgradeMinEnabledLevel > 0).ToList();
 
-			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
+			if (buildingReload.Count > 0)
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
 				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));

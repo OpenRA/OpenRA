@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -21,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft helicopter;
 		readonly AttackHeli attackHeli;
 		readonly AmmoPool[] ammoPools;
+		readonly ReloadAmmo[] reloadAmmo;
 		readonly bool attackOnlyVisibleTargets;
 
 		Target target;
@@ -46,6 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			helicopter = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().ToArray();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 		}
 
@@ -66,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
-			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
+			if (ammoPools.All(x => !x.HasAmmo()) && !reloadAmmo.Any(y => y.Info.UpgradeMinEnabledLevel == 0))
 				return Util.SequenceActivities(new HeliReturnToBase(self), NextActivity);
 
 			var dist = target.CenterPosition - self.CenterPosition;

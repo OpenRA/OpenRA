@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly AttackPlane attackPlane;
 		readonly AmmoPool[] ammoPools;
+		readonly ReloadAmmo[] reloadAmmo;
 
 		Activity inner;
 		int ticksUntilTurn;
@@ -31,6 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.target = target;
 			attackPlane = self.TraitOrDefault<AttackPlane>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().ToArray();
 			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
 		}
 
@@ -41,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Move to the next activity only if all ammo pools are depleted and none reload automatically
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
-			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
+			if (ammoPools.All(x => !x.HasAmmo()) && !reloadAmmo.Any(y => y.Info.UpgradeMinEnabledLevel == 0))
 				return NextActivity;
 
 			if (attackPlane != null)

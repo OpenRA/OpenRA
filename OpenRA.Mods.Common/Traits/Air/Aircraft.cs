@@ -61,6 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
+		[Desc("Take off from resupplying structure when fully rearmed/repaired?")]
+		public readonly bool TakeOffWhenResupplied = false;
+
 		[Desc("Does this actor need to turn before landing?")]
 		public readonly bool TurnToLand = false;
 
@@ -90,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool IsPlane;
 		public readonly AircraftInfo Info;
 		readonly Actor self;
+		readonly bool needsReloading;
 
 		UpgradeManager um;
 		IDisposable reservation;
@@ -140,6 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
 			// Or until the activities get unified enough so that it doesn't matter.
 			IsPlane = !info.CanHover;
+
+			needsReloading = self.Info.HasTraitInfo<ReloadAmmoInfo>() && self.Info.TraitInfos<ReloadAmmoInfo>().Any(y => y.UpgradeMinEnabledLevel > 0);
 		}
 
 		public void Created(Actor self) { um = self.TraitOrDefault<UpgradeManager>(); }
@@ -174,6 +180,29 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Repulse();
+
+			if (Info.TakeOffWhenResupplied && IsResupplied(self))
+				self.QueueActivity(new TakeOff(self));
+		}
+
+		public bool IsResupplied(Actor self)
+		{
+			var host = GetActorBelow();
+
+			// We don't want aircraft to take off if they're not sitting on a rearm/repair structure
+			if (host == null)
+				return false;
+
+			var repairing = !IsAirborne && Info.RepairBuildings.Contains(host.Info.Name)
+				&& self.GetDamageState() != DamageState.Undamaged;
+
+			var reloading = needsReloading && !IsAirborne && Info.RearmBuildings.Contains(host.Info.Name)
+				&& self.TraitsImplementing<AmmoPool>().Any(x => !x.FullAmmo());
+
+			if (!repairing && !reloading)
+				return true;
+
+			return false;
 		}
 
 		public void Repulse()
@@ -330,8 +359,6 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
-				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
 				yield return new Repair(a);
 		}
@@ -560,7 +587,6 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));

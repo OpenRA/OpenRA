@@ -122,7 +122,6 @@
     <Compile Include="Activities\Move\MoveAdjacentTo.cs" />
     <Compile Include="Activities\Move\MoveWithinRange.cs" />
     <Compile Include="Activities\Parachute.cs" />
-    <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
@@ -398,6 +397,7 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\RadarColorFromTerrain.cs" />
+    <Compile Include="Traits\ReloadAmmo.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
@@ -450,7 +450,7 @@
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
     <Compile Include="Traits\Render\WithVoxelBody.cs" />
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
-    <Compile Include="Traits\Repairable.cs" />
+    <Compile Include="Traits\Resupplyable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />

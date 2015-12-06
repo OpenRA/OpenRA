@@ -113,6 +113,9 @@ MIG:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 8
 	ReturnOnIdle:
@@ -175,10 +178,14 @@ YAK:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
 		EnableStances: false
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
+		ReloadTicks: 33
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
-		ReloadTicks: 11
+		ReloadCount: 3
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
@@ -265,6 +272,7 @@ HELI:
 		FacingTolerance: 20
 	Aircraft:
 		RearmBuildings: hpad
+		TakeOffWhenResupplied: true
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
@@ -276,6 +284,9 @@ HELI:
 		InitialStanceAI: HoldFire
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
 	AmmoPool:
 		Ammo: 8
 	SelectionDecorations:
@@ -319,6 +330,7 @@ HIND:
 		FacingTolerance: 20
 	Aircraft:
 		RearmBuildings: hpad
+		TakeOffWhenResupplied: true
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
@@ -329,10 +341,14 @@ HIND:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
 	WithSpriteRotorOverlay:
+	ReloadAmmo:
+		UpgradeTypes: aircraftreload
+		UpgradeMinEnabledLevel: 1
+		ReloadTicks: 32
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6
-		ReloadTicks: 8
+		ReloadCount: 4
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:
