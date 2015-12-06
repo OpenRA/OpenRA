@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 			rs.Add(new AnimationWithOffset(
-				DefaultAnimation, () => BarrelOffset(), () => IsTraitDisabled, () => false, p => RenderUtils.ZOffsetFromCenter(self, p, 0)));
+				DefaultAnimation, () => BarrelOffset(), () => IsTraitDisabled, p => RenderUtils.ZOffsetFromCenter(self, p, 0)));
 
 			// Restrict turret facings to match the sprite
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;

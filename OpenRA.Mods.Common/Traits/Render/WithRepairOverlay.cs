@@ -47,13 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-			overlay = new Animation(self.World, rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self),
+				() => info.PauseOnLowPower && self.IsDisabled());
 			overlay.PlayThen(info.Sequence, () => visible = false);
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible || !buildComplete,
-				() => info.PauseOnLowPower && self.IsDisabled(),
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
