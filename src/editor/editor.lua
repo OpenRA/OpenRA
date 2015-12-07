@@ -1333,6 +1333,8 @@ function CreateEditor(bare)
       idx = idx + 1
     end
     if this then editor:SetMainSelection(this) end
+    -- set the current name as the search value to make subsequence searches look for it
+    ide.findReplace:SetFind(name)
   end
 
   editor:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
