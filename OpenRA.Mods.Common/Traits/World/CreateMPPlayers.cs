@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -22,15 +23,18 @@ namespace OpenRA.Mods.Common.Traits
 		public void CreatePlayers(World w)
 		{
 			var players = new MapPlayers(w.Map.PlayerDefinitions).Players;
+			var worldPlayers = new List<Player>();
 
 			// Create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in players.Where(p => !p.Value.Playable))
 			{
 				var player = new Player(w, null, kv.Value);
-				w.AddPlayer(player);
+				worldPlayers.Add(player);
 				if (kv.Value.OwnsWorld)
 					w.WorldActor.Owner = player;
 			}
+
+			Player localPlayer = null;
 
 			// Create the regular playable players.
 			foreach (var kv in w.LobbyInfo.Slots)
@@ -40,21 +44,23 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var player = new Player(w, client, players[kv.Value.PlayerReference]);
-				w.AddPlayer(player);
+				worldPlayers.Add(player);
 
 				if (client.Index == Game.LocalClientId)
-					w.SetLocalPlayer(player.InternalName);
+					localPlayer = player;
 			}
 
 			// Create a player that is allied with everyone for shared observer shroud.
-			w.AddPlayer(new Player(w, null, new PlayerReference
+			worldPlayers.Add(new Player(w, null, new PlayerReference
 			{
 				Name = "Everyone",
 				NonCombatant = true,
 				Spectating = true,
 				Faction = "Random",
-				Allies = w.Players.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToArray()
+				Allies = worldPlayers.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToArray()
 			}));
+
+			w.SetPlayers(worldPlayers, localPlayer);
 
 			foreach (var p in w.Players)
 				foreach (var q in w.Players)

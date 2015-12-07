@@ -164,10 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
-				{
 					Players.Players.Remove(name);
-					worldRenderer.World.Players.RemoveAll(pp => pp.InternalName == name);
-				}
 			}
 
 			for (var index = 0; index < newCount; index++)

@@ -38,9 +38,14 @@ namespace OpenRA
 
 		public readonly MersenneTwister SharedRandom;
 
-		public readonly List<Player> Players = new List<Player>();
+		public Player[] Players = new Player[0];
 
-		public void AddPlayer(Player p) { Players.Add(p); }
+		public void SetPlayers(IEnumerable<Player> players, Player localPlayer)
+		{
+			Players = players.ToArray();
+			SetLocalPlayer(localPlayer);
+		}
+
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
@@ -82,12 +87,18 @@ namespace OpenRA
 			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }
 		}
 
-		public void SetLocalPlayer(string pr)
+		void SetLocalPlayer(Player localPlayer)
 		{
+			if (localPlayer == null)
+				return;
+
+			if (!Players.Contains(localPlayer))
+				throw new ArgumentException("The local player must be one of the players in the world.", "localPlayer");
+
 			if (IsReplay)
 				return;
 
-			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+			LocalPlayer = localPlayer;
 			RenderPlayer = LocalPlayer;
 		}
 
