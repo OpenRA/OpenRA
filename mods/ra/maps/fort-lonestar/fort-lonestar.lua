@@ -41,7 +41,7 @@ Waves =
 	{ delay = 1, entries = SovietEntryPoints, units = Tank, targets = SpawnPoints },
 	{ delay = 1, entries = SovietEntryPoints, units = Vehicles, targets = SpawnPoints },
 
-	{ delay = 1500, entries = SovietEntryPoints, Infantry, targets = SpawnPoints },
+	{ delay = 1500, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
 	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
 	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
 	{ delay = 1, entries = SovietEntryPoints, units = Infantry, targets = SpawnPoints },
