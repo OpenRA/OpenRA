@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				if (!(info.PauseOnLowPower && self.IsDisabled()))
-					wsb.PlayCustomAnimation(self, info.Sequence);
+					wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
 				ticks = info.Interval;
 			}
 		}
