@@ -17,6 +17,7 @@ powerdown:
 explosion:
 	Defaults:
 		Length: *
+		ZOffset: 511
 	piff: piff
 	piffs: piffpiff
 	water_piff: wpiff
@@ -41,6 +42,7 @@ explosion:
 	small_napalm: napalm1
 	large_napalm: napalm3
 	corpse: corpse1
+		ZOffset: -512
 		Tick: 1600
 		UseTilesetExtension: true
 		TilesetOverrides:

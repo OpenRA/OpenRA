@@ -126,6 +126,7 @@ pips:
 explosion:
 	Defaults:
 		Length: *
+		ZOffset: 511
 	building: twlt070
 	ionring: ring1
 		BlendMode: Additive

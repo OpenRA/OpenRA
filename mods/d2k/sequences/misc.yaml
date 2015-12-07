@@ -2,6 +2,7 @@ explosion:
 	Defaults:
 		BlendMode: Additive
 		Tick: 80
+		ZOffset: 511
 	piff: DATA.R8
 		Start: 3626
 		Length: 5
@@ -52,6 +53,7 @@ explosion:
 		Tick: 120
 		Offset: 0, -16
 	corpse: DATA.R8
+		ZOffset: -511
 		Start: 430
 		Length: 12
 		Tick: 1600
@@ -105,6 +107,7 @@ laserfire:
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
+		ZOffset: 511
 
 pips:
 	groups: DATA.R8
@@ -334,6 +337,7 @@ doubleblast:
 		Start: 3279
 		Facings: -16
 		BlendMode: Additive
+		ZOffset: 511
 
 doubleblastbullet:
 	idle: DATA.R8

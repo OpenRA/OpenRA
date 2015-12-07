@@ -35,6 +35,7 @@ smoke_m:
 laserfire:
 	idle:veh-hit3
 		Length: *
+		ZOffset: 511
 
 dragon:
 	idle:
@@ -64,6 +65,7 @@ patriot:
 explosion:
 	Defaults:
 		Length: *
+		ZOffset: 511
 	nuke_explosion: atomsfx
 	piff: piff
 	piffs: piffpiff
