@@ -8,9 +8,11 @@ powerdown:
 
 120mm:
 	idle:
+		ZOffset: 1023
 
 50cal:
 	idle:
+		ZOffset: 1023
 
 explosion:
 	Defaults:
@@ -80,6 +82,7 @@ pips:
 v2:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 rallypoint:
 	flag:flagfly
@@ -128,6 +131,7 @@ smoke_m:
 dragon:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 smokey:
 	idle:
@@ -137,21 +141,31 @@ smokey:
 bomb:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 missile:
 	idle:
 		Facings: 32
+		ZOffset: 1023
+
+torpedo:
+	idle: missile
+		Facings: 32
+		ZOffset: -1023
 
 litning:
 	bright:
 		Length: 4
+		ZOffset: 1023
 	dim:
 		Start: 4
 		Length: 4
+		ZOffset: 1023
 
 fb1:
 	idle: 
 		Length: *
+		ZOffset: 1023
 
 moveflsh:
 	idle:
@@ -184,6 +198,7 @@ sputnik:
 	idle:
 		Length: *
 		Offset: -4,0
+		ZOffset: 1023
 
 dd-crnr:
 	idle:
@@ -199,13 +214,17 @@ dd-crnr:
 fb2:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 fb3:
 	idle:
 		Facings: 32
+		ZOffset: 1023
+
 fb4:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 scrate:
 	idle:
@@ -319,24 +338,19 @@ parach-shadow:
 	idle:
 		Length: *
 
-atomicup:
-	idle:
-		Length: *
-
-atomicdn:
-	idle:
-		Length: *
-
 bomblet:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 parabomb:
 	open:
 		Length: 8
+		ZOffset: 1023
 	idle:
 		Start: 8
 		Length: 5
+		ZOffset: 1023
 
 smokland:
 	open: playersmoke
@@ -378,8 +392,10 @@ iconchevrons:
 atomic:
 	up: atomicup
 		Length: *
+		ZOffset: 1023
 	down: atomicdn
 		Length: *
+		ZOffset: 1023
 
 bubbles:
 	idle:
