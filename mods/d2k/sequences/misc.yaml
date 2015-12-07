@@ -62,36 +62,42 @@ large_trail:
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
+		ZOffset: 1023
 
 small_trail:
 	idle: DATA.R8
 		Start: 3735
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 small_trail2:
 	idle: DATA.R8
 		Start: 3540
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 bazooka_trail:
 	idle: DATA.R8
 		Start: 3381
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 bazooka_trail2:
 	idle: DATA.R8
 		Start: 3544
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 deviator_trail:
 	idle: DATA.R8
 		Start: 3535
 		Length: 5
 		Tick: 80
+		ZOffset: 1023
 
 laserfire:
 	idle: DATA.R8
@@ -175,10 +181,12 @@ rpg:
 	idle: DATA.R8
 		Start: 3014
 		BlendMode: Additive
+		ZOffset: 1023
 
 155mm:
 	idle: DATA.R8
 		Start: 3081
+		ZOffset: 1023
 
 crate-effects:
 	dollar: DATA.R8
@@ -208,17 +216,21 @@ missile:
 	idle: DATA.R8
 		Start: 3088
 		Facings: -32
+		ZOffset: 1023
 
 missile2:
 	idle: DATA.R8
 		Start: 3306
 		Facings: -32
+		ZOffset: 1023
 
 atomic:
 	up: DATA.R8
 		Start: 2147
+		ZOffset: 1023
 	down: DATA.R8
 		Start: 2148
+		ZOffset: 1023
 
 fire:
 	1: DATA.R8
@@ -264,31 +276,37 @@ bombs:
 	idle: DATA.R8
 		Start: 3280
 		Length: 4
+		ZOffset: 1023
 
 grenade:
 	idle: grenade.shp	# frames 3618-3621 from patch 1.06 DATA.R8
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 shrapnel:
 	idle: DATA.R8
 		Start: 3290
 		Length: 4
+		ZOffset: 1023
 
 shrapnel2:
 	idle: DATA.R8
 		Start: 3294
 		Length: 1
+		ZOffset: 1023
 
 shrapnel3:
 	idle: DATA.R8
 		Start: 3295
 		Length: 8
+		ZOffset: 1023
 
 shrapnel4:
 	idle: DATA.R8
 		Start: 3303
 		Length: 1
+		ZOffset: 1023
 		
 mpspawn:
 	idle: mpspawn.shp
@@ -322,6 +340,7 @@ doubleblastbullet:
 		Start: 3248
 		Facings: -16
 		BlendMode: Additive
+		ZOffset: 1023
 
 icon:
 	ornistrike: DATA.R8
