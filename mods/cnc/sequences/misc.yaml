@@ -1,6 +1,7 @@
 fb4:
 	idle:
 		Length: 4
+		ZOffset: 1023
 
 fire:
 	1: fire1
@@ -14,6 +15,7 @@ fire:
 
 120mm:
 	idle:
+		ZOffset: 1023
 
 smoke_m:
 	idle:
@@ -37,22 +39,27 @@ laserfire:
 dragon:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 smokey:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 bomb:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 missile:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 patriot:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 explosion:
 	Defaults:
@@ -149,17 +156,10 @@ crate-effects:
 	armorup: armorcrate
 	speedup: speedcrate
 
-atomicup:
-	idle:
-		Length: *
-
-atomicdn:
-	idle:
-		Length: *
-
 atomic:
 	Defaults:
 		Length: *
+		ZOffset: 1023
 	up: atomicup
 	down: atomicdn
 
@@ -167,11 +167,12 @@ ionsfx:
 	idle:
 		Length: *
 		Offset: 0, -78
-		ZOffset: 1
+		ZOffset: 1023
 
 bomblet:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 mpspawn:
 	idle:
