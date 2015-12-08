@@ -88,10 +88,10 @@ rank:
 		Length: *
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly
 		Length: *
 		Offset: 10,-5
-	circles:fpls
+	circles: fpls
 		Length: *
 
 beacon:
