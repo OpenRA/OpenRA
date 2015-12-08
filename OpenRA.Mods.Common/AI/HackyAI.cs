@@ -178,6 +178,8 @@ namespace OpenRA.Mods.Common.AI
 			return randomBaseBuilding != null ? randomBaseBuilding.Location : initialBaseCenter;
 		}
 
+		public bool IsEnabled;
+		public List<Squad> Squads = new List<Squad>();
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
@@ -194,7 +196,6 @@ namespace OpenRA.Mods.Common.AI
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
-		bool enabled;
 		int ticks;
 
 		BitArray resourceTypeIndices;
@@ -204,7 +205,6 @@ namespace OpenRA.Mods.Common.AI
 		Cache<Player, Enemy> aggro = new Cache<Player, Enemy>(_ => new Enemy());
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
-		List<Squad> squads = new List<Squad>();
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
 
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.AI
 		public void Activate(Player p)
 		{
 			Player = p;
-			enabled = true;
+			IsEnabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
@@ -523,7 +523,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Tick(Actor self)
 		{
-			if (!enabled)
+			if (!IsEnabled)
 				return;
 
 			ticks++;
@@ -603,21 +603,21 @@ namespace OpenRA.Mods.Common.AI
 
 		void CleanSquads()
 		{
-			squads.RemoveAll(s => !s.IsValid);
-			foreach (var s in squads)
+			Squads.RemoveAll(s => !s.IsValid);
+			foreach (var s in Squads)
 				s.Units.RemoveAll(unitCannotBeOrdered);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
 		Squad GetSquadOfType(SquadType type)
 		{
-			return squads.FirstOrDefault(s => s.Type == type);
+			return Squads.FirstOrDefault(s => s.Type == type);
 		}
 
 		Squad RegisterNewSquad(SquadType type, Actor target = null)
 		{
 			var ret = new Squad(this, type, target);
-			squads.Add(ret);
+			Squads.Add(ret);
 			return ret;
 		}
 
@@ -637,7 +637,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--attackForceTicks <= 0)
 			{
 				attackForceTicks = Info.AttackForceInterval;
-				foreach (var s in squads)
+				foreach (var s in Squads)
 					s.Update();
 			}
 
@@ -1059,7 +1059,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!enabled || e.Attacker == null)
+			if (!IsEnabled || e.Attacker == null)
 				return;
 
 			if (e.Attacker.Owner.Stances[self.Owner] == Stance.Neutral)

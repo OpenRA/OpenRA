@@ -24,6 +24,7 @@ namespace OpenRA.Traits
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
 		public bool ShowDepthPreview;
+		public bool ShowActorTags;
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -43,6 +44,7 @@ namespace OpenRA.Traits
 		public bool ShowCombatGeometry;
 		public bool ShowDebugGeometry;
 		public bool ShowDepthPreview;
+		public bool ShowActorTags;
 
 		public bool EnableAll;
 
@@ -58,6 +60,7 @@ namespace OpenRA.Traits
 			ShowCombatGeometry = info.ShowCombatGeometry;
 			ShowDebugGeometry = info.ShowDebugGeometry;
 			ShowDepthPreview = info.ShowDepthPreview;
+			ShowActorTags = info.ShowActorTags;
 		}
 
 		public void ResolveOrder(Actor self, Order order)

@@ -116,3 +116,10 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Terrain Geometry
+		Checkbox@SHOW_ACTOR_TAGS:
+			X: 45
+			Y: 335
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Actor Tags
