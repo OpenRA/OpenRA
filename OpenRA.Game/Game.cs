@@ -336,7 +336,6 @@ namespace OpenRA
 					Console.WriteLine("Error was: " + e.Message);
 
 					Cursor = new SoftwareCursor(ModData.CursorProvider);
-					Settings.Graphics.HardwareCursors = false;
 				}
 			}
 			else
