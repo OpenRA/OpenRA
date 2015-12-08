@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AircraftInfo : IPositionableInfo, IFacingInfo, IOccupySpaceInfo, IMoveInfo, ICruiseAltitudeInfo,
+	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IOccupySpaceInfo, IMoveInfo, ICruiseAltitudeInfo,
 		UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);

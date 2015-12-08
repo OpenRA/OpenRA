@@ -130,7 +130,7 @@ namespace OpenRA.Traits
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
-	public interface ISelectionDecorationsInfo : ITraitInfo
+	public interface ISelectionDecorationsInfo : ITraitInfoInterface
 	{
 		int[] SelectionBoxBounds { get; }
 	}
@@ -143,7 +143,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
-	public interface IDemolishableInfo : ITraitInfo { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
+	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
 		void Demolish(Actor self, Actor saboteur);
@@ -165,7 +165,7 @@ namespace OpenRA.Traits
 		Player Owner { get; }
 	}
 
-	public interface ITooltipInfo : ITraitInfo
+	public interface ITooltipInfo : ITraitInfoInterface
 	{
 		string TooltipForPlayerStance(Stance stance);
 		bool IsOwnerRowVisible { get; }
@@ -187,7 +187,7 @@ namespace OpenRA.Traits
 		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
 	}
 
-	public interface IDefaultVisibilityInfo : ITraitInfo { }
+	public interface IDefaultVisibilityInfo : ITraitInfoInterface { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 
@@ -199,7 +199,7 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
-	public interface IOccupySpaceInfo : ITraitInfo
+	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
 		bool SharesCell { get; }
@@ -239,7 +239,7 @@ namespace OpenRA.Traits
 	public interface IReloadModifier { int GetReloadModifier(); }
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
 	public interface IRangeModifier { int GetRangeModifier(); }
-	public interface IRangeModifierInfo : ITraitInfo { int GetRangeModifierDefault(); }
+	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
 	public interface IPowerModifier { int GetPowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
@@ -248,7 +248,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
-	public interface IPositionableInfo : ITraitInfo { }
+	public interface IPositionableInfo : ITraitInfoInterface { }
 	public interface IPositionable : IOccupySpace
 	{
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
@@ -260,7 +260,7 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMoveInfo : ITraitInfo { }
+	public interface IMoveInfo : ITraitInfoInterface { }
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
@@ -285,7 +285,7 @@ namespace OpenRA.Traits
 		int Facing { get; set; }
 	}
 
-	public interface IFacingInfo : ITraitInfo { int GetInitialFacing(); }
+	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
 
 	public interface ICrushable
 	{
@@ -294,12 +294,13 @@ namespace OpenRA.Traits
 		bool CrushableBy(HashSet<string> crushClasses, Player owner);
 	}
 
-	public interface ITraitInfo { object Create(ActorInitializer init); }
+	public interface ITraitInfoInterface { }
+	public interface ITraitInfo : ITraitInfoInterface { object Create(ActorInitializer init); }
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
-	public interface Requires<T> where T : class, ITraitInfo { }
+	public interface Requires<T> where T : class, ITraitInfoInterface { }
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
 
@@ -308,7 +309,7 @@ namespace OpenRA.Traits
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBotInfo : ITraitInfo { string Name { get; } }
+	public interface IBotInfo : ITraitInfoInterface { string Name { get; } }
 	public interface IBot
 	{
 		void Activate(Player p);
@@ -331,7 +332,7 @@ namespace OpenRA.Traits
 
 	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
 
-	public interface ITargetableInfo : ITraitInfo
+	public interface ITargetableInfo : ITraitInfoInterface
 	{
 		HashSet<string> GetTargetTypes();
 	}
@@ -390,5 +391,5 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
-	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfo { }
+	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfoInterface { }
 }
