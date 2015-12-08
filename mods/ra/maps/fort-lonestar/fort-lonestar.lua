@@ -12,6 +12,8 @@ OilDerricks = { OilDerrick1, OilDerrick2, OilDerrick3, OilDerrick4 }
 SpawnPoints = { Spawn1, Spawn2, Spawn3, Spawn4 }
 Snipers = { Sniper1, Sniper2, Sniper3, Sniper4, Sniper5, Sniper6, Sniper7, Sniper8, Sniper9, Sniper10, Sniper11, Sniper12 }
 
+ParaChance = 30
+
 Wave = 0
 Waves =
 {
@@ -57,7 +59,21 @@ SendWave = function()
 		end)
 
 		if (Wave < #Waves) then
-			SendWave()
+			if Utils.RandomInteger(1, 100) < ParaChance then
+				local units = ParaProxy.SendParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
+				Utils.Do(units, function(unit)
+					Trigger.OnIdle(unit, function(a)
+						if a.IsInWorld then
+							a.Hunt()
+						end
+					end)
+				end)
+
+				local delay = Utils.RandomInteger(DateTime.Seconds(20), DateTime.Seconds(45))
+				Trigger.AfterDelay(delay, SendWave)
+			else
+				SendWave()
+			end
 		else
 			Trigger.AfterDelay(DateTime.Minutes(2), SovietsRetreating)
 			Media.DisplayMessage("You survived the onslaught! No more waves incoming.")
@@ -102,5 +118,6 @@ WorldLoaded = function()
 
 	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
 
+	ParaProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
 	SendWave()
 end
