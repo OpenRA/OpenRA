@@ -590,7 +590,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var globalChatLabel = globalChatTab.Text;
 			globalChatTab.GetText = () =>
 			{
-				if (globalChatUnreadMessages == 0)
+				if (globalChatUnreadMessages == 0 || chatPanel == ChatPanelType.Global)
 					return globalChatLabel;
 
 				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
@@ -642,7 +642,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var lobbyChatLabel = lobbyChatTab.Text;
 			lobbyChatTab.GetText = () =>
 			{
-				if (lobbyChatUnreadMessages == 0)
+				if (lobbyChatUnreadMessages == 0 || chatPanel == ChatPanelType.Lobby)
 					return lobbyChatLabel;
 
 				return lobbyChatLabel + " ({0})".F(lobbyChatUnreadMessages);
