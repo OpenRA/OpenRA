@@ -35,7 +35,7 @@ lst:
 		Length: 4
 		Tick: 150
 	close:
-		Frames: 4, 3, 2, 1
+		Frames: [4..1]
 		Length: 4
 		Tick: 150
 	unload:
