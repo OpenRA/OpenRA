@@ -672,6 +672,7 @@ Rules:
 			Prerequisites: barracks
 		Valued:
 			Cost: 300
+		-MustBeDestroyed:
 	FTRK:
 		-Armament@AA:
 		-Armament@AG:
