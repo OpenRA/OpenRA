@@ -105,9 +105,7 @@ namespace OpenRA.Mods.Common.Graphics
 			public void Render(WorldRenderer wr)
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
-
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
@@ -122,8 +120,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void RenderDebugGeometry(WorldRenderer wr)
 			{
+				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
-				var groundZ = 0.5f * (pxOrigin.Y - wr.ScreenZPosition(voxel.pos, 0));
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
 				// Draw sprite rect
