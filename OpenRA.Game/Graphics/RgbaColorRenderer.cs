@@ -45,6 +45,34 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public void DrawLine(float2 start, float2 end, float width, Color startColor, Color endColor)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (nv + 4 > renderer.TempBufferSize)
+				Flush();
+
+			var delta = (end - start) / (end - start).Length;
+			var corner = width / 2 * new float2(-delta.Y, delta.X);
+
+			startColor = Util.PremultiplyAlpha(startColor);
+			var sr = startColor.R / 255.0f;
+			var sg = startColor.G / 255.0f;
+			var sb = startColor.B / 255.0f;
+			var sa = startColor.A / 255.0f;
+
+			endColor = Util.PremultiplyAlpha(endColor);
+			var er = endColor.R / 255.0f;
+			var eg = endColor.G / 255.0f;
+			var eb = endColor.B / 255.0f;
+			var ea = endColor.A / 255.0f;
+
+			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa);
+			vertices[nv++] = new Vertex(start + corner + Offset, sr, sg, sb, sa);
+			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea);
+			vertices[nv++] = new Vertex(end - corner + Offset, er, eg, eb, ea);
+		}
+
 		public void DrawLine(float2 start, float2 end, float width, Color color)
 		{
 			renderer.CurrentBatchRenderer = this;
