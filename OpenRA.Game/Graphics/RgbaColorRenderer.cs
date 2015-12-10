@@ -67,6 +67,115 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(end - corner + Offset, r, g, b, a);
 		}
 
+		/// <summary>
+		/// Calculate the intersection of two lines.
+		/// Will behave badly if the lines are parallel
+		/// </summary>
+		float2 IntersectionOf(float2 a, float2 da, float2 b, float2 db)
+		{
+			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
+			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
+			var x = da.X * crossB - db.X * crossA;
+			var y = da.Y * crossB - db.Y * crossA;
+			var d = da.X * db.Y - da.Y * db.X;
+			return new float2(x, y) / d;
+		}
+
+		void DrawConnectedLine(float2[] points, float width, Color color, bool closed)
+		{
+			// Not a line
+			if (points.Length < 2)
+				return;
+
+			// Single segment
+			if (points.Length == 2)
+			{
+				DrawLine(points[0], points[1], width, color);
+				return;
+			}
+
+			renderer.CurrentBatchRenderer = this;
+			color = Util.PremultiplyAlpha(color);
+			var r = color.R / 255.0f;
+			var g = color.G / 255.0f;
+			var b = color.B / 255.0f;
+			var a = color.A / 255.0f;
+
+			var start = points[0];
+			var end = points[1];
+			var dir = (end - start) / (end - start).Length;
+			var corner = width / 2 * new float2(-dir.Y, dir.X);
+
+			// Corners for start of line segment
+			var ca = start - corner;
+			var cb = start + corner;
+
+			// Segment is part of closed loop
+			if (closed)
+			{
+				var prev = points[points.Length - 1];
+				var prevDir = (start - prev) / (start - prev).Length;
+				var prevCorner = width / 2 * new float2(-prevDir.Y, prevDir.X);
+				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);
+				cb = IntersectionOf(start + prevCorner, prevDir, start + corner, dir);
+			}
+
+			var limit = closed ? points.Length : points.Length - 1;
+			for (var i = 0; i < limit; i++)
+			{
+				var next = points[(i + 2) % points.Length];
+				var nextDir = (next - end) / (next - end).Length;
+				var nextCorner = width / 2 * new float2(-nextDir.Y, nextDir.X);
+
+				// Vertices for the corners joining start-end to end-next
+				var cc = closed || i < limit ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
+				var cd = closed || i < limit ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
+
+				// Fill segment
+				if (nv + 4 > renderer.TempBufferSize)
+					Flush();
+
+				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(cb + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(cd + Offset, r, g, b, a);
+
+				// Advance line segment
+				end = next;
+				dir = nextDir;
+				corner = nextCorner;
+
+				ca = cd;
+				cb = cc;
+			}
+		}
+
+		public void DrawLine(float2[] points, float width, Color color, bool connectSegments = false)
+		{
+			if (!connectSegments)
+			{
+				if (points.Length < 2)
+					return;
+
+				for (var i = 1; i < points.Length; i++)
+					DrawLine(points[i - 1], points[i], width, color);
+			}
+			else
+				DrawConnectedLine(points, width, color, false);
+		}
+
+		public void DrawPolygon(float2[] vertices, float width, Color color)
+		{
+			DrawConnectedLine(vertices, width, color, true);
+		}
+
+		public void DrawRect(float2 tl, float2 br, float width, Color color)
+		{
+			var tr = new float2(br.X, tl.Y);
+			var bl = new float2(tl.X, br.Y);
+			DrawPolygon(new[] { tl, tr, br, bl }, width, color);
+		}
+
 		public void FillRect(float2 tl, float2 br, Color color)
 		{
 			renderer.CurrentBatchRenderer = this;
