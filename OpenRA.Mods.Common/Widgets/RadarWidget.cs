@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
-				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
 				Game.Renderer.DisableScissor();
 			}
 		}
@@ -317,22 +317,15 @@ namespace OpenRA.Mods.Common.Widgets
 			if (radarPings == null)
 				return;
 
-			var lr = Game.Renderer.LineRenderer;
-			var oldWidth = lr.LineWidth;
-			lr.LineWidth = 2;
+			var cr = Game.Renderer.RgbaColorRenderer;
 
 			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
 			{
 				var c = radarPing.Color;
 				var pingCell = world.Map.CellContaining(radarPing.Position);
 				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
-
-				lr.DrawLine(points[0], points[1], c);
-				lr.DrawLine(points[1], points[2], c);
-				lr.DrawLine(points[2], points[0], c);
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 2, c);
 			}
-
-			lr.LineWidth = oldWidth;
 		}
 
 		public override void Tick()
