@@ -33,13 +33,20 @@ namespace OpenRA.Widgets
 			this.worldRenderer = worldRenderer;
 		}
 
+		void DrawRollover(Actor unit)
+		{
+			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
+			if (unit.Info.HasTraitInfo<SelectableInfo>())
+				new SelectionBarsRenderable(unit, true, true).Render(worldRenderer);
+		}
+
 		public override void Draw()
 		{
 			if (!IsDragging)
 			{
 				// Render actors under the mouse pointer
 				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
-					worldRenderer.DrawRollover(u);
+					DrawRollover(u);
 
 				return;
 			}
@@ -48,7 +55,7 @@ namespace OpenRA.Widgets
 			var selbox = SelectionBox;
 			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
 			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
-				worldRenderer.DrawRollover(u);
+				DrawRollover(u);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

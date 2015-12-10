@@ -204,12 +204,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		public void DrawRollover(Actor unit)
-		{
-			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit, true, true).Render(this);
-		}
-
 		public void RefreshPalette()
 		{
 			palette.ApplyModifiers(World.WorldActor.TraitsImplementing<IPaletteModifier>());
