@@ -581,6 +581,7 @@ Heal:
 		Falloff: 100, 100, 0
 		Damage: -200
 		ValidTargets: Infantry
+		DebugOverlayColor: 00FF00
 
 WormJaw:
 	ReloadDelay: 10

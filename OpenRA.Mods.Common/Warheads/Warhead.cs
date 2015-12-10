@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -32,6 +33,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;
 		int IWarhead.Delay { get { return Delay; } }
+
+		[Desc("The color used for this warhead's visualization in the world's `WarheadDebugOverlay` trait.")]
+		public readonly Color DebugOverlayColor = Color.Red;
 
 		public bool IsValidTarget(IEnumerable<string> targetTypes)
 		{

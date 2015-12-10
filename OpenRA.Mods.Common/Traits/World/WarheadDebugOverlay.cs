@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public readonly WPos CenterPosition;
 			public readonly WDist[] Range;
+			public readonly Color Color;
 			public int Time;
 
 			public WDist OuterRange
@@ -36,10 +37,11 @@ namespace OpenRA.Mods.Common.Traits
 				get { return Range[Range.Length - 1]; }
 			}
 
-			public WHImpact(WPos pos, WDist[] range, int time)
+			public WHImpact(WPos pos, WDist[] range, int time, Color color)
 			{
 				CenterPosition = pos;
 				Range = range;
+				Color = color;
 				Time = time;
 			}
 		}
@@ -52,9 +54,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void AddImpact(WPos pos, WDist[] range)
+		public void AddImpact(WPos pos, WDist[] range, Color color)
 		{
-			impacts.Add(new WHImpact(pos, range, info.DisplayDuration));
+			impacts.Add(new WHImpact(pos, range, info.DisplayDuration, color));
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
@@ -64,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				var alpha = 255.0f * i.Time / info.DisplayDuration;
 				var rangeStep = alpha / i.Range.Length;
 
-				wr.DrawRangeCircle(i.CenterPosition, i.OuterRange, Color.FromArgb((int)alpha, Color.Red));
+				wr.DrawRangeCircle(i.CenterPosition, i.OuterRange, Color.FromArgb((int)alpha, i.Color));
 
 				foreach (var r in i.Range)
 				{
@@ -72,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 					var br = wr.ScreenPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
 					var rect = RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
-					Game.Renderer.WorldLineRenderer.FillEllipse(rect, Color.FromArgb((int)alpha, Color.Red));
+					Game.Renderer.WorldLineRenderer.FillEllipse(rect, Color.FromArgb((int)alpha, i.Color));
 
 					alpha -= rangeStep;
 				}
