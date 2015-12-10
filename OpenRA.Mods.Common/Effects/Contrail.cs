@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		[Desc("Measured in pixels.")]
+		[Desc("Length of the trail (in ticks).")]
 		public readonly int TrailLength = 25;
 
 		[Desc("RGB color of the contrail.")]
