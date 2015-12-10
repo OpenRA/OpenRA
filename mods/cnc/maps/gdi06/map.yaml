@@ -1055,7 +1055,6 @@ Rules:
 			WindTick: 150, 550
 			InstantWindChanges: false
 			UseSquares: false
-			ParticleSize: 0, 0
 			ScatterDirection: 0, 0
 			Gravity: 8.00, 12.00
 			SwingOffset: 0, 0
@@ -1063,6 +1062,7 @@ Rules:
 			SwingAmplitude: 0, 0
 			ParticleColors: 304074, 28386C, 202C60, 182C54
 			LineTailAlphaValue: 150
+			ParticleSize: 1, 1
 		GlobalLightingPaletteEffect:
 			Red: 0.75
 			Green: 0.85

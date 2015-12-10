@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Particles are drawn in squares when enabled, otherwise with lines.")]
 		public readonly bool UseSquares = true;
 
-		[Desc("Works only with squares enabled. Size min. and max. value in pixels.")]
+		[Desc("Size / width of the particle in px.")]
 		public readonly int[] ParticleSize = { 1, 3 };
 
 		[Desc("Scatters falling direction on the x-axis. Scatter min. and max. value in px/tick.")]
@@ -294,7 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 				{
 					var tempPosTail = new float2(topLeft.X + item.PosX - currentWindXOffset, item.PosY - (item.Gravity * 2 / 3) + topLeft.Y);
-					Game.Renderer.WorldLineRenderer.DrawLine(tempPos, tempPosTail, item.Color, item.TailColor);
+					Game.Renderer.WorldRgbaColorRenderer.DrawLine(tempPos, tempPosTail, item.Size, item.TailColor);
 				}
 			}
 		}
