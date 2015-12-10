@@ -458,7 +458,7 @@ HIJACKER:
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
-		UncloakOnMove: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		CloakTypes: Cloak, Hijacker
 		IsPlayerPalette: true
 	Mobile:
@@ -538,7 +538,7 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker

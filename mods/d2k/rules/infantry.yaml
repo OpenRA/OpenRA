@@ -251,7 +251,7 @@ saboteur:
 		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
-		UncloakOnMove: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: SaboteurVoice

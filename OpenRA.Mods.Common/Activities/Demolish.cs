@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (target.IsDead)
 					return;
 
-				if (cloak != null && cloak.Info.UncloakOnDemolish)
+				if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Demolish))
 					cloak.Uncloak();
 
 				for (var f = 0; f < flashes; f++)

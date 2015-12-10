@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!validStances.HasStance(stance))
 				return;
 
-			if (cloak != null && cloak.Info.UncloakOnInfiltrate)
+			if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
 				cloak.Uncloak();
 
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
