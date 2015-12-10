@@ -61,8 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 				var ha = wr.ScreenPosition(self.CenterPosition);
 				var hb = wr.ScreenPosition(self.CenterPosition + height);
 				wlr.DrawLine(ha, hb, hc);
-				wr.DrawTargetMarker(hc, ha);
-				wr.DrawTargetMarker(hc, hb);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
 			}
 
 			// No armaments to draw
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
 					wlr.DrawLine(sm, sd, c);
-					wr.DrawTargetMarker(c, sm);
+					TargetLineRenderable.DrawTargetMarker(wr, c, sm);
 				}
 			}
 		}

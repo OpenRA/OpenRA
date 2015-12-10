@@ -48,12 +48,28 @@ namespace OpenRA.Graphics
 			foreach (var b in waypoints.Skip(1).Select(pos => wr.ScreenPxPosition(pos)))
 			{
 				Game.Renderer.WorldLineRenderer.DrawLine(a, b, color);
-				wr.DrawTargetMarker(color, b);
+				DrawTargetMarker(wr, color, b);
 				a = b;
 			}
 
-			wr.DrawTargetMarker(color, first);
+			DrawTargetMarker(wr, color, first);
 		}
+
+		public static void DrawTargetMarker(WorldRenderer wr, Color c, float2 location)
+		{
+			var miz = -1 / wr.Viewport.Zoom;
+			var tl = new float2(miz, miz);
+			var br = -tl;
+			var bl = new float2(tl.X, br.Y);
+			var tr = new float2(br.X, tl.Y);
+
+			var wlr = Game.Renderer.WorldLineRenderer;
+			wlr.DrawLine(location + tl, location + tr, c);
+			wlr.DrawLine(location + tr, location + br, c);
+			wlr.DrawLine(location + br, location + bl, c);
+			wlr.DrawLine(location + bl, location + tl, c);
+		}
+
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
