@@ -11,7 +11,7 @@ See [configuration](http://studio.zerobrane.com/doc-configuration.html) page for
 
 -- to modify loaded configuration for recognized extensions for lua files
 -- (no longer needed in v1.21+) local G = ... -- this now points to the global environment
-local luaspec = ide.specs['lua']
+local luaspec = ide.specs.lua
 luaspec.exts[#luaspec.exts+1] = "luaz"
 luaspec.keywords[1] = luaspec.keywords[1] .. ' foo'
 
