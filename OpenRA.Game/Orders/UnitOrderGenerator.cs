@@ -17,34 +17,42 @@ namespace OpenRA.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		static Target TargetForInput(World world, CPos xy, MouseInput mi)
 		{
-			var underCursor = world.ScreenMap.ActorsAt(mi)
+			var actor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
 				.WithHighestSelectionPriority();
 
-			Target target;
-			if (underCursor != null)
-				target = Target.FromActor(underCursor);
-			else
-			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
-					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
-			}
+			if (actor != null)
+				return Target.FromActor(actor);
 
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
+				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
+				.WithHighestSelectionPriority();
+
+			if (frozen != null)
+				return Target.FromFrozenActor(frozen);
+
+			return Target.FromCell(world, xy);
+		}
+
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		{
+			var target = TargetForInput(world, xy, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
 				.Where(o => o != null)
 				.ToList();
 
 			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
-			if (actorsInvolved.Any())
-				yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
-				{
-					TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
-				};
+			if (!actorsInvolved.Any())
+				yield break;
+
+			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
+			{
+				TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
+			};
 
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
@@ -57,29 +65,15 @@ namespace OpenRA.Orders
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			var useSelect = false;
-			var underCursor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
-				.WithHighestSelectionPriority();
+			var target = TargetForInput(world, xy, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
 
-			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
-			{
-				if (underCursor.Info.HasTraitInfo<SelectableInfo>())
-					useSelect = true;
-			}
-
-			Target target;
-			if (underCursor != null)
-				target = Target.FromActor(underCursor);
-			else
-			{
-				var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
-					.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
-					.WithHighestSelectionPriority();
-				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(world, xy);
-			}
+			if (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
+					(mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
+				useSelect = true;
 
 			var ordersWithCursor = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
 				.Where(o => o != null && o.Cursor != null);
 
 			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
@@ -90,19 +84,32 @@ namespace OpenRA.Orders
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
 		public static bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
-			var target = Target.FromActor(world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority());
+			var actor = world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority();
+			if (actor == null)
+				return true;
+
+			var target = Target.FromActor(actor);
+			var cell = world.Map.CellContaining(target.CenterPosition);
+			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
 
-			var o = OrderForUnit(underCursor, target, mi);
-
+			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null && o.Order.OverrideSelection)
 				return false;
 
 			return true;
 		}
 
-		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
+		/// <summary>
+		/// Returns the most appropriate order for a given actor and target.
+		/// First priority is given to orders that interact with the given actors.
+		/// Second priority is given to actors in the given cell.
+		/// </summary>
+		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, CPos xy, MouseInput mi)
 		{
+			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
+				return null;
+
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
@@ -112,27 +119,30 @@ namespace OpenRA.Orders
 			if (self.Disposed || !target.IsValidFor(self))
 				return null;
 
-			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
+			var modifiers = TargetModifiers.None;
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
+				modifiers |= TargetModifiers.ForceAttack;
+			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+				modifiers |= TargetModifiers.ForceQueue;
+			if (mi.Modifiers.HasModifier(Modifiers.Alt))
+				modifiers |= TargetModifiers.ForceMove;
+
+			var orders = self.TraitsImplementing<IIssueOrder>()
+				.SelectMany(trait => trait.Orders.Select(x => new { Trait = trait, Order = x }))
+				.OrderByDescending(x => x.Order.OrderPriority);
+
+			for (var i = 0; i < 2; i++)
 			{
-				foreach (var o in self.TraitsImplementing<IIssueOrder>()
-					.SelectMany(trait => trait.Orders
-						.Select(x => new { Trait = trait, Order = x }))
-					.OrderByDescending(x => x.Order.OrderPriority))
+				foreach (var o in orders)
 				{
-					var actorsAt = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(target.CenterPosition)).ToList();
-
-					var modifiers = TargetModifiers.None;
-					if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
-						modifiers |= TargetModifiers.ForceAttack;
-					if (mi.Modifiers.HasModifier(Modifiers.Shift))
-						modifiers |= TargetModifiers.ForceQueue;
-					if (mi.Modifiers.HasModifier(Modifiers.Alt))
-						modifiers |= TargetModifiers.ForceMove;
-
+					var localModifiers = modifiers;
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, ref modifiers, ref cursor))
+					if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
+
+				// No valid orders, so check for orders against the cell
+				target = Target.FromCell(self.World, xy);
 			}
 
 			return null;
