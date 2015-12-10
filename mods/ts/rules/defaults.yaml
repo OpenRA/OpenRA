@@ -111,6 +111,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -216,6 +219,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	Health:
 		Shape: Circle
 			Radius: 363
@@ -319,6 +325,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -420,6 +429,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	MustBeDestroyed:
 	RenderSprites:
 	ThrowsShrapnel:
@@ -499,6 +511,15 @@
 	MustBeDestroyed:
 	RenderVoxels:
 	WithVoxelBody:
+	Cloak@CLOAKGENERATOR:
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		InitialDelay: 0
+		CloakDelay: 90
+		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -712,6 +733,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7

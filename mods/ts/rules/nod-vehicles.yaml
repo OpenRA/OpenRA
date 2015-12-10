@@ -282,6 +282,7 @@ STNK:
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,128, 213,-43,128
