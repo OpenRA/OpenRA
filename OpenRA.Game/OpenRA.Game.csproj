@@ -119,7 +119,6 @@
     <Compile Include="Graphics\CursorProvider.cs" />
     <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\HardwarePalette.cs" />
-    <Compile Include="Graphics\LineRenderer.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
     <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
