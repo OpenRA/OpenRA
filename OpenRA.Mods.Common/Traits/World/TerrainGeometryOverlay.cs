@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var map = wr.World.Map;
 			var tileSet = wr.World.TileSet;
-			var lr = Game.Renderer.WorldLineRenderer;
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var colors = wr.World.TileSet.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
@@ -71,22 +71,18 @@ namespace OpenRA.Mods.Common.Traits
 				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
 				var pos = map.CenterOfCell(uv.ToCPos(map));
 				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
+				var width = (uv == mouseCell ? 3 : 1) / wr.Viewport.Zoom;
 
-				if (uv == mouseCell)
-					lr.LineWidth = 3;
-
+				// Colors change between points, so render separately
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;
-					lr.DrawLine(screen[i], screen[j], color[i], color[j]);
+					wcr.DrawLine(screen[i], screen[j], width, color[i], color[j]);
 				}
-
-				lr.LineWidth = 1;
 			}
 
 			// Projected cell coordinates for the current cell
 			var projectedCorners = map.CellCorners[0];
-			lr.LineWidth = 3;
 			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
 			{
 				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));
@@ -94,11 +90,9 @@ namespace OpenRA.Mods.Common.Traits
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;
-					lr.DrawLine(screen[i], screen[j], Color.Navy);
+					wcr.DrawLine(screen[i], screen[j], 3 / wr.Viewport.Zoom, Color.Navy);
 				}
 			}
-
-			lr.LineWidth = 1;
 		}
 	}
 }
