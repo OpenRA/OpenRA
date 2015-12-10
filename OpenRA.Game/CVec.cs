@@ -118,7 +118,7 @@ namespace OpenRA
 
 			set
 			{
-				throw new LuaException("WVec is read-only. Use CVec.New to create a new value");
+				throw new LuaException("CVec is read-only. Use CVec.New to create a new value");
 			}
 		}
 
