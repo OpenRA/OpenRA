@@ -190,8 +190,21 @@ namespace OpenRA.FileFormats
 			rawData = null;
 			channels = sampleBits = sampleRate = 0;
 
-			if (!LoadSound(stream))
+			try
+			{
+				if (!LoadSound(stream))
+					return false;
+			}
+			catch (Exception e)
+			{
+				// LoadSound() will check if the stream is in a format that this parser supports.
+				// If not, it will simply return false so we know we can't use it. If it is, it will start
+				// parsing the data without any further failsafes, which means that it will crash on corrupted files
+				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
+				Log.Write("debug", "Failed to parse WAV file {0}. Error message:".F(fileName));
+				Log.Write("debug", e.ToString());
 				return false;
+			}
 
 			rawData = RawOutput;
 			channels = Channels;
