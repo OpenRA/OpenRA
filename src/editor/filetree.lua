@@ -187,7 +187,7 @@ local function treeSetConnectorsAndIcons(tree)
       item_id = tree:GetItemParent(item_id)
       if not item_id:IsOk() then break end
       cur = tree:GetItemText(item_id)
-      if cur and string.len(cur) > 0 then str = cur..pathsep..str end
+      if cur and #cur > 0 then str = MergeFullPath(cur, str) end
     end
     -- as root may already include path separator, normalize the path
     local fullPath = wx.wxFileName(str)
