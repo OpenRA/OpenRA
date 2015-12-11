@@ -55,6 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The upgrades to grant to self while airborne.")]
 		public readonly string[] AirborneUpgrades = { };
 
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant to self while at cruise altitude.")]
+		public readonly string[] CruisingUpgrades = { };
+
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
 
@@ -100,29 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int ROT { get { return Info.ROT; } }
 
 		bool airborne;
-		bool IsAirborne
-		{
-			get
-			{
-				return airborne;
-			}
-
-			set
-			{
-				if (airborne == value)
-					return;
-				airborne = value;
-				if (um != null)
-				{
-					if (airborne)
-						foreach (var u in Info.AirborneUpgrades)
-							um.GrantUpgrade(self, u, this);
-					else
-						foreach (var u in Info.AirborneUpgrades)
-							um.RevokeUpgrade(self, u, this);
-				}
-			}
-		}
+		bool cruising;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -149,8 +131,11 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 			self.World.ScreenMap.Add(self);
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= Info.MinAirborneAltitude)
-				IsAirborne = true;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			if (altitude.Length >= Info.MinAirborneAltitude)
+				OnAirborneAltitudeReached();
+			if (altitude == Info.CruiseAltitude)
+				OnCruisingAltitudeReached();
 		}
 
 		bool firstTick = true;
@@ -369,7 +354,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.ScreenMap.Update(self);
 			self.World.ActorMap.UpdatePosition(self, this);
-			IsAirborne = self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= Info.MinAirborneAltitude;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			var isAirborne = altitude.Length >= Info.MinAirborneAltitude;
+			if (isAirborne && !airborne)
+				OnAirborneAltitudeReached();
+			else if (!isAirborne && airborne)
+				OnAirborneAltitudeLeft();
+			var isCruising = altitude == Info.CruiseAltitude;
+			if (isCruising && !cruising)
+				OnCruisingAltitudeReached();
+			else if (!isCruising && cruising)
+				OnCruisingAltitudeLeft();
 		}
 
 		#endregion
@@ -610,8 +605,57 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
-			IsAirborne = false;
+			OnCruisingAltitudeLeft();
+			OnAirborneAltitudeLeft();
 		}
+
+		#region Airborne upgrades
+
+		void OnAirborneAltitudeReached()
+		{
+			if (airborne)
+				return;
+			airborne = true;
+			if (um != null)
+				foreach (var u in Info.AirborneUpgrades)
+					um.GrantUpgrade(self, u, this);
+		}
+
+		void OnAirborneAltitudeLeft()
+		{
+			if (!airborne)
+				return;
+			airborne = false;
+			if (um != null)
+				foreach (var u in Info.AirborneUpgrades)
+					um.RevokeUpgrade(self, u, this);
+		}
+
+		#endregion
+
+		#region Cruising upgrades
+
+		void OnCruisingAltitudeReached()
+		{
+			if (cruising)
+				return;
+			cruising = true;
+			if (um != null)
+				foreach (var u in Info.CruisingUpgrades)
+					um.GrantUpgrade(self, u, this);
+		}
+
+		void OnCruisingAltitudeLeft()
+		{
+			if (!cruising)
+				return;
+			cruising = false;
+			if (um != null)
+				foreach (var u in Info.CruisingUpgrades)
+					um.RevokeUpgrade(self, u, this);
+		}
+
+		#endregion
 
 		public void Disposing(Actor self)
 		{
