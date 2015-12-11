@@ -476,6 +476,13 @@
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
+	Aircraft:
+		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
+		RepairBuildings: gadept
+		RearmBuildings: gahpad, nahpad
+		LandWhenIdle: no
+		Voice: Move
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
@@ -496,23 +503,18 @@
 ^Helicopter:
 	Inherits: ^Aircraft
 	Aircraft:
-		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2048
-		Voice: Move
-		AirborneUpgrades: airborne
 		CanHover: True
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 
 ^Plane:
 	Inherits: ^Aircraft
 	Aircraft:
-		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2560
-		Voice: Move
-		AirborneUpgrades: airborne
 	ReturnOnIdle:
 
 ^Viceroid:

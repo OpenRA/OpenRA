@@ -136,6 +136,7 @@
 		RepairBuildings: hpad
 		LandWhenIdle: false
 		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
 		CanHover: True
 	HiddenUnderFog:
 		Type: CenterPosition
@@ -151,7 +152,9 @@
 		GenericName: Helicopter
 	WithFacingSpriteBody:
 	WithShadow:
-	Hovers:
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
