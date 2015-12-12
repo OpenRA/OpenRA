@@ -206,21 +206,9 @@ namespace OpenRA.Graphics
 
 		public void FillRect(float2 tl, float2 br, Color color)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (nv + 4 > renderer.TempBufferSize)
-				Flush();
-
-			color = Util.PremultiplyAlpha(color);
-			var r = color.R / 255.0f;
-			var g = color.G / 255.0f;
-			var b = color.B / 255.0f;
-			var a = color.A / 255.0f;
-
-			vertices[nv++] = new Vertex(new float2(tl.X, tl.Y) + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(new float2(br.X, tl.Y) + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(new float2(br.X, br.Y) + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(new float2(tl.X, br.Y) + Offset, r, g, b, a);
+			var tr = new float2(br.X, tl.Y);
+			var bl = new float2(tl.X, br.Y);
+			FillRect(tl, tr, br, bl, color);
 		}
 
 		public void FillRect(float2 a, float2 b, float2 c, float2 d, Color color)
