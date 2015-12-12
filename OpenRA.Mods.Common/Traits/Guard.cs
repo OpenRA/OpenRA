@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -59,52 +60,40 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class GuardOrderGenerator : IOrderGenerator
+	public class GuardOrderGenerator : GenericSelectTarget
 	{
-		readonly IEnumerable<Actor> subjects;
+		public GuardOrderGenerator(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
+			: base(subjects, order, cursor, button) { }
 
-		public GuardOrderGenerator(IEnumerable<Actor> subjects)
+		protected override IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
-			this.subjects = subjects;
-		}
-
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
-		{
-			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
-			{
-				world.CancelInputMode();
-				yield break;
-			}
-
 			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 
-			if (target == null || subjects.All(s => s.IsDead))
+			if (target == null || Subjects.All(s => s.IsDead))
 				yield break;
 
-			foreach (var subject in subjects)
+			world.CancelInputMode();
+			foreach (var subject in Subjects)
 				if (subject != target)
-					yield return new Order("Guard", subject, false) { TargetActor = target };
+					yield return new Order(OrderName, subject, false) { TargetActor = target };
 		}
 
-		public void Tick(World world)
+		public override void Tick(World world)
 		{
-			if (subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
+			if (Subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
 				world.CancelInputMode();
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
-
-		public string GetCursor(World world, CPos xy, MouseInput mi)
+		public override string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			if (!subjects.Any())
+			if (!Subjects.Any())
 				return null;
 
-			var multiple = subjects.Count() > 1;
+			var multiple = Subjects.Count() > 1;
 			var canGuard = FriendlyGuardableUnits(world, mi)
-				.Any(a => multiple || a != subjects.First());
+				.Any(a => multiple || a != Subjects.First());
 
-			return canGuard ? "guard" : "move-blocked";
+			return canGuard ? Cursor : "move-blocked";
 		}
 
 		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
