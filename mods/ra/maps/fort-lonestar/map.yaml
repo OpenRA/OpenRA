@@ -496,8 +496,9 @@ Smudges:
 Rules:
 	World:
 		CrateSpawner:
-			Maximum: 1
-			SpawnInterval: 2500
+			InitialSpawnDelay: 0
+			Maximum: 4
+			SpawnInterval: 1000
 			CrateActors: fortcrate
 		-SpawnMPUnits:
 		-MPStartLocations:
@@ -540,10 +541,21 @@ Rules:
 		GiveUnitCrateAction@e7:
 			Units: e7
 			SelectionShares: 10
+		GrantUpgradeCrateAction@ironcurtain:
+			SelectionShares: 10
+			Effect: invuln
+			Notification: ironcur9.aud
+			Upgrades: invulnerability
+			Duration: 1200
+		ExplodeCrateAction@bigboom:
+			Weapon: SCUD
+			SelectionShares: 5
 	Player:
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
 		-EnemyWatcher:
+	^Infantry:
+		Inherits@IC: ^IronCurtainable
 	OILB:
 		Health:
 			HP: 3000
