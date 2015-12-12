@@ -23,7 +23,7 @@ Videos:
 Options:
 	Fog: True
 	Shroud: True
-	AllyBuildRadius: False
+	AllyBuildRadius: True
 	FragileAlliances: False
 	StartingCash: 50
 	TechLevel: Unrestricted
@@ -587,6 +587,7 @@ Rules:
 			Cost: 400
 		Power:
 			Amount: 0
+		GivesBuildableArea:
 	PBOX:
 		Buildable:
 			Prerequisites: barracks
@@ -598,6 +599,7 @@ Rules:
 			Type: Heavy
 		Power:
 			Amount: 0
+		GivesBuildableArea:
 	DOG:
 		Buildable:
 			Prerequisites: barracks
