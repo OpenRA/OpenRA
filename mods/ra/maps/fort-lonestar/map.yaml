@@ -503,11 +503,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		WeatherOverlay:
-			ParticleDensityFactor: 0.0007625
-			ChangingWindLevel: true
-			WindLevels: -5, -3, -2, 0, 2, 3, 5
 			WindTick: 150, 550
-			InstantWindChanges: false
 			UseSquares: false
 			ParticleSize: 0, 0
 			ScatterDirection: 0, 0
@@ -557,8 +553,6 @@ Rules:
 			Weapon: SCUD
 			SelectionShares: 5
 	Player:
-		PlayerResources:
-			InitialCash: 50
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
 		-EnemyWatcher:
@@ -625,7 +619,6 @@ Rules:
 		Valued:
 			Cost: 40
 		Explodes:
-			Weapon: UnitExplodeSmall
 			Chance: 20
 	E3:
 		Buildable:
@@ -653,7 +646,6 @@ Rules:
 			Weapon: TankNapalm
 			Recoil: 200
 			RecoilRecovery: 38
-			LocalOffset: 0,85,0, 0,-85,0
 	MEDI:
 		Buildable:
 			Prerequisites: barracks
@@ -671,8 +663,6 @@ Rules:
 			Prerequisites: barracks
 		Health:
 			HP: 200
-		AutoTarget:
-			InitialStanceAI: Defend
 	SNIPER.soviets:
 		Inherits: SNIPER
 		Buildable:
@@ -681,11 +671,12 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		AutoTarget:
+			InitialStance: AttackAnything
 		RenderSprites:
 			Image: SNIPER
 	SPY:
 		Buildable:
-			Queue: Infantry
 			BuildPaletteOrder: 60
 			Prerequisites: barracks
 		Valued:
@@ -713,22 +704,17 @@ Rules:
 	4TNK:
 		Health:
 			HP: 2500
-		Armor:
-			Type: Heavy
 		Mobile:
 			Speed: 56
 		RevealsShroud:
 			Range: 14c0
 		Turreted:
 			ROT: 1
-		AttackTurreted:
-			PrimaryWeapon: 120mm
-			SecondaryWeapon: MammothTusk
-			PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-			SecondaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-			PrimaryRecoil: 8
-			PrimaryRecoilRecovery: 0.7
-			SecondaryRecoil: 2
+		Armament@PRIMARY:
+			Recoil: 8
+			RecoilRecovery: 0c7
+		Armament@SECONDARY:
+			Recoil: 2
 		Explodes:
 			Weapon: napalm
 			EmptyWeapon: napalm
@@ -736,29 +722,17 @@ Rules:
 			Step: 2
 			Ticks: 1
 			HealIfBelow: 40%
-			DamageCooldown: 150
 	BADR.Bomber:
-		Inherits: ^Plane
-		AttackBomber:
-		Armament:
-			Weapon: ParaBomb
 		Health:
 			HP: 60
-		Armor:
-			Type: Light
 		Aircraft:
-			ROT: 5
 			Speed: 280
 		AmmoPool:
 			Ammo: 30
-		WithFacingSpriteBody:
-		WithShadow:
-		-Selectable:
-		-GainsExperience:
 		Tooltip:
 			Name: Mig Bomber
-		-EjectOnDeath:
-		AutoSelectionSize:
+		SpawnActorOnDeath:
+			Actor: MIG.Husk
 		RenderSprites:
 			Image: mig
 	powerproxy.paratroopers:
@@ -818,47 +792,34 @@ Weapons:
 	120mm:
 		ReloadDelay: 150
 		Range: 10c0
-		Report: CANNON1.AUD
 		Burst: 6
 		Projectile: Bullet
 			Speed: 204
-			High: true
+			Blockable: false
 			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 256
 			Versus:
 				None: 75
-				Wood: 75
-				Light: 75
 				Concrete: 100
 			Damage: 150
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
-		Warhead@3Eff: CreateEffect
+		Warhead@3EffGround: CreateEffect
 			Explosion: self_destruct
-			WaterExplosion: self_destruct
 	MammothTusk:
 		ReloadDelay: 300
 		Range: 10c0
-		Report: MISSILE6.AUD
-		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
 			MaximumLaunchSpeed: 128
-			Arm: 2
-			High: true
-			Shadow: false
-			Proximity: true
+			Blockable: false
 			TrailImage: smokey
 			ContrailLength: 150
-			Inaccuracy: 853
-			Image: DRAGON
+			Inaccuracy: 0c853
 			ROT: 10
 			RangeLimit: 80
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 640
 			ValidTargets: Ground, Air
 			Versus:
@@ -868,12 +829,8 @@ Weapons:
 				Heavy: 100
 				Concrete: 200
 			Damage: 250
-			DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
-		Warhead@3Eff: CreateEffect
+		Warhead@3EffGround: CreateEffect
 			Explosion: nuke
-			WaterExplosion: nuke
 	TankNapalm:
 		ReloadDelay: 40
 		Range: 8c0
@@ -885,7 +842,7 @@ Weapons:
 			Speed: 426
 			Image: 120MM
 			Inaccuracy: 2c512
-			Trail: smokey
+			TrailImage: smokey
 			ContrailLength: 2
 		Warhead: SpreadDamage
 			Spread: 341
@@ -907,11 +864,10 @@ Weapons:
 	ParaBomb:
 		ReloadDelay: 5
 		Range: 5c0
-		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
 			-OpenSequence:
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 426
 			Versus:
 				None: 125
@@ -920,41 +876,32 @@ Weapons:
 				Concrete: 25
 			Damage: 200
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosion: napalm
 			ImpactSound: firebl3.aud
-			WaterExplosion: napalm
 	155mm:
 		ReloadDelay: 10
 		Range: 7c5
 		Burst: 20
-		MinRange: 3c0
 		-Report:
 		Projectile: Bullet
 			Speed: 170
-			Trail: fb4
+			TrailImage: fb4
 			Image: fb3
-			High: true
+			Blockable: false
 			Angle: 30
 			Inaccuracy: 1c682
 			ContrailLength: 2
-		Warhead: SpreadDamage
-			Spread: 426
+		Warhead@1Dam: SpreadDamage
 			Versus:
 				None: 80
 				Wood: 100
-				Light: 60
 				Heavy: 75
 				Concrete: 35
 			Damage: 10
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
 			Explosion: small_napalm
-			WaterExplosion: small_napalm
 			ImpactSound: firebl3.aud
 	FLAK-23:
 		ReloadDelay: 10
@@ -963,7 +910,7 @@ Weapons:
 		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
-			High: true
+			Blockable: false
 		Warhead: SpreadDamage
 			Spread: 213
 			ValidTargets: Air, Ground
@@ -982,51 +929,33 @@ Weapons:
 	SCUD:
 		ReloadDelay: 280
 		Range: 7c0
-		MinRange: 3c0
-		Report: MISSILE1.AUD
 		Projectile: Bullet
-			Speed: 170
 			Arm: 10
-			High: true
-			Shadow: false
-			Proximity: true
-			Trail: smokey
-			Inaccuracy: 426
-			Image: V2
+			TrailImage: smokey
+			Blockable: false
+			Inaccuracy: 0c426
 			Angle: 216
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 853
+			Falloff: 100, 37, 14, 5, 0
 			Versus:
 				None: 100
 				Wood: 90
 				Light: 80
 				Heavy: 70
 			Damage: 500
-			DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
+			AffectsParent: true
 		Warhead@3Eff: CreateEffect
 			Explosion: nuke
-			WaterExplosion: large_splash
 			ImpactSound: kaboom1.aud
-			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
-		ReloadDelay: 80
 		Range: 25c0
-		Report: silppk.aud
-		Projectile: Bullet
-			Speed: 1c682
-		Warhead: SpreadDamage
-			Spread: 128
+		ValidTargets: Infantry, Tank, Vehicle, Husk
+		InvalidTargets: Water, Structure, Wall
+		Warhead@1Dam: SpreadDamage
+			ValidTargets: Infantry, Tank, Vehicle, Husk
 			Versus:
-				Wood: 0
-				Light: 0
 				Heavy: 50
-				Concrete: 0
-			Damage: 150
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-		Warhead@2Eff: CreateEffect
-			Explosion: piffs
 
 Voices:
 
