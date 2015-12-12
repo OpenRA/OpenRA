@@ -571,12 +571,15 @@ Rules:
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense, Infantry, Soldier, Dog
+			Produces: Infantry, Soldier, Dog, Defense
 		-Sellable:
 		BaseProvider:
 			Range: 12c0
 		Power:
 			Amount: 0
+		ProductionBar@Defense:
+			ProductionType: Defense
+			Color: 8A8A8A
 	FTUR:
 		Buildable:
 			Prerequisites: barracks
