@@ -23,7 +23,7 @@ Videos:
 Options:
 	Fog: True
 	Shroud: True
-	AllyBuildRadius: False
+	AllyBuildRadius: True
 	FragileAlliances: False
 	StartingCash: 50
 	TechLevel: Unrestricted
