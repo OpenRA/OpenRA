@@ -159,6 +159,7 @@ namespace OpenRA
 
 		public bool CanTargetActor(Actor a)
 		{
+			// PERF: Avoid LINQ.
 			if (HasFogVisibility)
 				foreach (var fogVisibility in fogVisibilities)
 					if (fogVisibility.IsVisible(a))
@@ -171,6 +172,7 @@ namespace OpenRA
 		{
 			get
 			{
+				// PERF: Avoid LINQ.
 				foreach (var fogVisibility in fogVisibilities)
 					if (fogVisibility.HasFogVisibility())
 						return true;

@@ -189,6 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
 				return false;
 
+			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
 				if (armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
@@ -201,6 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
+			// PERF: Avoid LINQ.
 			var min = WDist.MaxValue;
 			foreach (var armament in Armaments)
 			{
@@ -219,6 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
+			// PERF: Avoid LINQ.
 			var max = WDist.Zero;
 			foreach (var armament in Armaments)
 			{

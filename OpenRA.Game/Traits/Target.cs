@@ -96,6 +96,7 @@ namespace OpenRA.Traits
 				if (actor == null)
 					return false;
 
+				// PERF: Avoid LINQ.
 				var isTargetable = false;
 				foreach (var targetable in actor.Targetables)
 				{

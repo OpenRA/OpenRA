@@ -132,6 +132,7 @@ namespace OpenRA.GameRules
 			if (!IsValidTarget(targetTypes))
 				return false;
 
+			// PERF: Avoid LINQ.
 			foreach (var warhead in Warheads)
 				if (warhead.IsValidAgainst(victim, firedBy))
 					return true;

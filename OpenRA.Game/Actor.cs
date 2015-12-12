@@ -324,6 +324,7 @@ namespace OpenRA
 
 		public IEnumerable<string> GetAllTargetTypes()
 		{
+			// PERF: Avoid LINQ.
 			foreach (var targetable in Targetables)
 				foreach (var targetType in targetable.TargetTypes)
 					yield return targetType;
@@ -331,6 +332,7 @@ namespace OpenRA
 
 		public IEnumerable<string> GetEnabledTargetTypes()
 		{
+			// PERF: Avoid LINQ.
 			foreach (var targetable in Targetables)
 				if (targetable.IsTraitEnabled())
 					foreach (var targetType in targetable.TargetTypes)
@@ -339,6 +341,7 @@ namespace OpenRA
 
 		public bool IsTargetableBy(Actor byActor)
 		{
+			// PERF: Avoid LINQ.
 			foreach (var targetable in Targetables)
 				if (targetable.IsTraitEnabled() && targetable.TargetableBy(this, byActor))
 					return true;
