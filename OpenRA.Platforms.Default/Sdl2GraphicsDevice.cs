@@ -109,7 +109,7 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidDataException("Failed to create hardware cursor `{0}`".F(name), ex);
+				throw new InvalidDataException("Failed to create hardware cursor `{0}` - {1}".F(name, ex.Message), ex);
 			}
 		}
 
