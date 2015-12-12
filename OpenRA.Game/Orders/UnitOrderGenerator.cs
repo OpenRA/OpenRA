@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
-	class UnitOrderGenerator : IOrderGenerator
+	public class UnitOrderGenerator : IOrderGenerator
 	{
 		static Target TargetForInput(World world, CPos xy, MouseInput mi)
 		{
@@ -36,7 +36,7 @@ namespace OpenRA.Orders
 			return Target.FromCell(world, xy);
 		}
 
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public virtual IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			var target = TargetForInput(world, xy, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
@@ -58,11 +58,11 @@ namespace OpenRA.Orders
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
 
-		public void Tick(World world) { }
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
+		public virtual void Tick(World world) { }
+		public virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		public virtual IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
 
-		public string GetCursor(World world, CPos xy, MouseInput mi)
+		public virtual string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			var useSelect = false;
 			var target = TargetForInput(world, xy, mi);
