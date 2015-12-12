@@ -135,7 +135,8 @@ end
 SpawnSovietVehicle = function(spawnpoints, rallypoints)
 	local route = Utils.RandomInteger(1, #spawnpoints + 1)
 	local rally = Utils.RandomInteger(1, #rallypoints + 1)
-	local unit = Reinforcements.Reinforce(soviets, { Utils.Random(SovietVehicles) }, { spawnpoints[route].Location, rallypoints[rally].Location })[1]
+	local unit = Reinforcements.Reinforce(soviets, { Utils.Random(SovietVehicles) }, { spawnpoints[route].Location })[1]
+	unit.AttackMove(rallypoints[rally].Location)
 	IdleHunt(unit)
 
 	Trigger.OnCapture(unit, function()
