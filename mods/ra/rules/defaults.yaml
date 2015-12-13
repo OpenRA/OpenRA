@@ -520,7 +520,12 @@
 		DamageThreshold: 90
 	RevealsShroud:
 		Range: 4c0
-	Fake:
+	WithDecoration@fake:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-fake
+		ReferencePoint: Top
+		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
 

@@ -2739,6 +2739,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(n => n.Key == "ShowToAllies");
 						node.Value.Nodes.RemoveAll(n => n.Key == "ShowToEnemies");
 					}
+
+					if (depth == 1 && node.Key == "Fake")
+					{
+						node.Key = "WithDecoration@fake";
+						node.Value.Nodes.Add(new MiniYamlNode("RequiresSelection", "true"));
+						node.Value.Nodes.Add(new MiniYamlNode("Image", "pips"));
+						node.Value.Nodes.Add(new MiniYamlNode("Sequence", "tag-fake"));
+						node.Value.Nodes.Add(new MiniYamlNode("ReferencePoint", "Top"));
+						node.Value.Nodes.Add(new MiniYamlNode("ZOffset", "256"));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

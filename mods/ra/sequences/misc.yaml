@@ -57,6 +57,7 @@ pips:
 #		Start: 4
 	tag-fake:
 		Start: 18
+		Offset: 0, 2
 	tag-primary:
 		Start: 2
 	pip-empty: pips2
