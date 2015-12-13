@@ -1261,8 +1261,6 @@ Rules:
 			ValuePerUnit: 0
 		LuaScript:
 			Scripts: desert-shellmap.lua
-		ScriptUpgradesCache:
-			Upgrades: unkillable
 		-StartGameNotification:
 	^Vehicle:
 		GivesBounty:
@@ -1272,6 +1270,8 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	^Tank:
 		GivesBounty:
 			Percentage: 0
@@ -1280,6 +1280,8 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	^Infantry:
 		GivesBounty:
 			Percentage: 0
@@ -1294,6 +1296,8 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	^Ship:
 		GivesBounty:
 			Percentage: 0
@@ -1302,18 +1306,24 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	^Plane:
 		GivesBounty:
 			Percentage: 0
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	^Building:
 		GivesBounty:
 			Percentage: 0
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+		UpgradeManager:
+			Scriptable: unkillable
 	OILB:
 		CashTrickler:
 			ShowTicks: false

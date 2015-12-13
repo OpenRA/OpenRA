@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		[FieldLoader.Require, Desc("Upgrades to grant for each accepted plug type.")]
+		[FieldLoader.Require, UpgradeGrantedReference, Desc("Upgrades to grant for each accepted plug type.")]
 		public readonly Dictionary<string, string[]> Upgrades = null;
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }

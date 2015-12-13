@@ -204,7 +204,6 @@
     <Compile Include="Pathfinder\CellInfo.cs" />
     <Compile Include="PlayerExtensions.cs" />
     <Compile Include="Scripting\Properties\AircraftProperties.cs" />
-    <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
     <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />

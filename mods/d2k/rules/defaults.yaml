@@ -21,6 +21,8 @@
 			400: firepower, damage, speed, reload, inaccuracy, rank
 			800: firepower, damage, speed, reload, inaccuracy, rank
 			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
+	UpgradeManager:
+		IgnoredAsUnused: eliteweapon
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
 		Modifier: 105, 110, 115, 125
