@@ -13,19 +13,19 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Orders
 {
-	public class GenericSelectTarget : IOrderGenerator
+	public class GenericSelectTarget : UnitOrderGenerator
 	{
-		readonly IEnumerable<Actor> subjects;
-		readonly string order;
-		readonly string cursor;
-		readonly MouseButton expectedButton;
+		protected readonly IEnumerable<Actor> Subjects;
+		protected readonly string OrderName;
+		protected readonly string Cursor;
+		protected readonly MouseButton ExpectedButton;
 
 		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
 		{
-			this.subjects = subjects;
-			this.order = order;
-			this.cursor = cursor;
-			expectedButton = button;
+			Subjects = subjects;
+			OrderName = order;
+			Cursor = cursor;
+			ExpectedButton = button;
 		}
 
 		public GenericSelectTarget(IEnumerable<Actor> subjects, string order, string cursor)
@@ -37,26 +37,23 @@ namespace OpenRA.Orders
 		public GenericSelectTarget(Actor subject, string order, string cursor, MouseButton button)
 			: this(new Actor[] { subject }, order, cursor, button) { }
 
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button != expectedButton)
+			if (mi.Button != ExpectedButton)
 				world.CancelInputMode();
 			return OrderInner(world, xy, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
+		protected virtual IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
-			if (mi.Button == expectedButton && world.Map.Contains(xy))
+			if (mi.Button == ExpectedButton && world.Map.Contains(xy))
 			{
 				world.CancelInputMode();
-				foreach (var subject in subjects)
-					yield return new Order(order, subject, false) { TargetLocation = xy };
+				foreach (var subject in Subjects)
+					yield return new Order(OrderName, subject, false) { TargetLocation = xy };
 			}
 		}
 
-		public virtual void Tick(World world) { }
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.Contains(xy) ? cursor : "generic-blocked"; }
+		public override string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.Contains(xy) ? Cursor : "generic-blocked"; }
 	}
 }
