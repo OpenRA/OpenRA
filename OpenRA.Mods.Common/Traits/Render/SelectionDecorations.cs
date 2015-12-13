@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 			pipImages.Tick();
 
 			var pos = basePosition - (0.5f * pipImages.Image.Size).ToInt2() + new int2(9, 5);
-			yield return new UISpriteRenderable(pipImages.Image, pos, 0, pal, 1f);
+			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, pal, 1f);
 		}
 
 		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 					pipImages.PlayRepeating(PipStrings[(int)pip]);
 					pipxyOffset += new int2(pipSize.X, 0);
 
-					yield return new UISpriteRenderable(pipImages.Image, pipxyBase + pipxyOffset, 0, pal, 1f);
+					yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, pal, 1f);
 				}
 
 				// Increment row
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					tagImages.PlayRepeating(TagStrings[(int)tag]);
 					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.Size).ToInt2();
-					yield return new UISpriteRenderable(tagImages.Image, pos, 0, pal, 1f);
+					yield return new UISpriteRenderable(tagImages.Image, self.CenterPosition, pos, 0, pal, 1f);
 
 					// Increment row
 					tagxyOffset = tagxyOffset.WithY(tagxyOffset.Y + 8);
