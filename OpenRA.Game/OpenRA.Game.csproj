@@ -102,7 +102,6 @@
     <Compile Include="Map\MapPlayers.cs" />
     <Compile Include="ContentInstaller.cs" />
     <Compile Include="MPos.cs" />
-    <Compile Include="Graphics\QuadRenderer.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\AsyncAction.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
@@ -252,6 +251,7 @@
     <Compile Include="GameSpeed.cs" />
     <Compile Include="GlobalChat.cs" />
     <Compile Include="Primitives\ObservableList.cs" />
+    <Compile Include="Graphics\RgbaColorRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

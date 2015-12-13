@@ -96,9 +96,11 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 				else
-					Game.Renderer.LineRenderer.FillRect(new Rectangle(
-						b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac),
-						b.Width, (int)(providedFrac * b.Height)), color);
+				{
+					var tl = new float2(b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac));
+					var br = tl + new float2(b.Width, (int)(providedFrac * b.Height));
+					Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);
+				}
 
 				var x = (b.Left + b.Right - indicator.Size.X) / 2;
 				var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - indicator.Size.Y / 2;
@@ -126,7 +128,11 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 				else
-					Game.Renderer.LineRenderer.FillRect(new Rectangle(b.X, b.Y, (int)(providedFrac * b.Width), b.Height), color);
+				{
+					var tl = new float2(b.X, b.Y);
+					var br = tl + new float2((int)(providedFrac * b.Width), b.Height);
+					Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);
+				}
 
 				var x = float2.Lerp(b.Left, b.Right, usedFrac) - indicator.Size.X / 2;
 				var y = (b.Bottom + b.Top - indicator.Size.Y) / 2;

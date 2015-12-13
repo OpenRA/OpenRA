@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("The width of the beam.")]
 		public readonly WDist Width = new WDist(512);
 
+		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
+		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
+
 		[Desc("How far beyond the target the projectile keeps on travelling.")]
 		public readonly WDist BeyondTargetRange = new WDist(0);
 
@@ -190,9 +193,7 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (!IsBeamComplete && info.RenderBeam && !(wr.World.FogObscures(tailPos) && wr.World.FogObscures(headPos)))
 			{
-				float width, y, z;
-				wr.ScreenVectorComponents(new WVec(info.Width, WDist.Zero, WDist.Zero), out width, out y, out z);
-				var beamRender = new BeamRenderable(headPos, 0, tailPos - headPos, width, color);
+				var beamRender = new BeamRenderable(headPos, 0, tailPos - headPos, info.Shape, info.Width, color);
 				return new[] { (IRenderable)beamRender };
 			}
 

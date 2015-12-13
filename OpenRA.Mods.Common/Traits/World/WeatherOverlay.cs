@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits
 				var tempPos = new float2(item.PosX + topLeft.X, item.PosY + topLeft.Y);
 
 				if (info.UseSquares)
-					Game.Renderer.WorldQuadRenderer.FillRect(new RectangleF(tempPos.X, tempPos.Y, item.Size, item.Size), item.Color);
+					Game.Renderer.WorldRgbaColorRenderer.FillRect(tempPos, tempPos + new float2(item.Size, item.Size), item.Color);
 				else
 				{
 					var tempPosTail = new float2(topLeft.X + item.PosX - currentWindXOffset, item.PosY - (item.Gravity * 2 / 3) + topLeft.Y);

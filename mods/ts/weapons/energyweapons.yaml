@@ -74,6 +74,7 @@ SonicZap:
 		Duration: 90
 		DamageInterval: 5 # Roughly 18 impacts.
 		Width: 0c384
+		Shape: Flat
 		BeyondTargetRange: 0c256
 		Blockable: true
 		Color: 00FFFFC8
@@ -174,7 +175,7 @@ ObeliskLaserFire:
 	Charges: true
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
-		BeamWidth: 4
+		Width: 170
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 250
@@ -185,7 +186,7 @@ TurretLaserFire:
 	Range: 5c512
 	Report: LASTUR1.AUD
 	Projectile: LaserZap
-		BeamWidth: 2
+		Width: 85
 		BeamDuration: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 42

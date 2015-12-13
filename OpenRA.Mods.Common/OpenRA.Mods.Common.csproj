@@ -713,6 +713,7 @@
     <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
     <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
     <Compile Include="Traits\World\EditorSelectionLayer.cs" />
+    <Compile Include="Graphics\DetectionCircleRenderable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

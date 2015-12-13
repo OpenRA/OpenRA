@@ -145,25 +145,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void FillRect(RectangleF r, Color color)
-		{
-			for (var y = r.Top; y < r.Bottom; y++)
-				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color);
-		}
-
-		public void FillEllipse(RectangleF r, Color color)
-		{
-			var a = (r.Right - r.Left) / 2;
-			var b = (r.Bottom - r.Top) / 2;
-			var xc = (r.Right + r.Left) / 2;
-			var yc = (r.Bottom + r.Top) / 2;
-			for (var y = r.Top; y <= r.Bottom; y++)
-			{
-				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
-				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), color);
-			}
-		}
-
 		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
 			shader.SetVec("Scroll", scroll.X, scroll.Y);

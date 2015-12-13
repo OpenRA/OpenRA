@@ -123,7 +123,7 @@ Laser:
 	Charges: true
 	Report: OBELRAY1.AUD
 	Projectile: LaserZap
-		BeamWidth: 2
+		Width: 85
 		HitAnim: laserfire
 	Warhead@1Dam: SpreadDamage
 		Spread: 42

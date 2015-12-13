@@ -64,12 +64,12 @@ namespace OpenRA.Widgets
 
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.LineRenderer.FillRect(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+			Game.Renderer.RgbaColorRenderer.FillRect(new float2(r.Left, r.Top), new float2(r.Right, r.Bottom), c);
 		}
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.LineRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+			Game.Renderer.RgbaColorRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
 
 		public static int[] GetBorderSizes(string collection)

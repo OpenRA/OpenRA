@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -48,7 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (healthInfo != null)
-				wr.DrawRangeCircle(self.CenterPosition, healthInfo.Radius, Color.Red);
+				RangeCircleRenderable.DrawRangeCircle(wr, self.CenterPosition, healthInfo.Radius,
+					1, Color.Red, 0, Color.Red);
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 
