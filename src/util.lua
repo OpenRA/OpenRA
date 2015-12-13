@@ -501,6 +501,7 @@ function LoadLuaFileExt(tab, file, proto)
         end
       else
         tab[name] = proto and result and setmetatable(result, proto) or result
+        if tab[name] then tab[name].fpath = file end
       end
     end
   end

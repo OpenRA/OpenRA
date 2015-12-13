@@ -34,6 +34,7 @@ ide.proto.Document = {__index = {
 ide.proto.Plugin = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
+  GetFilePath = function(self) return MergeFullPath(GetPathWithSep(ide.editorFilename), self.fpath) end,
   GetConfig = function(self) return ide.config[self.fname] or {} end,
   GetSettings = function(self) return SettingsRestorePackage(self.fname) end,
   SetSettings = function(self, settings, opts) SettingsSavePackage(self.fname, settings, opts) end,
