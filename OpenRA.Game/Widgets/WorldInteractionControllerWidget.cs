@@ -120,12 +120,25 @@ namespace OpenRA.Widgets
 							}
 						}
 					}
-					else if (dragStart.HasValue)
+					else
 					{
-						// Select actors in the dragbox
-						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						/* The block below does three things:
+						// 1. Allows actor selection using a selection box regardless of input mode.
+						// 2. Allows actor deselection with a single click in the default input mode (UnitOrderGenerator).
+						// 3. Prevents units from getting deselected when exiting input modes (eg. AttackMove or Guard).
+						//
+						// We cannot check for UnitOrderGenerator here since it's the default order generator that gets activated in
+						// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,
+						// only by dragging an empty selection box.
+						*/
+						if (dragStart.HasValue && (!(World.OrderGenerator is GenericSelectTarget) || hasBox))
+						{
+							var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
+							World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						}
 					}
+
+					World.CancelInputMode();
 				}
 
 				dragStart = dragEnd = null;
