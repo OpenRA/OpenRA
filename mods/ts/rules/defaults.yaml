@@ -61,10 +61,8 @@
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: FFFFFF
-	WithDecoration@EMPDISABLE:
-		Image: emp
-		Sequence: idle
-		ReferencePoint: HCenter, VCenter
+	WithIdleOverlay@EMPDISABLE:
+		Sequence: emp-overlay
 		Palette: effect
 		UpgradeTypes: empdisable
 		ShowToEnemies: true

@@ -1,31 +1,51 @@
 mcv.gdi:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: sidec01.mix:mcvicon
 
 mcv.nod:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: sidec02.mix:mcvicon
 
 apc:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: apcicon
 
 harv.gdi:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	harvest: harvestr
 		Length: *
 	icon: sidec01.mix:harvicon
 
 harv.nod:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	harvest: harvestr
 		Length: *
 	icon: sidec02.mix:harvicon
 
 hvr:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: hovricon
 
 4tnk:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	muzzle: gunfire
 		Length: *
 
 lpst.gdi:
-	icon: sidec01.mix:lpsticon
 	idle: gadpsa
 		Offset: 0, -12
 		ShadowStart: 3
@@ -33,9 +53,12 @@ lpst.gdi:
 		Offset: 0, -12
 		Length: 36
 		ShadowStart: 36
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
+	icon: sidec01.mix:lpsticon
 
 lpst.nod:
-	icon: sidec02.mix:lpsticon
 	idle: gadpsa
 		Offset: 0, -12
 		ShadowStart: 3
@@ -43,20 +66,39 @@ lpst.nod:
 		Offset: 0, -12
 		Length: 36
 		ShadowStart: 36
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
+	icon: sidec02.mix:lpsticon
 
 repair:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: rboticon
 
 art2:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: artyicon
 
 weed:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: weedicon
 
 hmec:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: hmecicon
 
 bike:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: cyclicon
 
 bggy:
@@ -70,23 +112,40 @@ bggy:
 	muzzle5: mgun-se
 	muzzle6: mgun-e
 	muzzle7: mgun-ne
+	emp-overlay: emp_fx01
+		BlendMode: Additive
 	icon: bggyicon
 
 sapc:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: sapcicon
 
 subtank:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: subticon
 
 sonic:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: soniicon
 
 ttnk:
 	muzzle: gunfire
 		Length: *
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: tickicon
 
 stnk:
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: stnkicon
 
 mmch:
@@ -103,6 +162,9 @@ mmch:
 		Facings: -32
 	muzzle: gunfire
 		Length: *
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: mmchicon
 
 gghunt:
@@ -110,6 +172,9 @@ gghunt:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 
 smech:
 	stand:
@@ -126,4 +191,67 @@ smech:
 		Facings: -8
 		ShadowStart: 240
 		Tick: 100
+	emp-overlay: emp_fx01
+		Length: *
+		BlendMode: Additive
 	icon: smchicon
+
+trucka:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+truckb:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+icbm:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+bus:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+pick:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+car:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+wini:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+locomotive:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+traincar:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+
+cargocar:
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
