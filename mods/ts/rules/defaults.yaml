@@ -456,7 +456,6 @@
 
 ^CivilianVoxelVehicle:
 	Inherits: ^VoxelVehicle
-	-RenderSprites:
 	-MustBeDestroyed:
 
 ^Aircraft:
@@ -666,6 +665,7 @@
 	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
 	RenderVoxels:
+	RenderSprites:
 	WithVoxelBody:
 	DrawLineToTarget:
 	Mobile:
