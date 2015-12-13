@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
 		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
-		public readonly int CloseEnough = 4;
+		public readonly WDist CloseEnough = WDist.FromCells(4);
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromOrder(self.World, order);
 
 				self.CancelActivity();
-				self.QueueActivity(movement.MoveWithinRange(target, new WDist(1024 * info.CloseEnough)));
+				self.QueueActivity(movement.MoveWithinRange(target, info.CloseEnough));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);

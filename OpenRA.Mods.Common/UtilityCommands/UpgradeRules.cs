@@ -2683,6 +2683,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// 'CloseEnough' on 'RepairableNear' uses WDist now
+				if (engineVersion < 20151214)
+				{
+					if (node.Key == "RepairableNear")
+					{
+						var ce = node.Value.Nodes.FirstOrDefault(n => n.Key == "CloseEnough");
+						if (ce != null && !ce.Value.Value.Contains("c"))
+							ce.Value.Value = ce.Value.Value + "c0";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
