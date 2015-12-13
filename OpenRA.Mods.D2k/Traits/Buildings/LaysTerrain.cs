@@ -56,7 +56,7 @@ namespace OpenRA.Mods.D2k.Traits
 				foreach (var c in FootprintUtils.Tiles(self))
 				{
 					// Only place on allowed terrain types
-					if (!info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
+					if (!map.Contains(c) || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))
 						continue;
 
 					// Don't place under other buildings or custom terrain
