@@ -42,7 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
-		static readonly string[] TagStrings = { "" };
 
 		public readonly SelectionDecorationsInfo Info;
 		readonly Actor self;
@@ -90,15 +89,11 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
-			var tm = wr.Viewport.WorldToViewPx(pos + new int2((b.Left + b.Right) / 2, b.Top));
 
 			foreach (var r in DrawControlGroup(wr, self, tl))
 				yield return r;
 
 			foreach (var r in DrawPips(wr, self, bl))
-				yield return r;
-
-			foreach (var r in DrawTags(wr, self, tm))
 				yield return r;
 		}
 
@@ -151,29 +146,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Increment row
 				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
-			}
-		}
-
-		IEnumerable<IRenderable> DrawTags(WorldRenderer wr, Actor self, int2 basePosition)
-		{
-			var tagImages = new Animation(self.World, "pips");
-			var pal = wr.Palette(Info.Palette);
-			var tagxyOffset = new int2(0, 6);
-
-			foreach (var tags in self.TraitsImplementing<ITags>())
-			{
-				foreach (var tag in tags.GetTags())
-				{
-					if (tag == TagType.None)
-						continue;
-
-					tagImages.PlayRepeating(TagStrings[(int)tag]);
-					var pos = basePosition + tagxyOffset - (0.5f * tagImages.Image.Size).ToInt2();
-					yield return new UISpriteRenderable(tagImages.Image, self.CenterPosition, pos, 0, pal, 1f);
-
-					// Increment row
-					tagxyOffset = tagxyOffset.WithY(tagxyOffset.Y + 8);
-				}
 			}
 		}
 	}
