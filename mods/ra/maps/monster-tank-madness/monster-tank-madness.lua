@@ -107,6 +107,7 @@ SendAlliedUnits = function()
 
 			Utils.Do(units, function(unit)
 				if unit.Type == "e6" then
+					Engineer = unit
 					Trigger.OnKilled(unit, LandingPossible)
 				end
 			end)
@@ -413,7 +414,17 @@ InitTriggers = function()
 		end
 	end)
 
+	LstProduced = 0
 	Trigger.OnKilled(USSRSpen, LandingPossible)
+	Trigger.OnProduction(USSRSpen, function(self, produced)
+		if produced.Type == "lst" then
+			LstProduced = LstProduced + 1
+			Trigger.OnKilled(produced, function()
+				LstProduced = LstProduced - 1
+				LandingPossible()
+			end)
+		end
+	end)
 end
 
 WorldLoaded = function()
