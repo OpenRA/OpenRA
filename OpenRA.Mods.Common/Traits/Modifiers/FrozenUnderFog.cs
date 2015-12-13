@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ISync
+	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync
 	{
 		[Sync] public int VisibilityHash;
 
@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		ITooltip tooltip;
 		Health health;
 		bool initialized;
+		bool isRendering;
 
 		class FrozenState
 		{
@@ -143,11 +144,35 @@ namespace OpenRA.Mods.Common.Traits
 			initialized = true;
 		}
 
+		public void TickRender(WorldRenderer wr, Actor self)
+		{
+			if (!initialized)
+				return;
+
+			IRenderable[] renderables = null;
+			foreach (var player in self.World.Players)
+			{
+				var frozen = stateByPlayer[player].FrozenActor;
+				if (!frozen.NeedRenderables)
+					continue;
+
+				if (renderables == null)
+				{
+					isRendering = true;
+					renderables = self.Render(wr).ToArray();
+					isRendering = false;
+				}
+
+				frozen.NeedRenderables = false;
+				frozen.Renderables = renderables;
+			}
+		}
+
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return
 				IsVisible(self, self.World.RenderPlayer) ||
-				(initialized && stateByPlayer[self.World.RenderPlayer].FrozenActor.IsRendering) ?
+				(initialized && isRendering) ?
 				r : SpriteRenderable.None;
 		}
 	}
