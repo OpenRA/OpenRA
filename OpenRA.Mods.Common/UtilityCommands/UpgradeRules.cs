@@ -2749,6 +2749,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.Add(new MiniYamlNode("ReferencePoint", "Top"));
 						node.Value.Nodes.Add(new MiniYamlNode("ZOffset", "256"));
 					}
+
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("PrimaryBuilding")))
+					{
+						var decNodes = new List<MiniYamlNode>();
+						decNodes.Add(new MiniYamlNode("RequiresSelection", "true"));
+						decNodes.Add(new MiniYamlNode("Image", "pips"));
+						decNodes.Add(new MiniYamlNode("Sequence", "tag-primary"));
+						decNodes.Add(new MiniYamlNode("ReferencePoint", "Top"));
+						decNodes.Add(new MiniYamlNode("ZOffset", "256"));
+						decNodes.Add(new MiniYamlNode("UpgradeTypes", "primary"));
+						decNodes.Add(new MiniYamlNode("UpgradeMinEnabledLevel", "1"));
+						node.Value.Nodes.Add(new MiniYamlNode("WithDecoration@primary", new MiniYaml("", decNodes)));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

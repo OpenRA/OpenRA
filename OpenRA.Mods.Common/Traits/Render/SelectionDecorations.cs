@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
-		static readonly string[] TagStrings = { "", "tag-primary" };
+		static readonly string[] TagStrings = { "" };
 
 		public readonly SelectionDecorationsInfo Info;
 		readonly Actor self;

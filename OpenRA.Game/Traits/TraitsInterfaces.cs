@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 
 	// depends on the order of pips in WorldRenderer.cs!
 	public enum PipType { Transparent, Green, Yellow, Red, Gray, Blue, Ammo, AmmoEmpty }
-	public enum TagType { None, Primary }
+	public enum TagType { None }
 
 	[Flags]
 	public enum Stance

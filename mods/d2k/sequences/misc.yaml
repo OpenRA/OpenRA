@@ -107,6 +107,7 @@ pips:
 	pickup-indicator: DATA.R8
 		Start: 112
 	tag-primary: primary.shp
+		Offset: 0, 2
 	pip-empty: DATA.R8
 		Start: 15
 	pip-green: DATA.R8

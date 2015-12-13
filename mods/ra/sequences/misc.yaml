@@ -60,6 +60,7 @@ pips:
 		Offset: 0, 2
 	tag-primary:
 		Start: 2
+		Offset: 0, 2
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
