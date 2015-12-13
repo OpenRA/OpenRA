@@ -88,7 +88,7 @@ construction_yard:
 		Prerequisites: upgrade.conyard
 		Upgrades: stardecoration
 	WithDecoration@upgraded:
-		SelectionDecoration: true
+		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
@@ -191,7 +191,7 @@ barracks:
 		Prerequisites: upgrade.barracks
 		Upgrades: stardecoration
 	WithDecoration@upgraded:
-		SelectionDecoration: true
+		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
@@ -359,7 +359,7 @@ light_factory:
 		Prerequisites: upgrade.light
 		Upgrades: stardecoration
 	WithDecoration@upgraded:
-		SelectionDecoration: true
+		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
@@ -432,7 +432,7 @@ heavy_factory:
 		Prerequisites: upgrade.heavy
 		Upgrades: stardecoration
 	WithDecoration@upgraded:
-		SelectionDecoration: true
+		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
@@ -782,7 +782,7 @@ high_tech_factory:
 		Prerequisites: upgrade.hightech
 		Upgrades: stardecoration
 	WithDecoration@upgraded:
-		SelectionDecoration: true
+		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right

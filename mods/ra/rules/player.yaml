@@ -66,7 +66,6 @@ Player:
 	GlobalUpgradeManager:
 	EnemyWatcher:
 	VeteranProductionIconOverlay:
-		Offset: 2, 2
 		Image: iconchevrons
 		Sequence: veteran
 

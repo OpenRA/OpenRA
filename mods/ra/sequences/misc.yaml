@@ -73,6 +73,7 @@ pips:
 	pip-disguise: pip-disguise
 		Length: *
 		Tick: 300
+		Offset: 0, -6
 
 v2:
 	idle:
@@ -370,6 +371,7 @@ rank:
 
 iconchevrons:
 	veteran:
+		Offset: 2, 2
 
 atomic:
 	up: atomicup

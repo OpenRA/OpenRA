@@ -77,9 +77,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IProductionIconOverlay
 	{
-		Sprite Sprite();
-		string Palette();
-		float Scale();
+		Sprite Sprite { get; }
+		string Palette { get; }
 		float2 Offset(float2 iconSize);
 		bool IsOverlayActive(ActorInfo ai);
 	}

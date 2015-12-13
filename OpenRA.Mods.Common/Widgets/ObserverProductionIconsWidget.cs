@@ -91,10 +91,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
-				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().FirstOrDefault();
-				if (pio != null && pio.IsOverlayActive(actor))
-					WidgetUtils.DrawSHPCentered(pio.Sprite(), location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
-						worldRenderer.Palette(pio.Palette()), 0.5f * pio.Scale());
+				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
+					.FirstOrDefault(p => p.IsOverlayActive(actor));
+				if (pio != null)
+					WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
+						worldRenderer.Palette(pio.Palette), 0.5f);
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex(ClockSequence,

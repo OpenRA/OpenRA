@@ -44,7 +44,6 @@
 		Sequence: rank
 		Palette: ra
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
