@@ -43,6 +43,7 @@ ide.proto.Plugin = {__index = {
 ide.proto.Interpreter = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
+  GetExePath = function(self, ...) return self:fexepath(...) end,
   GetAPI = function(self) return self.api end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
