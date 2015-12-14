@@ -293,7 +293,6 @@
 	AutoTarget:
 	RenderRangeCircle:
 	-GivesBuildableArea:
-	-WithCrumbleOverlay:
 	-WithMakeAnimation:
 	-WithSpriteBody:
 	WithWallSpriteBody:
