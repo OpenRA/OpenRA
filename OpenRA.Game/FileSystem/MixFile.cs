@@ -25,14 +25,16 @@ namespace OpenRA.FileSystem
 		readonly Stream s;
 		readonly int priority;
 		readonly string filename;
+		readonly FileSystem context;
 		readonly PackageHashType type;
 
 		// Save a mix to disk with the given contents
-		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
+		public MixFile(FileSystem context, string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.filename = filename;
 			this.priority = priority;
 			this.type = PackageHashType.Classic;
+			this.context = context;
 
 			if (File.Exists(filename))
 				File.Delete(filename);
@@ -51,13 +53,14 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public MixFile(string filename, PackageHashType type, int priority)
+		public MixFile(FileSystem context, string filename, PackageHashType type, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
 			this.type = type;
+			this.context = context;
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 			try
 			{
 				// Detect format type
@@ -223,9 +226,9 @@ namespace OpenRA.FileSystem
 				}
 			}
 
-			if (GlobalFileSystem.Exists("global mix database.dat"))
+			if (context.Exists("global mix database.dat"))
 			{
-				var db = new XccGlobalDatabase(GlobalFileSystem.Open("global mix database.dat"));
+				var db = new XccGlobalDatabase(context.Open("global mix database.dat"));
 				foreach (var e in db.Entries)
 				{
 					var hash = PackageEntry.HashFilename(e, type);
@@ -249,7 +252,7 @@ namespace OpenRA.FileSystem
 		{
 			// Cannot modify existing mixfile - rename existing file and
 			// create a new one with original content plus modifications
-			GlobalFileSystem.Unmount(this);
+			context.Unmount(this);
 
 			// TODO: Add existing data to the contents list
 			if (index.Count > 0)

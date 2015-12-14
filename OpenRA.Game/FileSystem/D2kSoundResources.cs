@@ -24,12 +24,12 @@ namespace OpenRA.FileSystem
 
 		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
 
-		public D2kSoundResources(string filename, int priority)
+		public D2kSoundResources(FileSystem context, string filename, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 			try
 			{
 				filenames = new List<string>();

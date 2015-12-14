@@ -8,12 +8,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
 

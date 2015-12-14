@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 
 namespace OpenRA
 {
@@ -228,12 +227,6 @@ namespace OpenRA
 
 			realText = realText.Substring(0, colon).Trim();
 			return ret;
-		}
-
-		public static List<MiniYamlNode> FromFileInPackage(string path)
-		{
-			using (var stream = GlobalFileSystem.Open(path))
-				return FromLines(stream.ReadAllLines(), path);
 		}
 
 		public static Dictionary<string, MiniYaml> DictFromFile(string path)

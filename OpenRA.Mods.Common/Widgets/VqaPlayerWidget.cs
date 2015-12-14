@@ -11,7 +11,6 @@
 using System;
 using System.Drawing;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -50,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (filename == cachedVideo)
 				return;
-			var video = new VqaReader(GlobalFileSystem.Open(filename));
+			var video = new VqaReader(Game.ModData.ModFiles.Open(filename));
 
 			cachedVideo = filename;
 			Open(video);

@@ -24,14 +24,14 @@ namespace OpenRA.FileSystem
 		readonly int priority;
 		readonly string filename;
 
-		public InstallShieldPackage(string filename, int priority)
+		public InstallShieldPackage(FileSystem context, string filename, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
 
 			filenames = new List<string>();
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 			try
 			{
 				// Parse package header

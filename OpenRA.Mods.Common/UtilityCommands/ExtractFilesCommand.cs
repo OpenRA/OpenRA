@@ -28,11 +28,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			var files = args.Skip(1);
-			GlobalFileSystem.LoadFromManifest(modData.Manifest);
+			modData.ModFiles.LoadFromManifest(modData.Manifest);
 
 			foreach (var f in files)
 			{
-				var src = GlobalFileSystem.Open(f);
+				var src = modData.ModFiles.Open(f);
 				if (src == null)
 					throw new InvalidOperationException("File not found: {0}".F(f));
 				var data = src.ReadAllBytes();

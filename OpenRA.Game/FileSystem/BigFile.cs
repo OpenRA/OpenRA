@@ -22,12 +22,12 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<string, Entry> entries = new Dictionary<string, Entry>();
 		readonly Stream s;
 
-		public BigFile(string filename, int priority)
+		public BigFile(FileSystem context, string filename, int priority)
 		{
 			Name = filename;
 			Priority = priority;
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 			try
 			{
 				if (s.ReadASCII(4) != "BIGF")

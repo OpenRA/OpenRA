@@ -17,7 +17,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.Chat;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -196,7 +195,7 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
-			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.FileSystem.ResolveAssembly;
 
 			InitializeSettings(args);
 
@@ -219,7 +218,6 @@ namespace OpenRA
 
 			GeoIP.Initialize();
 
-			GlobalFileSystem.Mount(Platform.GameDir); // Needed to access shaders
 			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
 			foreach (var r in renderers)
 			{
@@ -280,7 +278,11 @@ namespace OpenRA
 				OrderManager.Dispose();
 
 			if (ModData != null)
+			{
+				ModData.ModFiles.UnmountAll();
 				ModData.Dispose();
+			}
+
 			ModData = null;
 
 			// Fall back to default if the mod doesn't exist or has missing prerequisites.

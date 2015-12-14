@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common
 {
@@ -46,9 +45,9 @@ namespace OpenRA.Mods.Common
 				Directory.CreateDirectory(destPath);
 
 			Log.Write("debug", "Mounting {0}".F(srcPath));
-			GlobalFileSystem.Mount(srcPath);
+			Game.ModData.ModFiles.Mount(srcPath);
 			Log.Write("debug", "Mounting {0}".F(package));
-			GlobalFileSystem.Mount(package, annotation);
+			Game.ModData.ModFiles.Mount(package, annotation);
 
 			foreach (var directory in filesByDirectory)
 			{
@@ -71,7 +70,7 @@ namespace OpenRA.Mods.Common
 
 					Directory.CreateDirectory(containingDir);
 
-					using (var sourceStream = GlobalFileSystem.Open(file))
+					using (var sourceStream = Game.ModData.ModFiles.Open(file))
 					using (var destStream = File.Create(dest))
 					{
 						Log.Write("debug", "Extracting {0} to {1}".F(file, dest));

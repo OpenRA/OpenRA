@@ -10,7 +10,6 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 			Game.ModData.SpriteSequenceLoader.OnMissingSpriteError = s => Console.WriteLine("\t" + s);
 
 			foreach (var t in Game.ModData.Manifest.TileSets)

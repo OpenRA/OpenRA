@@ -11,7 +11,6 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -66,7 +65,7 @@ namespace OpenRA.Graphics
 
 		public static ISpriteFrame[] GetFrames(string filename, ISpriteLoader[] loaders)
 		{
-			using (var stream = GlobalFileSystem.Open(filename))
+			using (var stream = Game.ModData.ModFiles.Open(filename))
 			{
 				ISpriteFrame[] frames;
 				foreach (var loader in loaders)

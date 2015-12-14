@@ -28,13 +28,13 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<string, Entry> index;
 		readonly Stream stream;
 
-		public PakFile(string filename, int priority)
+		public PakFile(FileSystem context, string filename, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
 			index = new Dictionary<string, Entry>();
 
-			stream = GlobalFileSystem.Open(filename);
+			stream = context.Open(filename);
 			try
 			{
 				index = new Dictionary<string, Entry>();

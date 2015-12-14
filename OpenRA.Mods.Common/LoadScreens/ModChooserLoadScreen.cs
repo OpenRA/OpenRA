@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -22,10 +23,14 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void Init(Manifest m, Dictionary<string, string> info)
 		{
-			var sheet = new Sheet(SheetType.BGRA, info["Image"]);
 			var res = Game.Renderer.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
-			sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.Alpha);
+
+			using (var stream = File.OpenRead(info["Image"]))
+			{
+				var sheet = new Sheet(SheetType.BGRA, stream);
+				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.Alpha);
+			}
 		}
 
 		public void Display()

@@ -27,11 +27,13 @@ namespace OpenRA.FileSystem
 		readonly Stream s;
 		readonly int bagFilePriority;
 		readonly Dictionary<uint, IdxEntry> index;
+		readonly FileSystem context;
 
-		public BagFile(string filename, int priority)
+		public BagFile(FileSystem context, string filename, int priority)
 		{
 			bagFilename = filename;
 			bagFilePriority = priority;
+			this.context = context;
 
 			// A bag file is always accompanied with an .idx counterpart
 			// For example: audio.bag requires the audio.idx file
@@ -39,14 +41,14 @@ namespace OpenRA.FileSystem
 
 			// Build the index and dispose the stream, it is no longer needed after this
 			List<IdxEntry> entries;
-			using (var indexStream = GlobalFileSystem.Open(indexFilename))
+			using (var indexStream = context.Open(indexFilename))
 				entries = new IdxReader(indexStream).Entries;
 
 			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
 				"{0} (bag format)".F(filename),
 				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 		}
 
 		public int Priority { get { return 1000 + bagFilePriority; } }
@@ -159,9 +161,9 @@ namespace OpenRA.FileSystem
 		public IEnumerable<string> AllFileNames()
 		{
 			var lookup = new Dictionary<uint, string>();
-			if (GlobalFileSystem.Exists("global mix database.dat"))
+			if (context.Exists("global mix database.dat"))
 			{
-				var db = new XccGlobalDatabase(GlobalFileSystem.Open("global mix database.dat"));
+				var db = new XccGlobalDatabase(context.Open("global mix database.dat"));
 				foreach (var e in db.Entries)
 				{
 					var hash = IdxEntry.HashFilename(e, PackageHashType.CRC32);
@@ -175,7 +177,7 @@ namespace OpenRA.FileSystem
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
-			GlobalFileSystem.Unmount(this);
+			context.Unmount(this);
 			throw new NotImplementedException("Updating bag files unsupported");
 		}
 

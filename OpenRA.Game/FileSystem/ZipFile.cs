@@ -28,10 +28,11 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.Default.CodePage;
 		}
 
-		public ZipFile(string filename, int priority)
+		public ZipFile(FileSystem context, string filename, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
+
 			try
 			{
 				// Pull the file into memory, don't keep it open.
@@ -44,7 +45,7 @@ namespace OpenRA.FileSystem
 		}
 
 		// Create a new zip with the specified contents.
-		public ZipFile(string filename, int priority, Dictionary<string, byte[]> contents)
+		public ZipFile(FileSystem context, string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.priority = priority;
 			this.filename = filename;

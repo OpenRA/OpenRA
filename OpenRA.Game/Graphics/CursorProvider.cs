@@ -10,10 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.FileSystem;
-using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -42,7 +39,7 @@ namespace OpenRA.Graphics
 
 			var palettes = new Dictionary<string, ImmutablePalette>();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palettes.Add(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex));
+				palettes.Add(p.Key, new ImmutablePalette(modData.ModFiles.Open(p.Value.Value), shadowIndex));
 
 			Palettes = palettes.AsReadOnly();
 

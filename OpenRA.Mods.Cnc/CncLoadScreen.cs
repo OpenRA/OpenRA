@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Widgets;
@@ -41,7 +42,9 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			sheet = new Sheet(SheetType.BGRA, Platform.ResolvePath(loadInfo["Image"]));
+			using (var stream = File.OpenRead(Platform.ResolvePath(loadInfo["Image"])))
+				sheet = new Sheet(SheetType.BGRA, stream);
+
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 

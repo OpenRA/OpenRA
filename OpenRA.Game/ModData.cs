@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA
 {
@@ -31,8 +31,9 @@ namespace OpenRA
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
+		public FS ModFiles = new FS();
 
-		Lazy<Ruleset> defaultRules;
+		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
@@ -95,7 +96,7 @@ namespace OpenRA
 
 		public void MountFiles()
 		{
-			GlobalFileSystem.LoadFromManifest(Manifest);
+			ModFiles.LoadFromManifest(Manifest);
 		}
 
 		public void InitializeLoaders()
@@ -166,10 +167,10 @@ namespace OpenRA
 
 			// Reinitialize all our assets
 			InitializeLoaders();
-			GlobalFileSystem.LoadFromManifest(Manifest);
+			ModFiles.LoadFromManifest(Manifest);
 
 			// Mount map package so custom assets can be used. TODO: check priority.
-			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
+			ModFiles.Mount(ModFiles.OpenPackage(map.Path, null, int.MaxValue));
 
 			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();

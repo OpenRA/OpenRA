@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Utility
 {
@@ -35,7 +34,7 @@ namespace OpenRA.Utility
 				return;
 			}
 
-			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
+			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.FileSystem.ResolveAssembly;
 
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);

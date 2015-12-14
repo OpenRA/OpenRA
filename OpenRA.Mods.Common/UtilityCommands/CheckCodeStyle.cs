@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var relativePath = args[1];
 			var projectPath = Path.GetFullPath(relativePath);
 
+			// HACK: The engine code assumes that Game.modData is set.
+			Game.ModData = modData;
+
 			var console = new StyleCopConsole(null, false, null, null, true);
 			var project = new CodeProject(0, projectPath, new Configuration(null));
 			foreach (var filePath in Directory.GetFiles(projectPath, "*.cs", SearchOption.AllDirectories))

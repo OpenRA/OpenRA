@@ -11,12 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Eluant;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -133,7 +130,7 @@ namespace OpenRA.Scripting
 				.ToArray();
 
 			runtime.Globals["GameDir"] = Platform.GameDir;
-			runtime.DoBuffer(GlobalFileSystem.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.DoBuffer(Game.ModData.ModFiles.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
@@ -172,7 +169,7 @@ namespace OpenRA.Scripting
 			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
 			{
 				foreach (var s in scripts)
-					loadScript.Call(s, GlobalFileSystem.Open(s).ReadAllText()).Dispose();
+					loadScript.Call(s, Game.ModData.ModFiles.Open(s).ReadAllText()).Dispose();
 			}
 		}
 

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using OpenRA.FileSystem;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
@@ -25,11 +24,9 @@ namespace OpenRA.Platforms.Default
 
 		protected int CompileShaderObject(ShaderType type, string name)
 		{
-			string ext = type == ShaderType.VertexShader ? "vert" : "frag";
-			string filename = "glsl{0}{1}.{2}".F(Path.DirectorySeparatorChar, name, ext);
-			string code;
-			using (var file = new StreamReader(GlobalFileSystem.Open(filename)))
-				code = file.ReadToEnd();
+			var ext = type == ShaderType.VertexShader ? "vert" : "frag";
+			var filename = "glsl{0}{1}.{2}".F(Path.DirectorySeparatorChar, name, ext);
+			var code = File.ReadAllText(filename);
 
 			var shader = GL.CreateShader(type);
 			ErrorHandler.CheckGlError();

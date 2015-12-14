@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -43,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			wr.AddPalette(info.Name, new ImmutablePalette(GlobalFileSystem.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(Game.ModData.ModFiles.Open(world.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
