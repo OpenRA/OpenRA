@@ -79,7 +79,12 @@ namespace OpenRA.Widgets
 			return new[] { (int)ss[0].Size.Y, (int)ss[1].Size.Y, (int)ss[2].Size.X, (int)ss[3].Size.X };
 		}
 
-		static bool HasFlags(this PanelSides a, PanelSides b) { return (a & b) == b; }
+		static bool HasFlags(this PanelSides a, PanelSides b)
+		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
+			return (a & b) == b;
+		}
+
 		public static Rectangle InflateBy(this Rectangle rect, int l, int t, int r, int b)
 		{
 			return Rectangle.FromLTRB(rect.Left - l, rect.Top - t,

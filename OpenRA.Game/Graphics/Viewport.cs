@@ -22,6 +22,7 @@ namespace OpenRA.Graphics
 	{
 		public static bool Includes(this ScrollDirection d, ScrollDirection s)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (d & s) == s;
 		}
 

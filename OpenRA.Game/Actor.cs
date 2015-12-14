@@ -97,6 +97,9 @@ namespace OpenRA
 				}
 			}
 
+			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
+			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
+			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 			Bounds = DetermineBounds();
 			VisualBounds = DetermineVisualBounds();
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
@@ -149,6 +152,7 @@ namespace OpenRA
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			// PERF: Avoid LINQ.
 			var renderables = Renderables(wr);
 			foreach (var modifier in renderModifiers)
 				renderables = modifier.ModifyRender(this, wr, renderables);
@@ -157,6 +161,13 @@ namespace OpenRA
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
 		{
+			// PERF: Avoid LINQ.
+			// Implementations of Render are permitted to return both an eagerly materialized collection or a lazily
+			// generated sequence.
+			// For large amounts of renderables, a lazily generated sequence (e.g. as returned by LINQ, or by using
+			// `yield`) will avoid the need to allocate a large collection.
+			// For small amounts of renderables, allocating a small collection can often be faster and require less
+			// memory than creating the objects needed to represent a sequence.
 			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
@@ -206,6 +217,7 @@ namespace OpenRA
 
 		public override string ToString()
 		{
+			// PERF: Avoid format strings.
 			var name = Info.Name + " " + ActorID;
 			if (!IsInWorld)
 				name += " (not in world)";
@@ -305,6 +317,7 @@ namespace OpenRA
 
 		public bool IsDisabled()
 		{
+			// PERF: Avoid LINQ.
 			foreach (var disable in disables)
 				if (disable.Disabled)
 					return true;
@@ -313,6 +326,7 @@ namespace OpenRA
 
 		public bool CanBeViewedByPlayer(Player player)
 		{
+			// PERF: Avoid LINQ.
 			foreach (var visibilityModifier in visibilityModifiers)
 				if (!visibilityModifier.IsVisible(this, player))
 					return false;

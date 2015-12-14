@@ -196,13 +196,20 @@ namespace OpenRA.Network
 
 			static Func<ISync, object> SerializableCopyOfMember(MemberExpression getMember, Type memberType, string name)
 			{
+				// We need to serialize a copy of the current value so if the sync report is generated, the values can
+				// be dumped as strings.
 				if (memberType.IsValueType)
 				{
-					// We can get a copy just by accessing the member since it is a value type.
+					// PERF: For value types we can avoid the overhead of calling ToString immediately. We can instead
+					// just box a copy of the current value into an object. This is faster than calling ToString. We
+					// can call ToString later when we generate the report. Most of the time, the sync report is never
+					// generated so we successfully avoid the overhead to calling ToString.
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
 					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { syncParam }).Compile();
 				}
 
+				// For reference types, we have to call ToString right away to get a snapshot of the value. We cannot
+				// delay, as calling ToString later may produce different results.
 				return MemberToString(getMember, memberType, name);
 			}
 

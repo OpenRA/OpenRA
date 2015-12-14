@@ -304,7 +304,7 @@ namespace OpenRA.Widgets
 
 		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByOwnerAndSelectionClass(world.ActorMap.ActorsInWorld(), player, selectionClasses);
+			return SelectActorsByOwnerAndSelectionClass(world.Actors.Where(a => a.IsInWorld), player, selectionClasses);
 		}
 
 		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)

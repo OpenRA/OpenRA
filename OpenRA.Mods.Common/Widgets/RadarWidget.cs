@@ -208,6 +208,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void MarkShroudDirty(IEnumerable<PPos> projectedCellsChanged)
 		{
+			// PERF: Many cells in the shroud change every tick. We only track the changes here and defer the real work
+			// we need to do until we render. This allows us to avoid wasted work.
 			dirtyShroudCells.UnionWith(projectedCellsChanged);
 		}
 

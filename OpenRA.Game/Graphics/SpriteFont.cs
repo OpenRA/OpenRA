@@ -40,6 +40,7 @@ namespace OpenRA.Graphics
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
+			// PERF: Cache these delegates for Measure calls.
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
 			lineWidth = line => line.Sum(characterWidth);
 

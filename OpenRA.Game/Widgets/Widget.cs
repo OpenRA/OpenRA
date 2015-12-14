@@ -261,6 +261,7 @@ namespace OpenRA.Widgets
 
 		public virtual Rectangle GetEventBounds()
 		{
+			// PERF: Avoid LINQ.
 			var bounds = EventBounds;
 			foreach (var child in Children)
 				if (child.IsVisible())

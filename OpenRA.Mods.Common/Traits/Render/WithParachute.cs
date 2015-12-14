@@ -134,20 +134,20 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (info.ShadowImage == null)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (IsTraitDisabled)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (self.IsDead || !self.IsInWorld)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (self.World.FogObscures(self))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			shadow.Tick();
 			var pos = self.CenterPosition - new WVec(0, 0, self.CenterPosition.Z);
-			yield return new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, wr.Palette(info.ShadowPalette), 1, true);
+			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, wr.Palette(info.ShadowPalette), 1, true) };
 		}
 	}
 }
