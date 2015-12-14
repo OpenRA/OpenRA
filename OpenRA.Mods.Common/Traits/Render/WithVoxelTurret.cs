@@ -45,11 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class WithVoxelTurret : UpgradableTrait<WithVoxelTurretInfo>
+	public class WithVoxelTurret : UpgradableTrait<WithVoxelTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Actor self;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
+
+		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
+		bool buildComplete;
 
 		public WithVoxelTurret(Actor self, WithVoxelTurretInfo info)
 			: base(info)
@@ -58,11 +61,12 @@ namespace OpenRA.Mods.Common.Traits
 			body = self.Trait<BodyOrientation>();
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == Info.Turret);
+			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				() => turreted.Position(self), TurretRotation,
-				() => IsTraitDisabled, () => 0));
+				() => IsTraitDisabled || !buildComplete, () => 0));
 		}
 
 		IEnumerable<WRot> TurretRotation()
@@ -72,5 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 			yield return turreted.LocalOrientation(self) + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}
+
+		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
+		void INotifySold.Selling(Actor self) { buildComplete = false; }
+		void INotifySold.Sold(Actor self) { }
+		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }
