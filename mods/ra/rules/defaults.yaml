@@ -353,6 +353,7 @@
 	Aircraft:
 		RepairBuildings: fix
 		RearmBuildings: afld
+		AirborneUpgrades: airborne
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
 		UpgradeTypes: airborne
@@ -393,6 +394,7 @@
 		GenericName: Helicopter
 	Aircraft:
 		RearmBuildings: hpad
+		CanHover: True
 	GpsDot:
 		String: Helicopter
 	Hovers:
@@ -617,6 +619,8 @@
 	WithShadow:
 	Tooltip:
 		GenericName: Destroyed Plane
+	Aircraft:
+		AirborneUpgrades: airborne
 	FallsToEarth:
 		Spins: False
 		Moves: True
@@ -627,6 +631,9 @@
 	WithShadow:
 	Tooltip:
 		GenericName: Destroyed Helicopter
+	Aircraft:
+		AirborneUpgrades: airborne
+		CanHover: True
 	FallsToEarth:
 
 ^Bridge:

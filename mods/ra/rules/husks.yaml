@@ -88,8 +88,6 @@ TRAN.Husk:
 	Aircraft:
 		ROT: 4
 		Speed: 149
-		AirborneUpgrades: airborne
-		CanHover: True
 	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
 	WithSpriteRotorOverlay@SECONDARY:
@@ -121,7 +119,6 @@ BADR.Husk:
 	Aircraft:
 		ROT: 5
 		Speed: 149
-		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
 		Interval: 2
@@ -144,7 +141,6 @@ MIG.Husk:
 	Aircraft:
 		ROT: 5
 		Speed: 186
-		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
 		Interval: 2
@@ -164,7 +160,6 @@ YAK.Husk:
 	Aircraft:
 		ROT: 5
 		Speed: 149
-		AirborneUpgrades: airborne
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
 		Interval: 2
@@ -182,8 +177,6 @@ HELI.Husk:
 	Aircraft:
 		ROT: 4
 		Speed: 149
-		AirborneUpgrades: airborne
-		CanHover: True
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	SmokeTrailWhenDamaged:
@@ -202,8 +195,6 @@ HIND.Husk:
 	Aircraft:
 		ROT: 4
 		Speed: 112
-		AirborneUpgrades: airborne
-		CanHover: True
 	WithSpriteRotorOverlay:
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
@@ -219,7 +210,6 @@ U2.Husk:
 	Aircraft:
 		ROT: 7
 		Speed: 373
-		AirborneUpgrades: airborne
 	Contrail@1:
 		Offset: -725,683,0
 	Contrail@2:
