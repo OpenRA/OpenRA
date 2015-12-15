@@ -131,7 +131,7 @@ HellfireAA:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			None: 30
 			Wood: 75
@@ -167,7 +167,7 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 50
-		ValidTargets: Air, Infantry
+		ValidTargets: Air, Aircraft, Infantry
 		Versus:
 			None: 100
 			Wood: 75
@@ -205,7 +205,7 @@ Nike:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			None: 90
 			Light: 90
@@ -233,7 +233,7 @@ RedEye:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			None: 90
 			Wood: 75

@@ -104,7 +104,7 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		Versus:
 			None: 100
 			Wood: 85
@@ -270,7 +270,7 @@ RedEye2:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 33
-		ValidTargets: Air
+		ValidTargets: Air, Aircraft
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: tiny_twlt

@@ -355,11 +355,11 @@
 		RearmBuildings: afld
 		AirborneUpgrades: airborne
 	Targetable@GROUND:
-		TargetTypes: Ground, Repair, Vehicle
+		TargetTypes: Ground, Repair, Vehicle, Aircraft
 		UpgradeTypes: airborne
 		UpgradeMaxEnabledLevel: 0
 	Targetable@AIRBORNE:
-		TargetTypes: Air
+		TargetTypes: Air, Aircraft
 		UpgradeTypes: airborne
 		UpgradeMinEnabledLevel: 1
 	HiddenUnderFog:
