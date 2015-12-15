@@ -31,6 +31,10 @@ LUASEC_BASENAME="luasec-0.5"
 LUASEC_FILENAME="$LUASEC_BASENAME.zip"
 LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
 
+LFS_BASENAME="v_1_6_3"
+LFS_FILENAME="$LFS_BASENAME.tar.gz"
+LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
+
 WINAPI_BASENAME="winapi"
 WINAPI_URL="https://github.com/stevedonovan/winapi.git"
 
@@ -74,6 +78,9 @@ for ARG in "$@"; do
     ;;
   winapi)
     BUILD_WINAPI=true
+    ;;
+  lfs)
+    BUILD_LFS=true
     ;;
   zbstudio)
     BUILD_ZBSTUDIO=true
@@ -266,6 +273,20 @@ if [ $BUILD_LUASOCKET ]; then
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
 
+# build lfs
+if [ $BUILD_LFS ]; then
+  wget --no-check-certificate -c "$LFS_URL" -O "$LFS_FILENAME" || { echo "Error: failed to download lfs"; exit 1; }
+  tar -xzf "$LFS_FILENAME"
+  mv "luafilesystem-$LFS_BASENAME" "$LFS_BASENAME"
+  cd "$LFS_BASENAME/src"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" lfs.c -llua$LUAV \
+    || { echo "Error: failed to build lfs"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" ] || { echo "Error: lfs.dll isn't found"; exit 1; }
+  cd ../..
+  rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
+fi
+
 # build LuaSec
 if [ $BUILD_LUASEC ]; then
   # build openSSL
@@ -321,6 +342,7 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/$LUAD/winapi.dll" "$BIN_DIR/clibs$LUAS"
 [ $BUILD_LUASEC ] && cp "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}
