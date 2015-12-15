@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
+		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
 		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "hpad", "afld" };
+		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;

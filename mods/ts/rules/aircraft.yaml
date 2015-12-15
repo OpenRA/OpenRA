@@ -75,7 +75,6 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
 		TakeoffSound: orcaup1.aud
@@ -275,7 +274,6 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
 	Health:
@@ -319,8 +317,6 @@ HUNTER:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
 	Aircraft:
-		RearmBuildings:
-		RepairBuildings:
 		ROT: 16
 		Speed: 355
 		CruiseAltitude: 256

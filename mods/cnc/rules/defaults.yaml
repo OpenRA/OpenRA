@@ -134,7 +134,6 @@
 		Bounds: 24,24
 	Aircraft:
 		RepairBuildings: hpad
-		RearmBuildings:
 		LandWhenIdle: false
 		AirborneUpgrades: airborne
 		CanHover: True

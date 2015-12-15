@@ -350,6 +350,9 @@
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
+	Aircraft:
+		RepairBuildings: fix
+		RearmBuildings: afld
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
 		UpgradeTypes: airborne
@@ -388,6 +391,8 @@
 	Inherits: ^Plane
 	Tooltip:
 		GenericName: Helicopter
+	Aircraft:
+		RearmBuildings: hpad
 	GpsDot:
 		String: Helicopter
 	Hovers:

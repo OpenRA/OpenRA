@@ -105,7 +105,6 @@ MIG:
 		InitialFacing: 192
 		ROT: 4
 		Speed: 223
-		RearmBuildings: afld
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 		AirborneUpgrades: airborne
@@ -164,7 +163,6 @@ YAK:
 		FacingTolerance: 20
 	Aircraft:
 		CruiseAltitude: 2560
-		RearmBuildings: afld
 		InitialFacing: 192
 		ROT: 4
 		Speed: 178
@@ -213,7 +211,6 @@ TRAN:
 		Range: 10c0
 		Type: CenterPosition
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
 		Speed: 112
@@ -264,7 +261,6 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
@@ -318,7 +314,6 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
