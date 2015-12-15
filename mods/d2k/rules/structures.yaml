@@ -447,6 +447,8 @@ outpost:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Buildable:
 		Prerequisites: construction_yard, barracks, ~techlevel.medium
 		Queue: Building
@@ -531,6 +533,8 @@ starport:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -675,6 +679,8 @@ large_gun_turret:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -926,6 +932,8 @@ palace:
 		Produces: Palace
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:

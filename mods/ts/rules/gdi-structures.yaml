@@ -34,6 +34,8 @@ GAPOWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Pluggable@pluga:
 		Offset: 0,1
 		Upgrades:
@@ -348,6 +350,8 @@ GAPLUG:
 	CanPowerDown:
 		IndicatorPalette: mouse
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:

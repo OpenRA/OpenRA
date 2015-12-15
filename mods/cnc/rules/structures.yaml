@@ -462,6 +462,8 @@ HQ:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -549,6 +551,8 @@ EYE:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -600,6 +604,8 @@ TMPL:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 2000
 	RevealsShroud:
@@ -686,6 +692,8 @@ SAM:
 		Dimensions: 2,1
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -730,6 +738,8 @@ OBLI:
 		VisualBounds: 22,42
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 600
 	Armor:
@@ -810,6 +820,8 @@ ATWR:
 		VisualBounds: 22,40,0,4
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 600
 	Armor:

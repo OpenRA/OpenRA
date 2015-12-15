@@ -43,6 +43,8 @@ GACTWR:
 	Selectable:
 		Bounds: 48, 36, 0, -6
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 500
 	Armor:

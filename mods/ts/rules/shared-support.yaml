@@ -16,6 +16,8 @@ NAPULS:
 		Bounds: 78, 54, 0, -12
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 500
 	Armor:

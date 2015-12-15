@@ -42,6 +42,8 @@ MSLO:
 	CanPowerDown:
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -69,6 +71,8 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -275,6 +279,8 @@ IRON:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Selectable:
 		Bounds: 48,28,0,2
 	SelectionDecorations:
@@ -323,6 +329,8 @@ PDOX:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 1000
 	Armor:
@@ -395,6 +403,8 @@ TSLA:
 		VisualBounds: 24,36,0,4
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -440,6 +450,8 @@ AGUN:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -487,6 +499,8 @@ DOME:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 1000
 	Armor:
@@ -689,6 +703,8 @@ SAM:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -749,6 +765,8 @@ ATEK:
 	SupportPowerChargeBar:
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -1219,6 +1237,8 @@ POWR:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -1260,6 +1280,8 @@ APWR:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
