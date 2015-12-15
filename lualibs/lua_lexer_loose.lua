@@ -201,7 +201,8 @@ function M.lexc(code, f, pos)
   local yield = coroutine.yield
   local func = coroutine.wrap(f or function()
     M.lex(code, function(tag, name, pos)
-      yield {tag=tag, name, lineinfo=pos}
+      -- skip Comment tags as they may arbitrarily split statements and affects their processing
+      if tag ~= 'Comment' then yield {tag=tag, name, lineinfo=pos} end
     end, pos)
     yield {tag='Eof', lineinfo = #code+1}
   end)
