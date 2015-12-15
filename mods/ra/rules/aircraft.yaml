@@ -12,7 +12,6 @@ BADR:
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	Cargo:
 		MaxWeight: 10
 	-Selectable:
@@ -50,7 +49,6 @@ BADR.Bomber:
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AmmoPool:
 		Ammo: 7
 	-Selectable:
@@ -105,10 +103,8 @@ MIG:
 		InitialFacing: 192
 		ROT: 4
 		Speed: 223
-		RearmBuildings: afld
 		RepulsionSpeed: 40
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -164,13 +160,11 @@ YAK:
 		FacingTolerance: 20
 	Aircraft:
 		CruiseAltitude: 2560
-		RearmBuildings: afld
 		InitialFacing: 192
 		ROT: 4
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AutoTarget:
 		TargetWhenIdle: false
 		TargetWhenDamaged: false
@@ -213,14 +207,11 @@ TRAN:
 		Range: 10c0
 		Type: CenterPosition
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 0
 		ROT: 5
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
-		AirborneUpgrades: airborne
-		CanHover: True
 	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
 		Sequence: rotor2
@@ -264,13 +255,10 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 149
-		AirborneUpgrades: airborne
-		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -318,13 +306,10 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
 		Speed: 112
-		AirborneUpgrades: airborne
-		CanHover: True
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -355,7 +340,6 @@ U2:
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56
-		AirborneUpgrades: airborne
 	AttackBomber:
 	-Selectable:
 	-Voiced:

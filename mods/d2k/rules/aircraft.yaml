@@ -18,7 +18,6 @@ carryall.reinforce:
 		Speed: 144 # 112 * ~1.3 for balance reasons
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
 		RepairBuildings: repair_pad
-		RearmBuildings:
 		Repulsable: False
 		LandAltitude: 100
 		LandWhenIdle: False
@@ -61,8 +60,6 @@ frigate:
 	Aircraft:
 		ROT: 1
 		Speed: 189 # 126 * ~1.5 for balance reasons
-		RepairBuildings:
-		RearmBuildings:
 		Repulsable: False
 		MaximumPitch: 20
 	-AppearsOnRadar:
@@ -85,8 +82,6 @@ ornithopter:
 	Aircraft:
 		ROT: 2
 		Speed: 224 # 189 * ~1.2 for balance reasons
-		RepairBuildings:
-		RearmBuildings:
 		Repulsable: False
 		CanHover: True
 	AmmoPool:
@@ -104,8 +99,6 @@ ornithopter.husk:
 	Aircraft:
 		ROT: 5
 		Speed: 224
-		RepairBuildings:
-		RearmBuildings:
 	RenderSprites:
 		Image: ornithopter
 
@@ -116,8 +109,6 @@ carryall.husk:
 	Aircraft:
 		ROT: 4
 		Speed: 144
-		RepairBuildings:
-		RearmBuildings:
 		CanHover: True
 	RenderSprites:
 		Image: carryall

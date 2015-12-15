@@ -497,7 +497,7 @@
 	Inherits: ^Aircraft
 	Aircraft:
 		RepairBuildings: gadept
-		RearmBuildings:
+		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2048
 		Voice: Move
