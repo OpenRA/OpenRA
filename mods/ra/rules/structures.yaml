@@ -999,6 +999,8 @@ SILO:
 	Bib:
 		HasMinibib: Yes
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500

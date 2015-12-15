@@ -283,6 +283,8 @@ silo:
 			ordos: silo.ordos
 	WithSpriteBody:
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipColor: green
 		PipCount: 5

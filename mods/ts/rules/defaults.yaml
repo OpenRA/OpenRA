@@ -137,6 +137,10 @@
 	Sellable:
 		SellSounds: cashturn.aud
 	WithMakeAnimation:
+		MakeUpgrades: underConstruction
+	DisableOnUpgrade:
+		UpgradeTypes: underConstruction
+		UpgradeMinEnabledLevel: 1
 	ThrowsShrapnel:
 		Weapons: LargeDebris
 		Pieces: 3, 7

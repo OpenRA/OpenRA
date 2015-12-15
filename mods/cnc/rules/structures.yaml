@@ -212,10 +212,9 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
-	AutoSelectionSize:
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
