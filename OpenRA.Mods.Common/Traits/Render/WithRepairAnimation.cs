@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var spriteBody = host.TraitOrDefault<WithSpriteBody>();
 			if (spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				spriteBody.PlayCustomAnimation(host, info.Sequence, () => spriteBody.CancelCustomAnimation(self));
+				spriteBody.PlayCustomAnimation(host, info.Sequence, () => spriteBody.CancelCustomAnimation(host));
 		}
 	}
 }
