@@ -480,10 +480,13 @@
 		SellSounds: cashturn.aud
 	Capturable:
 	WithMakeAnimation:
+		MakeUpgrades: underConstruction
+	DisableOnUpgrade:
+		UpgradeTypes: underConstruction
+		UpgradeMinEnabledLevel: 1
 
 ^CivBuilding:
 	Inherits: ^Building
-	-UpgradeManager:
 	Health:
 		HP: 400
 	Tooltip:
@@ -599,6 +602,7 @@
 
 ^TibTree:
 	Inherits@1: ^SpriteActor
+	UpgradeManager:
 	Tooltip:
 		Name: Blossom Tree
 	RenderSprites:

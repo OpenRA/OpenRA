@@ -13,35 +13,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Changes the animation when the actor constructed a building.")]
-	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithBuildingPlacedAnimationInfo : UpgradableTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use"), SequenceReference]
 		public readonly string Sequence = "build";
 
-		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete
+	public class WithBuildingPlacedAnimation : UpgradableTrait<WithBuildingPlacedAnimationInfo>, INotifyBuildingPlaced
 	{
 		readonly WithBuildingPlacedAnimationInfo info;
 		readonly WithSpriteBody wsb;
-		bool buildComplete;
 
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
+			: base(info)
 		{
 			this.info = info;
 			wsb = self.Trait<WithSpriteBody>();
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
-		}
-
-		public void BuildingComplete(Actor self)
-		{
-			buildComplete = true;
 		}
 
 		public void BuildingPlaced(Actor self)
 		{
-			if (buildComplete)
+			if (!IsTraitDisabled)
 				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
 		}
 	}

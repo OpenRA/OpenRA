@@ -66,6 +66,8 @@ FACT:
 		Cooldown: 75
 		Range: 14c0
 	WithBuildingPlacedAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
