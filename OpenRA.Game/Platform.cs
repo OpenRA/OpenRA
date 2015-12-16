@@ -95,10 +95,18 @@ namespace OpenRA
 
 		public static string GameDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
 
-		/// <summary>Replace special character prefixes with full paths</summary>
+		/// <summary>Replaces special character prefixes with full paths.</summary>
 		public static string ResolvePath(string path)
 		{
 			path = path.TrimEnd(new char[] { ' ', '\t' });
+
+			// If the path contains ':', chances are it is a package path.
+			// If it isn't, someone passed an already resolved path, which is wrong.
+			if (path.IndexOf(":", StringComparison.Ordinal) > 1)
+			{
+				var split = path.Split(':');
+				return ResolvePath(split[0], split[1]);
+			}
 
 			// paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^"))
@@ -111,7 +119,17 @@ namespace OpenRA
 			return path;
 		}
 
-		/// <summary>Replace special character prefixes with full paths</summary>
+		/// <summary>Replaces package names with full paths. Avoid using this for non-package paths.</summary>
+		public static string ResolvePath(string package, string target)
+		{
+			// Resolve mod package paths.
+			if (ModMetadata.AllMods.ContainsKey(package))
+				package = ModMetadata.CandidateModPaths[package];
+
+			return ResolvePath(Path.Combine(package, target));
+		}
+
+		/// <summary>Replace special character prefixes with full paths.</summary>
 		public static string ResolvePath(params string[] path)
 		{
 			return ResolvePath(path.Aggregate(Path.Combine));

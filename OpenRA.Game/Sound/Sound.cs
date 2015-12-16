@@ -33,7 +33,7 @@ namespace OpenRA
 
 		public Sound(string engineName)
 		{
-			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
+			var enginePath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + engineName + ".dll"));
 			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
 		}
 

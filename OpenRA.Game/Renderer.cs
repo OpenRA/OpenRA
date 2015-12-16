@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
@@ -49,7 +50,7 @@ namespace OpenRA
 			var resolution = GetResolution(graphicSettings);
 
 			var rendererName = serverSettings.Dedicated ? "Null" : graphicSettings.Renderer;
-			var rendererPath = Platform.ResolvePath(".", "OpenRA.Platforms." + rendererName + ".dll");
+			var rendererPath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + rendererName + ".dll"));
 
 			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 
