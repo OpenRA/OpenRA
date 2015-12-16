@@ -154,8 +154,10 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
 
-			var list = yaml[key].ToDictionary().Keys.ToArray();
-			return parsePaths ? list.Select(Platform.ResolvePath).ToArray() : list;
+			if (parsePaths)
+				return yaml[key].Nodes.Select(node => Platform.ResolvePath(node.Key, node.Value.Value ?? string.Empty)).ToArray();
+
+			return yaml[key].ToDictionary().Keys.ToArray();
 		}
 
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
@@ -166,15 +168,19 @@ namespace OpenRA
 			var inner = new Dictionary<string, string>();
 			foreach (var node in yaml[key].Nodes)
 			{
+				var line = node.Key;
+				if (node.Value.Value != null)
+					line += ":" + node.Value.Value;
+
 				// '@' may be used in mod.yaml to indicate extra information (similar to trait @ tags).
 				// Applies to MapFolders (to indicate System and User directories) and Packages (to indicate package annotation).
-				if (node.Key.Contains('@'))
+				if (line.Contains('@'))
 				{
-					var split = node.Key.Split('@');
-					inner.Add(split[0], split[1]);
+					var split = line.Split('@');
+					inner.Add(parsePaths ? Platform.ResolvePath(split[0]) : split[0], split[1]);
 				}
 				else
-					inner.Add(node.Key, null);
+					inner.Add(line, null);
 			}
 
 			return new ReadOnlyDictionary<string, string>(inner);
