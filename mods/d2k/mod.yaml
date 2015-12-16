@@ -20,8 +20,8 @@ Folders:
 	~^Content/d2k/Music
 
 MapFolders:
-	./mods/d2k/maps: System
-	~^maps/d2k: User
+	./mods/d2k/maps@System
+	~^maps/d2k@User
 
 Packages:
 	SOUND.RS

@@ -160,8 +160,19 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			Func<string, string> keySelector = parsePaths ? (Func<string, string>)Platform.ResolvePath : k => k;
-			var inner = yaml[key].ToDictionary(keySelector, my => my.Value);
+			var inner = new Dictionary<string, string>();
+			foreach (var node in yaml[key].Nodes)
+			{
+				// '@' may be used in mod.yaml to indicate extra information (similar to trait @ tags).
+				// Applies to MapFolders (to indicate System and User directories) and Packages (to indicate package annotation).
+				if (node.Key.Contains('@'))
+				{
+					var split = node.Key.Split('@');
+					inner.Add(split[0], split[1]);
+				}
+				else
+					inner.Add(node.Key, null);
+			}
 
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
