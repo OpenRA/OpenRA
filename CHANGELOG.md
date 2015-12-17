@@ -1,5 +1,116 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Dec 17 2015)
+
+### Highlights
+  - Added find/replace in selection to search operations.
+  - Added printing of editor tabs and Console/Output windows (available on Windows and OSX).
+  - Added recursive processing of configuration files.
+  - Added `outline.showcompact` setting to keep outline more compact for large files.
+  - Added opening multiple files from the `Open` dialog.
+  - Updated Corona API for v2015.2731 and added handling of type inheritance.
+
+### Special thanks
+  - To [tmiv](https://github.com/tmiv) for allowing shortcuts to be added to tools menu items.
+
+### Improvements
+  - Added skipping comments in the lexer to avoid splitting statements (fixes #568).
+  - Added `GetExePath` method for the interpreter (#166).
+  - Added package `GetFilePath` method (#166).
+  - Added `showhiddenfiles` option to show hidden files in the filetree (closes #561).
+  - Added package `RemovePanel` method (#166).
+  - Added loading of custom package from the config file (closes #555).
+  - Added `Alt-Enter` to "replace all" when replace field is selected in the search panel.
+  - Added setting project directory to the selected directory to the project tree menu.
+  - Added ignoring `Ctrl-CapsLock` in the editor that was shrinking the font.
+  - Added recursive processing of configuration files with relative names (#555).
+  - Added moving cursor to the end of the pasted fragment (#556).
+  - Added workaround for copying UTF-8 invalid data to/from clipboard (#260, #556).
+  - Added `CloseAll` and `CloseAllExcept` document methods (#166).
+  - Added warning in the interpreter when a short name not generated on Windows (closes #559).
+  - Added check for recover record to be fully present.
+  - Added using `*Raw` methods when available for handling of invalid UTF-8 chars (#260, #556).
+  - Added `FileRemove` method (#166).
+  - Added package `onAppDone` method (#166).
+  - Added sorting the list of known extensions.
+  - Added `outline.showcompact` setting to keep outline more compact for large files (closes #549).
+  - Added updating selection boundaries after replace-in-selection (#547).
+  - Added resizing toolbar background after resizing the application window.
+  - Added timing to the tests.
+  - Added context menu item to clear text in the Console window.
+  - Added context menu to select a (clicked on) command in the Console window.
+  - Added `onMenuConsole` event (#166).
+  - Added reporting printing progress (#540).
+  - Added package `IsValidProperty` method (#166).
+  - Added separator to the print-related menu items on OSX (#540).
+  - Added header/footer printing (#540).
+  - Added printing of the current editor tab (closes #540).
+  - Add package `GetIndicators` method (#166).
+  - Added `editor.wrapmode` to configure wrapping mode in the editor.
+  - Added reporting of another instance running under a different user (closes #542).
+  - Added opening multiple files from the `Open` dialog (closes #541).
+  - Allowed reading input in the Output window without printing something first (closes #538).
+  - Allow shortcuts to be added to tools menu items
+  - Extended PATH on OSX with `/usr/local/bin` to provide access to tools in that folder (#356).
+  - Improved handling of names with Unicode chars during debugging on Windows (#559).
+  - Limited requesting attention on debugging starts to happen when debugging is suspended.
+  - Moved wxlua version number to a better location in the About screen.
+  - Optimized path generation in directory traversal (#260).
+  - Removed a workaround for wxlua build issue as it's no longer needed.
+  - Replaced `ConsoleClear` with `Erase` methods for the Console object.
+  - Removed search panel from the list of floated panels as it shouldn't be there.
+  - Removed `allowinteractivescript` setting as it doesn't need to be configurable (#538).
+  - Switched to using client size instead of system metric to get screen width (#260).
+  - Switched to using `KEY` event in search panel to make it work with wxwidgets 3.1+ (#260).
+  - Updated build scripts to use own wxwidgets repository to better sync build versions (#260).
+  - Updated build scripts to remove an error from the check for missing methods in wxlua.
+  - Updated README to remove outdated .ini reference from Estrela section.
+  - Updated instructions in the `estrela` configuration file to reference `include` command.
+  - Updated luasec build script to use the latest openSSL version (1.0.2d).
+  - Updated UTF-8 validation to use wxwidgets libraries for better performance (#556).
+  - Updated clipboard copy to make non-UTF-8 data to work on OSX (#260, #556).
+  - Updated Console history to work with UTF-8 invalid strings (#260, #556).
+  - Updated `Ctrl/Shift-Ins` and `Shift-Del` to work in all editors (#260, #556).
+  - Updated `Output` and `Console` to display invalid characters as is (#260, #556).
+  - Updated config sample to remove no longer needed `G` references.
+  - Updated config processing to simplify access to global functions.
+  - Updated config processing to allow use of `package` field.
+  - Updated windows launcher code to use manifest for hidpi awareness.
+  - Updated `AddConfig` method to accept single filename in addition to a list (#166).
+  - Updated event handling to better handle events that are executed once (#260).
+  - Updated `sample` package events for more accurate output.
+  - Updated default size/position for the first launch without saved settings.
+  - Updated tests to use a separate .ini file to minimize conflicts.
+  - Updated Corona API for v2015.2731.
+  - Updated Corona API processing script to follow Lua guidelines.
+  - Updated Corona API processing script to handle type inheritance.
+  - Updated `Save As`/`Open` command to use editor specific extensions instead of all.
+  - Updated capturing editor information during search to work with selections (#547, #416).
+  - Updated `Replace` and `Replace All` to take selection into account (#547, #416).
+  - Updated toolbar icons to fix black color in some images.
+  - Updated `SetDllDirectory` handling to avoid breaking dlopen with wxwidgets 3.1+ (#260).
+  - Updated Corona interpreter to avoid caching specified path.
+  - Updated tests to handle platform-specific tests.
+  - Updated directory traversing tests to work with smaller directories.
+  - Updated default file mask to match files without extension (#260).
+  - Updated tests to use a package instead of the obsolete app method.
+  - Updated wxwidget path in the build script to use git repository after wxwidgets migration.
+  - Updated menu shortcuts to avoid conflicts in the `File` menu (#540).
+  - Updated README with features in 1.20.
+
+### Fixes
+  - Fixed expanding sub-trees in project directory when set to the disk root on Windows.
+  - Fixed search navigation after selecting one variable instance (fixes #565).
+  - Fixed editing fragments in folded text (follow-up to d2ddc96a; #564).
+  - Fixed editing multiple selections when selection is in folded fragments (fixes #564).
+  - Fixed copy/paste on Windows when UTF-8 invalid strings end in new line (#260, #556).
+  - Fixed debugging of Busted scripts (closes #552).
+  - Fixed skipping editor tabs when clicked in some cases on OSX (closes #546).
+  - Fixed toolbar size not being adjusted on the very first launch.
+
+### Incompatibilities
+  - Removed `allowinteractivescript` setting as it doesn't need to be configurable (#538).
+
 ## v1.20 (Oct 08 2015)
 
 ### Highlights
