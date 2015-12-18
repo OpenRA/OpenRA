@@ -31,6 +31,13 @@ Waves =
 
 SendUnits = function(entryCell, unitTypes, targetCell)
 	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, 40, function(a)
+		if not a.HasProperty("AttackMove") then
+			Trigger.OnIdle(a, function(a)
+				a.Move(targetCell)
+			end)
+			return
+		end
+
 		Trigger.OnIdle(a, function(a)
 			if a.Location ~= targetCell then
 				a.AttackMove(targetCell)
