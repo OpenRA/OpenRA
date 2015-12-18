@@ -818,7 +818,7 @@ local function getProjectLabels()
     local parts = wx.wxFileName(proj..pathsep):GetDirs()
     table.insert(labels, ExpandPlaceholders(fmt, {
           f = proj,
-          i = interpreter and interpreter:GetName() or '?',
+          i = interpreter and interpreter:GetName() or (intfname or '')..'?',
           s = parts[#parts] or '',
         }))
   end
