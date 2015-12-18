@@ -903,7 +903,7 @@ Weapons:
 				Wood: 100
 				Heavy: 75
 				Concrete: 35
-			Damage: 10
+			Damage: 20
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
 		Warhead@3Eff: CreateEffect
 			Explosion: small_napalm
