@@ -101,7 +101,7 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
-			NeedRenderables = Visible && !wasVisible;
+			NeedRenderables |= Visible && !wasVisible;
 		}
 
 		public void Flash()
