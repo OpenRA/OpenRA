@@ -849,6 +849,7 @@ Weapons:
 			Inaccuracy: 2c512
 			TrailImage: smokey
 			ContrailLength: 2
+			Blockable: false
 		Warhead: SpreadDamage
 			Spread: 341
 			ValidTargets: Ground
