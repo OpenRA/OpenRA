@@ -811,9 +811,9 @@ local function fastWrap(func, ...)
   SetEditorSelection = SES
 end
 
-function StoreRestoreProjectTabs(curdir, newdir)
+function StoreRestoreProjectTabs(curdir, newdir, intfname)
   local win = ide.osname == 'Windows'
-  local interpreter = ide.interpreter.fname
+  local interpreter = intfname or ide.interpreter.fname
   local current, closing, restore = notebook:GetSelection(), 0, false
 
   if ide.osname ~= 'Macintosh' then notebook:Freeze() end

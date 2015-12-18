@@ -756,6 +756,10 @@ function filetree:updateProjectDir(newdir)
   -- strip the last path separator if any
   local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
+  -- save the current interpreter as it may be reset in onProjectClose
+  -- when the project event handlers manipulates interpreters
+  local intfname = ide.interpreter and ide.interpreter.fname
+
   if filetree.projdir and #filetree.projdir > 0 then
     PackageEventHandle("onProjectClose", filetree.projdir)
   end
@@ -763,7 +767,7 @@ function filetree:updateProjectDir(newdir)
   PackageEventHandle("onProjectPreLoad", newdir)
 
   if ide.config.projectautoopen and filetree.projdir then
-    StoreRestoreProjectTabs(filetree.projdir, newdir)
+    StoreRestoreProjectTabs(filetree.projdir, newdir, intfname)
   end
 
   filetree.projdir = newdir
