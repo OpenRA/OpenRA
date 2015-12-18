@@ -619,11 +619,11 @@ PackageEventHandle("onRegister")
 ProjectUpdateInterpreters()
 
 -- load rest of settings
-SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
 SettingsRestoreView()
 SettingsRestoreFileHistory(SetFileHistory)
 SettingsRestoreProjectSession(FileTreeSetProjects)
+SettingsRestoreEditorSettings()
 SettingsRestoreFileSession(function(tabs, params)
   if params and params.recovery
   then return SetOpenTabs(params)

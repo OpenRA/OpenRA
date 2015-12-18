@@ -579,16 +579,16 @@ function SettingsSaveEditorSettings()
   settings:DeleteGroup(listname)
   settings:SetPath(listname)
 
-  settings:Write("interpreter", ide.interpreter and ide.interpreter.fname or "_undefined_")
+  settings:Write("interpreter", ide.interpreter and ide.interpreter.fname or ide.config.default.interpreter)
 
   settings:SetPath(path)
 end
 
 function SettingsSaveAll()
-  SettingsSaveProjectSession(FileTreeGetProjects())
   SettingsSaveFileSession(GetOpenFiles())
-  SettingsSaveView()
-  SettingsSaveFileHistory(GetFileHistory())
-  SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
+  SettingsSaveProjectSession(FileTreeGetProjects())
+  SettingsSaveFileHistory(GetFileHistory())
+  SettingsSaveView()
+  SettingsSaveFramePosition(ide.frame, "MainFrame")
 end
