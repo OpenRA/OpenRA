@@ -83,7 +83,7 @@ SendWave = function()
 			end
 		else
 			Trigger.AfterDelay(DateTime.Minutes(2), SovietsRetreating)
-			Media.DisplayMessage("You survived the onslaught! No more waves incoming.")
+			Media.DisplayMessage("You almost survived the onslaught! No more waves incoming.")
 		end
 	end)
 end
