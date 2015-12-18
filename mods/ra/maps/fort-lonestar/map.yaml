@@ -558,6 +558,9 @@ Rules:
 		-EnemyWatcher:
 	^Infantry:
 		Inherits@IC: ^IronCurtainable
+	^Husk:
+		TransformOnCapture:
+			ForceHealthPercentage: 80
 	OILB:
 		Health:
 			HP: 3000
@@ -735,6 +738,11 @@ Rules:
 			Actor: MIG.Husk
 		RenderSprites:
 			Image: mig
+	MECH:
+		Buildable:
+			Prerequisites: barracks
+		Valued:
+			Cost: 1500
 	powerproxy.paratroopers:
 		ParatroopersPower:
 			DropItems: E1,E1,E1,E1,E2,E2
@@ -775,9 +783,6 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
 		Buildable:
 			Prerequisites: ~disabled
 	HIJACKER:
