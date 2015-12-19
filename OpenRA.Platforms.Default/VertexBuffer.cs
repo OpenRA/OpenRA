@@ -63,9 +63,9 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			GL.BindBuffer(BufferTarget.ArrayBuffer, buffer);
 			ErrorHandler.CheckGlError();
-			GL.VertexPointer(3, VertexPointerType.Float, VertexSize, IntPtr.Zero);
+			GL.VertexAttribPointer(Shader.VertexPosAttributeIndex, 3, VertexAttribPointerType.Float, false, VertexSize, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
-			GL.TexCoordPointer(4, TexCoordPointerType.Float, VertexSize, new IntPtr(12));
+			GL.VertexAttribPointer(Shader.TexCoordAttributeIndex, 4, VertexAttribPointerType.Float, false, VertexSize, new IntPtr(12));
 			ErrorHandler.CheckGlError();
 		}
 

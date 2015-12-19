@@ -1,9 +1,11 @@
 uniform vec2 Scroll;
 uniform vec2 r1,r2;		// matrix elements
 
-varying vec4 TexCoord;
-varying vec4 ChannelMask;
-varying vec4 DepthMask;
+attribute vec4 aVertexPosition;
+attribute vec4 aVertexTexCoord;
+varying vec4 vTexCoord;
+varying vec4 vChannelMask;
+varying vec4 vDepthMask;
 
 vec4 DecodeChannelMask(float x)
 {
@@ -34,9 +36,9 @@ vec4 DecodeDepthChannelMask(float x)
 
 void main()
 {
-	vec2 p = (gl_Vertex.xy - Scroll.xy) * r1 + r2;
+	vec2 p = (aVertexPosition.xy - Scroll.xy) * r1 + r2;
 	gl_Position = vec4(p.x,p.y,0,1);
-	TexCoord = gl_MultiTexCoord0;
-	ChannelMask = DecodeChannelMask(gl_MultiTexCoord0.w);
-	DepthMask = DecodeDepthChannelMask(gl_MultiTexCoord0.w);
+	vTexCoord = aVertexTexCoord;
+	vChannelMask = DecodeChannelMask(aVertexTexCoord.w);
+	vDepthMask = DecodeDepthChannelMask(aVertexTexCoord.w);
 } 

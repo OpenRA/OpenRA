@@ -91,9 +91,9 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
 			}
 
-			GL.EnableClientState(ArrayCap.VertexArray);
+			GL.EnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			ErrorHandler.CheckGlError();
-			GL.EnableClientState(ArrayCap.TextureCoordArray);
+			GL.EnableVertexAttribArray(Shader.TexCoordAttributeIndex);
 			ErrorHandler.CheckGlError();
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
