@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly WDist Width = new WDist(1);
 
 		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
