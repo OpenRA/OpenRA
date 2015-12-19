@@ -30,7 +30,7 @@ Waves =
 	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Boss } }
 }
 
-SendUnits = function(entryCell, unitTypes, targetCell)
+SendUnits = function(entryCell, unitTypes, targetCell, extraData)
 	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, 40, function(a)
 		if not a.HasProperty("AttackMove") then
 			Trigger.OnIdle(a, function(a)
@@ -46,6 +46,13 @@ SendUnits = function(entryCell, unitTypes, targetCell)
 				a.Hunt()
 			end
 		end)
+
+		if extraData == "IronCurtain" then
+			a.GrantUpgrade("invulnerability")
+			Trigger.AfterDelay(DateTime.Seconds(25), function()
+				a.RevokeUpgrade("invulnerability")
+			end)
+		end
 	end)
 end
 
@@ -60,6 +67,15 @@ SendWave = function()
 
 			SendUnits(entry, units, target)
 		end)
+
+		if wave.ironUnits then
+			Utils.Do(wave.ironUnits, function(units)
+				local entry = Utils.Random(SovietEntryPoints).Location
+				local target = Utils.Random(SpawnPoints).Location
+
+				SendUnits(entry, units, target, "IronCurtain")
+			end)
+		end
 
 		Utils.Do(players, function(player)
 			Media.PlaySpeechNotification(player, "EnemyUnitsApproaching")
