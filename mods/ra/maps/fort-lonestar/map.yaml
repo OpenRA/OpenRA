@@ -30,6 +30,7 @@ Options:
 	StartingUnitsClass: none
 	ConfigurableStartingUnits: False
 	ShortGame: False
+	Difficulties: Hard (4P), Normal (3P), Easy (2P), Very Easy (1P), Real tough guy, Endless mode
 
 Players:
 	PlayerReference@Neutral:
