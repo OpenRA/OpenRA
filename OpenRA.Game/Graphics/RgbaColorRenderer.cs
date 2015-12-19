@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 			vertices = new Vertex[renderer.TempBufferSize];
-			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList);
+			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
 		}
 
 		public void Flush()
@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > renderer.TempBufferSize)
+			if (nv + 6 > renderer.TempBufferSize)
 				Flush();
 
 			var delta = (end - start) / (end - start).Length;
@@ -70,14 +70,16 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa);
 			vertices[nv++] = new Vertex(start + corner + Offset, sr, sg, sb, sa);
 			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea);
+			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea);
 			vertices[nv++] = new Vertex(end - corner + Offset, er, eg, eb, ea);
+			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa);
 		}
 
 		public void DrawLine(float2 start, float2 end, float width, Color color)
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > renderer.TempBufferSize)
+			if (nv + 6 > renderer.TempBufferSize)
 				Flush();
 
 			var delta = (end - start) / (end - start).Length;
@@ -92,7 +94,9 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a);
 			vertices[nv++] = new Vertex(start + corner + Offset, r, g, b, a);
 			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a);
+			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a);
 			vertices[nv++] = new Vertex(end - corner + Offset, r, g, b, a);
+			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a);
 		}
 
 		/// <summary>
@@ -160,13 +164,15 @@ namespace OpenRA.Graphics
 				var cd = closed || i < limit ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
 
 				// Fill segment
-				if (nv + 4 > renderer.TempBufferSize)
+				if (nv + 6 > renderer.TempBufferSize)
 					Flush();
 
 				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a);
 				vertices[nv++] = new Vertex(cb + Offset, r, g, b, a);
 				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a);
 				vertices[nv++] = new Vertex(cd + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a);
 
 				// Advance line segment
 				end = next;
@@ -215,7 +221,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (nv + 4 > renderer.TempBufferSize)
+			if (nv + 6 > renderer.TempBufferSize)
 				Flush();
 
 			color = Util.PremultiplyAlpha(color);
@@ -227,7 +233,9 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca);
 			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca);
 			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca);
+			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca);
 			vertices[nv++] = new Vertex(d + Offset, cr, cg, cb, ca);
+			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca);
 		}
 
 		public void FillEllipse(RectangleF r, Color color, int vertices = 32)
