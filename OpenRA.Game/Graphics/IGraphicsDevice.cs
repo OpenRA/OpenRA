@@ -123,7 +123,6 @@ namespace OpenRA
 		PointList,
 		LineList,
 		TriangleList,
-		QuadList,
 	}
 
 	public struct Range<T>

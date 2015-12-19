@@ -210,7 +210,6 @@ namespace OpenRA.Platforms.Default
 				case PrimitiveType.PointList: return BeginMode.Points;
 				case PrimitiveType.LineList: return BeginMode.Lines;
 				case PrimitiveType.TriangleList: return BeginMode.Triangles;
-				case PrimitiveType.QuadList: return BeginMode.Quads;
 			}
 
 			throw new NotImplementedException();
