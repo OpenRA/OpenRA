@@ -1,9 +1,3 @@
-Patrol = { "e1", "e2", "e1" }
-Infantry = { "e4", "e1", "e1", "e2", "e1", "e2" }
-Vehicles = { "arty", "ftrk", "ftrk", "apc", "apc" }
-Tank = { "3tnk" }
-LongRange = { "v2rl" }
-Boss = { "4tnk" }
 
 SovietEntryPoints = { Entry1, Entry2, Entry3, Entry4, Entry5, Entry6, Entry7, Entry8 }
 PatrolWaypoints = { Entry2, Entry4, Entry6, Entry8 }
@@ -12,23 +6,75 @@ OilDerricks = { OilDerrick1, OilDerrick2, OilDerrick3, OilDerrick4 }
 SpawnPoints = { Spawn1, Spawn2, Spawn3, Spawn4 }
 Snipers = { Sniper1, Sniper2, Sniper3, Sniper4, Sniper5, Sniper6, Sniper7, Sniper8, Sniper9, Sniper10, Sniper11, Sniper12 }
 
-ParaChance = 30
+if Map.Difficulty == "Very Easy (1P)" then
+	ParaChance = 20
+	Patrol = { "e1", "e2", "e1" }
+	Infantry = { "e4", "e1", "e1", "e2", "e2" }
+	Vehicles = { "apc" }
+	Tank = { "3tnk" }
+	LongRange = { "arty" }
+	Boss = { "v2rl" }
+	Swarm = { "shok", "shok", "shok" }
+elseif Map.Difficulty == "Easy (2P)" then
+	ParaChance = 25
+	Patrol = { "e1", "e2", "e1" }
+	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
+	Vehicles = { "ftrk", "apc", "arty" }
+	Tank = { "3tnk" }
+	LongRange = { "v2rl" }
+	Boss = { "4tnk" }
+	Swarm = { "shok", "shok", "shok", "shok", "ttnk" }
+elseif Map.Difficulty == "Normal (3P)" then
+	ParaChance = 30
+	Patrol = { "e1", "e2", "e1", "e1" }
+	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
+	Vehicles = { "ftrk", "ftrk", "apc", "arty" }
+	Tank = { "3tnk" }
+	LongRange = { "v2rl" }
+	Boss = { "4tnk" }
+	Swarm = { "shok", "shok", "shok", "shok", "ttnk", "ttnk", "ttnk" }
+elseif Map.Difficulty == "Hard (4P)" then
+	ParaChance = 35
+	Patrol = { "e1", "e2", "e1", "e1", "e4" }
+	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1" }
+	Vehicles = { "arty", "ftrk", "ftrk", "apc", "apc" }
+	Tank = { "3tnk" }
+	LongRange = { "v2rl" }
+	Boss = { "4tnk" }
+	Swarm = { "shok", "shok", "shok", "shok", "shok", "ttnk", "ttnk", "ttnk", "ttnk" }
+else
+	ParaChance = 40
+	Patrol = { "e1", "e2", "e1", "e1", "e4", "e4" }
+	Infantry = { "e4", "e1", "e1", "e2", "e1", "e2", "e1", "e1" }
+	Vehicles = { "arty", "arty", "ftrk", "apc", "apc" }
+	Tank = { "ftrk", "3tnk" }
+	LongRange = { "v2rl" }
+	Boss = { "4tnk" }
+	Swarm = { "shok", "shok", "shok", "shok", "shok", "shok", "ttnk", "ttnk", "ttnk", "ttnk", "ttnk" }
+end
 
 Wave = 0
 Waves =
 {
 	{ delay = 500, units = { Infantry } },
-	{ delay = 750, units = { Patrol } },
-	{ delay = 750, units = { Infantry, Infantry, Vehicles }, },
+	{ delay = 500, units = { Patrol, Patrol } },
+	{ delay = 700, units = { Infantry, Infantry, Vehicles }, },
 	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Vehicles } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Tank, Vehicles } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Tank, Tank } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, Tank, LongRange } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, LongRange, Tank, Tank, Vehicles } },
-	{ delay = 1500, units = { Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Boss } }
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Vehicles } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Tank, Vehicles } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Tank, Tank, Swarm } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, LongRange } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, LongRange, Tank, LongRange } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, LongRange, Tank, Tank, Vehicles } },
+	{ delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, Infantry, Infantry, Boss, Swarm } }
 }
+
+-- Now do some adjustments to the waves
+if Map.Difficulty == "Real tough guy" then
+	Waves[8] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry }, ironUnits = { LongRange } }
+	Waves[9] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, LongRange, Vehicles, Tank }, ironUnits = { Tank } }
+	Waves[11] = { delay = 1500, units = { Vehicles, Infantry, Patrol, Patrol, Patrol, Infantry, LongRange, Tank, Boss, Infantry, Infantry, Patrol } }
+end
 
 SendUnits = function(entryCell, unitTypes, targetCell, extraData)
 	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, 40, function(a)
@@ -98,7 +144,7 @@ SendWave = function()
 				SendWave()
 			end
 		else
-			Trigger.AfterDelay(DateTime.Minutes(2), SovietsRetreating)
+			Trigger.AfterDelay(DateTime.Minutes(1), SovietsRetreating)
 			Media.DisplayMessage("You almost survived the onslaught! No more waves incoming.")
 		end
 	end)
