@@ -50,6 +50,12 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
 
+		[Desc("Width of projectile (used for finding blocking actors).")]
+		public readonly WDist Width = new WDist(1);
+
+		[Desc("Extra search radius beyond path for blocking actors.")]
+		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] Angle = { WAngle.Zero };
 
@@ -156,7 +162,18 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim != null)
 				anim.Tick();
 
+			var lastPos = pos;
 			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
+
+			// Check for walls or other blocking obstacles
+			var shouldExplode = false;
+			WPos blockedPos;
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
+				info.TargetExtraSearchRadius, out blockedPos))
+			{
+				pos = blockedPos;
+				shouldExplode = true;
+			}
 
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
@@ -168,8 +185,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
-			var shouldExplode = ticks++ >= length // Flight length reached/exceeded
-				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)); // Hit a wall or other blocking obstacle
+			// Flight length reached / exceeded
+			shouldExplode |= ticks++ >= length;
 
 			if (shouldExplode)
 				Explode(world);
