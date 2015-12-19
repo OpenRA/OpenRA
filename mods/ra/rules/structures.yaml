@@ -1664,8 +1664,6 @@ CYCL:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Chain-Link Barrier
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1679,8 +1677,6 @@ BARB:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Barbed-Wire Fence
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1694,8 +1690,6 @@ WOOD:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Wooden Fence
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:

@@ -501,6 +501,11 @@
 	Guardable:
 	FrozenUnderFog:
 	GpsRemoveFrozenActor:
+	Health:
+		HP: 100
+		Shape: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding

@@ -216,6 +216,9 @@
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
+	Health:
+		Shape: Circle
+			Radius: 363
 
 ^BuildingPlug:
 	AlwaysVisible:
