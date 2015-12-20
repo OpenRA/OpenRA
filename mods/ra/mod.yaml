@@ -16,8 +16,8 @@ Folders:
 	~^Content/ra
 
 MapFolders:
-	./mods/ra/maps: System
-	~^maps/ra: User
+	./mods/ra/maps@System
+	~^maps/ra@User
 
 Packages:
 	~main.mix

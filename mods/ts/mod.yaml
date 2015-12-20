@@ -15,49 +15,49 @@ Folders:
 	~^Content/ts
 
 MapFolders:
-	./mods/ts/maps: System
-	~^maps/ts: User
+	./mods/ts/maps@System
+	~^maps/ts@User
 
 Packages:
 # Tiberian Sun
-	~scores.mix:CRC32
-	~sidenc01.mix:CRC32
-	~sidenc02.mix:CRC32
-	~gmenu.mix:CRC32
-	~e01scd01.mix:CRC32
-	~e01scd02.mix:CRC32
-	~maps01.mix:CRC32
-	~maps02.mix:CRC32
-	~movies01.mix:CRC32
-	~movies02.mix:CRC32
-	~multi.mix:CRC32
-	~patch.mix:CRC32
-	~sidecd01.mix:CRC32
-	~sidecd02.mix:CRC32
-	~tibsun.mix:CRC32
-	cache.mix:CRC32
-	conquer.mix:CRC32
-	isosnow.mix:CRC32
-	isotemp.mix:CRC32
-	local.mix:CRC32
-	sidec01.mix:CRC32
-	sidec02.mix:CRC32
-	sno.mix:CRC32
-	snow.mix:CRC32
-	sounds.mix:CRC32
-	speech01.mix:CRC32 # EVA
-	speech02.mix:CRC32 # Cabal
-	tem.mix:CRC32
-	temperat.mix:CRC32
+	~scores.mix@CRC32
+	~sidenc01.mix@CRC32
+	~sidenc02.mix@CRC32
+	~gmenu.mix@CRC32
+	~e01scd01.mix@CRC32
+	~e01scd02.mix@CRC32
+	~maps01.mix@CRC32
+	~maps02.mix@CRC32
+	~movies01.mix@CRC32
+	~movies02.mix@CRC32
+	~multi.mix@CRC32
+	~patch.mix@CRC32
+	~sidecd01.mix@CRC32
+	~sidecd02.mix@CRC32
+	~tibsun.mix@CRC32
+	cache.mix@CRC32
+	conquer.mix@CRC32
+	isosnow.mix@CRC32
+	isotemp.mix@CRC32
+	local.mix@CRC32
+	sidec01.mix@CRC32
+	sidec02.mix@CRC32
+	sno.mix@CRC32
+	snow.mix@CRC32
+	sounds.mix@CRC32
+	speech01.mix@CRC32 # EVA
+	speech02.mix@CRC32 # Cabal
+	tem.mix@CRC32
+	temperat.mix@CRC32
 # Firestorm
-	~scores01.mix:CRC32
-	~expand01.mix:CRC32
-	~sounds01.mix:CRC32
-	~e01sc01.mix:CRC32
-	~e01sc02.mix:CRC32
-	~e01vox01.mix:CRC32
-	~e01vox02.mix:CRC32
-	~ecache01.mix:CRC32
+	~scores01.mix@CRC32
+	~expand01.mix@CRC32
+	~sounds01.mix@CRC32
+	~e01sc01.mix@CRC32
+	~e01sc02.mix@CRC32
+	~e01vox01.mix@CRC32
+	~e01vox02.mix@CRC32
+	~ecache01.mix@CRC32
 
 Rules:
 	./mods/ts/rules/ai.yaml
