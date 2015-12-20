@@ -484,7 +484,6 @@
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
-    <Compile Include="Traits\TransformOnPassenger.cs" />
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />

@@ -2807,6 +2807,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Remove obsolete TransformOnPassenger trait.
+				if (engineVersion < 20160102)
+				{
+					node.Value.Nodes.RemoveAll(x => x.Key.Contains("TransformOnPassenger"));
+					Console.WriteLine("TransformOnPassenger has been removed.");
+					Console.WriteLine("Use the upgrades system to apply modifiers to the transport actor instead.");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
