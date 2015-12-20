@@ -19,14 +19,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public interface ISpriteBodyInfo : ITraitInfo { }
-	public interface ISpriteBody
-	{
-		void PlayCustomAnimation(Actor self, string newAnimation, Action after);
-		void PlayCustomAnimationRepeating(Actor self, string name);
-		void PlayCustomAnimationBackwards(Actor self, string name, Action after);
-	}
-
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
