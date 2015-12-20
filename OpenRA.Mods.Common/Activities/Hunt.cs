@@ -25,12 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 			var attack = self.Trait<AttackBase>();
 			targets = self.World.ActorsHavingTrait<Huntable>().Where(
 				a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
-				&& IsTargetable(a, self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
-		}
-
-		bool IsTargetable(Actor self, Actor viewer)
-		{
-			return self.TraitsImplementing<ITargetable>().Any(t => t.IsTraitEnabled() && t.TargetableBy(self, viewer));
+				&& a.IsTargetableBy(self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
 		}
 
 		public override Activity Tick(Actor self)

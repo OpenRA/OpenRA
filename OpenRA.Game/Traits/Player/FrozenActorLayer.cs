@@ -62,7 +62,7 @@ namespace OpenRA.Traits
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
-			TargetTypes = self.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes).ToHashSet();
+			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
 			UpdateVisibility();
 		}

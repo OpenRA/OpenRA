@@ -125,11 +125,10 @@ namespace OpenRA.Mods.Common.AI
 				if (a == null)
 					return 0;
 
-				var targetable = a.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
-				if (!targetable.Any(t => t.TargetableBy(a, firedBy.PlayerActor)))
+				if (!a.IsTargetableBy(firedBy.PlayerActor))
 					return 0;
 
-				if (Types.Overlaps(targetable.SelectMany(t => t.TargetTypes)))
+				if (Types.Overlaps(a.GetEnabledTargetTypes()))
 				{
 					switch (TargetMetric)
 					{

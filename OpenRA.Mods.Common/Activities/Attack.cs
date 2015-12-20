@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// Drop the target once none of the weapons are effective against it
-			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack);
-			if (!armaments.Any())
+			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack).ToList();
+			if (armaments.Count == 0)
 				return NextActivity;
 
 			// Update ranges

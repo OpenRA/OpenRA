@@ -189,7 +189,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
 				return false;
 
-			return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World, self));
+			// PERF: Avoid LINQ.
+			foreach (var armament in Armaments)
+				if (armament.Weapon.IsValidAgainst(t, self.World, self))
+					return true;
+
+			return false;
 		}
 
 		public WDist GetMinimumRange()
@@ -197,9 +202,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			var min = Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.Weapon.MinRange)
-				.Append(WDist.MaxValue).Min();
+			// PERF: Avoid LINQ.
+			var min = WDist.MaxValue;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+				var range = armament.Weapon.MinRange;
+				if (min > range)
+					min = range;
+			}
+
 			return min != WDist.MaxValue ? min : WDist.Zero;
 		}
 
@@ -208,23 +221,32 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			return Armaments.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.MaxRange())
-				.Append(WDist.Zero).Max();
+			// PERF: Avoid LINQ.
+			var max = WDist.Zero;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+				var range = armament.MaxRange();
+				if (max < range)
+					max = range;
+			}
+
+			return max;
 		}
 
 		// Enumerates all armaments, that this actor possesses, that can be used against Target t
-		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack, bool onlyEnabled = true)
+		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack)
 		{
 			// If force-fire is not used, and the target requires force-firing or the target is
 			// terrain or invalid, no armaments can be used
-			if (!forceAttack && (t.RequiresForceFire || t.Type == TargetType.Terrain || t.Type == TargetType.Invalid))
+			if (!forceAttack && (t.Type == TargetType.Terrain || t.Type == TargetType.Invalid || t.RequiresForceFire))
 				return Enumerable.Empty<Armament>();
 
 			// Get target's owner; in case of terrain or invalid target there will be no problems
 			// with owner == null since forceFire will have to be true in this part of the method
 			// (short-circuiting in the logical expression below)
-			var owner = null as Player;
+			Player owner = null;
 			if (t.Type == TargetType.FrozenActor)
 			{
 				owner = t.FrozenActor.Owner;
@@ -241,10 +263,11 @@ namespace OpenRA.Mods.Common.Traits
 					owner = t.Actor.Owner;
 			}
 
-			return Armaments.Where(a => (!a.IsTraitDisabled || !onlyEnabled)
-				&& a.Weapon.IsValidAgainst(t, self.World, self)
+			return Armaments.Where(a =>
+				!a.IsTraitDisabled
 				&& (owner == null || (forceAttack ? a.Info.ForceTargetStances : a.Info.TargetStances)
-					.HasStance(self.Owner.Stances[owner])));
+					.HasStance(self.Owner.Stances[owner]))
+				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
 		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)

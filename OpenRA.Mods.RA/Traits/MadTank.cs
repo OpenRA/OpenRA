@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new HashSet<string> { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}
