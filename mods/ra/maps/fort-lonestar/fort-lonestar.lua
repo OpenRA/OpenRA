@@ -70,7 +70,7 @@ Waves =
 }
 
 -- Now do some adjustments to the waves
-if Map.Difficulty == "Real tough guy" then
+if Map.Difficulty == "Real tough guy" or Map.Difficulty == "Endless mode" then
 	Waves[8] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry }, ironUnits = { LongRange } }
 	Waves[9] = { delay = 1500, units = { Infantry, Infantry, Patrol, Infantry, Infantry, Infantry, Infantry, Infantry, LongRange, LongRange, Vehicles, Tank }, ironUnits = { Tank } }
 	Waves[11] = { delay = 1500, units = { Vehicles, Infantry, Patrol, Patrol, Patrol, Infantry, LongRange, Tank, Boss, Infantry, Infantry, Patrol } }
@@ -144,6 +144,13 @@ SendWave = function()
 				SendWave()
 			end
 		else
+			if Map.Difficulty == "Endless mode" then
+				Wave = 0
+				IncreaseDifficulty()
+				SendWave()
+				return
+			end
+
 			Trigger.AfterDelay(DateTime.Minutes(1), SovietsRetreating)
 			Media.DisplayMessage("You almost survived the onslaught! No more waves incoming.")
 		end
@@ -155,6 +162,13 @@ SovietsRetreating = function()
 		if not a.IsDead and a.Owner == soviets then
 			a.Destroy()
 		end
+	end)
+end
+
+IncreaseDifficulty = function()
+	local additions = { Infantry, Patrol, Vehicles, Tank, LongRange, Boss, Swarm }
+	Utils.Do(Waves, function(wave)
+		wave.units[#wave.units + 1] = Utils.Random(additions)
 	end)
 end
 
