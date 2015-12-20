@@ -19,9 +19,13 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Reduces health points over time when the actor is placed on unsafe terrain.")]
 	class DamagedWithoutFoundationInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
-		[WeaponReference]
+		[WeaponReference, Desc("The weapon to use for causing damage.")]
 		public readonly string Weapon = "weathering";
+
+		[Desc("Terrain types on which no damage is caused.")]
 		public readonly HashSet<string> SafeTerrain = new HashSet<string> { "Concrete" };
+
+		[Desc("The percentage of health the actor should keep.")]
 		public readonly int DamageThreshold = 50;
 
 		public WeaponInfo WeaponInfo { get; private set; }
@@ -64,6 +68,8 @@ namespace OpenRA.Mods.D2k.Traits
 			var delta = health.HP - damageThreshold;
 			if (delta > 0)
 				health.InflictDamage(self, self.World.WorldActor, delta, null, false);
+
+			damageTicks = info.WeaponInfo.ReloadDelay;
 		}
 
 		public void Tick(Actor self)
