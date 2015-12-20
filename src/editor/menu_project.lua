@@ -82,6 +82,13 @@ function ProjectSetInterpreter(name)
   else
     DisplayOutputLn(("Can't find interpreter '%s'; using the default interpreter instead.")
       :format(name))
+    local id = (
+      -- interpreter is set and is (still) on the list of known interpreters
+      IDget("debug.interpreter."..(ide.config.interpreter or ide.config.default.interpreter)) or
+      -- otherwise use default interpreter
+      ID("debug.interpreter."..ide.config.default.interpreter)
+    )
+    selectInterpreter(id)
   end
 end
 
