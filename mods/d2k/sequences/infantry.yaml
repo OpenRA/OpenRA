@@ -53,7 +53,7 @@ light_inf:
 	die-crushed: DATA.R8
 		Frames: 386, 393, 400, 407, 414, 421, 428, 435
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4011
@@ -113,7 +113,7 @@ trooper:
 	die-crushed: DATA.R8
 		Frames: 638, 645, 652, 659, 666, 673, 680, 687
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4012
@@ -164,7 +164,7 @@ engineer:
 	die-crushed: DATA.R8
 		Frames: 1346, 1353, 1360, 1367, 1374, 1381, 1388, 1395
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4013
@@ -224,7 +224,7 @@ thumper:
 	die-crushed: DATA.R8
 		Frames: 1548, 1554, 1561, 1568, 1575, 1582, 1589, 1596
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4014
@@ -301,7 +301,7 @@ fremen:
 	die-crushed: DATA.R8
 		Frames: 874, 881, 888, 895, 902, 909, 916, 923
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4032
@@ -352,7 +352,7 @@ saboteur:
 	die-crushed: DATA.R8
 		Frames: 2329, 2336, 2343, 2350, 2357, 2364, 2371, 2378
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4034
@@ -413,7 +413,7 @@ sardaukar:
 	die-crushed: DATA.R8
 		Frames: 1110, 1117, 1124, 1131, 1138, 1145, 1152, 1159
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	icon: DATA.R8
 		Start: 4015
@@ -452,7 +452,7 @@ grenadier: # 2502 - 2749 in 1.06 DATA.R8
 	die-crushed: grenadier.shp
 		Start: 195
 		Length: 8
-		Tick: 800
+		Tick: 80
 		ZOffset: -511
 	prone-stand: grenadier.shp
 		Start: 104
