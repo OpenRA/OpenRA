@@ -680,7 +680,7 @@ Rules:
 			Prerequisites: ~disabled
 	GAP:
 		Buildable:
-			Prerequisites: dome, ~structures.allies, ~techlevel.medium
+			Prerequisites: ~disabled
 	MNLY.AT:
 		Buildable:
 			Prerequisites: ~disabled
