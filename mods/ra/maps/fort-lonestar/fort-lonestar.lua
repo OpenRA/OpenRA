@@ -193,12 +193,6 @@ WorldLoaded = function()
 		players[i] = player
 	end
 
-	Utils.Do(Snipers, function(a)
-		if a.Owner == soviets then
-			a.GrantUpgrade("unkillable")
-		end
-	end)
-
 	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
 
 	ParaProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })

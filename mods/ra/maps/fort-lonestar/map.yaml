@@ -526,7 +526,7 @@ Rules:
 		LuaScript:
 			Scripts: fort-lonestar.lua
 		ScriptUpgradesCache:
-			Upgrades: unkillable, invulnerability
+			Upgrades: invulnerability
 	FORTCRATE:
 		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:
@@ -672,9 +672,8 @@ Rules:
 		Buildable:
 			Prerequisites: ~disabled
 		MustBeDestroyed:
-		DamageMultiplier@UNKILLABLE:
-			UpgradeTypes: unkillable
-			Modifier: 0, 0
+		Targetable:
+			TargetTypes: Disguise
 		AutoTarget:
 			InitialStance: AttackAnything
 		RenderSprites:
