@@ -105,9 +105,7 @@ namespace OpenRA.Mods.Common.Graphics
 			public void Render(WorldRenderer wr)
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
-
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
@@ -122,21 +120,27 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void RenderDebugGeometry(WorldRenderer wr)
 			{
+				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
-				var groundZ = 0.5f * (pxOrigin.Y - wr.ScreenZPosition(voxel.pos, 0));
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
+				var iz = 1 / wr.Viewport.Zoom;
 
 				// Draw sprite rect
 				var offset = pxOrigin + renderProxy.Sprite.Offset - 0.5f * renderProxy.Sprite.Size;
-				Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + renderProxy.Sprite.Size, Color.Red);
+				Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + renderProxy.Sprite.Size, iz, Color.Red);
 
 				// Draw transformed shadow sprite rect
 				var c = Color.Purple;
 				var psb = renderProxy.ProjectedShadowBounds;
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[1], shadowOrigin + psb[3], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[3], shadowOrigin + psb[0], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[0], shadowOrigin + psb[2], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[2], shadowOrigin + psb[1], c);
+
+				Game.Renderer.WorldRgbaColorRenderer.DrawPolygon(new[]
+				{
+					shadowOrigin + psb[1],
+					shadowOrigin + psb[3],
+					shadowOrigin + psb[0],
+					shadowOrigin + psb[2]
+				}, iz, c);
 
 				// Draw voxel bounding box
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
@@ -153,15 +157,16 @@ namespace OpenRA.Mods.Common.Graphics
 					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
 					var pxPos = pxOrigin + new float2(sx, sy);
 					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
-					DrawBoundsBox(pxPos, screenTransform, bounds, Color.Yellow);
+					DrawBoundsBox(pxPos, screenTransform, bounds, iz, Color.Yellow);
 				}
 			}
 
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, Color c)
+			static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
+				var wcr = Game.Renderer.WorldRgbaColorRenderer;
 				var corners = new float2[8];
 				for (var i = 0; i < 8; i++)
 				{
@@ -170,20 +175,17 @@ namespace OpenRA.Mods.Common.Graphics
 					corners[i] = pxPos + new float2(screen[0], screen[1]);
 				}
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[1], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[3], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[2], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[0], c);
+				// Front face
+				wcr.DrawPolygon(new[] { corners[0], corners[1], corners[3], corners[2] }, width, c);
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[4], corners[5], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[5], corners[7], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[7], corners[6], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[6], corners[4], c);
+				// Back face
+				wcr.DrawPolygon(new[] { corners[4], corners[5], corners[7], corners[6] }, width, c);
 
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[4], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[5], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[6], c);
-				Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[7], c);
+				// Horizontal edges
+				wcr.DrawLine(corners[0], corners[4], width, c);
+				wcr.DrawLine(corners[1], corners[5], width, c);
+				wcr.DrawLine(corners[2], corners[6], width, c);
+				wcr.DrawLine(corners[3], corners[7], width, c);
 			}
 
 			public Rectangle ScreenBounds(WorldRenderer wr)

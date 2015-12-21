@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 				RangeCircleRenderable.DrawRangeCircle(wr, self.CenterPosition, healthInfo.Radius,
 					1, Color.Red, 0, Color.Red);
 
-			var wlr = Game.Renderer.WorldLineRenderer;
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			var iz = 1 / wr.Viewport.Zoom;
 
 			if (blockInfo != null)
 			{
@@ -60,9 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 				var height = new WVec(0, 0, blockInfo.Height.Length);
 				var ha = wr.ScreenPosition(self.CenterPosition);
 				var hb = wr.ScreenPosition(self.CenterPosition + height);
-				wlr.DrawLine(ha, hb, hc);
-				wr.DrawTargetMarker(hc, ha);
-				wr.DrawTargetMarker(hc, hb);
+				wcr.DrawLine(ha, hb, iz, hc);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
 			}
 
 			// No armaments to draw
@@ -85,8 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 					var o = wr.ScreenPosition(pos);
 					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
 					var b = wr.ScreenPosition(pos + db * 224 / db.Length);
-					wlr.DrawLine(o, a, c);
-					wlr.DrawLine(o, b, c);
+					wcr.DrawLine(o, a, iz, c);
+					wcr.DrawLine(o, b, iz, c);
 				}
 
 				return;
@@ -101,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
-					wlr.DrawLine(sm, sd, c);
-					wr.DrawTargetMarker(c, sm);
+					wcr.DrawLine(sm, sd, iz, c);
+					TargetLineRenderable.DrawTargetMarker(wr, c, sm);
 				}
 			}
 		}

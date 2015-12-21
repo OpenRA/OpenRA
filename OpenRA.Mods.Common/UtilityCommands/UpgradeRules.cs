@@ -2694,6 +2694,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Added width support for line particles
+				if (engineVersion < 20151220 && node.Key == "WeatherOverlay")
+				{
+					var useSquares = node.Value.Nodes.FirstOrDefault(n => n.Key == "UseSquares");
+					if (useSquares != null && !FieldLoader.GetValue<bool>("UseSquares", useSquares.Value.Value))
+						node.Value.Nodes.Add(new MiniYamlNode("ParticleSize", "1, 1"));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

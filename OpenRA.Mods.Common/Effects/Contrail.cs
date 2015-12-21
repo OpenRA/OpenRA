@@ -23,8 +23,11 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		[Desc("Measured in pixels.")]
+		[Desc("Length of the trail (in ticks).")]
 		public readonly int TrailLength = 25;
+
+		[Desc("Width of the trail.")]
+		public readonly WDist TrailWidth = new WDist(64);
 
 		[Desc("RGB color of the contrail.")]
 		public readonly Color Color = Color.White;
@@ -48,7 +51,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 
 			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
-			trail = new ContrailRenderable(self.World, color, info.TrailLength, 0, 0);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, 0);
 
 			body = self.Trait<BodyOrientation>();
 		}

@@ -204,26 +204,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 		}
 
-		public void DrawRollover(Actor unit)
-		{
-			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit, true, true).Render(this);
-		}
-
-		public void DrawTargetMarker(Color c, float2 location)
-		{
-			var tl = new float2(-1 / Viewport.Zoom, -1 / Viewport.Zoom);
-			var br = new float2(1 / Viewport.Zoom, 1 / Viewport.Zoom);
-			var bl = new float2(tl.X, br.Y);
-			var tr = new float2(br.X, tl.Y);
-
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(location + tl, location + tr, c);
-			wlr.DrawLine(location + tr, location + br, c);
-			wlr.DrawLine(location + br, location + bl, c);
-			wlr.DrawLine(location + bl, location + tl, c);
-		}
-
 		public void RefreshPalette()
 		{
 			palette.ApplyModifiers(World.WorldActor.TraitsImplementing<IPaletteModifier>());

@@ -22,10 +22,8 @@ namespace OpenRA
 	{
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
-		public LineRenderer WorldLineRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
 		public VoxelRenderer WorldVoxelRenderer { get; private set; }
-		public LineRenderer LineRenderer { get; private set; }
 		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
@@ -63,10 +61,8 @@ namespace OpenRA
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
-			WorldLineRenderer = new LineRenderer(this, Device.CreateShader("color"));
 			WorldRgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
 			WorldVoxelRenderer = new VoxelRenderer(this, Device.CreateShader("vxl"));
-			LineRenderer = new LineRenderer(this, Device.CreateShader("color"));
 			RgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
 			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
@@ -120,7 +116,6 @@ namespace OpenRA
 				lastResolution = Resolution;
 				RgbaSpriteRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
 				SpriteRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
-				LineRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
 				RgbaColorRenderer.SetViewportParams(Resolution, 1f, int2.Zero);
 			}
 
@@ -132,7 +127,6 @@ namespace OpenRA
 				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
-				WorldLineRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldRgbaColorRenderer.SetViewportParams(Resolution, zoom, scroll);
 			}
 		}

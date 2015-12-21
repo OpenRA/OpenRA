@@ -24,17 +24,19 @@ namespace OpenRA.Mods.Common.Graphics
 
 		// Store trail positions in a circular buffer
 		readonly WPos[] trail;
+		readonly WDist width;
 		int next;
 		int length;
 		int skip;
 
-		public ContrailRenderable(World world, Color color, int length, int skip, int zOffset)
-			: this(world, new WPos[length], 0, 0, skip, color, zOffset) { }
+		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
+			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }
 
-		ContrailRenderable(World world, WPos[] trail, int next, int length, int skip, Color color, int zOffset)
+		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset)
 		{
 			this.world = world;
 			this.trail = trail;
+			this.width = width;
 			this.next = next;
 			this.length = length;
 			this.skip = skip;
@@ -47,9 +49,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, zOffset); }
-		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), next, length, skip, color, newOffset); }
-		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), next, length, skip, color, zOffset); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, zOffset); }
+		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
+		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -59,9 +61,8 @@ namespace OpenRA.Mods.Common.Graphics
 			if (length - skip < 4)
 				return;
 
-			var wlr = Game.Renderer.WorldLineRenderer;
-			var oldWidth = wlr.LineWidth;
-			wlr.LineWidth = wr.Viewport.Zoom;
+			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
@@ -73,13 +74,11 @@ namespace OpenRA.Mods.Common.Graphics
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
 				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
-					wlr.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), curColor, nextColor);
+					wcr.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), screenWidth, curColor, nextColor);
 
 				curPos = nextPos;
 				curColor = nextColor;
 			}
-
-			wlr.LineWidth = oldWidth;
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
