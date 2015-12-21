@@ -2,7 +2,6 @@
 SovietEntryPoints = { Entry1, Entry2, Entry3, Entry4, Entry5, Entry6, Entry7, Entry8 }
 PatrolWaypoints = { Entry2, Entry4, Entry6, Entry8 }
 ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4 }
-OilDerricks = { OilDerrick1, OilDerrick2, OilDerrick3, OilDerrick4 }
 SpawnPoints = { Spawn1, Spawn2, Spawn3, Spawn4 }
 Snipers = { Sniper1, Sniper2, Sniper3, Sniper4, Sniper5, Sniper6, Sniper7, Sniper8, Sniper9, Sniper10, Sniper11, Sniper12 }
 
