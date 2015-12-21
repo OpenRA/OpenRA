@@ -29,16 +29,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
-		readonly Ruleset modRules;
+		readonly Ruleset mapRules;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		PlayerReference selectedOwner;
 
 		[ObjectCreator.UseCtor]
-		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer, Ruleset modRules)
+		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
-			this.modRules = modRules;
+			this.mapRules = world.Map.Rules;
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			panel.RemoveChildren();
 
-			var actors = modRules.Actors.Where(a => !a.Value.Name.Contains('^'))
+			var actors = mapRules.Actors.Where(a => !a.Value.Name.Contains('^'))
 				.Select(a => a.Value);
 
 			foreach (var a in actors)
