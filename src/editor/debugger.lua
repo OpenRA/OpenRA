@@ -179,7 +179,7 @@ local function updateStackSync()
         local value, comment = val[1], fixUTF8(trimToMaxLength(tostring(val[2])))
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
-                 simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
+                 (simpleType[type(value)] or not val[2]) and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, image.LOCAL)
         stackCtrl:SetItemValueIfExpandable(item, value)
       end
@@ -189,7 +189,7 @@ local function updateStackSync()
         local value, comment = val[1], fixUTF8(trimToMaxLength(tostring(val[2])))
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
-                 simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
+                 (simpleType[type(value)] or not val[2]) and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, image.UPVALUE)
         stackCtrl:SetItemValueIfExpandable(item, value)
       end
