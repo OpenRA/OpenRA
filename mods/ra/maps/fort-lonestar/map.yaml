@@ -27,6 +27,7 @@ Options:
 	FragileAlliances: False
 	StartingCash: 50
 	TechLevel: Unrestricted
+	StartingUnitsClass: none
 	ConfigurableStartingUnits: False
 	ShortGame: False
 
@@ -151,9 +152,6 @@ Actors:
 	Actor73: tc05
 		Location: 16,34
 		Owner: Neutral
-	Actor30: tent
-		Location: 36,26
-		Owner: Multi0
 	Actor84: brik
 		Location: 35,25
 		Owner: Neutral
@@ -373,15 +371,6 @@ Actors:
 	Actor88: brik
 		Location: 25,29
 		Owner: Neutral
-	Actor100: tent
-		Location: 27,26
-		Owner: Multi3
-	Actor99: tent
-		Location: 27,36
-		Owner: Multi2
-	Actor31: tent
-		Location: 36,36
-		Owner: Multi1
 	Sniper1: sniper.soviets
 		Location: 9,26
 		Owner: Soviets
@@ -431,16 +420,16 @@ Actors:
 		Location: 30,30
 		Owner: Multi3
 	Spawn1: mpspawn
-		Location: 36,28
+		Location: 36,26
 		Owner: Neutral
 	Spawn2: mpspawn
-		Location: 27,28
+		Location: 27,26
 		Owner: Neutral
 	Spawn3: mpspawn
-		Location: 27,38
+		Location: 27,36
 		Owner: Neutral
 	Spawn4: mpspawn
-		Location: 36,38
+		Location: 36,36
 		Owner: Neutral
 	Entry1: waypoint
 		Location: 8,8
@@ -500,8 +489,8 @@ Rules:
 			Maximum: 4
 			SpawnInterval: 1000
 			CrateActors: fortcrate
-		-SpawnMPUnits:
-		-MPStartLocations:
+		MPStartUnits@mcvonly:
+			BaseActor: tent
 		WeatherOverlay:
 			WindTick: 150, 550
 			UseSquares: false
