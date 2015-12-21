@@ -675,7 +675,7 @@ Rules:
 		Targetable:
 			TargetTypes: Disguise
 		AutoTarget:
-			InitialStance: AttackAnything
+			InitialStanceAI: AttackAnything
 		RenderSprites:
 			Image: SNIPER
 	SPY:
