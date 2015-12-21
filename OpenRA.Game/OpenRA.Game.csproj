@@ -252,6 +252,7 @@
     <Compile Include="GlobalChat.cs" />
     <Compile Include="Primitives\ObservableList.cs" />
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
+    <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
