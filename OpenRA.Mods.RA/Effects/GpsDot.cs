@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly GpsDotInfo info;
 		readonly Animation anim;
 
-		readonly Dictionary<Player, DotState> stateByPlayer = new Dictionary<Player, DotState>();
+		readonly PlayerDictionary<DotState> dotStates;
 		readonly Lazy<HiddenUnderFog> huf;
 		readonly Lazy<FrozenUnderFog> fuf;
 		readonly Lazy<Disguise> disguise;
@@ -70,13 +70,12 @@ namespace OpenRA.Mods.RA.Effects
 			cloak = Exts.Lazy(() => self.TraitOrDefault<Cloak>());
 
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
-
-			stateByPlayer = self.World.Players.ToDictionary(p => p, p => new DotState(p.PlayerActor.Trait<GpsWatcher>()));
+			dotStates = new PlayerDictionary<DotState>(self.World, player => new DotState(player.PlayerActor.Trait<GpsWatcher>()));
 		}
 
 		public bool IsDotVisible(Player toPlayer)
 		{
-			return stateByPlayer[toPlayer].IsTargetable;
+			return dotStates[toPlayer].IsTargetable;
 		}
 
 		bool IsTargetableBy(Player toPlayer, out bool shouldRenderIndicator)
@@ -122,11 +121,11 @@ namespace OpenRA.Mods.RA.Effects
 			if (!self.IsInWorld || self.IsDead)
 				return;
 
-			foreach (var player in self.World.Players)
+			for (var playerIndex = 0; playerIndex < dotStates.Count; playerIndex++)
 			{
-				var state = stateByPlayer[player];
+				var state = dotStates[playerIndex];
 				var shouldRender = false;
-				var targetable = (state.Gps.Granted || state.Gps.GrantedAllies) && IsTargetableBy(player, out shouldRender);
+				var targetable = (state.Gps.Granted || state.Gps.GrantedAllies) && IsTargetableBy(world.Players[playerIndex], out shouldRender);
 				state.IsTargetable = targetable;
 				state.ShouldRender = targetable && shouldRender;
 			}
@@ -134,7 +133,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (self.World.RenderPlayer == null || !stateByPlayer[self.World.RenderPlayer].ShouldRender || self.Disposed)
+			if (self.World.RenderPlayer == null || !dotStates[self.World.RenderPlayer].ShouldRender || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);
