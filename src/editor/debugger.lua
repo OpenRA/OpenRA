@@ -336,6 +336,9 @@ local function activateDocument(file, line, activatehow)
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
         editor:Refresh() -- needed for background markers that don't get refreshed (wx2.9.5)
 
+        -- expand fold if the activated line is in a folded fragment
+        if not editor:GetLineVisible(line) then editor:ToggleFold(editor:GetFoldParent(line)) end
+
         -- found and marked what we are looking for;
         -- don't need to activate with CHECKONLY (this assumes line is given)
         if activatehow == activate.CHECKONLY then return editor end
