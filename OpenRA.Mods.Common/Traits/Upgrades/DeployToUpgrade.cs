@@ -110,8 +110,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployToUpgrade", 5,
-				() => IsOnValidTerrain() ? info.DeployCursor : info.DeployBlockedCursor); }
+			get
+			{
+				yield return new DeployOrderTargeter("DeployToUpgrade", 5,
+					() => IsOnValidTerrain() ? info.DeployCursor : info.DeployBlockedCursor);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -194,17 +197,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!string.IsNullOrEmpty(info.DeploySound))
 				Game.Sound.Play(info.DeploySound, self.CenterPosition);
-
+			if (!string.IsNullOrEmpty(info.DeployAnimation))
+				body.Value.PlayCustomAnimation(self, info.DeployAnimation);
 			// Revoke upgrades that are used while undeployed.
 			if (!init)
 				OnDeployStarted();
 
 			// If there is no animation to play just grant the upgrades that are used while deployed.
 			// Alternatively, play the deploy animation and then grant the upgrades.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
-				OnDeployCompleted();
-			else
-				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
+			OnDeployCompleted();
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the upgrades.</summary>
@@ -217,16 +218,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!string.IsNullOrEmpty(info.UndeploySound))
 				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
-
+			if (!string.IsNullOrEmpty(info.DeployAnimation))
+				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation);
 			if (!init)
 				OnUndeployStarted();
 
 			// If there is no animation to play just grant the upgrades that are used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the upgrades.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
-				OnUndeployCompleted();
-			else
-				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
+			OnUndeployCompleted();
 		}
 
 		void OnDeployStarted()
