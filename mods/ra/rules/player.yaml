@@ -68,4 +68,5 @@ Player:
 	VeteranProductionIconOverlay:
 		Image: iconchevrons
 		Sequence: veteran
+	ResourceStorageWarning:
 

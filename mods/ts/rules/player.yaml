@@ -48,4 +48,5 @@ Player:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ResourceStorageWarning:
 

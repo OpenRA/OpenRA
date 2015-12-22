@@ -2764,6 +2764,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactored the low resources notification to a separate trait
+				if (engineVersion < 20151227 && node.Key == "Player")
+				{
+					var resourcesNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "PlayerResources");
+
+					if (resourcesNode != null)
+					{
+						var intervalNode = resourcesNode.Value.Nodes.FirstOrDefault(x => x.Key == "AdviceInterval");
+						var storageNode = new MiniYamlNode("ResourceStorageWarning", "");
+
+						if (intervalNode != null)
+						{
+							// The time value is now in seconds, not ticks. We
+							// divide by 25 ticks per second at Normal.
+							int oldInterval;
+							if (int.TryParse(intervalNode.Value.Value, out oldInterval))
+								storageNode.Value.Nodes.Add(new MiniYamlNode("AdviceInterval", (oldInterval / 25).ToString()));
+							resourcesNode.Value.Nodes.Remove(intervalNode);
+						}
+
+						node.Value.Nodes.Add(storageNode);
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
