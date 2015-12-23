@@ -24,7 +24,15 @@ namespace OpenRA
 	public enum PowerState { Normal, Low, Critical }
 	public enum WinState { Undefined, Won, Lost }
 
-	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
+	public interface IPlayerSummary
+	{
+		string GetPlayerName();
+		string GetInternalFactionName();
+		HSLColor GetColor();
+		bool IsNonCombatant();
+	}
+
+	public class Player : IPlayerSummary, IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
 		public readonly Actor PlayerActor;
 		public readonly HSLColor Color;
@@ -50,6 +58,11 @@ namespace OpenRA
 		public World World { get; private set; }
 
 		readonly IFogVisibilityModifier[] fogVisibilities;
+
+		public string GetPlayerName() { return PlayerName; }
+		public string GetInternalFactionName() { return Faction.InternalName; }
+		public HSLColor GetColor() { return Color; }
+		public bool IsNonCombatant() { return NonCombatant; }
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
 		{

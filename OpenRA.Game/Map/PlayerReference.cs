@@ -9,10 +9,11 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
-	public class PlayerReference
+	public class PlayerReference : IPlayerSummary
 	{
 		public string Name;
 		public string Palette;
@@ -44,5 +45,10 @@ namespace OpenRA
 		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }
 
 		public override string ToString() { return Name; }
+
+		public string GetPlayerName() { return Name; }
+		public string GetInternalFactionName() { return Faction; }
+		public HSLColor GetColor() { return Color; }
+		public bool IsNonCombatant() { return NonCombatant; }
 	}
 }

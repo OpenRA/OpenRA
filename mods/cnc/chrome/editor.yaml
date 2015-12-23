@@ -208,7 +208,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: SIMPLE_TOOLTIP
+			TooltipTemplate: WORLD_TOOLTIP
 			Children:
 				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
 					Visible: false
