@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets
 							lastX = x;
 							lastPoint = point;
 							return origin + new float2(x * xStep, -point * scale);
-						}).ToArray(), 1, color);
+						}), 1, color);
 
 					if (lastPoint != 0f)
 						tiny.DrawText(GetValueFormat().F(lastPoint), origin + new float2(lastX * xStep, -lastPoint * scale - 2), color);
