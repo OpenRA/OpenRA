@@ -33,14 +33,10 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool Any(LuaValue[] collection, LuaFunction func)
 		{
 			foreach (var c in collection)
-			{
 				using (var ret = func.Call(c))
-				{
-					var result = ret.FirstOrDefault();
+				using (var result = ret.FirstOrDefault())
 					if (result != null && result.ToBoolean())
 						return true;
-				}
-			}
 
 			return false;
 		}
@@ -49,14 +45,10 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool All(LuaValue[] collection, LuaFunction func)
 		{
 			foreach (var c in collection)
-			{
 				using (var ret = func.Call(c))
-				{
-					var result = ret.FirstOrDefault();
+				using (var result = ret.FirstOrDefault())
 					if (result == null || !result.ToBoolean())
 						return false;
-				}
-			}
 
 			return true;
 		}
@@ -64,7 +56,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the first n values from a collection.")]
 		public LuaValue[] Take(int n, LuaValue[] source)
 		{
-			return source.Take(n).ToArray();
+			return source.Take(n).Select(v => v.CopyReference()).ToArray();
 		}
 
 		[Desc("Skips over the first numElements members of a table and return the rest.")]
@@ -73,7 +65,8 @@ namespace OpenRA.Mods.Common.Scripting
 			var t = Context.CreateTable();
 
 			for (var i = numElements; i <= table.Count; i++)
-				t.Add(t.Count + 1, table[i]);
+				using (LuaValue key = t.Count + 1, value = table[i])
+					t.Add(key, value);
 
 			return t;
 		}
@@ -81,7 +74,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns a random value from a collection.")]
 		public LuaValue Random(LuaValue[] collection)
 		{
-			return collection.Random(Context.World.SharedRandom);
+			return collection.Random(Context.World.SharedRandom).CopyReference();
 		}
 
 		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]

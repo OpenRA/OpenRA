@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -34,34 +33,14 @@ namespace OpenRA.Mods.Common.Scripting
 		public Actor[] ActorsInCircle(WPos location, WDist radius, LuaFunction filter = null)
 		{
 			var actors = Context.World.FindActorsInCircle(location, radius);
-
-			if (filter != null)
-			{
-				actors = actors.Where(a =>
-				{
-					using (var f = filter.Call(a.ToLuaValue(Context)))
-						return f.First().ToBoolean();
-				});
-			}
-
-			return actors.ToArray();
+			return FilteredObjects(actors, filter).ToArray();
 		}
 
 		[Desc("Returns a table of all actors within the requested rectangle, filtered using the specified function.")]
 		public Actor[] ActorsInBox(WPos topLeft, WPos bottomRight, LuaFunction filter = null)
 		{
 			var actors = Context.World.ActorMap.ActorsInBox(topLeft, bottomRight);
-
-			if (filter != null)
-			{
-				actors = actors.Where(a =>
-				{
-					using (var f = filter.Call(a.ToLuaValue(Context)))
-						return f.First().ToBoolean();
-				});
-			}
-
-			return actors.ToArray();
+			return FilteredObjects(actors, filter).ToArray();
 		}
 
 		[Desc("Returns the location of the top-left corner of the map (assuming zero terrain height).")]

@@ -29,26 +29,30 @@ namespace OpenRA.Mods.Common.Scripting
 			// Convert table entries into ActorInits
 			foreach (var kv in initTable)
 			{
-				// Find the requested type
-				var typeName = kv.Key.ToString();
-				var initType = Game.ModData.ObjectCreator.FindType(typeName + "Init");
-				if (initType == null)
-					throw new LuaException("Unknown initializer type '{0}'".F(typeName));
+				using (kv.Key)
+				using (kv.Value)
+				{
+					// Find the requested type
+					var typeName = kv.Key.ToString();
+					var initType = Game.ModData.ObjectCreator.FindType(typeName + "Init");
+					if (initType == null)
+						throw new LuaException("Unknown initializer type '{0}'".F(typeName));
 
-				// Cast it up to an IActorInit<T>
-				var genericType = initType.GetInterfaces()
-					.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
-				var innerType = genericType.GetGenericArguments().First();
-				var valueType = innerType.IsEnum ? typeof(int) : innerType;
+					// Cast it up to an IActorInit<T>
+					var genericType = initType.GetInterfaces()
+						.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
+					var innerType = genericType.GetGenericArguments().First();
+					var valueType = innerType.IsEnum ? typeof(int) : innerType;
 
-				// Try and coerce the table value to the required type
-				object value;
-				if (!kv.Value.TryGetClrValue(valueType, out value))
-					throw new LuaException("Invalid data type for '{0}' (expected '{1}')".F(typeName, valueType.Name));
+					// Try and coerce the table value to the required type
+					object value;
+					if (!kv.Value.TryGetClrValue(valueType, out value))
+						throw new LuaException("Invalid data type for '{0}' (expected '{1}')".F(typeName, valueType.Name));
 
-				// Construct the ActorInit. Phew!
-				var test = initType.GetConstructor(new[] { innerType }).Invoke(new[] { value });
-				initDict.Add(test);
+					// Construct the ActorInit. Phew!
+					var test = initType.GetConstructor(new[] { innerType }).Invoke(new[] { value });
+					initDict.Add(test);
+				}
 			}
 
 			// The actor must be added to the world at the end of the tick
