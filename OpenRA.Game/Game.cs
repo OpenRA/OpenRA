@@ -483,7 +483,11 @@ namespace OpenRA
 					Sound.Tick();
 					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
 
-					if (world != null)
+					if (world == null)
+						return;
+
+					// Don't tick when the shellmap is disabled
+					if (world.ShouldTick)
 					{
 						var isNetTick = LocalTick % NetTickScale == 0;
 
@@ -506,12 +510,13 @@ namespace OpenRA
 
 							PerfHistory.Tick();
 						}
-						else
-							if (orderManager.NetFrameNumber == 0)
-								orderManager.LastTickTime = RunTime;
+						else if (orderManager.NetFrameNumber == 0)
+							orderManager.LastTickTime = RunTime;
 
 						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
 					}
+					else
+						PerfHistory.Tick();
 				}
 			}
 		}
