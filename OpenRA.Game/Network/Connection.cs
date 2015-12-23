@@ -14,7 +14,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using OpenRA.Server;
-using OpenRA.Support;
 
 namespace OpenRA.Network
 {
@@ -211,12 +210,6 @@ namespace OpenRA.Network
 			if (disposing)
 				if (socket != null)
 					socket.Client.Close();
-
-			using (new PerfSample("Thread.Join"))
-			{
-				if (!t.Join(1000))
-					return;
-			}
 
 			base.Dispose(disposing);
 		}
