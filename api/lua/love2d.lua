@@ -5885,6 +5885,7 @@ local function convert(l)
     return r
   end
   local function params(t) -- merges parameters and return results
+    if not t then return end
     local r = {}
     for _,v in ipairs(t) do
       table.insert(r, v.name .. ': ' .. v.type)
@@ -5906,7 +5907,7 @@ local function convert(l)
 
   for n,v in ipairs(l.childs) do
     if v.functions and #v.functions > 1 and #v.functions[1] == 0 then
-      io.stderr:write("alternative signature ignored for "..v.name..".\n")
+      io.stderr:write("Alternative signature ignored for "..v.name..".\n")
       table.remove(v.functions, 1)
     end
     v.childs = merge(v.types, v.functions, v.constants, v.enums)
@@ -5915,21 +5916,24 @@ local function convert(l)
       v.name = nil
     end
     if #v.childs > 0 and v.childs[1] then
-      if v.childs[1].returns then
-        v.returns = params(v.childs[1].returns)
-      end
-      if v.childs[1].arguments then
-        v.args = params(v.childs[1].arguments)
-      end
+      if v.childs[1].returns then v.returns = params(v.childs[1].returns) end
+      if v.childs[1].arguments then v.args = params(v.childs[1].arguments) end
     end
-    local nochildren = #v.childs == 0 or #v.childs == 1 and #v.childs[1] == 0
-      or v.returns or v.args
-    v.type = nochildren and (v.functions and "function" or "value")
+    -- some nodes have first chils as empty and the data is in the second one (Mouse.setCursor)
+    if v.variants and #v.variants > 0 then
+      v.returns = params(v.variants[1] and v.variants[1].returns or v.variants[2] and v.variants[2].returns)
+    end
+    if v.variants and #v.variants > 0 then
+      v.args = params(v.variants[1] and v.variants[1].arguments or v.variants[2] and v.variants[2].arguments)
+    end
+    local nochildren = #v.childs == 0 or v.returns or v.args
+    v.type = nochildren and ((v.returns or v.args or v.variants) and "function" or "value")
       or v.types and "class"
       or v.constants and "class"
       or v.functions and "lib"
       or "function"
     if v.constants then v.description = "class constants" end
+    v.variants = nil
     v.types = nil
     v.functions = nil
     v.constants = nil
