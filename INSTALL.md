@@ -25,7 +25,8 @@ Linux
 
 Use `make dependencies` to map the native libraries to your system, fetch the remaining CLI dependencies using [NuGet](http://www.nuget.org) and place them at the appropriate places.
 
-To compile OpenRA, run `make all` from the command line.
+To checkout stable (for online play) `git show-ref` and then `git checkout 'stable-ref'`
+To compile OpenRA, run `make version && make all` from the command line.
 
 Run with either `launch-game.sh` or `mono --debug OpenRA.Game.exe`.
 
