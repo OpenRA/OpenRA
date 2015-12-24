@@ -188,7 +188,7 @@
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
     <Compile Include="VoiceExts.cs" />
-    <Compile Include="Network\ReplayRecorderConnection.cs" />
+    <Compile Include="Network\ReplayRecorder.cs" />
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Graphics\Renderable.cs" />

@@ -44,6 +44,7 @@ namespace OpenRA.Network
 		}
 
 		protected List<ReceivedPacket> receivedPackets = new List<ReceivedPacket>();
+		public ReplayRecorder Recorder { get; private set; }
 
 		public virtual int LocalClientId
 		{
@@ -99,10 +100,26 @@ namespace OpenRA.Network
 			}
 
 			foreach (var p in packets)
+			{
 				packetFn(p.FromClient, p.Data);
+				if (Recorder != null)
+					Recorder.Receive(p.FromClient, p.Data);
+			}
 		}
 
-		protected virtual void Dispose(bool disposing) { }
+		public void StartRecording(Func<string> chooseFilename)
+		{
+			// If we have a previous recording then save/dispose it and start a new one.
+			if (Recorder != null)
+				Recorder.Dispose();
+			Recorder = new ReplayRecorder(chooseFilename);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing && Recorder != null)
+				Recorder.Dispose();
+		}
 
 		public void Dispose()
 		{
