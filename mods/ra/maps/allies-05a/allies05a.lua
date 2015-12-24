@@ -213,6 +213,10 @@ SendSpy = function()
 		SpyCameraA = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera1.Location })
 		SpyCameraB = Actor.Create("camera", true, { Owner = greece, Location = SpyCamera2.Location })
 	end
+
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		Media.DisplayMessage("Commander! You have to disguise me in order to get through the enemy patrols.", "Spy")
+	end)
 end
 
 ActivatePatrols = function()
