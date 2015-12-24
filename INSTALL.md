@@ -27,7 +27,7 @@ Use `make dependencies` to map the native libraries to your system, fetch the re
 
 To checkout the latest stable for online play run run `git checkout master`
 
-To compile OpenRA, run `make version && make` from the command line.
+To compile OpenRA, run `make version && make all` from the command line.
 
 Run with either `launch-game.sh` or `mono --debug OpenRA.Game.exe`.
 
