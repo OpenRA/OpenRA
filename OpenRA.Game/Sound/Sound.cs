@@ -9,14 +9,19 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 
 namespace OpenRA
 {
+	public interface ISoundLoader
+	{
+		bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate);
+	}
+
 	public sealed class Sound : IDisposable
 	{
 		readonly ISoundEngine soundEngine;
@@ -51,22 +56,21 @@ namespace OpenRA
 				return null;
 			}
 
-			if (filename.ToLowerInvariant().EndsWith("wav"))
-				using (var s = Game.ModData.ModFiles.Open(filename))
-					return LoadWave(new WavLoader(s));
+			using (var stream = Game.ModData.ModFiles.Open(filename))
+			{
+				byte[] rawData;
+				int channels;
+				int sampleBits;
+				int sampleRate;
+				foreach (var loader in Game.ModData.SoundLoaders)
+				{
+					stream.Position = 0;
+					if (loader.TryParseSound(stream, filename, out rawData, out channels, out sampleBits, out sampleRate))
+						return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
+				}
 
-			using (var s = Game.ModData.ModFiles.Open(filename))
-				return LoadSoundRaw(AudLoader.LoadSound(s), 1, 16, 22050);
-		}
-
-		ISoundSource LoadWave(WavLoader wave)
-		{
-			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
-		}
-
-		ISoundSource LoadSoundRaw(byte[] rawData, int channels, int sampleBits, int sampleRate)
-		{
-			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
+				throw new InvalidDataException(filename + " is not a valid sound file!");
+			}
 		}
 
 		public void Initialize()
@@ -121,7 +125,7 @@ namespace OpenRA
 
 		public void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{
-			rawSource = LoadSoundRaw(raw, channels, sampleBits, sampleRate);
+			rawSource = soundEngine.AddSoundSourceFromMemory(raw, channels, sampleBits, sampleRate);
 			video = soundEngine.Play2D(rawSource, false, true, WPos.Zero, InternalSoundVolume, false);
 		}
 

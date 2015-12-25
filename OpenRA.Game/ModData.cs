@@ -25,6 +25,7 @@ namespace OpenRA
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
+		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly RulesetCache RulesetCache;
@@ -60,17 +61,8 @@ namespace OpenRA
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
-			var spriteLoaders = new List<ISpriteLoader>();
-			foreach (var format in Manifest.SpriteFormats)
-			{
-				var loader = ObjectCreator.FindType(format + "Loader");
-				if (loader == null || !loader.GetInterfaces().Contains(typeof(ISpriteLoader)))
-					throw new InvalidOperationException("Unable to find a sprite loader for type '{0}'.".F(format));
-
-				spriteLoaders.Add((ISpriteLoader)ObjectCreator.CreateBasic(loader));
-			}
-
-			SpriteLoaders = spriteLoaders.ToArray();
+			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
+			SpriteLoaders = GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
@@ -111,6 +103,21 @@ namespace OpenRA
 			VoxelLoader = new VoxelLoader();
 
 			CursorProvider = new CursorProvider(this);
+		}
+
+		TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
+		{
+			var loaders = new List<TLoader>();
+			foreach (var format in formats)
+			{
+				var loader = ObjectCreator.FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
+					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
+
+				loaders.Add((TLoader)ObjectCreator.CreateBasic(loader));
+			}
+
+			return loaders.ToArray();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }

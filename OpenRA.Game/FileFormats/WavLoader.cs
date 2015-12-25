@@ -13,48 +13,53 @@ using System.IO;
 
 namespace OpenRA.FileFormats
 {
-	public class WavLoader
+	public class WavLoader : ISoundLoader
 	{
-		public readonly int FileSize;
-		public readonly string Format;
+		public int FileSize;
+		public string Format;
 
-		public readonly int FmtChunkSize;
-		public readonly int AudioFormat;
-		public readonly int Channels;
-		public readonly int SampleRate;
-		public readonly int ByteRate;
-		public readonly int BlockAlign;
-		public readonly int BitsPerSample;
+		public int FmtChunkSize;
+		public int AudioFormat;
+		public int Channels;
+		public int SampleRate;
+		public int ByteRate;
+		public int BlockAlign;
+		public int BitsPerSample;
 
-		public readonly int UncompressedSize;
-		public readonly int DataSize;
-		public readonly byte[] RawOutput;
+		public int UncompressedSize;
+		public int DataSize;
+		public byte[] RawOutput;
 
 		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
 
-		public WavLoader(Stream s)
+		bool LoadSound(Stream s)
 		{
+			var type = s.ReadASCII(4);
+			if (type != "RIFF")
+				return false;
+
+			FileSize = s.ReadInt32();
+			Format = s.ReadASCII(4);
+			if (Format != "WAVE")
+				return false;
+
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
 					s.ReadByte(); // Alignment
 
-				var type = s.ReadASCII(4);
+				type = s.ReadASCII(4);
 				switch (type)
 				{
-					case "RIFF":
-						FileSize = s.ReadInt32();
-						Format = s.ReadASCII(4);
-						if (Format != "WAVE")
-							throw new NotSupportedException("Not a canonical WAVE file.");
-						break;
 					case "fmt ":
 						FmtChunkSize = s.ReadInt32();
 						AudioFormat = s.ReadInt16();
 						Type = (WaveType)AudioFormat;
+
 						if (Type != WaveType.Pcm && Type != WaveType.ImaAdpcm)
 							throw new NotSupportedException("Compression type is not supported.");
+
 						Channels = s.ReadInt16();
 						SampleRate = s.ReadInt32();
 						ByteRate = s.ReadInt32();
@@ -91,6 +96,8 @@ namespace OpenRA.FileFormats
 				RawOutput = DecodeImaAdpcmData();
 				BitsPerSample = 16;
 			}
+
+			return true;
 		}
 
 		public static float WaveLength(Stream s)
@@ -175,6 +182,36 @@ namespace OpenRA.FileFormats
 			}
 
 			return output;
+		}
+
+		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels,
+			out int sampleBits, out int sampleRate)
+		{
+			rawData = null;
+			channels = sampleBits = sampleRate = 0;
+
+			try
+			{
+				if (!LoadSound(stream))
+					return false;
+			}
+			catch (Exception e)
+			{
+				// LoadSound() will check if the stream is in a format that this parser supports.
+				// If not, it will simply return false so we know we can't use it. If it is, it will start
+				// parsing the data without any further failsafes, which means that it will crash on corrupted files
+				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
+				Log.Write("debug", "Failed to parse WAV file {0}. Error message:".F(fileName));
+				Log.Write("debug", e.ToString());
+				return false;
+			}
+
+			rawData = RawOutput;
+			channels = Channels;
+			sampleBits = BitsPerSample;
+			sampleRate = SampleRate;
+
+			return true;
 		}
 	}
 }

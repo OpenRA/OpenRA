@@ -36,16 +36,18 @@ namespace OpenRA.FileFormats
 			Chunk c;
 			c.CompressedSize = s.ReadUInt16();
 			c.OutputSize = s.ReadUInt16();
+
 			if (s.ReadUInt32() != 0xdeaf)
 				throw new InvalidDataException("Chunk header is bogus");
 			return c;
 		}
 	}
 
-	public static class AudLoader
+	public class AudLoader : ISoundLoader
 	{
-		static int[] indexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
-		static int[] stepTable =
+		static readonly int ExpectedSampleRate = 22050;
+		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
+		static readonly int[] StepTable =
 		{
 			7, 8, 9, 10, 11, 12, 13, 14, 16,
 			17, 19, 21, 23, 25, 28, 31, 34, 37,
@@ -64,14 +66,14 @@ namespace OpenRA.FileFormats
 			var sb = (b & 8) != 0;
 			b &= 7;
 
-			var delta = (stepTable[index] * b) / 4 + stepTable[index] / 8;
+			var delta = (StepTable[index] * b) / 4 + StepTable[index] / 8;
 			if (sb) delta = -delta;
 
 			current += delta;
 			if (current > short.MaxValue) current = short.MaxValue;
 			if (current < short.MinValue) current = short.MinValue;
 
-			index += indexAdjust[b];
+			index += IndexAdjust[b];
 			if (index < 0) index = 0;
 			if (index > 88) index = 88;
 
@@ -117,13 +119,24 @@ namespace OpenRA.FileFormats
 			return samples / sampleRate;
 		}
 
-		public static byte[] LoadSound(Stream s)
+		public static bool LoadSound(Stream s, out byte[] rawData)
 		{
-			/*var sampleRate =*/ s.ReadUInt16();
+			rawData = null;
+
+			var sampleRate = s.ReadUInt16();
 			var dataSize = s.ReadInt32();
 			var outputSize = s.ReadInt32();
-			/*var flags = (SoundFlags)*/ s.ReadByte();
-			/*var format = (SoundFormat)*/ s.ReadByte();
+			var readFlag = s.ReadByte();
+			var readFormat = s.ReadByte();
+
+			if (sampleRate != ExpectedSampleRate)
+				return false;
+
+			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
+				return false;
+
+			if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
+				return false;
 
 			var output = new byte[outputSize];
 			var offset = 0;
@@ -153,7 +166,37 @@ namespace OpenRA.FileFormats
 				dataSize -= 8 + chunk.CompressedSize;
 			}
 
-			return output;
+			rawData = output;
+			return true;
+		}
+
+		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits,
+			out int sampleRate)
+		{
+			channels = sampleBits = sampleRate = 0;
+
+			try
+			{
+				if (!LoadSound(stream, out rawData))
+					return false;
+			}
+			catch (Exception e)
+			{
+				// LoadSound() will check if the stream is in a format that this parser supports.
+				// If not, it will simply return false so we know we can't use it. If it is, it will start
+				// parsing the data without any further failsafes, which means that it will crash on corrupted files
+				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
+				Log.Write("debug", "Failed to parse AUD file {0}. Error message:".F(fileName));
+				Log.Write("debug", e.ToString());
+				rawData = null;
+				return false;
+			}
+
+			channels = 1;
+			sampleBits = 16;
+			sampleRate = ExpectedSampleRate;
+
+			return true;
 		}
 	}
 }

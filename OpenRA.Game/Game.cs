@@ -293,9 +293,10 @@ namespace OpenRA
 			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
-			Sound.Initialize();
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
+
+			Sound.Initialize();
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();

@@ -214,6 +214,8 @@ MapGrid:
 
 SupportsMapsFrom: cnc
 
+SoundFormats: Aud, Wav
+
 SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
