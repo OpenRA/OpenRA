@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace OpenRA.Traits
@@ -43,14 +44,22 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors)
+		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.Bounds, selectionPixel));
 		}
 
-		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors)
+		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => a.Info.SelectionPriority());
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.Bounds, selectionPixel));
+		}
+
+		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel)
+		{
+			var centerPixel = new int2(bounds.X, bounds.Y);
+			var pixelDistance = (centerPixel - selectionPixel).Length;
+
+			return ((long)-pixelDistance << 32) + info.SelectionPriority();
 		}
 
 		static readonly Actor[] NoActors = { };

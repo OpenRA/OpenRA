@@ -62,12 +62,12 @@ namespace OpenRA.Mods.Common.Orders
 			buildingInfluence = producer.World.WorldActor.Trait<BuildingInfluence>();
 		}
 
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
-			var ret = InnerOrder(world, xy, mi).ToArray();
+			var ret = InnerOrder(world, cell, mi).ToArray();
 
 			// If there was a successful placement order
 			if (ret.Any(o => o.OrderString == "PlaceBuilding"
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Orders
 			return ret;
 		}
 
-		IEnumerable<Order> InnerOrder(World world, CPos xy, MouseInput mi)
+		IEnumerable<Order> InnerOrder(World world, CPos cell, MouseInput mi)
 		{
 			if (world.Paused)
 				yield break;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
-				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
+				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
 
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Orders
 			}
 		}
 
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }
+		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{

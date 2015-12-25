@@ -17,31 +17,31 @@ namespace OpenRA.Orders
 {
 	public class UnitOrderGenerator : IOrderGenerator
 	{
-		static Target TargetForInput(World world, CPos xy, MouseInput mi)
+		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAt(mi)
 				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
-				.WithHighestSelectionPriority();
+				.WithHighestSelectionPriority(worldPixel);
 
 			if (actor != null)
 				return Target.FromActor(actor);
 
 			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
 				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
-				.WithHighestSelectionPriority();
+				.WithHighestSelectionPriority(worldPixel);
 
 			if (frozen != null)
 				return Target.FromFrozenActor(frozen);
 
-			return Target.FromCell(world, xy);
+			return Target.FromCell(world, cell);
 		}
 
-		public virtual IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			var target = TargetForInput(world, xy, mi);
-			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
+			var target = TargetForInput(world, cell, worldPixel, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
 				.Where(o => o != null)
 				.ToList();
 
@@ -62,18 +62,18 @@ namespace OpenRA.Orders
 		public virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public virtual IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
 
-		public virtual string GetCursor(World world, CPos xy, MouseInput mi)
+		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var useSelect = false;
-			var target = TargetForInput(world, xy, mi);
-			var actorsAt = world.ActorMap.GetActorsAt(xy).ToList();
+			var target = TargetForInput(world, cell, worldPixel, mi);
+			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
 			if (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
 					(mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
 				useSelect = true;
 
 			var ordersWithCursor = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, xy, mi))
+				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
 				.Where(o => o != null && o.Cursor != null);
 
 			var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
@@ -84,14 +84,14 @@ namespace OpenRA.Orders
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
 		public static bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
-			var actor = world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority();
+			var actor = world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority(xy);
 			if (actor == null)
 				return true;
 
 			var target = Target.FromActor(actor);
 			var cell = world.Map.CellContaining(target.CenterPosition);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var underCursor = world.Selection.Actors.WithHighestSelectionPriority();
+			var underCursor = world.Selection.Actors.WithHighestSelectionPriority(xy);
 
 			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null && o.Order.OverrideSelection)

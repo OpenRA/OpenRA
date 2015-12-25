@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Traits
 			this.self = self;
 		}
 
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 			{
@@ -159,11 +159,11 @@ namespace OpenRA.Mods.RA.Traits
 				yield break;
 			}
 
-			if (self.IsInWorld && self.Location != xy
-				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(xy))
+			if (self.IsInWorld && self.Location != cell
+				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = xy };
+				yield return new Order("PortableChronoTeleport", self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = cell };
 			}
 		}
 
@@ -194,10 +194,10 @@ namespace OpenRA.Mods.RA.Traits
 				Color.FromArgb(96, Color.Black));
 		}
 
-		public string GetCursor(World world, CPos xy, MouseInput mi)
+		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (self.IsInWorld && self.Location != xy
-				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(xy))
+			if (self.IsInWorld && self.Location != cell
+				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
 				return "chrono-target";
 			else
 				return "move-blocked";
