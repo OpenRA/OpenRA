@@ -215,6 +215,7 @@ function ReLoadFile(filePath, editor, ...)
         end
       end
     end
+    PackageEventHandle("onEditorMarkerUpdate", editor)
   end
 
   return editor

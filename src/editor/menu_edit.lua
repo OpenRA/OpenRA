@@ -370,12 +370,13 @@ local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER
 local function bookmarkToggle()
   local editor = GetEditor()
   local line = editor:GetCurrentLine()
-  local markers = editor:MarkerGet(line)
-  if bit.band(markers, BOOKMARK_MARKER_VALUE) > 0 then
+  local isset = bit.band(editor:MarkerGet(line), BOOKMARK_MARKER_VALUE) > 0
+  if isset then
     editor:MarkerDelete(line, BOOKMARK_MARKER)
   else
     editor:MarkerAdd(line, BOOKMARK_MARKER)
   end
+  PackageEventHandle("onEditorMarkerUpdate", editor, BOOKMARK_MARKER, line, not isset)
 end
 
 local function bookmarkNext()
