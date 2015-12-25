@@ -208,14 +208,6 @@ namespace OpenRA
 			Log.AddChannel("geoip", "geoip.log");
 			Log.AddChannel("irc", "irc.log");
 
-			if (Settings.Server.DiscoverNatDevices)
-				UPnP.TryNatDiscovery();
-			else
-			{
-				Settings.Server.NatDeviceAvailable = false;
-				Settings.Server.AllowPortForward = false;
-			}
-
 			GeoIP.Initialize();
 
 			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
@@ -239,6 +231,8 @@ namespace OpenRA
 
 			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
 
+			UPnP.TryNatDiscovery().Wait();
+
 			GlobalChat = new GlobalChat();
 
 			Console.WriteLine("Available mods:");
@@ -246,9 +240,6 @@ namespace OpenRA
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
-
-			if (Settings.Server.DiscoverNatDevices)
-				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
 		public static bool IsModInstalled(string modId)

@@ -88,11 +88,11 @@ if [ ! -f nunit-console.exe ]; then
 	rm -rf NUnit.Runners
 fi
 
-if [ ! -f Mono.Nat.dll ]; then
-	echo "Fetching Mono.Nat from NuGet"
-	get Mono.Nat 1.2.21
-	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
-	rm -rf Mono.Nat
+if [ ! -f Open.Nat.dll ]; then
+	echo "Fetching Open.Nat from NuGet"
+	get Open.Nat 2.0.14
+	cp ./Open.NAT/lib/net45/Open.Nat.dll .
+	rm -rf Open.Nat
 fi
 
 if [ ! -f FuzzyLogicLibrary.dll ]; then

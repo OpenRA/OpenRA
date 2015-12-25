@@ -63,12 +63,6 @@
       <HintPath>..\thirdparty\download\SharpFont.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Nat">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-      <Package>mono.nat</Package>
-      <HintPath>..\thirdparty\download\Mono.Nat.dll</HintPath>
-    </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
@@ -88,6 +82,9 @@
     <Reference Include="SmarIrc4net">
       <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Open.Nat">
+      <HintPath>..\thirdparty\download\Open.Nat.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

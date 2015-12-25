@@ -76,12 +76,12 @@ if (!(Test-Path "windows/SDL2.dll"))
 	rmdir sdl2.redist -Recurse
 }
 
-if (!(Test-Path "Mono.Nat.dll"))
+if (!(Test-Path "Open.Nat.dll"))
 {
-	echo "Fetching Mono.Nat from NuGet."
-	./nuget.exe install Mono.Nat -Version 1.2.21 -ExcludeVersion
-	cp Mono.Nat/lib/net40/Mono.Nat.dll .
-	rmdir Mono.Nat -Recurse
+	echo "Fetching Open.Nat from NuGet."
+	./nuget.exe install Open.Nat -Version 2.0.14 -ExcludeVersion
+	cp Open.NAT/lib/net45/Open.Nat.dll .
+	rmdir Open.Nat -Recurse
 }
 
 if (!(Test-Path "windows/lua51.dll"))
