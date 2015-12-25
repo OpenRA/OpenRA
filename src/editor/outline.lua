@@ -257,7 +257,7 @@ local function indexFromQueue()
   return
 end
 
-local function outlineCreateOutlineWindow()
+local function createOutlineWindow()
   local REFRESH, REINDEX = 1, 2
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
@@ -304,8 +304,6 @@ local function outlineCreateOutlineWindow()
   end
 
   local function activateByPosition(event)
-    -- only toggle if this is a folder and the click is on the item line
-    -- (exclude the label as it's used for renaming and dragging)
     local mask = (wx.wxTREE_HITTEST_ONITEMINDENT + wx.wxTREE_HITTEST_ONITEMLABEL
       + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
     local item_id, flags = ctrl:HitTest(event:GetPosition())
@@ -377,7 +375,7 @@ local function eachNode(eachFunc, root, recursive)
   end
 end
 
-outlineCreateOutlineWindow()
+createOutlineWindow()
 
 local pathsep = GetPathSeparator()
 local function isInSubDir(name, path)
