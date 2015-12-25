@@ -2115,6 +2115,9 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 		AnnounceOnSeen:
+	^TechBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -2160,6 +2163,8 @@ Rules:
 			CargoType: Demitri
 		RenderSprites:
 			Image: DELPHI
+		Voiced:
+			VoiceSet: DemitriVoice
 	TRAN:
 		RevealsShroud:
 			Range: 0c0
@@ -2406,6 +2411,22 @@ Weapons:
 			ValidImpactTypes: Water
 
 Voices:
+	DemitriVoice:
+		Variants:
+			allies: .r01,.r03
+			england: .r01,.r03
+			france: .r01,.r03
+			germany: .r01,.r03
+			soviet: .r01,.r03
+			russia: .r01,.r03
+			ukraine: .r01,.r03
+		Voices:
+			Select: await1,ready,report1,yessir1
+			Action: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
+			Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
+			Burned: dedman10
+			Zapped: dedman6
+		DisableVariants: Die, Burned, Zapped
 
 Music:
 
