@@ -25,7 +25,7 @@ namespace OpenRA.Platforms.Default
 		protected int CompileShaderObject(ShaderType type, string name)
 		{
 			var ext = type == ShaderType.VertexShader ? "vert" : "frag";
-			var filename = "glsl{0}{1}.{2}".F(Path.DirectorySeparatorChar, name, ext);
+			var filename = Path.Combine(Platform.GameDir, "glsl", name + "." + ext);
 			var code = File.ReadAllText(filename);
 
 			var shader = GL.CreateShader(type);
