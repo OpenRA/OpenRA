@@ -1,68 +1,72 @@
-aoi: Act on Instinct
-aoi2: Act on Instinct (Voiced)
-	Filename: aoi
-	Extension: var
+aoi: Act On Instinct
 airstrik: Air Strike
-befeared: To be Feared
-befeared2: To be Feared (Voiced)
-	Filename: befeared
-	Extension: var
-80mx226m: C&C 80's mix
 ccthang: C&C Thang
-ind2: Canyon Chase
-chrg226m: Depth Charge
-crep226m: Creeping Upon
-stopthem: Deception (Stop Them)
-deception: Deception (Stop Them) (Voiced)
-	Filename: stopthem
-	Extension: var
+ind2: Canyon Chase (Industrial 2)
 heavyg: Demolition (Heavy Gear)
-die: Die
-dril225m: Drill
-dron226m: Drone
 fwp: Fight Win Prevail
-fist226m: Iron Fist
-warfare: Warfare (Full Stop)
+warfare: Full Stop (Warfare)
 win1: Great Shot!
 	Hidden: true
-win2: Great Shot! (Voiced)
-	Filename: win2
+win2: Great Shot! (SFX)
+	Filename: win1
 	Extension: var
-heart: Heartbreak (Voiced)
-	Extension: var
-iam: I Am - Destructible Times (Voiced)
+	Hidden: true
+iam: I Am - Times (Credits)
 ind: Industrial
-linefire: In the Line of Fire
+linefire: In The Line Of Fire
 trouble: In Trouble
-trouble2: In Trouble (Voiced)
-	Filename: trouble
-	Extension: var
-justdoit: Just Do it Up
-justdoit2: Just Do it Up (Voiced)
+justdoit: Just Do It Up
+justdoit2: Just Do It Up (SFX)
 	Filename: justdoit
 	Extension: var
+jdi_v2: Just Do It Up 2 (Take 'Em out)
 map1: Map Theme
 	Hidden: true
-march: March to Doom
-nomercy: No Mercy
-nomercy2: No Mercy (Voiced)
-	Filename: nomercy
-	Extension: var
-otp: On the Prowl
-prp: Prepare for Battle
-radio: Radio
-rain: Rain in the Night
-rout: Reaching out (Voiced)
-	Extension: var
-recn226m: Recon
-jdi_v2: Just Do it Up 2 (Take em' out)
-target: Target (Mechanical Man)
-j1: Untamed Land
-valkyrie: Ride of the Valkyries
-voic226m: Voice Rhythm
-outtakes: Outtakes
-	Hidden: true
+march: March To Doom
 nod_map1: Nod Map Theme
 	Hidden: true
 nod_win1: Nod Win Theme
 	Hidden: true
+nomercy: No Mercy
+nomercy2: No Mercy (SFX)
+	Filename: nomercy
+	Extension: var
+otp: On The Prowl
+outtakes: Outtakes (Censored)
+	Hidden: true
+prp: Prepare For Battle
+radio: Radio
+rain: Rain In The Night
+target: Target (Mechanical Man)
+j1: Untamed Land (Jungle)
+valkyrie: Ride Of The Valkyries
+	Hidden: true
+stopthem: We Will Stop Them (Deception)
+deception: We Will Stop Them (SFX)
+	Filename: stopthem
+	Extension: var
+
+# Covert Operations tracks
+aoi2: Act On Instinct (SFX)
+	Filename: aoi
+	Extension: var
+befeared: To Be Feared
+befeared2: To Be Feared (SFX)
+	Filename: befeared
+	Extension: var
+80mx226m: C&C 80's Mix
+crep226m: Creeping Upon
+chrg226m: Depth Charge
+die: Die
+dril225m: Drill
+dron226m: Drone
+fist226m: Iron Fist
+heart: Heartbreak
+	Extension: var
+trouble2: In Trouble (SFX)
+	Filename: trouble
+	Extension: var
+rout: Reaching Out
+	Extension: var
+recn226m: Recon
+voic226m: Voice Rhythm

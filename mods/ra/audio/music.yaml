@@ -1,22 +1,22 @@
-intro: Intro
-	Hidden: true
-map: Map
-	Hidden: true
-score: Militant Force
-	Hidden: true
-await_r: Await
+await_r: Afterlife (Await)
 bigf226m: Bigfoot
-credits: Reload Fire
 crus226m: Crush
 dense_r: Dense
 fac1226m: Face to the Enemy 1
 fac2226m: Face to the Enemy 2
 fogger1a: Fogger
 hell226m: Hell March
+intro: Intro
+	Hidden: true
+map: Map
+	Hidden: true
 mud1a: Mud
 radio2: Radio 2
+credits: Reload Fire (Credits)
 rollout: Roll Out
-run1226m: Run for your Life
+run1226m: Run (For Your Life)
+score: Militant Force (Scores)
+	Hidden: true
 smsh226m: Smash
 snake: Snake
 terminat: Terminate
@@ -26,21 +26,22 @@ vector1a: Vector
 work226m: Workmen
 
 # Counterstrike tracks
-2nd_hand: The Second Hand
-backstab: Backstab
-shut_it: Shut It
-under3: Underlying Thoughts
-chaos2: Chaos
-twinmix1: Twin Cannon Remix
-vr2: Voice Rhythm 2
 araziod: Arazoid
+backstab: Backstab
+chaos2: Chaos
+shut_it: Shut It
+2nd_hand: The Second Hand
+twinmix1: Twin Cannon (Remix)
+under3: Underlying Thoughts
+vr2: Voice Rhythm 2
 
 # Aftermath tracks
+await: Afterlife (Await)
 bog: Bog
-gloom: Gloom
-rpt: Running through Pipes (Mech Man 2)
-traction: Traction
 float_v2: Floating
-grndwire: Ground Wire
+gloom: Gloom
+grndwire: Groundwire
+rpt: Running Through Pipes
 search: The Search
+traction: Traction
 wastelnd: Wasteland
