@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AttackBaseInfo : UpgradableTraitInfo, ITraitInfo
+	public abstract class AttackBaseInfo : UpgradableTraitInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
@@ -70,7 +70,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
-			if (!self.IsInWorld || IsTraitDisabled)
+			if (!self.IsInWorld || IsTraitDisabled || self.IsDisabled())
+				return false;
+
+			if (!target.IsValidFor(self))
 				return false;
 
 			if (!HasAnyValidWeapons(target))
@@ -80,13 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (building.Value != null && !building.Value.BuildComplete)
 				return false;
 
-			if (!target.IsValidFor(self))
-				return false;
-
 			if (Armaments.All(a => a.IsReloading))
-				return false;
-
-			if (self.IsDisabled())
 				return false;
 
 			if (target.Type == TargetType.Actor && !self.Owner.CanTargetActor(target.Actor))

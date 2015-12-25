@@ -87,17 +87,17 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : UpgradableTrait<ArmamentInfo>, INotifyCreated, ITick, IExplodeModifier
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 
 		readonly Actor self;
-		Lazy<Turreted> turret;
-		Lazy<BodyOrientation> coords;
-		Lazy<AmmoPool> ammoPool;
+		Turreted turret;
+		AmmoPool ammoPool;
+		BodyOrientation coords;
+		IEnumerable<int> rangeModifiers;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
-		Lazy<IEnumerable<int>> rangeModifiers;
 
 		public WDist Recoil;
 		public int FireDelay { get; private set; }
@@ -107,12 +107,6 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
-
-			// We can't resolve these until runtime
-			turret = Exts.Lazy(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
-			ammoPool = Exts.Lazy(() => self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == info.AmmoPoolName));
-			rangeModifiers = Exts.Lazy(() => self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier()));
 
 			Weapon = info.WeaponInfo;
 			Burst = Weapon.Burst;
@@ -135,7 +129,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WDist MaxRange()
 		{
-			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers.Value));
+			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers));
+		}
+
+		public void Created(Actor self)
+		{
+			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
+			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
+			coords = self.Trait<BodyOrientation>();
+			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 		}
 
 		public void Tick(Actor self)
@@ -174,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsReloading)
 				return null;
 
-			if (ammoPool.Value != null && !ammoPool.Value.HasAmmo())
+			if (ammoPool != null && !ammoPool.HasAmmo())
 				return null;
 
 			if (!target.IsInRange(self.CenterPosition, MaxRange()))
@@ -247,23 +249,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
-			var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
-			if (turret.Value != null)
+			if (turret != null)
 			{
-				var turretOrientation = coords.Value.QuantizeOrientation(self, turret.Value.LocalOrientation(self));
+				var turretOrientation = coords.QuantizeOrientation(self, turret.LocalOrientation(self));
 				localOffset = localOffset.Rotate(turretOrientation);
-				localOffset += turret.Value.Offset;
+				localOffset += turret.Offset;
 			}
 
-			return coords.Value.LocalToWorld(localOffset.Rotate(bodyOrientation));
+			return coords.LocalToWorld(localOffset.Rotate(bodyOrientation));
 		}
 
 		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
 			var orientation = self.Orientation + WRot.FromYaw(b.Yaw);
-			if (turret.Value != null)
-				orientation += turret.Value.LocalOrientation(self);
+			if (turret != null)
+				orientation += turret.LocalOrientation(self);
 			return orientation;
 		}
 
