@@ -7,7 +7,7 @@ Windows
 =======
 
 * [Windows PowerShell >= 4.0](http://microsoft.com/powershell)
-* [.NET Framework >= 4.0 (Client Profile)](http://www.microsoft.com/en-us/download/details.aspx?id=17113)
+* [.NET Framework >= 4.5 (Client Profile)](http://www.microsoft.com/en-us/download/details.aspx?id=30653)
 * [SDL 2](http://www.libsdl.org/download-2.0.php) (included)
 * [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm) (included)
 * [zlib](http://gnuwin32.sourceforge.net/packages/zlib.htm) (included)
