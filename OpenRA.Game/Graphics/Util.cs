@@ -38,7 +38,9 @@ namespace OpenRA.Graphics
 			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
 			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);
 			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }

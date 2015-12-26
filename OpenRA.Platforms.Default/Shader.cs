@@ -18,6 +18,9 @@ namespace OpenRA.Platforms.Default
 {
 	class Shader : ThreadAffine, IShader
 	{
+		public const int VertexPosAttributeIndex = 0;
+		public const int TexCoordAttributeIndex = 1;
+
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		readonly int program;
@@ -62,6 +65,12 @@ namespace OpenRA.Platforms.Default
 			// Assemble program
 			program = GL.CreateProgram();
 			ErrorHandler.CheckGlError();
+
+			GL.BindAttribLocation(program, VertexPosAttributeIndex, "aVertexPosition");
+			ErrorHandler.CheckGlError();
+			GL.BindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
+			ErrorHandler.CheckGlError();
+
 			GL.AttachShader(program, vertexShader);
 			ErrorHandler.CheckGlError();
 			GL.AttachShader(program, fragmentShader);

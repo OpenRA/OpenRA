@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 			this.palette = palette;
 
 			map = world.Map;
-			rowStride = 4 * map.MapSize.X;
+			rowStride = 6 * map.MapSize.X;
 
 			vertices = new Vertex[rowStride * map.MapSize.Y];
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
@@ -87,7 +87,7 @@ namespace OpenRA.Graphics
 			else
 				sprite = emptySprite;
 
-			var offset = rowStride * uv.V + 4 * uv.U;
+			var offset = rowStride * uv.V + 6 * uv.U;
 			Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
 
 			dirtyRows.Add(uv.V);
@@ -123,7 +123,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, rowStride * firstRow, rowStride * (lastRow - firstRow),
-				PrimitiveType.QuadList, Sheet, BlendMode);
+				PrimitiveType.TriangleList, Sheet, BlendMode);
 
 			Game.Renderer.Flush();
 		}

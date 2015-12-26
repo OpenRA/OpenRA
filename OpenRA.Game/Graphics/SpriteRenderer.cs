@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 			vertices = new Vertex[renderer.TempBufferSize];
-			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.QuadList);
+			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
 		}
 
 		public void Flush()
@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (s.BlendMode != currentBlend || s.Sheet != currentSheet || nv + 4 > renderer.TempBufferSize)
+			if (s.BlendMode != currentBlend || s.Sheet != currentSheet || nv + 6 > renderer.TempBufferSize)
 				Flush();
 
 			currentBlend = s.BlendMode;
@@ -72,7 +72,7 @@ namespace OpenRA.Graphics
 		{
 			SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteTextureIndex, nv, size);
-			nv += 4;
+			nv += 6;
 		}
 
 		// For RGBASpriteRenderer, which doesn't use palettes
@@ -90,14 +90,14 @@ namespace OpenRA.Graphics
 		{
 			SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
-			nv += 4;
+			nv += 6;
 		}
 
 		public void DrawSprite(Sprite s, Vertex[] sourceVertices, int offset)
 		{
 			SetRenderStateForSprite(s);
-			Array.Copy(sourceVertices, offset, vertices, nv, 4);
-			nv += 4;
+			Array.Copy(sourceVertices, offset, vertices, nv, 6);
+			nv += 6;
 		}
 
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet, BlendMode blendMode)

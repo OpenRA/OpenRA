@@ -91,9 +91,9 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
 			}
 
-			GL.EnableClientState(ArrayCap.VertexArray);
+			GL.EnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			ErrorHandler.CheckGlError();
-			GL.EnableClientState(ArrayCap.TextureCoordArray);
+			GL.EnableVertexAttribArray(Shader.TexCoordAttributeIndex);
 			ErrorHandler.CheckGlError();
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
@@ -210,7 +210,6 @@ namespace OpenRA.Platforms.Default
 				case PrimitiveType.PointList: return BeginMode.Points;
 				case PrimitiveType.LineList: return BeginMode.Lines;
 				case PrimitiveType.TriangleList: return BeginMode.Triangles;
-				case PrimitiveType.QuadList: return BeginMode.Quads;
 			}
 
 			throw new NotImplementedException();
@@ -329,13 +328,6 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			GL.Disable(EnableCap.ScissorTest);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void SetLineWidth(float width)
-		{
-			VerifyThreadAffinity();
-			GL.LineWidth(width);
 			ErrorHandler.CheckGlError();
 		}
 
