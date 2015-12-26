@@ -10,7 +10,6 @@
 
 using System;
 using System.Diagnostics;
-using OpenTK.Graphics.OpenGL;
 
 namespace OpenRA.Platforms.Default
 {
@@ -18,7 +17,7 @@ namespace OpenRA.Platforms.Default
 	{
 		public static void CheckGlVersion()
 		{
-			var versionString = GL.GetString(StringName.Version);
+			var versionString = OpenGL.glGetString(OpenGL.GL_VERSION);
 			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
 
 			var major = 0;
@@ -39,8 +38,8 @@ namespace OpenRA.Platforms.Default
 
 		public static void CheckGlError()
 		{
-			var n = GL.GetError();
-			if (n != ErrorCode.NoError)
+			var n = OpenGL.glGetError();
+			if (n != OpenGL.GL_NO_ERROR)
 			{
 				var error = "GL Error: {0}\n{1}".F(n, new StackTrace());
 				WriteGraphicsLog(error);
@@ -53,8 +52,9 @@ namespace OpenRA.Platforms.Default
 			Log.Write("graphics", message);
 			Log.Write("graphics", "");
 			Log.Write("graphics", "OpenGL Information:");
-			Log.Write("graphics", "Vendor: {0}", GL.GetString(StringName.Vendor));
-			if (GL.GetString(StringName.Vendor).Contains("Microsoft"))
+			var vendor = OpenGL.glGetString(OpenGL.GL_VENDOR);
+			Log.Write("graphics", "Vendor: {0}", vendor);
+			if (vendor.Contains("Microsoft"))
 			{
 				var msg = "";
 				msg += "Note:  The default driver provided by Microsoft does not include full OpenGL support.\n";
@@ -62,11 +62,11 @@ namespace OpenRA.Platforms.Default
 				Log.Write("graphics", msg);
 			}
 
-			Log.Write("graphics", "Renderer: {0}", GL.GetString(StringName.Renderer));
-			Log.Write("graphics", "GL Version: {0}", GL.GetString(StringName.Version));
-			Log.Write("graphics", "Shader Version: {0}", GL.GetString(StringName.ShadingLanguageVersion));
+			Log.Write("graphics", "Renderer: {0}", OpenGL.glGetString(OpenGL.GL_RENDERER));
+			Log.Write("graphics", "GL Version: {0}", OpenGL.glGetString(OpenGL.GL_VERSION));
+			Log.Write("graphics", "Shader Version: {0}", OpenGL.glGetString(OpenGL.GL_SHADING_LANGUAGE_VERSION));
 			Log.Write("graphics", "Available extensions:");
-			Log.Write("graphics", GL.GetString(StringName.Extensions));
+			Log.Write("graphics", OpenGL.glGetString(OpenGL.GL_EXTENSIONS));
 		}
 	}
 }
