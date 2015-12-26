@@ -331,13 +331,6 @@ namespace OpenRA.Platforms.Default
 			ErrorHandler.CheckGlError();
 		}
 
-		public void SetLineWidth(float width)
-		{
-			VerifyThreadAffinity();
-			GL.LineWidth(width);
-			ErrorHandler.CheckGlError();
-		}
-
 		public Bitmap TakeScreenshot()
 		{
 			var rect = new Rectangle(Point.Empty, WindowSize);

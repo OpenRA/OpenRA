@@ -173,11 +173,6 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
-		public void SetLineWidth(float width)
-		{
-			Device.SetLineWidth(width);
-		}
-
 		public Size Resolution { get { return Device.WindowSize; } }
 
 		public interface IBatchRenderer { void Flush();	}
