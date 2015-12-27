@@ -330,7 +330,6 @@ cli-dependencies:
 	@./thirdparty/fetch-thirdparty-deps.sh
 	@ $(CP_R) thirdparty/download/*.dll .
 	@ $(CP_R) thirdparty/download/*.dll.config .
-	@ $(CP) thirdparty/SDL2-CS.dll.config .
 
 linux-dependencies: cli-dependencies linux-native-dependencies
 

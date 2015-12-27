@@ -53,7 +53,6 @@ cp thirdparty/download/SharpFont* packaging/built
 
 # SDL2-CS
 cp thirdparty/download/SDL2-CS* packaging/built
-cp thirdparty/SDL2-CS* packaging/built
 
 # OpenAL-CS
 cp thirdparty/download/OpenAL-CS* packaging/built
