@@ -895,7 +895,7 @@ Weapons:
 		Range: 5c0
 		Projectile: GravityBomb
 			Image: BOMBLET
-			-OpenSequence:
+			OpenSequence: idle # TODO: This crashes otherwise
 		Warhead@1Dam: SpreadDamage
 			Spread: 426
 			Versus:
