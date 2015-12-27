@@ -45,7 +45,6 @@ namespace OpenRA.FileFormats
 
 	public class AudLoader : ISoundLoader
 	{
-		static readonly int ExpectedSampleRate = 22050;
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =
 		{
@@ -119,18 +118,15 @@ namespace OpenRA.FileFormats
 			return samples / sampleRate;
 		}
 
-		public static bool LoadSound(Stream s, out byte[] rawData)
+		public static bool LoadSound(Stream s, out byte[] rawData, out int sampleRate)
 		{
 			rawData = null;
 
-			var sampleRate = s.ReadUInt16();
+			sampleRate = s.ReadUInt16();
 			var dataSize = s.ReadInt32();
 			var outputSize = s.ReadInt32();
 			var readFlag = s.ReadByte();
 			var readFormat = s.ReadByte();
-
-			if (sampleRate != ExpectedSampleRate)
-				return false;
 
 			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
 				return false;
@@ -177,7 +173,7 @@ namespace OpenRA.FileFormats
 
 			try
 			{
-				if (!LoadSound(stream, out rawData))
+				if (!LoadSound(stream, out rawData, out sampleRate))
 					return false;
 			}
 			catch (Exception e)
@@ -194,7 +190,6 @@ namespace OpenRA.FileFormats
 
 			channels = 1;
 			sampleBits = 16;
-			sampleRate = ExpectedSampleRate;
 
 			return true;
 		}
