@@ -123,6 +123,13 @@ if (!(Test-Path "SDL2-CS.dll"))
 	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/SDL2-CS/releases/download/20150709/SDL2-CS.dll", $target)
 }
 
+if (!(Test-Path "OpenAL-CS.dll"))
+{
+	echo "Fetching OpenAL-CS from GitHub."
+	$target = Join-Path $pwd.ToString() "OpenAL-CS.dll"
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll", $target)
+}
+
 if (!(Test-Path "Eluant.dll"))
 {
 	echo "Fetching Eluant from GitHub."
