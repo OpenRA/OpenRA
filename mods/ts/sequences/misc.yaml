@@ -18,6 +18,7 @@ poweroff:
 	offline:
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 allyrepair:
 	repair: wrench

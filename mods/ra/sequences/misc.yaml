@@ -5,6 +5,7 @@ clock:
 powerdown:
 	disabled: speed
 		Start: 3
+		ZOffset: 2047
 
 120mm:
 	idle:
@@ -185,6 +186,7 @@ poweroff:
 	offline:
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 allyrepair:
 	repair:

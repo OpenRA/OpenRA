@@ -132,11 +132,13 @@ clock:
 powerdown:
 	disabled: speed.shp
 		Start: 3
+		ZOffset: 2047
 
 poweroff:
 	offline: poweroff.shp
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 rank:
 	rank: rank.shp
