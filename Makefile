@@ -117,7 +117,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
 
 pnull_SRCS := $(shell find OpenRA.Platforms.Null/ -iname '*.cs')
 pnull_TARGET = OpenRA.Platforms.Null.dll
@@ -330,7 +330,6 @@ cli-dependencies:
 	@./thirdparty/fetch-thirdparty-deps.sh
 	@ $(CP_R) thirdparty/download/*.dll .
 	@ $(CP_R) thirdparty/download/*.dll.config .
-	@ $(CP) thirdparty/SDL2-CS.dll.config .
 
 linux-dependencies: cli-dependencies linux-native-dependencies
 
@@ -394,6 +393,7 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenAL-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
