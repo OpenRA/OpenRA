@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	public class ParatroopersPowerInfo : SupportPowerInfo
 	{
-		[ActorReference]
+		[ActorReference(typeof(AircraftInfo))]
 		public readonly string UnitType = "badr";
 		public readonly int SquadSize = 1;
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Spawn and remove the plane this far outside the map.")]
 		public readonly WDist Cordon = new WDist(5120);
 
-		[ActorReference]
+		[ActorReference(typeof(PassengerInfo))]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
 		public readonly string[] DropItems = { };
 
