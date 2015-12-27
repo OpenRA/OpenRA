@@ -91,15 +91,20 @@ rallypoint:
 	flag: flagfly
 		Length: *
 		Offset: 10,-5
+		ZOffset: 2535
 	circles: fpls
 		Length: *
+		ZOffset: 2047
 
 beacon:
+	Defaults:
+		ZOffset: 2535
 	arrow: mouse2
 		Start: 5
 		Offset: 1,-12
 	circles: fpls
 		Length: *
+		ZOffset: 2047
 	airstrike: bombicon
 		Offset: 0,-42
 	atomic: atomicon

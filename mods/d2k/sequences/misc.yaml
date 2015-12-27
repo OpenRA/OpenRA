@@ -167,15 +167,19 @@ rallypoint:
 	flag: flagfly.shp
 		Length: *
 		Offset: 11,-5
+		ZOffset: 2535
 	circles: fpls.shp
 		Length: *
+		ZOffset: 2047
 
 beacon:
 	arrow: MOUSE.R8
 		Start: 148
 		Offset: -24,-24
+		ZOffset: 2535
 	circles: fpls.shp
 		Length: *
+		ZOffset: 2047
 
 rpg:
 	idle: DATA.R8
