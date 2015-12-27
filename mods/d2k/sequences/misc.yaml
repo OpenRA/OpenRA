@@ -272,6 +272,8 @@ fire:
 		BlendMode: Additive
 
 smoke_m:
+	Defaults:
+		ZOffset: 511
 	idle: DATA.R8
 		Start: 3418
 		Length: 2
