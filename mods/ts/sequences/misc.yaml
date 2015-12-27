@@ -260,6 +260,7 @@ moveflsh:
 	idle: ring
 		Length: *
 		Tick: 30
+		ZOffset: 2047
 
 wake:
 	idle: wake2
