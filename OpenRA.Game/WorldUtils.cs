@@ -32,13 +32,10 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
-			using (new PerfSample("FindUnitsInCircle"))
-			{
-				// Target ranges are calculated in 2D, so ignore height differences
-				var vec = new WVec(r, r, WDist.Zero);
-				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
-					a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
-			}
+			// Target ranges are calculated in 2D, so ignore height differences
+			var vec = new WVec(r, r, WDist.Zero);
+			return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
+				a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
 		}
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
