@@ -217,6 +217,7 @@ allyrepair:
 		Length: 2
 		Tick: 300
 		Offset: -11,-10
+		ZOffset: 2047
 
 missile:
 	idle: DATA.R8
