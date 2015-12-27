@@ -476,6 +476,8 @@ outpost:
 	Inherits: ^Building
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Buildable:
 		Prerequisites: construction_yard, barracks, ~techlevel.medium
@@ -560,6 +562,8 @@ starport:
 	PrimaryBuilding:
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
@@ -712,6 +716,8 @@ large_gun_turret:
 		InitialFacing: 128
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Power:
 		Amount: -60
@@ -963,6 +969,8 @@ palace:
 	Production:
 		Produces: Palace
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:

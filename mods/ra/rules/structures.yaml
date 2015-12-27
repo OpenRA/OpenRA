@@ -40,6 +40,8 @@ MSLO:
 		CameraActor: camera
 		FlashType: Nuke
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	RequiresPower:
 	DisabledOverlay:
 	SupportPowerChargeBar:
@@ -290,6 +292,8 @@ IRON:
 		Dimensions: 2,1
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Selectable:
 		Bounds: 48,28,0,2
@@ -338,6 +342,8 @@ PDOX:
 		Dimensions: 2,2
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 1000
@@ -410,6 +416,8 @@ TSLA:
 	SelectionDecorations:
 		VisualBounds: 24,36,0,4
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 400
@@ -455,6 +463,8 @@ AGUN:
 		VisualBounds: 24,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 400
@@ -502,6 +512,8 @@ DOME:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 1000

@@ -253,6 +253,8 @@ NAMISL:
 		Amount: -50
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	RequiresPower:
 	DisabledOverlay:
 	ProvidesPrerequisite@buildingname:

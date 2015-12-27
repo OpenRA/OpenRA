@@ -13,8 +13,6 @@ Sounds:
 		ChatLine: message1
 		ClickDisabledSound: wrong1
 		ClickSound: clicky1
-		DisablePower: 00-i232
-		EnablePower: 00-i230
 		GameForming: gamefrm1
 		Gdiclose: gdiclose
 		Gdiopen: gdiopen
