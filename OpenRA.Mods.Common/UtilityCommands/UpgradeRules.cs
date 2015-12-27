@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -2700,6 +2701,67 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var useSquares = node.Value.Nodes.FirstOrDefault(n => n.Key == "UseSquares");
 					if (useSquares != null && !FieldLoader.GetValue<bool>("UseSquares", useSquares.Value.Value))
 						node.Value.Nodes.Add(new MiniYamlNode("ParticleSize", "1, 1"));
+				}
+
+				// Overhauled the actor decorations traits
+				if (engineVersion < 20151226)
+				{
+					if (depth == 1 && (node.Key.StartsWith("WithDecoration") || node.Key.StartsWith("WithRankDecoration")))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "Scale");
+						node.Value.Nodes.RemoveAll(n => n.Key == "Offset");
+						var sd = node.Value.Nodes.FirstOrDefault(n => n.Key == "SelectionDecoration");
+						if (sd != null)
+							sd.Key = "RequiresSelection";
+
+						var reference = node.Value.Nodes.FirstOrDefault(n => n.Key == "ReferencePoint");
+						if (reference != null)
+						{
+							var values = FieldLoader.GetValue<string[]>("ReferencePoint", reference.Value.Value);
+							values = values.Where(v => v != "HCenter" && v != "VCenter").ToArray();
+							if (values.Length == 0)
+								values = new[] { "Center" };
+
+							reference.Value.Value = FieldSaver.FormatValue(values);
+						}
+
+						var stance = Stance.Ally;
+						var showToAllies = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShowToAllies");
+						if (showToAllies != null && !FieldLoader.GetValue<bool>("ShowToAllies", showToAllies.Value.Value))
+							stance ^= Stance.Ally;
+						var showToEnemies = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShowToEnemies");
+						if (showToEnemies != null && FieldLoader.GetValue<bool>("ShowToEnemies", showToEnemies.Value.Value))
+							stance |= Stance.Enemy;
+
+						if (stance != Stance.Ally)
+							node.Value.Nodes.Add(new MiniYamlNode("Stance", FieldSaver.FormatValue(stance)));
+
+						node.Value.Nodes.RemoveAll(n => n.Key == "ShowToAllies");
+						node.Value.Nodes.RemoveAll(n => n.Key == "ShowToEnemies");
+					}
+
+					if (depth == 1 && node.Key == "Fake")
+					{
+						node.Key = "WithDecoration@fake";
+						node.Value.Nodes.Add(new MiniYamlNode("RequiresSelection", "true"));
+						node.Value.Nodes.Add(new MiniYamlNode("Image", "pips"));
+						node.Value.Nodes.Add(new MiniYamlNode("Sequence", "tag-fake"));
+						node.Value.Nodes.Add(new MiniYamlNode("ReferencePoint", "Top"));
+						node.Value.Nodes.Add(new MiniYamlNode("ZOffset", "256"));
+					}
+
+					if (depth == 0 && node.Value.Nodes.Any(n => n.Key.StartsWith("PrimaryBuilding")))
+					{
+						var decNodes = new List<MiniYamlNode>();
+						decNodes.Add(new MiniYamlNode("RequiresSelection", "true"));
+						decNodes.Add(new MiniYamlNode("Image", "pips"));
+						decNodes.Add(new MiniYamlNode("Sequence", "tag-primary"));
+						decNodes.Add(new MiniYamlNode("ReferencePoint", "Top"));
+						decNodes.Add(new MiniYamlNode("ZOffset", "256"));
+						decNodes.Add(new MiniYamlNode("UpgradeTypes", "primary"));
+						decNodes.Add(new MiniYamlNode("UpgradeMinEnabledLevel", "1"));
+						node.Value.Nodes.Add(new MiniYamlNode("WithDecoration@primary", new MiniYaml("", decNodes)));
+					}
 				}
 
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);

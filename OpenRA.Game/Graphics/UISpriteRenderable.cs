@@ -17,14 +17,16 @@ namespace OpenRA.Graphics
 	public struct UISpriteRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
+		readonly WPos effectiveWorldPos;
 		readonly int2 screenPos;
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
 
-		public UISpriteRenderable(Sprite sprite, int2 screenPos, int zOffset, PaletteReference palette, float scale)
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale)
 		{
 			this.sprite = sprite;
+			this.effectiveWorldPos = effectiveWorldPos;
 			this.screenPos = screenPos;
 			this.zOffset = zOffset;
 			this.palette = palette;
@@ -32,14 +34,14 @@ namespace OpenRA.Graphics
 		}
 
 		// Does not exist in the world, so a world positions don't make sense
-		public WPos Pos { get { return WPos.Zero; } }
+		public WPos Pos { get { return effectiveWorldPos; } }
 		public WVec Offset { get { return WVec.Zero; } }
 		public bool IsDecoration { get { return true; } }
 
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, screenPos, zOffset, newPalette, scale); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }

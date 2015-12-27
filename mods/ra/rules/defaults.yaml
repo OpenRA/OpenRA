@@ -47,7 +47,6 @@
 		Sequence: rank
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
@@ -521,7 +520,12 @@
 		DamageThreshold: 90
 	RevealsShroud:
 		Range: 4c0
-	Fake:
+	WithDecoration@fake:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-fake
+		ReferencePoint: Top
+		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
 

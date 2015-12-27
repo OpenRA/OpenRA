@@ -218,7 +218,6 @@ SPY:
 		Sequence: pip-disguise
 		Palette: effect
 		ReferencePoint: Top, Right
-		Offset: 4, -2
 		ZOffset: 256
 		UpgradeTypes: disguise
 		UpgradeMinEnabledLevel: 1

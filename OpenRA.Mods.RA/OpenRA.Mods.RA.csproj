@@ -86,7 +86,6 @@
     <Compile Include="Scripting\Properties\InfiltrateProperties.cs" />
     <Compile Include="Scripting\Properties\DisguiseProperties.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="Traits\Buildings\Fake.cs" />
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />

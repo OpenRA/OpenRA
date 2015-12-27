@@ -44,7 +44,6 @@
 		Sequence: rank
 		Palette: ra
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
@@ -61,10 +60,8 @@
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: FFFFFF
-	WithDecoration@EMPDISABLE:
-		Image: emp
-		Sequence: idle
-		ReferencePoint: HCenter, VCenter
+	WithIdleOverlay@EMPDISABLE:
+		Sequence: emp-overlay
 		Palette: effect
 		UpgradeTypes: empdisable
 		ShowToEnemies: true
@@ -456,7 +453,6 @@
 
 ^CivilianVoxelVehicle:
 	Inherits: ^VoxelVehicle
-	-RenderSprites:
 	-MustBeDestroyed:
 
 ^Aircraft:
@@ -666,6 +662,7 @@
 	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
 	RenderVoxels:
+	RenderSprites:
 	WithVoxelBody:
 	DrawLineToTarget:
 	Mobile:

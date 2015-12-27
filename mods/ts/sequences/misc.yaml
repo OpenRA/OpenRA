@@ -90,6 +90,7 @@ pips:
 		Length: 10
 	tag-primary: pipsra #TODO: backfall to RA asset
 		Start: 2
+		Offset: 0, 2
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
@@ -107,6 +108,8 @@ pips:
 	pip-disguise: pip-disguise
 		Length: *
 		Tick: 300
+		Offset: 0, -6
+
 # TODO:
 	pip-empty-building:
 	pip-green-building:
@@ -243,11 +246,6 @@ wake:
 	idle: wake2
 		Length: *
 		Tick: 180
-
-emp:
-	idle: emp_fx01
-		Length: *
-		BlendMode: Additive
 
 resources:
 	Defaults:

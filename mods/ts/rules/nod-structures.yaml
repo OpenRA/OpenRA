@@ -116,6 +116,15 @@ NAHAND:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 116, 78, 3, -8
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NAWEAP:
 	Inherits: ^Building
@@ -163,6 +172,15 @@ NAWEAP:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 149, 116, -3, -20
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NAHPAD:
 	Inherits: ^Building
@@ -207,6 +225,15 @@ NAHPAD:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 78, 54, 0, -8
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NARADR:
 	Inherits: ^Building
@@ -406,3 +433,4 @@ NAWAST:
 	SelectionDecorations:
 		VisualBounds: 100, 60, 5, -5
 	RenderSprites:
+

@@ -20,16 +20,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Flags]
 	public enum ReferencePoints
 	{
-		Top = 0,
-		VCenter = 1,
+		Center = 0,
+		Top = 1,
 		Bottom = 2,
-
-		Left = 0 << 2,
-		HCenter = 1 << 2,
-		Right = 2 << 2,
+		Left = 4,
+		Right = 8,
 	}
 
-	[Desc("Displays a custom animation if conditions are satisfied.")]
+	[Desc("Displays a custom UI overlay relative to the selection box.")]
 	public class WithDecorationInfo : UpgradableTraitInfo
 	{
 		[Desc("Image used for this decoration. Defaults to the actor's type.")]
@@ -41,131 +39,96 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
 		[PaletteReference] public readonly string Palette = "chrome";
 
-		[Desc("Point in the actor's bounding box used as reference for offsetting the decoration image. " +
-			"Possible values are any combination of Top, VCenter, Bottom and Left, HCenter, Right separated by a comma.")]
+		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
+			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
 		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
-
-		[Desc("Pixel offset relative to the actor's bounding box' reference point.")]
-		public readonly int2 Offset = int2.Zero;
 
 		[Desc("The Z offset to apply when rendering this decoration.")]
 		public readonly int ZOffset = 1;
 
-		[Desc("Visual scale of the image.")]
-		public readonly float Scale = 1f;
-
-		[Desc("Should this be visible to allied players?")]
-		public readonly bool ShowToAllies = true;
-
-		[Desc("Should this be visible to enemy players?")]
-		public readonly bool ShowToEnemies = false;
+		[Desc("Player stances who can view the decoration.")]
+		public readonly Stance Stances = Stance.Ally;
 
 		[Desc("Should this be visible only when selected?")]
-		public readonly bool SelectionDecoration = false;
+		public readonly bool RequiresSelection = false;
 
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
-	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, IRender, IPostRenderSelection
+	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, ITick, IRender, IPostRenderSelection
 	{
-		readonly WithDecorationInfo info;
+		protected readonly Animation Anim;
+
 		readonly string image;
-		readonly Animation anim;
 		readonly Actor self;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
 			: base(info)
 		{
-			this.info = info;
 			this.self = self;
 			image = info.Image ?? self.Info.Name;
-			anim = new Animation(self.World, image, () => self.World.Paused);
-			anim.PlayRepeating(info.Sequence);
-		}
-
-		public void PlaySingleFrame(int frame)
-		{
-			anim.PlayFetchIndex(info.Sequence, () => frame);
+			Anim = new Animation(self.World, image, () => self.World.Paused);
+			Anim.PlayRepeating(info.Sequence);
 		}
 
 		public virtual bool ShouldRender(Actor self) { return true; }
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return !info.SelectionDecoration ? RenderInner(self, wr, self.Bounds) : Enumerable.Empty<IRenderable>();
+			return !Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			return info.SelectionDecoration ? RenderInner(self, wr, self.VisualBounds) : Enumerable.Empty<IRenderable>();
+			return Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
-		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr, Rectangle actorBounds)
+		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || Anim == null)
 				return Enumerable.Empty<IRenderable>();
 
-			if (self.IsDead || !self.IsInWorld)
-				return Enumerable.Empty<IRenderable>();
-
-			if (anim == null)
-				return Enumerable.Empty<IRenderable>();
-
-			var allied = self.Owner.IsAlliedWith(self.World.RenderPlayer);
-
-			if (!allied && !info.ShowToEnemies)
-				return Enumerable.Empty<IRenderable>();
-
-			if (allied && !info.ShowToAllies)
-				return Enumerable.Empty<IRenderable>();
-
-			if (!ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
-
-			if (self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
-
-			var pxPos = wr.ScreenPxPosition(self.CenterPosition);
-			actorBounds.Offset(pxPos.X, pxPos.Y);
-
-			var img = anim.Image;
-			var imgSize = img.Size.ToInt2();
-
-			switch (info.ReferencePoint & (ReferencePoints)3)
+			if (self.World.RenderPlayer != null)
 			{
-				case ReferencePoints.Top:
-					pxPos = pxPos.WithY(actorBounds.Top + imgSize.Y / 2);
-					break;
-				case ReferencePoints.VCenter:
-					pxPos = pxPos.WithY((actorBounds.Top + actorBounds.Bottom) / 2);
-					break;
-				case ReferencePoints.Bottom:
-					pxPos = pxPos.WithY(actorBounds.Bottom - imgSize.Y / 2);
-					break;
+				var stance = self.Owner.Stances[self.World.RenderPlayer];
+				if (!Info.Stances.HasStance(stance))
+					return Enumerable.Empty<IRenderable>();
 			}
 
-			switch (info.ReferencePoint & (ReferencePoints)(3 << 2))
+			if (!ShouldRender(self) || self.World.FogObscures(self))
+				return Enumerable.Empty<IRenderable>();
+
+			var bounds = self.VisualBounds;
+			var halfSize = (0.5f * Anim.Image.Size).ToInt2();
+
+			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
+			var sizeOffset = -halfSize;
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
 			{
-				case ReferencePoints.Left:
-					pxPos = pxPos.WithX(actorBounds.Left + imgSize.X / 2);
-					break;
-				case ReferencePoints.HCenter:
-					pxPos = pxPos.WithX((actorBounds.Left + actorBounds.Right) / 2);
-					break;
-				case ReferencePoints.Right:
-					pxPos = pxPos.WithX(actorBounds.Right - imgSize.X / 2);
-					break;
+				boundsOffset -= new int2(0, bounds.Height / 2);
+				sizeOffset += new int2(0, halfSize.Y);
+			}
+			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
+			{
+				boundsOffset += new int2(0, bounds.Height / 2);
+				sizeOffset -= new int2(0, halfSize.Y);
 			}
 
-			pxPos += info.Offset;
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Left))
+			{
+				boundsOffset -= new int2(bounds.Width / 2, 0);
+				sizeOffset += new int2(halfSize.X, 0);
+			}
+			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
+			{
+				boundsOffset += new int2(bounds.Width / 2, 0);
+				sizeOffset -= new int2(halfSize.X, 0);
+			}
 
-			// HACK: Because WorldRenderer.Position() does not care about terrain height at the location
-			var renderPos = wr.ProjectedPosition(pxPos);
-			renderPos = new WPos(renderPos.X, renderPos.Y + self.CenterPosition.Z, self.CenterPosition.Z);
-
-			anim.Tick();
-
-			return new IRenderable[] { new SpriteRenderable(img, renderPos, WVec.Zero, info.ZOffset, wr.Palette(info.Palette), info.Scale, true) };
+			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
+			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
 		}
+
+		public void Tick(Actor self) { Anim.Tick(); }
 	}
 }

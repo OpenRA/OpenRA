@@ -25,16 +25,25 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Used together with ClassicProductionQueue.")]
-	public class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
-
-	public class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
+	public class PrimaryBuildingInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
-		bool isPrimary = false;
-		public bool IsPrimary { get { return isPrimary; } }
+		[UpgradeGrantedReference, Desc("The upgrades to grant while the primary building.")]
+		public readonly string[] Upgrades = { "primary" };
 
-		public IEnumerable<TagType> GetTags()
+		public object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
+	}
+
+	public class PrimaryBuilding : IIssueOrder, IResolveOrder
+	{
+		readonly PrimaryBuildingInfo info;
+		readonly UpgradeManager manager;
+
+		public bool IsPrimary { get; private set; }
+
+		public PrimaryBuilding(Actor self, PrimaryBuildingInfo info)
 		{
-			yield return isPrimary ? TagType.Primary : TagType.None;
+			this.info = info;
+			manager = self.Trait<UpgradeManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -53,14 +62,16 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "PrimaryProducer")
-				SetPrimaryProducer(self, !isPrimary);
+				SetPrimaryProducer(self, !IsPrimary);
 		}
 
 		public void SetPrimaryProducer(Actor self, bool state)
 		{
 			if (state == false)
 			{
-				isPrimary = false;
+				IsPrimary = false;
+				foreach (var up in info.Upgrades)
+					manager.RevokeUpgrade(self, up, this);
 				return;
 			}
 
@@ -78,7 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 					b.Trait.SetPrimaryProducer(b.Actor, false);
 			}
 
-			isPrimary = true;
+			IsPrimary = true;
+			foreach (var up in info.Upgrades)
+				manager.GrantUpgrade(self, up, this);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Faction.InternalName);
 		}

@@ -57,8 +57,10 @@ pips:
 #		Start: 4
 	tag-fake:
 		Start: 18
+		Offset: 0, 2
 	tag-primary:
 		Start: 2
+		Offset: 0, 2
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
@@ -73,6 +75,7 @@ pips:
 	pip-disguise: pip-disguise
 		Length: *
 		Tick: 300
+		Offset: 0, -6
 
 v2:
 	idle:
@@ -370,6 +373,7 @@ rank:
 
 iconchevrons:
 	veteran:
+		Offset: 2, 2
 
 atomic:
 	up: atomicup

@@ -953,6 +953,10 @@ cyc2:
 		ShadowStart: 190
 	die6: electro
 		Length: *
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
 	icon: cybcicon
 
 cyborg:
@@ -1014,6 +1018,10 @@ cyborg:
 		ShadowStart: 662
 	die6: electro
 		Length: *
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
 	icon: cybiicon
 
 mutant:
