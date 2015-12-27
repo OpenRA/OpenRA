@@ -2788,6 +2788,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactored Health.Radius to HitShapes
+				if (engineVersion < 20151227)
+				{
+					if (node.Key.StartsWith("Health"))
+					{
+						var radius = node.Value.Nodes.FirstOrDefault(x => x.Key == "Radius");
+						if (radius != null)
+						{
+							var radiusValue = FieldLoader.GetValue<string>("Radius", radius.Value.Value);
+							node.Value.Nodes.Add(new MiniYamlNode("Shape", "Circle"));
+
+							var shape = node.Value.Nodes.First(x => x.Key == "Shape");
+							shape.Value.Nodes.Add(new MiniYamlNode("Radius", radiusValue));
+
+							node.Value.Nodes.Remove(radius);
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

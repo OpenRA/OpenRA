@@ -591,7 +591,8 @@ Ant:
 		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
-		Radius: 469
+		Shape: Circle
+			Radius: 469
 	Mobile:
 		Speed: 99
 		ROT: 12

@@ -163,7 +163,8 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Health:
-		Radius: 128
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -286,8 +287,9 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Health:
-		Radius: 128
 		HP: 1000
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: Wood
 	Buildable:
@@ -339,8 +341,9 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Health:
-		Radius: 427
 		HP: 300
+		Shape: Circle
+			Radius: 427
 	Armor:
 		Type: Wood
 	RevealsShroud:
