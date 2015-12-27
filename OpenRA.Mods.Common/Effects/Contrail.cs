@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("Offset for Z sorting.")]
+		public readonly int ZOffset = 0;
+
 		[Desc("Length of the trail (in ticks).")]
 		public readonly int TrailLength = 25;
 
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 
 			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, 0);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
 
 			body = self.Trait<BodyOrientation>();
 		}
