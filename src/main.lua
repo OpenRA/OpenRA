@@ -165,6 +165,7 @@ ide = {
     projectautoopen = true,
     autorecoverinactivity = 10, -- seconds
     outlineinactivity = 0.250, -- seconds
+    markersinactivity = 0.500, -- seconds
     symbolindexinactivity = 2, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
@@ -605,7 +606,7 @@ end
 for _, file in ipairs({
     "settings", "singleinstance", "iofilters", "package", "markup",
     "gui", "filetree", "output", "debugger", "outline", "commandbar",
-    "editor", "findreplace", "commands", "autocomplete", "shellbox",
+    "editor", "findreplace", "commands", "autocomplete", "shellbox", "markers",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
     "print", "inspect" }) do
