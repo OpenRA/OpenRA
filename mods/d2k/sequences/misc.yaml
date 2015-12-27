@@ -193,6 +193,8 @@ rpg:
 		ZOffset: 1023
 
 crate-effects:
+	Defaults:
+		ZOffset: 2047
 	dollar: DATA.R8
 		Start: 3679
 		Length: 8

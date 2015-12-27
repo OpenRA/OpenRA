@@ -293,40 +293,26 @@ xcrated:
 		ZOffset: -511
 
 crate-effects:
+	Defaults:
+		ZOffset: 2047
+		Length: *
 	speed: speed
-		Length: *
 	dollar: dollar
-		Length: *
 	reveal-map: earth
-		Length: *
 	hide-map: empulse
-		Length: *
 	fpower: fpower
-		Length: *
 	gps: gpsbox
-		Length: *
 	invuln: invulbox
-		Length: *
 	heal: invun
-		Length: *
 	nuke: missile2
-		Length: *
 	parabombs: parabox
-		Length: *
 	sonar: sonarbox
-		Length: *
 	stealth: stealth2
-		Length: *
 	timequake: tquake
-		Length: *
 	armor: armor
-		Length: *
 	chrono: chronbox
-		Length: *
 	airstrike: deviator
-		Length: *
 	levelup: levelup
-		Length: *
 		Tick: 200
 
 parach:

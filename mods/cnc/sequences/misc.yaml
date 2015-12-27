@@ -143,6 +143,7 @@ xcrated:
 crate-effects:
 	Defaults:
 		Length: *
+		ZOffset: 2047
 	airstrike: deviator
 	nuke: missile2
 	dollar: dollar
