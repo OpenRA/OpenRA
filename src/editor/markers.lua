@@ -100,7 +100,7 @@ local function createMarkersWindow()
   ctrl:SetImageList(markers.imglist)
   ctrl:SetFont(ide.font.fNormal)
 
-  function ctrl:ActivateItem(item_id)
+  function ctrl:ActivateItem(item_id, toggle)
     if ctrl:GetItemImage(item_id) == image.FILE then
       -- activate editor tab
       local editor = item2editor(item_id)
@@ -110,9 +110,18 @@ local function createMarkersWindow()
       if parent:IsOk() and ctrl:GetItemImage(parent) == image.FILE then
         local editor = item2editor(parent)
         if editor then
-          ide:GetDocument(editor):SetActive()
           local line = tonumber(ctrl:GetItemText(item_id):match("^(%d+):"))
-          if line then editor:GotoLine(line-1) end
+          ide:GetDocument(editor):SetActive()
+          if line then
+            editor:GotoLine(line-1)
+            local evtype = (ctrl:GetItemImage(item_id) == image.BOOKMARK and ID.BOOKMARKTOGGLE
+              or ctrl:GetItemImage(item_id) == image.BREAKPOINT and ID.TOGGLEBREAKPOINT
+              or nil)
+            if toggle and evtype then
+              ctrl:Delete(item_id)
+              ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, evtype))
+            end
+          end
         end
       end
     end
@@ -124,7 +133,7 @@ local function createMarkersWindow()
     local item_id, flags = ctrl:HitTest(event:GetPosition())
 
     if item_id and item_id:IsOk() and bit.band(flags, mask) > 0 then
-      ctrl:ActivateItem(item_id)
+      ctrl:ActivateItem(item_id, bit.band(flags, wx.wxTREE_HITTEST_ONITEMICON) > 0)
     else
       event:Skip()
     end
