@@ -61,7 +61,6 @@ Player:
 	AllyRepair:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
-		AdviceInterval: 650
 	ActorGroupProxy:
 	DeveloperMode:
 	BaseAttackNotifier:
@@ -85,4 +84,6 @@ Player:
 	EnemyWatcher:
 	HarvesterInsurance:
 	GlobalUpgradeManager:
+	ResourceStorageWarning:
+		AdviceInterval: 26
 

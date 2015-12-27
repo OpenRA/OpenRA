@@ -382,6 +382,7 @@
     <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Player\ProvidesPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
+    <Compile Include="Traits\Player\ResourceStorageWarning.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />

@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Create some head room for resource storage if we really need it
-			if (playerResources.AlertSilo)
+			if (playerResources.Resources > 0.8 * playerResources.ResourceCapacity)
 			{
 				var silo = GetProducibleBuilding("Silo", buildableThings);
 				if (silo != null && HasSufficientPowerForActor(silo))
