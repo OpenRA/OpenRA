@@ -15,8 +15,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using OpenRA;
 using OpenRA.Graphics;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -78,9 +76,7 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
 
-			GraphicsContext.CurrentContext = context;
-
-			GL.LoadAll();
+			OpenGL.LoadDelegates();
 			ErrorHandler.CheckGlVersion();
 			ErrorHandler.CheckGlError();
 
@@ -91,9 +87,9 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
 			}
 
-			GL.EnableVertexAttribArray(Shader.VertexPosAttributeIndex);
+			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			ErrorHandler.CheckGlError();
-			GL.EnableVertexAttribArray(Shader.TexCoordAttributeIndex);
+			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);
 			ErrorHandler.CheckGlError();
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
@@ -203,13 +199,13 @@ namespace OpenRA.Platforms.Default
 			SDL.SDL_Quit();
 		}
 
-		static BeginMode ModeFromPrimitiveType(PrimitiveType pt)
+		static int ModeFromPrimitiveType(PrimitiveType pt)
 		{
 			switch (pt)
 			{
-				case PrimitiveType.PointList: return BeginMode.Points;
-				case PrimitiveType.LineList: return BeginMode.Lines;
-				case PrimitiveType.TriangleList: return BeginMode.Triangles;
+				case PrimitiveType.PointList: return OpenGL.GL_POINTS;
+				case PrimitiveType.LineList: return OpenGL.GL_LINES;
+				case PrimitiveType.TriangleList: return OpenGL.GL_TRIANGLES;
 			}
 
 			throw new NotImplementedException();
@@ -218,78 +214,78 @@ namespace OpenRA.Platforms.Default
 		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
 		{
 			VerifyThreadAffinity();
-			GL.DrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
+			OpenGL.glDrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void Clear()
 		{
 			VerifyThreadAffinity();
-			GL.ClearColor(0, 0, 0, 1);
+			OpenGL.glClearColor(0, 0, 0, 1);
 			ErrorHandler.CheckGlError();
-			GL.Clear(ClearBufferMask.ColorBufferBit);
+			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void EnableDepthBuffer()
 		{
 			VerifyThreadAffinity();
-			GL.Clear(ClearBufferMask.DepthBufferBit);
+			OpenGL.glClear(OpenGL.GL_DEPTH_BUFFER_BIT);
 			ErrorHandler.CheckGlError();
-			GL.Enable(EnableCap.DepthTest);
+			OpenGL.glEnable(OpenGL.GL_DEPTH_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			VerifyThreadAffinity();
-			GL.Disable(EnableCap.DepthTest);
+			OpenGL.glDisable(OpenGL.GL_DEPTH_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void SetBlendMode(BlendMode mode)
 		{
 			VerifyThreadAffinity();
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
+			OpenGL.glBlendEquation(OpenGL.GL_FUNC_ADD);
 			ErrorHandler.CheckGlError();
 
 			switch (mode)
 			{
 				case BlendMode.None:
-					GL.Disable(EnableCap.Blend);
+					OpenGL.glDisable(OpenGL.GL_BLEND);
 					break;
 				case BlendMode.Alpha:
-					GL.Enable(EnableCap.Blend);
+					OpenGL.glEnable(OpenGL.GL_BLEND);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcAlpha);
+					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
 					break;
 				case BlendMode.Additive:
 				case BlendMode.Subtractive:
-					GL.Enable(EnableCap.Blend);
+					OpenGL.glEnable(OpenGL.GL_BLEND);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.One);
+					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE);
 					if (mode == BlendMode.Subtractive)
 					{
 						ErrorHandler.CheckGlError();
-						GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+						OpenGL.glBlendEquation(OpenGL.GL_FUNC_REVERSE_SUBTRACT);
 					}
 
 					break;
 				case BlendMode.Multiply:
-					GL.Enable(EnableCap.Blend);
+					OpenGL.glEnable(OpenGL.GL_BLEND);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
 					ErrorHandler.CheckGlError();
 					break;
 				case BlendMode.Multiplicative:
-					GL.Enable(EnableCap.Blend);
+					OpenGL.glEnable(OpenGL.GL_BLEND);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.Zero, BlendingFactorDest.SrcColor);
+					OpenGL.glBlendFunc(OpenGL.GL_ZERO, OpenGL.GL_SRC_COLOR);
 					break;
 				case BlendMode.DoubleMultiplicative:
-					GL.Enable(EnableCap.Blend);
+					OpenGL.glEnable(OpenGL.GL_BLEND);
 					ErrorHandler.CheckGlError();
-					GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.SrcColor);
+					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_SRC_COLOR);
 					break;
 			}
 
@@ -318,16 +314,16 @@ namespace OpenRA.Platforms.Default
 			if (height < 0)
 				height = 0;
 
-			GL.Scissor(left, WindowSize.Height - (top + height), width, height);
+			OpenGL.glScissor(left, WindowSize.Height - (top + height), width, height);
 			ErrorHandler.CheckGlError();
-			GL.Enable(EnableCap.ScissorTest);
+			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
 		public void DisableScissor()
 		{
 			VerifyThreadAffinity();
-			GL.Disable(EnableCap.ScissorTest);
+			OpenGL.glDisable(OpenGL.GL_SCISSOR_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
@@ -338,15 +334,15 @@ namespace OpenRA.Platforms.Default
 			var data = bitmap.LockBits(rect,
 				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-			GL.PushClientAttrib(ClientAttribMask.ClientPixelStoreBit);
+			OpenGL.glPushClientAttrib(OpenGL.GL_CLIENT_PIXEL_STORE_BIT);
 
-			GL.PixelStore(PixelStoreParameter.PackRowLength, data.Stride / 4f);
-			GL.PixelStore(PixelStoreParameter.PackAlignment, 1);
+			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, data.Stride / 4f);
+			OpenGL.glPixelStoref(OpenGL.GL_PACK_ALIGNMENT, 1);
 
-			GL.ReadPixels(rect.X, rect.Y, rect.Width, rect.Height, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-			GL.Finish();
+			OpenGL.glReadPixels(rect.X, rect.Y, rect.Width, rect.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
+			OpenGL.glFinish();
 
-			GL.PopClientAttrib();
+			OpenGL.glPopClientAttrib();
 
 			bitmap.UnlockBits(data);
 

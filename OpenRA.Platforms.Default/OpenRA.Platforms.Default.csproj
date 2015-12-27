@@ -53,6 +53,7 @@
     <Compile Include="ThreadAffine.cs" />
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="OpenAlSoundEngine.cs" />
+    <Compile Include="OpenGL.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
