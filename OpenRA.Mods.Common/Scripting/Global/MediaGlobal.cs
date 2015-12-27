@@ -53,7 +53,6 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.Sound.Play(file);
 		}
 
-		Action onComplete;
 		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
@@ -65,8 +64,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (func != null)
 			{
-				var f = func.CopyReference() as LuaFunction;
-				onComplete = () =>
+				var f = (LuaFunction)func.CopyReference();
+				Action onComplete = () =>
 				{
 					try
 					{
@@ -113,13 +112,13 @@ namespace OpenRA.Mods.Common.Scripting
 			playlist.Stop();
 		}
 
-		Action onCompleteFullscreen;
 		[Desc("Play a VQA video fullscreen. File name has to include the file extension.")]
 		public void PlayMovieFullscreen(string movie, LuaFunction func = null)
 		{
+			Action onCompleteFullscreen;
 			if (func != null)
 			{
-				var f = func.CopyReference() as LuaFunction;
+				var f = (LuaFunction)func.CopyReference();
 				onCompleteFullscreen = () =>
 				{
 					try
@@ -139,15 +138,14 @@ namespace OpenRA.Mods.Common.Scripting
 			Media.PlayFMVFullscreen(world, movie, onCompleteFullscreen);
 		}
 
-		Action onLoadComplete;
-		Action onCompleteRadar;
 		[Desc("Play a VQA video in the radar window. File name has to include the file extension. " +
 			"Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
 		public bool PlayMovieInRadar(string movie, LuaFunction playComplete = null)
 		{
+			Action onCompleteRadar;
 			if (playComplete != null)
 			{
-				var f = playComplete.CopyReference() as LuaFunction;
+				var f = (LuaFunction)playComplete.CopyReference();
 				onCompleteRadar = () =>
 				{
 					try
@@ -178,7 +176,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			AsyncLoader l = new AsyncLoader(Media.LoadVqa);
 			IAsyncResult ar = l.BeginInvoke(s, null, null);
-			onLoadComplete = () =>
+			Action onLoadComplete = () =>
 			{
 				Media.StopFMVInRadar();
 				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, l.EndInvoke(ar), onCompleteRadar));

@@ -28,8 +28,13 @@ namespace OpenRA.Mods.RA.Scripting
 			{
 				Actor actor;
 				CPos cell;
-				if (!kv.Key.TryGetClrValue<Actor>(out actor) || !kv.Value.TryGetClrValue<CPos>(out cell))
-					throw new LuaException("Chronoshift requires a table of Actor,CPos pairs. Received {0},{1}".F(kv.Key.WrappedClrType().Name, kv.Value.WrappedClrType().Name));
+				using (kv.Key)
+				using (kv.Value)
+				{
+					if (!kv.Key.TryGetClrValue(out actor) || !kv.Value.TryGetClrValue(out cell))
+						throw new LuaException("Chronoshift requires a table of Actor,CPos pairs. Received {0},{1}".F(
+							kv.Key.WrappedClrType().Name, kv.Value.WrappedClrType().Name));
+				}
 
 				var cs = actor.TraitOrDefault<Chronoshiftable>();
 				if (cs != null && cs.CanChronoshiftTo(actor, cell))

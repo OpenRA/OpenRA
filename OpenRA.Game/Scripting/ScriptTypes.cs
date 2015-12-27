@@ -107,13 +107,22 @@ namespace OpenRA.Scripting
 
 				foreach (var kv in table)
 				{
-					object element;
-					if (innerType == typeof(LuaValue))
-						element = kv.Value;
-					else if (!kv.Value.TryGetClrValue(innerType, out element))
-						throw new LuaException("Unable to convert table value of type {0} to type {1}".F(kv.Value.WrappedClrType(), innerType));
+					using (kv.Key)
+					{
+						object element;
+						if (innerType == typeof(LuaValue))
+							element = kv.Value;
+						else
+						{
+							var elementHasClrValue = kv.Value.TryGetClrValue(innerType, out element);
+							if (!elementHasClrValue || !(element is LuaValue))
+								kv.Value.Dispose();
+							if (!elementHasClrValue)
+								throw new LuaException("Unable to convert table value of type {0} to type {1}".F(kv.Value.WrappedClrType(), innerType));
+						}
 
-					array.SetValue(element, i++);
+						array.SetValue(element, i++);
+					}
 				}
 
 				clrObject = array;
@@ -159,11 +168,13 @@ namespace OpenRA.Scripting
 
 			if (obj is Array)
 			{
-				var array = obj as Array;
+				var array = (Array)obj;
 				var i = 1;
 				var table = context.CreateTable();
+
 				foreach (var x in array)
-					table.Add(i++, x.ToLuaValue(context));
+					using (LuaValue key = i++, value = x.ToLuaValue(context))
+						table.Add(key, value);
 
 				return table;
 			}
