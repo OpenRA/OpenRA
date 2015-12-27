@@ -1,0 +1,184 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	MissionData:
+		Briefing: The Allies are now being flanked from both sides. Evacuate before the remaining Allied forces in the area are wiped out. Einstein has recently developed a technology which allows us to obscure units from the enemy. Pull out at least one prototype mobile gap generator intact.
+	LuaScript:
+		Scripts: exodus.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E3,E3,E4
+
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+	EditorOnlyTooltip:
+		Description: invalid targets for YakAttack
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+BARR:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIND:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+PT:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTUR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+	CreatesShroud:
+		Range: 6c0
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+CAMERA.Large:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 49c0
+	EditorOnlyTooltip:
+		Description: required for YakAttack to work
