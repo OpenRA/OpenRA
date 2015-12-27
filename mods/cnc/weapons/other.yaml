@@ -125,6 +125,7 @@ Laser:
 	Projectile: LaserZap
 		Width: 85
 		HitAnim: laserfire
+		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 360

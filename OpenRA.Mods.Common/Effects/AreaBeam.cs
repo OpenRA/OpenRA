@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Should the beam be visuall rendered? False = Beam is invisible.")]
 		public readonly bool RenderBeam = true;
 
+		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
+		public readonly int ZOffset = 0;
+
 		[Desc("Color of the beam.")]
 		public readonly Color Color = Color.Red;
 
@@ -193,7 +196,7 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (!IsBeamComplete && info.RenderBeam && !(wr.World.FogObscures(tailPos) && wr.World.FogObscures(headPos)))
 			{
-				var beamRender = new BeamRenderable(headPos, 0, tailPos - headPos, info.Shape, info.Width, color);
+				var beamRender = new BeamRenderable(headPos, info.ZOffset, tailPos - headPos, info.Shape, info.Width, color);
 				return new[] { (IRenderable)beamRender };
 			}
 

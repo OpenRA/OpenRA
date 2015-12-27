@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
 
+		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
+		public readonly int ZOffset = 0;
+
 		public readonly int BeamDuration = 10;
 
 		public readonly bool UsePlayerColor = false;
@@ -102,7 +105,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
-				yield return new BeamRenderable(args.Source, 0, target - args.Source, info.Shape, info.Width, rc);
+				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
 			}
 
 			if (hitanim != null)
