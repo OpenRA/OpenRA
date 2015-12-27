@@ -841,6 +841,8 @@ Rules:
 			Amount: 20
 		RenderSprites:
 			Image: MNLY
+		Chronoshiftable:
+			ReturnToOrigin: false
 	FTUR:
 		Health:
 			HP: 1000
@@ -861,8 +863,6 @@ Rules:
 			SelectTargetSound: slcttgt1.aud
 			BeginChargeSound: chrochr1.aud
 			EndChargeSound: chrordy1.aud
-			Duration: 999999
-			KillCargo: yes
 			Range: 3
 		GrantUpgradePower@IRONCURTAIN:
 			Icon: invuln
