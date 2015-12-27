@@ -179,6 +179,7 @@ rpg:
 	idle: DATA.R8
 		Start: 3015
 		Facings: -32
+		ZOffset: 1023
 
 120mm:
 	idle: DATA.R8
