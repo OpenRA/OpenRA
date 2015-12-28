@@ -312,35 +312,35 @@ namespace OpenRA.Platforms.Default
 		public delegate void TexParameterf(int target, int pname, float param);
 		public static TexParameterf glTexParameterf { get; private set; }
 
-		public delegate void GenFramebuffersEXT(int n, out uint framebuffers);
-		public static GenFramebuffersEXT glGenFramebuffersEXT { get; private set; }
+		public delegate void GenFramebuffers(int n, out uint framebuffers);
+		public static GenFramebuffers glGenFramebuffers { get; private set; }
 
-		public delegate void BindFramebufferEXT(int target, uint framebuffer);
-		public static BindFramebufferEXT glBindFramebufferEXT { get; private set; }
+		public delegate void BindFramebuffer(int target, uint framebuffer);
+		public static BindFramebuffer glBindFramebuffer { get; private set; }
 
-		public delegate void FramebufferTexture2DEXT(int target, int attachment,
+		public delegate void FramebufferTexture2D(int target, int attachment,
 			int textarget, uint texture, int level);
-		public static FramebufferTexture2DEXT glFramebufferTexture2DEXT { get; private set; }
+		public static FramebufferTexture2D glFramebufferTexture2D { get; private set; }
 
-		public delegate void DeleteFramebuffersEXT(int n, ref uint framebuffers);
-		public static DeleteFramebuffersEXT glDeleteFramebuffersEXT { get; private set; }
+		public delegate void DeleteFramebuffers(int n, ref uint framebuffers);
+		public static DeleteFramebuffers glDeleteFramebuffers { get; private set; }
 
-		public delegate void GenRenderbuffersEXT(int n, out uint renderbuffers);
-		public static GenRenderbuffersEXT glGenRenderbuffersEXT { get; private set; }
+		public delegate void GenRenderbuffers(int n, out uint renderbuffers);
+		public static GenRenderbuffers glGenRenderbuffers { get; private set; }
 
-		public delegate void BindRenderbufferEXT(int target, uint renderbuffer);
-		public static BindRenderbufferEXT glBindRenderbufferEXT { get; private set; }
+		public delegate void BindRenderbuffer(int target, uint renderbuffer);
+		public static BindRenderbuffer glBindRenderbuffer { get; private set; }
 
-		public delegate void RenderbufferStorageEXT(int target, int internalformat,
+		public delegate void RenderbufferStorage(int target, int internalformat,
 			int width, int height);
-		public static RenderbufferStorageEXT glRenderbufferStorageEXT { get; private set; }
+		public static RenderbufferStorage glRenderbufferStorage { get; private set; }
 
-		public delegate void DeleteRenderbuffersEXT(int n, ref uint renderbuffers);
-		public static DeleteRenderbuffersEXT glDeleteRenderbuffersEXT { get; private set; }
+		public delegate void DeleteRenderbuffers(int n, ref uint renderbuffers);
+		public static DeleteRenderbuffers glDeleteRenderbuffers { get; private set; }
 
-		public delegate void FramebufferRenderbufferEXT(int target, int attachment,
+		public delegate void FramebufferRenderbuffer(int target, int attachment,
 			int renderbuffertarget, uint renderbuffer);
-		public static FramebufferRenderbufferEXT glFramebufferRenderbufferEXT { get; private set; }
+		public static FramebufferRenderbuffer glFramebufferRenderbuffer { get; private set; }
 
 		public delegate int CheckFramebufferStatus(int target);
 		public static CheckFramebufferStatus glCheckFramebufferStatus { get; private set; }
@@ -424,16 +424,16 @@ namespace OpenRA.Platforms.Default
 				glGetTexImage = Bind<GetTexImage>("glGetTexImage");
 				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
 				glTexParameterf = Bind<TexParameterf>("glTexParameterf");
-				glGenFramebuffersEXT = Bind<GenFramebuffersEXT>("glGenFramebuffersEXT");
-				glBindFramebufferEXT = Bind<BindFramebufferEXT>("glBindFramebufferEXT");
-				glFramebufferTexture2DEXT = Bind<FramebufferTexture2DEXT>("glFramebufferTexture2DEXT");
-				glDeleteFramebuffersEXT = Bind<DeleteFramebuffersEXT>("glDeleteFramebuffersEXT");
-				glGenRenderbuffersEXT = Bind<GenRenderbuffersEXT>("glGenRenderbuffersEXT");
-				glBindRenderbufferEXT = Bind<BindRenderbufferEXT>("glBindRenderbufferEXT");
-				glRenderbufferStorageEXT = Bind<RenderbufferStorageEXT>("glRenderbufferStorageEXT");
-				glDeleteRenderbuffersEXT = Bind<DeleteRenderbuffersEXT>("glDeleteRenderbuffersEXT");
-				glFramebufferRenderbufferEXT = Bind<FramebufferRenderbufferEXT>("glFramebufferRenderbufferEXT");
-				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatus");
+				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffersEXT");
+				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebufferEXT");
+				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2DEXT");
+				glDeleteFramebuffers = Bind<DeleteFramebuffers>("glDeleteFramebuffersEXT");
+				glGenRenderbuffers = Bind<GenRenderbuffers>("glGenRenderbuffersEXT");
+				glBindRenderbuffer = Bind<BindRenderbuffer>("glBindRenderbufferEXT");
+				glRenderbufferStorage = Bind<RenderbufferStorage>("glRenderbufferStorageEXT");
+				glDeleteRenderbuffers = Bind<DeleteRenderbuffers>("glDeleteRenderbuffersEXT");
+				glFramebufferRenderbuffer = Bind<FramebufferRenderbuffer>("glFramebufferRenderbufferEXT");
+				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatusEXT");
 			}
 			catch (Exception e)
 			{
