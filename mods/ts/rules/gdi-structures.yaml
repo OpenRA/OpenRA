@@ -30,6 +30,7 @@ GAPOWR:
 		Amount: 100
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
+	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
