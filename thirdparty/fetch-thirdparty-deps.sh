@@ -73,19 +73,17 @@ fi
 
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from NuGet"
-	get NUnit 2.6.4
-	cp ./NUnit/lib/nunit.framework* .
+	get NUnit 3.0.1
+	cp ./NUnit/lib/net40/nunit.framework* .
 	rm -rf NUnit
 fi
 
-if [ ! -f nunit-console.exe ]; then
-	echo "Fetching NUnit.Runners from NuGet"
-	get NUnit.Runners 2.6.4
-	cp ./NUnit.Runners/tools/nunit-console.exe .
-	chmod +x nunit-console.exe
-	cp ./NUnit.Runners/tools/nunit-console.exe.config .
-	cp -R ./NUnit.Runners/tools/lib .
-	rm -rf NUnit.Runners
+if [ ! -f nunit3-console.exe ]; then
+	echo "Fetching NUnit.Console from NuGet"
+	get NUnit.Console 3.0.1
+	cp -R ./NUnit.Console/tools/* .
+	chmod +x nunit3-console.exe
+	rm -rf NUnit.Console
 fi
 
 if [ ! -f Mono.Nat.dll ]; then
