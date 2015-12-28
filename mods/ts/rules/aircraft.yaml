@@ -59,7 +59,6 @@ DSHP:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -98,9 +97,6 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
 
 ORCAB:
 	Inherits: ^Plane
@@ -144,8 +140,8 @@ ORCAB:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
 		UpgradeMinEnabledLevel: 1
 
 ORCATRAN:
@@ -179,9 +175,6 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -211,9 +204,6 @@ TRNSPORT:
 		Range: 2c0
 		Type: CenterPosition
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
 	Selectable:
 		Bounds: 44,32,0,-8
 
@@ -298,9 +288,6 @@ APACHE:
 	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
 
 HUNTER:
 	Inherits@1: ^GainsExperience
@@ -331,7 +318,9 @@ HUNTER:
 	RenderSprites:
 		Image: GGHUNT
 	WithFacingSpriteBody:
-	Hovers:
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	DrawLineToTarget:
