@@ -335,8 +335,17 @@ namespace OpenRA.Platforms.Default
 		public delegate int CheckFramebufferStatus(int target);
 		public static CheckFramebufferStatus glCheckFramebufferStatus { get; private set; }
 
-		public static void LoadDelegates()
+		public static void Initialize()
 		{
+			CheckGlVersion();
+
+			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
+			{
+				OpenGL.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
+					+ "Please try updating your GPU driver to the latest version provided by the manufacturer.");
+				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
+			}
+
 			glFlush = Bind<Flush>("glFlush");
 			glViewport = Bind<Viewport>("glViewport");
 			glClear = Bind<Clear>("glClear");
@@ -408,6 +417,29 @@ namespace OpenRA.Platforms.Default
 		static T Bind<T>(string name)
 		{
 			return (T)(object)Marshal.GetDelegateForFunctionPointer(SDL.SDL_GL_GetProcAddress(name), typeof(T));
+		}
+
+		static void CheckGlVersion()
+		{
+			var versionString = OpenGL.glGetString(OpenGL.GL_VERSION);
+			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
+
+			var major = 0;
+			if (version.Length > 0)
+				int.TryParse(version[0], out major);
+
+			var minor = 0;
+			if (version.Length > 1)
+				int.TryParse(version[1], out minor);
+
+			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
+			if (major < 2)
+			{
+				OpenGL.WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
+				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
+			}
+
+			ErrorHandler.CheckGlError();
 		}
 
 		public static void WriteGraphicsLog(string message)

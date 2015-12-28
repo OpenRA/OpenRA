@@ -76,16 +76,7 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
 
-			OpenGL.LoadDelegates();
-			ErrorHandler.CheckGlVersion();
-			ErrorHandler.CheckGlError();
-
-			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
-			{
-				OpenGL.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
-					+ "Please try updating your GPU driver to the latest version provided by the manufacturer.");
-				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
-			}
+			OpenGL.Initialize();
 
 			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			ErrorHandler.CheckGlError();

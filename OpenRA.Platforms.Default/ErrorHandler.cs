@@ -15,27 +15,6 @@ namespace OpenRA.Platforms.Default
 {
 	static class ErrorHandler
 	{
-		public static void CheckGlVersion()
-		{
-			var versionString = OpenGL.glGetString(OpenGL.GL_VERSION);
-			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
-
-			var major = 0;
-			if (version.Length > 0)
-				int.TryParse(version[0], out major);
-
-			var minor = 0;
-			if (version.Length > 1)
-				int.TryParse(version[1], out minor);
-
-			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
-			if (major < 2)
-			{
-				OpenGL.WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
-				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
-			}
-		}
-
 		public static void CheckGlError()
 		{
 			var n = OpenGL.glGetError();
