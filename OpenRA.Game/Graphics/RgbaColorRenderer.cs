@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -113,6 +114,23 @@ namespace OpenRA.Graphics
 			return new float2(x, y) / d;
 		}
 
+		void DrawDisconnectedLine(IEnumerable<float2> points, float width, Color color)
+		{
+			using (var e = points.GetEnumerator())
+			{
+				if (!e.MoveNext())
+					return;
+
+				var lastPoint = e.Current;
+				while (e.MoveNext())
+				{
+					var point = e.Current;
+					DrawLine(lastPoint, point, width, color);
+					lastPoint = point;
+				}
+			}
+		}
+
 		void DrawConnectedLine(float2[] points, float width, Color color, bool closed)
 		{
 			// Not a line
@@ -184,18 +202,12 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(float2[] points, float width, Color color, bool connectSegments = false)
+		public void DrawLine(IEnumerable<float2> points, float width, Color color, bool connectSegments = false)
 		{
 			if (!connectSegments)
-			{
-				if (points.Length < 2)
-					return;
-
-				for (var i = 1; i < points.Length; i++)
-					DrawLine(points[i - 1], points[i], width, color);
-			}
+				DrawDisconnectedLine(points, width, color);
 			else
-				DrawConnectedLine(points, width, color, false);
+				DrawConnectedLine(points as float2[] ?? points.ToArray(), width, color, false);
 		}
 
 		public void DrawPolygon(float2[] vertices, float width, Color color)
