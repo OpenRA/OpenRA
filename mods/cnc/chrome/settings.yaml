@@ -269,6 +269,13 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Cash Ticks
+						Checkbox@MUTE_SOUND:
+							X: 15
+							Y: 70
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: Mute Sound
 						Label@MUSIC_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
 							Y: 67

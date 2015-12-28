@@ -302,6 +302,8 @@ namespace OpenRA.Widgets
 					return CycleStatusBars();
 				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
 					return TogglePixelDouble();
+				else if (key == Game.Settings.Keys.ToggleMuteKey)
+					return ToggleMute();
 			}
 
 			return false;
@@ -358,6 +360,24 @@ namespace OpenRA.Widgets
 		{
 			Game.Settings.Graphics.PixelDouble ^= true;
 			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+			return true;
+		}
+
+		bool ToggleMute()
+		{
+			Game.Settings.Sound.Mute ^= true;
+
+			if (Game.Settings.Sound.Mute)
+			{
+				Game.Sound.MuteAudio();
+				Game.Debug("Audio muted");
+			}
+			else
+			{
+				Game.Sound.UnmuteAudio();
+				Game.Debug("Audio unmuted");
+			}
+
 			return true;
 		}
 	}

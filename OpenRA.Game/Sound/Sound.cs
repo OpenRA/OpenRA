@@ -114,6 +114,16 @@ namespace OpenRA
 			soundEngine.StopAllSounds();
 		}
 
+		public void MuteAudio()
+		{
+			soundEngine.Volume = 0f;
+		}
+
+		public void UnmuteAudio()
+		{
+			soundEngine.Volume = 1f;
+		}
+
 		public ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1f); }
 		public ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1f); }
 		public ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }

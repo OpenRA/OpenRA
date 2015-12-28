@@ -165,6 +165,12 @@ Background@MUSIC_PANEL:
 			Text: Close
 			Font: Bold
 			Key: escape
+		Label@MUTE_LABEL:
+			X: 25
+			Y: PARENT_BOTTOM - 45
+			Width: 300
+			Height: 20
+			Font: Small
 
 Background@INSTALL_MUSIC_PANEL:
 	Logic: InstallMusicLogic
