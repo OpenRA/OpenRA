@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -439,7 +440,18 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
 			}
 
-			ErrorHandler.CheckGlError();
+			CheckGlError();
+		}
+
+		public static void CheckGLError()
+		{
+			var n = OpenGL.glGetError();
+			if (n != OpenGL.GL_NO_ERROR)
+			{
+				var error = "GL Error: {0}\n{1}".F(n, new StackTrace());
+				WriteGraphicsLog(error);
+				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+			}
 		}
 
 		public static void WriteGraphicsLog(string message)

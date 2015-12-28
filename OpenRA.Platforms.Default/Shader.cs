@@ -31,19 +31,19 @@ namespace OpenRA.Platforms.Default
 			var code = File.ReadAllText(filename);
 
 			var shader = OpenGL.glCreateShader(type);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			unsafe
 			{
 				var length = code.Length;
 				OpenGL.glShaderSource(shader, 1, new string[] { code }, new IntPtr(&length));
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glCompileShader(shader);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			int success;
 			OpenGL.glGetShaderiv(shader, OpenGL.GL_COMPILE_STATUS, out success);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			if (success == (int)OpenGL.GL_FALSE)
 			{
 				int len;
@@ -66,23 +66,23 @@ namespace OpenRA.Platforms.Default
 
 			// Assemble program
 			program = OpenGL.glCreateProgram();
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			OpenGL.glBindAttribLocation(program, VertexPosAttributeIndex, "aVertexPosition");
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glBindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			OpenGL.glAttachShader(program, vertexShader);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glAttachShader(program, fragmentShader);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			OpenGL.glLinkProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			int success;
 			OpenGL.glGetProgramiv(program, OpenGL.GL_LINK_STATUS, out success);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			if (success == (int)OpenGL.GL_FALSE)
 			{
 				int len;
@@ -96,12 +96,12 @@ namespace OpenRA.Platforms.Default
 			}
 
 			OpenGL.glUseProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			int numUniforms;
 			OpenGL.glGetProgramiv(program, OpenGL.GL_ACTIVE_UNIFORMS, out numUniforms);
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			var nextTexUnit = 0;
 			for (var i = 0; i < numUniforms; i++)
@@ -111,16 +111,16 @@ namespace OpenRA.Platforms.Default
 				var sb = new StringBuilder(128);
 				OpenGL.glGetActiveUniform(program, i, 128, out length, out size, out type, sb);
 				var sampler = sb.ToString();
-				ErrorHandler.CheckGlError();
+				OpenGL.CheckGLError();
 
 				if (type == OpenGL.GL_SAMPLER_2D)
 				{
 					samplers.Add(sampler, nextTexUnit);
 
 					var loc = OpenGL.glGetUniformLocation(program, sampler);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glUniform1i(loc, nextTexUnit);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 
 					nextTexUnit++;
 				}
@@ -139,9 +139,9 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, ((Texture)kv.Value).ID);
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			a();
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetTexture(string name, ITexture t)
@@ -159,40 +159,40 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			var param = OpenGL.glGetUniformLocation(program, name);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glUniform1i(param, value ? 1 : 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x)
 		{
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			var param = OpenGL.glGetUniformLocation(program, name);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glUniform1f(param, x);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x, float y)
 		{
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			var param = OpenGL.glGetUniformLocation(program, name);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glUniform2f(param, x, y);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float[] vec, int length)
 		{
 			VerifyThreadAffinity();
 			var param = OpenGL.glGetUniformLocation(program, name);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			unsafe
 			{
 				fixed (float* pVec = vec)
@@ -209,7 +209,7 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetMatrix(string name, float[] mtx)
@@ -219,9 +219,9 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidDataException("Invalid 4x4 matrix");
 
 			OpenGL.glUseProgram(program);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			var param = OpenGL.glGetUniformLocation(program, name);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			unsafe
 			{
@@ -229,7 +229,7 @@ namespace OpenRA.Platforms.Default
 					OpenGL.glUniformMatrix4fv(param, 1, false, new IntPtr(pMtx));
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 	}
 }
