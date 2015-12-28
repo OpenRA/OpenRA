@@ -125,6 +125,8 @@ crate:
 		CustomBounds: 20,20
 
 mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -134,6 +136,8 @@ mpspawn:
 		QuantizedFacings: 1
 
 waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -151,6 +155,8 @@ waypoint:
 		Palette: colorpicker
 
 camera:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
 	AlwaysVisible:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
@@ -165,6 +171,8 @@ camera:
 		Type: CenterPosition
 
 wormspawner:
+	EditorOnlyTooltip:
+		Name: (worm spawning location)
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false

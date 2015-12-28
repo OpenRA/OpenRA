@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				Footprint = new ReadOnlyDictionary<CPos, SubCell>(footprint);
 			}
 
-			var tooltip = Info.TraitInfoOrDefault<TooltipInfo>();
+			var tooltip = Info.TraitInfoOrDefault<EditorOnlyTooltipInfo>() as TooltipInfoBase ?? Info.TraitInfoOrDefault<TooltipInfo>();
 			Tooltip = (tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + owner.Name + " (" + owner.Faction + ")"
 				+ "\nID: " + ID + "\nType: " + Info.Name;
 

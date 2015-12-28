@@ -207,6 +207,8 @@ HIND.Husk:
 
 U2.Husk:
 	Inherits: ^PlaneHusk
+	EditorOnlyTooltip:
+		Name: Husk (U2 Spy Plane)
 	Aircraft:
 		ROT: 7
 		Speed: 373
