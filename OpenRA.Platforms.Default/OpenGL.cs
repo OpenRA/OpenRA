@@ -409,5 +409,27 @@ namespace OpenRA.Platforms.Default
 		{
 			return (T)(object)Marshal.GetDelegateForFunctionPointer(SDL.SDL_GL_GetProcAddress(name), typeof(T));
 		}
+
+		public static void WriteGraphicsLog(string message)
+		{
+			Log.Write("graphics", message);
+			Log.Write("graphics", "");
+			Log.Write("graphics", "OpenGL Information:");
+			var vendor = OpenGL.glGetString(OpenGL.GL_VENDOR);
+			Log.Write("graphics", "Vendor: {0}", vendor);
+			if (vendor.Contains("Microsoft"))
+			{
+				var msg = "";
+				msg += "Note:  The default driver provided by Microsoft does not include full OpenGL support.\n";
+				msg += "Please install the latest drivers from your graphics card manufacturer's website.\n";
+				Log.Write("graphics", msg);
+			}
+
+			Log.Write("graphics", "Renderer: {0}", OpenGL.glGetString(OpenGL.GL_RENDERER));
+			Log.Write("graphics", "GL Version: {0}", OpenGL.glGetString(OpenGL.GL_VERSION));
+			Log.Write("graphics", "Shader Version: {0}", OpenGL.glGetString(OpenGL.GL_SHADING_LANGUAGE_VERSION));
+			Log.Write("graphics", "Available extensions:");
+			Log.Write("graphics", OpenGL.glGetString(OpenGL.GL_EXTENSIONS));
+		}
 	}
 }

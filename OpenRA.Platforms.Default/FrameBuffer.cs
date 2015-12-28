@@ -57,7 +57,7 @@ namespace OpenRA.Platforms.Default
 			if (status != OpenGL.FRAMEBUFFER_COMPLETE_EXT)
 			{
 				var error = "Error creating framebuffer: {0}\n{1}".F(status, new StackTrace());
-				ErrorHandler.WriteGraphicsLog(error);
+				OpenGL.WriteGraphicsLog(error);
 				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
 			}
 

@@ -31,7 +31,7 @@ namespace OpenRA.Platforms.Default
 			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
 			if (major < 2)
 			{
-				WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
+				OpenGL.WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
 			}
 		}
@@ -42,31 +42,9 @@ namespace OpenRA.Platforms.Default
 			if (n != OpenGL.GL_NO_ERROR)
 			{
 				var error = "GL Error: {0}\n{1}".F(n, new StackTrace());
-				WriteGraphicsLog(error);
+				OpenGL.WriteGraphicsLog(error);
 				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
 			}
-		}
-
-		public static void WriteGraphicsLog(string message)
-		{
-			Log.Write("graphics", message);
-			Log.Write("graphics", "");
-			Log.Write("graphics", "OpenGL Information:");
-			var vendor = OpenGL.glGetString(OpenGL.GL_VENDOR);
-			Log.Write("graphics", "Vendor: {0}", vendor);
-			if (vendor.Contains("Microsoft"))
-			{
-				var msg = "";
-				msg += "Note:  The default driver provided by Microsoft does not include full OpenGL support.\n";
-				msg += "Please install the latest drivers from your graphics card manufacturer's website.\n";
-				Log.Write("graphics", msg);
-			}
-
-			Log.Write("graphics", "Renderer: {0}", OpenGL.glGetString(OpenGL.GL_RENDERER));
-			Log.Write("graphics", "GL Version: {0}", OpenGL.glGetString(OpenGL.GL_VERSION));
-			Log.Write("graphics", "Shader Version: {0}", OpenGL.glGetString(OpenGL.GL_SHADING_LANGUAGE_VERSION));
-			Log.Write("graphics", "Available extensions:");
-			Log.Write("graphics", OpenGL.glGetString(OpenGL.GL_EXTENSIONS));
 		}
 	}
 }
