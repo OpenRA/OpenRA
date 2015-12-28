@@ -23,6 +23,15 @@ namespace OpenRA.Platforms.Default
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	internal static class OpenGL
 	{
+		public enum GLFeatures
+		{
+			None = 0,
+			GL2OrGreater = 1,
+			FramebufferExt = 4,
+		}
+
+		public static GLFeatures Features { get; private set; }
+
 		public const int GL_FALSE = 0;
 
 		// ClearBufferMask
@@ -338,81 +347,99 @@ namespace OpenRA.Platforms.Default
 
 		public static void Initialize()
 		{
-			CheckGlVersion();
-
-			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
+			// glGetError and glGetString are used in our error handlers
+			// so we want these to be available early.
+			try
 			{
-				OpenGL.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
-					+ "Please try updating your GPU driver to the latest version provided by the manufacturer.");
-				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
+				glGetError = Bind<GetError>("glGetError");
+				glGetStringInternal = Bind<GetString>("glGetString");
+			}
+			catch (Exception)
+			{
+				throw new InvalidProgramException("Failed to initialize low-level OpenGL bindings. GPU information is not available");
 			}
 
-			glFlush = Bind<Flush>("glFlush");
-			glViewport = Bind<Viewport>("glViewport");
-			glClear = Bind<Clear>("glClear");
-			glClearColor = Bind<ClearColor>("glClearColor");
-			glGetError = Bind<GetError>("glGetError");
-			glGetStringInternal = Bind<GetString>("glGetString");
-			glGetIntegerv = Bind<GetIntegerv>("glGetIntegerv");
-			glFinish = Bind<Finish>("glFinish");
-			glCreateProgram = Bind<CreateProgram>("glCreateProgram");
-			glUseProgram = Bind<UseProgram>("glUseProgram");
-			glGetProgramiv = Bind<GetProgramiv>("glGetProgramiv");
-			glCreateShader = Bind<CreateShader>("glCreateShader");
-			glShaderSource = Bind<ShaderSource>("glShaderSource");
-			glCompileShader = Bind<CompileShader>("glCompileShader");
-			glGetShaderiv = Bind<GetShaderiv>("glGetShaderiv");
-			glAttachShader = Bind<AttachShader>("glAttachShader");
-			glGetShaderInfoLog = Bind<GetShaderInfoLog>("glGetShaderInfoLog");
-			glLinkProgram = Bind<LinkProgram>("glLinkProgram");
-			glGetProgramInfoLog = Bind<GetProgramInfoLog>("glGetProgramInfoLog");
-			glGetUniformLocation = Bind<GetUniformLocation>("glGetUniformLocation");
-			glGetActiveUniform = Bind<GetActiveUniform>("glGetActiveUniform");
-			glUniform1i = Bind<Uniform1i>("glUniform1i");
-			glUniform1f = Bind<Uniform1f>("glUniform1f");
-			glUniform2f = Bind<Uniform2f>("glUniform2f");
-			glUniform1fv = Bind<Uniform1fv>("glUniform1fv");
-			glUniform2fv = Bind<Uniform2fv>("glUniform2fv");
-			glUniform3fv = Bind<Uniform3fv>("glUniform3fv");
-			glUniform4fv = Bind<Uniform4fv>("glUniform4fv");
-			glUniformMatrix4fv = Bind<UniformMatrix4fv>("glUniformMatrix4fv");
-			glGenBuffers = Bind<GenBuffers>("glGenBuffers");
-			glBindBuffer = Bind<BindBuffer>("glBindBuffer");
-			glBufferData = Bind<BufferData>("glBufferData");
-			glBufferSubData = Bind<BufferSubData>("glBufferSubData");
-			glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
-			glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
-			glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");
-			glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
-			glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
-			glDrawArrays = Bind<DrawArrays>("glDrawArrays");
-			glEnable = Bind<Enable>("glEnable");
-			glDisable = Bind<Disable>("glDisable");
-			glBlendEquation = Bind<BlendEquation>("glBlendEquation");
-			glBlendFunc = Bind<BlendFunc>("glBlendFunc");
-			glScissor = Bind<Scissor>("glScissor");
-			glPushClientAttrib = Bind<PushClientAttrib>("glPushClientAttrib");
-			glPopClientAttrib = Bind<PopClientAttrib>("glPopClientAttrib");
-			glPixelStoref = Bind<PixelStoref>("glPixelStoref");
-			glReadPixels = Bind<ReadPixels>("glReadPixels");
-			glGenTextures = Bind<GenTextures>("glGenTextures");
-			glDeleteTextures = Bind<DeleteTextures>("glDeleteTextures");
-			glBindTexture = Bind<BindTexture>("glBindTexture");
-			glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
-			glTexImage2D = Bind<TexImage2D>("glTexImage2D");
-			glGetTexImage = Bind<GetTexImage>("glGetTexImage");
-			glTexParameteri = Bind<TexParameteri>("glTexParameteri");
-			glTexParameterf = Bind<TexParameterf>("glTexParameterf");
-			glGenFramebuffersEXT = Bind<GenFramebuffersEXT>("glGenFramebuffersEXT");
-			glBindFramebufferEXT = Bind<BindFramebufferEXT>("glBindFramebufferEXT");
-			glFramebufferTexture2DEXT = Bind<FramebufferTexture2DEXT>("glFramebufferTexture2DEXT");
-			glDeleteFramebuffersEXT = Bind<DeleteFramebuffersEXT>("glDeleteFramebuffersEXT");
-			glGenRenderbuffersEXT = Bind<GenRenderbuffersEXT>("glGenRenderbuffersEXT");
-			glBindRenderbufferEXT = Bind<BindRenderbufferEXT>("glBindRenderbufferEXT");
-			glRenderbufferStorageEXT = Bind<RenderbufferStorageEXT>("glRenderbufferStorageEXT");
-			glDeleteRenderbuffersEXT = Bind<DeleteRenderbuffersEXT>("glDeleteRenderbuffersEXT");
-			glFramebufferRenderbufferEXT = Bind<FramebufferRenderbufferEXT>("glFramebufferRenderbufferEXT");
-			glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatus");
+			DetectGLFeatures();
+			if (!Features.HasFlag(GLFeatures.GL2OrGreater) || !Features.HasFlag(GLFeatures.FramebufferExt))
+			{
+				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(OpenGL.GL_VERSION));
+				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
+			}
+			else
+				Console.WriteLine("OpenGL version: " + glGetString(OpenGL.GL_VERSION));
+
+			try
+			{
+				glFlush = Bind<Flush>("glFlush");
+				glViewport = Bind<Viewport>("glViewport");
+				glClear = Bind<Clear>("glClear");
+				glClearColor = Bind<ClearColor>("glClearColor");
+				glGetIntegerv = Bind<GetIntegerv>("glGetIntegerv");
+				glFinish = Bind<Finish>("glFinish");
+				glCreateProgram = Bind<CreateProgram>("glCreateProgram");
+				glUseProgram = Bind<UseProgram>("glUseProgram");
+				glGetProgramiv = Bind<GetProgramiv>("glGetProgramiv");
+				glCreateShader = Bind<CreateShader>("glCreateShader");
+				glShaderSource = Bind<ShaderSource>("glShaderSource");
+				glCompileShader = Bind<CompileShader>("glCompileShader");
+				glGetShaderiv = Bind<GetShaderiv>("glGetShaderiv");
+				glAttachShader = Bind<AttachShader>("glAttachShader");
+				glGetShaderInfoLog = Bind<GetShaderInfoLog>("glGetShaderInfoLog");
+				glLinkProgram = Bind<LinkProgram>("glLinkProgram");
+				glGetProgramInfoLog = Bind<GetProgramInfoLog>("glGetProgramInfoLog");
+				glGetUniformLocation = Bind<GetUniformLocation>("glGetUniformLocation");
+				glGetActiveUniform = Bind<GetActiveUniform>("glGetActiveUniform");
+				glUniform1i = Bind<Uniform1i>("glUniform1i");
+				glUniform1f = Bind<Uniform1f>("glUniform1f");
+				glUniform2f = Bind<Uniform2f>("glUniform2f");
+				glUniform1fv = Bind<Uniform1fv>("glUniform1fv");
+				glUniform2fv = Bind<Uniform2fv>("glUniform2fv");
+				glUniform3fv = Bind<Uniform3fv>("glUniform3fv");
+				glUniform4fv = Bind<Uniform4fv>("glUniform4fv");
+				glUniformMatrix4fv = Bind<UniformMatrix4fv>("glUniformMatrix4fv");
+				glGenBuffers = Bind<GenBuffers>("glGenBuffers");
+				glBindBuffer = Bind<BindBuffer>("glBindBuffer");
+				glBufferData = Bind<BufferData>("glBufferData");
+				glBufferSubData = Bind<BufferSubData>("glBufferSubData");
+				glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
+				glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
+				glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");
+				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
+				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
+				glDrawArrays = Bind<DrawArrays>("glDrawArrays");
+				glEnable = Bind<Enable>("glEnable");
+				glDisable = Bind<Disable>("glDisable");
+				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
+				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
+				glScissor = Bind<Scissor>("glScissor");
+				glPushClientAttrib = Bind<PushClientAttrib>("glPushClientAttrib");
+				glPopClientAttrib = Bind<PopClientAttrib>("glPopClientAttrib");
+				glPixelStoref = Bind<PixelStoref>("glPixelStoref");
+				glReadPixels = Bind<ReadPixels>("glReadPixels");
+				glGenTextures = Bind<GenTextures>("glGenTextures");
+				glDeleteTextures = Bind<DeleteTextures>("glDeleteTextures");
+				glBindTexture = Bind<BindTexture>("glBindTexture");
+				glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
+				glTexImage2D = Bind<TexImage2D>("glTexImage2D");
+				glGetTexImage = Bind<GetTexImage>("glGetTexImage");
+				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
+				glTexParameterf = Bind<TexParameterf>("glTexParameterf");
+				glGenFramebuffersEXT = Bind<GenFramebuffersEXT>("glGenFramebuffersEXT");
+				glBindFramebufferEXT = Bind<BindFramebufferEXT>("glBindFramebufferEXT");
+				glFramebufferTexture2DEXT = Bind<FramebufferTexture2DEXT>("glFramebufferTexture2DEXT");
+				glDeleteFramebuffersEXT = Bind<DeleteFramebuffersEXT>("glDeleteFramebuffersEXT");
+				glGenRenderbuffersEXT = Bind<GenRenderbuffersEXT>("glGenRenderbuffersEXT");
+				glBindRenderbufferEXT = Bind<BindRenderbufferEXT>("glBindRenderbufferEXT");
+				glRenderbufferStorageEXT = Bind<RenderbufferStorageEXT>("glRenderbufferStorageEXT");
+				glDeleteRenderbuffersEXT = Bind<DeleteRenderbuffersEXT>("glDeleteRenderbuffersEXT");
+				glFramebufferRenderbufferEXT = Bind<FramebufferRenderbufferEXT>("glFramebufferRenderbufferEXT");
+				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatus");
+			}
+			catch (Exception e)
+			{
+				OpenGL.WriteGraphicsLog("Failed to initialize OpenGL bindings.\nInner exception was: {0}".F(e));
+				throw new InvalidProgramException("Failed to initialize OpenGL. See graphics.log for details.");
+			}
 		}
 
 		static T Bind<T>(string name)
@@ -420,27 +447,29 @@ namespace OpenRA.Platforms.Default
 			return (T)(object)Marshal.GetDelegateForFunctionPointer(SDL.SDL_GL_GetProcAddress(name), typeof(T));
 		}
 
-		static void CheckGlVersion()
+		public static void DetectGLFeatures()
 		{
-			var versionString = OpenGL.glGetString(OpenGL.GL_VERSION);
-			var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
-
-			var major = 0;
-			if (version.Length > 0)
-				int.TryParse(version[0], out major);
-
-			var minor = 0;
-			if (version.Length > 1)
-				int.TryParse(version[1], out minor);
-
-			Console.WriteLine("Detected OpenGL version: {0}.{1}".F(major, minor));
-			if (major < 2)
+			try
 			{
-				OpenGL.WriteGraphicsLog("OpenRA requires OpenGL version 2.0 or greater and detected {0}.{1}".F(major, minor));
-				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
-			}
+				var versionString = glGetString(OpenGL.GL_VERSION);
+				var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
 
-			CheckGlError();
+				var major = 0;
+				if (version.Length > 0)
+					int.TryParse(version[0], out major);
+
+				var minor = 0;
+				if (version.Length > 1)
+					int.TryParse(version[1], out minor);
+
+				if (major >= 2 && minor >= 0)
+					Features |= GLFeatures.GL2OrGreater;
+
+				var hasFramebufferExt = SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_TRUE;
+				if (hasFramebufferExt)
+					Features |= GLFeatures.FramebufferExt;
+			}
+			catch (Exception) { }
 		}
 
 		public static void CheckGLError()
