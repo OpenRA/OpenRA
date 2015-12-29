@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,6 +39,19 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Launch = new LaunchArguments(args);
 			Ui.ResetAll();
 			Game.Settings.Save();
+
+			if (Launch.Benchmark)
+			{
+				Log.AddChannel("cpu", "cpu.csv");
+				Log.Write("cpu", "tick;time [ms]");
+
+				Log.AddChannel("render", "render.csv");
+				Log.Write("render", "frame;time [ms]");
+
+				Console.WriteLine("Saving benchmark data into {0}".F(Path.Combine(Platform.SupportDir, "Logs")));
+
+				Game.BenchmarkMode = true;
+			}
 
 			// Join a server directly
 			var connect = Launch.GetConnectAddress();

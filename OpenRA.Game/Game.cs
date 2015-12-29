@@ -45,6 +45,8 @@ namespace OpenRA
 		public static Sound Sound;
 		public static bool HasInputFocus = false;
 
+		public static bool BenchmarkMode = false;
+
 		public static GlobalChat GlobalChat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
@@ -493,6 +495,9 @@ namespace OpenRA
 
 							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
+							if (BenchmarkMode)
+								Log.Write("cpu", "{0};{1}".F(LocalTick, PerfHistory.Items["tick_time"].LastValue));
+
 							if (isNetTick)
 								orderManager.Tick();
 
@@ -578,6 +583,9 @@ namespace OpenRA
 			PerfHistory.Items["batches"].Tick();
 			PerfHistory.Items["render_widgets"].Tick();
 			PerfHistory.Items["render_flip"].Tick();
+
+			if (BenchmarkMode)
+				Log.Write("render", "{0};{1}".F(RenderFrame, PerfHistory.Items["render"].LastValue));
 		}
 
 		static void Loop()
