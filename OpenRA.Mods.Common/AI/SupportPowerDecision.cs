@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.AI
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		public class Consideration
 		{
-			public enum DecisionMetric { Health, Value, None }
+			public enum DecisionMetric { Health, Value, BaseBuilding, None }
 
 			[Desc("Against whom should this power be used?", "Allowed keywords: Ally, Neutral, Enemy")]
 			public readonly Stance Against = Stance.Enemy;
@@ -140,6 +140,11 @@ namespace OpenRA.Mods.Common.AI
 							var health = a.TraitOrDefault<Health>();
 							return (health != null) ? (health.HP / health.MaxHP) * Attractiveness : 0;
 
+					case DecisionMetric.BaseBuilding:
+						if (a.Info.HasTraitInfo<BaseBuildingInfo>())
+							return Attractiveness;
+						else
+							break;
 						default:
 							return Attractiveness;
 					}

@@ -546,6 +546,7 @@ namespace OpenRA.Mods.Common.AI
 				World.IssueOrder(orders.Dequeue());
 		}
 
+		// TODO: Investigate why there are no references for this method?
 		internal Actor ChooseEnemyTarget()
 		{
 			if (Player.WinState != WinState.Undefined)
@@ -582,6 +583,7 @@ namespace OpenRA.Mods.Common.AI
 			if (leastLikedEnemies.Count() > 1)
 				aggro[enemy].Aggro++;
 
+			BotDebug("Bot {0}({1}) has chosen target {2}({3})", Player.PlayerName, Player.ClientIndex, target.Owner.PlayerName, target.Owner.ClientIndex);
 			return target;
 		}
 
@@ -755,8 +757,18 @@ namespace OpenRA.Mods.Common.AI
 			var ownUnits = activeUnits
 				.Where(unit => unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && unit.IsIdle).ToList();
 
-			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
+			// todo: bug, no rush attack is done if there is no enemy construction yard
+			if (!allEnemyBaseBuilder.Any()) {
+				BotDebug("Bot {0}({1}) considered rush attack but couldn't find any enemy contrcuction yards",
+					this.Player.PlayerName, this.Player.ClientIndex);
 				return;
+			}
+
+			if (ownUnits.Count < Info.SquadSize) {
+				BotDebug("Bot {0}({1}) considered rush attack but current unit count({2}) is lower than the rush squad limit({3})",
+					this.Player.PlayerName, this.Player.ClientIndex, ownUnits.Count, Info.SquadSize);
+				return;
+			}
 
 			foreach (var b in allEnemyBaseBuilder)
 			{
@@ -773,6 +785,7 @@ namespace OpenRA.Mods.Common.AI
 					foreach (var a3 in ownUnits)
 						rush.Units.Add(a3);
 
+					BotDebug("Bot {0} is going to rush attack {1} with squad made of {2} units", this.Player.PlayerName, target.Owner.PlayerName, rush.Units.Count.ToString());
 					return;
 				}
 			}
@@ -796,6 +809,9 @@ namespace OpenRA.Mods.Common.AI
 				foreach (var a in ownUnits)
 					protectSq.Units.Add(a);
 			}
+
+			BotDebug("Bot {0}:{1} decided to protect his own against enemy {2}:{3} with a protection squad made of {4} units",
+				this.Player.PlayerName, this.Player.ClientIndex.ToString(), attacker.Owner.PlayerName, attacker.Owner.ClientIndex.ToString(), protectSq.Units.Count.ToString());
 		}
 
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
@@ -995,6 +1011,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
+			BotDebug("Bot {0}:{1} found a target with attractiveness of {2} to attack", this.Player.PlayerName, this.Player.ClientIndex.ToString(), bestAttractiveness.ToString());
 			return bestLocation;
 		}
 
@@ -1008,13 +1025,18 @@ namespace OpenRA.Mods.Common.AI
 		void ProductionUnits(Actor self)
 		{
 			// Stop building until economy is restored
-			if (!HasAdequateProc())
+			if (!HasAdequateProc()) {
+				BotDebug("Bot {0}({1}) is trying to build units but have no funds", this.Player.PlayerName, this.Player.ClientIndex.ToString());
 				return;
+			}
 
 			// No construction yards - Build a new MCV
 			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
 					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
+			{
+				BotDebug("Bot {0}({1}) is building a new MCV", this.Player.PlayerName, this.Player.ClientIndex.ToString());
 				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
+			}
 
 			foreach (var q in Info.UnitQueues)
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
@@ -1040,11 +1062,14 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			if (Info.UnitLimits != null &&
-				Info.UnitLimits.ContainsKey(name) &&
-				World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name])
+			    Info.UnitLimits.ContainsKey(name) &&
+			    World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name]) {
+				BotDebug("Bot {0}({1}) reached limit for building {2} units", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 				return;
+			}
 
 			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
+			BotDebug("Bot {0}({1}) is building a {2} unit", this.Player.PlayerName, this.Player.ClientIndex.ToString(), unit.Name);
 		}
 
 		void BuildUnit(string category, string name)
