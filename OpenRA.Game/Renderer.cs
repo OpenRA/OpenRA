@@ -91,6 +91,9 @@ namespace OpenRA
 
 		public void InitializeFonts(Manifest m)
 		{
+			if (Fonts != null)
+				foreach (var font in Fonts.Values)
+					font.Dispose();
 			using (new Support.PerfTimer("SpriteFonts"))
 			{
 				if (fontSheetBuilder != null)
@@ -175,7 +178,7 @@ namespace OpenRA
 
 		public Size Resolution { get { return Device.WindowSize; } }
 
-		public interface IBatchRenderer { void Flush();	}
+		public interface IBatchRenderer { void Flush(); }
 
 		public IBatchRenderer CurrentBatchRenderer
 		{
@@ -254,6 +257,9 @@ namespace OpenRA
 			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
 				fontSheetBuilder.Dispose();
+			if (Fonts != null)
+				foreach (var font in Fonts.Values)
+					font.Dispose();
 		}
 
 		public string GetClipboardText()

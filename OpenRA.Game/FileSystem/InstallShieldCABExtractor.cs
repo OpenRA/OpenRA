@@ -17,7 +17,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace OpenRA.FileSystem
 {
-	public class InstallShieldCABExtractor : IFolder
+	public sealed class InstallShieldCABExtractor : IFolder
 	{
 		const uint FileSplit = 0x1;
 		const uint FileObfuscated = 0x2;

@@ -124,12 +124,12 @@ namespace OpenRA.Mods.Cnc
 			r.EndFrame(nih);
 		}
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			if (sheet != null)
+			if (disposing && sheet != null)
 				sheet.Dispose();
 
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 	}
 }

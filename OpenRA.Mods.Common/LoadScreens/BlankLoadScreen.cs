@@ -90,6 +90,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Game.Settings.Save();
 		}
 
-		public virtual void Dispose() { }
+		protected virtual void Dispose(bool disposing) { }
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 	}
 }

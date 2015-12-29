@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 		void Tick();
 	}
 
-	public class SoftwareCursor : ICursor
+	public sealed class SoftwareCursor : ICursor
 	{
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Cache<string, PaletteReference> paletteReferences;

@@ -66,7 +66,7 @@ namespace OpenRA.Chat
 		}
 	}
 
-	public class GlobalChat : IDisposable
+	public sealed class GlobalChat : IDisposable
 	{
 		readonly IrcClient client = new IrcClient();
 		volatile Channel channel;
