@@ -38,6 +38,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			PlayerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
+
+			foreach (var a in self.TraitsImplementing<INotifyPowered>())
+				a.OnPower(self);
+
+			foreach (var a in self.TraitsImplementing<INotifyUnpowered>())
+				a.OnPowerLoss(self);
 		}
 
 		protected override void UpgradeEnabled(Actor self) { PlayerPower.UpdateActor(self); }
