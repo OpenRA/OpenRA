@@ -178,8 +178,8 @@ namespace OpenRA.Mods.Common.Traits
 				return SubCell.FullCell;
 
 			return !self.World.ActorMap.GetActorsAt(cell)
-				.Where(x => x != ignoreActor)
-				.Any() ? SubCell.FullCell : SubCell.Invalid;
+				.Any(x => x != ignoreActor)
+				? SubCell.FullCell : SubCell.Invalid;
 		}
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
