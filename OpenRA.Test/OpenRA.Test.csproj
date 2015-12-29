@@ -49,6 +49,7 @@
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\CoordinateTest.cs" />
+    <Compile Include="OpenRA.Mods.Common\ShapeTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
     <Compile Include="OpenRA.Game\PlatformTest.cs" />
   </ItemGroup>
@@ -56,6 +57,11 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0dfb103f-2962-400f-8c6d-e2c28ccba633}</Project>
       <Name>OpenRA.Game</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

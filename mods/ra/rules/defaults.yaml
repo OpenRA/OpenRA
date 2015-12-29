@@ -165,8 +165,9 @@
 	Inherits@3: ^SpriteActor
 	DrawLineToTarget:
 	Health:
-		Radius: 128
 		HP: 25
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:

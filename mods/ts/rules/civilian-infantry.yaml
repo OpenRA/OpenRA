@@ -211,8 +211,9 @@ DOGGIE:
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
-		Radius: 213
 		HP: 250
+		Shape: Circle
+			Radius: 213
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	Valued:

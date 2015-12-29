@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common
 				var actorWidth = 0;
 				var healthInfo = currActor.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo != null)
-					actorWidth = healthInfo.Radius.Length;
+					actorWidth = healthInfo.Shape.OuterRadius.Length;
 
 				var projection = MinimumPointLineProjection(lineStart, lineEnd, currActor.CenterPosition);
 				var distance = (currActor.CenterPosition - projection).HorizontalLength;

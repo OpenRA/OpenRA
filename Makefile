@@ -140,9 +140,9 @@ mod_common: $(mod_common_TARGET)
 test_dll_SRCS := $(shell find OpenRA.Test/ -iname '*.cs')
 test_dll_TARGET = OpenRA.Test.dll
 test_dll_KIND = library
-test_dll_DEPS = $(game_TARGET)
+test_dll_DEPS = $(game_TARGET) $(mod_common_TARGET)
 test_dll_FLAGS = -warn:1
-test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(NUNIT_LIBS)
+test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(mod_common_TARGET) $(NUNIT_LIBS)
 PROGRAMS += test_dll
 test_dll: $(test_dll_TARGET)
 

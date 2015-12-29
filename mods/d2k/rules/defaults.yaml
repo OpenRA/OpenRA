@@ -160,7 +160,8 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Health:
-		Radius: 96
+		Shape: Circle
+			Radius: 96
 	Armor:
 		Type: none
 	RevealsShroud:
