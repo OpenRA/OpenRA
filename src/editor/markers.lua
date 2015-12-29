@@ -155,7 +155,19 @@ local function createMarkersWindow()
 
   ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
     function (event)
-      local menu = wx.wxMenu {}
+      local item_id = event:GetItem()
+      local ID_BOOKMARKTOGGLE = ID("markers.bookmarktoggle")
+      local ID_BREAKPOINTTOGGLE = ID("markers.breakpointtoggle")
+      local menu = wx.wxMenu {
+        { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark"), TR("Toggle bookmark") },
+        { ID_BREAKPOINTTOGGLE, TR("Toggle Break&point"), TR("Toggle breakpoint") },
+      }
+      local activate = function() ctrl:ActivateItem(item_id, true) end
+      menu:Enable(ID_BOOKMARKTOGGLE, ctrl:GetItemImage(item_id) == image.BOOKMARK)
+      menu:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, activate)
+
+      menu:Enable(ID_BREAKPOINTTOGGLE, ctrl:GetItemImage(item_id) == image.BREAKPOINT)
+      menu:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, activate)
 
       PackageEventHandle("onMenuMarkers", menu, ctrl, event)
 
