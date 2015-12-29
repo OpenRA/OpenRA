@@ -243,7 +243,7 @@ nunit: test_dll
 		echo 'NUnit version >= 2.6 required'>&2; \
 		exit 1; \
 	fi
-	@$(NUNIT_CONSOLE) $(test_dll_TARGET)
+	@$(NUNIT_CONSOLE) --noresult $(test_dll_TARGET)
 
 test: utility mods
 	@echo
