@@ -50,7 +50,7 @@ before_test:
     }
 
 test_script:
-  - nunit-console-x86.exe OpenRA.Test.dll
+  - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
 
 after_test:
   - choco install pandoc -y

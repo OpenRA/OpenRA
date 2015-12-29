@@ -228,7 +228,7 @@ check: utility mods
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 
-NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit-console.exe && echo mono thirdparty/download/nunit-console.exe || \
+NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit2-console 2>/dev/null || which nunit3-console 2>/dev/null || which nunit-console 2>/dev/null)
 nunit: test_dll
 	@echo
@@ -243,7 +243,7 @@ nunit: test_dll
 		echo 'NUnit version >= 2.6 required'>&2; \
 		exit 1; \
 	fi
-	@$(NUNIT_CONSOLE) $(test_dll_TARGET)
+	@$(NUNIT_CONSOLE) --noresult $(test_dll_TARGET)
 
 test: utility mods
 	@echo
