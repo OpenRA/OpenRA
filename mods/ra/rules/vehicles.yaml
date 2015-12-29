@@ -50,9 +50,9 @@ V2RL:
 		Speed: 128
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	Turreted:
-		ROT: 5
+		ROT: 7
 	Armament:
 		Weapon: 25mm
 		Recoil: 85
