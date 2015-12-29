@@ -28,42 +28,42 @@ namespace OpenRA.Platforms.Default
 			if (!Exts.IsPowerOf2(size.Width) || !Exts.IsPowerOf2(size.Height))
 				throw new InvalidDataException("Frame buffer size ({0}x{1}) must be a power of two".F(size.Width, size.Height));
 
-			OpenGL.glGenFramebuffersEXT(1, out framebuffer);
-			ErrorHandler.CheckGlError();
-			OpenGL.glBindFramebufferEXT(OpenGL.FRAMEBUFFER_EXT, framebuffer);
-			ErrorHandler.CheckGlError();
+			OpenGL.glGenFramebuffers(1, out framebuffer);
+			OpenGL.CheckGLError();
+			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, framebuffer);
+			OpenGL.CheckGLError();
 
 			// Color
 			texture = new Texture();
 			texture.SetEmpty(size.Width, size.Height);
-			OpenGL.glFramebufferTexture2DEXT(OpenGL.FRAMEBUFFER_EXT, OpenGL.COLOR_ATTACHMENT0_EXT, OpenGL.GL_TEXTURE_2D, texture.ID, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.glFramebufferTexture2D(OpenGL.FRAMEBUFFER_EXT, OpenGL.COLOR_ATTACHMENT0_EXT, OpenGL.GL_TEXTURE_2D, texture.ID, 0);
+			OpenGL.CheckGLError();
 
 			// Depth
-			OpenGL.glGenRenderbuffersEXT(1, out depth);
-			ErrorHandler.CheckGlError();
+			OpenGL.glGenRenderbuffers(1, out depth);
+			OpenGL.CheckGLError();
 
-			OpenGL.glBindRenderbufferEXT(OpenGL.RENDERBUFFER_EXT, depth);
-			ErrorHandler.CheckGlError();
+			OpenGL.glBindRenderbuffer(OpenGL.RENDERBUFFER_EXT, depth);
+			OpenGL.CheckGLError();
 
-			OpenGL.glRenderbufferStorageEXT(OpenGL.RENDERBUFFER_EXT, OpenGL.GL_DEPTH_COMPONENT, size.Width, size.Height);
-			ErrorHandler.CheckGlError();
+			OpenGL.glRenderbufferStorage(OpenGL.RENDERBUFFER_EXT, OpenGL.GL_DEPTH_COMPONENT, size.Width, size.Height);
+			OpenGL.CheckGLError();
 
-			OpenGL.glFramebufferRenderbufferEXT(OpenGL.FRAMEBUFFER_EXT, OpenGL.DEPTH_ATTACHMENT_EXT, OpenGL.RENDERBUFFER_EXT, depth);
-			ErrorHandler.CheckGlError();
+			OpenGL.glFramebufferRenderbuffer(OpenGL.FRAMEBUFFER_EXT, OpenGL.DEPTH_ATTACHMENT_EXT, OpenGL.RENDERBUFFER_EXT, depth);
+			OpenGL.CheckGLError();
 
 			// Test for completeness
 			var status = OpenGL.glCheckFramebufferStatus(OpenGL.FRAMEBUFFER_EXT);
 			if (status != OpenGL.FRAMEBUFFER_COMPLETE_EXT)
 			{
 				var error = "Error creating framebuffer: {0}\n{1}".F(status, new StackTrace());
-				ErrorHandler.WriteGraphicsLog(error);
+				OpenGL.WriteGraphicsLog(error);
 				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
 			}
 
 			// Restore default buffer
-			OpenGL.glBindFramebufferEXT(OpenGL.FRAMEBUFFER_EXT, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, 0);
+			OpenGL.CheckGLError();
 		}
 
 		static int[] ViewportRectangle()
@@ -75,7 +75,7 @@ namespace OpenRA.Platforms.Default
 					OpenGL.glGetIntegerv(OpenGL.GL_VIEWPORT, ptr);
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			return v;
 		}
 
@@ -88,26 +88,26 @@ namespace OpenRA.Platforms.Default
 			cv = ViewportRectangle();
 
 			OpenGL.glFlush();
-			ErrorHandler.CheckGlError();
-			OpenGL.glBindFramebufferEXT(OpenGL.FRAMEBUFFER_EXT, framebuffer);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
+			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, framebuffer);
+			OpenGL.CheckGLError();
 			OpenGL.glViewport(0, 0, size.Width, size.Height);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glClearColor(0, 0, 0, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void Unbind()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glFlush();
-			ErrorHandler.CheckGlError();
-			OpenGL.glBindFramebufferEXT(OpenGL.FRAMEBUFFER_EXT, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
+			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, 0);
+			OpenGL.CheckGLError();
 			OpenGL.glViewport(cv[0], cv[1], cv[2], cv[3]);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public ITexture Texture
@@ -138,10 +138,10 @@ namespace OpenRA.Platforms.Default
 			if (disposing)
 				texture.Dispose();
 
-			OpenGL.glDeleteFramebuffersEXT(1, ref framebuffer);
-			ErrorHandler.CheckGlError();
-			OpenGL.glDeleteRenderbuffersEXT(1, ref depth);
-			ErrorHandler.CheckGlError();
+			OpenGL.glDeleteFramebuffers(1, ref framebuffer);
+			OpenGL.CheckGLError();
+			OpenGL.glDeleteRenderbuffers(1, ref depth);
+			OpenGL.CheckGLError();
 		}
 	}
 }

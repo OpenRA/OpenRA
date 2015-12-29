@@ -46,37 +46,37 @@ namespace OpenRA.Platforms.Default
 		public Texture()
 		{
 			OpenGL.glGenTextures(1, out texture);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public Texture(Bitmap bitmap)
 		{
 			OpenGL.glGenTextures(1, out texture);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			SetData(bitmap);
 		}
 
 		void PrepareTexture()
 		{
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			var filter = scaleFilter == TextureScaleFilter.Linear ? OpenGL.GL_LINEAR : OpenGL.GL_NEAREST;
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, (int)filter);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MIN_FILTER, (int)filter);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			OpenGL.glTexParameterf(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_S, (float)OpenGL.GL_CLAMP_TO_EDGE);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glTexParameterf(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_T, (float)OpenGL.GL_CLAMP_TO_EDGE);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_BASE_LEVEL, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAX_LEVEL, 0);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetData(byte[] colors, int width, int height)
@@ -94,7 +94,7 @@ namespace OpenRA.Platforms.Default
 					PrepareTexture();
 					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
 						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 				}
 			}
 		}
@@ -118,7 +118,7 @@ namespace OpenRA.Platforms.Default
 					PrepareTexture();
 					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
 						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 				}
 			}
 		}
@@ -142,7 +142,7 @@ namespace OpenRA.Platforms.Default
 				PrepareTexture();
 				OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, bits.Width, bits.Height,
 					0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, bits.Scan0); // TODO: weird strides
-				ErrorHandler.CheckGlError();
+				OpenGL.CheckGLError();
 				bitmap.UnlockBits(bits);
 			}
 			finally
@@ -157,7 +157,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			var data = new byte[4 * Size.Width * Size.Height];
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture);
 			unsafe
 			{
@@ -169,7 +169,7 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			return data;
 		}
 
@@ -183,7 +183,7 @@ namespace OpenRA.Platforms.Default
 			PrepareTexture();
 			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
 				0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, IntPtr.Zero);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		~Texture()

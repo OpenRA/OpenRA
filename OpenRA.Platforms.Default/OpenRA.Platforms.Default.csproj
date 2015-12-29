@@ -49,7 +49,6 @@
     <Compile Include="Sdl2GraphicsDevice.cs" />
     <Compile Include="Sdl2Input.cs" />
     <Compile Include="Shader.cs" />
-    <Compile Include="ErrorHandler.cs" />
     <Compile Include="FrameBuffer.cs" />
     <Compile Include="MultiTapDetection.cs" />
     <Compile Include="Texture.cs" />

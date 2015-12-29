@@ -76,21 +76,12 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
 
-			OpenGL.LoadDelegates();
-			ErrorHandler.CheckGlVersion();
-			ErrorHandler.CheckGlError();
-
-			if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_FALSE)
-			{
-				ErrorHandler.WriteGraphicsLog("OpenRA requires the OpenGL extension GL_EXT_framebuffer_object.\n"
-					+ "Please try updating your GPU driver to the latest version provided by the manufacturer.");
-				throw new InvalidProgramException("Missing OpenGL extension GL_EXT_framebuffer_object. See graphics.log for details.");
-			}
+			OpenGL.Initialize();
 
 			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
@@ -215,39 +206,39 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			OpenGL.glDrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void Clear()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glClearColor(0, 0, 0, 1);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void EnableDepthBuffer()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glClear(OpenGL.GL_DEPTH_BUFFER_BIT);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_DEPTH_TEST);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glDisable(OpenGL.GL_DEPTH_TEST);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetBlendMode(BlendMode mode)
 		{
 			VerifyThreadAffinity();
 			OpenGL.glBlendEquation(OpenGL.GL_FUNC_ADD);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 
 			switch (mode)
 			{
@@ -256,40 +247,40 @@ namespace OpenRA.Platforms.Default
 					break;
 				case BlendMode.Alpha:
 					OpenGL.glEnable(OpenGL.GL_BLEND);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
 					break;
 				case BlendMode.Additive:
 				case BlendMode.Subtractive:
 					OpenGL.glEnable(OpenGL.GL_BLEND);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE);
 					if (mode == BlendMode.Subtractive)
 					{
-						ErrorHandler.CheckGlError();
+						OpenGL.CheckGLError();
 						OpenGL.glBlendEquation(OpenGL.GL_FUNC_REVERSE_SUBTRACT);
 					}
 
 					break;
 				case BlendMode.Multiply:
 					OpenGL.glEnable(OpenGL.GL_BLEND);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					break;
 				case BlendMode.Multiplicative:
 					OpenGL.glEnable(OpenGL.GL_BLEND);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_ZERO, OpenGL.GL_SRC_COLOR);
 					break;
 				case BlendMode.DoubleMultiplicative:
 					OpenGL.glEnable(OpenGL.GL_BLEND);
-					ErrorHandler.CheckGlError();
+					OpenGL.CheckGLError();
 					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_SRC_COLOR);
 					break;
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void GrabWindowMouseFocus()
@@ -315,16 +306,16 @@ namespace OpenRA.Platforms.Default
 				height = 0;
 
 			OpenGL.glScissor(left, WindowSize.Height - (top + height), width, height);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void DisableScissor()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glDisable(OpenGL.GL_SCISSOR_TEST);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public Bitmap TakeScreenshot()

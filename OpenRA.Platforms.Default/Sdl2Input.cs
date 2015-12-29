@@ -179,7 +179,7 @@ namespace OpenRA.Platforms.Default
 				pendingMotion = null;
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 	}
 }

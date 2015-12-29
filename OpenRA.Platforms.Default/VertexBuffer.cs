@@ -23,7 +23,7 @@ namespace OpenRA.Platforms.Default
 		public VertexBuffer(int size)
 		{
 			OpenGL.glGenBuffers(1, out buffer);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			Bind();
 
 			var ptr = GCHandle.Alloc(new T[size], GCHandleType.Pinned);
@@ -39,7 +39,7 @@ namespace OpenRA.Platforms.Default
 				ptr.Free();
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetData(T[] data, int length)
@@ -64,7 +64,7 @@ namespace OpenRA.Platforms.Default
 				ptr.Free();
 			}
 
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void SetData(IntPtr data, int start, int length)
@@ -74,18 +74,18 @@ namespace OpenRA.Platforms.Default
 				new IntPtr(VertexSize * start),
 				new IntPtr(VertexSize * length),
 				data);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		public void Bind()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glBindBuffer(OpenGL.GL_ARRAY_BUFFER, buffer);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glVertexAttribPointer(Shader.VertexPosAttributeIndex, 3, OpenGL.GL_FLOAT, false, VertexSize, IntPtr.Zero);
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 			OpenGL.glVertexAttribPointer(Shader.TexCoordAttributeIndex, 4, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(12));
-			ErrorHandler.CheckGlError();
+			OpenGL.CheckGLError();
 		}
 
 		~VertexBuffer()
