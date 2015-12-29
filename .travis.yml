@@ -28,12 +28,14 @@ env:
 # Run the build script
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
+# Run the NUnit tests
 script:
  - travis_retry make all-dependencies
  - make all
  - make check
  - make check-scripts
  - make test
+ - make nunit
 
 # Automatically update the trait documentation and Lua API
 after_success:
