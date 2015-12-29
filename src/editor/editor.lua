@@ -783,6 +783,8 @@ function CreateEditor(bare)
   function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
   function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
 
+  function editor:BreakpointToggle(...) return DebuggerToggleBreakpoint(self, ...) end
+
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
