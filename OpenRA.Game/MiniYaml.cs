@@ -128,16 +128,6 @@ namespace OpenRA
 			Nodes = nodes ?? new List<MiniYamlNode>();
 		}
 
-		public static MiniYaml FromDictionary<K, V>(Dictionary<K, V> dict)
-		{
-			return new MiniYaml(null, dict.Select(x => new MiniYamlNode(x.Key.ToString(), new MiniYaml(x.Value.ToString()))).ToList());
-		}
-
-		public static MiniYaml FromList<T>(List<T> list)
-		{
-			return new MiniYaml(null, list.Select(x => new MiniYamlNode(x.ToString(), new MiniYaml(null))).ToList());
-		}
-
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
 		{
 			var nd = y.ToDictionary();
