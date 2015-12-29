@@ -190,8 +190,38 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		void Zoom(int direction)
+		{
+			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
+			var currentZoom = worldRenderer.Viewport.Zoom;
+			int nextIndex = zoomSteps.IndexOf(currentZoom);
+
+			if (direction < 0)
+				nextIndex++;
+			else
+				nextIndex--;
+
+			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
+			{
+				return;
+			}
+			var zoom = zoomSteps.ElementAt(nextIndex);
+			if (!this.world.IsGameOver && zoom < 1.0f)
+			{
+				return;
+			}
+			worldRenderer.Viewport.Zoom = zoom;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (mi.Event == MouseInputEvent.Scroll &&
+				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			{
+				Zoom(mi.ScrollDelta);
+				return true;
+			}
+
 			var scrolltype = Game.Settings.Game.MouseScroll;
 			if (scrolltype == MouseScrollType.Disabled)
 				return false;
