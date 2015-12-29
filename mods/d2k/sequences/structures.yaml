@@ -30,6 +30,14 @@ medium_gun_turret:
 		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
 		Length: 16
 		Offset: -24,16
+	make: DATA.R8 #TODO: unused, enabling WMA currently breaks turrets (bleed 20151214)
+		Start: 4313
+		Length: 8
+		Offset: -16,16
+	crumble-overlay: DATA.R8
+		Start: 4321
+		Length: 7
+		Offset: -16,16
 	turret: DATA.R8
 		Start: 2589
 		Facings: -32
@@ -53,6 +61,14 @@ large_gun_turret:
 		Frames: 2621, 2624, 2622, 2632, 2625, 2626, 2636, 2629, 2623, 2633, 2627, 2628, 2634, 2630, 2631, 2635
 		Length: 16
 		Offset: -24,16
+	make: DATA.R8 #TODO: unused, enabling WMA currently breaks turrets (bleed 20151214)
+		Start: 4313
+		Length: 8
+		Offset: -16,16
+	crumble-overlay: DATA.R8
+		Start: 4321
+		Length: 7
+		Offset: -16,16
 	turret: DATA.R8
 		Start: 2637
 		Facings: -32
