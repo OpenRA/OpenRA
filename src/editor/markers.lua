@@ -5,15 +5,19 @@ ide.markers = {
   markersCtrl = nil,
   imglist = ide:CreateImageList("MARKERS", "FILE-NORMAL", "DEBUG-BREAKPOINT-TOGGLE", "BOOKMARK-TOGGLE"),
   needrefresh = {},
-  settings = {
-  },
+  settings = {markers = {}},
 }
 
+local unpack = table.unpack or unpack
 local markers = ide.markers
+local caches = {}
 local image = { FILE = 0, BREAKPOINT = 1, BOOKMARK = 2 }
 local markertypes = {breakpoint = 0, bookmark = 0}
-
-local caches = {}
+local maskall = 0
+for markertype in pairs(markertypes) do
+  markertypes[markertype] = 2^ide:GetMarker(markertype)
+  maskall = maskall + markertypes[markertype]
+end
 
 local function resetMarkersTimer()
   if ide.config.markersinactivity then
@@ -26,17 +30,25 @@ local function needRefresh(editor)
   resetMarkersTimer()
 end
 
+local function getMarkers(editor)
+  local edmarkers = {}
+  local line = editor:MarkerNext(0, maskall)
+  while line > -1 do
+    local markerval = editor:MarkerGet(line)
+    for markertype, val in pairs(markertypes) do
+      if bit.band(markerval, val) > 0 then
+        table.insert(edmarkers, {line, markertype})
+      end
+    end
+    line = editor:MarkerNext(line + 1, maskall)
+  end
+  return edmarkers
+end
+
 local function markersRefresh()
   local ctrl = ide.markers.markersCtrl
   local win = ide:GetMainFrame():FindFocus()
   ctrl:Freeze()
-
-  local maskall = 0
-  for markertype in pairs(markertypes) do
-    local val = 2^ide:GetMarker(markertype)
-    maskall = maskall + val
-    markertypes[markertype] = val
-  end
 
   for editor in pairs(ide.markers.needrefresh) do
     local cache = caches[editor]
@@ -56,16 +68,10 @@ local function markersRefresh()
       ctrl:DeleteChildren(fileitem)
       ctrl:SetEvtHandlerEnabled(true)
 
-      local line = editor:MarkerNext(0, maskall)
-      while line > -1 do
+      for _, edmarker in ipairs(getMarkers(editor)) do
+        local line, markertype = unpack(edmarker)
         local text = ("%d: %s"):format(line+1, FixUTF8(editor:GetLineDyn(line)))
-        local markerval = editor:MarkerGet(line)
-        for markertype, val in pairs(markertypes) do
-          if bit.band(markerval, val) > 0 then
-            ctrl:AppendItem(fileitem, text, image[markertype:upper()])
-          end
-        end
-        line = editor:MarkerNext(line + 1, maskall)
+        ctrl:AppendItem(fileitem, text, image[markertype:upper()])
       end
 
       -- if no markers added, then remove the file from the markers list
@@ -101,7 +107,8 @@ local function createMarkersWindow()
   ctrl:SetFont(ide.font.fNormal)
 
   function ctrl:ActivateItem(item_id, toggle)
-    if ctrl:GetItemImage(item_id) == image.FILE then
+    local itemimage = ctrl:GetItemImage(item_id)
+    if itemimage == image.FILE then
       -- activate editor tab
       local editor = item2editor(item_id)
       if editor then ide:GetDocument(editor):SetActive() end
@@ -114,12 +121,10 @@ local function createMarkersWindow()
           ide:GetDocument(editor):SetActive()
           if line then
             editor:GotoLine(line-1)
-            local evtype = (ctrl:GetItemImage(item_id) == image.BOOKMARK and ID.BOOKMARKTOGGLE
-              or ctrl:GetItemImage(item_id) == image.BREAKPOINT and ID.TOGGLEBREAKPOINT
-              or nil)
-            if toggle and evtype then
+            if toggle then
+              local _ = (itemimage == image.BOOKMARK and editor:BookmarkToggle(line-1, false)
+                or itemimage == image.BREAKPOINT and editor:BreakpointToggle(line-1, false))
               ctrl:Delete(item_id)
-              ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, evtype))
             end
           end
         end
@@ -174,8 +179,10 @@ createMarkersWindow()
 local package = ide:AddPackage('core.markers', {
     -- save markers; remove tab from the list
     onEditorClose = function(self, editor)
+      local cache = caches[editor]
+      if not cache then return end
+      if cache.fileitem then markers.markersCtrl:Delete(cache.fileitem) end
       caches[editor] = nil
-      needRefresh(editor)
     end,
 
     -- schedule marker update if the change is for one of the editors with markers
@@ -189,7 +196,38 @@ local package = ide:AddPackage('core.markers', {
       -- if no marker, then all markers in a file need to be refreshed
       if not caches[editor] then caches[editor] = {} end
       needRefresh(editor)
+      markers:SaveMarkers(editor)
     end,
+
+    onEditorSave = function(self, editor) markers:SaveMarkers(editor) end,
+    onEditorLoad = function(self, editor) markers:LoadMarkers(editor) end,
   })
+
+function markers:SaveSettings() package:SetSettings(self.settings) end
+
+function markers:SaveMarkers(editor, force)
+  -- if the file has the name and has not been modified, save the breakpoints
+  local doc = ide:GetDocument(editor)
+  local filepath = doc:GetFilePath()
+  if filepath and (force or not doc:IsModified()) then
+    -- remove it from the list if it has no breakpoints
+    local edmarkers = getMarkers(editor)
+    self.settings.markers[filepath] = #edmarkers > 0 and edmarkers or nil
+    self:SaveSettings()
+  end
+end
+
+function markers:LoadMarkers(editor)
+  -- if the file has the name and has not been modified, save the breakpoints
+  local doc = ide:GetDocument(editor)
+  local filepath = doc:GetFilePath()
+  if filepath then
+    for _, edmarker in ipairs(self.settings.markers[filepath] or {}) do
+      local line, markertype = unpack(edmarker)
+      local _ = (markertype == "bookmark" and editor:BookmarkToggle(line, true)
+        or markertype == "breakpoint" and editor:BreakpointToggle(line, true))
+    end
+  end
+end
 
 MergeSettings(markers.settings, package:GetSettings())
