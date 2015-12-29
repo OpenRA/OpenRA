@@ -59,6 +59,7 @@ local function markersRefresh()
         local root = ctrl:GetRootItem()
         if not root or not root:IsOk() then return end
         fileitem = ctrl:AppendItem(root, filename, image.FILE)
+        ctrl:SortChildren(root)
         cache.fileitem = fileitem
       end
 
