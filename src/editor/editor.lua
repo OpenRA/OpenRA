@@ -784,6 +784,7 @@ function CreateEditor(bare)
   function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
 
   function editor:BreakpointToggle(...) return DebuggerToggleBreakpoint(self, ...) end
+  function editor:BookmarkToggle(...) return EditorBookmarkToggle(self, ...) end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 

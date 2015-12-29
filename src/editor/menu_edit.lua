@@ -367,10 +367,9 @@ frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
 local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER
 
-local function bookmarkToggle()
-  local editor = GetEditor()
-  local line = editor:GetCurrentLine()
+function EditorBookmarkToggle(editor, line, value)
   local isset = bit.band(editor:MarkerGet(line), BOOKMARK_MARKER_VALUE) > 0
+  if value ~= nil and isset == value then return end
   if isset then
     editor:MarkerDelete(line, BOOKMARK_MARKER)
   else
@@ -399,6 +398,10 @@ local function bookmarkPrev()
   end
 end
 
-frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkToggle)
+frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function()
+    local editor = GetEditor()
+    EditorBookmarkToggle(editor, editor:GetCurrentLine())
+  end)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
