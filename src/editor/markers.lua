@@ -119,15 +119,16 @@ local function createMarkersWindow()
         local editor = item2editor(parent)
         if editor then
           local line = tonumber(ctrl:GetItemText(item_id):match("^(%d+):"))
-          ide:GetDocument(editor):SetActive()
           if line then
-            editor:GotoLine(line-1)
             if toggle then
               local _ = (itemimage == image.BOOKMARK and editor:BookmarkToggle(line-1, false)
                 or itemimage == image.BREAKPOINT and editor:BreakpointToggle(line-1, false))
               ctrl:Delete(item_id)
+              return -- don't activate the editor when the breakpoint is toggled
             end
+            editor:GotoLine(line-1)
           end
+          ide:GetDocument(editor):SetActive()
         end
       end
     end
