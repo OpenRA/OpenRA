@@ -174,6 +174,8 @@ elseif ($command -eq "check")
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
 		echo "Checking for code style violations in OpenRA.Test..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
+		echo "Checking for explicit interface violations..."
+		./OpenRA.Utility.exe all --check-explicit-interfaces
 	}
 	else
 	{
