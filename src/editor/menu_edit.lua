@@ -365,24 +365,9 @@ frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) GetEditorWithFocus():FoldSome() end)
 
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
-local BOOKMARK_MARKER_VALUE = 2^BOOKMARK_MARKER
-
-function EditorBookmarkToggle(editor, line, value)
-  local isset = bit.band(editor:MarkerGet(line), BOOKMARK_MARKER_VALUE) > 0
-  if value ~= nil and isset == value then return end
-  if isset then
-    editor:MarkerDelete(line, BOOKMARK_MARKER)
-  else
-    editor:MarkerAdd(line, BOOKMARK_MARKER)
-  end
-  PackageEventHandle("onEditorMarkerUpdate", editor, BOOKMARK_MARKER, line, not isset)
-end
 
 frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function()
-    local editor = GetEditor()
-    EditorBookmarkToggle(editor, editor:GetCurrentLine())
-  end)
+  function() GetEditor():BookmarkToggle() end)
 frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() GetEditor():MarkerGotoNext(BOOKMARK_MARKER) end)
 frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED,

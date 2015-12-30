@@ -801,9 +801,21 @@ function CreateEditor(bare)
     editor:EnsureVisibleEnforcePolicy(line)
     return line
   end
+  function editor:MarkerToggle(marker, line, value)
+    local value = 2^marker
+    line = line or editor:GetCurrentLine()
+    local isset = bit.band(editor:MarkerGet(line), value) > 0
+    if value ~= nil and isset == value then return end
+    if isset then
+      editor:MarkerDelete(line, marker)
+    else
+      editor:MarkerAdd(line, marker)
+    end
+    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line, not isset)
+  end
 
   function editor:BreakpointToggle(...) return DebuggerToggleBreakpoint(self, ...) end
-  function editor:BookmarkToggle(...) return EditorBookmarkToggle(self, ...) end
+  function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 
