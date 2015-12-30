@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Health health;
 
 		public RepairBuilding(Actor self, Actor target)
-			: base(self, target)
+			: base(self, target, EnterBehaviour.Dispose)
 		{
 			this.target = target;
 			health = target.Trait<Health>();

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Infiltrates infiltrates;
 
 		public Infiltrate(Actor self, Actor target)
-			: base(self, target)
+			: base(self, target, EnterBehaviour.Dispose)
 		{
 			this.target = target;
 
