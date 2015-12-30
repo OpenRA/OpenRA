@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
@@ -596,7 +597,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
 			};
 
-			globalChatLastReadMessages = Game.GlobalChat.History.Count;
+			globalChatLastReadMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
 
 			var lobbyChat = lobby.Get("LOBBYCHAT");
 			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
@@ -678,7 +679,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public override void Tick()
 		{
-			var newMessages = Game.GlobalChat.History.Count;
+			var newMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
 			globalChatUnreadMessages += newMessages - globalChatLastReadMessages;
 			globalChatLastReadMessages = newMessages;
 
