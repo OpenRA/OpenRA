@@ -45,19 +45,19 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new DetectionCircleRenderable(centerPosition, radius, zOffset,
-				trailCount, trailAngle, trailSeparation, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
 			return new DetectionCircleRenderable(centerPosition, radius, newOffset,
-				trailCount, trailAngle, trailSeparation, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
 		{
 			return new DetectionCircleRenderable(centerPosition + vec, radius, zOffset,
-				trailCount, trailAngle, trailSeparation, color, contrastColor);
+				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
 		public IRenderable AsDecoration() { return this; }
