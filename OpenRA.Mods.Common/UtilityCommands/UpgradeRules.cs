@@ -3410,13 +3410,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		internal static void UpgradeChromeLayout(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
+			var parentKey = parent != null ? parent.Key.Split('@').First() : null;
+
 			foreach (var node in nodes)
 			{
 				if (engineVersion < 20151102)
 				{
 					if (node.Key == "Color" || node.Key == "ReadyTextAltColor" || node.Key == "TextColor" || node.Key == "TextColorDisabled")
 					{
-						if (parent.Key.StartsWith("MapPreview@"))
+						if (parentKey == "MapPreview")
 							TryUpdateHSLColor(ref node.Value.Value);
 						else
 							TryUpdateColor(ref node.Value.Value);
