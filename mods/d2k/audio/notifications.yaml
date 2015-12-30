@@ -44,8 +44,8 @@ Sounds:
 	Notifications:
 		RadarUp: MULTI1
 		RadarDown:
-		DisablePower: POWRDN1
-		EnablePower: POWRUP1
+		DisablePower: POWRUP1
+		EnablePower: POWRDN1
 		CashTickUp: CASHTIK1
 		CashTickDown:CASHTIK1
 		LevelUp: SCORTIK1
