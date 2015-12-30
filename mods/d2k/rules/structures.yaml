@@ -613,6 +613,9 @@ wall:
 		TerrainTypes: Rock, Concrete
 	Health:
 		HP: 2000
+		Shape: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	Armor:
 		Type: none
 	RevealsShroud:

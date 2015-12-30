@@ -855,8 +855,6 @@ SBAG:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.GDI
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	LineBuild:
@@ -880,8 +878,6 @@ CYCL:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.Nod
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	LineBuild:

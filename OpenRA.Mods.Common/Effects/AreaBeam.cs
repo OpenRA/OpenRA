@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly bool Blockable = false;
 
 		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(2048);
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Should the beam be visuall rendered? False = Beam is invisible.")]
 		public readonly bool RenderBeam = true;

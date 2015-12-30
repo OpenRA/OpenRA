@@ -276,8 +276,6 @@ ARCO.Husk:
 
 BARB:
 	Inherits: ^Wall
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	Tooltip:
@@ -292,8 +290,6 @@ BARB:
 
 WOOD:
 	Inherits: ^Wall
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	Tooltip:
