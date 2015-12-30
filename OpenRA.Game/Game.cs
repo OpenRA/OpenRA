@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -255,9 +256,14 @@ namespace OpenRA
 
 		public static bool IsModInstalled(string modId)
 		{
-			return Manifest.AllMods[modId].RequiresMods.All(mod => ModMetadata.AllMods.ContainsKey(mod.Key)
+			return Manifest.AllMods[modId].RequiresMods.All(IsModInstalled);
+		}
+
+		public static bool IsModInstalled(KeyValuePair<string, string> mod)
+		{
+			return ModMetadata.AllMods.ContainsKey(mod.Key)
 				&& ModMetadata.AllMods[mod.Key].Version == mod.Value
-				&& IsModInstalled(mod.Key));
+				&& IsModInstalled(mod.Key);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)

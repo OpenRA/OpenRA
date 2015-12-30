@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var panel = widget.Get("INSTALL_MOD_PANEL");
 
-			var mods = Manifest.AllMods[modId].RequiresMods.Select(x => "{0} ({1})".F(x.Key, x.Value));
+			var mods = Manifest.AllMods[modId].RequiresMods.Where(m => !Game.IsModInstalled(m)).Select(m => "{0} ({1})".F(m.Key, m.Value));
 			var text = string.Join(", ", mods);
 			panel.Get<LabelWidget>("MOD_LIST").Text = text;
 
