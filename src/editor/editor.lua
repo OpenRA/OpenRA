@@ -783,6 +783,25 @@ function CreateEditor(bare)
   function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
   function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
 
+  function editor:MarkerGotoNext(marker)
+    local value = 2^marker
+    local line = editor:MarkerNext(editor:GetCurrentLine()+1, value)
+    if line == -1 then line = editor:MarkerNext(0, value) end
+    if line == -1 then return end
+    editor:GotoLine(line)
+    editor:EnsureVisibleEnforcePolicy(line)
+    return line
+  end
+  function editor:MarkerGotoPrev(marker)
+    local value = 2^marker
+    local line = editor:MarkerPrevious(editor:GetCurrentLine()-1, value)
+    if line == -1 then line = editor:MarkerPrevious(editor:GetLineCount(), value) end
+    if line == -1 then return end
+    editor:GotoLine(line)
+    editor:EnsureVisibleEnforcePolicy(line)
+    return line
+  end
+
   function editor:BreakpointToggle(...) return DebuggerToggleBreakpoint(self, ...) end
   function editor:BookmarkToggle(...) return EditorBookmarkToggle(self, ...) end
 

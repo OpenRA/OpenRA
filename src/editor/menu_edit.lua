@@ -378,30 +378,12 @@ function EditorBookmarkToggle(editor, line, value)
   PackageEventHandle("onEditorMarkerUpdate", editor, BOOKMARK_MARKER, line, not isset)
 end
 
-local function bookmarkNext()
-  local editor = GetEditor()
-  local line = editor:MarkerNext(editor:GetCurrentLine()+1, BOOKMARK_MARKER_VALUE)
-  if line == -1 then line = editor:MarkerNext(0, BOOKMARK_MARKER_VALUE) end
-  if line ~= -1 then
-    editor:GotoLine(line)
-    editor:EnsureVisibleEnforcePolicy(line)
-  end
-end
-
-local function bookmarkPrev()
-  local editor = GetEditor()
-  local line = editor:MarkerPrevious(editor:GetCurrentLine()-1, BOOKMARK_MARKER_VALUE)
-  if line == -1 then line = editor:MarkerPrevious(editor:GetLineCount(), BOOKMARK_MARKER_VALUE) end
-  if line ~= -1 then
-    editor:GotoLine(line)
-    editor:EnsureVisibleEnforcePolicy(line)
-  end
-end
-
 frame:Connect(ID_BOOKMARKTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function()
     local editor = GetEditor()
     EditorBookmarkToggle(editor, editor:GetCurrentLine())
   end)
-frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkNext)
-frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED, bookmarkPrev)
+frame:Connect(ID_BOOKMARKNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() GetEditor():MarkerGotoNext(BOOKMARK_MARKER) end)
+frame:Connect(ID_BOOKMARKPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() GetEditor():MarkerGotoPrev(BOOKMARK_MARKER) end)
