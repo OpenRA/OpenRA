@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			capturable = self.Trait<ExternalCapturable>();
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			// only show when building is being captured
 			if (!capturable.CaptureInProgress)
@@ -37,6 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 			return (float)capturable.CaptureProgressTime / (capturable.Info.CaptureCompleteTime * 25);
 		}
 
-		public Color GetColor() { return Color.Orange; }
+		Color ISelectionBar.GetColor() { return Color.Orange; }
 	}
 }

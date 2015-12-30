@@ -66,7 +66,7 @@ namespace OpenRA.Mods.D2k.Traits
 				changingOwner = null; // It was triggered by this trait: reset
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			if (remaining <= 0)
 				return 0;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.D2k.Traits
 			return (float)remaining / duration;
 		}
 
-		public Color GetColor()
+		Color ISelectionBar.GetColor()
 		{
 			return info.BarColor;
 		}

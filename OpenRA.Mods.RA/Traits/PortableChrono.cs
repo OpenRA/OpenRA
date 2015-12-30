@@ -105,12 +105,12 @@ namespace OpenRA.Mods.RA.Traits
 			get { return chargeTick <= 0; }
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			return (float)(Info.ChargeDelay - chargeTick) / Info.ChargeDelay;
 		}
 
-		public Color GetColor() { return Color.Magenta; }
+		Color ISelectionBar.GetColor() { return Color.Magenta; }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter

@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		// Show the remaining time as a bar
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			if (!info.ReturnToOrigin)
 				return 0f;
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA.Traits
 			return (float)ReturnTicks / duration;
 		}
 
-		public Color GetColor() { return info.TimeBarColor; }
+		Color ISelectionBar.GetColor() { return info.TimeBarColor; }
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{

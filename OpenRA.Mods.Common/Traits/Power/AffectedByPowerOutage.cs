@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			if (playerPower.PowerOutageRemainingTicks <= 0)
 				return 0;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (float)playerPower.PowerOutageRemainingTicks / playerPower.PowerOutageTotalTicks;
 		}
 
-		public Color GetColor()
+		Color ISelectionBar.GetColor()
 		{
 			return Color.Yellow;
 		}
