@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[Desc("Discard resources once silo capacity has been reached.")]
+		public readonly bool DiscardExcessResources = false;
+
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
@@ -84,10 +87,12 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount) { return info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
 
 		public void GiveResource(int amount)
 		{
+			if (info.DiscardExcessResources)
+				amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
 			playerResources.GiveResources(amount);
 			if (info.ShowTicks)
 				currentDisplayValue += amount;

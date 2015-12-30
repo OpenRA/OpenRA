@@ -76,6 +76,7 @@ PROC:
 	TiberianSunRefinery:
 		DockAngle: 160
 		DockOffset: 2,1
+		DiscardExcessResources: true
 	StoresResources:
 		PipColor: Green
 		PipCount: 15
