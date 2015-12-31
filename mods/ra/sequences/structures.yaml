@@ -38,6 +38,8 @@ bio:
 		Length: *
 
 oilb:
+	Defaults:
+		Offset: 0,-6
 	idle:
 	damaged-idle:
 		Start: 1
@@ -45,6 +47,7 @@ oilb:
 	make:
 	bib: bib3
 		Length: *
+		Offset: 0,0
 		UseTilesetExtension: true
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
