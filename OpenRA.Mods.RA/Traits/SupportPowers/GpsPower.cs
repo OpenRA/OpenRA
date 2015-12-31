@@ -25,12 +25,13 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
-		[Sync] public bool Launched = false;
-		[Sync] public bool GrantedAllies = false;
-		[Sync] public bool Granted = false;
-		public Player Owner;
+		[Sync] public bool Launched { get; private set; }
+		[Sync] public bool GrantedAllies { get; private set; }
+		[Sync] public bool Granted { get; private set; }
+		public readonly Player Owner;
 
-		List<Actor> actors = new List<Actor> { };
+		readonly List<Actor> actors = new List<Actor>();
+		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
 
 		public GpsWatcher(Player owner) { Owner = owner; }
 
@@ -49,11 +50,11 @@ namespace OpenRA.Mods.RA.Traits
 		public void Launch(Actor atek, SupportPowerInfo info)
 		{
 			atek.World.Add(new DelayedAction(((GpsPowerInfo)info).RevealDelay * 25,
-					() =>
-					{
-						Launched = true;
-						RefreshGps(atek);
-					}));
+				() =>
+				{
+					Launched = true;
+					RefreshGps(atek);
+				}));
 		}
 
 		public void RefreshGps(Actor atek)
@@ -69,11 +70,18 @@ namespace OpenRA.Mods.RA.Traits
 
 		void RefreshGranted()
 		{
+			var wasGranted = Granted;
+			var wasGrantedAllies = GrantedAllies;
+
 			Granted = actors.Count > 0 && Launched;
 			GrantedAllies = Owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(Owner));
 
 			if (Granted || GrantedAllies)
 				Owner.Shroud.ExploreAll(Owner.World);
+
+			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
+				foreach (var tp in notifyOnRefresh.ToList())
+					tp.Trait.OnGpsRefresh(tp.Actor, Owner);
 		}
 
 		public bool HasFogVisibility()
@@ -89,7 +97,19 @@ namespace OpenRA.Mods.RA.Traits
 
 			return gpsDot.IsDotVisible(Owner);
 		}
+
+		public void RegisterForOnGpsRefreshed(Actor actor, IOnGpsRefreshed toBeNotified)
+		{
+			notifyOnRefresh.Add(new TraitPair<IOnGpsRefreshed>(actor, toBeNotified));
+		}
+
+		public void UnregisterForOnGpsRefreshed(Actor actor, IOnGpsRefreshed toBeNotified)
+		{
+			notifyOnRefresh.Remove(new TraitPair<IOnGpsRefreshed>(actor, toBeNotified));
+		}
 	}
+
+	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
 	class GpsPowerInfo : SupportPowerInfo
 	{
