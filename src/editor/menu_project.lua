@@ -51,7 +51,7 @@ debugMenu:Append(ID_INTERPRETER, TR("Lua &Interpreter"), targetMenu, TR("Set the
 menuBar:Append(debugMenu, TR("&Project"))
 
 ide:AttachMenu(ID_BREAKPOINT, wx.wxMenu {
-  { ID_BREAKPOINTTOGGLE, TR("Toggle Break&point")..KSC(ID_BREAKPOINTTOGGLE) },
+  { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint")..KSC(ID_BREAKPOINTTOGGLE) },
   { ID_BREAKPOINTNEXT, TR("Go To Next Breakpoint")..KSC(ID_BREAKPOINTNEXT) },
   { ID_BREAKPOINTPREV, TR("Go To Previous Breakpoint")..KSC(ID_BREAKPOINTPREV) },
 })

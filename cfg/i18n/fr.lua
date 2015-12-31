@@ -286,7 +286,7 @@ return {
   ["Text not found."] = "Texte non trouvé.", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "Le fichier d'API doit être placé dans un sous-répertoire du répertoire d'API.", -- src\editor\autocomplete.lua
   ["Toggle Bookmark"] = "Créer/Supprimer un marque-page", -- src\editor\menu_edit.lua
-  ["Toggle Break&point"] = "Créer/Supprimer un &point d'arrêt", -- src\editor\menu_project.lua
+  ["Toggle Breakpoint"] = "Créer/Supprimer un point d'arrêt", -- src\editor\menu_project.lua
   ["Toggle bookmark"] = "Crée ou supprime un marque-page", -- src\editor\toolbar.lua, src\editor\menu_edit.lua
   ["Toggle breakpoint"] = "Crée ou supprime un point d'arrêt", -- src\editor\toolbar.lua, src\editor\menu_project.lua
   ["Tr&ace"] = "&Tracer", -- src\editor\menu_project.lua

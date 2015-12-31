@@ -161,7 +161,7 @@ local function createMarkersWindow()
       local ID_BREAKPOINTTOGGLE = ID("markers.breakpointtoggle")
       local menu = wx.wxMenu {
         { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark"), TR("Toggle bookmark") },
-        { ID_BREAKPOINTTOGGLE, TR("Toggle Break&point"), TR("Toggle breakpoint") },
+        { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint"), TR("Toggle breakpoint") },
       }
       local activate = function() ctrl:ActivateItem(item_id, true) end
       menu:Enable(ID_BOOKMARKTOGGLE, ctrl:GetItemImage(item_id) == image.BOOKMARK)
