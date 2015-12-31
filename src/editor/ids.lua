@@ -94,7 +94,11 @@ ID_ZOOMRESET        = NewID()
 ID_ZOOMIN           = NewID()
 ID_ZOOMOUT          = NewID()
 -- Project menu
-ID_TOGGLEBREAKPOINT = NewID()
+ID_BREAKPOINT       = NewID()
+ID_BREAKPOINTTOGGLE = NewID()
+ID_BREAKPOINTNEXT   = NewID()
+ID_BREAKPOINTPREV   = NewID()
+ID_TOGGLEBREAKPOINT = ID_BREAKPOINTTOGGLE -- for compatibility; to remove after v1.30
 ID_COMPILE          = NewID()
 ID_ANALYZE          = NewID()
 ID_RUN              = NewID()

@@ -814,8 +814,11 @@ function CreateEditor(bare)
     PackageEventHandle("onEditorMarkerUpdate", editor, marker, line, not isset)
   end
 
-  function editor:BreakpointToggle(...) return DebuggerToggleBreakpoint(self, ...) end
   function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
+  function editor:BreakpointToggle(line, ...)
+    line = line or self:GetCurrentLine()
+    return DebuggerToggleBreakpoint(self, line, ...)
+  end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 
