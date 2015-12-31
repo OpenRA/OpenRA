@@ -131,6 +131,18 @@ function ide:FindMenuItem(itemid, menu)
   end
   return
 end
+function ide:AttachMenu(...)
+  -- AttachMenu([targetmenu,] id, submenu)
+  -- `targetmenu` is only needed for menus not attached to the main menubar
+  local menu, id, submenu = ...
+  if select('#', ...) == 2 then menu, id, submenu = nil, ... end
+  local item, menu, pos = self:FindMenuItem(id, menu)
+  if not item then return end
+
+  local menuitem = wx.wxMenuItem(menu, id, item:GetItemLabel(), item:GetHelp(), wx.wxITEM_NORMAL, submenu)
+  menu:Destroy(item)
+  return menu:Insert(pos, menuitem), pos
+end
 
 function ide:FindDocument(path)
   local fileName = wx.wxFileName(path)
