@@ -245,6 +245,7 @@ RAILMINE:
 
 QUEE:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^2x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
@@ -258,6 +259,7 @@ QUEE:
 
 LAR1:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva

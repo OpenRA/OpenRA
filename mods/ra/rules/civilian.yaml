@@ -67,6 +67,7 @@ TECN:
 
 FCOM:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -87,6 +88,7 @@ FCOM:
 
 HOSP:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
 	Selectable:
 		Priority: 0
 	Building:
@@ -121,6 +123,12 @@ V01:
 		Range: 10c0
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
+		Type: Rectangle
+			TopLeft: -768, -597
+			BottomRight: 896, 683
 
 V02:
 	Inherits: ^CivBuilding
@@ -129,6 +137,12 @@ V02:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 597
 
 V03:
 	Inherits: ^CivBuilding
@@ -137,6 +151,12 @@ V03:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
+		Type: Rectangle
+			TopLeft: -1024, -597
+			BottomRight: 1024, 597
 
 V04:
 	Inherits: ^CivBuilding
@@ -145,9 +165,16 @@ V04:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
+		Type: Rectangle
+			TopLeft: -683, -432
+			BottomRight: 683, 683
 
 V05:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -156,6 +183,7 @@ V05:
 
 V06:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -164,6 +192,7 @@ V06:
 
 V07:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -312,6 +341,10 @@ AMMOBOX3:
 
 MISS:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	Selectable:
 		Priority: 0
 	Building:
@@ -335,6 +368,7 @@ MISS:
 
 BIO:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -354,6 +388,10 @@ BIO:
 
 OILB:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
 	Selectable:
 		Priority: 0
 	Building:
@@ -541,15 +579,34 @@ V20:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 896
 
 V21:
 	Inherits: ^DesertCivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 0
+	HitShape@WELL:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -770,512,0
+		Type: Rectangle
+			TopLeft: 0, 0
+			BottomRight: 1024, 598
 
 V22:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -562,6 +619,12 @@ V24:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
+		Type: Rectangle
+			TopLeft: -1024, -683
+			BottomRight: 640, 853
 
 V25:
 	Inherits: ^DesertCivBuilding
@@ -572,9 +635,16 @@ V25:
 		Name: Church
 	RevealsShroud:
 		Range: 10c0
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,-128,0, 420,512,0
+		Type: Rectangle
+			TopLeft: -683, -683
+			BottomRight: 1024, 512
 
 V26:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -590,24 +660,28 @@ V29:
 
 V30:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
 
 V31:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
 
 V32:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
 
 V33:
 	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -626,6 +700,12 @@ V37:
 	Building:
 		Footprint: __xx_ ___xx
 		Dimensions: 5,2
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -512, -597
+			BottomRight: 1536, 597
 
 RICE:
 	Inherits: ^CivField
@@ -639,6 +719,8 @@ RUSHOUSE:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
+	HitShape:
+		UseOccupiedCellsOffsets: false
 
 ASIANHUT:
 	Inherits: ^CivBuilding
@@ -654,6 +736,8 @@ SNOWHUT:
 		Dimensions: 1,2
 	RenderSprites:
 		Scale: 0.7
+	HitShape:
+		UseOccupiedCellsOffsets: false
 
 LHUS:
 	Inherits: ^CivBuilding
