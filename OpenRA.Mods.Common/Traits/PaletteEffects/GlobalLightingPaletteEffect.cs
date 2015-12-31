@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -54,6 +53,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
+			// Calculate ambient color multipliers as integers for speed. To handle fractional ambiance, we'll increase
+			// the magnitude of the result by 8 bits.
+			var ar = (uint)((1 << 8) * Ambient * Red);
+			var ag = (uint)((1 << 8) * Ambient * Green);
+			var ab = (uint)((1 << 8) * Ambient * Blue);
+
 			foreach (var kvp in palettes)
 			{
 				if (info.ExcludePalettes.Contains(kvp.Key))
@@ -66,11 +71,37 @@ namespace OpenRA.Mods.Common.Traits
 
 				for (var x = 0; x < Palette.Size; x++)
 				{
+					/* Here is the reference code for the operation we are performing.
 					var from = palette.GetColor(x);
-					var red = (int)(from.R * Ambient * Red).Clamp(0, 255);
-					var green = (int)(from.G * Ambient * Green).Clamp(0, 255);
-					var blue = (int)(from.B * Ambient * Blue).Clamp(0, 255);
-					palette.SetColor(x, Color.FromArgb(from.A, red, green, blue));
+					var r = (int)(from.R * Ambient * Red).Clamp(0, 255);
+					var g = (int)(from.G * Ambient * Green).Clamp(0, 255);
+					var b = (int)(from.B * Ambient * Blue).Clamp(0, 255);
+					palette.SetColor(x, Color.FromArgb(from.A, r, g, b));
+					*/
+
+					// PERF: Use integer arithmetic to avoid costly conversions to and from floating point values.
+					var from = palette[x];
+
+					// 1: Extract each color component and shift it to the lower bits, then multiply with ambiance.
+					// 2: Because the ambiance was increased by 8 bits, our result has been shifted 8 bits up.
+					// If the multiply overflowed we clamp the value, otherwise we mask out the fractional bits.
+					// 3: Finally, we shift the color component back to its correct place. We're already 8 bits higher
+					// than expected due to the multiply, so we don't have to shift as far to get back.
+					var r1 = ((from & 0x00FF0000) >> 16) * ar;
+					var r2 = r1 >= 0x0000FF00 ? 0x0000FF00 : r1 & 0x0000FF00;
+					var r3 = r2 << 8;
+
+					var g1 = ((from & 0x0000FF00) >> 8) * ag;
+					var g2 = g1 >= 0x0000FF00 ? 0x0000FF00 : g1 & 0x0000FF00;
+					var g3 = g2 << 0;
+
+					var b1 = ((from & 0x000000FF) >> 0) * ab;
+					var b2 = b1 >= 0x0000FF00 ? 0x0000FF00 : b1 & 0x0000FF00;
+					var b3 = b2 >> 8;
+
+					// Combine all the adjusted components back together.
+					var a = from & 0xFF000000;
+					palette[x] = a | r3 | g3 | b3;
 				}
 			}
 		}
