@@ -37,14 +37,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Action onComplete;
 
-		readonly World world;
-
-		[ObjectCreator.UseCtor]
-		public VqaPlayerWidget(World world)
-		{
-			this.world = world;
-		}
-
 		public void Load(string filename)
 		{
 			if (filename == cachedVideo)
@@ -201,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Sound.StopVideo();
 			video.Reset();
 			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
-			world.AddFrameEndTask(_ => onComplete());
+			Game.RunAfterTick(onComplete);
 		}
 
 		public void CloseVideo()
