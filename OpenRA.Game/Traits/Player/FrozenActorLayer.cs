@@ -36,13 +36,15 @@ namespace OpenRA.Traits
 		readonly Actor actor;
 		readonly Shroud shroud;
 
-		public Player Owner;
+		public Player Owner { get; private set; }
 
-		public ITooltipInfo TooltipInfo;
-		public Player TooltipOwner;
+		public ITooltipInfo TooltipInfo { get; private set; }
+		public Player TooltipOwner { get; private set; }
+		readonly ITooltip tooltip;
 
-		public int HP;
-		public DamageState DamageState;
+		public int HP { get; private set; }
+		public DamageState DamageState { get; private set; }
+		readonly IHealth health;
 
 		public bool Visible = true;
 		public bool Shrouded { get; private set; }
@@ -68,6 +70,9 @@ namespace OpenRA.Traits
 			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
+			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+			health = self.TraitOrDefault<IHealth>();
+
 			UpdateVisibility();
 		}
 
@@ -75,6 +80,23 @@ namespace OpenRA.Traits
 		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+
+		public void RefreshState()
+		{
+			Owner = actor.Owner;
+
+			if (health != null)
+			{
+				HP = health.HP;
+				DamageState = health.DamageState;
+			}
+
+			if (tooltip != null)
+			{
+				TooltipInfo = tooltip.TooltipInfo;
+				TooltipOwner = tooltip.Owner;
+			}
+		}
 
 		public void Tick()
 		{
