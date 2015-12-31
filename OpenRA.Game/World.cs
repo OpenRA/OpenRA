@@ -213,7 +213,9 @@ namespace OpenRA
 			foreach (var player in Players)
 				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
-			var rc = OrderManager.Connection as ReplayRecorderConnection;
+			var echo = OrderManager.Connection as EchoConnection;
+			var rc = echo != null ? echo.Recorder : null;
+
 			if (rc != null)
 				rc.Metadata = new ReplayMetadata(gameInfo);
 		}

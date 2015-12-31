@@ -16,11 +16,9 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-	sealed class ReplayRecorderConnection : IConnection
+	sealed class ReplayRecorder
 	{
 		public ReplayMetadata Metadata;
-
-		IConnection inner;
 		BinaryWriter writer;
 		Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new MemoryStream();
@@ -36,10 +34,9 @@ namespace OpenRA.Network
 			return frame == 0 && data.ToOrderList(null).Any(o => o.OrderString == "StartGame");
 		}
 
-		public ReplayRecorderConnection(IConnection inner, Func<string> chooseFilename)
+		public ReplayRecorder(Func<string> chooseFilename)
 		{
 			this.chooseFilename = chooseFilename;
-			this.inner = inner;
 
 			writer = new BinaryWriter(preStartBuffer);
 		}
@@ -70,30 +67,19 @@ namespace OpenRA.Network
 			this.writer = new BinaryWriter(file);
 		}
 
-		public int LocalClientId { get { return inner.LocalClientId; } }
-		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
-
-		public void Send(int frame, List<byte[]> orders) { inner.Send(frame, orders); }
-		public void SendImmediate(List<byte[]> orders) { inner.SendImmediate(orders); }
-		public void SendSync(int frame, byte[] syncData) { inner.SendSync(frame, syncData); }
-
-		public void Receive(Action<int, byte[]> packetFn)
+		public void Receive(int clientID, byte[] data)
 		{
-			inner.Receive((client, data) =>
-				{
-					if (preStartBuffer != null && IsGameStart(data))
-					{
-						writer.Flush();
-						var preStartData = preStartBuffer.ToArray();
-						preStartBuffer = null;
-						StartSavingReplay(preStartData);
-					}
+			if (preStartBuffer != null && IsGameStart(data))
+			{
+				writer.Flush();
+				var preStartData = preStartBuffer.ToArray();
+				preStartBuffer = null;
+				StartSavingReplay(preStartData);
+			}
 
-					writer.Write(client);
-					writer.Write(data.Length);
-					writer.Write(data);
-					packetFn(client, data);
-				});
+			writer.Write(clientID);
+			writer.Write(data.Length);
+			writer.Write(data);
 		}
 
 		bool disposed;
@@ -114,7 +100,6 @@ namespace OpenRA.Network
 			if (preStartBuffer != null)
 				preStartBuffer.Dispose();
 			writer.Close();
-			inner.Dispose();
 		}
 	}
 }
