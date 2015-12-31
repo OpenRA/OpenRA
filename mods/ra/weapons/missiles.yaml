@@ -367,7 +367,7 @@ TorpTube:
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Missile
-		Image: MISSILE
+		Image: torpedo
 		Arm: 3
 		MaximumLaunchSpeed: 85
 		TrailImage: bubbles

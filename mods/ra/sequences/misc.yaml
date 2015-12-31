@@ -5,16 +5,20 @@ clock:
 powerdown:
 	disabled: speed
 		Start: 3
+		ZOffset: 2047
 
 120mm:
 	idle:
+		ZOffset: 1023
 
 50cal:
 	idle:
+		ZOffset: 1023
 
 explosion:
 	Defaults:
 		Length: *
+		ZOffset: 511
 	piff: piff
 	piffs: piffpiff
 	water_piff: wpiff
@@ -39,6 +43,7 @@ explosion:
 	small_napalm: napalm1
 	large_napalm: napalm3
 	corpse: corpse1
+		ZOffset: -512
 		Tick: 1600
 		UseTilesetExtension: true
 		TilesetOverrides:
@@ -80,20 +85,26 @@ pips:
 v2:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 rallypoint:
 	flag:flagfly
 		Length: *
 		Offset: 11,-5
+		ZOffset: 2535
 	circles:fpls
 		Length: *
+		ZOffset: 2047
 
 beacon:
+	Defaults:
+		ZOffset: 2535
 	arrow: mouse
 		Start: 5
 		Offset: 1,-12
 	circles: fpls
 		Length: *
+		ZOffset: 2047
 	atomicon: lores-atomicon
 		Length: *
 		Offset: 0,-42
@@ -128,6 +139,7 @@ smoke_m:
 dragon:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 smokey:
 	idle:
@@ -137,26 +149,37 @@ smokey:
 bomb:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 missile:
 	idle:
 		Facings: 32
+		ZOffset: 1023
+
+torpedo:
+	idle: missile
+		Facings: 32
+		ZOffset: -1023
 
 litning:
 	bright:
 		Length: 4
+		ZOffset: 1023
 	dim:
 		Start: 4
 		Length: 4
+		ZOffset: 1023
 
 fb1:
 	idle: 
 		Length: *
+		ZOffset: 1023
 
 moveflsh:
 	idle:
 		Length: *
 		Tick: 80
+		ZOffset: 2047
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
@@ -169,11 +192,13 @@ poweroff:
 	offline:
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 allyrepair:
 	repair:
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 tabs:
 	left-normal:
@@ -184,6 +209,7 @@ sputnik:
 	idle:
 		Length: *
 		Offset: -4,0
+		ZOffset: 1023
 
 dd-crnr:
 	idle:
@@ -199,13 +225,17 @@ dd-crnr:
 fb2:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 fb3:
 	idle:
 		Facings: 32
+		ZOffset: 1023
+
 fb4:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 scrate:
 	idle:
@@ -272,40 +302,26 @@ xcrated:
 		ZOffset: -511
 
 crate-effects:
+	Defaults:
+		ZOffset: 2047
+		Length: *
 	speed: speed
-		Length: *
 	dollar: dollar
-		Length: *
 	reveal-map: earth
-		Length: *
 	hide-map: empulse
-		Length: *
 	fpower: fpower
-		Length: *
 	gps: gpsbox
-		Length: *
 	invuln: invulbox
-		Length: *
 	heal: invun
-		Length: *
 	nuke: missile2
-		Length: *
 	parabombs: parabox
-		Length: *
 	sonar: sonarbox
-		Length: *
 	stealth: stealth2
-		Length: *
 	timequake: tquake
-		Length: *
 	armor: armor
-		Length: *
 	chrono: chronbox
-		Length: *
 	airstrike: deviator
-		Length: *
 	levelup: levelup
-		Length: *
 		Tick: 200
 
 parach:
@@ -319,24 +335,19 @@ parach-shadow:
 	idle:
 		Length: *
 
-atomicup:
-	idle:
-		Length: *
-
-atomicdn:
-	idle:
-		Length: *
-
 bomblet:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 parabomb:
 	open:
 		Length: 8
+		ZOffset: 1023
 	idle:
 		Start: 8
 		Length: 5
+		ZOffset: 1023
 
 smokland:
 	open: playersmoke
@@ -378,8 +389,10 @@ iconchevrons:
 atomic:
 	up: atomicup
 		Length: *
+		ZOffset: 1023
 	down: atomicdn
 		Length: *
+		ZOffset: 1023
 
 bubbles:
 	idle:

@@ -18,25 +18,30 @@ poweroff:
 	offline:
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 allyrepair:
 	repair: wrench
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 rallypoint:
 	flag: mouse
 		Start: 221
 		Length: 8
+		ZOffset: 3072
 	circles: null
 
 beacon:
 	arrow: mouse
 		Start: 6
 		Offset: 1,-12
+		ZOffset: 2535
 	circles: ring
 		Length: 12
 		BlendMode: Additive
+		ZOffset: 2047
 
 crate:
 	idle:
@@ -47,6 +52,7 @@ crate:
 crate-effects:
 	Defaults:
 		Length: *
+		ZOffset: 2047
 	dollar: money
 	reveal-map: reveal
 	hide-map: shroudx
@@ -126,6 +132,7 @@ pips:
 explosion:
 	Defaults:
 		Length: *
+		ZOffset: 511
 	building: twlt070
 	ionring: ring1
 		BlendMode: Additive
@@ -172,54 +179,66 @@ explosion:
 discus:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 canister:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 pulsball:
 	idle:
 		Length: *
 		BlendMode: Additive
+		ZOffset: 1023
 
 dragon:
 	idle:
 		Facings: 32
+		ZOffset: 1023
 
 crystal4:
 	idle:
 		Length: 15
 		ShadowStart: 15
 		UseTilesetExtension: true
+		ZOffset: 1023
 
 120mm:
 	idle:
+		ZOffset: 1023
 
 torpedo:
 	idle:
 		Length: *
+		ZOffset: 1023
 
 flameall:
 	idle:
 		Length: 19
 		Facings: -8
 		Tick: 160
+		ZOffset: 1023
 
 largesmoke:
 	idle: lgrysmk1
 		Length: *
+		ZOffset: 1023
 
 smallsmoke:
 	idle: sgrysmk1
 		Length: *
+		ZOffset: 1023
 
 large_smoke_trail:
 	idle: smokey
 		Length: *
+		ZOffset: 1023
 
 small_smoke_trail:
 	idle: smokey2
 		Length: *
+		ZOffset: 1023
 
 largefire:
 	idle: fire1
@@ -241,11 +260,13 @@ moveflsh:
 	idle: ring
 		Length: *
 		Tick: 30
+		ZOffset: 2047
 
 wake:
 	idle: wake2
 		Length: *
 		Tick: 180
+		ZOffset: 2047
 
 resources:
 	Defaults:
@@ -354,7 +375,7 @@ ionbeam:
 	idle:
 		Length: *
 		Offset: 0, -78
-		ZOffset: 1
+		ZOffset: 1023
 
 trock01:
 	idle:
@@ -417,48 +438,34 @@ srock05:
 		Offset: 0, -12
 
 dbrissm:
+	Defaults:
+		ZOffset: 1023
+		Length:*
 	1: dbris1sm
-		Length:*
 	2: dbris2sm
-		Length:*
 	3: dbris3sm
-		Length:*
 	4: dbris4sm
-		Length:*
 	5: dbris5sm
-		Length:*
 	6: dbris6sm
-		Length:*
 	7: dbris7sm
-		Length:*
 	8: dbris8sm
-		Length:*
 	9: dbris9sm
-		Length:*
 	10: dbrs10sm
-		Length:*
 
 dbrislg:
+	Defaults:
+		ZOffset: 1023
+		Length:*
 	1: dbris1lg
-		Length:*
 	2: dbris2lg
-		Length:*
 	3: dbris3lg
-		Length:*
 	4: dbris4lg
-		Length:*
 	5: dbris5lg
-		Length:*
 	6: dbris6lg
-		Length:*
 	7: dbris7lg
-		Length:*
 	8: dbris8lg
-		Length:*
 	9: dbris9lg
-		Length:*
 	10: dbrs10lg
-		Length:*
 
 crat01:
 	idle:

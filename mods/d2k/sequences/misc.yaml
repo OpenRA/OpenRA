@@ -2,6 +2,7 @@ explosion:
 	Defaults:
 		BlendMode: Additive
 		Tick: 80
+		ZOffset: 511
 	piff: DATA.R8
 		Start: 3626
 		Length: 5
@@ -52,6 +53,7 @@ explosion:
 		Tick: 120
 		Offset: 0, -16
 	corpse: DATA.R8
+		ZOffset: -511
 		Start: 430
 		Length: 12
 		Tick: 1600
@@ -62,36 +64,42 @@ large_trail:
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
+		ZOffset: 1023
 
 small_trail:
 	idle: DATA.R8
 		Start: 3735
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 small_trail2:
 	idle: DATA.R8
 		Start: 3540
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 bazooka_trail:
 	idle: DATA.R8
 		Start: 3381
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 bazooka_trail2:
 	idle: DATA.R8
 		Start: 3544
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 deviator_trail:
 	idle: DATA.R8
 		Start: 3535
 		Length: 5
 		Tick: 80
+		ZOffset: 1023
 
 laserfire:
 	idle: DATA.R8
@@ -99,6 +107,7 @@ laserfire:
 		Length: 4
 		Tick: 80
 		BlendMode: Additive
+		ZOffset: 511
 
 pips:
 	groups: DATA.R8
@@ -123,11 +132,13 @@ clock:
 powerdown:
 	disabled: speed.shp
 		Start: 3
+		ZOffset: 2047
 
 poweroff:
 	offline: poweroff.shp
 		Length: *
 		Tick: 160
+		ZOffset: 2047
 
 rank:
 	rank: rank.shp
@@ -156,31 +167,40 @@ rallypoint:
 	flag: flagfly.shp
 		Length: *
 		Offset: 11,-5
+		ZOffset: 2535
 	circles: fpls.shp
 		Length: *
+		ZOffset: 2047
 
 beacon:
 	arrow: MOUSE.R8
 		Start: 148
 		Offset: -24,-24
+		ZOffset: 2535
 	circles: fpls.shp
 		Length: *
+		ZOffset: 2047
 
 rpg:
 	idle: DATA.R8
 		Start: 3015
 		Facings: -32
+		ZOffset: 1023
 
 120mm:
 	idle: DATA.R8
 		Start: 3014
 		BlendMode: Additive
+		ZOffset: 1023
 
 155mm:
 	idle: DATA.R8
 		Start: 3081
+		ZOffset: 1023
 
 crate-effects:
+	Defaults:
+		ZOffset: 2047
 	dollar: DATA.R8
 		Start: 3679
 		Length: 8
@@ -203,22 +223,27 @@ allyrepair:
 		Length: 2
 		Tick: 300
 		Offset: -11,-10
+		ZOffset: 2047
 
 missile:
 	idle: DATA.R8
 		Start: 3088
 		Facings: -32
+		ZOffset: 1023
 
 missile2:
 	idle: DATA.R8
 		Start: 3306
 		Facings: -32
+		ZOffset: 1023
 
 atomic:
 	up: DATA.R8
 		Start: 2147
+		ZOffset: 1023
 	down: DATA.R8
 		Start: 2148
+		ZOffset: 1023
 
 fire:
 	1: DATA.R8
@@ -247,6 +272,8 @@ fire:
 		BlendMode: Additive
 
 smoke_m:
+	Defaults:
+		ZOffset: 511
 	idle: DATA.R8
 		Start: 3418
 		Length: 2
@@ -264,31 +291,37 @@ bombs:
 	idle: DATA.R8
 		Start: 3280
 		Length: 4
+		ZOffset: 1023
 
 grenade:
 	idle: grenade.shp	# frames 3618-3621 from patch 1.06 DATA.R8
 		Length: 4
 		Tick: 80
+		ZOffset: 1023
 
 shrapnel:
 	idle: DATA.R8
 		Start: 3290
 		Length: 4
+		ZOffset: 1023
 
 shrapnel2:
 	idle: DATA.R8
 		Start: 3294
 		Length: 1
+		ZOffset: 1023
 
 shrapnel3:
 	idle: DATA.R8
 		Start: 3295
 		Length: 8
+		ZOffset: 1023
 
 shrapnel4:
 	idle: DATA.R8
 		Start: 3303
 		Length: 1
+		ZOffset: 1023
 		
 mpspawn:
 	idle: mpspawn.shp
@@ -316,12 +349,14 @@ doubleblast:
 		Start: 3279
 		Facings: -16
 		BlendMode: Additive
+		ZOffset: 511
 
 doubleblastbullet:
 	idle: DATA.R8
 		Start: 3248
 		Facings: -16
 		BlendMode: Additive
+		ZOffset: 1023
 
 icon:
 	ornistrike: DATA.R8
@@ -371,6 +406,7 @@ moveflsh:
 		Length: 5
 		Tick: 80
 		BlendMode: Multiply
+		ZOffset: 2047
 
 resources:
 	spice: BLOXBASE.R8
