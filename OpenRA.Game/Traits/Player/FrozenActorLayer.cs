@@ -32,7 +32,6 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
-		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
@@ -59,7 +58,6 @@ namespace OpenRA.Traits
 			actor = self;
 			this.shroud = shroud;
 			NeedRenderables = startsRevealed;
-			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
@@ -149,16 +147,6 @@ namespace OpenRA.Traits
 
 		public bool HasRenderables { get { return !Shrouded && Renderables.Any(); } }
 
-		public bool ShouldBeRemoved(Player owner)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var rfa in removeFrozenActors)
-				if (rfa.RemoveActor(actor, owner))
-					return true;
-
-			return false;
-		}
-
 		public override string ToString()
 		{
 			return "{0} {1}{2}".F(Info.Name, ID, IsValid ? "" : " (invalid)");
@@ -211,6 +199,13 @@ namespace OpenRA.Traits
 			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
 		}
 
+		public void Remove(FrozenActor fa)
+		{
+			partitionedFrozenActorIds.Remove(fa.ID);
+			world.ScreenMap.Remove(owner, fa);
+			frozenActorsById.Remove(fa.ID);
+		}
+
 		Rectangle FootprintBounds(FrozenActor fa)
 		{
 			var p1 = fa.Footprint[0];
@@ -238,7 +233,7 @@ namespace OpenRA.Traits
 		{
 			UpdateDirtyFrozenActorsFromDirtyBins();
 
-			var idsToRemove = new List<uint>();
+			var frozenActorsToRemove = new List<FrozenActor>();
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
@@ -253,22 +248,16 @@ namespace OpenRA.Traits
 				if (dirtyFrozenActorIds.Contains(id))
 					frozenActor.UpdateVisibility();
 
-				if (frozenActor.ShouldBeRemoved(owner))
-					idsToRemove.Add(id);
-				else if (frozenActor.Visible)
+				if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
-					idsToRemove.Add(id);
+					frozenActorsToRemove.Add(frozenActor);
 			}
 
 			dirtyFrozenActorIds.Clear();
 
-			foreach (var id in idsToRemove)
-			{
-				partitionedFrozenActorIds.Remove(id);
-				world.ScreenMap.Remove(owner, frozenActorsById[id]);
-				frozenActorsById.Remove(id);
-			}
+			foreach (var fa in frozenActorsToRemove)
+				Remove(fa);
 		}
 
 		void UpdateDirtyFrozenActorsFromDirtyBins()

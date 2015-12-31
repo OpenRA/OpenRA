@@ -388,11 +388,6 @@ namespace OpenRA.Traits
 		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
 	}
 
-	public interface IRemoveFrozenActor
-	{
-		bool RemoveActor(Actor self, Player owner);
-	}
-
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
 	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfoInterface { }
 }
