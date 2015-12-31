@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged
+	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged, INotifyPowered, INotifyUnpowered
 	{
 		GpsWatcher owner;
 
@@ -129,6 +129,9 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
+
+		public void OnPower(Actor self) { owner.GpsAdd(self); }
+		public void OnPowerLoss(Actor self) { RemoveGps(self); }
 
 		public void Selling(Actor self) { }
 		public void Sold(Actor self) { RemoveGps(self); }
