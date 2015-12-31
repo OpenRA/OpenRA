@@ -838,7 +838,7 @@ namespace OpenRA
 			return delta.Yaw.Facing;
 		}
 
-		public void Resize(int width, int height)		// editor magic.
+		public void Resize(int width, int height)
 		{
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
