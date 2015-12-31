@@ -519,6 +519,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
