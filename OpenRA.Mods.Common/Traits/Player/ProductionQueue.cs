@@ -361,7 +361,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual TraitPair<Production> MostLikelyProducer()
 		{
 			var trait = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			return new TraitPair<Production> { Actor = self, Trait = trait };
+			return new TraitPair<Production>(self, trait);
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)
