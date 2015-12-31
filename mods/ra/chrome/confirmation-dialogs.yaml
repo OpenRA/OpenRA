@@ -50,7 +50,34 @@ Background@CANCEL_PROMPT:
 			Y: 50
 			Width: PARENT_RIGHT - 30
 			Height: 65
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT/2 - WIDTH/2
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+Background@ERROR_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 640
+	Height: 145
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 20
+			Height: 25
+			Font: Bold
 			Align: Center
+		Label@PROMPT_TEXT:
+			X: 15
+			Y: 35
+			Width: PARENT_RIGHT - 30
+			Height: 65
+			Align: Center
+			WordWrap: true
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT/2 - WIDTH/2
 			Y: PARENT_BOTTOM - 45
