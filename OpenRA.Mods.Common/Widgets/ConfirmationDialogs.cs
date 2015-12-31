@@ -56,6 +56,26 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 		}
 
+		public static void ErrorPrompt(string title, Exception e, Action onCancel = null, string cancelText = null)
+		{
+			var prompt = Ui.OpenWindow("ERROR_PROMPT");
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+
+			var textPrompt = prompt.Get<LabelWidget>("PROMPT_TEXT");
+			var font = Game.Renderer.Fonts[textPrompt.Font];
+			textPrompt.GetText = () => WidgetUtils.WrapText(e.Message, textPrompt.Bounds.Width, font);
+
+			if (!string.IsNullOrEmpty(cancelText))
+				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
+
+			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				Ui.CloseWindow();
+				if (onCancel != null)
+					onCancel();
+			};
+		}
+
 		public static void TextInputPrompt(
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,
