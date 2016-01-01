@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common
 
 			// Target is still alive - resolve the real order
 			if (frozen.Actor != null && frozen.Actor.IsInWorld)
-				return Target.FromActor(frozen.Actor);
+				return Target.FromFrozenActor(frozen);
 
 			if (!order.Queued)
 				self.CancelActivity();
