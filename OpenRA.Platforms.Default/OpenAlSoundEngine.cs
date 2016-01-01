@@ -304,13 +304,24 @@ namespace OpenRA.Platforms.Default
 			AL10.alListenerf(EFX.AL_METERS_PER_UNIT, .01f);
 		}
 
+		~OpenAlSoundEngine()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
 		public void Dispose()
 		{
-			if (device == IntPtr.Zero)
-				return;
+			Game.RunAfterTick(() => Dispose(true));
+			GC.SuppressFinalize(this);
+		}
 
-			ALC10.alcCloseDevice(device);
-			device = IntPtr.Zero;
+		void Dispose(bool disposing)
+		{
+			if (device != IntPtr.Zero)
+			{
+				ALC10.alcCloseDevice(device);
+				device = IntPtr.Zero;
+			}
 		}
 	}
 

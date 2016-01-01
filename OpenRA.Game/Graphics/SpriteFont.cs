@@ -17,7 +17,7 @@ using SharpFont;
 
 namespace OpenRA.Graphics
 {
-	public class SpriteFont
+	public sealed class SpriteFont : IDisposable
 	{
 		static readonly Library Library = new Library();
 
@@ -149,6 +149,11 @@ namespace OpenRA.Graphics
 			s.Sheet.CommitBufferedData();
 
 			return g;
+		}
+
+		public void Dispose()
+		{
+			face.Dispose();
 		}
 	}
 

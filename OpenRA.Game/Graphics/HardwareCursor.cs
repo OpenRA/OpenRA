@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class HardwareCursor : ICursor
+	public sealed class HardwareCursor : ICursor
 	{
 		readonly Dictionary<string, IHardwareCursor[]> hardwareCursors = new Dictionary<string, IHardwareCursor[]>();
 		readonly CursorProvider cursorProvider;

@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class RadarWidget : Widget
+	public sealed class RadarWidget : Widget, IDisposable
 	{
 		public string WorldInteractionController = null;
 		public int AnimationLength = 5;
@@ -447,6 +447,12 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Removed();
 			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
+			Dispose();
+		}
+
+		public void Dispose()
+		{
+			radarSheet.Dispose();
 		}
 	}
 }
