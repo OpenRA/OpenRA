@@ -93,8 +93,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories.Keys, setupItem);
 			}
 
-			var attr = File.GetAttributes(map.Path);
-			var mapIsUnpacked = attr.HasFlag(FileAttributes.Directory);
+			var mapIsUnpacked = false;
+
+			if (map.Path != null)
+			{
+				var attr = File.GetAttributes(map.Path);
+				mapIsUnpacked = attr.HasFlag(FileAttributes.Directory);
+			}
+
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
 			filename.Text = mapIsUnpacked ? Path.GetFileName(map.Path) : Path.GetFileNameWithoutExtension(map.Path);
 			var fileType = mapIsUnpacked ? MapFileType.Unpacked : MapFileType.OraMap;
