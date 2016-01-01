@@ -1,6 +1,7 @@
 Player:
 	AlwaysVisible:
 	TechTree:
+	GlobalUpgradeManager:
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildSpeed: .4

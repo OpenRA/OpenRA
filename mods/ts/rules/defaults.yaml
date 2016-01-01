@@ -315,6 +315,23 @@
 	DeathSounds@ZAPPED:
 		Voice: Zapped
 		DeathTypes: EnergyDeath
+	SelfHealing@HOSPITAL:
+		Step: 5
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
+	GlobalUpgradable@HOSPITAL:
+		Upgrades: hospitalheal
+		Prerequisites: cahosp
+	WithDecoration@REDCROSS:
+		Image: pips
+		Sequence: medic
+		Palette: pips
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
 
 ^Soldier:
 	Inherits: ^Infantry
