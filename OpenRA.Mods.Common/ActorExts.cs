@@ -80,21 +80,8 @@ namespace OpenRA.Mods.Common
 			self.SetTargetLine(frozen, targetLine, true);
 
 			// Target is still alive - resolve the real order
-			if (frozen.Actor != null && frozen.Actor.IsInWorld)
+			if (frozen.Actor != null)
 				return Target.FromFrozenActor(frozen);
-
-			if (!order.Queued)
-				self.CancelActivity();
-
-			var move = self.TraitOrDefault<IMove>();
-			if (move != null)
-			{
-				// Move within sight range of the frozen actor
-				var sight = self.TraitOrDefault<RevealsShroud>();
-				var range = sight != null ? sight.Range : WDist.FromCells(2);
-
-				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), range));
-			}
 
 			return Target.Invalid;
 		}
