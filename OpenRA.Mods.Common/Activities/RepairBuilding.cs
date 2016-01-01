@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Actor target;
 		readonly Health health;
 
-		public RepairBuilding(Actor self, Actor target)
-			: base(self, target)
+		public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour)
+			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
 			health = target.Trait<Health>();
@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (health.DamageState == DamageState.Undamaged)
 				return;
+
 			target.InflictDamage(self, -health.MaxHP, null);
-			self.Dispose();
 		}
 	}
 }

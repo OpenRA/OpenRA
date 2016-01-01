@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly BridgeHut hut;
 
-		public RepairBridge(Actor self, Actor target)
-			: base(self, target)
+		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour)
+			: base(self, target, enterBehaviour)
 		{
 			hut = target.Trait<BridgeHut>();
 		}
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
 				return;
+
 			hut.Repair(self);
-			self.Dispose();
 		}
 	}
 }

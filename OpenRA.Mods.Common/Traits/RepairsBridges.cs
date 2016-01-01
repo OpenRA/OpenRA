@@ -21,6 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("Behaviour when entering the structure.",
+			"Possible values are Exit, Suicide, Dispose.")]
+		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
+
 		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
 	}
 
@@ -72,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
 
 				self.CancelActivity();
-				self.QueueActivity(new RepairBridge(self, order.TargetActor));
+				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour));
 			}
 		}
 

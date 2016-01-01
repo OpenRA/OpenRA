@@ -8,22 +8,29 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Traits;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Scripting
 {
 	[ScriptPropertyGroup("Ability")]
-	public class InfiltrateProperties : ScriptActorProperties
+	public class InfiltrateProperties : ScriptActorProperties, Requires<InfiltratesInfo>
 	{
+		readonly InfiltratesInfo info;
+
 		public InfiltrateProperties(ScriptContext context, Actor self)
 			: base(context, self)
-		{ }
+		{
+			info = Self.Info.TraitInfo<InfiltratesInfo>();
+		}
 
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
 		{
-			Self.QueueActivity(new Infiltrate(Self, target));
+			Self.QueueActivity(new Infiltrate(Self, target, info.EnterBehaviour, info.ValidStances, info.Notification));
 		}
 	}
 }

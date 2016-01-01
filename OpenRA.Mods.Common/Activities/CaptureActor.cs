@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Health health;
 
 		public CaptureActor(Actor self, Actor target)
-			: base(self, target)
+			: base(self, target, EnterBehaviour.Dispose)
 		{
 			actor = target;
 			building = actor.TraitOrDefault<Building>();
