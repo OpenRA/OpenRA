@@ -23,19 +23,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of Z axis changes in world units.")]
 		public readonly int OffsetModifier = -43;
 
+		public readonly int MinHoveringAltitude = 0;
+
 		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
 	}
 
 	public class Hovers : UpgradableTrait<HoversInfo>, IRenderModifier
 	{
 		readonly HoversInfo info;
-		readonly bool aircraft;
 
 		public Hovers(HoversInfo info, Actor self)
 			: base(info)
 		{
 			this.info = info;
-			aircraft = self.Info.HasTraitInfo<AircraftInfo>();
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -43,7 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Paused || IsTraitDisabled)
 				return r;
 
-			var visualOffset = !aircraft || self.CenterPosition.Z > 0 ? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
+			var visualOffset = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length >= info.MinHoveringAltitude
+				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1
+				: 0;
 			var worldVisualOffset = new WVec(0, 0, info.OffsetModifier * visualOffset);
 
 			return r.Select(a => a.OffsetBy(worldVisualOffset));
