@@ -14,30 +14,27 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	class DemoTruckInfo : ITraitInfo, Requires<ExplodesInfo>
+	[Desc("Does a suicide attack where it moves next to the target when used in combination with `Explodes`.")]
+	class AttackSuicidesInfo : ITraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new DemoTruck(init.Self, this); }
+		public object Create(ActorInitializer init) { return new AttackSuicides(init.Self, this); }
 	}
 
-	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
+	class AttackSuicides : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly DemoTruckInfo info;
+		readonly AttackSuicidesInfo info;
+		readonly IMove move;
 
-		public DemoTruck(Actor self, DemoTruckInfo info)
+		public AttackSuicides(Actor self, AttackSuicidesInfo info)
 		{
 			this.info = info;
-		}
-
-		static void Explode(Actor self)
-		{
-			self.World.AddFrameEndTask(w => self.InflictDamage(self, int.MaxValue, null));
+			move = self.Trait<IMove>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -77,11 +74,13 @@ namespace OpenRA.Mods.RA.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(target, Color.Red);
-				self.QueueActivity(new MoveAdjacentTo(self, target));
-				self.QueueActivity(new CallFunc(() => Explode(self)));
+
+				self.QueueActivity(move.MoveToTarget(self, target));
+
+				self.QueueActivity(new CallFunc(() => self.Kill(self)));
 			}
 			else if (order.OrderString == "Detonate")
-				Explode(self);
+				self.Kill(self);
 		}
 	}
 }

@@ -324,7 +324,7 @@ HUNTER:
 		HP: 500
 	Armor:
 		Type: Light
-	DemoTruck:
+	AttackSuicides:
 	Explodes:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
