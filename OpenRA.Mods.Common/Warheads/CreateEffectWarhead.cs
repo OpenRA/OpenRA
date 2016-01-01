@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (dat.Length > airMargin.Length)
 				return isDirectHit ? ImpactType.AirHit : ImpactType.Air;
 
-			if (dat.Length <= 0 && world.Map.GetTerrainInfo(cell).IsWater)
+			if (dat.Length <= airMargin.Length && world.Map.GetTerrainInfo(cell).IsWater)
 				return isDirectHit ? ImpactType.WaterHit : ImpactType.Water;
 
 			if (isDirectHit)
