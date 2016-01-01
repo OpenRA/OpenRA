@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync
+	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated
 	{
 		[Sync] public int VisibilityHash;
 
@@ -39,7 +39,6 @@ namespace OpenRA.Mods.Common.Traits
 		PlayerDictionary<FrozenState> frozenStates;
 		ITooltip tooltip;
 		Health health;
-		bool initialized;
 		bool isRendering;
 
 		class FrozenState
@@ -64,13 +63,47 @@ namespace OpenRA.Mods.Common.Traits
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 		}
 
+		public void Created(Actor self)
+		{
+			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+			health = self.TraitOrDefault<Health>();
+
+			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
+			{
+				var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
+				if (startsRevealed)
+					UpdateFrozenActor(self, frozenActor, playerIndex);
+				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
+				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
+			});
+		}
+
+		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
+		{
+			VisibilityHash |= 1 << (playerIndex % 32);
+
+			frozenActor.Owner = self.Owner;
+
+			if (health != null)
+			{
+				frozenActor.HP = health.HP;
+				frozenActor.DamageState = health.DamageState;
+			}
+
+			if (tooltip != null)
+			{
+				frozenActor.TooltipInfo = tooltip.TooltipInfo;
+				frozenActor.TooltipOwner = tooltip.Owner;
+			}
+		}
+
 		bool IsVisibleInner(Actor self, Player byPlayer)
 		{
 			// If fog is disabled visibility is determined by shroud
 			if (!byPlayer.Shroud.FogEnabled)
 				return byPlayer.Shroud.AnyExplored(self.OccupiesSpace.OccupiedCells());
 
-			return initialized && frozenStates[byPlayer].IsVisible;
+			return frozenStates[byPlayer].IsVisible;
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
@@ -89,61 +122,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			VisibilityHash = 0;
 
-			if (!initialized)
-			{
-				frozenStates = new PlayerDictionary<FrozenState>(self.World, player =>
-				{
-					var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
-					player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-					return new FrozenState(frozenActor) { IsVisible = startsRevealed };
-				});
-				tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
-				health = self.TraitOrDefault<Health>();
-			}
-
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var state = frozenStates[playerIndex];
 				var frozenActor = state.FrozenActor;
-				bool isVisible;
-				if (!initialized)
-				{
-					isVisible = state.IsVisible;
-				}
-				else
-				{
-					isVisible = !frozenActor.Visible;
-					state.IsVisible = isVisible;
-				}
+				var isVisible = !frozenActor.Visible;
+				state.IsVisible = isVisible;
 
 				if (isVisible)
-					VisibilityHash |= 1 << (playerIndex % 32);
-				else
-					continue;
-
-				frozenActor.Owner = self.Owner;
-
-				if (health != null)
-				{
-					frozenActor.HP = health.HP;
-					frozenActor.DamageState = health.DamageState;
-				}
-
-				if (tooltip != null)
-				{
-					frozenActor.TooltipInfo = tooltip.TooltipInfo;
-					frozenActor.TooltipOwner = tooltip.Owner;
-				}
+					UpdateFrozenActor(self, frozenActor, playerIndex);
 			}
-
-			initialized = true;
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
-			if (!initialized)
-				return;
-
 			IRenderable[] renderables = null;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
@@ -165,10 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return
-				IsVisible(self, self.World.RenderPlayer) ||
-				(initialized && isRendering) ?
-				r : SpriteRenderable.None;
+			return IsVisible(self, self.World.RenderPlayer) || isRendering ? r : SpriteRenderable.None;
 		}
 	}
 }
