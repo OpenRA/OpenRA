@@ -17,7 +17,8 @@ local fileMenu = wx.wxMenu({
     { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },
     { ID_SAVEALL, TR("Save A&ll")..KSC(ID_SAVEALL), TR("Save all open documents") },
     { },
-    -- placeholder for ID_RECENTFILES and ID_RECENTPROJECTS
+    { ID_RECENTFILES, TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history") },
+    { ID_RECENTPROJECTS, TR("Recent Projects")..KSC(ID_RECENTPROJECTS), TR("Project history") },
     { },
     { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") }})
 menuBar:Append(fileMenu, TR("&File"))
@@ -26,17 +27,12 @@ local filehistorymenu = wx.wxMenu({
     { },
     { ID_RECENTFILESCLEAR, TR("Clear Items")..KSC(ID_RECENTFILESCLEAR), TR("Clear items from this list") },
 })
-local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
-  TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
-fileMenu:Insert(8,filehistory)
-
 local projecthistorymenu = wx.wxMenu({
     { },
     { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear items from this list") },
 })
-local projecthistory = wx.wxMenuItem(fileMenu, ID_RECENTPROJECTS,
-  TR("Recent Projects")..KSC(ID_RECENTPROJECTS), TR("Project history"), wx.wxITEM_NORMAL, projecthistorymenu)
-fileMenu:Insert(9,projecthistory)
+ide:AttachMenu(ID_RECENTFILES, filehistorymenu)
+ide:AttachMenu(ID_RECENTPROJECTS, projecthistorymenu)
 
 do -- recent file history
   local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
