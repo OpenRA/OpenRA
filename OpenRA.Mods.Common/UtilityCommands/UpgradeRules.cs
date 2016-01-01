@@ -2876,6 +2876,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename WithDockingOverlay to WithDockedOverlay
+				if (engineVersion < 20160116)
+				{
+					if (node.Key.StartsWith("WithDockingOverlay"))
+						node.Key = "WithDockedOverlay" + node.Key.Substring(18);
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

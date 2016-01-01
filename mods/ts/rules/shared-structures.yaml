@@ -91,7 +91,7 @@ PROC:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
 		Sequence: bib
-	WithDockingOverlay@flame:
+	WithDockedOverlay@FLAME:
 		Sequence: flame
 		Palette: effect
 	Power:
