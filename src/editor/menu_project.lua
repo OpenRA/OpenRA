@@ -288,7 +288,15 @@ frame:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_BREAKPOINTNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function() GetEditor():MarkerGotoNext(BREAKPOINT_MARKER) end)
+  function()
+    local BPNSC = KSC(ID_BREAKPOINTNEXT):gsub("\t","")
+    if not GetEditor():MarkerGotoNext(BREAKPOINT_MARKER) and BPNSC == "F9" then
+      DisplayOutputLn(("You used '%s' shortcut that used to toggle a breakpoint and is now used to navigate to the next breakpoint in the document.")
+        :format(BPNSC))
+      DisplayOutputLn(("To toggle a breakpoint, use '%s' instead.")
+        :format(KSC(ID_BREAKPOINTTOGGLE):gsub("\t","")))
+    end
+  end)
 frame:Connect(ID_BREAKPOINTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function() GetEditor():MarkerGotoPrev(BREAKPOINT_MARKER) end)
 
