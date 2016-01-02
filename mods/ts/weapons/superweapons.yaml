@@ -26,12 +26,12 @@ MultiCluster:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: expnew09.aud
+		ImpactSounds: expnew09.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -62,7 +62,7 @@ IonCannon:
 		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff_impact: CreateEffect
 		Explosions: ionring
-		ImpactSound: ion1.aud
+		ImpactSounds: ion1.aud
 	Warhead@3Dam_area: SpreadDamage
 		Spread: 1c0
 		Damage: 250
@@ -104,7 +104,7 @@ ClusterMissile:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@SoundEffect0: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: expnew19.aud
+		ImpactSounds: expnew19.aud
 	Warhead@ResourceDestruction0: DestroyResource
 		Size: 1
 	Warhead@ClusterSmudges0: LeaveSmudge

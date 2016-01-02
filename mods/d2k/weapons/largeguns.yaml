@@ -26,7 +26,7 @@
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSound: EXPLSML4.WAV
+		ImpactSounds: EXPLSML4.WAV
 
 80mm_A:
 	ReloadDelay: 50
@@ -132,7 +132,7 @@ DevBullet:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
-		ImpactSound: EXPLMD1.WAV
+		ImpactSounds: EXPLMD1.WAV
 
 155mm:
 	ReloadDelay: 80
@@ -163,4 +163,4 @@ DevBullet:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: EXPLMD2.WAV
+		ImpactSounds: EXPLMD2.WAV

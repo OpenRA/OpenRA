@@ -20,12 +20,12 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_clsn
-		ImpactSound: expnew14.aud
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
@@ -48,12 +48,12 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_clsn
-		ImpactSound: expnew14.aud
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -82,12 +82,12 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_clsn
-		ImpactSound: expnew14.aud
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -116,12 +116,12 @@
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater

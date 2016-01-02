@@ -43,7 +43,7 @@ Fremen_S:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: EXPLSML2.WAV
+		ImpactSounds: EXPLSML2.WAV
 
 M_LMG:
 	ReloadDelay: 40

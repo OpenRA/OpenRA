@@ -19,7 +19,7 @@ Flamethrower:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSound: flamer2.aud
+		ImpactSounds: flamer2.aud
 
 BigFlamer:
 	ReloadDelay: 50
@@ -44,7 +44,7 @@ BigFlamer:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
-		ImpactSound: flamer2.aud
+		ImpactSounds: flamer2.aud
 
 Chemspray:
 	ReloadDelay: 65
@@ -65,7 +65,7 @@ Chemspray:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 Grenade:
 	ReloadDelay: 50
@@ -90,7 +90,7 @@ Grenade:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 Napalm:
 	ValidTargets: Ground, Water
@@ -115,7 +115,7 @@ Napalm:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
-		ImpactSound: flamer2.aud
+		ImpactSounds: flamer2.aud
 
 Laser:
 	ReloadDelay: 1
@@ -156,7 +156,7 @@ TiberiumExplosion:
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
-		ImpactSound: xplosml2.aud
+		ImpactSounds: xplosml2.aud
 
 Heal:
 	ReloadDelay: 4
@@ -237,4 +237,4 @@ Demolish:
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: building
-		ImpactSound: xplobig6.aud
+		ImpactSounds: xplobig6.aud

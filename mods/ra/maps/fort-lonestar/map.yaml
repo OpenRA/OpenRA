@@ -881,7 +881,7 @@ Weapons:
 		Warhead@3Eff: CreateEffect
 			Explosions: small_explosion
 			WaterExplosion: small_explosion
-			ImpactSound: firebl3.aud
+			ImpactSounds: firebl3.aud
 	ParaBomb:
 		ReloadDelay: 5
 		Range: 5c0
@@ -902,7 +902,7 @@ Weapons:
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: napalm
-			ImpactSound: firebl3.aud
+			ImpactSounds: firebl3.aud
 			WaterExplosion: napalm
 	155mm:
 		ReloadDelay: 10
@@ -933,7 +933,7 @@ Weapons:
 		Warhead@3Eff: CreateEffect
 			Explosions: small_napalm
 			WaterExplosion: small_napalm
-			ImpactSound: firebl3.aud
+			ImpactSounds: firebl3.aud
 	FLAK-23:
 		ReloadDelay: 10
 		Range: 8c0
@@ -986,7 +986,7 @@ Weapons:
 		Warhead@3Eff: CreateEffect
 			Explosions: nuke
 			WaterExplosion: large_splash
-			ImpactSound: kaboom1.aud
+			ImpactSounds: kaboom1.aud
 			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
 		ReloadDelay: 80

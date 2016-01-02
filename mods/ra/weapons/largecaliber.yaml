@@ -43,11 +43,11 @@
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 105mm:
@@ -72,11 +72,11 @@
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 120mm:
@@ -102,11 +102,11 @@
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 TurretGun:
@@ -129,11 +129,11 @@ TurretGun:
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 155mm:
@@ -162,11 +162,11 @@ TurretGun:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 8Inch:
@@ -195,11 +195,11 @@ TurretGun:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 2Inch:
@@ -222,9 +222,9 @@ TurretGun:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water

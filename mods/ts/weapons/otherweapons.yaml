@@ -43,7 +43,7 @@ FiendShard:
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 
 SlimeAttack:

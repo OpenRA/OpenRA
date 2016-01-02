@@ -20,12 +20,12 @@ Grenade:
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
-		ImpactSound: expnew13.aud
+		ImpactSounds: expnew13.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -52,12 +52,12 @@ Bomb:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: expnew09.aud
+		ImpactSounds: expnew09.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -85,12 +85,12 @@ RPGTower:
 		DamageTypes: Prone70Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_clsn
-		ImpactSound: expnew14.aud
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater

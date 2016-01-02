@@ -19,7 +19,7 @@
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 105mm:
 	ReloadDelay: 50
@@ -41,7 +41,7 @@
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 120mm:
 	ReloadDelay: 40
@@ -64,7 +64,7 @@
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 120mmDual:
 	ReloadDelay: 40
@@ -89,7 +89,7 @@
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 TurretGun:
 	ReloadDelay: 20
@@ -111,7 +111,7 @@ TurretGun:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 ArtilleryShell:
 	ReloadDelay: 65
@@ -138,4 +138,4 @@ ArtilleryShell:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
-		ImpactSound: XPLOSML2.AUD
+		ImpactSounds: XPLOSML2.AUD

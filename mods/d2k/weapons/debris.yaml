@@ -27,7 +27,7 @@ Debris:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: EXPLLG5.WAV
+		ImpactSounds: EXPLLG5.WAV
 
 Debris2:
 	ReloadDelay: 60
@@ -61,7 +61,7 @@ Debris2:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: EXPLLG5.WAV
+		ImpactSounds: EXPLLG5.WAV
 
 Debris3:
 	ReloadDelay: 60
@@ -95,7 +95,7 @@ Debris3:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: EXPLLG5.WAV
+		ImpactSounds: EXPLLG5.WAV
 
 Debris4:
 	ReloadDelay: 60
@@ -129,4 +129,4 @@ Debris4:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: EXPLLG5.WAV
+		ImpactSounds: EXPLLG5.WAV

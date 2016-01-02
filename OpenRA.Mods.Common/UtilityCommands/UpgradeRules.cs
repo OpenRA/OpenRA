@@ -3441,6 +3441,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var explosionNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "Explosion");
 						if (explosionNode != null)
 							explosionNode.Key = "Explosions";
+
+						// Add support for multiple impact sounds to CreateEffectWarhead
+						var impactSoundNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ImpactSound");
+						if (impactSoundNode != null)
+							impactSoundNode.Key = "ImpactSounds";
 					}
 				}
 

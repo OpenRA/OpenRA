@@ -27,17 +27,17 @@ Bazooka:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ImpactSound: expnew12.aud
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		ValidImpactTypes: Air, AirHit
 		Explosions: tiny_twlt
-		ImpactSound: expnew05.aud
+		ImpactSounds: expnew05.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -71,17 +71,17 @@ HoverMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ImpactSound: expnew12.aud
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -114,12 +114,12 @@ MammothTusk:
 		DamageTypes: Explosion
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_twlt
-		ImpactSound: expnew07.aud
+		ImpactSounds: expnew07.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 
 BikeMissile:
@@ -153,12 +153,12 @@ BikeMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ImpactSound: expnew12.aud
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
@@ -193,17 +193,17 @@ Dragon:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ImpactSound: expnew12.aud
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -237,17 +237,17 @@ Hellfire:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
-		ImpactSound: expnew12.aud
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -274,4 +274,4 @@ RedEye2:
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: tiny_twlt
-		ImpactSound: expnew05.aud
+		ImpactSounds: expnew05.aud

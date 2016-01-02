@@ -11,7 +11,7 @@ UnitExplode:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_twlt
-		ImpactSound: expnew09.aud
+		ImpactSounds: expnew09.aud
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -25,7 +25,7 @@ UnitExplodeSmall:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_brnl
-		ImpactSound: expnew13.aud
+		ImpactSounds: expnew13.aud
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -42,7 +42,7 @@ TiberiumExplosion:
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: expnew09.aud
+		ImpactSounds: expnew09.aud
 
 SmallDebris:
 	ReloadDelay: 60

@@ -1172,11 +1172,11 @@ Weapons:
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: napalm
-			ImpactSound: firebl3.aud
+			ImpactSounds: firebl3.aud
 			InvalidImpactTypes: Water
 		Warhead@4EffWater: CreateEffect
 			Explosions: napalm
-			ImpactSound: splash9.aud
+			ImpactSounds: splash9.aud
 			ValidImpactTypes: Water
 
 Voices:

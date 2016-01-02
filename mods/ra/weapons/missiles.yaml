@@ -29,11 +29,11 @@ Maverick:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Dragon:
@@ -66,11 +66,11 @@ Dragon:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 HellfireAG:
@@ -104,11 +104,11 @@ HellfireAG:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 HellfireAA:
@@ -142,11 +142,11 @@ HellfireAA:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 MammothTusk:
@@ -178,15 +178,15 @@ MammothTusk:
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom12.aud
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 	Warhead@5EffAir: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 
 Nike:
@@ -215,7 +215,7 @@ Nike:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 
 RedEye:
 	ReloadDelay: 50
@@ -244,7 +244,7 @@ RedEye:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 
 SubMissile:
 	ReloadDelay: 300
@@ -272,11 +272,11 @@ SubMissile:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Stinger:
@@ -308,15 +308,15 @@ Stinger:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@5EffAir: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 StingerAA:
@@ -348,15 +348,15 @@ StingerAA:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@5EffAir: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 TorpTube:
@@ -389,15 +389,15 @@ TorpTube:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water, WaterHit
 	Warhead@4EffWaterHit: CreateEffect
 		Explosions: artillery_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		ValidImpactTypes: WaterHit
 	Warhead@5EffWater: CreateEffect
 		Explosions: large_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 SCUD:
@@ -428,11 +428,11 @@ SCUD:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
-		ImpactSound: firebl3.aud
+		ImpactSounds: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 APTusk:
@@ -464,9 +464,9 @@ APTusk:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water

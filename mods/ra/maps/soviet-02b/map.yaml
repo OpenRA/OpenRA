@@ -671,7 +671,7 @@ Weapons:
 			Delay: 5
 		Warhead@3Eff: CreateEffect
 			Explosions: napalm
-			ImpactSound: firebl3.aud
+			ImpactSounds: firebl3.aud
 			Delay: 5
 
 Voices:

@@ -5,7 +5,7 @@ FlametankExplode:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
-		ImpactSound: xplobig6.aud
+		ImpactSounds: xplobig6.aud
 
 HeliCrash:
 	Warhead@1Dam: SpreadDamage
@@ -14,14 +14,14 @@ HeliCrash:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_building
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
@@ -35,7 +35,7 @@ UnitExplode:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
-		ImpactSound: xplobig6.aud
+		ImpactSounds: xplobig6.aud
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -49,7 +49,7 @@ UnitExplodeSmall:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_frag
-		ImpactSound: xplobig4.aud
+		ImpactSounds: xplobig4.aud
 
 GrenadierExplode:
 	Warhead@1Dam: SpreadDamage
@@ -63,7 +63,7 @@ GrenadierExplode:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
-		ImpactSound: xplosml2.aud
+		ImpactSounds: xplosml2.aud
 
 Napalm.Crate:
 	Warhead@1Dam: SpreadDamage
@@ -81,4 +81,4 @@ Napalm.Crate:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
-		ImpactSound: flamer2.aud
+		ImpactSounds: flamer2.aud

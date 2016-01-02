@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
-		[Desc("Sound to play on impact.")]
-		public readonly string ImpactSound = null;
+		[Desc("List of sounds that can be played on impact.")]
+		public readonly string[] ImpactSounds = new string[0];
 
 		[Desc("What impact types should this effect apply to.")]
 		public readonly ImpactType ValidImpactTypes = ImpactType.Ground | ImpactType.Water | ImpactType.Air | ImpactType.GroundHit | ImpactType.WaterHit | ImpactType.AirHit;
@@ -103,8 +103,9 @@ namespace OpenRA.Mods.Common.Warheads
 			if (explosion != null)
 				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, explosion, palette)));
 
-			if (ImpactSound != null)
-				Game.Sound.Play(ImpactSound, pos);
+			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
+			if (impactSound != null)
+				Game.Sound.Play(impactSound, pos);
 		}
 
 		public bool IsValidImpact(WPos pos, Actor firedBy)

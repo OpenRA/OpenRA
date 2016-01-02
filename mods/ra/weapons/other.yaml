@@ -21,7 +21,7 @@ FireballLauncher:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
-		ImpactSound: firebl3.aud
+		ImpactSounds: firebl3.aud
 
 Flamer:
 	ReloadDelay: 50
@@ -48,7 +48,7 @@ Flamer:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSound: firebl3.aud
+		ImpactSounds: firebl3.aud
 
 Napalm:
 	ReloadDelay: 20
@@ -70,11 +70,11 @@ Napalm:
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
-		ImpactSound: firebl3.aud
+		ImpactSounds: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4Eff: CreateEffect
 		Explosions: med_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Grenade:
@@ -100,11 +100,11 @@ Grenade:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ImpactSound: splash9.aud
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 DepthCharge:
@@ -131,10 +131,10 @@ DepthCharge:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: large_splash
-		ImpactSound: h2obomb2.aud
+		ImpactSounds: h2obomb2.aud
 	Warhead@4EffHit: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: kaboom15.aud
+		ImpactSounds: kaboom15.aud
 		ValidImpactTypes: WaterHit
 
 TeslaZap:
@@ -216,14 +216,14 @@ Crush:
 		Damage: 100
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		ImpactSound: squishy2.aud
+		ImpactSounds: squishy2.aud
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: building
-		ImpactSound: kaboom25.aud
+		ImpactSounds: kaboom25.aud
 
 Claw:
 	ReloadDelay: 30
@@ -275,4 +275,4 @@ MADTankDetonate:
 		Size: 7,6
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: mineblo1.aud
+		ImpactSounds: mineblo1.aud

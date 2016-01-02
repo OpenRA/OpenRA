@@ -92,21 +92,21 @@ OrniBomb:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: NAPALM1.WAV
+		ImpactSounds: NAPALM1.WAV
 
 Crush:
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
 		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		ImpactSound: CRUSH1.WAV
+		ImpactSounds: CRUSH1.WAV
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: building
-		ImpactSound: EXPLLG2.WAV
+		ImpactSounds: EXPLLG2.WAV
 
 Atomic:
 	Warhead@1Dam: SpreadDamage
@@ -126,7 +126,7 @@ Atomic:
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
-		ImpactSound: EXPLLG2.WAV
+		ImpactSounds: EXPLLG2.WAV
 
 CrateNuke:
 	Warhead@1Dam: SpreadDamage
@@ -147,7 +147,7 @@ CrateNuke:
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
-		ImpactSound: EXPLLG2.WAV
+		ImpactSounds: EXPLLG2.WAV
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -168,22 +168,22 @@ CrateExplosion:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: EXPLSML4.WAV
+		ImpactSounds: EXPLSML4.WAV
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
 		Explosions: self_destruct
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
 		Explosions: building
-		ImpactSound: EXPLSML2.WAV
+		ImpactSounds: EXPLSML2.WAV
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSound: EXPLLG2.WAV
+		ImpactSounds: EXPLLG2.WAV
 
 grenade:
 	ReloadDelay: 50
@@ -212,7 +212,7 @@ grenade:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSound: EXPLLG5.WAV
+		ImpactSounds: EXPLLG5.WAV
 
 Weathering:
 	ReloadDelay: 100
@@ -237,7 +237,7 @@ GrenDeath:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: building
-		ImpactSound: EXPLSML4.WAV
+		ImpactSounds: EXPLSML4.WAV
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
@@ -258,7 +258,7 @@ SardDeath:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactSound: EXPLSML2.WAV
+		ImpactSounds: EXPLSML2.WAV
 
 SpiceExplosion:
 	Projectile: Bullet

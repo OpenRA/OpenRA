@@ -291,7 +291,7 @@ Weapons:
 		Warhead@1Eff: CreateEffect
 			Explosions: large_explosion
 			WaterExplosion: large_splash
-			ImpactSound: kaboom12.aud
+			ImpactSounds: kaboom12.aud
 			WaterImpactSound: splash9.aud
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
@@ -319,7 +319,7 @@ Weapons:
 		Warhead@1Eff: CreateEffect
 			Explosions: large_explosion
 			WaterExplosion: large_splash
-			ImpactSound: kaboom12.aud
+			ImpactSounds: kaboom12.aud
 			WaterImpactSound: splash9.aud
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater

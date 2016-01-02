@@ -29,7 +29,7 @@ Bazooka:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 
 Rocket:
 	ReloadDelay: 30
@@ -62,7 +62,7 @@ Rocket:
 	Warhead@3Eff: CreateEffect
 		Explosions: rocket_explosion
 		ExplosionPalette: effect75alpha
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 
 TowerMissile:
 	ReloadDelay: 60
@@ -101,7 +101,7 @@ TowerMissile:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 
 mtank_pri:
 	ReloadDelay: 115
@@ -139,7 +139,7 @@ mtank_pri:
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 
 DeviatorMissile:
 	ReloadDelay: 160
@@ -178,7 +178,7 @@ DeviatorMissile:
 		Explosions: deviator
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
-		ImpactSound: EXPLSML1.WAV
+		ImpactSounds: EXPLSML1.WAV
 	Warhead@4OwnerChange: ChangeOwner
 		Range: 256
 		Duration: 375

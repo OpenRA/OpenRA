@@ -29,7 +29,7 @@ Rockets:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 BikeRockets:
 	ReloadDelay: 50
@@ -63,7 +63,7 @@ BikeRockets:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 OrcaAGMissiles:
 	ReloadDelay: 12
@@ -97,7 +97,7 @@ OrcaAGMissiles:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 OrcaAAMissiles:
 	ReloadDelay: 12
@@ -129,7 +129,7 @@ OrcaAAMissiles:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 MammothMissiles:
 	ReloadDelay: 45
@@ -162,11 +162,11 @@ MammothMissiles:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 		InvalidImpactTypes: Air, AirHit
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 		ValidImpactTypes: Air, AirHit
 
 227mm:
@@ -202,7 +202,7 @@ MammothMissiles:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 227mm.stnk:
 	ReloadDelay: 70
@@ -235,7 +235,7 @@ MammothMissiles:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 BoatMissile:
 	ReloadDelay: 35
@@ -266,11 +266,11 @@ BoatMissile:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 		InvalidImpactTypes: Air, AirHit
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 		ValidImpactTypes: Air, AirHit
 
 TowerMissle:
@@ -302,7 +302,7 @@ TowerMissle:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 SAMMissile:
 	ReloadDelay: 15
@@ -332,7 +332,7 @@ SAMMissile:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 HonestJohn:
 	ReloadDelay: 200
@@ -361,7 +361,7 @@ HonestJohn:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
 
 Patriot:
 	ReloadDelay: 25
@@ -388,4 +388,4 @@ Patriot:
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
-		ImpactSound: xplos.aud
+		ImpactSounds: xplos.aud
