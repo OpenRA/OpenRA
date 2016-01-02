@@ -25,7 +25,7 @@ namespace OpenRA.FileSystem
 
 		static ZipFile()
 		{
-			ZipConstants.DefaultCodePage = Encoding.Default.CodePage;
+			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
 		public ZipFile(FileSystem context, string filename, int priority)
