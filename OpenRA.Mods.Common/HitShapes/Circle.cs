@@ -49,6 +49,12 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
+			var attackablePositions = actor.TraitsImplementing<IAttackablePositions>();
+			if (attackablePositions.Any())
+			{
+				var positions = attackablePositions.SelectMany(ap => ap.AttackablePositions(actor));
+				actorPos = positions.PositionClosestTo(actorPos);
+			}
 
 			if (pos.Z > actorPos.Z + VerticalTopOffset)
 				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalTopOffset)));
@@ -62,6 +68,12 @@ namespace OpenRA.Mods.Common.HitShapes
 		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
+			var attackablePositions = actor.TraitsImplementing<IAttackablePositions>();
+			if (attackablePositions.Any())
+			{
+				var positions = attackablePositions.SelectMany(ap => ap.AttackablePositions(actor));
+				actorPos = positions.PositionClosestTo(actorPos);
+			}
 
 			RangeCircleRenderable.DrawRangeCircle(
 				wr, actorPos + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow, 0, Color.Yellow);
