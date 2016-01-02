@@ -224,6 +224,7 @@ Background@SUPPORT_POWER_TOOLTIP:
 Background@FACTION_DESCRIPTION_TOOLTIP:
 	Logic: FactionTooltipLogic
 	Background: dialog4
+	Height: 26
 	Children:
 		Label@HEADER:
 			X: 7
@@ -231,12 +232,10 @@ Background@FACTION_DESCRIPTION_TOOLTIP:
 			Width: 8
 			Height: 12
 			Font: Bold
-			VAlign: Top
 		Label@DESCRIPTION:
 			X: 14
-			Y: 0
+			Y: 20
 			Width: 15
 			Height: 18
 			Font: TinyBold
-			VAlign: Top
 
