@@ -481,10 +481,35 @@ sandworm:
 		Length: 20
 		Tick: 100
 	idle: DATA.R8
-		Start: 3586
-		Length: 35
-		Tick: 180
-		BlendMode: Additive
-	burrowed: DATA.R8
 		Start: 39
+	lightninga: DATA.R8
+		Start: 3591
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
+	lightningb: DATA.R8
+		Start: 3596
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
+	lightningc: DATA.R8
+		Start: 3601
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
+	lightningd: DATA.R8
+		Start: 3606
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
+	lightninge: DATA.R8
+		Start: 3611
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
+	lightningf: DATA.R8
+		Start: 3616
+		Length: 5
+		Tick: 80
+		BlendMode: Additive
 	icon: wormicon.shp
