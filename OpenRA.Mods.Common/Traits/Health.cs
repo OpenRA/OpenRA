@@ -9,18 +9,29 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum TargetablePositionType { FootPrint, CenterPosition }
+
 	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
+
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
+
+		[Desc("Modifies offset of targeting position for targeting by weapons.")]
+		public readonly WVec TargetablePositionOffset = WVec.Zero;
+
+		[Desc("Possible values are CenterPosition (ignoring footprint of buildings) and ",
+			"FootPrint (currently just takes the first cell of the footprint).")]
+		public readonly TargetablePositionType TargetablePositionType = TargetablePositionType.CenterPosition;
 
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Shape;
@@ -55,9 +66,11 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public class Health : IHealth, ISync, ITick
+	public class Health : IHealth, ISync, ITick, ITargetablePositions, INotifyCreated
 	{
 		public readonly HealthInfo Info;
+		Building building;
+		BodyOrientation body;
 
 		[Sync] int hp;
 
@@ -73,11 +86,28 @@ namespace OpenRA.Mods.Common.Traits
 			DisplayHP = hp;
 		}
 
+		public void Created(Actor self)
+		{
+			building = self.TraitOrDefault<Building>();
+			body = self.TraitOrDefault<BodyOrientation>();
+		}
+
 		public int HP { get { return hp; } }
 		public int MaxHP { get; private set; }
 
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
+
+		public IEnumerable<WPos> TargetablePositions(Actor self)
+		{
+			if (Info.TargetablePositionType == TargetablePositionType.FootPrint && building != null)
+				return building.OccupiedCells().Select(c => self.World.Map.CenterOfCell(c.First) + Info.TargetablePositionOffset);
+
+			var offset = Info.TargetablePositionOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+			var pos = self.CenterPosition + body.LocalToWorld(offset);
+
+			return new WPos[] { pos };
+		}
 
 		public DamageState DamageState
 		{
