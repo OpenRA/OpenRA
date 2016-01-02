@@ -14,6 +14,12 @@ BGGY:
 		Speed: 142
 	Health:
 		HP: 220
+		TargetablePositionOffset: 0, 0, 120
+		Shape: Rectangle
+			TopLeft: -192, -320
+			BottomRight: 192, 320
+			VerticalTopOffset: 120
+			VerticalBottomOffset: -120
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -45,6 +51,13 @@ BIKE:
 		Speed: 170
 	Health:
 		HP: 150
+		TargetablePositionOffset: 0, 0, 144
+		Shape: Capsule
+			Radius: 144
+			PointA: 0, -128
+			PointB: 0, 144
+			VerticalTopOffset: 144
+			VerticalBottomOffset: -144
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -81,6 +94,12 @@ TTNK:
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 350
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -192, -276
+			BottomRight: 192, 320
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	Armor:
 		Type: Light
 		UpgradeTypes: undeployed
@@ -176,6 +195,12 @@ ART2:
 		Prerequisites: ~naweap, naradr
 	Health:
 		HP: 300
+		TargetablePositionOffset: 0, 0, 160
+		Shape: Rectangle
+			TopLeft: -192, -356
+			BottomRight: 192, 356
+			VerticalTopOffset: 160
+			VerticalBottomOffset: -160
 	Armor:
 		Type: Light
 	Mobile:
@@ -205,6 +230,12 @@ REPAIR:
 		Description: Repairs nearby vehicles.\n  Unarmed
 	Health:
 		HP: 200
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -192, -300
+			BottomRight: 192, 268
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
@@ -245,6 +276,12 @@ WEED:
 		TurnSpeed: 5
 	Health:
 		HP: 600
+		TargetablePositionOffset: 0, 64, 128
+		Shape: Rectangle
+			TopLeft: -192, -300
+			BottomRight: 192, 300
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
@@ -274,6 +311,13 @@ SAPC:
 		Speed: 71
 	Health:
 		HP: 175
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Capsule
+			Radius: 176
+			PointA: 0, -192
+			PointB: 0, 144
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -303,6 +347,12 @@ SUBTANK:
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 300
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -224, -360
+			BottomRight: 224, 360
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -330,6 +380,12 @@ STNK:
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 180
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Rectangle
+			TopLeft: -320, -320
+			BottomRight: 320, 320
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Light
 	RevealsShroud:
