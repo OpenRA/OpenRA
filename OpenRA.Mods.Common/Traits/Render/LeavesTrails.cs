@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.World.Map.CenterOfCell(cachedCell);
 
 				if (info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(info.Image))
-					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, info.Image, info.Palette)));
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, info.Image, "idle", info.Palette)));
 
 				cachedPosition = self.CenterPosition;
 				ticks = 0;
