@@ -2818,6 +2818,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160103)
+				{
+					// Overhauled WithActiveAnimation -> WithIdleAnimation
+					if (node.Key == "WithActiveAnimation")
+					{
+						node.Key = "WithIdleAnimation";
+						foreach (var n in node.Value.Nodes)
+							if (n.Key == "Sequence")
+								n.Key = "Sequences";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

@@ -421,7 +421,6 @@
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
-    <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithSiloAnimation.cs" />
@@ -718,6 +717,7 @@
     <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
     <Compile Include="Traits\World\EditorSelectionLayer.cs" />
     <Compile Include="Graphics\DetectionCircleRenderable.cs" />
+    <Compile Include="Traits\Render\WithIdleAnimation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
