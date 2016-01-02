@@ -389,4 +389,3 @@ Patriot:
 	Warhead@3Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: xplos.aud
-

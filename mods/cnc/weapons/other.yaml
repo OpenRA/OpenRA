@@ -239,4 +239,3 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosion: building
 		ImpactSound: xplobig6.aud
-

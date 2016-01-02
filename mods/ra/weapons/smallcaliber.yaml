@@ -357,4 +357,3 @@ Sniper:
 		Damage: 140
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-

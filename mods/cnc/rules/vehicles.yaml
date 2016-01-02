@@ -553,4 +553,3 @@ MHQ:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-

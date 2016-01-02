@@ -197,4 +197,3 @@ APCGun.AA:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosion: small_frag
-
