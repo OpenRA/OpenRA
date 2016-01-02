@@ -1,4 +1,4 @@
-﻿using OpenRA.Graphics;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -6,37 +6,37 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.AS.Traits
 {
-    public class WithIdleOverlayASInfo : WithIdleOverlayInfo
-    {
-        [Desc("Image name to use, if null, it falls back to default.")]
-        public readonly string Image = "";
+	public class WithIdleOverlayASInfo : WithIdleOverlayInfo
+	{
+		[Desc("Image name to use, if null, it falls back to default.")]
+		public readonly string Image = "";
 
-        public override object Create(ActorInitializer init) { return new WithIdleOverlayAS(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithIdleOverlayAS(init.Self, this); }
 
-        public new IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
-        {
-            if (UpgradeMinEnabledLevel > 0)
-                yield break;
+		public new IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
+		{
+			if (UpgradeMinEnabledLevel > 0)
+				yield break;
 
-            if (Palette != null)
-                p = init.WorldRenderer.Palette(Palette);
+			if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
 
-            var idleImage = Image != null ? Image : image;
+			var idleImage = Image != null ? Image : image;
 
-            var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-            var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-            var anim = new Animation(init.World, idleImage, () => facing);
-            anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+			var anim = new Animation(init.World, idleImage, () => facing);
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-            var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
-            var offset = body.LocalToWorld(Offset.Rotate(orientation));
-            yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
-        }
-    }
+			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
+			var offset = body.LocalToWorld(Offset.Rotate(orientation));
+			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+		}
+	}
 
-    public class WithIdleOverlayAS : UpgradableTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
-    {
-        readonly Animation overlay;
+	public class WithIdleOverlayAS : UpgradableTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	{
+		readonly Animation overlay;
 		bool buildComplete;
 
 		public WithIdleOverlayAS(Actor self, WithIdleOverlayASInfo info)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.AS.Traits
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-            var image = info.Image != null ? info.Image : rs.GetImage(self);
+			var image = info.Image != null ? info.Image : rs.GetImage(self);
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, image,
@@ -87,5 +87,5 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}
-    }
+	}
 }
