@@ -76,6 +76,9 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Vertical rate of turn.")]
 		public readonly int VerticalRateOfTurn = 6;
 
+		[Desc("Gravity applied while in free fall.")]
+		public readonly int Gravity = 10;
+
 		[Desc("Run out of fuel after being activated this many ticks. Zero for unlimited fuel.")]
 		public readonly int RangeLimit = 0;
 
@@ -152,8 +155,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly ProjectileArgs args;
 		readonly Animation anim;
 
-		// NOTE: Might be desirable to unhardcode the number -10
-		readonly WVec gravity = new WVec(0, 0, -10);
+		readonly WVec gravity;
 
 		int ticks;
 
@@ -191,6 +193,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			pos = args.Source;
 			hFacing = args.Facing;
+			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 
 			var world = args.SourceActor.World;

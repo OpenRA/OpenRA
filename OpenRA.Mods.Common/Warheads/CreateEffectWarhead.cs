@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (dat.Length > airMargin.Length)
 				return isDirectHit ? ImpactType.AirHit : ImpactType.Air;
 
-			if (dat.Length <= 0 && world.Map.GetTerrainInfo(cell).IsWater)
+			if (dat.Length <= airMargin.Length && world.Map.GetTerrainInfo(cell).IsWater)
 				return isDirectHit ? ImpactType.WaterHit : ImpactType.Water;
 
 			if (isDirectHit)
@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Common.Warheads
 				if (healthInfo == null)
 					continue;
 
-				// If the impact position is within any actor's health radius, we have a direct hit
-				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Shape.OuterRadius.LengthSquared)
+				// If the impact position is within any actor's HitShape, we have a direct hit
+				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Shape.DistanceFromEdge(pos, unit).LengthSquared)
 					return true;
 			}
 
