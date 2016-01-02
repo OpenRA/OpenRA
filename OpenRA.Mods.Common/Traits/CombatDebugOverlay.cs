@@ -58,6 +58,25 @@ namespace OpenRA.Mods.Common.Traits
 			if (healthInfo != null)
 				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
 
+			var attackablePositions = self.TraitsImplementing<IAttackablePositions>();
+			foreach (var ap in attackablePositions)
+			{
+				var attackPos = self.CenterPosition;
+				var positions = ap.AttackablePositions(self);
+				if (positions.Any())
+					attackPos = positions.First();
+
+				var attackPosColor = Color.Magenta;
+				var apx = new WVec(96, 0, 0);
+				var apy = new WVec(0, 96, 0);
+				var apa = wr.ScreenPosition(attackPos + apx);
+				var apb = wr.ScreenPosition(attackPos - apx);
+				var apc = wr.ScreenPosition(attackPos + apy);
+				var apd = wr.ScreenPosition(attackPos - apy);
+				wcr.DrawLine(apa, apb, iz, attackPosColor);
+				wcr.DrawLine(apc, apd, iz, attackPosColor);
+			}
+
 			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
 			if (blockers.Count > 0)
 			{

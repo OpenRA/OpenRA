@@ -165,6 +165,35 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public IEnumerable<WPos> AttackablePositions
+		{
+			get
+			{
+				switch (Type)
+				{
+					case TargetType.Actor:
+						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
+							return new[] { actor.CenterPosition };
+
+						var attackablePositions = actor.TraitsImplementing<IAttackablePositions>();
+						if (attackablePositions.Any())
+						{
+							var target = this;
+							return attackablePositions.SelectMany(ap => ap.AttackablePositions(target.actor));
+						}
+
+						return new[] { actor.CenterPosition };
+					case TargetType.FrozenActor:
+						return new[] { frozen.CenterPosition };
+					case TargetType.Terrain:
+						return new[] { pos };
+					default:
+					case TargetType.Invalid:
+						return NoPositions;
+				}
+			}
+		}
+
 		public bool IsInRange(WPos origin, WDist range)
 		{
 			if (Type == TargetType.Invalid)

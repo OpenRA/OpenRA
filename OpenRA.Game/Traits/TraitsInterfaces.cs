@@ -381,6 +381,11 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
+	public interface IAttackablePositions
+	{
+		IEnumerable<WPos> AttackablePositions(Actor self);
+	}
+
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData); }
 	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 	public interface ILintRulesPass { void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules); }
