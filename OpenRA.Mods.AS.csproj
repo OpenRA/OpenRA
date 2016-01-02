@@ -25,6 +25,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <DebugType>full</DebugType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\ChronoResourceTeleport.cs" />
+    <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Effects\SimpleAnim.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
