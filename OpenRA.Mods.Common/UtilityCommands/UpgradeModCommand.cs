@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeActorRules(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Weapons:");
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Tilesets:");
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeTileset(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Cursors:");
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeCursors(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Chrome Metrics:");
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeChromeMetrics(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Chrome Layout:");
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeChromeLayout(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Maps:");
