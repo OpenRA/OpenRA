@@ -13,6 +13,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -26,10 +27,17 @@ namespace OpenRA.Mods.Common.HitShapes
 		[FieldLoader.Require]
 		public readonly int2 BottomRight;
 
+		[Desc("Defines the top offset relative to the actor's target point.")]
+		public readonly int VerticalTopOffset = 0;
+
+		[Desc("Defines the bottom offset relative to the actor's target point.")]
+		public readonly int VerticalBottomOffset = 0;
+
 		int2 quadrantSize;
 		int2 center;
 
-		WVec[] combatOverlayVerts;
+		WVec[] combatOverlayVertsTop;
+		WVec[] combatOverlayVertsBottom;
 
 		public RectangleShape() { }
 
@@ -44,17 +52,28 @@ namespace OpenRA.Mods.Common.HitShapes
 			if (TopLeft.X >= BottomRight.X || TopLeft.Y >= BottomRight.Y)
 				throw new YamlException("TopLeft and BottomRight points are invalid.");
 
+			if (VerticalTopOffset < VerticalBottomOffset)
+				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
+
 			quadrantSize = (BottomRight - TopLeft) / 2;
 			center = TopLeft + quadrantSize;
 
 			OuterRadius = new WDist(Math.Max(TopLeft.Length, BottomRight.Length));
 
-			combatOverlayVerts = new WVec[]
+			combatOverlayVertsTop = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, 0),
-				new WVec(BottomRight.X, TopLeft.Y, 0),
-				new WVec(BottomRight.X, BottomRight.Y, 0),
-				new WVec(TopLeft.X, BottomRight.Y, 0)
+				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset)
+			};
+
+			combatOverlayVertsBottom = new WVec[]
+			{
+				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset)
 			};
 		}
 
@@ -69,13 +88,25 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
-			return DistanceFromEdge((pos - actor.CenterPosition).Rotate(-actor.Orientation));
+			var actorPos = actor.CenterPosition;
+
+			if (pos.Z > actorPos.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-actor.Orientation));
+
+			if (pos.Z < actorPos.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-actor.Orientation));
+
+			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-actor.Orientation));
 		}
 
 		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
 		{
-			var verts = combatOverlayVerts.Select(v => wr.ScreenPosition(actor.CenterPosition + v.Rotate(actor.Orientation)));
-			wcr.DrawPolygon(verts.ToArray(), 1, Color.Yellow);
+			var actorPos = actor.CenterPosition;
+
+			var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(actorPos + v.Rotate(actor.Orientation)));
+			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(actorPos + v.Rotate(actor.Orientation)));
+			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
+			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
 		}
 	}
 }

@@ -11,8 +11,10 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -27,6 +29,12 @@ namespace OpenRA.Mods.Common.HitShapes
 		public readonly int2 PointB;
 
 		public readonly WDist Radius = new WDist(426);
+
+		[Desc("Defines the top offset relative to the actor's target point.")]
+		public readonly int VerticalTopOffset = 0;
+
+		[Desc("Defines the bottom offset relative to the actor's target point.")]
+		public readonly int VerticalBottomOffset = 0;
 
 		int2 ab;
 		int abLenSq;
@@ -47,6 +55,9 @@ namespace OpenRA.Mods.Common.HitShapes
 
 			if (abLenSq == 0)
 				throw new YamlException("This Capsule describes a circle. Use a Circle HitShape instead.");
+
+			if (VerticalTopOffset < VerticalBottomOffset)
+				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 
 			OuterRadius = Radius + new WDist(Math.Max(PointA.Length, PointB.Length));
 		}
@@ -73,22 +84,41 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
-			return DistanceFromEdge((pos - actor.CenterPosition).Rotate(-actor.Orientation));
+			var actorPos = actor.CenterPosition;
+
+			if (pos.Z > actorPos.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-actor.Orientation));
+
+			if (pos.Z < actorPos.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-actor.Orientation));
+
+			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-actor.Orientation));
 		}
 
 		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
 		{
-			var a = actor.CenterPosition + new WVec(PointA.X, PointA.Y, 0).Rotate(actor.Orientation);
-			var b = actor.CenterPosition + new WVec(PointB.X, PointB.Y, 0).Rotate(actor.Orientation);
+			var actorPos = actor.CenterPosition;
 
-			var offset = new WVec(a.Y - b.Y, b.X - a.X, 0);
-			offset = offset * Radius.Length / offset.Length;
+			var a = actorPos + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(actor.Orientation);
+			var b = actorPos + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(actor.Orientation);
+			var aa = actorPos + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+			var bb = actorPos + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+
+			var offset1 = new WVec(a.Y - b.Y, b.X - a.X, 0);
+			offset1 = offset1 * Radius.Length / offset1.Length;
+			var offset2 = new WVec(aa.Y - bb.Y, bb.X - aa.X, 0);
+			offset2 = offset2 * Radius.Length / offset2.Length;
 
 			var c = Color.Yellow;
 			RangeCircleRenderable.DrawRangeCircle(wr, a, Radius, 1, c, 0, c);
 			RangeCircleRenderable.DrawRangeCircle(wr, b, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(a - offset), wr.ScreenPosition(b - offset) }, 1, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(a + offset), wr.ScreenPosition(b + offset) }, 1, c);
+			wcr.DrawLine(new[] { wr.ScreenPosition(a - offset1), wr.ScreenPosition(b - offset1) }, 1, c);
+			wcr.DrawLine(new[] { wr.ScreenPosition(a + offset1), wr.ScreenPosition(b + offset1) }, 1, c);
+
+			RangeCircleRenderable.DrawRangeCircle(wr, aa, Radius, 1, c, 0, c);
+			RangeCircleRenderable.DrawRangeCircle(wr, bb, Radius, 1, c, 0, c);
+			wcr.DrawLine(new[] { wr.ScreenPosition(aa - offset2), wr.ScreenPosition(bb - offset2) }, 1, c);
+			wcr.DrawLine(new[] { wr.ScreenPosition(aa + offset2), wr.ScreenPosition(bb + offset2) }, 1, c);
 		}
 	}
 }
