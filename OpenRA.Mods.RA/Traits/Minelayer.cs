@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
 				yield break;
 
-			var pal = wr.Palette("terrain");
+			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 			foreach (var c in Minefield)
 				yield return new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
 					WVec.Zero, -511, pal, 1f, true);
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Traits
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayer.Info.TraitInfo<MinelayerInfo>().MinefieldDepth);
 
-				var pal = wr.Palette("terrain");
+				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
 					var tile = movement.CanEnterCell(c, null, false) ? tileOk : tileBlocked;

@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string Sequence = "resources";
 		[SequenceReference("Sequence")] public readonly string[] Variants = { };
-		[PaletteReference] public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;

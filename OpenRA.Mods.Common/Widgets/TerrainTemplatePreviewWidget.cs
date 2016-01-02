@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class TerrainTemplatePreviewWidget : Widget
 	{
 		public Func<float> GetScale = () => 1f;
-		public string Palette = "terrain";
+		public string Palette = TileSet.TerrainPaletteInternalName;
 
 		readonly WorldRenderer worldRenderer;
 		readonly TileSet tileset;

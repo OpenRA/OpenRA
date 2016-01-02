@@ -167,6 +167,8 @@ namespace OpenRA
 
 	public class TileSet
 	{
+		public const string TerrainPaletteInternalName = "terrain";
+
 		public readonly string Name;
 		public readonly string Id;
 		public readonly int SheetSize = 512;

@@ -16,7 +16,7 @@ namespace OpenRA.Traits
 	public class FixedColorPaletteInfo : ITraitInfo
 	{
 		[Desc("The name of the palette to base off.")]
-		[PaletteReference] public readonly string Base = "terrain";
+		[PaletteReference] public readonly string Base = TileSet.TerrainPaletteInternalName;
 
 		[Desc("The name of the resulting palette")]
 		[PaletteDefinition] public readonly string Name = "resources";

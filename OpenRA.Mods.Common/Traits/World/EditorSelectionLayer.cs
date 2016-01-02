@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteReference]
 		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = "terrain";
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[Desc("Sequence image where the selection overlay types are defined.")]
 		public readonly string Image = "editor-overlay";

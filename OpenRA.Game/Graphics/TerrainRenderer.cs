@@ -16,8 +16,6 @@ namespace OpenRA.Graphics
 {
 	sealed class TerrainRenderer : IDisposable
 	{
-		const string TerrainPalette = "terrain";
-
 		readonly World world;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
 		readonly Theater theater;
@@ -33,7 +31,7 @@ namespace OpenRA.Graphics
 
 			foreach (var template in world.TileSet.Templates)
 			{
-				var palette = template.Value.Palette ?? TerrainPalette;
+				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
 				spriteLayers.GetOrAdd(palette, pal =>
 					new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(palette), wr.World.Type != WorldType.Editor));
 			}
@@ -48,7 +46,7 @@ namespace OpenRA.Graphics
 		public void UpdateCell(CPos cell)
 		{
 			var tile = mapTiles[cell];
-			var palette = world.TileSet.Templates[tile.Type].Palette ?? TerrainPalette;
+			var palette = world.TileSet.Templates[tile.Type].Palette ?? TileSet.TerrainPaletteInternalName;
 			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);

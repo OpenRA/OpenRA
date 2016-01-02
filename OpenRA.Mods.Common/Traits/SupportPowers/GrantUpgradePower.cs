@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var pal = wr.Palette("terrain");
+				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
