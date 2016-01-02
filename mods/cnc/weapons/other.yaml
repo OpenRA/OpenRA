@@ -18,7 +18,7 @@ Flamethrower:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 		ImpactSound: flamer2.aud
 
 BigFlamer:
@@ -43,7 +43,7 @@ BigFlamer:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: med_napalm
+		Explosions: med_napalm
 		ImpactSound: flamer2.aud
 
 Chemspray:
@@ -64,7 +64,7 @@ Chemspray:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: chemball
+		Explosions: chemball
 		ImpactSound: xplos.aud
 
 Grenade:
@@ -89,7 +89,7 @@ Grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_poof
+		Explosions: small_poof
 		ImpactSound: xplos.aud
 
 Napalm:
@@ -114,7 +114,7 @@ Napalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: med_napalm
+		Explosions: med_napalm
 		ImpactSound: flamer2.aud
 
 Laser:
@@ -155,7 +155,7 @@ TiberiumExplosion:
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
-		Explosion: chemball
+		Explosions: chemball
 		ImpactSound: xplosml2.aud
 
 Heal:
@@ -236,5 +236,5 @@ Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
+		Explosions: building
 		ImpactSound: xplobig6.aud

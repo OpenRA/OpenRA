@@ -891,10 +891,10 @@ Weapons:
 				Concrete: 10
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@2Eff: CreateEffect
-			Explosion: piffs
+			Explosions: piffs
 			InvalidImpactTypes: Water
 		Warhead@3EffWater: CreateEffect
-			Explosion: water_piffs
+			Explosions: water_piffs
 			ValidImpactTypes: Water
 	FireballLauncherInterior:
 		ReloadDelay: 65
@@ -918,7 +918,7 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
+			Explosions: napalm
 			ImpactSound: firebl3.aud
 	MissionBarrelExplodeInterior:
 		Warhead@1Dam: SpreadDamage
@@ -938,7 +938,7 @@ Weapons:
 			Size: 2,1
 			Delay: 5
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
+			Explosions: napalm
 			ImpactSound: firebl3.aud
 			Delay: 5
 

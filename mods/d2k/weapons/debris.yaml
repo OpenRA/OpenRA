@@ -26,7 +26,7 @@ Debris:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: EXPLLG5.WAV
 
 Debris2:
@@ -60,7 +60,7 @@ Debris2:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 		ImpactSound: EXPLLG5.WAV
 
 Debris3:
@@ -94,7 +94,7 @@ Debris3:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 		ImpactSound: EXPLLG5.WAV
 
 Debris4:
@@ -128,5 +128,5 @@ Debris4:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
+		Explosions: large_explosion
 		ImpactSound: EXPLLG5.WAV

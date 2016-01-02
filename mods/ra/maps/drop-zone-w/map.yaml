@@ -289,7 +289,7 @@ Weapons:
 			Damage: 250
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@1Eff: CreateEffect
-			Explosion: large_explosion
+			Explosions: large_explosion
 			WaterExplosion: large_splash
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud
@@ -317,7 +317,7 @@ Weapons:
 			Damage: 400
 			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@1Eff: CreateEffect
-			Explosion: large_explosion
+			Explosions: large_explosion
 			WaterExplosion: large_splash
 			ImpactSound: kaboom12.aud
 			WaterImpactSound: splash9.aud

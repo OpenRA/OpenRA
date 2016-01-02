@@ -18,7 +18,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 105mm:
@@ -40,7 +40,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 120mm:
@@ -63,7 +63,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 120mmDual:
@@ -88,7 +88,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 TurretGun:
@@ -110,7 +110,7 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 ArtilleryShell:
@@ -137,5 +137,5 @@ ArtilleryShell:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: poof
+		Explosions: poof
 		ImpactSound: XPLOSML2.AUD

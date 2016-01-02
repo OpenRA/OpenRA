@@ -23,8 +23,8 @@ Sound:
 			building: 60
 			heavy: 60
 			invulnerable: 0
- 			cy: 20
- 			harvester: 50
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
@@ -38,8 +38,8 @@ Sound:
 			building: 60
 			heavy: 60
 			invulnerable: 0
- 			cy: 20
- 			harvester: 50
+			cy: 20
+			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 
 Heal:
@@ -91,7 +91,7 @@ OrniBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
+		Explosions: large_explosion
 		ImpactSound: NAPALM1.WAV
 
 Crush:
@@ -105,7 +105,7 @@ Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
+		Explosions: building
 		ImpactSound: EXPLLG2.WAV
 
 Atomic:
@@ -125,7 +125,7 @@ Atomic:
 			harvester: 60
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: nuke
+		Explosions: nuke
 		ImpactSound: EXPLLG2.WAV
 
 CrateNuke:
@@ -146,7 +146,7 @@ CrateNuke:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: nuke
+		Explosions: nuke
 		ImpactSound: EXPLLG2.WAV
 
 CrateExplosion:
@@ -167,22 +167,22 @@ CrateExplosion:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
+		Explosions: large_explosion
 		ImpactSound: EXPLSML4.WAV
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
-		Explosion: self_destruct
+		Explosions: self_destruct
 		ImpactSound: EXPLSML1.WAV
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
-		Explosion: building
+		Explosions: building
 		ImpactSound: EXPLSML2.WAV
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
-		Explosion: large_explosion
+		Explosions: large_explosion
 		ImpactSound: EXPLLG2.WAV
 
 grenade:
@@ -211,7 +211,7 @@ grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 		ImpactSound: EXPLLG5.WAV
 
 Weathering:
@@ -236,7 +236,7 @@ GrenDeath:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: building
+		Explosions: building
 		ImpactSound: EXPLSML4.WAV
 
 SardDeath:
@@ -257,7 +257,7 @@ SardDeath:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 		ImpactSound: EXPLSML2.WAV
 
 SpiceExplosion:
@@ -287,7 +287,7 @@ SpiceExplosion:
 		AddsResourceType: Spice
 		Size: 1
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 
 BloomExplosion:
 	Report: EXPLMD1.WAV
@@ -320,4 +320,4 @@ BloomSpawn:
 		Blockable: false
 		Image: null
 	Warhead@1Eff: CreateEffect
-		Explosion: bloomspawn
+		Explosions: bloomspawn

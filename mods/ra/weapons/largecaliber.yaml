@@ -17,10 +17,10 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ValidImpactTypes: Water
 
 90mm:
@@ -42,11 +42,11 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -71,11 +71,11 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -101,11 +101,11 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -128,11 +128,11 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -161,11 +161,11 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
+		Explosions: artillery_explosion
 		ImpactSound: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
+		Explosions: med_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -194,11 +194,11 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
+		Explosions: artillery_explosion
 		ImpactSound: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: large_splash
+		Explosions: large_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -221,10 +221,10 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water

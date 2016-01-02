@@ -10,7 +10,7 @@ UnitExplode:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_twlt
+		Explosions: large_twlt
 		ImpactSound: expnew09.aud
 
 UnitExplodeSmall:
@@ -24,7 +24,7 @@ UnitExplodeSmall:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_brnl
+		Explosions: medium_brnl
 		ImpactSound: expnew13.aud
 
 TiberiumExplosion:
@@ -41,7 +41,7 @@ TiberiumExplosion:
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
+		Explosions: large_explosion
 		ImpactSound: expnew09.aud
 
 SmallDebris:

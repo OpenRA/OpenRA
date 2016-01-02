@@ -13,7 +13,7 @@ Atomic:
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff_impact: CreateEffect
-		Explosion: nuke_explosion
+		Explosions: nuke_explosion
 		ImpactSound: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512

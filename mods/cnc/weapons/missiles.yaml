@@ -28,7 +28,7 @@ Rockets:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 BikeRockets:
@@ -62,7 +62,7 @@ BikeRockets:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 OrcaAGMissiles:
@@ -96,7 +96,7 @@ OrcaAGMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 OrcaAAMissiles:
@@ -128,7 +128,7 @@ OrcaAAMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 MammothMissiles:
@@ -161,11 +161,11 @@ MammothMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_poof
+		Explosions: small_poof
 		ImpactSound: xplos.aud
 		InvalidImpactTypes: Air, AirHit
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_building
+		Explosions: small_building
 		ImpactSound: xplos.aud
 		ValidImpactTypes: Air, AirHit
 
@@ -201,7 +201,7 @@ MammothMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_frag
+		Explosions: med_frag
 		ImpactSound: xplos.aud
 
 227mm.stnk:
@@ -234,7 +234,7 @@ MammothMissiles:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag
 		ImpactSound: xplos.aud
 
 BoatMissile:
@@ -265,11 +265,11 @@ BoatMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_poof
+		Explosions: small_poof
 		ImpactSound: xplos.aud
 		InvalidImpactTypes: Air, AirHit
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_building
+		Explosions: small_building
 		ImpactSound: xplos.aud
 		ValidImpactTypes: Air, AirHit
 
@@ -301,7 +301,7 @@ TowerMissle:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_frag
+		Explosions: med_frag
 		ImpactSound: xplos.aud
 
 SAMMissile:
@@ -331,7 +331,7 @@ SAMMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_building
+		Explosions: small_building
 		ImpactSound: xplos.aud
 
 HonestJohn:
@@ -360,7 +360,7 @@ HonestJohn:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_poof
+		Explosions: small_poof
 		ImpactSound: xplos.aud
 
 Patriot:
@@ -387,5 +387,5 @@ Patriot:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: poof
+		Explosions: poof
 		ImpactSound: xplos.aud

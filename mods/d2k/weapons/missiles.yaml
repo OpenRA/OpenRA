@@ -28,7 +28,7 @@ Bazooka:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: tiny_explosion
+		Explosions: tiny_explosion
 		ImpactSound: EXPLSML1.WAV
 
 Rocket:
@@ -60,7 +60,7 @@ Rocket:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: rocket_explosion
+		Explosions: rocket_explosion
 		ExplosionPalette: effect75alpha
 		ImpactSound: EXPLSML1.WAV
 
@@ -100,7 +100,7 @@ TowerMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: EXPLSML1.WAV
 
 mtank_pri:
@@ -138,7 +138,7 @@ mtank_pri:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: EXPLSML1.WAV
 
 DeviatorMissile:
@@ -175,7 +175,7 @@ DeviatorMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: deviator
+		Explosions: deviator
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
 		ImpactSound: EXPLSML1.WAV

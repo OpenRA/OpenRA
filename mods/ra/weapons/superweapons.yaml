@@ -19,11 +19,11 @@ ParaBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
+		Explosions: artillery_explosion
 		ImpactSound: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -43,7 +43,7 @@ Atomic:
 		SmudgeType: Scorch
 		Size: 1
 	Warhead@4Eff_impact: CreateEffect
-		Explosion: nuke
+		Explosions: nuke
 		ImpactSound: kaboom1.aud
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0

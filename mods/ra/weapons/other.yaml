@@ -20,7 +20,7 @@ FireballLauncher:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
+		Explosions: napalm
 		ImpactSound: firebl3.aud
 
 Flamer:
@@ -47,7 +47,7 @@ Flamer:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 		ImpactSound: firebl3.aud
 
 Napalm:
@@ -69,11 +69,11 @@ Napalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
+		Explosions: napalm
 		ImpactSound: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4Eff: CreateEffect
-		Explosion: med_splash
+		Explosions: med_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -99,11 +99,11 @@ Grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 		ImpactSound: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
 
@@ -130,10 +130,10 @@ DepthCharge:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_splash
+		Explosions: large_splash
 		ImpactSound: h2obomb2.aud
 	Warhead@4EffHit: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		ImpactSound: kaboom15.aud
 		ValidImpactTypes: WaterHit
 
@@ -222,7 +222,7 @@ Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
+		Explosions: building
 		ImpactSound: kaboom25.aud
 
 Claw:
@@ -274,5 +274,5 @@ MADTankDetonate:
 		SmudgeType: Crater
 		Size: 7,6
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
+		Explosions: med_explosion
 		ImpactSound: mineblo1.aud

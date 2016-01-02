@@ -1290,7 +1290,7 @@ Weapons:
 			Size: 2,1
 			Delay: 5
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
+			Explosions: napalm
 			ImpactSound: firebl3.aud
 			Delay: 5
 
