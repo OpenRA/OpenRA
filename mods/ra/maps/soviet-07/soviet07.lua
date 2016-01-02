@@ -82,16 +82,19 @@ Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
 		Actor.Create("ftur", true, { Owner = player, Location = FTur1Goal.Location})
 		Actor.Create("ftur", true, { Owner = player, Location = FTur2Goal.Location})
 		Camera.Position = CameraGoalCenter1.CenterPosition
+
 		if not cameraGoalRightTrigger then
 			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter1.Location })
 			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter2.Location })
 			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter3.Location })
 		end
+
 		Utils.Do(GoalGuards, function(actor)
 			if not actor.IsDead then
 				actor.AttackMove(FTur1Goal.Location)
 			end
 		end)
+
 		player.MarkCompletedObjective(sovietObjective4)
 	end
 end)
@@ -162,9 +165,11 @@ Trigger.OnEnteredFootprint(RSoldierTrapTrigger, function(a, id)
 			Actor.Create("camera", true, { Owner = player, Location = CameraRSoldier.Location })
 			Actor.Create("camera", true, { Owner = player, Location = CameraFTurBottom.Location })
 		end
+
 		if not RSoldier1.IsDead and not RSoldierTrap1.IsDead then
 			RSoldier1.Attack(RSoldierTrap1)
 		end
+
 		if not RSoldier2.IsDead and not RSoldierTrap2.IsDead then
 			RSoldier2.Attack(RSoldierTrap2)
 		end
@@ -190,6 +195,7 @@ Trigger.OnAllKilled(PrisonerGuards, function()
 	Utils.Do(Engineers, function(actor)
 		actor.Owner = player
 	end)
+
 	Prisoner6.Owner = player
 	player.MarkCompletedObjective(sovietObjective2)
 end)
@@ -199,6 +205,7 @@ Trigger.OnKilled(BarlCC, function()
 		Actor.Create("camera", true, { Owner = player, Location = CameraCC.Location })
 		cameraCCTrigger = true
 	end
+
 	Utils.Do(CCGuards, function(actor)
 		if not actor.IsDead then
 			actor.Hunt()
@@ -250,10 +257,13 @@ end
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
 	enemy = Player.GetPlayer("Greece")
+
 	Camera.Position = SoldierTrap1Waypoint1.CenterPosition
 	Actor.Create("camera", true, { Owner = player, Location = CameraStart1.Location })
 	Actor.Create("camera", true, { Owner = player, Location = CameraStart2.Location })
+
 	IntroSequence()
+
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
@@ -269,6 +279,7 @@ WorldLoaded = function()
 	Trigger.OnPlayerLost(player, function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
+
 	alliedObjective = enemy.AddPrimaryObjective("Destroy all Soviet troops.")
 	sovietObjective1 = player.AddPrimaryObjective("Deactivate the security system.")
 	sovietObjective2 = player.AddPrimaryObjective("Rescue the engineers.")
@@ -282,6 +293,7 @@ Tick = function()
 	if player.HasNoRequiredUnits() and timerStarted then
 		enemy.MarkCompletedObjective(alliedObjective)
 	end
+
 	if remainingTime == DateTime.Minutes(5) and Map.Difficulty ~= "Hard" then
 		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
 	elseif remainingTime == DateTime.Minutes(4) then
@@ -293,9 +305,11 @@ Tick = function()
 	elseif remainingTime == DateTime.Minutes(1) then
 		Media.PlaySpeechNotification(player, "WarningOneMinuteRemaining")
 	end
+
 	if goalLeft1Trigger and goalLeft2Trigger and goalRight1Trigger and goalRight2Trigger then
 		player.MarkCompletedObjective(sovietObjective3)
 	end
+
 	if remainingTime > 0 and timerStarted then
 		UserInterface.SetMissionText("Time until Meltdown: " .. Utils.FormatTime(remainingTime), player.Color)
 		remainingTime = remainingTime - 1
