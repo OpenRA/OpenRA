@@ -668,7 +668,7 @@ Actors:
 		Location: 99,56
 		Owner: Greece
 		SubCell: 3
-	GoalGuard5: e7
+	Tanya: e7
 		Location: 75,54
 		Owner: Greece
 		Facing: 128

@@ -10,7 +10,7 @@ Dogs = { Dog1, Dog2, Dog3, Dog4, Dog5, Dog6, Dog7, Dog8, Dog9, Dog10, Dog11, Dog
 Engineers = { Prisoner1, Prisoner2, Prisoner3, Prisoner4, Prisoner5 }
 PrisonerGuards = { PrisonerGuard1, PrisonerGuard2, PrisonerGuard3 }
 EntranceGuards = { EntranceGuard1, EntranceGuard2, EntranceGuard3, EntranceGuard4, EntranceGuard5, EntranceGuard6, EntranceGuard7, EntranceGuard8, EntranceGuard9, EntranceGuard10 }
-GoalGuards = { GoalGuard1, GoalGuard2, GoalGuard3, GoalGuard4, GoalGuard5 }
+GoalGuards = { GoalGuard1, GoalGuard2, GoalGuard3, GoalGuard4 }
 CCGuards = { CCGuard1, CCGuard2, CCGuard3, CCGuard4 }
 StartingUnitsReinforcements = { "e1", "e1", "e1", "e1" }
 
@@ -79,8 +79,8 @@ end)
 Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
 	if not controlCenterEngineerTrigger and a.Owner == player and a.Type == "e6" then
 		controlCenterEngineerTrigger = true
-		Actor.Create("ftur", true, { Owner = player, Location = FTur1Goal.Location})
-		Actor.Create("ftur", true, { Owner = player, Location = FTur2Goal.Location})
+		local fturA = Actor.Create("ftur", true, { Owner = player, Location = FTur1Goal.Location})
+		local fturB = Actor.Create("ftur", true, { Owner = player, Location = FTur2Goal.Location})
 		Camera.Position = CameraGoalCenter1.CenterPosition
 
 		if not cameraGoalRightTrigger then
@@ -94,6 +94,11 @@ Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
 				actor.AttackMove(FTur1Goal.Location)
 			end
 		end)
+
+		if not Tanya.IsDead then
+			Tanya.Demolish(fturA)
+			Tanya.Demolish(fturB)
+		end
 
 		player.MarkCompletedObjective(sovietObjective4)
 	end
