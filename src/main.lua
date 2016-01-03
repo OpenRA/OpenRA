@@ -502,12 +502,15 @@ do
         -- package can be included as "package 'file.lua'" or "package 'folder/'"
         elseif type(p) == 'string' then
           local config = ide.configqueue[#ide.configqueue]
+          local pkg
           for _, packagepath in ipairs({'.', 'packages/', '../packages/'}) do
             local p = config and MergeFullPath(config.."/../"..packagepath, p)
-            if wx.wxDirExists(p) then
-              processPackages(loadToTab(nil, p, {}, false, ide.proto.Plugin))
-            elseif wx.wxFileExists(p) then
-              processPackages(LoadLuaFileExt({}, p, ide.proto.Plugin))
+            pkg = wx.wxDirExists(p) and loadToTab(nil, p, {}, false, ide.proto.Plugin)
+              or wx.wxFileExists(p) and LoadLuaFileExt({}, p, ide.proto.Plugin)
+              or wx.wxFileExists(p..".lua") and LoadLuaFileExt({}, p..".lua", ide.proto.Plugin)
+            if pkg then
+              processPackages(pkg)
+              break
             end
           end
         else
