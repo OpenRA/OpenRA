@@ -511,6 +511,7 @@ outpost:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
+		IsDecoration: true
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
