@@ -53,17 +53,17 @@ namespace OpenRA.Mods.D2k.Activities
 			var targetLocation = target.Actor.Location;
 			foreach (var t in targets)
 			{
-				var target = t; // loop variable in closure hazard
+				var targetClose = t; // loop variable in closure hazard
 
 				self.World.AddFrameEndTask(_ =>
 				{
 					// Don't use Kill() because we don't want any of its side-effects (husks, etc)
-					target.Dispose();
+					targetClose.Dispose();
 
 					// Harvester insurance
-					if (target.Info.HasTraitInfo<HarvesterInfo>())
+					if (targetClose.Info.HasTraitInfo<HarvesterInfo>())
 					{
-						var insurance = target.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
+						var insurance = targetClose.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
 						if (insurance != null)
 							self.World.AddFrameEndTask(__ => insurance.TryActivate());
 					}

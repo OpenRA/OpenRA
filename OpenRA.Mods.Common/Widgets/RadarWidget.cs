@@ -318,8 +318,6 @@ namespace OpenRA.Mods.Common.Widgets
 			if (radarPings == null)
 				return;
 
-			var cr = Game.Renderer.RgbaColorRenderer;
-
 			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
 			{
 				var c = radarPing.Color;
