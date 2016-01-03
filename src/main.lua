@@ -527,6 +527,7 @@ do
         local p = config and MergeFullPath(config.."/../", c)
         includes[p] = (includes[p] or 0) + 1
         if includes[p] > 1 or LoadLuaConfig(p) or LoadLuaConfig(p..".lua") then return end
+        includes[p] = includes[p] - 1
       end
       print(("Can't find configuration file '%s' to process."):format(c))
     end
