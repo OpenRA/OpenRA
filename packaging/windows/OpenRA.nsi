@@ -104,7 +104,6 @@ Section "Game" GAME
 	File "${SRCDIR}\MaxMind.Db.dll"
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
 	File "${SRCDIR}\Newtonsoft.Json.dll"
-	File "${SRCDIR}\RestSharp.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\SmarIrc4net.dll"
@@ -148,14 +147,14 @@ Section "-DotNet" DotNet
 	IfErrors error 0
 	IntCmp $0 1 done error done
 	error:
-		MessageBox MB_YESNO ".NET Framework v4.0 or later is required to run OpenRA. $\n \
+		MessageBox MB_YESNO ".NET Framework v4.5.2 or later is required to run OpenRA. $\n \
 		Do you wish for the installer to launch your web browser in order to download and install it?" \
 		IDYES download IDNO error2
 	download:
-		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=17113"
+		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=42643"
 		Goto done
 	error2:
-		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.0 \
+		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.5.2 \
 		or later is installed."
 	done:
 SectionEnd
@@ -207,7 +206,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
 	Delete $INSTDIR\Newtonsoft.Json.dll
-	Delete $INSTDIR\RestSharp.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\soft_oal.dll
