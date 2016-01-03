@@ -3,7 +3,7 @@ Player:
 		Name: Omnius
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
-		UnitQueues: Infantry, Vehicle, Armor, Starport
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
 			Refinery: refinery
@@ -119,7 +119,7 @@ Player:
 		Name: Vidious
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
-		UnitQueues: Infantry, Vehicle, Armor, Starport
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
 			Refinery: refinery
@@ -235,7 +235,7 @@ Player:
 		Name: Gladius
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
-		UnitQueues: Infantry, Vehicle, Armor, Starport
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
 			Refinery: refinery
