@@ -513,6 +513,7 @@ do
               break
             end
           end
+          if not pkg then print(("Can't find '%s' to load package from."):format(p)) end
         else
           print(("Can't load package based on parameter of type '%s'."):format(type(p)))
         end
