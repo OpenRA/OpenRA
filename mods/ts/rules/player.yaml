@@ -41,7 +41,6 @@ Player:
 	PlayerResources:
 	ActorGroupProxy:
 	DeveloperMode:
-	GpsWatcher:
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:
