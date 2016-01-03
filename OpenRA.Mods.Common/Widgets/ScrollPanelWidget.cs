@@ -379,6 +379,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void BindingAddImpl(object item)
 		{
+			if (makeWidget == null)
+				return;
+
 			var widget = makeWidget(item);
 			var scrollToBottom = autoScroll && ScrolledToBottom;
 
