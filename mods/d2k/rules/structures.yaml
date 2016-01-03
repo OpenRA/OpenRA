@@ -558,6 +558,7 @@ starport:
 			corrino: starport.corrino
 	WithDeliveryOverlay:
 		Palette: starportlights
+		PauseOnLowPower: true
 	ProductionBar:
 	PrimaryBuilding:
 	RequiresPower:
