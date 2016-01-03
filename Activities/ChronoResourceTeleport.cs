@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
@@ -9,7 +9,7 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.AS.Effects;
+using OpenRA.Effects;
 using OpenRA.Mods.AS.Traits;
 using OpenRA.Traits;
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.AS.Activities
 			var sourcepos = self.CenterPosition;
 
 			if (info.ChronoInSequence != null)
-				self.World.AddFrameEndTask(w => w.Add(new SimpleAnim(w, sourcepos, image, info.ChronoInSequence, info.Palette)));
+				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(sourcepos, w, image, info.ChronoInSequence, info.Palette)));
 
 			if (info.ChronoInSound != null)
 				Game.Sound.Play(info.ChronoInSound, sourcepos);
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.AS.Activities
 			var destpos = self.CenterPosition;
 
 			if (info.ChronoOutSequence != null)
-				self.World.AddFrameEndTask(w => w.Add(new SimpleAnim(w, destpos, image, info.ChronoOutSequence, info.Palette)));
+				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(destpos, w, image, info.ChronoOutSequence, info.Palette)));
 
 			if (info.ChronoOutSound != null)
 				Game.Sound.Play(info.ChronoOutSound, destpos);

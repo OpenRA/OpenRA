@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="Activities\ChronoResourceTeleport.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
-    <Compile Include="Effects\SimpleAnim.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
