@@ -5,22 +5,8 @@ Background@SIMPLE_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Height: 23
-			Font: Bold
-
-Background@TWO_LINE_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: panel-black
-	Height: 48
-	Children:
-		Label@LABEL:
-			X: 5
-			Height: 46
-			Font: Bold
-		Label@HOTKEY:
-			Visible: false
-			TextColor: FFFF00
-			Height: 23
+			Y: 2
+			Height: 18
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:
@@ -30,12 +16,14 @@ Background@BUTTON_TOOLTIP:
 	Children:
 		Label@LABEL:
 			X: 5
-			Height: 23
+			Y: 2
+			Height: 18
 			Font: Bold
 		Label@HOTKEY:
+			Y: 2
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			Height: 18
 			Font: Bold
 
 Background@WORLD_TOOLTIP:
@@ -231,6 +219,7 @@ Background@INGAME_CLIENT_TOOLTIP:
 Background@FACTION_DESCRIPTION_TOOLTIP:
 	Logic: FactionTooltipLogic
 	Background: panel-black
+	Height: 26
 	Children:
 		Label@HEADER:
 			X: 7
@@ -238,12 +227,10 @@ Background@FACTION_DESCRIPTION_TOOLTIP:
 			Width: 8
 			Height: 12
 			Font: Bold
-			VAlign: Top
 		Label@DESCRIPTION:
 			X: 14
-			Y: 0
+			Y: 24
 			Width: 15
-			Height: 14
+			Height: 8
 			Font: TinyBold
-			VAlign: Top
 

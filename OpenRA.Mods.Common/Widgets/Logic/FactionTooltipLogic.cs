@@ -23,29 +23,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var header = widget.Get<LabelWidget>("HEADER");
 			var headerLine = lines[0];
-			var headerFont = Game.Renderer.Fonts[header.Font];
-			var headerSize = headerFont.Measure(headerLine);
-			header.Bounds.Width += headerSize.X;
-			header.Bounds.Height += headerSize.Y;
 			header.GetText = () => headerLine;
+
+			var verticalPadding = widget.Bounds.Height - header.Bounds.Height;
+			if (verticalPadding <= 0)
+				verticalPadding = 2 * header.Bounds.Y + header.LinePixelSpacing; // With hang space
+
+			header.ResizeToText(headerLine);
 
 			if (lines.Length > 1)
 			{
 				var description = widget.Get<LabelWidget>("DESCRIPTION");
-				var descriptionLines = lines.Skip(1).ToArray();
-				var descriptionFont = Game.Renderer.Fonts[description.Font];
-				description.Bounds.Y += header.Bounds.Y + header.Bounds.Height;
-				description.Bounds.Width += descriptionLines.Select(l => descriptionFont.Measure(l).X).Max();
-				description.Bounds.Height += descriptionFont.Measure(descriptionLines.First()).Y * descriptionLines.Length;
-				description.GetText = () => string.Join("\n", descriptionLines);
+				var maxRight = Math.Max(header.Bounds.Right, description.Bounds.Right);
+				var minLeft = Math.Min(header.Bounds.Left, description.Bounds.Left);
+				var horizontalPadding = widget.Bounds.Width  + minLeft - maxRight;
+				if (horizontalPadding <= 0)
+					horizontalPadding = 2 * Math.Min(header.Bounds.X, description.Bounds.X);
+				var separatorPadding = description.Bounds.Y - header.Bounds.Bottom;
+				if (separatorPadding <= 0)
+					separatorPadding = header.LinePixelSpacing;
 
-				widget.Bounds.Width = Math.Max(header.Bounds.X + header.Bounds.Width, description.Bounds.X + description.Bounds.Width);
-				widget.Bounds.Height = description.Bounds.Y + description.Bounds.Height;
+				var descriptionLines = lines.Skip(1).ToArray();
+				description.Bounds.Y = header.Bounds.Bottom + separatorPadding;
+				description.Text = string.Join("\n", descriptionLines);
+				description.ResizeToText(description.Text);
+
+				maxRight = Math.Max(header.Bounds.Right, description.Bounds.Right);
+				minLeft = Math.Min(header.Bounds.Left, description.Bounds.Left);
+				widget.Bounds.Width = maxRight - minLeft + horizontalPadding;
+				widget.Bounds.Height = description.Bounds.Bottom + verticalPadding - header.Bounds.Y;
 			}
 			else
 			{
-				widget.Bounds.Width = header.Bounds.X + header.Bounds.Width;
-				widget.Bounds.Height = header.Bounds.Y + header.Bounds.Height;
+				var horizontalPadding = widget.Bounds.Width - header.Bounds.Width;
+				if (horizontalPadding <= 0)
+					horizontalPadding = 2 * header.Bounds.X;
+
+				widget.Bounds.Width = header.Bounds.Right + horizontalPadding;
+				widget.Bounds.Height = header.Bounds.Bottom + verticalPadding - header.Bounds.Y;
 			}
 		}
 	}

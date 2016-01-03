@@ -700,8 +700,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
 			var name = from + ":";
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(from);
+			var nameSize = nameLabel.MeasureText(from);
 
 			var time = DateTime.Now;
 			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);
@@ -713,9 +712,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			textLabel.Bounds.Width -= nameSize.X;
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			text = textLabel.WrapText(text);
 			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
+			var dh = textLabel.MeasureText(text).Y - textLabel.Bounds.Height;
 			if (dh > 0)
 			{
 				textLabel.Bounds.Height += dh;

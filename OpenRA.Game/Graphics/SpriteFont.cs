@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 	{
 		static readonly Library Library = new Library();
 
-		readonly int size;
+		public readonly int Size;
 		readonly SheetBuilder builder;
 		readonly Func<string, float> lineWidth;
 		readonly Face face;
@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			if (builder.Type != SheetType.BGRA)
 				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
 
-			this.size = size;
+			this.Size = size;
 			this.builder = builder;
 
 			face = new Face(Library, name);
@@ -50,22 +50,22 @@ namespace OpenRA.Graphics
 
 		void PrecacheColor(Color c, string name)
 		{
-			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, size, c.Name)))
+			using (new PerfTimer("PrecacheColor {0} {1}px {2}".F(name, Size, c.Name)))
 				for (var n = (char)0x20; n < (char)0x7f; n++)
 					if (glyphs[Pair.New(n, c)] == null)
 						throw new InvalidOperationException();
 		}
 
-		public void DrawText(string text, float2 location, Color c)
+		public void DrawText(string text, float2 location, Color c, int lineSpacing = 0)
 		{
-			location.Y += size;	// baseline vs top
+			location.Y += Size;	// baseline vs top
 
 			var p = location;
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					location.Y += size;
+					location.Y += Size + lineSpacing;
 					p = location;
 					continue;
 				}
@@ -79,26 +79,26 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
+		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset, int lineSpacing = 0)
 		{
 			if (offset > 0)
 			{
-				DrawText(text, location + new float2(-offset, 0), bg);
-				DrawText(text, location + new float2(offset, 0), bg);
-				DrawText(text, location + new float2(0, -offset), bg);
-				DrawText(text, location + new float2(0, offset), bg);
+				DrawText(text, location + new float2(-offset, 0), bg, lineSpacing);
+				DrawText(text, location + new float2(offset, 0), bg, lineSpacing);
+				DrawText(text, location + new float2(0, -offset), bg, lineSpacing);
+				DrawText(text, location + new float2(0, offset), bg, lineSpacing);
 			}
 
-			DrawText(text, location, fg);
+			DrawText(text, location, fg, lineSpacing);
 		}
 
-		public int2 Measure(string text)
+		public int2 Measure(string text, int lineSpacing = 0)
 		{
 			if (string.IsNullOrEmpty(text))
-				return new int2(0, size);
+				return new int2(0, Size);
 
 			var lines = text.Split('\n');
-			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * size);
+			return new int2((int)Math.Ceiling(lines.Max(lineWidth)), lines.Length * (Size + lineSpacing) - lineSpacing);
 		}
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)

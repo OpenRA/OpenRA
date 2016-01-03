@@ -40,9 +40,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var iconMargin = timeIcon.Bounds.X;
 
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
-			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
 			ActorInfo lastActor = null;
 
 			tooltipContainer.BeforeRender = () =>
@@ -61,9 +58,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nameLabel.GetText = () => tooltip.Name;
 
 				var hotkey = palette.TooltipIcon.Hotkey;
-				var nameWidth = font.Measure(tooltip.Name).X;
+				var nameWidth = nameLabel.MeasureText(tooltip.Name).X;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				var hotkeyWidth = hotkey.IsValid() ? hotkeyLabel.ResizeToText(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
 				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
 				hotkeyLabel.Visible = hotkey.IsValid();
@@ -95,19 +92,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var descString = tooltip.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
-				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
-				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
+				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresLabel.ResizeToText(requiresString).X, descLabel.ResizeToText(descString).X }.Aggregate(Math.Max);
+				var rightWidth = new[] { powerLabel.ResizeToText(powerString).X, timeLabel.ResizeToText(timeString).X, costLabel.ResizeToText(costString).X }.Aggregate(Math.Max);
 
 				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
-				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
+				var nameBottom = nameLabel.Bounds.Bottom + nameLabel.LinePixelSpacing;
+				var requiresBottom = requiresLabel.Bounds.Bottom + requiresLabel.LinePixelSpacing;
+				var descBottom = descLabel.Bounds.Bottom + descLabel.LinePixelSpacing;
+				var leftBottom = Math.Max(Math.Max(nameBottom, requiresBottom), descBottom);
+
+				var costBottom = IconLabelPairBottom(costIcon, costLabel);
+				var timeBottom = IconLabelPairBottom(timeIcon, timeLabel);
+				var powerBottom = powerIcon.IsVisible() ? IconLabelPairBottom(powerIcon, powerLabel) : 0;
+				var rightBottom = Math.Max(Math.Max(costBottom, timeBottom), powerBottom);
+
+				widget.Bounds.Height = Math.Max(leftBottom, rightBottom) + 2 * nameLabel.Bounds.Y;
 
 				lastActor = actor;
 			};
+		}
+
+		static int IconLabelPairBottom(ImageWidget icon, LabelWidget label)
+		{
+			var iconBottom = icon.Bounds.Height != 0 ? icon.Bounds.Bottom : icon.Bounds.Y + icon.Bounds.Width;
+			return Math.Max(iconBottom + label.LinePixelSpacing, label.Bounds.Bottom);
 		}
 
 		static string ActorName(Ruleset rules, string a)

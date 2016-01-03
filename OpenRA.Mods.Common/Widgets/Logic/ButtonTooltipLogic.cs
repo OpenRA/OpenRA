@@ -18,13 +18,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ButtonTooltipLogic(Widget widget, ButtonWidget button)
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
-			var font = Game.Renderer.Fonts[label.Font];
 			var text = button.GetTooltipText();
-			var labelWidth = font.Measure(text).X;
 
 			label.GetText = () => text;
-			label.Bounds.Width = labelWidth;
-			widget.Bounds.Width = 2 * label.Bounds.X + labelWidth;
+			var horizontalPadding = widget.Bounds.Width - label.Bounds.Width;
+			if (horizontalPadding <= 0 || label.Bounds.Width <= 0)
+				horizontalPadding = 2 * label.Bounds.X;
+			var verticalPadding = widget.Bounds.Height - label.Bounds.Height;
+			if (verticalPadding <= 0 || label.Bounds.Height <= 0)
+				verticalPadding = 2 * label.Bounds.Y + label.LinePixelSpacing; // With hang space
+
+			var textSize = label.ResizeToText(text);
+			widget.Bounds.Width = textSize.X + horizontalPadding;
+			widget.Bounds.Height = textSize.Y + verticalPadding;
 
 			if (button.Key.IsValid())
 			{
@@ -33,9 +39,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var hotkeyLabel = "({0})".F(button.Key.DisplayString());
 				hotkey.GetText = () => hotkeyLabel;
-				hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
+				hotkey.Bounds.X = widget.Bounds.Width;
+				hotkey.ResizeToText(hotkeyLabel);
 
-				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + font.Measure(hotkeyLabel).X;
+				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + hotkey.Bounds.Width;
 			}
 		}
 	}

@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var content = item.Content.Replace("\\n", "\n");
 				content = WidgetUtils.WrapText(content, contentLabel.Bounds.Width, Game.Renderer.Fonts[contentLabel.Font]);
 				contentLabel.GetText = () => content;
-				contentLabel.Bounds.Height = Game.Renderer.Fonts[contentLabel.Font].Measure(content).Y;
+				contentLabel.Bounds.Height = contentLabel.MeasureText(content).Y;
 				newsItem.Bounds.Height += contentLabel.Bounds.Height;
 
 				newsPanel.AddChild(newsItem);

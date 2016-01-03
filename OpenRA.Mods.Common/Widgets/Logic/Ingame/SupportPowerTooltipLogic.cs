@@ -24,9 +24,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
-			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
-			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var name = "";
 			var time = "";
 			var desc = "";
@@ -58,14 +55,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var hotkey = icon.Hotkey;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? nameFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
+				var hotkeyWidth = hotkey.IsValid() ? hotkeyLabel.MeasureText(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
-				hotkeyLabel.Bounds.X = nameFont.Measure(name).X + 2 * nameLabel.Bounds.X;
+				hotkeyLabel.Bounds.X = nameLabel.MeasureText(name).X + 2 * nameLabel.Bounds.X;
 				hotkeyLabel.Visible = hotkey.IsValid();
 
-				var timeWidth = timeFont.Measure(time).X;
-				var topWidth = nameFont.Measure(name).X + hotkeyWidth + timeWidth + timeOffset;
-				var descSize = descFont.Measure(desc);
+				var timeWidth = timeLabel.MeasureText(time).X;
+				var topWidth = nameLabel.MeasureText(name).X + hotkeyWidth + timeWidth + timeOffset;
+				var descSize = descLabel.MeasureText(desc);
 				widget.Bounds.Width = 2 * nameLabel.Bounds.X + Math.Max(topWidth, descSize.X);
 				widget.Bounds.Height = baseHeight + descSize.Y;
 				timeLabel.Bounds.X = widget.Bounds.Width - nameLabel.Bounds.X - timeWidth;

@@ -18,28 +18,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ClientTooltipLogic : ChromeLogic
 	{
-		SpriteFont latencyFont;
-		SpriteFont latencyPrefixFont;
-
 		[ObjectCreator.UseCtor]
 		public ClientTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, int clientIndex)
 		{
 			var admin = widget.Get<LabelWidget>("ADMIN");
-			var adminFont = Game.Renderer.Fonts[admin.Font];
-
 			var latency = widget.GetOrNull<LabelWidget>("LATENCY");
-			if (latency != null)
-				latencyFont = Game.Renderer.Fonts[latency.Font];
-
 			var latencyPrefix = widget.GetOrNull<LabelWidget>("LATENCY_PREFIX");
-			if (latencyPrefix != null)
-				latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
-
 			var ip = widget.Get<LabelWidget>("IP");
-			var addressFont = Game.Renderer.Fonts[ip.Font];
-
 			var location = widget.Get<LabelWidget>("LOCATION");
-			var locationFont = Game.Renderer.Fonts[location.Font];
 
 			var locationOffset = location.Bounds.Y;
 			var addressOffset = ip.Bounds.Y;
@@ -51,12 +37,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
-				var latencyPrefixSize = latencyPrefix == null ? 0 : latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText() + " ").X;
-				var locationWidth = locationFont.Measure(location.GetText()).X;
-				var adminWidth = adminFont.Measure(admin.GetText()).X;
-				var addressWidth = addressFont.Measure(ip.GetText()).X;
-				var latencyWidth = latencyFont == null ? 0 : latencyPrefixSize + latencyFont.Measure(latency.GetText()).X;
-				var width = Math.Max(locationWidth, Math.Max(adminWidth, Math.Max(addressWidth, latencyWidth)));
+				var latencyPrefixSize = latencyPrefix == null ? 0 : latencyPrefix.Bounds.X + latencyPrefix.MeasureText(latencyPrefix.GetText() + " ").X;
+				var locationWidth = location.MeasureText(location.GetText()).X;
+				var adminWidth = admin.MeasureText(admin.GetText()).X;
+				var ipWidth = ip.MeasureText(ip.GetText()).X;
+				var latencyWidth = latency == null ? 0 : latencyPrefixSize + latency.MeasureText(latency.GetText()).X;
+				var width = Math.Max(locationWidth, Math.Max(adminWidth, Math.Max(ipWidth, latencyWidth)));
 				widget.Bounds.Width = width + 2 * margin;
 				if (latency != null)
 					latency.Bounds.Width = widget.Bounds.Width;

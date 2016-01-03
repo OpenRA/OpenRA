@@ -482,10 +482,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
 			var playerName = template.Get<LabelWidget>("PLAYER");
-			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
-			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
+			var suffixLength = new CachedTransform<string, int>(s => playerName.MeasureText(s).X);
 			var name = new CachedTransform<Pair<string, int>, string>(c =>
-				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
+				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerName.SpriteFont));
 
 			playerName.GetText = () =>
 			{
