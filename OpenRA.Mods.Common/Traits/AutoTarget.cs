@@ -140,8 +140,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (nextScanTime <= 0)
 			{
 				nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
-				var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-				return ChooseTarget(self, range, allowMove);
+
+				// If we can't attack right now, there's no need to try and find a target.
+				var attackStances = attack.UnforcedAttackTargetStances();
+				if (attackStances != OpenRA.Traits.Stance.None)
+				{
+					var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
+					return ChooseTarget(self, attackStances, range, allowMove);
+				}
 			}
 
 			return null;
@@ -162,12 +168,19 @@ namespace OpenRA.Mods.Common.Traits
 			attack.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
+		Actor ChooseTarget(Actor self, Stance attackStances, WDist range, bool allowMove)
 		{
 			var actorsByArmament = new Dictionary<Armament, List<Actor>>();
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 			foreach (var actor in actorsInRange)
 			{
+				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
+				// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
+				// allied units, this helps significantly reduce the cost of auto target scans. This is important as
+				// these groups will continuously rescan their allies until an enemy finally comes into range.
+				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
+					continue;
+
 				if (PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
 					continue;
 

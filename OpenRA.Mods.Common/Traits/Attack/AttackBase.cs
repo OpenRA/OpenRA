@@ -287,6 +287,17 @@ namespace OpenRA.Mods.Common.Traits
 				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
 		}
 
+		public Stance UnforcedAttackTargetStances()
+		{
+			// PERF: Avoid LINQ.
+			var stances = Stance.None;
+			foreach (var armament in Armaments)
+				if (!armament.IsTraitDisabled)
+					stances |= armament.Info.TargetStances;
+
+			return stances;
+		}
+
 		class AttackOrderTargeter : IOrderTargeter
 		{
 			readonly AttackBase ab;
