@@ -209,7 +209,7 @@ namespace OpenRA.Traits
 					maxV = p.V;
 			}
 
-			return Rectangle.FromLTRB(minU, minV, maxU, maxV);
+			return Rectangle.FromLTRB(minU, minV, maxU + 1, maxV + 1);
 		}
 
 		public void Tick(Actor self)
