@@ -89,7 +89,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
-	File "${SRCDIR}\Mono.Nat.dll"
+	File "${SRCDIR}\Open.Nat.dll"
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\README.html"
@@ -148,14 +148,14 @@ Section "-DotNet" DotNet
 	IfErrors error 0
 	IntCmp $0 1 done error done
 	error:
-		MessageBox MB_YESNO ".NET Framework v4.0 or later is required to run OpenRA. $\n \
+		MessageBox MB_YESNO ".NET Framework v4.5.2 or later is required to run OpenRA. $\n \
 		Do you wish for the installer to launch your web browser in order to download and install it?" \
 		IDYES download IDNO error2
 	download:
-		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=17113"
+		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=42643"
 		Goto done
 	error2:
-		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.0 \
+		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.5.2 \
 		or later is installed."
 	done:
 SectionEnd
@@ -194,7 +194,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
-	Delete $INSTDIR\Mono.Nat.dll
+	Delete $INSTDIR\Open.Nat.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING
