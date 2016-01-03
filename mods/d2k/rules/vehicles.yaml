@@ -514,4 +514,3 @@ combat_tank_o:
 		HP: 1800
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk
-

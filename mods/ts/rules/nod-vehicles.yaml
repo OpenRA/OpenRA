@@ -291,4 +291,3 @@ STNK:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	-MustBeDestroyed:
-

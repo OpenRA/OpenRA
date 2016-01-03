@@ -275,4 +275,3 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosion: tiny_twlt
 		ImpactSound: expnew05.aud
-

@@ -228,4 +228,3 @@ TurretGun:
 		Explosion: small_splash
 		ImpactSound: splash9.aud
 		ValidImpactTypes: Water
-

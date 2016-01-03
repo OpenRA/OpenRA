@@ -390,4 +390,3 @@ Container@PLAYER_WIDGETS:
 							Background: scrolldown-buttons
 							TooltipText: Scroll down
 							TooltipContainer: TOOLTIP_CONTAINER
-

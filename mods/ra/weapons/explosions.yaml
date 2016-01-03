@@ -274,4 +274,3 @@ OreExplosion:
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: kaboom25.aud
-

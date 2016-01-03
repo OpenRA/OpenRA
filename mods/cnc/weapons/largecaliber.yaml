@@ -139,4 +139,3 @@ ArtilleryShell:
 	Warhead@3Eff: CreateEffect
 		Explosion: poof
 		ImpactSound: XPLOSML2.AUD
-

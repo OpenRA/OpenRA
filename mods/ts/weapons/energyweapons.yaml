@@ -195,4 +195,3 @@ TurretLaserFire:
 		Spread: 42
 		Damage: 30
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
-

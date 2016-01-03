@@ -1,5 +1,4 @@
 # General dumping-ground for UI element sizes, etc.
-
 Metrics:
 	ButtonDepth: 1
 	ButtonFont: Regular
@@ -36,4 +35,3 @@ Metrics:
 	IncompatibleGameStartedColor: D2691E
 	GlobalChatTextColor: FFFFFF
 	GlobalChatNotificationColor: D3D3D3
-

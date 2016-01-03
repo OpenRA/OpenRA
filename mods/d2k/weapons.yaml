@@ -849,4 +849,3 @@ BloomSpawn:
 		Image: null
 	Warhead@1Eff: CreateEffect
 		Explosion: bloomspawn
-

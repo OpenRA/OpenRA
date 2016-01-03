@@ -147,4 +147,3 @@ STNK.Husk:
 		IntoActor: stnk
 	RenderSprites:
 		Image: stnk.destroyed
-

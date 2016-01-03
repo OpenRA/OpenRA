@@ -429,4 +429,3 @@ VICE:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
-

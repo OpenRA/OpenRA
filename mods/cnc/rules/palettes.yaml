@@ -75,4 +75,3 @@
 	RotationPaletteEffect@water:
 		ExcludePalettes: effect, chrome
 		RotationBase: 32
-

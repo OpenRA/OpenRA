@@ -134,4 +134,3 @@ Container@SERVER_LOBBY:
 			Text: Start Game
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-
