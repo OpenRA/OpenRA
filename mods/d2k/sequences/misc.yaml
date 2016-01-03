@@ -109,6 +109,17 @@ laserfire:
 		BlendMode: Additive
 		ZOffset: 511
 
+sandtrail:
+	Defaults:
+		Length: 8
+		Tick: 200
+		ZOffset: -512
+	traila: sandtrail.shp
+	trailb: sandtrail.shp
+		Frames: 2, 6, 4, 5, 0, 1, 3, 7
+	trailc: sandtrail.shp
+		Frames: 7, 4, 6, 5, 2, 0, 3, 1
+
 pips:
 	groups: DATA.R8
 		Start: 17

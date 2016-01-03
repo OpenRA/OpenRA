@@ -18,9 +18,13 @@ namespace OpenRA.Mods.Common.Traits
 	public enum TrailType { Cell, CenterPosition }
 
 	[Desc("Renders a sprite effect when leaving a cell.")]
-	public class LeavesTrailsInfo : ITraitInfo
+	public class LeavesTrailsInfo : UpgradableTraitInfo
 	{
 		public readonly string Image = null;
+
+		[SequenceReference("Image")]
+		public readonly string[] Sequences = { "idle" };
+
 		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Only do so when the terrain types match with the previous cell.")]
@@ -42,43 +46,47 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay between trail updates when moving.")]
 		public readonly int MovingInterval = 0;
 
-		public object Create(ActorInitializer init) { return new LeavesTrails(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
 	}
 
-	public class LeavesTrails : ITick
+	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick
 	{
-		readonly LeavesTrailsInfo info;
-
-		public LeavesTrails(LeavesTrailsInfo info, Actor self)
-		{
-			this.info = info;
-		}
+		public LeavesTrails(Actor self, LeavesTrailsInfo info)
+			: base(info) { }
 
 		WPos cachedPosition;
 		int ticks;
 
 		public void Tick(Actor self)
 		{
-			var isMoving = self.CenterPosition != cachedPosition;
-			if ((isMoving && !info.TrailWhileMoving) || (!isMoving && !info.TrailWhileStationary))
+			if (IsTraitDisabled)
 				return;
 
-			var interval = isMoving ? info.MovingInterval :
-				info.StationaryInterval;
+			var isMoving = self.CenterPosition != cachedPosition;
+			if ((isMoving && !Info.TrailWhileMoving) || (!isMoving && !Info.TrailWhileStationary))
+				return;
+
+			var interval = isMoving ? Info.MovingInterval : Info.StationaryInterval;
 			if (++ticks >= interval)
 			{
 				var cachedCell = self.World.Map.CellContaining(cachedPosition);
 				var type = self.World.Map.GetTerrainInfo(cachedCell).Type;
 
-				var pos = info.Type == TrailType.CenterPosition ? cachedPosition :
+				var pos = Info.Type == TrailType.CenterPosition ? cachedPosition :
 					self.World.Map.CenterOfCell(cachedCell);
 
-				if (info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(info.Image))
-					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, info.Image, info.Palette)));
+				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
+						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette)));
 
 				cachedPosition = self.CenterPosition;
 				ticks = 0;
 			}
+		}
+
+		protected override void UpgradeEnabled(Actor self)
+		{
+			cachedPosition = self.CenterPosition;
 		}
 	}
 }

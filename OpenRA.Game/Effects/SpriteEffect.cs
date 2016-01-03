@@ -20,13 +20,13 @@ namespace OpenRA.Effects
 		readonly WPos pos;
 		readonly bool scaleSizeWithZoom;
 
-		public SpriteEffect(WPos pos, World world, string image, string palette, bool scaleSizeWithZoom = false)
+		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool scaleSizeWithZoom = false)
 		{
 			this.pos = pos;
 			this.palette = palette;
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			anim = new Animation(world, image);
-			anim.PlayThen("idle", () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
 		public void Tick(World world)

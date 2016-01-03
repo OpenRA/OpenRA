@@ -20,10 +20,14 @@ namespace OpenRA.Mods.D2k.Traits
 	class AttackSwallowInfo : AttackFrontalInfo
 	{
 		[Desc("The number of ticks it takes to return underground.")]
-		public readonly int ReturnTime = 60;
+		public readonly int ReturnDelay = 60;
 
 		[Desc("The number of ticks it takes to get in place under the target to attack.")]
-		public readonly int AttackTime = 30;
+		public readonly int AttackDelay = 30;
+
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant while attacking.")]
+		public readonly string[] AttackingUpgrades = { "attacking" };
 
 		public readonly string WormAttackSound = "Worm.wav";
 

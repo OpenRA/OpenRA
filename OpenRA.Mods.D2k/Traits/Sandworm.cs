@@ -10,12 +10,13 @@
 
 using System;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<WithSpriteBodyInfo>, Requires<AttackBaseInfo>
+	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Time between rescanning for targets (in ticks).")]
 		public readonly int TargetRescanInterval = 125;
@@ -29,15 +30,6 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The chance this actor has of disappearing after it attacks (in %).")]
 		public readonly int ChanceToDisappear = 100;
 
-		[Desc("Name of the sequence that is used when the actor is idle or moving (not attacking).")]
-		[SequenceReference] public readonly string IdleSequence = "idle";
-
-		[Desc("Name of the sequence that is used when the actor is attacking.")]
-		[SequenceReference] public readonly string MouthSequence = "mouth";
-
-		[Desc("Name of the sequence that is used when the actor is burrowed.")]
-		[SequenceReference] public readonly string BurrowedSequence = "burrowed";
-
 		public override object Create(ActorInitializer init) { return new Sandworm(init.Self, this); }
 	}
 
@@ -47,7 +39,6 @@ namespace OpenRA.Mods.D2k.Traits
 
 		readonly WormManager manager;
 		readonly Mobile mobile;
-		readonly WithSpriteBody withSpriteBody;
 		readonly AttackBase attackTrait;
 
 		public bool IsMovingTowardTarget { get; private set; }
@@ -61,17 +52,8 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			Info = info;
 			mobile = self.Trait<Mobile>();
-			withSpriteBody = self.Trait<WithSpriteBody>();
 			attackTrait = self.Trait<AttackBase>();
 			manager = self.World.WorldActor.Trait<WormManager>();
-		}
-
-		public override void OnBecomingIdle(Actor self)
-		{
-			if (withSpriteBody.DefaultAnimation.CurrentSequence.Name != Info.IdleSequence)
-				withSpriteBody.DefaultAnimation.PlayRepeating(Info.IdleSequence);
-
-			base.OnBecomingIdle(self);
 		}
 
 		public override void DoAction(Actor self, CPos targetCell)
