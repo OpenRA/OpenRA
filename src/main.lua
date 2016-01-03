@@ -526,7 +526,7 @@ do
       for _, config in ipairs({ide.configqueue[#ide.configqueue], ide.configs.user, ide.configs.system}) do
         local p = config and MergeFullPath(config.."/../", c)
         includes[p] = (includes[p] or 0) + 1
-        if includes[p] > 1 or LoadLuaConfig(p) then return end
+        if includes[p] > 1 or LoadLuaConfig(p) or LoadLuaConfig(p..".lua") then return end
       end
       print(("Can't find configuration file '%s' to process."):format(c))
     end
