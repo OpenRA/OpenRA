@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var mapRules = palette.World.Map.Rules;
 			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
-			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			var res = palette.World.LocalPlayer.PlayerActor.Trait<IResourceDisplay>();
 
 			widget.IsVisible = () => palette.TooltipIcon != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var costString = cost.ToString();
 				costLabel.GetText = () => costString;
-				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayResources >= cost
+				costLabel.GetColor = () => res.Amount >= cost
 					? Color.White : Color.Red;
 
 				var descString = tooltip.Description.Replace("\\n", "\n");

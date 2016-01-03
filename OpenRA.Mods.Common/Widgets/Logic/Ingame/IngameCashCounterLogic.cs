@@ -8,7 +8,8 @@
  */
 #endregion
 
-using OpenRA.Traits;
+using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -18,12 +19,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameCashCounterLogic(Widget widget, World world)
 		{
-			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			var resourceDisplay = world.LocalPlayer.PlayerActor.Trait<IResourceDisplay>();
 			var cash = widget.Get<LabelWithTooltipWidget>("CASH");
 			var label = cash.Text;
 
-			cash.GetText = () => label.F(playerResources.DisplayCash + playerResources.DisplayResources);
-			cash.GetTooltipText = () => "Silo Usage: {0}/{1}".F(playerResources.Resources, playerResources.ResourceCapacity);
+			cash.GetText = () => label.F(resourceDisplay.Amount);
+			cash.GetTooltipText = () => "Silo Usage: {0}/{1}".F(resourceDisplay.CappedAmount, resourceDisplay.Capacity);
 		}
 	}
 }

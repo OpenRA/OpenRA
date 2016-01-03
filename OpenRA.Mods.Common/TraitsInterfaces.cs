@@ -117,4 +117,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool PreventsAutoTarget(Actor self, Actor attacker);
 	}
+
+	// This provides resource information to the chrome bits. Note that some
+	// chrome bits assume that each player has exactly one trait implementing
+	// this.
+	public interface IResourceDisplay
+	{
+		int Amount { get; }
+		int CappedAmount { get; }
+		int Capacity { get; }
+		int Earned { get; }
+		int Spent { get; }
+	}
 }

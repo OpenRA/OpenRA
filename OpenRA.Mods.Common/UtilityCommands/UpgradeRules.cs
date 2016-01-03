@@ -2876,6 +2876,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Add ResourceDisplay for each PlayerResource
+				if (engineVersion < 20160104)
+				{
+					if (node.Value.Nodes.Any(x => x.Key == "PlayerResources") &&
+					    !node.Value.Nodes.Any(x => x.Key == "ResourceDisplay"))
+						node.Value.Nodes.Add(new MiniYamlNode("ResourceDisplay", ""));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
