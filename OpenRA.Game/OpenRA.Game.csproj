@@ -255,6 +255,9 @@
     <Compile Include="Primitives\ObservableList.cs" />
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
+    <Compile Include="FileFormats\LCWCompression.cs" />
+    <Compile Include="FileFormats\XORDeltaCompression.cs" />
+    <Compile Include="FileFormats\RLEZerosCompression.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
@@ -278,9 +281,6 @@
     <Compile Include="FileFormats\Blowfish.cs" />
     <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
     <Compile Include="FileFormats\CRC32.cs" />
-    <Compile Include="FileFormats\Format2.cs" />
-    <Compile Include="FileFormats\Format40.cs" />
-    <Compile Include="FileFormats\Format80.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="FileFormats\WavLoader.cs" />
     <Compile Include="FileFormats\XccGlobalDatabase.cs" />

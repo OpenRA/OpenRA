@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var src = reader.ReadBytes((int)length);
 
 					/*int actualLength =*/
-					Format80.DecodeInto(src, dest);
+					LCWCompression.DecodeInto(src, dest);
 
 					chunks.Add(dest);
 				}

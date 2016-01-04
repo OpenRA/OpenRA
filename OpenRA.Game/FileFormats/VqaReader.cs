@@ -329,7 +329,7 @@ namespace OpenRA.FileFormats
 						Array.Clear(cbf, 0, cbf.Length);
 						Array.Clear(cbfBuffer, 0, cbfBuffer.Length);
 						var decodeCount = 0;
-						decodeCount = Format80.DecodeInto(fileBuffer, cbfBuffer, decodeMode ? 1 : 0, decodeMode);
+						decodeCount = LCWCompression.DecodeInto(fileBuffer, cbfBuffer, decodeMode ? 1 : 0, decodeMode);
 						if ((videoFlags & 0x10) == 16)
 						{
 							var p = 0;
@@ -365,7 +365,7 @@ namespace OpenRA.FileFormats
 							if (type == "CBP0")
 								cbf = (byte[])cbp.Clone();
 							else
-								Format80.DecodeInto(cbp, cbf);
+								LCWCompression.DecodeInto(cbp, cbf);
 
 							chunkBufferOffset = currentChunkBuffer = 0;
 						}
@@ -390,7 +390,7 @@ namespace OpenRA.FileFormats
 
 					// Frame data
 					case "VPTZ":
-						Format80.DecodeInto(s.ReadBytes(subchunkLength), origData);
+						LCWCompression.DecodeInto(s.ReadBytes(subchunkLength), origData);
 
 						// This is the last subchunk
 						return;
@@ -398,9 +398,9 @@ namespace OpenRA.FileFormats
 						Array.Clear(origData, 0, origData.Length);
 						s.ReadBytes(fileBuffer, 0, subchunkLength);
 						if (fileBuffer[0] != 0)
-							vtprSize = Format80.DecodeInto(fileBuffer, origData);
+							vtprSize = LCWCompression.DecodeInto(fileBuffer, origData);
 						else
-							Format80.DecodeInto(fileBuffer, origData, 1, true);
+							LCWCompression.DecodeInto(fileBuffer, origData, 1, true);
 						return;
 					case "VPTR":
 						Array.Clear(origData, 0, origData.Length);

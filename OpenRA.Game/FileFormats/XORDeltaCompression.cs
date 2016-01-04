@@ -10,7 +10,8 @@
 
 namespace OpenRA.FileFormats
 {
-	public static class Format40
+	// Data that is to be XORed against another set of data (aka Format40)
+	public static class XORDeltaCompression
 	{
 		public static int DecodeInto(byte[] src, byte[] dest, int srcOffset)
 		{

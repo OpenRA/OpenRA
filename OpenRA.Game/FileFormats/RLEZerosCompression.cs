@@ -10,7 +10,8 @@
 
 namespace OpenRA.FileFormats
 {
-	public static class Format2
+	// Run length encoded sequences of zeros (aka Format2)
+	public static class RLEZerosCompression
 	{
 		public static void DecodeInto(byte[] src, byte[] dest, int destIndex)
 		{
