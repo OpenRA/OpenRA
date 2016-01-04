@@ -489,6 +489,13 @@ do
   }
   ide.configqueue = {}
 
+  -- package/include can be called when the IDE is only partially or fully loaded,
+  -- which requires two different types of reporting; combine them into one.
+  local report = function(...)
+    if DisplayOutputLn then return DisplayOutputLn(...) end
+    print(...)
+  end
+
   local num = 0
   local package = setmetatable({}, {
       __index = function(_,k) return package[k] end,
@@ -513,9 +520,9 @@ do
               break
             end
           end
-          if not pkg then print(("Can't find '%s' to load package from."):format(p)) end
+          if not pkg then report(("Can't find '%s' to load package from."):format(p)) end
         else
-          print(("Can't load package based on parameter of type '%s'."):format(type(p)))
+          report(("Can't load package based on parameter of type '%s'."):format(type(p)))
         end
       end,
     })
@@ -529,7 +536,7 @@ do
         if includes[p] > 1 or LoadLuaConfig(p) or LoadLuaConfig(p..".lua") then return end
         includes[p] = includes[p] - 1
       end
-      print(("Can't find configuration file '%s' to process."):format(c))
+      report(("Can't find configuration file '%s' to process."):format(c))
     end
   end
 
