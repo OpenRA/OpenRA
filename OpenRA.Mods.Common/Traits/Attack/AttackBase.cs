@@ -86,9 +86,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (Armaments.All(a => a.IsReloading))
 				return false;
 
-			if (target.Type == TargetType.Actor && !self.Owner.CanTargetActor(target.Actor))
-				return false;
-
 			return true;
 		}
 
