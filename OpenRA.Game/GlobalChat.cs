@@ -225,9 +225,17 @@ namespace OpenRA.Chat
 
 		void OnKick(object sender, KickEventArgs e)
 		{
-			Disconnect();
-			connectionStatus = ChatConnectionStatus.Error;
-			AddNotification("Error: You were kicked from the chat by {0}".F(e.Who));
+			if (e.Whom == client.Nickname)
+			{
+				Disconnect();
+				connectionStatus = ChatConnectionStatus.Error;
+				AddNotification("You were kicked from the chat by {0}. ({1})".F(e.Who, e.KickReason));
+			}
+			else
+			{
+				Users.Remove(e.Whom);
+				AddNotification("{0} was kicked from the chat by {1}. ({2})".F(e.Whom, e.Who, e.KickReason));
+			}
 		}
 
 		void OnJoin(object sender, JoinEventArgs e)
