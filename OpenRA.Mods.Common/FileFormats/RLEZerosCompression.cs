@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	// Run length encoded sequences of zeros (aka Format2)
 	public static class RLEZerosCompression

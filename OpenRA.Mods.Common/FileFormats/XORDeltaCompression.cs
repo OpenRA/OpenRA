@@ -8,7 +8,7 @@
  */
 #endregion
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	// Data that is to be XORed against another set of data (aka Format40)
 	public static class XORDeltaCompression

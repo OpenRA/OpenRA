@@ -255,9 +255,6 @@
     <Compile Include="Primitives\ObservableList.cs" />
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
-    <Compile Include="FileFormats\LCWCompression.cs" />
-    <Compile Include="FileFormats\XORDeltaCompression.cs" />
-    <Compile Include="FileFormats\RLEZerosCompression.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

@@ -11,8 +11,8 @@
 using System;
 using System.Drawing;
 using System.IO;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
