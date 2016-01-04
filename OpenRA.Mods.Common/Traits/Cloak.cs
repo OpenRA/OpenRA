@@ -157,12 +157,12 @@ namespace OpenRA.Mods.Common.Traits
 				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Info.Range.LengthSquared);
 		}
 
-		public Color RadarColorOverride(Actor self)
+		public Color RadarColorOverride(Actor self, Color color)
 		{
-			var c = self.Owner.Color.RGB;
 			if (self.Owner == self.World.LocalPlayer && Cloaked)
-				c = Color.FromArgb(128, c);
-			return c;
+				color = Color.FromArgb(128, color);
+
+			return color;
 		}
 	}
 }

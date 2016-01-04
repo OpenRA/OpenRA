@@ -201,7 +201,7 @@ namespace OpenRA.Traits
 		bool HasFogVisibility();
 	}
 
-	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
+	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
 
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{

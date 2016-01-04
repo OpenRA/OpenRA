@@ -29,6 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public bool VisibleOnRadar(Actor self) { return true; }
-		public Color RadarColorOverride(Actor self) { return c; }
+		public Color RadarColorOverride(Actor self, Color color) { return c; }
 	}
 }
