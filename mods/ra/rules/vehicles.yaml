@@ -405,7 +405,7 @@ MNLY.AP:
 		Name: Minelayer
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
-		HP: 100
+		HP: 150
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -440,7 +440,7 @@ MNLY.AT:
 		Name: Minelayer
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
-		HP: 100
+		HP: 150
 	Armor:
 		Type: Heavy
 	Mobile:
