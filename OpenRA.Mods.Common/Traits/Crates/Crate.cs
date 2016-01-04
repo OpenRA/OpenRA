@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			OnCrushInner(crusher);
 		}
 
-		public void OnLanded()
+		void INotifyParachuteLanded.OnLanded(Actor ignore)
 		{
 			// Check whether the crate landed on anything
 			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)

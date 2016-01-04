@@ -400,6 +400,7 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Production.cs" />
+    <Compile Include="Traits\ProductionParadrop.cs" />
     <Compile Include="Traits\ProductionQueueFromSelection.cs" />
     <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />

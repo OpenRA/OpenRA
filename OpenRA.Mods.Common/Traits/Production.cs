@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
+		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
 		{
 			var exit = CPos.Zero;
 			var exitLocation = CPos.Zero;

@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			PlaySequence();
 		}
 
-		void INotifyParachuteLanded.OnLanded()
+		void INotifyParachuteLanded.OnLanded(Actor ignore)
 		{
 			PlaySequence();
 		}
