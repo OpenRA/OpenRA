@@ -97,6 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UpgradeManager um;
 		IDisposable reservation;
+		IEnumerable<int> speedModifiers;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -124,7 +125,11 @@ namespace OpenRA.Mods.Common.Traits
 			IsPlane = !info.CanHover;
 		}
 
-		public void Created(Actor self) { um = self.TraitOrDefault<UpgradeManager>(); }
+		public void Created(Actor self)
+		{
+			um = self.TraitOrDefault<UpgradeManager>();
+			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
+		}
 
 		public void AddedToWorld(Actor self)
 		{
@@ -183,17 +188,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (altitude != Info.CruiseAltitude.Length)
 				return WVec.Zero;
 
-			var repulsionForce = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
-				.Where(a =>
-				{
-					if (a.IsDead)
-						return false;
+			// PERF: Avoid LINQ.
+			var repulsionForce = WVec.Zero;
+			foreach (var actor in self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation))
+			{
+				if (actor.IsDead)
+					continue;
 
-					var ai = a.Info.TraitInfoOrDefault<AircraftInfo>();
-					return ai != null && ai.Repulsable && ai.CruiseAltitude == Info.CruiseAltitude;
-				})
-				.Select(GetRepulsionForce)
-				.Aggregate(WVec.Zero, (a, b) => a + b);
+				var ai = actor.Info.TraitInfoOrDefault<AircraftInfo>();
+				if (ai == null || !ai.Repulsable || ai.CruiseAltitude != Info.CruiseAltitude)
+					continue;
+
+				repulsionForce += GetRepulsionForce(actor);
+			}
 
 			if (Info.CanHover)
 				return repulsionForce;
@@ -279,12 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeed
 		{
-			get
-			{
-				var modifiers = self.TraitsImplementing<ISpeedModifier>()
-					.Select(m => m.GetSpeedModifier());
-				return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
-			}
+			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
