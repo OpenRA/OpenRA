@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void OnLanded()
+		public void OnLanded(Actor ignore)
 		{
 			// Check whether the crate landed on anything
 			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)

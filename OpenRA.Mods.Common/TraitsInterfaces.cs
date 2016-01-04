@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
 	public interface INotifyCharging { void Charging(Actor self, Target target); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
-	public interface INotifyParachuteLanded { void OnLanded(); }
+	public interface INotifyParachuteLanded { void OnLanded(Actor ignore); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -53,12 +54,15 @@ namespace OpenRA.Mods.Common.Traits
 			positionable = self.TraitOrDefault<IPositionable>();
 		}
 
-		public void OnLanded()
+		public void OnLanded(Actor ignore)
 		{
 			if (!info.KilledOnImpassableTerrain)
 				return;
 
 			if (positionable.CanEnterCell(self.Location, self))
+				return;
+
+			if (ignore != null && self.World.ActorMap.GetActorsAt(self.Location).Any(a => a != ignore))
 				return;
 
 			var terrain = self.World.Map.GetTerrainInfo(self.Location);
