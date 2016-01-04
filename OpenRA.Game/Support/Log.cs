@@ -17,12 +17,12 @@ namespace OpenRA
 	public struct ChannelInfo
 	{
 		public string Filename;
-		public StreamWriter Writer;
+		public TextWriter Writer;
 	}
 
 	public static class Log
 	{
-		public static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
+		static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
 
 		static IEnumerable<string> FilenamesForChannel(string channelName, string baseFilename)
 		{
@@ -33,56 +33,63 @@ namespace OpenRA
 				yield return Path.Combine(path, i > 0 ? "{0}.{1}".F(baseFilename, i) : baseFilename);
 		}
 
+		public static ChannelInfo Channel(string channelName)
+		{
+			ChannelInfo info;
+			lock (Channels)
+				if (!Channels.TryGetValue(channelName, out info))
+					throw new Exception("Tried logging to non-existent channel " + channelName);
+
+			return info;
+		}
+
 		public static void AddChannel(string channelName, string baseFilename)
 		{
-			if (Channels.ContainsKey(channelName)) return;
-
-			if (string.IsNullOrEmpty(baseFilename))
+			lock (Channels)
 			{
-				Channels.Add(channelName, new ChannelInfo());
-				return;
-			}
+				if (Channels.ContainsKey(channelName)) return;
 
-			foreach (var filename in FilenamesForChannel(channelName, baseFilename))
-				try
+				if (string.IsNullOrEmpty(baseFilename))
 				{
-					var writer = File.CreateText(filename);
-					writer.AutoFlush = true;
-
-					Channels.Add(channelName,
-						new ChannelInfo()
-						{
-							Filename = filename,
-							Writer = writer
-						});
-
+					Channels.Add(channelName, new ChannelInfo());
 					return;
 				}
-				catch (IOException) { }
+
+				foreach (var filename in FilenamesForChannel(channelName, baseFilename))
+					try
+					{
+						var writer = File.CreateText(filename);
+						writer.AutoFlush = true;
+
+						Channels.Add(channelName,
+							new ChannelInfo
+							{
+								Filename = filename,
+								Writer = TextWriter.Synchronized(writer)
+							});
+
+						return;
+					}
+					catch (IOException) { }
+			}
 		}
 
 		public static void Write(string channel, string value)
 		{
-			ChannelInfo info;
-			if (!Channels.TryGetValue(channel, out info))
-				throw new Exception("Tried logging to non-existent channel " + channel);
-
-			if (info.Writer == null)
+			var writer = Channel(channel).Writer;
+			if (writer == null)
 				return;
 
-			info.Writer.WriteLine(value);
+			writer.WriteLine(value);
 		}
 
 		public static void Write(string channel, string format, params object[] args)
 		{
-			ChannelInfo info;
-			if (!Channels.TryGetValue(channel, out info))
-				throw new Exception("Tried logging to non-existent channel " + channel);
-
-			if (info.Writer == null)
+			var writer = Channel(channel).Writer;
+			if (writer == null)
 				return;
 
-			info.Writer.WriteLine(format, args);
+			writer.WriteLine(format, args);
 		}
 	}
 }
