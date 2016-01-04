@@ -723,6 +723,7 @@
     <Compile Include="FileFormats\LCWCompression.cs" />
     <Compile Include="FileFormats\XORDeltaCompression.cs" />
     <Compile Include="FileFormats\RLEZerosCompression.cs" />
+    <Compile Include="FileFormats\IniFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	public class IniFile
 	{

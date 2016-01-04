@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
