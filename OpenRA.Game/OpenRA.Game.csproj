@@ -94,6 +94,7 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
+    <Compile Include="FileFormats\VocLoader.cs" />
     <Compile Include="FileSystem\IdxEntry.cs" />
     <Compile Include="FileSystem\IFolder.cs" />
     <Compile Include="LogProxy.cs" />
