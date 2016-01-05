@@ -199,6 +199,9 @@ function ReLoadFile(filePath, editor, ...)
   if not editor then return end
 
   if #markers > 0 then -- restore all markers
+    -- delete all markers as they may be restored by a different mechanism,
+    -- which may be limited to only restoring some markers
+    editor:MarkerDeleteAll(-1)
     local samelinecount = lines == editor:GetLineCount()
     for _, marker in ipairs(markers) do
       local line, mask, text = unpack(marker)
