@@ -17,6 +17,25 @@ namespace OpenRA.FileFormats
 {
 	public class VocLoader : ISoundLoader
 	{
+		bool ISoundLoader.CanParse(Stream stream)
+		{
+			var position = stream.Position;
+			try
+			{
+				VocStream.CheckVocHeader(stream);
+			}
+			catch
+			{
+				return false;
+			}
+			finally
+			{
+				stream.Position = position;
+			}
+
+			return true;
+		}
+
 		bool ISoundLoader.TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate)
 		{
 			var position = stream.Position;
@@ -29,8 +48,11 @@ namespace OpenRA.FileFormats
 				sampleRate = vocStream.SampleRate;
 				rawData = vocStream.ReadAllBytes();
 			}
-			catch
+			catch (Exception e)
 			{
+				Log.Write("debug", "Failed to parse VOC file {0}. Error message:".F(fileName));
+				Log.Write("debug", e.ToString());
+
 				rawData = null;
 				channels = sampleBits = sampleRate = 0;
 				return false;
@@ -42,6 +64,22 @@ namespace OpenRA.FileFormats
 
 			return true;
 		}
+
+		float ISoundLoader.GetLength(Stream stream)
+		{
+			try
+			{
+				var vocStream = new VocStream(stream);
+				return vocStream.LengthInSeconds;
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Failed to parse VOC file. Error message:");
+				Log.Write("debug", e.ToString());
+			}
+
+			return 0;
+		}
 	}
 
 	public class VocStream : Stream
@@ -49,6 +87,7 @@ namespace OpenRA.FileFormats
 		public int BitsPerSample { get { return 8; } }
 		public int Channels { get { return 1; } }
 		public int SampleRate { get; private set; }
+		public float LengthInSeconds { get { return (float)totalSamples / SampleRate; } }
 
 		int totalSamples = 0;
 		int samplePosition = 0;
@@ -100,11 +139,11 @@ namespace OpenRA.FileFormats
 		public VocStream(Stream stream)
 		{
 			this.stream = stream;
-			CheckVocHeader();
+			CheckVocHeader(stream);
 			Preload();
 		}
 
-		void CheckVocHeader()
+		public static void CheckVocHeader(Stream stream)
 		{
 			var vfh = VocFileHeader.Read(stream);
 

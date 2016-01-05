@@ -19,7 +19,9 @@ namespace OpenRA
 {
 	public interface ISoundLoader
 	{
+		bool CanParse(Stream stream);
 		bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate);
+		float GetLength(Stream stream);
 	}
 
 	public sealed class Sound : IDisposable
