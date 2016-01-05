@@ -1,11 +1,8 @@
--- Copyright 2011-15 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-16 Paul Kulchenko, ZeroBrane LLC
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
 local ide = ide
---
--- filetree, treectrl for drive & project
---
 
 ide.filetree = {
   projdir = "",
@@ -324,7 +321,7 @@ local function treeSetConnectorsAndIcons(tree)
           or fullpath:lower():gsub(q(source:lower()), target))
         local editor = LoadFile(path)
         -- check if the file was loaded into another editor;
-        -- this is possible is "foo" is renamed to "bar" and both are opened;
+        -- this is possible if "foo" is renamed to "bar" and both are opened;
         -- if this happens, then "bar" is refreshed and "foo" can be closed.
         if doc.editor:GetId() ~= editor:GetId() then ClosePage(doc.index) end
         if not isdir and editor then PackageEventHandle("onEditorSave", editor) end
