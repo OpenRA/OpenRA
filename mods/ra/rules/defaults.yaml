@@ -118,7 +118,7 @@
 		Notification: UnitStolen
 	MustBeDestroyed:
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 	Parachutable:
 		FallRate: 26
 		KilledOnImpassableTerrain: true
@@ -246,7 +246,7 @@
 	Cloneable:
 		Types: Infantry
 	Voiced:
-		VoiceSet: GenericVoice
+		VoiceSets: GenericVoice
 	WithParachute:
 		UpgradeTypes: parachute
 		UpgradeMinEnabledLevel: 1
@@ -289,7 +289,7 @@
 		Types: CivilianInfantry
 	ScaredyCat:
 	Voiced:
-		VoiceSet: CivilianMaleVoice
+		VoiceSets: CivilianMaleVoice
 
 ^ArmedCivilian:
 	Armament:
@@ -337,7 +337,7 @@
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 	WithFacingSpriteBody:
 
 ^Plane:
@@ -389,7 +389,7 @@
 	WithFacingSpriteBody:
 	MustBeDestroyed:
 	Voiced:
-		VoiceSet: GenericVoice
+		VoiceSets: GenericVoice
 
 ^Helicopter:
 	Inherits: ^Plane

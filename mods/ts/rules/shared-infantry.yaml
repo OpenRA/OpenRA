@@ -46,7 +46,7 @@ ENGINEER:
 		BuildPaletteOrder: 30
 		Prerequisites: ~barracks
 	Voiced:
-		VoiceSet: Engineer
+		VoiceSets: Engineer
 	Mobile:
 		Speed: 56
 	Health:

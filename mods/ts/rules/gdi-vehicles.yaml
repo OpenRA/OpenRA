@@ -112,7 +112,7 @@ SMECH:
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
-		VoiceSet: Mech
+		VoiceSets: Mech
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithFacingSpriteBody:

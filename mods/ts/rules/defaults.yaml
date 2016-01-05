@@ -264,7 +264,7 @@
 	Selectable:
 		Bounds: 14,23,-1,-9
 	Voiced:
-		VoiceSet: Infantry
+		VoiceSets: Infantry
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -353,7 +353,7 @@
 ^CivilianInfantry:
 	Inherits: ^Infantry
 	Voiced:
-		VoiceSet: Civilian
+		VoiceSets: Civilian
 	Tooltip:
 		Name: Civilian
 	ScaredyCat:
@@ -386,7 +386,7 @@
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
-		VoiceSet: Vehicle
+		VoiceSets: Vehicle
 	Targetable:
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
@@ -482,7 +482,7 @@
 		Voice: Move
 		IdealSeparation: 853
 	Voiced:
-		VoiceSet: Heli
+		VoiceSets: Heli
 	HiddenUnderFog:
 		Type: CenterPosition
 	AttackMove:
@@ -667,7 +667,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Voiced:
-		VoiceSet: Vehicle
+		VoiceSets: Vehicle
 	AttackTurreted:
 		Voice: Attack
 	AutoTarget:
@@ -718,7 +718,7 @@
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
-		VoiceSet: Vehicle
+		VoiceSets: Vehicle
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	Passenger:

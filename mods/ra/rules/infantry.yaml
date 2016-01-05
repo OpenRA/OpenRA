@@ -43,7 +43,7 @@ DOG:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
 	Voiced:
-		VoiceSet: DogVoice
+		VoiceSets: DogVoice
 	-TakeCover:
 
 E1:
@@ -181,7 +181,7 @@ E6:
 		Type: building
 	-AutoTarget:
 	Voiced:
-		VoiceSet: EngineerVoice
+		VoiceSets: EngineerVoice
 	Selectable:
 		Priority: 5
 
@@ -232,7 +232,7 @@ SPY:
 	AttackMove:
 		Voice: Move
 	Voiced:
-		VoiceSet: SpyVoice
+		VoiceSets: SpyVoice
 
 SPY.England:
 	Inherits: SPY
@@ -288,7 +288,7 @@ E7:
 	AnnounceOnBuild:
 	AnnounceOnKill:
 	Voiced:
-		VoiceSet: TanyaVoice
+		VoiceSets: TanyaVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -321,7 +321,7 @@ MEDI:
 		StandSequences: stand
 		AttackSequence: heal
 	Voiced:
-		VoiceSet: MedicVoice
+		VoiceSets: MedicVoice
 	Selectable:
 		Priority: 5
 
@@ -360,7 +360,7 @@ MECH:
 		AttackSequence: repair
 		StandSequences: stand
 	Voiced:
-		VoiceSet: MechanicVoice
+		VoiceSets: MechanicVoice
 	Selectable:
 		Priority: 5
 
@@ -371,7 +371,7 @@ EINSTEIN:
 	Mobile:
 		Speed: 71
 	Voiced:
-		VoiceSet: EinsteinVoice
+		VoiceSets: EinsteinVoice
 
 DELPHI:
 	Inherits: ^CivInfantry
@@ -407,7 +407,7 @@ GNRL:
 	Guard:
 		Voice: Move
 	Voiced:
-		VoiceSet: StavrosVoice
+		VoiceSets: StavrosVoice
 	-ScaredyCat:
 	WithInfantryBody:
 		IdleSequences: idle1
@@ -427,7 +427,7 @@ THF:
 		InfiltrateTypes: Cash
 	-AutoTarget:
 	Voiced:
-		VoiceSet: ThiefVoice
+		VoiceSets: ThiefVoice
 	WithInfantryBody:
 		-IdleSequences:
 		StandSequences: stand
@@ -454,7 +454,7 @@ HIJACKER:
 		CaptureTypes: vehicle
 	-AutoTarget:
 	Voiced:
-		VoiceSet: ThiefVoice
+		VoiceSets: ThiefVoice
 	-TakeCover:
 	WithInfantryBody:
 		-IdleSequences:
@@ -505,7 +505,7 @@ SHOK:
 	WithInfantryBody:
 		AttackSequence: shoot
 	Voiced:
-		VoiceSet: ShokVoice
+		VoiceSets: ShokVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -577,7 +577,7 @@ Zombie:
 	Armament:
 		Weapon: claw
 	Voiced:
-		VoiceSet: AntVoice
+		VoiceSets: AntVoice
 	-TakeCover:
 
 Ant:
@@ -615,4 +615,4 @@ Ant:
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	Voiced:
-		VoiceSet: AntVoice
+		VoiceSets: AntVoice

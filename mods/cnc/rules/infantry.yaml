@@ -191,7 +191,7 @@ RMBO:
 	AnnounceOnBuild:
 	AnnounceOnKill:
 	Voiced:
-		VoiceSet: CommandoVoice
+		VoiceSets: CommandoVoice
 
 PVICE:
 	Inherits: ^Viceroid

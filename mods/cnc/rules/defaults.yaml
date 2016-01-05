@@ -97,7 +97,7 @@
 		UncloakSound: trans1.aud
 	MustBeDestroyed:
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -158,7 +158,7 @@
 		UpgradeMinEnabledLevel: 1
 	MustBeDestroyed:
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -252,7 +252,7 @@
 		Voice: Poisoned
 		DeathTypes: TiberiumDeath
 	Voiced:
-		VoiceSet: GenericVoice
+		VoiceSets: GenericVoice
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -294,7 +294,7 @@
 	Crushable:
 		CrushSound: squish2.aud
 	Voiced:
-		VoiceSet: CivilianMaleVoice
+		VoiceSets: CivilianMaleVoice
 	WithInfantryBody:
 		AttackSequence: shoot
 
@@ -351,7 +351,7 @@
 	DrawLineToTarget:
 	DeathSounds:
 	Voiced:
-		VoiceSet: DinoVoice
+		VoiceSets: DinoVoice
 
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
@@ -405,7 +405,7 @@
 	PoisonedByTiberium:
 		Weapon: Heal
 	Voiced:
-		VoiceSet: DinoVoice
+		VoiceSets: DinoVoice
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -443,7 +443,7 @@
 	Guard:
 	Guardable:
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 
 ^Building:
 	Inherits@1: ^ExistsInWorld

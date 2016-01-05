@@ -2164,7 +2164,7 @@ Rules:
 		RenderSprites:
 			Image: DELPHI
 		Voiced:
-			VoiceSet: DemitriVoice
+			VoiceSets: DemitriVoice
 	TRAN:
 		RevealsShroud:
 			Range: 0c0

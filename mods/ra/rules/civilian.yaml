@@ -6,7 +6,7 @@ C1:
 C2:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C3:
 	Inherits: ^CivInfantry
@@ -16,7 +16,7 @@ C4:
 	RenderSprites:
 		Image: C2
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
@@ -28,7 +28,7 @@ C6:
 	RenderSprites:
 		Image: C2
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C7:
 	Inherits@1: ^CivInfantry
@@ -42,7 +42,7 @@ C8:
 	RenderSprites:
 		Image: C2
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C9:
 	Inherits: ^CivInfantry
@@ -54,7 +54,7 @@ C10:
 	RenderSprites:
 		Image: C2
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 FCOM:
 	Inherits: ^TechBuilding
