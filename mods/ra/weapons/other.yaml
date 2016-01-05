@@ -264,7 +264,7 @@ MADTankThump:
 	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 1c0
-		damage: 2
+		Damage: 2
 			Delay: 8
 		InvalidTargets: MADTank, Infantry
 	Warhead@26mu: LeaveSmudge
