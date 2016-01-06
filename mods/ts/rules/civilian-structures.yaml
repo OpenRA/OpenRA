@@ -1295,6 +1295,7 @@ GALITE:
 		Range: 2c0
 	Power:
 		Amount: 0
+# TODO: should use terrain lighting instead, depends on https://github.com/OpenRA/OpenRA/issues/3605
 	WithIdleOverlay@LIGHTING:
 		Sequence: lighting
 		Palette: alpha
@@ -1306,6 +1307,13 @@ GALITE:
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
 	-Cloak@CLOAKGENERATOR:
+
+TSTLAMP:
+	Inherits: GALITE
+	RenderSprites:
+		Image: galite
+	Tooltip:
+		Description: light post with alpha blending
 
 GAICBM:
 	Inherits: ^Building
