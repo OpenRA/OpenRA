@@ -6,6 +6,7 @@
 local ide = ide
 local searchpanel = 'searchpanel'
 local q = EscapeMagic
+local unpack = table.unpack or unpack
 ide.findReplace = {
   panel = nil, -- the control for find/replace
   replace = false, -- is it a find or replace

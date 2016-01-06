@@ -1,6 +1,7 @@
 -- Copyright 2011-15 Paul Kulchenko, ZeroBrane LLC
 ---------------------------------------------------------
 
+local unpack = table.unpack or unpack
 local maxlines = 8
 local row_height = 46
 
