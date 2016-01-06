@@ -1164,7 +1164,7 @@ function CreateEditor(bare)
       end
     end)
 
-  local alreadyProcessed = 0
+  editor.processedUpdateContent = 0
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function (event)
       PackageEventHandle("onEditorUpdateUI", editor, event)
@@ -1176,13 +1176,14 @@ function CreateEditor(bare)
       -- of markup styling becoming visible after text deletion by Backspace.
       -- to avoid this, we allow the first update after any updates caused
       -- by real changes; the rest of UPDATEUI events are skipped.
+      -- (use direct comparison, as need to skip events that just update content)
       if event:GetUpdated() == wxstc.wxSTC_UPDATE_CONTENT
       and not next(editor.ev) then
-         if alreadyProcessed > 1 then return end
+         if editor.processedUpdateContent > 1 then return end
       else
-         alreadyProcessed = 0
+         editor.processedUpdateContent = 0
       end
-      alreadyProcessed = alreadyProcessed + 1
+      editor.processedUpdateContent = editor.processedUpdateContent + 1
 
       if ide.osname ~= 'Windows' then updateStatusText(editor) end
 
