@@ -443,6 +443,10 @@
 	EngineerRepairable:
 	AcceptsSupplies:
 	WithMakeAnimation:
+		MakeUpgrades: underConstruction
+	DisableOnUpgrade:
+		UpgradeTypes: underConstruction
+		UpgradeMinEnabledLevel: 1
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EmitInfantryOnSell:

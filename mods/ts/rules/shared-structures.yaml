@@ -135,6 +135,8 @@ GASILO:
 			nod: gasilo.nod
 	WithSpriteBody:
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithIdleOverlay@UNDERLAY:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:

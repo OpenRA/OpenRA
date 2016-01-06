@@ -15,13 +15,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Use together with CanPowerDown/RequiresPower on buildings or Husk for vehicles.")]
-	public class DisabledOverlayInfo : TraitInfo<DisabledOverlay> { }
-
-	public class DisabledOverlay : IRenderModifier
+	public class DisabledOverlayInfo : UpgradableTraitInfo
 	{
+		public override object Create(ActorInitializer init) { return new DisabledOverlay(init, this); }
+	}
+
+	public class DisabledOverlay : UpgradableTrait<DisabledOverlayInfo>, IRenderModifier
+	{
+		public DisabledOverlay(ActorInitializer init, DisabledOverlayInfo info)
+			: base(info) { }
+
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (!self.IsDisabled())
+			if (IsTraitDisabled || !self.IsDisabled())
 				return r;
 
 			return ModifiedRender(self, wr, r);

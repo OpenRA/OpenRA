@@ -41,6 +41,8 @@ NALASR:
 		Bounds: 40, 30, -8, -6
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -82,6 +84,8 @@ NAOBEL:
 		Bounds: 88, 42, 0, -6
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 600
 	Armor:
@@ -122,6 +126,8 @@ NASAM:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 500
 	Armor:
@@ -257,6 +263,8 @@ NAMISL:
 		PowerdownSpeech: DisablePower
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:

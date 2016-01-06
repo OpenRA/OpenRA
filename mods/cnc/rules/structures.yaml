@@ -66,6 +66,8 @@ FACT:
 		Cooldown: 75
 		Range: 14c0
 	WithBuildingPlacedAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -210,10 +212,9 @@ SILO:
 		Range: 4c0
 	Bib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
-	AutoSelectionSize:
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
@@ -463,6 +464,8 @@ HQ:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -552,6 +555,8 @@ EYE:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -605,6 +610,8 @@ TMPL:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 2000
 	RevealsShroud:
@@ -691,6 +698,8 @@ SAM:
 		Dimensions: 2,1
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -735,6 +744,8 @@ OBLI:
 		VisualBounds: 22,42
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 600
 	Armor:
@@ -815,6 +826,8 @@ ATWR:
 		VisualBounds: 22,40,0,4
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 600
 	Armor:

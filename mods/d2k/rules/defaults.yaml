@@ -285,6 +285,10 @@
 		Pieces: 2, 5
 		Range: 1c512, 4c0
 	WithMakeAnimation:
+		MakeUpgrades: underConstruction
+	DisableOnUpgrade:
+		UpgradeTypes: underConstruction
+		UpgradeMinEnabledLevel: 1
 
 ^Defense:
 	Inherits: ^Building

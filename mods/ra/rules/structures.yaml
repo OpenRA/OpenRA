@@ -44,6 +44,8 @@ MSLO:
 		PowerdownSound: DisablePower
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -71,6 +73,8 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -295,6 +299,8 @@ IRON:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Selectable:
 		Bounds: 48,28,0,2
 	SelectionDecorations:
@@ -345,6 +351,8 @@ PDOX:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 1000
 	Armor:
@@ -419,6 +427,8 @@ TSLA:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -466,6 +476,8 @@ AGUN:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -515,6 +527,8 @@ DOME:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 1000
 	Armor:
@@ -717,6 +731,8 @@ SAM:
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Health:
 		HP: 400
 	Armor:
@@ -777,6 +793,8 @@ ATEK:
 	SupportPowerChargeBar:
 	RequiresPower:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -947,6 +965,8 @@ FACT:
 	BaseProvider:
 		Range: 16c0
 	WithBuildingPlacedAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: 0
 	WithDeathAnimation:
@@ -1033,6 +1053,8 @@ SILO:
 	Bib:
 		HasMinibib: Yes
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipCount: 5
 		Capacity: 1500
@@ -1267,6 +1289,8 @@ POWR:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -1308,6 +1332,8 @@ APWR:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false

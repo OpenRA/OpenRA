@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Render trait for buildings that change the sprite according to the remaining resource storage capacity across all depots.")]
-	class WithSiloAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	class WithSiloAnimationInfo : UpgradableTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence to use for resources-dependent 'stages'."), SequenceReference]
 		public readonly string Sequence = "stages";
@@ -24,24 +24,28 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal resource stages. Does not have to match number of sequence frames.")]
 		public readonly int Stages = 10;
 
-		public object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
 	}
 
-	class WithSiloAnimation : INotifyBuildComplete, INotifyOwnerChanged
+	class WithSiloAnimation : UpgradableTrait<WithSiloAnimationInfo>, ITick, INotifyOwnerChanged
 	{
 		readonly WithSiloAnimationInfo info;
 		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		public WithSiloAnimation(ActorInitializer init, WithSiloAnimationInfo info)
+			: base(info)
 		{
 			this.info = info;
 			wsb = init.Self.Trait<WithSpriteBody>();
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void BuildingComplete(Actor self)
+		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
 				() => playerResources.ResourceCapacity != 0
 				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)

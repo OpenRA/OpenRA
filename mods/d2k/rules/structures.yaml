@@ -299,6 +299,8 @@ silo:
 			ordos: silo.ordos
 	WithSpriteBody:
 	WithSiloAnimation:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	StoresResources:
 		PipColor: green
 		PipCount: 5
@@ -479,6 +481,8 @@ outpost:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Buildable:
 		Prerequisites: construction_yard, barracks, ~techlevel.medium
 		Queue: Building
@@ -565,6 +569,8 @@ starport:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -722,6 +728,8 @@ large_gun_turret:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -975,6 +983,8 @@ palace:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	DisabledOverlay:
+		UpgradeMaxEnabledLevel: 0
+		UpgradeTypes: underConstruction
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:
