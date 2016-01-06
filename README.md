@@ -104,7 +104,7 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 
 The Estrela project has been merged into ZeroBrane Studio. If you have used Estrela
 for graphics shader authoring or luxinia, create/modify the `cfg/user.lua` and
-add `include "estrela.lua"` (1.20+) to load all tools and specifications by default again.
+add `include "estrela"` (1.21+) to load all tools and specifications by default again.
   
 ## License
 

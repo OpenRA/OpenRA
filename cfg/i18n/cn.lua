@@ -285,7 +285,7 @@ return {
   ["Text not found."] = "寻找不到text", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "API file必须存放在API文件夹中的子文件夹", -- src\editor\autocomplete.lua
   ["Toggle Bookmark"] = nil, -- src\editor\menu_edit.lua
-  ["Toggle Break&point"] = "切换中断点", -- src\editor\menu_project.lua
+  ["Toggle Breakpoint"] = "切换中断点", -- src\editor\menu_project.lua
   ["Toggle bookmark"] = nil, -- src\editor\toolbar.lua, src\editor\menu_edit.lua
   ["Toggle breakpoint"] = "切换中断点", -- src\editor\toolbar.lua, src\editor\menu_project.lua
   ["Tr&ace"] = "追踪", -- src\editor\menu_project.lua

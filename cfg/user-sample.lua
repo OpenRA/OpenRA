@@ -162,3 +162,9 @@ editor.keymap[#editor.keymap+1] = {wxstc.wxSTC_KEY_RIGHT, wxstc.wxSTC_SCMOD_ALT+
 editor.keymap[#editor.keymap+1] = {('A'):byte(), wxstc.wxSTC_SCMOD_CTRL, wxstc.wxSTC_CMD_HOME}
 editor.keymap[#editor.keymap+1] = {('E'):byte(), wxstc.wxSTC_SCMOD_CTRL, wxstc.wxSTC_CMD_LINEEND}
 keymap[ID.SELECTALL] = nil -- remove `Ctrl-A` shortcut from `SelectAll`
+
+-- updated shortcuts to use them as of v1.20
+keymap[ID.BREAK]            = "Shift-F9"
+keymap[ID.BREAKPOINTTOGGLE] = "F9"
+keymap[ID.BREAKPOINTNEXT]   = ""
+keymap[ID.BREAKPOINTPREV]   = ""

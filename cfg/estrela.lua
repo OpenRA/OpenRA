@@ -1,6 +1,6 @@
 -- If you have used Estrela for graphics shader authoring or luxinia,
 -- create/modify the `user.lua` file in the current folder
--- and add `include "estrela.lua"` (1.20+) to load all tools and specifications by default again.
+-- and add `include "estrela"` (1.21+) to load all tools and specifications by default again.
 
 -- load all tools, specs, and interpreters
 local all = function() return true end

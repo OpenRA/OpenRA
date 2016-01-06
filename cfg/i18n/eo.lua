@@ -286,7 +286,7 @@ return {
   ["Text not found."] = "Teksto ne trovitis", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "La dosiero de API devas troviĝi en subdosierujo de la API-a dosierujo.", -- src\editor\autocomplete.lua
   ["Toggle Bookmark"] = "Baskuli legosignon", -- src\editor\menu_edit.lua
-  ["Toggle Break&point"] = "Baskuli halto&punkto", -- src\editor\menu_project.lua
+  ["Toggle Breakpoint"] = "Baskuli haltopunkto", -- src\editor\menu_project.lua
   ["Toggle bookmark"] = "Baskuli legosignon", -- src\editor\toolbar.lua, src\editor\menu_edit.lua
   ["Toggle breakpoint"] = "Baskuli haltopunkto", -- src\editor\toolbar.lua, src\editor\menu_project.lua
   ["Tr&ace"] = "Spuri", -- src\editor\menu_project.lua

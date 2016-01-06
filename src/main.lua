@@ -165,6 +165,7 @@ ide = {
     projectautoopen = true,
     autorecoverinactivity = 10, -- seconds
     outlineinactivity = 0.250, -- seconds
+    markersinactivity = 0.500, -- seconds
     symbolindexinactivity = 2, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
@@ -488,6 +489,13 @@ do
   }
   ide.configqueue = {}
 
+  -- package/include can be called when the IDE is only partially or fully loaded,
+  -- which requires two different types of reporting; combine them into one.
+  local report = function(...)
+    if DisplayOutputLn then return DisplayOutputLn(...) end
+    print(...)
+  end
+
   local num = 0
   local package = setmetatable({}, {
       __index = function(_,k) return package[k] end,
@@ -501,16 +509,20 @@ do
         -- package can be included as "package 'file.lua'" or "package 'folder/'"
         elseif type(p) == 'string' then
           local config = ide.configqueue[#ide.configqueue]
+          local pkg
           for _, packagepath in ipairs({'.', 'packages/', '../packages/'}) do
             local p = config and MergeFullPath(config.."/../"..packagepath, p)
-            if wx.wxDirExists(p) then
-              processPackages(loadToTab(nil, p, {}, false, ide.proto.Plugin))
-            elseif wx.wxFileExists(p) then
-              processPackages(LoadLuaFileExt({}, p, ide.proto.Plugin))
+            pkg = wx.wxDirExists(p) and loadToTab(nil, p, {}, false, ide.proto.Plugin)
+              or wx.wxFileExists(p) and LoadLuaFileExt({}, p, ide.proto.Plugin)
+              or wx.wxFileExists(p..".lua") and LoadLuaFileExt({}, p..".lua", ide.proto.Plugin)
+            if pkg then
+              processPackages(pkg)
+              break
             end
           end
+          if not pkg then report(("Can't find '%s' to load package from."):format(p)) end
         else
-          print(("Can't load package based on parameter of type '%s'."):format(type(p)))
+          report(("Can't load package based on parameter of type '%s'."):format(type(p)))
         end
       end,
     })
@@ -521,9 +533,10 @@ do
       for _, config in ipairs({ide.configqueue[#ide.configqueue], ide.configs.user, ide.configs.system}) do
         local p = config and MergeFullPath(config.."/../", c)
         includes[p] = (includes[p] or 0) + 1
-        if includes[p] > 1 or LoadLuaConfig(p) then return end
+        if includes[p] > 1 or LoadLuaConfig(p) or LoadLuaConfig(p..".lua") then return end
+        includes[p] = includes[p] - 1
       end
-      print(("Can't find configuration file '%s' to process."):format(c))
+      report(("Can't find configuration file '%s' to process."):format(c))
     end
   end
 
@@ -605,7 +618,7 @@ end
 for _, file in ipairs({
     "settings", "singleinstance", "iofilters", "package", "markup",
     "gui", "filetree", "output", "debugger", "outline", "commandbar",
-    "editor", "findreplace", "commands", "autocomplete", "shellbox",
+    "editor", "findreplace", "commands", "autocomplete", "shellbox", "markers",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
     "print", "inspect" }) do

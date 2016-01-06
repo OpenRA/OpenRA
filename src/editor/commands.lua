@@ -185,13 +185,9 @@ function ReLoadFile(filePath, editor, ...)
   if not editor then return LoadFile(filePath, editor, ...) end
 
   -- save all markers
-  local maskany = 2^24-1
-  local markers = {}
-  local line = editor:MarkerNext(0, maskany)
-  while line > -1 do
-    table.insert(markers, {line, editor:MarkerGet(line), editor:GetLineDyn(line)})
-    line = editor:MarkerNext(line + 1, maskany)
-  end
+  local markers = editor:MarkerGetAll()
+  -- add the current line content to retrieved markers to compare later if needed
+  for _, marker in ipairs(markers) do marker[3] = editor:GetLineDyn(marker[1]) end
   local lines = editor:GetLineCount()
 
   -- load file into the same editor
@@ -199,6 +195,9 @@ function ReLoadFile(filePath, editor, ...)
   if not editor then return end
 
   if #markers > 0 then -- restore all markers
+    -- delete all markers as they may be restored by a different mechanism,
+    -- which may be limited to only restoring some markers
+    editor:MarkerDeleteAll(-1)
     local samelinecount = lines == editor:GetLineCount()
     for _, marker in ipairs(markers) do
       local line, mask, text = unpack(marker)
@@ -215,6 +214,7 @@ function ReLoadFile(filePath, editor, ...)
         end
       end
     end
+    PackageEventHandle("onEditorMarkerUpdate", editor)
   end
 
   return editor

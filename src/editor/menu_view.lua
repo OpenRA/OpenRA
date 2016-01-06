@@ -14,6 +14,7 @@ local viewMenu = wx.wxMenu {
   { ID_VIEWWATCHWINDOW, TR("&Watch Window")..KSC(ID_VIEWWATCHWINDOW), TR("View the watch window"), wx.wxITEM_CHECK },
   { ID_VIEWCALLSTACK, TR("&Stack Window")..KSC(ID_VIEWCALLSTACK), TR("View the stack window"), wx.wxITEM_CHECK },
   { ID_VIEWOUTLINE, TR("Outline Window")..KSC(ID_VIEWOUTLINE), TR("View the outline window"), wx.wxITEM_CHECK },
+  { ID_VIEWMARKERS, TR("Markers Window")..KSC(ID_VIEWMARKERS), TR("View the markers window"), wx.wxITEM_CHECK },
   { },
   { ID_VIEWTOOLBAR, TR("&Tool Bar")..KSC(ID_VIEWTOOLBAR), TR("Show/Hide the toolbar"), wx.wxITEM_CHECK },
   { ID_VIEWSTATUSBAR, TR("&Status Bar")..KSC(ID_VIEWSTATUSBAR), TR("Show/Hide the status bar"), wx.wxITEM_CHECK },
@@ -56,6 +57,7 @@ local panels = {
   [ID_VIEWWATCHWINDOW] = "watchpanel",
   [ID_VIEWCALLSTACK] = "stackpanel",
   [ID_VIEWOUTLINE] = "outlinepanel",
+  [ID_VIEWMARKERS] = "markerspanel",
   [ID_VIEWTOOLBAR] = "toolbar",
 }
 
@@ -94,6 +96,7 @@ frame:Connect(ID_VIEWOUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWFILETREE, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWOUTLINE, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
+frame:Connect(ID_VIEWMARKERS, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) if togglePanel(event) then DebuggerRefreshPanels() end end)
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,

@@ -1415,10 +1415,12 @@ local function debuggerMakeFileName(editor)
   or ide.config.default.fullname
 end
 
-function DebuggerToggleBreakpoint(editor, line)
+function DebuggerToggleBreakpoint(editor, line, value)
+  local isset = bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
+  if value ~= nil and isset == value then return end
   local filePath = debugger.editormap and debugger.editormap[editor]
     or debuggerMakeFileName(editor)
-  if bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0 then
+  if isset then
     -- if there is pending "run-to-cursor" call at this location, remove it
     local ed, ln = unpack(debugger.runtocursor or {})
     local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
@@ -1432,6 +1434,7 @@ function DebuggerToggleBreakpoint(editor, line)
     editor:MarkerAdd(line, BREAKPOINT_MARKER)
     if debugger.server then debugger.breakpoint(filePath, line+1, true) end
   end
+  PackageEventHandle("onEditorMarkerUpdate", editor, BREAKPOINT_MARKER, line+1, not isset)
 end
 
 -- scratchpad functions

@@ -30,7 +30,7 @@ local debugTab = {
   { ID_TRACE, TR("Tr&ace")..KSC(ID_TRACE), TR("Trace execution showing each executed line") },
   { ID_BREAK, TR("&Break")..KSC(ID_BREAK), TR("Break execution at the next executed line of code") },
   { },
-  { ID_TOGGLEBREAKPOINT, TR("Toggle Break&point")..KSC(ID_TOGGLEBREAKPOINT), TR("Toggle breakpoint") },
+  { ID_BREAKPOINT, TR("Breakpoint")..KSC(ID_BREAKPOINT) },
   { },
   { ID_CLEAROUTPUT, TR("C&lear Output Window")..KSC(ID_CLEAROUTPUT), TR("Clear the output window before compiling or debugging"), wx.wxITEM_CHECK },
   { ID_COMMANDLINEPARAMETERS, TR("Command Line Parameters...")..KSC(ID_COMMANDLINEPARAMETERS), TR("Provide command line parameters") },
@@ -49,6 +49,12 @@ local debugMenuStop = {
 debugMenu:Append(ID_PROJECTDIR, TR("Project Directory"), targetDirMenu, TR("Set the project directory to be used"))
 debugMenu:Append(ID_INTERPRETER, TR("Lua &Interpreter"), targetMenu, TR("Set the interpreter to be used"))
 menuBar:Append(debugMenu, TR("&Project"))
+
+ide:AttachMenu(ID_BREAKPOINT, wx.wxMenu {
+  { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint")..KSC(ID_BREAKPOINTTOGGLE) },
+  { ID_BREAKPOINTNEXT, TR("Go To Next Breakpoint")..KSC(ID_BREAKPOINTNEXT) },
+  { ID_BREAKPOINTPREV, TR("Go To Previous Breakpoint")..KSC(ID_BREAKPOINTPREV) },
+})
 
 local interpreters
 local function selectInterpreter(id)
@@ -270,18 +276,35 @@ end
 -----------------------
 -- Actions
 
-frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function ()
-    local editor = GetEditor()
-    local line = editor:LineFromPosition(editor:GetCurrentPos())
-    DebuggerToggleBreakpoint(editor, line)
-  end)
-frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
+local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
+
+frame:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() GetEditor():BreakpointToggle() end)
+frame:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditorWithFocus(GetEditor())
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and (editor ~= nil)
       and (not debugger.scratchpad))
   end)
+
+frame:Connect(ID_BREAKPOINTNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function()
+    local BPNSC = KSC(ID_BREAKPOINTNEXT):gsub("\t","")
+    if not GetEditor():MarkerGotoNext(BREAKPOINT_MARKER) and BPNSC == "F9" then
+      local osx = ide.osname == "Macintosh"
+      DisplayOutputLn(("You used '%s' shortcut that has been changed from toggling a breakpoint to navigating to the next breakpoint in the document.")
+        :format(BPNSC))
+      DisplayOutputLn(("To toggle a breakpoint, use '%s' or click in the editor margin.")
+        :format(KSC(ID_BREAKPOINTTOGGLE):gsub("\t",""):gsub("Ctrl", osx and "Cmd" or "Ctrl")))
+    end
+  end)
+frame:Connect(ID_BREAKPOINTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function() GetEditor():MarkerGotoPrev(BREAKPOINT_MARKER) end)
+
+frame:Connect(ID_BREAKPOINTNEXT, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(GetEditor() ~= nil) end)
+frame:Connect(ID_BREAKPOINTPREV, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()

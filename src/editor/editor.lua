@@ -783,6 +783,42 @@ function CreateEditor(bare)
   function editor:SetupKeywords(...) return SetupKeywords(self, ...) end
   function editor:ValueFromPosition(pos) return getValAtPosition(self, pos) end
 
+  function editor:MarkerGotoNext(marker)
+    local value = 2^marker
+    local line = editor:MarkerNext(editor:GetCurrentLine()+1, value)
+    if line == -1 then line = editor:MarkerNext(0, value) end
+    if line == -1 then return end
+    editor:GotoLine(line)
+    editor:EnsureVisibleEnforcePolicy(line)
+    return line
+  end
+  function editor:MarkerGotoPrev(marker)
+    local value = 2^marker
+    local line = editor:MarkerPrevious(editor:GetCurrentLine()-1, value)
+    if line == -1 then line = editor:MarkerPrevious(editor:GetLineCount(), value) end
+    if line == -1 then return end
+    editor:GotoLine(line)
+    editor:EnsureVisibleEnforcePolicy(line)
+    return line
+  end
+  function editor:MarkerToggle(marker, line, value)
+    line = line or editor:GetCurrentLine()
+    local isset = bit.band(editor:MarkerGet(line), 2^marker) > 0
+    if value ~= nil and isset == value then return end
+    if isset then
+      editor:MarkerDelete(line, marker)
+    else
+      editor:MarkerAdd(line, marker)
+    end
+    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line, not isset)
+  end
+
+  function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
+  function editor:BreakpointToggle(line, ...)
+    line = line or self:GetCurrentLine()
+    return DebuggerToggleBreakpoint(self, line, ...)
+  end
+
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
@@ -1128,11 +1164,9 @@ function CreateEditor(bare)
       end
     end)
 
-  local alreadyProcessed = 0
+  editor.processedUpdateContent = 0
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function (event)
-      PackageEventHandle("onEditorUpdateUI", editor, event)
-
       -- some of UPDATEUI events are triggered by blinking cursor, and since
       -- there are no changes, the rest of the processing can be skipped;
       -- the reason for `alreadyProcessed` is that it is not possible
@@ -1140,13 +1174,16 @@ function CreateEditor(bare)
       -- of markup styling becoming visible after text deletion by Backspace.
       -- to avoid this, we allow the first update after any updates caused
       -- by real changes; the rest of UPDATEUI events are skipped.
+      -- (use direct comparison, as need to skip events that just update content)
       if event:GetUpdated() == wxstc.wxSTC_UPDATE_CONTENT
       and not next(editor.ev) then
-         if alreadyProcessed > 1 then return end
+         if editor.processedUpdateContent > 1 then return end
       else
-         alreadyProcessed = 0
+         editor.processedUpdateContent = 0
       end
-      alreadyProcessed = alreadyProcessed + 1
+      editor.processedUpdateContent = editor.processedUpdateContent + 1
+
+      PackageEventHandle("onEditorUpdateUI", editor, event)
 
       if ide.osname ~= 'Windows' then updateStatusText(editor) end
 

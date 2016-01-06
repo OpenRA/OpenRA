@@ -131,6 +131,18 @@ function ide:FindMenuItem(itemid, menu)
   end
   return
 end
+function ide:AttachMenu(...)
+  -- AttachMenu([targetmenu,] id, submenu)
+  -- `targetmenu` is only needed for menus not attached to the main menubar
+  local menu, id, submenu = ...
+  if select('#', ...) == 2 then menu, id, submenu = nil, ... end
+  local item, menu, pos = self:FindMenuItem(id, menu)
+  if not item then return end
+
+  local menuitem = wx.wxMenuItem(menu, id, item:GetItemLabel(), item:GetHelp(), wx.wxITEM_NORMAL, submenu)
+  menu:Destroy(item)
+  return menu:Insert(pos, menuitem), pos
+end
 
 function ide:FindDocument(path)
   local fileName = wx.wxFileName(path)
@@ -350,6 +362,18 @@ function ide:CreateStyledTextCtrl(...)
       self:SetTargetEnd(self:GetSelectionEnd())
       self:ReplaceTarget("")
     end
+  end
+
+  function editor:MarkerGetAll(mask, from, to)
+    mask = mask or 2^24-1
+    local markers = {}
+    local line = editor:MarkerNext(from or 0, mask)
+    while line > -1 do
+      table.insert(markers, {line, editor:MarkerGet(line)})
+      if to and line > to then break end
+      line = editor:MarkerNext(line + 1, mask)
+    end
+    return markers
   end
 
   editor:Connect(wx.wxEVT_KEY_DOWN,

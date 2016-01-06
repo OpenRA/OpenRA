@@ -511,9 +511,9 @@ end
 function LoadLuaConfig(filename,isstring)
   if not filename then return end
   -- skip those files that don't exist
-  if not isstring and not wx.wxFileName(filename):FileExists() then return end
+  if not isstring and not wx.wxFileExists(filename) then return end
   -- if it's marked as command, but exists as a file, load it as a file
-  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
+  if isstring and wx.wxFileExists(filename) then isstring = false end
 
   local cfgfn, err, msg
   if isstring
