@@ -296,7 +296,7 @@
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
 	SpawnActorOnDeath:
-		Actor: vissml
+		Actor: visc_sml
 		Probability: 10
 		OwnerType: InternalName
 		InternalOwner: Creeps

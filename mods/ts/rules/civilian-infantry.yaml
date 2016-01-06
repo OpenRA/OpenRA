@@ -236,21 +236,25 @@ DOGGIE:
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
 
-VISSML:
+VISC_SML:
 	Inherits: ^Viceroid
 	Tooltip:
 		Name: Baby Visceroid
+		Description: infantry transmorgifies into this
 	Health:
 		HP: 200
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 30
 		MaxMoveDelayInTicks: 60
+	RenderSprites:
+		Image: vissml
 
-VISLRG:
+VISC_LRG:
 	Inherits: ^Viceroid
 	Tooltip:
 		Name: Adult Visceroid
+		Description: 2 small visceroids combine into this
 	Health:
 		HP: 500
 	Armament:
@@ -264,6 +268,8 @@ VISLRG:
 		MaxMoveDelayInTicks: 45
 	Mobile:
 		Crushes: crate, infantry
+	RenderSprites:
+		Image: vislrg
 
 CIV1:
 	Inherits: ^CivilianInfantry
