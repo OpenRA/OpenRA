@@ -161,7 +161,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI,
   function(event)
     local editor = GetEditorWithFocus(GetEditor())
     event:Enable(editor ~= nil
-      and ide:IsValidProperty(editor, 'spec') and editor.spec
+      and ide:IsValidProperty(editor, "spec") and editor.spec
       and editor.spec.linecomment and true or false)
   end)
 
@@ -269,15 +269,15 @@ local function processSelection(editor, func)
     editor:SelectAll()
     text = editor:GetSelectedText()
   end
-  local wholeline = text:find('\n$')
+  local wholeline = text:find("\n$")
   local buf = {}
-  for line in string.gmatch(text..(wholeline and '' or '\n'), "(.-\r?\n)") do
+  for line in string.gmatch(text..(wholeline and "" or "\n"), "(.-\r?\n)") do
     table.insert(buf, line)
   end
   if #buf > 0 then
     if func then func(buf) end
     -- add new line at the end if it was there
-    local newtext = table.concat(buf, ''):gsub('(\r?\n)$', wholeline and '%1' or '')
+    local newtext = table.concat(buf, ""):gsub("(\r?\n)$", wholeline and "%1" or "")
     -- straightforward editor:ReplaceSelection() doesn't work reliably as
     -- it sometimes doubles the context when the entire file is selected.
     -- this seems like Scintilla issue, so use ReplaceTarget instead.
@@ -302,12 +302,12 @@ local function reIndent(editor, buf)
 
   local edline = editor:LineFromPosition(editor:GetSelectionStart())
   local indent = 0
-  local text = ''
+  local text = ""
   -- find the last non-empty line in the previous block (if any)
   for n = edline-1, 1, -1 do
     indent = editor:GetLineIndentation(n)
     text = editor:GetLineDyn(n)
-    if text:match('[^\r\n]') then break end
+    if text:match("[^\r\n]") then break end
   end
 
   local ut = editor:GetUseTabs()
@@ -344,7 +344,7 @@ local function reIndent(editor, buf)
   for line = 1, #buf do
     if not isstatic[line] then
       buf[line] = buf[line]:gsub("^[ \t]*",
-        not buf[line]:match('%S') and ''
+        not buf[line]:match("%S") and ""
         or ut and ("\t"):rep(indents[line] / tw) or (" "):rep(indents[line]))
     end
   end
