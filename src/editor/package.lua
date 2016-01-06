@@ -364,6 +364,18 @@ function ide:CreateStyledTextCtrl(...)
     end
   end
 
+  function editor:MarkerGetAll(mask, from, to)
+    mask = mask or 2^24-1
+    local markers = {}
+    local line = editor:MarkerNext(from or 0, mask)
+    while line > -1 do
+      table.insert(markers, {line, editor:MarkerGet(line)})
+      if to and line > to then break end
+      line = editor:MarkerNext(line + 1, mask)
+    end
+    return markers
+  end
+
   editor:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
       local keycode = event:GetKeyCode()
