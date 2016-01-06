@@ -285,8 +285,24 @@ local function processSelection(editor, func)
     -- ReplaceSelection should handle (after wxwidgets 3.x upgrade), this
     -- will need to be revisited when ReplaceSelection is updated.
     if newtext ~= text then
-      editor:TargetFromSelection()
-      editor:ReplaceTarget(newtext)
+      editor:BeginUndoAction()
+      -- if there is at least one marker, then use a different mechanism to preserve them
+      -- simply saving markers, replacing text, and reapplying markers doesn't work as
+      -- they get reset after `undo/redo` operations.
+      local ssel, esel = editor:GetSelectionStart(), editor:GetSelectionEnd()
+      local sline = editor:LineFromPosition(ssel)
+      local eline = editor:LineFromPosition(esel)
+      if #editor:MarkerGetAll(nil, sline, eline) > 0 then
+        for line = #buf, 1, -1 do
+          editor:SetTargetStart(line == 1 and ssel or editor:PositionFromLine(sline+line-1))
+          editor:SetTargetEnd(line == eline-sline+1 and esel or editor:GetLineEndPosition(sline+line-1))
+          editor:ReplaceTarget((buf[line]:gsub("\r?\n$", "")))
+        end
+      else
+        editor:TargetFromSelection()
+        editor:ReplaceTarget(newtext)
+      end
+      editor:EndUndoAction()
     end
   end
   editor:GotoPosEnforcePolicy(math.min(
