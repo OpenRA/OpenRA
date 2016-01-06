@@ -38,7 +38,7 @@ V2RL:
 		BuildPaletteOrder: 50
 		Prerequisites: ~vehicles.allies, ~techlevel.low
 	Valued:
-		Cost: 700
+		Cost: 600
 	Tooltip:
 		Name: Light Tank
 		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
