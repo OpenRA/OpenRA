@@ -129,7 +129,7 @@ NUK2:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
@@ -236,7 +236,7 @@ PYLE:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.GDI
 	Building:
@@ -277,7 +277,7 @@ HAND:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.Nod
 	Building:
@@ -317,7 +317,7 @@ AFLD:
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.Nod
 	Building:
@@ -360,7 +360,7 @@ WEAP:
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.GDI
 	Building:
@@ -402,7 +402,7 @@ HPAD:
 		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Queue: Building.GDI, Building.Nod
 	Building:
@@ -504,7 +504,7 @@ FIX:
 		Name: Repair Facility
 		Description: Repairs vehicles
 	Buildable:
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 60
 		Prerequisites: vehicleproduction
 		Queue: Building.GDI, Building.Nod
 	Building:
