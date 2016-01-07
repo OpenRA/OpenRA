@@ -1,19 +1,43 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Dec 17 2015)
+## Current master (Jan 06 2016)
 
 ### Highlights
+  - Added `markers` panel to show and navigate bookmarks and breakpoints (#419).
+  - Added saving/restoring bookmarks and breakpoints.
+  - Added breakpoint prev/next navigation (`Project | Breakpoint` menu).
   - Added find/replace in selection to search operations.
   - Added printing of editor tabs and Console/Output windows (available on Windows and OSX).
-  - Added recursive processing of configuration files.
+  - Added recursive processing of configuration files (using `include` command).
   - Added `outline.showcompact` setting to keep outline more compact for large files.
   - Added opening multiple files from the `Open` dialog.
   - Updated Corona API for v2015.2731 and added handling of type inheritance.
+  - Updated love2d API for v0.10.0.
 
 ### Special thanks
   - To [tmiv](https://github.com/tmiv) for allowing shortcuts to be added to tools menu items.
 
 ### Improvements
+  - Added skipping `UPDATE_CONTENT` events on cursor blinks in `UPDATEUI` (#419).
+  - Added preserving markers after sorting/reindentation operations.
+  - Added editor `MarkerGetAll` method (#166).
+  - Added example on how to set breakpoint shortcuts used in v1.20 or earlier (#419).
+  - Added processing of `include` command without extension in config (#555).
+  - Added reporting of missing packages when using `package` command in config (#555).
+  - Added processing of `package` command without extension in config (#555).
+  - Added hint on using updated breakpoint shortcut (#419).
+  - Added breakpoint prev/next navigation (#419).
+  - Added `AttachMenu` package method (#166).
+  - Added `MarkerToggle` editor method (#166).
+  - Added `MarkerGotoNext` and `MarkerGotoPrev` editor methods (#166).
+  - Added local menu to the `Markers` panel to toggle markers (#419).
+  - Added saving/restoring bookmarks and breakpoints (#419).
+  - Added `BookmarkToggle` method to the editor (#166).
+  - Added `BreakpointToggle` method to the editor (#166).
+  - Added `markers` panel to show bookmarks and breakpoints (#419).
+  - Added `onEditorMarkerUpdate` event (#166).
+  - Added unfolding fragments that include activated line during debugging (closes #575).
+  - Added skipping comment when none is provided in the Stack (instead of showing `nil`).
   - Added skipping comments in the lexer to avoid splitting statements (fixes #568).
   - Added `GetExePath` method for the interpreter (#166).
   - Added package `GetFilePath` method (#166).
@@ -52,6 +76,7 @@
   - Allowed reading input in the Output window without printing something first (closes #538).
   - Allow shortcuts to be added to tools menu items
   - Extended PATH on OSX with `/usr/local/bin` to provide access to tools in that folder (#356).
+  - Improved compatibility when running the IDE using Lua 5.2.
   - Improved handling of names with Unicode chars during debugging on Windows (#559).
   - Limited requesting attention on debugging starts to happen when debugging is suspended.
   - Moved wxlua version number to a better location in the About screen.
@@ -62,6 +87,14 @@
   - Removed `allowinteractivescript` setting as it doesn't need to be configurable (#538).
   - Switched to using client size instead of system metric to get screen width (#260).
   - Switched to using `KEY` event in search panel to make it work with wxwidgets 3.1+ (#260).
+  - Switched to per-editor tracking in `UPDATEUI` event.
+  - Updated breakpoint shortcut message to reference a proper shortcut on OSX (#419).
+  - Updated string formatting for consistency.
+  - Updated `Toggle Breakpoint` and `Break` shortcuts for consistency (#419).
+  - Updated 'Toggle Breakpoint' message for consistency (#419).
+  - Updated love2d API for v0.10.0 (#247).
+  - Updated script to process new love2d API format (with `variants`).
+  - Updated showing filename of the missing interpreter in the project list (#570).
   - Updated build scripts to use own wxwidgets repository to better sync build versions (#260).
   - Updated build scripts to remove an error from the check for missing methods in wxlua.
   - Updated README to remove outdated .ini reference from Estrela section.
@@ -99,6 +132,13 @@
   - Updated README with features in 1.20.
 
 ### Fixes
+  - Fixed reapplying markers after reloading modified file (#419).
+  - Fixed setting interpreter after launching with non-existing project.
+  - Fixed showing package errors during project switches (#555).
+  - Fixed `include` command not checking needed `packages` folders to load from (#555).
+  - Fixed resetting the default interpreter after selecting a non-existent one.
+  - Fixed restoring project-specific interpreter when switching projects (#570).
+  - Fixed restoring project-specific interpreter after relaunch (fixes #570).
   - Fixed expanding sub-trees in project directory when set to the disk root on Windows.
   - Fixed search navigation after selecting one variable instance (fixes #565).
   - Fixed editing fragments in folded text (follow-up to d2ddc96a; #564).
@@ -109,7 +149,8 @@
   - Fixed toolbar size not being adjusted on the very first launch.
 
 ### Incompatibilities
-  - Removed `allowinteractivescript` setting as it doesn't need to be configurable (#538).
+  - Removed `allowinteractivescript` setting as no longer needs to be configurable (#538).
+  - Changed 'Toggle Breakpoint' shortcut from `F9` to `Ctrl-F9` or `Cmd-F9` (on OSX).
 
 ## v1.20 (Oct 08 2015)
 
