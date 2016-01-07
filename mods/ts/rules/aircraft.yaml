@@ -59,6 +59,8 @@ DSHP:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
+	SpawnActorOnDeath:
+		Actor: DSHP.Husk
 
 ORCA:
 	Inherits: ^Helicopter
@@ -98,6 +100,8 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
+	SpawnActorOnDeath:
+		Actor: ORCA.Husk
 
 ORCAB:
 	Inherits: ^Plane
@@ -145,6 +149,8 @@ ORCAB:
 	Hovers@CRUISING:
 		UpgradeTypes: cruising
 		UpgradeMinEnabledLevel: 1
+	SpawnActorOnDeath:
+		Actor: ORCAB.Husk
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -177,6 +183,8 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
+	SpawnActorOnDeath:
+		Actor: ORCATRAN.Husk
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -209,6 +217,8 @@ TRNSPORT:
 	RenderSprites:
 	Selectable:
 		Bounds: 44,32,0,-8
+	SpawnActorOnDeath:
+		Actor: TRNSPORT.Husk
 
 SCRIN:
 	Inherits: ^Plane
@@ -254,6 +264,8 @@ SCRIN:
 	AutoTarget:
 	RenderSprites:
 	DeathSounds:
+	SpawnActorOnDeath:
+		Actor: SCRIN.Husk
 
 APACHE:
 	Inherits: ^Helicopter
@@ -293,6 +305,8 @@ APACHE:
 	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
+	SpawnActorOnDeath:
+		Actor: APACHE.Husk
 
 HUNTER:
 	Inherits@1: ^GainsExperience

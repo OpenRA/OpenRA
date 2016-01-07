@@ -67,6 +67,7 @@ Rules:
 	./mods/ts/rules/palettes.yaml
 	./mods/ts/rules/defaults.yaml
 	./mods/ts/rules/aircraft.yaml
+	./mods/ts/rules/husks.yaml
 	./mods/ts/rules/civilian-infantry.yaml
 	./mods/ts/rules/civilian-structures.yaml
 	./mods/ts/rules/civilian-vehicles.yaml

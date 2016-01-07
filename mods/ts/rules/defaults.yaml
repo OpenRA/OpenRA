@@ -538,6 +538,31 @@
 		CruiseAltitude: 2560
 	ReturnOnIdle:
 
+^AircraftHusk:
+	RenderVoxels:
+	RenderSprites:
+	WithVoxelBody:
+	BodyOrientation:
+		QuantizedFacings: 0
+		CameraPitch: 90
+	Aircraft:
+		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
+	Health:
+		HP: 280
+	Armor:
+		Type: Heavy
+	HiddenUnderFog:
+		Type: CenterPosition
+	AutoTargetIgnore:
+	ScriptTriggers:
+	Tooltip:
+		GenericName: Destroyed Aircraft
+	FallsToEarth:
+		Spins: true
+		Moves: true
+		Velocity: 86
+
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
