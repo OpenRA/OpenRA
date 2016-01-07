@@ -16,7 +16,7 @@ namespace OpenRA.Traits
 {
 	public class DrawLineToTargetInfo : ITraitInfo
 	{
-		public readonly int Ticks = 60;
+		public readonly int Delay = 60;
 
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 			this.c = c;
 
 			if (display)
-				lifetime = info.Ticks;
+				lifetime = info.Delay;
 		}
 
 		public void SetTargets(Actor self, List<Target> targets, Color c, bool display)
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 			this.c = c;
 
 			if (display)
-				lifetime = info.Ticks;
+				lifetime = info.Delay;
 		}
 
 		public void Selected(Actor a)
@@ -55,7 +55,7 @@ namespace OpenRA.Traits
 				return;
 
 			// Reset the order line timeout.
-			lifetime = info.Ticks;
+			lifetime = info.Delay;
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
