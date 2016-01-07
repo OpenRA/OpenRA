@@ -1092,6 +1092,7 @@ CTDAM:
 		Dimensions: 2, 5
 	Power:
 		Amount: 200
+	PowerTooltip:
 	Armor:
 		Type: heavy
 	Health:

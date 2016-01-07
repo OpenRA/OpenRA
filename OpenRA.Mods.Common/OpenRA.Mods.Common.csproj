@@ -297,6 +297,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
     <Compile Include="Traits\CaptureNotification.cs" />
