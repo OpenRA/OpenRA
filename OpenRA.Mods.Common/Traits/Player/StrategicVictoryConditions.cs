@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
 	{
 		[Desc("Amount of time (in game ticks) that the player has to hold all the strategic points.", "Defaults to 5 minutes.")]
-		public readonly int TicksToHold = 25 * 60 * 5;
+		public readonly int HoldDuration = 25 * 60 * 5;
 
 		[Desc("Should the timer reset when the player loses hold of a strategic point.")]
 		public readonly bool ResetOnHoldLost = true;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo svcInfo)
 		{
 			info = svcInfo;
-			TicksLeft = info.TicksToHold;
+			TicksLeft = info.HoldDuration;
 			player = self.Owner;
 			mo = self.Trait<MissionObjectives>();
 		}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (TicksLeft != 0)
 					if (info.ResetOnHoldLost)
-						TicksLeft = info.TicksToHold; // Reset the time hold
+						TicksLeft = info.HoldDuration; // Reset the time hold
 			}
 		}
 

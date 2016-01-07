@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class WithInfantryBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<IMoveInfo>, Requires<RenderSpritesInfo>
 	{
-		public readonly int MinIdleWaitTicks = 30;
-		public readonly int MaxIdleWaitTicks = 110;
+		public readonly int MinIdleDelay = 30;
+		public readonly int MaxIdleDelay = 110;
 
 		[SequenceReference] public readonly string MoveSequence = "run";
 		[SequenceReference] public readonly string AttackSequence = null;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.IdleSequences.Length > 0)
 				{
 					idleSequence = Info.IdleSequences.Random(self.World.SharedRandom);
-					idleDelay = self.World.SharedRandom.Next(Info.MinIdleWaitTicks, Info.MaxIdleWaitTicks);
+					idleDelay = self.World.SharedRandom.Next(Info.MinIdleDelay, Info.MaxIdleDelay);
 				}
 			}
 			else if (AllowIdleAnimation(self))

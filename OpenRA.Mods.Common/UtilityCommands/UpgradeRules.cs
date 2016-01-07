@@ -884,7 +884,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					// much smarter rules parsing, because we currently can't reason about inherited traits.
 					if (depth == 0)
 					{
-						var childKeys = new[] { "MinIdleWaitTicks", "MaxIdleWaitTicks", "MoveAnimation", "AttackAnimation", "IdleAnimations", "StandAnimations" };
+						var childKeys = new[] { "MinIdleWaitTicks", "MaxIdleDelay", "MoveAnimation", "AttackAnimation", "IdleAnimations", "StandAnimations" };
 
 						var ri = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("RenderInfantry"));
 						if (ri != null)
