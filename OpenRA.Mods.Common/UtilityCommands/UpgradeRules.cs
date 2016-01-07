@@ -2830,6 +2830,52 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160701 && depth == 1 && node.Key.StartsWith("Cloak"))
+				{
+					var defaultCloakType = Traits.UncloakType.Attack
+						| Traits.UncloakType.Unload | Traits.UncloakType.Infiltrate | Traits.UncloakType.Demolish;
+
+					// Merge Uncloak types
+					var t = defaultCloakType;
+					for (var i = node.Value.Nodes.Count - 1; i >= 0; i--)
+					{
+						var n = node.Value.Nodes[i];
+						var v = string.Compare(n.Value.Value, "true", true) == 0;
+						Traits.UncloakType flag;
+						if (n.Key == "UncloakOnAttack")
+							flag = Traits.UncloakType.Attack;
+						else if (n.Key == "UncloakOnMove")
+							flag = Traits.UncloakType.Move;
+						else if (n.Key == "UncloakOnUnload")
+							flag = Traits.UncloakType.Unload;
+						else if (n.Key == "UncloakOnInfiltrate")
+							flag = Traits.UncloakType.Infiltrate;
+						else if (n.Key == "UncloakOnDemolish")
+							flag = Traits.UncloakType.Demolish;
+						else
+							continue;
+						t = v ? t | flag : t & ~flag;
+						node.Value.Nodes.Remove(n);
+					}
+
+					if (t != defaultCloakType)
+					{
+						Console.WriteLine("\t\tCloak type: " + t.ToString());
+						var ts = new List<string>();
+						if (t.HasFlag(Traits.UncloakType.Attack))
+							ts.Add("Attack");
+						if (t.HasFlag(Traits.UncloakType.Unload))
+							ts.Add("Unload");
+						if (t.HasFlag(Traits.UncloakType.Infiltrate))
+							ts.Add("Infiltrate");
+						if (t.HasFlag(Traits.UncloakType.Demolish))
+							ts.Add("Demolish");
+						if (t.HasFlag(Traits.UncloakType.Move))
+							ts.Add("Move");
+						node.Value.Nodes.Add(new MiniYamlNode("UncloakOn", ts.JoinWith(", ")));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

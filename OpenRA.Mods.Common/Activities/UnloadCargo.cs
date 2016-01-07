@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || cargo.IsEmpty(self))
 				return NextActivity;
 
-			if (cloak != null && cloak.Info.UncloakOnUnload)
+			if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Unload))
 				cloak.Uncloak();
 
 			var actor = cargo.Peek(self);
