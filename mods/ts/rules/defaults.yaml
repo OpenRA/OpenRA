@@ -483,6 +483,7 @@
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		Voice: Move
+		IdealSeparation: 853
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
