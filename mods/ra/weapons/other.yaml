@@ -265,6 +265,8 @@ MADTankThump:
 	Warhead@1Dam: HealthPercentageDamage
 		Spread: 1c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 8
 		InvalidTargets: MADTank, Infantry
 	Warhead@26mu: LeaveSmudge
@@ -274,11 +276,15 @@ MADTankThump:
 	Warhead@2Dam: HealthPercentageDamage
 		Spread: 2c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 16
 		InvalidTargets: MADTank, Infantry
 	Warhead@3Dam: HealthPercentageDamage
 		Spread: 3c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 24
 		InvalidTargets: MADTank, Infantry
 	Warhead@28mu: LeaveSmudge
@@ -288,11 +294,15 @@ MADTankThump:
 	Warhead@4Dam: HealthPercentageDamage
 		Spread: 4c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 32
 		InvalidTargets: MADTank, Infantry
 	Warhead@5Dam: HealthPercentageDamage
 		Spread: 5c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 40
 		InvalidTargets: MADTank, Infantry
 	Warhead@30mu: LeaveSmudge
@@ -302,11 +312,15 @@ MADTankThump:
 	Warhead@6Dam: HealthPercentageDamage
 		Spread: 6c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 48
 		InvalidTargets: MADTank, Infantry
 	Warhead@7Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 3
+		Versus:
+			wood: 1
 		Delay: 56
 		InvalidTargets: MADTank, Infantry
 	Warhead@32mu: LeaveSmudge
