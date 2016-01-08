@@ -22,6 +22,7 @@ DPOD:
 		MaxWeight: 1
 		PipCount: 1
 		UnloadVoice: Move
+		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
@@ -59,6 +60,7 @@ DSHP:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
+		EjectOnDeath: true
 	SpawnActorOnDeath:
 		Actor: DSHP.Husk
 
@@ -183,6 +185,7 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
+		EjectOnDeath: true
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
 
