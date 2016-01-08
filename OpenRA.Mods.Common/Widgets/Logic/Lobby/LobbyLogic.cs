@@ -776,6 +776,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void UpdatePlayerList()
 		{
+			if (orderManager.LocalClient == null)
+				return;
+
 			var idx = 0;
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
