@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var src = reader.ReadBytes((int)length);
 
 					/*int actualLength =*/
-					Format80.DecodeInto(src, dest);
+					LCWCompression.DecodeInto(src, dest);
 
 					chunks.Add(dest);
 				}

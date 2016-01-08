@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileFormats;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.TS.UtilityCommands
 {

@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	class FastByteReader
 	{
@@ -41,7 +41,8 @@ namespace OpenRA.FileFormats
 		public int Remaining() { return src.Length - offset; }
 	}
 
-	public static class Format80
+	// Lempel - Castle - Welch algorithm (aka Format80)
+	public static class LCWCompression
 	{
 		static void ReplicatePrevious(byte[] dest, int destIndex, int srcIndex, int count)
 		{
@@ -156,7 +157,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		// Quick and dirty Format80 encoder version 2
+		// Quick and dirty LCW encoder version 2
 		// Uses raw copy and RLE compression
 		public static byte[] Encode(byte[] src)
 		{

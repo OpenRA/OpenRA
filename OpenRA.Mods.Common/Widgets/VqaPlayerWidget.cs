@@ -10,8 +10,8 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
