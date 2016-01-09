@@ -730,7 +730,11 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuilding:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^CommonHuskDefaults:
 		Tooltip:
@@ -740,6 +744,7 @@ Rules:
 			PlayerPalette: player-units
 	^CivBuildingHusk:
 		Tooltip:
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	HARV:
 		Harvester:

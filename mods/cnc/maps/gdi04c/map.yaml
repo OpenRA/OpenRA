@@ -839,7 +839,7 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
@@ -854,6 +854,14 @@ Rules:
 	^CivInfantry:
 		Health:
 			HP: 125
+	^CivBuilding:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuildingHusk:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
 	^Bridge:
 		DamageMultiplier@INVULNERABLE:
 			Modifier: 0

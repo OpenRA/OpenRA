@@ -1123,7 +1123,7 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:

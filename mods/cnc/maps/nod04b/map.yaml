@@ -555,16 +555,18 @@ Rules:
 			PlayerPalette: player-units
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
 	^CivBuilding:
 		Tooltip:
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^CivBuildingHusk:
 		Tooltip:
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^CommonHuskDefaults:
 		Tooltip:

@@ -314,6 +314,13 @@ Rules:
 			Modifier: 0
 	^CivBuilding:
 		MustBeDestroyed:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuildingHusk:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
 	^CivInfantry:
 		MustBeDestroyed:
 	^Vehicle:
@@ -350,7 +357,7 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
