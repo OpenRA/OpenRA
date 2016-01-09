@@ -242,12 +242,12 @@ namespace OpenRA.Mods.Common.Traits
 					shroud.CellsChanged += DirtyCells;
 
 				// Needs the anonymous function to ensure the correct overload is chosen
-				if (shroud != null && shroud.ShroudEnabled)
+				if (shroud != null)
 					visibleUnderShroud = puv => currentShroud.IsExplored(puv);
 				else
 					visibleUnderShroud = puv => map.Contains(puv);
 
-				if (shroud != null && shroud.FogEnabled)
+				if (shroud != null)
 					visibleUnderFog = puv => currentShroud.IsVisible(puv);
 				else
 					visibleUnderFog = puv => map.Contains(puv);
