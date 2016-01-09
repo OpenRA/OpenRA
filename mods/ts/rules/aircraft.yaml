@@ -48,6 +48,7 @@ DSHP:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
+		IdealSeparation: 1275
 	Health:
 		HP: 200
 	Armor:
@@ -173,6 +174,7 @@ ORCATRAN:
 		LandableTerrainTypes: Clear
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
+		IdealSeparation: 1275
 	Health:
 		HP: 200
 	Armor:
