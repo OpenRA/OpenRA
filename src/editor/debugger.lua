@@ -1596,6 +1596,7 @@ function DebuggerScratchpadOn(editor)
     scratchpad.origin = scratchpadEditor:GetTextRangeDyn(nstart+1,nend)
     if tonumber(scratchpad.origin) then
       scratchpad.point = point
+      scratchpadEditor:BeginUndoAction()
       scratchpadEditor:CaptureMouse()
     end
   end)
@@ -1603,6 +1604,7 @@ function DebuggerScratchpadOn(editor)
   scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
+      scratchpadEditor:EndUndoAction()
       scratchpadEditor:ReleaseMouse()
       wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
     else event:Skip() end
