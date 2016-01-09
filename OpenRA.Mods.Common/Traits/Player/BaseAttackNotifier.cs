@@ -47,10 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// only track last hit against our base
-			if (!self.Info.HasTraitInfo<BuildingInfo>())
-				return;
-
 			if (e.Attacker == null)
 				return;
 
@@ -58,6 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (e.Attacker == self.World.WorldActor)
+				return;
+
+			// Only track last hit against our base
+			if (!self.Info.HasTraitInfo<BuildingInfo>())
 				return;
 
 			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage <= 0)
