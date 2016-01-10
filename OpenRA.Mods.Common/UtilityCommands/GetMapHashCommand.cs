@@ -12,7 +12,7 @@ using System;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	public class GetMapHashCommand : IUtilityCommand
+	class GetMapHashCommand : IUtilityCommand
 	{
 		public string Name { get { return "--map-hash"; } }
 
