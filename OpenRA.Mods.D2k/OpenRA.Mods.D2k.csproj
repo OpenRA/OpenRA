@@ -108,6 +108,7 @@
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithDecorationCarryable.cs" />
     <Compile Include="Traits\World\D2kEditorResourceLayer.cs" />
+    <Compile Include="Lint\CheckImportActors.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

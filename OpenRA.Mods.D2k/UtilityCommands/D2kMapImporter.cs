@@ -17,11 +17,11 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
-	class D2kMapImporter
+	public class D2kMapImporter
 	{
 		const int MapCordonWidth = 2;
 
-		readonly Dictionary<int, Pair<string, string>> actorDataByActorCode = new Dictionary<int, Pair<string, string>>
+		public static Dictionary<int, Pair<string, string>> ActorDataByActorCode = new Dictionary<int, Pair<string, string>>
 		{
 			{ 20, Pair.New("wormspawner", "Creeps") },
 			{ 23, Pair.New("mpspawn", "Neutral") },
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			{ 370, Pair.New("missile_tank", "Harkonnen") },
 			{ 371, Pair.New("siege_tank", "Harkonnen") },
 			{ 372, Pair.New("carryall", "Harkonnen") },
-			{ 374, Pair.New("devast", "Harkonnen") },
+			{ 374, Pair.New("devastator", "Harkonnen") },
 
 			// Ordos:
 			{ 404, Pair.New("wall", "Ordos") },
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			{ 570, Pair.New("missile_tank", "Ordos") },
 			{ 571, Pair.New("siege_tank", "Ordos") },
 			{ 572, Pair.New("carryall", "Ordos") },
-			{ 574, Pair.New("deviatortank", "Ordos") },
+			{ 574, Pair.New("deviator", "Ordos") },
 
 			// Corrino:
 			{ 580, Pair.New("wall", "Corrino") },
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			{ 624, Pair.New("refinery", "Fremen") },
 			{ 625, Pair.New("outpost", "Fremen") },
 			{ 627, Pair.New("light_factory", "Fremen") },
-			{ 628, Pair.New("palacec", "Fremen") },
+			{ 628, Pair.New("palace", "Fremen") },
 			{ 629, Pair.New("silo", "Fremen") },
 			{ 630, Pair.New("heavy_factory", "Fremen") },
 			{ 631, Pair.New("repair_pad", "Fremen") },
@@ -344,9 +344,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					map.MapResources.Value[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
-				if (actorDataByActorCode.ContainsKey(tileSpecialInfo))
+				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))
 				{
-					var kvp = actorDataByActorCode[tileSpecialInfo];
+					var kvp = ActorDataByActorCode[tileSpecialInfo];
 					if (!rules.Actors.ContainsKey(kvp.First.ToLower()))
 						throw new InvalidOperationException("Actor with name {0} could not be found in the rules YAML file!".F(kvp.First));
 
