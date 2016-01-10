@@ -65,6 +65,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Author = "Westwood Studios"
 				};
 
+				Map.Description = ExtractBriefing(file);
+
 				Map.RequiresMod = Game.ModData.Manifest.Mod.Id;
 
 				SetBounds(Map, mapSection);
@@ -113,6 +115,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		public abstract void ValidateMapFormat(int format);
+
+		static string ExtractBriefing(IniFile file)
+		{
+			var briefingSection = file.GetSection("Briefing", true);
+			if (briefingSection == null)
+				return string.Empty;
+
+			var briefing = new StringBuilder();
+			foreach (var s in briefingSection)
+				briefing.AppendLine(s.Value);
+
+			return briefing.Replace("\n", " ").ToString();
+		}
 
 		static void SetBounds(Map map, IniSection mapSection)
 		{
