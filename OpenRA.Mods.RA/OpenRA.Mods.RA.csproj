@@ -113,6 +113,7 @@
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
+    <Compile Include="ImportRedAlertLegacyMapCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
