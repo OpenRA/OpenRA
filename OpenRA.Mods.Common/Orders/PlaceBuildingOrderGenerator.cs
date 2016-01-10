@@ -148,12 +148,12 @@ namespace OpenRA.Mods.Common.Orders
 		{
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-
+			var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
-				foreach (var r in dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy)))
+				foreach (var r in dec.Render(wr, world, actorInfo, offset))
 					yield return r;
 
 			var cells = new Dictionary<CPos, bool>();
@@ -194,7 +194,6 @@ namespace OpenRA.Mods.Common.Orders
 					initialized = true;
 				}
 
-				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
 				var previewRenderables = preview
 					.SelectMany(p => p.Render(wr, offset))
 					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
