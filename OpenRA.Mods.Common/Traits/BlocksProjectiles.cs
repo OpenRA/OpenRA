@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return world.ActorMap.GetActorsAt(world.Map.CellContaining(pos))
 				.Any(a => a.TraitsImplementing<IBlocksProjectiles>()
-					.Where(t => t.BlockingHeight >= dat)
+					.Where(t => t.BlockingHeight > dat)
 					.Any(Exts.IsTraitEnabled));
 		}
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
 				var dat = world.Map.DistanceAboveTerrain(hitPos);
-				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight >= dat))
+				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight > dat))
 				{
 					hit = hitPos;
 					return true;
