@@ -59,49 +59,4 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == "Guard" ? info.Voice : null;
 		}
 	}
-
-	public class GuardOrderGenerator : GenericSelectTarget
-	{
-		public GuardOrderGenerator(IEnumerable<Actor> subjects, string order, string cursor, MouseButton button)
-			: base(subjects, order, cursor, button) { }
-
-		protected override IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
-		{
-			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
-
-			if (target == null || Subjects.All(s => s.IsDead))
-				yield break;
-
-			world.CancelInputMode();
-			foreach (var subject in Subjects)
-				if (subject != target)
-					yield return new Order(OrderName, subject, false) { TargetActor = target };
-		}
-
-		public override void Tick(World world)
-		{
-			if (Subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
-				world.CancelInputMode();
-		}
-
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
-		{
-			if (!Subjects.Any())
-				return null;
-
-			var multiple = Subjects.Count() > 1;
-			var canGuard = FriendlyGuardableUnits(world, mi)
-				.Any(a => multiple || a != Subjects.First());
-
-			return canGuard ? Cursor : "move-blocked";
-		}
-
-		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
-		{
-			return world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && !a.IsDead &&
-					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
-					a.Info.HasTraitInfo<GuardableInfo>());
-		}
-	}
 }
