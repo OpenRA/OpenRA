@@ -2414,7 +2414,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20151102 && depth == 2)
+				if (engineVersion < 20151225 && depth == 2)
 				{
 					if (node.Key == "Color")
 					{
@@ -2436,7 +2436,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// DeathType on Explodes was renamed to DeathTypes
-				if (engineVersion < 20151110)
+				if (engineVersion < 20151225)
 				{
 					if (node.Key == "Explodes")
 					{
@@ -2457,7 +2457,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20151127)
+				if (engineVersion < 20151225)
 				{
 					// Rename WithTurret to WithSpriteTurret
 					if (depth == 1 && node.Key.StartsWith("WithTurret"))
@@ -2512,7 +2512,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Mobile actors immobilized by Carryable, Cargo, DeployToUpgrade, and/or others using upgrade(s)
-				if (engineVersion < 20151204 && depth == 0)
+				if (engineVersion < 20151225 && depth == 0)
 				{
 					var notMobile = "notmobile";
 
@@ -2685,7 +2685,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// 'CloseEnough' on 'RepairableNear' uses WDist now
-				if (engineVersion < 20151214)
+				if (engineVersion < 20151225)
 				{
 					if (node.Key == "RepairableNear")
 					{
@@ -2696,7 +2696,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Added width support for line particles
-				if (engineVersion < 20151220 && node.Key == "WeatherOverlay")
+				if (engineVersion < 20151225 && node.Key == "WeatherOverlay")
 				{
 					var useSquares = node.Value.Nodes.FirstOrDefault(n => n.Key == "UseSquares");
 					if (useSquares != null && !FieldLoader.GetValue<bool>("UseSquares", useSquares.Value.Value))
@@ -2830,7 +2830,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20160701 && depth == 1 && node.Key.StartsWith("Cloak"))
+				if (engineVersion < 20160107 && depth == 1 && node.Key.StartsWith("Cloak"))
 				{
 					var defaultCloakType = Traits.UncloakType.Attack
 						| Traits.UncloakType.Unload | Traits.UncloakType.Infiltrate | Traits.UncloakType.Demolish;
