@@ -1899,7 +1899,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					// Rename *CrateAction.ValidRaces
 					if (depth == 2 && node.Key == "ValidRaces"
-					    && (parentKey == "DuplicateUnitCrateAction" || parentKey == "GiveUnitCrateAction"))
+						&& (parentKey == "DuplicateUnitCrateAction" || parentKey == "GiveUnitCrateAction"))
 						node.Key = "ValidFactions";
 				}
 
