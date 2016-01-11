@@ -402,8 +402,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var location = item.GetOrNull<LabelWidget>("LOCATION");
 					if (location != null)
 					{
+						var font = Game.Renderer.Fonts[location.Font];
 						var cachedServerLocation = GeoIP.LookupCountry(game.Address.Split(':')[0]);
-						location.GetText = () => cachedServerLocation;
+						var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+						location.GetText = () => label;
 						location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
 					}
 
