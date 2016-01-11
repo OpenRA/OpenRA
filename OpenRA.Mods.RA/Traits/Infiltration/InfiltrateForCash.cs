@@ -10,6 +10,7 @@
 
 using System;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
@@ -34,9 +35,10 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
+			var spyValue = infiltrator.Info.TraitInfoOrDefault<ValuedInfo>();
 
 			var toTake = (targetResources.Cash + targetResources.Resources) * info.Percentage / 100;
-			var toGive = Math.Max(toTake, info.Minimum);
+			var toGive = Math.Max(toTake, info.Minimum >= 0 ? info.Minimum : spyValue != null ? spyValue.Cost : 0);
 
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
