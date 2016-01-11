@@ -252,7 +252,6 @@ function SettingsRestorePackage(package)
   local path = settings:GetPath()
   settings:SetPath(packagename)
   local outtab = {}
-  local report = DisplayOutputLn or print
   local ismore, key, index = settings:GetFirstEntry("", 0)
   while (ismore) do
     local couldread, value = settings:Read(key, "")
@@ -261,7 +260,7 @@ function SettingsRestorePackage(package)
       if ok then outtab[key] = res
       else
         outtab[key] = nil
-        report(("Couldn't load and ignored '%s' settings for package '%s': %s")
+        ide:Print(("Couldn't load and ignored '%s' settings for package '%s': %s")
           :format(key, package, res))
       end
     end

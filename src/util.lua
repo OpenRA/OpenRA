@@ -474,9 +474,8 @@ end
 
 function LoadLuaFileExt(tab, file, proto)
   local cfgfn,err = loadfile(file)
-  local report = DisplayOutputLn or print
   if not cfgfn then
-    report(("Error while loading file: '%s'."):format(err))
+    ide:Print(("Error while loading file: '%s'."):format(err))
   else
     local name = file:match("([a-zA-Z_0-9%-]+)%.lua$")
     if not name then return end
@@ -492,7 +491,7 @@ function LoadLuaFileExt(tab, file, proto)
 
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
-      report(("Error while processing file: '%s'."):format(result))
+      ide:Print(("Error while processing file: '%s'."):format(result))
     else
       if (tab[name]) then
         local out = tab[name]
@@ -520,16 +519,15 @@ function LoadLuaConfig(filename,isstring)
   then msg, cfgfn, err = "string", loadstring(filename)
   else msg, cfgfn, err = "file", loadfile(filename) end
 
-  local report = DisplayOutputLn or print
   if not cfgfn then
-    report(("Error while loading configuration %s: '%s'."):format(msg, err))
+    ide:Print(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
     setfenv(cfgfn,ide.config)
     table.insert(ide.configqueue, filename)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     table.remove(ide.configqueue)
     if err then
-      report(("Error while processing configuration %s: '%s'."):format(msg, err))
+      ide:Print(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
   end
   return true

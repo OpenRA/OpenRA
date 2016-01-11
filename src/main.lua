@@ -42,6 +42,7 @@ dofile "src/util.lua"
 -----------
 -- IDE
 --
+local pendingOutput = {}
 ide = {
   MODPREF = "* ",
   MAXMARGIN = 4,
@@ -237,6 +238,17 @@ ide = {
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 
   test = {}, -- local functions used for testing
+
+  Print = function(self, ...)
+    if DisplayOutputLn then
+      -- flush any pending output
+      while #pendingOutput > 0 do DisplayOutputLn(unpack(table.remove(pendingOutput, 1))) end
+      -- print without parameters can be used for flushing, so skip the printing
+      if select('#', ...) > 0 then DisplayOutputLn(...) end
+      return
+    end
+    pendingOutput[#pendingOutput + 1] = {...}
+  end,
 }
 
 -- add wx.wxMOD_RAW_CONTROL as it's missing in wxlua 2.8.12.3;
@@ -402,13 +414,12 @@ end
 -- load packages
 local function processPackages(packages)
   -- check dependencies and assign file names to each package
-  local report = DisplayOutputLn or print
   local skip = {}
   for fname, package in pairs(packages) do
     if type(package.dependencies) == 'table'
     and package.dependencies.osname
     and not package.dependencies.osname:find(ide.osname, 1, true) then
-      report(("Package '%s' not loaded: requires %s platform, but you are running %s.")
+      ide:Print(("Package '%s' not loaded: requires %s platform, but you are running %s.")
         :format(fname, package.dependencies.osname, ide.osname))
       skip[fname] = true
     end
@@ -418,7 +429,7 @@ local function processPackages(packages)
       or -1
     local isversion = tonumber(ide.VERSION)
     if isversion and needsversion > isversion then
-      report(("Package '%s' not loaded: requires version %s, but you are running version %s.")
+      ide:Print(("Package '%s' not loaded: requires version %s, but you are running version %s.")
         :format(fname, needsversion, ide.VERSION))
       skip[fname] = true
     end
@@ -462,18 +473,6 @@ local function loadSpecs(filter)
   UpdateSpecs()
 end
 
--- temporarily replace print() to capture reported error messages to show
--- them later in the Output window after everything is loaded.
-local resumePrint do
-  local errors = {}
-  local origprint = print
-  print = function(...) errors[#errors+1] = {...} end
-  resumePrint = function()
-    print = origprint
-    for _, e in ipairs(errors) do DisplayOutputLn(unpack(e)) end
-  end
-end
-
 function GetIDEString(keyword, default)
   return app.stringtable[keyword] or default or keyword
 end
@@ -488,13 +487,6 @@ do
     user = ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/user.lua"),
   }
   ide.configqueue = {}
-
-  -- package/include can be called when the IDE is only partially or fully loaded,
-  -- which requires two different types of reporting; combine them into one.
-  local report = function(...)
-    if DisplayOutputLn then return DisplayOutputLn(...) end
-    print(...)
-  end
 
   local num = 0
   local package = setmetatable({}, {
@@ -520,9 +512,9 @@ do
               break
             end
           end
-          if not pkg then report(("Can't find '%s' to load package from."):format(p)) end
+          if not pkg then ide:Print(("Can't find '%s' to load package from."):format(p)) end
         else
-          report(("Can't load package based on parameter of type '%s'."):format(type(p)))
+          ide:Print(("Can't load package based on parameter of type '%s'."):format(type(p)))
         end
       end,
     })
@@ -536,7 +528,7 @@ do
         if includes[p] > 1 or LoadLuaConfig(p) or LoadLuaConfig(p..".lua") then return end
         includes[p] = includes[p] - 1
       end
-      report(("Can't find configuration file '%s' to process."):format(c))
+      ide:Print(("Can't find configuration file '%s' to process."):format(c))
     end
   end
 
@@ -562,7 +554,7 @@ if ide.osname == 'Windows' and ide.wxver >= "2.9.5" then
   local new = wx.wxFileName(wx.wxStandardPaths.Get():GetUserConfigDir(), ini)
   if old:FileExists() and not new:FileExists() then
     FileCopy(old:GetFullPath(), new:GetFullPath())
-    print(("Migrated configuration file from '%s' to '%s'.")
+    ide:Print(("Migrated configuration file from '%s' to '%s'.")
       :format(old:GetFullPath(), new:GetFullPath()))
   end
 end
@@ -588,7 +580,7 @@ do
   -- check and apply default styles in case a user resets styles in the config
   for _, styles in ipairs({"styles", "stylesoutshell"}) do
     if not ide.config[styles] then
-      print(("Ignored incorrect value of '%s' setting in the configuration file")
+      ide:Print(("Ignored incorrect value of '%s' setting in the configuration file")
         :format(styles))
       ide.config[styles] = StylesGetDefault()
     end
@@ -751,7 +743,7 @@ ide.frame:SetAcceleratorTable(wx.wxAcceleratorTable(at))
 -- as special items unless SetMenuBar is done after menus are populated.
 ide.frame:SetMenuBar(ide.frame.menuBar)
 
-resumePrint()
+ide:Print() -- flush pending output (if any)
 
 PackageEventHandle("onAppLoad")
 
