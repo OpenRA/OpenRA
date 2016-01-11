@@ -25,8 +25,6 @@ namespace OpenRA
 		public string Description;
 		public string Version;
 		public string Author;
-		public string LogoImagePath;
-		public string PreviewImagePath;
 		public bool Hidden;
 		public ContentInstaller Content;
 

@@ -3,8 +3,6 @@ Metadata:
 	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nTry to establish a foothold on the desert planet Arrakis\nwith its harsh environmental conditions and protect your\nharvesting operations from giant sandworms as well as\nruthless enemy factions.
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
-	LogoImagePath: d2k:logo.png
-	PreviewImagePath: d2k:preview.png
 
 RequiresMods:
 	modchooser: {DEV_VERSION}

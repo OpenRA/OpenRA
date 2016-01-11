@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					using (var preview = new Bitmap(Platform.ResolvePath(mod.PreviewImagePath)))
+					using (var preview = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "preview.png")))
 						if (preview.Width == 296 && preview.Height == 196)
 							previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					using (var logo = new Bitmap(Platform.ResolvePath(mod.LogoImagePath)))
+					using (var logo = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "logo.png")))
 						if (logo.Width == 96 && logo.Height == 96)
 							logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
