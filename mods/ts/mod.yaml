@@ -9,13 +9,13 @@ RequiresMods:
 
 Folders:
 	.
-	./mods/ts
-	./mods/ts/bits
-	./mods/ts/uibits
+	ts:
+	ts:bits
+	ts:uibits
 	~^Content/ts
 
 MapFolders:
-	./mods/ts/maps@System
+	ts:maps@System
 	~^maps/ts@User
 
 Packages:
@@ -60,57 +60,57 @@ Packages:
 	~ecache01.mix@CRC32
 
 Rules:
-	./mods/ts/rules/ai.yaml
-	./mods/ts/rules/misc.yaml
-	./mods/ts/rules/player.yaml
-	./mods/ts/rules/world.yaml
-	./mods/ts/rules/palettes.yaml
-	./mods/ts/rules/defaults.yaml
-	./mods/ts/rules/aircraft.yaml
-	./mods/ts/rules/husks.yaml
-	./mods/ts/rules/civilian-infantry.yaml
-	./mods/ts/rules/civilian-structures.yaml
-	./mods/ts/rules/civilian-vehicles.yaml
-	./mods/ts/rules/gdi-infantry.yaml
-	./mods/ts/rules/gdi-structures.yaml
-	./mods/ts/rules/gdi-support.yaml
-	./mods/ts/rules/gdi-vehicles.yaml
-	./mods/ts/rules/nod-infantry.yaml
-	./mods/ts/rules/nod-structures.yaml
-	./mods/ts/rules/nod-support.yaml
-	./mods/ts/rules/nod-vehicles.yaml
-	./mods/ts/rules/shared-infantry.yaml
-	./mods/ts/rules/shared-structures.yaml
-	./mods/ts/rules/shared-support.yaml
-	./mods/ts/rules/shared-vehicles.yaml
-	./mods/ts/rules/trees.yaml
+	ts:rules/ai.yaml
+	ts:rules/misc.yaml
+	ts:rules/player.yaml
+	ts:rules/world.yaml
+	ts:rules/palettes.yaml
+	ts:rules/defaults.yaml
+	ts:rules/aircraft.yaml
+	ts:rules/husks.yaml
+	ts:rules/civilian-infantry.yaml
+	ts:rules/civilian-structures.yaml
+	ts:rules/civilian-vehicles.yaml
+	ts:rules/gdi-infantry.yaml
+	ts:rules/gdi-structures.yaml
+	ts:rules/gdi-support.yaml
+	ts:rules/gdi-vehicles.yaml
+	ts:rules/nod-infantry.yaml
+	ts:rules/nod-structures.yaml
+	ts:rules/nod-support.yaml
+	ts:rules/nod-vehicles.yaml
+	ts:rules/shared-infantry.yaml
+	ts:rules/shared-structures.yaml
+	ts:rules/shared-support.yaml
+	ts:rules/shared-vehicles.yaml
+	ts:rules/trees.yaml
 
 Weapons:
-	./mods/ts/weapons/bombsandgrenades.yaml
-	./mods/ts/weapons/energyweapons.yaml
-	./mods/ts/weapons/explosions.yaml
-	./mods/ts/weapons/healweapons.yaml
-	./mods/ts/weapons/largeguns.yaml
-	./mods/ts/weapons/missiles.yaml
-	./mods/ts/weapons/otherweapons.yaml
-	./mods/ts/weapons/smallguns.yaml
-	./mods/ts/weapons/superweapons.yaml
+	ts:weapons/bombsandgrenades.yaml
+	ts:weapons/energyweapons.yaml
+	ts:weapons/explosions.yaml
+	ts:weapons/healweapons.yaml
+	ts:weapons/largeguns.yaml
+	ts:weapons/missiles.yaml
+	ts:weapons/otherweapons.yaml
+	ts:weapons/smallguns.yaml
+	ts:weapons/superweapons.yaml
 
 Sequences:
-	./mods/ts/sequences/aircraft.yaml
-	./mods/ts/sequences/infantry.yaml
-	./mods/ts/sequences/misc.yaml
-	./mods/ts/sequences/civilian.yaml
-	./mods/ts/sequences/structures.yaml
-	./mods/ts/sequences/vehicles.yaml
-	./mods/ts/sequences/trees.yaml
+	ts:sequences/aircraft.yaml
+	ts:sequences/infantry.yaml
+	ts:sequences/misc.yaml
+	ts:sequences/civilian.yaml
+	ts:sequences/structures.yaml
+	ts:sequences/vehicles.yaml
+	ts:sequences/trees.yaml
 
 VoxelSequences:
-	./mods/ts/sequences/voxels.yaml
+	ts:sequences/voxels.yaml
 
 TileSets:
-	./mods/ts/tilesets/temperate.yaml
-	./mods/ts/tilesets/snow.yaml
+	ts:tilesets/temperate.yaml
+	ts:tilesets/snow.yaml
 
 MapGrid:
 	TileSize: 48,24
@@ -120,16 +120,16 @@ MapGrid:
 	SubCellDefaultIndex: 2
 
 Cursors:
-	./mods/ts/cursors.yaml
+	ts:cursors.yaml
 
 Chrome:
-	./mods/ts/chrome.yaml
+	ts:chrome.yaml
 
 Assemblies:
 	./mods/common/OpenRA.Mods.Common.dll
 	ra:OpenRA.Mods.RA.dll
 	cnc:OpenRA.Mods.Cnc.dll
-	./mods/ts/OpenRA.Mods.TS.dll
+	ts:OpenRA.Mods.TS.dll
 
 ChromeLayout:
 	ra:chrome/ingame.yaml
@@ -137,16 +137,16 @@ ChromeLayout:
 	ra:chrome/ingame-diplomacy.yaml
 	ra:chrome/ingame-fmvplayer.yaml
 	ra:chrome/ingame-menu.yaml
-	./mods/ts/chrome/ingame-info.yaml
+	ts:chrome/ingame-info.yaml
 	ra:chrome/ingame-infoscripterror.yaml
 	ra:chrome/ingame-infobriefing.yaml
 	ra:chrome/ingame-infoobjectives.yaml
 	ra:chrome/ingame-infostats.yaml
 	d2k:chrome/ingame-observer.yaml
-	./mods/ts/chrome/ingame-observerstats.yaml
-	./mods/ts/chrome/ingame-player.yaml
+	ts:chrome/ingame-observerstats.yaml
+	ts:chrome/ingame-player.yaml
 	ra:chrome/ingame-perf.yaml
-	./mods/ts/chrome/ingame-debug.yaml
+	ts:chrome/ingame-debug.yaml
 	ra:chrome/mainmenu.yaml
 	ra:chrome/settings.yaml
 	ra:chrome/credits.yaml
@@ -157,7 +157,7 @@ ChromeLayout:
 	ra:chrome/lobby-music.yaml
 	ra:chrome/lobby-kickdialogs.yaml
 	ra:chrome/lobby-globalchat.yaml
-	./mods/ts/chrome/color-picker.yaml
+	ts:chrome/color-picker.yaml
 	ra:chrome/map-chooser.yaml
 	ra:chrome/multiplayer.yaml
 	ra:chrome/multiplayer-browser.yaml
@@ -166,7 +166,7 @@ ChromeLayout:
 	ra:chrome/multiplayer-globalchat.yaml
 	ra:chrome/connection.yaml
 	ra:chrome/replaybrowser.yaml
-	./mods/ts/chrome/dropdowns.yaml
+	ts:chrome/dropdowns.yaml
 	ra:chrome/musicplayer.yaml
 	ra:chrome/tooltips.yaml
 	ra:chrome/assetbrowser.yaml
@@ -175,21 +175,21 @@ ChromeLayout:
 	ra:chrome/editor.yaml
 
 Voices:
-	./mods/ts/audio/voices.yaml
+	ts:audio/voices.yaml
 
 Notifications:
-	./mods/ts/audio/speech-generic.yaml
-	./mods/ts/audio/speech-singleplayer.yaml
-	./mods/ts/audio/sounds-generic.yaml
+	ts:audio/speech-generic.yaml
+	ts:audio/speech-singleplayer.yaml
+	ts:audio/sounds-generic.yaml
 
 Music:
-	./mods/ts/audio/music.yaml
+	ts:audio/music.yaml
 
 Translations:
-	./mods/ts/languages/english.yaml
+	ts:languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
-	Image: ./mods/ts/uibits/loadscreen.png
+	Image: ts:uibits/loadscreen.png
 	Text: Updating EVA installation..., Changing perspective...
 
 ContentInstaller:
@@ -222,7 +222,7 @@ LobbyDefaults:
 	Fog: true
 
 ChromeMetrics:
-	./mods/ts/metrics.yaml
+	ts:metrics.yaml
 
 Fonts:
 	Regular:
