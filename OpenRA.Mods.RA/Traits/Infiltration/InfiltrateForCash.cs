@@ -19,14 +19,14 @@ namespace OpenRA.Mods.RA.Traits
 	class InfiltrateForCashInfo : ITraitInfo
 	{
 		[Desc("Percentage of the victim's resources that will be stolen.")]
-		public readonly int Percentage = 50;
+		public readonly int Percentage = 100;
 
 		[Desc("Amount of guaranteed funds to claim when the victim does not have enough resources.",
 			"When negative, the production price of the infiltrating actor will be used instead.")]
-		public readonly int Minimum = 500;
+		public readonly int Minimum = -1;
 
 		[Desc("Sound the victim will hear when they get robbed.")]
-		public readonly string SoundToVictim = "credit1.aud";
+		public readonly string SoundToVictim = null;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
@@ -49,7 +49,8 @@ namespace OpenRA.Mods.RA.Traits
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
 
-			Game.Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
+			if (info.SoundToVictim != null)
+				Game.Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
 		}

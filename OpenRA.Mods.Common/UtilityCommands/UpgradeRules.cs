@@ -2899,6 +2899,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed arbitrary defaults from InfiltrateForCash
+				if (engineVersion < 20160118)
+				{
+					if (node.Key == "InfiltrateForCash")
+					{
+						if (!node.Value.Nodes.Any(n => n.Key == "Percentage"))
+							node.Value.Nodes.Add(new MiniYamlNode("Percentage", "50"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Minimum"))
+							node.Value.Nodes.Add(new MiniYamlNode("Minimum", "500"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "SoundToVictim"))
+							node.Value.Nodes.Add(new MiniYamlNode("SoundToVictim", "credit1.aud"));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
