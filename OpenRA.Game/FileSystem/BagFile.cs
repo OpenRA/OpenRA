@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BagFile : IFolder
+	public sealed class BagFile : IPackage
 	{
 		static readonly uint[] Nothing = { };
 

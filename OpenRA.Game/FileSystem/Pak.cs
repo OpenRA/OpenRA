@@ -21,7 +21,7 @@ namespace OpenRA.FileSystem
 		public string Filename;
 	}
 
-	public sealed class PakFile : IFolder
+	public sealed class PakFile : IPackage
 	{
 		readonly string filename;
 		readonly int priority;

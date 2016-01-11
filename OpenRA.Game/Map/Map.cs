@@ -157,7 +157,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
-		[FieldLoader.Ignore] public IFolder Container;
+		[FieldLoader.Ignore] public IPackage Container;
 		public string Path { get; private set; }
 
 		// Yaml map data

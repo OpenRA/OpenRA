@@ -14,7 +14,7 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public interface IFolder : IDisposable
+	public interface IPackage : IDisposable
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
