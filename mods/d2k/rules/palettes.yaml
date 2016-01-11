@@ -37,6 +37,7 @@
 		Filename: DATA.R8
 		Offset: 2572352
 		InvertColor: true
+		AllowModifiers: false
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0
