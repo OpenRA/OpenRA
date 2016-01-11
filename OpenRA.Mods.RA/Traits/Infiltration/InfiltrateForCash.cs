@@ -18,8 +18,14 @@ namespace OpenRA.Mods.RA.Traits
 	[Desc("This structure can be infiltrated causing funds to be stolen.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
+		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 50;
+
+		[Desc("Amount of guaranteed funds to claim when the victim does not have enough resources.",
+			"When negative, the production price of the infiltrating actor will be used instead.")]
 		public readonly int Minimum = 500;
+
+		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string SoundToVictim = "credit1.aud";
 
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
