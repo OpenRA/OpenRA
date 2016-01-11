@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (palette == null)
 					return r;
 				else
-					return r.Select(a => a.WithPalette(palette));
+					return r.Select(a => a.IsDecoration ? a : a.WithPalette(palette));
 			}
 			else
 				return SpriteRenderable.None;
