@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 
 			panel = widget;
-			assetSource = Game.ModData.ModFiles.MountedFolders.First();
+			assetSource = Game.ModData.ModFiles.MountedPackages.First();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
@@ -345,7 +345,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
 			// var sources = new[] { (IPackage)null }.Concat(GlobalFileSystem.MountedFolders);
-			var sources = Game.ModData.ModFiles.MountedFolders;
+			var sources = Game.ModData.ModFiles.MountedPackages;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}
