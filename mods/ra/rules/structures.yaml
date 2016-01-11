@@ -998,7 +998,6 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
-		Minimum: 500
 		SoundToVictim: credit1.aud
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
