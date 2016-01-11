@@ -3,96 +3,98 @@ Metadata:
 	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nTry to establish a foothold on the desert planet Arrakis\nwith its harsh environmental conditions and protect your\nharvesting operations from giant sandworms as well as\nruthless enemy factions.
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
+	LogoImagePath: d2k:logo.png
+	PreviewImagePath: d2k:preview.png
 
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
 Folders:
 	.
-	./mods/d2k
-	./mods/d2k/bits
-	./mods/d2k/bits/tex
-	./mods/d2k/bits/xmas
-	./mods/d2k/uibits
+	d2k:
+	d2k:bits
+	d2k:bits/tex
+	d2k:bits/xmas
+	d2k:uibits
 	~^Content/d2k
 	~^Content/d2k/GAMESFX
 	~^Content/d2k/Movies
 	~^Content/d2k/Music
 
 MapFolders:
-	./mods/d2k/maps@System
+	d2k:maps@System
 	~^maps/d2k@User
 
 Packages:
 	SOUND.RS
 
 Rules:
-	./mods/d2k/rules/misc.yaml
-	./mods/d2k/rules/ai.yaml
-	./mods/d2k/rules/player.yaml
-	./mods/d2k/rules/world.yaml
-	./mods/d2k/rules/palettes.yaml
-	./mods/d2k/rules/defaults.yaml
-	./mods/d2k/rules/vehicles.yaml
-	./mods/d2k/rules/starport.yaml
-	./mods/d2k/rules/husks.yaml
-	./mods/d2k/rules/structures.yaml
-	./mods/d2k/rules/aircraft.yaml
-	./mods/d2k/rules/infantry.yaml
-	./mods/d2k/rules/arrakis.yaml
+	d2k:rules/misc.yaml
+	d2k:rules/ai.yaml
+	d2k:rules/player.yaml
+	d2k:rules/world.yaml
+	d2k:rules/palettes.yaml
+	d2k:rules/defaults.yaml
+	d2k:rules/vehicles.yaml
+	d2k:rules/starport.yaml
+	d2k:rules/husks.yaml
+	d2k:rules/structures.yaml
+	d2k:rules/aircraft.yaml
+	d2k:rules/infantry.yaml
+	d2k:rules/arrakis.yaml
 
 Sequences:
-	./mods/d2k/sequences/aircraft.yaml
-	./mods/d2k/sequences/vehicles.yaml
-	./mods/d2k/sequences/infantry.yaml
-	./mods/d2k/sequences/structures.yaml
-	./mods/d2k/sequences/misc.yaml
+	d2k:sequences/aircraft.yaml
+	d2k:sequences/vehicles.yaml
+	d2k:sequences/infantry.yaml
+	d2k:sequences/structures.yaml
+	d2k:sequences/misc.yaml
 
 TileSets:
-	./mods/d2k/tilesets/arrakis.yaml
+	d2k:tilesets/arrakis.yaml
 
 MapGrid:
 	TileSize: 32,32
 	Type: Rectangular
 
 Cursors:
-	./mods/d2k/cursors.yaml
+	d2k:cursors.yaml
 
 Chrome:
-	./mods/d2k/chrome.yaml
+	d2k:chrome.yaml
 
 Assemblies:
 	./mods/common/OpenRA.Mods.Common.dll
 	./mods/cnc/OpenRA.Mods.Cnc.dll
-	./mods/d2k/OpenRA.Mods.D2k.dll
+	d2k:OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	./mods/d2k/chrome/ingame.yaml
+	d2k:chrome/ingame.yaml
 	./mods/ra/chrome/ingame-chat.yaml
 	./mods/ra/chrome/ingame-diplomacy.yaml
 	./mods/ra/chrome/ingame-fmvplayer.yaml
-	./mods/d2k/chrome/ingame-menu.yaml
+	d2k:chrome/ingame-menu.yaml
 	./mods/ra/chrome/ingame-info.yaml
 	./mods/ra/chrome/ingame-infoscripterror.yaml
 	./mods/ra/chrome/ingame-infobriefing.yaml
 	./mods/ra/chrome/ingame-infoobjectives.yaml
-	./mods/d2k/chrome/ingame-infostats.yaml
-	./mods/d2k/chrome/ingame-observer.yaml
+	d2k:chrome/ingame-infostats.yaml
+	d2k:chrome/ingame-observer.yaml
 	./mods/ra/chrome/ingame-observerstats.yaml
-	./mods/d2k/chrome/ingame-player.yaml
+	d2k:chrome/ingame-player.yaml
 	./mods/ra/chrome/ingame-perf.yaml
 	./mods/ra/chrome/ingame-debug.yaml
-	./mods/d2k/chrome/mainmenu.yaml
+	d2k:chrome/mainmenu.yaml
 	./mods/ra/chrome/settings.yaml
 	./mods/ra/chrome/credits.yaml
 	./mods/ra/chrome/lobby.yaml
 	./mods/ra/chrome/lobby-mappreview.yaml
-	./mods/d2k/chrome/lobby-players.yaml
-	./mods/d2k/chrome/lobby-options.yaml
+	d2k:chrome/lobby-players.yaml
+	d2k:chrome/lobby-options.yaml
 	./mods/ra/chrome/lobby-music.yaml
 	./mods/ra/chrome/lobby-kickdialogs.yaml
 	./mods/ra/chrome/lobby-globalchat.yaml
-	./mods/d2k/chrome/color-picker.yaml
+	d2k:chrome/color-picker.yaml
 	./mods/ra/chrome/map-chooser.yaml
 	./mods/ra/chrome/multiplayer.yaml
 	./mods/ra/chrome/multiplayer-browser.yaml
@@ -100,33 +102,33 @@ ChromeLayout:
 	./mods/ra/chrome/multiplayer-directconnect.yaml
 	./mods/ra/chrome/multiplayer-globalchat.yaml
 	./mods/ra/chrome/connection.yaml
-	./mods/d2k/chrome/dropdowns.yaml
+	d2k:chrome/dropdowns.yaml
 	./mods/ra/chrome/musicplayer.yaml
-	./mods/d2k/chrome/tooltips.yaml
+	d2k:chrome/tooltips.yaml
 	./mods/ra/chrome/assetbrowser.yaml
-	./mods/d2k/chrome/missionbrowser.yaml
+	d2k:chrome/missionbrowser.yaml
 	./mods/ra/chrome/confirmation-dialogs.yaml
 	./mods/ra/chrome/editor.yaml
 	./mods/ra/chrome/replaybrowser.yaml
 
 Weapons:
-	./mods/d2k/weapons.yaml
-	./mods/d2k/weapons/debris.yaml
+	d2k:weapons.yaml
+	d2k:weapons/debris.yaml
 
 Voices:
-	./mods/d2k/audio/voices.yaml
+	d2k:audio/voices.yaml
 
 Notifications:
-	./mods/d2k/audio/notifications.yaml
+	d2k:audio/notifications.yaml
 
 Music:
-	./mods/d2k/audio/music.yaml
+	d2k:audio/music.yaml
 
 Translations:
-	./mods/d2k/languages/english.yaml
+	d2k:languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
-	Image: ./mods/d2k/uibits/loadscreen.png
+	Image: d2k:uibits/loadscreen.png
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing 'thopters..., Summoning mentats...
 
 ContentInstaller:
@@ -161,7 +163,7 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
-	./mods/d2k/metrics.yaml
+	d2k:metrics.yaml
 
 Fonts:
 	Regular:
@@ -171,7 +173,7 @@ Fonts:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:./mods/d2k/Dune2k.ttf
+		Font:d2k:Dune2k.ttf
 		Size:32
 	MediumBold:
 		Font:./mods/common/FreeSansBold.ttf
@@ -190,7 +192,7 @@ Fonts:
 		Size:10
 
 Missions:
-	./mods/d2k/missions.yaml
+	d2k:missions.yaml
 
 SupportsMapsFrom: d2k
 

@@ -17,6 +17,7 @@ namespace OpenRA
 {
 	public class ModMetadata
 	{
+		public static readonly Dictionary<string, string> CandidateModPaths = GetCandidateMods();
 		public static readonly Dictionary<string, ModMetadata> AllMods = ValidateMods();
 
 		public string Id;
@@ -24,21 +25,19 @@ namespace OpenRA
 		public string Description;
 		public string Version;
 		public string Author;
+		public string LogoImagePath;
+		public string PreviewImagePath;
 		public bool Hidden;
 		public ContentInstaller Content;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
 		{
-			var basePath = Platform.ResolvePath(".", "mods");
-			var mods = Directory.GetDirectories(basePath)
-				.Select(x => x.Substring(basePath.Length + 1));
-
 			var ret = new Dictionary<string, ModMetadata>();
-			foreach (var m in mods)
+			foreach (var pair in CandidateModPaths)
 			{
 				try
 				{
-					var yamlPath = Platform.ResolvePath(".", "mods", m, "mod.yaml");
+					var yamlPath = Path.Combine(pair.Value, "mod.yaml");
 					if (!File.Exists(yamlPath))
 						continue;
 
@@ -47,22 +46,40 @@ namespace OpenRA
 					if (!nd.ContainsKey("Metadata"))
 						continue;
 
-					var mod = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
-					mod.Id = m;
+					var metadata = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
+					metadata.Id = pair.Key;
 
 					if (nd.ContainsKey("ContentInstaller"))
-						mod.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
+						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
 
-					ret.Add(m, mod);
+					ret.Add(pair.Key, metadata);
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(m));
+					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(pair.Key));
 					Console.WriteLine(ex.Message);
 				}
 			}
 
 			return ret;
+		}
+
+		static Dictionary<string, string> GetCandidateMods()
+		{
+			// Get mods that are in the game folder.
+			var basePath = Platform.ResolvePath(Path.Combine(".", "mods"));
+			var mods = Directory.GetDirectories(basePath)
+				.ToDictionary(x => x.Substring(basePath.Length + 1));
+
+			// Get mods that are in the support folder.
+			var supportPath = Platform.ResolvePath(Path.Combine("^", "mods"));
+			if (!Directory.Exists(supportPath))
+				return mods;
+
+			foreach (var pair in Directory.GetDirectories(supportPath).ToDictionary(x => x.Substring(supportPath.Length + 1)))
+				mods.Add(pair.Key, pair.Value);
+
+			return mods;
 		}
 	}
 }
