@@ -103,11 +103,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var yaml = MiniYaml.ApplyRemovals(partial);
 				foreach (var kv in yaml)
 				{
-					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key));
+					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
 
 					var maps = Game.ModData.MapCache
 						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
-						.Select(p => p.Map);
+						.Select(p => p.Map)
+						.OrderBy(m => missionMapPaths.IndexOf(Path.GetFullPath(m.Path)));
 
 					CreateMissionGroup(kv.Key, maps);
 					allMaps.AddRange(maps);
