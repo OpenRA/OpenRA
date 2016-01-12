@@ -187,8 +187,9 @@ frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
   function (event)
-    event:Enable(ide.findReplace:CanSave(GetEditorWithFocus())
-      and true or EditorIsModified(GetEditor()))
+    local doc = ide:GetDocument(GetEditor())
+    event:Enable(ide.findReplace:CanSave(GetEditorWithFocus()) and true
+      or doc and (doc:IsModified() or doc:IsNew()) or false)
   end)
 
 frame:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED,

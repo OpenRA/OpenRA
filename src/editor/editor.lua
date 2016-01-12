@@ -119,7 +119,7 @@ local function isFileAlteredOnDisk(editor)
           GetIDEString("editormessage"),
           wx.wxOK + wx.wxCENTRE, ide.frame)
       elseif not editor:GetReadOnly() and modTime:IsValid() and oldModTime:IsEarlierThan(modTime) then
-        local ret = (edcfg.autoreload and (not EditorIsModified(editor)) and wx.wxYES)
+        local ret = (edcfg.autoreload and (not ide:GetDocument(editor):IsModified()) and wx.wxYES)
           or wx.wxMessageBox(
             TR("File '%s' has been modified on disk."):format(fileName)
             .."\n"..TR("Do you want to reload it?"),
@@ -390,16 +390,6 @@ function EditorCallTip(editor, pos, x, y)
     end
     if oncalltip ~= false then callTipFitAndShow(editor, pos, tip) end
   end
-end
-
-function EditorIsModified(editor)
-  local modified = false
-  if editor then
-    local id = editor:GetId()
-    modified = openDocuments[id]
-      and (openDocuments[id].isModified or not openDocuments[id].filePath)
-  end
-  return modified
 end
 
 -- Indicator handling for functions and local/global variables

@@ -267,13 +267,14 @@ local function createNotebook(frame)
       or event:GetId() == ID_CLOSE and notebook:GetPageCount() <= 1)
     then event:Enable(false) end
   end
-  local function IfModified(event) event:Enable(EditorIsModified(GetEditor(selection))) end
 
   notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
-      local editor = GetEditor(selection)
-      SaveFile(editor, ide.openDocuments[editor:GetId()].filePath)
+      ide:GetDocument(GetEditor(selection)):Save()
     end)
-  notebook:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI, IfModified)
+  notebook:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI, function(event)
+      local doc = ide:GetDocument(GetEditor(selection))
+      event:Enable(doc:IsModified() or doc:IsNew())
+    end)
   notebook:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       SaveFileAs(GetEditor(selection))
     end)
