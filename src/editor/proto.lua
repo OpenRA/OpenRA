@@ -12,6 +12,7 @@ ide.proto.Document = {__index = {
   GetEditor = function(self) return self.editor end,
   GetTabIndex = function(self) return self.index end,
   IsModified = function(self) return self.isModified end,
+  IsNew = function(self) return self.filePath == nil end,
   SetModified = function(self, modified)
     self.isModified = modified
     self:SetTabText()
