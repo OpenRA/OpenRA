@@ -622,11 +622,6 @@ function findReplace:RunInFiles(replace)
   self:SetStatus(TR("Searching for '%s'."):format(findText))
   wx.wxSafeYield() -- allow the status to update
 
-  -- return focus to the control that had it if it's on the search panel
-  -- (as it could be changed by added results tab)
-  if ctrl and ctrl:GetParent():GetId() == self.panel:GetId()
-  or not showaseditor then ctrl:SetFocus() end
-
   local startdir, mask = self:GetScope()
   local completed = self:ProcInFiles(startdir, mask or "*", flags.SubDirs)
 
@@ -658,10 +653,21 @@ function findReplace:RunInFiles(replace)
 
   self:SetStatus(not completed and TR("Cancelled by the user.")
     or TR("Found %d instance.", self.occurrences):format(self.occurrences))
-  if completed and ide.config.search.autohide then self:Hide() end
   self.oveditor:Destroy()
   self.oveditor = nil
   self.toolbar:UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+
+  -- return focus to the control that had it if it's on the search panel
+  -- (as it could be changed by added results tab)
+  if ctrl and (ctrl:GetParent():GetId() == self.panel:GetId() or not showaseditor) then
+    -- set the focus temporarily on the search results tab as this provides a workaround
+    -- for the cursor disappearing in Search/Replace controls after results shown
+    -- in the same tab (somehow caused by `oveditor:Destroy()` call).
+    if ide:IsValidCtrl(reseditor) then reseditor:SetFocus() end
+    ctrl:SetFocus()
+  end
+
+  if completed and ide.config.search.autohide then self:Hide() end
 end
 
 local icons = {
