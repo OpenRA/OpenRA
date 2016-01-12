@@ -587,6 +587,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
 			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
+			BindCheckboxPref(panel, "WIDGETDEBUG_CHECKBOX", ds, "WidgetRenderBoundsLines");
 
 			return () => { };
 		}

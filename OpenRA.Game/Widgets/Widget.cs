@@ -74,7 +74,18 @@ namespace OpenRA.Widgets
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
-		public static void Draw() { Root.DrawOuter(); }
+		public static void Draw()
+		{
+			Root.DrawOuter();
+
+			if (Game.Settings.Debug.WidgetRenderBoundsLines)
+			{
+				Root.DrawDebugRenderBounds();
+
+				if (MouseOverWidget != null)
+					MouseOverWidget.DrawDebugRenderBounds(true, false);
+			}
+		}
 
 		public static bool HandleInput(MouseInput mi)
 		{
@@ -162,6 +173,10 @@ namespace OpenRA.Widgets
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
+		public Color DebugBoundsColor = Color.Red;
+		public float DebugBoundsWidth = 1;
+		public Color DebugMouseOverBoundsColor = Color.Green;
+		public float DebugMouseOverBoundsWidth = 2;
 
 		// Calculated internally
 		public Rectangle Bounds;
@@ -185,6 +200,11 @@ namespace OpenRA.Widgets
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
+
+			DebugBoundsColor = widget.DebugBoundsColor;
+			DebugBoundsWidth = widget.DebugBoundsWidth;
+			DebugMouseOverBoundsColor = widget.DebugMouseOverBoundsColor;
+			DebugMouseOverBoundsWidth = widget.DebugMouseOverBoundsWidth;
 
 			foreach (var child in widget.Children)
 				AddChild(child.Clone());
@@ -418,6 +438,23 @@ namespace OpenRA.Widgets
 		}
 
 		public virtual void Draw() { }
+
+		public void DrawDebugRenderBounds(bool drawEvenIfInvisible = false, bool recurseDownAllChildren = true)
+		{
+			if (drawEvenIfInvisible || IsVisible())
+			{
+				var isMouseOverWidget = this == Ui.MouseOverWidget;
+				Game.Renderer.RgbaColorRenderer.DrawRect(
+					new float2(RenderBounds.Left, RenderBounds.Top),
+					new float2(RenderBounds.Right, RenderBounds.Bottom),
+					isMouseOverWidget ? DebugMouseOverBoundsWidth : DebugBoundsWidth,
+					isMouseOverWidget ? DebugMouseOverBoundsColor : DebugBoundsColor);
+
+				if (recurseDownAllChildren)
+					foreach (var child in Children.OfType<Widget>().Reverse())
+						child.DrawDebugRenderBounds();
+			}
+		}
 
 		public virtual void DrawOuter()
 		{
