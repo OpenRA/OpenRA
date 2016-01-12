@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SwitchMenu(MenuType type)
 		{
 			menuType = type;
+
+			// Update button mouseover
+			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 
 		[ObjectCreator.UseCtor]
