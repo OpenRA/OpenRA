@@ -97,7 +97,7 @@ function ide:GetToolBar() return self.frame.toolBar end
 function ide:GetDebugger() return self.debugger end
 function ide:GetMainFrame() return self.frame end
 function ide:GetUIManager() return self.frame.uimgr end
-function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
+function ide:GetDocument(ed) return ed and self.openDocuments[ed:GetId()] end
 function ide:GetDocuments() return self.openDocuments end
 function ide:GetKnownExtensions(ext)
   local knownexts, extmatch = {}, ext and ext:lower()
