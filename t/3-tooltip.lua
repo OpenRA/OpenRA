@@ -45,5 +45,5 @@ ide:RemoveAPI("lua", "test")
 ReloadLuaAPI()
 
 -- cleanup
-ide:GetDocument(editor).isModified = false
+ide:GetDocument(editor):SetModified(false)
 ClosePage()

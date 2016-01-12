@@ -184,5 +184,5 @@ ok(status and (res or ""):match('value'),
 
 -- cleanup
 ide.config.acandtip.strategy = strategy
-ide:GetDocument(editor).isModified = false
+ide:GetDocument(editor):SetModified(false)
 ClosePage()

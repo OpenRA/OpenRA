@@ -39,5 +39,5 @@ for _, tst in ipairs({
   ok(defonly == true, ("Numeric expression '%s' can be checked with inline parser."):format(tst))
 end
 
-ide:GetDocument(editor).isModified = false
+ide:GetDocument(editor):SetModified(false)
 ClosePage()

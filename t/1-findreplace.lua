@@ -107,6 +107,5 @@ end
 
 -- cleanup
 findReplace:Hide()
-while editor:CanUndo() do editor:Undo() end
 ide:GetDocument(editor):SetModified(false)
 ClosePage()
