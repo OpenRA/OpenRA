@@ -125,12 +125,12 @@ namespace OpenRA.FileFormats
 			sampleRate = s.ReadUInt16();
 			var dataSize = s.ReadInt32();
 			var outputSize = s.ReadInt32();
-			var readFlag = s.ReadByte();
-			var readFormat = s.ReadByte();
 
+			var readFlag = s.ReadByte();
 			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
 				return false;
 
+			var readFormat = s.ReadByte();
 			if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
 				return false;
 
