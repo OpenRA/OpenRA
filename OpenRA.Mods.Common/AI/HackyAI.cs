@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.AI
 		public bool EnoughWaterToBuildNaval()
 		{
 			var baseProviders = World.ActorsHavingTrait<BaseProvider>()
-				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>());
+				.Where(a => a.Owner == Player);
 
 			foreach (var b in baseProviders)
 			{
@@ -343,7 +343,7 @@ namespace OpenRA.Mods.Common.AI
 		public bool CloseEnoughToWater()
 		{
 			var areaProviders = World.ActorsHavingTrait<GivesBuildableArea>()
-				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>());
+				.Where(a => a.Owner == Player);
 
 			foreach (var a in areaProviders)
 			{
