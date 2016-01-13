@@ -167,6 +167,11 @@ namespace OpenRA.Network
 			}
 		}
 
+		public void StopWaitingForClient(Session.Client client)
+		{
+			frameData.RemoveClient(client.Index);
+		}
+
 		public void Tick()
 		{
 			if (!IsReadyForNextFrame)

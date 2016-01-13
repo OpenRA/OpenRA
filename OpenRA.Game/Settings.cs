@@ -72,6 +72,9 @@ namespace OpenRA
 		[Desc("Query map information from the Resource Center if they are not available locally.")]
 		public bool QueryMapRepository = true;
 
+		[Desc("If a player drops, the AI should take over.")]
+		public bool BotsForDisconnectedClients = true;
+
 		public string TimestampFormat = "s";
 
 		public ServerSettings Clone()

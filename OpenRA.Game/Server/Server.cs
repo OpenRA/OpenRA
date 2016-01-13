@@ -21,6 +21,7 @@ using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Server
 {
@@ -559,11 +560,14 @@ namespace OpenRA.Server
 				// Send disconnected order, even if still in the lobby
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
+				var botController = LobbyInfo.Clients.First(c => c.IsAdmin);
+
 				// Client was the server admin, but the game isn't over yet.
 				if (Dedicated && dropClient.IsAdmin)
 				{
 					// Pick the human player who joined right after the previous admin.
 					var nextAdmin = LobbyInfo.Clients.Where(c => c.Bot == null && c != dropClient).MinByOrDefault(c => c.Index);
+					botController = nextAdmin;
 
 					// Still in the lobby so handle things directly.
 					if (State == ServerState.WaitingPlayers)
@@ -585,6 +589,13 @@ namespace OpenRA.Server
 					}
 					else
 						DispatchOrdersToClients(toDrop, 0, Order.NewAdmin(nextAdmin.Index).Serialize());
+				}
+
+				var replaceWithBot = Settings.BotsForDisconnectedClients && State == ServerState.GameStarted;
+				if (replaceWithBot)
+				{
+					var bot = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Random(Random);
+					DispatchOrdersToClients(toDrop, 0, Order.ReplacePlayerWithBot(bot.Type, botController.Index).Serialize());
 				}
 
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });

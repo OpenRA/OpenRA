@@ -101,6 +101,35 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "ReplacePlayerWithBot":
+					{
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						if (client != null && world != null)
+						{
+							var player = world.FindPlayerByClient(client);
+							if (player == null || player.IsBot)
+								break;
+
+							client.State = Session.ClientState.Ready;
+
+							var controller = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == order.ExtraData);
+							if (controller == null)
+								break;
+
+							client.BotControllerClientIndex = controller.Index;
+							client.Bot = order.TargetString;
+							client.IpAddress = null;
+
+							orderManager.StopWaitingForClient(client);
+
+							player.ActivateBot(client.Bot);
+
+							Game.Debug("Replaced player {0} with bot {1} controlled by {2}".F(client.Name, client.Bot, controller.Name));
+						}
+
+						break;
+					}
+
 				case "TeamChat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);

@@ -172,6 +172,11 @@ namespace OpenRA
 			return new Order("NewAdmin", null, false) { ExtraData = (uint)nextAdminIndex };
 		}
 
+		public static Order ReplacePlayerWithBot(string botName, int botControllerIndex)
+		{
+			return new Order("ReplacePlayerWithBot", null, false) { TargetString = botName, ExtraData = (uint)botControllerIndex };
+		}
+
 		// For scripting special powers
 		public Order()
 			: this(null, null, null, CPos.Zero, null, false, CPos.Zero, 0) { }
