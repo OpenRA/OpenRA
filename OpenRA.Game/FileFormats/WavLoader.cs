@@ -43,7 +43,6 @@ namespace OpenRA.FileFormats
 			Format = s.ReadASCII(4);
 			if (Format != "WAVE")
 				return false;
-
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
@@ -57,8 +56,8 @@ namespace OpenRA.FileFormats
 						AudioFormat = s.ReadInt16();
 						Type = (WaveType)AudioFormat;
 
-						if (Type != WaveType.Pcm && Type != WaveType.ImaAdpcm)
-							throw new NotSupportedException("Compression type is not supported.");
+						if (!Enum.IsDefined(typeof(WaveType), Type))
+							throw new NotSupportedException("Compression type {0} is not supported.".F(AudioFormat));
 
 						Channels = s.ReadInt16();
 						SampleRate = s.ReadInt32();
