@@ -669,19 +669,19 @@ namespace OpenRA.Mods.Common.AI
 			FindAndDeployBackupMcv(self);
 		}
 
-		CPos FindNextResource(Actor self)
+		CPos FindNextResource(Actor harvester)
 		{
-			var harvInfo = self.Info.TraitInfo<HarvesterInfo>();
-			var mobileInfo = self.Info.TraitInfo<MobileInfo>();
+			var harvInfo = harvester.Info.TraitInfo<HarvesterInfo>();
+			var mobileInfo = harvester.Info.TraitInfo<MobileInfo>();
 			var passable = (uint)mobileInfo.GetMovementClass(World.TileSet);
 
 			var path = pathfinder.FindPath(
-				PathSearch.Search(World, mobileInfo, self, true,
-					loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+				PathSearch.Search(World, mobileInfo, harvester, true,
+					loc => domainIndex.IsPassable(harvester.Location, loc, passable) && harvester.CanHarvestAt(loc, resLayer, harvInfo, territory))
 					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-						.Where(u => !u.IsDead && self.Owner.Stances[u.Owner] == Stance.Enemy)
+						.Where(u => !u.IsDead && harvester.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
-					.FromPoint(self.Location));
+					.FromPoint(harvester.Location));
 
 			if (path.Count == 0)
 				return CPos.Zero;
@@ -692,15 +692,15 @@ namespace OpenRA.Mods.Common.AI
 		void GiveOrdersToIdleHarvesters()
 		{
 			// Find idle harvesters and give them orders:
-			foreach (var a in activeUnits)
+			foreach (var harvester in activeUnits)
 			{
-				var harv = a.TraitOrDefault<Harvester>();
+				var harv = harvester.TraitOrDefault<Harvester>();
 				if (harv == null)
 					continue;
 
-				if (!a.IsIdle)
+				if (!harvester.IsIdle)
 				{
-					var act = a.GetCurrentActivity();
+					var act = harvester.GetCurrentActivity();
 
 					// A Wait activity is technically idle:
 					if ((act.GetType() != typeof(Wait)) &&
@@ -712,9 +712,9 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				var newSafeResourcePatch = FindNextResource(a);
-				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(a, newSafeResourcePatch));
-				QueueOrder(new Order("Harvest", a, false) { TargetLocation = newSafeResourcePatch });
+				var newSafeResourcePatch = FindNextResource(harvester);
+				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
+				QueueOrder(new Order("Harvest", harvester, false) { TargetLocation = newSafeResourcePatch });
 			}
 		}
 
