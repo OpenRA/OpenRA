@@ -2910,8 +2910,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "Minimum"))
 							node.Value.Nodes.Add(new MiniYamlNode("Minimum", "500"));
 
-						if (!node.Value.Nodes.Any(n => n.Key == "SoundToVictim"))
-							node.Value.Nodes.Add(new MiniYamlNode("SoundToVictim", "credit1.aud"));
+						var sound = node.Value.Nodes.FirstOrDefault(n => n.Key == "SoundToVictim");
+						if (sound != null)
+						{
+							node.Value.Nodes.Remove(sound);
+							Console.WriteLine("The 'SoundToVictim' property of the 'InfiltrateForCash' trait has been");
+							Console.WriteLine("replaced with a 'Notification' property. Please add the sound file");
+							Console.WriteLine("'{0}' to your mod's audio notification yaml and".F(sound.Value.Value));
+							Console.WriteLine("update your mod's rules accordingly.");
+							Console.WriteLine();
+						}
 					}
 				}
 

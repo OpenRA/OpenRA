@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly int Minimum = -1;
 
 		[Desc("Sound the victim will hear when they get robbed.")]
-		public readonly string SoundToVictim = null;
+		public readonly string Notification = null;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Traits
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
 
-			if (info.SoundToVictim != null)
-				Game.Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
+			if (info.Notification != null)
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
 		}
