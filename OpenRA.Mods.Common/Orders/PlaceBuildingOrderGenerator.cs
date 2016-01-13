@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>())
+					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
 						orderType = "LineBuild";
 				}
 
@@ -172,8 +172,11 @@ namespace OpenRA.Mods.Common.Orders
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
-				foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
-					cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
+				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
+					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
+						cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
+				else
+					cells.Add(topLeft, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
 			}
 			else
 			{
