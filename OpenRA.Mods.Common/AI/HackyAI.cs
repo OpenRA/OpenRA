@@ -23,6 +23,23 @@ namespace OpenRA.Mods.Common.AI
 {
 	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
+		public class UnitCategories
+		{
+			public readonly HashSet<string> Mcv = new HashSet<string>();
+		}
+
+		public class BuildingCategories
+		{
+			public readonly HashSet<string> ConstructionYard = new HashSet<string>();
+			public readonly HashSet<string> VehiclesFactory = new HashSet<string>();
+			public readonly HashSet<string> Refinery = new HashSet<string>();
+			public readonly HashSet<string> Power = new HashSet<string>();
+			public readonly HashSet<string> Barracks = new HashSet<string>();
+			public readonly HashSet<string> Production = new HashSet<string>();
+			public readonly HashSet<string> NavalProduction = new HashSet<string>();
+			public readonly HashSet<string> Silo = new HashSet<string>();
+		}
+
 		[Desc("Ingame name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
@@ -133,11 +150,13 @@ namespace OpenRA.Mods.Common.AI
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
 		[Desc("Tells the AI what unit types fall under the same common name. Only supported entry is Mcv.")]
-		public readonly Dictionary<string, HashSet<string>> UnitsCommonNames = null;
+		[FieldLoader.LoadUsing("LoadUnitCategories", true)]
+		public readonly UnitCategories UnitsCommonNames;
 
 		[Desc("Tells the AI what building types fall under the same common name.",
 			"Possible keys are ConstructionYard, Power, Refinery, Silo , Barracks, Production, VehiclesFactory, NavalProduction.")]
-		public readonly Dictionary<string, HashSet<string>> BuildingCommonNames = null;
+		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
+		public readonly BuildingCategories BuildingCommonNames;
 
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
@@ -146,6 +165,18 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing("LoadDecisions")]
 		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
+
+		static object LoadUnitCategories(MiniYaml yaml)
+		{
+			var categories = yaml.Nodes.First(n => n.Key == "UnitsCommonNames");
+			return FieldLoader.Load<UnitCategories>(categories.Value);
+		}
+
+		static object LoadBuildingCategories(MiniYaml yaml)
+		{
+			var categories = yaml.Nodes.First(n => n.Key == "BuildingCommonNames");
+			return FieldLoader.Load<BuildingCategories>(categories.Value);
+		}
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
@@ -378,57 +409,38 @@ namespace OpenRA.Mods.Common.AI
 			return World.ActorsHavingTrait<IPositionable>().Count(a => a.Owner == owner && a.Info.Name == unit);
 		}
 
-		int? CountBuildingByCommonName(string commonName, Player owner)
+		int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
 		{
-			if (!Info.BuildingCommonNames.ContainsKey(commonName))
-				return null;
-
 			return World.ActorsHavingTrait<Building>()
-				.Count(a => a.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Info.Name));
+				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
 		}
 
-		public ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
+		public ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
 		{
-			if (commonName == "ConstructionYard")
-				return Map.Rules.Actors.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(Random).Value;
-
-			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
-		}
-
-		public ActorInfo GetUnitInfoByCommonName(string commonName, Player owner)
-		{
-			return GetInfoByCommonName(Info.UnitsCommonNames, commonName, owner);
-		}
-
-		public ActorInfo GetInfoByCommonName(Dictionary<string, HashSet<string>> names, string commonName, Player owner)
-		{
-			if (!names.Any() || !names.ContainsKey(commonName))
-				throw new InvalidOperationException("Can't find {0} in the HackyAI UnitsCommonNames definition.".F(commonName));
-
-			return Map.Rules.Actors.Where(k => names[commonName].Contains(k.Key)).Random(Random).Value;
+			return Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(Random).Value;
 		}
 
 		public bool HasAdequateFact()
 		{
 			// Require at least one construction yard, unless we have no vehicles factory (can't build it).
-			return CountBuildingByCommonName("ConstructionYard", Player) > 0 ||
-				CountBuildingByCommonName("VehiclesFactory", Player) == 0;
+			return CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0 ||
+				CountBuildingByCommonName(Info.BuildingCommonNames.VehiclesFactory, Player) == 0;
 		}
 
 		public bool HasAdequateProc()
 		{
 			// Require at least one refinery, unless we have no power (can't build it).
-			return CountBuildingByCommonName("Refinery", Player) > 0 ||
-				CountBuildingByCommonName("Power", Player) == 0;
+			return CountBuildingByCommonName(Info.BuildingCommonNames.Refinery, Player) > 0 ||
+				CountBuildingByCommonName(Info.BuildingCommonNames.Power, Player) == 0;
 		}
 
 		public bool HasMinimumProc()
 		{
 			// Require at least two refineries, unless we have no power (can't build it)
 			// or barracks (higher priority?)
-			return CountBuildingByCommonName("Refinery", Player) >= 2 ||
-				CountBuildingByCommonName("Power", Player) == 0 ||
-				CountBuildingByCommonName("Barracks", Player) == 0;
+			return CountBuildingByCommonName(Info.BuildingCommonNames.Refinery, Player) >= 2 ||
+				CountBuildingByCommonName(Info.BuildingCommonNames.Power, Player) == 0 ||
+				CountBuildingByCommonName(Info.BuildingCommonNames.Barracks, Player) == 0;
 		}
 
 		// For mods like RA (number of building must match the number of aircraft)
@@ -1014,7 +1026,7 @@ namespace OpenRA.Mods.Common.AI
 			// No construction yards - Build a new MCV
 			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
 					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
-				BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", Player).Name);
+				BuildUnit("Vehicle", GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
 
 			foreach (var q in Info.UnitQueues)
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
