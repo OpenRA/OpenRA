@@ -45,8 +45,9 @@ return {
         filepath = winapi.short_path(filepath)
       end
     end
+    local params = ide.config.arg.any or ide.config.arg.lua
     local code = ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(filepath)
-    local cmd = '"'..exe..'" '..code
+    local cmd = '"'..exe..'" '..code..(params and " "..params or "")
 
     -- add "LUA_DEV\clibs" to PATH to allow required DLLs to load
     local _, path = wx.wxGetEnv("PATH")
@@ -71,4 +72,5 @@ return {
   fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = false,
   unhideanywindow = true,
+  takeparameters = true,
 }
