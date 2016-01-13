@@ -202,11 +202,11 @@ namespace OpenRA.Mods.Common.AI
 
 		public CPos GetRandomBaseCenter()
 		{
-			var randomBaseBuilding = World.ActorsHavingTrait<BaseBuilding>()
-				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<MobileInfo>())
+			var randomConstructionYard = World.Actors.Where(a => a.Owner == Player &&
+				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name))
 				.RandomOrDefault(Random);
 
-			return randomBaseBuilding != null ? randomBaseBuilding.Location : initialBaseCenter;
+			return randomConstructionYard != null ? randomConstructionYard.Location : initialBaseCenter;
 		}
 
 		public bool IsEnabled;
@@ -609,8 +609,8 @@ namespace OpenRA.Mods.Common.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return World.ActorsHavingTrait<BaseBuilding>()
-				.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead && !a.Info.HasTraitInfo<MobileInfo>()).ToList();
+			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead &&
+				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name)).ToList();
 		}
 
 		void CleanSquads()
@@ -721,7 +721,7 @@ namespace OpenRA.Mods.Common.AI
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == Player && !a.Info.HasTraitInfo<BaseBuildingInfo>() && !activeUnits.Contains(a));
+				.Where(a => a.Owner == Player && !Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) && !activeUnits.Contains(a));
 
 			foreach (var a in newUnits)
 			{
@@ -845,17 +845,14 @@ namespace OpenRA.Mods.Common.AI
 		void InitializeBase(Actor self)
 		{
 			// Find and deploy our mcv
-			var mcv = self.World.ActorsHavingTrait<BaseBuilding>().FirstOrDefault(a => a.Owner == Player);
+			var mcv = self.World.Actors.FirstOrDefault(a => a.Owner == Player &&
+				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name));
 
 			if (mcv != null)
 			{
 				initialBaseCenter = mcv.Location;
 				defenseCenter = mcv.Location;
-
-				// Don't transform the mcv if it is a fact
-				// HACK: This needs to query against MCVs directly
-				if (mcv.Info.HasTraitInfo<MobileInfo>())
-					QueueOrder(new Order("DeployTransform", mcv, false));
+				QueueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
@@ -865,9 +862,8 @@ namespace OpenRA.Mods.Common.AI
 		// backup location within the main base.
 		void FindAndDeployBackupMcv(Actor self)
 		{
-			// HACK: This needs to query against MCVs directly
-			var mcvs = self.World.ActorsHavingTrait<BaseBuilding>()
-				.Where(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>());
+			var mcvs = self.World.Actors.Where(a => a.Owner == Player &&
+				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name));
 
 			foreach (var mcv in mcvs)
 			{
@@ -1024,8 +1020,8 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.ActorsHavingTrait<BaseBuilding>()
-					.Any(a => a.Owner == Player && a.Info.HasTraitInfo<MobileInfo>()))
+			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == Player &&
+				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name)))
 				BuildUnit("Vehicle", GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
 
 			foreach (var q in Info.UnitQueues)
