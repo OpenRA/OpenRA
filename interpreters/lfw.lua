@@ -17,11 +17,23 @@ return {
   frun = function(self,wfilename,rundebug)
     exe = exe or exePath()
     local filepath = wfilename:GetFullPath()
-    local script
     if rundebug then
       DebuggerAttachDefault({basedir = self:fworkdir(wfilename),
         runstart = ide.config.debugger.runonstart == true})
-      script = rundebug
+
+      -- update arg to point to the proper file
+      rundebug = ('if arg then arg[0] = [[%s]] end '):format(filepath)..rundebug
+
+      local tmpfile = wx.wxFileName()
+      tmpfile:AssignTempFileName(".")
+      filepath = tmpfile:GetFullPath()
+      local f = io.open(filepath, "w")
+      if not f then
+        DisplayOutputLn("Can't open temporary file '"..filepath.."' for writing.")
+        return
+      end
+      f:write(rundebug)
+      f:close()
     else
       -- if running on Windows and can't open the file, this may mean that
       -- the file path includes unicode characters that need special handling
@@ -32,11 +44,9 @@ return {
         winapi.set_encoding(winapi.CP_UTF8)
         filepath = winapi.short_path(filepath)
       end
-
-      script = ('dofile [[%s]]'):format(filepath)
     end
-    local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
-    local cmd = '"'..exe..'" -e "'..code..'"'
+    local code = ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(filepath)
+    local cmd = '"'..exe..'" '..code
 
     -- add "LUA_DEV\clibs" to PATH to allow required DLLs to load
     local _, path = wx.wxGetEnv("PATH")
@@ -46,7 +56,8 @@ return {
     end
 
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
+    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
+      function() if rundebug then wx.wxRemoveFile(filepath) end end)
 
     -- restore PATH
     wx.wxSetEnv("PATH", path)
