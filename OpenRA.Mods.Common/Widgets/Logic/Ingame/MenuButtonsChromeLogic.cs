@@ -98,7 +98,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var cachedPause = world.PredictedPaused;
 
 			if (button.HideIngameUI)
+			{
+				// Cancel custom input modes (guard, building placement, etc)
+				world.CancelInputMode();
+
 				worldRoot.IsVisible = () => false;
+			}
 
 			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
 				world.SetPauseState(true);
