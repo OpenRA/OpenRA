@@ -170,6 +170,7 @@ namespace OpenRA.FileFormats
 			out int sampleRate)
 		{
 			channels = sampleBits = sampleRate = 0;
+			var position = stream.Position;
 
 			try
 			{
@@ -186,6 +187,10 @@ namespace OpenRA.FileFormats
 				Log.Write("sound", e.ToString());
 				rawData = null;
 				return false;
+			}
+			finally
+			{
+				stream.Position = position;
 			}
 
 			channels = 1;

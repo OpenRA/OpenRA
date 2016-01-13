@@ -63,11 +63,8 @@ namespace OpenRA
 				int sampleBits;
 				int sampleRate;
 				foreach (var loader in Game.ModData.SoundLoaders)
-				{
-					stream.Position = 0;
 					if (loader.TryParseSound(stream, filename, out rawData, out channels, out sampleBits, out sampleRate))
 						return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
-				}
 
 				throw new InvalidDataException(filename + " is not a valid sound file!");
 			}

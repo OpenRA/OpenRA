@@ -181,6 +181,7 @@ namespace OpenRA.FileFormats
 		{
 			rawData = null;
 			channels = sampleBits = sampleRate = 0;
+			var position = stream.Position;
 
 			try
 			{
@@ -196,6 +197,10 @@ namespace OpenRA.FileFormats
 				Log.Write("sound", "Failed to parse WAV file {0}. Error message:".F(fileName));
 				Log.Write("sound", e.ToString());
 				return false;
+			}
+			finally
+			{
+				stream.Position = position;
 			}
 
 			rawData = RawOutput;
