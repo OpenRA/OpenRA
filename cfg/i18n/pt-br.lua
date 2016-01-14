@@ -1,6 +1,9 @@
+--- @author Evandro Costa <evandro.co>
+--- @date 26/12/2014
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
   ["%s event failed: %s"] = "Evento %s falhou: %s", -- src\editor\package.lua
+  ["%s%% formatted..."] = nil, -- src\editor\print.lua
   ["%s%% loaded..."] = nil, -- src\editor\commands.lua
   ["&About"] = "Sobre", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Adicionar observador", -- src\editor\debugger.lua
@@ -29,6 +32,7 @@ return {
   ["&Open..."] = "Abrir...", -- src\editor\menu_file.lua
   ["&Output/Console Window"] = "Saída/Console", -- src\editor\menu_view.lua
   ["&Paste"] = "Colar", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
+  ["&Print..."] = nil, -- src\editor\print.lua
   ["&Project Page"] = "&Página do projeto", -- src\editor\menu_help.lua
   ["&Project"] = "&Projeto", -- src\editor\menu_project.lua
   ["&Redo"] = "&Refazer", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -37,6 +41,7 @@ return {
   ["&Run"] = "Executa&r", -- src\editor\menu_project.lua
   ["&Save"] = "&Salvar", -- src\editor\gui.lua, src\editor\menu_file.lua
   ["&Search"] = "Localizar", -- src\editor\menu_search.lua
+  ["&Select Command"] = nil, -- src\editor\gui.lua
   ["&Sort"] = "Ordenar", -- src\editor\menu_edit.lua
   ["&Stack Window"] = "Pilha de execução", -- src\editor\menu_view.lua
   ["&Start Debugger Server"] = "Iniciar &servidor de depuração", -- src\editor\menu_project.lua
@@ -58,6 +63,8 @@ return {
   ["Binary file is shown as read-only as it is only partially loaded."] = nil, -- src\editor\commands.lua
   ["Bookmark"] = "Marcador", -- src\editor\menu_edit.lua
   ["Break execution at the next executed line of code"] = "Interromper execução na próxima linha de código", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Breakpoint"] = nil, -- src\editor\menu_project.lua
+  ["C&lear Console Window"] = nil, -- src\editor\gui.lua
   ["C&lear Output Window"] = "&Limpar janela de saída", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "C&omentar/Descomentar", -- src\editor\menu_edit.lua
   ["Can't evaluate the expression while the application is running."] = "Impossível executar a expressão enquanto a aplicação estiver em execução.", -- src\editor\debugger.lua
@@ -144,6 +151,7 @@ return {
   ["Find the next text occurrence"] = "Localizar a ocorrência posterior do texto", -- src\editor\menu_search.lua
   ["Find"] = "Localizar", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "Expandir ou recolher todos os blocos do código", -- src\editor\menu_edit.lua
+  ["Formatting page %d..."] = nil, -- src\editor\print.lua
   ["Found %d instance."] = {}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "Registro de autorrecuperação encontrado e sessão restaurada.", -- src\editor\commands.lua
   ["Full &Screen"] = "Tela inteira", -- src\editor\menu_view.lua
@@ -151,7 +159,9 @@ return {
   ["Go To File..."] = "Ir para o arquivo...", -- src\editor\menu_search.lua
   ["Go To Line..."] = "Ir para a linha...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Ir para o próximo marcador", -- src\editor\menu_edit.lua
+  ["Go To Next Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Previous Bookmark"] = "Ir para o marcador anterior", -- src\editor\menu_edit.lua
+  ["Go To Previous Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Symbol..."] = "Ir para o símbolo...", -- src\editor\menu_search.lua
   ["Go to file"] = "Ir para o arquivo", -- src\editor\menu_search.lua
   ["Go to line"] = "Ir para a linha", -- src\editor\menu_search.lua
@@ -169,6 +179,8 @@ return {
   ["Lua &Interpreter"] = "&Interpretador Lua", -- src\editor\menu_project.lua
   ["Map Directory..."] = nil, -- src\editor\filetree.lua
   ["Mapped remote request for '%s' to '%s'."] = "Solicitação remota '%s' mapeada para '%s'.", -- src\editor\debugger.lua
+  ["Markers Window"] = nil, -- src\editor\menu_view.lua
+  ["Markers"] = nil, -- src\editor\markers.lua
   ["Match case"] = "Diferenciar maiúsc/minúsc", -- src\editor\toolbar.lua
   ["Match whole word"] = "Somente palavras inteiras", -- src\editor\toolbar.lua
   ["Mixed end-of-line encodings detected."] = "Multíplas codificações de fim-de-linha encontradas.", -- src\editor\commands.lua
@@ -183,11 +195,13 @@ return {
   ["Output (running)"] = "Saída (executando)", -- src\editor\debugger.lua, src\editor\output.lua
   ["Output (suspended)"] = "Saída (suspendido)", -- src\editor\debugger.lua
   ["Output"] = "Saída", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
+  ["Page Setup..."] = nil, -- src\editor\print.lua
   ["Paste text from the clipboard"] = "Colar texto da área de transfêrencia", -- src\editor\menu_edit.lua
   ["Preferences"] = "Preferências", -- src\editor\menu_edit.lua
   ["Prepend '!' to force local execution."] = "Prefixe com '!' para forçar a execução local.", -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "Prefixe com '=' para exibir valores complexos em multíplas linhas.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Pressionar cancelar para abortar.", -- src\editor\commands.lua
+  ["Print the current document"] = nil, -- src\editor\print.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Programa '%s' iniciado em '%s' (pid: %d).", -- src\editor\output.lua
   ["Program can't start because conflicting process is running as '%s'."] = "Impossível iniciar programa porque um processo conflitante está em execução como '%s'.", -- src\editor\output.lua
   ["Program completed in %.2f seconds (pid: %d)."] = "Programa completado em %.2f segundos (pid: %d).", -- src\editor\output.lua
@@ -204,9 +218,10 @@ return {
   ["R/W"] = "R/W", -- src\editor\editor.lua
   ["Re&place In Files"] = "Substituir em arquivos", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Inserir recuos nas linhas selecionadas", -- src\editor\menu_edit.lua
+  ["Reached end of selection and wrapped around."] = nil, -- src\editor\findreplace.lua
   ["Reached end of text and wrapped around."] = nil, -- src\editor\findreplace.lua
-  ["Recent Projects"] = "Projetos recentes", -- src\editor\menu_file.lua
   ["Recent Files"] = "Arquivos recentes", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Projetos recentes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refazer última edição desfeita", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua
   ["Refresh indexed symbols from files in the selected directory"] = nil, -- src\editor\outline.lua
@@ -238,6 +253,7 @@ return {
   ["Saved auto-recover at %s."] = "Autorrecuperação salvo às %s.", -- src\editor\commands.lua
   ["Scratchpad error"] = "Erro no rascunho", -- src\editor\debugger.lua
   ["Search direction"] = nil, -- src\editor\toolbar.lua
+  ["Search in selection"] = nil, -- src\editor\toolbar.lua
   ["Search in subdirectories"] = nil, -- src\editor\toolbar.lua
   ["Searching for '%s'."] = nil, -- src\editor\findreplace.lua
   ["Sel: %d/%d"] = "Sel: %d/%d", -- src\editor\editor.lua
@@ -250,7 +266,9 @@ return {
   ["Set As Start File"] = nil, -- src\editor\filetree.lua
   ["Set From Current File"] = "Alterar para o arquivo atual", -- src\editor\menu_project.lua
   ["Set To Project Directory"] = nil, -- src\editor\findreplace.lua
+  ["Set To Selected Directory"] = nil, -- src\editor\filetree.lua
   ["Set project directory from current file"] = "Alterar pasta do projeto para a pasta do arquivo atual", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Set project directory to the selected one"] = nil, -- src\editor\filetree.lua
   ["Set search directory"] = nil, -- src\editor\toolbar.lua
   ["Set the interpreter to be used"] = "Alterar interpretador a ser utilizado", -- src\editor\menu_project.lua
   ["Set the project directory to be used"] = "Alterar pasta do projeto a ser utilizado", -- src\editor\menu_project.lua, src\editor\filetree.lua
@@ -285,10 +303,10 @@ return {
   ["Symbol Index"] = nil, -- src\editor\outline.lua
   ["Text not found."] = "Texto não encontrado.", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "O arquivo de API deve estar localizado em uma subpasta da pasta de API", -- src\editor\autocomplete.lua
-  ["Toggle Bookmark"] = "Alternar marcador", -- src\editor\menu_edit.lua
-  ["Toggle Breakpoint"] = "Alternar ponto de interrupção", -- src\editor\menu_project.lua
-  ["Toggle bookmark"] = "Alternar marcador", -- src\editor\toolbar.lua, src\editor\menu_edit.lua
-  ["Toggle breakpoint"] = "Alternar ponto de interrupção", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Toggle Bookmark"] = "Alternar marcador", -- src\editor\markers.lua, src\editor\menu_edit.lua
+  ["Toggle Breakpoint"] = "Alternar ponto de interrupção", -- src\editor\markers.lua, src\editor\menu_project.lua
+  ["Toggle bookmark"] = "Alternar marcador", -- src\editor\toolbar.lua, src\editor\menu_edit.lua, src\editor\markers.lua
+  ["Toggle breakpoint"] = "Alternar ponto de interrupção", -- src\editor\markers.lua, src\editor\toolbar.lua
   ["Tr&ace"] = "R&astrear", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "Rastrear execução exibindo cada linha de código executada", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = "Impossível criar pasta '%s'.", -- src\editor\filetree.lua
@@ -309,6 +327,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "Use '%s' para exibir os finais de linha e '%s' para convertê-los.", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "Use 'clear' para limpar a saída e o histórico.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Usar Shift-Enter para adicionar uma nova linha ao código.", -- src\editor\shellbox.lua
+  ["View the markers window"] = nil, -- src\editor\menu_view.lua
   ["View the outline window"] = "Exibir a janela de definições", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Exibir a janela de saída/console", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Exibir janela do projeto/hierarquia de arquivos", -- src\editor\menu_view.lua

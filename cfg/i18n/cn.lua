@@ -1,5 +1,6 @@
 return {
   ["%s event failed: %s"] = nil, -- src\editor\package.lua
+  ["%s%% formatted..."] = nil, -- src\editor\print.lua
   ["%s%% loaded..."] = nil, -- src\editor\commands.lua
   ["&About"] = "关于(&A)", -- src\editor\menu_help.lua
   ["&Add Watch"] = "添加监视(&A)", -- src\editor\debugger.lua
@@ -28,6 +29,7 @@ return {
   ["&Open..."] = "打开...", -- src\editor\menu_file.lua
   ["&Output/Console Window"] = "输出/主控台视窗", -- src\editor\menu_view.lua
   ["&Paste"] = "粘贴", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
+  ["&Print..."] = nil, -- src\editor\print.lua
   ["&Project Page"] = nil, -- src\editor\menu_help.lua
   ["&Project"] = "项目", -- src\editor\menu_project.lua
   ["&Redo"] = "重做", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -36,6 +38,7 @@ return {
   ["&Run"] = "执行", -- src\editor\menu_project.lua
   ["&Save"] = "保存", -- src\editor\gui.lua, src\editor\menu_file.lua
   ["&Search"] = "搜索", -- src\editor\menu_search.lua
+  ["&Select Command"] = nil, -- src\editor\gui.lua
   ["&Sort"] = "分类", -- src\editor\menu_edit.lua
   ["&Stack Window"] = "叠视窗/堆栈视窗", -- src\editor\menu_view.lua
   ["&Start Debugger Server"] = "开启除错器伺服机", -- src\editor\menu_project.lua
@@ -57,6 +60,8 @@ return {
   ["Binary file is shown as read-only as it is only partially loaded."] = nil, -- src\editor\commands.lua
   ["Bookmark"] = nil, -- src\editor\menu_edit.lua
   ["Break execution at the next executed line of code"] = "执行下一语句之后中断执行", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Breakpoint"] = nil, -- src\editor\menu_project.lua
+  ["C&lear Console Window"] = nil, -- src\editor\gui.lua
   ["C&lear Output Window"] = "清除输出视窗", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "注释/消除注释", -- src\editor\menu_edit.lua
   ["Can't evaluate the expression while the application is running."] = nil, -- src\editor\debugger.lua
@@ -143,6 +148,7 @@ return {
   ["Find the next text occurrence"] = "查找之後将出现的text", -- src\editor\menu_search.lua
   ["Find"] = "查找", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "折叠/展开所有代码折叠", -- src\editor\menu_edit.lua
+  ["Formatting page %d..."] = nil, -- src\editor\print.lua
   ["Found %d instance."] = {}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "找到自动恢复存档和恢复已存对话", -- src\editor\commands.lua
   ["Full &Screen"] = "全屏", -- src\editor\menu_view.lua
@@ -150,7 +156,9 @@ return {
   ["Go To File..."] = nil, -- src\editor\menu_search.lua
   ["Go To Line..."] = "到...行", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = nil, -- src\editor\menu_edit.lua
+  ["Go To Next Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Previous Bookmark"] = nil, -- src\editor\menu_edit.lua
+  ["Go To Previous Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
   ["Go to file"] = nil, -- src\editor\menu_search.lua
   ["Go to line"] = "到...行", -- src\editor\menu_search.lua
@@ -168,6 +176,8 @@ return {
   ["Lua &Interpreter"] = "Lua 解释器", -- src\editor\menu_project.lua
   ["Map Directory..."] = nil, -- src\editor\filetree.lua
   ["Mapped remote request for '%s' to '%s'."] = "映射远程请求 '%s' 至 '%s'", -- src\editor\debugger.lua
+  ["Markers Window"] = nil, -- src\editor\menu_view.lua
+  ["Markers"] = nil, -- src\editor\markers.lua
   ["Match case"] = "case匹配", -- src\editor\toolbar.lua
   ["Match whole word"] = "全句匹配", -- src\editor\toolbar.lua
   ["Mixed end-of-line encodings detected."] = "发现混杂的EOL编码", -- src\editor\commands.lua
@@ -182,11 +192,13 @@ return {
   ["Output (running)"] = "输出 (进行中)", -- src\editor\debugger.lua, src\editor\output.lua
   ["Output (suspended)"] = nil, -- src\editor\debugger.lua
   ["Output"] = "输出", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
+  ["Page Setup..."] = nil, -- src\editor\print.lua
   ["Paste text from the clipboard"] = "从clipboard粘贴text", -- src\editor\menu_edit.lua
   ["Preferences"] = "首选项", -- src\editor\menu_edit.lua
   ["Prepend '!' to force local execution."] = nil, -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "在多行展现复杂值请前置 '='", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "按 <cancel> 以退出", -- src\editor\commands.lua
+  ["Print the current document"] = nil, -- src\editor\print.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "程式 '%s' 执行于 '%s' (pid: %d).", -- src\editor\output.lua
   ["Program can't start because conflicting process is running as '%s'."] = "程序不能启动因为有名为 '%s' 的冲突进程", -- src\editor\output.lua
   ["Program completed in %.2f seconds (pid: %d)."] = "程序于 %.2f 秒完成 (pid: %d).", -- src\editor\output.lua
@@ -203,9 +215,10 @@ return {
   ["R/W"] = "读写", -- src\editor\editor.lua
   ["Re&place In Files"] = "在文档中替换", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = nil, -- src\editor\menu_edit.lua
+  ["Reached end of selection and wrapped around."] = nil, -- src\editor\findreplace.lua
   ["Reached end of text and wrapped around."] = nil, -- src\editor\findreplace.lua
-  ["Recent Projects"] = nil, -- src\editor\menu_file.lua
   ["Recent Files"] = "最近的文档", -- src\editor\menu_file.lua
+  ["Recent Projects"] = nil, -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "重做最后被取消的编辑", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua
   ["Refresh indexed symbols from files in the selected directory"] = nil, -- src\editor\outline.lua
@@ -237,6 +250,7 @@ return {
   ["Saved auto-recover at %s."] = "在 %s 存档自动恢复", -- src\editor\commands.lua
   ["Scratchpad error"] = "暂存器错误", -- src\editor\debugger.lua
   ["Search direction"] = nil, -- src\editor\toolbar.lua
+  ["Search in selection"] = nil, -- src\editor\toolbar.lua
   ["Search in subdirectories"] = nil, -- src\editor\toolbar.lua
   ["Searching for '%s'."] = nil, -- src\editor\findreplace.lua
   ["Sel: %d/%d"] = nil, -- src\editor\editor.lua
@@ -249,7 +263,9 @@ return {
   ["Set As Start File"] = nil, -- src\editor\filetree.lua
   ["Set From Current File"] = "从当前文档设置", -- src\editor\menu_project.lua
   ["Set To Project Directory"] = nil, -- src\editor\findreplace.lua
+  ["Set To Selected Directory"] = nil, -- src\editor\filetree.lua
   ["Set project directory from current file"] = "从当前文档设置项目文件夹", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Set project directory to the selected one"] = nil, -- src\editor\filetree.lua
   ["Set search directory"] = nil, -- src\editor\toolbar.lua
   ["Set the interpreter to be used"] = "设置解释器", -- src\editor\menu_project.lua
   ["Set the project directory to be used"] = "设置项目文件夹", -- src\editor\menu_project.lua, src\editor\filetree.lua
@@ -284,10 +300,10 @@ return {
   ["Symbol Index"] = nil, -- src\editor\outline.lua
   ["Text not found."] = "寻找不到text", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "API file必须存放在API文件夹中的子文件夹", -- src\editor\autocomplete.lua
-  ["Toggle Bookmark"] = nil, -- src\editor\menu_edit.lua
-  ["Toggle Breakpoint"] = "切换中断点", -- src\editor\menu_project.lua
-  ["Toggle bookmark"] = nil, -- src\editor\toolbar.lua, src\editor\menu_edit.lua
-  ["Toggle breakpoint"] = "切换中断点", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Toggle Bookmark"] = nil, -- src\editor\markers.lua, src\editor\menu_edit.lua
+  ["Toggle Breakpoint"] = "切换中断点", -- src\editor\markers.lua, src\editor\menu_project.lua
+  ["Toggle bookmark"] = nil, -- src\editor\toolbar.lua, src\editor\menu_edit.lua, src\editor\markers.lua
+  ["Toggle breakpoint"] = "切换中断点", -- src\editor\markers.lua, src\editor\toolbar.lua
   ["Tr&ace"] = "追踪", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "执行追踪展示每一执行过的语句", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = nil, -- src\editor\filetree.lua
@@ -308,6 +324,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "用 '%s' 来显示语句的终结和 '%s' 来进行转换", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "用 'clear' 来清除shell的输出和历史", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "用 <Shift-Enter> 来处理多行代码", -- src\editor\shellbox.lua
+  ["View the markers window"] = nil, -- src\editor\menu_view.lua
   ["View the outline window"] = nil, -- src\editor\menu_view.lua
   ["View the output/console window"] = "查看输出/主控台视窗", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "查看项目/文件树视窗", -- src\editor\menu_view.lua

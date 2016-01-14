@@ -1,6 +1,8 @@
+--- Traduko fare de cosmotect
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
   ["%s event failed: %s"] = "%s evento malplenumiĝas: %s", -- src\editor\package.lua
+  ["%s%% formatted..."] = nil, -- src\editor\print.lua
   ["%s%% loaded..."] = nil, -- src\editor\commands.lua
   ["&About"] = "&Pri", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Aldoni observadaĵon", -- src\editor\debugger.lua
@@ -29,6 +31,7 @@ return {
   ["&Open..."] = "&Malfermi...", -- src\editor\menu_file.lua
   ["&Output/Console Window"] = "&Eliga/Konzola fenestro", -- src\editor\menu_view.lua
   ["&Paste"] = "&Alglui", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
+  ["&Print..."] = nil, -- src\editor\print.lua
   ["&Project Page"] = "&Projektpaĝo", -- src\editor\menu_help.lua
   ["&Project"] = "&Projekto", -- src\editor\menu_project.lua
   ["&Redo"] = "&Refari", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -37,6 +40,7 @@ return {
   ["&Run"] = "&Plenumi", -- src\editor\menu_project.lua
   ["&Save"] = "&Konservi", -- src\editor\gui.lua, src\editor\menu_file.lua
   ["&Search"] = "&Serĉi", -- src\editor\menu_search.lua
+  ["&Select Command"] = nil, -- src\editor\gui.lua
   ["&Sort"] = "&Ordi", -- src\editor\menu_edit.lua
   ["&Stack Window"] = "&Staka fenestro", -- src\editor\menu_view.lua
   ["&Start Debugger Server"] = "&Ekfunkciigi sencimigilo-servilon", -- src\editor\menu_project.lua
@@ -58,6 +62,8 @@ return {
   ["Binary file is shown as read-only as it is only partially loaded."] = nil, -- src\editor\commands.lua
   ["Bookmark"] = "Legosigno", -- src\editor\menu_edit.lua
   ["Break execution at the next executed line of code"] = "Haltigi plenumon ĉe la sekva plenumata linio da fontkodo", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Breakpoint"] = nil, -- src\editor\menu_project.lua
+  ["C&lear Console Window"] = nil, -- src\editor\gui.lua
   ["C&lear Output Window"] = "Viŝi eligan fenestron", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "F&orkomenti/Eksforkomenti", -- src\editor\menu_edit.lua
   ["Can't evaluate the expression while the application is running."] = "Ne povas malkodi la esprimon dum funkciatas la aplikaĵo.", -- src\editor\debugger.lua
@@ -144,6 +150,7 @@ return {
   ["Find the next text occurrence"] = "Pluserĉi la aperaĵon da teksto", -- src\editor\menu_search.lua
   ["Find"] = "Traserĉi", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "Kaŝi aŭ malkaŝi ĉiujn faldaĵojn da fontkodoj", -- src\editor\menu_edit.lua
+  ["Formatting page %d..."] = nil, -- src\editor\print.lua
   ["Found %d instance."] = {}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "Trovis aŭtomatrestaŭran dosieron kaj riparis konservitan seancon.", -- src\editor\commands.lua
   ["Full &Screen"] = "Plenekrana &reĝimo", -- src\editor\menu_view.lua
@@ -151,7 +158,9 @@ return {
   ["Go To File..."] = nil, -- src\editor\menu_search.lua
   ["Go To Line..."] = "Iri al linio...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Iri al sekvanta legosigno", -- src\editor\menu_edit.lua
+  ["Go To Next Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Previous Bookmark"] = "Iri al antaŭanta legosigno", -- src\editor\menu_edit.lua
+  ["Go To Previous Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Symbol..."] = nil, -- src\editor\menu_search.lua
   ["Go to file"] = nil, -- src\editor\menu_search.lua
   ["Go to line"] = "Iri al linio", -- src\editor\menu_search.lua
@@ -169,6 +178,8 @@ return {
   ["Lua &Interpreter"] = "Interpretilo de Lua", -- src\editor\menu_project.lua
   ["Map Directory..."] = nil, -- src\editor\filetree.lua
   ["Mapped remote request for '%s' to '%s'."] = "Mapi faran peton pri '%s' al '%s'.", -- src\editor\debugger.lua
+  ["Markers Window"] = nil, -- src\editor\menu_view.lua
+  ["Markers"] = nil, -- src\editor\markers.lua
   ["Match case"] = "Atenti usklecon", -- src\editor\toolbar.lua
   ["Match whole word"] = "Atenti plenan vorton", -- src\editor\toolbar.lua
   ["Mixed end-of-line encodings detected."] = "Detektis kodoprezentojn miksitajn linifinajn", -- src\editor\commands.lua
@@ -183,11 +194,13 @@ return {
   ["Output (running)"] = "Eligo (funkciata)", -- src\editor\debugger.lua, src\editor\output.lua
   ["Output (suspended)"] = "Eligo (finetita)", -- src\editor\debugger.lua
   ["Output"] = "Eligo", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
+  ["Page Setup..."] = nil, -- src\editor\print.lua
   ["Paste text from the clipboard"] = "Alglui tekston el la tondejo", -- src\editor\menu_edit.lua
   ["Preferences"] = "Preferoj", -- src\editor\menu_edit.lua
   ["Prepend '!' to force local execution."] = "Antaŭdoni je '!' por altrudi lokan plenumon.", -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "Antaŭdoni je '=' por montri komplikajn valorojn sur multaj linioj.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Premu nulig-butonon por fini.", -- src\editor\commands.lua
+  ["Print the current document"] = nil, -- src\editor\print.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "La programo nome de '%s' komencitas en '%s' (pid: %d).", -- src\editor\output.lua
   ["Program can't start because conflicting process is running as '%s'."] = "La programo ne povas komenci, ĉar konflikta procezo funkcias kiel je la '%s'.", -- src\editor\output.lua
   ["Program completed in %.2f seconds (pid: %d)."] = "La programo finfaris post %.2f sekundoj", -- src\editor\output.lua
@@ -204,9 +217,10 @@ return {
   ["R/W"] = "L/S", -- src\editor\editor.lua
   ["Re&place In Files"] = "Anstataŭi en dosieroj", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Realinei elektitajn liniojn", -- src\editor\menu_edit.lua
+  ["Reached end of selection and wrapped around."] = nil, -- src\editor\findreplace.lua
   ["Reached end of text and wrapped around."] = nil, -- src\editor\findreplace.lua
-  ["Recent Projects"] = "Antaŭnelongaj projektoj", -- src\editor\menu_file.lua
   ["Recent Files"] = "Antaŭnelongaj dosieroj", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Antaŭnelongaj projektoj", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refari lastan redakton", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua
   ["Refresh indexed symbols from files in the selected directory"] = nil, -- src\editor\outline.lua
@@ -238,6 +252,7 @@ return {
   ["Saved auto-recover at %s."] = "Konservis aŭtomatrestaŭron je %s.", -- src\editor\commands.lua
   ["Scratchpad error"] = "Eraro de malnetdosiero", -- src\editor\debugger.lua
   ["Search direction"] = nil, -- src\editor\toolbar.lua
+  ["Search in selection"] = nil, -- src\editor\toolbar.lua
   ["Search in subdirectories"] = nil, -- src\editor\toolbar.lua
   ["Searching for '%s'."] = nil, -- src\editor\findreplace.lua
   ["Sel: %d/%d"] = "Ele: %d/%d", -- src\editor\editor.lua
@@ -250,7 +265,9 @@ return {
   ["Set As Start File"] = nil, -- src\editor\filetree.lua
   ["Set From Current File"] = "Precizigi per la kuranta dosiero", -- src\editor\menu_project.lua
   ["Set To Project Directory"] = nil, -- src\editor\findreplace.lua
+  ["Set To Selected Directory"] = nil, -- src\editor\filetree.lua
   ["Set project directory from current file"] = "Precizigi la projektan dosierujon per la kurantan dosieron", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Set project directory to the selected one"] = nil, -- src\editor\filetree.lua
   ["Set search directory"] = nil, -- src\editor\toolbar.lua
   ["Set the interpreter to be used"] = "Precizigi la interpretiloton", -- src\editor\menu_project.lua
   ["Set the project directory to be used"] = "Precizigi la projekt-dosierujoton", -- src\editor\menu_project.lua, src\editor\filetree.lua
@@ -285,10 +302,10 @@ return {
   ["Symbol Index"] = nil, -- src\editor\outline.lua
   ["Text not found."] = "Teksto ne trovitis", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "La dosiero de API devas troviĝi en subdosierujo de la API-a dosierujo.", -- src\editor\autocomplete.lua
-  ["Toggle Bookmark"] = "Baskuli legosignon", -- src\editor\menu_edit.lua
-  ["Toggle Breakpoint"] = "Baskuli haltopunkto", -- src\editor\menu_project.lua
-  ["Toggle bookmark"] = "Baskuli legosignon", -- src\editor\toolbar.lua, src\editor\menu_edit.lua
-  ["Toggle breakpoint"] = "Baskuli haltopunkto", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Toggle Bookmark"] = "Baskuli legosignon", -- src\editor\markers.lua, src\editor\menu_edit.lua
+  ["Toggle Breakpoint"] = "Baskuli haltopunkto", -- src\editor\markers.lua, src\editor\menu_project.lua
+  ["Toggle bookmark"] = "Baskuli legosignon", -- src\editor\toolbar.lua, src\editor\menu_edit.lua, src\editor\markers.lua
+  ["Toggle breakpoint"] = "Baskuli haltopunkto", -- src\editor\markers.lua, src\editor\toolbar.lua
   ["Tr&ace"] = "Spuri", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "Spurili plenumon per montri ĉiun plenumitan linion", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = "Ne kapablas krei je la dosierujo '%s'.", -- src\editor\filetree.lua
@@ -309,6 +326,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "Uzu je '%s' por montri linifinojn kaj je '%s' por konverti ilin", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "Tajpu 'clear' por viŝi la eligon kaj historion de la ŝelo.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Uzu <Majuskligklavon-Enenklavon> por plurlinia fontkodo.", -- src\editor\shellbox.lua
+  ["View the markers window"] = nil, -- src\editor\menu_view.lua
   ["View the outline window"] = "Vidi la skemo-fenestron", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Vidi la eligo/konzolo-fenestron", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Vidi la projekto/dosierarbo-fenestron", -- src\editor\menu_view.lua

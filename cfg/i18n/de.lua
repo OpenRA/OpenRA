@@ -1,6 +1,7 @@
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
   ["%s event failed: %s"] = "Ereignis fehlgeschlagen : %s", -- src\editor\package.lua
+  ["%s%% formatted..."] = nil, -- src\editor\print.lua
   ["%s%% loaded..."] = "%s%% geladen...", -- src\editor\commands.lua
   ["&About"] = "&Über", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Beobachtungspunkt hinzufügen", -- src\editor\debugger.lua
@@ -29,6 +30,7 @@ return {
   ["&Open..."] = "&Öffnen...", -- src\editor\menu_file.lua
   ["&Output/Console Window"] = "&Ausgabefenster/Konsole", -- src\editor\menu_view.lua
   ["&Paste"] = "&Einfügen", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
+  ["&Print..."] = nil, -- src\editor\print.lua
   ["&Project Page"] = "&Projektseite", -- src\editor\menu_help.lua
   ["&Project"] = "&Projekt", -- src\editor\menu_project.lua
   ["&Redo"] = "&Wiederholen", -- src\editor\gui.lua, src\editor\editor.lua, src\editor\menu_edit.lua
@@ -37,6 +39,7 @@ return {
   ["&Run"] = "&Starten", -- src\editor\menu_project.lua
   ["&Save"] = "&Speichern", -- src\editor\gui.lua, src\editor\menu_file.lua
   ["&Search"] = "&Suchen", -- src\editor\menu_search.lua
+  ["&Select Command"] = nil, -- src\editor\gui.lua
   ["&Sort"] = "&Sortieren", -- src\editor\menu_edit.lua
   ["&Stack Window"] = "&Stapel/Stack", -- src\editor\menu_view.lua
   ["&Start Debugger Server"] = "De&bugserver starten", -- src\editor\menu_project.lua
@@ -58,6 +61,8 @@ return {
   ["Binary file is shown as read-only as it is only partially loaded."] = "Binärdatei ist als schreibgeschützt angezeigt, da sie nur teilweise geladen wurde.", -- src\editor\commands.lua
   ["Bookmark"] = "Lese&zeichen", -- src\editor\menu_edit.lua
   ["Break execution at the next executed line of code"] = "Programmausführung bei der nächsten ausgeführten Zeile stoppen", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Breakpoint"] = nil, -- src\editor\menu_project.lua
+  ["C&lear Console Window"] = nil, -- src\editor\gui.lua
   ["C&lear Output Window"] = "Ausgabefenster l&öschen", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "(Aus-)/K&ommentieren", -- src\editor\menu_edit.lua
   ["Can't evaluate the expression while the application is running."] = "Kann den Ausdruck nicht auswerten solange die Anwendung läuft.", -- src\editor\debugger.lua
@@ -144,6 +149,7 @@ return {
   ["Find the next text occurrence"] = "Finde nächstes Auftreten des Textes", -- src\editor\menu_search.lua
   ["Find"] = "Finden", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "Alle Stellen im Code ein-/ausklappen ", -- src\editor\menu_edit.lua
+  ["Formatting page %d..."] = nil, -- src\editor\print.lua
   ["Found %d instance."] = {"Eine Instanz gefunden", "%d Instanzen gefunden."}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "Autowiederherstellen-Aufzeichnung gefunden und vorherige Sitzung wiederhergestellt.", -- src\editor\commands.lua
   ["Full &Screen"] = "&Vollbild", -- src\editor\menu_view.lua
@@ -151,7 +157,9 @@ return {
   ["Go To File..."] = "Gehe zu Datei...", -- src\editor\menu_search.lua
   ["Go To Line..."] = "Gehe zu Zeile...", -- src\editor\menu_search.lua
   ["Go To Next Bookmark"] = "Zu nächstem Lesezeichen", -- src\editor\menu_edit.lua
+  ["Go To Next Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Previous Bookmark"] = "Zu vorherigem Lesezeichen", -- src\editor\menu_edit.lua
+  ["Go To Previous Breakpoint"] = nil, -- src\editor\menu_project.lua
   ["Go To Symbol..."] = "Gehe zu Symbol...", -- src\editor\menu_search.lua
   ["Go to file"] = "Gehe zu Datei", -- src\editor\menu_search.lua
   ["Go to line"] = "Gehe zu Zeile", -- src\editor\menu_search.lua
@@ -169,6 +177,8 @@ return {
   ["Lua &Interpreter"] = "&Lua Interpreter", -- src\editor\menu_project.lua
   ["Map Directory..."] = "Verzeichnis virtuell einbinden...", -- src\editor\filetree.lua
   ["Mapped remote request for '%s' to '%s'."] = "Fern-Aufforderung für '%s' auf '%s' abgebildet.", -- src\editor\debugger.lua
+  ["Markers Window"] = nil, -- src\editor\menu_view.lua
+  ["Markers"] = nil, -- src\editor\markers.lua
   ["Match case"] = "Groß-/Kleinschreibung", -- src\editor\toolbar.lua
   ["Match whole word"] = "Ganzes Wort", -- src\editor\toolbar.lua
   ["Mixed end-of-line encodings detected."] = "Gemischte End-of-Line Kodierung entdeckt.", -- src\editor\commands.lua
@@ -183,11 +193,13 @@ return {
   ["Output (running)"] = "Ausgabe (ausgeführt)", -- src\editor\debugger.lua, src\editor\output.lua
   ["Output (suspended)"] = "Ausgabe (angehalten)", -- src\editor\debugger.lua
   ["Output"] = "Ausgabe", -- src\editor\debugger.lua, src\editor\output.lua, src\editor\gui.lua, src\editor\settings.lua
+  ["Page Setup..."] = nil, -- src\editor\print.lua
   ["Paste text from the clipboard"] = "Text aus Zwischenablage einfügen", -- src\editor\menu_edit.lua
   ["Preferences"] = "Einstellungen", -- src\editor\menu_edit.lua
   ["Prepend '!' to force local execution."] = "'!' voranstellen um lokale Ausführung zu erzwingen.", -- src\editor\shellbox.lua
   ["Prepend '=' to show complex values on multiple lines."] = "'=' voranstellen, um komplexe Ausdrücke auf mehrere Zeilen zu verteilen.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Abbrechen Drücken zum Beenden.", -- src\editor\commands.lua
+  ["Print the current document"] = nil, -- src\editor\print.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Programm '%s' gestartet in '%s' (pid : %d).", -- src\editor\output.lua
   ["Program can't start because conflicting process is running as '%s'."] = "Programm kann nicht starten, da blockierender Prozeß als '%s' läuft.", -- src\editor\output.lua
   ["Program completed in %.2f seconds (pid: %d)."] = "Programm beendet nach %.2f Sekunden (pid : %d).", -- src\editor\output.lua
@@ -204,9 +216,10 @@ return {
   ["R/W"] = "R/W", -- src\editor\editor.lua
   ["Re&place In Files"] = "Ersetze in &Dateien", -- src\editor\menu_search.lua
   ["Re-indent selected lines"] = "Ausgewählte Zeilen neu einrücken", -- src\editor\menu_edit.lua
+  ["Reached end of selection and wrapped around."] = nil, -- src\editor\findreplace.lua
   ["Reached end of text and wrapped around."] = "Ende des Textes erreicht, setze am Beginn fort.", -- src\editor\findreplace.lua
-  ["Recent Projects"] = "Letzte Projekte", -- src\editor\menu_file.lua
   ["Recent Files"] = "Letzte Dateien", -- src\editor\menu_file.lua
+  ["Recent Projects"] = "Letzte Projekte", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Stelle letzte rückgängig gemachte Bearbeitung wieder her", -- src\editor\menu_edit.lua
   ["Refresh Index"] = "Index erneuern", -- src\editor\outline.lua
   ["Refresh indexed symbols from files in the selected directory"] = "Erneuere indizierte Symbole in Dateien des ausgewählten Verzeichnisses", -- src\editor\outline.lua
@@ -238,6 +251,7 @@ return {
   ["Saved auto-recover at %s."] = "%s Autowiederherstellen gespeichert.", -- src\editor\commands.lua
   ["Scratchpad error"] = "Fehler im Entwurf", -- src\editor\debugger.lua
   ["Search direction"] = "Suchrichtung", -- src\editor\toolbar.lua
+  ["Search in selection"] = nil, -- src\editor\toolbar.lua
   ["Search in subdirectories"] = "Suche in Unterverzeichnissen", -- src\editor\toolbar.lua
   ["Searching for '%s'."] = "Suche nach '%s'.", -- src\editor\findreplace.lua
   ["Sel: %d/%d"] = "Ausgew.: %d/%d", -- src\editor\editor.lua
@@ -250,7 +264,9 @@ return {
   ["Set As Start File"] = "Als Startdatei definieren.", -- src\editor\filetree.lua
   ["Set From Current File"] = "Anhand der aktuellen Datei festlegen", -- src\editor\menu_project.lua
   ["Set To Project Directory"] = "Setze als Projektverzeichnis", -- src\editor\findreplace.lua
+  ["Set To Selected Directory"] = nil, -- src\editor\filetree.lua
   ["Set project directory from current file"] = "Lege Projektverzeichnis anhand der aktuellen Datei fest", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Set project directory to the selected one"] = nil, -- src\editor\filetree.lua
   ["Set search directory"] = "Setze Suchverzeichnis", -- src\editor\toolbar.lua
   ["Set the interpreter to be used"] = "Wähle zu benutzenden Interpreter aus", -- src\editor\menu_project.lua
   ["Set the project directory to be used"] = "Lege zu benutzendes Projektverzeichnis fest", -- src\editor\menu_project.lua, src\editor\filetree.lua
@@ -285,10 +301,10 @@ return {
   ["Symbol Index"] = "Symbolindex", -- src\editor\outline.lua
   ["Text not found."] = "Text nicht gefunden.", -- src\editor\findreplace.lua
   ["The API file must be located in a subdirectory of the API directory."] = "Die API-Datei muß sich in einem Unterverzeichnis des API-Verzeichnisses befinden.", -- src\editor\autocomplete.lua
-  ["Toggle Bookmark"] = "Lesezeichen setzen/löschen", -- src\editor\menu_edit.lua
-  ["Toggle Breakpoint"] = "Haltepunkt an/aus", -- src\editor\menu_project.lua
-  ["Toggle bookmark"] = "Lesezeichen setzen/löschen", -- src\editor\toolbar.lua, src\editor\menu_edit.lua
-  ["Toggle breakpoint"] = "Haltepunkt an/aus", -- src\editor\toolbar.lua, src\editor\menu_project.lua
+  ["Toggle Bookmark"] = "Lesezeichen setzen/löschen", -- src\editor\markers.lua, src\editor\menu_edit.lua
+  ["Toggle Breakpoint"] = "Haltepunkt an/aus", -- src\editor\markers.lua, src\editor\menu_project.lua
+  ["Toggle bookmark"] = "Lesezeichen setzen/löschen", -- src\editor\toolbar.lua, src\editor\menu_edit.lua, src\editor\markers.lua
+  ["Toggle breakpoint"] = "Haltepunkt an/aus", -- src\editor\markers.lua, src\editor\toolbar.lua
   ["Tr&ace"] = "Ablauf &verfolgen", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "Ablaufverfolgung zeigt jede ausgeführte Zeile an", -- src\editor\menu_project.lua
   ["Unable to create directory '%s'."] = "Kann kein Verzeichnis '%s' erstellen.", -- src\editor\filetree.lua
@@ -309,6 +325,7 @@ return {
   ["Use '%s' to show line endings and '%s' to convert them."] = "'%s' um Zeilenende-Codes zu sehen, und '%s' um sie zu konvertieren.", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "'clear' um Ausgabefenster und Verlauf zu löschen.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "<Umsch-Eingabetaste> für Code in mehreren Zeilen.", -- src\editor\shellbox.lua
+  ["View the markers window"] = nil, -- src\editor\menu_view.lua
   ["View the outline window"] = "Übersichtsfenster ansehen", -- src\editor\menu_view.lua
   ["View the output/console window"] = "Ausgabe-/Konsolenfenster ansehen", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Projekt-/Dateifenster ansehen", -- src\editor\menu_view.lua
