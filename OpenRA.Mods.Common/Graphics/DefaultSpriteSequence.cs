@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		readonly Sprite[] sprites;
-		readonly bool reverseFacings, transpose;
+		readonly bool reverseFacings, transpose, useClassicFacingFudge;
 
 		protected readonly ISpriteSequenceLoader Loader;
 
@@ -129,6 +129,8 @@ namespace OpenRA.Mods.Common.Graphics
 				Tick = LoadField(d, "Tick", 40);
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
+				useClassicFacingFudge = LoadField(d, "UseClassicFacingFudge", false);
+
 				var flipX = LoadField(d, "FlipX", false);
 				var flipY = LoadField(d, "FlipY", false);
 
@@ -138,6 +140,11 @@ namespace OpenRA.Mods.Common.Graphics
 					reverseFacings = true;
 					Facings = -Facings;
 				}
+
+				if (useClassicFacingFudge && Facings != 32)
+					throw new InvalidOperationException(
+						"{0}: Sequence {1}.{2}: UseClassicFacingFudge is only valid for 32 facings"
+						.F(info.Nodes[0].Location, sequence, animation));
 
 				var offset = LoadField(d, "Offset", float2.Zero);
 				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
@@ -237,8 +244,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual Sprite GetSprite(int start, int frame, int facing)
 		{
-			var f = Util.QuantizeFacing(facing, Facings);
-
+			var f = Util.QuantizeFacing(facing, Facings, useClassicFacingFudge);
 			if (reverseFacings)
 				f = (Facings - f) % Facings;
 
