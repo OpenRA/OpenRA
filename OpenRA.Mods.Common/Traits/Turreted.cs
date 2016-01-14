@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Quantize orientation to match a rendered sprite
 			// Implies no pitch or yaw
-			var facing = Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
+			var facing = body.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings);
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 
