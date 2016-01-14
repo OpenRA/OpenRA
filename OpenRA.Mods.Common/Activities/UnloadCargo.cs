@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				self.NotifyBlocker(BlockedExitCells(actor));
 
-				return Util.SequenceActivities(new Wait(10), this);
+				return ActivityUtils.SequenceActivities(new Wait(10), this);
 			}
 
 			cargo.Unload(self);

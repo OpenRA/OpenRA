@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (inner == null)
 				return NextActivity;
 
-			inner = Util.RunActivity(self, inner);
+			inner = ActivityUtils.RunActivity(self, inner);
 
 			return this;
 		}

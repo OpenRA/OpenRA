@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 			var deliver = new DeliverResources(self);
 
 			if (harv.IsFull)
-				return Util.SequenceActivities(deliver, NextActivity);
+				return ActivityUtils.SequenceActivities(deliver, NextActivity);
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				var randFrames = self.World.SharedRandom.Next(100, 175);
-				return Util.SequenceActivities(NextActivity, new Wait(randFrames), this);
+				return ActivityUtils.SequenceActivities(NextActivity, new Wait(randFrames), this);
 			}
 			else
 			{
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (territory != null)
 				{
 					if (!territory.ClaimResource(self, closestHarvestablePosition.Value))
-						return Util.SequenceActivities(new Wait(25), next);
+						return ActivityUtils.SequenceActivities(new Wait(25), next);
 				}
 
 				// If not given a direct order, assume ordered to the first resource location we find:
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notify)
 					n.MovingToResources(self, closestHarvestablePosition.Value, next);
 
-				return Util.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), next);
+				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), next);
 			}
 		}
 

@@ -54,45 +54,6 @@ namespace OpenRA.Traits
 			return WPos.Lerp(w.Map.CenterOfCell(from), w.Map.CenterOfCell(to), 1, 2);
 		}
 
-		public static Activity SequenceActivities(params Activity[] acts)
-		{
-			return acts.Reverse().Aggregate(
-				(next, a) => { a.Queue(next); return a; });
-		}
-
-		public static Activity RunActivity(Actor self, Activity act)
-		{
-			// PERF: If there are no activities we can bail straight away and save ourselves a call to
-			// Stopwatch.GetTimestamp.
-			if (act == null)
-				return act;
-
-			// PERF: This is a hot path and must run with minimal added overhead.
-			// Calling Stopwatch.GetTimestamp is a bit expensive, so we enumerate manually to allow us to call it only
-			// once per iteration in the normal case.
-			// See also: DoTimed
-			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
-			var start = Stopwatch.GetTimestamp();
-			while (act != null)
-			{
-				var prev = act;
-				act = act.Tick(self);
-				var current = Stopwatch.GetTimestamp();
-				if (current - start > longTickThresholdInStopwatchTicks)
-				{
-					PerfTimer.LogLongTick(start, current, "Activity", prev);
-					start = Stopwatch.GetTimestamp();
-				}
-				else
-					start = current;
-
-				if (prev == act)
-					break;
-			}
-
-			return act;
-		}
-
 		/* pretty crap */
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)
 		{

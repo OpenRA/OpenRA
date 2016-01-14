@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			inner = Util.RunActivity(self, inner);
+			inner = ActivityUtils.RunActivity(self, inner);
 			return this;
 		}
 

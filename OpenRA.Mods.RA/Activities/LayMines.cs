@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				return Util.SequenceActivities(
+				return ActivityUtils.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
 					new Rearm(self),
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
-				return Util.SequenceActivities(new Wait(20), this); // A little wait after placing each mine, for show
+				return ActivityUtils.SequenceActivities(new Wait(20), this); // A little wait after placing each mine, for show
 			}
 
 			if (minelayer.Minefield.Length > 0)
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					var p = minelayer.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return Util.SequenceActivities(movement.MoveTo(p, 0), this);
+						return ActivityUtils.SequenceActivities(movement.MoveTo(p, 0), this);
 				}
 			}
 

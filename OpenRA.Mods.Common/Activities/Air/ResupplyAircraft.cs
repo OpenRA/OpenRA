@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return NextActivity;
 
-			return Util.SequenceActivities(
+			return ActivityUtils.SequenceActivities(
 				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
 		}
 	}

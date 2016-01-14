@@ -106,12 +106,12 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return Util.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
+					return ActivityUtils.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
 				else
 					return new FlyCircle(self);
 			}
 
-			return Util.SequenceActivities(
+			return ActivityUtils.SequenceActivities(
 				new Fly(self, Target.FromPos(w1)),
 				new Fly(self, Target.FromPos(w2)),
 				new Fly(self, Target.FromPos(w3)),

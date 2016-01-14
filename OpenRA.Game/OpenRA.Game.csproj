@@ -255,6 +255,7 @@
     <Compile Include="Primitives\ObservableList.cs" />
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
+    <Compile Include="Traits\ActivityUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

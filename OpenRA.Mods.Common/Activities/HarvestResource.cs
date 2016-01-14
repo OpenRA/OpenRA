@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 				var current = facing.Facing;
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
-					return Util.SequenceActivities(new Turn(self, desired), this);
+					return ActivityUtils.SequenceActivities(new Turn(self, desired), this);
 			}
 
 			var resource = resLayer.Harvest(self.Location);
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
+			return ActivityUtils.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }

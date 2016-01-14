@@ -86,7 +86,7 @@ namespace OpenRA.Mods.D2k.Activities
 				case State.Transport:
 					var targetl = GetLocationToDrop(carryable.Destination);
 					state = State.Land;
-					return Util.SequenceActivities(movement.MoveTo(targetl, 0), this);
+					return ActivityUtils.SequenceActivities(movement.MoveTo(targetl, 0), this);
 
 				case State.Land:
 					if (!CanDropHere())
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Activities
 					if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.LandAltitude))
 						return this;
 					state = State.Release;
-					return Util.SequenceActivities(new Wait(15), this);
+					return ActivityUtils.SequenceActivities(new Wait(15), this);
 
 				case State.Release:
 					if (!CanDropHere())

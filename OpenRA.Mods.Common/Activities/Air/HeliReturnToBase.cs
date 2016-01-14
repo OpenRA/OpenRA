@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Activities
 									.ClosestTo(self);
 
 				if (nearestHpad == null)
-					return Util.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
+					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
 				else
-					return Util.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
+					return ActivityUtils.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
 			}
 
 			heli.MakeReservation(dest);
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-			return Util.SequenceActivities(
+			return ActivityUtils.SequenceActivities(
 				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
 				new Turn(self, initialFacing),
 				new HeliLand(self, false),
