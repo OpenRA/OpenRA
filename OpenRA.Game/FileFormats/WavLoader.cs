@@ -68,24 +68,17 @@ namespace OpenRA.FileFormats
 						s.ReadBytes(FmtChunkSize - 16);
 						break;
 					case "fact":
-						{
-							var chunkSize = s.ReadInt32();
-							UncompressedSize = s.ReadInt32();
-							s.ReadBytes(chunkSize - 4);
-						}
-
+						var chunkSize = s.ReadInt32();
+						UncompressedSize = s.ReadInt32();
+						s.ReadBytes(chunkSize - 4);
 						break;
 					case "data":
 						DataSize = s.ReadInt32();
 						RawOutput = s.ReadBytes(DataSize);
 						break;
 					default:
-						// Ignore unknown chunks
-						{
-							var chunkSize = s.ReadInt32();
-							s.ReadBytes(chunkSize);
-						}
-
+						var unknownChunkSize = s.ReadInt32();
+						s.ReadBytes(unknownChunkSize);
 						break;
 				}
 			}
