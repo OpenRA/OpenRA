@@ -35,6 +35,14 @@
 		Name: Corrino
 		InternalName: corrino
 		Selectable: false
+	Faction@Mercenaries:
+		Name: Mercenaries
+		InternalName: mercenary
+		Selectable: false
+	Faction@Smugglers:
+		Name: Smugglers
+		InternalName: smuggler
+		Selectable: false
 	ResourceType@Spice:
 		ResourceType: 1
 		Palette: d2k

@@ -1497,7 +1497,7 @@ palace.corrino:
 		Offset: -48,48
 		Tick: 100
 
-starport.corrino:
+starport.smuggler:
 	idle: DATA.R8
 		Start: 2999
 		Offset: -48,48
@@ -1541,7 +1541,7 @@ starport.corrino:
 		Start: 4020
 		Offset: -30,-24
 
-heavy.corrino:
+heavy.mercenary:
 	idle: DATA.R8
 		Start: 3001
 		Offset: -48,64

@@ -265,7 +265,7 @@ upgrade.heavy:
 		FactionImages:
 			atreides: heavy.atreides
 			ordos: heavy.ordos
-			corrino: heavy.corrino
+			mercenary: heavy.mercenary
 	ProvidesPrerequisite@upgradename:
 
 upgrade.hightech:
