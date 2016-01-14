@@ -414,15 +414,19 @@ wood:
 gun:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	recoil:
 		Start: 32
 		Facings: 32
+		UseClassicFacingFudge: True
 	damaged-idle:
 		Start: 64
 		Facings: 32
+		UseClassicFacingFudge: True
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+		UseClassicFacingFudge: True
 	make: gunmake
 		Length: *
 		Tick: 80
@@ -449,6 +453,7 @@ sam:
 	idle:
 		Start: 17
 		Facings: 32
+		UseClassicFacingFudge: True
 	closing:
 		Start: 50
 		Length: 14
@@ -462,6 +467,7 @@ sam:
 	damaged-idle:
 		Start: 81
 		Facings: 32
+		UseClassicFacingFudge: True
 	damaged-closing:
 		Start: 114
 		Length: 14

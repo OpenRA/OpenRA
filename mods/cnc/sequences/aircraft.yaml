@@ -1,11 +1,13 @@
 c17:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	icon: c17icnh
 
 tran:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	rotor: lrotor
 		Length: 4
 	rotor2: rrotor
@@ -27,6 +29,7 @@ tran:
 heli:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	rotor: lrotor
 		Length: 4
 	slow-rotor: lrotor
@@ -41,6 +44,7 @@ heli:
 orca:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	move:
 		Start: 32
 		Facings: 32
@@ -50,6 +54,7 @@ orca:
 a10:
 	idle:
 		Facings: 32
+		UseClassicFacingFudge: True
 	muzzle: minigun
 		Length: 6
 		Facings: 8
