@@ -509,7 +509,6 @@ combat_tank_o:
 		Weapon: 80mm_O
 	Mobile:
 		Speed: 85
-		ROT: 5
 	Health:
 		HP: 1800
 	SpawnActorOnDeath:
