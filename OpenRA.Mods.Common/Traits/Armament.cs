@@ -253,7 +253,10 @@ namespace OpenRA.Mods.Common.Traits
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
 			if (turret != null)
 			{
-				var turretOrientation = coords.QuantizeOrientation(self, turret.LocalOrientation(self));
+				// WorldOrientation is quantized to satisfy the *Fudges.
+				// Need to then convert back to a pseudo-local coordinate space, apply offsets,
+				// then rotate back at the end
+				var turretOrientation = turret.WorldOrientation(self) - bodyOrientation;
 				localOffset = localOffset.Rotate(turretOrientation);
 				localOffset += turret.Offset;
 			}
@@ -263,10 +266,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
-			var orientation = self.Orientation + WRot.FromYaw(b.Yaw);
-			if (turret != null)
-				orientation += turret.LocalOrientation(self);
-			return orientation;
+			var orientation = turret != null ? turret.WorldOrientation(self) :
+				coords.QuantizeOrientation(self, self.Orientation);
+
+			return orientation + WRot.FromYaw(b.Yaw);
 		}
 
 		public Actor Actor { get { return self; } }

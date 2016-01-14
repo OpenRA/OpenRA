@@ -84,20 +84,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		WVec BarrelOffset()
 		{
+			var b = self.Orientation;
+			var qb = body.QuantizeOrientation(self, b);
 			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 			var turretLocalOffset = turreted != null ? turreted.Offset : WVec.Zero;
-			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
+			var turretOrientation = turreted != null ? turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw) : WRot.Zero;
 
-			var quantizedBody = body.QuantizeOrientation(self, self.Orientation);
-			var quantizedTurret = body.QuantizeOrientation(self, turretOrientation);
-			return body.LocalToWorld((turretLocalOffset + localOffset.Rotate(quantizedTurret)).Rotate(quantizedBody));
+			return body.LocalToWorld((turretLocalOffset + localOffset.Rotate(turretOrientation)).Rotate(qb));
 		}
 
 		IEnumerable<WRot> BarrelRotation()
 		{
 			var b = self.Orientation;
 			var qb = body.QuantizeOrientation(self, b);
-			yield return turreted.LocalOrientation(self) + WRot.FromYaw(b.Yaw - qb.Yaw);
+			yield return turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}
 
