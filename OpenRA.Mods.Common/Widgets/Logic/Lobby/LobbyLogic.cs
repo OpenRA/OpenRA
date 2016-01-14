@@ -190,8 +190,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
 			{
-				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
-					Map.RuleStatus != MapRuleStatus.Cached || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
+				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||	Map.RuleStatus != MapRuleStatus.Cached ||
+					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
+					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
 
 				var botNames = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
