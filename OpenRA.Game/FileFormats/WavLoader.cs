@@ -43,7 +43,6 @@ namespace OpenRA.FileFormats
 			Format = s.ReadASCII(4);
 			if (Format != "WAVE")
 				return false;
-
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
@@ -57,8 +56,8 @@ namespace OpenRA.FileFormats
 						AudioFormat = s.ReadInt16();
 						Type = (WaveType)AudioFormat;
 
-						if (Type != WaveType.Pcm && Type != WaveType.ImaAdpcm)
-							throw new NotSupportedException("Compression type is not supported.");
+						if (!Enum.IsDefined(typeof(WaveType), Type))
+							throw new NotSupportedException("Compression type {0} is not supported.".F(AudioFormat));
 
 						Channels = s.ReadInt16();
 						SampleRate = s.ReadInt32();
@@ -69,24 +68,17 @@ namespace OpenRA.FileFormats
 						s.ReadBytes(FmtChunkSize - 16);
 						break;
 					case "fact":
-						{
-							var chunkSize = s.ReadInt32();
-							UncompressedSize = s.ReadInt32();
-							s.ReadBytes(chunkSize - 4);
-						}
-
+						var chunkSize = s.ReadInt32();
+						UncompressedSize = s.ReadInt32();
+						s.ReadBytes(chunkSize - 4);
 						break;
 					case "data":
 						DataSize = s.ReadInt32();
 						RawOutput = s.ReadBytes(DataSize);
 						break;
 					default:
-						// Ignore unknown chunks
-						{
-							var chunkSize = s.ReadInt32();
-							s.ReadBytes(chunkSize);
-						}
-
+						var unknownChunkSize = s.ReadInt32();
+						s.ReadBytes(unknownChunkSize);
 						break;
 				}
 			}
@@ -189,6 +181,7 @@ namespace OpenRA.FileFormats
 		{
 			rawData = null;
 			channels = sampleBits = sampleRate = 0;
+			var position = stream.Position;
 
 			try
 			{
@@ -201,9 +194,13 @@ namespace OpenRA.FileFormats
 				// If not, it will simply return false so we know we can't use it. If it is, it will start
 				// parsing the data without any further failsafes, which means that it will crash on corrupted files
 				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
-				Log.Write("debug", "Failed to parse WAV file {0}. Error message:".F(fileName));
-				Log.Write("debug", e.ToString());
+				Log.Write("sound", "Failed to parse WAV file {0}. Error message:".F(fileName));
+				Log.Write("sound", e.ToString());
 				return false;
+			}
+			finally
+			{
+				stream.Position = position;
 			}
 
 			rawData = RawOutput;

@@ -19,6 +19,8 @@ namespace OpenRA.FileFormats
 	{
 		bool ISoundLoader.TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate)
 		{
+			var position = stream.Position;
+
 			try
 			{
 				var vocStream = new VocStream(stream);
@@ -32,6 +34,10 @@ namespace OpenRA.FileFormats
 				rawData = null;
 				channels = sampleBits = sampleRate = 0;
 				return false;
+			}
+			finally
+			{
+				stream.Position = position;
 			}
 
 			return true;

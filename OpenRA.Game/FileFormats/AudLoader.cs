@@ -125,12 +125,12 @@ namespace OpenRA.FileFormats
 			sampleRate = s.ReadUInt16();
 			var dataSize = s.ReadInt32();
 			var outputSize = s.ReadInt32();
-			var readFlag = s.ReadByte();
-			var readFormat = s.ReadByte();
 
+			var readFlag = s.ReadByte();
 			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
 				return false;
 
+			var readFormat = s.ReadByte();
 			if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
 				return false;
 
@@ -170,6 +170,7 @@ namespace OpenRA.FileFormats
 			out int sampleRate)
 		{
 			channels = sampleBits = sampleRate = 0;
+			var position = stream.Position;
 
 			try
 			{
@@ -182,10 +183,14 @@ namespace OpenRA.FileFormats
 				// If not, it will simply return false so we know we can't use it. If it is, it will start
 				// parsing the data without any further failsafes, which means that it will crash on corrupted files
 				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
-				Log.Write("debug", "Failed to parse AUD file {0}. Error message:".F(fileName));
-				Log.Write("debug", e.ToString());
+				Log.Write("sound", "Failed to parse AUD file {0}. Error message:".F(fileName));
+				Log.Write("sound", e.ToString());
 				rawData = null;
 				return false;
+			}
+			finally
+			{
+				stream.Position = position;
 			}
 
 			channels = 1;
