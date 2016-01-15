@@ -69,6 +69,9 @@ namespace OpenRA.Network
 
 		public void Receive(int clientID, byte[] data)
 		{
+			if (disposed) // TODO: This can be removed once NetworkConnection is fixed to dispose properly.
+				return;
+
 			if (preStartBuffer != null && IsGameStart(data))
 			{
 				writer.Flush();

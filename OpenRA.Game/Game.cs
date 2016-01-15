@@ -175,6 +175,43 @@ namespace OpenRA
 			GC.Collect();
 		}
 
+		public static void RestartGame()
+		{
+			var replay = OrderManager.Connection as ReplayConnection;
+			var replayName = replay != null ? replay.Filename : null;
+			var uid = OrderManager.World.Map.Uid;
+			var globalSettings = OrderManager.LobbyInfo.GlobalSettings;
+
+			// Disconnect from the current game
+			Disconnect();
+			Ui.ResetAll();
+
+			// Restart the game with the same replay/mission
+			if (replay != null)
+				JoinReplay(replayName);
+			else
+				StartMission(uid, globalSettings.GameSpeedType, globalSettings.Difficulty);
+		}
+
+		public static void StartMission(string mapUID, string gameSpeed, string difficulty, Action onStart = null)
+		{
+			OrderManager om = null;
+
+			Action lobbyReady = null;
+			lobbyReady = () =>
+			{
+				LobbyInfoChanged -= lobbyReady;
+				om.IssueOrder(Order.Command("gamespeed {0}".F(gameSpeed)));
+				om.IssueOrder(Order.Command("difficulty {0}".F(difficulty)));
+				om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
+				if (onStart != null)
+					onStart();
+			};
+			LobbyInfoChanged += lobbyReady;
+
+			om = JoinServer(IPAddress.Loopback.ToString(), CreateLocalServer(mapUID), "");
+		}
+
 		public static bool IsHost
 		{
 			get

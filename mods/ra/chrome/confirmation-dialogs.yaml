@@ -1,7 +1,7 @@
 Background@CONFIRM_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
-	Width: 370
+	Width: 600
 	Height: 175
 	Children:
 		Label@PROMPT_TITLE:
@@ -21,9 +21,16 @@ Background@CONFIRM_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Confirm
+			Text: Abort
 			Font: Bold
 			Key: return
+		Button@OTHER_BUTTON:
+			X: PARENT_RIGHT - 380
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Restart
+			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT - 180
 			Y: PARENT_BOTTOM - 45

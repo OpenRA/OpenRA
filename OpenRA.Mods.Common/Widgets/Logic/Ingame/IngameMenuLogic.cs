@@ -88,14 +88,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			abortMissionButton.OnClick = () =>
 			{
-				if (world.IsGameOver)
-				{
-					onQuit();
-					return;
-				}
-
 				hideMenu = true;
-				ConfirmationDialogs.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, showMenu);
+
+				if (world.LocalPlayer == null || (world.LocalPlayer.WinState != WinState.Won &&
+					(!world.IsGameOver || world.Map.Visibility == MapVisibility.MissionSelector)))
+				{
+					Action restartAction = null;
+					if (world.IsReplay || world.Map.Visibility == MapVisibility.MissionSelector)
+					{
+						var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+						var exitDelay = iop != null ? iop.ExitDelay : 0;
+						restartAction = () =>
+						{
+							Ui.CloseWindow();
+							if (mpe != null)
+							{
+								if (Game.IsCurrentWorld(world))
+									mpe.Fade(MenuPaletteEffect.EffectType.Black);
+								exitDelay += 40 * mpe.Info.FadeLength;
+							}
+
+							Game.RunAfterDelay(exitDelay, Game.RestartGame);
+						};
+					}
+
+					ConfirmationDialogs.PromptConfirmAction(
+						title: "Leave Mission",
+						text: "Leave this game and return to the menu?",
+						onConfirm: onQuit,
+						onCancel: showMenu,
+						confirmText: "Leave",
+						cancelText: "Stay",
+						otherText: "Restart",
+						onOther: restartAction);
+				}
+				else
+					onQuit();
 			};
 
 			var exitEditorButton = menu.Get<ButtonWidget>("EXIT_EDITOR");
@@ -103,7 +131,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			exitEditorButton.OnClick = () =>
 			{
 				hideMenu = true;
-				ConfirmationDialogs.PromptConfirmAction("Exit Map Editor", "Exit and lose all unsaved changes?", onQuit, showMenu);
+				ConfirmationDialogs.PromptConfirmAction(
+					title: "Exit Map Editor",
+					text: "Exit and lose all unsaved changes?",
+					onConfirm: onQuit,
+					onCancel: showMenu);
 			};
 
 			Action onSurrender = () =>
@@ -117,7 +149,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			surrenderButton.OnClick = () =>
 			{
 				hideMenu = true;
-				ConfirmationDialogs.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, showMenu);
+				ConfirmationDialogs.PromptConfirmAction(
+					title: "Surrender",
+					text: "Are you sure you want to surrender?",
+					onConfirm: onSurrender,
+					onCancel: showMenu);
 			};
 
 			var saveMapButton = menu.Get<ButtonWidget>("SAVE_MAP");
