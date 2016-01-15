@@ -403,16 +403,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Action<ReplayMetadata, Action> onDeleteReplay = (r, after) =>
 			{
 				ConfirmationDialogs.PromptConfirmAction(
-					"Delete selected replay?",
-					"Delete replay '{0}'?".F(Path.GetFileNameWithoutExtension(r.FilePath)),
-					() =>
+					title: "Delete selected replay?",
+					text: "Delete replay '{0}'?".F(Path.GetFileNameWithoutExtension(r.FilePath)),
+					onConfirm: () =>
 					{
 						DeleteReplay(r);
 						if (after != null)
 							after.Invoke();
 					},
-					null,
-					"Delete");
+					confirmText: "Delete");
 			};
 
 			{
@@ -444,16 +443,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					ConfirmationDialogs.PromptConfirmAction(
-						"Delete all selected replays?",
-						"Delete {0} replays?".F(list.Count),
-						() =>
+						title: "Delete all selected replays?",
+						text: "Delete {0} replays?".F(list.Count),
+						onConfirm: () =>
 						{
 							list.ForEach(DeleteReplay);
 							if (selectedReplay == null)
 								SelectFirstVisibleReplay();
 						},
-						null,
-						"Delete All");
+						confirmText: "Delete All");
 				};
 			}
 		}

@@ -15,28 +15,60 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public static class ConfirmationDialogs
 	{
-		public static void PromptConfirmAction(string title, string text, Action onConfirm, Action onCancel = null, string confirmText = null, string cancelText = null)
+		public static void PromptConfirmAction(
+			string title,
+			string text,
+			Action onConfirm,
+			Action onCancel = null,
+			Action onOther = null,
+			string confirmText = null,
+			string cancelText = null,
+			string otherText = null)
 		{
 			var prompt = Ui.OpenWindow("CONFIRM_PROMPT");
+			var confirmButton = prompt.Get<ButtonWidget>("CONFIRM_BUTTON");
+			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
+			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
+
 			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
 			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
 			if (!string.IsNullOrEmpty(confirmText))
-				prompt.Get<ButtonWidget>("CONFIRM_BUTTON").GetText = () => confirmText;
-			if (!string.IsNullOrEmpty(cancelText))
-				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
+				confirmButton.GetText = () => confirmText;
+			if (!string.IsNullOrEmpty(otherText) && otherButton != null)
+				otherButton.GetText = () => otherText;
+			if (!string.IsNullOrEmpty(cancelText) && cancelButton != null)
+				cancelButton.GetText = () => cancelText;
 
-			prompt.Get<ButtonWidget>("CONFIRM_BUTTON").OnClick = () =>
+			confirmButton.OnClick = () =>
 			{
 				Ui.CloseWindow();
 				onConfirm();
 			};
 
-			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			if (onCancel != null && cancelButton != null)
 			{
-				Ui.CloseWindow();
-				if (onCancel != null)
-					onCancel();
-			};
+				cancelButton.IsVisible = () => true;
+				cancelButton.OnClick = () =>
+				{
+					Ui.CloseWindow();
+					if (onCancel != null)
+						onCancel();
+				};
+			}
+			else if (cancelButton != null)
+				cancelButton.IsVisible = () => false;
+
+			if (onOther != null && otherButton != null)
+			{
+				otherButton.IsVisible = () => true;
+				otherButton.OnClick = () =>
+				{
+					if (onOther != null)
+						onOther();
+                };
+			}
+			else if (otherButton != null)
+				otherButton.IsVisible = () => false;
 		}
 
 		public static void CancelPrompt(string title, string text, Action onCancel = null, string cancelText = null)
@@ -47,39 +79,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (!string.IsNullOrEmpty(cancelText))
 				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
-
-			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
-			{
-				Ui.CloseWindow();
-				if (onCancel != null)
-					onCancel();
-			};
-		}
-		/**
-		 * open confirmation dialog for mission / game restart
-		 */
-		public static void PromptAbortMission(World world, string title, string text, Action onAbort, Action onCancel = null, Action closeMenu = null)
-		{
-			var isMultiplayer = !world.LobbyInfo.IsSinglePlayer && !world.IsReplay;
-			var prompt = Ui.OpenWindow("ABORT_MISSION_PROMPT");
-			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
-			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
-			prompt.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () =>
-			{
-				Ui.CloseWindow();
-				onAbort();
-			};
-
-			var restartButton = prompt.Get<ButtonWidget>("RESTART_BUTTON");
-			restartButton.IsVisible = () => !isMultiplayer;
-			restartButton.OnClick = () =>
-			{
-				if (closeMenu != null)
-					closeMenu();
-
-				Ui.CloseWindow();
-				Game.RestartGame();
-			};
 
 			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{

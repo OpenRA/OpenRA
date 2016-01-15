@@ -309,31 +309,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void DeleteOneMap(string map, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete map",
-				"Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
-				() =>
+				title: "Delete map",
+				text: "Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
+				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);
 					if (after != null)
 						after(newUid);
 				},
-				null,
-				"Delete");
+				confirmText: "Delete");
 		}
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete maps",
-				"Delete all maps on this page?",
-				() =>
+				title: "Delete maps",
+				text: "Delete all maps on this page?",
+				onConfirm: () =>
 				{
 					maps.Do(m => DeleteMap(m));
 					if (after != null)
 						after(WidgetUtils.ChooseInitialMap(null));
 				},
-				null,
-				"Delete");
+				confirmText: "Delete");
 		}
 	}
 }

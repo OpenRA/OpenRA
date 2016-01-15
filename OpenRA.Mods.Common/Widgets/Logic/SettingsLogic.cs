@@ -73,12 +73,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.PromptConfirmAction(
-						"Restart Now?",
-						"Some changes will not be applied until\nthe game is restarted. Restart now?",
-						Game.Restart,
-						closeAndExit,
-						"Restart Now",
-						"Restart Later");
+						title: "Restart Now?",
+						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
+						onConfirm: Game.Restart,
+						onCancel: closeAndExit,
+						confirmText: "Restart Now",
+						cancelText: "Restart Later");
 				else
 					closeAndExit();
 			};
