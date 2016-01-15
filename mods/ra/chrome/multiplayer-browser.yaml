@@ -22,7 +22,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 					Font: Bold
 				Label@LOCATION:
 					X: 380
-					Width: 120
+					Width: 110
 					Height: 25
 					Text: Country
 					Font: Bold
@@ -72,7 +72,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 							Height: 25
 						Label@LOCATION:
 							X: 380
-							Width: 120
+							Width: 110
 							Height: 25
 						Label@STATUS:
 							X: 495
