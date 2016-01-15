@@ -14,7 +14,7 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class D2kSoundResources : IFolder
+	public sealed class D2kSoundResources : IPackage
 	{
 		readonly Stream s;
 

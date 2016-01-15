@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ScrollPanelWidget assetList;
 		ScrollItemWidget template;
 
-		IFolder assetSource = null;
+		IPackage assetSource = null;
 		List<string> availableShps = new List<string>();
 		bool animateFrames = false;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 
 			panel = widget;
-			assetSource = Game.ModData.ModFiles.MountedFolders.First();
+			assetSource = Game.ModData.ModFiles.MountedPackages.First();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
@@ -334,7 +334,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShowSourceDropdown(DropDownButtonWidget dropdown)
 		{
-			Func<IFolder, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
+			Func<IPackage, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => assetSource == source,
@@ -344,8 +344,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			// TODO: Re-enable "All Packages" once list generation is done in a background thread
-			// var sources = new[] { (IFolder)null }.Concat(GlobalFileSystem.MountedFolders);
-			var sources = Game.ModData.ModFiles.MountedFolders;
+			// var sources = new[] { (IPackage)null }.Concat(GlobalFileSystem.MountedFolders);
+			var sources = Game.ModData.ModFiles.MountedPackages;
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}

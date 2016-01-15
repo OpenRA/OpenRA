@@ -19,16 +19,16 @@ namespace OpenRA.FileSystem
 {
 	public class FileSystem
 	{
-		public readonly List<string> FolderPaths = new List<string>();
-		public readonly List<IFolder> MountedFolders = new List<IFolder>();
+		public readonly List<string> PackagePaths = new List<string>();
+		public readonly List<IPackage> MountedPackages = new List<IPackage>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 
 		int order;
-		Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
-		Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+		Cache<uint, List<IPackage>> crcHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
+		Cache<uint, List<IPackage>> classicHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
 
-		public IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
+		public IPackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 				return new MixFile(this, filename, order, content);
@@ -50,7 +50,7 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order, content);
 		}
 
-		public IFolder OpenPackage(string filename, string annotation, int order)
+		public IPackage OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 			{
@@ -81,10 +81,10 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order);
 		}
 
-		public void Mount(IFolder mount)
+		public void Mount(IPackage mount)
 		{
-			if (!MountedFolders.Contains(mount))
-				MountedFolders.Add(mount);
+			if (!MountedPackages.Contains(mount))
+				MountedPackages.Add(mount);
 		}
 
 		public void Mount(string name, string annotation = null)
@@ -95,7 +95,7 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			FolderPaths.Add(name);
+			PackagePaths.Add(name);
 			Action a = () => MountInner(OpenPackage(name, annotation, order++));
 
 			if (optional)
@@ -105,42 +105,42 @@ namespace OpenRA.FileSystem
 				a();
 		}
 
-		void MountInner(IFolder folder)
+		void MountInner(IPackage package)
 		{
-			MountedFolders.Add(folder);
+			MountedPackages.Add(package);
 
-			foreach (var hash in folder.ClassicHashes())
+			foreach (var hash in package.ClassicHashes())
 			{
-				var folderList = classicHashIndex[hash];
-				if (!folderList.Contains(folder))
-					folderList.Add(folder);
+				var packageList = classicHashIndex[hash];
+				if (!packageList.Contains(package))
+					packageList.Add(package);
 			}
 
-			foreach (var hash in folder.CrcHashes())
+			foreach (var hash in package.CrcHashes())
 			{
-				var folderList = crcHashIndex[hash];
-				if (!folderList.Contains(folder))
-					folderList.Add(folder);
+				var packageList = crcHashIndex[hash];
+				if (!packageList.Contains(package))
+					packageList.Add(package);
 			}
 		}
 
-		public bool Unmount(IFolder mount)
+		public bool Unmount(IPackage mount)
 		{
-			if (MountedFolders.Contains(mount))
+			if (MountedPackages.Contains(mount))
 				mount.Dispose();
 
-			return MountedFolders.RemoveAll(f => f == mount) > 0;
+			return MountedPackages.RemoveAll(f => f == mount) > 0;
 		}
 
 		public void UnmountAll()
 		{
-			foreach (var folder in MountedFolders)
-				folder.Dispose();
+			foreach (var package in MountedPackages)
+				package.Dispose();
 
-			MountedFolders.Clear();
-			FolderPaths.Clear();
-			classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
-			crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+			MountedPackages.Clear();
+			PackagePaths.Clear();
+			classicHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
+			crcHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
 		}
 
 		public void LoadFromManifest(Manifest manifest)
@@ -156,12 +156,12 @@ namespace OpenRA.FileSystem
 		Stream GetFromCache(PackageHashType type, string filename)
 		{
 			var index = type == PackageHashType.CRC32 ? crcHashIndex : classicHashIndex;
-			var folder = index[PackageEntry.HashFilename(filename, type)]
+			var package = index[PackageEntry.HashFilename(filename, type)]
 				.Where(x => x.Exists(filename))
 				.MinByOrDefault(x => x.Priority);
 
-			if (folder != null)
-				return folder.GetContent(filename);
+			if (package != null)
+				return package.GetContent(filename);
 
 			return null;
 		}
@@ -178,20 +178,20 @@ namespace OpenRA.FileSystem
 		public bool TryOpen(string name, out Stream s)
 		{
 			var filename = name;
-			var foldername = string.Empty;
+			var packageName = string.Empty;
 
 			// Used for faction specific packages; rule out false positive on Windows C:\ drive notation
-			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
-			if (explicitFolder)
+			var explicitPackage = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitPackage)
 			{
 				var divide = name.Split(':');
-				foldername = divide.First();
+				packageName = divide.First();
 				filename = divide.Last();
 			}
 
-			// Check the cache for a quick lookup if the folder name is unknown
-			// TODO: This disables caching for explicit folder requests
-			if (filename.IndexOfAny(new char[] { '/', '\\' }) == -1 && !explicitFolder)
+			// Check the cache for a quick lookup if the package name is unknown
+			// TODO: This disables caching for explicit package requests
+			if (filename.IndexOfAny(new[] { '/', '\\' }) == -1 && !explicitPackage)
 			{
 				s = GetFromCache(PackageHashType.Classic, filename);
 				if (s != null)
@@ -203,15 +203,15 @@ namespace OpenRA.FileSystem
 			}
 
 			// Ask each package individually
-			IFolder folder;
-			if (explicitFolder && !string.IsNullOrEmpty(foldername))
-				folder = MountedFolders.Where(x => x.Name == foldername).MaxByOrDefault(x => x.Priority);
+			IPackage package;
+			if (explicitPackage && !string.IsNullOrEmpty(packageName))
+				package = MountedPackages.Where(x => x.Name == packageName).MaxByOrDefault(x => x.Priority);
 			else
-				folder = MountedFolders.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
+				package = MountedPackages.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
 
-			if (folder != null)
+			if (package != null)
 			{
-				s = folder.GetContent(filename);
+				s = package.GetContent(filename);
 				return true;
 			}
 
@@ -221,16 +221,16 @@ namespace OpenRA.FileSystem
 
 		public bool Exists(string name)
 		{
-			var explicitFolder = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
-			if (explicitFolder)
+			var explicitPackage = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
+			if (explicitPackage)
 			{
 				var divide = name.Split(':');
-				var foldername = divide.First();
+				var packageName = divide.First();
 				var filename = divide.Last();
-				return MountedFolders.Where(n => n.Name == foldername).Any(f => f.Exists(filename));
+				return MountedPackages.Where(n => n.Name == packageName).Any(f => f.Exists(filename));
 			}
 			else
-				return MountedFolders.Any(f => f.Exists(name));
+				return MountedPackages.Any(f => f.Exists(name));
 		}
 
 		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)

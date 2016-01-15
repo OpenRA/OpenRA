@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BigFile : IFolder
+	public sealed class BigFile : IPackage
 	{
 		public string Name { get; private set; }
 		public int Priority { get; private set; }

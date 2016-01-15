@@ -96,7 +96,7 @@
     <Compile Include="CacheStorage.cs" />
     <Compile Include="FileFormats\VocLoader.cs" />
     <Compile Include="FileSystem\IdxEntry.cs" />
-    <Compile Include="FileSystem\IFolder.cs" />
+    <Compile Include="FileSystem\IPackage.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="FileFormats\IdxReader.cs" />
     <Compile Include="FileSystem\BagFile.cs" />
