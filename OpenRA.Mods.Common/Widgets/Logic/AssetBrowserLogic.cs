@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ScrollPanelWidget assetList;
 		ScrollItemWidget template;
 
-		IPackage assetSource = null;
+		IReadOnlyPackage assetSource = null;
 		List<string> availableShps = new List<string>();
 		bool animateFrames = false;
 
@@ -334,7 +334,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShowSourceDropdown(DropDownButtonWidget dropdown)
 		{
-			Func<IPackage, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
+			Func<IReadOnlyPackage, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => assetSource == source,

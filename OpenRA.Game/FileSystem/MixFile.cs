@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class MixFile : IPackage
+	public sealed class MixFile : IReadWritePackage
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;

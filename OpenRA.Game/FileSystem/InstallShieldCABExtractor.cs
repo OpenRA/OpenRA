@@ -17,7 +17,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class InstallShieldCABExtractor : IPackage
+	public sealed class InstallShieldCABExtractor : IReadOnlyPackage
 	{
 		const uint FileSplit = 0x1;
 		const uint FileObfuscated = 0x2;
@@ -449,11 +449,6 @@ namespace OpenRA.FileSystem
 			Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 			using (var destfile = File.Open(fileName, FileMode.Create))
 				GetContentById(index, destfile);
-		}
-
-		public void Write(Dictionary<string, byte[]> input)
-		{
-			throw new NotImplementedException("Cannot Add Files To Cab");
 		}
 
 		public IEnumerable<uint> ClassicHashes()

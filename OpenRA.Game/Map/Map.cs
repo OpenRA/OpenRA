@@ -157,7 +157,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
-		[FieldLoader.Ignore] public IPackage Container;
+		[FieldLoader.Ignore] public IReadWritePackage Container;
 		public string Path { get; private set; }
 
 		// Yaml map data
@@ -317,7 +317,7 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			Container = Game.ModData.ModFiles.OpenPackage(path, null, int.MaxValue);
+			Container = Game.ModData.ModFiles.OpenWritablePackage(path, int.MaxValue);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");

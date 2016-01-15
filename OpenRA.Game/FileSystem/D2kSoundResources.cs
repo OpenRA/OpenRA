@@ -14,7 +14,7 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class D2kSoundResources : IPackage
+	public sealed class D2kSoundResources : IReadOnlyPackage
 	{
 		readonly Stream s;
 
@@ -92,11 +92,6 @@ namespace OpenRA.FileSystem
 		public IEnumerable<uint> CrcHashes()
 		{
 			yield break;
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			throw new NotImplementedException("Cannot save Dune 2000 Sound Resources.");
 		}
 
 		public void Dispose()
