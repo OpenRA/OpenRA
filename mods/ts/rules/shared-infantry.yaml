@@ -64,3 +64,5 @@ ENGINEER:
 		FactionImages:
 			gdi: engineer.gdi
 			nod: engineer.nod
+	Selectable:
+		Priority: 5
