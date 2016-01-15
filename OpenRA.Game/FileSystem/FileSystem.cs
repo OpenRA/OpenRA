@@ -30,22 +30,10 @@ namespace OpenRA.FileSystem
 
 		public IReadWritePackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
-			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(this, filename, order, content);
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, order, content);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, order, content);
-			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .RS archives is unimplemented");
-			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .Z archives is unimplemented");
-			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .PAK archives is unimplemented");
-			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .big archives is unimplemented");
-			if (filename.EndsWith(".cab", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .cab archives is unimplemented");
 
 			return new Folder(filename, order, content);
 		}

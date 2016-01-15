@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class MixFile : IReadWritePackage
+	public sealed class MixFile : IReadOnlyPackage
 	{
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
@@ -27,31 +27,6 @@ namespace OpenRA.FileSystem
 		readonly string filename;
 		readonly FileSystem context;
 		readonly PackageHashType type;
-
-		// Save a mix to disk with the given contents
-		public MixFile(FileSystem context, string filename, int priority, Dictionary<string, byte[]> contents)
-		{
-			this.filename = filename;
-			this.priority = priority;
-			this.type = PackageHashType.Classic;
-			this.context = context;
-
-			if (File.Exists(filename))
-				File.Delete(filename);
-
-			s = File.Create(filename);
-			try
-			{
-				index = new Dictionary<uint, PackageEntry>();
-				contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
-				Write(contents);
-			}
-			catch
-			{
-				Dispose();
-				throw;
-			}
-		}
 
 		public MixFile(FileSystem context, string filename, PackageHashType type, int priority)
 		{
@@ -247,45 +222,6 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 1000 + priority; } }
 		public string Name { get { return filename; } }
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			// Cannot modify existing mixfile - rename existing file and
-			// create a new one with original content plus modifications
-			context.Unmount(this);
-
-			// TODO: Add existing data to the contents list
-			if (index.Count > 0)
-				throw new NotImplementedException("Updating mix files unfinished");
-
-			// Construct a list of entries for the file header
-			uint dataSize = 0;
-			var items = new List<PackageEntry>();
-			foreach (var kv in contents)
-			{
-				var length = (uint)kv.Value.Length;
-				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key), type);
-				items.Add(new PackageEntry(hash, dataSize, length));
-				dataSize += length;
-			}
-
-			// Write the new file
-			s.Seek(0, SeekOrigin.Begin);
-			using (var writer = new BinaryWriter(s))
-			{
-				// Write file header
-				writer.Write((ushort)items.Count);
-				writer.Write(dataSize);
-				foreach (var item in items)
-					item.Write(writer);
-
-				writer.Flush();
-
-				// Copy file data
-				foreach (var file in contents)
-					s.Write(file.Value);
-			}
-		}
 
 		public void Dispose()
 		{
