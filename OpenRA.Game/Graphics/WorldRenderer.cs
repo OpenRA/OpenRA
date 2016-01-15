@@ -219,7 +219,7 @@ namespace OpenRA.Graphics
 		public void ScreenVectorComponents(WVec vec, out float x, out float y, out float z)
 		{
 			x = TileSize.Width * vec.X / 1024f;
-			y = TileSize.Height * vec.Y / 1024f;
+			y = TileSize.Height * (vec.Y - vec.Z) / 1024f;
 			z = TileSize.Height * vec.Z / 1024f;
 		}
 
@@ -236,7 +236,7 @@ namespace OpenRA.Graphics
 			// Round to nearest pixel
 			float x, y, z;
 			ScreenVectorComponents(vec, out x, out y, out z);
-			return new int2((int)Math.Round(x), (int)Math.Round(y - z));
+			return new int2((int)Math.Round(x), (int)Math.Round(y));
 		}
 
 		public float ScreenZPosition(WPos pos, int offset)
