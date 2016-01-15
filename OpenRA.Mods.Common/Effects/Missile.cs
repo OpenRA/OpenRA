@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				// Set vertical facing so that the missile faces its target
 				var vDist = new WVec(-tarDistVec.Z, -relTarHorDist, 0);
-				vFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, 0);
+				vFacing = (sbyte)vDist.Yaw.Facing;
 
 				// Do not accept -1 as valid vertical facing since it is usually a numerical error
 				// and will lead to premature descent and crashing into the ground
@@ -546,7 +546,7 @@ namespace OpenRA.Mods.Common.Effects
 				{
 					// Aim for the target
 					var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
-					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 
 					// Do not accept -1  as valid vertical facing since it is usually a numerical error
 					// and will lead to premature descent and crashing into the ground
@@ -639,7 +639,7 @@ namespace OpenRA.Mods.Common.Effects
 							{
 								// Aim for the target
 								var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-								desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 									desiredVFacing = 0;
 							}
@@ -649,7 +649,7 @@ namespace OpenRA.Mods.Common.Effects
 					{
 						// Aim for the target
 						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-						desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 							desiredVFacing = 0;
 					}
@@ -659,7 +659,7 @@ namespace OpenRA.Mods.Common.Effects
 					// Aim to attain cruise altitude as soon as possible while having the absolute value
 					// of vertical facing bound by the maximum vertical rate of turn
 					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 					ChangeSpeed();
@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.Effects
 				// Aim to attain cruise altitude as soon as possible while having the absolute value
 				// of vertical facing bound by the maximum vertical rate of turn
 				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-				desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 				ChangeSpeed();
@@ -694,7 +694,8 @@ namespace OpenRA.Mods.Common.Effects
 			var relTarHgt = tarDistVec.Z;
 
 			// Compute which direction the projectile should be facing
-			var desiredHFacing = OpenRA.Traits.Util.GetFacing(tarDistVec + predVel, hFacing);
+			var velVec = tarDistVec + predVel;
+			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
 
 			if (allowPassBy && System.Math.Abs(desiredHFacing - hFacing) >= System.Math.Abs(desiredHFacing + 128 - hFacing))
 			{
@@ -764,10 +765,10 @@ namespace OpenRA.Mods.Common.Effects
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)
-			var fac1 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
+			var yaw1 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
 			tarVel = newTarPos - targetPosition;
-			var fac2 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
-			predVel = tarVel.Rotate(WRot.FromFacing(fac2 - fac1));
+			var yaw2 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
+			predVel = tarVel.Rotate(WRot.FromYaw(yaw2 - yaw1));
 			targetPosition = newTarPos;
 
 			// Compute current distance from target position
@@ -781,7 +782,7 @@ namespace OpenRA.Mods.Common.Effects
 			else
 				move = HomingTick(world, tarDistVec, relTarHorDist);
 
-			renderFacing = WAngle.ArcTan(move.Z - move.Y, move.X).Angle / 4 - 64;
+			renderFacing = new WVec(move.X, move.Y - move.Z, 0).Yaw.Facing;
 
 			// Move the missile
 			var lastPos = pos;
