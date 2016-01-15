@@ -52,17 +52,19 @@ NALASR:
 	Turreted:
 		ROT: 10
 		InitialFacing: 300
-		Offset: 298,-171,0
+		Offset: 298,-171,288
 	AttackTurreted:
 	Armament:
 		Weapon: TurretLaserFire
-		LocalOffset: 0, 0, 200
+		LocalOffset: 352, 0, 224
 	RenderVoxels:
 	WithVoxelTurret:
 	Power:
 		Amount: -40
 	SelectionDecorations:
 		VisualBounds: 40, 36, -8, -8
+	BodyOrientation:
+		QuantizedFacings: 0
 
 NAOBEL:
 	Inherits: ^Defense
