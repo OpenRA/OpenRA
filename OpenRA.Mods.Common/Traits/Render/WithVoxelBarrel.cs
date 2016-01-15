@@ -44,19 +44,25 @@ namespace OpenRA.Mods.Common.Traits
 
 			var turretFacing = Turreted.GetInitialTurretFacing(init, t.InitialFacing, t.Turret);
 			var turretOrientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(turretFacing) - orientation.Yaw), facings);
-			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
 
-			yield return new VoxelAnimation(voxel, () => turretOffset, () => new[] { turretOrientation, orientation },
+			var quantizedTurret = body.QuantizeOrientation(turretOrientation, facings);
+			var quantizedBody = body.QuantizeOrientation(orientation, facings);
+			var barrelOffset = body.LocalToWorld((t.Offset + LocalOffset.Rotate(quantizedTurret)).Rotate(quantizedBody));
+
+			yield return new VoxelAnimation(voxel, () => barrelOffset, () => new[] { turretOrientation, orientation },
 				() => false, () => 0);
 		}
 	}
 
-	public class WithVoxelBarrel : UpgradableTrait<WithVoxelBarrelInfo>
+	public class WithVoxelBarrel : UpgradableTrait<WithVoxelBarrelInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
+
+		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
+		bool buildComplete;
 
 		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
 			: base(info)
@@ -68,21 +74,23 @@ namespace OpenRA.Mods.Common.Traits
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
+			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
+
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
-				() => IsTraitDisabled, () => 0));
+				() => IsTraitDisabled || !buildComplete, () => 0));
 		}
 
 		WVec BarrelOffset()
 		{
 			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
-			var turretOffset = turreted != null ? turreted.Position(self) : WVec.Zero;
+			var turretLocalOffset = turreted != null ? turreted.Offset : WVec.Zero;
 			var turretOrientation = turreted != null ? turreted.LocalOrientation(self) : WRot.Zero;
 
 			var quantizedBody = body.QuantizeOrientation(self, self.Orientation);
 			var quantizedTurret = body.QuantizeOrientation(self, turretOrientation);
-			return turretOffset + body.LocalToWorld(localOffset.Rotate(quantizedTurret).Rotate(quantizedBody));
+			return body.LocalToWorld((turretLocalOffset + localOffset.Rotate(quantizedTurret)).Rotate(quantizedBody));
 		}
 
 		IEnumerable<WRot> BarrelRotation()
@@ -92,5 +100,12 @@ namespace OpenRA.Mods.Common.Traits
 			yield return turreted.LocalOrientation(self) + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}
+
+		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
+		void INotifySold.Selling(Actor self) { buildComplete = false; }
+		void INotifySold.Sold(Actor self) { }
+		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }
