@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
+			return Util.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
 		}
 	}
 }
