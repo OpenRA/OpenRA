@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Rotate towards the target
 			var dist = pos - self.CenterPosition;
-			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
 			var move = helicopter.FlyStep(desiredFacing);
 

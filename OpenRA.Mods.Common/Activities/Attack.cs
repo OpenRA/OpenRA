@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
 				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 
-			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
+			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities(new Turn(self, desiredFacing), this);
 

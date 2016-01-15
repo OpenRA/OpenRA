@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var pos = self.CenterPosition;
-			var targetYaw = WAngle.FromFacing(OpenRA.Traits.Util.GetFacing(target.CenterPosition - self.CenterPosition, 0));
+			var targetYaw = (target.CenterPosition - self.CenterPosition).Yaw;
 
 			foreach (var a in Armaments)
 			{

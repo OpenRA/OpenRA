@@ -796,7 +796,8 @@ namespace OpenRA.Mods.Common.Traits
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
-			var facing = Util.GetFacing(toPos - fromPos, Facing);
+			var delta = toPos - fromPos;
+			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : Facing;
 			return Util.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
 

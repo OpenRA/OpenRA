@@ -169,13 +169,11 @@ namespace OpenRA.Mods.Common.Traits
 		public void Repulse()
 		{
 			var repulsionForce = GetRepulsionForce();
-
-			var repulsionFacing = Util.GetFacing(repulsionForce, -1);
-			if (repulsionFacing == -1)
+			if (repulsionForce.HorizontalLengthSquared == 0)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
-			SetPosition(self, CenterPosition + FlyStep(speed, repulsionFacing));
+			SetPosition(self, CenterPosition + FlyStep(speed, repulsionForce.Yaw.Facing));
 		}
 
 		public virtual WVec GetRepulsionForce()

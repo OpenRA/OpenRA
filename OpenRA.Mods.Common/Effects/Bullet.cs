@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Effects
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
-			facing = OpenRA.Traits.Util.GetFacing(target - pos, 0);
+			facing = (target - pos).Yaw.Facing;
 			length = Math.Max((target - pos).Length / speed.Length, 1);
 
 			if (!string.IsNullOrEmpty(info.Image))

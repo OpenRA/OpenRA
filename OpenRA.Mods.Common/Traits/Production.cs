@@ -63,8 +63,18 @@ namespace OpenRA.Mods.Common.Traits
 				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
 				var to = self.World.Map.CenterOfCell(exit);
 
-				var fi = producee.TraitInfoOrDefault<IFacingInfo>();
-				var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi == null ? 0 : fi.GetInitialFacing()) : exitinfo.Facing;
+				var initialFacing = exitinfo.Facing;
+				if (exitinfo.Facing < 0)
+				{
+					var delta = to - spawn;
+					if (delta.HorizontalLengthSquared == 0)
+					{
+						var fi = producee.TraitInfoOrDefault<IFacingInfo>();
+						initialFacing = fi != null ? fi.GetInitialFacing() : 0;
+					}
+					else
+						initialFacing = delta.Yaw.Facing;
+				}
 
 				exitLocation = rp.Value != null ? rp.Value.Location : exit;
 				target = Target.FromCell(self.World, exitLocation);
