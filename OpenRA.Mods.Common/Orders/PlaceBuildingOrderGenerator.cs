@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
-		readonly Actor producer;
+		readonly ProductionQueue queue;
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
 		readonly PlaceBuildingInfo placeBuildingInfo;
@@ -37,16 +37,17 @@ namespace OpenRA.Mods.Common.Orders
 
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
-			producer = queue.Actor;
-			placeBuildingInfo = producer.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
+			var world = queue.Actor.World;
+			this.queue = queue;
+			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			building = name;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
-				producer.World.Selection.Clear();
+				world.Selection.Clear();
 
-			var map = producer.World.Map;
-			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
+			var map = world.Map;
+			var tileset = world.TileSet.Id.ToLowerInvariant();
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();
@@ -54,12 +55,12 @@ namespace OpenRA.Mods.Common.Orders
 			var buildableInfo = info.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
 			faction = buildableInfo.ForceFaction
-				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : producer.Owner.Faction.InternalName);
+				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 
-			buildingInfluence = producer.World.WorldActor.Trait<BuildingInfluence>();
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
 		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -83,6 +84,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (world.Paused)
 				yield break;
 
+			var owner = queue.Actor.Owner;
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
@@ -94,19 +96,19 @@ namespace OpenRA.Mods.Common.Orders
 					orderType = "PlacePlug";
 					if (!AcceptsPlug(topLeft, plugInfo))
 					{
-						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 						yield break;
 					}
 				}
 				else
 				{
 					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
-						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
+						|| !buildingInfo.IsCloseEnoughToBase(world, owner, building, topLeft))
 					{
 						foreach (var order in ClearBlockersOrders(world, topLeft))
 							yield return order;
 
-						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 						yield break;
 					}
 
@@ -114,10 +116,10 @@ namespace OpenRA.Mods.Common.Orders
 						orderType = "LineBuild";
 				}
 
-				yield return new Order(orderType, producer.Owner.PlayerActor, false)
+				yield return new Order(orderType, owner.PlayerActor, false)
 				{
 					TargetLocation = topLeft,
-					TargetActor = producer,
+					TargetActor = queue.Actor,
 					TargetString = building,
 					SuppressVisualFeedback = true
 				};
@@ -126,6 +128,9 @@ namespace OpenRA.Mods.Common.Orders
 
 		public void Tick(World world)
 		{
+			if (queue.CurrentItem() == null || queue.CurrentItem().Item != building)
+				world.CancelInputMode();
+
 			if (preview == null)
 				return;
 
@@ -185,7 +190,7 @@ namespace OpenRA.Mods.Common.Orders
 					var td = new TypeDictionary()
 					{
 						new FactionInit(faction),
-						new OwnerInit(producer.Owner),
+						new OwnerInit(queue.Actor.Owner),
 						new HideBibPreviewInit()
 					};
 
@@ -230,7 +235,7 @@ namespace OpenRA.Mods.Common.Orders
 				.Where(world.Map.Contains).ToList();
 
 			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
-				.Where(a => a.Owner == producer.Owner && a.IsIdle)
+				.Where(a => a.Owner == queue.Actor.Owner && a.IsIdle)
 				.Select(a => new TraitPair<Mobile> { Actor = a, Trait = a.TraitOrDefault<Mobile>() });
 
 			foreach (var blocker in blockers.Where(x => x.Trait != null))
