@@ -21,7 +21,7 @@ namespace OpenRA.FileSystem
 		public string Filename;
 	}
 
-	public sealed class PakFile : IPackage
+	public sealed class PakFile : IReadOnlyPackage
 	{
 		readonly string filename;
 		readonly int priority;
@@ -91,11 +91,6 @@ namespace OpenRA.FileSystem
 		public bool Exists(string filename)
 		{
 			return index.ContainsKey(filename);
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			throw new NotImplementedException("Cannot save Pak archives.");
 		}
 
 		public int Priority { get { return 1000 + priority; } }

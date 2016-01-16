@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BigFile : IPackage
+	public sealed class BigFile : IReadOnlyPackage
 	{
 		public string Name { get; private set; }
 		public int Priority { get; private set; }
@@ -109,11 +109,6 @@ namespace OpenRA.FileSystem
 		public IEnumerable<string> AllFileNames()
 		{
 			return entries.Keys;
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			throw new NotImplementedException();
 		}
 
 		public void Dispose()

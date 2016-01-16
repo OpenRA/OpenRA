@@ -17,7 +17,7 @@ using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class ZipFile : IPackage
+	public sealed class ZipFile : IReadWritePackage
 	{
 		readonly string filename;
 		readonly int priority;

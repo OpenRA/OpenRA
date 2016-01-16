@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BagFile : IPackage
+	public sealed class BagFile : IReadOnlyPackage
 	{
 		static readonly uint[] Nothing = { };
 
@@ -173,12 +173,6 @@ namespace OpenRA.FileSystem
 			}
 
 			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			context.Unmount(this);
-			throw new NotImplementedException("Updating bag files unsupported");
 		}
 
 		public void Dispose()

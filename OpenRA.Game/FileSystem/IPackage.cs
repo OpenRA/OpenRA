@@ -14,15 +14,19 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	public interface IPackage : IDisposable
+	public interface IReadOnlyPackage : IDisposable
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<uint> ClassicHashes();
 		IEnumerable<uint> CrcHashes();
 		IEnumerable<string> AllFileNames();
-		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
 		string Name { get; }
+	}
+
+	public interface IReadWritePackage : IReadOnlyPackage
+	{
+		void Write(Dictionary<string, byte[]> contents);
 	}
 }

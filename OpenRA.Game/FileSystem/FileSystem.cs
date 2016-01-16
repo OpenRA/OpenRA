@@ -20,37 +20,25 @@ namespace OpenRA.FileSystem
 	public class FileSystem
 	{
 		public readonly List<string> PackagePaths = new List<string>();
-		public readonly List<IPackage> MountedPackages = new List<IPackage>();
+		public readonly List<IReadOnlyPackage> MountedPackages = new List<IReadOnlyPackage>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 
 		int order;
-		Cache<uint, List<IPackage>> crcHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
-		Cache<uint, List<IPackage>> classicHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
+		Cache<uint, List<IReadOnlyPackage>> crcHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+		Cache<uint, List<IReadOnlyPackage>> classicHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
-		public IPackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
+		public IReadWritePackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
-			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(this, filename, order, content);
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, order, content);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, order, content);
-			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .RS archives is unimplemented");
-			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .Z archives is unimplemented");
-			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .PAK archives is unimplemented");
-			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .big archives is unimplemented");
-			if (filename.EndsWith(".cab", StringComparison.InvariantCultureIgnoreCase))
-				throw new NotImplementedException("The creation of .cab archives is unimplemented");
 
 			return new Folder(filename, order, content);
 		}
 
-		public IPackage OpenPackage(string filename, string annotation, int order)
+		public IReadOnlyPackage OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 			{
@@ -81,7 +69,17 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order);
 		}
 
-		public void Mount(IPackage mount)
+		public IReadWritePackage OpenWritablePackage(string filename, int order)
+		{
+			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, order);
+			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, order);
+
+			return new Folder(filename, order);
+		}
+
+		public void Mount(IReadOnlyPackage mount)
 		{
 			if (!MountedPackages.Contains(mount))
 				MountedPackages.Add(mount);
@@ -105,7 +103,7 @@ namespace OpenRA.FileSystem
 				a();
 		}
 
-		void MountInner(IPackage package)
+		void MountInner(IReadOnlyPackage package)
 		{
 			MountedPackages.Add(package);
 
@@ -124,7 +122,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public bool Unmount(IPackage mount)
+		public bool Unmount(IReadOnlyPackage mount)
 		{
 			if (MountedPackages.Contains(mount))
 				mount.Dispose();
@@ -139,8 +137,8 @@ namespace OpenRA.FileSystem
 
 			MountedPackages.Clear();
 			PackagePaths.Clear();
-			classicHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
-			crcHashIndex = new Cache<uint, List<IPackage>>(_ => new List<IPackage>());
+			classicHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+			crcHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
 		public void LoadFromManifest(Manifest manifest)
@@ -203,7 +201,7 @@ namespace OpenRA.FileSystem
 			}
 
 			// Ask each package individually
-			IPackage package;
+			IReadOnlyPackage package;
 			if (explicitPackage && !string.IsNullOrEmpty(packageName))
 				package = MountedPackages.Where(x => x.Name == packageName).MaxByOrDefault(x => x.Priority);
 			else

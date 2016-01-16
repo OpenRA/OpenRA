@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class InstallShieldPackage : IPackage
+	public sealed class InstallShieldPackage : IReadOnlyPackage
 	{
 		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
 		readonly List<string> filenames;
