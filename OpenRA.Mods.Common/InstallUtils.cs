@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common
 		}
 
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
-		public static bool ExtractFromPackage(string srcPath, string package, string annotation, Dictionary<string, string[]> filesByDirectory,
+		public static bool ExtractFromPackage(string srcPath, string package, Dictionary<string, string[]> filesByDirectory,
 			string destPath, bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
 		{
 			Directory.CreateDirectory(destPath);
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common
 			Log.Write("debug", "Mounting {0}".F(srcPath));
 			Game.ModData.ModFiles.Mount(srcPath);
 			Log.Write("debug", "Mounting {0}".F(package));
-			Game.ModData.ModFiles.Mount(package, annotation);
+			Game.ModData.ModFiles.Mount(package);
 
 			foreach (var directory in filesByDirectory)
 			{

@@ -36,7 +36,7 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order, content);
 		}
 
-		public IReadOnlyPackage OpenPackage(string filename, string annotation, int order)
+		public IReadOnlyPackage OpenPackage(string filename, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
 				return new MixFile(this, filename, order);
@@ -76,7 +76,7 @@ namespace OpenRA.FileSystem
 				MountedPackages.Add(mount);
 		}
 
-		public void Mount(string name, string annotation = null)
+		public void Mount(string name)
 		{
 			var optional = name.StartsWith("~");
 			if (optional)
@@ -84,7 +84,7 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			Action a = () => MountInner(OpenPackage(name, annotation, order++));
+			Action a = () => MountInner(OpenPackage(name, order++));
 
 			if (optional)
 				try { a(); }
@@ -132,7 +132,7 @@ namespace OpenRA.FileSystem
 				Mount(dir);
 
 			foreach (var pkg in manifest.Packages)
-				Mount(pkg.Key, pkg.Value);
+				Mount(pkg);
 		}
 
 		Stream GetFromCache(string filename)
