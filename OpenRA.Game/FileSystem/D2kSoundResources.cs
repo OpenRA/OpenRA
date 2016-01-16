@@ -83,16 +83,6 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 1000 + priority; } }
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return index.Keys;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
 		public void Dispose()
 		{
 			s.Dispose();

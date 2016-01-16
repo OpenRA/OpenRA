@@ -451,11 +451,6 @@ namespace OpenRA.FileSystem
 				GetContentById(index, destfile);
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return fileLookup.Keys.Select(k => PackageEntry.HashFilename(k, PackageHashType.Classic));
-		}
-
 		public Stream GetContentById(uint index)
 		{
 			var fileDes = fileDescriptors[index];
@@ -505,11 +500,6 @@ namespace OpenRA.FileSystem
 		public Stream GetContent(string fileName)
 		{
 			return GetContentById(fileLookup[fileName]);
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
 		}
 
 		public IEnumerable<string> AllFileNames()

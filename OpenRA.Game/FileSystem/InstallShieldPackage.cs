@@ -122,16 +122,6 @@ namespace OpenRA.FileSystem
 			return GetContent(PackageEntry.HashFilename(filename, PackageHashType.Classic));
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return index.Keys;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			return filenames;
@@ -144,11 +134,6 @@ namespace OpenRA.FileSystem
 
 		public int Priority { get { return 2000 + priority; } }
 		public string Name { get { return filename; } }
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			throw new NotImplementedException("Cannot save InstallShieldPackages.");
-		}
 
 		public void Dispose()
 		{

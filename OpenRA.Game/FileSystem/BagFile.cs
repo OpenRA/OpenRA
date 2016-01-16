@@ -21,8 +21,6 @@ namespace OpenRA.FileSystem
 {
 	public sealed class BagFile : IReadOnlyPackage
 	{
-		static readonly uint[] Nothing = { };
-
 		readonly string bagFilename;
 		readonly Stream s;
 		readonly int bagFilePriority;
@@ -146,16 +144,6 @@ namespace OpenRA.FileSystem
 		public bool Exists(string filename)
 		{
 			return FindMatchingHash(filename).HasValue;
-		}
-
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return Nothing;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			return index.Keys;
 		}
 
 		public IEnumerable<string> AllFileNames()
