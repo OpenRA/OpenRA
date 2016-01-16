@@ -39,14 +39,7 @@ namespace OpenRA.FileSystem
 		public IReadOnlyPackage OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-			{
-				var type = string.IsNullOrEmpty(annotation)
-					? PackageHashType.Classic
-					: FieldLoader.GetValue<PackageHashType>("(value)", annotation);
-
-				return new MixFile(this, filename, type, order);
-			}
-
+				return new MixFile(this, filename, order);
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, order);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))

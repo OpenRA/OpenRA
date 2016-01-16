@@ -20,19 +20,18 @@ namespace OpenRA.FileSystem
 {
 	public sealed class MixFile : IReadOnlyPackage
 	{
-		readonly Dictionary<uint, PackageEntry> index;
+		public string Name { get; private set; }
+
+		readonly Dictionary<string, PackageEntry> index;
 		readonly long dataStart;
 		readonly Stream s;
 		readonly int priority;
-		readonly string filename;
 		readonly FileSystem context;
-		readonly PackageHashType type;
 
-		public MixFile(FileSystem context, string filename, PackageHashType type, int priority)
+		public MixFile(FileSystem context, string filename, int priority)
 		{
-			this.filename = filename;
+			Name = filename;
 			this.priority = priority;
-			this.type = type;
 			this.context = context;
 
 			s = context.Open(filename);
@@ -55,15 +54,67 @@ namespace OpenRA.FileSystem
 				else
 					entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
 
-				index = entries.ToDictionaryWithConflictLog(x => x.Hash,
+				index = ParseIndex(entries.ToDictionaryWithConflictLog(x => x.Hash,
 					"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, isCncMix ? "C&C" : "RA/TS/RA2", isEncrypted, dataStart),
-					null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
+					null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)));
 			}
 			catch (Exception)
 			{
 				Dispose();
 				throw;
 			}
+		}
+
+		Dictionary<string, PackageEntry> ParseIndex(Dictionary<uint, PackageEntry> entries)
+		{
+			var classicIndex = new Dictionary<string, PackageEntry>();
+			var crcIndex = new Dictionary<string, PackageEntry>();
+			var allPossibleFilenames = new HashSet<string>();
+
+			// Try and find a local mix database
+			var dbNameClassic = PackageEntry.HashFilename("local mix database.dat", PackageHashType.Classic);
+			var dbNameCRC = PackageEntry.HashFilename("local mix database.dat", PackageHashType.CRC32);
+			foreach (var kv in entries)
+			{
+				if (kv.Key == dbNameClassic || kv.Key == dbNameCRC)
+				{
+					var db = new XccLocalDatabase(GetContent(kv.Value));
+					foreach (var e in db.Entries)
+						allPossibleFilenames.Add(e);
+
+					break;
+				}
+			}
+
+			// Load the global mix database
+			// TODO: This should be passed to the mix file ctor
+			if (context.Exists("global mix database.dat"))
+			{
+				var db = new XccGlobalDatabase(context.Open("global mix database.dat"));
+				foreach (var e in db.Entries)
+					allPossibleFilenames.Add(e);
+			}
+
+			foreach (var filename in allPossibleFilenames)
+			{
+				var classicHash = PackageEntry.HashFilename(filename, PackageHashType.Classic);
+				var crcHash = PackageEntry.HashFilename(filename, PackageHashType.CRC32);
+				PackageEntry e;
+
+				if (entries.TryGetValue(classicHash, out e))
+					classicIndex.Add(filename, e);
+
+				if (entries.TryGetValue(crcHash, out e))
+					crcIndex.Add(filename, e);
+			}
+
+			var bestIndex = crcIndex.Count > classicIndex.Count ? crcIndex : classicIndex;
+
+			var unknown = entries.Count - bestIndex.Count;
+			if (unknown > 0)
+				Log.Write("debug", "{0}: failed to resolve filenames for {1} unknown hashes".F(Name, unknown));
+
+			return bestIndex;
 		}
 
 		static List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
@@ -135,76 +186,34 @@ namespace OpenRA.FileSystem
 			return ret;
 		}
 
-		uint? FindMatchingHash(string filename)
+		public Stream GetContent(PackageEntry entry)
 		{
-			var hash = PackageEntry.HashFilename(filename, type);
-			if (index.ContainsKey(hash))
-				return hash;
-
-			// Maybe we were given a raw hash?
-			uint raw;
-			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
-				return null;
-
-			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
-				return raw;
-
-			return null;
-		}
-
-		public Stream GetContent(uint hash)
-		{
-			PackageEntry e;
-			if (!index.TryGetValue(hash, out e))
-				return null;
-
 			Stream parentStream;
-			var offset = dataStart + e.Offset + SegmentStream.GetOverallNestedOffset(s, out parentStream);
+			var offset = dataStart + entry.Offset + SegmentStream.GetOverallNestedOffset(s, out parentStream);
 			var path = ((FileStream)parentStream).Name;
-			return new SegmentStream(File.OpenRead(path), offset, e.Length);
+			return new SegmentStream(File.OpenRead(path), offset, entry.Length);
 		}
 
 		public Stream GetContent(string filename)
 		{
-			var hash = FindMatchingHash(filename);
-			return hash.HasValue ? GetContent(hash.Value) : null;
+			PackageEntry e;
+			if (!index.TryGetValue(filename, out e))
+				return null;
+
+			return GetContent(e);
 		}
 
 		public IEnumerable<string> AllFileNames()
 		{
-			var lookup = new Dictionary<uint, string>();
-			if (Exists("local mix database.dat"))
-			{
-				var db = new XccLocalDatabase(GetContent("local mix database.dat"));
-				foreach (var e in db.Entries)
-				{
-					var hash = PackageEntry.HashFilename(e, type);
-					if (!lookup.ContainsKey(hash))
-						lookup.Add(hash, e);
-				}
-			}
-
-			if (context.Exists("global mix database.dat"))
-			{
-				var db = new XccGlobalDatabase(context.Open("global mix database.dat"));
-				foreach (var e in db.Entries)
-				{
-					var hash = PackageEntry.HashFilename(e, type);
-					if (!lookup.ContainsKey(hash))
-						lookup.Add(hash, e);
-				}
-			}
-
-			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
+			return index.Keys;
 		}
 
 		public bool Exists(string filename)
 		{
-			return FindMatchingHash(filename).HasValue;
+			return index.ContainsKey(filename);
 		}
 
 		public int Priority { get { return 1000 + priority; } }
-		public string Name { get { return filename; } }
 
 		public void Dispose()
 		{
