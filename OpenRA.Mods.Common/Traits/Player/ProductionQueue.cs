@@ -249,66 +249,61 @@ namespace OpenRA.Mods.Common.Traits
 			switch (order.OrderString)
 			{
 				case "StartProduction":
+					var unit = rules.Actors[order.TargetString];
+					var bi = unit.TraitInfo<BuildableInfo>();
+
+					// Not built by this queue
+					if (!bi.Queue.Contains(Info.Type))
+						return;
+
+					var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
+					var time = GetBuildTime(order.TargetString);
+
+					// You can't build that
+					if (BuildableItems().All(b => b.Name != order.TargetString))
+						return;
+
+					// Check if the player is trying to build more units that they are allowed
+					var fromLimit = int.MaxValue;
+					if (!developerMode.AllTech && bi.BuildLimit > 0)
 					{
-						var unit = rules.Actors[order.TargetString];
-						var bi = unit.TraitInfo<BuildableInfo>();
-						if (!bi.Queue.Contains(Info.Type))
-							return; /* Not built by this queue */
+						var inQueue = queue.Count(pi => pi.Item == order.TargetString);
+						var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
+						fromLimit = bi.BuildLimit - (inQueue + owned);
 
-						var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
-						var time = GetBuildTime(order.TargetString);
+						if (fromLimit <= 0)
+							return;
+					}
 
-						if (BuildableItems().All(b => b.Name != order.TargetString))
-							return;	/* you can't build that!! */
-
-						// Check if the player is trying to build more units that they are allowed
-						var fromLimit = int.MaxValue;
-						if (!developerMode.AllTech && bi.BuildLimit > 0)
+					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
+					for (var n = 0; n < amountToBuild; n++)
+					{
+						var hasPlayedSound = false;
+						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
 						{
-							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
-							fromLimit = bi.BuildLimit - (inQueue + owned);
+							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 
-							if (fromLimit <= 0)
-								return;
-						}
-
-						var amountToBuild = Math.Min(fromLimit, order.ExtraData);
-						for (var n = 0; n < amountToBuild; n++)
-						{
-							var hasPlayedSound = false;
-							BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+							if (isBuilding && !hasPlayedSound)
+								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+							else if (!isBuilding)
 							{
-								var isBuilding = unit.HasTraitInfo<BuildingInfo>();
-
-								if (isBuilding && !hasPlayedSound)
-									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-								else if (!isBuilding)
-								{
-									if (BuildUnit(order.TargetString))
-										Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-									else if (!hasPlayedSound && time > 0)
-										hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
-								}
-							})));
-						}
-
-						break;
+								if (BuildUnit(order.TargetString))
+									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+								else if (!hasPlayedSound && time > 0)
+									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+							}
+						})));
 					}
 
+					break;
 				case "PauseProduction":
-					{
-						if (queue.Count > 0 && queue[0].Item == order.TargetString)
-							queue[0].Pause(order.ExtraData != 0);
+					if (queue.Count > 0 && queue[0].Item == order.TargetString)
+						queue[0].Pause(order.ExtraData != 0);
 
-						break;
-					}
-
+					break;
 				case "CancelProduction":
-					{
-						CancelProduction(order.TargetString, order.ExtraData);
-						break;
-					}
+					CancelProduction(order.TargetString, order.ExtraData);
+					break;
 			}
 		}
 
