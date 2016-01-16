@@ -70,7 +70,7 @@ Templates:
 	Template@0:
 		Category: Clear
 		Id: 0
-		Images: Clear01.sno, Clear01a.sno, Clear01b.sno, Clear01c.sno, Clear01d.sno, Clear01e.sno, Clear01f.sno, Clear01g.sno
+		Images: clear01.sno, clear01a.sno, clear01b.sno, clear01c.sno, clear01d.sno, clear01e.sno, clear01f.sno, clear01g.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -79,7 +79,7 @@ Templates:
 	Template@1:
 		Category: Misc Buildings
 		Id: 1
-		Images: Bld01.sno
+		Images: bld01.sno
 		Size: 1, 1
 		Tiles:
 			0: Rough
@@ -88,7 +88,7 @@ Templates:
 	Template@2:
 		Category: Misc Buildings
 		Id: 2
-		Images: Bld02.sno
+		Images: bld02.sno
 		Size: 2, 2
 		Tiles:
 			0: Rough
@@ -106,7 +106,7 @@ Templates:
 	Template@3:
 		Category: Misc Buildings
 		Id: 3
-		Images: Bld03.sno
+		Images: bld03.sno
 		Size: 3, 3
 		Tiles:
 			0: Cliff
@@ -139,7 +139,7 @@ Templates:
 	Template@4:
 		Category: Clear
 		Id: 4
-		Images: Snow01.sno, Snow01a.sno, Snow01b.sno, Snow01c.sno
+		Images: snow01.sno, snow01a.sno, snow01b.sno, snow01c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -148,7 +148,7 @@ Templates:
 	Template@5:
 		Category: Clear
 		Id: 5
-		Images: Snow02.sno
+		Images: snow02.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -157,7 +157,7 @@ Templates:
 	Template@6:
 		Category: Clear
 		Id: 6
-		Images: Snow03.sno
+		Images: snow03.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -166,7 +166,7 @@ Templates:
 	Template@7:
 		Category: Clear
 		Id: 7
-		Images: Snow04.sno
+		Images: snow04.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -534,7 +534,7 @@ Templates:
 	Template@60:
 		Category: Cliff Set
 		Id: 60
-		Images: Cliff01.sno
+		Images: cliff01.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -554,7 +554,7 @@ Templates:
 	Template@61:
 		Category: Cliff Set
 		Id: 61
-		Images: Cliff02.sno
+		Images: cliff02.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -567,7 +567,7 @@ Templates:
 	Template@62:
 		Category: Cliff Set
 		Id: 62
-		Images: Cliff03.sno
+		Images: cliff03.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -587,7 +587,7 @@ Templates:
 	Template@63:
 		Category: Cliff Set
 		Id: 63
-		Images: Cliff04.sno
+		Images: cliff04.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -607,7 +607,7 @@ Templates:
 	Template@64:
 		Category: Cliff Set
 		Id: 64
-		Images: Cliff05.sno
+		Images: cliff05.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -627,7 +627,7 @@ Templates:
 	Template@65:
 		Category: Cliff Set
 		Id: 65
-		Images: Cliff06.sno
+		Images: cliff06.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -647,7 +647,7 @@ Templates:
 	Template@66:
 		Category: Cliff Set
 		Id: 66
-		Images: Cliff07.sno
+		Images: cliff07.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -667,7 +667,7 @@ Templates:
 	Template@67:
 		Category: Cliff Set
 		Id: 67
-		Images: Cliff08.sno
+		Images: cliff08.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -680,7 +680,7 @@ Templates:
 	Template@68:
 		Category: Cliff Set
 		Id: 68
-		Images: Cliff09.sno
+		Images: cliff09.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -696,7 +696,7 @@ Templates:
 	Template@69:
 		Category: Cliff Set
 		Id: 69
-		Images: Cliff10.sno
+		Images: cliff10.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -712,7 +712,7 @@ Templates:
 	Template@70:
 		Category: Cliff Set
 		Id: 70
-		Images: Cliff11.sno
+		Images: cliff11.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -728,7 +728,7 @@ Templates:
 	Template@71:
 		Category: Cliff Set
 		Id: 71
-		Images: Cliff12.sno
+		Images: cliff12.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -737,7 +737,7 @@ Templates:
 	Template@72:
 		Category: Cliff Set
 		Id: 72
-		Images: Cliff13.sno
+		Images: cliff13.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -746,7 +746,7 @@ Templates:
 	Template@73:
 		Category: Cliff Set
 		Id: 73
-		Images: Cliff14.sno
+		Images: cliff14.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -755,7 +755,7 @@ Templates:
 	Template@74:
 		Category: Cliff Set
 		Id: 74
-		Images: Cliff15.sno
+		Images: cliff15.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -775,7 +775,7 @@ Templates:
 	Template@75:
 		Category: Cliff Set
 		Id: 75
-		Images: Cliff16.sno
+		Images: cliff16.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -795,7 +795,7 @@ Templates:
 	Template@76:
 		Category: Cliff Set
 		Id: 76
-		Images: Cliff17.sno
+		Images: cliff17.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -815,7 +815,7 @@ Templates:
 	Template@77:
 		Category: Cliff Set
 		Id: 77
-		Images: Cliff18.sno
+		Images: cliff18.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -828,7 +828,7 @@ Templates:
 	Template@78:
 		Category: Cliff Set
 		Id: 78
-		Images: Cliff19.sno
+		Images: cliff19.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -848,7 +848,7 @@ Templates:
 	Template@79:
 		Category: Cliff Set
 		Id: 79
-		Images: Cliff20.sno
+		Images: cliff20.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -868,7 +868,7 @@ Templates:
 	Template@80:
 		Category: Cliff Set
 		Id: 80
-		Images: Cliff21.sno
+		Images: cliff21.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -888,7 +888,7 @@ Templates:
 	Template@81:
 		Category: Cliff Set
 		Id: 81
-		Images: Cliff22.sno
+		Images: cliff22.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -901,7 +901,7 @@ Templates:
 	Template@82:
 		Category: Cliff Set
 		Id: 82
-		Images: Cliff23.sno
+		Images: cliff23.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -915,7 +915,7 @@ Templates:
 	Template@83:
 		Category: Cliff Set
 		Id: 83
-		Images: Cliff24.sno
+		Images: cliff24.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -929,7 +929,7 @@ Templates:
 	Template@84:
 		Category: Cliff Set
 		Id: 84
-		Images: Cliff25.sno
+		Images: cliff25.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -943,7 +943,7 @@ Templates:
 	Template@85:
 		Category: Cliff Set
 		Id: 85
-		Images: Cliff26.sno
+		Images: cliff26.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -953,7 +953,7 @@ Templates:
 	Template@86:
 		Category: Cliff Set
 		Id: 86
-		Images: Cliff27.sno
+		Images: cliff27.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -971,7 +971,7 @@ Templates:
 	Template@87:
 		Category: Cliff Set
 		Id: 87
-		Images: Cliff28.sno
+		Images: cliff28.sno
 		Size: 2, 2
 		Tiles:
 			1: Cliff
@@ -989,7 +989,7 @@ Templates:
 	Template@88:
 		Category: Cliff Set
 		Id: 88
-		Images: Cliff29.sno
+		Images: cliff29.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -999,7 +999,7 @@ Templates:
 	Template@89:
 		Category: Cliff Set
 		Id: 89
-		Images: Cliff30.sno
+		Images: cliff30.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1009,7 +1009,7 @@ Templates:
 	Template@90:
 		Category: Cliff Set
 		Id: 90
-		Images: Cliff31.sno
+		Images: cliff31.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -1027,7 +1027,7 @@ Templates:
 	Template@91:
 		Category: Cliff Set
 		Id: 91
-		Images: Cliff32.sno
+		Images: cliff32.sno
 		Size: 2, 2
 		Tiles:
 			1: Cliff
@@ -1045,7 +1045,7 @@ Templates:
 	Template@92:
 		Category: Cliff Set
 		Id: 92
-		Images: Cliff33.sno, Cliff33a.sno
+		Images: cliff33.sno, cliff33a.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1055,7 +1055,7 @@ Templates:
 	Template@93:
 		Category: Cliff Set
 		Id: 93
-		Images: Cliff34.sno, Cliff34a.sno
+		Images: cliff34.sno, cliff34a.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1065,7 +1065,7 @@ Templates:
 	Template@94:
 		Category: Cliff Set
 		Id: 94
-		Images: Cliff35.sno
+		Images: cliff35.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -1079,7 +1079,7 @@ Templates:
 	Template@95:
 		Category: Cliff Set
 		Id: 95
-		Images: Cliff36.sno
+		Images: cliff36.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -1093,7 +1093,7 @@ Templates:
 	Template@96:
 		Category: Cliff Set
 		Id: 96
-		Images: Cliff37.sno
+		Images: cliff37.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -1107,7 +1107,7 @@ Templates:
 	Template@97:
 		Category: Cliff Set
 		Id: 97
-		Images: Cliff38.sno
+		Images: cliff38.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1117,7 +1117,7 @@ Templates:
 	Template@98:
 		Category: Cliff Set
 		Id: 98
-		Images: Cliff39.sno
+		Images: cliff39.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1127,7 +1127,7 @@ Templates:
 	Template@99:
 		Category: Cliff Set
 		Id: 99
-		Images: Cliff40.sno
+		Images: cliff40.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -1137,7 +1137,7 @@ Templates:
 	Template@100:
 		Category: Civilian Buildings
 		Id: 100
-		Images: Civ01.sno
+		Images: civ01.sno
 		Size: 3, 3
 		Tiles:
 			0: Impassable
@@ -1170,7 +1170,7 @@ Templates:
 	Template@101:
 		Category: Civilian Buildings
 		Id: 101
-		Images: Civ02.sno
+		Images: civ02.sno
 		Size: 1, 2
 		Tiles:
 			0: Impassable
@@ -1182,7 +1182,7 @@ Templates:
 	Template@102:
 		Category: Civilian Buildings
 		Id: 102
-		Images: Civ03.sno
+		Images: civ03.sno
 		Size: 1, 1
 		Tiles:
 			0: Impassable
@@ -1191,7 +1191,7 @@ Templates:
 	Template@103:
 		Category: Civilian Buildings
 		Id: 103
-		Images: Civ04.sno
+		Images: civ04.sno
 		Size: 1, 2
 		Tiles:
 			0: Impassable
@@ -1203,7 +1203,7 @@ Templates:
 	Template@104:
 		Category: Civilian Buildings
 		Id: 104
-		Images: Civ05.sno
+		Images: civ05.sno
 		Size: 2, 2
 		Tiles:
 			1: Impassable
@@ -1218,7 +1218,7 @@ Templates:
 	Template@105:
 		Category: Civilian Buildings
 		Id: 105
-		Images: Civ06.sno
+		Images: civ06.sno
 		Size: 3, 3
 		Tiles:
 			1: Impassable
@@ -1242,7 +1242,7 @@ Templates:
 	Template@106:
 		Category: Civilian Buildings
 		Id: 106
-		Images: Civ07.sno
+		Images: civ07.sno
 		Size: 1, 1
 		Tiles:
 			0: Impassable
@@ -1251,7 +1251,7 @@ Templates:
 	Template@107:
 		Category: Civilian Buildings
 		Id: 107
-		Images: Civ08.sno
+		Images: civ08.sno
 		Size: 1, 2
 		Tiles:
 			0: Impassable
@@ -1263,7 +1263,7 @@ Templates:
 	Template@108:
 		Category: Shore Pieces
 		Id: 108
-		Images: Shore01.sno
+		Images: shore01.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1281,7 +1281,7 @@ Templates:
 	Template@109:
 		Category: Shore Pieces
 		Id: 109
-		Images: Shore02.sno
+		Images: shore02.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1299,7 +1299,7 @@ Templates:
 	Template@110:
 		Category: Shore Pieces
 		Id: 110
-		Images: Shore03.sno
+		Images: shore03.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1317,7 +1317,7 @@ Templates:
 	Template@111:
 		Category: Shore Pieces
 		Id: 111
-		Images: Shore04.sno
+		Images: shore04.sno
 		Size: 1, 2
 		Tiles:
 			0: Water
@@ -1329,7 +1329,7 @@ Templates:
 	Template@112:
 		Category: Shore Pieces
 		Id: 112
-		Images: Shore05.sno
+		Images: shore05.sno
 		Size: 2, 3
 		Tiles:
 			0: Water
@@ -1353,7 +1353,7 @@ Templates:
 	Template@113:
 		Category: Shore Pieces
 		Id: 113
-		Images: Shore06.sno
+		Images: shore06.sno
 		Size: 2, 3
 		Tiles:
 			0: Water
@@ -1377,7 +1377,7 @@ Templates:
 	Template@114:
 		Category: Shore Pieces
 		Id: 114
-		Images: Shore07.sno
+		Images: shore07.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1395,7 +1395,7 @@ Templates:
 	Template@115:
 		Category: Shore Pieces
 		Id: 115
-		Images: Shore08.sno
+		Images: shore08.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1413,7 +1413,7 @@ Templates:
 	Template@116:
 		Category: Shore Pieces
 		Id: 116
-		Images: Shore09.sno
+		Images: shore09.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1431,7 +1431,7 @@ Templates:
 	Template@117:
 		Category: Shore Pieces
 		Id: 117
-		Images: Shore10.sno
+		Images: shore10.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1449,7 +1449,7 @@ Templates:
 	Template@118:
 		Category: Shore Pieces
 		Id: 118
-		Images: Shore11.sno
+		Images: shore11.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1467,7 +1467,7 @@ Templates:
 	Template@119:
 		Category: Shore Pieces
 		Id: 119
-		Images: Shore12.sno
+		Images: shore12.sno
 		Size: 2, 1
 		Tiles:
 			0: Water
@@ -1479,7 +1479,7 @@ Templates:
 	Template@120:
 		Category: Shore Pieces
 		Id: 120
-		Images: Shore13.sno
+		Images: shore13.sno
 		Size: 3, 2
 		Tiles:
 			0: Clear
@@ -1503,7 +1503,7 @@ Templates:
 	Template@121:
 		Category: Shore Pieces
 		Id: 121
-		Images: Shore14.sno
+		Images: shore14.sno
 		Size: 3, 2
 		Tiles:
 			0: Water
@@ -1527,7 +1527,7 @@ Templates:
 	Template@122:
 		Category: Shore Pieces
 		Id: 122
-		Images: Shore15.sno
+		Images: shore15.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1545,7 +1545,7 @@ Templates:
 	Template@123:
 		Category: Shore Pieces
 		Id: 123
-		Images: Shore16.sno
+		Images: shore16.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1563,7 +1563,7 @@ Templates:
 	Template@124:
 		Category: Shore Pieces
 		Id: 124
-		Images: Shore17.sno
+		Images: shore17.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1581,7 +1581,7 @@ Templates:
 	Template@125:
 		Category: Shore Pieces
 		Id: 125
-		Images: Shore18.sno
+		Images: shore18.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1599,7 +1599,7 @@ Templates:
 	Template@126:
 		Category: Shore Pieces
 		Id: 126
-		Images: Shore19.sno
+		Images: shore19.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1617,7 +1617,7 @@ Templates:
 	Template@127:
 		Category: Shore Pieces
 		Id: 127
-		Images: Shore20.sno
+		Images: shore20.sno
 		Size: 1, 2
 		Tiles:
 			0: Water
@@ -1629,7 +1629,7 @@ Templates:
 	Template@128:
 		Category: Shore Pieces
 		Id: 128
-		Images: Shore21.sno
+		Images: shore21.sno
 		Size: 2, 3
 		Tiles:
 			0: Water
@@ -1653,7 +1653,7 @@ Templates:
 	Template@129:
 		Category: Shore Pieces
 		Id: 129
-		Images: Shore22.sno
+		Images: shore22.sno
 		Size: 2, 3
 		Tiles:
 			0: Water
@@ -1677,7 +1677,7 @@ Templates:
 	Template@130:
 		Category: Shore Pieces
 		Id: 130
-		Images: Shore23.sno
+		Images: shore23.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1695,7 +1695,7 @@ Templates:
 	Template@131:
 		Category: Shore Pieces
 		Id: 131
-		Images: Shore24.sno
+		Images: shore24.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1713,7 +1713,7 @@ Templates:
 	Template@132:
 		Category: Shore Pieces
 		Id: 132
-		Images: Shore25.sno
+		Images: shore25.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1731,7 +1731,7 @@ Templates:
 	Template@133:
 		Category: Shore Pieces
 		Id: 133
-		Images: Shore26.sno
+		Images: shore26.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1749,7 +1749,7 @@ Templates:
 	Template@134:
 		Category: Shore Pieces
 		Id: 134
-		Images: Shore27.sno
+		Images: shore27.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1767,7 +1767,7 @@ Templates:
 	Template@135:
 		Category: Shore Pieces
 		Id: 135
-		Images: Shore28.sno
+		Images: shore28.sno
 		Size: 2, 1
 		Tiles:
 			0: Water
@@ -1779,7 +1779,7 @@ Templates:
 	Template@136:
 		Category: Shore Pieces
 		Id: 136
-		Images: Shore29.sno
+		Images: shore29.sno
 		Size: 3, 2
 		Tiles:
 			0: Water
@@ -1803,7 +1803,7 @@ Templates:
 	Template@137:
 		Category: Shore Pieces
 		Id: 137
-		Images: Shore30.sno
+		Images: shore30.sno
 		Size: 3, 2
 		Tiles:
 			0: Water
@@ -1827,7 +1827,7 @@ Templates:
 	Template@138:
 		Category: Shore Pieces
 		Id: 138
-		Images: Shore31.sno
+		Images: shore31.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1845,7 +1845,7 @@ Templates:
 	Template@139:
 		Category: Shore Pieces
 		Id: 139
-		Images: Shore32.sno
+		Images: shore32.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1863,7 +1863,7 @@ Templates:
 	Template@140:
 		Category: Shore Pieces
 		Id: 140
-		Images: Shore33.sno
+		Images: shore33.sno
 		Size: 2, 2
 		Tiles:
 			0: Clear
@@ -1881,7 +1881,7 @@ Templates:
 	Template@141:
 		Category: Shore Pieces
 		Id: 141
-		Images: Shore34.sno
+		Images: shore34.sno
 		Size: 2, 2
 		Tiles:
 			0: Clear
@@ -1899,7 +1899,7 @@ Templates:
 	Template@142:
 		Category: Shore Pieces
 		Id: 142
-		Images: Shore35.sno
+		Images: shore35.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1917,7 +1917,7 @@ Templates:
 	Template@143:
 		Category: Shore Pieces
 		Id: 143
-		Images: Shore36.sno
+		Images: shore36.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1935,7 +1935,7 @@ Templates:
 	Template@144:
 		Category: Shore Pieces
 		Id: 144
-		Images: Shore37.sno
+		Images: shore37.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1953,7 +1953,7 @@ Templates:
 	Template@145:
 		Category: Shore Pieces
 		Id: 145
-		Images: Shore38.sno
+		Images: shore38.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1971,7 +1971,7 @@ Templates:
 	Template@146:
 		Category: Shore Pieces
 		Id: 146
-		Images: Shore39.sno
+		Images: shore39.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -1989,7 +1989,7 @@ Templates:
 	Template@147:
 		Category: Shore Pieces
 		Id: 147
-		Images: Shore40.sno
+		Images: shore40.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -2007,7 +2007,7 @@ Templates:
 	Template@148:
 		Category: Shore Pieces
 		Id: 148
-		Images: Shore41.sno
+		Images: shore41.sno
 		Size: 6, 4
 		Tiles:
 			1: Clear
@@ -2076,7 +2076,7 @@ Templates:
 	Template@149:
 		Category: Shore Pieces
 		Id: 149
-		Images: Shore42.sno
+		Images: shore42.sno
 		Size: 9, 5
 		Tiles:
 			2: Water
@@ -2172,7 +2172,7 @@ Templates:
 	Template@150:
 		Category: Rough lat
 		Id: 150
-		Images: Ruff01.sno, Ruff01a.sno, Ruff01b.sno, Ruff01c.sno, Ruff01d.sno, Ruff01e.sno, Ruff01f.sno, Ruff01g.sno
+		Images: ruff01.sno, ruff01a.sno, ruff01b.sno, ruff01c.sno, ruff01d.sno, ruff01e.sno, ruff01f.sno, ruff01g.sno
 		Size: 1, 1
 		Tiles:
 			0: Rough
@@ -2325,7 +2325,7 @@ Templates:
 	Template@167:
 		Category: Cliff/Water pieces
 		Id: 167
-		Images: WCliff01.sno
+		Images: wcliff01.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -2345,7 +2345,7 @@ Templates:
 	Template@168:
 		Category: Cliff/Water pieces
 		Id: 168
-		Images: WCliff02.sno
+		Images: wcliff02.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -2358,7 +2358,7 @@ Templates:
 	Template@169:
 		Category: Cliff/Water pieces
 		Id: 169
-		Images: WCliff03.sno
+		Images: wcliff03.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -2378,7 +2378,7 @@ Templates:
 	Template@170:
 		Category: Cliff/Water pieces
 		Id: 170
-		Images: WCliff04.sno
+		Images: wcliff04.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -2398,7 +2398,7 @@ Templates:
 	Template@171:
 		Category: Cliff/Water pieces
 		Id: 171
-		Images: WCliff05.sno
+		Images: wcliff05.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2418,7 +2418,7 @@ Templates:
 	Template@172:
 		Category: Cliff/Water pieces
 		Id: 172
-		Images: WCliff06.sno
+		Images: wcliff06.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2438,7 +2438,7 @@ Templates:
 	Template@173:
 		Category: Cliff/Water pieces
 		Id: 173
-		Images: WCliff07.sno
+		Images: wcliff07.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2458,7 +2458,7 @@ Templates:
 	Template@174:
 		Category: Cliff/Water pieces
 		Id: 174
-		Images: WCliff08.sno
+		Images: wcliff08.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -2471,7 +2471,7 @@ Templates:
 	Template@175:
 		Category: Cliff/Water pieces
 		Id: 175
-		Images: WCliff09.sno
+		Images: wcliff09.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2487,7 +2487,7 @@ Templates:
 	Template@176:
 		Category: Cliff/Water pieces
 		Id: 176
-		Images: WCliff10.sno
+		Images: wcliff10.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2506,7 +2506,7 @@ Templates:
 	Template@177:
 		Category: Cliff/Water pieces
 		Id: 177
-		Images: WCliff11.sno
+		Images: wcliff11.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2522,7 +2522,7 @@ Templates:
 	Template@178:
 		Category: Cliff/Water pieces
 		Id: 178
-		Images: WCliff12.sno
+		Images: wcliff12.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -2531,7 +2531,7 @@ Templates:
 	Template@179:
 		Category: Cliff/Water pieces
 		Id: 179
-		Images: WCliff13.sno
+		Images: wcliff13.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -2540,7 +2540,7 @@ Templates:
 	Template@180:
 		Category: Cliff/Water pieces
 		Id: 180
-		Images: WCliff14.sno
+		Images: wcliff14.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -2549,7 +2549,7 @@ Templates:
 	Template@181:
 		Category: Cliff/Water pieces
 		Id: 181
-		Images: WCliff15.sno
+		Images: wcliff15.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2569,7 +2569,7 @@ Templates:
 	Template@182:
 		Category: Cliff/Water pieces
 		Id: 182
-		Images: WCliff16.sno
+		Images: wcliff16.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2589,7 +2589,7 @@ Templates:
 	Template@183:
 		Category: Cliff/Water pieces
 		Id: 183
-		Images: WCliff17.sno
+		Images: wcliff17.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -2609,7 +2609,7 @@ Templates:
 	Template@184:
 		Category: Cliff/Water pieces
 		Id: 184
-		Images: WCliff18.sno
+		Images: wcliff18.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -2622,7 +2622,7 @@ Templates:
 	Template@185:
 		Category: Cliff/Water pieces
 		Id: 185
-		Images: WCliff19.sno
+		Images: wcliff19.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -2642,7 +2642,7 @@ Templates:
 	Template@186:
 		Category: Cliff/Water pieces
 		Id: 186
-		Images: WCliff20.sno
+		Images: wcliff20.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -2662,7 +2662,7 @@ Templates:
 	Template@187:
 		Category: Cliff/Water pieces
 		Id: 187
-		Images: WCliff21.sno
+		Images: wcliff21.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -2682,7 +2682,7 @@ Templates:
 	Template@188:
 		Category: Cliff/Water pieces
 		Id: 188
-		Images: WCliff22.sno
+		Images: wcliff22.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -2695,7 +2695,7 @@ Templates:
 	Template@189:
 		Category: Cliff/Water pieces
 		Id: 189
-		Images: WCliff23.sno
+		Images: wcliff23.sno
 		Size: 2, 3
 		Tiles:
 			0: Cliff
@@ -2718,7 +2718,7 @@ Templates:
 	Template@190:
 		Category: Cliff/Water pieces
 		Id: 190
-		Images: WCliff24.sno
+		Images: wcliff24.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -2730,7 +2730,7 @@ Templates:
 	Template@191:
 		Category: Cliff/Water pieces
 		Id: 191
-		Images: WCliff25.sno
+		Images: wcliff25.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -2742,7 +2742,7 @@ Templates:
 	Template@192:
 		Category: Cliff/Water pieces
 		Id: 192
-		Images: WCliff26.sno
+		Images: wcliff26.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -2754,7 +2754,7 @@ Templates:
 	Template@193:
 		Category: Cliff/Water pieces
 		Id: 193
-		Images: WCliff27.sno
+		Images: wcliff27.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -2766,7 +2766,7 @@ Templates:
 	Template@194:
 		Category: Cliff/Water pieces
 		Id: 194
-		Images: WCliff28.sno
+		Images: wcliff28.sno
 		Size: 3, 2
 		Tiles:
 			0: Cliff
@@ -2789,7 +2789,7 @@ Templates:
 	Template@195:
 		Category: Bendy Dirt Roads
 		Id: 195
-		Images: Droadc01.sno
+		Images: droadc01.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -2810,7 +2810,7 @@ Templates:
 	Template@196:
 		Category: Bendy Dirt Roads
 		Id: 196
-		Images: Droadc02.sno
+		Images: droadc02.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2828,7 +2828,7 @@ Templates:
 	Template@197:
 		Category: Bendy Dirt Roads
 		Id: 197
-		Images: Droadc03.sno
+		Images: droadc03.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2846,7 +2846,7 @@ Templates:
 	Template@198:
 		Category: Bendy Dirt Roads
 		Id: 198
-		Images: Droadc04.sno
+		Images: droadc04.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2861,7 +2861,7 @@ Templates:
 	Template@199:
 		Category: Bendy Dirt Roads
 		Id: 199
-		Images: Droadc05.sno
+		Images: droadc05.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2879,7 +2879,7 @@ Templates:
 	Template@200:
 		Category: Bendy Dirt Roads
 		Id: 200
-		Images: Droadc06.sno
+		Images: droadc06.sno
 		Size: 3, 2
 		Tiles:
 			1: DirtRoad
@@ -2900,7 +2900,7 @@ Templates:
 	Template@201:
 		Category: Bendy Dirt Roads
 		Id: 201
-		Images: Droadc07.sno
+		Images: droadc07.sno
 		Size: 2, 3
 		Tiles:
 			0: DirtRoad
@@ -2921,7 +2921,7 @@ Templates:
 	Template@202:
 		Category: Bendy Dirt Roads
 		Id: 202
-		Images: Droadc08.sno
+		Images: droadc08.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2939,7 +2939,7 @@ Templates:
 	Template@203:
 		Category: Bendy Dirt Roads
 		Id: 203
-		Images: Droadc09.sno
+		Images: droadc09.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2957,7 +2957,7 @@ Templates:
 	Template@204:
 		Category: Bendy Dirt Roads
 		Id: 204
-		Images: Droadc10.sno
+		Images: droadc10.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -2975,7 +2975,7 @@ Templates:
 	Template@205:
 		Category: Bendy Dirt Roads
 		Id: 205
-		Images: Droadc11.sno
+		Images: droadc11.sno
 		Size: 3, 2
 		Tiles:
 			1: DirtRoad
@@ -2996,7 +2996,7 @@ Templates:
 	Template@206:
 		Category: Bendy Dirt Roads
 		Id: 206
-		Images: Droadc12.sno
+		Images: droadc12.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -3017,7 +3017,7 @@ Templates:
 	Template@207:
 		Category: Bendy Dirt Roads
 		Id: 207
-		Images: Droadc13.sno
+		Images: droadc13.sno
 		Size: 2, 3
 		Tiles:
 			0: DirtRoad
@@ -3041,7 +3041,7 @@ Templates:
 	Template@208:
 		Category: Bendy Dirt Roads
 		Id: 208
-		Images: Droadc14.sno
+		Images: droadc14.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3059,7 +3059,7 @@ Templates:
 	Template@209:
 		Category: Bendy Dirt Roads
 		Id: 209
-		Images: Droadc15.sno
+		Images: droadc15.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3074,7 +3074,7 @@ Templates:
 	Template@210:
 		Category: Bendy Dirt Roads
 		Id: 210
-		Images: Droadc16.sno
+		Images: droadc16.sno
 		Size: 2, 2
 		Tiles:
 			1: DirtRoad
@@ -3089,7 +3089,7 @@ Templates:
 	Template@211:
 		Category: Bendy Dirt Roads
 		Id: 211
-		Images: Droadc17.sno
+		Images: droadc17.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -3113,7 +3113,7 @@ Templates:
 	Template@212:
 		Category: Bendy Dirt Roads
 		Id: 212
-		Images: Droadc18.sno
+		Images: droadc18.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3128,7 +3128,7 @@ Templates:
 	Template@213:
 		Category: Bendy Dirt Roads
 		Id: 213
-		Images: Droadc19.sno
+		Images: droadc19.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3146,7 +3146,7 @@ Templates:
 	Template@214:
 		Category: Bendy Dirt Roads
 		Id: 214
-		Images: Droadc20.sno
+		Images: droadc20.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -3167,7 +3167,7 @@ Templates:
 	Template@215:
 		Category: Bendy Dirt Roads
 		Id: 215
-		Images: Droadc21.sno
+		Images: droadc21.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3185,7 +3185,7 @@ Templates:
 	Template@216:
 		Category: Bendy Dirt Roads
 		Id: 216
-		Images: Droadc22.sno
+		Images: droadc22.sno
 		Size: 2, 2
 		Tiles:
 			1: DirtRoad
@@ -3200,7 +3200,7 @@ Templates:
 	Template@217:
 		Category: Bendy Dirt Roads
 		Id: 217
-		Images: Droadc23.sno
+		Images: droadc23.sno
 		Size: 2, 3
 		Tiles:
 			1: DirtRoad
@@ -3218,7 +3218,7 @@ Templates:
 	Template@218:
 		Category: Bendy Dirt Roads
 		Id: 218
-		Images: Droadc24.sno
+		Images: droadc24.sno
 		Size: 2, 3
 		Tiles:
 			1: DirtRoad
@@ -3239,7 +3239,7 @@ Templates:
 	Template@219:
 		Category: Dirt Road Junctions
 		Id: 219
-		Images: Droadj01.sno
+		Images: droadj01.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3257,7 +3257,7 @@ Templates:
 	Template@220:
 		Category: Dirt Road Junctions
 		Id: 220
-		Images: Droadj02.sno
+		Images: droadj02.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3275,7 +3275,7 @@ Templates:
 	Template@221:
 		Category: Dirt Road Junctions
 		Id: 221
-		Images: Droadj03.sno
+		Images: droadj03.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3293,7 +3293,7 @@ Templates:
 	Template@222:
 		Category: Dirt Road Junctions
 		Id: 222
-		Images: Droadj04.sno
+		Images: droadj04.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3311,7 +3311,7 @@ Templates:
 	Template@223:
 		Category: Dirt Road Junctions
 		Id: 223
-		Images: Droadj05.sno
+		Images: droadj05.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3329,7 +3329,7 @@ Templates:
 	Template@224:
 		Category: Dirt Road Junctions
 		Id: 224
-		Images: Droadj06.sno
+		Images: droadj06.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3356,7 +3356,7 @@ Templates:
 	Template@225:
 		Category: Dirt Road Junctions
 		Id: 225
-		Images: Droadj07.sno
+		Images: droadj07.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3380,7 +3380,7 @@ Templates:
 	Template@226:
 		Category: Dirt Road Junctions
 		Id: 226
-		Images: Droadj08.sno
+		Images: droadj08.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3404,7 +3404,7 @@ Templates:
 	Template@227:
 		Category: Dirt Road Junctions
 		Id: 227
-		Images: Droadj09.sno
+		Images: droadj09.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3431,7 +3431,7 @@ Templates:
 	Template@228:
 		Category: Dirt Road Junctions
 		Id: 228
-		Images: Droadj10.sno
+		Images: droadj10.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3458,7 +3458,7 @@ Templates:
 	Template@229:
 		Category: Dirt Road Junctions
 		Id: 229
-		Images: Droadj11.sno
+		Images: droadj11.sno
 		Size: 4, 4
 		Tiles:
 			2: DirtRoad
@@ -3503,7 +3503,7 @@ Templates:
 	Template@230:
 		Category: Straight Dirt Roads
 		Id: 230
-		Images: Droads01.sno
+		Images: droads01.sno
 		Size: 4, 4
 		Tiles:
 			2: DirtRoad
@@ -3536,7 +3536,7 @@ Templates:
 	Template@231:
 		Category: Straight Dirt Roads
 		Id: 231
-		Images: Droads02.sno
+		Images: droads02.sno
 		Size: 4, 4
 		Tiles:
 			2: DirtRoad
@@ -3569,7 +3569,7 @@ Templates:
 	Template@232:
 		Category: Straight Dirt Roads
 		Id: 232
-		Images: Droads03.sno
+		Images: droads03.sno
 		Size: 4, 4
 		Tiles:
 			2: DirtRoad
@@ -3602,7 +3602,7 @@ Templates:
 	Template@233:
 		Category: Straight Dirt Roads
 		Id: 233
-		Images: Droads04.sno
+		Images: droads04.sno
 		Size: 4, 4
 		Tiles:
 			0: Clear
@@ -3644,7 +3644,7 @@ Templates:
 	Template@234:
 		Category: Straight Dirt Roads
 		Id: 234
-		Images: Droads05.sno
+		Images: droads05.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3668,7 +3668,7 @@ Templates:
 	Template@235:
 		Category: Straight Dirt Roads
 		Id: 235
-		Images: Droads06.sno
+		Images: droads06.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3683,7 +3683,7 @@ Templates:
 	Template@236:
 		Category: Straight Dirt Roads
 		Id: 236
-		Images: Droads07.sno
+		Images: droads07.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -3698,7 +3698,7 @@ Templates:
 	Template@237:
 		Category: Straight Dirt Roads
 		Id: 237
-		Images: Droads08.sno
+		Images: droads08.sno
 		Size: 4, 4
 		Tiles:
 			2: Clear
@@ -3728,7 +3728,7 @@ Templates:
 	Template@238:
 		Category: Straight Dirt Roads
 		Id: 238
-		Images: Droads09.sno
+		Images: droads09.sno
 		Size: 4, 3
 		Tiles:
 			1: Clear
@@ -3761,7 +3761,7 @@ Templates:
 	Template@239:
 		Category: Straight Dirt Roads
 		Id: 239
-		Images: Droads10.sno
+		Images: droads10.sno
 		Size: 3, 3
 		Tiles:
 			1: Clear
@@ -3785,7 +3785,7 @@ Templates:
 	Template@240:
 		Category: Straight Dirt Roads
 		Id: 240
-		Images: Droads11.sno
+		Images: droads11.sno
 		Size: 4, 4
 		Tiles:
 			2: DirtRoad
@@ -3818,7 +3818,7 @@ Templates:
 	Template@241:
 		Category: Straight Dirt Roads
 		Id: 241
-		Images: Droads12.sno
+		Images: droads12.sno
 		Size: 3, 4
 		Tiles:
 			1: DirtRoad
@@ -3851,7 +3851,7 @@ Templates:
 	Template@242:
 		Category: Straight Dirt Roads
 		Id: 242
-		Images: Droads13.sno
+		Images: droads13.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -3875,7 +3875,7 @@ Templates:
 	Template@243:
 		Category: Straight Dirt Roads
 		Id: 243
-		Images: Droads14.sno
+		Images: droads14.sno
 		Size: 5, 3
 		Tiles:
 			1: DirtRoad
@@ -3911,7 +3911,7 @@ Templates:
 	Template@244:
 		Category: Straight Dirt Roads
 		Id: 244
-		Images: Droads15.sno
+		Images: droads15.sno
 		Size: 3, 5
 		Tiles:
 			1: DirtRoad
@@ -3947,7 +3947,7 @@ Templates:
 	Template@245:
 		Category: Straight Dirt Roads
 		Id: 245
-		Images: Droads16.sno
+		Images: droads16.sno
 		Size: 2, 4
 		Tiles:
 			1: Clear
@@ -3971,7 +3971,7 @@ Templates:
 	Template@246:
 		Category: Straight Dirt Roads
 		Id: 246
-		Images: Droads17.sno
+		Images: droads17.sno
 		Size: 4, 2
 		Tiles:
 			0: DirtRoad
@@ -4001,7 +4001,7 @@ Templates:
 	Template@247:
 		Category: Straight Dirt Roads
 		Id: 247
-		Images: Droads18.sno
+		Images: droads18.sno
 		Size: 4, 2
 		Tiles:
 			0: DirtRoad
@@ -4031,7 +4031,7 @@ Templates:
 	Template@248:
 		Category: Straight Dirt Roads
 		Id: 248
-		Images: Droads19.sno
+		Images: droads19.sno
 		Size: 4, 2
 		Tiles:
 			0: DirtRoad
@@ -4061,7 +4061,7 @@ Templates:
 	Template@249:
 		Category: Straight Dirt Roads
 		Id: 249
-		Images: Droads20.sno
+		Images: droads20.sno
 		Size: 4, 2
 		Tiles:
 			0: DirtRoad
@@ -4091,7 +4091,7 @@ Templates:
 	Template@250:
 		Category: Straight Dirt Roads
 		Id: 250
-		Images: Droads21.sno
+		Images: droads21.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -4115,7 +4115,7 @@ Templates:
 	Template@251:
 		Category: Straight Dirt Roads
 		Id: 251
-		Images: Droads22.sno
+		Images: droads22.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -4133,7 +4133,7 @@ Templates:
 	Template@252:
 		Category: Straight Dirt Roads
 		Id: 252
-		Images: Droads23.sno
+		Images: droads23.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -4145,7 +4145,7 @@ Templates:
 	Template@253:
 		Category: Straight Dirt Roads
 		Id: 253
-		Images: Droads24.sno
+		Images: droads24.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -4157,7 +4157,7 @@ Templates:
 	Template@254:
 		Category: Straight Dirt Roads
 		Id: 254
-		Images: Droads25.sno
+		Images: droads25.sno
 		Size: 3, 2
 		Tiles:
 			0: DirtRoad
@@ -4181,7 +4181,7 @@ Templates:
 	Template@255:
 		Category: Straight Dirt Roads
 		Id: 255
-		Images: Droads26.sno
+		Images: droads26.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -4199,7 +4199,7 @@ Templates:
 	Template@256:
 		Category: Straight Dirt Roads
 		Id: 256
-		Images: Droads27.sno
+		Images: droads27.sno
 		Size: 3, 3
 		Tiles:
 			1: Clear
@@ -4226,7 +4226,7 @@ Templates:
 	Template@257:
 		Category: Straight Dirt Roads
 		Id: 257
-		Images: Droads28.sno
+		Images: droads28.sno
 		Size: 3, 2
 		Tiles:
 			0: Clear
@@ -4250,7 +4250,7 @@ Templates:
 	Template@258:
 		Category: Straight Dirt Roads
 		Id: 258
-		Images: Droads29.sno
+		Images: droads29.sno
 		Size: 2, 2
 		Tiles:
 			0: Clear
@@ -4268,7 +4268,7 @@ Templates:
 	Template@259:
 		Category: Straight Dirt Roads
 		Id: 259
-		Images: Droads30.sno
+		Images: droads30.sno
 		Size: 2, 2
 		Tiles:
 			0: Clear
@@ -4286,7 +4286,7 @@ Templates:
 	Template@260:
 		Category: Straight Dirt Roads
 		Id: 260
-		Images: Droads31.sno
+		Images: droads31.sno
 		Size: 4, 3
 		Tiles:
 			0: DirtRoad
@@ -4316,7 +4316,7 @@ Templates:
 	Template@261:
 		Category: Straight Dirt Roads
 		Id: 261
-		Images: Droads32.sno
+		Images: droads32.sno
 		Size: 4, 3
 		Tiles:
 			2: Clear
@@ -4346,7 +4346,7 @@ Templates:
 	Template@262:
 		Category: Straight Dirt Roads
 		Id: 262
-		Images: Droads33.sno
+		Images: droads33.sno
 		Size: 4, 2
 		Tiles:
 			0: Clear
@@ -4376,7 +4376,7 @@ Templates:
 	Template@263:
 		Category: Straight Dirt Roads
 		Id: 263
-		Images: Droads34.sno
+		Images: droads34.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -4409,7 +4409,7 @@ Templates:
 	Template@264:
 		Category: Straight Dirt Roads
 		Id: 264
-		Images: Droads35.sno
+		Images: droads35.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -4442,7 +4442,7 @@ Templates:
 	Template@265:
 		Category: Straight Dirt Roads
 		Id: 265
-		Images: Droads36.sno
+		Images: droads36.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -4475,7 +4475,7 @@ Templates:
 	Template@266:
 		Category: Straight Dirt Roads
 		Id: 266
-		Images: Droads37.sno
+		Images: droads37.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -4508,7 +4508,7 @@ Templates:
 	Template@267:
 		Category: Straight Dirt Roads
 		Id: 267
-		Images: Droads38.sno
+		Images: droads38.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -4532,7 +4532,7 @@ Templates:
 	Template@268:
 		Category: Straight Dirt Roads
 		Id: 268
-		Images: Droads39.sno
+		Images: droads39.sno
 		Size: 2, 2
 		Tiles:
 			1: DirtRoad
@@ -4547,7 +4547,7 @@ Templates:
 	Template@269:
 		Category: Straight Dirt Roads
 		Id: 269
-		Images: Droads40.sno
+		Images: droads40.sno
 		Size: 2, 2
 		Tiles:
 			1: DirtRoad
@@ -4562,7 +4562,7 @@ Templates:
 	Template@270:
 		Category: Straight Dirt Roads
 		Id: 270
-		Images: Droads41.sno
+		Images: droads41.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -4595,7 +4595,7 @@ Templates:
 	Template@271:
 		Category: Straight Dirt Roads
 		Id: 271
-		Images: Droads42.sno
+		Images: droads42.sno
 		Size: 4, 5
 		Tiles:
 			1: DirtRoad
@@ -4631,7 +4631,7 @@ Templates:
 	Template@272:
 		Category: Straight Dirt Roads
 		Id: 272
-		Images: Droads43.sno
+		Images: droads43.sno
 		Size: 3, 3
 		Tiles:
 			1: DirtRoad
@@ -4655,7 +4655,7 @@ Templates:
 	Template@273:
 		Category: Straight Dirt Roads
 		Id: 273
-		Images: Droads44.sno
+		Images: droads44.sno
 		Size: 4, 4
 		Tiles:
 			1: Clear
@@ -4688,7 +4688,7 @@ Templates:
 	Template@274:
 		Category: Straight Dirt Roads
 		Id: 274
-		Images: Droads45.sno
+		Images: droads45.sno
 		Size: 2, 3
 		Tiles:
 			0: Clear
@@ -4712,7 +4712,7 @@ Templates:
 	Template@275:
 		Category: Straight Dirt Roads
 		Id: 275
-		Images: Droads46.sno
+		Images: droads46.sno
 		Size: 3, 3
 		Tiles:
 			1: Clear
@@ -4736,7 +4736,7 @@ Templates:
 	Template@276:
 		Category: Straight Dirt Roads
 		Id: 276
-		Images: Droads47.sno
+		Images: droads47.sno
 		Size: 5, 3
 		Tiles:
 			1: DirtRoad
@@ -4775,7 +4775,7 @@ Templates:
 	Template@277:
 		Category: Straight Dirt Roads
 		Id: 277
-		Images: Droads48.sno
+		Images: droads48.sno
 		Size: 3, 5
 		Tiles:
 			1: DirtRoad
@@ -4811,7 +4811,7 @@ Templates:
 	Template@278:
 		Category: Straight Dirt Roads
 		Id: 278
-		Images: Droads49.sno
+		Images: droads49.sno
 		Size: 4, 4
 		Tiles:
 			1: Clear
@@ -4844,7 +4844,7 @@ Templates:
 	Template@279:
 		Category: Straight Dirt Roads
 		Id: 279
-		Images: Droads50.sno
+		Images: droads50.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -4874,7 +4874,7 @@ Templates:
 	Template@280:
 		Category: Straight Dirt Roads
 		Id: 280
-		Images: Droads51.sno
+		Images: droads51.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -4904,7 +4904,7 @@ Templates:
 	Template@281:
 		Category: Straight Dirt Roads
 		Id: 281
-		Images: Droads52.sno
+		Images: droads52.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -4934,7 +4934,7 @@ Templates:
 	Template@282:
 		Category: Straight Dirt Roads
 		Id: 282
-		Images: Droads53.sno
+		Images: droads53.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -4964,7 +4964,7 @@ Templates:
 	Template@283:
 		Category: Straight Dirt Roads
 		Id: 283
-		Images: Droads54.sno
+		Images: droads54.sno
 		Size: 2, 3
 		Tiles:
 			0: DirtRoad
@@ -4988,7 +4988,7 @@ Templates:
 	Template@284:
 		Category: Straight Dirt Roads
 		Id: 284
-		Images: Droads55.sno
+		Images: droads55.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -5006,7 +5006,7 @@ Templates:
 	Template@285:
 		Category: Straight Dirt Roads
 		Id: 285
-		Images: Droads56.sno
+		Images: droads56.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -5018,7 +5018,7 @@ Templates:
 	Template@286:
 		Category: Straight Dirt Roads
 		Id: 286
-		Images: Droads57.sno
+		Images: droads57.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -5030,7 +5030,7 @@ Templates:
 	Template@287:
 		Category: Straight Dirt Roads
 		Id: 287
-		Images: Droads58.sno
+		Images: droads58.sno
 		Size: 2, 4
 		Tiles:
 			0: Clear
@@ -5060,7 +5060,7 @@ Templates:
 	Template@288:
 		Category: Straight Dirt Roads
 		Id: 288
-		Images: Droads59.sno
+		Images: droads59.sno
 		Size: 3, 3
 		Tiles:
 			0: Clear
@@ -5087,7 +5087,7 @@ Templates:
 	Template@289:
 		Category: Straight Dirt Roads
 		Id: 289
-		Images: Droads60.sno
+		Images: droads60.sno
 		Size: 2, 3
 		Tiles:
 			0: Clear
@@ -5108,7 +5108,7 @@ Templates:
 	Template@290:
 		Category: Straight Dirt Roads
 		Id: 290
-		Images: Droads61.sno
+		Images: droads61.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -5135,7 +5135,7 @@ Templates:
 	Template@291:
 		Category: Straight Dirt Roads
 		Id: 291
-		Images: Droads62.sno
+		Images: droads62.sno
 		Size: 2, 4
 		Tiles:
 			0: DirtRoad
@@ -5165,7 +5165,7 @@ Templates:
 	Template@292:
 		Category: Straight Dirt Roads
 		Id: 292
-		Images: Droads63.sno
+		Images: droads63.sno
 		Size: 2, 2
 		Tiles:
 			0: DirtRoad
@@ -5183,7 +5183,7 @@ Templates:
 	Template@293:
 		Category: Straight Dirt Roads
 		Id: 293
-		Images: Droads64.sno
+		Images: droads64.sno
 		Size: 3, 4
 		Tiles:
 			1: DirtRoad
@@ -5213,7 +5213,7 @@ Templates:
 	Template@294:
 		Category: Straight Dirt Roads
 		Id: 294
-		Images: Droads65.sno
+		Images: droads65.sno
 		Size: 3, 4
 		Tiles:
 			0: DirtRoad
@@ -5243,7 +5243,7 @@ Templates:
 	Template@295:
 		Category: Straight Dirt Roads
 		Id: 295
-		Images: Droads66.sno
+		Images: droads66.sno
 		Size: 2, 3
 		Tiles:
 			0: Clear
@@ -5264,7 +5264,7 @@ Templates:
 	Template@296:
 		Category: Bridges
 		Id: 296
-		Images: Ovrps01.sno, Ovrps01a.sno
+		Images: ovrps01.sno, ovrps01a.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -5323,7 +5323,7 @@ Templates:
 	Template@297:
 		Category: Bridges
 		Id: 297
-		Images: Ovrps02.sno, Ovrps02a.sno
+		Images: ovrps02.sno, ovrps02a.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -5382,7 +5382,7 @@ Templates:
 	Template@298:
 		Category: Bridges
 		Id: 298
-		Images: Ovrps03.sno, Ovrps03a.sno
+		Images: ovrps03.sno, ovrps03a.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5426,7 +5426,7 @@ Templates:
 	Template@299:
 		Category: Bridges
 		Id: 299
-		Images: Ovrps04.sno, Ovrps04a.sno
+		Images: ovrps04.sno, ovrps04a.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -5485,7 +5485,7 @@ Templates:
 	Template@300:
 		Category: Bridges
 		Id: 300
-		Images: Ovrps05.sno, Ovrps05a.sno
+		Images: ovrps05.sno, ovrps05a.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -5544,7 +5544,7 @@ Templates:
 	Template@301:
 		Category: Bridges
 		Id: 301
-		Images: Ovrps06.sno, Ovrps06a.sno
+		Images: ovrps06.sno, ovrps06a.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -5588,7 +5588,7 @@ Templates:
 	Template@302:
 		Category: Bridges
 		Id: 302
-		Images: Ovrps07.sno
+		Images: ovrps07.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5627,7 +5627,7 @@ Templates:
 	Template@303:
 		Category: Bridges
 		Id: 303
-		Images: Ovrps08.sno
+		Images: ovrps08.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5666,7 +5666,7 @@ Templates:
 	Template@304:
 		Category: Bridges
 		Id: 304
-		Images: Ovrps09.sno
+		Images: ovrps09.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5705,7 +5705,7 @@ Templates:
 	Template@305:
 		Category: Bridges
 		Id: 305
-		Images: Ovrps10.sno
+		Images: ovrps10.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5744,7 +5744,7 @@ Templates:
 	Template@306:
 		Category: Bridges
 		Id: 306
-		Images: Ovrps11.sno
+		Images: ovrps11.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -5780,7 +5780,7 @@ Templates:
 	Template@307:
 		Category: Bridges
 		Id: 307
-		Images: Ovrps12.sno
+		Images: ovrps12.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -5819,7 +5819,7 @@ Templates:
 	Template@308:
 		Category: Bridges
 		Id: 308
-		Images: Ovrps13.sno
+		Images: ovrps13.sno
 		Size: 5, 2
 		Tiles:
 			1: Road
@@ -5855,7 +5855,7 @@ Templates:
 	Template@309:
 		Category: Bridges
 		Id: 309
-		Images: Ovrps14.sno
+		Images: ovrps14.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -5894,7 +5894,7 @@ Templates:
 	Template@310:
 		Category: Bridges
 		Id: 310
-		Images: Ovrps15.sno
+		Images: ovrps15.sno
 		Size: 5, 2
 		Tiles:
 			1: Rough
@@ -5930,7 +5930,7 @@ Templates:
 	Template@311:
 		Category: Bridges
 		Id: 311
-		Images: Ovrps16.sno
+		Images: ovrps16.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -5966,7 +5966,7 @@ Templates:
 	Template@312:
 		Category: Paved Roads
 		Id: 312
-		Images: Proad01.sno, Proad01a.sno, Proad01b.sno, Proad01c.sno
+		Images: proad01.sno, proad01a.sno, proad01b.sno, proad01c.sno
 		Size: 1, 3
 		Tiles:
 			0: Road
@@ -5981,7 +5981,7 @@ Templates:
 	Template@313:
 		Category: Paved Roads
 		Id: 313
-		Images: Proad02.sno, Proad02a.sno, Proad02b.sno, Proad02c.sno
+		Images: proad02.sno, proad02a.sno, proad02b.sno, proad02c.sno
 		Size: 3, 1
 		Tiles:
 			0: Road
@@ -5996,7 +5996,7 @@ Templates:
 	Template@314:
 		Category: Paved Roads
 		Id: 314
-		Images: Proad03.sno
+		Images: proad03.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6029,7 +6029,7 @@ Templates:
 	Template@315:
 		Category: Paved Roads
 		Id: 315
-		Images: Proad04.sno
+		Images: proad04.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6062,7 +6062,7 @@ Templates:
 	Template@316:
 		Category: Paved Roads
 		Id: 316
-		Images: Proad05.sno
+		Images: proad05.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6095,7 +6095,7 @@ Templates:
 	Template@317:
 		Category: Paved Roads
 		Id: 317
-		Images: Proad06.sno
+		Images: proad06.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6128,7 +6128,7 @@ Templates:
 	Template@318:
 		Category: Paved Roads
 		Id: 318
-		Images: Proad07.sno
+		Images: proad07.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6161,7 +6161,7 @@ Templates:
 	Template@319:
 		Category: Paved Roads
 		Id: 319
-		Images: Proad08.sno
+		Images: proad08.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6194,7 +6194,7 @@ Templates:
 	Template@320:
 		Category: Paved Roads
 		Id: 320
-		Images: Proad09.sno
+		Images: proad09.sno
 		Size: 3, 3
 		Tiles:
 			0: Road
@@ -6227,7 +6227,7 @@ Templates:
 	Template@321:
 		Category: Paved Roads
 		Id: 321
-		Images: Proad10.sno
+		Images: proad10.sno
 		Size: 4, 3
 		Tiles:
 			0: Clear
@@ -6269,7 +6269,7 @@ Templates:
 	Template@322:
 		Category: Paved Roads
 		Id: 322
-		Images: Proad11.sno
+		Images: proad11.sno
 		Size: 4, 3
 		Tiles:
 			0: Road
@@ -6311,7 +6311,7 @@ Templates:
 	Template@323:
 		Category: Paved Roads
 		Id: 323
-		Images: Proad12.sno
+		Images: proad12.sno
 		Size: 4, 3
 		Tiles:
 			0: DirtRoad
@@ -6353,7 +6353,7 @@ Templates:
 	Template@324:
 		Category: Paved Roads
 		Id: 324
-		Images: Proad13.sno
+		Images: proad13.sno
 		Size: 3, 4
 		Tiles:
 			0: DirtRoad
@@ -6395,7 +6395,7 @@ Templates:
 	Template@325:
 		Category: Paved Roads
 		Id: 325
-		Images: Proad14.sno
+		Images: proad14.sno
 		Size: 3, 4
 		Tiles:
 			0: Clear
@@ -6437,7 +6437,7 @@ Templates:
 	Template@326:
 		Category: Paved Roads
 		Id: 326
-		Images: Proad15.sno
+		Images: proad15.sno
 		Size: 3, 4
 		Tiles:
 			0: Clear
@@ -6479,7 +6479,7 @@ Templates:
 	Template@327:
 		Category: Paved Roads
 		Id: 327
-		Images: Proad16.sno
+		Images: proad16.sno
 		Size: 4, 5
 		Tiles:
 			0: Road
@@ -6533,7 +6533,7 @@ Templates:
 	Template@328:
 		Category: Paved Roads
 		Id: 328
-		Images: Proad17.sno
+		Images: proad17.sno
 		Size: 4, 4
 		Tiles:
 			1: DirtRoad
@@ -6581,7 +6581,7 @@ Templates:
 	Template@329:
 		Category: Paved Roads
 		Id: 329
-		Images: Proad18.sno
+		Images: proad18.sno
 		Size: 4, 5
 		Tiles:
 			1: DirtRoad
@@ -6635,7 +6635,7 @@ Templates:
 	Template@330:
 		Category: Paved Roads
 		Id: 330
-		Images: Proad19.sno
+		Images: proad19.sno
 		Size: 5, 4
 		Tiles:
 			2: Road
@@ -6689,7 +6689,7 @@ Templates:
 	Template@331:
 		Category: Paved Roads
 		Id: 331
-		Images: Proad20.sno
+		Images: proad20.sno
 		Size: 4, 4
 		Tiles:
 			0: Road
@@ -6737,7 +6737,7 @@ Templates:
 	Template@332:
 		Category: Paved Roads
 		Id: 332
-		Images: Proad21.sno
+		Images: proad21.sno
 		Size: 5, 4
 		Tiles:
 			1: Road
@@ -6791,7 +6791,7 @@ Templates:
 	Template@333:
 		Category: Water
 		Id: 333
-		Images: Water01.sno
+		Images: water01.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6809,7 +6809,7 @@ Templates:
 	Template@334:
 		Category: Water
 		Id: 334
-		Images: Water02.sno
+		Images: water02.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6827,7 +6827,7 @@ Templates:
 	Template@335:
 		Category: Water
 		Id: 335
-		Images: Water03.sno
+		Images: water03.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6845,7 +6845,7 @@ Templates:
 	Template@336:
 		Category: Water
 		Id: 336
-		Images: Water04.sno
+		Images: water04.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6863,7 +6863,7 @@ Templates:
 	Template@337:
 		Category: Water
 		Id: 337
-		Images: Water05.sno
+		Images: water05.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6881,7 +6881,7 @@ Templates:
 	Template@338:
 		Category: Water
 		Id: 338
-		Images: Water06.sno
+		Images: water06.sno
 		Size: 2, 2
 		Tiles:
 			0: Water
@@ -6899,7 +6899,7 @@ Templates:
 	Template@339:
 		Category: Water
 		Id: 339
-		Images: Water07.sno
+		Images: water07.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -6917,7 +6917,7 @@ Templates:
 	Template@340:
 		Category: Water
 		Id: 340
-		Images: Water08.sno
+		Images: water08.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -6935,7 +6935,7 @@ Templates:
 	Template@341:
 		Category: Water
 		Id: 341
-		Images: Water09.sno
+		Images: water09.sno
 		Size: 1, 1
 		Tiles:
 			0: Water
@@ -6944,7 +6944,7 @@ Templates:
 	Template@342:
 		Category: Water
 		Id: 342
-		Images: Water10.sno
+		Images: water10.sno
 		Size: 1, 1
 		Tiles:
 			0: Water
@@ -6953,7 +6953,7 @@ Templates:
 	Template@343:
 		Category: Water
 		Id: 343
-		Images: Water11.sno
+		Images: water11.sno
 		Size: 1, 1
 		Tiles:
 			0: Water
@@ -6962,7 +6962,7 @@ Templates:
 	Template@344:
 		Category: Water
 		Id: 344
-		Images: Water12.sno
+		Images: water12.sno
 		Size: 1, 1
 		Tiles:
 			0: Water
@@ -6971,7 +6971,7 @@ Templates:
 	Template@345:
 		Category: Water
 		Id: 345
-		Images: Water13.sno
+		Images: water13.sno
 		Size: 1, 1
 		Tiles:
 			0: Water
@@ -6980,7 +6980,7 @@ Templates:
 	Template@346:
 		Category: Water
 		Id: 346
-		Images: Water14.sno
+		Images: water14.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -6989,7 +6989,7 @@ Templates:
 	Template@387:
 		Category: Dirt Road Slopes
 		Id: 387
-		Images: DRSLPE01.sno
+		Images: drslpe01.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -7003,7 +7003,7 @@ Templates:
 	Template@388:
 		Category: Dirt Road Slopes
 		Id: 388
-		Images: DRSLPE02.sno
+		Images: drslpe02.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -7017,7 +7017,7 @@ Templates:
 	Template@389:
 		Category: Dirt Road Slopes
 		Id: 389
-		Images: DRSLPE03.sno
+		Images: drslpe03.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -7031,7 +7031,7 @@ Templates:
 	Template@390:
 		Category: Dirt Road Slopes
 		Id: 390
-		Images: DRSLPE04.sno
+		Images: drslpe04.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -7045,7 +7045,7 @@ Templates:
 	Template@391:
 		Category: Dirt Road Slopes
 		Id: 391
-		Images: DRSLPE05.sno
+		Images: drslpe05.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -7059,7 +7059,7 @@ Templates:
 	Template@392:
 		Category: Dirt Road Slopes
 		Id: 392
-		Images: DRSLPE06.sno
+		Images: drslpe06.sno
 		Size: 1, 2
 		Tiles:
 			0: DirtRoad
@@ -7073,7 +7073,7 @@ Templates:
 	Template@393:
 		Category: Dirt Road Slopes
 		Id: 393
-		Images: DRSLPE07.sno
+		Images: drslpe07.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -7087,7 +7087,7 @@ Templates:
 	Template@394:
 		Category: Dirt Road Slopes
 		Id: 394
-		Images: DRSLPE08.sno
+		Images: drslpe08.sno
 		Size: 2, 1
 		Tiles:
 			0: DirtRoad
@@ -7101,7 +7101,7 @@ Templates:
 	Template@403:
 		Category: Slope Set Pieces
 		Id: 403
-		Images: RAMP01.sno
+		Images: ramp01.sno
 		Size: 3, 4
 		Tiles:
 			1: Clear
@@ -7151,7 +7151,7 @@ Templates:
 	Template@404:
 		Category: Slope Set Pieces
 		Id: 404
-		Images: RAMP02.sno
+		Images: ramp02.sno
 		Size: 3, 4
 		Tiles:
 			0: Clear
@@ -7201,7 +7201,7 @@ Templates:
 	Template@405:
 		Category: Slope Set Pieces
 		Id: 405
-		Images: RAMP03.sno
+		Images: ramp03.sno
 		Size: 4, 3
 		Tiles:
 			0: Clear
@@ -7251,7 +7251,7 @@ Templates:
 	Template@406:
 		Category: Slope Set Pieces
 		Id: 406
-		Images: RAMP04.sno
+		Images: ramp04.sno
 		Size: 4, 3
 		Tiles:
 			1: Cliff
@@ -7301,7 +7301,7 @@ Templates:
 	Template@407:
 		Category: Slope Set Pieces
 		Id: 407
-		Images: RAMP05.sno
+		Images: ramp05.sno
 		Size: 3, 4
 		Tiles:
 			1: Clear
@@ -7350,7 +7350,7 @@ Templates:
 	Template@408:
 		Category: Slope Set Pieces
 		Id: 408
-		Images: RAMP06.sno
+		Images: ramp06.sno
 		Size: 3, 4
 		Tiles:
 			0: Clear
@@ -7386,7 +7386,7 @@ Templates:
 	Template@409:
 		Category: Slope Set Pieces
 		Id: 409
-		Images: RAMP07.sno
+		Images: ramp07.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -7406,7 +7406,7 @@ Templates:
 	Template@410:
 		Category: Slope Set Pieces
 		Id: 410
-		Images: RAMP08.sno
+		Images: ramp08.sno
 		Size: 4, 3
 		Tiles:
 			1: Cliff
@@ -7455,7 +7455,7 @@ Templates:
 	Template@411:
 		Category: Slope Set Pieces
 		Id: 411
-		Images: RAMP09.sno
+		Images: ramp09.sno
 		Size: 4, 3
 		Tiles:
 			0: Clear
@@ -7491,7 +7491,7 @@ Templates:
 	Template@412:
 		Category: Slope Set Pieces
 		Id: 412
-		Images: RAMP10.sno
+		Images: ramp10.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -7511,7 +7511,7 @@ Templates:
 	Template@423:
 		Category: Dead Oil Tanker
 		Id: 423
-		Images: TANKER01.sno
+		Images: tanker01.sno
 		Size: 5, 8
 		Tiles:
 			0: Cliff
@@ -7595,7 +7595,7 @@ Templates:
 	Template@424:
 		Category: Ruins
 		Id: 424
-		Images: RUIN01.sno
+		Images: ruin01.sno
 		Size: 3, 3
 		Tiles:
 			1: Cliff
@@ -7622,7 +7622,7 @@ Templates:
 	Template@435:
 		Category: Waterfalls
 		Id: 435
-		Images: W-a-01.sno
+		Images: w-a-01.sno
 		Size: 2, 4
 		Tiles:
 			0: Cliff
@@ -7656,7 +7656,7 @@ Templates:
 	Template@436:
 		Category: Waterfalls
 		Id: 436
-		Images: W-a-02.sno
+		Images: w-a-02.sno
 		Size: 1, 4
 		Tiles:
 			0: Cliff
@@ -7676,7 +7676,7 @@ Templates:
 	Template@437:
 		Category: Waterfalls
 		Id: 437
-		Images: W-a-03.sno
+		Images: w-a-03.sno
 		Size: 2, 4
 		Tiles:
 			0: Cliff
@@ -7710,7 +7710,7 @@ Templates:
 	Template@438:
 		Category: Waterfalls
 		Id: 438
-		Images: W-a-04.sno
+		Images: w-a-04.sno
 		Size: 2, 4
 		Tiles:
 			0: Cliff
@@ -7744,7 +7744,7 @@ Templates:
 	Template@439:
 		Category: Ice 01
 		Id: 439
-		Images: Ice0101.sno
+		Images: ice0101.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7753,7 +7753,7 @@ Templates:
 	Template@440:
 		Category: Ice 01
 		Id: 440
-		Images: Ice0102.sno
+		Images: ice0102.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7762,7 +7762,7 @@ Templates:
 	Template@441:
 		Category: Ice 01
 		Id: 441
-		Images: Ice0103.sno
+		Images: ice0103.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7771,7 +7771,7 @@ Templates:
 	Template@442:
 		Category: Ice 01
 		Id: 442
-		Images: Ice0104.sno
+		Images: ice0104.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7780,7 +7780,7 @@ Templates:
 	Template@443:
 		Category: Ice 01
 		Id: 443
-		Images: Ice0105.sno
+		Images: ice0105.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7789,7 +7789,7 @@ Templates:
 	Template@444:
 		Category: Ice 01
 		Id: 444
-		Images: Ice0106.sno
+		Images: ice0106.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7798,7 +7798,7 @@ Templates:
 	Template@445:
 		Category: Ice 01
 		Id: 445
-		Images: Ice0107.sno
+		Images: ice0107.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7807,7 +7807,7 @@ Templates:
 	Template@446:
 		Category: Ice 01
 		Id: 446
-		Images: Ice0108.sno
+		Images: ice0108.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7816,7 +7816,7 @@ Templates:
 	Template@447:
 		Category: Ice 01
 		Id: 447
-		Images: Ice0109.sno
+		Images: ice0109.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7825,7 +7825,7 @@ Templates:
 	Template@448:
 		Category: Ice 01
 		Id: 448
-		Images: Ice0110.sno
+		Images: ice0110.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7834,7 +7834,7 @@ Templates:
 	Template@449:
 		Category: Ice 01
 		Id: 449
-		Images: Ice0111.sno
+		Images: ice0111.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7843,7 +7843,7 @@ Templates:
 	Template@450:
 		Category: Ice 01
 		Id: 450
-		Images: Ice0112.sno
+		Images: ice0112.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7852,7 +7852,7 @@ Templates:
 	Template@451:
 		Category: Ice 01
 		Id: 451
-		Images: Ice0113.sno
+		Images: ice0113.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7861,7 +7861,7 @@ Templates:
 	Template@452:
 		Category: Ice 01
 		Id: 452
-		Images: Ice0114.sno
+		Images: ice0114.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7870,7 +7870,7 @@ Templates:
 	Template@453:
 		Category: Ice 01
 		Id: 453
-		Images: Ice0115.sno
+		Images: ice0115.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7879,7 +7879,7 @@ Templates:
 	Template@454:
 		Category: Ice 01
 		Id: 454
-		Images: Ice0116.sno
+		Images: ice0116.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7888,7 +7888,7 @@ Templates:
 	Template@455:
 		Category: Ice 01
 		Id: 455
-		Images: Ice0117.sno
+		Images: ice0117.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7897,7 +7897,7 @@ Templates:
 	Template@456:
 		Category: Ice 01
 		Id: 456
-		Images: Ice0118.sno
+		Images: ice0118.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7906,7 +7906,7 @@ Templates:
 	Template@457:
 		Category: Ice 01
 		Id: 457
-		Images: Ice0119.sno
+		Images: ice0119.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7915,7 +7915,7 @@ Templates:
 	Template@458:
 		Category: Ice 01
 		Id: 458
-		Images: Ice0120.sno
+		Images: ice0120.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7924,7 +7924,7 @@ Templates:
 	Template@459:
 		Category: Ice 01
 		Id: 459
-		Images: Ice0121.sno
+		Images: ice0121.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7933,7 +7933,7 @@ Templates:
 	Template@460:
 		Category: Ice 01
 		Id: 460
-		Images: Ice0122.sno
+		Images: ice0122.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7942,7 +7942,7 @@ Templates:
 	Template@461:
 		Category: Ice 01
 		Id: 461
-		Images: Ice0123.sno
+		Images: ice0123.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7951,7 +7951,7 @@ Templates:
 	Template@462:
 		Category: Ice 01
 		Id: 462
-		Images: Ice0124.sno
+		Images: ice0124.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7960,7 +7960,7 @@ Templates:
 	Template@463:
 		Category: Ice 01
 		Id: 463
-		Images: Ice0125.sno
+		Images: ice0125.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7969,7 +7969,7 @@ Templates:
 	Template@464:
 		Category: Ice 01
 		Id: 464
-		Images: Ice0126.sno
+		Images: ice0126.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7978,7 +7978,7 @@ Templates:
 	Template@465:
 		Category: Ice 01
 		Id: 465
-		Images: Ice0127.sno
+		Images: ice0127.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7987,7 +7987,7 @@ Templates:
 	Template@466:
 		Category: Ice 01
 		Id: 466
-		Images: Ice0128.sno
+		Images: ice0128.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -7996,7 +7996,7 @@ Templates:
 	Template@467:
 		Category: Ice 01
 		Id: 467
-		Images: Ice0129.sno
+		Images: ice0129.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8005,7 +8005,7 @@ Templates:
 	Template@468:
 		Category: Ice 01
 		Id: 468
-		Images: Ice0130.sno
+		Images: ice0130.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8014,7 +8014,7 @@ Templates:
 	Template@469:
 		Category: Ice 01
 		Id: 469
-		Images: Ice0131.sno
+		Images: ice0131.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8023,7 +8023,7 @@ Templates:
 	Template@470:
 		Category: Ice 01
 		Id: 470
-		Images: Ice0132.sno
+		Images: ice0132.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8032,7 +8032,7 @@ Templates:
 	Template@471:
 		Category: Ice 01
 		Id: 471
-		Images: Ice0133.sno
+		Images: ice0133.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8041,7 +8041,7 @@ Templates:
 	Template@472:
 		Category: Ice 01
 		Id: 472
-		Images: Ice0134.sno
+		Images: ice0134.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8050,7 +8050,7 @@ Templates:
 	Template@473:
 		Category: Ice 01
 		Id: 473
-		Images: Ice0135.sno
+		Images: ice0135.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8059,7 +8059,7 @@ Templates:
 	Template@474:
 		Category: Ice 01
 		Id: 474
-		Images: Ice0136.sno
+		Images: ice0136.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8068,7 +8068,7 @@ Templates:
 	Template@475:
 		Category: Ice 01
 		Id: 475
-		Images: Ice0137.sno
+		Images: ice0137.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8077,7 +8077,7 @@ Templates:
 	Template@476:
 		Category: Ice 01
 		Id: 476
-		Images: Ice0138.sno
+		Images: ice0138.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8086,7 +8086,7 @@ Templates:
 	Template@477:
 		Category: Ice 01
 		Id: 477
-		Images: Ice0139.sno
+		Images: ice0139.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8095,7 +8095,7 @@ Templates:
 	Template@478:
 		Category: Ice 01
 		Id: 478
-		Images: Ice0140.sno
+		Images: ice0140.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8104,7 +8104,7 @@ Templates:
 	Template@479:
 		Category: Ice 01
 		Id: 479
-		Images: Ice0141.sno
+		Images: ice0141.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8113,7 +8113,7 @@ Templates:
 	Template@480:
 		Category: Ice 01
 		Id: 480
-		Images: Ice0142.sno
+		Images: ice0142.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8122,7 +8122,7 @@ Templates:
 	Template@481:
 		Category: Ice 01
 		Id: 481
-		Images: Ice0143.sno
+		Images: ice0143.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8131,7 +8131,7 @@ Templates:
 	Template@482:
 		Category: Ice 01
 		Id: 482
-		Images: Ice0144.sno
+		Images: ice0144.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8140,7 +8140,7 @@ Templates:
 	Template@483:
 		Category: Ice 01
 		Id: 483
-		Images: Ice0145.sno
+		Images: ice0145.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8149,7 +8149,7 @@ Templates:
 	Template@484:
 		Category: Ice 01
 		Id: 484
-		Images: Ice0146.sno
+		Images: ice0146.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8158,7 +8158,7 @@ Templates:
 	Template@485:
 		Category: Ice 01
 		Id: 485
-		Images: Ice0147.sno
+		Images: ice0147.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8167,7 +8167,7 @@ Templates:
 	Template@486:
 		Category: Ice 01
 		Id: 486
-		Images: Ice0148.sno
+		Images: ice0148.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8176,7 +8176,7 @@ Templates:
 	Template@487:
 		Category: Ice 01
 		Id: 487
-		Images: Ice0149.sno
+		Images: ice0149.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8185,7 +8185,7 @@ Templates:
 	Template@488:
 		Category: Ice 01
 		Id: 488
-		Images: Ice0150.sno
+		Images: ice0150.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8194,7 +8194,7 @@ Templates:
 	Template@489:
 		Category: Ice 01
 		Id: 489
-		Images: Ice0151.sno
+		Images: ice0151.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8203,7 +8203,7 @@ Templates:
 	Template@490:
 		Category: Ice 01
 		Id: 490
-		Images: Ice0152.sno
+		Images: ice0152.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8212,7 +8212,7 @@ Templates:
 	Template@491:
 		Category: Ice 01
 		Id: 491
-		Images: Ice0153.sno
+		Images: ice0153.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8221,7 +8221,7 @@ Templates:
 	Template@492:
 		Category: Ice 01
 		Id: 492
-		Images: Ice0154.sno
+		Images: ice0154.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8230,7 +8230,7 @@ Templates:
 	Template@493:
 		Category: Ice 01
 		Id: 493
-		Images: Ice0155.sno
+		Images: ice0155.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8239,7 +8239,7 @@ Templates:
 	Template@494:
 		Category: Ice 01
 		Id: 494
-		Images: Ice0156.sno
+		Images: ice0156.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8248,7 +8248,7 @@ Templates:
 	Template@495:
 		Category: Ice 01
 		Id: 495
-		Images: Ice0157.sno
+		Images: ice0157.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8257,7 +8257,7 @@ Templates:
 	Template@496:
 		Category: Ice 01
 		Id: 496
-		Images: Ice0158.sno
+		Images: ice0158.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8266,7 +8266,7 @@ Templates:
 	Template@497:
 		Category: Ice 01
 		Id: 497
-		Images: Ice0159.sno
+		Images: ice0159.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8275,7 +8275,7 @@ Templates:
 	Template@498:
 		Category: Ice 01
 		Id: 498
-		Images: Ice0160.sno
+		Images: ice0160.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8284,7 +8284,7 @@ Templates:
 	Template@499:
 		Category: Ice 01
 		Id: 499
-		Images: Ice0161.sno
+		Images: ice0161.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8293,7 +8293,7 @@ Templates:
 	Template@500:
 		Category: Ice 01
 		Id: 500
-		Images: Ice0162.sno
+		Images: ice0162.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8302,7 +8302,7 @@ Templates:
 	Template@501:
 		Category: Ice 01
 		Id: 501
-		Images: Ice0163.sno
+		Images: ice0163.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8311,7 +8311,7 @@ Templates:
 	Template@502:
 		Category: Ice 01
 		Id: 502
-		Images: Ice0164.sno
+		Images: ice0164.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8320,7 +8320,7 @@ Templates:
 	Template@503:
 		Category: Ice 02
 		Id: 503
-		Images: Ice0201.sno
+		Images: ice0201.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8329,7 +8329,7 @@ Templates:
 	Template@504:
 		Category: Ice 02
 		Id: 504
-		Images: Ice0202.sno
+		Images: ice0202.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8338,7 +8338,7 @@ Templates:
 	Template@505:
 		Category: Ice 02
 		Id: 505
-		Images: Ice0203.sno
+		Images: ice0203.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8347,7 +8347,7 @@ Templates:
 	Template@506:
 		Category: Ice 02
 		Id: 506
-		Images: Ice0204.sno
+		Images: ice0204.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8356,7 +8356,7 @@ Templates:
 	Template@507:
 		Category: Ice 02
 		Id: 507
-		Images: Ice0205.sno
+		Images: ice0205.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8365,7 +8365,7 @@ Templates:
 	Template@508:
 		Category: Ice 02
 		Id: 508
-		Images: Ice0206.sno
+		Images: ice0206.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8374,7 +8374,7 @@ Templates:
 	Template@509:
 		Category: Ice 02
 		Id: 509
-		Images: Ice0207.sno
+		Images: ice0207.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8383,7 +8383,7 @@ Templates:
 	Template@510:
 		Category: Ice 02
 		Id: 510
-		Images: Ice0208.sno
+		Images: ice0208.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8392,7 +8392,7 @@ Templates:
 	Template@511:
 		Category: Ice 02
 		Id: 511
-		Images: Ice0209.sno
+		Images: ice0209.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8401,7 +8401,7 @@ Templates:
 	Template@512:
 		Category: Ice 02
 		Id: 512
-		Images: Ice0210.sno
+		Images: ice0210.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8410,7 +8410,7 @@ Templates:
 	Template@513:
 		Category: Ice 02
 		Id: 513
-		Images: Ice0211.sno
+		Images: ice0211.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8419,7 +8419,7 @@ Templates:
 	Template@514:
 		Category: Ice 02
 		Id: 514
-		Images: Ice0212.sno
+		Images: ice0212.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8428,7 +8428,7 @@ Templates:
 	Template@515:
 		Category: Ice 02
 		Id: 515
-		Images: Ice0213.sno
+		Images: ice0213.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8437,7 +8437,7 @@ Templates:
 	Template@516:
 		Category: Ice 02
 		Id: 516
-		Images: Ice0214.sno
+		Images: ice0214.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8446,7 +8446,7 @@ Templates:
 	Template@517:
 		Category: Ice 02
 		Id: 517
-		Images: Ice0215.sno
+		Images: ice0215.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8455,7 +8455,7 @@ Templates:
 	Template@518:
 		Category: Ice 02
 		Id: 518
-		Images: Ice0216.sno
+		Images: ice0216.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8464,7 +8464,7 @@ Templates:
 	Template@519:
 		Category: Ice 02
 		Id: 519
-		Images: Ice0217.sno
+		Images: ice0217.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8473,7 +8473,7 @@ Templates:
 	Template@520:
 		Category: Ice 02
 		Id: 520
-		Images: Ice0218.sno
+		Images: ice0218.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8482,7 +8482,7 @@ Templates:
 	Template@521:
 		Category: Ice 02
 		Id: 521
-		Images: Ice0219.sno
+		Images: ice0219.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8491,7 +8491,7 @@ Templates:
 	Template@522:
 		Category: Ice 02
 		Id: 522
-		Images: Ice0220.sno
+		Images: ice0220.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8500,7 +8500,7 @@ Templates:
 	Template@523:
 		Category: Ice 02
 		Id: 523
-		Images: Ice0221.sno
+		Images: ice0221.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8509,7 +8509,7 @@ Templates:
 	Template@524:
 		Category: Ice 02
 		Id: 524
-		Images: Ice0222.sno
+		Images: ice0222.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8518,7 +8518,7 @@ Templates:
 	Template@525:
 		Category: Ice 02
 		Id: 525
-		Images: Ice0223.sno
+		Images: ice0223.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8527,7 +8527,7 @@ Templates:
 	Template@526:
 		Category: Ice 02
 		Id: 526
-		Images: Ice0224.sno
+		Images: ice0224.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8536,7 +8536,7 @@ Templates:
 	Template@527:
 		Category: Ice 02
 		Id: 527
-		Images: Ice0225.sno
+		Images: ice0225.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8545,7 +8545,7 @@ Templates:
 	Template@528:
 		Category: Ice 02
 		Id: 528
-		Images: Ice0226.sno
+		Images: ice0226.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8554,7 +8554,7 @@ Templates:
 	Template@529:
 		Category: Ice 02
 		Id: 529
-		Images: Ice0227.sno
+		Images: ice0227.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8563,7 +8563,7 @@ Templates:
 	Template@530:
 		Category: Ice 02
 		Id: 530
-		Images: Ice0228.sno
+		Images: ice0228.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8572,7 +8572,7 @@ Templates:
 	Template@531:
 		Category: Ice 02
 		Id: 531
-		Images: Ice0229.sno
+		Images: ice0229.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8581,7 +8581,7 @@ Templates:
 	Template@532:
 		Category: Ice 02
 		Id: 532
-		Images: Ice0230.sno
+		Images: ice0230.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8590,7 +8590,7 @@ Templates:
 	Template@533:
 		Category: Ice 02
 		Id: 533
-		Images: Ice0231.sno
+		Images: ice0231.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8599,7 +8599,7 @@ Templates:
 	Template@534:
 		Category: Ice 02
 		Id: 534
-		Images: Ice0232.sno
+		Images: ice0232.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8608,7 +8608,7 @@ Templates:
 	Template@535:
 		Category: Ice 02
 		Id: 535
-		Images: Ice0233.sno
+		Images: ice0233.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8617,7 +8617,7 @@ Templates:
 	Template@536:
 		Category: Ice 02
 		Id: 536
-		Images: Ice0234.sno
+		Images: ice0234.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8626,7 +8626,7 @@ Templates:
 	Template@537:
 		Category: Ice 02
 		Id: 537
-		Images: Ice0235.sno
+		Images: ice0235.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8635,7 +8635,7 @@ Templates:
 	Template@538:
 		Category: Ice 02
 		Id: 538
-		Images: Ice0236.sno
+		Images: ice0236.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8644,7 +8644,7 @@ Templates:
 	Template@539:
 		Category: Ice 02
 		Id: 539
-		Images: Ice0237.sno
+		Images: ice0237.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8653,7 +8653,7 @@ Templates:
 	Template@540:
 		Category: Ice 02
 		Id: 540
-		Images: Ice0238.sno
+		Images: ice0238.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8662,7 +8662,7 @@ Templates:
 	Template@541:
 		Category: Ice 02
 		Id: 541
-		Images: Ice0239.sno
+		Images: ice0239.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8671,7 +8671,7 @@ Templates:
 	Template@542:
 		Category: Ice 02
 		Id: 542
-		Images: Ice0240.sno
+		Images: ice0240.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8680,7 +8680,7 @@ Templates:
 	Template@543:
 		Category: Ice 02
 		Id: 543
-		Images: Ice0241.sno
+		Images: ice0241.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8689,7 +8689,7 @@ Templates:
 	Template@544:
 		Category: Ice 02
 		Id: 544
-		Images: Ice0242.sno
+		Images: ice0242.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8698,7 +8698,7 @@ Templates:
 	Template@545:
 		Category: Ice 02
 		Id: 545
-		Images: Ice0243.sno
+		Images: ice0243.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8707,7 +8707,7 @@ Templates:
 	Template@546:
 		Category: Ice 02
 		Id: 546
-		Images: Ice0244.sno
+		Images: ice0244.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8716,7 +8716,7 @@ Templates:
 	Template@547:
 		Category: Ice 02
 		Id: 547
-		Images: Ice0245.sno
+		Images: ice0245.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8725,7 +8725,7 @@ Templates:
 	Template@548:
 		Category: Ice 02
 		Id: 548
-		Images: Ice0246.sno
+		Images: ice0246.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8734,7 +8734,7 @@ Templates:
 	Template@549:
 		Category: Ice 02
 		Id: 549
-		Images: Ice0247.sno
+		Images: ice0247.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8743,7 +8743,7 @@ Templates:
 	Template@550:
 		Category: Ice 02
 		Id: 550
-		Images: Ice0248.sno
+		Images: ice0248.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8752,7 +8752,7 @@ Templates:
 	Template@551:
 		Category: Ice 02
 		Id: 551
-		Images: Ice0249.sno
+		Images: ice0249.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8761,7 +8761,7 @@ Templates:
 	Template@552:
 		Category: Ice 02
 		Id: 552
-		Images: Ice0250.sno
+		Images: ice0250.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8770,7 +8770,7 @@ Templates:
 	Template@553:
 		Category: Ice 02
 		Id: 553
-		Images: Ice0251.sno
+		Images: ice0251.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8779,7 +8779,7 @@ Templates:
 	Template@554:
 		Category: Ice 02
 		Id: 554
-		Images: Ice0252.sno
+		Images: ice0252.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8788,7 +8788,7 @@ Templates:
 	Template@555:
 		Category: Ice 02
 		Id: 555
-		Images: Ice0253.sno
+		Images: ice0253.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8797,7 +8797,7 @@ Templates:
 	Template@556:
 		Category: Ice 02
 		Id: 556
-		Images: Ice0254.sno
+		Images: ice0254.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8806,7 +8806,7 @@ Templates:
 	Template@557:
 		Category: Ice 02
 		Id: 557
-		Images: Ice0255.sno
+		Images: ice0255.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8815,7 +8815,7 @@ Templates:
 	Template@558:
 		Category: Ice 02
 		Id: 558
-		Images: Ice0256.sno
+		Images: ice0256.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8824,7 +8824,7 @@ Templates:
 	Template@559:
 		Category: Ice 02
 		Id: 559
-		Images: Ice0257.sno
+		Images: ice0257.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8833,7 +8833,7 @@ Templates:
 	Template@560:
 		Category: Ice 02
 		Id: 560
-		Images: Ice0258.sno
+		Images: ice0258.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8842,7 +8842,7 @@ Templates:
 	Template@561:
 		Category: Ice 02
 		Id: 561
-		Images: Ice0259.sno
+		Images: ice0259.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8851,7 +8851,7 @@ Templates:
 	Template@562:
 		Category: Ice 02
 		Id: 562
-		Images: Ice0260.sno
+		Images: ice0260.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8860,7 +8860,7 @@ Templates:
 	Template@563:
 		Category: Ice 02
 		Id: 563
-		Images: Ice0261.sno
+		Images: ice0261.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8869,7 +8869,7 @@ Templates:
 	Template@564:
 		Category: Ice 02
 		Id: 564
-		Images: Ice0262.sno
+		Images: ice0262.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8878,7 +8878,7 @@ Templates:
 	Template@565:
 		Category: Ice 02
 		Id: 565
-		Images: Ice0263.sno
+		Images: ice0263.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8887,7 +8887,7 @@ Templates:
 	Template@566:
 		Category: Ice 02
 		Id: 566
-		Images: Ice0264.sno
+		Images: ice0264.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8896,7 +8896,7 @@ Templates:
 	Template@567:
 		Category: Ice 03
 		Id: 567
-		Images: Ice0301.sno
+		Images: ice0301.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8905,7 +8905,7 @@ Templates:
 	Template@568:
 		Category: Ice 03
 		Id: 568
-		Images: Ice0302.sno
+		Images: ice0302.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8914,7 +8914,7 @@ Templates:
 	Template@569:
 		Category: Ice 03
 		Id: 569
-		Images: Ice0303.sno
+		Images: ice0303.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8923,7 +8923,7 @@ Templates:
 	Template@570:
 		Category: Ice 03
 		Id: 570
-		Images: Ice0304.sno
+		Images: ice0304.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8932,7 +8932,7 @@ Templates:
 	Template@571:
 		Category: Ice 03
 		Id: 571
-		Images: Ice0305.sno
+		Images: ice0305.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8941,7 +8941,7 @@ Templates:
 	Template@572:
 		Category: Ice 03
 		Id: 572
-		Images: Ice0306.sno
+		Images: ice0306.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8950,7 +8950,7 @@ Templates:
 	Template@573:
 		Category: Ice 03
 		Id: 573
-		Images: Ice0307.sno
+		Images: ice0307.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8959,7 +8959,7 @@ Templates:
 	Template@574:
 		Category: Ice 03
 		Id: 574
-		Images: Ice0308.sno
+		Images: ice0308.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8968,7 +8968,7 @@ Templates:
 	Template@575:
 		Category: Ice 03
 		Id: 575
-		Images: Ice0309.sno
+		Images: ice0309.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8977,7 +8977,7 @@ Templates:
 	Template@576:
 		Category: Ice 03
 		Id: 576
-		Images: Ice0310.sno
+		Images: ice0310.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8986,7 +8986,7 @@ Templates:
 	Template@577:
 		Category: Ice 03
 		Id: 577
-		Images: Ice0311.sno
+		Images: ice0311.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -8995,7 +8995,7 @@ Templates:
 	Template@578:
 		Category: Ice 03
 		Id: 578
-		Images: Ice0312.sno
+		Images: ice0312.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9004,7 +9004,7 @@ Templates:
 	Template@579:
 		Category: Ice 03
 		Id: 579
-		Images: Ice0313.sno
+		Images: ice0313.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9013,7 +9013,7 @@ Templates:
 	Template@580:
 		Category: Ice 03
 		Id: 580
-		Images: Ice0314.sno
+		Images: ice0314.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9022,7 +9022,7 @@ Templates:
 	Template@581:
 		Category: Ice 03
 		Id: 581
-		Images: Ice0315.sno
+		Images: ice0315.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9031,7 +9031,7 @@ Templates:
 	Template@582:
 		Category: Ice 03
 		Id: 582
-		Images: Ice0316.sno
+		Images: ice0316.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9040,7 +9040,7 @@ Templates:
 	Template@583:
 		Category: Ice 03
 		Id: 583
-		Images: Ice0317.sno
+		Images: ice0317.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9049,7 +9049,7 @@ Templates:
 	Template@584:
 		Category: Ice 03
 		Id: 584
-		Images: Ice0318.sno
+		Images: ice0318.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9058,7 +9058,7 @@ Templates:
 	Template@585:
 		Category: Ice 03
 		Id: 585
-		Images: Ice0319.sno
+		Images: ice0319.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9067,7 +9067,7 @@ Templates:
 	Template@586:
 		Category: Ice 03
 		Id: 586
-		Images: Ice0320.sno
+		Images: ice0320.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9076,7 +9076,7 @@ Templates:
 	Template@587:
 		Category: Ice 03
 		Id: 587
-		Images: Ice0321.sno
+		Images: ice0321.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9085,7 +9085,7 @@ Templates:
 	Template@588:
 		Category: Ice 03
 		Id: 588
-		Images: Ice0322.sno
+		Images: ice0322.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9094,7 +9094,7 @@ Templates:
 	Template@589:
 		Category: Ice 03
 		Id: 589
-		Images: Ice0323.sno
+		Images: ice0323.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9103,7 +9103,7 @@ Templates:
 	Template@590:
 		Category: Ice 03
 		Id: 590
-		Images: Ice0324.sno
+		Images: ice0324.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9112,7 +9112,7 @@ Templates:
 	Template@591:
 		Category: Ice 03
 		Id: 591
-		Images: Ice0325.sno
+		Images: ice0325.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9121,7 +9121,7 @@ Templates:
 	Template@592:
 		Category: Ice 03
 		Id: 592
-		Images: Ice0326.sno
+		Images: ice0326.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9130,7 +9130,7 @@ Templates:
 	Template@593:
 		Category: Ice 03
 		Id: 593
-		Images: Ice0327.sno
+		Images: ice0327.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9139,7 +9139,7 @@ Templates:
 	Template@594:
 		Category: Ice 03
 		Id: 594
-		Images: Ice0328.sno
+		Images: ice0328.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9148,7 +9148,7 @@ Templates:
 	Template@595:
 		Category: Ice 03
 		Id: 595
-		Images: Ice0329.sno
+		Images: ice0329.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9157,7 +9157,7 @@ Templates:
 	Template@596:
 		Category: Ice 03
 		Id: 596
-		Images: Ice0330.sno
+		Images: ice0330.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9166,7 +9166,7 @@ Templates:
 	Template@597:
 		Category: Ice 03
 		Id: 597
-		Images: Ice0331.sno
+		Images: ice0331.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9175,7 +9175,7 @@ Templates:
 	Template@598:
 		Category: Ice 03
 		Id: 598
-		Images: Ice0332.sno
+		Images: ice0332.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9184,7 +9184,7 @@ Templates:
 	Template@599:
 		Category: Ice 03
 		Id: 599
-		Images: Ice0333.sno
+		Images: ice0333.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9193,7 +9193,7 @@ Templates:
 	Template@600:
 		Category: Ice 03
 		Id: 600
-		Images: Ice0334.sno
+		Images: ice0334.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9202,7 +9202,7 @@ Templates:
 	Template@601:
 		Category: Ice 03
 		Id: 601
-		Images: Ice0335.sno
+		Images: ice0335.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9211,7 +9211,7 @@ Templates:
 	Template@602:
 		Category: Ice 03
 		Id: 602
-		Images: Ice0336.sno
+		Images: ice0336.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9220,7 +9220,7 @@ Templates:
 	Template@603:
 		Category: Ice 03
 		Id: 603
-		Images: Ice0337.sno
+		Images: ice0337.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9229,7 +9229,7 @@ Templates:
 	Template@604:
 		Category: Ice 03
 		Id: 604
-		Images: Ice0338.sno
+		Images: ice0338.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9238,7 +9238,7 @@ Templates:
 	Template@605:
 		Category: Ice 03
 		Id: 605
-		Images: Ice0339.sno
+		Images: ice0339.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9247,7 +9247,7 @@ Templates:
 	Template@606:
 		Category: Ice 03
 		Id: 606
-		Images: Ice0340.sno
+		Images: ice0340.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9256,7 +9256,7 @@ Templates:
 	Template@607:
 		Category: Ice 03
 		Id: 607
-		Images: Ice0341.sno
+		Images: ice0341.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9265,7 +9265,7 @@ Templates:
 	Template@608:
 		Category: Ice 03
 		Id: 608
-		Images: Ice0342.sno
+		Images: ice0342.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9274,7 +9274,7 @@ Templates:
 	Template@609:
 		Category: Ice 03
 		Id: 609
-		Images: Ice0343.sno
+		Images: ice0343.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9283,7 +9283,7 @@ Templates:
 	Template@610:
 		Category: Ice 03
 		Id: 610
-		Images: Ice0344.sno
+		Images: ice0344.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9292,7 +9292,7 @@ Templates:
 	Template@611:
 		Category: Ice 03
 		Id: 611
-		Images: Ice0345.sno
+		Images: ice0345.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9301,7 +9301,7 @@ Templates:
 	Template@612:
 		Category: Ice 03
 		Id: 612
-		Images: Ice0346.sno
+		Images: ice0346.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9310,7 +9310,7 @@ Templates:
 	Template@613:
 		Category: Ice 03
 		Id: 613
-		Images: Ice0347.sno
+		Images: ice0347.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9319,7 +9319,7 @@ Templates:
 	Template@614:
 		Category: Ice 03
 		Id: 614
-		Images: Ice0348.sno
+		Images: ice0348.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9328,7 +9328,7 @@ Templates:
 	Template@615:
 		Category: Ice 03
 		Id: 615
-		Images: Ice0349.sno
+		Images: ice0349.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9337,7 +9337,7 @@ Templates:
 	Template@616:
 		Category: Ice 03
 		Id: 616
-		Images: Ice0350.sno
+		Images: ice0350.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9346,7 +9346,7 @@ Templates:
 	Template@617:
 		Category: Ice 03
 		Id: 617
-		Images: Ice0351.sno
+		Images: ice0351.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9355,7 +9355,7 @@ Templates:
 	Template@618:
 		Category: Ice 03
 		Id: 618
-		Images: Ice0352.sno
+		Images: ice0352.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9364,7 +9364,7 @@ Templates:
 	Template@619:
 		Category: Ice 03
 		Id: 619
-		Images: Ice0353.sno
+		Images: ice0353.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9373,7 +9373,7 @@ Templates:
 	Template@620:
 		Category: Ice 03
 		Id: 620
-		Images: Ice0354.sno
+		Images: ice0354.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9382,7 +9382,7 @@ Templates:
 	Template@621:
 		Category: Ice 03
 		Id: 621
-		Images: Ice0355.sno
+		Images: ice0355.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9391,7 +9391,7 @@ Templates:
 	Template@622:
 		Category: Ice 03
 		Id: 622
-		Images: Ice0356.sno
+		Images: ice0356.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9400,7 +9400,7 @@ Templates:
 	Template@623:
 		Category: Ice 03
 		Id: 623
-		Images: Ice0357.sno
+		Images: ice0357.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9409,7 +9409,7 @@ Templates:
 	Template@624:
 		Category: Ice 03
 		Id: 624
-		Images: Ice0358.sno
+		Images: ice0358.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9418,7 +9418,7 @@ Templates:
 	Template@625:
 		Category: Ice 03
 		Id: 625
-		Images: Ice0359.sno
+		Images: ice0359.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9427,7 +9427,7 @@ Templates:
 	Template@626:
 		Category: Ice 03
 		Id: 626
-		Images: Ice0360.sno
+		Images: ice0360.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9436,7 +9436,7 @@ Templates:
 	Template@627:
 		Category: Ice 03
 		Id: 627
-		Images: Ice0361.sno
+		Images: ice0361.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9445,7 +9445,7 @@ Templates:
 	Template@628:
 		Category: Ice 03
 		Id: 628
-		Images: Ice0362.sno
+		Images: ice0362.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9454,7 +9454,7 @@ Templates:
 	Template@629:
 		Category: Ice 03
 		Id: 629
-		Images: Ice0363.sno
+		Images: ice0363.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9463,7 +9463,7 @@ Templates:
 	Template@630:
 		Category: Ice 03
 		Id: 630
-		Images: Ice0364.sno
+		Images: ice0364.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9472,7 +9472,7 @@ Templates:
 	Template@631:
 		Category: Ice shore
 		Id: 631
-		Images: Ishore01.sno
+		Images: ishore01.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9481,7 +9481,7 @@ Templates:
 	Template@632:
 		Category: Ice shore
 		Id: 632
-		Images: Ishore02.sno
+		Images: ishore02.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9490,7 +9490,7 @@ Templates:
 	Template@633:
 		Category: Ice shore
 		Id: 633
-		Images: Ishore03.sno
+		Images: ishore03.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9499,7 +9499,7 @@ Templates:
 	Template@634:
 		Category: Ice shore
 		Id: 634
-		Images: Ishore04.sno
+		Images: ishore04.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9508,7 +9508,7 @@ Templates:
 	Template@635:
 		Category: Ice shore
 		Id: 635
-		Images: Ishore05.sno
+		Images: ishore05.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9517,7 +9517,7 @@ Templates:
 	Template@636:
 		Category: Ice shore
 		Id: 636
-		Images: Ishore06.sno
+		Images: ishore06.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9526,7 +9526,7 @@ Templates:
 	Template@637:
 		Category: Ice shore
 		Id: 637
-		Images: Ishore07.sno
+		Images: ishore07.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9535,7 +9535,7 @@ Templates:
 	Template@638:
 		Category: Ice shore
 		Id: 638
-		Images: Ishore08.sno
+		Images: ishore08.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9544,7 +9544,7 @@ Templates:
 	Template@639:
 		Category: Ice shore
 		Id: 639
-		Images: Ishore09.sno
+		Images: ishore09.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9553,7 +9553,7 @@ Templates:
 	Template@640:
 		Category: Ice shore
 		Id: 640
-		Images: Ishore10.sno
+		Images: ishore10.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9562,7 +9562,7 @@ Templates:
 	Template@641:
 		Category: Ice shore
 		Id: 641
-		Images: Ishore11.sno
+		Images: ishore11.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9571,7 +9571,7 @@ Templates:
 	Template@642:
 		Category: Ice shore
 		Id: 642
-		Images: Ishore12.sno
+		Images: ishore12.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9580,7 +9580,7 @@ Templates:
 	Template@643:
 		Category: Ice shore
 		Id: 643
-		Images: Ishore13.sno
+		Images: ishore13.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9589,7 +9589,7 @@ Templates:
 	Template@644:
 		Category: Ice shore
 		Id: 644
-		Images: Ishore14.sno
+		Images: ishore14.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9598,7 +9598,7 @@ Templates:
 	Template@645:
 		Category: Ice shore
 		Id: 645
-		Images: Ishore15.sno
+		Images: ishore15.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9607,7 +9607,7 @@ Templates:
 	Template@646:
 		Category: Ice shore
 		Id: 646
-		Images: Ishore16.sno
+		Images: ishore16.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9616,7 +9616,7 @@ Templates:
 	Template@647:
 		Category: Ice shore
 		Id: 647
-		Images: Ishore17.sno
+		Images: ishore17.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9625,7 +9625,7 @@ Templates:
 	Template@648:
 		Category: Ice shore
 		Id: 648
-		Images: Ishore18.sno
+		Images: ishore18.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9634,7 +9634,7 @@ Templates:
 	Template@649:
 		Category: Ice shore
 		Id: 649
-		Images: Ishore19.sno
+		Images: ishore19.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9643,7 +9643,7 @@ Templates:
 	Template@650:
 		Category: Ice shore
 		Id: 650
-		Images: Ishore20.sno
+		Images: ishore20.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9652,7 +9652,7 @@ Templates:
 	Template@651:
 		Category: Ice shore
 		Id: 651
-		Images: Ishore21.sno
+		Images: ishore21.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9661,7 +9661,7 @@ Templates:
 	Template@652:
 		Category: Ice shore
 		Id: 652
-		Images: Ishore22.sno
+		Images: ishore22.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9670,7 +9670,7 @@ Templates:
 	Template@653:
 		Category: Ice shore
 		Id: 653
-		Images: Ishore23.sno
+		Images: ishore23.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9679,7 +9679,7 @@ Templates:
 	Template@654:
 		Category: Ice shore
 		Id: 654
-		Images: Ishore24.sno
+		Images: ishore24.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9688,7 +9688,7 @@ Templates:
 	Template@655:
 		Category: Ice shore
 		Id: 655
-		Images: Ishore25.sno
+		Images: ishore25.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9697,7 +9697,7 @@ Templates:
 	Template@656:
 		Category: Ice shore
 		Id: 656
-		Images: Ishore26.sno
+		Images: ishore26.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9706,7 +9706,7 @@ Templates:
 	Template@657:
 		Category: Ice shore
 		Id: 657
-		Images: Ishore27.sno
+		Images: ishore27.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9715,7 +9715,7 @@ Templates:
 	Template@658:
 		Category: Ice shore
 		Id: 658
-		Images: Ishore28.sno
+		Images: ishore28.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9724,7 +9724,7 @@ Templates:
 	Template@659:
 		Category: Ice shore
 		Id: 659
-		Images: Ishore29.sno
+		Images: ishore29.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9733,7 +9733,7 @@ Templates:
 	Template@660:
 		Category: Ice shore
 		Id: 660
-		Images: Ishore30.sno
+		Images: ishore30.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9742,7 +9742,7 @@ Templates:
 	Template@661:
 		Category: Ice shore
 		Id: 661
-		Images: Ishore31.sno
+		Images: ishore31.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9751,7 +9751,7 @@ Templates:
 	Template@662:
 		Category: Ice shore
 		Id: 662
-		Images: Ishore32.sno
+		Images: ishore32.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9760,7 +9760,7 @@ Templates:
 	Template@663:
 		Category: Ice shore
 		Id: 663
-		Images: Ishore33.sno
+		Images: ishore33.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9769,7 +9769,7 @@ Templates:
 	Template@664:
 		Category: Ice shore
 		Id: 664
-		Images: Ishore34.sno
+		Images: ishore34.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9778,7 +9778,7 @@ Templates:
 	Template@665:
 		Category: Ice shore
 		Id: 665
-		Images: Ishore35.sno
+		Images: ishore35.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9787,7 +9787,7 @@ Templates:
 	Template@666:
 		Category: Ice shore
 		Id: 666
-		Images: Ishore36.sno
+		Images: ishore36.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9796,7 +9796,7 @@ Templates:
 	Template@667:
 		Category: Ice shore
 		Id: 667
-		Images: Ishore37.sno
+		Images: ishore37.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9805,7 +9805,7 @@ Templates:
 	Template@668:
 		Category: Ice shore
 		Id: 668
-		Images: Ishore38.sno
+		Images: ishore38.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9814,7 +9814,7 @@ Templates:
 	Template@669:
 		Category: Ice shore
 		Id: 669
-		Images: Ishore39.sno
+		Images: ishore39.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9823,7 +9823,7 @@ Templates:
 	Template@670:
 		Category: Ice shore
 		Id: 670
-		Images: Ishore40.sno
+		Images: ishore40.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9832,7 +9832,7 @@ Templates:
 	Template@671:
 		Category: Ice shore
 		Id: 671
-		Images: Ishore41.sno
+		Images: ishore41.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9841,7 +9841,7 @@ Templates:
 	Template@672:
 		Category: Ice shore
 		Id: 672
-		Images: Ishore42.sno
+		Images: ishore42.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9850,7 +9850,7 @@ Templates:
 	Template@673:
 		Category: Ice shore
 		Id: 673
-		Images: Ishore43.sno
+		Images: ishore43.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9859,7 +9859,7 @@ Templates:
 	Template@674:
 		Category: Ice shore
 		Id: 674
-		Images: Ishore44.sno
+		Images: ishore44.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9868,7 +9868,7 @@ Templates:
 	Template@675:
 		Category: Ice shore
 		Id: 675
-		Images: Ishore45.sno
+		Images: ishore45.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9877,7 +9877,7 @@ Templates:
 	Template@676:
 		Category: Ice shore
 		Id: 676
-		Images: Ishore46.sno
+		Images: ishore46.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9886,7 +9886,7 @@ Templates:
 	Template@677:
 		Category: Ice shore
 		Id: 677
-		Images: Ishore47.sno
+		Images: ishore47.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9895,7 +9895,7 @@ Templates:
 	Template@678:
 		Category: Ice shore
 		Id: 678
-		Images: Ishore48.sno
+		Images: ishore48.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -9904,7 +9904,7 @@ Templates:
 	Template@679:
 		Category: Waterfalls-B
 		Id: 679
-		Images: W-b-01.sno
+		Images: w-b-01.sno
 		Size: 4, 2
 		Tiles:
 			0: Cliff
@@ -9938,7 +9938,7 @@ Templates:
 	Template@680:
 		Category: Waterfalls-B
 		Id: 680
-		Images: W-b-02.sno
+		Images: w-b-02.sno
 		Size: 4, 1
 		Tiles:
 			0: Cliff
@@ -9958,7 +9958,7 @@ Templates:
 	Template@681:
 		Category: Waterfalls-B
 		Id: 681
-		Images: W-b-03.sno
+		Images: w-b-03.sno
 		Size: 4, 2
 		Tiles:
 			0: Cliff
@@ -9992,7 +9992,7 @@ Templates:
 	Template@682:
 		Category: Waterfalls-B
 		Id: 682
-		Images: W-b-04.sno
+		Images: w-b-04.sno
 		Size: 4, 2
 		Tiles:
 			0: Cliff
@@ -10026,7 +10026,7 @@ Templates:
 	Template@683:
 		Category: Waterfalls-C
 		Id: 683
-		Images: W-c-01.sno
+		Images: w-c-01.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -10044,7 +10044,7 @@ Templates:
 	Template@684:
 		Category: Waterfalls-C
 		Id: 684
-		Images: W-c-02.sno
+		Images: w-c-02.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -10054,7 +10054,7 @@ Templates:
 	Template@685:
 		Category: Waterfalls-C
 		Id: 685
-		Images: W-c-03.sno
+		Images: w-c-03.sno
 		Size: 2, 1
 		Tiles:
 			0: Cliff
@@ -10068,7 +10068,7 @@ Templates:
 	Template@686:
 		Category: Waterfalls-C
 		Id: 686
-		Images: W-c-04.sno
+		Images: w-c-04.sno
 		Size: 2, 2
 		Tiles:
 			1: Cliff
@@ -10086,7 +10086,7 @@ Templates:
 	Template@687:
 		Category: Waterfalls-D
 		Id: 687
-		Images: W-d-01.sno
+		Images: w-d-01.sno
 		Size: 2, 2
 		Tiles:
 			1: Cliff
@@ -10104,7 +10104,7 @@ Templates:
 	Template@688:
 		Category: Waterfalls-D
 		Id: 688
-		Images: W-d-02.sno
+		Images: w-d-02.sno
 		Size: 1, 1
 		Tiles:
 			0: Cliff
@@ -10114,7 +10114,7 @@ Templates:
 	Template@689:
 		Category: Waterfalls-D
 		Id: 689
-		Images: W-d-03.sno
+		Images: w-d-03.sno
 		Size: 1, 2
 		Tiles:
 			0: Cliff
@@ -10128,7 +10128,7 @@ Templates:
 	Template@690:
 		Category: Waterfalls-D
 		Id: 690
-		Images: W-d-04.sno
+		Images: w-d-04.sno
 		Size: 2, 2
 		Tiles:
 			0: Cliff
@@ -10206,7 +10206,7 @@ Templates:
 	Template@695:
 		Category: TrainBridges
 		Id: 695
-		Images: Tovrps01.sno, Tovrps01a.sno
+		Images: tovrps01.sno, tovrps01a.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -10265,7 +10265,7 @@ Templates:
 	Template@696:
 		Category: TrainBridges
 		Id: 696
-		Images: Tovrps02.sno, Tovrps02a.sno
+		Images: tovrps02.sno, tovrps02a.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -10324,7 +10324,7 @@ Templates:
 	Template@697:
 		Category: TrainBridges
 		Id: 697
-		Images: Tovrps03.sno, Tovrps03a.sno
+		Images: tovrps03.sno, tovrps03a.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10368,7 +10368,7 @@ Templates:
 	Template@698:
 		Category: TrainBridges
 		Id: 698
-		Images: Tovrps04.sno, Tovrps04a.sno
+		Images: tovrps04.sno, tovrps04a.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -10427,7 +10427,7 @@ Templates:
 	Template@699:
 		Category: TrainBridges
 		Id: 699
-		Images: Tovrps05.sno, Tovrps05a.sno
+		Images: tovrps05.sno, tovrps05a.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -10486,7 +10486,7 @@ Templates:
 	Template@700:
 		Category: TrainBridges
 		Id: 700
-		Images: Tovrps06.sno, Tovrps06a.sno
+		Images: tovrps06.sno, tovrps06a.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -10530,7 +10530,7 @@ Templates:
 	Template@701:
 		Category: TrainBridges
 		Id: 701
-		Images: Tovrps07.sno
+		Images: tovrps07.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10569,7 +10569,7 @@ Templates:
 	Template@702:
 		Category: TrainBridges
 		Id: 702
-		Images: Tovrps08.sno
+		Images: tovrps08.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10608,7 +10608,7 @@ Templates:
 	Template@703:
 		Category: TrainBridges
 		Id: 703
-		Images: Tovrps09.sno
+		Images: tovrps09.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10647,7 +10647,7 @@ Templates:
 	Template@704:
 		Category: TrainBridges
 		Id: 704
-		Images: Tovrps10.sno
+		Images: tovrps10.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10686,7 +10686,7 @@ Templates:
 	Template@705:
 		Category: TrainBridges
 		Id: 705
-		Images: Tovrps11.sno
+		Images: tovrps11.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -10722,7 +10722,7 @@ Templates:
 	Template@706:
 		Category: TrainBridges
 		Id: 706
-		Images: Tovrps12.sno
+		Images: tovrps12.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -10761,7 +10761,7 @@ Templates:
 	Template@707:
 		Category: TrainBridges
 		Id: 707
-		Images: Tovrps13.sno
+		Images: tovrps13.sno
 		Size: 5, 2
 		Tiles:
 			1: Road
@@ -10797,7 +10797,7 @@ Templates:
 	Template@708:
 		Category: TrainBridges
 		Id: 708
-		Images: Tovrps14.sno
+		Images: tovrps14.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -10836,7 +10836,7 @@ Templates:
 	Template@709:
 		Category: TrainBridges
 		Id: 709
-		Images: Tovrps15.sno
+		Images: tovrps15.sno
 		Size: 5, 2
 		Tiles:
 			1: Rough
@@ -10872,7 +10872,7 @@ Templates:
 	Template@710:
 		Category: TrainBridges
 		Id: 710
-		Images: Tovrps16.sno
+		Images: tovrps16.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -10908,7 +10908,7 @@ Templates:
 	Template@711:
 		Category: Rough ground
 		Id: 711
-		Images: Rough01.sno
+		Images: rough01.sno
 		Size: 9, 7
 		Tiles:
 			2: Rough
@@ -11022,7 +11022,7 @@ Templates:
 	Template@712:
 		Category: Rough ground
 		Id: 712
-		Images: Rough02.sno
+		Images: rough02.sno
 		Size: 4, 4
 		Tiles:
 			1: Rough
@@ -11058,7 +11058,7 @@ Templates:
 	Template@713:
 		Category: Rough ground
 		Id: 713
-		Images: Rough03.sno
+		Images: rough03.sno
 		Size: 5, 3
 		Tiles:
 			0: Rough
@@ -11097,7 +11097,7 @@ Templates:
 	Template@714:
 		Category: Rough ground
 		Id: 714
-		Images: Rough04.sno
+		Images: rough04.sno
 		Size: 4, 3
 		Tiles:
 			0: Rough
@@ -11127,7 +11127,7 @@ Templates:
 	Template@715:
 		Category: Rough ground
 		Id: 715
-		Images: Rough05.sno
+		Images: rough05.sno
 		Size: 3, 5
 		Tiles:
 			1: Rough
@@ -11169,7 +11169,7 @@ Templates:
 	Template@716:
 		Category: Rough ground
 		Id: 716
-		Images: Rough06.sno
+		Images: rough06.sno
 		Size: 4, 4
 		Tiles:
 			1: Clear
@@ -11214,7 +11214,7 @@ Templates:
 	Template@717:
 		Category: Rough ground
 		Id: 717
-		Images: Rough07.sno
+		Images: rough07.sno
 		Size: 3, 3
 		Tiles:
 			0: Rough
@@ -11244,7 +11244,7 @@ Templates:
 	Template@718:
 		Category: Rough ground
 		Id: 718
-		Images: Rough08.sno
+		Images: rough08.sno
 		Size: 6, 10
 		Tiles:
 			1: Rough
@@ -11316,7 +11316,7 @@ Templates:
 	Template@719:
 		Category: Rough ground
 		Id: 719
-		Images: Rough09.sno
+		Images: rough09.sno
 		Size: 8, 3
 		Tiles:
 			0: Clear
@@ -11370,7 +11370,7 @@ Templates:
 	Template@720:
 		Category: Rough ground
 		Id: 720
-		Images: Rough10.sno
+		Images: rough10.sno
 		Size: 3, 4
 		Tiles:
 			0: Rough
@@ -11400,7 +11400,7 @@ Templates:
 	Template@721:
 		Category: Ramp edge fixup
 		Id: 721
-		Images: Rmpfx01.sno, Rmpfx01a.sno, Rmpfx01b.sno, Rmpfx01c.sno
+		Images: rmpfx01.sno, rmpfx01a.sno, rmpfx01b.sno, rmpfx01c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11410,7 +11410,7 @@ Templates:
 	Template@722:
 		Category: Ramp edge fixup
 		Id: 722
-		Images: Rmpfx02.sno, Rmpfx02a.sno, Rmpfx02b.sno, Rmpfx02c.sno
+		Images: rmpfx02.sno, rmpfx02a.sno, rmpfx02b.sno, rmpfx02c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11420,7 +11420,7 @@ Templates:
 	Template@723:
 		Category: Ramp edge fixup
 		Id: 723
-		Images: Rmpfx03.sno, Rmpfx03a.sno, Rmpfx03b.sno, Rmpfx03c.sno
+		Images: rmpfx03.sno, rmpfx03a.sno, rmpfx03b.sno, rmpfx03c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11430,7 +11430,7 @@ Templates:
 	Template@724:
 		Category: Ramp edge fixup
 		Id: 724
-		Images: Rmpfx04.sno, Rmpfx04a.sno, Rmpfx04b.sno, Rmpfx04c.sno
+		Images: rmpfx04.sno, rmpfx04a.sno, rmpfx04b.sno, rmpfx04c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11440,7 +11440,7 @@ Templates:
 	Template@725:
 		Category: Ramp edge fixup
 		Id: 725
-		Images: Rmpfx05.sno, Rmpfx05a.sno, Rmpfx05b.sno, Rmpfx05c.sno
+		Images: rmpfx05.sno, rmpfx05a.sno, rmpfx05b.sno, rmpfx05c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11450,7 +11450,7 @@ Templates:
 	Template@726:
 		Category: Ramp edge fixup
 		Id: 726
-		Images: Rmpfx06.sno, Rmpfx06a.sno, Rmpfx06b.sno, Rmpfx06c.sno
+		Images: rmpfx06.sno, rmpfx06a.sno, rmpfx06b.sno, rmpfx06c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11460,7 +11460,7 @@ Templates:
 	Template@727:
 		Category: Ramp edge fixup
 		Id: 727
-		Images: Rmpfx07.sno, Rmpfx07a.sno, Rmpfx07b.sno, Rmpfx07c.sno
+		Images: rmpfx07.sno, rmpfx07a.sno, rmpfx07b.sno, rmpfx07c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11470,7 +11470,7 @@ Templates:
 	Template@728:
 		Category: Ramp edge fixup
 		Id: 728
-		Images: Rmpfx08.sno, Rmpfx08a.sno, Rmpfx08b.sno, Rmpfx08c.sno
+		Images: rmpfx08.sno, rmpfx08a.sno, rmpfx08b.sno, rmpfx08c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11480,7 +11480,7 @@ Templates:
 	Template@729:
 		Category: Ramp edge fixup
 		Id: 729
-		Images: Rmpfx09.sno, Rmpfx09a.sno, Rmpfx09b.sno, Rmpfx09c.sno
+		Images: rmpfx09.sno, rmpfx09a.sno, rmpfx09b.sno, rmpfx09c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11490,7 +11490,7 @@ Templates:
 	Template@730:
 		Category: Ramp edge fixup
 		Id: 730
-		Images: Rmpfx10.sno, Rmpfx10a.sno, Rmpfx10b.sno, Rmpfx10c.sno
+		Images: rmpfx10.sno, rmpfx10a.sno, rmpfx10b.sno, rmpfx10c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11500,7 +11500,7 @@ Templates:
 	Template@731:
 		Category: Ramp edge fixup
 		Id: 731
-		Images: Rmpfx11.sno, Rmpfx11a.sno, Rmpfx11b.sno, Rmpfx11c.sno
+		Images: rmpfx11.sno, rmpfx11a.sno, rmpfx11b.sno, rmpfx11c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11510,7 +11510,7 @@ Templates:
 	Template@732:
 		Category: Ramp edge fixup
 		Id: 732
-		Images: Rmpfx12.sno, Rmpfx12a.sno, Rmpfx12b.sno, Rmpfx12c.sno
+		Images: rmpfx12.sno, rmpfx12a.sno, rmpfx12b.sno, rmpfx12c.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -11520,7 +11520,7 @@ Templates:
 	Template@745:
 		Category: Water slopes
 		Id: 745
-		Images: WSLOPE01.sno
+		Images: wslope01.sno
 		Size: 1, 4
 		Tiles:
 			0: Cliff
@@ -11542,7 +11542,7 @@ Templates:
 	Template@746:
 		Category: Water slopes
 		Id: 746
-		Images: WSLOPE02.sno
+		Images: wslope02.sno
 		Size: 4, 1
 		Tiles:
 			0: Cliff
@@ -11564,7 +11564,7 @@ Templates:
 	Template@747:
 		Category: Water slopes
 		Id: 747
-		Images: WSLOPE03.sno
+		Images: wslope03.sno
 		Size: 1, 4
 		Tiles:
 			0: Cliff
@@ -11586,7 +11586,7 @@ Templates:
 	Template@748:
 		Category: Water slopes
 		Id: 748
-		Images: WSLOPE04.sno
+		Images: wslope04.sno
 		Size: 4, 1
 		Tiles:
 			0: Cliff
@@ -11608,7 +11608,7 @@ Templates:
 	Template@749:
 		Category: Paved Road Slopes
 		Id: 749
-		Images: Prslpe01.sno
+		Images: prslpe01.sno
 		Size: 1, 3
 		Tiles:
 			0: Road
@@ -11626,7 +11626,7 @@ Templates:
 	Template@750:
 		Category: Paved Road Slopes
 		Id: 750
-		Images: Prslpe02.sno
+		Images: prslpe02.sno
 		Size: 3, 1
 		Tiles:
 			0: Road
@@ -11644,7 +11644,7 @@ Templates:
 	Template@751:
 		Category: Paved Road Slopes
 		Id: 751
-		Images: Prslpe03.sno
+		Images: prslpe03.sno
 		Size: 1, 3
 		Tiles:
 			0: Road
@@ -11662,7 +11662,7 @@ Templates:
 	Template@752:
 		Category: Paved Road Slopes
 		Id: 752
-		Images: Prslpe04.sno
+		Images: prslpe04.sno
 		Size: 3, 1
 		Tiles:
 			0: DirtRoad
@@ -11680,7 +11680,7 @@ Templates:
 	Template@753:
 		Category: Monorail Slopes
 		Id: 753
-		Images: Tslope01.sno
+		Images: tslope01.sno
 		Size: 1, 1
 		Tiles:
 			0: Rail
@@ -11690,7 +11690,7 @@ Templates:
 	Template@754:
 		Category: Monorail Slopes
 		Id: 754
-		Images: Tslope02.sno
+		Images: tslope02.sno
 		Size: 1, 1
 		Tiles:
 			0: Rail
@@ -11700,7 +11700,7 @@ Templates:
 	Template@755:
 		Category: Monorail Slopes
 		Id: 755
-		Images: Tslope03.sno
+		Images: tslope03.sno
 		Size: 1, 1
 		Tiles:
 			0: Rail
@@ -11710,7 +11710,7 @@ Templates:
 	Template@756:
 		Category: Monorail Slopes
 		Id: 756
-		Images: Tslope04.sno
+		Images: tslope04.sno
 		Size: 1, 1
 		Tiles:
 			0: Rail
@@ -12275,7 +12275,7 @@ Templates:
 	Template@989:
 		Category: Rock LAT
 		Id: 989
-		Images: Rock01.sno, Rock01a.sno, Rock01b.sno, Rock01c.sno, Rock01d.sno, Rock01e.sno, Rock01f.sno, Rock01g.sno
+		Images: rock01.sno, rock01a.sno, rock01b.sno, rock01c.sno, rock01d.sno, rock01e.sno, rock01f.sno, rock01g.sno
 		Size: 1, 1
 		Tiles:
 			0: Rough
@@ -12428,7 +12428,7 @@ Templates:
 	Template@1006:
 		Category: Grey
 		Id: 1006
-		Images: Grey01.sno, Grey01a.sno, Grey01b.sno, Grey01c.sno, Grey01d.sno, Grey01e.sno, Grey01f.sno, Grey01g.sno
+		Images: grey01.sno, grey01a.sno, grey01b.sno, grey01c.sno, grey01d.sno, grey01e.sno, grey01f.sno, grey01g.sno
 		Size: 1, 1
 		Tiles:
 			0: Clear
@@ -12953,7 +12953,7 @@ Templates:
 	Template@1031:
 		Category: Pavement (Use for LAT)
 		Id: 1031
-		Images: Pvclr01.sno, Pvclr01a.sno, Pvclr01b.sno, Pvclr01c.sno, Pvclr01d.sno, Pvclr01e.sno, Pvclr01f.sno, Pvclr01g.sno
+		Images: pvclr01.sno, pvclr01a.sno, pvclr01b.sno, pvclr01c.sno, pvclr01d.sno, pvclr01e.sno, pvclr01f.sno, pvclr01g.sno
 		Size: 1, 1
 		Tiles:
 			0: Road
@@ -12962,7 +12962,7 @@ Templates:
 	Template@1032:
 		Category: Pavement
 		Id: 1032
-		Images: Pave01.sno
+		Images: pave01.sno
 		Size: 1, 1
 		Tiles:
 			0: Road
@@ -12971,7 +12971,7 @@ Templates:
 	Template@1033:
 		Category: Pavement
 		Id: 1033
-		Images: Pave02.sno
+		Images: pave02.sno
 		Size: 1, 1
 		Tiles:
 			0: Road
@@ -12980,7 +12980,7 @@ Templates:
 	Template@1034:
 		Category: Pavement
 		Id: 1034
-		Images: Pave03.sno
+		Images: pave03.sno
 		Size: 1, 1
 		Tiles:
 			0: Road
@@ -12989,7 +12989,7 @@ Templates:
 	Template@1035:
 		Category: Pavement
 		Id: 1035
-		Images: Pave04.sno
+		Images: pave04.sno
 		Size: 1, 1
 		Tiles:
 			0: Road
@@ -12998,7 +12998,7 @@ Templates:
 	Template@1036:
 		Category: Pavement
 		Id: 1036
-		Images: Pave05.sno
+		Images: pave05.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13016,7 +13016,7 @@ Templates:
 	Template@1037:
 		Category: Pavement
 		Id: 1037
-		Images: Pave06.sno
+		Images: pave06.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13034,7 +13034,7 @@ Templates:
 	Template@1038:
 		Category: Pavement
 		Id: 1038
-		Images: Pave07.sno
+		Images: pave07.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13052,7 +13052,7 @@ Templates:
 	Template@1039:
 		Category: Pavement
 		Id: 1039
-		Images: Pave08.sno
+		Images: pave08.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13070,7 +13070,7 @@ Templates:
 	Template@1040:
 		Category: Pavement
 		Id: 1040
-		Images: Pave09.sno
+		Images: pave09.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13088,7 +13088,7 @@ Templates:
 	Template@1041:
 		Category: Pavement
 		Id: 1041
-		Images: Pave10.sno
+		Images: pave10.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13106,7 +13106,7 @@ Templates:
 	Template@1042:
 		Category: Pavement
 		Id: 1042
-		Images: Pave11.sno
+		Images: pave11.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13124,7 +13124,7 @@ Templates:
 	Template@1043:
 		Category: Pavement
 		Id: 1043
-		Images: Pave12.sno
+		Images: pave12.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13142,7 +13142,7 @@ Templates:
 	Template@1044:
 		Category: Pavement
 		Id: 1044
-		Images: Pave13.sno
+		Images: pave13.sno
 		Size: 2, 2
 		Tiles:
 			0: Road
@@ -13160,7 +13160,7 @@ Templates:
 	Template@1045:
 		Category: Pavement
 		Id: 1045
-		Images: Pave14.sno
+		Images: pave14.sno
 		Size: 2, 2
 		Tiles:
 			0: Road

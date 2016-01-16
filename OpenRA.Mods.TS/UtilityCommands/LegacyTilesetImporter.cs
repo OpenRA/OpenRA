@@ -29,8 +29,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-
-			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
+			Game.ModData.MountFiles();
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var section = file.GetSection("TileSet{0:D4}".F(tilesetGroupIndex));
 
 					var sectionCount = int.Parse(section.GetValue("TilesInSet", "1"));
-					var sectionFilename = section.GetValue("FileName", "");
+					var sectionFilename = section.GetValue("FileName", "").ToLowerInvariant();
 					var sectionCategory = section.GetValue("SetName", "");
 
 					// Loop over templates
