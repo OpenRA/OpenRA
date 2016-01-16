@@ -378,6 +378,11 @@ namespace OpenRA.Mods.Common.Server
 						if (server.Map.RuleDefinitions.Any())
 							server.SendMessage("This map contains custom rules. Game experience may change.");
 
+						if (server.Settings.LockBots)
+							server.SendMessage("Bots have been disabled on this server.");
+						else if (server.MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+							server.SendMessage("Bots have been disabled on this map.");
+
 						return true;
 					}
 				},
