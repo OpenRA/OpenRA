@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -301,6 +302,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var gameStartVideo = selectedMap.Videos.GameStart;
+			var orders = new[] {
+				Order.Command("gamespeed {0}".F(gameSpeed)),
+				Order.Command("difficulty {0}".F(difficulty)),
+				Order.Command("state {0}".F(Session.ClientState.Ready))
+			};
+
 			if (gameStartVideo != null && Game.ModData.ModFiles.Exists(gameStartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
@@ -308,11 +315,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				PlayVideo(fsPlayer, gameStartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
-					Game.StartMission(selectedMapPreview.Uid, gameSpeed, difficulty, onStart);
+					Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);
 				});
 			}
 			else
-				Game.StartMission(selectedMapPreview.Uid, gameSpeed, difficulty, onStart);
+				Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);
 		}
 
 		class DropDownOption

@@ -179,8 +179,11 @@ namespace OpenRA
 		{
 			var replay = OrderManager.Connection as ReplayConnection;
 			var replayName = replay != null ? replay.Filename : null;
-			var uid = OrderManager.World.Map.Uid;
-			var globalSettings = OrderManager.LobbyInfo.GlobalSettings;
+			var lobbyInfo = OrderManager.LobbyInfo;
+			var orders = new[] {
+					Order.Command("sync_lobby {0}".F(lobbyInfo.Serialize())),
+					Order.Command("startgame")
+			};
 
 			// Disconnect from the current game
 			Disconnect();
@@ -190,10 +193,10 @@ namespace OpenRA
 			if (replay != null)
 				JoinReplay(replayName);
 			else
-				StartMission(uid, globalSettings.GameSpeedType, globalSettings.Difficulty);
+				CreateAndStartLocalServer(lobbyInfo.GlobalSettings.Map, orders);
 		}
 
-		public static void StartMission(string mapUID, string gameSpeed, string difficulty, Action onStart = null)
+		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders, Action onStart = null)
 		{
 			OrderManager om = null;
 
@@ -201,9 +204,9 @@ namespace OpenRA
 			lobbyReady = () =>
 			{
 				LobbyInfoChanged -= lobbyReady;
-				om.IssueOrder(Order.Command("gamespeed {0}".F(gameSpeed)));
-				om.IssueOrder(Order.Command("difficulty {0}".F(difficulty)));
-				om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
+				foreach (var o in setupOrders)
+					om.IssueOrder(o);
+
 				if (onStart != null)
 					onStart();
 			};
