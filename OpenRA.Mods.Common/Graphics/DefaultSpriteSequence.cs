@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual Sprite GetSprite(int start, int frame, int facing)
 		{
-			var f = OpenRA.Traits.Util.QuantizeFacing(facing, Facings);
+			var f = Util.QuantizeFacing(facing, Facings);
 
 			if (reverseFacings)
 				f = (Facings - f) % Facings;

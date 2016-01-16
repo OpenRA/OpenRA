@@ -10,12 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Support;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common
 {
 	public static class Util
 	{

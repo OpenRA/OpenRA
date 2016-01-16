@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (a.Info.MuzzleSplitFacings > 0)
-				sequence += OpenRA.Traits.Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
+				sequence += Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
 
 			if (barrel == null)
 				return;
