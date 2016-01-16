@@ -31,6 +31,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// Update news once per game launch
 		static bool fetchedNews;
 
+		void SwitchMenu(MenuType type)
+		{
+			menuType = type;
+
+			// Update button mouseover
+			Game.RunAfterTick(Ui.ResetTooltips);
+		}
+
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world)
 		{
@@ -41,15 +49,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => menuType == MenuType.Main;
 
-			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = () => menuType = MenuType.Singleplayer;
+			mainMenu.Get<ButtonWidget>("SINGLEPLAYER_BUTTON").OnClick = () => SwitchMenu(MenuType.Singleplayer);
 
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 				{
 					{ "onStart", RemoveShellmapUI },
-					{ "onExit", () => menuType = MenuType.Main },
+					{ "onExit", () => SwitchMenu(MenuType.Main) },
 					{ "directConnectHost", null },
 					{ "directConnectPort", 0 },
 				});
@@ -68,14 +76,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs
 				{
-					{ "onExit", () => menuType = MenuType.Main }
+					{ "onExit", () => SwitchMenu(MenuType.Main) }
 				});
 			};
 
-			mainMenu.Get<ButtonWidget>("EXTRAS_BUTTON").OnClick = () => menuType = MenuType.Extras;
+			mainMenu.Get<ButtonWidget>("EXTRAS_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
@@ -86,10 +94,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
 			missionsButton.OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 				{
-					{ "onExit", () => menuType = MenuType.Singleplayer },
+					{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
 					{ "onStart", RemoveShellmapUI }
 				});
 			};
@@ -102,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
 
-			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
+			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
 			// Extras menu
 			var extrasMenu = widget.Get("EXTRAS_MENU");
@@ -110,47 +118,47 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			extrasMenu.Get<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Ui.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs
 				{
-					{ "onExit", () => menuType = MenuType.Extras },
+					{ "onExit", () => SwitchMenu(MenuType.Extras) },
 					{ "onStart", RemoveShellmapUI }
 				});
 			};
 
 			extrasMenu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 				{
-					{ "onExit", () => menuType = MenuType.Extras },
+					{ "onExit", () => SwitchMenu(MenuType.Extras) },
 					{ "world", world }
 				});
 			};
 
-			extrasMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => menuType = MenuType.MapEditor;
+			extrasMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => SwitchMenu(MenuType.MapEditor);
 
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");
 			if (assetBrowserButton != null)
 				assetBrowserButton.OnClick = () =>
 				{
-					menuType = MenuType.None;
+					SwitchMenu(MenuType.None);
 					Game.OpenWindow("ASSETBROWSER_PANEL", new WidgetArgs
 					{
-						{ "onExit", () => menuType = MenuType.Extras },
+						{ "onExit", () => SwitchMenu(MenuType.Extras) },
 					});
 				};
 
 			extrasMenu.Get<ButtonWidget>("CREDITS_BUTTON").OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Ui.OpenWindow("CREDITS_PANEL", new WidgetArgs
 				{
-					{ "onExit", () => menuType = MenuType.Extras },
+					{ "onExit", () => SwitchMenu(MenuType.Extras) },
 				});
 			};
 
-			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Main;
+			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
 			// Map editor menu
 			var mapEditorMenu = widget.Get("MAP_EDITOR_MENU");
@@ -165,29 +173,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newMapButton = widget.Get<ButtonWidget>("NEW_MAP_BUTTON");
 			newMapButton.OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Game.OpenWindow("NEW_MAP_BG", new WidgetArgs()
 				{
 					{ "onSelect", onSelect },
-					{ "onExit", () => menuType = MenuType.MapEditor }
+					{ "onExit", () => SwitchMenu(MenuType.MapEditor) }
 				});
 			};
 
 			var loadMapButton = widget.Get<ButtonWidget>("LOAD_MAP_BUTTON");
 			loadMapButton.OnClick = () =>
 			{
-				menuType = MenuType.None;
+				SwitchMenu(MenuType.None);
 				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", null },
 					{ "initialTab", MapClassification.User },
-					{ "onExit", () => menuType = MenuType.MapEditor },
+					{ "onExit", () => SwitchMenu(MenuType.MapEditor) },
 					{ "onSelect", onSelect },
 					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
 				});
 			};
 
-			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => menuType = MenuType.Extras;
+			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
@@ -224,11 +232,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void OnRemoteDirectConnect(string host, int port)
 		{
-			menuType = MenuType.None;
+			SwitchMenu(MenuType.None);
 			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
 				{ "onStart", RemoveShellmapUI },
-				{ "onExit", () => menuType = MenuType.Main },
+				{ "onExit", () => SwitchMenu(MenuType.Main) },
 				{ "directConnectHost", host },
 				{ "directConnectPort", port },
 			});
@@ -240,7 +248,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.CreateLocalServer(map.Uid),
 				"",
 				() => { Game.LoadEditor(map.Uid); },
-				() => { Game.CloseServer(); menuType = MenuType.MapEditor; });
+				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
 		}
 
 		void SetNewsStatus(string message)
@@ -343,10 +351,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void OpenSkirmishLobbyPanel()
 		{
-			menuType = MenuType.None;
+			SwitchMenu(MenuType.None);
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
-				{ "onExit", () => { Game.Disconnect(); menuType = MenuType.Singleplayer; } },
+				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", RemoveShellmapUI },
 				{ "skirmishMode", true }
 			});
@@ -362,7 +370,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.CreateLocalServer(map),
 				"",
 				OpenSkirmishLobbyPanel,
-				() => { Game.CloseServer(); menuType = MenuType.Main; });
+				() => { Game.CloseServer(); SwitchMenu(MenuType.Main); });
 		}
 
 		protected override void Dispose(bool disposing)
