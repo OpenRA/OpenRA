@@ -89,7 +89,6 @@
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />
-    <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Traits\Disguise.cs" />
     <Compile Include="Traits\GpsRemoveFrozenActor.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />

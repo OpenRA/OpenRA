@@ -270,6 +270,7 @@
     <Compile Include="Traits\Attack\AttackFrontal.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
     <Compile Include="Traits\Attack\AttackOmni.cs" />
+    <Compile Include="Traits\Attack\AttackSuicides.cs" />
     <Compile Include="Traits\Attack\AttackTurreted.cs" />
     <Compile Include="Traits\Attack\AttackWander.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
