@@ -418,17 +418,17 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
-														 icon.Pos + holdOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + holdOffset,
+							Color.White, Color.Black, 1);
 					else if (!waiting)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
-														 icon.Pos + timeOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + timeOffset,
+							Color.White, Color.Black, 1);
 
 					if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
-														 icon.Pos + queuedOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + queuedOffset,
+							Color.White, Color.Black, 1);
 				}
 			}
 		}
