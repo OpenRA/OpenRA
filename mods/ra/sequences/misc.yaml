@@ -88,11 +88,11 @@ v2:
 		ZOffset: 1023
 
 rallypoint:
-	flag:flagfly
+	flag: flagfly
 		Length: *
 		Offset: 11,-5
 		ZOffset: 2535
-	circles:fpls
+	circles: fpls
 		Length: *
 		ZOffset: 2047
 
