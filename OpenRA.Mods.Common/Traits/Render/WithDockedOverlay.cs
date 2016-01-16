@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Rendered when a harvester is docked.")]
-	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithDockedOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "docking-overlay";
@@ -29,17 +29,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDockingOverlay(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithDockedOverlay(init.Self, this); }
 	}
 
-	public class WithDockingOverlay : INotifyDocking, INotifyBuildComplete, INotifySold
+	public class WithDockedOverlay : INotifyDocking, INotifyBuildComplete, INotifySold
 	{
-		readonly WithDockingOverlayInfo info;
+		readonly WithDockedOverlayInfo info;
 		readonly AnimationWithOffset anim;
 		bool buildComplete;
 		bool docked;
 
-		public WithDockingOverlay(Actor self, WithDockingOverlayInfo info)
+		public WithDockedOverlay(Actor self, WithDockedOverlayInfo info)
 		{
 			this.info = info;
 

@@ -91,9 +91,10 @@ PROC:
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
 		Sequence: bib
-	WithDockingOverlay@flame:
+	WithDockedOverlay@FLAME:
 		Sequence: flame
 		Palette: effect
+	WithDockingOverlay@UNLOAD:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:

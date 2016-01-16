@@ -1038,7 +1038,6 @@ nahpad:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-# TODO: unused narefn_a
 proc.gdi:
 	Defaults: ntrefn
 		Offset: -12, -42
@@ -1057,6 +1056,9 @@ proc.gdi:
 		ShadowStart: 20
 	flame: ntrefn_b
 		Length: *
+	unload-overlay: narefn_a
+		Length: *
+		ZOffset: 1024
 	idle-redlights: ntrefn_c
 		Length: 16
 		Tick: 120
@@ -1078,7 +1080,6 @@ proc.gdi:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-# TODO: unused narefn_a
 proc.nod:
 	Defaults: ntrefn
 		Offset: -12, -42
@@ -1097,6 +1098,9 @@ proc.nod:
 		ShadowStart: 20
 	flame: ntrefn_b
 		Length: *
+	unload-overlay: narefn_a
+		Length: *
+		ZOffset: 1024
 	idle-redlights: ntrefn_c
 		Length: 16
 		Tick: 120

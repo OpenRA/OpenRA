@@ -260,7 +260,7 @@ refinery:
 		FactionImages:
 			atreides: refinery.atreides
 			ordos: refinery.ordos
-	WithDockingOverlay@SMOKE:
+	WithDockedOverlay@SMOKE:
 		Sequence: smoke
 	Power:
 		Amount: -75
