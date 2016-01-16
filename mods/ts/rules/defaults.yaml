@@ -77,9 +77,21 @@
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
 
+^Cloakable:
+	Cloak@CLOAKGENERATOR:
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		InitialDelay: 0
+		CloakDelay: 90
+		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@3: ^Cloakable
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -105,15 +117,6 @@
 	Guardable:
 		Range: 3c0
 	Demolishable:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -184,6 +187,7 @@
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	Inherits@2: ^Cloakable
 	CombatDebugOverlay:
 	HiddenUnderShroud:
 	AppearsOnRadar:
@@ -213,15 +217,6 @@
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	Health:
 		Shape: Circle
 			Radius: 363
@@ -238,6 +233,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
+	Inherits@4: ^Cloakable
 	DrawLineToTarget:
 	Health:
 		HP: 50
@@ -319,15 +315,6 @@
 	DeathSounds@ZAPPED:
 		Voice: Zapped
 		DeathTypes: EnergyDeath
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -379,6 +366,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^EmpDisableMobile
+	Inherits@4: ^Cloakable
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -423,15 +411,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	MustBeDestroyed:
 	RenderSprites:
 	ThrowsShrapnel:
@@ -474,6 +453,7 @@
 ^Aircraft:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^Cloakable
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: yes
@@ -512,15 +492,6 @@
 	MustBeDestroyed:
 	RenderVoxels:
 	WithVoxelBody:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -715,6 +686,7 @@
 ^Train:
 	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^Cloakable
 	RenderVoxels:
 	RenderSprites:
 	WithVoxelBody:
@@ -753,15 +725,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
-		CloakSound: cloak5.aud
-		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7
