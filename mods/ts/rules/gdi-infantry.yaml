@@ -54,6 +54,8 @@ MEDIC:
 		Ticks: 60
 	Passenger:
 		PipType: Red
+	Selectable:
+		Priority: 5
 
 JUMPJET:
 	Inherits: ^Soldier

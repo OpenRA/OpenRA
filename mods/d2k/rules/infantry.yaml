@@ -47,6 +47,8 @@ engineer:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice
+	Selectable:
+		Priority: 5
 
 trooper:
 	Inherits: ^Infantry

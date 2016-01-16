@@ -162,6 +162,8 @@ REPAIR:
 		ForceTargetStances: None
 	AttackFrontal:
 		Voice: Attack
+	Selectable:
+		Priority: 5	
 
 WEED:
 	Inherits: ^VoxelTank
