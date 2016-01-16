@@ -725,6 +725,7 @@
     <Compile Include="FileFormats\XORDeltaCompression.cs" />
     <Compile Include="FileFormats\RLEZerosCompression.cs" />
     <Compile Include="FileFormats\IniFile.cs" />
+    <Compile Include="Orders\GuardOrderGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
