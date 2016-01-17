@@ -9,14 +9,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -38,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
-			this.mapRules = world.Map.Rules;
+			mapRules = world.Map.Rules;
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 
@@ -126,7 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// Scale templates to fit within the panel
 					var scale = 1f;
 					if (scale * preview.IdealPreviewSize.X > itemTemplate.Bounds.Width)
-						scale = (float)(itemTemplate.Bounds.Width - panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
+						scale = (itemTemplate.Bounds.Width - panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
 					preview.GetScale = () => scale;
 					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);

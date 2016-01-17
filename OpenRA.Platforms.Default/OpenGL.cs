@@ -362,11 +362,11 @@ namespace OpenRA.Platforms.Default
 			DetectGLFeatures();
 			if (!Features.HasFlag(GLFeatures.GL2OrGreater) || !Features.HasFlag(GLFeatures.FramebufferExt))
 			{
-				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(OpenGL.GL_VERSION));
+				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
 			}
 			else
-				Console.WriteLine("OpenGL version: " + glGetString(OpenGL.GL_VERSION));
+				Console.WriteLine("OpenGL version: " + glGetString(GL_VERSION));
 
 			try
 			{
@@ -437,7 +437,7 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (Exception e)
 			{
-				OpenGL.WriteGraphicsLog("Failed to initialize OpenGL bindings.\nInner exception was: {0}".F(e));
+				WriteGraphicsLog("Failed to initialize OpenGL bindings.\nInner exception was: {0}".F(e));
 				throw new InvalidProgramException("Failed to initialize OpenGL. See graphics.log for details.");
 			}
 		}
@@ -451,7 +451,7 @@ namespace OpenRA.Platforms.Default
 		{
 			try
 			{
-				var versionString = glGetString(OpenGL.GL_VERSION);
+				var versionString = glGetString(GL_VERSION);
 				var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
 
 				var major = 0;
@@ -474,8 +474,8 @@ namespace OpenRA.Platforms.Default
 
 		public static void CheckGLError()
 		{
-			var n = OpenGL.glGetError();
-			if (n != OpenGL.GL_NO_ERROR)
+			var n = glGetError();
+			if (n != GL_NO_ERROR)
 			{
 				var error = "GL Error: {0}\n{1}".F(n, new StackTrace());
 				WriteGraphicsLog(error);
@@ -488,7 +488,7 @@ namespace OpenRA.Platforms.Default
 			Log.Write("graphics", message);
 			Log.Write("graphics", "");
 			Log.Write("graphics", "OpenGL Information:");
-			var vendor = OpenGL.glGetString(OpenGL.GL_VENDOR);
+			var vendor = glGetString(GL_VENDOR);
 			Log.Write("graphics", "Vendor: {0}", vendor);
 			if (vendor.Contains("Microsoft"))
 			{
@@ -498,11 +498,11 @@ namespace OpenRA.Platforms.Default
 				Log.Write("graphics", msg);
 			}
 
-			Log.Write("graphics", "Renderer: {0}", OpenGL.glGetString(OpenGL.GL_RENDERER));
-			Log.Write("graphics", "GL Version: {0}", OpenGL.glGetString(OpenGL.GL_VERSION));
-			Log.Write("graphics", "Shader Version: {0}", OpenGL.glGetString(OpenGL.GL_SHADING_LANGUAGE_VERSION));
+			Log.Write("graphics", "Renderer: {0}", glGetString(GL_RENDERER));
+			Log.Write("graphics", "GL Version: {0}", glGetString(GL_VERSION));
+			Log.Write("graphics", "Shader Version: {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
 			Log.Write("graphics", "Available extensions:");
-			Log.Write("graphics", OpenGL.glGetString(OpenGL.GL_EXTENSIONS));
+			Log.Write("graphics", glGetString(GL_EXTENSIONS));
 		}
 	}
 }

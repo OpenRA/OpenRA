@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
-			this.self = init.Self;
+			self = init.Self;
 			this.info = info;
 
 			if (init.Contains<LocationInit>())

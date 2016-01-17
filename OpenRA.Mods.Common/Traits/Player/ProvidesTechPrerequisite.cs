@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			var tech = init.World.Map.Options.TechLevel ?? init.World.LobbyInfo.GlobalSettings.TechLevel;
-			this.enabled = info.Name == tech;
+			enabled = info.Name == tech;
 		}
 	}
 }

@@ -75,7 +75,7 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			CVec a, b;
-			if (!left.TryGetClrValue<CVec>(out a) || !right.TryGetClrValue<CVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call CVec.Add(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -84,7 +84,7 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			CVec a, b;
-			if (!left.TryGetClrValue<CVec>(out a) || !right.TryGetClrValue<CVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a - b);
@@ -98,7 +98,7 @@ namespace OpenRA
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			CVec a, b;
-			if (!left.TryGetClrValue<CVec>(out a) || !right.TryGetClrValue<CVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				return false;
 
 			return a == b;

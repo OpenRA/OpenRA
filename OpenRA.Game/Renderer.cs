@@ -95,7 +95,7 @@ namespace OpenRA
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
 					font.Dispose();
-			using (new Support.PerfTimer("SpriteFonts"))
+			using (new PerfTimer("SpriteFonts"))
 			{
 				if (fontSheetBuilder != null)
 					fontSheetBuilder.Dispose();

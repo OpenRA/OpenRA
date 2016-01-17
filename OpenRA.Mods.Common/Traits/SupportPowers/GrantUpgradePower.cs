@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = power.info.Range;
+				range = power.info.Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 

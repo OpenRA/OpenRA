@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ID = id;
 			this.actor = actor;
-			this.Owner = owner;
+			Owner = owner;
 			this.worldRenderer = worldRenderer;
 
 			if (!actor.InitDict.Contains<FactionInit>())

@@ -29,11 +29,11 @@ namespace OpenRA.Mods.Common.Effects
 
 		public FloatingText(WPos pos, Color color, string text, int duration)
 		{
-			this.font = Game.Renderer.Fonts["TinyBold"];
+			font = Game.Renderer.Fonts["TinyBold"];
 			this.pos = pos;
 			this.color = color;
 			this.text = text;
-			this.remaining = duration;
+			remaining = duration;
 		}
 
 		public void Tick(World world)

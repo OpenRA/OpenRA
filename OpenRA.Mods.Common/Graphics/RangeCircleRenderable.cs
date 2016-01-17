@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var offset = new WVec(radius.Length, 0, 0);
-			for (var i = 0; i < RangeCircleRenderable.RangeCircleSegments; i++)
+			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var a = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleRenderable.RangeCircleStartRotations[i]));
-				var b = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleRenderable.RangeCircleEndRotations[i]));
+				var a = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleStartRotations[i]));
+				var b = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleEndRotations[i]));
 
 				if (contrastWidth > 0)
 					wcr.DrawLine(a, b, contrastWidth / wr.Viewport.Zoom, contrastColor);

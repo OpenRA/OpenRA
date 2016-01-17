@@ -8,11 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Linq;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown<SlotDropDownOption>("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
@@ -490,7 +490,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerName.GetText = () =>
 			{
 				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
-				if (client != null && client.State == Network.Session.ClientState.Disconnected)
+				if (client != null && client.State == Session.ClientState.Disconnected)
 					suffix = " (Gone)";
 
 				var sl = suffixLength.Update(suffix);

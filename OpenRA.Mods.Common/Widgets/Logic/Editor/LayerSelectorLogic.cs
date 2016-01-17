@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -32,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.modRules = modRules;
 			this.worldRenderer = worldRenderer;
-			this.world = worldRenderer.World;
+			world = worldRenderer.World;
 
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 

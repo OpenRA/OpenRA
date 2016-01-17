@@ -9,12 +9,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
-using OpenRA.GameRules;
-using OpenRA.Traits;
 
 namespace OpenRA.Test
 {

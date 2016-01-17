@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackGarrisoned(Actor self, AttackGarrisonedInfo info)
 			: base(self, info)
 		{
-			this.Info = info;
+			Info = info;
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();

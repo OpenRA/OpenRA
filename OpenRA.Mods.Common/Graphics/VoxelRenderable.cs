@@ -43,9 +43,9 @@ namespace OpenRA.Mods.Common.Graphics
 			this.lightSource = lightSource;
 			this.lightAmbientColor = lightAmbientColor;
 			this.lightDiffuseColor = lightDiffuseColor;
-			this.palette = color;
-			this.normalsPalette = normals;
-			this.shadowPalette = shadow;
+			palette = color;
+			normalsPalette = normals;
+			shadowPalette = shadow;
 		}
 
 		public WPos Pos { get { return pos; } }
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
 
 				renderProxy = Game.Renderer.WorldVoxelRenderer.RenderAsync(
-					wr, draw, voxel.camera, voxel.scale, VoxelRenderable.GroundNormal, voxel.lightSource,
+					wr, draw, voxel.camera, voxel.scale, GroundNormal, voxel.lightSource,
 					voxel.lightAmbientColor, voxel.lightDiffuseColor,
 					voxel.palette, voxel.normalsPalette, voxel.shadowPalette);
 			}

@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
@@ -199,7 +198,7 @@ namespace OpenRA.Mods.Common.Server
 
 			// Validate whether color is allowed and get an alternative if it isn't
 			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
-				client.Color = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index);
+				client.Color = ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index);
 		}
 
 		#endregion

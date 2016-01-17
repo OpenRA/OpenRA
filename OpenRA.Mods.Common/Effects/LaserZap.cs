@@ -68,10 +68,10 @@ namespace OpenRA.Mods.Common.Effects
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			this.target = args.PassiveTarget;
+			target = args.PassiveTarget;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
-				this.hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
 		}
 
 		public void Tick(World world)

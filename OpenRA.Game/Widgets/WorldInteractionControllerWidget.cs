@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Orders;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Widgets
@@ -37,7 +36,7 @@ namespace OpenRA.Widgets
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
 		{
-			this.World = world;
+			World = world;
 			this.worldRenderer = worldRenderer;
 		}
 

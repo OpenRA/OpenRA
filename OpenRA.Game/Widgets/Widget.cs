@@ -503,7 +503,7 @@ namespace OpenRA.Widgets
 
 		public Widget GetOrNull(string id)
 		{
-			if (this.Id == id)
+			if (Id == id)
 				return this;
 
 			foreach (var child in Children)

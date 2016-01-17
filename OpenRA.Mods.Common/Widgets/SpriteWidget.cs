@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			GetPalette = () => Palette;
 
-			this.WorldRenderer = worldRenderer;
+			WorldRenderer = worldRenderer;
 		}
 
 		protected SpriteWidget(SpriteWidget other)

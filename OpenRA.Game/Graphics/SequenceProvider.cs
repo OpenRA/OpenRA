@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace OpenRA.Graphics
 {
@@ -50,8 +48,8 @@ namespace OpenRA.Graphics
 
 		public SequenceProvider(SequenceCache cache, Map map)
 		{
-			this.sequences = Exts.Lazy(() => cache.LoadSequences(map));
-			this.SpriteCache = cache.SpriteCache;
+			sequences = Exts.Lazy(() => cache.LoadSequences(map));
+			SpriteCache = cache.SpriteCache;
 		}
 
 		public ISpriteSequence GetSequence(string unitName, string sequenceName)

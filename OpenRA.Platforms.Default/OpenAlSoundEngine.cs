@@ -13,11 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenAL;
-using OpenRA.FileFormats;
-using OpenRA.FileSystem;
-using OpenRA.GameRules;
-using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Platforms.Default
 {
@@ -106,7 +101,7 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("Can't create OpenAL device");
 			}
 
-			var ctx = ALC10.alcCreateContext(device, (int[])null);
+			var ctx = ALC10.alcCreateContext(device, null);
 			if (ctx == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
 			ALC10.alcMakeContextCurrent(ctx);

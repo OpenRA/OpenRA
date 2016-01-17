@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static IEnumerable<CPos> Tiles(Ruleset rules, string name, BuildingInfo buildingInfo, CPos topLeft)
 		{
-			var dim = (CVec)buildingInfo.Dimensions;
+			var dim = buildingInfo.Dimensions;
 
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static IEnumerable<CPos> UnpathableTiles(string name, BuildingInfo buildingInfo, CPos position)
 		{
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x)).ToArray();
-			foreach (var tile in TilesWhere(name, (CVec)buildingInfo.Dimensions, footprint, a => a == 'x'))
+			foreach (var tile in TilesWhere(name, buildingInfo.Dimensions, footprint, a => a == 'x'))
 				yield return tile + position;
 		}
 

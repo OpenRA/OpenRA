@@ -160,10 +160,10 @@ namespace OpenRA.Mods.Common.AI
 		public bool CanAttack(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
 		{
 			var inputValues = new Dictionary<FuzzyVariable, double>();
-			inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), (double)NormalizedHealth(ownUnits, 100));
-			inputValues.Add(fuzzyEngine.InputByName("EnemyHealth"), (double)NormalizedHealth(enemyUnits, 100));
-			inputValues.Add(fuzzyEngine.InputByName("RelativeAttackPower"), (double)RelativePower(ownUnits, enemyUnits));
-			inputValues.Add(fuzzyEngine.InputByName("RelativeSpeed"), (double)RelativeSpeed(ownUnits, enemyUnits));
+			inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), NormalizedHealth(ownUnits, 100));
+			inputValues.Add(fuzzyEngine.InputByName("EnemyHealth"), NormalizedHealth(enemyUnits, 100));
+			inputValues.Add(fuzzyEngine.InputByName("RelativeAttackPower"), RelativePower(ownUnits, enemyUnits));
+			inputValues.Add(fuzzyEngine.InputByName("RelativeSpeed"), RelativeSpeed(ownUnits, enemyUnits));
 
 			var result = fuzzyEngine.Calculate(inputValues);
 			var attackChance = result[fuzzyEngine.OutputByName("AttackOrFlee")];

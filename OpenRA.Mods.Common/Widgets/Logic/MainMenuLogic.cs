@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadMapIntoEditor(Map map)
 		{
-			ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
+			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
 				Game.CreateLocalServer(map.Uid),
 				"",
 				() => { Game.LoadEditor(map.Uid); },

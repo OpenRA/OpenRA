@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 			if (defaultSrc != Src)
 				root.Add(new MiniYamlNode("Src", Src));
 
-			return new MiniYaml(FieldSaver.FormatValue(this, this.GetType().GetField("rect")), root);
+			return new MiniYaml(FieldSaver.FormatValue(this, GetType().GetField("rect")), root);
 		}
 	}
 }

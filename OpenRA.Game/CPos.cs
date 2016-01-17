@@ -73,7 +73,7 @@ namespace OpenRA
 		{
 			CPos a;
 			CVec b;
-			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call CPos.Add(CPos, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -83,7 +83,7 @@ namespace OpenRA
 		{
 			CPos a;
 			CVec b;
-			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call CPos.Subtract(CPos, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a - b);
@@ -92,7 +92,7 @@ namespace OpenRA
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			CPos a, b;
-			if (!left.TryGetClrValue<CPos>(out a) || !right.TryGetClrValue<CPos>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				return false;
 
 			return a == b;

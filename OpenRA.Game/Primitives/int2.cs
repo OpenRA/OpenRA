@@ -18,7 +18,7 @@ namespace OpenRA
 	public struct int2 : IEquatable<int2>
 	{
 		public readonly int X, Y;
-		public int2(int x, int y) { this.X = x; this.Y = y; }
+		public int2(int x, int y) { X = x; Y = y; }
 		public int2(Point p) { X = p.X; Y = p.Y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }
 
@@ -66,7 +66,7 @@ namespace OpenRA
 		// Change endianness of a uint32
 		public static uint Swap(uint orig)
 		{
-			return (uint)((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
+			return ((orig & 0xff000000) >> 24) | ((orig & 0x00ff0000) >> 8) | ((orig & 0x0000ff00) << 8) | ((orig & 0x000000ff) << 24);
 		}
 
 		public static int Lerp(int a, int b, int mul, int div)

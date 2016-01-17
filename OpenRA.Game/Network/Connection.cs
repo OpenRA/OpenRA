@@ -68,7 +68,7 @@ namespace OpenRA.Network
 		public virtual void SendImmediate(List<byte[]> orders)
 		{
 			var ms = new MemoryStream();
-			ms.Write(BitConverter.GetBytes((int)0));
+			ms.Write(BitConverter.GetBytes(0));
 			foreach (var o in orders)
 				ms.Write(o);
 			Send(ms.ToArray());
@@ -196,12 +196,12 @@ namespace OpenRA.Network
 			try
 			{
 				var ms = new MemoryStream();
-				ms.Write(BitConverter.GetBytes((int)packet.Length));
+				ms.Write(BitConverter.GetBytes(packet.Length));
 				ms.Write(packet);
 
 				foreach (var q in queuedSyncPackets)
 				{
-					ms.Write(BitConverter.GetBytes((int)q.Length));
+					ms.Write(BitConverter.GetBytes(q.Length));
 					ms.Write(q);
 					base.Send(q);
 				}

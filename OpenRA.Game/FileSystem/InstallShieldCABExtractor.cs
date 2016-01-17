@@ -43,7 +43,7 @@ namespace OpenRA.FileSystem
 				FirstFile = reader.ReadUInt32();
 				LastFile = reader.ReadUInt32();
 
-				reader.Seek(offset + (long)nameOffset, SeekOrigin.Begin);
+				reader.Seek(offset + nameOffset, SeekOrigin.Begin);
 				Name = reader.ReadASCIIZ();
 			}
 		}
@@ -107,7 +107,7 @@ namespace OpenRA.FileSystem
 			{
 				Version = reader.ReadUInt32();
 				VolumeInfo = reader.ReadUInt32();
-				CabDescriptorOffset = (long)reader.ReadUInt32();
+				CabDescriptorOffset = reader.ReadUInt32();
 				CabDescriptorSize = reader.ReadUInt32();
 			}
 		}
@@ -125,7 +125,7 @@ namespace OpenRA.FileSystem
 			public CabDescriptor(Stream reader, CommonHeader commonHeader)
 			{
 				reader.Seek(commonHeader.CabDescriptorOffset + 12, SeekOrigin.Begin);
-				FileTableOffset = (long)reader.ReadUInt32();
+				FileTableOffset = reader.ReadUInt32();
 				/*    unknown  */ reader.ReadUInt32();
 				FileTableSize = reader.ReadUInt32();
 
@@ -134,7 +134,7 @@ namespace OpenRA.FileSystem
 				/*   unknown  */ reader.ReadBytes(8);
 				FileCount = reader.ReadUInt32();
 
-				FileTableOffset2 = (long)reader.ReadUInt32();
+				FileTableOffset2 = reader.ReadUInt32();
 			}
 		}
 
@@ -201,7 +201,7 @@ namespace OpenRA.FileSystem
 				this.index = index;
 				this.commonName = commonName;
 				this.context = context;
-				volumeNumber = (ushort)((uint)fileDes.Volume - 1u);
+				volumeNumber = (ushort)(fileDes.Volume - 1u);
 				RemainingArchiveStream = 0;
 				if ((fileDes.Flags & FileCompressed) > 0)
 					RemainingFileStream = fileDes.CompressedSize;
@@ -374,7 +374,7 @@ namespace OpenRA.FileSystem
 					hdrFile.Seek((long)nextOffset + 4 + commonHeader.CabDescriptorOffset, SeekOrigin.Begin);
 					var descriptorOffset = hdrFile.ReadUInt32();
 					nextOffset = hdrFile.ReadUInt32();
-					hdrFile.Seek((long)descriptorOffset + commonHeader.CabDescriptorOffset, SeekOrigin.Begin);
+					hdrFile.Seek(descriptorOffset + commonHeader.CabDescriptorOffset, SeekOrigin.Begin);
 
 					fileGroups.Add(new FileGroup(hdrFile, commonHeader.CabDescriptorOffset));
 				}
@@ -387,7 +387,7 @@ namespace OpenRA.FileSystem
 				{
 					AddFileDescriptorToList(index);
 					var fileDescriptor = fileDescriptors[index];
-					var fullFilePath   = "{0}\\{1}\\{2}".F(fileGroup.Name, DirectoryName((uint)fileDescriptor.DirectoryIndex), fileDescriptor.Filename);
+					var fullFilePath   = "{0}\\{1}\\{2}".F(fileGroup.Name, DirectoryName(fileDescriptor.DirectoryIndex), fileDescriptor.Filename);
 					fileLookup.Add(fullFilePath, index);
 				}
 			}

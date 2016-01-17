@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.centerPosition = centerPosition;
 			this.radius = radius;
 			this.zOffset = zOffset;
-			this.trailCount = lineTrails;
+			trailCount = lineTrails;
 			this.trailSeparation = trailSeparation;
 			this.trailAngle = trailAngle;
 			this.color = color;

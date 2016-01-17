@@ -126,7 +126,7 @@ namespace OpenRA
 				return result;
 			}
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(OpenRA.Primitives.Cache<,>))
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Primitives.Cache<,>))
 				return ""; // TODO
 
 			if (t == typeof(DateTime))

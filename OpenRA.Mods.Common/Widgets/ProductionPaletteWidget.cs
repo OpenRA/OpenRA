@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
-			this.World = world;
+			World = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

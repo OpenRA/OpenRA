@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 
@@ -52,8 +51,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
 		{
-			yield return new VoxelRenderable(components, pos + offset, zOffset, camera, this.scale,
-				lightSource, this.lightAmbientColor, this.lightDiffuseColor,
+			yield return new VoxelRenderable(components, pos + offset, zOffset, camera, scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}
 	}

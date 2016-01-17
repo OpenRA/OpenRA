@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads

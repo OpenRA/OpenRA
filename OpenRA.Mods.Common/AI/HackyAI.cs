@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Should the AI repair its buildings if damaged?")]
 		public readonly bool ShouldRepairBuildings = true;
 
-		string IBotInfo.Name { get { return this.Name; } }
+		string IBotInfo.Name { get { return Name; } }
 
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public readonly World World;
 		public Map Map { get { return World.Map; } }
-		IBotInfo IBot.Info { get { return this.Info; } }
+		IBotInfo IBot.Info { get { return Info; } }
 
 		int rushTicks;
 		int assignRolesTicks;

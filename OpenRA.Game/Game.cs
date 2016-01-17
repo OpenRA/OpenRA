@@ -86,7 +86,7 @@ namespace OpenRA
 
 		// More accurate replacement for Environment.TickCount
 		static Stopwatch stopwatch = Stopwatch.StartNew();
-		public static int RunTime { get { return (int)Game.stopwatch.ElapsedMilliseconds; } }
+		public static int RunTime { get { return (int)stopwatch.ElapsedMilliseconds; } }
 
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
@@ -461,8 +461,8 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
-		public static void RunAfterTick(Action a) { delayedActions.Add(a, Game.RunTime); }
-		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, Game.RunTime + delayMilliseconds); }
+		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
+		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
 		static void TakeScreenshotInner()
 		{
@@ -489,7 +489,7 @@ namespace OpenRA
 
 				bitmap.Dispose();
 
-				Game.RunAfterTick(() => Debug("Saved screenshot " + filename));
+				RunAfterTick(() => Debug("Saved screenshot " + filename));
 			});
 		}
 
@@ -571,7 +571,7 @@ namespace OpenRA
 
 		static void LogicTick()
 		{
-			delayedActions.PerformActions(Game.RunTime);
+			delayedActions.PerformActions(RunTime);
 
 			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{
@@ -604,9 +604,9 @@ namespace OpenRA
 
 				using (new PerfSample("render_widgets"))
 				{
-					Game.Renderer.WorldVoxelRenderer.BeginFrame();
+					Renderer.WorldVoxelRenderer.BeginFrame();
 					Ui.PrepareRenderables();
-					Game.Renderer.WorldVoxelRenderer.EndFrame();
+					Renderer.WorldVoxelRenderer.EndFrame();
 
 					Ui.Draw();
 
@@ -684,7 +684,7 @@ namespace OpenRA
 			{
 				// Ideal time between logic updates. Timestep = 0 means the game is paused
 				// but we still call LogicTick() because it handles pausing internally.
-				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Game.Timestep;
+				var logicInterval = worldRenderer != null && worldRenderer.World.Timestep != 0 ? worldRenderer.World.Timestep : Timestep;
 
 				// Ideal time between screen updates
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;

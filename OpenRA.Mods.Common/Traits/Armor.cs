@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to define weapon efficiency modifiers with different percentages per Type.")]

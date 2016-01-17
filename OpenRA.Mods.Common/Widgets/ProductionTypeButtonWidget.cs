@@ -8,8 +8,6 @@
  */
 #endregion
 
-using OpenRA.Widgets;
-
 namespace OpenRA.Mods.Common.Widgets
 {
 	public class ProductionTypeButtonWidget : ButtonWidget

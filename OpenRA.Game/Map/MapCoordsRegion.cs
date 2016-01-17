@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -64,8 +62,8 @@ namespace OpenRA
 
 		public MapCoordsRegion(MPos mapTopLeft, MPos mapBottomRight)
 		{
-			this.topLeft = mapTopLeft;
-			this.bottomRight = mapBottomRight;
+			topLeft = mapTopLeft;
+			bottomRight = mapBottomRight;
 		}
 
 		public MapCoordsEnumerator GetEnumerator()

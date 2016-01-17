@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool targetCenter = false)
 		{
-			this.move = self.Trait<IMove>();
+			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
 			this.enterBehaviour = enterBehaviour;

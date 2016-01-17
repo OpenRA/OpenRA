@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -63,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nameLabel.GetText = () =>
 				{
 					var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
-					if (client != null && client.State == Network.Session.ClientState.Disconnected)
+					if (client != null && client.State == Session.ClientState.Disconnected)
 						suffix = " (Gone)";
 
 					var sl = suffixLength.Update(suffix);

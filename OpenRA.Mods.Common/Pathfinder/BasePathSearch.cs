@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder

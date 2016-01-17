@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 
 		public VoxelRenderProxy(Sprite sprite, Sprite shadowSprite, float2[] projectedShadowBounds, float shadowDirection)
 		{
-			this.Sprite = sprite;
+			Sprite = sprite;
 			ShadowSprite = shadowSprite;
 			ProjectedShadowBounds = projectedShadowBounds;
 			ShadowDirection = shadowDirection;
