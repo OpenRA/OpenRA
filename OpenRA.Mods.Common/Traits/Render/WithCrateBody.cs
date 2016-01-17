@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			rs.Add(anim);
 		}
 
-		public void OnLanded()
+		public void OnLanded(Actor ignore)
 		{
 			var sequence = self.World.Map.GetTerrainInfo(self.Location).IsWater ? info.WaterSequence : info.LandSequence;
 			if (!string.IsNullOrEmpty(sequence))
