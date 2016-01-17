@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.Map.FindTilesInCircle(xy, range);
-				var pal = wr.Palette("terrain");
+				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var t in tiles)
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA.Traits
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var pal = wr.Palette("terrain");
+				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
 				// Source tiles
 				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))

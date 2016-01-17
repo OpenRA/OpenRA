@@ -18,7 +18,6 @@ namespace OpenRA.Mods.Common.Widgets
 	public class TerrainTemplatePreviewWidget : Widget
 	{
 		public Func<float> GetScale = () => 1f;
-		public string Palette = "terrain";
 
 		readonly WorldRenderer worldRenderer;
 		readonly TileSet tileset;
@@ -93,7 +92,8 @@ namespace OpenRA.Mods.Common.Widgets
 					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
 					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
 					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
-					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(Palette), size);
+					var palette = Template.Palette ?? TileSet.TerrainPaletteInternalName;
+					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(palette), size);
 				}
 			}
 		}

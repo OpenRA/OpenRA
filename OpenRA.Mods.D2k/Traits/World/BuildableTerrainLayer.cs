@@ -18,7 +18,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class BuildableTerrainLayerInfo : ITraitInfo
 	{
 		[Desc("Palette to render the layer sprites in.")]
-		public readonly string Palette = "terrain";
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		public object Create(ActorInitializer init) { return new BuildableTerrainLayer(init.Self, this); }
 	}
