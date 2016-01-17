@@ -263,19 +263,77 @@ Mandible:
 MADTankThump:
 	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
+		Spread: 1c0
+		Damage: 1
+		Delay: 8
+		InvalidTargets: MADTank, Infantry
+	Warhead@26mu: LeaveSmudge
+		Delay: 8
+		SmudgeType: Crater
+		Size: 1
+	Warhead@2Dam: HealthPercentageDamage
+		Spread: 2c0
+		Damage: 1
+		Delay: 16
+		InvalidTargets: MADTank, Infantry
+	Warhead@3Dam: HealthPercentageDamage
+		Spread: 3c0
+		Damage: 1
+		Delay: 24
+		InvalidTargets: MADTank, Infantry
+	Warhead@28mu: LeaveSmudge
+		Delay: 24
+		SmudgeType: Crater
+		Size: 3
+	Warhead@4Dam: HealthPercentageDamage
+		Spread: 4c0
+		Damage: 1
+		Delay: 32
+		InvalidTargets: MADTank, Infantry
+	Warhead@5Dam: HealthPercentageDamage
+		Spread: 5c0
+		Damage: 1
+		Delay: 40
+		InvalidTargets: MADTank, Infantry
+	Warhead@30mu: LeaveSmudge
+		Delay: 40
+		SmudgeType: Crater
+		Size: 5
+	Warhead@6Dam: HealthPercentageDamage
+		Spread: 6c0
+		Damage: 1
+		Delay: 48
+		InvalidTargets: MADTank, Infantry
+	Warhead@7Dam: HealthPercentageDamage
 		Spread: 7c0
 		Damage: 1
+		Delay: 56
 		InvalidTargets: MADTank, Infantry
-
+	Warhead@31mu: LeaveSmudge
+		Delay: 56
+		SmudgeType: Crater
+		Size: 7
+	Warhead@8Dam: HealthPercentageDamage
+		Spread: 8c0
+		Damage: 1
+		Delay: 64
+		InvalidTargets: MADTank, Infantry
+	Warhead@9Dam: HealthPercentageDamage
+		Spread: 9c0
+		Damage: 1
+		Delay: 72
+		InvalidTargets: MADTank, Infantry
+	Warhead@33mu: LeaveSmudge
+		Delay: 72
+		SmudgeType: Crater
+		Size: 9
+	
 MADTankDetonate:
 	InvalidTargets: MADTank, Infantry
 	Warhead@1Dam: HealthPercentageDamage
-		Spread: 7c0
-		Damage: 19
-		InvalidTargets: MADTank, Infantry
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		Size: 7,6
+		Spread: 9c0
+		Damage: 40
+		InvalidTargets: MADTank, Infantry, Structure
 	Warhead@3Eff: CreateEffect
 		Explosion: med_explosion
 		ImpactSound: mineblo1.aud
