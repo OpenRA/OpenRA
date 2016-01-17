@@ -22,8 +22,6 @@ namespace OpenRA.Traits
 
 	public class Shroud : ISync
 	{
-		[Sync] public bool Disabled;
-
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
 		readonly Actor self;
@@ -37,6 +35,24 @@ namespace OpenRA.Traits
 		// can't make us invalid.
 		readonly Dictionary<Actor, PPos[]> visibility = new Dictionary<Actor, PPos[]>();
 		readonly Dictionary<Actor, PPos[]> generation = new Dictionary<Actor, PPos[]>();
+
+		[Sync] bool disabled;
+		public bool Disabled
+		{
+			get
+			{
+				return disabled;
+			}
+
+			set
+			{
+				if (disabled == value)
+					return;
+
+				disabled = value;
+				Invalidate(map.ProjectedCellBounds);
+			}
+		}
 
 		public int Hash { get; private set; }
 
@@ -270,7 +286,7 @@ namespace OpenRA.Traits
 		public bool IsExplored(PPos puv)
 		{
 			if (!ShroudEnabled)
-				return true;
+				return map.Contains(puv);
 
 			var uv = (MPos)puv;
 			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
@@ -304,7 +320,7 @@ namespace OpenRA.Traits
 		public bool IsVisible(PPos puv)
 		{
 			if (!FogEnabled)
-				return true;
+				return map.Contains(puv);
 
 			var uv = (MPos)puv;
 			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
