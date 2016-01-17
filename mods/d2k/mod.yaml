@@ -130,6 +130,7 @@ LoadScreen: LogoStripeLoadScreen
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing 'thopters..., Summoning mentats...
 
 ContentInstaller:
+	OutputFilenameCase: ForceUpper
 # TODO: check if DATA.R8 is at 1.03 patch level with 4840 frames
 	TestFiles: ^Content/d2k/BLOXBASE.R8, ^Content/d2k/BLOXBAT.R8, ^Content/d2k/BLOXBGBS.R8, ^Content/d2k/BLOXICE.R8, ^Content/d2k/BLOXTREE.R8, ^Content/d2k/BLOXWAST.R8, ^Content/d2k/DATA.R8, ^Content/d2k/SOUND.RS, ^Content/d2k/PALETTE.BIN
 	PackageMirrorList: http://www.openra.net/packages/d2k-103-mirrors.txt
