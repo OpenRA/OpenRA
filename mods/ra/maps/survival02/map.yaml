@@ -1154,7 +1154,7 @@ Weapons:
 	ParaBomb:
 		ROF: 5
 		Range: 7c0
-		Report: CHUTE1.AUD
+		Report: chute1.aud
 		Projectile: GravityBomb
 			Image: BOMBLET
 			-OpenSequence:

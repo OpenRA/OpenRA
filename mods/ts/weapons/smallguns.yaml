@@ -1,7 +1,7 @@
 Minigun:
 	ReloadDelay: 21
 	Range: 4c0
-	Report: INFGUN3.AUD, GOSTGUN1.AUD, SLVKGUN1.AUD
+	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -24,7 +24,7 @@ Minigun:
 M1Carbine:
 	ReloadDelay: 20
 	Range: 4c0
-	Report: INFGUN3.AUD
+	Report: infgun3.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -47,7 +47,7 @@ M1Carbine:
 Vulcan:
 	ReloadDelay: 60
 	Range: 4c0
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -71,7 +71,7 @@ Vulcan2:
 	ReloadDelay: 50
 	Burst: 3
 	Range: 6c0
-	Report: TSGUN4.AUD
+	Report: tsgun4.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -96,7 +96,7 @@ Vulcan3:
 	ReloadDelay: 30
 	Burst: 3
 	Range: 4c0
-	Report: CYGUN1.AUD
+	Report: cygun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -119,7 +119,7 @@ Vulcan3:
 VulcanTower:
 	ReloadDelay: 26
 	Range: 6c0
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -143,7 +143,7 @@ JumpCannon:
 	ReloadDelay: 40
 	Burst: 2
 	Range: 5c0
-	Report: JUMPJET1.AUD
+	Report: jumpjet1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -166,7 +166,7 @@ JumpCannon:
 AssaultCannon:
 	ReloadDelay: 50
 	Range: 5c0
-	Report: TSGUN4.AUD
+	Report: tsgun4.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -191,7 +191,7 @@ RaiderCannon:
 	Range: 4c0
 	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
 	BurstDelay: 55
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -214,7 +214,7 @@ RaiderCannon:
 HarpyClaw:
 	ReloadDelay: 36
 	Range: 5c0
-	Report: CYGUN1.AUD
+	Report: cygun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	ValidTargets: Ground, Air
@@ -239,7 +239,7 @@ HarpyClaw:
 Pistola:
 	ReloadDelay: 20
 	Range: 3c0
-	Report: GUN18.AUD
+	Report: gun18.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -262,7 +262,7 @@ Pistola:
 Sniper:
 	ReloadDelay: 60
 	Range: 6c768
-	Report: SILENCER.AUD
+	Report: silencer.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage

@@ -2,7 +2,7 @@ Bazooka:
 	ReloadDelay: 60
 	Range: 6c0
 	MinRange: 0c512
-	Report: RKETINF1.AUD
+	Report: rketinf1.aud
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		MaximumLaunchSpeed: 213
@@ -45,7 +45,7 @@ HoverMissile:
 	ReloadDelay: 68
 	Burst: 2
 	Range: 8c0
-	Report: HOVRMIS1.AUD
+	Report: hovrmis1.aud
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		MaximumLaunchSpeed: 213
@@ -88,7 +88,7 @@ HoverMissile:
 MammothTusk:
 	ReloadDelay: 80
 	Range: 6c0
-	Report: MISL1.AUD
+	Report: misl1.aud
 	ValidTargets: Air
 	Burst: 2
 	Projectile: Missile
@@ -127,7 +127,7 @@ BikeMissile:
 	Burst: 2 # to make bike alternate between left and right launcher, change in dmg/s compared to original TS
 	BurstDelay: 60
 	Range: 5c0
-	Report: MISL1.AUD
+	Report: misl1.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 2
@@ -167,7 +167,7 @@ Dragon:
 	ReloadDelay: 50
 	Range: 6c0
 	Burst: 2
-	Report: MISL1.AUD
+	Report: misl1.aud
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		MaximumLaunchSpeed: 171
@@ -210,7 +210,7 @@ Dragon:
 Hellfire:
 	ReloadDelay: 50
 	Range: 6c0
-	Report: ORCAMIS1.AUD
+	Report: orcamis1.aud
 	Burst: 2
 	ValidTargets: Ground
 	Projectile: Missile
@@ -254,7 +254,7 @@ Hellfire:
 RedEye2:
 	ReloadDelay: 55
 	Range: 15c0
-	Report: SAMSHOT1.AUD
+	Report: samshot1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		MaximumLaunchSpeed: 384

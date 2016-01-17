@@ -1,7 +1,7 @@
 LtRail:
 	ReloadDelay: 60
 	Range: 6c0
-	Report: BIGGGUN1.AUD
+	Report: bigggun1.aud
 	Projectile: AreaBeam
 		Speed: 20c0
 		Duration: 3
@@ -44,7 +44,7 @@ MechRailgun:
 	Range: 8c0
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
 	BurstDelay: 60
-	Report: RAILUSE5.AUD
+	Report: railuse5.aud
 	Projectile: AreaBeam
 		Speed: 20c0
 		Duration: 3
@@ -68,7 +68,7 @@ SonicZap:
 	ReloadDelay: 180
 	Range: 6c0
 	Charges: yes
-	Report: SONIC4.AUD
+	Report: sonic4.aud
 	Projectile: AreaBeam
 		Speed: 0c128
 		Duration: 90
@@ -104,7 +104,7 @@ SonicZap:
 CyCannon:
 	ReloadDelay: 50
 	Range: 7c0
-	Report: SCRIN5B.AUD
+	Report: scrin5b.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		MaximumLaunchSpeed: 192
@@ -138,7 +138,7 @@ CyCannon:
 Proton:
 	ReloadDelay: 50
 	Range: 5c0
-	Report: SCRIN5B.AUD
+	Report: scrin5b.aud
 	Burst: 5
 	BurstDelay: 3
 	ValidTargets: Ground
@@ -174,7 +174,7 @@ ObeliskLaserFire:
 	ReloadDelay: 120
 	Range: 10c512
 	Charges: true
-	Report: OBELRAY1.AUD
+	Report: obelray1.aud
 	Projectile: LaserZap
 		Width: 170
 		ZOffset: 2047
@@ -186,7 +186,7 @@ ObeliskLaserFire:
 TurretLaserFire:
 	ReloadDelay: 40
 	Range: 5c512
-	Report: LASTUR1.AUD
+	Report: lastur1.aud
 	Projectile: LaserZap
 		Width: 85
 		BeamDuration: 5

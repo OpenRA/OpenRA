@@ -2,7 +2,7 @@ Rockets:
 	ReloadDelay: 50
 	Range: 6c0
 	MinRange: 0c512
-	Report: BAZOOK1.AUD
+	Report: bazook1.aud
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
@@ -34,7 +34,7 @@ Rockets:
 BikeRockets:
 	ReloadDelay: 50
 	Range: 6c0
-	Report: BAZOOK1.AUD
+	Report: bazook1.aud
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 10
@@ -71,7 +71,7 @@ OrcaAGMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	MinRange: 1c256
-	Report: BAZOOK1.AUD
+	Report: bazook1.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 1
@@ -105,7 +105,7 @@ OrcaAAMissiles:
 	BurstDelay: 12
 	Range: 5c0
 	MinRange: 1c256
-	Report: BAZOOK1.AUD
+	Report: bazook1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
@@ -134,7 +134,7 @@ OrcaAAMissiles:
 MammothMissiles:
 	ReloadDelay: 45
 	Range: 5c0
-	Report: ROCKET1.AUD
+	Report: rocket1.aud
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 15
@@ -175,7 +175,7 @@ MammothMissiles:
 	MinRange: 3c0
 	Burst: 4
 	BurstDelay: 4
-	Report: ROCKET1.AUD
+	Report: rocket1.aud
 	ValidTargets: Ground
 	Projectile: Bullet
 		Arm: 5
@@ -207,7 +207,7 @@ MammothMissiles:
 227mm.stnk:
 	ReloadDelay: 70
 	Range: 7c0
-	Report: ROCKET1.AUD
+	Report: rocket1.aud
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Ground, Air
@@ -242,7 +242,7 @@ BoatMissile:
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 7
-	Report: ROCKET2.AUD
+	Report: rocket2.aud
 	Projectile: Missile
 		Arm: 0
 		Blockable: false
@@ -276,7 +276,7 @@ BoatMissile:
 TowerMissle:
 	ReloadDelay: 15
 	Range: 7c0
-	Report: ROCKET2.AUD
+	Report: rocket2.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 0
@@ -307,7 +307,7 @@ TowerMissle:
 SAMMissile:
 	ReloadDelay: 15
 	Range: 8c0
-	Report: ROCKET2.AUD
+	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
@@ -337,7 +337,7 @@ SAMMissile:
 HonestJohn:
 	ReloadDelay: 200
 	Range: 10c0
-	Report: ROCKET1.AUD
+	Report: rocket1.aud
 	Projectile: Bullet
 		Arm: 10
 		Blockable: false
@@ -367,7 +367,7 @@ Patriot:
 	ReloadDelay: 25
 	Range: 9c0
 	MinRange: 1c0
-	Report: ROCKET2.AUD
+	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Blockable: false

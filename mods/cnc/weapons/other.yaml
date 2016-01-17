@@ -2,7 +2,7 @@ Flamethrower:
 	ReloadDelay: 55
 	Range: 2c512
 	InvalidTargets: Wall
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -25,7 +25,7 @@ BigFlamer:
 	ReloadDelay: 50
 	Range: 3c512
 	InvalidTargets: Wall
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
@@ -49,7 +49,7 @@ BigFlamer:
 Chemspray:
 	ReloadDelay: 65
 	Range: 3c0
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -121,7 +121,7 @@ Laser:
 	ReloadDelay: 1
 	Range: 7c512
 	Charges: true
-	Report: OBELRAY1.AUD
+	Report: obelray1.aud
 	Projectile: LaserZap
 		Width: 85
 		HitAnim: laserfire

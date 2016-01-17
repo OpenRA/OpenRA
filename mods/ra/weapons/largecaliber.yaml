@@ -1,7 +1,7 @@
 25mm:
 	ReloadDelay: 13
 	Range: 4c0
-	Report: CANNON2.AUD
+	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 853
 		Image: 50CAL
@@ -26,7 +26,7 @@
 90mm:
 	ReloadDelay: 50
 	Range: 4c768
-	Report: CANNON1.AUD
+	Report: cannon1.aud
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
@@ -53,7 +53,7 @@
 105mm:
 	ReloadDelay: 70
 	Range: 4c768
-	Report: CANNON1.AUD
+	Report: cannon1.aud
 	Burst: 2
 	BurstDelay: 4
 	Projectile: Bullet
@@ -82,7 +82,7 @@
 120mm:
 	ReloadDelay: 90
 	Range: 4c768
-	Report: CANNON1.AUD
+	Report: cannon1.aud
 	Burst: 2
 	InvalidTargets: Air, Infantry
 	Projectile: Bullet
@@ -112,7 +112,7 @@
 TurretGun:
 	ReloadDelay: 30
 	Range: 7c0
-	Report: TURRET1.AUD
+	Report: turret1.aud
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
@@ -140,7 +140,7 @@ TurretGun:
 	ReloadDelay: 85
 	Range: 14c0
 	MinRange: 3c0
-	Report: TANK5.AUD
+	Report: tank5.aud
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
@@ -173,7 +173,7 @@ TurretGun:
 	ReloadDelay: 250
 	Range: 16c0
 	Burst: 2
-	Report: TURRET1.AUD
+	Report: turret1.aud
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
@@ -205,7 +205,7 @@ TurretGun:
 2Inch:
 	ReloadDelay: 60
 	Range: 5c512
-	Report: CANNON2.AUD
+	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM

@@ -2,7 +2,7 @@ Maverick:
 	ReloadDelay: 30
 	Range: 9c0
 	MinRange: 3c0
-	Report: MISSILE7.AUD
+	Report: missile7.aud
 	Burst: 2
 	BurstDelay: 7
 	ValidTargets: Ground, Water
@@ -40,7 +40,7 @@ Dragon:
 	ReloadDelay: 50
 	Range: 5c0
 	MinRange: 0c512
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		MaximumLaunchSpeed: 213
@@ -77,7 +77,7 @@ HellfireAG:
 	ReloadDelay: 60
 	Range: 4c0
 	MinRange: 1c256
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Ground, Water
@@ -115,7 +115,7 @@ HellfireAA:
 	ReloadDelay: 60
 	Range: 4c0
 	MinRange: 1c256
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Air
@@ -152,7 +152,7 @@ HellfireAA:
 MammothTusk:
 	ReloadDelay: 60
 	Range: 8c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile
@@ -192,7 +192,7 @@ MammothTusk:
 Nike:
 	ReloadDelay: 15
 	Range: 7c512
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
@@ -220,7 +220,7 @@ Nike:
 RedEye:
 	ReloadDelay: 50
 	Range: 7c512
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
@@ -250,7 +250,7 @@ SubMissile:
 	ReloadDelay: 300
 	Range: 16c0
 	Burst: 2
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Projectile: Bullet
 		Speed: 102
 		Blockable: false
@@ -282,7 +282,7 @@ SubMissile:
 Stinger:
 	ReloadDelay: 60
 	Range: 9c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 0
 	ValidTargets: Ground, Water
@@ -322,7 +322,7 @@ Stinger:
 StingerAA:
 	ReloadDelay: 60
 	Range: 9c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 0
 	ValidTargets: Air
@@ -362,7 +362,7 @@ StingerAA:
 TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
-	Report: TORPEDO1.AUD
+	Report: torpedo1.aud
 	ValidTargets: Water, Underwater, Bridge
 	Burst: 2
 	BurstDelay: 20
@@ -404,7 +404,7 @@ SCUD:
 	ReloadDelay: 240
 	Range: 10c0
 	MinRange: 3c0
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	Projectile: Bullet
 		Speed: 170
 		Blockable: false
@@ -438,7 +438,7 @@ SCUD:
 APTusk:
 	ReloadDelay: 60
 	Range: 6c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		MaximumLaunchSpeed: 298

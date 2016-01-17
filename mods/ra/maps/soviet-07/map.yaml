@@ -878,7 +878,7 @@ Weapons:
 	M1CarbineInterior:
 		ReloadDelay: 20
 		Range: 3c0
-		Report: GUN11.AUD
+		Report: gun11.aud
 		Projectile: Bullet
 			Speed: 1c682
 		Warhead@1Dam: SpreadDamage

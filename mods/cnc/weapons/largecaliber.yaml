@@ -1,7 +1,7 @@
 70mm:
 	ReloadDelay: 30
 	Range: 4c0
-	Report: TNKFIRE3.AUD
+	Report: tnkfire3.aud
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 853
@@ -24,7 +24,7 @@
 105mm:
 	ReloadDelay: 50
 	Range: 4c768
-	Report: TNKFIRE4.AUD
+	Report: tnkfire4.aud
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
@@ -46,7 +46,7 @@
 120mm:
 	ReloadDelay: 40
 	Range: 4c768
-	Report: TNKFIRE6.AUD
+	Report: tnkfire6.aud
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 682
@@ -69,7 +69,7 @@
 120mmDual:
 	ReloadDelay: 40
 	Range: 4c768
-	Report: TNKFIRE6.AUD
+	Report: tnkfire6.aud
 	Burst: 2
 	BurstDelay: 8
 	Projectile: Bullet
@@ -94,7 +94,7 @@
 TurretGun:
 	ReloadDelay: 20
 	Range: 6c0
-	Report: TNKFIRE6.AUD
+	Report: tnkfire6.aud
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 853
@@ -117,7 +117,7 @@ ArtilleryShell:
 	ReloadDelay: 65
 	Range: 11c0
 	MinRange: 2c896
-	Report: TNKFIRE2.AUD
+	Report: tnkfire2.aud
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false

@@ -271,7 +271,7 @@ Weapons:
 		ReloadDelay: 200
 		Range: 32c0
 		Burst: 4
-		Report: TURRET1
+		Report: turret1.aud
 		Projectile: Bullet
 			Speed: 546
 			High: true
@@ -299,7 +299,7 @@ Weapons:
 		ReloadDelay: 250
 		Range: 32c0
 		Burst: 4
-		Report: MISSILE6
+		Report: missile6.aud
 		Projectile: Bullet
 			Speed: 409
 			High: true

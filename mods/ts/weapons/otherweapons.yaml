@@ -1,7 +1,7 @@
 FireballLauncher:
 	ReloadDelay: 50
 	Range: 4c256
-	Report: FLAMTNK1.AUD
+	Report: flamtnk1.aud
 	Projectile: Bullet
 		Speed: 64
 		Image: FLAMEALL
@@ -25,7 +25,7 @@ FiendShard:
 	ReloadDelay: 30
 	Burst: 3
 	Range: 5c0
-	Report: FIEND2.AUD
+	Report: fiend2.aud
 	Projectile: Bullet
 		Speed: 213
 		Image: CRYSTAL4
@@ -49,7 +49,7 @@ FiendShard:
 SlimeAttack:
 	ReloadDelay: 80
 	Range: 5c0
-	Report: VICER1.AUD
+	Report: vicer1.aud
 	Projectile: Bullet
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
