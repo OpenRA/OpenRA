@@ -170,12 +170,8 @@ namespace OpenRA.Mods.Common.AI
 			return true;
 		}
 
-		ActorInfo GetProducibleBuilding(string commonName, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
+		ActorInfo GetProducibleBuilding(HashSet<string> actors, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
 		{
-			HashSet<string> actors;
-			if (!ai.Info.BuildingCommonNames.TryGetValue(commonName, out actors))
-				return null;
-
 			var available = buildables.Where(actor =>
 			{
 				// Are we able to build this?
@@ -205,7 +201,7 @@ namespace OpenRA.Mods.Common.AI
 			var buildableThings = queue.BuildableItems();
 
 			// This gets used quite a bit, so let's cache it here
-			var power = GetProducibleBuilding("Power", buildableThings,
+			var power = GetProducibleBuilding(ai.Info.BuildingCommonNames.Power, buildableThings,
 				a => a.TraitInfos<PowerInfo>().Where(i => i.UpgradeMinEnabledLevel < 1).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
@@ -221,7 +217,7 @@ namespace OpenRA.Mods.Common.AI
 			// Next is to build up a strong economy
 			if (!ai.HasAdequateProc() || !ai.HasMinimumProc())
 			{
-				var refinery = GetProducibleBuilding("Refinery", buildableThings);
+				var refinery = GetProducibleBuilding(ai.Info.BuildingCommonNames.Refinery, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
@@ -238,7 +234,7 @@ namespace OpenRA.Mods.Common.AI
 			// Make sure that we can spend as fast as we are earning
 			if (ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
 			{
-				var production = GetProducibleBuilding("Production", buildableThings);
+				var production = GetProducibleBuilding(ai.Info.BuildingCommonNames.Production, buildableThings);
 				if (production != null && HasSufficientPowerForActor(production))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
@@ -257,7 +253,7 @@ namespace OpenRA.Mods.Common.AI
 				&& playerResources.Resources > ai.Info.NewProductionCashThreshold
 				&& ai.CloseEnoughToWater())
 			{
-				var navalproduction = GetProducibleBuilding("NavalProduction", buildableThings);
+				var navalproduction = GetProducibleBuilding(ai.Info.BuildingCommonNames.NavalProduction, buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
@@ -274,7 +270,7 @@ namespace OpenRA.Mods.Common.AI
 			// Create some head room for resource storage if we really need it
 			if (playerResources.Resources > 0.8 * playerResources.ResourceCapacity)
 			{
-				var silo = GetProducibleBuilding("Silo", buildableThings);
+				var silo = GetProducibleBuilding(ai.Info.BuildingCommonNames.Silo, buildableThings);
 				if (silo != null && HasSufficientPowerForActor(silo))
 				{
 					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
@@ -308,8 +304,7 @@ namespace OpenRA.Mods.Common.AI
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
 				// and any structure providing buildable area close enough to that water.
 				// TODO: Extend this check to cover any naval structure, not just production.
-				if (ai.Info.BuildingCommonNames.ContainsKey("NavalProduction")
-					&& ai.Info.BuildingCommonNames["NavalProduction"].Contains(name)
+				if (ai.Info.BuildingCommonNames.NavalProduction.Contains(name)
 					&& (waterState == Water.NotEnoughWater || !ai.CloseEnoughToWater()))
 					continue;
 
