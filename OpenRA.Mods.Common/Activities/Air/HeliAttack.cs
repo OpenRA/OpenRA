@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Activities
 			var dist = target.CenterPosition - self.CenterPosition;
 
 			// Can rotate facing while ascending
-			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
 
 			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))

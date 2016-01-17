@@ -915,7 +915,11 @@ namespace OpenRA
 
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
 		{
-			return Traits.Util.GetFacing(CenterOfCell(towards) - CenterOfCell(cell), fallbackfacing);
+			var delta = CenterOfCell(towards) - CenterOfCell(cell);
+			if (delta.HorizontalLengthSquared == 0)
+				return fallbackfacing;
+
+			return delta.Yaw.Facing;
 		}
 
 		public void Resize(int width, int height)		// editor magic.

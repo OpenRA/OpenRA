@@ -58,6 +58,18 @@ namespace OpenRA
 				(int)((lx * mtx[2] + ly * mtx[6] + lz * mtx[10]) / mtx[15]));
 		}
 
+		public WAngle Yaw
+		{
+			get
+			{
+				if (LengthSquared == 0)
+					return WAngle.Zero;
+
+				// OpenRA defines north as -y
+				return WAngle.ArcTan(-Y, X) - new WAngle(256);
+			}
+		}
+
 		public static WVec Lerp(WVec a, WVec b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		public static WVec LerpQuadratic(WVec a, WVec b, WAngle pitch, int mul, int div)
@@ -134,7 +146,7 @@ namespace OpenRA
 					case "X": return X;
 					case "Y": return Y;
 					case "Z": return Z;
-					case "Facing": return Traits.Util.GetFacing(this, 0);
+					case "Facing": return Yaw.Facing;
 					default: throw new LuaException("WVec does not define a member '{0}'".F(key));
 				}
 			}

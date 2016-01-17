@@ -31,18 +31,6 @@ namespace OpenRA.Traits
 				return (facing - rot) & 0xFF;
 		}
 
-		public static int GetFacing(WVec d, int currentFacing)
-		{
-			if (d.LengthSquared == 0)
-				return currentFacing;
-
-			// OpenRA defines north as -y, so invert
-			var angle = WAngle.ArcTan(-d.Y, d.X, 4).Angle;
-
-			// Convert back to a facing
-			return (angle / 4 - 0x40) & 0xFF;
-		}
-
 		public static int GetNearestFacing(int facing, int desiredFacing)
 		{
 			var turn = desiredFacing - facing;
