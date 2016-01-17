@@ -37,8 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PPos[] footprint;
 
 		PlayerDictionary<FrozenState> frozenStates;
-		ITooltip tooltip;
-		Health health;
 		bool isRendering;
 
 		class FrozenState
@@ -65,9 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
-			health = self.TraitOrDefault<Health>();
-
 			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
 			{
 				var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
@@ -81,20 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
 		{
 			VisibilityHash |= 1 << (playerIndex % 32);
-
-			frozenActor.Owner = self.Owner;
-
-			if (health != null)
-			{
-				frozenActor.HP = health.HP;
-				frozenActor.DamageState = health.DamageState;
-			}
-
-			if (tooltip != null)
-			{
-				frozenActor.TooltipInfo = tooltip.TooltipInfo;
-				frozenActor.TooltipOwner = tooltip.Owner;
-			}
+			frozenActor.RefreshState();
 		}
 
 		bool IsVisibleInner(Actor self, Player byPlayer)

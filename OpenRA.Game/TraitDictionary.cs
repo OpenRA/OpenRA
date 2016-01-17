@@ -255,7 +255,7 @@ namespace OpenRA
 
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
-				public TraitPair<T> Current { get { return new TraitPair<T> { Actor = actors[index], Trait = traits[index] }; } }
+				public TraitPair<T> Current { get { return new TraitPair<T>(actors[index], traits[index]); } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
 			}

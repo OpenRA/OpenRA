@@ -2889,6 +2889,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "AttackSuicides";
 				}
 
+				// Replaced GpsRemoveFrozenActor with FrozenUnderFogUpdatedByGps
+				if (engineVersion < 20160117)
+				{
+					if (node.Key == "GpsRemoveFrozenActor")
+					{
+						node.Key = "FrozenUnderFogUpdatedByGps";
+						node.Value.Nodes.Clear();
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

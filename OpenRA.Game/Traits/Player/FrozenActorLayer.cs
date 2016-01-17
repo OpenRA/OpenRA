@@ -32,17 +32,18 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
-		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
-		public Player Owner;
+		public Player Owner { get; private set; }
 
-		public ITooltipInfo TooltipInfo;
-		public Player TooltipOwner;
+		public ITooltipInfo TooltipInfo { get; private set; }
+		public Player TooltipOwner { get; private set; }
+		readonly ITooltip tooltip;
 
-		public int HP;
-		public DamageState DamageState;
+		public int HP { get; private set; }
+		public DamageState DamageState { get; private set; }
+		readonly IHealth health;
 
 		public bool Visible = true;
 		public bool Shrouded { get; private set; }
@@ -57,7 +58,6 @@ namespace OpenRA.Traits
 			actor = self;
 			this.shroud = shroud;
 			NeedRenderables = startsRevealed;
-			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
@@ -68,6 +68,9 @@ namespace OpenRA.Traits
 			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
+			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+			health = self.TraitOrDefault<IHealth>();
+
 			UpdateVisibility();
 		}
 
@@ -75,6 +78,23 @@ namespace OpenRA.Traits
 		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+
+		public void RefreshState()
+		{
+			Owner = actor.Owner;
+
+			if (health != null)
+			{
+				HP = health.HP;
+				DamageState = health.DamageState;
+			}
+
+			if (tooltip != null)
+			{
+				TooltipInfo = tooltip.TooltipInfo;
+				TooltipOwner = tooltip.Owner;
+			}
+		}
 
 		public void Tick()
 		{
@@ -126,16 +146,6 @@ namespace OpenRA.Traits
 		}
 
 		public bool HasRenderables { get { return !Shrouded && Renderables.Any(); } }
-
-		public bool ShouldBeRemoved(Player owner)
-		{
-			// PERF: Avoid LINQ.
-			foreach (var rfa in removeFrozenActors)
-				if (rfa.RemoveActor(actor, owner))
-					return true;
-
-			return false;
-		}
 
 		public override string ToString()
 		{
@@ -189,6 +199,13 @@ namespace OpenRA.Traits
 			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
 		}
 
+		public void Remove(FrozenActor fa)
+		{
+			partitionedFrozenActorIds.Remove(fa.ID);
+			world.ScreenMap.Remove(owner, fa);
+			frozenActorsById.Remove(fa.ID);
+		}
+
 		Rectangle FootprintBounds(FrozenActor fa)
 		{
 			var p1 = fa.Footprint[0];
@@ -216,7 +233,7 @@ namespace OpenRA.Traits
 		{
 			UpdateDirtyFrozenActorsFromDirtyBins();
 
-			var idsToRemove = new List<uint>();
+			var frozenActorsToRemove = new List<FrozenActor>();
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
@@ -231,22 +248,16 @@ namespace OpenRA.Traits
 				if (dirtyFrozenActorIds.Contains(id))
 					frozenActor.UpdateVisibility();
 
-				if (frozenActor.ShouldBeRemoved(owner))
-					idsToRemove.Add(id);
-				else if (frozenActor.Visible)
+				if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
-					idsToRemove.Add(id);
+					frozenActorsToRemove.Add(frozenActor);
 			}
 
 			dirtyFrozenActorIds.Clear();
 
-			foreach (var id in idsToRemove)
-			{
-				partitionedFrozenActorIds.Remove(id);
-				world.ScreenMap.Remove(owner, frozenActorsById[id]);
-				frozenActorsById.Remove(id);
-			}
+			foreach (var fa in frozenActorsToRemove)
+				Remove(fa);
 		}
 
 		void UpdateDirtyFrozenActorsFromDirtyBins()

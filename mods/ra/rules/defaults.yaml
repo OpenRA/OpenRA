@@ -430,7 +430,7 @@
 	Guardable:
 		Range: 3c0
 	FrozenUnderFog:
-	GpsRemoveFrozenActor:
+	FrozenUnderFogUpdatedByGps:
 	Tooltip:
 		GenericName: Structure
 	Demolishable:
@@ -500,7 +500,7 @@
 		SellSounds: cashturn.aud
 	Guardable:
 	FrozenUnderFog:
-	GpsRemoveFrozenActor:
+	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 100
 		Shape: Rectangle
