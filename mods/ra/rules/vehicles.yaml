@@ -713,7 +713,7 @@ QTNK:
 	MadTank:
 	-EjectOnDeath:
 	Targetable:
-		TargetTypes: Ground, MADTank, Repair
+		TargetTypes: Ground, MADTank, Repair, Vehicle
 
 STNK:
 	Inherits: ^Vehicle
