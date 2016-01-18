@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			currentWidget = Game.LoadWidget(world, button.MenuContainer, menuRoot, widgetArgs);
+			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 	}
 }
