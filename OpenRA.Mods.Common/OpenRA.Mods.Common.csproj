@@ -727,6 +727,7 @@
     <Compile Include="FileFormats\IniFile.cs" />
     <Compile Include="Orders\GuardOrderGenerator.cs" />
     <Compile Include="UtilityCommands\CheckExplicitInterfacesCommand.cs" />
+    <Compile Include="FileFormats\LZOCompression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
