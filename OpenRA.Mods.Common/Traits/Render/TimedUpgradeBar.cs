@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			value = remaining * 1f / duration;
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0;
@@ -55,6 +55,6 @@ namespace OpenRA.Mods.Common.Traits
 			return value;
 		}
 
-		public Color GetColor() { return info.Color; }
+		Color ISelectionBar.GetColor() { return info.Color; }
 	}
 }

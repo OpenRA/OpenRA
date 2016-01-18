@@ -78,8 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				Color.FromArgb(96, Color.Black));
 		}
 
-		// Selection bar
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			// Visible to player and allies
 			if (!ValidRenderPlayer())
@@ -92,6 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 			return (float)progress / total;
 		}
 
-		public Color GetColor() { return Color.Purple; }
+		Color ISelectionBar.GetColor() { return Color.Purple; }
 	}
 }

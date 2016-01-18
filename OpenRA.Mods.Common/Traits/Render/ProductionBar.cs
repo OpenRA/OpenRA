@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
 		}
 
-		public float GetValue()
+		float ISelectionBar.GetValue()
 		{
 			// only people we like should see our production status.
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			return value;
 		}
 
-		public Color GetColor() { return info.Color; }
+		Color ISelectionBar.GetColor() { return info.Color; }
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{

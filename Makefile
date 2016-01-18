@@ -227,6 +227,9 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
+	@echo
+	@echo "Checking for explicit interface violations..."
+	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
