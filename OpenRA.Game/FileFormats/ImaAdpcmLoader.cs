@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.IO;
 
 namespace OpenRA.FileFormats

@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 

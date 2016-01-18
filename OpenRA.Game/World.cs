@@ -196,7 +196,7 @@ namespace OpenRA
 		public void LoadComplete(WorldRenderer wr)
 		{
 			// ScreenMap must be initialized before anything else
-			using (new Support.PerfTimer("ScreenMap.WorldLoaded"))
+			using (new PerfTimer("ScreenMap.WorldLoaded"))
 				ScreenMap.WorldLoaded(this, wr);
 
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
@@ -205,7 +205,7 @@ namespace OpenRA
 				if (wlh == ScreenMap)
 					continue;
 
-				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
+				using (new PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
 					wlh.WorldLoaded(this, wr);
 			}
 
@@ -374,7 +374,7 @@ namespace OpenRA
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
 		{
-			return TraitDict.ActorsHavingTrait<T>(predicate);
+			return TraitDict.ActorsHavingTrait(predicate);
 		}
 
 		public void OnPlayerWinStateChanged(Player player)

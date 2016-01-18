@@ -23,7 +23,7 @@ namespace OpenRA
 	public struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Length;
-		public long LengthSquared { get { return (long)Length * (long)Length; } }
+		public long LengthSquared { get { return (long)Length * Length; } }
 
 		public WDist(int r) { Length = r; }
 		public static readonly WDist Zero = new WDist(0);
@@ -57,7 +57,7 @@ namespace OpenRA
 
 		public static bool TryParse(string s, out WDist result)
 		{
-			result = WDist.Zero;
+			result = Zero;
 
 			if (string.IsNullOrEmpty(s))
 				return false;
@@ -115,7 +115,7 @@ namespace OpenRA
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Add(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a + b);
@@ -125,7 +125,7 @@ namespace OpenRA
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Subtract(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a - b);
@@ -135,7 +135,7 @@ namespace OpenRA
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Equals(WDist, WDist) with invalid arguments.");
 
 			return a == b;

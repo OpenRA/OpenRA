@@ -305,8 +305,8 @@ namespace OpenRA.Mods.Common.Traits
 			public AttackOrderTargeter(AttackBase ab, int priority, bool negativeDamage)
 			{
 				this.ab = ab;
-				this.OrderID = ab.attackOrderName;
-				this.OrderPriority = priority;
+				OrderID = ab.attackOrderName;
+				OrderPriority = priority;
 			}
 
 			public string OrderID { get; private set; }

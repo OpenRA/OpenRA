@@ -17,7 +17,7 @@ namespace OpenRA.Platforms.Default
 {
 	class Sdl2Input
 	{
-		MouseButton lastButtonBits = (MouseButton)0;
+		MouseButton lastButtonBits = MouseButton.None;
 
 		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
 		public bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }

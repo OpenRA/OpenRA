@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 
 		public ResourceType(ResourceTypeInfo info, World world)
 		{
-			this.Info = info;
+			Info = info;
 			Variants = new Dictionary<string, Sprite[]>();
 			foreach (var v in info.Variants)
 			{

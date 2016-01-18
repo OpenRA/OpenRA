@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Parachutable(ActorInitializer init, ParachutableInfo info)
 		{
-			this.self = init.Self;
+			self = init.Self;
 			this.info = info;
 
 			positionable = self.TraitOrDefault<IPositionable>();

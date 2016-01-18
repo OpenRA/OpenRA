@@ -288,7 +288,7 @@ namespace OpenRA
 				if (wasInWorld)
 					w.Add(this);
 
-				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
+				foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
 		}
@@ -381,7 +381,7 @@ namespace OpenRA
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			Actor a, b;
-			if (!left.TryGetClrValue<Actor>(out a) || !right.TryGetClrValue<Actor>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				return false;
 
 			return a == b;

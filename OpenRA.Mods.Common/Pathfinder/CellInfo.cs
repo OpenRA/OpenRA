@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	/// <summary>

@@ -154,9 +154,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
-			this.self = init.Self;
-			this.topLeft = init.Get<LocationInit, CPos>();
-			this.Info = info;
+			self = init.Self;
+			topLeft = init.Get<LocationInit, CPos>();
+			Info = info;
 
 			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();

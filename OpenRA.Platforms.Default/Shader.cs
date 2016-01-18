@@ -44,7 +44,7 @@ namespace OpenRA.Platforms.Default
 			int success;
 			OpenGL.glGetShaderiv(shader, OpenGL.GL_COMPILE_STATUS, out success);
 			OpenGL.CheckGLError();
-			if (success == (int)OpenGL.GL_FALSE)
+			if (success == OpenGL.GL_FALSE)
 			{
 				int len;
 				OpenGL.glGetShaderiv(shader, OpenGL.GL_INFO_LOG_LENGTH, out len);
@@ -83,7 +83,7 @@ namespace OpenRA.Platforms.Default
 			int success;
 			OpenGL.glGetProgramiv(program, OpenGL.GL_LINK_STATUS, out success);
 			OpenGL.CheckGLError();
-			if (success == (int)OpenGL.GL_FALSE)
+			if (success == OpenGL.GL_FALSE)
 			{
 				int len;
 				OpenGL.glGetProgramiv(program, OpenGL.GL_INFO_LOG_LENGTH, out len);

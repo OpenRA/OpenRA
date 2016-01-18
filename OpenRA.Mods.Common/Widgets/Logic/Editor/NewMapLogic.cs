@@ -9,14 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using OpenRA;
-using OpenRA.FileFormats;
-using OpenRA.Mods.Common.Widgets;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (turreted != null)
 						getFacing = () => turreted.TurretFacing;
 					else if (facing != null)
-						getFacing = (Func<int>)(() => facing.Facing);
+						getFacing = () => facing.Facing;
 					else
 						getFacing = () => 0;
 

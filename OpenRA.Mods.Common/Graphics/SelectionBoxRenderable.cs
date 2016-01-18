@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {

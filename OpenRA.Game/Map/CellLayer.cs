@@ -74,7 +74,7 @@ namespace OpenRA
 			return uv.V * Size.Width + uv.U;
 		}
 
-		/// <summary>Gets or sets the <see cref="OpenRA.CellLayer"/> using cell coordinates</summary>
+		/// <summary>Gets or sets the <see cref="CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
 			get

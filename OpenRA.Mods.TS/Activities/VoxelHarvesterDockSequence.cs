@@ -10,7 +10,6 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.TS.Traits;
 
 namespace OpenRA.Mods.TS.Activities

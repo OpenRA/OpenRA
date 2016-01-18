@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ClassicProductionQueue(ActorInitializer init, ClassicProductionQueueInfo info)
 			: base(init, init.Self, info)
 		{
-			this.self = init.Self;
+			self = init.Self;
 			this.info = info;
 		}
 

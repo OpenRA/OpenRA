@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -760,7 +759,7 @@ namespace OpenRA.Mods.Common.Server
 				{ "name",
 					s =>
 					{
-						var sanitizedName = OpenRA.Settings.SanitizedPlayerName(s);
+						var sanitizedName = Settings.SanitizedPlayerName(s);
 						if (sanitizedName == client.Name)
 							return true;
 

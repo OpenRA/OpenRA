@@ -82,9 +82,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var ca = Color.FromArgb((int)a);
 			var cb = Color.FromArgb((int)b);
 
-			return Math.Abs((int)ca.R - (int)cb.R) +
-				Math.Abs((int)ca.G - (int)cb.G) +
-				Math.Abs((int)ca.B - (int)cb.B);
+			return Math.Abs(ca.R - cb.R) +
+				Math.Abs(ca.G - cb.G) +
+				Math.Abs(ca.B - cb.B);
 		}
 	}
 }

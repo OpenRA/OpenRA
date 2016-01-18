@@ -12,8 +12,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
-using OpenRA;
 using OpenRA.Graphics;
 using SDL2;
 

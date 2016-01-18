@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Orders
 
 		public DeployOrderTargeter(string order, int priority, Func<string> cursor)
 		{
-			this.OrderID = order;
-			this.OrderPriority = priority;
+			OrderID = order;
+			OrderPriority = priority;
 			this.cursor = cursor;
 		}
 

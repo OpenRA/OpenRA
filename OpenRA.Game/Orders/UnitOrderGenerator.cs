@@ -167,11 +167,11 @@ namespace OpenRA.Orders
 
 			public UnitOrderResult(Actor actor, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
 			{
-				this.Actor = actor;
-				this.Order = order;
-				this.Trait = trait;
-				this.Cursor = cursor;
-				this.Target = target;
+				Actor = actor;
+				Order = order;
+				Trait = trait;
+				Cursor = cursor;
+				Target = target;
 			}
 		}
 	}

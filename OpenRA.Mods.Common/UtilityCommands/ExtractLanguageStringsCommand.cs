@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				Console.WriteLine("# {0}:", filename);
 				var yaml = MiniYaml.FromFile(filename);
-				ExtractLanguageStringsCommand.FromChromeLayout(ref yaml, null,
+				FromChromeLayout(ref yaml, null,
 					translatableFields.Select(t => t.Name).Distinct(), null);
 				using (var file = new StreamWriter(filename))
 					file.WriteLine(yaml.WriteToString());

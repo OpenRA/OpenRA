@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Support;
 using OpenRA.Traits;
 

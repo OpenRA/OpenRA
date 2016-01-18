@@ -8,8 +8,6 @@
   */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -65,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				var height = (int)map.MapHeight.Value[uv];
 				var tile = map.MapTiles.Value[uv];
 				var ti = tileSet.GetTileInfo(tile);
-				var ramp = ti != null ? (int)ti.RampType : 0;
+				var ramp = ti != null ? ti.RampType : 0;
 
 				var corners = map.CellCorners[ramp];
 				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();

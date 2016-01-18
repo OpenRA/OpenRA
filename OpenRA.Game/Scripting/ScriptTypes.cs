@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using Eluant;
 
 namespace OpenRA.Scripting
@@ -145,16 +144,16 @@ namespace OpenRA.Scripting
 				return LuaNil.Instance;
 
 			if (obj is double)
-				return (LuaValue)(double)obj;
+				return (double)obj;
 
 			if (obj is int)
-				return (LuaValue)(int)obj;
+				return (int)obj;
 
 			if (obj is bool)
-				return (LuaValue)(bool)obj;
+				return (bool)obj;
 
 			if (obj is string)
-				return (LuaValue)(string)obj;
+				return (string)obj;
 
 			if (obj is IScriptBindable)
 			{

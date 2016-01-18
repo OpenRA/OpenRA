@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -64,7 +63,7 @@ namespace OpenRA.Network
 			}
 
 			file.Write(initialContent);
-			this.writer = new BinaryWriter(file);
+			writer = new BinaryWriter(file);
 		}
 
 		public void Receive(int clientID, byte[] data)

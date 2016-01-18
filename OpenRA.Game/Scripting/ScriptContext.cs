@@ -86,8 +86,8 @@ namespace OpenRA.Scripting
 		public ScriptGlobal(ScriptContext context)
 			: base(context)
 		{
-			// The 'this.' resolves the actual (subclass) type
-			var type = this.GetType();
+			// GetType resolves the actual (subclass) type
+			var type = GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
 			if (names.Length != 1)
 				throw new InvalidOperationException("[ScriptGlobal] attribute not found for global table '{0}'".F(type));

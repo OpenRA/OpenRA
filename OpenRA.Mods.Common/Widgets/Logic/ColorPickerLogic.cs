@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ColorPickerLogic(Widget widget, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
 			string actorType;
-			if (!ChromeMetrics.TryGet<string>("ColorPickerActorType", out actorType))
+			if (!ChromeMetrics.TryGet("ColorPickerActorType", out actorType))
 				actorType = "mcv";
 
 			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");

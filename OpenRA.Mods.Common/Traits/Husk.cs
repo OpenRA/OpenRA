@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
 			this.info = info;
-			this.self = init.Self;
+			self = init.Self;
 
 			TopLeft = init.Get<LocationInit, CPos>();
 			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.World.Map.CenterOfCell(TopLeft);

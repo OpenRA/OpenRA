@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.delay = delay;
-			this.turn = delay / 2;
+			turn = delay / 2;
 			this.flashType = flashType;
 
 			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * turn);

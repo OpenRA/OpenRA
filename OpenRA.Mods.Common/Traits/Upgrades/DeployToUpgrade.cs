@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public DeployToUpgrade(ActorInitializer init, DeployToUpgradeInfo info)
 		{
-			this.self = init.Self;
+			self = init.Self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;

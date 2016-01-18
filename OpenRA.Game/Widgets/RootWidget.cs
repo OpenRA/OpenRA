@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 
 				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
 				{
-					foreach (var child in this.Children)
+					foreach (var child in Children)
 						child.Visible ^= true;
 
 					return true;

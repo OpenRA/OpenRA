@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenRA.Network;
 
 namespace OpenRA
@@ -52,14 +51,14 @@ namespace OpenRA
 		Order(string orderString, Actor subject,
 			Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation, uint extraData)
 		{
-			this.OrderString = orderString;
-			this.Subject = subject;
-			this.TargetActor = targetActor;
-			this.TargetLocation = targetLocation;
-			this.TargetString = targetString;
-			this.Queued = queued;
-			this.ExtraLocation = extraLocation;
-			this.ExtraData = extraData;
+			OrderString = orderString;
+			Subject = subject;
+			TargetActor = targetActor;
+			TargetLocation = targetLocation;
+			TargetString = targetString;
+			Queued = queued;
+			ExtraLocation = extraLocation;
+			ExtraData = extraData;
 		}
 
 		public static Order Deserialize(World world, BinaryReader r)

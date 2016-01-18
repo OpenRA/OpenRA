@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using Eluant;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting

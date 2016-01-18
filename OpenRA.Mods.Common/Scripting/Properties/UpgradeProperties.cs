@@ -10,7 +10,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;

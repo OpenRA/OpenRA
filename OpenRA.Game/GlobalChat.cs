@@ -10,11 +10,9 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Meebey.SmartIrc4net;
-using OpenRA;
 using OpenRA.Primitives;
 
 namespace OpenRA.Chat

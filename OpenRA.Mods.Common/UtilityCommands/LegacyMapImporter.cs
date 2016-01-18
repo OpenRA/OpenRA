@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				for (var i = 0; i < mapSize; i++)
 				{
 					var tileID = ms.ReadUInt16();
-					types[i, j] = tileID == (ushort)0 ? (ushort)255 : tileID; // RAED weirdness
+					types[i, j] = tileID == 0 ? (ushort)255 : tileID; // RAED weirdness
 				}
 			}
 

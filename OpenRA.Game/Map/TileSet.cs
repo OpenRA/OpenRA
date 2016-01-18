@@ -79,9 +79,9 @@ namespace OpenRA
 
 		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
 		{
-			this.Id = id;
-			this.Images = images;
-			this.Size = size;
+			Id = id;
+			Images = images;
+			Size = size;
 		}
 
 		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)

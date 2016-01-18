@@ -38,11 +38,11 @@ namespace OpenRA
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
 			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
-			{ typeof(WDist), ((Func<WDist, int>)Hash<WDist>).Method },
-			{ typeof(WPos), ((Func<WPos, int>)Hash<WPos>).Method },
-			{ typeof(WVec), ((Func<WVec, int>)Hash<WVec>).Method },
-			{ typeof(WAngle), ((Func<WAngle, int>)Hash<WAngle>).Method },
-			{ typeof(WRot), ((Func<WRot, int>)Hash<WRot>).Method },
+			{ typeof(WDist), ((Func<WDist, int>)Hash).Method },
+			{ typeof(WPos), ((Func<WPos, int>)Hash).Method },
+			{ typeof(WVec), ((Func<WVec, int>)Hash).Method },
+			{ typeof(WAngle), ((Func<WAngle, int>)Hash).Method },
+			{ typeof(WRot), ((Func<WRot, int>)Hash).Method },
 			{ typeof(TypeDictionary), ((Func<TypeDictionary, int>)HashTDict).Method },
 			{ typeof(Actor), ((Func<Actor, int>)HashActor).Method },
 			{ typeof(Player), ((Func<Player, int>)HashPlayer).Method },
@@ -152,7 +152,7 @@ namespace OpenRA
 					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.Terrain:
-					return Hash<WPos>(t.CenterPosition);
+					return Hash(t.CenterPosition);
 
 				default:
 				case TargetType.Invalid:

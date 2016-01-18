@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				return path;
 			};
 			this.destination = destination;
-			this.nearEnough = WDist.Zero;
+			nearEnough = WDist.Zero;
 		}
 
 		// HACK: for legacy code
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Activities
 			};
 
 			this.destination = destination;
-			this.nearEnough = WDist.Zero;
+			nearEnough = WDist.Zero;
 			this.ignoredActor = ignoredActor;
 		}
 

@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
+				range = ((ChronoshiftPowerInfo)power.Info).Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Traits
 				this.order = order;
 				this.power = power;
 				this.sourceLocation = sourceLocation;
-				this.range = ((ChronoshiftPowerInfo)power.Info).Range;
+				range = ((ChronoshiftPowerInfo)power.Info).Range;
 
 				var tileset = manager.Self.World.TileSet.Id.ToLowerInvariant();
 				validTile = world.Map.SequenceProvider.GetSequence("overlay", "target-valid-{0}".F(tileset)).GetSprite(0);

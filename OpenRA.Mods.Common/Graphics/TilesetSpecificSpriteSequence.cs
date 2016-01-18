@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 
@@ -69,16 +67,16 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var spriteName = sprite ?? sequence;
 
-			if (LoadField<bool>(d, "UseTilesetCode", false))
+			if (LoadField(d, "UseTilesetCode", false))
 			{
 				string code;
 				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out code))
 					spriteName = spriteName.Substring(0, 1) + code + spriteName.Substring(2, spriteName.Length - 2);
 			}
 
-			if (LoadField<bool>(d, "AddExtension", true))
+			if (LoadField(d, "AddExtension", true))
 			{
-				var useTilesetExtension = LoadField<bool>(d, "UseTilesetExtension", false);
+				var useTilesetExtension = LoadField(d, "UseTilesetExtension", false);
 
 				string tilesetExtension;
 				if (useTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out tilesetExtension))

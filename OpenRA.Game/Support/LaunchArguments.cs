@@ -29,7 +29,7 @@ namespace OpenRA
 			if (args == null)
 				return;
 
-			foreach (var f in this.GetType().GetFields())
+			foreach (var f in GetType().GetFields())
 				if (args.Contains("Launch" + "." + f.Name))
 					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
 		}

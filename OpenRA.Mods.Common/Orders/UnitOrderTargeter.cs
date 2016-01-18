@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
@@ -21,8 +20,8 @@ namespace OpenRA.Mods.Common.Orders
 
 		public UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 		{
-			this.OrderID = order;
-			this.OrderPriority = priority;
+			OrderID = order;
+			OrderPriority = priority;
 			this.cursor = cursor;
 			this.targetEnemyUnits = targetEnemyUnits;
 			this.targetAllyUnits = targetAllyUnits;
