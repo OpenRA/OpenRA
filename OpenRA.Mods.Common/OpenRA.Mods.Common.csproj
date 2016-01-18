@@ -200,6 +200,8 @@
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Orders\EnterTransportTargeter.cs" />
+    <Compile Include="Orders\EnterTransportsTargeter.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
