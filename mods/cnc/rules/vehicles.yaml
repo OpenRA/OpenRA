@@ -1,13 +1,13 @@
 MCV:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 2000
+		Cost: 4000
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.medium
+		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
 	Selectable:
 		Priority: 4
@@ -15,9 +15,9 @@ MCV:
 		Speed: 71
 		Crushes: crate, infantry
 	Health:
-		HP: 750
+		HP: 950
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
 	Transforms:
@@ -486,7 +486,7 @@ MLRS:
 		PipCount: 0
 		SelfReloads: true
 		ReloadCount: 1
-		SelfReloadTicks: 100
+		SelfReloadTicks: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
