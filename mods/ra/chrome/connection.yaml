@@ -43,7 +43,7 @@ Background@CONNECTIONFAILED_PANEL:
 			MaxLength: 20
 			Height: 25
 		Button@RETRY_BUTTON:
-			X: PARENT_RIGHT - 360
+			X: PARENT_RIGHT - 430
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
