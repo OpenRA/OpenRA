@@ -135,8 +135,11 @@ namespace OpenRA.Mods.Common.Server
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 
-						var validatedColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index, conn);
-						client.PreferredColor = client.Color = validatedColor;
+						if (!slot.LockColor)
+						{
+							var validatedColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index, conn);
+							client.PreferredColor = client.Color = validatedColor;
+						}
 
 						server.SyncLobbyClients();
 						CheckAutoStart(server);
@@ -367,7 +370,8 @@ namespace OpenRA.Mods.Common.Server
 						foreach (var c in server.LobbyInfo.Clients)
 						{
 							// Validate if color is allowed and get an alternative it isn't
-							c.Color = c.PreferredColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, c.Color, c.Index, conn);
+							if (c.Slot == null || (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor))
+								c.Color = c.PreferredColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, c.Color, c.Index, conn);
 						}
 
 						server.SyncLobbyInfo();
