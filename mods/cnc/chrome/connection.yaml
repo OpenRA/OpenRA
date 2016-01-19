@@ -46,7 +46,6 @@ Container@CONNECTIONFAILED_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Connection Failed
 		Background@CONNECTION_BACKGROUND:
 			Width: 370
 			Height: 85
