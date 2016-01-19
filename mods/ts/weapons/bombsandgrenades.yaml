@@ -65,7 +65,7 @@ Bomb:
 RPGTower:
 	ReloadDelay: 80
 	Range: 8c0
-	Report: GLNCH4.AUD
+	Report: glnch4.aud
 	Projectile: Bullet
 		Speed: 384
 		Blockable: false

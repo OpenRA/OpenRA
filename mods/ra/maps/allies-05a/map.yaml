@@ -1819,7 +1819,7 @@ Weapons:
 	MissionColt:
 		ReloadDelay: 6
 		Range: 7c0
-		Report: GUN5.AUD
+		Report: gun5.aud
 		Projectile: Bullet
 			High: true
 			Speed: 1c682

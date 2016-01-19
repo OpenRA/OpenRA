@@ -2385,7 +2385,7 @@ Weapons:
 	SuperTankPrimary:
 		ROF: 70
 		Range: 4c768
-		Report: TURRET1.AUD
+		Report: turret1.aud
 		Burst: 2
 		InvalidTargets: Air, Infantry
 		Projectile: Bullet

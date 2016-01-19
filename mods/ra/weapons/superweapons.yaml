@@ -1,7 +1,7 @@
 ParaBomb:
 	ReloadDelay: 10
 	Range: 3c0
-	Report: CHUTE1.AUD
+	Report: chute1.aud
 	Projectile: GravityBomb
 		Image: PARABOMB
 		OpenSequence: open

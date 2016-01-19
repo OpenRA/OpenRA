@@ -1,5 +1,5 @@
 Sniper:
-	Report: RAMGUN2.AUD
+	Report: ramgun2.aud
 	ValidTargets: Ground, Infantry
 	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
 	ReloadDelay: 40
@@ -15,7 +15,7 @@ Sniper:
 HighV:
 	ReloadDelay: 25
 	Range: 6c0
-	Report: GUN8.AUD
+	Report: gun8.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -82,7 +82,7 @@ Pistol:
 	ReloadDelay: 7
 	Range: 3c0
 	InvalidTargets: Wall
-	Report: GUN18.AUD
+	Report: gun18.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -102,7 +102,7 @@ M16:
 	ReloadDelay: 20
 	Range: 4c0
 	InvalidTargets: Wall
-	Report: MGUN2.AUD
+	Report: mgun2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -123,7 +123,7 @@ MachineGun:
 	Burst: 5
 	InvalidTargets: Wall
 	Range: 4c0
-	Report: MGUN11.AUD
+	Report: mgun11.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage

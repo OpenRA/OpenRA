@@ -1,7 +1,7 @@
 Colt45:
 	ReloadDelay: 5
 	Range: 7c0
-	Report: GUN5.AUD
+	Report: gun5.aud
 	ValidTargets: Ground, Infantry
 	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
 	Projectile: Bullet
@@ -23,7 +23,7 @@ ZSU-23:
 	BurstDelay: 5
 	ReloadDelay: 0
 	Range: 10c0
-	Report: AACANON3.AUD
+	Report: aacanon3.aud
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 3c340
@@ -44,7 +44,7 @@ ZSU-23:
 Vulcan:
 	ReloadDelay: 30
 	Range: 6c0
-	Report: GUN13.AUD
+	Report: gun13.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam_1: SpreadDamage
@@ -163,7 +163,7 @@ ChainGun:
 	ReloadDelay: 10
 	Range: 5c0
 	MinRange: 0c768
-	Report: GUN13.AUD
+	Report: gun13.aud
 	Projectile: Bullet
 		Speed: 1c682
 		Blockable: false
@@ -188,7 +188,7 @@ ChainGun.Yak:
 	ReloadDelay: 3
 	Range: 5c0
 	MinRange: 3c0
-	Report: GUN13.AUD
+	Report: gun13.aud
 	Projectile: Bullet
 		Speed: 1c682
 		Blockable: false
@@ -211,7 +211,7 @@ ChainGun.Yak:
 Pistol:
 	ReloadDelay: 7
 	Range: 3c0
-	Report: GUN27.AUD
+	Report: gun27.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -233,7 +233,7 @@ Pistol:
 M1Carbine:
 	ReloadDelay: 20
 	Range: 5c0
-	Report: GUN11.AUD
+	Report: gun11.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -255,7 +255,7 @@ M1Carbine:
 M60mg:
 	ReloadDelay: 30
 	Range: 4c0
-	Report: PILLBOX1.AUD
+	Report: pillbox1.aud
 	Burst: 5
 	Projectile: Bullet
 		Speed: 1c682
@@ -298,7 +298,7 @@ SilencedPPK:
 FLAK-23-AA:
 	ReloadDelay: 10
 	Range: 8c0
-	Report: AACANON3.AUD
+	Report: aacanon3.aud
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 1c682
@@ -321,7 +321,7 @@ FLAK-23-AA:
 FLAK-23-AG:
 	ReloadDelay: 10
 	Range: 6c0
-	Report: AACANON3.AUD
+	Report: aacanon3.aud
 	ValidTargets: Ground, Water
 	Projectile: Bullet
 		Speed: 1c682
@@ -345,7 +345,7 @@ FLAK-23-AG:
 		ValidImpactTypes: Water
 
 Sniper:
-	Report: GUN5.AUD
+	Report: gun5.aud
 	ReloadDelay: 70
 	Range: 10c0
 	ValidTargets: Ground, Infantry

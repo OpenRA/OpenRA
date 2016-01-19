@@ -1,7 +1,7 @@
 90mm:
 	ReloadDelay: 50
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
@@ -33,7 +33,7 @@
 120mm:
 	ReloadDelay: 80
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 1c512
 	Warhead@1Dam: SpreadDamage
@@ -61,7 +61,7 @@
 120mmx:
 	ReloadDelay: 80
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Burst: 2
 	BurstDelay: 5
 	Projectile: Bullet
@@ -95,7 +95,7 @@
 155mm:
 	ReloadDelay: 110
 	Range: 18c0
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 170
 		Image: 120mm

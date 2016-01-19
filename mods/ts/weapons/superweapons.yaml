@@ -1,7 +1,7 @@
 MultiCluster:
 	ReloadDelay: 80
 	Range: 6c0
-	Report: MISL1.AUD
+	Report: misl1.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		MaximumLaunchSpeed: 170
@@ -39,7 +39,7 @@ MultiCluster:
 SuicideBomb:
 	ReloadDelay: 1
 	Range: 0c512
-	Report: HUNTER2.AUD
+	Report: hunter2.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 110
@@ -78,7 +78,7 @@ IonCannon:
 EMPulseCannon:
 	ReloadDelay: 100
 	Range: 10c0
-	Report: PLSECAN2.AUD
+	Report: plsecan2.aud
 	Projectile: Bullet
 		Speed: 425
 		Blockable: false

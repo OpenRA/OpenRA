@@ -796,7 +796,7 @@ Weapons:
 	120mm:
 		ReloadDelay: 150
 		Range: 10c0
-		Report: CANNON1.AUD
+		Report: cannon1.aud
 		Burst: 6
 		Projectile: Bullet
 			Speed: 204
@@ -821,7 +821,7 @@ Weapons:
 	MammothTusk:
 		ReloadDelay: 300
 		Range: 10c0
-		Report: MISSILE6.AUD
+		Report: missile6.aud
 		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
@@ -855,7 +855,7 @@ Weapons:
 	TankNapalm:
 		ReloadDelay: 40
 		Range: 8c0
-		Report: AACANON3.AUD
+		Report: aacanon3.aud
 		ValidTargets: Ground
 		Burst: 6
 		BurstDelay: 1
@@ -885,7 +885,7 @@ Weapons:
 	ParaBomb:
 		ReloadDelay: 5
 		Range: 5c0
-		Report: CHUTE1.AUD
+		Report: chute1.aud
 		Projectile: GravityBomb
 			Image: BOMBLET
 			-OpenSequence:
@@ -937,7 +937,7 @@ Weapons:
 	FLAK-23:
 		ReloadDelay: 10
 		Range: 8c0
-		Report: AACANON3.AUD
+		Report: aacanon3.aud
 		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
@@ -961,7 +961,7 @@ Weapons:
 		ReloadDelay: 280
 		Range: 7c0
 		MinRange: 3c0
-		Report: MISSILE1.AUD
+		Report: missile1.aud
 		Projectile: Bullet
 			Speed: 170
 			Arm: 10

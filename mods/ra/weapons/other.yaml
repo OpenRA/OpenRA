@@ -141,7 +141,7 @@ TeslaZap:
 	ReloadDelay: 3
 	Charges: true
 	Range: 8c512
-	Report: TESLA1.AUD
+	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -154,7 +154,7 @@ TeslaZap:
 PortaTesla:
 	ReloadDelay: 70
 	Range: 6c0
-	Report: TESLA1.AUD
+	Report: tesla1.aud
 	Charges: yes
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
@@ -167,7 +167,7 @@ PortaTesla:
 TTankZap:
 	ReloadDelay: 120
 	Range: 7c0
-	Report: TESLA1.AUD
+	Report: tesla1.aud
 	Charges: yes
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
@@ -181,7 +181,7 @@ DogJaw:
 	ValidTargets: Infantry
 	ReloadDelay: 10
 	Range: 3c0
-	Report: DOGG5P.AUD
+	Report: dogg5p.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 100
@@ -191,7 +191,7 @@ DogJaw:
 Heal:
 	ReloadDelay: 80
 	Range: 4c0
-	Report: HEAL2.AUD
+	Report: heal2.aud
 	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c682
@@ -204,7 +204,7 @@ Heal:
 Repair:
 	ReloadDelay: 80
 	Range: 4c0
-	Report: FIXIT1.AUD
+	Report: fixit1.aud
 	ValidTargets: Repair
 	Projectile: Bullet
 		Speed: 1c682
