@@ -66,7 +66,7 @@ local function createFrame()
       if rect:Contains(event:GetPosition()) then -- click on the interpreter
         local menuitem = ide:FindMenuItem(ID.INTERPRETER)
         if menuitem then
-          local menu = menuitem:GetSubMenu()
+          local menu = ide:CloneMenu(menuitem:GetSubMenu())
           if menu then statusBar:PopupMenu(menu) end
         end
       end
