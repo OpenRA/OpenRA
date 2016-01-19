@@ -375,7 +375,7 @@ Patriot:
 		TrailImage: smokey
 		ContrailLength: 8
 		HorizontalRateOfTurn: 20
-		MaximumLaunchSpeed: 341
+		MaximumLaunchSpeed: 300
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
