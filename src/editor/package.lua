@@ -143,6 +143,17 @@ function ide:AttachMenu(...)
   menu:Destroy(item)
   return menu:Insert(pos, menuitem), pos
 end
+function ide:CloneMenu(menu)
+  if not menu then return end
+  local newmenu = wx.wxMenu()
+  local node = menu:GetMenuItems():GetFirst()
+  while node do
+    local item = node:GetData():DynamicCast("wxMenuItem")
+    newmenu:Append(item:GetId(), item:GetItemLabel(), item:GetHelp(), item:GetKind())
+    node = node:GetNext()
+  end
+  return newmenu
+end
 
 function ide:FindDocument(path)
   local fileName = wx.wxFileName(path)
