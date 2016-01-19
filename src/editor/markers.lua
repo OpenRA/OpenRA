@@ -90,7 +90,7 @@ end
 
 local function item2editor(item_id)
   for editor, cache in pairs(caches) do
-    if cache.fileitem:GetValue() == item_id:GetValue() then return editor end
+    if cache.fileitem and cache.fileitem:GetValue() == item_id:GetValue() then return editor end
   end
 end
 
@@ -221,6 +221,7 @@ function markers:SaveSettings() package:SetSettings(self.settings) end
 
 function markers:SaveMarkers(editor, force)
   -- if the file has the name and has not been modified, save the breakpoints
+  -- this also works when the file is saved as the modified flag is already set to `false`
   local doc = ide:GetDocument(editor)
   local filepath = doc:GetFilePath()
   if filepath and (force or not doc:IsModified()) then
@@ -232,7 +233,6 @@ function markers:SaveMarkers(editor, force)
 end
 
 function markers:LoadMarkers(editor)
-  -- if the file has the name and has not been modified, save the breakpoints
   local doc = ide:GetDocument(editor)
   local filepath = doc:GetFilePath()
   if filepath then
