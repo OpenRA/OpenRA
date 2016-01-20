@@ -23,14 +23,12 @@ namespace OpenRA.FileSystem
 	public sealed class PakFile : IReadOnlyPackage
 	{
 		readonly string filename;
-		readonly int priority;
 		readonly Dictionary<string, Entry> index;
 		readonly Stream stream;
 
-		public PakFile(FileSystem context, string filename, int priority)
+		public PakFile(FileSystem context, string filename)
 		{
 			this.filename = filename;
-			this.priority = priority;
 			index = new Dictionary<string, Entry>();
 
 			stream = context.Open(filename);
@@ -81,7 +79,6 @@ namespace OpenRA.FileSystem
 			return index.ContainsKey(filename);
 		}
 
-		public int Priority { get { return 1000 + priority; } }
 		public string Name { get { return filename; } }
 
 		public void Dispose()

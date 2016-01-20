@@ -175,8 +175,8 @@ namespace OpenRA
 			InitializeLoaders();
 			ModFiles.LoadFromManifest(Manifest);
 
-			// Mount map package so custom assets can be used. TODO: check priority.
-			ModFiles.Mount(ModFiles.OpenPackage(map.Path, int.MaxValue));
+			// Mount map package so custom assets can be used.
+			ModFiles.Mount(ModFiles.OpenPackage(map.Path));
 
 			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();

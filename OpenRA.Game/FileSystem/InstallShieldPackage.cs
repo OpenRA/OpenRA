@@ -32,13 +32,11 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 		readonly Stream s;
 		readonly long dataStart = 255;
-		readonly int priority;
 		readonly string filename;
 
-		public InstallShieldPackage(FileSystem context, string filename, int priority)
+		public InstallShieldPackage(FileSystem context, string filename)
 		{
 			this.filename = filename;
-			this.priority = priority;
 
 			s = context.Open(filename);
 			try
@@ -128,7 +126,6 @@ namespace OpenRA.FileSystem
 			return index.ContainsKey(filename);
 		}
 
-		public int Priority { get { return 2000 + priority; } }
 		public string Name { get { return filename; } }
 
 		public void Dispose()

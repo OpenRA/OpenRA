@@ -316,7 +316,7 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			Container = Game.ModData.ModFiles.OpenWritablePackage(path, int.MaxValue);
+			Container = Game.ModData.ModFiles.OpenWritablePackage(path);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
@@ -649,7 +649,7 @@ namespace OpenRA
 				Path = toPath;
 
 				// Create a new map package
-				Container = Game.ModData.ModFiles.CreatePackage(Path, int.MaxValue, entries);
+				Container = Game.ModData.ModFiles.CreatePackage(Path, entries);
 			}
 
 			// Update existing package

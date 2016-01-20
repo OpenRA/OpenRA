@@ -23,13 +23,11 @@ namespace OpenRA.FileSystem
 	{
 		readonly string bagFilename;
 		readonly Stream s;
-		readonly int bagFilePriority;
 		readonly Dictionary<string, IdxEntry> index;
 
-		public BagFile(FileSystem context, string filename, int priority)
+		public BagFile(FileSystem context, string filename)
 		{
 			bagFilename = filename;
-			bagFilePriority = priority;
 
 			// A bag file is always accompanied with an .idx counterpart
 			// For example: audio.bag requires the audio.idx file
@@ -47,7 +45,6 @@ namespace OpenRA.FileSystem
 			s = context.Open(filename);
 		}
 
-		public int Priority { get { return 1000 + bagFilePriority; } }
 		public string Name { get { return bagFilename; } }
 
 		public Stream GetContent(string filename)

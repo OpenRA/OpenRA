@@ -331,19 +331,16 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<uint, FileDescriptor> fileDescriptors = new Dictionary<uint, FileDescriptor>();
 		readonly Dictionary<string, uint> fileLookup = new Dictionary<string, uint>();
 		readonly FileSystem context;
-		int priority;
 		string commonName;
-		public int Priority { get { return priority; } }
 
 		public string Name { get { return commonName; } }
 
-		public InstallShieldCABExtractor(FileSystem context, string hdrFilename, int priority = -1)
+		public InstallShieldCABExtractor(FileSystem context, string hdrFilename)
 		{
 			var fileGroups = new List<FileGroup>();
 			var fileGroupOffsets = new List<uint>();
 
 			hdrFile = context.Open(hdrFilename);
-			this.priority = priority;
 			this.context = context;
 
 			// Strips archive number AND file extension

@@ -18,14 +18,12 @@ namespace OpenRA.FileSystem
 	public sealed class BigFile : IReadOnlyPackage
 	{
 		public string Name { get; private set; }
-		public int Priority { get; private set; }
 		readonly Dictionary<string, Entry> entries = new Dictionary<string, Entry>();
 		readonly Stream s;
 
-		public BigFile(FileSystem context, string filename, int priority)
+		public BigFile(FileSystem context, string filename)
 		{
 			Name = filename;
-			Priority = priority;
 
 			s = context.Open(filename);
 			try

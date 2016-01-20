@@ -19,7 +19,6 @@ namespace OpenRA.FileSystem
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<string> AllFileNames();
-		int Priority { get; }
 		string Name { get; }
 	}
 

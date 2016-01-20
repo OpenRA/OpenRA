@@ -25,13 +25,11 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<string, PackageEntry> index;
 		readonly long dataStart;
 		readonly Stream s;
-		readonly int priority;
 		readonly FileSystem context;
 
-		public MixFile(FileSystem context, string filename, int priority)
+		public MixFile(FileSystem context, string filename)
 		{
 			Name = filename;
-			this.priority = priority;
 			this.context = context;
 
 			s = context.Open(filename);
@@ -212,8 +210,6 @@ namespace OpenRA.FileSystem
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public int Priority { get { return 1000 + priority; } }
 
 		public void Dispose()
 		{

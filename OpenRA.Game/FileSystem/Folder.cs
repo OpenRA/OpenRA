@@ -16,23 +16,20 @@ namespace OpenRA.FileSystem
 	public sealed class Folder : IReadWritePackage
 	{
 		readonly string path;
-		readonly int priority;
 
 		// Create a new folder package
-		public Folder(string path, int priority, Dictionary<string, byte[]> contents)
+		public Folder(string path, Dictionary<string, byte[]> contents)
 		{
 			this.path = path;
-			this.priority = priority;
 			if (Directory.Exists(path))
 				Directory.Delete(path, true);
 
 			Write(contents);
 		}
 
-		public Folder(string path, int priority)
+		public Folder(string path)
 		{
 			this.path = path;
-			this.priority = priority;
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 		}
@@ -54,7 +51,6 @@ namespace OpenRA.FileSystem
 			return File.Exists(Path.Combine(path, filename));
 		}
 
-		public int Priority { get { return priority; } }
 		public string Name { get { return path; } }
 
 		public void Write(Dictionary<string, byte[]> contents)

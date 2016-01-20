@@ -31,13 +31,11 @@ namespace OpenRA.FileSystem
 		readonly Stream s;
 
 		readonly string filename;
-		readonly int priority;
 		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 
-		public D2kSoundResources(FileSystem context, string filename, int priority)
+		public D2kSoundResources(FileSystem context, string filename)
 		{
 			this.filename = filename;
-			this.priority = priority;
 
 			s = context.Open(filename);
 			try
@@ -79,8 +77,6 @@ namespace OpenRA.FileSystem
 		}
 
 		public string Name { get { return filename; } }
-
-		public int Priority { get { return 1000 + priority; } }
 
 		public void Dispose()
 		{

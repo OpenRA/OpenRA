@@ -19,7 +19,6 @@ namespace OpenRA.FileSystem
 	public sealed class ZipFile : IReadWritePackage
 	{
 		readonly string filename;
-		readonly int priority;
 		SZipFile pkg;
 
 		static ZipFile()
@@ -27,10 +26,9 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFile(FileSystem context, string filename, int priority)
+		public ZipFile(FileSystem context, string filename)
 		{
 			this.filename = filename;
-			this.priority = priority;
 
 			try
 			{
@@ -44,9 +42,8 @@ namespace OpenRA.FileSystem
 		}
 
 		// Create a new zip with the specified contents.
-		public ZipFile(FileSystem context, string filename, int priority, Dictionary<string, byte[]> contents)
+		public ZipFile(FileSystem context, string filename, Dictionary<string, byte[]> contents)
 		{
-			this.priority = priority;
 			this.filename = filename;
 
 			if (File.Exists(filename))
@@ -82,7 +79,6 @@ namespace OpenRA.FileSystem
 			return pkg.GetEntry(filename) != null;
 		}
 
-		public int Priority { get { return 500 + priority; } }
 		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)

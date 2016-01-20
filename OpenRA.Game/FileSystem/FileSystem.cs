@@ -23,52 +23,50 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
-
-		int order;
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
-		public IReadWritePackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
+		public IReadWritePackage CreatePackage(string filename, Dictionary<string, byte[]> content)
 		{
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order, content);
+				return new ZipFile(this, filename, content);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order, content);
+				return new ZipFile(this, filename, content);
 
-			return new Folder(filename, order, content);
+			return new Folder(filename, content);
 		}
 
-		public IReadOnlyPackage OpenPackage(string filename, int order)
+		public IReadOnlyPackage OpenPackage(string filename)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(this, filename, order);
+				return new MixFile(this, filename);
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order);
+				return new ZipFile(this, filename);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order);
+				return new ZipFile(this, filename);
 			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				return new D2kSoundResources(this, filename, order);
+				return new D2kSoundResources(this, filename);
 			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldPackage(this, filename, order);
+				return new InstallShieldPackage(this, filename);
 			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				return new PakFile(this, filename, order);
+				return new PakFile(this, filename);
 			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
-				return new BigFile(this, filename, order);
+				return new BigFile(this, filename);
 			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
-				return new BagFile(this, filename, order);
+				return new BagFile(this, filename);
 			if (filename.EndsWith(".hdr", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldCABExtractor(this, filename, order);
+				return new InstallShieldCABExtractor(this, filename);
 
-			return new Folder(filename, order);
+			return new Folder(filename);
 		}
 
-		public IReadWritePackage OpenWritablePackage(string filename, int order)
+		public IReadWritePackage OpenWritablePackage(string filename)
 		{
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order);
+				return new ZipFile(this, filename);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, order);
+				return new ZipFile(this, filename);
 
-			return new Folder(filename, order);
+			return new Folder(filename);
 		}
 
 		public void Mount(string name)
@@ -79,7 +77,7 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			Action a = () => Mount(OpenPackage(name, order++));
+			Action a = () => Mount(OpenPackage(name));
 			if (optional)
 				try { a(); }
 				catch { }
@@ -149,8 +147,7 @@ namespace OpenRA.FileSystem
 		Stream GetFromCache(string filename)
 		{
 			var package = fileIndex[filename]
-				.Where(x => x.Exists(filename))
-				.MinByOrDefault(x => x.Priority);
+				.LastOrDefault(x => x.Exists(filename));
 
 			if (package != null)
 				return package.GetContent(filename);
@@ -193,9 +190,9 @@ namespace OpenRA.FileSystem
 			// Ask each package individually
 			IReadOnlyPackage package;
 			if (explicitPackage && !string.IsNullOrEmpty(packageName))
-				package = mountedPackages.Keys.Where(x => x.Name == packageName).MaxByOrDefault(x => x.Priority);
+				package = mountedPackages.Keys.LastOrDefault(x => x.Name == packageName);
 			else
-				package = mountedPackages.Keys.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
+				package = mountedPackages.Keys.LastOrDefault(x => x.Exists(filename));
 
 			if (package != null)
 			{
