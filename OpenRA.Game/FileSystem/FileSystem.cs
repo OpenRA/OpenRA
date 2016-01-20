@@ -19,7 +19,8 @@ namespace OpenRA.FileSystem
 {
 	public class FileSystem
 	{
-		public readonly List<IReadOnlyPackage> MountedPackages = new List<IReadOnlyPackage>();
+		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
+		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 
@@ -70,12 +71,6 @@ namespace OpenRA.FileSystem
 			return new Folder(filename, order);
 		}
 
-		public void Mount(IReadOnlyPackage mount)
-		{
-			if (!MountedPackages.Contains(mount))
-				MountedPackages.Add(mount);
-		}
-
 		public void Mount(string name)
 		{
 			var optional = name.StartsWith("~");
@@ -84,8 +79,7 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			Action a = () => MountInner(OpenPackage(name, order++));
-
+			Action a = () => Mount(OpenPackage(name, order++));
 			if (optional)
 				try { a(); }
 				catch { }
@@ -93,35 +87,55 @@ namespace OpenRA.FileSystem
 				a();
 		}
 
-		void MountInner(IReadOnlyPackage package)
+		public void Mount(IReadOnlyPackage package)
 		{
-			MountedPackages.Add(package);
-
-			foreach (var filename in package.AllFileNames())
+			var mountCount = 0;
+			if (mountedPackages.TryGetValue(package, out mountCount))
 			{
-				var packageList = fileIndex[filename];
-				if (!packageList.Contains(package))
-					packageList.Add(package);
+				// Package is already mounted
+				// Increment the mount count and bump up the file loading priority
+				mountedPackages[package] = mountCount + 1;
+				foreach (var filename in package.AllFileNames())
+				{
+					fileIndex[filename].Remove(package);
+					fileIndex[filename].Add(package);
+				}
+			}
+			else
+			{
+				// Mounting the package for the first time
+				mountedPackages.Add(package, 1);
+				foreach (var filename in package.AllFileNames())
+					fileIndex[filename].Add(package);
 			}
 		}
 
 		public bool Unmount(IReadOnlyPackage package)
 		{
-			foreach (var packagesForFile in fileIndex.Values)
-				packagesForFile.RemoveAll(p => p == package);
+			var mountCount = 0;
+			if (!mountedPackages.TryGetValue(package, out mountCount))
+				return false;
 
-			if (MountedPackages.Contains(package))
+			if (--mountCount <= 0)
+			{
+				foreach (var packagesForFile in fileIndex.Values)
+					packagesForFile.RemoveAll(p => p == package);
+
+				mountedPackages.Remove(package);
 				package.Dispose();
+			}
+			else
+				mountedPackages[package] = mountCount;
 
-			return MountedPackages.RemoveAll(p => p == package) > 0;
+			return true;
 		}
 
 		public void UnmountAll()
 		{
-			foreach (var package in MountedPackages)
+			foreach (var package in mountedPackages.Keys)
 				package.Dispose();
 
-			MountedPackages.Clear();
+			mountedPackages.Clear();
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
@@ -179,9 +193,9 @@ namespace OpenRA.FileSystem
 			// Ask each package individually
 			IReadOnlyPackage package;
 			if (explicitPackage && !string.IsNullOrEmpty(packageName))
-				package = MountedPackages.Where(x => x.Name == packageName).MaxByOrDefault(x => x.Priority);
+				package = mountedPackages.Keys.Where(x => x.Name == packageName).MaxByOrDefault(x => x.Priority);
 			else
-				package = MountedPackages.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
+				package = mountedPackages.Keys.Where(x => x.Exists(filename)).MaxByOrDefault(x => x.Priority);
 
 			if (package != null)
 			{
@@ -201,10 +215,10 @@ namespace OpenRA.FileSystem
 				var divide = name.Split(':');
 				var packageName = divide.First();
 				var filename = divide.Last();
-				return MountedPackages.Where(n => n.Name == packageName).Any(f => f.Exists(filename));
+				return mountedPackages.Keys.Where(n => n.Name == packageName).Any(f => f.Exists(filename));
 			}
 			else
-				return MountedPackages.Any(f => f.Exists(name));
+				return mountedPackages.Keys.Any(f => f.Exists(name));
 		}
 
 		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)
