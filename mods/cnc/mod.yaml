@@ -7,21 +7,10 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
+Packages:
+	~^Content/cnc
 	.
 	./mods/cnc
-	./mods/cnc/bits
-	./mods/cnc/bits/jungle
-	./mods/cnc/bits/desert
-	./mods/cnc/bits/ss
-	./mods/cnc/uibits
-	~^Content/cnc
-
-MapFolders:
-	./mods/cnc/maps@System
-	~^maps/cnc@User
-
-Packages:
 	speech.mix
 	conquer.mix
 	sounds.mix
@@ -29,13 +18,22 @@ Packages:
 	temperat.mix
 	winter.mix
 	desert.mix
-	snow.mix
 	~movies-gdi.mix
 	~movies-nod.mix
 	~movies.mix
 	~scores.mix
 	~scores2.mix
 	~transit.mix
+	./mods/cnc/bits/snow.mix
+	./mods/cnc/bits
+	./mods/cnc/bits/jungle
+	./mods/cnc/bits/desert
+	./mods/cnc/bits/ss
+	./mods/cnc/uibits
+
+MapFolders:
+	./mods/cnc/maps@System
+	~^maps/cnc@User
 
 Rules:
 	./mods/cnc/rules/misc.yaml

@@ -6,7 +6,7 @@ Metadata:
 
 RequiresMods:
 
-Folders:
+Packages:
 	.
 	./mods/modchooser
 

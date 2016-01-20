@@ -7,24 +7,22 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
-	.
-	d2k:
-	d2k:bits
-	d2k:bits/tex
-	d2k:bits/xmas
-	d2k:uibits
+Packages:
 	~^Content/d2k
 	~^Content/d2k/GAMESFX
 	~^Content/d2k/Movies
 	~^Content/d2k/Music
+	.
+	d2k:
+	SOUND.RS
+	d2k:bits
+	d2k:bits/tex
+	d2k:bits/xmas
+	d2k:uibits
 
 MapFolders:
 	d2k:maps@System
 	~^maps/d2k@User
-
-Packages:
-	SOUND.RS
 
 Rules:
 	d2k:rules/misc.yaml

@@ -128,9 +128,6 @@ namespace OpenRA.FileSystem
 		public void LoadFromManifest(Manifest manifest)
 		{
 			UnmountAll();
-			foreach (var dir in manifest.Folders)
-				Mount(dir);
-
 			foreach (var pkg in manifest.Packages)
 				Mount(pkg);
 		}
