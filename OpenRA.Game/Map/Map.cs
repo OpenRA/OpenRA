@@ -263,7 +263,7 @@ namespace OpenRA
 
 		void AssertExists(string filename)
 		{
-			using (var s = Container.GetContent(filename))
+			using (var s = Container.GetStream(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
@@ -321,7 +321,7 @@ namespace OpenRA
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml"), path));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetStream("map.yaml"), path));
 			FieldLoader.Load(this, yaml);
 
 			// Support for formats 1-3 dropped 2011-02-11.
@@ -427,8 +427,8 @@ namespace OpenRA
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
-			if (Container.Exists("map.png"))
-				using (var dataStream = Container.GetContent("map.png"))
+			if (Container.Contains("map.png"))
+				using (var dataStream = Container.GetStream("map.png"))
 					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
@@ -634,12 +634,12 @@ namespace OpenRA
 			// Add any custom assets
 			if (Container != null)
 			{
-				foreach (var file in Container.AllFileNames())
+				foreach (var file in Container.Contents)
 				{
 					if (file == "map.bin" || file == "map.yaml")
 						continue;
 
-					entries.Add(file, Container.GetContent(file).ReadAllBytes());
+					entries.Add(file, Container.GetStream(file).ReadAllBytes());
 				}
 			}
 
@@ -662,7 +662,7 @@ namespace OpenRA
 		public CellLayer<TerrainTile> LoadMapTiles()
 		{
 			var tiles = new CellLayer<TerrainTile>(this);
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.TilesOffset > 0)
@@ -694,7 +694,7 @@ namespace OpenRA
 		public CellLayer<byte> LoadMapHeight()
 		{
 			var tiles = new CellLayer<byte>(this);
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.HeightsOffset > 0)
@@ -716,7 +716,7 @@ namespace OpenRA
 		{
 			var resources = new CellLayer<ResourceTile>(this);
 
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.ResourcesOffset > 0)
@@ -968,9 +968,9 @@ namespace OpenRA
 			using (var ms = new MemoryStream())
 			{
 				// Read the relevant data into the buffer
-				using (var s = Container.GetContent("map.yaml"))
+				using (var s = Container.GetStream("map.yaml"))
 					s.CopyTo(ms);
-				using (var s = Container.GetContent("map.bin"))
+				using (var s = Container.GetStream("map.bin"))
 					s.CopyTo(ms);
 
 				// Take the SHA1

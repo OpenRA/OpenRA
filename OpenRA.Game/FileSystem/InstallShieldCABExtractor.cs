@@ -329,11 +329,11 @@ namespace OpenRA.FileSystem
 		readonly List<uint> directoryTable;
 		readonly Dictionary<uint, string> directoryNames = new Dictionary<uint, string>();
 		readonly Dictionary<uint, FileDescriptor> fileDescriptors = new Dictionary<uint, FileDescriptor>();
-		readonly Dictionary<string, uint> fileLookup = new Dictionary<string, uint>();
+		readonly Dictionary<string, uint> index = new Dictionary<string, uint>();
 		readonly FileSystem context;
-		string commonName;
 
-		public string Name { get { return commonName; } }
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
 
 		public InstallShieldCABExtractor(FileSystem context, string hdrFilename)
 		{
@@ -344,7 +344,7 @@ namespace OpenRA.FileSystem
 			this.context = context;
 
 			// Strips archive number AND file extension
-			commonName = Regex.Replace(hdrFilename, @"\d*\.[^\.]*$", "");
+			Name = Regex.Replace(hdrFilename, @"\d*\.[^\.]*$", "");
 			var signature = hdrFile.ReadUInt32();
 
 			if (signature != 0x28635349)
@@ -380,12 +380,12 @@ namespace OpenRA.FileSystem
 			hdrFile.Seek(commonHeader.CabDescriptorOffset + cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2, SeekOrigin.Begin);
 			foreach (var fileGroup in fileGroups)
 			{
-				for (var index = fileGroup.FirstFile; index <= fileGroup.LastFile; ++index)
+				for (var i = fileGroup.FirstFile; i <= fileGroup.LastFile; ++i)
 				{
-					AddFileDescriptorToList(index);
-					var fileDescriptor = fileDescriptors[index];
+					AddFileDescriptorToList(i);
+					var fileDescriptor = fileDescriptors[i];
 					var fullFilePath   = "{0}\\{1}\\{2}".F(fileGroup.Name, DirectoryName(fileDescriptor.DirectoryIndex), fileDescriptor.Filename);
-					fileLookup.Add(fullFilePath, index);
+					index.Add(fullFilePath, i);
 				}
 			}
 		}
@@ -404,9 +404,9 @@ namespace OpenRA.FileSystem
 			return test;
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
-			return fileLookup.ContainsKey(filename);
+			return index.ContainsKey(filename);
 		}
 
 		public uint DirectoryCount()
@@ -462,7 +462,7 @@ namespace OpenRA.FileSystem
 
 			var output = new MemoryStream((int)fileDes.ExpandedSize);
 
-			using (var reader = new CabReader(context, fileDes, index, commonName))
+			using (var reader = new CabReader(context, fileDes, index, Name))
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
@@ -487,21 +487,16 @@ namespace OpenRA.FileSystem
 			if ((fileDes.Flags & FileObfuscated) != 0)
 				throw new NotImplementedException("Haven't implemented obfuscated files");
 
-			using (var reader = new CabReader(context, fileDes, index, commonName))
+			using (var reader = new CabReader(context, fileDes, index, Name))
 				reader.CopyTo(output);
 
 			if (output.Length != fileDes.ExpandedSize)
 				throw new Exception("Did not fully extract Expected = {0}, Got = {1}".F(fileDes.ExpandedSize, output.Length));
 		}
 
-		public Stream GetContent(string fileName)
+		public Stream GetStream(string fileName)
 		{
-			return GetContentById(fileLookup[fileName]);
-		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			return fileLookup.Keys;
+			return GetContentById(index[fileName]);
 		}
 
 		public void Dispose()

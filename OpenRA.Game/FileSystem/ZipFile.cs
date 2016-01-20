@@ -18,7 +18,7 @@ namespace OpenRA.FileSystem
 {
 	public sealed class ZipFile : IReadWritePackage
 	{
-		readonly string filename;
+		public string Name { get; private set; }
 		SZipFile pkg;
 
 		static ZipFile()
@@ -28,7 +28,7 @@ namespace OpenRA.FileSystem
 
 		public ZipFile(FileSystem context, string filename)
 		{
-			this.filename = filename;
+			Name = filename;
 
 			try
 			{
@@ -44,7 +44,7 @@ namespace OpenRA.FileSystem
 		// Create a new zip with the specified contents.
 		public ZipFile(FileSystem context, string filename, Dictionary<string, byte[]> contents)
 		{
-			this.filename = filename;
+			Name = filename;
 
 			if (File.Exists(filename))
 				File.Delete(filename);
@@ -53,7 +53,7 @@ namespace OpenRA.FileSystem
 			Write(contents);
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			var entry = pkg.GetEntry(filename);
 			if (entry == null)
@@ -68,24 +68,25 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public IEnumerable<string> AllFileNames()
+		public IEnumerable<string> Contents
 		{
-			foreach (ZipEntry entry in pkg)
-				yield return entry.Name;
+			get
+			{
+				foreach (ZipEntry entry in pkg)
+					yield return entry.Name;
+			}
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return pkg.GetEntry(filename) != null;
 		}
-
-		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// TODO: Clear existing content?
 			pkg.Close();
-			pkg = SZipFile.Create(filename);
+			pkg = SZipFile.Create(Name);
 			pkg.BeginUpdate();
 
 			foreach (var kvp in contents)
@@ -93,7 +94,7 @@ namespace OpenRA.FileSystem
 
 			pkg.CommitUpdate();
 			pkg.Close();
-			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
+			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(Name)));
 		}
 
 		public void Dispose()

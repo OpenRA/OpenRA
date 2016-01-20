@@ -22,13 +22,15 @@ namespace OpenRA.FileSystem
 
 	public sealed class PakFile : IReadOnlyPackage
 	{
-		readonly string filename;
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
+
 		readonly Dictionary<string, Entry> index;
 		readonly Stream stream;
 
 		public PakFile(FileSystem context, string filename)
 		{
-			this.filename = filename;
+			Name = filename;
 			index = new Dictionary<string, Entry>();
 
 			stream = context.Open(filename);
@@ -57,7 +59,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			Entry entry;
 			if (!index.TryGetValue(filename, out entry))
@@ -68,18 +70,10 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(data);
 		}
 
-		public IEnumerable<string> AllFileNames()
-		{
-			foreach (var filename in index.Keys)
-				yield return filename;
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public string Name { get { return filename; } }
 
 		public void Dispose()
 		{

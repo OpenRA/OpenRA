@@ -93,7 +93,7 @@ namespace OpenRA.FileSystem
 				// Package is already mounted
 				// Increment the mount count and bump up the file loading priority
 				mountedPackages[package] = mountCount + 1;
-				foreach (var filename in package.AllFileNames())
+				foreach (var filename in package.Contents)
 				{
 					fileIndex[filename].Remove(package);
 					fileIndex[filename].Add(package);
@@ -103,7 +103,7 @@ namespace OpenRA.FileSystem
 			{
 				// Mounting the package for the first time
 				mountedPackages.Add(package, 1);
-				foreach (var filename in package.AllFileNames())
+				foreach (var filename in package.Contents)
 					fileIndex[filename].Add(package);
 			}
 		}
@@ -147,10 +147,10 @@ namespace OpenRA.FileSystem
 		Stream GetFromCache(string filename)
 		{
 			var package = fileIndex[filename]
-				.LastOrDefault(x => x.Exists(filename));
+				.LastOrDefault(x => x.Contains(filename));
 
 			if (package != null)
-				return package.GetContent(filename);
+				return package.GetStream(filename);
 
 			return null;
 		}
@@ -192,11 +192,11 @@ namespace OpenRA.FileSystem
 			if (explicitPackage && !string.IsNullOrEmpty(packageName))
 				package = mountedPackages.Keys.LastOrDefault(x => x.Name == packageName);
 			else
-				package = mountedPackages.Keys.LastOrDefault(x => x.Exists(filename));
+				package = mountedPackages.Keys.LastOrDefault(x => x.Contains(filename));
 
 			if (package != null)
 			{
-				s = package.GetContent(filename);
+				s = package.GetStream(filename);
 				return true;
 			}
 
@@ -212,10 +212,10 @@ namespace OpenRA.FileSystem
 				var divide = name.Split(':');
 				var packageName = divide.First();
 				var filename = divide.Last();
-				return mountedPackages.Keys.Where(n => n.Name == packageName).Any(f => f.Exists(filename));
+				return mountedPackages.Keys.Where(n => n.Name == packageName).Any(f => f.Contains(filename));
 			}
 			else
-				return mountedPackages.Keys.Any(f => f.Exists(name));
+				return mountedPackages.Keys.Any(f => f.Contains(name));
 		}
 
 		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)

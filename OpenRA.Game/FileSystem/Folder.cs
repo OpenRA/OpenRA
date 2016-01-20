@@ -34,24 +34,27 @@ namespace OpenRA.FileSystem
 				Directory.CreateDirectory(path);
 		}
 
-		public Stream GetContent(string filename)
+		public string Name { get { return path; } }
+
+		public IEnumerable<string> Contents
+		{
+			get
+			{
+				foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+					yield return Path.GetFileName(filename);
+			}
+		}
+
+		public Stream GetStream(string filename)
 		{
 			try { return File.OpenRead(Path.Combine(path, filename)); }
 			catch { return null; }
 		}
 
-		public IEnumerable<string> AllFileNames()
-		{
-			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
-				yield return Path.GetFileName(filename);
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return File.Exists(Path.Combine(path, filename));
 		}
-
-		public string Name { get { return path; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{

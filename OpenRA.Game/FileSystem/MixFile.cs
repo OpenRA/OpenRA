@@ -21,6 +21,7 @@ namespace OpenRA.FileSystem
 	public sealed class MixFile : IReadOnlyPackage
 	{
 		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
 
 		readonly Dictionary<string, PackageEntry> index;
 		readonly long dataStart;
@@ -192,7 +193,7 @@ namespace OpenRA.FileSystem
 			return new SegmentStream(File.OpenRead(path), offset, entry.Length);
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			PackageEntry e;
 			if (!index.TryGetValue(filename, out e))
@@ -201,12 +202,7 @@ namespace OpenRA.FileSystem
 			return GetContent(e);
 		}
 
-		public IEnumerable<string> AllFileNames()
-		{
-			return index.Keys;
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
