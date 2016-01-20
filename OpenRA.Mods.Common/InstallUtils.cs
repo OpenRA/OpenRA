@@ -41,8 +41,7 @@ namespace OpenRA.Mods.Common
 		public static bool ExtractFromPackage(string srcPath, string package, string annotation, Dictionary<string, string[]> filesByDirectory,
 			string destPath, bool overwrite, Action<string> onProgress, Action<string> onError)
 		{
-			if (!Directory.Exists(destPath))
-				Directory.CreateDirectory(destPath);
+			Directory.CreateDirectory(destPath);
 
 			Log.Write("debug", "Mounting {0}".F(srcPath));
 			Game.ModData.ModFiles.Mount(srcPath);
@@ -86,6 +85,8 @@ namespace OpenRA.Mods.Common
 		public static bool CopyFiles(string srcPath, Dictionary<string, string[]> files, string destPath,
 			bool overwrite, Action<string> onProgress, Action<string> onError)
 		{
+			Directory.CreateDirectory(destPath);
+
 			foreach (var folder in files)
 			{
 				var targetDir = folder.Key;
