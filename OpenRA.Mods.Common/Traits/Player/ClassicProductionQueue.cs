@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init, this); }
 	}
 
-	public class ClassicProductionQueue : ProductionQueue, ISync
+	public class ClassicProductionQueue : ProductionQueue
 	{
 		static readonly ActorInfo[] NoItems = { };
 
