@@ -190,14 +190,14 @@ namespace OpenRA.Mods.Common.Traits
 		void UpdateNeighbours(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
 			// Include actors inside the footprint too
-			var cells = OpenRA.Traits.Util.ExpandFootprint(footprint.Keys, true);
+			var cells = Util.ExpandFootprint(footprint.Keys, true);
 			foreach (var p in cells.SelectMany(c => PreviewsAt(c)))
 				p.ReplaceInit(new RuntimeNeighbourInit(NeighbouringPreviews(p.Footprint)));
 		}
 
 		Dictionary<CPos, string[]> NeighbouringPreviews(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
-			var cells = OpenRA.Traits.Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
+			var cells = Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
 			return cells.ToDictionary(c => c, c => PreviewsAt(c).Select(p => p.Info.Name).ToArray());
 		}
 

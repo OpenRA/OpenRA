@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				return Util.SequenceActivities(new Turn(self, firstFacing), this);
+				return ActivityUtils.SequenceActivities(new Turn(self, firstFacing), this);
 			}
 			else
 			{

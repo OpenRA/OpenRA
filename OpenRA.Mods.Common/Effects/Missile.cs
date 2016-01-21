@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -200,7 +201,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -723,8 +724,8 @@ namespace OpenRA.Mods.Common.Effects
 				desiredHFacing = hFacing;
 
 			// Compute new direction the projectile will be facing
-			hFacing = OpenRA.Traits.Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
-			vFacing = OpenRA.Traits.Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
+			hFacing = Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
+			vFacing = Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
 
 			// Compute the projectile's guided displacement
 			return new WVec(0, -1024 * speed, 0)

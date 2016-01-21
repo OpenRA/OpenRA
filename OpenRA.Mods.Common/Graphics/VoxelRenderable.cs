@@ -144,19 +144,19 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// Draw voxel bounding box
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
-				var scaleTransform = Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
-				var cameraTransform = Util.MakeFloatMatrix(voxel.camera.AsMatrix());
+				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
+				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(voxel.camera.AsMatrix());
 
 				foreach (var v in draw)
 				{
 					var bounds = v.Voxel.Bounds(v.FrameFunc());
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
-						(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
+						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
 					float sx, sy, sz;
 					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
 					var pxPos = pxOrigin + new float2(sx, sy);
-					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 					DrawBoundsBox(pxPos, screenTransform, bounds, iz, Color.Yellow);
 				}
 			}
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Graphics
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-					var screen = Util.MatrixVectorMultiply(transform, vec);
+					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
 					corners[i] = pxPos + new float2(screen[0], screen[1]);
 				}
 
@@ -192,8 +192,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
-				var scaleTransform = Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
-				var cameraTransform = Util.MakeFloatMatrix(voxel.camera.AsMatrix());
+				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
+				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(voxel.camera.AsMatrix());
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
@@ -203,17 +203,17 @@ namespace OpenRA.Mods.Common.Graphics
 				{
 					var bounds = v.Voxel.Bounds(v.FrameFunc());
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
-						(x, y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
+						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
 					float sx, sy, sz;
 					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
 					var pxPos = pxOrigin + new float2(sx, sy);
-					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
 					{
 						var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-						var screen = Util.MatrixVectorMultiply(screenTransform, vec);
+						var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(screenTransform, vec);
 						minX = Math.Min(minX, pxPos.X + screen[0]);
 						minY = Math.Min(minY, pxPos.Y + screen[1]);
 						maxX = Math.Max(maxX, pxPos.X + screen[0]);

@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 					attack.Target = target;
 
 					if (move != null)
-						return Util.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
+						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
 				}
 
 				return NextActivity;

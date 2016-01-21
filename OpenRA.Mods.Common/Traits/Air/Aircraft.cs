@@ -424,7 +424,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsPlane)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
-			return Util.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
+			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)
@@ -439,11 +439,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// TODO: Ignore repulsion when moving
 			if (IsPlane)
-				return Util.SequenceActivities(
+				return ActivityUtils.SequenceActivities(
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
 
-			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
+			return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
@@ -538,7 +538,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (IsPlane)
 					{
-						self.QueueActivity(order.Queued, Util.SequenceActivities(
+						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
 							new ReturnToBase(self, order.TargetActor),
 							new ResupplyAircraft(self)));
 					}

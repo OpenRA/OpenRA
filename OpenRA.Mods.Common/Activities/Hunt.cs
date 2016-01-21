@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (target == null)
 				return this;
 
-			return Util.SequenceActivities(
+			return ActivityUtils.SequenceActivities(
 				new AttackMoveActivity(self, new Move(self, target.Location, WDist.FromCells(2))),
 				new Wait(25),
 				this);

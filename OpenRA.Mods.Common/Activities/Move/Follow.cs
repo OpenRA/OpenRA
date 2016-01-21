@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
 			{
 				var wait = new WaitFor(() => !target.IsValidFor(self) || target.CenterPosition != cachedPosition);
-				return Util.SequenceActivities(wait, path, this);
+				return ActivityUtils.SequenceActivities(wait, path, this);
 			}
 
-			return Util.SequenceActivities(path, this);
+			return ActivityUtils.SequenceActivities(path, this);
 		}
 	}
 }

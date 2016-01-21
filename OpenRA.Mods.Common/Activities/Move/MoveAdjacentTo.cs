@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 					inner.Cancel(self);
 
 				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
-				return Util.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
+				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
 			}
 
 			// Inner move order has completed.
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Ticks the inner move activity to actually move the actor.
-			inner = Util.RunActivity(self, inner);
+			inner = ActivityUtils.RunActivity(self, inner);
 
 			return this;
 		}

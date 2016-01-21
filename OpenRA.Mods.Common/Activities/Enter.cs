@@ -252,10 +252,10 @@ namespace OpenRA.Mods.Common.Activities
 		Activity CanceledTick(Actor self)
 		{
 			if (inner == null)
-				return Util.RunActivity(self, NextActivity);
+				return ActivityUtils.RunActivity(self, NextActivity);
 			inner.Cancel(self);
 			inner.Queue(NextActivity);
-			return Util.RunActivity(self, inner);
+			return ActivityUtils.RunActivity(self, inner);
 		}
 
 		public override Activity Tick(Actor self)
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Activities
 				return CanceledTick(self);
 
 			// Run inner activity/InsideTick
-			inner = inner == this ? InsideTick(self) : Util.RunActivity(self, inner);
+			inner = inner == this ? InsideTick(self) : ActivityUtils.RunActivity(self, inner);
 
 			// If we are finished, move on to next activity
 			if (inner == null && nextState == State.Done)

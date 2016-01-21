@@ -78,11 +78,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Try to move within range
 			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
-				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+				return ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
 
 			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
-				return Util.SequenceActivities(new Turn(self, desiredFacing), this);
+				return ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
 
 			attack.DoAttack(self, Target, armaments);
 

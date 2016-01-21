@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			return Util.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
+			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
 		}
 	}
 }
