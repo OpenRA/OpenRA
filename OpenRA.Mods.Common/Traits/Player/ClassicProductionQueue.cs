@@ -85,14 +85,13 @@ namespace OpenRA.Mods.Common.Traits
 				.FirstOrDefault();
 		}
 
-		protected override bool BuildUnit(string name)
+		protected override bool BuildUnit(ActorInfo unit)
 		{
 			// Find a production structure to build this actor
-			var ai = self.World.Map.Rules.Actors[name];
-			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
+			var bi = unit.TraitInfo<BuildableInfo>();
 
 			// Some units may request a specific production type, which is ignored if the AllTech cheat is enabled
-			var type = bi == null || developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
+			var type = developerMode.AllTech ? Info.Type : bi.BuildAtProductionType ?? Info.Type;
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
@@ -102,13 +101,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!producers.Any())
 			{
-				CancelProduction(name, 1);
+				CancelProduction(unit.Name, 1);
 				return true;
 			}
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, ai, p.Trait.Faction))
+				if (p.Trait.Produce(p.Actor, unit, p.Trait.Faction))
 				{
 					FinishProduction();
 					return true;
@@ -120,12 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override int GetBuildTime(string unitString)
 		{
-			var ai = self.World.Map.Rules.Actors[unitString];
-			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
-			if (bi == null)
-				return 0;
-
-			return GetBuildTime(ai);
+			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
 		}
 
 		public override int GetBuildTime(ActorInfo unit)

@@ -232,7 +232,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
-				playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost); // refund what's been paid so far.
+				// Refund what's been paid so far
+				playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost);
 				FinishProduction();
 			}
 
@@ -287,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 							else if (!isBuilding)
 							{
-								if (BuildUnit(order.TargetString))
+								if (BuildUnit(unit))
 									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
 								else if (!hasPlayedSound && time > 0)
 									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
@@ -309,11 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int GetBuildTime(string unitString)
 		{
-			var unit = self.World.Map.Rules.Actors[unitString];
-			if (unit == null || !unit.HasTraitInfo<BuildableInfo>())
-				return 0;
-
-			return GetBuildTime(unit);
+			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
 		}
 
 		public virtual int GetBuildTime(ActorInfo unit)
@@ -340,7 +337,9 @@ namespace OpenRA.Mods.Common.Traits
 			else if (lastIndex == 0)
 			{
 				var item = queue[0];
-				playerResources.GiveCash(item.TotalCost - item.RemainingCost);	// refund what has been paid
+
+				// Refund what has been paid
+				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
 				FinishProduction();
 			}
 		}
@@ -365,17 +364,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)
 		// Returns false if the unit can't be built
-		protected virtual bool BuildUnit(string name)
+		protected virtual bool BuildUnit(ActorInfo unit)
 		{
 			// Cannot produce if I'm dead
 			if (!self.IsInWorld || self.IsDead)
 			{
-				CancelProduction(name, 1);
+				CancelProduction(unit.Name, 1);
 				return true;
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, self.World.Map.Rules.Actors[name], Faction))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, Faction))
 			{
 				FinishProduction();
 				return true;
