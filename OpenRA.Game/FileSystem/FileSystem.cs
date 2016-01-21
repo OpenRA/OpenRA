@@ -21,6 +21,8 @@ namespace OpenRA.FileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
+		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
+
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
 		public IReadWritePackage CreatePackage(string filename, Dictionary<string, byte[]> content)
@@ -54,7 +56,13 @@ namespace OpenRA.FileSystem
 			if (filename.EndsWith(".hdr", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldCABExtractor(this, filename);
 
-			return new Folder(filename);
+			IReadOnlyPackage parent;
+			string subPath = null;
+			if (TryGetPackageContaining(filename, out parent, out subPath))
+				if (parent is Folder)
+					return new Folder(Path.Combine(((Folder)parent).Name, subPath));
+
+			return new Folder(Platform.ResolvePath(filename));
 		}
 
 		public IReadWritePackage OpenWritablePackage(string filename)
@@ -67,15 +75,13 @@ namespace OpenRA.FileSystem
 			return new Folder(filename);
 		}
 
-		public void Mount(string name)
+		public void Mount(string name, string explicitName = null)
 		{
 			var optional = name.StartsWith("~");
 			if (optional)
 				name = name.Substring(1);
 
-			name = Platform.ResolvePath(name);
-
-			Action a = () => Mount(OpenPackage(name));
+			Action a = () => Mount(OpenPackage(name), explicitName);
 			if (optional)
 				try { a(); }
 				catch { }
@@ -83,7 +89,7 @@ namespace OpenRA.FileSystem
 				a();
 		}
 
-		public void Mount(IReadOnlyPackage package)
+		public void Mount(IReadOnlyPackage package, string explicitName = null)
 		{
 			var mountCount = 0;
 			if (mountedPackages.TryGetValue(package, out mountCount))
@@ -101,6 +107,10 @@ namespace OpenRA.FileSystem
 			{
 				// Mounting the package for the first time
 				mountedPackages.Add(package, 1);
+
+				if (explicitName != null)
+					explicitMounts.Add(explicitName, package);
+
 				foreach (var filename in package.Contents)
 					fileIndex[filename].Add(package);
 			}
@@ -118,6 +128,7 @@ namespace OpenRA.FileSystem
 					packagesForFile.RemoveAll(p => p == package);
 
 				mountedPackages.Remove(package);
+				explicitMounts.Remove(package.Name);
 				package.Dispose();
 			}
 			else
@@ -132,14 +143,15 @@ namespace OpenRA.FileSystem
 				package.Dispose();
 
 			mountedPackages.Clear();
+			explicitMounts.Clear();
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
 		public void LoadFromManifest(Manifest manifest)
 		{
 			UnmountAll();
-			foreach (var pkg in manifest.Packages)
-				Mount(pkg);
+			foreach (var kv in manifest.Packages)
+				Mount(kv.Key, kv.Value);
 		}
 
 		Stream GetFromCache(string filename)
@@ -162,58 +174,64 @@ namespace OpenRA.FileSystem
 			return s;
 		}
 
-		public bool TryOpen(string name, out Stream s)
+		public bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
 		{
-			var filename = name;
-			var packageName = string.Empty;
-
-			// Used for faction specific packages; rule out false positive on Windows C:\ drive notation
-			var explicitPackage = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
-			if (explicitPackage)
+			var explicitSplit = path.IndexOf('|');
+			if (explicitSplit > 0 && explicitMounts.TryGetValue(path.Substring(0, explicitSplit), out package))
 			{
-				var divide = name.Split(':');
-				packageName = divide.First();
-				filename = divide.Last();
+				filename = path.Substring(explicitSplit + 1);
+				return true;
 			}
 
-			// Check the cache for a quick lookup if the package name is unknown
-			// TODO: This disables caching for explicit package requests
-			if (filename.IndexOfAny(new[] { '/', '\\' }) == -1 && !explicitPackage)
+			package = fileIndex[path].LastOrDefault(x => x.Contains(path));
+			filename = path;
+
+			return package != null;
+		}
+
+		public bool TryOpen(string filename, out Stream s)
+		{
+			var explicitSplit = filename.IndexOf('|');
+			if (explicitSplit > 0)
 			{
-				s = GetFromCache(filename);
-				if (s != null)
-					return true;
+				IReadOnlyPackage explicitPackage;
+				if (explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out explicitPackage))
+				{
+					s = explicitPackage.GetStream(filename.Substring(explicitSplit + 1));
+					if (s != null)
+						return true;
+				}
 			}
+
+			s = GetFromCache(filename);
+			if (s != null)
+				return true;
 
 			// Ask each package individually
-			IReadOnlyPackage package;
-			if (explicitPackage && !string.IsNullOrEmpty(packageName))
-				package = mountedPackages.Keys.LastOrDefault(x => x.Name == packageName);
-			else
-				package = mountedPackages.Keys.LastOrDefault(x => x.Contains(filename));
-
+			// TODO: This fallback can be removed once the filesystem cleanups are complete
+			var	package = mountedPackages.Keys.LastOrDefault(x => x.Contains(filename));
 			if (package != null)
 			{
 				s = package.GetStream(filename);
-				return true;
+				return s != null;
 			}
 
 			s = null;
 			return false;
 		}
 
-		public bool Exists(string name)
+		public bool Exists(string filename)
 		{
-			var explicitPackage = name.Contains(':') && !Directory.Exists(Path.GetDirectoryName(name));
-			if (explicitPackage)
+			var explicitSplit = filename.IndexOf('|');
+			if (explicitSplit > 0)
 			{
-				var divide = name.Split(':');
-				var packageName = divide.First();
-				var filename = divide.Last();
-				return mountedPackages.Keys.Where(n => n.Name == packageName).Any(f => f.Contains(filename));
+				IReadOnlyPackage explicitPackage;
+				if (explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out explicitPackage))
+					if (explicitPackage.Contains(filename.Substring(explicitSplit + 1)))
+						return true;
 			}
-			else
-				return mountedPackages.Keys.Any(f => f.Contains(name));
+
+			return fileIndex.ContainsKey(filename);
 		}
 	}
 }

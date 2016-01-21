@@ -43,7 +43,7 @@
 		Filename: anim.pal
 	PaletteFromFile@sidebar:
 		Name: sidebar
-		Filename: sidec02.mix:sidebar.pal
+		Filename: sidebar-nod|sidebar.pal
 	PaletteFromPaletteWithAlpha@clock:
 		Name: iconclock
 		BasePalette: sidebar

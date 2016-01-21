@@ -32,13 +32,13 @@ Packages:
 	isosnow.mix
 	isotemp.mix
 	local.mix
-	sidec01.mix
-	sidec02.mix
+	sidec01.mix: sidebar-gdi
+	sidec02.mix: sidebar-nod
 	sno.mix
 	snow.mix
 	sounds.mix
-	speech01.mix # EVA
-	speech02.mix # Cabal
+	speech01.mix: speech-gdi
+	speech02.mix: speech-nod
 	tem.mix
 	temperat.mix
 # Firestorm
