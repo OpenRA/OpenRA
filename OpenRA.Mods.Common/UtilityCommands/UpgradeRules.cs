@@ -2899,6 +2899,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed arbitrary defaults from InfiltrateForCash
+				if (engineVersion < 20160118)
+				{
+					if (node.Key == "InfiltrateForCash")
+					{
+						if (!node.Value.Nodes.Any(n => n.Key == "Percentage"))
+							node.Value.Nodes.Add(new MiniYamlNode("Percentage", "50"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Minimum"))
+							node.Value.Nodes.Add(new MiniYamlNode("Minimum", "500"));
+
+						var sound = node.Value.Nodes.FirstOrDefault(n => n.Key == "SoundToVictim");
+						if (sound != null)
+						{
+							node.Value.Nodes.Remove(sound);
+							Console.WriteLine("The 'SoundToVictim' property of the 'InfiltrateForCash' trait has been");
+							Console.WriteLine("replaced with a 'Notification' property. Please add the sound file");
+							Console.WriteLine("'{0}' to your mod's audio notification yaml and".F(sound.Value.Value));
+							Console.WriteLine("update your mod's rules accordingly.");
+							Console.WriteLine();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

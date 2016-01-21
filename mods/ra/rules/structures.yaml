@@ -998,8 +998,7 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
-		Minimum: 500
-		SoundToVictim: credit1.aud
+		Notification: CreditsStolen
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
