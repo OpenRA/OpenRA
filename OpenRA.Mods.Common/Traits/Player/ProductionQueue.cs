@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var valued = unit.TraitInfoOrDefault<ValuedInfo>();
 					var cost = valued != null ? valued.Cost : 0;
-					var time = GetBuildTime(unit);
+					var time = GetBuildTime(unit, bi);
 					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
 					for (var n = 0; n < amountToBuild; n++)
 					{
@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
 		}
 
-		public virtual int GetBuildTime(ActorInfo unit)
+		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
 		{
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;

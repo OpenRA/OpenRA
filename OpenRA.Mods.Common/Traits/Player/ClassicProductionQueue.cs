@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
 		}
 
-		public override int GetBuildTime(ActorInfo unit)
+		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
 		{
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.SpeedUp)
 			{
-				var type = unit.TraitInfo<BuildableInfo>().BuildAtProductionType ?? info.Type;
+				var type = (bi ?? unit.TraitInfo<BuildableInfo>()).BuildAtProductionType ?? info.Type;
 
 				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
 					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
