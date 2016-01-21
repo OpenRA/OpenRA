@@ -41,11 +41,12 @@ namespace OpenRA
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
+			ModFiles.LoadFromManifest(Manifest);
 
 			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
-			var assemblies =
-				new[] { typeof(Game).Assembly }.Concat(
-					Manifest.Assemblies.Select(path => Assembly.LoadFrom(Platform.ResolvePath(path))));
+			var assemblies = new[] { typeof(Game).Assembly }
+					.Concat(Manifest.Assemblies.Select(path => Assembly.Load(ModFiles.Open(path).ReadAllBytes())))
+					.ToList();
 			ObjectCreator = new ObjectCreator(assemblies);
 			Manifest.LoadCustomData(ObjectCreator);
 
@@ -55,8 +56,6 @@ namespace OpenRA
 				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
 				LoadScreen.Display();
 			}
-
-			ModFiles.LoadFromManifest(Manifest);
 
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
