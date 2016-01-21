@@ -1,9 +1,9 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Jan 06 2016)
+## v1.30 (Jan 21 2016)
 
 ### Highlights
-  - Added `markers` panel to show and navigate bookmarks and breakpoints (#419).
+  - Added `markers` panel to show and navigate bookmarks and breakpoints.
   - Added saving/restoring bookmarks and breakpoints.
   - Added breakpoint prev/next navigation (`Project | Breakpoint` menu).
   - Added find/replace in selection to search operations.
@@ -16,8 +16,15 @@
 
 ### Special thanks
   - To [tmiv](https://github.com/tmiv) for allowing shortcuts to be added to tools menu items.
+  - To [Yonaba](https://github.com/Yonaba/) for French translation update.
+  - To [Leo Bartoloni](https://github.com/bartoleo) for Italian translation update.
+  - To [Inigo Sola](https://github.com/inigosola) for Spanish translation update.
 
 ### Improvements
+  - Added `CloneMenu` package method (#166).
+  - Added Torch and Redis debugging links.
+  - Added `IsNew` method for documents (#166).
+  - Added `Print` method and updated core components to use it during launch.
   - Added skipping `UPDATE_CONTENT` events on cursor blinks in `UPDATEUI` (#419).
   - Added preserving markers after sorting/reindentation operations.
   - Added editor `MarkerGetAll` method (#166).
@@ -85,13 +92,21 @@
   - Replaced `ConsoleClear` with `Erase` methods for the Console object.
   - Removed search panel from the list of floated panels as it shouldn't be there.
   - Removed `allowinteractivescript` setting as it doesn't need to be configurable (#538).
+  - Replaced `EditorIsModified` with document method calls.
+  - Spanish translation updated
   - Switched to using client size instead of system metric to get screen width (#260).
   - Switched to using `KEY` event in search panel to make it work with wxwidgets 3.1+ (#260).
   - Switched to per-editor tracking in `UPDATEUI` event.
-  - Updated breakpoint shortcut message to reference a proper shortcut on OSX (#419).
-  - Updated string formatting for consistency.
+  - Updated `interpreter` menu to use a clone to avoid Linux assertion.
+  - Updated Italian Translation (closes #586).
+  - Updated french translation as of df381b5 (see #70)
+  - Updated Russian translation (#70).
+  - Updated translation files with new messages (#70).
+  - Updated LuaForWindows interpreter to accept command line parameters (#582).
+  - Updated LuaForWindows interpreter to properly pass `arg` to the script (closes #582).
+  - Updated `GetDocument` to not fail when no editor is passed.
+  - Updated live coding to group number updates together for `Undo`/`Redo` purposes.
   - Updated `Toggle Breakpoint` and `Break` shortcuts for consistency (#419).
-  - Updated 'Toggle Breakpoint' message for consistency (#419).
   - Updated love2d API for v0.10.0 (#247).
   - Updated script to process new love2d API format (with `variants`).
   - Updated showing filename of the missing interpreter in the project list (#570).
@@ -132,6 +147,7 @@
   - Updated README with features in 1.20.
 
 ### Fixes
+  - Fixed showing cursor in search panel fields after file search.
   - Fixed reapplying markers after reloading modified file (#419).
   - Fixed setting interpreter after launching with non-existing project.
   - Fixed showing package errors during project switches (#555).
@@ -149,8 +165,9 @@
   - Fixed toolbar size not being adjusted on the very first launch.
 
 ### Incompatibilities
+  - Changed `Toggle Breakpoint` shortcut from `F9` to `Ctrl/Cmd-F9`.
+  - Removed `Project | Break` shortcut to avoid conflict with breakpoint navigation.
   - Removed `allowinteractivescript` setting as no longer needs to be configurable (#538).
-  - Changed 'Toggle Breakpoint' shortcut from `F9` to `Ctrl-F9` or `Cmd-F9` (on OSX).
 
 ## v1.20 (Oct 08 2015)
 
