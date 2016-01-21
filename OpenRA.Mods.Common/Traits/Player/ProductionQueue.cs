@@ -256,9 +256,6 @@ namespace OpenRA.Mods.Common.Traits
 					if (!bi.Queue.Contains(Info.Type))
 						return;
 
-					var cost = unit.HasTraitInfo<ValuedInfo>() ? unit.TraitInfo<ValuedInfo>().Cost : 0;
-					var time = GetBuildTime(order.TargetString);
-
 					// You can't build that
 					if (BuildableItems().All(b => b.Name != order.TargetString))
 						return;
@@ -275,6 +272,9 @@ namespace OpenRA.Mods.Common.Traits
 							return;
 					}
 
+					var valued = unit.TraitInfoOrDefault<ValuedInfo>();
+					var cost = valued != null ? valued.Cost : 0;
+					var time = GetBuildTime(unit);
 					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
 					for (var n = 0; n < amountToBuild; n++)
 					{
@@ -313,11 +313,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (unit == null || !unit.HasTraitInfo<BuildableInfo>())
 				return 0;
 
+			return GetBuildTime(unit);
+		}
+
+		public virtual int GetBuildTime(ActorInfo unit)
+		{
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
 			var time = unit.GetBuildTime() * Info.BuildSpeed;
-
 			return (int)time;
 		}
 

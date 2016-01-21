@@ -125,14 +125,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (bi == null)
 				return 0;
 
+			return GetBuildTime(ai);
+		}
+
+		public override int GetBuildTime(ActorInfo unit)
+		{
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = (int)(ai.GetBuildTime() * Info.BuildSpeed);
+			var time = (int)(unit.GetBuildTime() * Info.BuildSpeed);
 
 			if (info.SpeedUp)
 			{
-				var type = bi.BuildAtProductionType ?? info.Type;
+				var type = unit.TraitInfo<BuildableInfo>().BuildAtProductionType ?? info.Type;
 
 				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
 					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
