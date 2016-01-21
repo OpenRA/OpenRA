@@ -45,6 +45,8 @@ namespace OpenRA.FileSystem
 				return new ZipFile(this, filename);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename);
+			if (filename.EndsWith(".oramod", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename);
 			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
 				return new D2kSoundResources(this, filename);
 			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
@@ -61,8 +63,7 @@ namespace OpenRA.FileSystem
 			IReadOnlyPackage parent;
 			string subPath = null;
 			if (TryGetPackageContaining(filename, out parent, out subPath))
-				if (parent is Folder)
-					return new Folder(Path.Combine(((Folder)parent).Name, subPath));
+				return OpenPackage(subPath, parent);
 
 			return new Folder(Platform.ResolvePath(filename));
 		}
@@ -89,6 +90,15 @@ namespace OpenRA.FileSystem
 				return new ZipFile(this, filename, parent.GetStream(filename));
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename, parent.GetStream(filename));
+
+			if (parent is ZipFile)
+				return new ZipFolder(this, (ZipFile)parent, filename, filename);
+
+			if (parent is ZipFolder)
+			{
+				var folder = (ZipFolder)parent;
+				return new ZipFolder(this, folder.Parent, folder.Name + "/" + filename, filename);
+			}
 
 			return null;
 		}

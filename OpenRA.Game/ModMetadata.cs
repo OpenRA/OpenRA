@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -40,10 +41,19 @@ namespace OpenRA
 				try
 				{
 					IReadOnlyPackage package = null;
-					if (Directory.Exists(pair.Value))
-						package = new Folder(pair.Value);
+					if (Directory.Exists(pair.Second))
+						package = new Folder(pair.Second);
 					else
-						throw new InvalidDataException(pair.Value + " is not a valid mod package");
+					{
+						try
+						{
+							package = new ZipFile(null, pair.Second);
+						}
+						catch
+						{
+							throw new InvalidDataException(pair.Second + " is not a valid mod package");
+						}
+					}
 
 					if (!package.Contains("mod.yaml"))
 						continue;
@@ -54,7 +64,7 @@ namespace OpenRA
 						continue;
 
 					var metadata = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
-					metadata.Id = pair.Key;
+					metadata.Id = pair.First;
 					metadata.Package = package;
 
 					if (nd.ContainsKey("RequiresMods"))
@@ -65,11 +75,13 @@ namespace OpenRA
 					if (nd.ContainsKey("ContentInstaller"))
 						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
 
-					ret.Add(pair.Key, metadata);
+					// Mods in the support directory and oramod packages (which are listed later
+					// in the CandidateMods list) override mods in the main install.
+					ret[pair.First] = metadata;
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(pair.Key));
+					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(pair.First));
 					Console.WriteLine(ex.Message);
 				}
 			}
@@ -77,12 +89,16 @@ namespace OpenRA
 			return ret;
 		}
 
-		static Dictionary<string, string> GetCandidateMods()
+		static IEnumerable<Pair<string, string>> GetCandidateMods()
 		{
 			// Get mods that are in the game folder.
 			var basePath = Platform.ResolvePath(Path.Combine(".", "mods"));
 			var mods = Directory.GetDirectories(basePath)
-				.ToDictionary(x => x.Substring(basePath.Length + 1));
+				.Select(x => Pair.New(x.Substring(basePath.Length + 1), x))
+				.ToList();
+
+			foreach (var m in Directory.GetFiles(basePath, "*.oramod"))
+				mods.Add(Pair.New(Path.GetFileNameWithoutExtension(m), m));
 
 			// Get mods that are in the support folder.
 			var supportPath = Platform.ResolvePath(Path.Combine("^", "mods"));
@@ -90,7 +106,10 @@ namespace OpenRA
 				return mods;
 
 			foreach (var pair in Directory.GetDirectories(supportPath).ToDictionary(x => x.Substring(supportPath.Length + 1)))
-				mods.Add(pair.Key, pair.Value);
+				mods.Add(Pair.New(pair.Key, pair.Value));
+
+			foreach (var m in Directory.GetFiles(supportPath, "*.oramod"))
+				mods.Add(Pair.New(Path.GetFileNameWithoutExtension(m), m));
 
 			return mods;
 		}
