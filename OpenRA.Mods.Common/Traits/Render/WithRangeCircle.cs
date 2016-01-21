@@ -16,6 +16,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum RangeCircleVisibility { Always, WhenSelected }
+
 	[Desc("Renders an arbitrary circle when selected or placing a structure")]
 	class WithRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
 	{
@@ -24,6 +26,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Color of the circle")]
 		public readonly Color Color = Color.FromArgb(128, Color.White);
+
+		[Desc("If set, the color of the owning player will be used instead of `Color`.")]
+		public readonly bool UsePlayerColor = false;
+
+		[Desc("Stances of players which will be able to see the circle.",
+			"Valid values are combinations of `None`, `Ally`, `Enemy` and `Neutral`.")]
+		public readonly Stance ValidStances = Stance.Ally;
+
+		[Desc("When to show the range circle. Valid values are `Always`, and `WhenSelected`")]
+		public readonly RangeCircleVisibility Visible = RangeCircleVisibility.WhenSelected;
 
 		[Desc("Range of the circle")]
 		public readonly WDist Range = WDist.Zero;
@@ -38,15 +50,15 @@ namespace OpenRA.Mods.Common.Traits
 				Color.FromArgb(96, Color.Black));
 
 			foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
-				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer) && a.Trait.Info.Type == Type)
-					foreach (var r in a.Trait.RenderAfterWorld(wr))
+				if (a.Trait.Info.Type == Type)
+					foreach (var r in a.Trait.RenderRangeCircle(wr))
 						yield return r;
 		}
 
 		public object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : IPostRenderSelection
+	class WithRangeCircle : IPostRenderSelection, IPostRender
 	{
 		public readonly WithRangeCircleInfo Info;
 		readonly Actor self;
@@ -57,17 +69,44 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		bool Visible
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				yield break;
+			get
+			{
+				var p = self.World.RenderPlayer;
+				return p == null || Info.ValidStances.HasStance(self.Owner.Stances[p]) || (p.Spectating && !p.NonCombatant);
+			}
+		}
 
-			yield return new RangeCircleRenderable(
-				self.CenterPosition,
-				Info.Range,
-				0,
-				Info.Color,
-				Color.FromArgb(96, Color.Black));
+		public IEnumerable<IRenderable> RenderRangeCircle(WorldRenderer wr)
+		{
+			if (Info.Visible == RangeCircleVisibility.WhenSelected && Visible)
+				yield return new RangeCircleRenderable(
+					self.CenterPosition,
+					Info.Range,
+					0,
+					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
+					Color.FromArgb(96, Color.Black));
+
+			yield break;
+		}
+
+		IEnumerable<IRenderable> IPostRenderSelection.RenderAfterWorld(WorldRenderer wr)
+		{
+			return RenderRangeCircle(wr);
+		}
+
+		void IPostRender.RenderAfterWorld(WorldRenderer wr, Actor self)
+		{
+			if (Info.Visible == RangeCircleVisibility.Always && Visible)
+				RangeCircleRenderable.DrawRangeCircle(
+					wr,
+					self.CenterPosition,
+					Info.Range,
+					1,
+					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
+					3,
+					Color.FromArgb(96, Color.Black));
 		}
 	}
 }
