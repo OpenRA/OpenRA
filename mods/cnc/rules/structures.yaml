@@ -1,7 +1,7 @@
 FACT:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		Cost: 4000
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
@@ -9,7 +9,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1400
+		HP: 2000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -515,7 +515,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 400
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -840,7 +840,7 @@ ATWR:
 	DetectCloaked:
 		Range: 5c0
 	Power:
-		Amount: -40
+		Amount: -50
 
 SBAG:
 	Inherits: ^Wall

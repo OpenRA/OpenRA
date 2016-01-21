@@ -16,7 +16,7 @@ Rockets:
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 35
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
@@ -170,7 +170,7 @@ MammothMissiles:
 		ValidImpactTypes: Air, AirHit
 
 227mm:
-	ReloadDelay: 140
+	ReloadDelay: 100
 	Range: 12c0
 	MinRange: 3c0
 	Burst: 4

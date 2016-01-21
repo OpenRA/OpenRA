@@ -174,7 +174,7 @@ APCGun:
 		Versus:
 			None: 50
 			Wood: 50
-			Light: 100
+			Light: 105
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
