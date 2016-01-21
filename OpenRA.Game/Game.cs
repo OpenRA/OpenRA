@@ -293,7 +293,7 @@ namespace OpenRA
 
 		public static bool IsModInstalled(string modId)
 		{
-			return Manifest.AllMods[modId].RequiresMods.All(IsModInstalled);
+			return ModMetadata.AllMods[modId].RequiresMods.All(IsModInstalled);
 		}
 
 		public static bool IsModInstalled(KeyValuePair<string, string> mod)
