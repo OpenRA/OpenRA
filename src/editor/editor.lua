@@ -1157,9 +1157,9 @@ function CreateEditor(bare)
   editor.processedUpdateContent = 0
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function (event)
-      -- some of UPDATEUI events are triggered by blinking cursor, and since
-      -- there are no changes, the rest of the processing can be skipped;
-      -- the reason for `alreadyProcessed` is that it is not possible
+      -- some of UPDATEUI events may be triggered as the result of editor updates
+      -- from subsequent events (like PAINTED, which happens in documentmap plugin).
+      -- the reason for the `processed` check is that it is not possible
       -- to completely skip all of these updates as this causes the issue
       -- of markup styling becoming visible after text deletion by Backspace.
       -- to avoid this, we allow the first update after any updates caused
