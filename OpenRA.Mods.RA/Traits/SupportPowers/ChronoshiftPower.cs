@@ -36,6 +36,15 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly bool KillCargo = true;
 
+		[Desc("Cursor sequence to use when selecting targets for the chronoshift.")]
+		public readonly string SelectionCursor = "chrono-select";
+
+		[Desc("Cursor sequence to use when targeting an area for the chronoshift.")]
+		public readonly string TargetCursor = "chrono-target";
+
+		[Desc("Cursor sequence to use when the targeted area is blocked.")]
+		public readonly string TargetBlockedCursor = "move-blocked";
+
 		public override object Create(ActorInitializer init) { return new ChronoshiftPower(init.Self, this); }
 	}
 
@@ -162,7 +171,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return "chrono-select";
+				return ((ChronoshiftPowerInfo)power.Info).SelectionCursor;
 			}
 		}
 
@@ -295,7 +304,8 @@ namespace OpenRA.Mods.RA.Traits
 
 			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return IsValidTarget(cell) ? "chrono-target" : "move-blocked";
+				var powerInfo = (ChronoshiftPowerInfo)power.Info;
+				return IsValidTarget(cell) ? powerInfo.TargetCursor : powerInfo.TargetBlockedCursor;
 			}
 		}
 	}
