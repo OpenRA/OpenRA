@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			if (!CrushableBy(crushClasses, crusher.Owner))
+			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
 
 			var mobile = self.TraitOrDefault<Mobile>();
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			if (!CrushableBy(crushClasses, crusher.Owner))
+			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
 
 			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
@@ -71,7 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 			self.Kill(crusher);
 		}
 
-		public bool CrushableBy(HashSet<string> crushClasses, Player crushOwner)
+		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player crushOwner)
+		{
+			return CrushableInner(crushClasses, crushOwner);
+		}
+
+		bool CrushableInner(HashSet<string> crushClasses, Player crushOwner)
 		{
 			// Only make actor crushable if it is on the ground.
 			if (!self.IsAtGroundLevel())

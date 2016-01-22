@@ -61,7 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			if (!CrushableBy(crushClasses, crusher.Owner))
+			// Crate can only be crushed if it is not in the air.
+			if (!self.IsAtGroundLevel() || !crushClasses.Contains(info.CrushClass))
 				return;
 
 			OnCrushInner(crusher);
@@ -84,7 +85,8 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				// Make sure that the actor can collect this crate type
-				return CrushableBy(mi.Crushes, a.Owner);
+				// Crate can only be crushed if it is not in the air.
+				return self.IsAtGroundLevel() && mi.Crushes.Contains(info.CrushClass);
 			});
 
 			// Destroy the crate if none of the units in the cell are valid collectors
@@ -196,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		public bool CrushableBy(HashSet<string> crushClasses, Player owner)
+		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player owner)
 		{
 			// Crate can only be crushed if it is not in the air.
 			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);

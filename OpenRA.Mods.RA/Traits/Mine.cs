@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			if (!CrushableBy(crushClasses, crusher.Owner))
+			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;
 
 			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 			self.Kill(crusher);
 		}
 
-		public bool CrushableBy(HashSet<string> crushClasses, Player owner)
+		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player owner)
 		{
 			return info.CrushClasses.Overlaps(crushClasses);
 		}
