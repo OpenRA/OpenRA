@@ -121,6 +121,7 @@ local function name2index(name)
 end
 local function navigateTo(default, selected)
   local styles = ide.config.styles
+  -- re-register the marker as the colors might have changed
   local marker = ide:AddMarker(markername,
     wxstc.wxSTC_MARK_BACKGROUND, styles.text.fg, styles.caretlinebg.bg)
 

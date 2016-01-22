@@ -103,6 +103,7 @@ local markers = {
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 function StylesRemoveMarker(marker) markers[marker] = nil end
 function StylesAddMarker(marker, ch, fg, bg)
+  if type(fg) ~= "table" or type(bg) ~= "table" then return end
   local num = (markers[marker] or {})[1]
   if not num then -- new marker; find the smallest available marker number
     local nums = {}
