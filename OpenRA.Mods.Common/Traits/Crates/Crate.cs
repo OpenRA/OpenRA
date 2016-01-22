@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class Crate : ITick, IPositionable, ICrushable, ISync,
+		INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCrushed
 	{
 		readonly Actor self;
 		readonly CrateInfo info;
@@ -56,36 +57,14 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<LocationInit, CPos>());
 		}
 
-		public void WarnCrush(Actor crusher) { }
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
 
-		public void OnCrush(Actor crusher)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			if (collected)
+			if (!CrushableBy(crushClasses, crusher.Owner))
 				return;
 
-			var crateActions = self.TraitsImplementing<CrateAction>();
-
-			self.Dispose();
-			collected = true;
-
-			if (crateActions.Any())
-			{
-				var shares = crateActions.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
-
-				var totalShares = shares.Sum(a => a.Second);
-				var n = self.World.SharedRandom.Next(totalShares);
-
-				foreach (var s in shares)
-				{
-					if (n < s.Second)
-					{
-						s.First.Activate(crusher);
-						return;
-					}
-					else
-						n -= s.Second;
-				}
-			}
+			OnCrushInner(crusher);
 		}
 
 		public void OnLanded()
@@ -110,9 +89,39 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Destroy the crate if none of the units in the cell are valid collectors
 			if (collector != null)
-				OnCrush(collector);
+				OnCrushInner(collector);
 			else
 				self.Dispose();
+		}
+
+		void OnCrushInner(Actor crusher)
+		{
+			if (collected)
+				return;
+
+			var crateActions = self.TraitsImplementing<CrateAction>();
+
+			self.Dispose();
+			collected = true;
+
+			if (crateActions.Any())
+			{
+				var shares = crateActions.Select(a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
+
+				var totalShares = shares.Sum(a => a.Second);
+				var n = self.World.SharedRandom.Next(totalShares);
+
+				foreach (var s in shares)
+				{
+					if (n < s.Second)
+					{
+						s.First.Activate(crusher);
+						return;
+					}
+
+					n -= s.Second;
+				}
+			}
 		}
 
 		public void Tick(Actor self)

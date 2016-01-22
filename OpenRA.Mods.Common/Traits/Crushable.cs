@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
-	class Crushable : ICrushable
+	class Crushable : ICrushable, INotifyCrushed
 	{
 		readonly Actor self;
 		readonly CrushableInfo info;
@@ -40,16 +40,23 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void WarnCrush(Actor crusher)
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
+			if (!CrushableBy(crushClasses, crusher.Owner))
+				return;
+
 			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && self.World.SharedRandom.Next(100) <= info.WarnProbability)
 				mobile.Nudge(self, crusher, true);
 		}
 
-		public void OnCrush(Actor crusher)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
+			if (!CrushableBy(crushClasses, crusher.Owner))
+				return;
+
 			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
+
 			var wda = self.TraitsImplementing<WithDeathAnimation>()
 				.FirstOrDefault(s => s.Info.CrushedSequence != null);
 			if (wda != null)

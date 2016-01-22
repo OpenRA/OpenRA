@@ -594,10 +594,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
-			foreach (var crushable in crushables)
-				crushable.WarnCrush(self);
+			var notifiers = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
+				.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
+			foreach (var notifyCrushed in notifiers)
+				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.Crushes);
 		}
 
 		public void FinishedMoving(Actor self)
@@ -606,10 +606,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
-			foreach (var crushable in crushables)
-				crushable.OnCrush(self);
+			var notifiers = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
+				.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
+			foreach (var notifyCrushed in notifiers)
+				notifyCrushed.Trait.OnCrush(notifyCrushed.Actor, self, Info.Crushes);
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
