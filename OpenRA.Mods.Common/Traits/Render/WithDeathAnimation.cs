@@ -117,6 +117,15 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
 			crushed = true;
+
+			if (Info.CrushedSequence == null)
+				return;
+
+			var crushPalette = Info.CrushedSequencePalette;
+			if (Info.CrushedPaletteIsPlayerPalette)
+				crushPalette += self.Owner.InternalName;
+
+			SpawnDeathAnimation(self, Info.CrushedSequence, crushPalette);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }

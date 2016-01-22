@@ -57,17 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
 
-			var wda = self.TraitsImplementing<WithDeathAnimation>()
-				.FirstOrDefault(s => s.Info.CrushedSequence != null);
-			if (wda != null)
-			{
-				var palette = wda.Info.CrushedSequencePalette;
-				if (wda.Info.CrushedPaletteIsPlayerPalette)
-					palette += self.Owner.InternalName;
-
-				wda.SpawnDeathAnimation(self, wda.Info.CrushedSequence, palette);
-			}
-
 			self.Kill(crusher);
 		}
 
