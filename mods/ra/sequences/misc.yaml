@@ -250,8 +250,13 @@ scrate:
 		ZOffset: -511
 
 wcrate:
-	idle:
+	Defaults:
 		ZOffset: -511
+	idle:
+	land:
+	water: wwcrate
+		Length: *
+		Tick: 500
 
 xcratea:
 	idle:
