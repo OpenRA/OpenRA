@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[UpgradeGrantedReference, Desc("The upgrades to grant while the primary building.")]
 		public readonly string[] Upgrades = { "primary" };
 
+		[Desc("The speech notification to play when selecting a primary building.")]
+		public readonly string SelectionNotification = "PrimaryBuildingSelected";
+
 		public object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
 	}
 
@@ -93,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var up in info.Upgrades)
 				manager.GrantUpgrade(self, up, this);
 
-			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SelectionNotification, self.Owner.Faction.InternalName);
 		}
 	}
 }
