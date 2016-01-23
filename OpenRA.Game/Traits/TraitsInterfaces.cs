@@ -301,6 +301,7 @@ namespace OpenRA.Traits
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
 
+	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
 		bool CrushableBy(HashSet<string> crushClasses, Player owner);
