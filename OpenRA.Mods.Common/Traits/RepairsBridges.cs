@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to use when repairing is denied.")]
 		public readonly string TargetBlockedCursor = "goldwrench-blocked";
 
+		[Desc("Speech notification to play when a bridge is repaired.")]
+		public readonly string RepairNotification = null;
+
 		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
 	}
 
@@ -82,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
 
 				self.CancelActivity();
-				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour));
+				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour, info.RepairNotification));
 			}
 		}
 
