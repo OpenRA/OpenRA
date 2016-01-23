@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Traits
 			self.Kill(crusher);
 		}
 
-		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player owner)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
 			return info.CrushClasses.Overlaps(crushClasses);
 		}

@@ -304,7 +304,7 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
-		bool CrushableBy(HashSet<string> crushClasses, Player owner);
+		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
 	}
 
 	[RequireExplicitImplementation]

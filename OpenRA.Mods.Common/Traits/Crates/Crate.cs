@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player owner)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
 			// Crate can only be crushed if it is not in the air.
 			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);

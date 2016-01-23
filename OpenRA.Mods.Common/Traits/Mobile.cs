@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var crushable in crushables)
 			{
 				lacksCrushability = false;
-				if (!crushable.CrushableBy(Crushes, self.Owner))
+				if (!crushable.CrushableBy(otherActor, self, Crushes))
 					return true;
 			}
 

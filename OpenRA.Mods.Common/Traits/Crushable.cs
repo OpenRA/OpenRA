@@ -71,9 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 			self.Kill(crusher);
 		}
 
-		bool ICrushable.CrushableBy(HashSet<string> crushClasses, Player crushOwner)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			return CrushableInner(crushClasses, crushOwner);
+			return CrushableInner(crushClasses, crusher.Owner);
 		}
 
 		bool CrushableInner(HashSet<string> crushClasses, Player crushOwner)
