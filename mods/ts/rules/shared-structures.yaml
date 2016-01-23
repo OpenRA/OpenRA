@@ -85,7 +85,7 @@ PROC:
 		Value: 600
 	FreeActor:
 		Actor: HARV
-		SpawnOffset: 3,1
+		SpawnOffset: 2,1
 		Facing: 160
 	WithIdleOverlay@REDLIGHTS:
 		Sequence: idle-redlights
