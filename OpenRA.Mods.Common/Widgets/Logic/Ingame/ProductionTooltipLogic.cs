@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				powerIcon.IsVisible = () => power != 0;
 
 				var lowpower = pm.PowerState != PowerState.Normal;
-				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor.Name)
+				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor, buildable)
 					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
 				var timeString = WidgetUtils.FormatTime(time, world.Timestep);
 				timeLabel.GetText = () => timeString;
