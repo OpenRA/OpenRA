@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] XmasImages = { };
 
 		[SequenceReference] public readonly string IdleSequence = "idle";
-		public readonly string WaterSequence = null;
-		public readonly string LandSequence = null;
+		[SequenceReference] public readonly string WaterSequence = null;
+		[SequenceReference] public readonly string LandSequence = null;
 
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
 
