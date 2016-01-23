@@ -171,7 +171,7 @@ Proton:
 		ValidImpactTypes: Water
 
 ObeliskLaserFire:
-	ReloadDelay: 120
+	ReloadDelay: 1
 	Range: 10c512
 	Charges: true
 	Report: obelray1.aud
