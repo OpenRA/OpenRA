@@ -238,16 +238,15 @@ fb4:
 		ZOffset: 1023
 
 scrate:
-	idle:
+	Defaults:
 		ZOffset: -511
+	idle:
 	land:
 		Start: 1
-		ZOffset: -511
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
-		ZOffset: -511
 
 wcrate:
 	Defaults:
