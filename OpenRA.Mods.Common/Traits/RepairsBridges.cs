@@ -25,6 +25,12 @@ namespace OpenRA.Mods.Common.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
+		[Desc("Cursor to use when targeting a BridgeHut of an unrepaired bridge.")]
+		public readonly string TargetCursor = "goldwrench";
+
+		[Desc("Cursor to use when repairing is denied.")]
+		public readonly string TargetBlockedCursor = "goldwrench-blocked";
+
 		public object Create(ActorInitializer init) { return new RepairsBridges(this); }
 	}
 
@@ -39,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new RepairBridgeOrderTargeter(); }
+			get { yield return new RepairBridgeOrderTargeter(info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -82,8 +88,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		class RepairBridgeOrderTargeter : UnitOrderTargeter
 		{
-			public RepairBridgeOrderTargeter()
-				: base("RepairBridge", 6, "goldwrench", true, true) { }
+			readonly RepairsBridgesInfo info;
+
+			public RepairBridgeOrderTargeter(RepairsBridgesInfo info)
+				: base("RepairBridge", 6, info.TargetCursor, true, true)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
@@ -102,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Can't repair a bridge that is undamaged, already under repair, or dangling
 				if (damage == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
-					cursor = "goldwrench-blocked";
+					cursor = info.TargetBlockedCursor;
 
 				return true;
 			}
