@@ -420,6 +420,7 @@ MNLY.AP:
 		Ammo: 5
 		RearmSound: minelay1.aud
 	ReloadAmmo:
+		RearmBuildings: fix
 		UpgradeTypes: fixreload
 		ReloadTicks: 50
 		UpgradeMinEnabledLevel: 1
@@ -459,6 +460,7 @@ MNLY.AT:
 		Ammo: 5
 		RearmSound: minelay1.aud
 	ReloadAmmo:
+		RearmBuildings: fix
 		UpgradeTypes: fixreload
 		ReloadTicks: 50
 		UpgradeMinEnabledLevel: 1

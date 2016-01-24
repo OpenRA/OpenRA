@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => p.Info.Name == info.AmmoPoolName).ToArray();
 			reload = self.TraitsImplementing<ReloadAmmo>().Where(r => r.Info.UpgradeMinEnabledLevel > 0).ToArray();
 			movement = self.Trait<IMove>();
-			rearmBuildings = info.RearmBuildings;
+			rearmBuildings = reload.First().Info.RearmBuildings;
 		}
 
 		public override Activity Tick(Actor self)
