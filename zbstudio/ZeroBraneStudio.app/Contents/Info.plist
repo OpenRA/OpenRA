@@ -33,6 +33,6 @@
 	<key>LSRequiresCarbon</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string></string>
+	<string>Copyright (C) 2011 Paul Kulchenko, ZeroBrane LLC</string>
 </dict>
 </plist>
