@@ -43,32 +43,36 @@ namespace OpenRA.Mods.Common.Warheads
 				: new Dictionary<string, int>();
 		}
 
-		public int DamageVersus(Actor victim)
+		public int DamageVersus(Actor victim, Actor firedBy, WPos impact)
 		{
 			var armor = victim.TraitsImplementing<Armor>()
 				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type))
 				.Select(a => Versus[a.Info.Type]);
+			var dirArmor = victim.TraitsImplementing<DirectionalArmor>()
+				.Where(a => !a.IsTraitDisabled && a.GetArmor(victim, firedBy, impact) != null && Versus.ContainsKey(a.GetArmor(victim, firedBy, impact)))
+				.Select(a => Versus[a.GetArmor(victim, firedBy, impact)]);
 
-			return Util.ApplyPercentageModifiers(100, armor);
+
+			return Util.ApplyPercentageModifiers(Util.ApplyPercentageModifiers(100, armor), dirArmor);
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits that damage a single actor, rather than a position
 			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, damageModifiers);
+				DoImpact(target.Actor, firedBy, damageModifiers, target.CenterPosition);
 			else if (target.Type != TargetType.Invalid)
 				DoImpact(target.CenterPosition, firedBy, damageModifiers);
 		}
 
 		public abstract void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers);
 
-		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
+		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers, WPos impactPos)
 		{
 			if (!IsValidAgainst(victim, firedBy))
 				return;
 
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, firedBy, impactPos)));
 			victim.InflictDamage(firedBy, damage, this);
 		}
 	}
