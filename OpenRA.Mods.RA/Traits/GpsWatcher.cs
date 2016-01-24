@@ -49,9 +49,9 @@ namespace OpenRA.Mods.RA.Traits
 			RefreshGps(atek);
 		}
 
-		public void Launch(Actor atek, SupportPowerInfo info)
+		public void Launch(Actor atek, GpsPowerInfo info)
 		{
-			atek.World.Add(new DelayedAction(((GpsPowerInfo)info).RevealDelay * 25,
+			atek.World.Add(new DelayedAction(info.RevealDelay * 25,
 				() =>
 				{
 					Launched = true;

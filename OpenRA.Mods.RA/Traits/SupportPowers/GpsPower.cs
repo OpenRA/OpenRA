@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				w.Add(new SatelliteLaunch(self, info));
 
-				owner.Launch(self, Info);
+				owner.Launch(self, info);
 			});
 		}
 
