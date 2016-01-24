@@ -60,7 +60,7 @@ MSUB:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
-		Prerequisites: ~spen, stek, ~techlevel.unrestricted
+		Prerequisites: ~spen, stek, ~techlevel.high
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -162,7 +162,7 @@ CA:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
-		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
+		Prerequisites: ~syrd, atek, ~techlevel.high
 	Valued:
 		Cost: 2400
 	Tooltip:

@@ -154,7 +154,7 @@ ATEF:
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
-		Prerequisites: ~structures.france, ~techlevel.unrestricted
+		Prerequisites: ~structures.france, ~techlevel.high
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
