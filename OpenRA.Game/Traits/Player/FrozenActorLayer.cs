@@ -64,6 +64,19 @@ namespace OpenRA.Traits
 				.Where(m => shroud.Contains(m))
 				.ToArray();
 
+			if (Footprint.Length == 0)
+				throw new ArgumentException(("This frozen actor has no footprint! Please report a bug!\n" +
+					"Actor Name: {0}\n" +
+					"Actor Location: {1}\n" +
+					"Input footprint: [{2}]\n" +
+					"Input footprint (shroud.Contains): [{3}]\n" +
+					"Input footprint (map.Contains): [{4}]")
+					.F(actor.Info.Name,
+					actor.Location.ToString(),
+					footprint.Select(p => p.ToString()).JoinWith("|"),
+					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|"),
+					footprint.Select(p => actor.World.Map.Contains(p).ToString()).JoinWith("|")));
+
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
