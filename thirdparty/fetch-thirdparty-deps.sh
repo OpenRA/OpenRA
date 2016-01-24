@@ -114,7 +114,7 @@ fi
 
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
-	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20151127/Eluant.dll
+	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20160124/Eluant.dll
 fi
 
 if [ ! -f SmarIrc4net.dll ]; then

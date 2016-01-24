@@ -134,7 +134,7 @@ if (!(Test-Path "Eluant.dll"))
 {
 	echo "Fetching Eluant from GitHub."
 	$target = Join-Path $pwd.ToString() "Eluant.dll"
-	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/Eluant/releases/download/20151127/Eluant.dll", $target)
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/Eluant/releases/download/20160124/Eluant.dll", $target)
 }
 
 if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb.gz").LastWriteTime) -gt (new-timespan -days 30)))
