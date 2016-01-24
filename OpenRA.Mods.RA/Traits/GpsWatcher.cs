@@ -30,12 +30,16 @@ namespace OpenRA.Mods.RA.Traits
 		[Sync] public bool Launched { get; private set; }
 		[Sync] public bool GrantedAllies { get; private set; }
 		[Sync] public bool Granted { get; private set; }
-		public readonly Player Owner;
+
+		readonly Player owner;
 
 		readonly List<Actor> actors = new List<Actor>();
 		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
 
-		public GpsWatcher(Player owner) { Owner = owner; }
+		public GpsWatcher(Player owner)
+		{
+			this.owner = owner;
+		}
 
 		public void GpsRemove(Actor atek)
 		{
@@ -66,7 +70,7 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
 
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(Owner))
+			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(owner))
 				atek.Owner.Shroud.ExploreAll(atek.World);
 		}
 
@@ -76,14 +80,14 @@ namespace OpenRA.Mods.RA.Traits
 			var wasGrantedAllies = GrantedAllies;
 
 			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = Owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(Owner));
+			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
 
 			if (Granted || GrantedAllies)
-				Owner.Shroud.ExploreAll(Owner.World);
+				owner.Shroud.ExploreAll(owner.World);
 
 			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
 				foreach (var tp in notifyOnRefresh.ToList())
-					tp.Trait.OnGpsRefresh(tp.Actor, Owner);
+					tp.Trait.OnGpsRefresh(tp.Actor, owner);
 		}
 
 		public bool HasFogVisibility()
@@ -97,7 +101,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (gpsDot == null)
 				return false;
 
-			return gpsDot.IsDotVisible(Owner);
+			return gpsDot.IsDotVisible(owner);
 		}
 
 		public void RegisterForOnGpsRefreshed(Actor actor, IOnGpsRefreshed toBeNotified)

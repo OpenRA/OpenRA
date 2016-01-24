@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged
 	{
-		GpsWatcher owner;
 		readonly GpsPowerInfo info;
+		GpsWatcher owner;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
