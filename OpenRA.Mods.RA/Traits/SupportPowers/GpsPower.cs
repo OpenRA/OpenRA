@@ -22,16 +22,26 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly int RevealDelay = 0;
 
+		public readonly string DoorImage = "atek";
+		[SequenceReference("DoorImage")] public readonly string DoorSequence = "active";
+		[PaletteReference] public readonly string DoorPalette = "effect";
+
+		public readonly string SatelliteImage = "sputnik";
+		[SequenceReference("SatelliteImage")] public readonly string SatelliteSequence = "idle";
+		[PaletteReference] public readonly string SatellitePalette = "effect";
+
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
 	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged
 	{
 		GpsWatcher owner;
+		readonly GpsPowerInfo info;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
 		{
+			this.info = info;
 			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);
 		}
@@ -49,7 +59,7 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				Game.Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
 
-				w.Add(new SatelliteLaunch(self));
+				w.Add(new SatelliteLaunch(self, info));
 
 				owner.Launch(self, Info);
 			});
