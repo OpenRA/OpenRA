@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public GpsWatcher(Player owner) { Owner = owner; }
 
-		public void GpsRem(Actor atek)
+		public void GpsRemove(Actor atek)
 		{
 			actors.Remove(atek);
 			RefreshGps(atek);

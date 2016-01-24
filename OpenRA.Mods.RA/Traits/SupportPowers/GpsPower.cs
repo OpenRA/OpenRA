@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Traits
 		void RemoveGps(Actor self)
 		{
 			// Extra function just in case something needs to be added later
-			owner.GpsRem(self);
+			owner.GpsRemove(self);
 		}
 
 		public void StanceChanged(Actor self, Player a, Player b, Stance oldStance, Stance newStance)
