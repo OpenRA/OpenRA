@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
+	[Desc("Requires `GpsWatcher` on the player actor.")]
 	class GpsPowerInfo : SupportPowerInfo
 	{
 		public readonly int RevealDelay = 0;
