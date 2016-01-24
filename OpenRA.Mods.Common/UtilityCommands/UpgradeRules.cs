@@ -3427,6 +3427,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160124)
+				{
+					node.Value.Nodes.RemoveAll(x => x.Key == "Charges");
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

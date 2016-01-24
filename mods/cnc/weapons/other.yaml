@@ -120,7 +120,6 @@ Napalm:
 Laser:
 	ReloadDelay: 1
 	Range: 7c512
-	Charges: true
 	Report: obelray1.aud
 	Projectile: LaserZap
 		Width: 85

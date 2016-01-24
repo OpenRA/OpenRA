@@ -139,7 +139,6 @@ DepthCharge:
 
 TeslaZap:
 	ReloadDelay: 3
-	Charges: true
 	Range: 8c512
 	Report: tesla1.aud
 	Projectile: TeslaZap
@@ -155,7 +154,6 @@ PortaTesla:
 	ReloadDelay: 70
 	Range: 6c0
 	Report: tesla1.aud
-	Charges: yes
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -168,7 +166,6 @@ TTankZap:
 	ReloadDelay: 120
 	Range: 7c0
 	Report: tesla1.aud
-	Charges: yes
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
