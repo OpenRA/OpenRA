@@ -2923,6 +2923,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Moved reloading AmmoPools to separate ReloadAmmo trait
+				if (engineVersion < 20160125)
+				{
+					if (node.Key.StartsWith("AmmoPool"))
+					{
+						Console.WriteLine("'ReloadTicks' and 'ResetOnFire' have been moved to the");
+						Console.WriteLine("new ReloadAmmo trait. 'SelfReloads' and 'SelfReloadTicks'");
+						Console.WriteLine("have been removed. ReloadAmmo is upgradable, which means");
+						Console.WriteLine("if you don't set custom 'Upgrades' and 'UpgradeMinEnabledLevel'");
+						Console.WriteLine("it works like the old SelfReloads boolean.");
+						Console.WriteLine("If you want it to reload at specific actors, set ReloadAmmo to");
+						Console.WriteLine("'UpgradeMinEnabledLevel: 1', require an upgrade, and provide that upgrade");
+						Console.WriteLine("on the supplying actor, for example via UpgradeActorsNear.");
+						Console.WriteLine("Look at aircraft and minelayers in the RA mod to see how it's done,");
+						Console.WriteLine("or look at the CnC mod for an example of self-reloading.");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
