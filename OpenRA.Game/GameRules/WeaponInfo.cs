@@ -46,8 +46,6 @@ namespace OpenRA.GameRules
 		[Desc("Number of shots in a single ammo magazine.")]
 		public readonly int Burst = 1;
 
-		public readonly bool Charges = false;
-
 		[Desc("What types of targets are affected.")]
 		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
