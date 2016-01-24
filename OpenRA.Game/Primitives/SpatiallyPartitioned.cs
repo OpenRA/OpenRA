@@ -25,8 +25,8 @@ namespace OpenRA.Primitives
 		public SpatiallyPartitioned(int width, int height, int binSize)
 		{
 			this.binSize = binSize;
-			rows = height / binSize + 1;
-			cols = width / binSize + 1;
+			rows = Exts.IntegerDivisionRoundingAwayFromZero(height, binSize);
+			cols = Exts.IntegerDivisionRoundingAwayFromZero(width, binSize);
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
 		}
 
@@ -66,15 +66,21 @@ namespace OpenRA.Primitives
 			return new Rectangle(col * binSize, row * binSize, binSize, binSize);
 		}
 
+		void BoundsToBinRowsAndCols(Rectangle bounds, out int minRow, out int maxRow, out int minCol, out int maxCol)
+		{
+			minRow = Math.Max(0, bounds.Top / binSize);
+			minCol = Math.Max(0, bounds.Left / binSize);
+			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Bottom, binSize));
+			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Right, binSize));
+		}
+
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
 		{
-			var top = Math.Max(0, bounds.Top / binSize);
-			var left = Math.Max(0, bounds.Left / binSize);
-			var bottom = Math.Min(rows - 1, bounds.Bottom / binSize);
-			var right = Math.Min(cols - 1, bounds.Right / binSize);
+			int minRow, maxRow, minCol, maxCol;
+			BoundsToBinRowsAndCols(bounds, out minRow, out maxRow, out minCol, out maxCol);
 
-			for (var row = top; row <= bottom; row++)
-				for (var col = left; col <= right; col++)
+			for (var row = minRow; row < maxRow; row++)
+				for (var col = minCol; col < maxCol; col++)
 					action(BinAt(row, col), actor, bounds);
 		}
 
@@ -89,18 +95,16 @@ namespace OpenRA.Primitives
 
 		public IEnumerable<T> InBox(Rectangle box)
 		{
-			var left = (box.Left / binSize).Clamp(0, cols - 1);
-			var right = (box.Right / binSize).Clamp(0, cols - 1);
-			var top = (box.Top / binSize).Clamp(0, rows - 1);
-			var bottom = (box.Bottom / binSize).Clamp(0, rows - 1);
+			int minRow, maxRow, minCol, maxCol;
+			BoundsToBinRowsAndCols(box, out minRow, out maxRow, out minCol, out maxCol);
 
 			// We want to return any items intersecting the box.
 			// If the box covers multiple bins, we must handle items that are contained in multiple bins and avoid
 			// returning them more than once. We shall use a set to track these.
 			// PERF: If we are only looking inside one bin, we can avoid the cost of performing this tracking.
-			var items = top == bottom && left == right ? null : new HashSet<T>();
-			for (var row = top; row <= bottom; row++)
-				for (var col = left; col <= right; col++)
+			var items = minRow >= maxRow || minCol >= maxCol ? null : new HashSet<T>();
+			for (var row = minRow; row < maxRow; row++)
+				for (var col = minCol; col < maxCol; col++)
 				{
 					var binBounds = BinBounds(row, col);
 					foreach (var kvp in BinAt(row, col))

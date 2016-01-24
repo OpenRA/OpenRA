@@ -327,6 +327,15 @@ namespace OpenRA
 			return root;
 		}
 
+		public static int IntegerDivisionRoundingAwayFromZero(int dividend, int divisor)
+		{
+			int remainder;
+			var quotient = Math.DivRem(dividend, divisor, out remainder);
+			if (remainder == 0)
+				return quotient;
+			return quotient + (Math.Sign(dividend) == Math.Sign(divisor) ? 1 : -1);
+		}
+
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)
 		{
 			return string.Join(j, ts);
