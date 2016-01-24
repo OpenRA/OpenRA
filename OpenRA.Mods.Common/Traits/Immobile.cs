@@ -55,14 +55,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+
+			if (!self.Bounds.Size.IsEmpty)
+				self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+
+			if (!self.Bounds.Size.IsEmpty)
+				self.World.ScreenMap.Remove(self);
 		}
 	}
 }
