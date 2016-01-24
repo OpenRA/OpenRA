@@ -765,7 +765,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var allEnemyBaseBuilder = FindEnemyConstructionYards();
 			var ownUnits = activeUnits
-				.Where(unit => unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>() && unit.IsIdle).ToList();
+				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
+					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
 
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
 				return;
@@ -802,7 +803,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!protectSq.IsValid)
 			{
 				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit => unit.Owner == Player && !unit.Info.HasTraitInfo<BuildingInfo>()
+					.Where(unit => unit.Owner == Player && !unit.Info.HasTraitInfo<BuildingInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()
 						&& unit.Info.HasTraitInfo<AttackBaseInfo>());
 
 				foreach (var a in ownUnits)
