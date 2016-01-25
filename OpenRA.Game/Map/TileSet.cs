@@ -53,6 +53,7 @@ namespace OpenRA
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
 		public readonly bool IsWater = false; // TODO: Remove this
 		public readonly Color Color;
+		public readonly bool RestrictPlayerColor = false;
 		public readonly string CustomCursor;
 
 		// Private default ctor for serialization comparison
