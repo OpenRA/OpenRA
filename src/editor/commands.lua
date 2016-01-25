@@ -950,7 +950,16 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
     if ide.infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
       -- check if the window is shown before returning focus to it,
       -- as it may lead to a recursion in event handlers on OSX (wxwidgets 2.9.5).
-      pcall(function() if ide:IsWindowShown(ide.infocus) then ide.infocus:SetFocus() end end)
+      pcall(function()
+          if ide:IsWindowShown(ide.infocus) then
+            ide.infocus:SetFocus()
+            -- if switching to the editor, then also call SetSTCFocus,
+            -- otherwise the cursor is not shown in the editor on OSX.
+            if ide.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl" then
+              ide.infocus:DynamicCast("wxStyledTextCtrl"):SetSTCFocus(true)
+            end
+          end
+        end)
       return
     end
 

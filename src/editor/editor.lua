@@ -172,6 +172,10 @@ function SetEditorSelection(selection)
   if editor then
     editor:SetFocus()
     editor:SetSTCFocus(true)
+    -- when the active editor is changed while the focus is away from the application
+    -- (as happens on OSX when the editor is selected from the command bar)
+    -- the focus stays on wxAuiToolBar component, so need to explicitly switch it.
+    if ide.osname == "Macintosh" and ide.infocus then ide.infocus = editor end
 
     local id = editor:GetId()
     FileTreeMarkSelected(openDocuments[id] and openDocuments[id].filePath or '')
