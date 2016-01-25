@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class WithGateSpriteBodyInfo : WithSpriteBodyInfo, Requires<GateInfo>
+	class WithGateSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<GateInfo>
 	{
 		[Desc("Cells (outside the gate footprint) that contain wall cells that can connect to the gate")]
 		public readonly CVec[] WallConnections = { };
@@ -33,6 +33,11 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
+
+		string IWallConnectorInfo.GetWallConnectionType()
+		{
+			return Type;
 		}
 	}
 

@@ -17,8 +17,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	interface IWallConnectorInfo : ITraitInfoInterface
+	{
+		string GetWallConnectionType();
+	}
+
 	[Desc("Render trait for actors that change sprites if neighbors with the same trait are present.")]
-	class WithWallSpriteBodyInfo : WithSpriteBodyInfo, Requires<BuildingInfo>
+	class WithWallSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<BuildingInfo>
 	{
 		public readonly string Type = "wall";
 
@@ -40,8 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
 					{
-						var rb = init.World.Map.Rules.Actors[n].TraitInfos<WithWallSpriteBodyInfo>().FirstOrDefault(Exts.IsTraitEnabled);
-						if (rb != null && rb.Type == Type)
+						var rb = init.World.Map.Rules.Actors[n].TraitInfos<IWallConnectorInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+						if (rb != null && rb.GetWallConnectionType() == Type)
 						{
 							haveNeighbour = true;
 							break;
@@ -66,6 +72,11 @@ namespace OpenRA.Mods.Common.Traits
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => adjacent);
 
 			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+		}
+
+		string IWallConnectorInfo.GetWallConnectionType()
+		{
+			return Type;
 		}
 	}
 
