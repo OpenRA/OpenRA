@@ -25,6 +25,24 @@ GAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+GAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: gapile, ~structures.gdi
+	Tooltip:
+		Name: GDI Gate
+
+GAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: gapile, ~structures.gdi
+	Tooltip:
+		Name: GDI Gate
+
 GACTWR:
 	Inherits: ^Defense
 	-WithSpriteBody:

@@ -602,6 +602,120 @@ gawall:
 		Offset: 0, 0
 		UseTilesetCode: false
 
+gagate_a:
+	Defaults:
+		Offset: -24, -24
+		UseTilesetCode: true
+	idle:
+		Length: 10
+		ShadowStart: 21
+	damaged-idle:
+		Start: 10
+		Length: 10
+		ShadowStart: 31
+	dead:
+		Start: 20
+		Tick: 400
+		ShadowStart: 41
+	make:
+		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 9
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: gateicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+gagate_b:
+	Defaults:
+		Offset: 24, -24
+		UseTilesetCode: true
+	idle:
+		Length: 10
+		ShadowStart: 21
+	damaged-idle:
+		Start: 10
+		Length: 10
+		ShadowStart: 31
+	dead:
+		Start: 20
+		Tick: 400
+		ShadowStart: 41
+	make:
+		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 9
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: gat2icon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+nagate_a:
+	Defaults:
+		Offset: -24, -24
+		UseTilesetCode: true
+		Tick: 80
+	idle:
+		Length: 7
+		ShadowStart: 15
+	damaged-idle:
+		Start: 7
+		Length: 7
+		ShadowStart: 22
+	dead:
+		Start: 14
+		Tick: 400
+		ShadowStart: 29
+	make:
+		Frames: 6, 5, 4, 3, 2, 1
+		Length: 6
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: ngaticon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+nagate_b:
+	Defaults:
+		Offset: 24, -24
+		UseTilesetCode: true
+		Tick: 80
+	idle:
+		Length: 7
+		ShadowStart: 15
+	damaged-idle:
+		Start: 7
+		Length: 7
+		ShadowStart: 22
+	dead:
+		Start: 14
+		Tick: 400
+		ShadowStart: 29
+	make:
+		Frames: 6, 5, 4, 3, 2, 1
+		Length: 6
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: nga2icon
+		Offset: 0, 0
+		UseTilesetCode: false
+
 nawall:
 	Defaults:
 		Offset: 0, -12

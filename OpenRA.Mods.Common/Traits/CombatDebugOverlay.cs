@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -22,24 +24,28 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
-	public class CombatDebugOverlay : IPostRender, INotifyDamage
+	public class CombatDebugOverlay : IPostRender, INotifyDamage, INotifyCreated
 	{
 		readonly DeveloperMode devMode;
 
 		readonly HealthInfo healthInfo;
-		readonly BlocksProjectilesInfo blockInfo;
+		IBlocksProjectiles[] allBlockers;
 		Lazy<AttackBase> attack;
 		Lazy<BodyOrientation> coords;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
-			blockInfo = self.Info.TraitInfoOrDefault<BlocksProjectilesInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
+		}
+
+		public void Created(Actor self)
+		{
+			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
@@ -53,10 +59,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (healthInfo != null)
 				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
 
-			if (blockInfo != null)
+			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
+			if (blockers.Count > 0)
 			{
 				var hc = Color.Orange;
-				var height = new WVec(0, 0, blockInfo.Height.Length);
+				var height = new WVec(0, 0, blockers.Max(b => b.BlockingHeight.Length));
 				var ha = wr.ScreenPosition(self.CenterPosition);
 				var hb = wr.ScreenPosition(self.CenterPosition + height);
 				wcr.DrawLine(ha, hb, iz, hc);

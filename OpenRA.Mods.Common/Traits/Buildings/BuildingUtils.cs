@@ -71,12 +71,11 @@ namespace OpenRA.Mods.Common.Traits
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?
-					if (world.ActorsHavingTrait<LineBuildNode>()
-						.Any(a => a.Location == cell
-							&& a.Info.TraitInfo<LineBuildNodeInfo>().Types.Overlaps(lbi.NodeTypes)))
-						dirs[d] = i; // Cell contains actor of correct type
-					else
-						dirs[d] = -1; // Cell is blocked by another actor type
+					var hasConnector = world.ActorMap.GetActorsAt(cell)
+						.Any(a => a.Info.TraitInfos<LineBuildNodeInfo>()
+							.Any(info => info.Types.Overlaps(lbi.NodeTypes) && info.Connections.Contains(vecs[d])));
+
+					dirs[d] = hasConnector ? i : -1;
 				}
 
 				// Place intermediate-line sections
