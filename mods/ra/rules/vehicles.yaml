@@ -161,8 +161,9 @@ V2RL:
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Health:
 		HP: 900
-	Armor:
-		Type: Heavy
+	#Armor:
+	#	Type: Heavy
+	DirectionalArmor:
 	Mobile:
 		Speed: 42
 		Crushes: wall, mine, crate, infantry

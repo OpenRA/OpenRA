@@ -37,10 +37,10 @@ namespace OpenRA.Mods.Common.Warheads
 				hitActors = hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
 
 			foreach (var victim in hitActors)
-				DoImpact(victim, firedBy, damageModifiers);
+				DoImpact(victim, firedBy, damageModifiers, pos);
 		}
 
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers, WPos impactPos)
 		{
 			if (!IsValidAgainst(victim, firedBy))
 				return;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return;
 
 			// Damage is measured as a percentage of the target health
-			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim)));
+			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim, firedBy, impactPos)));
 			victim.InflictDamage(firedBy, damage, this);
 		}
 	}

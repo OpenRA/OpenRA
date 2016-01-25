@@ -731,6 +731,7 @@
     <Compile Include="UtilityCommands\CheckExplicitInterfacesCommand.cs" />
     <Compile Include="FileFormats\LZOCompression.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="Traits\DirectionalArmor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
