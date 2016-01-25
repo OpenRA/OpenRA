@@ -15,12 +15,19 @@ Speech:
 		BuildingReady: BDRDY
 		Cancelled: CANCL
 		CannotDeploy: DPLOY
+		DeathHandMissilePrepping: PREP
+		DeathHandMissileReady: DHRDY
 		EnemyUnitsApproaching: ENEMY
 		EnemyUnitsDetected: ENEMY_DETECTED
+		GameLoaded: GLOAD
+		GameSaved: GSAVE
+		Guarding: GUARD
 		HarvesterAttack: HATTK
+		InsufficientFunds: MONEY
 		Leave: ABORT
 		Lose: MFAIL
 		LowPower: POWER
+		MissileLaunchDetected: LAUNC
 		NewOptions: NEWOP
 		NoRoom: NROOM
 		OnHold: HOLD
@@ -28,12 +35,21 @@ Speech:
 		PrimaryBuildingSelected: PRMRY
 		Reinforce: REINF
 		Repairing: MEND
+		Retreating: RUN
 		SilosNeeded: SILOS
+		StarportActions: SPORT
 		StartGame:
+		StructureSold: SELL
+		TMinusFive: 5MIN
+		TMinusFour: 4MIN
+		TMinusOne: 1MIN
+		TMinusThree: 3MIN
+		TMinusTwo: 2MIN
 		Training: TRAIN
 		UnitLost: ULOST
 		UnitReady: UNRDY
 		UnitRepaired: GANEW
+		UpgradeOptions: UPGOP
 		Upgrading: UPGRD
 		Win: MWIN
 		WormAttack: WATTK
