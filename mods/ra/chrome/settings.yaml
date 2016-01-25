@@ -357,30 +357,52 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Font: Regular
 					Text: Enabled
-				Checkbox@EDGESCROLL_CHECKBOX:
+				Checkbox@ALLOW_ZOOM_CHECKBOX:
 					X: 15
 					Y: 70
+					Width: 130
+					Height: 20
+					Font: Regular
+					Text: Allow zoom
+				Label@ZOOM_MODIFIER_LABEL:
+					X: PARENT_RIGHT - WIDTH - 120
+					Y: 68
+					Width: 160
+					Height: 20
+					Font: Regular
+					Text: Modifier used to zoom:
+					Align: Right
+				DropDownButton@ZOOM_MODIFIER:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 68
+					Width: 100
+					Height: 25
+					Font: Regular
+					Text: Alt
+				Checkbox@EDGESCROLL_CHECKBOX:
+					X: 15
+					Y: 100
 					Width: 130
 					Height: 20
 					Font: Regular
 					Text: Edge Scrolling
 				Checkbox@LOCKMOUSE_CHECKBOX:
 					X: 15
-					Y: 100
+					Y: 130
 					Width: 130
 					Height: 20
 					Font: Regular
 					Text: Lock mouse to window
 				Label@SCROLL_SPEED_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 67
+					Y: 97
 					Width: 95
 					Height: 25
 					Text: Scroll Speed:
 					Align: Right
 				Slider@SCROLLSPEED_SLIDER:
 					X: PARENT_RIGHT - WIDTH - 15
-					Y: 73
+					Y: 103
 					Width: 250
 					Height: 20
 					Ticks: 5
@@ -388,32 +410,32 @@ Background@SETTINGS_PANEL:
 					MaximumValue: 50
 				Label@UI_SCROLL_SPEED_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 97
+					Y: 127
 					Width: 95
 					Height: 25
 					Text: UI Scroll Speed:
 					Align: Right
 				Slider@UI_SCROLLSPEED_SLIDER:
 					X: PARENT_RIGHT - WIDTH - 15
-					Y: 103
+					Y: 133
 					Width: 250
 					Height: 20
 					Ticks: 5
 					MinimumValue: 1
 					MaximumValue: 100
 				Label@HOTKEYS_TITLE:
-					Y: 135
+					Y: 165
 					Width: PARENT_RIGHT
 					Font: Bold
 					Text: Hotkeys
 					Align: Center
 				ScrollPanel@HOTKEY_LIST:
 					X: 15
-					Y: 155
+					Y: 185
 					Width: 560
 					TopBottomSpacing: 4
 					ItemSpacing: 4
-					Height: 190
+					Height: 160
 					Children:
 						ScrollItem@HEADER:
 							BaseName: scrollheader

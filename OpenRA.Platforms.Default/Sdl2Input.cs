@@ -124,7 +124,7 @@ namespace OpenRA.Platforms.Default
 							int x, y;
 							SDL.SDL_GetMouseState(out x, out y);
 							scrollDelta = e.wheel.y;
-							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), Modifiers.None, 0));
+							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, scrollDelta, new int2(x, y), mods, 0));
 
 							break;
 						}
