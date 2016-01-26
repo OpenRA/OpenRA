@@ -7,37 +7,53 @@ Speech:
 		ordos: OI_
 		harkonnen: HI_
 	Notifications:
-		Repairing: MEND
-		BuildingCannotPlaceAudio: PLACE
-		LowPower: POWER
-		SilosNeeded: SILOS
-		PrimaryBuildingSelected: PRMRY
-		NewOptions: NEWOP
-		Win: MWIN
-		Lose: MFAIL
 		BaseAttack: ATACK
-		HarvesterAttack: HATTK
-		Leave: ABORT
-		StartGame:
-		UnitReady: UNRDY
-		NoRoom: NROOM
-		Training: TRAIN
-		OnHold: HOLD
-		Cancelled: CANCL
 		Building: BUILD
-		BuildingReady: BDRDY
-		OrderPlaced: ORDER
-		Reinforce: REINF
-		UnitLost: ULOST
-		BuildingLost: BLOST
+		BuildingCannotPlaceAudio: PLACE
 		BuildingCaptured: CAPT
-		WormSign: WSIGN
-		WormAttack: WATTK
+		BuildingLost: BLOST
+		BuildingReady: BDRDY
+		Cancelled: CANCL
+		CannotDeploy: DPLOY
+		DeathHandMissilePrepping: PREP
+		DeathHandMissileReady: DHRDY
 		EnemyUnitsApproaching: ENEMY
 		EnemyUnitsDetected: ENEMY_DETECTED
+		GameLoaded: GLOAD
+		GameSaved: GSAVE
+		Guarding: GUARD
+		HarvesterAttack: HATTK
+		InsufficientFunds: MONEY
+		Leave: ABORT
+		Lose: MFAIL
+		LowPower: POWER
+		MissileLaunchDetected: LAUNC
+		NewOptions: NEWOP
+		NoRoom: NROOM
+		OnHold: HOLD
+		OrderPlaced: ORDER
+		PrimaryBuildingSelected: PRMRY
+		Reinforce: REINF
+		Repairing: MEND
+		Retreating: RUN
+		SilosNeeded: SILOS
+		StarportActions: SPORT
+		StartGame:
+		StructureSold: SELL
+		TMinusFive: 5MIN
+		TMinusFour: 4MIN
+		TMinusOne: 1MIN
+		TMinusThree: 3MIN
+		TMinusTwo: 2MIN
+		Training: TRAIN
+		UnitLost: ULOST
+		UnitReady: UNRDY
 		UnitRepaired: GANEW
-		CannotDeploy: DPLOY
+		UpgradeOptions: UPGOP
 		Upgrading: UPGRD
+		Win: MWIN
+		WormAttack: WATTK
+		WormSign: WSIGN
 
 Sounds:
 	DefaultVariant: .WAV
