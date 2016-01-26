@@ -21,6 +21,8 @@ namespace OpenRA.Mods.Common
 	{
 		// The bigger the color threshold, the less permissive is the algorithm
 		public readonly int Threshold = 0x50;
+		public readonly float[] HsvSaturationRange = new[] { 0.25f, 1f };
+		public readonly float[] HsvValueRange = new[] { 0.2f, 1.0f };
 
 		double GetColorDelta(Color colorA, Color colorB)
 		{
@@ -51,9 +53,18 @@ namespace OpenRA.Mods.Common
 			return true;
 		}
 
-
 		public bool IsValid(Color askedColor, out Color forbiddenColor, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
 		{
+			// Validate color against HSV
+			float h, s, v;
+			new HSLColor(askedColor).ToHSV(out h, out s, out v);
+			if (s < HsvSaturationRange[0] || s > HsvSaturationRange[1] || v < HsvValueRange[0] || v > HsvValueRange[1])
+			{
+				onError("Color was adjusted to be inside the allowed range.");
+				forbiddenColor = askedColor;
+				return false;
+			}
+
 			// Validate color against the current map tileset
 			if (!IsValid(askedColor, terrainColors, out forbiddenColor))
 			{
@@ -81,10 +92,10 @@ namespace OpenRA.Mods.Common
 			Action<string> ignoreError = _ => { };
 			do
 			{
-				var hue = (byte)random.Next(255);
-				var sat = (byte)random.Next(255);
-				var lum = (byte)random.Next(129, 255);
-				color = new HSLColor(hue, sat, lum);
+				var h = random.Next(255) / 255f;
+				var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+				var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+				color = HSLColor.FromHSV(h, s, v);
 			} while (!IsValid(color.RGB, out forbidden, terrainColors, playerColors, ignoreError));
 
 			return color;
