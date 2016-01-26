@@ -56,7 +56,7 @@ TRUCKB:
 	Inherits: ^TRUCK
 
 ICBM:
-	Inherits: ^CivilianVoxelVehicle
+	Inherits: ^CivilianVoxelCrusher
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -79,7 +79,7 @@ ICBM:
 		Voice: Move
 
 BUS:
-	Inherits: ^CivilianVoxelVehicle
+	Inherits: ^CivilianVoxelCrusher
 	Valued:
 		Cost: 800
 	Tooltip:

@@ -1,5 +1,5 @@
 APC:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -87,7 +87,7 @@ HVR:
 		MovingInterval: 6
 
 SMECH:
-	Inherits: ^Tank
+	Inherits: ^Vehicle
 	Valued:
 		Cost: 500
 	Tooltip:
