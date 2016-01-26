@@ -208,6 +208,11 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
+		UpgradeTypes: hazmatsuits
+		UpgradeMaxEnabledLevel: 0
+	GlobalUpgradable@BIO:
+		Upgrades: hazmatsuits
+		Prerequisites: bio
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
@@ -227,7 +232,7 @@
 		DamageCooldown: 125
 		UpgradeTypes: hospitalheal
 		UpgradeMinEnabledLevel: 1
-	GlobalUpgradable:
+	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DetectCloaked:
