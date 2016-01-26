@@ -1666,6 +1666,40 @@ BRIK:
 	WithWallSpriteBody:
 		Type: concrete
 
+VGATE:
+	Inherits: ^Gate
+	Gate:
+		Footprint: x x x
+		Dimensions: 1,3
+	WithGateSpriteBody:
+		WallConnections: 0,-1, 0,3
+	LineBuildNode:
+		Connections: 0,-1, 0,1
+	Tooltip:
+		Name: Vertical Gate
+
+HGATE:
+	Inherits: ^Gate
+	Gate:
+		Footprint: xxx
+		Dimensions: 3,1
+	WithGateSpriteBody:
+		WallConnections: -1,0, 3,0
+	LineBuildNode:
+		Connections: -1,0, 1,0
+	Tooltip:
+		Name: Horizontal Gate
+	RenderSprites:
+		Image: agate
+		FactionImages:
+			allies: agate
+			england: agate
+			france: agate
+			germany: agate
+			soviet: sgate
+			russia: sgate
+			ukraine: sgate
+
 CYCL:
 	Inherits: ^Wall
 	Tooltip:

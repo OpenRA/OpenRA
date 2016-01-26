@@ -511,6 +511,32 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 
+^Gate:
+	Inherits: ^BasicBuilding
+	Valued:
+		Cost: 250
+	Health:
+		HP: 350
+	Armor:
+		Type: Heavy
+	LineBuildNode:
+		Types: concrete, gate
+	-Building:
+	-WithSpriteBody:
+	WithGateSpriteBody:
+	Power:
+	CanPowerDown:
+	Tooltip:
+		Name: Gate
+		Description: Automated barrier that opens for allied units.
+	Gate:
+		Adjacent: 4
+		BlocksProjectilesHeight: 0
+		BuildSounds: place2.aud
+		OpeningSound: cashturn.aud
+		ClosingSound: cashturn.aud
+		TerrainTypes: Clear, Road
+
 ^TechBuilding:
 	Inherits: ^BasicBuilding
 	Health:

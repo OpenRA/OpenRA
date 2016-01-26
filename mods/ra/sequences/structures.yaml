@@ -598,6 +598,33 @@ brik:
 		Length: 16
 	icon: brikicon
 
+vgate:
+	make:
+		Length: 7
+	idle:
+		Frames: 6, 5, 4, 3, 2, 1, 0
+		Length: 7
+		ZOffset: -1c511
+	damaged-idle:
+		Frames: 13, 12, 11, 10, 9, 8, 7
+		Length: 7
+		ZOffset: -1c511
+
+agate:
+	make:
+		Length: 7
+	idle:
+		Frames: 6, 5, 4, 3, 2, 1, 0
+		Length: 7
+		ZOffset: -1c511
+	damaged-idle:
+		Frames: 13, 12, 11, 10, 9, 8, 7
+		Length: 7
+		ZOffset: -1c511
+
+sgate:
+	Inherits: agate
+
 sbag:
 	idle:
 		Length: 16
