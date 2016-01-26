@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
 		[Desc("Upgrade types to grant to transport.")]
-		public readonly string[] GrantUpgrades = { };
+		[UpgradeGrantedReference] public readonly string[] GrantUpgrades = { };
 
 		[VoiceReference] public readonly string Voice = "Action";
 
