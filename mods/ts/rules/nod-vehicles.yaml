@@ -45,7 +45,7 @@ BIKE:
 	Health:
 		HP: 150
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 5c0
 	Armament@PRIMARY:
