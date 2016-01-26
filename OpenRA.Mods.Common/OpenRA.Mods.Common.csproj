@@ -212,7 +212,6 @@
     <Compile Include="Scripting\Properties\AircraftProperties.cs" />
     <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
-    <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
@@ -733,6 +732,7 @@
     <Compile Include="FileFormats\LZOCompression.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Traits\Render\WithGateSpriteBody.cs" />
+    <Compile Include="ColorValidator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

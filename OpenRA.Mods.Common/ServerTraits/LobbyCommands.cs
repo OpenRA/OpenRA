@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -19,7 +20,7 @@ using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.Common.Server
 {
-	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
+	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, IClientJoined
 	{
 		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
 		{
@@ -136,10 +137,7 @@ namespace OpenRA.Mods.Common.Server
 						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 
 						if (!slot.LockColor)
-						{
-							var validatedColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, client.Color, client.Index, conn);
-							client.PreferredColor = client.Color = validatedColor;
-						}
+							client.PreferredColor = client.Color = SanitizePlayerColor(server, client.Color, client.Index, conn);
 
 						server.SyncLobbyClients();
 						CheckAutoStart(server);
@@ -291,16 +289,12 @@ namespace OpenRA.Mods.Common.Server
 							};
 
 							// Pick a random color for the bot
-							HSLColor botColor;
-							do
-							{
-								var hue = (byte)server.Random.Next(255);
-								var sat = (byte)server.Random.Next(255);
-								var lum = (byte)server.Random.Next(51, 255);
-								botColor = new HSLColor(hue, sat, lum);
-							} while (!ColorValidator.ValidatePlayerNewColor(server, botColor.RGB, bot.Index));
-
-							bot.Color = bot.PreferredColor = botColor;
+							var validator = server.ModData.Manifest.Get<ColorValidator>();
+							var tileset = server.Map.Rules.TileSets[server.Map.Tileset];
+							var terrainColors = tileset.TerrainInfo.Select(ti => ti.Color);
+							var playerColors = server.LobbyInfo.Clients.Select(c => c.Color.RGB)
+								.Concat(server.MapPlayers.Players.Values.Select(p => p.Color.RGB));
+							bot.Color = bot.PreferredColor = validator.RandomValidColor(server.Random, terrainColors, playerColors);
 
 							server.LobbyInfo.Clients.Add(bot);
 						}
@@ -367,12 +361,10 @@ namespace OpenRA.Mods.Common.Server
 								server.LobbyInfo.Clients.Remove(c);
 						}
 
+						// Validate if color is allowed and get an alternative it isn't
 						foreach (var c in server.LobbyInfo.Clients)
-						{
-							// Validate if color is allowed and get an alternative it isn't
 							if (c.Slot == null || (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor))
-								c.Color = c.PreferredColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, c.Color, c.Index, conn);
-						}
+								c.Color = c.PreferredColor = SanitizePlayerColor(server, c.Color, c.Index, conn);
 
 						server.SyncLobbyInfo();
 
@@ -875,16 +867,13 @@ namespace OpenRA.Mods.Common.Server
 						if (targetClient.Slot == null || server.LobbyInfo.Slots[targetClient.Slot].LockColor)
 							return true;
 
-						var newHslColor = FieldLoader.GetValue<HSLColor>("(value)", parts[1]);
-
 						// Validate if color is allowed and get an alternative it isn't
-						var altHslColor = ColorValidator.ValidatePlayerColorAndGetAlternative(server, newHslColor, targetClient.Index, conn);
-
-						targetClient.Color = altHslColor;
+						var newColor = FieldLoader.GetValue<HSLColor>("(value)", parts[1]);
+						targetClient.Color = SanitizePlayerColor(server, newColor, targetClient.Index, conn);
 
 						// Only update player's preferred color if new color is valid
-						if (newHslColor == altHslColor)
-							targetClient.PreferredColor = altHslColor;
+						if (newColor == targetClient.Color)
+							targetClient.PreferredColor = targetClient.Color;
 
 						server.SyncLobbyClients();
 						return true;
@@ -972,6 +961,34 @@ namespace OpenRA.Mods.Common.Server
 
 			if (!server.Map.Options.Difficulties.Contains(server.LobbyInfo.GlobalSettings.Difficulty))
 				server.LobbyInfo.GlobalSettings.Difficulty = server.Map.Options.Difficulties.First();
+		}
+
+		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)
+		{
+			var validator = server.ModData.Manifest.Get<ColorValidator>();
+			var askColor = askedColor;
+
+			Action<string> onError = message =>
+			{
+				if (connectionToEcho != null)
+					server.SendOrderTo(connectionToEcho, "Message", message);
+			};
+
+			var tileset = server.Map.Rules.TileSets[server.Map.Tileset];
+			var terrainColors = tileset.TerrainInfo.Select(ti => ti.Color).ToList();
+			var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color.RGB)
+				.Concat(server.MapPlayers.Players.Values.Select(p => p.Color.RGB)).ToList();
+
+			return validator.MakeValid(askColor.RGB, server.Random, terrainColors, playerColors, onError);
+		}
+
+		public void ClientJoined(S server, Connection conn)
+		{
+			var client = server.GetClient(conn);
+
+			// Validate whether color is allowed and get an alternative if it isn't
+			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
+				client.Color = SanitizePlayerColor(server, client.Color, client.Index);
 		}
 	}
 }
