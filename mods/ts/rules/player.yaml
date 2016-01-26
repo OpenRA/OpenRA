@@ -44,6 +44,7 @@ Player:
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:
+		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:

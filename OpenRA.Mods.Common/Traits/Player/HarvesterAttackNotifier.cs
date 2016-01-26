@@ -47,12 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			// only track last hit against our harvesters
-			if (!self.Info.HasTraitInfo<HarvesterInfo>())
+			// Don't track self-damage
+			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
 				return;
 
-			// don't track self-damage
-			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
+			// Only track last hit against our harvesters
+			if (!self.Info.HasTraitInfo<HarvesterInfo>())
 				return;
 
 			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)
