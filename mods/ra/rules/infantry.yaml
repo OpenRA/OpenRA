@@ -251,7 +251,7 @@ E7:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
-		Prerequisites: ~tent, atek, ~techlevel.unrestricted
+		Prerequisites: ~tent, atek, ~techlevel.high
 		BuildLimit: 1
 	Valued:
 		Cost: 1200
@@ -476,7 +476,7 @@ SHOK:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
-		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
+		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
 	Valued:
 		Cost: 400
 	Tooltip:

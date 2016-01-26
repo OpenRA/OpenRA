@@ -60,7 +60,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~techlevel.high
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -747,7 +747,7 @@ ATEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
-		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: weap, dome, ~structures.allies, ~techlevel.high
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -1318,7 +1318,7 @@ STEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
-		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
+		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.high
 	Valued:
 		Cost: 1500
 	Tooltip:

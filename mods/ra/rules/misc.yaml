@@ -75,7 +75,7 @@ CRATE:
 		SelectionShares: 3
 		Units: 4tnk
 		ValidFactions: soviet, russia, ukraine
-		Prerequisites: techlevel.unrestricted, fix, techcenter
+		Prerequisites: techlevel.high, fix, techcenter
 	GiveUnitCrateAction@squadlight:
 		SelectionShares: 7
 		Units: e1,e1,e1,e3,e3
