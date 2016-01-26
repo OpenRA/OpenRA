@@ -398,6 +398,7 @@
 		UseLocation: yes
 	HiddenUnderFog:
 		Type: CenterPosition
+		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
