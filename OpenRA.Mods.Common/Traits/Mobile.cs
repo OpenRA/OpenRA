@@ -756,7 +756,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 
 			if (subCell == SubCell.Any)
-				subCell = self.World.ActorMap.FreeSubCell(cell, subCell);
+				subCell = Info.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
 
 			// TODO: solve/reduce cell is full problem
 			if (subCell == SubCell.Invalid)
