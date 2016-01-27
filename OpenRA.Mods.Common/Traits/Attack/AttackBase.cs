@@ -35,10 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("Unable to fire while in motion.")]
+		public readonly bool NoMovingFire = false;
+
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : UpgradableTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync, INotifyCreated
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
@@ -52,6 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected Func<IEnumerable<Armament>> getArmaments;
 
 		readonly Actor self;
+
+		IEnumerable<IMove> moves;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 			: base(info)
@@ -68,9 +73,17 @@ namespace OpenRA.Mods.Common.Traits
 			positionable = Exts.Lazy(() => self.Trait<IPositionable>());
 		}
 
+		public void Created(Actor self)
+		{
+			moves = self.TraitsImplementing<IMove>();
+		}
+
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld || IsTraitDisabled || self.IsDisabled())
+				return false;
+
+			if (Info.NoMovingFire && moves.Any(m => m.IsMoving))
 				return false;
 
 			if (!target.IsValidFor(self))
@@ -267,6 +280,9 @@ namespace OpenRA.Mods.Common.Traits
 		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
 		{
 			if (self.IsDisabled() || IsTraitDisabled)
+				return;
+
+			if (Info.NoMovingFire && moves.Any(m => m.IsMoving))
 				return;
 
 			if (!target.IsValidFor(self))
