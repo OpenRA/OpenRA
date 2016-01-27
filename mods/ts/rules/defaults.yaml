@@ -540,7 +540,7 @@
 		Moves: true
 		Velocity: 86
 
-^Viceroid:
+^Visceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	DrawLineToTarget:

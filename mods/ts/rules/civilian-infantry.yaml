@@ -237,7 +237,7 @@ DOGGIE:
 		MaxMoveDelayInTicks: 45
 
 VISC_SML:
-	Inherits: ^Viceroid
+	Inherits: ^Visceroid
 	Tooltip:
 		Name: Baby Visceroid
 		Description: infantry transmorgifies into this
@@ -251,7 +251,7 @@ VISC_SML:
 		Image: vissml
 
 VISC_LRG:
-	Inherits: ^Viceroid
+	Inherits: ^Visceroid
 	Tooltip:
 		Name: Adult Visceroid
 		Description: 2 small visceroids combine into this
