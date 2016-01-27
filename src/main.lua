@@ -57,6 +57,7 @@ ide = {
       checkeol = true,
       saveallonrun = false,
       caretline = true,
+      commentlinetoggle = false,
       showfncall = false,
       autotabs = false,
       usetabs  = false,

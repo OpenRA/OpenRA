@@ -242,6 +242,7 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
       end
     end
 
+    local linetoggle = ide.config.editor.commentlinetoggle
     editor:BeginUndoAction()
     -- go last to first as selection positions we captured may be affected
     -- by text changes
@@ -250,9 +251,9 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
       local text = editor:GetLineDyn(line)
       local validline = (line == sline or line < eline or esel-editor:PositionFromLine(line) > 0)
       local _, cpos = text:find("^%s*"..qlc, pos)
-      if not comment and cpos and validline then
+      if (linetoggle or not comment) and cpos and validline then
         editor:DeleteRange(cpos-#lc+editor:PositionFromLine(line), #lc)
-      elseif comment and text:find("%S") and validline then
+      elseif (linetoggle or comment) and text:find("%S") and validline then
         editor:SetTargetStart(pos+editor:PositionFromLine(line)-1)
         editor:SetTargetEnd(editor:GetTargetStart())
         editor:ReplaceTarget(lc)
