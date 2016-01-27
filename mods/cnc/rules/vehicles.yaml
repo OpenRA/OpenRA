@@ -448,6 +448,7 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
+		NoMovingFire: true
 	WithSpriteTurret:
 		AimSequence: aim
 	AutoTarget:
@@ -488,6 +489,7 @@ MLRS:
 		ReloadCount: 1
 		SelfReloadTicks: 45
 	AttackTurreted:
+		NoMovingFire: true
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
 	AutoTarget:
