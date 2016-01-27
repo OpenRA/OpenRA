@@ -999,14 +999,14 @@ wx.wxUpdateUIEvent.SetUpdateInterval(updateInterval)
 ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
-      if ide.osname == 'Macintosh' and ide.infocus and event:GetActive() then
+      local active = event:GetActive()
+      if ide.osname == 'Macintosh' and active and ide.infocus then
         -- restore focus to the last element that received it;
         -- wrap into pcall in case the element has disappeared
         -- while the application was out of focus
         pcall(function() if ide:IsWindowShown(ide.infocus) then ide.infocus:SetFocus() end end)
       end
 
-      local active = event:GetActive()
       -- save auto-recovery record when making the app inactive
       if not active then saveAutoRecovery(true) end
 
