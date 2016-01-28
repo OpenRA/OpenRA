@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, ActorEntered, ActorExited);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, WDist.Zero, ActorEntered, ActorExited);
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				cachedPosition = self.CenterPosition;
 				cachedRange = desiredRange;
-				self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, cachedPosition, cachedRange);
+				self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, cachedPosition, cachedRange, WDist.Zero);
 			}
 		}
 
