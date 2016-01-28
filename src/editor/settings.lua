@@ -59,11 +59,22 @@ function SettingsRestoreFramePosition(window, windowName)
   if (s ~= -1) and (s ~= 1) and (s ~= 2) then
     local clientX, clientY, clientWidth, clientHeight = wx.wxClientDisplayRect()
 
+    -- if left-top corner outside of the left-top side, reset it to the screen side
     if x < clientX then x = clientX end
     if y < clientY then y = clientY end
 
+    -- if the window is too wide for the screen, reset it to the screen size
     if w > clientWidth then w = clientWidth end
     if h > clientHeight then h = clientHeight end
+
+    -- if the right-bottom corner is still outside and there is only one display,
+    -- then reposition left-top corner, keeping the window centered
+    if wx.wxDisplay():GetCount() == 1 then
+      local outx = (x + w) - (clientX + clientWidth)
+      local outy = (y + h) - (clientY + clientHeight)
+      if outx > 0 then x = math.floor(0.5+(x - outx)/2) end
+      if outy > 0 then y = math.floor(0.5+(y - outy)/2) end
+    end
 
     window:SetSize(x, y, w, h)
   elseif s == 1 then
