@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// TODO: Eventually support CellTriggers as well
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, ActorEntered, ActorLeft);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, WDist.Zero, ActorEntered, ActorLeft);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld || self.CenterPosition == prevPosition)
 				return;
 
-			self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, self.CenterPosition, Info.Range);
+			self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, self.CenterPosition, Info.Range, WDist.Zero);
 			prevPosition = self.CenterPosition;
 		}
 
