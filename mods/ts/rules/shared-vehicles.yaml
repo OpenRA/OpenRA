@@ -1,5 +1,5 @@
 MCV:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -17,7 +17,6 @@ MCV:
 		Type: Light
 	Mobile:
 		Speed: 85
-		Crushes: wall, crate, infantry
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
@@ -100,7 +99,7 @@ HARV:
 			nod: harv.nod
 
 LPST:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	-AppearsOnRadar:
 	-GainsExperience:
 	Buildable:

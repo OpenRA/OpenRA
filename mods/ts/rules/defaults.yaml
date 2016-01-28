@@ -450,6 +450,11 @@
 	Inherits: ^VoxelVehicle
 	-MustBeDestroyed:
 
+^CivilianVoxelCrusher:
+	Inherits: ^CivilianVoxelVehicle
+	Mobile:
+		Crushes: wall, crate, infantry
+
 ^Aircraft:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
@@ -535,7 +540,7 @@
 		Moves: true
 		Velocity: 86
 
-^Viceroid:
+^Visceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	DrawLineToTarget:
@@ -694,6 +699,7 @@
 	Mobile:
 		TerrainSpeeds:
 			Rail: 100
+		Crushes: wall, crate, infantry
 		ROT: 5
 		Voice: Move
 		Speed: 113

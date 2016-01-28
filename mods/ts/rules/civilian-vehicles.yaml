@@ -56,7 +56,7 @@ TRUCKB:
 	Inherits: ^TRUCK
 
 ICBM:
-	Inherits: ^CivilianVoxelVehicle
+	Inherits: ^CivilianVoxelCrusher
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -79,7 +79,7 @@ ICBM:
 		Voice: Move
 
 BUS:
-	Inherits: ^CivilianVoxelVehicle
+	Inherits: ^CivilianVoxelCrusher
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -99,6 +99,7 @@ BUS:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 PICK:
 	Inherits: ^CivilianVoxelVehicle
@@ -121,6 +122,7 @@ PICK:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 CAR:
 	Inherits: ^CivilianVoxelVehicle
@@ -143,6 +145,7 @@ CAR:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 WINI:
 	Inherits: ^CivilianVoxelVehicle
@@ -165,6 +168,7 @@ WINI:
 		PipCount: 5
 		UnloadVoice: Unload
 		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 LOCOMOTIVE:
 	Inherits: ^Train
@@ -175,6 +179,7 @@ LOCOMOTIVE:
 	Cargo:
 		MaxWeight: 2
 		PipCount: 2
+		EjectOnDeath: true
 
 TRAINCAR:
 	Inherits: ^Train
@@ -185,6 +190,7 @@ TRAINCAR:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 5
+		EjectOnDeath: true
 
 CARGOCAR:
 	Inherits: ^Train
@@ -195,3 +201,4 @@ CARGOCAR:
 	Cargo:
 		MaxWeight: 10
 		PipCount: 5
+		EjectOnDeath: true

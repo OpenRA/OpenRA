@@ -1,5 +1,5 @@
 APC:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -64,7 +64,7 @@ HVR:
 	Health:
 		HP: 230
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 7c0
 	Armament:
@@ -87,7 +87,7 @@ HVR:
 		MovingInterval: 6
 
 SMECH:
-	Inherits: ^Tank
+	Inherits: ^Vehicle
 	Valued:
 		Cost: 500
 	Tooltip:
