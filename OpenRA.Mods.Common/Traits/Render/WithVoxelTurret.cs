@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var b = self.Orientation;
 			var qb = body.QuantizeOrientation(self, b);
-			yield return turreted.LocalOrientation(self) + WRot.FromYaw(b.Yaw - qb.Yaw);
+			yield return turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}
 

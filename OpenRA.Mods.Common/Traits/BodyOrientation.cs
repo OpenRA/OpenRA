@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Fudge the coordinate system angles like the early games.")]
 		public readonly bool UseClassicPerspectiveFudge = true;
 
+		[Desc("Fudge the coordinate system angles like the early games.")]
+		public readonly bool UseClassicFacingFudge = false;
+
 		public WVec LocalToWorld(WVec vec)
 		{
 			// Rotate by 90 degrees
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int QuantizeFacing(int facing, int facings)
 		{
-			return Util.QuantizeFacing(facing, facings) * (256 / facings);
+			return Util.QuantizeFacing(facing, facings, UseClassicFacingFudge) * (256 / facings);
 		}
 
 		public object Create(ActorInitializer init) { return new BodyOrientation(init, this); }

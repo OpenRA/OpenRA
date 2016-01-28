@@ -98,6 +98,8 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -157,6 +159,8 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -674,6 +678,8 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
@@ -687,6 +693,8 @@
 		Explosion: HeliCrash
 	Tooltip:
 		GenericName: Destroyed Helicopter
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Bridge:
 	AlwaysVisible:

@@ -493,6 +493,8 @@ AGUN:
 		Range: 6c0
 	WithBuildingExplosion:
 		Sequences: building, building_napalm, large_explosion, self_destruct
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 DOME:
 	Inherits: ^Building
@@ -646,7 +648,7 @@ GUN:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 12
-		InitialFacing: 50
+		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
@@ -661,6 +663,8 @@ GUN:
 		Range: 7c0
 	WithBuildingExplosion:
 		Sequences: building, building_napalm, large_explosion, self_destruct
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 FTUR:
 	Inherits: ^Defense
@@ -741,6 +745,8 @@ SAM:
 		Amount: -40
 	DetectCloaked:
 		Range: 5c0
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ATEK:
 	Inherits: ^ScienceBuilding
@@ -1066,6 +1072,7 @@ HPAD:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
 		MoveIntoWorld: false
+		Facing: 224
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter

@@ -207,7 +207,7 @@ TRAN:
 		Range: 10c0
 		Type: CenterPosition
 	Aircraft:
-		InitialFacing: 0
+		InitialFacing: 224
 		ROT: 5
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
@@ -256,7 +256,7 @@ HELI:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false
-		InitialFacing: 20
+		InitialFacing: 224
 		ROT: 4
 		Speed: 149
 	AutoTarget:
@@ -307,7 +307,7 @@ HIND:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false
-		InitialFacing: 20
+		InitialFacing: 224
 		ROT: 4
 		Speed: 112
 	AutoTarget:

@@ -13,7 +13,7 @@ TRAN:
 		LandWhenIdle: true
 		ROT: 5
 		Speed: 140
-		InitialFacing: 0
+		InitialFacing: 224
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
 	Health:
@@ -54,6 +54,7 @@ HELI:
 		Queue: Aircraft.Nod
 	Aircraft:
 		RearmBuildings: hpad
+		InitialFacing: 224
 		ROT: 4
 		Speed: 186
 	Health:
@@ -105,6 +106,7 @@ ORCA:
 		Queue: Aircraft.GDI
 	Aircraft:
 		RearmBuildings: hpad
+		InitialFacing: 224
 		ROT: 4
 		Speed: 186
 	Health:

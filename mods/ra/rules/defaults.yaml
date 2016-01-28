@@ -139,6 +139,8 @@
 		Sequence: idle
 		OpeningSequence: open
 		Offset: 0,0,200
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -401,6 +403,8 @@
 	Hovers@CRUISING:
 		UpgradeTypes: cruising
 		UpgradeMinEnabledLevel: 1
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -626,6 +630,8 @@
 	Chronoshiftable:
 	Tooltip:
 		GenericName: Destroyed Vehicle
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^PlaneHusk:
 	Inherits: ^BasicHusk
@@ -650,6 +656,8 @@
 		CruisingUpgrades: cruising
 		CanHover: True
 	FallsToEarth:
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Bridge:
 	AlwaysVisible:

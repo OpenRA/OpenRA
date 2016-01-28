@@ -98,9 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var recoil = arms.Aggregate(WDist.Zero, (a, b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WDist.Zero, WDist.Zero);
-			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
-			var turretOrientation = body.QuantizeOrientation(self, t.LocalOrientation(self));
-			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var quantizedWorldTurret = t.WorldOrientation(self);
+			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(quantizedWorldTurret));
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)

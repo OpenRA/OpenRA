@@ -658,7 +658,7 @@ GUN:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 12
-		InitialFacing: 50
+		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
@@ -672,6 +672,8 @@ GUN:
 		Range: 3c0
 	Power:
 		Amount: -20
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 SAM:
 	Inherits: ^Defense
@@ -712,6 +714,8 @@ SAM:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 OBLI:
 	Inherits: ^Defense
