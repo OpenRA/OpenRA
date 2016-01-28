@@ -55,6 +55,7 @@ ENGINEER:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
+		RepairNotification: BridgeRepaired
 	Captures:
 		CaptureTypes: building
 	-AutoTarget:
