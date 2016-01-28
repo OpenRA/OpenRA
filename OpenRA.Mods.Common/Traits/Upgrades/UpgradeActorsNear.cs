@@ -107,6 +107,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (produced.OccupiesSpace == null)
 				return;
 
+			// We don't grant upgrades when disabled
+			if (self.IsDisabled())
+				return;
+
 			// Work around for actors produced within the region not triggering until the second tick
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.LengthSquared)
 			{
