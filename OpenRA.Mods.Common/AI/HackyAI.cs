@@ -702,9 +702,7 @@ namespace OpenRA.Mods.Common.AI
 				{
 					var act = harvester.GetCurrentActivity();
 
-					// A Wait activity is technically idle:
-					if ((act.GetType() != typeof(Wait)) &&
-						(act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources)))
+					if (act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
 						continue;
 				}
 
