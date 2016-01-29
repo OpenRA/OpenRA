@@ -127,6 +127,7 @@ local function createMarkersWindow()
               return -- don't activate the editor when the breakpoint is toggled
             end
             editor:GotoLine(line-1)
+            editor:EnsureVisibleEnforcePolicy(line-1)
           end
           ide:GetDocument(editor):SetActive()
         end
