@@ -19,7 +19,6 @@ namespace OpenRA.FileSystem
 {
 	public class FileSystem
 	{
-		public readonly List<string> PackagePaths = new List<string>();
 		public readonly List<IReadOnlyPackage> MountedPackages = new List<IReadOnlyPackage>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
@@ -92,7 +91,6 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			PackagePaths.Add(name);
 			Action a = () => MountInner(OpenPackage(name, annotation, order++));
 
 			if (optional)
@@ -131,7 +129,6 @@ namespace OpenRA.FileSystem
 				package.Dispose();
 
 			MountedPackages.Clear();
-			PackagePaths.Clear();
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
