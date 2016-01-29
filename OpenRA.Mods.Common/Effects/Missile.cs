@@ -41,14 +41,14 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Maximum vertical launch angle (pitch).")]
 		public readonly WAngle MaximumLaunchAngle = new WAngle(128);
 
-		[Desc("Minimum launch speed in WDist / tick")]
-		public readonly WDist MinimumLaunchSpeed = new WDist(75);
+		[Desc("Minimum launch speed in WDist / tick. Defaults to Speed if -1.")]
+		public readonly WDist MinimumLaunchSpeed = new WDist(-1);
 
-		[Desc("Maximum launch speed in WDist / tick")]
-		public readonly WDist MaximumLaunchSpeed = new WDist(200);
+		[Desc("Maximum launch speed in WDist / tick. Defaults to Speed if -1.")]
+		public readonly WDist MaximumLaunchSpeed = new WDist(-1);
 
 		[Desc("Maximum projectile speed in WDist / tick")]
-		public readonly WDist MaximumSpeed = new WDist(384);
+		public readonly WDist Speed = new WDist(384);
 
 		[Desc("Projectile acceleration when propulsion activated.")]
 		public readonly WDist Acceleration = new WDist(5);
@@ -243,7 +243,9 @@ namespace OpenRA.Mods.Common.Effects
 		void DetermineLaunchSpeedAndAngleForIncline(int predClfDist, int diffClfMslHgt, int relTarHorDist,
 			out int speed, out int vFacing)
 		{
-			speed = info.MaximumLaunchSpeed.Length;
+			var minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
+			var maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 
 			// Find smallest vertical facing, for which the missile will be able to climb terrAltDiff w-units
 			// within hHeightChange w-units all the while ending the ascent with vertical facing 0
@@ -253,7 +255,7 @@ namespace OpenRA.Mods.Common.Effects
 			// to hit the target without passing it by (and thus having to do horizontal loops)
 			var minSpeed = ((System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
 					(relTarHorDist + predClfDist) * 1024 / (2 * (2048 - WAngle.FromFacing(vFacing).Sin())))
-				* info.VerticalRateOfTurn * 157) / 6400).Clamp(info.MinimumLaunchSpeed.Length, info.MaximumLaunchSpeed.Length);
+				* info.VerticalRateOfTurn * 157) / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
 
 			if ((sbyte)vFacing < 0)
 				speed = minSpeed;
@@ -263,7 +265,7 @@ namespace OpenRA.Mods.Common.Effects
 				// Find highest speed greater than the above minimum that allows the missile
 				// to surmount the incline
 				var vFac = vFacing;
-				speed = BisectionSearch(minSpeed, info.MaximumLaunchSpeed.Length, spd =>
+				speed = BisectionSearch(minSpeed, maxLaunchSpeed, spd =>
 				{
 					var lpRds = LoopRadius(spd, info.VerticalRateOfTurn);
 					return WillClimbWithinDistance(vFac, lpRds, predClfDist, diffClfMslHgt)
@@ -284,7 +286,7 @@ namespace OpenRA.Mods.Common.Effects
 		// TODO: Double check Launch parameter determination
 		void DetermineLaunchSpeedAndAngle(World world, out int speed, out int vFacing)
 		{
-			speed = info.MaximumLaunchSpeed.Length;
+			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
 
 			// Compute current distance from target position
@@ -303,7 +305,7 @@ namespace OpenRA.Mods.Common.Effects
 			else if (lastHt != 0)
 			{
 				vFacing = System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0);
-				speed = info.MaximumLaunchSpeed.Length;
+				speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			}
 			else
 			{
@@ -397,7 +399,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void ChangeSpeed(int sign = 1)
 		{
-			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.MaximumSpeed.Length);
+			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.Speed.Length);
 
 			// Compute the vertical loop radius
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
@@ -408,7 +410,7 @@ namespace OpenRA.Mods.Common.Effects
 			// Compute the projectile's freefall displacement
 			var move = velocity + gravity / 2;
 			velocity += gravity;
-			var velRatio = info.MaximumSpeed.Length * 1024 / velocity.Length;
+			var velRatio = info.Speed.Length * 1024 / velocity.Length;
 			if (velRatio < 1024)
 				velocity = velocity * velRatio / 1024;
 
