@@ -7,7 +7,7 @@ Maverick:
 	BurstDelay: 7
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		MaximumLaunchSpeed: 256
+		Speed: 256
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
@@ -43,7 +43,7 @@ Dragon:
 	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		MaximumLaunchSpeed: 213
+		Speed: 213
 		Arm: 2
 		Blockable: false
 		TrailImage: smokey
@@ -82,7 +82,7 @@ HellfireAG:
 	BurstDelay: 10
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		MaximumLaunchSpeed: 256
+		Speed: 256
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
@@ -120,7 +120,7 @@ HellfireAA:
 	BurstDelay: 10
 	ValidTargets: Air
 	Projectile: Missile
-		MaximumLaunchSpeed: 384
+		Speed: 384
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
@@ -156,7 +156,7 @@ MammothTusk:
 	Burst: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile
-		MaximumLaunchSpeed: 341
+		Speed: 341
 		Arm: 2
 		Blockable: false
 		ContrailLength: 10
@@ -201,7 +201,7 @@ Nike:
 		Image: MISSILE
 		HorizontalRateOfTurn: 25
 		RangeLimit: 50
-		MaximumLaunchSpeed: 341
+		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -229,7 +229,7 @@ RedEye:
 		Image: MISSILE
 		HorizontalRateOfTurn: 20
 		RangeLimit: 30
-		MaximumLaunchSpeed: 298
+		Speed: 298
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -293,7 +293,7 @@ Stinger:
 		Image: DRAGON
 		HorizontalRateOfTurn: 20
 		RangeLimit: 50
-		MaximumLaunchSpeed: 170
+		Speed: 170
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -333,7 +333,7 @@ StingerAA:
 		Image: DRAGON
 		HorizontalRateOfTurn: 20
 		RangeLimit: 50
-		MaximumLaunchSpeed: 255
+		Speed: 255
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -369,7 +369,7 @@ TorpTube:
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3
-		MaximumLaunchSpeed: 85
+		Speed: 85
 		TrailImage: bubbles
 		HorizontalRateOfTurn: 1
 		RangeLimit: 160
@@ -441,7 +441,7 @@ APTusk:
 	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
-		MaximumLaunchSpeed: 298
+		Speed: 298
 		Arm: 2
 		Blockable: false
 		TrailImage: smokey
