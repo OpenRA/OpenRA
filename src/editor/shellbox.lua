@@ -498,7 +498,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         end
         currentHistory = getPromptLine() -- reset history
         return -- don't need to do anything else with return
-      else
+      elseif event:GetModifiers() == wx.wxMOD_NONE or out:GetSelectedText() == "" then
         -- move cursor to end if not already there
         if not caretOnPromptLine() then
           out:GotoPos(out:GetLength())
