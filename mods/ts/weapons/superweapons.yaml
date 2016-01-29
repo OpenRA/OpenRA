@@ -13,6 +13,8 @@ MultiCluster:
 		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
