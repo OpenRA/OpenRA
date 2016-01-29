@@ -3451,6 +3451,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename some speed-related Missile properties
+				if (engineVersion < 20160205)
+				{
+					var mod = Game.ModData.Manifest.Mod.Id;
+					if (mod == "ts")
+					{
+						if (node.Key == "Projectile" && node.Value.Value == "Missile")
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("MinimumLaunchSpeed", "75"));
+							node.Value.Nodes.Add(new MiniYamlNode("Speed", "384"));
+						}
+					}
+					else
+					{
+						if (node.Key == "MaximumLaunchSpeed" && parent.Value.Value == "Missile")
+							node.Key = "Speed";
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
