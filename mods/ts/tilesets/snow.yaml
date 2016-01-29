@@ -13,6 +13,7 @@ Terrain:
 		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: C7C9FA
 		TargetTypes: Ground
+		RestrictPlayerColor: true
 	TerrainType@Road:
 		Type: Road
 		Color: 2D2B28
@@ -30,6 +31,7 @@ Terrain:
 		Color: 3D4148
 		TargetTypes: Water
 		IsWater: True
+		RestrictPlayerColor: true
 	TerrainType@DirtRoad:
 		Type: DirtRoad
 		Color: 82838F
@@ -47,11 +49,13 @@ Terrain:
 		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 009000
 		TargetTypes: Ground
+		RestrictPlayerColor: true
 	TerrainType@BlueTiberium:
 		Type: BlueTiberium
 		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
 		Color: 202080
 		TargetTypes: Ground
+		RestrictPlayerColor: true
 	TerrainType@Veins:
 		Type: Veins
 		Color: 000000

@@ -33,6 +33,7 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: RockCrater
 		Color: CE8C42
+		RestrictPlayerColor: true
 	TerrainType@Rough:
 		Type: Rough
 		TargetTypes: Ground
@@ -43,10 +44,12 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: SandCrater
 		Color: D0C0A0
+		RestrictPlayerColor: true
 	TerrainType@Spice:
 		Type: Spice
 		TargetTypes: Ground
 		Color: EF944A
+		RestrictPlayerColor: true
 	TerrainType@Transition:
 		Type: Transition
 		TargetTypes: Ground

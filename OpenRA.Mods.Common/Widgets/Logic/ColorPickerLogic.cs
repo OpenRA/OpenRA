@@ -56,7 +56,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 			// Set the initial state
+			var validator = Game.ModData.Manifest.Get<ColorValidator>();
+			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
 			mixer.Set(initialColor);
+
 			hueSlider.Value = initialColor.H / 255f;
 			onChange(mixer.Color);
 		}

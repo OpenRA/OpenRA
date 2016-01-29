@@ -14,11 +14,13 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 54FCFC
+		RestrictPlayerColor: true
 	TerrainType@Clear:
 		Type: Clear
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 865F45
+		RestrictPlayerColor: true
 	TerrainType@River:
 		Type: River
 		TargetTypes: Ground
@@ -42,6 +44,7 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: Crater, Scorch
 		Color: A1E21C
+		RestrictPlayerColor: true
 	TerrainType@Tree:
 		Type: Tree
 		TargetTypes: Ground
@@ -56,6 +59,7 @@ Terrain:
 		TargetTypes: Water
 		IsWater: True
 		Color: 5DA5CE
+		RestrictPlayerColor: true
 
 Templates:
 	Template@255:

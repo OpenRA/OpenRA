@@ -162,7 +162,6 @@ ServerTraits:
 	PlayerPinger
 	MasterServerPinger
 	LobbySettingsNotification
-	ColorValidator
 
 LobbyDefaults:
 	AllowCheats: false
@@ -240,3 +239,5 @@ GameSpeeds:
 		Name: Fastest
 		Timestep: 20
 		OrderLatency: 6
+
+ColorValidator:
