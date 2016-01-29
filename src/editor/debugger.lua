@@ -245,9 +245,10 @@ local function debuggerToggleViews(show)
     local bar = view == 'toolbar'
     local pane = mgr:GetPane(view)
     if show then -- starting debugging and pane is not shown
-      debugger.toggleview[view] = not pane:IsShown()
-      if debugger.toggleview[view] and (needed or bar)
-      and (not bar or not ide.frame:IsFullScreen()) then
+      -- show toolbar during debugging if hidden and not fullscreen
+      debugger.toggleview[view] = (not pane:IsShown()
+        and (not bar or not ide.frame:IsFullScreen()))
+      if debugger.toggleview[view] and (needed or bar) then
         pane:Show()
         refresh = true
       end
