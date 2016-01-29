@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.628,
+  _VERSION = 0.63,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -1180,7 +1180,7 @@ local function handle(params, client, options)
       local breakpoint = client:receive()
       if not breakpoint then
         print("Program finished")
-        return
+        return nil, nil, false
       end
       local _, _, status = string.find(breakpoint, "^(%d+)")
       if status == "200" then
@@ -1548,7 +1548,7 @@ local function listen(host, port)
   while true do
     io.write("> ")
     local file, line, err = handle(io.read("*line"), client)
-    if not file and not err then break end -- completed debugging
+    if not file and err == false then break end -- completed debugging
   end
 
   client:close()
