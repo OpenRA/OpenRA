@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
 			{
 				if (Info.FallbackSequence != null)
-					SpawnDeathAnimation(self, Info.FallbackSequence, palette);
+					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette);
 
 				return;
 			}
@@ -102,16 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 				sequence += Info.DeathTypes[damageType];
 			}
 
-			SpawnDeathAnimation(self, sequence, palette);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, palette);
 		}
 
-		public void SpawnDeathAnimation(Actor self, string sequence, string palette)
+		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette)
 		{
-			self.World.AddFrameEndTask(w =>
-			{
-				if (!self.Disposed)
-					w.Add(new Corpse(w, self.CenterPosition, rs.GetImage(self), sequence, palette));
-			});
+			self.World.AddFrameEndTask(w => w.Add(new Corpse(w, pos, image, sequence, palette)));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
@@ -125,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CrushedPaletteIsPlayerPalette)
 				crushPalette += self.Owner.InternalName;
 
-			SpawnDeathAnimation(self, Info.CrushedSequence, crushPalette);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, crushPalette);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
