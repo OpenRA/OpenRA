@@ -10,18 +10,29 @@
 
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
 	public sealed class D2kSoundResources : IReadOnlyPackage
 	{
+		struct Entry
+		{
+			public readonly uint Offset;
+			public readonly uint Length;
+
+			public Entry(uint offset, uint length)
+			{
+				Offset = offset;
+				Length = length;
+			}
+		}
+
 		readonly Stream s;
 
 		readonly string filename;
-		readonly List<string> filenames;
 		readonly int priority;
-
-		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
+		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 
 		public D2kSoundResources(FileSystem context, string filename, int priority)
 		{
@@ -31,20 +42,13 @@ namespace OpenRA.FileSystem
 			s = context.Open(filename);
 			try
 			{
-				filenames = new List<string>();
-
 				var headerLength = s.ReadUInt32();
 				while (s.Position < headerLength + 4)
 				{
 					var name = s.ReadASCIIZ();
 					var offset = s.ReadUInt32();
 					var length = s.ReadUInt32();
-
-					var hash = PackageEntry.HashFilename(name, PackageHashType.Classic);
-					if (!index.ContainsKey(hash))
-						index.Add(hash, new PackageEntry(hash, offset, length));
-
-					filenames.Add(name);
+					index.Add(name, new Entry(offset, length));
 				}
 			}
 			catch
@@ -54,44 +58,29 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(uint hash)
+		public Stream GetContent(string filename)
 		{
-			PackageEntry e;
-			if (!index.TryGetValue(hash, out e))
+			Entry e;
+			if (!index.TryGetValue(filename, out e))
 				return null;
 
 			s.Seek(e.Offset, SeekOrigin.Begin);
 			return new MemoryStream(s.ReadBytes((int)e.Length));
 		}
 
-		public Stream GetContent(string filename)
-		{
-			return GetContent(PackageEntry.HashFilename(filename, PackageHashType.Classic));
-		}
-
 		public bool Exists(string filename)
 		{
-			return index.ContainsKey(PackageEntry.HashFilename(filename, PackageHashType.Classic));
+			return index.ContainsKey(filename);
 		}
 
 		public IEnumerable<string> AllFileNames()
 		{
-			return filenames;
+			return index.Keys;
 		}
 
 		public string Name { get { return filename; } }
 
 		public int Priority { get { return 1000 + priority; } }
-
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return index.Keys;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
 
 		public void Dispose()
 		{

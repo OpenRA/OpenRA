@@ -170,23 +170,6 @@ namespace OpenRA.FileSystem
 			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
-		static readonly uint[] Nothing = { };
-		public IEnumerable<uint> ClassicHashes()
-		{
-			if (type == PackageHashType.Classic)
-				return index.Keys;
-
-			return Nothing;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			if (type == PackageHashType.CRC32)
-				return index.Keys;
-
-			return Nothing;
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			var lookup = new Dictionary<uint, string>();

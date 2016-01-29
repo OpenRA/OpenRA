@@ -37,9 +37,26 @@ namespace OpenRA.Mods.Common
 			return volumes.FirstOrDefault(isValidDisk);
 		}
 
+		static string GetFileName(string path, ContentInstaller.FilenameCase caseModifier)
+		{
+			// Gets the file path, splitting on both / and \
+			var index = path.LastIndexOfAny(new[] { '\\', '/' });
+			var output = path.Substring(index + 1);
+
+			switch (caseModifier)
+			{
+				case ContentInstaller.FilenameCase.ForceLower:
+					return output.ToLowerInvariant();
+				case ContentInstaller.FilenameCase.ForceUpper:
+					return output.ToUpperInvariant();
+				default:
+					return output;
+			}
+		}
+
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
 		public static bool ExtractFromPackage(string srcPath, string package, string annotation, Dictionary<string, string[]> filesByDirectory,
-			string destPath, bool overwrite, Action<string> onProgress, Action<string> onError)
+			string destPath, bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
 		{
 			Directory.CreateDirectory(destPath);
 
@@ -55,7 +72,7 @@ namespace OpenRA.Mods.Common
 				foreach (var file in directory.Value)
 				{
 					var containingDir = Path.Combine(destPath, targetDir);
-					var dest = Path.Combine(containingDir, file.ToLowerInvariant());
+					var dest = Path.Combine(containingDir, GetFileName(file, caseModifier));
 					if (File.Exists(dest))
 					{
 						if (overwrite)
@@ -83,7 +100,7 @@ namespace OpenRA.Mods.Common
 		}
 
 		public static bool CopyFiles(string srcPath, Dictionary<string, string[]> files, string destPath,
-			bool overwrite, Action<string> onProgress, Action<string> onError)
+			bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
 		{
 			Directory.CreateDirectory(destPath);
 
@@ -100,9 +117,9 @@ namespace OpenRA.Mods.Common
 						return false;
 					}
 
-					var destFile = Path.GetFileName(file);
+					var destFile = GetFileName(file, caseModifier);
 					var containingDir = Path.Combine(destPath, targetDir);
-					var dest = Path.Combine(containingDir, destFile.ToLowerInvariant());
+					var dest = Path.Combine(containingDir, destFile);
 					if (File.Exists(dest) && !overwrite)
 					{
 						Log.Write("debug", "Skipping {0}".F(dest));

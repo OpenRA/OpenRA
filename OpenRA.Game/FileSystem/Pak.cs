@@ -70,17 +70,6 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(data);
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			foreach (var filename in index.Keys)
-				yield return PackageEntry.HashFilename(filename, PackageHashType.Classic);
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			foreach (var filename in index.Keys)

@@ -18,8 +18,6 @@ namespace OpenRA.FileSystem
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
-		IEnumerable<uint> ClassicHashes();
-		IEnumerable<uint> CrcHashes();
 		IEnumerable<string> AllFileNames();
 		int Priority { get; }
 		string Name { get; }

@@ -19,14 +19,12 @@ namespace OpenRA.FileSystem
 {
 	public class FileSystem
 	{
-		public readonly List<string> PackagePaths = new List<string>();
 		public readonly List<IReadOnlyPackage> MountedPackages = new List<IReadOnlyPackage>();
 
 		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 
 		int order;
-		Cache<uint, List<IReadOnlyPackage>> crcHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
-		Cache<uint, List<IReadOnlyPackage>> classicHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
 		public IReadWritePackage CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
@@ -93,7 +91,6 @@ namespace OpenRA.FileSystem
 
 			name = Platform.ResolvePath(name);
 
-			PackagePaths.Add(name);
 			Action a = () => MountInner(OpenPackage(name, annotation, order++));
 
 			if (optional)
@@ -107,27 +104,23 @@ namespace OpenRA.FileSystem
 		{
 			MountedPackages.Add(package);
 
-			foreach (var hash in package.ClassicHashes())
+			foreach (var filename in package.AllFileNames())
 			{
-				var packageList = classicHashIndex[hash];
-				if (!packageList.Contains(package))
-					packageList.Add(package);
-			}
-
-			foreach (var hash in package.CrcHashes())
-			{
-				var packageList = crcHashIndex[hash];
+				var packageList = fileIndex[filename];
 				if (!packageList.Contains(package))
 					packageList.Add(package);
 			}
 		}
 
-		public bool Unmount(IReadOnlyPackage mount)
+		public bool Unmount(IReadOnlyPackage package)
 		{
-			if (MountedPackages.Contains(mount))
-				mount.Dispose();
+			foreach (var packagesForFile in fileIndex.Values)
+				packagesForFile.RemoveAll(p => p == package);
 
-			return MountedPackages.RemoveAll(f => f == mount) > 0;
+			if (MountedPackages.Contains(package))
+				package.Dispose();
+
+			return MountedPackages.RemoveAll(p => p == package) > 0;
 		}
 
 		public void UnmountAll()
@@ -136,9 +129,7 @@ namespace OpenRA.FileSystem
 				package.Dispose();
 
 			MountedPackages.Clear();
-			PackagePaths.Clear();
-			classicHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
-			crcHashIndex = new Cache<uint, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
 		public void LoadFromManifest(Manifest manifest)
@@ -151,10 +142,9 @@ namespace OpenRA.FileSystem
 				Mount(pkg.Key, pkg.Value);
 		}
 
-		Stream GetFromCache(PackageHashType type, string filename)
+		Stream GetFromCache(string filename)
 		{
-			var index = type == PackageHashType.CRC32 ? crcHashIndex : classicHashIndex;
-			var package = index[PackageEntry.HashFilename(filename, type)]
+			var package = fileIndex[filename]
 				.Where(x => x.Exists(filename))
 				.MinByOrDefault(x => x.Priority);
 
@@ -191,11 +181,7 @@ namespace OpenRA.FileSystem
 			// TODO: This disables caching for explicit package requests
 			if (filename.IndexOfAny(new[] { '/', '\\' }) == -1 && !explicitPackage)
 			{
-				s = GetFromCache(PackageHashType.Classic, filename);
-				if (s != null)
-					return true;
-
-				s = GetFromCache(PackageHashType.CRC32, filename);
+				s = GetFromCache(filename);
 				if (s != null)
 					return true;
 			}

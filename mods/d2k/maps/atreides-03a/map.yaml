@@ -19,7 +19,7 @@ Visibility: MissionSelector
 Type: Campaign
 
 Videos:
-	Briefing: a_br03_e.vqa
+	Briefing: A_BR03_E.VQA
 
 Options:
 	Crates: False

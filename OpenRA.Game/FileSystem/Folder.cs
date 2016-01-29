@@ -43,17 +43,6 @@ namespace OpenRA.FileSystem
 			catch { return null; }
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
-				yield return PackageEntry.HashFilename(Path.GetFileName(filename), PackageHashType.Classic);
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))

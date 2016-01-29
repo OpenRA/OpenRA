@@ -71,17 +71,6 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			foreach (ZipEntry entry in pkg)
-				yield return PackageEntry.HashFilename(entry.Name, PackageHashType.Classic);
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			foreach (ZipEntry entry in pkg)

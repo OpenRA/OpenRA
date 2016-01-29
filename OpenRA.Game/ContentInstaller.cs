@@ -15,11 +15,14 @@ namespace OpenRA
 	// Referenced from ModMetadata, so needs to be in OpenRA.Game :(
 	public class ContentInstaller : IGlobalModData
 	{
+		public enum FilenameCase { Input, ForceLower, ForceUpper }
+
 		public readonly string[] TestFiles = { };
 		public readonly string[] DiskTestFiles = { };
 		public readonly string PackageToExtractFromCD = null;
 		public readonly bool OverwriteFiles = true;
 
+		public readonly FilenameCase OutputFilenameCase = FilenameCase.ForceLower;
 		public readonly Dictionary<string, string[]> CopyFilesFromCD = new Dictionary<string, string[]>();
 		public readonly Dictionary<string, string[]> ExtractFilesFromCD = new Dictionary<string, string[]>();
 

@@ -96,16 +96,6 @@ namespace OpenRA.FileSystem
 			return entries.ContainsKey(filename);
 		}
 
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return entries.Keys.Select(filename => PackageEntry.HashFilename(filename, PackageHashType.Classic));
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			return Enumerable.Empty<uint>();
-		}
-
 		public IEnumerable<string> AllFileNames()
 		{
 			return entries.Keys;

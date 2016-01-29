@@ -146,13 +146,11 @@ LoadScreen: CncLoadScreen
 
 ContentInstaller:
 	TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-	FilesToCopy: CONQUER.MIX, DESERT.MIX, SCORES.MIX, SOUNDS.MIX, TEMPERAT.MIX, WINTER.MIX
-	FilesToExtract: speech.mix, tempicnh.mix, transit.mix
 	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt
 	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
 	PackageToExtractFromCD: install/setup.z
 	ExtractFilesFromCD:
-		.: speech.mix, tempicnh.mix, transit.mix
+		.: C&C95\SPEECH.MIX, C&C95\TEMPICNH.MIX, C&C95\TRANSIT.MIX
 	CopyFilesFromCD:
 		.: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
 	ShippedSoundtracks: 4
