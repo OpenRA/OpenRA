@@ -406,7 +406,7 @@ NAWAST:
 		Description: Processes Veins\ninto useable resources.
 	Buildable:
 		BuildPaletteOrder: 110
-		Prerequisites: namisl
+		Prerequisites: namisl, ~structures.nod
 		Queue: Building
 		BuildLimit: 1
 	Building:
