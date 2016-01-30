@@ -32,37 +32,7 @@ vice:
 	icon: viceicnh
 
 pvice:
-	idle:
-		Length: *
-	muzzle:
-		Combine:
-			chem-n:
-				Length: *
-				Offset: 1,2
-			chem-nw:
-				Length: *
-				Offset: 8,2
-			chem-w:
-				Length: *
-				Offset: 8,-3
-			chem-sw:
-				Length: *
-				Offset: 7,-6
-			chem-s:
-				Length: *
-				Offset: 1,-6
-			chem-se:
-				Length: *
-				Offset: -5,-6
-			chem-e:
-				Length: *
-				Offset: -7,-3
-			chem-ne:
-				Length: *
-				Offset: -3,2
-		Facings: 8
-		Length: 13
-	icon: viceicnh
+	Inherits: vice
 
 e1:
 	stand:
