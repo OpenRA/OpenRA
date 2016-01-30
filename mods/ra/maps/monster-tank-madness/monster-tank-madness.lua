@@ -124,11 +124,9 @@ LandingPossible = function()
 end
 
 SuperTankDomeInfiltrated = function()
-	turkey.SetStance(player, "Ally")
-	turkey.SetStance(neutral, "Ally")
-
 	SuperTankAttack = true
 	Utils.Do(SuperTanks, function(tnk)
+		tnk.Owner = friendlyMadTanks
 		if not tnk.IsDead then
 			Trigger.ClearAll(tnk)
 			tnk.Stop()
@@ -276,6 +274,7 @@ InitPlayers = function()
 	ussr = Player.GetPlayer("USSR")
 	ukraine = Player.GetPlayer("Ukraine")
 	turkey = Player.GetPlayer("Turkey")
+	friendlyMadTanks = Player.GetPlayer("FriendlyMadTanks")
 
 	player.Cash = 0
 	ussr.Cash = 2000
