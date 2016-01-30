@@ -221,6 +221,7 @@ LobbyDefaults:
 	Fog: true
 
 ChromeMetrics:
+	./mods/common/metrics.yaml
 	./mods/ts/metrics.yaml
 
 Fonts:

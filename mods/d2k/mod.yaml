@@ -164,6 +164,7 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
+	./mods/common/metrics.yaml
 	d2k:metrics.yaml
 
 Fonts:

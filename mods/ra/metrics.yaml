@@ -22,10 +22,6 @@ Metrics:
 	TextContrastColor: 000000
 	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	ColorPickerActorType: ^fact.colorpicker
-	SpawnFont: TinyBold
-	SpawnColor: FFFFFF
-	SpawnContrastColor: 000000
-	SpawnLabelOffset: 0,1
 	FactionSuffix-allies: allies
 	FactionSuffix-england: allies
 	FactionSuffix-france: allies
@@ -34,16 +30,4 @@ Metrics:
 	FactionSuffix-russia: soviet
 	FactionSuffix-ukraine: soviet
 	IncompatibleVersionColor: D3D3D3
-	IncompatibleGameColor: A9A9A9
-	ProtectedGameColor: FF0000
 	IncompatibleProtectedGameColor: B22222
-	WaitingGameColor: 00FF00
-	IncompatibleWaitingGameColor: 32CD32
-	GameStartedColor: FFA500
-	IncompatibleGameStartedColor: D2691E
-	GlobalChatTextColor: FFFFFF
-	GlobalChatNotificationColor: D3D3D3
-	PlayerStanceColorSelf: 32CD32
-	PlayerStanceColorAllies: FFFF00
-	PlayerStanceColorEnemies: FF0000
-	PlayerStanceColorNeutrals: D2B48C

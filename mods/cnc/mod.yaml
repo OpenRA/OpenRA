@@ -173,6 +173,7 @@ LobbyDefaults:
 	TechLevel: Unrestricted
 
 ChromeMetrics:
+	./mods/common/metrics.yaml
 	./mods/cnc/metrics.yaml
 
 Fonts:
