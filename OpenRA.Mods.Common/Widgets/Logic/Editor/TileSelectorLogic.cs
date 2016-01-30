@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class TileSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
+		readonly Widget tileSelectorContainer;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
 
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var tileset = modRules.TileSets[worldRenderer.World.Map.Tileset];
 
+			tileSelectorContainer = widget;
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");
 			itemTemplate = panel.Get<ScrollItemWidget>("TILEPREVIEW_TEMPLATE");
@@ -48,6 +50,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tileCategorySelector.Text = categories.First();
 			IntializeTilePreview(widget, worldRenderer, tileset, categories.First());
+		}
+
+		public void SwitchCategory(WorldRenderer worldRenderer, TileSet tileset, string category)
+		{
+			var tileCategorySelector = tileSelectorContainer.Get<DropDownButtonWidget>("TILE_CATEGORY");
+			tileCategorySelector.Text = category;
+			IntializeTilePreview(tileSelectorContainer, worldRenderer, tileset, category);
 		}
 
 		void IntializeTilePreview(Widget widget, WorldRenderer worldRenderer, TileSet tileset, string category)

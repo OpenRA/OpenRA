@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly EditorDefaultBrush defaultBrush;
+		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		bool enableTooltips;
@@ -30,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public EditorViewportControllerWidget(World world, WorldRenderer worldRenderer)
 		{
+			this.world = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
@@ -71,6 +73,21 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
+			{
+				var map = world.Map;
+				var mapTiles = map.MapTiles.Value;
+				var mapHeight = map.MapHeight.Value;
+				var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+
+				var tileset = map.Rules.TileSets[worldRenderer.World.Map.Tileset];
+
+				string category = tileset.Templates[mapTiles[cell].Type].Category;
+				var tileSelectorWidget = this.Parent.Get<ContainerWidget>("TILE_WIDGETS");
+
+				var logic = (Logic.TileSelectorLogic)(tileSelectorWidget.LogicObjects[0]);
+				logic.SwitchCategory(worldRenderer, tileset, category);
+			}
 			if (CurrentBrush.HandleMouseInput(mi))
 				return true;
 
