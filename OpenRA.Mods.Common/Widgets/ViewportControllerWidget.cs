@@ -189,6 +189,11 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		bool IsZoomAllowed(float zoom)
+		{
+			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer.Spectating;
+		}
+
 		void Zoom(int direction)
 		{
 			float[] zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
@@ -204,7 +209,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var zoom = zoomSteps.ElementAt(nextIndex);
-			if (!this.world.IsGameOver && zoom < 1.0f)
+			if (!IsZoomAllowed(zoom))
 				return;
 
 			worldRenderer.Viewport.Zoom = zoom;
