@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -18,6 +19,7 @@ using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -26,6 +28,14 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
+		struct StanceColors
+		{
+			public Color Self;
+			public Color Allies;
+			public Color Enemies;
+			public Color Neutrals;
+		}
+
 		public readonly Actor PlayerActor;
 		public readonly HSLColor Color;
 
@@ -50,6 +60,7 @@ namespace OpenRA
 		public World World { get; private set; }
 
 		readonly IFogVisibilityModifier[] fogVisibilities;
+		readonly StanceColors stanceColors;
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
 		{
@@ -127,6 +138,11 @@ namespace OpenRA
 				else
 					logic.Activate(this);
 			}
+
+			stanceColors.Self = ChromeMetrics.Get<Color>("PlayerStanceColorSelf");
+			stanceColors.Allies = ChromeMetrics.Get<Color>("PlayerStanceColorAllies");
+			stanceColors.Enemies = ChromeMetrics.Get<Color>("PlayerStanceColorEnemies");
+			stanceColors.Neutrals = ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
 		}
 
 		public override string ToString()
@@ -179,6 +195,31 @@ namespace OpenRA
 
 				return false;
 			}
+		}
+
+		public Color PlayerStanceColor(Actor a)
+		{
+			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
+			if (player != null && !player.Spectating)
+			{
+				var apparentOwner = a.EffectiveOwner != null && a.EffectiveOwner.Disguised
+					? a.EffectiveOwner.Owner
+					: a.Owner;
+
+				if (a.Owner.IsAlliedWith(a.World.RenderPlayer))
+					apparentOwner = a.Owner;
+
+				if (apparentOwner == player)
+					return stanceColors.Self;
+
+				if (apparentOwner.IsAlliedWith(player))
+					return stanceColors.Allies;
+
+				if (!apparentOwner.NonCombatant)
+					return stanceColors.Enemies;
+			}
+
+			return stanceColors.Neutrals;
 		}
 
 		#region Scripting interface

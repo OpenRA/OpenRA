@@ -158,13 +158,13 @@ Background@SETTINGS_PANEL:
 					Y: 157
 					Height: 25
 					Text: FPS
-				Checkbox@TEAM_HEALTH_COLORS_CHECKBOX:
+				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
 					X: 310
 					Y: 195
 					Width: 200
 					Height: 20
 					Font: Regular
-					Text: Team Health Colors
+					Text: Player Stance Colors
 				Checkbox@SHOW_SHELLMAP:
 					X: 15
 					Y: 195

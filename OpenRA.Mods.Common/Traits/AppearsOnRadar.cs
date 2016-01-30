@@ -40,7 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
 		{
-			var color = modifier != null ? modifier.RadarColorOverride(self) : self.Owner.Color.RGB;
+			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color.RGB;
+			if (modifier != null)
+				color = modifier.RadarColorOverride(self, color);
 
 			if (info.UseLocation)
 				return new[] { Pair.New(self.Location, color) };

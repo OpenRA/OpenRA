@@ -36,3 +36,7 @@ Metrics:
 	IncompatibleGameStartedColor: D2691E
 	GlobalChatTextColor: FFFFFF
 	GlobalChatNotificationColor: D3D3D3
+	PlayerStanceColorSelf: 32CD32
+	PlayerStanceColorAllies: FFFF00
+	PlayerStanceColorEnemies: FF0000
+	PlayerStanceColorNeutrals: D2B48C
