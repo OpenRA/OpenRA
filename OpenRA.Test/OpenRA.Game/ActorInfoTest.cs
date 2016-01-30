@@ -31,6 +31,8 @@ namespace OpenRA.Test
 	class MockB2Info : MockTraitInfo { }
 	class MockC2Info : MockTraitInfo { }
 
+	class MockStringInfo : MockTraitInfo { public string AString = null; }
+
 	[TestFixture]
 	public class ActorInfoTest
 	{
@@ -140,6 +142,29 @@ Actor:
 
 			var actorInfo = CreateActorInfoFromYaml("Actor", null, baseYaml, overrideYaml);
 			Assert.IsFalse(actorInfo.HasTraitInfo<MockA2Info>(), "Actor should not have the MockA2 trait, but does.");
+		}
+
+		[TestCase(TestName = "Trait can be removed and later overridden")]
+		public void TraitCanBeRemovedAndLaterOverridden()
+		{
+			var baseYaml = @"
+^BaseA:
+    MockString:
+        AString: ""Base""
+Actor:
+    Inherits: ^BaseA
+    -MockString:
+";
+			var overrideYaml = @"
+Actor:
+    MockString:
+        AString: ""Override""
+";
+
+			var actorInfo = CreateActorInfoFromYaml("Actor", null, baseYaml, overrideYaml);
+			Assert.IsTrue(actorInfo.HasTraitInfo<MockStringInfo>(), "Actor should have the MockStringInfo trait, but does not.");
+			Assert.IsTrue(actorInfo.TraitInfo<MockStringInfo>().AString == "\"Override\"",
+				"MockStringInfo trait has not been set with the correct override value for AString.");
 		}
 
 		// This needs to match the logic used in RulesetCache.LoadYamlRules
