@@ -23,11 +23,7 @@ namespace OpenRA.Graphics
 		{
 			units = new Dictionary<string, Dictionary<string, Voxel>>();
 
-			var partial = voxelFiles
-				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(voxelNodes, MiniYaml.MergePartial);
-
-			var sequences = MiniYaml.ApplyRemovals(partial);
+			var sequences = MiniYaml.Merge(voxelFiles.Select(MiniYaml.FromFile));
 			foreach (var s in sequences)
 				LoadVoxelsForUnit(s.Key, s.Value);
 

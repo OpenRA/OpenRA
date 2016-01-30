@@ -61,27 +61,27 @@ namespace OpenRA
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(actorCache, m.Rules,
 					map != null ? map.RuleDefinitions : NoMapRules,
-					(k, y) => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value, y));
+					k => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Weapons"))
 				weapons = LoadYamlRules(weaponCache, m.Weapons,
 					map != null ? map.WeaponDefinitions : NoMapRules,
-					(k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Voices"))
 				voices = LoadYamlRules(voiceCache, m.Voices,
 					map != null ? map.VoiceDefinitions : NoMapRules,
-					(k, _) => new SoundInfo(k.Value));
+					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Notifications"))
 				notifications = LoadYamlRules(notificationCache, m.Notifications,
 					map != null ? map.NotificationDefinitions : NoMapRules,
-					(k, _) => new SoundInfo(k.Value));
+					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Music"))
 				music = LoadYamlRules(musicCache, m.Music,
 					map != null ? map.MusicDefinitions : NoMapRules,
-					(k, _) => new MusicInfo(k.Key, k.Value));
+					k => new MusicInfo(k.Key, k.Value));
 
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
@@ -93,33 +93,30 @@ namespace OpenRA
 		Dictionary<string, T> LoadYamlRules<T>(
 			Dictionary<string, T> itemCache,
 			string[] files, List<MiniYamlNode> nodes,
-			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
+			Func<MiniYamlNode, T> f)
 		{
 			RaiseProgress();
 
 			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
-
-			var partial = files
-				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(nodes, MiniYaml.MergePartial);
-
-			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> wrap = (wkv, wyy) =>
+			Func<MiniYamlNode, T> wrap = wkv =>
 			{
 				var key = inputKey + wkv.Value.ToLines(wkv.Key).JoinWith("|");
 				T t;
 				if (itemCache.TryGetValue(key, out t))
 					return t;
 
-				t = f(wkv, wyy);
+				t = f(wkv);
 				itemCache.Add(key, t);
 
 				RaiseProgress();
 				return t;
 			};
 
-			var yy = partial.ToDictionary(x => x.Key, x => x.Value);
-			var itemSet = partial.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => wrap(kv, yy), "LoadYamlRules", null, null);
+			var tree = MiniYaml.Merge(files.Select(MiniYaml.FromFile).Append(nodes))
+				.ToDictionaryWithConflictLog(n => n.Key, n => n.Value, "LoadYamlRules", null, null);
+			RaiseProgress();
 
+			var itemSet = tree.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => wrap(new MiniYamlNode(kv.Key, kv.Value)));
 			RaiseProgress();
 			return itemSet;
 		}

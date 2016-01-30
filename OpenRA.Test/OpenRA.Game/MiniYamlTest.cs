@@ -17,24 +17,6 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class MiniYamlTest
 	{
-		readonly string mixedMergeA = @"
-Merge:
-	FromA:
-	FromARemovedB:
-	FromARemovedA:
-	-FromBRemovedA:
-	-FromARemovedA:
-";
-
-		readonly string mixedMergeB = @"
-Merge:
-	FromB:
-	FromBRemovedA:
-	FromBRemovedB:
-	-FromARemovedB:
-	-FromBRemovedB:
-";
-
 		readonly string yamlTabStyle = @"
 Root1:
 	Child1:
@@ -61,30 +43,6 @@ Root2:
 		Attribute1: Test
 ";
 
-		[TestCase(TestName = "Merging: mixed addition and removal")]
-		public void MergeYamlA()
-		{
-			var a = MiniYaml.FromString(mixedMergeA, "mixedMergeA");
-			var b = MiniYaml.FromString(mixedMergeB, "mixedMergeB");
-
-			// Merge order should not matter
-			// Note: All the Merge* variants are different plumbing over the same
-			// Internal logic.  Testing only Merge is sufficient.
-			TestMixedMerge(MiniYaml.Merge(a, b).First().Value);
-			TestMixedMerge(MiniYaml.Merge(b, a).First().Value);
-		}
-
-		void TestMixedMerge(MiniYaml result)
-		{
-			Console.WriteLine(result.ToLines("result").JoinWith("\n"));
-			Assert.That(result.Nodes.Any(n => n.Key == "FromA"), Is.True, "Node from A");
-			Assert.That(result.Nodes.Any(n => n.Key == "FromB"), Is.True, "Node from B");
-			Assert.That(result.Nodes.Any(n => n.Key == "FromARemovedA"), Is.Not.True, "Node from A removed by A");
-			Assert.That(result.Nodes.Any(n => n.Key == "FromARemovedB"), Is.Not.True, "Node from A removed by B");
-			Assert.That(result.Nodes.Any(n => n.Key == "FromBRemovedA"), Is.Not.True, "Node from B removed by A");
-			Assert.That(result.Nodes.Any(n => n.Key == "FromBRemovedB"), Is.Not.True, "Node from B removed by B");
-		}
-
 		[TestCase(TestName = "Mixed tabs & spaces indents")]
 		public void TestIndents()
 		{
@@ -93,6 +51,107 @@ Root2:
 			var mixed = MiniYaml.FromString(yamlMixedStyle, "yamlMixedStyle").WriteToString();
 			Console.WriteLine(mixed);
 			Assert.That(tabs, Is.EqualTo(mixed));
+		}
+
+		[TestCase(TestName = "Inheritance and removal can be composed")]
+		public void InheritanceAndRemovalCanBeComposed()
+		{
+			var baseYaml = @"
+^BaseA:
+	MockA2:
+^BaseB:
+	Inherits@a: ^BaseA
+	MockB2:
+";
+			var extendedYaml = @"
+Test:
+	Inherits@b: ^BaseB
+	-MockA2:
+";
+			var mapYaml = @"
+^BaseC:
+	MockC2:
+Test:
+	Inherits@c: ^BaseC
+";
+			var result = MiniYaml.Merge(new[] { baseYaml, extendedYaml, mapYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test").Value.Nodes;
+
+			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
+			Assert.IsTrue(result.Any(n => n.Key == "MockB2"), "Node should have the MockB2 child, but does not.");
+			Assert.IsTrue(result.Any(n => n.Key == "MockC2"), "Node should have the MockC2 child, but does not.");
+		}
+
+		[TestCase(TestName = "Child can be removed after multiple inheritance")]
+		public void ChildCanBeRemovedAfterMultipleInheritance()
+		{
+			var baseYaml = @"
+^BaseA:
+	MockA2:
+Test:
+	Inherits: ^BaseA
+	MockA2:
+";
+			var overrideYaml = @"
+Test:
+	-MockA2
+";
+
+			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test").Value.Nodes;
+
+			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
+		}
+
+		[TestCase(TestName = "Child can be removed and later overridden")]
+		public void ChildCanBeRemovedAndLaterOverridden()
+		{
+			var baseYaml = @"
+^BaseA:
+    MockString:
+        AString: Base
+Test:
+    Inherits: ^BaseA
+    -MockString:
+";
+			var overrideYaml = @"
+Test:
+    MockString:
+        AString: Override
+";
+
+			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test").Value.Nodes;
+
+			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
+			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.ToDictionary()["AString"].Value == "Override",
+				"MockString value has not been set with the correct override value for AString.");
+		}
+
+		[TestCase(TestName = "Child can be removed from intermediate parent")]
+		public void ChildCanBeOverriddenThenRemoved()
+		{
+			var baseYaml = @"
+^BaseA:
+    MockString:
+        AString: Base
+^BaseB:
+    Inherits: ^BaseA
+    MockString:
+        AString: Override
+";
+			var overrideYaml = @"
+Test:
+    Inherits: ^BaseB
+    MockString:
+    	-AString:
+";
+
+			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test").Value.Nodes;
+			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
+			Assert.IsFalse(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"),
+				"MockString value should have been removed, but was not.");
 		}
 	}
 }

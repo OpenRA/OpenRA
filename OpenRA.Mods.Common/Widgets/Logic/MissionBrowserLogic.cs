@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
 		{
+			var modData = Game.ModData;
 			this.onStart = onStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
@@ -92,18 +93,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			missionList.RemoveChildren();
 
 			// Add a group for each campaign
-			if (Game.ModData.Manifest.Missions.Any())
+			if (modData.Manifest.Missions.Any())
 			{
-				var partial = Game.ModData.Manifest.Missions
-					.Select(MiniYaml.FromFile)
-					.Aggregate(MiniYaml.MergePartial);
-
-				var yaml = MiniYaml.ApplyRemovals(partial);
+				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(MiniYaml.FromFile));
 				foreach (var kv in yaml)
 				{
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
 
-					var maps = Game.ModData.MapCache
+					var maps = modData.MapCache
 						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
 						.Select(p => p.Map)
 						.OrderBy(m => missionMapPaths.IndexOf(Path.GetFullPath(m.Path)));
@@ -114,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Add an additional group for loose missions
-			var looseMissions = Game.ModData.MapCache
+			var looseMissions = modData.MapCache
 				.Where(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
 				.Select(p => p.Map);
 
