@@ -108,6 +108,9 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
+		/// <summary>Possibly handle keyboard input (if this widget has keyboard focus)</summary>
+		/// <returns><c>true</c>, if keyboard input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
+		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
 			if (KeyboardFocusWidget != null)
@@ -345,6 +348,10 @@ namespace OpenRA.Widgets
 
 		public virtual void MouseEntered() { }
 		public virtual void MouseExited() { }
+
+		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
+		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
+		/// <param name="mi">Mouse input data</param>
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
 
 		public bool HandleMouseInputOuter(MouseInput mi)
