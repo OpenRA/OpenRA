@@ -136,21 +136,22 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var queue = new Queue<CPos>();
-			var touched = new bool[map.MapSize.X, map.MapSize.Y];
+			var touched = new CellLayer<bool>(map);
 
 			var rules = map.Rules;
 			var tileset = rules.TileSets[map.Tileset];
 			var template = tileset.Templates[Template];
 
-			Action<CPos> maybeEnqueue = (newCell) =>
+			Action<CPos> maybeEnqueue = newCell =>
 			{
-				if (map.Contains(cell) && !touched[newCell.X, newCell.Y])
+				if (map.Contains(cell) && !touched[newCell])
 				{
 					queue.Enqueue(newCell);
-					touched[newCell.X, newCell.Y] = true;
+					touched[newCell] = true;
 				}
 			};
-			Func<CPos, bool> shouldPaint = (cellToCheck) =>
+
+			Func<CPos, bool> shouldPaint = cellToCheck =>
 			{
 				for (var y = 0; y < template.Size.Y; y++)
 				{
