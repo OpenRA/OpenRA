@@ -43,18 +43,18 @@ namespace OpenRA
 				// Guard against circular inheritance
 				allParents.Add(name);
 
-				var partial = MergeWithParents(node, allUnits, allParents);
-				foreach (var t in MiniYaml.ApplyRemovals(partial.Nodes))
-					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
-						try
-						{
-							traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
-						}
-						catch (FieldLoader.MissingFieldsException e)
-						{
-							if (!abstractActorType)
-								throw new YamlException(e.Message);
-						}
+				foreach (var t in ResolveInherits(node, allUnits, allParents))
+				{
+					try
+					{
+						traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
+					}
+					catch (FieldLoader.MissingFieldsException e)
+					{
+						if (!abstractActorType)
+							throw new YamlException(e.Message);
+					}
+				}
 			}
 			catch (YamlException e)
 			{
@@ -69,34 +69,45 @@ namespace OpenRA
 				traits.Add(t);
 		}
 
-		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		static void MergeIntoResolved(MiniYamlNode node, List<MiniYamlNode> resolved)
 		{
-			return node.Nodes.Where(n => n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
-				.ToDictionary(n => n.Value.Value, n =>
+			var merge = resolved.FirstOrDefault(n => n.Key == node.Key);
+			if (merge != null)
+				merge.Value = MiniYaml.MergePartial(node.Value, merge.Value);
+			else
+				resolved.Add(new MiniYamlNode(node.Key, node.Value));
+		}
+
+		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
+		{
+			var resolved = new List<MiniYamlNode>();
+			foreach (var n in node.Nodes)
 			{
-				MiniYaml i;
-					if (!allUnits.TryGetValue(n.Value.Value, out i))
+				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
+				{
+					if (!allParents.Add(n.Value.Value))
+						throw new YamlException(
+							"Bogus inheritance -- duplicate inheritance of {0}.".F(n.Value.Value));
+
+					MiniYaml parent;
+					if (!allUnits.TryGetValue(n.Value.Value, out parent))
 						throw new YamlException(
 							"Bogus inheritance -- parent type {0} does not exist".F(n.Value.Value));
 
-				return i;
-			});
-		}
-
-		static MiniYaml MergeWithParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
-		{
-			var parents = GetParents(node, allUnits);
-
-			foreach (var kv in parents)
-			{
-				if (!allParents.Add(kv.Key))
-					throw new YamlException(
-						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
-
-				node = MiniYaml.MergePartial(node, MergeWithParents(kv.Value, allUnits, allParents));
+					foreach (var r in ResolveInherits(parent, allUnits, allParents))
+						MergeIntoResolved(r, resolved);
+				}
+				else if (n.Key.StartsWith("-"))
+				{
+					var removed = n.Key.Substring(1);
+					if (resolved.RemoveAll(r => r.Key == removed) == 0)
+						throw new YamlException("Bogus yaml removal: {0}".F(removed));
+				}
+				else
+					MergeIntoResolved(n, resolved);
 			}
 
-			return node;
+			return resolved;
 		}
 
 		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
