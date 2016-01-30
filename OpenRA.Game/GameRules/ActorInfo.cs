@@ -43,8 +43,11 @@ namespace OpenRA
 				// Guard against circular inheritance
 				allParents.Add(name);
 
+				Console.WriteLine(name + ":");
 				foreach (var t in ResolveInherits(node, allUnits, allParents))
 				{
+					PrintRecursive(t, 1);
+
 					try
 					{
 						traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
@@ -75,7 +78,7 @@ namespace OpenRA
 			if (merge != null)
 				merge.Value = MiniYaml.MergePartial(node.Value, merge.Value);
 			else
-				resolved.Add(new MiniYamlNode(node.Key, node.Value));
+				resolved.Add(node.Clone());
 		}
 
 		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
@@ -108,6 +111,25 @@ namespace OpenRA
 			}
 
 			return resolved;
+		}
+
+		static void PrintRecursive(MiniYamlNode n, int level)
+		{
+			string str = "";
+			for (var i = 0; i < level; i++)
+				str += "    ";
+
+			str += n.Key + ": " + n.Value.Value;
+			Console.WriteLine(str);
+			level += 1;
+			foreach (var c in n.Value.Nodes)
+				PrintRecursive(c, level);
+		}
+
+		static void PrintRecursive(MiniYaml my)
+		{
+			foreach (var c in my.Nodes)
+				PrintRecursive(c, 0);
 		}
 
 		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)

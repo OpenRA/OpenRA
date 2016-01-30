@@ -79,6 +79,11 @@ namespace OpenRA
 		{
 			return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
 		}
+
+		public MiniYamlNode Clone()
+		{
+			return new MiniYamlNode(Key, Value.Clone());
+		}
 	}
 
 	public class MiniYaml
@@ -88,6 +93,11 @@ namespace OpenRA
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
+
+		public MiniYaml Clone()
+		{
+			return new MiniYaml(Value, Nodes.Select(n => n.Clone()).ToList());
+		}
 
 		public Dictionary<string, MiniYaml> ToDictionary()
 		{
@@ -250,18 +260,18 @@ namespace OpenRA
 			return ApplyRemovals(MergePartial(a, b));
 		}
 
-		public static List<MiniYamlNode> MergePartial(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> MergePartial(List<MiniYamlNode> current, List<MiniYamlNode> merge)
 		{
-			if (a.Count == 0)
-				return b;
+			if (current.Count == 0)
+				return merge;
 
-			if (b.Count == 0)
-				return a;
+			if (merge.Count == 0)
+				return current;
 
 			var ret = new List<MiniYamlNode>();
 
-			var dictA = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var dictA = current.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var dictB = merge.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
 			var allKeys = dictA.Keys.Union(dictB.Keys);
 
 			foreach (var key in allKeys)
@@ -302,6 +312,45 @@ namespace OpenRA
 
 			if (removeKeys.Any())
 				throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+
+			return ret;
+		}
+
+		public static MiniYaml MergePartial2(MiniYaml current, MiniYaml merge)
+		{
+			if (current == null)
+				return merge;
+
+			if (merge == null)
+				return current;
+
+			return new MiniYaml(merge.Value ?? current.Value, MergePartial2(current.Nodes, merge.Nodes));
+		}
+
+		public static List<MiniYamlNode> MergePartial2(List<MiniYamlNode> current, List<MiniYamlNode> merge)
+		{
+			if (current.Count == 0)
+				return merge;
+
+			if (merge.Count == 0)
+				return current;
+
+			var ret = new List<MiniYamlNode>();
+
+			var dictA = current.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var dictB = merge.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var allKeys = dictA.Keys.Union(dictB.Keys);
+
+			foreach (var key in allKeys)
+			{
+				MiniYamlNode aa, bb;
+				dictA.TryGetValue(key, out aa);
+				dictB.TryGetValue(key, out bb);
+
+				var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
+				var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, MergePartial2(aa.Value, bb.Value), loc);
+				ret.Add(merged);
+			}
 
 			return ret;
 		}

@@ -102,7 +102,7 @@ namespace OpenRA
 			var partial = files
 				.Select(s => MiniYaml.FromFile(s))
 				.Append(nodes)
-				.Aggregate(MiniYaml.MergePartial);
+				.Aggregate(MiniYaml.MergePartial2);
 
 			Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> wrap = (wkv, wyy) =>
 			{
