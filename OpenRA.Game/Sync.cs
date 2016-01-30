@@ -26,14 +26,20 @@ namespace OpenRA
 
 	public static class Sync
 	{
-		static Cache<Type, Func<object, int>> hashFuncCache = new Cache<Type, Func<object, int>>(t => GenerateHashFunc(t));
+		static readonly ConcurrentCache<Type, Func<object, int>> HashFunctions =
+			new ConcurrentCache<Type, Func<object, int>>(GenerateHashFunc);
 
-		public static int CalculateSyncHash(object obj)
+		internal static Func<object, int> GetHashFunction(ISync sync)
 		{
-			return hashFuncCache[obj.GetType()](obj);
+			return HashFunctions[sync.GetType()];
 		}
 
-		static Dictionary<Type, MethodInfo> hashFunctions = new Dictionary<Type, MethodInfo>()
+		internal static int Hash(ISync sync)
+		{
+			return GetHashFunction(sync)(sync);
+		}
+
+		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new Dictionary<Type, MethodInfo>()
 		{
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
@@ -50,8 +56,8 @@ namespace OpenRA
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
-			if (hashFunctions.ContainsKey(type))
-				il.EmitCall(OpCodes.Call, hashFunctions[type], null);
+			if (CustomHashFunctions.ContainsKey(type))
+				il.EmitCall(OpCodes.Call, CustomHashFunctions[type], null);
 			else if (type == typeof(bool))
 			{
 				var l = il.DefineLabel();

@@ -341,18 +341,19 @@ namespace OpenRA
 
 				// hash all the actors
 				foreach (var a in Actors)
-					ret += n++ * (int)(1 + a.ActorID) * Sync.CalculateSyncHash(a);
+					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
 
 				// hash all the traits that tick
-				foreach (var x in ActorsWithTrait<ISync>())
-					ret += n++ * (int)(1 + x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
+				foreach (var actor in ActorsHavingTrait<ISync>())
+					foreach (var syncHash in actor.SyncHashes)
+						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash;
 
 				// TODO: don't go over all effects
 				foreach (var e in Effects)
 				{
 					var sync = e as ISync;
 					if (sync != null)
-						ret += n++ * Sync.CalculateSyncHash(sync);
+						ret += n++ * Sync.Hash(sync);
 				}
 
 				// Hash the shared rng
