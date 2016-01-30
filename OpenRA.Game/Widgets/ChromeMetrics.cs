@@ -20,11 +20,8 @@ namespace OpenRA.Widgets
 		public static void Initialize(IEnumerable<string> yaml)
 		{
 			data = new Dictionary<string, string>();
-			var partial = yaml
-				.Select(y => MiniYaml.FromFile(y))
-				.Aggregate(MiniYaml.MergePartial);
 
-			var metrics = MiniYaml.ApplyRemovals(partial);
+			var metrics = MiniYaml.Merge(yaml.Select(MiniYaml.FromFile));
 			foreach (var m in metrics)
 				foreach (var n in m.Value.Nodes)
 					data[n.Key] = n.Value.Value;

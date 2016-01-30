@@ -123,13 +123,7 @@ namespace OpenRA.Graphics
 
 		Sequences Load(List<MiniYamlNode> sequenceNodes)
 		{
-			var sequenceFiles = modData.Manifest.Sequences;
-
-			var partial = sequenceFiles
-				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(sequenceNodes, MiniYaml.MergePartial);
-
-			var nodes = MiniYaml.ApplyRemovals(partial);
+			var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(MiniYaml.FromFile).Append(sequenceNodes));
 			var items = new Dictionary<string, UnitSequences>();
 			foreach (var n in nodes)
 			{

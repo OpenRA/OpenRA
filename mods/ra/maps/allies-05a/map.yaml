@@ -1710,9 +1710,8 @@ Rules:
 		RenderSprites:
 			Image: E7
 	Colt:
-		-Huntable:
-		AutoTargetIgnore:
 		Inherits: ^Defense
+		AutoTargetIgnore:
 		Valued:
 			Cost: 800
 		Building:
@@ -1736,6 +1735,7 @@ Rules:
 		AttackTurreted:
 		AutoTarget:
 		-Selectable:
+		-Huntable:
 	E1.Autotarget:
 		Inherits: E1
 		Buildable:

@@ -31,6 +31,8 @@ namespace OpenRA.Test
 	class MockB2Info : MockTraitInfo { }
 	class MockC2Info : MockTraitInfo { }
 
+	class MockStringInfo : MockTraitInfo { public string AString = null; }
+
 	[TestFixture]
 	public class ActorInfoTest
 	{
@@ -95,64 +97,19 @@ namespace OpenRA.Test
 			}
 		}
 
-		[TestCase(TestName = "Trait inheritance and removal can be composed")]
-		public void TraitInheritanceAndRemovalCanBeComposed()
-		{
-			var baseYaml = @"
-^BaseA:
-	MockA2:
-^BaseB:
-	Inherits@a: ^BaseA
-	MockB2:
-";
-			var extendedYaml = @"
-Actor:
-	Inherits@b: ^BaseB
-	-MockA2:
-";
-			var mapYaml = @"
-^BaseC:
-	MockC2:
-Actor:
-	Inherits@c: ^BaseC
-";
-
-			var actorInfo = CreateActorInfoFromYaml("Actor", mapYaml, baseYaml, extendedYaml);
-			Assert.IsFalse(actorInfo.HasTraitInfo<MockA2Info>(), "Actor should not have the MockA2 trait, but does.");
-			Assert.IsTrue(actorInfo.HasTraitInfo<MockB2Info>(), "Actor should have the MockB2 trait, but does not.");
-			Assert.IsTrue(actorInfo.HasTraitInfo<MockC2Info>(), "Actor should have the MockC2 trait, but does not.");
-		}
-
-		[TestCase(TestName = "Trait can be removed after multiple inheritance")]
-		public void TraitCanBeRemovedAfterMultipleInheritance()
-		{
-			var baseYaml = @"
-^BaseA:
-	MockA2:
-Actor:
-	Inherits: ^BaseA
-	MockA2:
-";
-			var overrideYaml = @"
-Actor:
-	-MockA2
-";
-
-			var actorInfo = CreateActorInfoFromYaml("Actor", null, baseYaml, overrideYaml);
-			Assert.IsFalse(actorInfo.HasTraitInfo<MockA2Info>(), "Actor should not have the MockA2 trait, but does.");
-		}
-
 		// This needs to match the logic used in RulesetCache.LoadYamlRules
 		ActorInfo CreateActorInfoFromYaml(string name, string mapYaml, params string[] yamls)
 		{
-			var initialNodes = mapYaml == null ? new List<MiniYamlNode>() : MiniYaml.FromString(mapYaml);
-			var yaml = yamls
-				.Select(s => MiniYaml.FromString(s))
-				.Aggregate(initialNodes, MiniYaml.MergePartial);
+			var nodes = mapYaml == null ? new List<MiniYamlNode>() : MiniYaml.FromString(mapYaml);
+			var sources = yamls.ToList();
+			if (mapYaml != null)
+				sources.Add(mapYaml);
+
+			var yaml = MiniYaml.Merge(sources.Select(s => MiniYaml.FromString(s)));
 			var allUnits = yaml.ToDictionary(node => node.Key, node => node.Value);
 			var unit = allUnits[name];
 			var creator = new ObjectCreator(new[] { typeof(ActorInfoTest).Assembly });
-			return new ActorInfo(creator, name, unit, allUnits);
+			return new ActorInfo(creator, name, unit);
 		}
 	}
 }
