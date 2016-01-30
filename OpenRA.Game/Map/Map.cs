@@ -63,7 +63,6 @@ namespace OpenRA
 		public bool? Fog;
 		public bool? Shroud;
 		public bool? AllyBuildRadius;
-		public bool? FragileAlliances;
 		public int? StartingCash;
 		public string TechLevel;
 		public bool ConfigurableStartingUnits = true;
@@ -86,8 +85,6 @@ namespace OpenRA
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (StartingCash.HasValue)
 				settings.StartingCash = StartingCash.Value;
-			if (FragileAlliances.HasValue)
-				settings.FragileAlliances = FragileAlliances.Value;
 			if (ShortGame.HasValue)
 				settings.ShortGame = ShortGame.Value;
 		}

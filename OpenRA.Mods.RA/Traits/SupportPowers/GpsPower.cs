@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged
+	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged
 	{
 		GpsWatcher owner;
 
@@ -157,11 +157,6 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			// Extra function just in case something needs to be added later
 			owner.GpsRem(self);
-		}
-
-		public void StanceChanged(Actor self, Player a, Player b, Stance oldStance, Stance newStance)
-		{
-			owner.RefreshGps(self);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

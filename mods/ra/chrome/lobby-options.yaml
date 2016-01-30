@@ -27,29 +27,24 @@ Background@LOBBY_OPTIONS_BIN:
 					Height: 20
 					Text: Fog of War
 				Checkbox@SHORTGAME_CHECKBOX:
-					X: 150
+					X: 180
 					Width: 140
 					Height: 20
 					Text: Short Game
 				Checkbox@CRATES_CHECKBOX:
-					X: 150
+					X: 180
 					Y: 35
 					Width: 140
 					Height: 20
 					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 290
+					X: 350
 					Width: 140
 					Height: 20
 					Text: Build off Allies' ConYards
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					X: 290
-					Y: 35
-					Width: 140
-					Height: 20
-					Text: Diplomacy Changes
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					Y: 70
+					X: 350
+					Y: 35
 					Width: 140
 					Height: 20
 					Text: Debug Menu
