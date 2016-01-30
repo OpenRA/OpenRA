@@ -110,8 +110,11 @@ ChromeLayout:
 	./mods/ra/chrome/replaybrowser.yaml
 
 Weapons:
-	d2k:weapons.yaml
 	d2k:weapons/debris.yaml
+	d2k:weapons/smallguns.yaml
+	d2k:weapons/largeguns.yaml
+	d2k:weapons/missiles.yaml
+	d2k:weapons/other.yaml
 
 Voices:
 	d2k:audio/voices.yaml
