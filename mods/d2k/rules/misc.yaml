@@ -223,6 +223,8 @@ upgrade.barracks:
 		FactionImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
+			mercenary: barracks.ordos
+			smuggler: barracks.ordos
 	ProvidesPrerequisite@upgradename:
 
 upgrade.light:
@@ -244,6 +246,8 @@ upgrade.light:
 		FactionImages:
 			atreides: light.atreides
 			ordos: light.ordos
+			mercenary: light.ordos
+			smuggler: light.ordos
 	ProvidesPrerequisite@upgradename:
 
 upgrade.heavy:
@@ -266,6 +270,7 @@ upgrade.heavy:
 			atreides: heavy.atreides
 			ordos: heavy.ordos
 			mercenary: heavy.mercenary
+			smuggler: heavy.ordos
 	ProvidesPrerequisite@upgradename:
 
 upgrade.hightech:
