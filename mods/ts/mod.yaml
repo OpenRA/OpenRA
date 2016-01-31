@@ -20,44 +20,44 @@ MapFolders:
 
 Packages:
 # Tiberian Sun
-	~scores.mix@CRC32
-	~sidenc01.mix@CRC32
-	~sidenc02.mix@CRC32
-	~gmenu.mix@CRC32
-	~e01scd01.mix@CRC32
-	~e01scd02.mix@CRC32
-	~maps01.mix@CRC32
-	~maps02.mix@CRC32
-	~movies01.mix@CRC32
-	~movies02.mix@CRC32
-	~multi.mix@CRC32
-	~patch.mix@CRC32
-	~sidecd01.mix@CRC32
-	~sidecd02.mix@CRC32
-	~tibsun.mix@CRC32
-	cache.mix@CRC32
-	conquer.mix@CRC32
-	isosnow.mix@CRC32
-	isotemp.mix@CRC32
-	local.mix@CRC32
-	sidec01.mix@CRC32
-	sidec02.mix@CRC32
-	sno.mix@CRC32
-	snow.mix@CRC32
-	sounds.mix@CRC32
-	speech01.mix@CRC32 # EVA
-	speech02.mix@CRC32 # Cabal
-	tem.mix@CRC32
-	temperat.mix@CRC32
+	~scores.mix
+	~sidenc01.mix
+	~sidenc02.mix
+	~gmenu.mix
+	~e01scd01.mix
+	~e01scd02.mix
+	~maps01.mix
+	~maps02.mix
+	~movies01.mix
+	~movies02.mix
+	~multi.mix
+	~patch.mix
+	~sidecd01.mix
+	~sidecd02.mix
+	~tibsun.mix
+	cache.mix
+	conquer.mix
+	isosnow.mix
+	isotemp.mix
+	local.mix
+	sidec01.mix
+	sidec02.mix
+	sno.mix
+	snow.mix
+	sounds.mix
+	speech01.mix # EVA
+	speech02.mix # Cabal
+	tem.mix
+	temperat.mix
 # Firestorm
-	~scores01.mix@CRC32
-	~expand01.mix@CRC32
-	~sounds01.mix@CRC32
-	~e01sc01.mix@CRC32
-	~e01sc02.mix@CRC32
-	~e01vox01.mix@CRC32
-	~e01vox02.mix@CRC32
-	~ecache01.mix@CRC32
+	~scores01.mix
+	~expand01.mix
+	~sounds01.mix
+	~e01sc01.mix
+	~e01sc02.mix
+	~e01vox01.mix
+	~e01vox02.mix
+	~ecache01.mix
 
 Rules:
 	./mods/ts/rules/ai.yaml
@@ -198,12 +198,12 @@ ContentInstaller:
 	DiskTestFiles: MULTI.MIX, INSTALL/TIBSUN.MIX
 	CopyFilesFromCD:
 		.: INSTALL/TIBSUN.MIX, SCORES.MIX, MULTI.MIX
-	PackageToExtractFromCD: INSTALL/TIBSUN.MIX:CRC32
+	PackageToExtractFromCD: INSTALL/TIBSUN.MIX
 	ExtractFilesFromCD:
 		.: cache.mix, conquer.mix, isosnow.mix, isotemp.mix, local.mix, sidec01.mix, sidec02.mix, sno.mix, snow.mix, sounds.mix, speech01.mix, tem.mix, temperat.mix
 	ShippedSoundtracks: 2
 	MusicPackageMirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
-	InstallShieldCABFilePackageIds: 332:CRC32
+	InstallShieldCABFilePackageIds: 332
 	InstallShieldCABFileIds: 323, 364
 
 ServerTraits:

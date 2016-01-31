@@ -131,8 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
 						var destFile = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
-						var annotation = archive.Length > 1 ? archive[1] : null;
-						InstallUtils.ExtractFromPackage(source, destFile, annotation, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
+						InstallUtils.ExtractFromPackage(source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
 						progressBar.Percentage += installPercent;
 					}
 				}
@@ -157,7 +156,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var packageToExtract = installData.PackageToExtractFromCD.Split(':');
 			var extractPackage = packageToExtract.First();
-			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
 
 			var extractFiles = installData.ExtractFilesFromCD;
 
@@ -191,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest,
+						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest,
 							overwrite, installData.OutputFilenameCase, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");

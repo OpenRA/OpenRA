@@ -36,12 +36,11 @@ namespace OpenRA
 
 		public readonly ModMetadata Mod;
 		public readonly string[]
-			Folders, Rules, ServerTraits,
+			Packages, Folders, Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
-		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
@@ -75,7 +74,7 @@ namespace OpenRA
 			// TODO: Use fieldloader
 			Folders = YamlList(yaml, "Folders", true);
 			MapFolders = YamlDictionary(yaml, "MapFolders", true);
-			Packages = YamlDictionary(yaml, "Packages", true);
+			Packages = YamlList(yaml, "Packages", true);
 			Rules = YamlList(yaml, "Rules", true);
 			Sequences = YamlList(yaml, "Sequences", true);
 			VoxelSequences = YamlList(yaml, "VoxelSequences", true);
