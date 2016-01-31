@@ -542,6 +542,11 @@ Rules:
 		ExplodeCrateAction@bigboom:
 			Weapon: SCUD
 			SelectionShares: 5
+		GiveMcvCrateAction:
+			SelectionShares: 0
+			NoBaseSelectionShares: 1000
+			Units: mobiletent
+			ValidFactions: allies
 	Player:
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
@@ -562,6 +567,36 @@ Rules:
 		CashTrickler:
 			Period: 250
 			Amount: 50
+	MOBILETENT:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 2000
+		Tooltip:
+			Name: Mobile Tent
+		Selectable:
+			Priority: 4
+		SelectionDecorations:
+			VisualBounds: 21,21
+		Health:
+			HP: 600
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 85
+			Crushes: wall, mine, crate, infantry
+		RevealsShroud:
+			Range: 4c0
+		MustBeDestroyed:
+			RequiredForShortGame: true
+		BaseBuilding:
+		Transforms:
+			IntoActor: tent
+			Offset: 0,0
+			Facing: 96
+			TransformSounds: placbldg.aud, build5.aud
+			NoTransformNotification: BuildingCannotPlaceAudio
+		RenderSprites:
+			Image: TRUK
 	TENT:
 		Health:
 			HP: 1000
@@ -575,6 +610,7 @@ Rules:
 		ProductionBar@Defense:
 			ProductionType: Defense
 			Color: 8A8A8A
+		BaseBuilding:
 	FTUR:
 		Buildable:
 			Prerequisites: barracks
