@@ -24,6 +24,13 @@ namespace OpenRA
 {
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
+		internal struct SyncHash
+		{
+			public readonly ISync Trait;
+			public readonly int Hash;
+			public SyncHash(ISync trait, int hash) { Trait = trait; Hash = hash; }
+		}
+
 		public readonly ActorInfo Info;
 
 		public readonly World World;
@@ -61,6 +68,8 @@ namespace OpenRA
 				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
 			}
 		}
+
+		internal IEnumerable<SyncHash> SyncHashes { get; private set; }
 
 		readonly IFacing facing;
 		readonly IHealth health;
@@ -112,6 +121,12 @@ namespace OpenRA
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
+
+			SyncHashes =
+				TraitsImplementing<ISync>()
+				.Select(sync => Pair.New(sync, Sync.GetHashFunction(sync)))
+				.ToArray()
+				.Select(pair => new SyncHash(pair.First, pair.Second(pair.First)));
 		}
 
 		Rectangle DetermineBounds()

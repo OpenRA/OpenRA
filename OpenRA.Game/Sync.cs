@@ -26,24 +26,29 @@ namespace OpenRA
 
 	public static class Sync
 	{
-		static Cache<Type, Func<object, int>> hashFuncCache = new Cache<Type, Func<object, int>>(t => GenerateHashFunc(t));
+		static readonly ConcurrentCache<Type, Func<object, int>> HashFunctions =
+			new ConcurrentCache<Type, Func<object, int>>(GenerateHashFunc);
 
-		public static int CalculateSyncHash(object obj)
+		internal static Func<object, int> GetHashFunction(ISync sync)
 		{
-			return hashFuncCache[obj.GetType()](obj);
+			return HashFunctions[sync.GetType()];
 		}
 
-		static Dictionary<Type, MethodInfo> hashFunctions = new Dictionary<Type, MethodInfo>()
+		internal static int Hash(ISync sync)
+		{
+			return GetHashFunction(sync)(sync);
+		}
+
+		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new Dictionary<Type, MethodInfo>()
 		{
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
 			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
-			{ typeof(WDist), ((Func<WDist, int>)Hash).Method },
-			{ typeof(WPos), ((Func<WPos, int>)Hash).Method },
-			{ typeof(WVec), ((Func<WVec, int>)Hash).Method },
-			{ typeof(WAngle), ((Func<WAngle, int>)Hash).Method },
-			{ typeof(WRot), ((Func<WRot, int>)Hash).Method },
-			{ typeof(TypeDictionary), ((Func<TypeDictionary, int>)HashTDict).Method },
+			{ typeof(WDist), ((Func<WDist, int>)HashUsingHashCode).Method },
+			{ typeof(WPos), ((Func<WPos, int>)HashUsingHashCode).Method },
+			{ typeof(WVec), ((Func<WVec, int>)HashUsingHashCode).Method },
+			{ typeof(WAngle), ((Func<WAngle, int>)HashUsingHashCode).Method },
+			{ typeof(WRot), ((Func<WRot, int>)HashUsingHashCode).Method },
 			{ typeof(Actor), ((Func<Actor, int>)HashActor).Method },
 			{ typeof(Player), ((Func<Player, int>)HashPlayer).Method },
 			{ typeof(Target), ((Func<Target, int>)HashTarget).Method },
@@ -51,8 +56,8 @@ namespace OpenRA
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
 		{
-			if (hashFunctions.ContainsKey(type))
-				il.EmitCall(OpCodes.Call, hashFunctions[type], null);
+			if (CustomHashFunctions.ContainsKey(type))
+				il.EmitCall(OpCodes.Call, CustomHashFunctions[type], null);
 			else if (type == typeof(bool))
 			{
 				var l = il.DefineLabel();
@@ -62,15 +67,13 @@ namespace OpenRA
 				il.Emit(OpCodes.Ldc_I4, 0x555);
 				il.MarkLabel(l);
 			}
-			else if (type.HasAttribute<SyncAttribute>())
-				il.EmitCall(OpCodes.Call, ((Func<object, int>)CalculateSyncHash).Method, null);
 			else if (type != typeof(int))
 				throw new NotImplementedException("SyncAttribute on member of unhashable type: {0}".F(type.FullName));
 
 			il.Emit(OpCodes.Xor);
 		}
 
-		public static Func<object, int> GenerateHashFunc(Type t)
+		static Func<object, int> GenerateHashFunc(Type t)
 		{
 			var d = new DynamicMethod("hash_{0}".F(t.Name), typeof(int), new Type[] { typeof(object) }, t);
 			var il = d.GetILGenerator();
@@ -116,14 +119,6 @@ namespace OpenRA
 			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}
 
-		public static int HashTDict(TypeDictionary d)
-		{
-			var ret = 0;
-			foreach (var o in d)
-				ret += CalculateSyncHash(o);
-			return ret;
-		}
-
 		public static int HashActor(Actor a)
 		{
 			if (a != null)
@@ -152,7 +147,7 @@ namespace OpenRA
 					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
 
 				case TargetType.Terrain:
-					return Hash(t.CenterPosition);
+					return HashUsingHashCode(t.CenterPosition);
 
 				default:
 				case TargetType.Invalid:
@@ -160,7 +155,7 @@ namespace OpenRA
 			}
 		}
 
-		public static int Hash<T>(T t)
+		public static int HashUsingHashCode<T>(T t)
 		{
 			return t.GetHashCode();
 		}
