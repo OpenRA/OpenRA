@@ -213,6 +213,12 @@
 	GlobalUpgradable@BIO:
 		Upgrades: hazmatsuits
 		Prerequisites: bio
+	WithDecoration@HAZMAT:
+		Image: pips
+		Sequence: pip-hazmat
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hazmatsuits
+		UpgradeMinEnabledLevel: 1
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
