@@ -89,7 +89,15 @@ return {
     else
       local cmd = ('"%s"'):format(gideros)
       -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-      pid = CommandLineRun(cmd,self:fworkdir(wfilename),not mac,true)
+      pid = CommandLineRun(cmd,self:fworkdir(wfilename),not mac,true,nil,nil,function()
+          -- get any pending messages (including errors) from the last session
+          local cmd = ('"%s" %s'):format(gdrbridge, 'getlog')
+          ide:ExecuteCommand(cmd,self:fworkdir(wfilename),function(s)
+              -- remove all "status" messages from the output
+              s = s:gsub("%f[\r\n]%s*%*.-[\r\n]",""):gsub("^%s*%*.-[\r\n]+","")
+              DisplayOutput(s)
+            end)
+        end)
       if not pid then return end
     end
 
