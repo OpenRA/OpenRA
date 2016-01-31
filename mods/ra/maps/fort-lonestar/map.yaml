@@ -153,9 +153,6 @@ Actors:
 	Actor73: tc05
 		Location: 16,34
 		Owner: Neutral
-	Actor84: brik
-		Location: 35,25
-		Owner: Neutral
 	Actor32: tc01
 		Location: 8,24
 		Owner: Neutral
@@ -164,27 +161,6 @@ Actors:
 		Owner: Neutral
 	Actor5: tc01
 		Location: 44,44
-		Owner: Neutral
-	Actor67: brik
-		Location: 29,25
-		Owner: Neutral
-	Actor41: brik
-		Location: 25,25
-		Owner: Neutral
-	Actor56: brik
-		Location: 26,25
-		Owner: Neutral
-	Actor85: brik
-		Location: 39,26
-		Owner: Neutral
-	Actor81: brik
-		Location: 38,25
-		Owner: Neutral
-	Actor65: brik
-		Location: 27,25
-		Owner: Neutral
-	Actor66: brik
-		Location: 28,25
 		Owner: Neutral
 	Actor51: t08
 		Location: 55,46
@@ -213,12 +189,6 @@ Actors:
 	Actor17: tc03
 		Location: 54,26
 		Owner: Neutral
-	Actor83: brik
-		Location: 36,25
-		Owner: Neutral
-	Actor197: brik
-		Location: 39,37
-		Owner: Neutral
 	Actor11: tc04
 		Location: 20,53
 		Owner: Neutral
@@ -233,15 +203,6 @@ Actors:
 		Owner: Neutral
 	Actor1: t05
 		Location: 29,16
-		Owner: Neutral
-	Actor82: brik
-		Location: 37,25
-		Owner: Neutral
-	Actor86: brik
-		Location: 39,27
-		Owner: Neutral
-	Actor80: brik
-		Location: 39,25
 		Owner: Neutral
 	Actor71: tc02
 		Location: 15,40
@@ -269,42 +230,6 @@ Actors:
 		Owner: Neutral
 	Actor52: t12
 		Location: 44,53
-		Owner: Neutral
-	Actor87: brik
-		Location: 39,28
-		Owner: Neutral
-	Actor91: brik
-		Location: 37,39
-		Owner: Neutral
-	Actor196: brik
-		Location: 39,38
-		Owner: Neutral
-	Actor195: brik
-		Location: 39,39
-		Owner: Neutral
-	Actor45: brik
-		Location: 25,28
-		Owner: Neutral
-	Actor92: brik
-		Location: 39,29
-		Owner: Neutral
-	Actor194: brik
-		Location: 38,39
-		Owner: Neutral
-	Actor55: brik
-		Location: 25,39
-		Owner: Neutral
-	Actor200: brik
-		Location: 28,39
-		Owner: Neutral
-	Actor233: brik
-		Location: 29,39
-		Owner: Neutral
-	Actor240: brik
-		Location: 39,35
-		Owner: Neutral
-	Actor199: brik
-		Location: 27,39
 		Owner: Neutral
 	Actor28: tc01
 		Location: 24,54
@@ -339,38 +264,113 @@ Actors:
 	Actor68: tc05
 		Location: 35,7
 		Owner: Neutral
-	Actor239: brik
-		Location: 39,36
+	WallTopLeft1: brik
+		Location: 25,28
 		Owner: Neutral
-	Actor89: brik
-		Location: 35,39
-		Owner: Neutral
-	Actor90: brik
-		Location: 36,39
-		Owner: Neutral
-	Actor237: brik
-		Location: 25,35
-		Owner: Neutral
-	Actor236: brik
-		Location: 25,36
-		Owner: Neutral
-	Actor235: brik
-		Location: 25,37
-		Owner: Neutral
-	Actor234: brik
-		Location: 25,38
-		Owner: Neutral
-	Actor44: brik
+	WallTopLeft2: brik
 		Location: 25,27
 		Owner: Neutral
-	Actor43: brik
+	WallTopLeft3: brik
 		Location: 25,26
 		Owner: Neutral
-	Actor198: brik
-		Location: 26,39
-		Owner: Neutral
-	Actor88: brik
+	WallTopLeft4: brik
 		Location: 25,29
+		Owner: Neutral
+	WallTopLeft5: brik
+		Location: 29,25
+		Owner: Neutral
+	WallTopLeft6: brik
+		Location: 25,25
+		Owner: Neutral
+	WallTopLeft7: brik
+		Location: 26,25
+		Owner: Neutral
+	WallTopLeft8: brik
+		Location: 27,25
+		Owner: Neutral
+	WallTopLeft9: brik
+		Location: 28,25
+		Owner: Neutral
+	WallTopRight1: brik
+		Location: 35,25
+		Owner: Neutral
+	WallTopRight2: brik
+		Location: 36,25
+		Owner: Neutral
+	WallTopRight3: brik
+		Location: 37,25
+		Owner: Neutral
+	WallTopRight4: brik
+		Location: 38,25
+		Owner: Neutral
+	WallTopRight5: brik
+		Location: 39,25
+		Owner: Neutral
+	WallTopRight6: brik
+		Location: 39,26
+		Owner: Neutral
+	WallTopRight7: brik
+		Location: 39,27
+		Owner: Neutral
+	WallTopRight8: brik
+		Location: 39,28
+		Owner: Neutral
+	WallTopRight9: brik
+		Location: 39,29
+		Owner: Neutral
+	WallBottomRight1: brik
+		Location: 39,37
+		Owner: Neutral
+	WallBottomRight2: brik
+		Location: 37,39
+		Owner: Neutral
+	WallBottomRight3: brik
+		Location: 39,38
+		Owner: Neutral
+	WallBottomRight4: brik
+		Location: 39,39
+		Owner: Neutral
+	WallBottomRight5: brik
+		Location: 38,39
+		Owner: Neutral
+	WallBottomRight6: brik
+		Location: 39,35
+		Owner: Neutral
+	WallBottomRight7: brik
+		Location: 39,36
+		Owner: Neutral
+	WallBottomRight8: brik
+		Location: 35,39
+		Owner: Neutral
+	WallBottomRight9: brik
+		Location: 36,39
+		Owner: Neutral
+	WallBottomLeft1: brik
+		Location: 25,39
+		Owner: Neutral
+	WallBottomLeft2: brik
+		Location: 28,39
+		Owner: Neutral
+	WallBottomLeft3: brik
+		Location: 29,39
+		Owner: Neutral
+	WallBottomLeft4: brik
+		Location: 27,39
+		Owner: Neutral
+	WallBottomLeft5: brik
+		Location: 25,35
+		Owner: Neutral
+	WallBottomLeft6: brik
+		Location: 25,36
+		Owner: Neutral
+	WallBottomLeft7: brik
+		Location: 25,37
+		Owner: Neutral
+	WallBottomLeft8: brik
+		Location: 25,38
+		Owner: Neutral
+	WallBottomLeft9: brik
+		Location: 26,39
 		Owner: Neutral
 	Sniper1: sniper.soviets
 		Location: 9,26

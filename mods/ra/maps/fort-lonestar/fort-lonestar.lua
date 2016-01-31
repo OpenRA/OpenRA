@@ -5,6 +5,14 @@ ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4 }
 SpawnPoints = { Spawn1, Spawn2, Spawn3, Spawn4 }
 Snipers = { Sniper1, Sniper2, Sniper3, Sniper4, Sniper5, Sniper6, Sniper7, Sniper8, Sniper9, Sniper10, Sniper11, Sniper12 }
 
+Walls =
+{
+	{ WallTopRight1, WallTopRight2, WallTopRight3, WallTopRight4, WallTopRight5, WallTopRight6, WallTopRight7, WallTopRight8, WallTopRight9 },
+	{ WallTopLeft1, WallTopLeft2, WallTopLeft3, WallTopLeft4, WallTopLeft5, WallTopLeft6, WallTopLeft7, WallTopLeft8, WallTopLeft9 },
+	{ WallBottomLeft1, WallBottomLeft2, WallBottomLeft3, WallBottomLeft4, WallBottomLeft5, WallBottomLeft6, WallBottomLeft7, WallBottomLeft8, WallBottomLeft9 },
+	{ WallBottomRight1, WallBottomRight2, WallBottomRight3, WallBottomRight4, WallBottomRight5, WallBottomRight6, WallBottomRight7, WallBottomRight8, WallBottomRight9 }
+}
+
 if Map.Difficulty == "Very Easy (1P)" then
 	ParaChance = 20
 	Patrol = { "e1", "e2", "e1" }
@@ -181,6 +189,14 @@ Tick = function()
 	end
 end
 
+SetupWallOwners = function()
+	Utils.Do(players, function(player)
+		Utils.Do(Walls[player.Spawn], function(wall)
+			wall.Owner = player
+		end)
+	end)
+end
+
 WorldLoaded = function()
 	soviets = Player.GetPlayer("Soviets")
 	players = { }
@@ -190,6 +206,8 @@ WorldLoaded = function()
 	end
 
 	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
+
+	SetupWallOwners()
 
 	ParaProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
 	SendWave()
