@@ -34,7 +34,7 @@ Type `sudo make install-all` for system wide installation. Run `make install-lin
 Debian/Ubuntu
 -------------
 
-* mono-dmcs
+* mono-mcs
 * libmono-system-windows-forms4.0-cil
 * nuget
 * cli-common-dev (>= 2.10)
