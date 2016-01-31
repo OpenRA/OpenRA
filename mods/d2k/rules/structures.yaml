@@ -43,6 +43,7 @@ concreteb:
 
 construction_yard:
 	Inherits: ^Building
+	-DamagedWithoutFoundation:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -79,7 +80,8 @@ construction_yard:
 		FactionImages:
 			atreides: conyard.atreides
 			ordos: conyard.ordos
-			corrino: conyard.corrino
+			smuggler: conyard.ordos
+			mercenary: conyard.ordos
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
@@ -134,6 +136,8 @@ wind_trap:
 		FactionImages:
 			atreides: power.atreides
 			ordos: power.ordos
+			smuggler: power.ordos
+			mercenary: power.ordos
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
@@ -194,6 +198,8 @@ barracks:
 		FactionImages:
 			atreides: barracks.atreides
 			ordos: barracks.ordos
+			smuggler: barracks.ordos
+			mercenary: barracks.ordos
 	ProvidesPrerequisite@buildingname:
 	GlobalUpgradable:
 		Prerequisites: upgrade.barracks
@@ -260,6 +266,8 @@ refinery:
 		FactionImages:
 			atreides: refinery.atreides
 			ordos: refinery.ordos
+			smuggler: refinery.ordos
+			mercenary: refinery.ordos
 	WithDockedOverlay@SMOKE:
 		Sequence: smoke
 	Power:
@@ -297,6 +305,8 @@ silo:
 		FactionImages:
 			atreides: silo.atreides
 			ordos: silo.ordos
+			smuggler: silo.ordos
+			mercenary: silo.ordos
 	WithSpriteBody:
 	WithSiloAnimation:
 	StoresResources:
@@ -343,6 +353,8 @@ light_factory:
 		FactionImages:
 			atreides: light.atreides
 			ordos: light.ordos
+			smuggler: light.ordos
+			mercenary: light.ordos
 	RallyPoint:
 		Offset: 2,2
 	Exit@1:
@@ -442,7 +454,8 @@ heavy_factory:
 		FactionImages:
 			atreides: heavy.atreides
 			ordos: heavy.ordos
-			corrino: heavy.corrino
+			mercenary: heavy.mercenary
+			smuggler: heavy.ordos
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -508,6 +521,8 @@ outpost:
 		FactionImages:
 			atreides: outpost.atreides
 			ordos: outpost.ordos
+			smuggler: outpost.ordos
+			mercenary: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
@@ -555,7 +570,8 @@ starport:
 		FactionImages:
 			atreides: starport.atreides
 			ordos: starport.ordos
-			corrino: starport.corrino
+			smuggler: starport.smuggler
+			mercenary: starport.ordos
 	WithDeliveryOverlay:
 		Palette: starportlights
 	ProductionBar:
@@ -765,6 +781,8 @@ repair_pad:
 		FactionImages:
 			atreides: repair_pad.atreides
 			ordos: repair_pad.ordos
+			smuggler: repair_pad.ordos
+			mercenary: repair_pad.ordos
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
@@ -806,6 +824,8 @@ high_tech_factory:
 		FactionImages:
 			atreides: hightech.atreides
 			ordos: hightech.ordos
+			smuggler: hightech.ordos
+			mercenary: hightech.ordos
 	ProvidesPrerequisite@upgrade:
 		Prerequisite: hightech.atreides
 		Factions: atreides
@@ -869,6 +889,8 @@ research_centre:
 		FactionImages:
 			atreides: research.atreides
 			ordos: research.ordos
+			smuggler: research.ordos
+			mercenary: research.ordos
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -909,6 +931,8 @@ palace:
 			atreides: palace.atreides
 			ordos: palace.ordos
 			corrino: palace.corrino
+			smuggler: palace.ordos
+			mercenary: palace.ordos
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@nuke:

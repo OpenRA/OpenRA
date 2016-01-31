@@ -233,8 +233,6 @@
 	ActorLostNotification:
 	AttackMove:
 	DrawLineToTarget:
-	Voiced:
-		VoiceSet: GenericVoice
 	WithFacingSpriteBody:
 	WithShadow:
 
