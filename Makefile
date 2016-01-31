@@ -104,9 +104,19 @@ endif
 #
 # Core binaries
 
+# OpenRA.Markup
+markup_SRCS := $(shell find OpenRA.Markup/ -iname '*.cs')
+markup_TARGET = OpenRA.Markup.dll
+markup_KIND = library
+#markup_DEPS = none
+markup_LIBS = $(COMMON_LIBS)
+PROGRAMS += markup
+markup: $(markup_TARGET)
+
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
+game_DEPS = $(markup_TARGET)
 game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SharpFont.dll
 game_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS += game
@@ -131,7 +141,7 @@ platforms: $(pdefault_TARGET) $(pnull_TARGET)
 mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
 mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
 mod_common_KIND = library
-mod_common_DEPS = $(game_TARGET)
+mod_common_DEPS = $(markup_TARGET) $(game_TARGET)
 mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
@@ -140,7 +150,7 @@ mod_common: $(mod_common_TARGET)
 test_dll_SRCS := $(shell find OpenRA.Test/ -iname '*.cs')
 test_dll_TARGET = OpenRA.Test.dll
 test_dll_KIND = library
-test_dll_DEPS = $(game_TARGET) $(mod_common_TARGET)
+test_dll_DEPS = $(markup_TARGET) $(game_TARGET) $(mod_common_TARGET)
 test_dll_FLAGS = -warn:1
 test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(mod_common_TARGET) $(NUNIT_LIBS)
 PROGRAMS += test_dll
@@ -148,7 +158,7 @@ test_dll: $(test_dll_TARGET)
 
 ##### Official Mods #####
 
-STD_MOD_LIBS	= $(game_TARGET)
+STD_MOD_LIBS	= $(markup_TARGET) $(game_TARGET)
 STD_MOD_DEPS	= $(STD_MOD_LIBS)
 
 # Red Alert
@@ -194,6 +204,9 @@ check-scripts:
 	@luac -p $(shell find lua/* -iname '*.lua')
 
 check: utility mods
+	@echo
+	@echo "Checking for code style violations in OpenRA.Markup..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Markup
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
@@ -280,7 +293,7 @@ gamemonitor: $(gamemonitor_TARGET)
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
-utility_DEPS = $(game_TARGET)
+utility_DEPS = $(markup_TARGET) $(game_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)

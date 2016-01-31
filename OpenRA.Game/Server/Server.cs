@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;

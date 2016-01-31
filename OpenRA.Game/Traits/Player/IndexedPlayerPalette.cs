@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 
 namespace OpenRA.Traits
 {

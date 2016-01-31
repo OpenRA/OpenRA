@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using OpenRA.Markup;
 using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Widgets;

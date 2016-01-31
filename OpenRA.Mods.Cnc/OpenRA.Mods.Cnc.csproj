@@ -102,6 +102,10 @@
       <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Markup\OpenRA.Markup.csproj">
+      <Project>{382F64EF-9D04-4DB8-B193-43E05249E2E7}</Project>
+      <Name>OpenRA.Markup</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

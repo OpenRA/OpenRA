@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.GameRules;
+using OpenRA.Markup;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 

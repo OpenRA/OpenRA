@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
 

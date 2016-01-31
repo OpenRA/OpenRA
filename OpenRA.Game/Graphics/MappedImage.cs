@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Markup;
 
 namespace OpenRA.Graphics
 {

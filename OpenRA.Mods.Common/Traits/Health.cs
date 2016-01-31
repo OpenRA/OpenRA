@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Traits;
 

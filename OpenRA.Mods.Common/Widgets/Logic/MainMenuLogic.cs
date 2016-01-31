@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.Markup;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

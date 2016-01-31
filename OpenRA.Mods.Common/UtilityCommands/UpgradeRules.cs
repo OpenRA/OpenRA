@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands

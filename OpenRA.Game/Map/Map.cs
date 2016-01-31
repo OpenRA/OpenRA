@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Traits;

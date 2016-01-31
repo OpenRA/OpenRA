@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Traits;
 
 namespace OpenRA

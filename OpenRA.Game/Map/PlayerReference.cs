@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Markup;
 
 namespace OpenRA
 {

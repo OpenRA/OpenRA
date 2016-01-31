@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.UtilityCommands;
 using OpenRA.Primitives;

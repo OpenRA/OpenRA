@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Primitives;
 
 namespace OpenRA

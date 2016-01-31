@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.FileFormats;
+using OpenRA.Markup;
 
 namespace OpenRA.GameRules
 {
