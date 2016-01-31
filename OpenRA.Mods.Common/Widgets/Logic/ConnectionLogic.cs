@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			connectionError.GetText = () => orderManager.ServerError;
 
+			var panelTitle = widget.Get<LabelWidget>("TITLE");
+			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";
+
 			passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)
 			{
