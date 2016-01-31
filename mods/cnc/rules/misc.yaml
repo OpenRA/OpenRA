@@ -25,6 +25,16 @@ CRATE:
 		NoBaseSelectionShares: 120
 		Units: mcv
 
+WCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Wooden Crate
+
+SCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Steel Crate
+
 mpspawn:
 	EditorOnlyTooltip:
 		Name: (multiplayer player starting point)

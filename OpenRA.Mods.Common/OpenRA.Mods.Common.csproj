@@ -547,7 +547,6 @@
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
-    <Compile Include="UtilityCommands\LegacyMapImporter.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />

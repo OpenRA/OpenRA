@@ -89,6 +89,7 @@
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
+    <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
