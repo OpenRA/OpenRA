@@ -79,7 +79,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 if (!(Test-Path "Mono.Nat.dll"))
 {
 	echo "Fetching Mono.Nat from NuGet."
-	./nuget.exe install Mono.Nat -Version 1.2.21 -ExcludeVersion
+	./nuget.exe install Mono.Nat -Version 1.2.24 -ExcludeVersion
 	cp Mono.Nat/lib/net40/Mono.Nat.dll .
 	rmdir Mono.Nat -Recurse
 }

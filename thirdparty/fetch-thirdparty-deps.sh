@@ -88,7 +88,7 @@ fi
 
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from NuGet"
-	get Mono.Nat 1.2.21
+	get Mono.Nat 1.2.24
 	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat
 fi
