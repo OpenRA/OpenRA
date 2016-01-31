@@ -290,10 +290,13 @@ Weapons:
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@1Eff: CreateEffect
 			Explosions: large_explosion
-			WaterExplosion: large_splash
 			ImpactSounds: kaboom12.aud
-			WaterImpactSound: splash9.aud
-		Warhead@2Smu: LeaveSmudge
+			ValidImpactTypes: Ground
+		Warhead@2Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: splash9.aud
+			ValidImpactTypes: Water
+		Warhead@3Smu: LeaveSmudge
 			SmudgeType: Crater
 	SubMissile:
 		ReloadDelay: 250
@@ -318,10 +321,13 @@ Weapons:
 			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@1Eff: CreateEffect
 			Explosions: large_explosion
-			WaterExplosion: large_splash
 			ImpactSounds: kaboom12.aud
-			WaterImpactSound: splash9.aud
-		Warhead@2Smu: LeaveSmudge
+			ValidImpactTypes: Ground
+		Warhead@2Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: splash9.aud
+			ValidImpactTypes: Water
+		Warhead@3Smu: LeaveSmudge
 			SmudgeType: Crater
 
 Voices:

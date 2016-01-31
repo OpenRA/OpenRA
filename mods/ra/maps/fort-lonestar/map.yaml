@@ -817,7 +817,6 @@ Weapons:
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: self_destruct
-			WaterExplosion: self_destruct
 	MammothTusk:
 		ReloadDelay: 300
 		Range: 10c0
@@ -851,7 +850,6 @@ Weapons:
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: nuke
-			WaterExplosion: nuke
 	TankNapalm:
 		ReloadDelay: 40
 		Range: 8c0
@@ -880,7 +878,6 @@ Weapons:
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
 			Explosions: small_explosion
-			WaterExplosion: small_explosion
 			ImpactSounds: firebl3.aud
 	ParaBomb:
 		ReloadDelay: 5
@@ -903,7 +900,6 @@ Weapons:
 		Warhead@3Eff: CreateEffect
 			Explosions: napalm
 			ImpactSounds: firebl3.aud
-			WaterExplosion: napalm
 	155mm:
 		ReloadDelay: 10
 		Range: 7c5
@@ -932,7 +928,6 @@ Weapons:
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
 			Explosions: small_napalm
-			WaterExplosion: small_napalm
 			ImpactSounds: firebl3.aud
 	FLAK-23:
 		ReloadDelay: 10
@@ -985,9 +980,12 @@ Weapons:
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: nuke
-			WaterExplosion: large_splash
 			ImpactSounds: kaboom1.aud
-			WaterImpactSound: kaboom1.aud
+			ValidImpactTypes: Ground
+		Warhead@4Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: kaboom1.aud
+			ValidImpactTypes: Water
 	SilencedPPK:
 		ReloadDelay: 80
 		Range: 25c0
