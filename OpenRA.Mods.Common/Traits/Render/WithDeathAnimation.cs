@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;

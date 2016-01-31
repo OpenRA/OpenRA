@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands

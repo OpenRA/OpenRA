@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

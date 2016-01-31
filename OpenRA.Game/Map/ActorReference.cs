@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using OpenRA.Markup;
 using OpenRA.Primitives;
 
 namespace OpenRA

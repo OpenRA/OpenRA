@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Markup;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

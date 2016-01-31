@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using System.IO;
+using OpenRA.Markup;
 
 namespace OpenRA
 {

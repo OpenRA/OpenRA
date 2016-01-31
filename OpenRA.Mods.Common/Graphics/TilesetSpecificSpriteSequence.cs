@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 
 namespace OpenRA.Mods.Common.Graphics
 {

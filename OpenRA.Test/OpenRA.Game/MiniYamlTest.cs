@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using OpenRA.Markup;
 
 namespace OpenRA.Test
 {

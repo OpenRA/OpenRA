@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.Markup;
+
 namespace OpenRA.Network
 {
 	public class GameServer

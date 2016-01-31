@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Markup;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

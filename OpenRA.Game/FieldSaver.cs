@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 
 namespace OpenRA
 {

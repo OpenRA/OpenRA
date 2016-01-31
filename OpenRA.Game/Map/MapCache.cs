@@ -17,6 +17,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 using OpenRA.Primitives;
 
 namespace OpenRA

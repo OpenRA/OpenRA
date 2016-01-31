@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Markup;
 
 namespace OpenRA
 {
