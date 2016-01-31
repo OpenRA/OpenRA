@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Graphics
 					{
 						var sd = sub.Value.ToDictionary();
 
-						// Allow per-sprite offset, start, and length
+						// Allow per-sprite offset, flipping, start, and length
 						var subStart = LoadField(sd, "Start", 0);
 						var subOffset = LoadField(sd, "Offset", float2.Zero);
 						var subFlipX = LoadField(sd, "FlipX", false);
@@ -157,7 +157,10 @@ namespace OpenRA.Mods.Common.Graphics
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
 						var subSprites = cache[subSrc].Select(
-							s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, subFlipX, subFlipY), s.Offset + subOffset + offset, s.Channel, blendMode));
+							s => new Sprite(s.Sheet,
+								FlipRectangle(s.Bounds, subFlipX, subFlipY),
+								new float2(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y) + subOffset + offset,
+								s.Channel, blendMode));
 
 						var subLength = 0;
 						MiniYaml subLengthYaml;
@@ -177,7 +180,10 @@ namespace OpenRA.Mods.Common.Graphics
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
-						s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, flipX, flipY), s.Offset + offset, s.Channel, blendMode)).ToArray();
+						s => new Sprite(s.Sheet,
+							FlipRectangle(s.Bounds, flipX, flipY),
+							new float2(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y) + offset,
+							s.Channel, blendMode)).ToArray();
 				}
 
 				MiniYaml length;
