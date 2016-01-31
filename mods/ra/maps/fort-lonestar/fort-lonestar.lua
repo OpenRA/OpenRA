@@ -92,12 +92,9 @@ SendUnits = function(entryCell, unitTypes, targetCell, extraData)
 			return
 		end
 
+		a.AttackMove(targetCell)
 		Trigger.OnIdle(a, function(a)
-			if a.Location ~= targetCell then
-				a.AttackMove(targetCell)
-			else
-				a.Hunt()
-			end
+			a.Hunt()
 		end)
 
 		if extraData == "IronCurtain" then
