@@ -52,7 +52,7 @@ if (!(Test-Path "MaxMind.GeoIP2.dll"))
 if (!(Test-Path "SharpFont.dll"))
 {
 	echo "Fetching SharpFont from NuGet."
-	./nuget.exe install SharpFont -Version 3.0.0 -ExcludeVersion
+	./nuget.exe install SharpFont -Version 3.1.0 -ExcludeVersion
 	cp SharpFont/lib/net20/SharpFont* .
 	cp SharpFont/config/SharpFont.dll.config .
 	rmdir SharpFont -Recurse
