@@ -492,6 +492,9 @@ local package = ide:AddPackage('core.outline', {
         -- this is somehow caused by `ExpandAllChildren` triggered from `SetFocus` inside
         -- `PAGE_CHANGED` handler for the notebook.
         ide:DoWhenIdle(function()
+            -- check if this editor is still in the cache,
+            -- as it may be closed before this handler is executed
+            if not caches[editor] then return end
             ctrl:SetItemBold(fileitem, true)
             if (ide.config.outline or {}).showcompact then
               ctrl:Expand(fileitem)
