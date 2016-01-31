@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -74,20 +76,36 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!painting)
 				return true;
 
+			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Move)
+				return true;
+
+			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+			var isMoving = mi.Event == MouseInputEvent.Move;
+
+			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+			{
+				FloodFillWithBrush(cell, isMoving);
+				painting = false;
+			}
+			else
+				PaintCell(cell, isMoving);
+
+			return true;
+		}
+
+		void PaintCell(CPos cell, bool isMoving)
+		{
 			var map = world.Map;
 			var mapTiles = map.MapTiles.Value;
 			var mapHeight = map.MapHeight.Value;
-			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-
-			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Move)
-				return true;
 
 			var rules = map.Rules;
 			var tileset = rules.TileSets[map.Tileset];
 			var template = tileset.Templates[Template];
 			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
-			if (mi.Event == MouseInputEvent.Move && PlacementOverlapsSameTemplate(template, cell))
-				return true;
+
+			if (isMoving && PlacementOverlapsSameTemplate(template, cell))
+				return;
 
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
@@ -106,8 +124,81 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 			}
+		}
 
-			return true;
+		void FloodFillWithBrush(CPos cell, bool isMoving)
+		{
+			var map = world.Map;
+			var mapTiles = map.MapTiles.Value;
+			var replace = mapTiles[cell];
+
+			if (replace.Type == Template)
+				return;
+
+			var queue = new Queue<CPos>();
+			var touched = new CellLayer<bool>(map);
+
+			var rules = map.Rules;
+			var tileset = rules.TileSets[map.Tileset];
+			var template = tileset.Templates[Template];
+
+			Action<CPos> maybeEnqueue = newCell =>
+			{
+				if (map.Contains(cell) && !touched[newCell])
+				{
+					queue.Enqueue(newCell);
+					touched[newCell] = true;
+				}
+			};
+
+			Func<CPos, bool> shouldPaint = cellToCheck =>
+			{
+				for (var y = 0; y < template.Size.Y; y++)
+				{
+					for (var x = 0; x < template.Size.X; x++)
+					{
+						var c = cellToCheck + new CVec(x, y);
+						if (!map.Contains(c) || mapTiles[c].Type != replace.Type)
+							return false;
+					}
+				}
+
+				return true;
+			};
+
+			Func<CPos, CVec, CPos> findEdge = (refCell, direction) =>
+			{
+				for (;;)
+				{
+					var newCell = refCell + direction;
+					if (!shouldPaint(newCell))
+						return refCell;
+					refCell = newCell;
+				}
+			};
+
+			queue.Enqueue(cell);
+			while (queue.Count > 0)
+			{
+				var queuedCell = queue.Dequeue();
+				if (!shouldPaint(queuedCell))
+					continue;
+
+				var previousCell = findEdge(queuedCell, new CVec(-1 * template.Size.X, 0));
+				var nextCell = findEdge(queuedCell, new CVec(1 * template.Size.X, 0));
+
+				for (var x = previousCell.X; x <= nextCell.X; x += template.Size.X)
+				{
+					PaintCell(new CPos(x, queuedCell.Y), isMoving);
+					var upperCell = new CPos(x, queuedCell.Y - (1 * template.Size.Y));
+					var lowerCell = new CPos(x, queuedCell.Y + (1 * template.Size.Y));
+
+					if (shouldPaint(upperCell))
+						maybeEnqueue(upperCell);
+					if (shouldPaint(lowerCell))
+						maybeEnqueue(lowerCell);
+				}
+			}
 		}
 
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
