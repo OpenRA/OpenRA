@@ -21,21 +21,3 @@ Metrics:
 	TextContrastColor: 000000
 	ColorPickerRemapIndices: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	ColorPickerActorType: ^mmch.colorpicker
-	SpawnFont: TinyBold
-	SpawnColor: FFFFFF
-	SpawnContrastColor: 000000
-	SpawnLabelOffset: 0,1
-	IncompatibleVersionColor: FF0000
-	IncompatibleGameColor: A9A9A9
-	ProtectedGameColor: FF0000
-	IncompatibleProtectedGameColor: 8B0000
-	WaitingGameColor: 00FF00
-	IncompatibleWaitingGameColor: 32CD32
-	GameStartedColor: FFA500
-	IncompatibleGameStartedColor: D2691E
-	GlobalChatTextColor: FFFFFF
-	GlobalChatNotificationColor: D3D3D3
-	PlayerStanceColorSelf: 32CD32
-	PlayerStanceColorAllies: FFFF00
-	PlayerStanceColorEnemies: FF0000
-	PlayerStanceColorNeutrals: D2B48C
