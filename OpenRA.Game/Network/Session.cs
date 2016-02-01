@@ -196,6 +196,7 @@ namespace OpenRA.Network
 			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;
+			public bool DisableSingleplayer;
 
 			public static Global Deserialize(MiniYaml data)
 			{
