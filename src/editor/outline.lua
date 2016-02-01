@@ -10,6 +10,7 @@ ide.outline = {
     ignoredirs = {},
   },
   needsaving = false,
+  needrefresh = nil,
   indexqueue = {[0] = {}},
   indexpurged = false, -- flag that the index has been purged from old records; once per session
 }
@@ -552,11 +553,23 @@ local package = ide:AddPackage('core.outline', {
        end
     end,
 
-    onEditorPainted = function(self, editor)
+    onEditorUpdateUI = function(self, editor, event)
+      -- only update when content or selection changes; ignore scrolling events
+      if bit.band(event:GetUpdated(), wxstc.wxSTC_UPDATE_CONTENT + wxstc.wxSTC_UPDATE_SELECTION) > 0 then
+        ide.outline.needrefresh = editor
+      end
+    end,
+
+    onIdle = function(self)
+      local editor = ide.outline.needrefresh
+      if not editor then return end
+
+      ide.outline.needrefresh = nil
+
       local ctrl = ide.outline.outlineCtrl
       if not ide:IsWindowShown(ctrl) then return end
 
-      local cache = caches[editor]
+      local cache = ide:IsValidCtrl(editor) and caches[editor]
       if not cache or not ide.config.outline.showcurrentfunction then return end
 
       local edpos = editor:GetCurrentPos()+1
