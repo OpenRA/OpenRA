@@ -1048,7 +1048,7 @@ frame:Connect(wx.wxEVT_IDLE,
     PackageEventHandle("onIdle", event)
 
     -- process onidle events if any
-    if #ide.onidle > 0 then table.remove(ide.onidle)() end
+    if #ide.onidle > 0 then table.remove(ide.onidle, 1)() end
     if #ide.onidle > 0 then event:RequestMore(true) end -- request more if anything left
 
     if ide.config.showmemoryusage then
