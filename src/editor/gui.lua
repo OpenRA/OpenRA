@@ -261,12 +261,7 @@ local function createNotebook(frame)
       notebook:PopupMenu(menu)
     end)
 
-  local function IfAtLeastOneTab(event)
-    event:Enable(notebook:GetPageCount() > 0)
-    if ide.osname == 'Macintosh' and (event:GetId() == ID_CLOSEALL
-      or event:GetId() == ID_CLOSE and notebook:GetPageCount() <= 1)
-    then event:Enable(false) end
-  end
+  local function IfAtLeastOneTab(event) event:Enable(notebook:GetPageCount() > 0) end
 
   notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
       ide:GetDocument(GetEditor(selection)):Save()
@@ -279,20 +274,25 @@ local function createNotebook(frame)
       SaveFileAs(GetEditor(selection))
     end)
   notebook:Connect(ID_SAVEAS, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
+
+  -- the following three methods require handling of closing in the idle event,
+  -- because of wxwidgets issue that causes crash on OSX when the last page is closed
+  -- (http://trac.wxwidgets.org/ticket/15417)
   notebook:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-      ClosePage(selection)
+      ide:DoWhenIdle(function() ClosePage(selection) end)
+    end)
+  notebook:Connect(ID_CLOSEALL, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide:DoWhenIdle(function() CloseAllPagesExcept(nil) end)
+    end)
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+      ide:DoWhenIdle(function() CloseAllPagesExcept(selection) end)
     end)
   notebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  notebook:Connect(ID_CLOSEALL, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-      CloseAllPagesExcept(nil)
-    end)
   notebook:Connect(ID_CLOSEALL, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
-      CloseAllPagesExcept(selection)
-    end)
   notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function (event)
       event:Enable(notebook:GetPageCount() > 1)
     end)
+
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ShowLocation(ide:GetDocument(GetEditor(selection)):GetFilePath())
     end)
