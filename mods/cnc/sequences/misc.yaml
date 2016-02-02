@@ -210,6 +210,8 @@ pips:
 		Start: 4
 	pip-blue:
 		Start: 5
+	pip-heal: pip-heal
+		Length: *
 	groups: pdigits
 		Length: *
 	pip-hazmat: pip-hazmat

@@ -241,6 +241,12 @@
 	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
+	WithDecoration@REDCROSS:
+		Image: pips
+		Sequence: pip-heal
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
 	DetectCloaked:
 		Range: 2c0
 	DeathSounds@NORMAL:
