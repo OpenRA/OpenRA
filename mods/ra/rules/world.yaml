@@ -174,3 +174,4 @@ EditorWorld:
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
+	EditorHighlightLayer:

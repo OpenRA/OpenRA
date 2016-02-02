@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Common.Widgets
 	public class EditorViewportControllerWidget : Widget
 	{
 		public IEditorBrush CurrentBrush { get; private set; }
+		public bool IsEyedropping { get; private set; }
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
-		public bool IsEyedropping { get; private set; }
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly EditorDefaultBrush defaultBrush;
@@ -38,12 +38,27 @@ namespace OpenRA.Mods.Common.Widgets
 			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
 		}
 
-		public void ClearBrush() { SetBrush(null); }
-
 		public void ToggleEyedropping()
 		{
-			this.IsEyedropping = !this.IsEyedropping;
+			if (IsEyedropping)
+				EndEyedropping();
+			else
+				StartEyedropping();
 		}
+
+		public void StartEyedropping()
+		{
+			IsEyedropping = true;
+			SetBrush(new EditorEyedropperTileBrush(this, worldRenderer));
+		}
+
+		public void EndEyedropping()
+		{
+			IsEyedropping = false;
+			ClearBrush();
+		}
+
+		public void ClearBrush() { SetBrush(null); }
 
 		public void SetBrush(IEditorBrush brush)
 		{
@@ -80,29 +95,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up && IsEyedropping)
-			{
-				// Handle eydropper tool - interacts with the tile selector logic
-				var map = world.Map;
-				var mapTiles = map.MapTiles.Value;
-				var mapHeight = map.MapHeight.Value;
-
-				var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-
-				var tileset = map.Rules.TileSets[worldRenderer.World.Map.Tileset];
-
-				var template = mapTiles[cell].Type;
-				var category = tileset.Templates[template].Category;
-				var tileSelectorWidget = this.Parent.Get<ContainerWidget>("TILE_WIDGETS");
-
-				var logic = (Logic.TileSelectorLogic)(tileSelectorWidget.LogicObjects[0]);
-				CurrentBrush = new EditorTileBrush(this, template, worldRenderer);
-				logic.SwitchCategory(worldRenderer, tileset, category);
-
-				ToggleEyedropping();
-
-				return true;
-			}
 			if (CurrentBrush.HandleMouseInput(mi))
 				return true;
 
