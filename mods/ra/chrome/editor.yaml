@@ -394,3 +394,9 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+		Button@EYEDROPPER_BUTTON:
+			X: 665
+			Width: 120
+			Height: 25
+			Text: Eyedropper tool
+			Font: Bold

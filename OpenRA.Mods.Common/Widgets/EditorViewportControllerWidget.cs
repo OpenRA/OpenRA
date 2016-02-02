@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
+		public bool IsEyedropping { get; private set; }
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly EditorDefaultBrush defaultBrush;
@@ -38,6 +39,12 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void ClearBrush() { SetBrush(null); }
+
+		public void ToggleEyedropping()
+		{
+			this.IsEyedropping = !this.IsEyedropping;
+		}
+
 		public void SetBrush(IEditorBrush brush)
 		{
 			if (CurrentBrush != null)
@@ -73,20 +80,28 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up && IsEyedropping)
 			{
+				// Handle eydropper tool - interacts with the tile selector logic
 				var map = world.Map;
 				var mapTiles = map.MapTiles.Value;
 				var mapHeight = map.MapHeight.Value;
+
 				var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 				var tileset = map.Rules.TileSets[worldRenderer.World.Map.Tileset];
 
-				string category = tileset.Templates[mapTiles[cell].Type].Category;
+				var template = mapTiles[cell].Type;
+				var category = tileset.Templates[template].Category;
 				var tileSelectorWidget = this.Parent.Get<ContainerWidget>("TILE_WIDGETS");
 
 				var logic = (Logic.TileSelectorLogic)(tileSelectorWidget.LogicObjects[0]);
+				CurrentBrush = new EditorTileBrush(this, template, worldRenderer);
 				logic.SwitchCategory(worldRenderer, tileset, category);
+
+				ToggleEyedropping();
+
+				return true;
 			}
 			if (CurrentBrush.HandleMouseInput(mi))
 				return true;

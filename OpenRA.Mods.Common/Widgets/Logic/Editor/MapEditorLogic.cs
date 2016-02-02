@@ -83,6 +83,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (reslayer != null)
 					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
 			}
+
+			var eyedropperToggle = widget.GetOrNull<ButtonWidget>("EYEDROPPER_BUTTON");
+			if (eyedropperToggle != null)
+			{
+				eyedropperToggle.OnClick = () => editorViewport.ToggleEyedropping();
+				eyedropperToggle.IsHighlighted = () => editorViewport.IsEyedropping;
+			}
 		}
 	}
 }
