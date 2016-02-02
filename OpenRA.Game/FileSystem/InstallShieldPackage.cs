@@ -29,16 +29,16 @@ namespace OpenRA.FileSystem
 			}
 		}
 
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
+
 		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 		readonly Stream s;
 		readonly long dataStart = 255;
-		readonly int priority;
-		readonly string filename;
 
-		public InstallShieldPackage(FileSystem context, string filename, int priority)
+		public InstallShieldPackage(FileSystem context, string filename)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
 
 			s = context.Open(filename);
 			try
@@ -106,7 +106,7 @@ namespace OpenRA.FileSystem
 			s.Position += chunkSize - nameLength - 30;
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			Entry e;
 			if (!index.TryGetValue(filename, out e))
@@ -118,18 +118,10 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(Blast.Decompress(data));
 		}
 
-		public IEnumerable<string> AllFileNames()
-		{
-			return index.Keys;
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public int Priority { get { return 2000 + priority; } }
-		public string Name { get { return filename; } }
 
 		public void Dispose()
 		{

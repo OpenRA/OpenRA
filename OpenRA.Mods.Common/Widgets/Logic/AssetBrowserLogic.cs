@@ -361,7 +361,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (assetSource == null)
 				return;
 
-			var files = assetSource.AllFileNames().OrderBy(s => s);
+			var files = assetSource.Contents.OrderBy(s => s);
 			foreach (var file in files)
 			{
 				if (allowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))

@@ -7,18 +7,10 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
+Packages:
+	~^Content/ts
 	.
 	./mods/ts
-	./mods/ts/bits
-	./mods/ts/uibits
-	~^Content/ts
-
-MapFolders:
-	./mods/ts/maps@System
-	~^maps/ts@User
-
-Packages:
 # Tiberian Sun
 	~scores.mix
 	~sidenc01.mix
@@ -58,6 +50,12 @@ Packages:
 	~e01vox01.mix
 	~e01vox02.mix
 	~ecache01.mix
+	./mods/ts/bits
+	./mods/ts/uibits
+
+MapFolders:
+	./mods/ts/maps@System
+	~^maps/ts@User
 
 Rules:
 	./mods/ts/rules/ai.yaml

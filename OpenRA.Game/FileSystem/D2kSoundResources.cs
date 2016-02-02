@@ -28,16 +28,15 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		readonly Stream s;
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
 
-		readonly string filename;
-		readonly int priority;
+		readonly Stream s;
 		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 
-		public D2kSoundResources(FileSystem context, string filename, int priority)
+		public D2kSoundResources(FileSystem context, string filename)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
 
 			s = context.Open(filename);
 			try
@@ -58,7 +57,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			Entry e;
 			if (!index.TryGetValue(filename, out e))
@@ -68,19 +67,10 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(s.ReadBytes((int)e.Length));
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			return index.Keys;
-		}
-
-		public string Name { get { return filename; } }
-
-		public int Priority { get { return 1000 + priority; } }
 
 		public void Dispose()
 		{

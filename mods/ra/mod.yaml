@@ -7,19 +7,10 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
+Packages:
+	~^Content/ra
 	.
 	./mods/ra
-	./mods/ra/bits
-	./mods/ra/bits/desert
-	./mods/ra/uibits
-	~^Content/ra
-
-MapFolders:
-	./mods/ra/maps@System
-	~^maps/ra@User
-
-Packages:
 	~main.mix
 	redalert.mix
 	conquer.mix
@@ -35,6 +26,13 @@ Packages:
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
+	./mods/ra/bits
+	./mods/ra/bits/desert
+	./mods/ra/uibits
+
+MapFolders:
+	./mods/ra/maps@System
+	~^maps/ra@User
 
 Rules:
 	./mods/ra/rules/misc.yaml

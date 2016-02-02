@@ -16,11 +16,10 @@ namespace OpenRA.FileSystem
 {
 	public interface IReadOnlyPackage : IDisposable
 	{
-		Stream GetContent(string filename);
-		bool Exists(string filename);
-		IEnumerable<string> AllFileNames();
-		int Priority { get; }
 		string Name { get; }
+		IEnumerable<string> Contents { get; }
+		Stream GetStream(string filename);
+		bool Contains(string filename);
 	}
 
 	public interface IReadWritePackage : IReadOnlyPackage

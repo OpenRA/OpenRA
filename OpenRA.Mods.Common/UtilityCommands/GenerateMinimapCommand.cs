@@ -27,12 +27,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			Game.ModData = modData;
+			modData.MountFiles();
+
 			var map = new Map(args[1]);
-
-			modData.ModFiles.UnmountAll();
-			foreach (var dir in Game.ModData.Manifest.Folders)
-				modData.ModFiles.Mount(dir);
-
 			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";
