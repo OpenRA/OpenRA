@@ -24,7 +24,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly EditorDefaultBrush defaultBrush;
-		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		bool enableTooltips;
@@ -32,7 +31,6 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public EditorViewportControllerWidget(World world, WorldRenderer worldRenderer)
 		{
-			this.world = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
