@@ -105,34 +105,52 @@ namespace OpenRA.FileFormats
 			return output;
 		}
 
-		public static float SoundLength(Stream s)
+		public float GetLength(Stream s)
 		{
 			var sampleRate = s.ReadUInt16();
 			/*var dataSize = */ s.ReadInt32();
 			var outputSize = s.ReadInt32();
-			var flags = (SoundFlags)s.ReadByte();
+			var flagsByte = s.ReadByte();
 
+			var flags = (SoundFlags)flagsByte;
 			var samples = outputSize;
 			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;
 			if (0 != (flags & SoundFlags._16Bit)) samples /= 2;
 			return samples / sampleRate;
 		}
 
-		public static bool LoadSound(Stream s, out byte[] rawData, out int sampleRate)
+		public bool CanParse(Stream stream)
 		{
-			rawData = null;
+			var position = stream.Position;
+			/*var sampleRate =*/ stream.ReadUInt16();
+			/*var dataSize =*/ stream.ReadInt32();
+			/*var outputSize =*/ stream.ReadInt32();
+			var flags = stream.ReadByte();
+			var format = stream.ReadByte();
 
+			if (!Enum.IsDefined(typeof(SoundFlags), flags))
+			{
+				stream.Position = position;
+				return false;
+			}
+
+			if (!Enum.IsDefined(typeof(SoundFormat), format))
+			{
+				stream.Position = position;
+				return false;
+			}
+
+			stream.Position = position;
+			return true;
+		}
+
+		public void LoadSound(Stream s, out byte[] rawData, out int sampleRate)
+		{
 			sampleRate = s.ReadUInt16();
 			var dataSize = s.ReadInt32();
 			var outputSize = s.ReadInt32();
-
-			var readFlag = s.ReadByte();
-			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
-				return false;
-
-			var readFormat = s.ReadByte();
-			if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
-				return false;
+			/*var readFlag =*/ s.ReadByte();
+			/*var readFormat =*/ s.ReadByte();
 
 			var output = new byte[outputSize];
 			var offset = 0;
@@ -163,23 +181,25 @@ namespace OpenRA.FileFormats
 			}
 
 			rawData = output;
-			return true;
 		}
 
 		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits,
 			out int sampleRate)
 		{
+			rawData = null;
 			channels = sampleBits = sampleRate = 0;
 			var position = stream.Position;
 
 			try
 			{
-				if (!LoadSound(stream, out rawData, out sampleRate))
+				if (!CanParse(stream))
 					return false;
+
+				LoadSound(stream, out rawData, out sampleRate);
 			}
 			catch (Exception e)
 			{
-				// LoadSound() will check if the stream is in a format that this parser supports.
+				// CanParse() will check if the stream is in a format that this parser supports.
 				// If not, it will simply return false so we know we can't use it. If it is, it will start
 				// parsing the data without any further failsafes, which means that it will crash on corrupted files
 				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).

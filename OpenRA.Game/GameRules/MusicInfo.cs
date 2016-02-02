@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.IO;
 using OpenRA.FileFormats;
 
 namespace OpenRA.GameRules
@@ -39,12 +41,20 @@ namespace OpenRA.GameRules
 				return;
 
 			Exists = true;
-			using (var s = Game.ModData.ModFiles.Open(Filename))
+
+			using (var stream = Game.ModData.ModFiles.Open(Filename))
 			{
-				if (Filename.ToLowerInvariant().EndsWith("wav"))
-					Length = (int)WavLoader.WaveLength(s);
-				else
-					Length = (int)AudLoader.SoundLength(s);
+				foreach (var loader in Game.ModData.SoundLoaders)
+				{
+					stream.Position = 0;
+					if (!loader.CanParse(stream))
+						continue;
+
+					Length = (int)loader.GetLength(stream);
+					return;
+				}
+
+				throw new InvalidDataException(Filename + " is not a valid sound file!");
 			}
 		}
 	}

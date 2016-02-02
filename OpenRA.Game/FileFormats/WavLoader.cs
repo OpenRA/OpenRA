@@ -33,16 +33,35 @@ namespace OpenRA.FileFormats
 		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
 
-		bool LoadSound(Stream s)
+		public bool CanParse(Stream stream)
+		{
+			var position = stream.Position;
+
+			var type = stream.ReadASCII(4);
+			if (type != "RIFF")
+			{
+				stream.Position = position;
+				return false;
+			}
+
+			/*var fileSize =*/ stream.ReadInt32();
+			var format = stream.ReadASCII(4);
+			if (format != "WAVE")
+			{
+				stream.Position = position;
+				return false;
+			}
+
+			stream.Position = position;
+			return true;
+		}
+
+		void LoadSound(Stream s)
 		{
 			var type = s.ReadASCII(4);
-			if (type != "RIFF")
-				return false;
-
 			FileSize = s.ReadInt32();
 			Format = s.ReadASCII(4);
-			if (Format != "WAVE")
-				return false;
+
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
@@ -88,11 +107,9 @@ namespace OpenRA.FileFormats
 				RawOutput = DecodeImaAdpcmData();
 				BitsPerSample = 16;
 			}
-
-			return true;
 		}
 
-		public static float WaveLength(Stream s)
+		public float GetLength(Stream s)
 		{
 			s.Position = 12;
 			var fmt = s.ReadASCII(4);
@@ -185,12 +202,14 @@ namespace OpenRA.FileFormats
 
 			try
 			{
-				if (!LoadSound(stream))
+				if (!CanParse(stream))
 					return false;
+
+				LoadSound(stream);
 			}
 			catch (Exception e)
 			{
-				// LoadSound() will check if the stream is in a format that this parser supports.
+				// CanParse() will check if the stream is in a format that this parser supports.
 				// If not, it will simply return false so we know we can't use it. If it is, it will start
 				// parsing the data without any further failsafes, which means that it will crash on corrupted files
 				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
