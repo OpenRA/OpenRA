@@ -44,9 +44,9 @@ namespace OpenRA.GameRules
 			using (var s = filesystem.Open(Filename))
 			{
 				if (Filename.ToLowerInvariant().EndsWith("wav"))
-					Length = (int)WavLoader.WaveLength(s);
+					Length = (int)WavReader.WaveLength(s);
 				else
-					Length = (int)AudLoader.SoundLength(s);
+					Length = (int)AudReader.SoundLength(s);
 			}
 		}
 	}

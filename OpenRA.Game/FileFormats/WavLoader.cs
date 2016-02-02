@@ -16,6 +16,63 @@ namespace OpenRA.FileFormats
 {
 	public class WavLoader : ISoundLoader
 	{
+		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
+		{
+			try
+			{
+				sound = new WavFormat(stream);
+				return true;
+			}
+			catch
+			{
+				// Not a (supported) WAV
+			}
+
+			sound = null;
+			return false;
+		}
+	}
+
+	public class WavFormat : ISoundFormat
+	{
+		public int Channels { get { return channels; } }
+		public int SampleBits { get { return sampleBits; } }
+		public int SampleRate { get { return sampleRate; } }
+		public float LengthInSeconds { get { return WavReader.WaveLength(stream); } }
+		public Stream GetPCMInputStream() { return new MemoryStream(rawData); }
+
+		int channels;
+		int sampleBits;
+		int sampleRate;
+		byte[] rawData;
+
+		readonly Stream stream;
+
+		public WavFormat(Stream stream)
+		{
+			this.stream = stream;
+			var wavReader = new WavReader();
+
+			var position = stream.Position;
+			try
+			{
+				if (!wavReader.LoadSound(stream))
+					throw new InvalidDataException();
+			}
+			finally
+			{
+				stream.Position = position;
+			}
+
+			rawData = wavReader.RawOutput;
+			channels = wavReader.Channels;
+			sampleBits = wavReader.BitsPerSample;
+			sampleRate = wavReader.SampleRate;
+		}
+	}
+
+	public class WavReader
+	{
 		public int FileSize;
 		public string Format;
 
@@ -34,7 +91,7 @@ namespace OpenRA.FileFormats
 		public enum WaveType { Pcm = 0x1, ImaAdpcm = 0x11 }
 		public static WaveType Type { get; private set; }
 
-		bool LoadSound(Stream s)
+		public bool LoadSound(Stream s)
 		{
 			var type = s.ReadASCII(4);
 			if (type != "RIFF")
@@ -175,41 +232,6 @@ namespace OpenRA.FileFormats
 			}
 
 			return output;
-		}
-
-		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels,
-			out int sampleBits, out int sampleRate)
-		{
-			rawData = null;
-			channels = sampleBits = sampleRate = 0;
-			var position = stream.Position;
-
-			try
-			{
-				if (!LoadSound(stream))
-					return false;
-			}
-			catch (Exception e)
-			{
-				// LoadSound() will check if the stream is in a format that this parser supports.
-				// If not, it will simply return false so we know we can't use it. If it is, it will start
-				// parsing the data without any further failsafes, which means that it will crash on corrupted files
-				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
-				Log.Write("sound", "Failed to parse WAV file {0}. Error message:".F(fileName));
-				Log.Write("sound", e.ToString());
-				return false;
-			}
-			finally
-			{
-				stream.Position = position;
-			}
-
-			rawData = RawOutput;
-			channels = Channels;
-			sampleBits = BitsPerSample;
-			sampleRate = SampleRate;
-
-			return true;
 		}
 	}
 }

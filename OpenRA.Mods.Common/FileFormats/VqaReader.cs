@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 
 			if (audioChannels == 1)
-				audioData = compressed ? AudLoader.LoadSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
+				audioData = compressed ? AudReader.LoadSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
 			else
 			{
 				byte[] leftData, rightData;
@@ -233,9 +233,9 @@ namespace OpenRA.Mods.Common.FileFormats
 				else
 				{
 					adpcmIndex = 0;
-					leftData = AudLoader.LoadSound(audio1.ToArray(), ref adpcmIndex);
+					leftData = AudReader.LoadSound(audio1.ToArray(), ref adpcmIndex);
 					adpcmIndex = 0;
-					rightData = AudLoader.LoadSound(audio2.ToArray(), ref adpcmIndex);
+					rightData = AudReader.LoadSound(audio2.ToArray(), ref adpcmIndex);
 				}
 
 				audioData = new byte[rightData.Length + leftData.Length];

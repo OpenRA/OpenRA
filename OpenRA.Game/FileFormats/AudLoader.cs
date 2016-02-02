@@ -46,6 +46,55 @@ namespace OpenRA.FileFormats
 
 	public class AudLoader : ISoundLoader
 	{
+		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
+		{
+			try
+			{
+				sound = new AudFormat(stream);
+				return true;
+			}
+			catch
+			{
+				// Not a supported AUD
+			}
+
+			sound = null;
+			return false;
+		}
+	}
+
+	public class AudFormat : ISoundFormat
+	{
+		public int Channels { get { return 1; } }
+		public int SampleBits { get { return 16; } }
+		public int SampleRate { get { return sampleRate; } }
+		public float LengthInSeconds { get { return AudReader.SoundLength(stream); } }
+		public Stream GetPCMInputStream() { return new MemoryStream(rawData); }
+
+		int sampleRate;
+		byte[] rawData;
+
+		Stream stream;
+
+		public AudFormat(Stream stream)
+		{
+			this.stream = stream;
+
+			var position = stream.Position;
+			try
+			{
+				if (!AudReader.LoadSound(stream, out rawData, out sampleRate))
+					throw new InvalidDataException();
+			}
+			finally
+			{
+				stream.Position = position;
+			}
+		}
+	}
+
+	public class AudReader
+	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =
 		{
@@ -164,39 +213,6 @@ namespace OpenRA.FileFormats
 			}
 
 			rawData = output;
-			return true;
-		}
-
-		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits,
-			out int sampleRate)
-		{
-			channels = sampleBits = sampleRate = 0;
-			var position = stream.Position;
-
-			try
-			{
-				if (!LoadSound(stream, out rawData, out sampleRate))
-					return false;
-			}
-			catch (Exception e)
-			{
-				// LoadSound() will check if the stream is in a format that this parser supports.
-				// If not, it will simply return false so we know we can't use it. If it is, it will start
-				// parsing the data without any further failsafes, which means that it will crash on corrupted files
-				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
-				Log.Write("sound", "Failed to parse AUD file {0}. Error message:".F(fileName));
-				Log.Write("sound", e.ToString());
-				rawData = null;
-				return false;
-			}
-			finally
-			{
-				stream.Position = position;
-			}
-
-			channels = 1;
-			sampleBits = 16;
-
 			return true;
 		}
 	}
