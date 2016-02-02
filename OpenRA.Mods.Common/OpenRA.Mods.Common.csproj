@@ -504,7 +504,7 @@
     <Compile Include="Traits\World\CrateSpawner.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
-    <Compile Include="Traits\World\EditorCellHighlightLayer.cs" />
+    <Compile Include="Traits\World\EditorHighlightLayer.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
     <Compile Include="Traits\World\MPStartUnits.cs" />
