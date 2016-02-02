@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
-		const double tooCloseDestinationThreshold = 5000;
+		const double TooCloseDestinationThreshold = 5000;
 
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
