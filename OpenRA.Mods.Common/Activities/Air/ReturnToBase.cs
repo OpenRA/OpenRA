@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
-		static Double ToCloseDestinationThreshold = 5000;
+		const Double tooCloseDestinationThreshold = 5000;
 
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var w1DistanceFromSelf = DistanceFromPoint(w1, self.CenterPosition);
 
-			if (w1DistanceFromSelf > ToCloseDestinationThreshold) {
+			if (w1DistanceFromSelf > tooCloseDestinationThreshold) {
 				landingProcedures.Add (new Fly(self, Target.FromPos(w1)));
 			}
 
