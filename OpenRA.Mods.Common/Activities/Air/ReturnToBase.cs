@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var w1DistanceFromSelf = DistanceFromPoint(w1, self.CenterPosition);
 
-			if (w1DistanceFromSelf > tooCloseDestinationThreshold) {
+			if (w1DistanceFromSelf > TooCloseDestinationThreshold) {
 				landingProcedures.Add(new Fly(self, Target.FromPos(w1)));
 			}
 
