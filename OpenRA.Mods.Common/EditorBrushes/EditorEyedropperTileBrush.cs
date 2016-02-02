@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var category = tileset.Templates[template].Category;
 				var tileSelectorWidget = editorWidget.Parent.Get<ContainerWidget>("TILE_WIDGETS");
 
-				var logic = (Logic.TileSelectorLogic)(tileSelectorWidget.LogicObjects[0]);
+				var logic = (Logic.TileSelectorLogic)tileSelectorWidget.LogicObjects[0];
 				editorWidget.SetBrush(new EditorTileBrush(editorWidget, template, worldRenderer));
 				logic.SwitchCategory(worldRenderer, tileset, category);
 
