@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MountFiles();
 
 			var src = args[1];
 			var shadowIndex = new int[] { };

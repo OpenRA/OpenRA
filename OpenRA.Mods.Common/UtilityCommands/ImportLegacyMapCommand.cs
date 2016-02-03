@@ -44,7 +44,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MountFiles();
 
 			Rules = Game.ModData.RulesetCache.Load();
 

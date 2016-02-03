@@ -154,7 +154,6 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MountFiles();
 
 			var filename = args[1];
 			var file = new IniFile(File.Open(args[1], FileMode.Open));

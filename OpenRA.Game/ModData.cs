@@ -56,6 +56,8 @@ namespace OpenRA
 				LoadScreen.Display();
 			}
 
+			ModFiles.LoadFromManifest(Manifest);
+
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
@@ -84,11 +86,6 @@ namespace OpenRA
 		{
 			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
 				LoadScreen.Display();
-		}
-
-		public void MountFiles()
-		{
-			ModFiles.LoadFromManifest(Manifest);
 		}
 
 		public void InitializeLoaders()
