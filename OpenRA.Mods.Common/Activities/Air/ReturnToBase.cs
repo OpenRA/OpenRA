@@ -18,6 +18,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
+		static int TicksForNextValidation = 50;
+
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
 		bool isCalculated;
@@ -106,7 +108,10 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return ActivityUtils.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
+					return ActivityUtils.SequenceActivities(
+						new Fly(self, Target.FromActor(nearestAfld)), 
+						new FlyCircleTimed(TicksForNextValidation, self),
+						new ReturnToBase(self));
 				else
 					return new FlyCircle(self);
 			}
@@ -116,6 +121,7 @@ namespace OpenRA.Mods.Common.Activities
 				new Fly(self, Target.FromPos(w2)),
 				new Fly(self, Target.FromPos(w3)),
 				new Land(self, Target.FromActor(dest)),
+				new ResupplyAircraft(self),
 				NextActivity);
 		}
 	}
