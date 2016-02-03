@@ -208,6 +208,17 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
+		UpgradeTypes: hazmatsuits
+		UpgradeMaxEnabledLevel: 0
+	GlobalUpgradable@BIO:
+		Upgrades: hazmatsuits
+		Prerequisites: bio
+	WithDecoration@HAZMAT:
+		Image: pips
+		Sequence: pip-hazmat
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hazmatsuits
+		UpgradeMinEnabledLevel: 1
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
@@ -227,7 +238,7 @@
 		DamageCooldown: 125
 		UpgradeTypes: hospitalheal
 		UpgradeMinEnabledLevel: 1
-	GlobalUpgradable:
+	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DetectCloaked:
@@ -299,6 +310,7 @@
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 50
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 1000
 	Tooltip:

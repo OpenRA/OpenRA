@@ -212,6 +212,8 @@ pips:
 		Start: 5
 	groups: pdigits
 		Length: *
+	pip-hazmat: pip-hazmat
+		Length: *
 
 overlay:
 	build-valid-desert:
