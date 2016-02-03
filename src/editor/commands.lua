@@ -930,6 +930,19 @@ frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, function() saveAutoRecovery() end)
 
+local function restoreFocus()
+  -- check if the window is shown before returning focus to it,
+  -- as it may lead to a recursion in event handlers on OSX (wxwidgets 2.9.5).
+  if ide:IsWindowShown(ide.infocus) then
+    ide.infocus:SetFocus()
+    -- if switching to the editor, then also call SetSTCFocus,
+    -- otherwise the cursor is not shown in the editor on OSX.
+    if ide.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl" then
+      ide.infocus:DynamicCast("wxStyledTextCtrl"):SetSTCFocus(true)
+    end
+  end
+end
+
 -- in the presence of wxAuiToolbar, when (1) the app gets focus,
 -- (2) a floating panel is closed or (3) a toolbar dropdown is closed,
 -- the focus is always on the toolbar when the app gets focus,
@@ -947,19 +960,8 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
   if win then
     local class = win:GetClassInfo():GetClassName()
     -- don't set focus on the main frame or toolbar
-    if ide.infocus and (class == 'wxAuiToolBar' or class == 'wxFrame') then
-      -- check if the window is shown before returning focus to it,
-      -- as it may lead to a recursion in event handlers on OSX (wxwidgets 2.9.5).
-      pcall(function()
-          if ide:IsWindowShown(ide.infocus) then
-            ide.infocus:SetFocus()
-            -- if switching to the editor, then also call SetSTCFocus,
-            -- otherwise the cursor is not shown in the editor on OSX.
-            if ide.infocus:GetClassInfo():GetClassName() == "wxStyledTextCtrl" then
-              ide.infocus:DynamicCast("wxStyledTextCtrl"):SetSTCFocus(true)
-            end
-          end
-        end)
+    if ide.infocus and (class == "wxAuiToolBar" or class == "wxFrame") then
+      pcall(restoreFocus)
       return
     end
 
@@ -972,7 +974,7 @@ ide.editorApp:Connect(wx.wxEVT_SET_FOCUS, function(event)
     local parent = win:GetParent()
     while parent do
       local class = parent:GetClassInfo():GetClassName()
-      if (class == 'wxFrame' or class:find('^wx.*Dialog$'))
+      if (class == "wxFrame" or class:find("^wx.*Dialog$"))
       and parent:GetId() ~= frameid then
         mainwin = false; break
       end
@@ -1001,12 +1003,10 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   function(event)
     if not ide.exitingProgram then
       local active = event:GetActive()
-      if ide.osname == 'Macintosh' and active and ide.infocus then
-        -- restore focus to the last element that received it;
-        -- wrap into pcall in case the element has disappeared
-        -- while the application was out of focus
-        pcall(function() if ide:IsWindowShown(ide.infocus) then ide.infocus:SetFocus() end end)
-      end
+      -- restore focus to the last element that received it;
+      -- wrap into pcall in case the element has disappeared
+      -- while the application was out of focus
+      if ide.osname == "Macintosh" and active and ide.infocus then pcall(restoreFocus) end
 
       -- save auto-recovery record when making the app inactive
       if not active then saveAutoRecovery(true) end
