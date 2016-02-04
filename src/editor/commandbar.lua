@@ -309,7 +309,8 @@ local function score(p, v)
 
   local key = p..'\2'..v
   if not cache[key] then
-    local score = weights.onegram * overlap(p, v, 1)
+    -- ignore all whitespaces in the pattern for one-gram comparison
+    local score = weights.onegram * overlap(p:gsub("%s+",""), v, 1)
     if score > 0 then -- don't bother with those that can't even score 1grams
       p = ' '..(p:gsub(sep, ' '))
       v = ' '..(v:gsub(sep, ' '))
@@ -322,7 +323,7 @@ local function score(p, v)
 end
 
 function CommandBarScoreItems(t, pattern, limit)
-  local r, plen = {}, #pattern
+  local r, plen = {}, #(pattern:gsub("%s+",""))
   local maxp = 0
   local num = 0
   local prefilter = ide.config.commandbar and ide.config.commandbar.prefilter

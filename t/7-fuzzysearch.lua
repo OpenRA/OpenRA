@@ -21,3 +21,5 @@ check("f", "fun", "funclist.lua")
 
 ok(1 == #CommandBarScoreItems({"funclist.lua", "f"}, "fun"),
   "Patterns longer than strings don't match.")
+ok(1 == #CommandBarScoreItems({"io.read"}, "io r"),
+  "Patterns with whitespaces still match.")
