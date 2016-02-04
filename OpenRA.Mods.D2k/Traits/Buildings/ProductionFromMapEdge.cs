@@ -22,10 +22,17 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production
+	class ProductionFromMapEdge : Production, INotifyCreated
 	{
+		RallyPoint rp;
+
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info) { }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			rp = self.TraitOrDefault<RallyPoint>();
+		}
 
 		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
@@ -37,7 +44,9 @@ namespace OpenRA.Mods.D2k.Traits
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
-			var initialFacing = self.World.Map.FacingBetween(location, self.Location, 0);
+			var destination = rp != null ? rp.Location : self.Location;
+
+			var initialFacing = self.World.Map.FacingBetween(location, destination, 0);
 
 			self.World.AddFrameEndTask(w =>
 				{
@@ -56,13 +65,13 @@ namespace OpenRA.Mods.D2k.Traits
 
 					var move = newUnit.TraitOrDefault<IMove>();
 					if (move != null)
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, self.Location));
+						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, destination));
 
-					newUnit.SetTargetLine(Target.FromCell(self.World, self.Location), Color.Green, false);
+					newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
 
 					if (!self.IsDead)
 						foreach (var t in self.TraitsImplementing<INotifyProduction>())
-							t.UnitProduced(self, newUnit, self.Location);
+							t.UnitProduced(self, newUnit, destination);
 
 					var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 					foreach (var notify in notifyOthers)
