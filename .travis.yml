@@ -10,6 +10,7 @@ sudo: false
 cache:
   directories:
   - thirdparty/download
+  - Support/Content
 
 addons:
   apt:
@@ -26,12 +27,14 @@ env:
 
 # Fetch dependencies
 # Run the build script
+# Fetch mod assets
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
 # Run the NUnit tests
 script:
  - travis_retry make all-dependencies
  - make all
+ - travis_retry ./thirdparty/fetch-travis-assets.sh
  - make check
  - make check-scripts
  - make test
