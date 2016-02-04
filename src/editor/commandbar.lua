@@ -226,7 +226,9 @@ function CommandBarShow(params)
     onExit(math.floor(y / row_height)+1)
   end
 
+  local takeNearestEdit = false
   local function onIdle(event)
+    if takeNearestEdit then onExit() end
     if linewas == linenow then return end
     linewas = linenow
     if linenow == 0 then return end
@@ -261,7 +263,10 @@ function CommandBarShow(params)
   search:Connect(wx.wxEVT_KEY_DOWN, onKeyDown)
   search:Connect(wx.wxEVT_COMMAND_TEXT_UPDATED, onTextUpdated)
   search:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, function() onExit(linenow) end)
-  search:Connect(wx.wxEVT_KILL_FOCUS, function() onExit() end)
+  -- this could be done with calling `onExit`, but on OSX KILL_FOCUS is called before
+  -- mouse LEFT_DOWN, which closes the panel before the results are taken;
+  -- to avoid this, `onExit` call is delayed and handled in IDLE event
+  search:Connect(wx.wxEVT_KILL_FOCUS, function() takeNearestEdit = true end)
 
   frame:Show(true)
   frame:Update()
