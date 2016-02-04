@@ -386,6 +386,13 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+		Button@EYEDROPPER_BUTTON:
+			X: WINDOW_RIGHT - 640 - 120
+			Y: 5
+			Width: 120
+			Height: 25
+			Text: Select terrain
+			Font: Bold
 		Button@COPYPASTE_BUTTON:
 			X: WINDOW_RIGHT-390
 			Y: 5

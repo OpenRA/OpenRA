@@ -388,15 +388,15 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 570
+			X: 553
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Button@EYEDROPPER_BUTTON:
-			X: 665
+			X: 633
 			Width: 120
 			Height: 25
-			Text: Eyedropper tool
+			Text: Select terrain
 			Font: Bold

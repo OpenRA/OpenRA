@@ -149,3 +149,4 @@ EditorWorld:
 	EditorActorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
+	EditorHighlightLayer:

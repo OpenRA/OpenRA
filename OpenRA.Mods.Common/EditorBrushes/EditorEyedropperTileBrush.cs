@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up && editorWidget.IsEyedropping)
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				// Handle eydropper tool - interacts with the tile selector logic
 				var map = world.Map;
@@ -80,10 +80,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose()
 		{
 			highlightLayer.Clear();
-			if (editorWidget.IsEyedropping)
-			{
-				editorWidget.EndEyedropping();
-			}
 		}
 	}
 }

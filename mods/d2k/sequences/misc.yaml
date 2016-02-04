@@ -173,6 +173,7 @@ editor-overlay:
 	copy:
 	paste:
 		Start: 1
+	highlight:
 
 rallypoint:
 	flag: flagfly.shp

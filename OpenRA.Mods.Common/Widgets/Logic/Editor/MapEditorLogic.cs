@@ -87,8 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var eyedropperToggle = widget.GetOrNull<ButtonWidget>("EYEDROPPER_BUTTON");
 			if (eyedropperToggle != null)
 			{
-				eyedropperToggle.OnClick = () => editorViewport.ToggleEyedropping();
-				eyedropperToggle.IsHighlighted = () => editorViewport.IsEyedropping;
+				eyedropperToggle.OnClick = () => editorViewport.SetBrush(new EditorEyedropperTileBrush(editorViewport, worldRenderer));
+				eyedropperToggle.IsHighlighted = () => editorViewport.CurrentBrush is EditorEyedropperTileBrush;
 			}
 		}
 	}

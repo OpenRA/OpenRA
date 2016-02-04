@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget tileSelectorContainer;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
+		readonly DropDownButtonWidget tileCategorySelector;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer, Ruleset modRules)
@@ -31,9 +32,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");
 			itemTemplate = panel.Get<ScrollItemWidget>("TILEPREVIEW_TEMPLATE");
+			tileCategorySelector = widget.Get<DropDownButtonWidget>("TILE_CATEGORY");
 			panel.Layout = new GridLayout(panel);
 
-			var tileCategorySelector = widget.Get<DropDownButtonWidget>("TILE_CATEGORY");
 			var categories = tileset.EditorTemplateOrder;
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
@@ -54,7 +55,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void SwitchCategory(WorldRenderer worldRenderer, TileSet tileset, string category)
 		{
-			var tileCategorySelector = tileSelectorContainer.Get<DropDownButtonWidget>("TILE_CATEGORY");
 			tileCategorySelector.Text = category;
 			IntializeTilePreview(tileSelectorContainer, worldRenderer, tileset, category);
 		}

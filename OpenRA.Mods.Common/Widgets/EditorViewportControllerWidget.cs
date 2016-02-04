@@ -17,7 +17,6 @@ namespace OpenRA.Mods.Common.Widgets
 	public class EditorViewportControllerWidget : Widget
 	{
 		public IEditorBrush CurrentBrush { get; private set; }
-		public bool IsEyedropping { get; private set; }
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
@@ -34,26 +33,6 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
-		}
-
-		public void ToggleEyedropping()
-		{
-			if (IsEyedropping)
-				EndEyedropping();
-			else
-				StartEyedropping();
-		}
-
-		public void StartEyedropping()
-		{
-			IsEyedropping = true;
-			SetBrush(new EditorEyedropperTileBrush(this, worldRenderer));
-		}
-
-		public void EndEyedropping()
-		{
-			IsEyedropping = false;
-			ClearBrush();
 		}
 
 		public void ClearBrush() { SetBrush(null); }

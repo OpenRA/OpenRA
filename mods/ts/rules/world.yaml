@@ -177,3 +177,5 @@ EditorWorld:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 		Palette: placebuilding
+	EditorHighlightLayer:
+		Palette: placebuilding
