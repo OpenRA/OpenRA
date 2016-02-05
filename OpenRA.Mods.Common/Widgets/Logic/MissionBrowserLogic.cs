@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget template;
 
 		MapPreview selectedMapPreview;
+		Map selectedMap;
 
 		PlayingVideo playingVideo;
 
@@ -161,16 +162,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectMap(Map map)
 		{
+			selectedMap = map;
 			selectedMapPreview = Game.ModData.MapCache[map.Uid];
 
 			// Cache the rules on a background thread to avoid jank
 			new Thread(selectedMapPreview.CacheRules).Start();
 
-			var briefingVideo = selectedMapPreview.Map.Videos.Briefing;
+			var briefingVideo = map.Videos.Briefing;
 			var briefingVideoVisible = briefingVideo != null;
 			var briefingVideoDisabled = !(briefingVideoVisible && Game.ModData.ModFiles.Exists(briefingVideo));
 
-			var infoVideo = selectedMapPreview.Map.Videos.BackgroundInfo;
+			var infoVideo = map.Videos.BackgroundInfo;
 			var infoVideoVisible = infoVideo != null;
 			var infoVideoDisabled = !(infoVideoVisible && Game.ModData.ModFiles.Exists(infoVideo));
 
@@ -291,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedMapPreview.RuleStatus != MapRuleStatus.Cached)
 				return;
 
-			var gameStartVideo = selectedMapPreview.Map.Videos.GameStart;
+			var gameStartVideo = selectedMap.Videos.GameStart;
 			if (gameStartVideo != null && Game.ModData.ModFiles.Exists(gameStartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
