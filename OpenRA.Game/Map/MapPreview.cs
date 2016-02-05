@@ -57,6 +57,8 @@ namespace OpenRA
 		MapCache cache;
 
 		public readonly string Uid;
+		public string Path { get; private set; }
+
 		public string Title { get; private set; }
 		public string Type { get; private set; }
 		public string Author { get; private set; }
@@ -118,6 +120,7 @@ namespace OpenRA
 		public void UpdateFromMap(Map m, MapClassification classification)
 		{
 			Map = m;
+			Path = m.Path;
 			Title = m.Title;
 			Type = m.Type;
 			Type = m.Type;
@@ -231,7 +234,7 @@ namespace OpenRA
 							return;
 						}
 
-						mapPath = Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+						mapPath = System.IO.Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
 					}
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };

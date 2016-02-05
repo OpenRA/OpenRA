@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
 
 					var maps = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
+						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Path)))
 						.Select(p => p.Map)
 						.OrderBy(m => missionMapPaths.IndexOf(Path.GetFullPath(m.Path)));
 

@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string DeleteMap(string map)
 		{
-			var path = Game.ModData.MapCache[map].Map.Path;
+			var path = Game.ModData.MapCache[map].Path;
 			try
 			{
 				if (File.Exists(path))
