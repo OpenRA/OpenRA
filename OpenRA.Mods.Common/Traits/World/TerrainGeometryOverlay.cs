@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				var ti = tileSet.GetTileInfo(tile);
 				var ramp = ti != null ? ti.RampType : 0;
 
-				var corners = map.CellCorners[ramp];
+				var corners = map.Grid.CellCorners[ramp];
 				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
 				var pos = map.CenterOfCell(uv.ToCPos(map));
 				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Projected cell coordinates for the current cell
-			var projectedCorners = map.CellCorners[0];
+			var projectedCorners = map.Grid.CellCorners[0];
 			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
 			{
 				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));
