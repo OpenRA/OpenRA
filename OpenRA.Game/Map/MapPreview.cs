@@ -68,6 +68,7 @@ namespace OpenRA
 		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
+		public MapVisibility Visibility { get; private set; }
 		public bool SuitableForInitialMap { get; private set; }
 
 		public MapRuleStatus RuleStatus { get; private set; }
@@ -111,6 +112,7 @@ namespace OpenRA
 			GridType = gridType;
 			Status = MapStatus.Unavailable;
 			Class = MapClassification.Unknown;
+			Visibility = MapVisibility.Lobby;
 		}
 
 		public void UpdateFromMap(Map m, MapClassification classification)
@@ -126,6 +128,7 @@ namespace OpenRA
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
+			Visibility = m.Visibility;
 
 			var players = new MapPlayers(m.PlayerDefinitions).Players;
 			PlayerCount = players.Count(x => x.Value.Playable);
@@ -135,7 +138,7 @@ namespace OpenRA
 
 		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
 		{
-			if (Status != MapStatus.Available || !Map.Visibility.HasFlag(MapVisibility.Lobby))
+			if (Status != MapStatus.Available || !Visibility.HasFlag(MapVisibility.Lobby))
 				return false;
 
 			// Other map types may have confusing settings or gameplay

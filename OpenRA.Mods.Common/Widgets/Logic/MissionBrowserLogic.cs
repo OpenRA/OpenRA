@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Add an additional group for loose missions
 			var looseMissions = modData.MapCache
-				.Where(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
+				.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
 				.Select(p => p.Map);
 
 			if (looseMissions.Any())
