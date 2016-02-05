@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Game.ModData.MapCache.LoadMaps();
 					maps.AddRange(Game.ModData.MapCache
 						.Where(m => m.Status == MapStatus.Available)
-						.Select(m => m.Map));
+						.Select(m => new Map(m.Path)));
 				}
 				else
 					maps.Add(new Map(args[1]));

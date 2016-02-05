@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var maps = modData.MapCache
 						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Path)))
-						.Select(p => p.Map)
+						.Select(p => new Map(p.Path))
 						.OrderBy(m => missionMapPaths.IndexOf(Path.GetFullPath(m.Path)));
 
 					CreateMissionGroup(kv.Key, maps);
@@ -115,8 +115,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Add an additional group for loose missions
 			var looseMissions = modData.MapCache
-				.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
-				.Select(p => p.Map);
+				.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Any(m => m.Uid == p.Uid))
+				.Select(p => new Map(p.Path));
 
 			if (looseMissions.Any())
 			{

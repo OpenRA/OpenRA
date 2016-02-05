@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("Processing Maps:");
 			var maps = Game.ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available)
-				.Select(m => m.Map);
+				.Select(m => new Map(m.Path));
 
 			foreach (var map in maps)
 			{

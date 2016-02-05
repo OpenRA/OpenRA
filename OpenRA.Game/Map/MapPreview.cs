@@ -67,7 +67,6 @@ namespace OpenRA
 		public MapGridType GridType { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
-		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
 		public MapVisibility Visibility { get; private set; }
@@ -117,7 +116,6 @@ namespace OpenRA
 
 		public void UpdateFromMap(Map m, MapClassification classification)
 		{
-			Map = m;
 			Path = m.Path;
 			Title = m.Title;
 			Type = m.Type;
