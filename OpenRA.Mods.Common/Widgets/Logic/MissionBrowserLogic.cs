@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
 			startButton.OnClick = StartMissionClicked;
-			startButton.IsDisabled = () => selectedMapPreview == null || selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
+			startButton.IsDisabled = () => selectedMap == null || selectedMap.InvalidCustomRules;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedMapPreview = Game.ModData.MapCache[map.Uid];
 
 			// Cache the rules on a background thread to avoid jank
-			new Thread(selectedMapPreview.CacheRules).Start();
+			new Thread(() => selectedMap.PreloadRules()).Start();
 
 			var briefingVideo = map.Videos.Briefing;
 			var briefingVideoVisible = briefingVideo != null;
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			StopVideo(videoPlayer);
 
-			if (selectedMapPreview.RuleStatus != MapRuleStatus.Cached)
+			if (selectedMap.InvalidCustomRules)
 				return;
 
 			var gameStartVideo = selectedMap.Videos.GameStart;

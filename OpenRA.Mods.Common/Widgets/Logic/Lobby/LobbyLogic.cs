@@ -744,16 +744,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Maps need to be validated and pre-loaded before they can be accessed
 				new Thread(_ =>
 				{
-					var currentMap = Map = MapPreview.Map;
-					var mapPreview = MapPreview;
-					mapPreview.CacheRules();
+					var currentMap = Map = new Map(MapPreview.Path);
+					currentMap.PreloadRules();
 					Game.RunAfterTick(() =>
 					{
 						// Map may have changed in the meantime
 						if (currentMap != Map)
 							return;
 
-						if (mapPreview.RuleStatus != MapRuleStatus.Invalid)
+						if (!currentMap.InvalidCustomRules)
 						{
 							// Tell the server that we have the map
 							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
@@ -821,7 +820,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, MapPreview);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, MapPreview);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, MapPreview);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, MapPreview, Map == null || Map.InvalidCustomRules);
 				}
 				else
 				{

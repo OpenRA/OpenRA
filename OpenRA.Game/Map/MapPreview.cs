@@ -73,8 +73,6 @@ namespace OpenRA
 		public MapVisibility Visibility { get; private set; }
 		public bool SuitableForInitialMap { get; private set; }
 
-		public MapRuleStatus RuleStatus { get; private set; }
-
 		Download download;
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
@@ -174,7 +172,6 @@ namespace OpenRA
 						if (!r.downloading)
 						{
 							Status = MapStatus.Unavailable;
-							RuleStatus = MapRuleStatus.Invalid;
 							return;
 						}
 
@@ -252,11 +249,7 @@ namespace OpenRA
 						}
 
 						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
-						Game.RunAfterTick(() =>
-						{
-							UpdateFromMap(new Map(mapPath), MapClassification.User);
-							CacheRules();
-						});
+						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath), MapClassification.User));
 					};
 
 					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);
@@ -278,19 +271,9 @@ namespace OpenRA
 			download = null;
 		}
 
-		public void CacheRules()
-		{
-			if (RuleStatus != MapRuleStatus.Unknown)
-				return;
-
-			Map.PreloadRules();
-			RuleStatus = Map.InvalidCustomRules ? MapRuleStatus.Invalid : MapRuleStatus.Cached;
-		}
-
 		public void Invalidate()
 		{
 			Status = MapStatus.Unavailable;
-			RuleStatus = MapRuleStatus.Unknown;
 		}
 	}
 }

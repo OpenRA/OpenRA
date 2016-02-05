@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
 			{
-				available.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && lobby.MapPreview.RuleStatus == MapRuleStatus.Cached;
+				available.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && (lobby.Map == null || !lobby.Map.InvalidCustomRules);
 
 				var preview = available.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.MapPreview;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var invalid = widget.GetOrNull("MAP_INVALID");
 			if (invalid != null)
 			{
-				invalid.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && lobby.MapPreview.RuleStatus == MapRuleStatus.Invalid;
+				invalid.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && lobby.Map != null && lobby.Map.InvalidCustomRules;
 
 				var preview = invalid.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => lobby.MapPreview;
@@ -106,8 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var progress = widget.GetOrNull("MAP_PROGRESS");
 			if (progress != null)
 			{
-				progress.IsVisible = () =>
-					(lobby.MapPreview.Status != MapStatus.Available || lobby.MapPreview.RuleStatus == MapRuleStatus.Unknown) &&
+				progress.IsVisible = () => lobby.MapPreview.Status != MapStatus.Available &&
 					lobby.MapPreview.Status != MapStatus.DownloadAvailable;
 
 				var preview = progress.Get<MapPreviewWidget>("MAP_PREVIEW");
