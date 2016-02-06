@@ -55,7 +55,7 @@ Packages:
 
 MapFolders:
 	./mods/ts/maps@System
-	~^maps/ts@User
+	~^maps/ts/{DEV_VERSION}@User
 
 Rules:
 	./mods/ts/rules/ai.yaml

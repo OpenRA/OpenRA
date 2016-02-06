@@ -362,8 +362,9 @@ all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
-		awk '{sub("\tmodchooser:.*$$","\tmodchooser: $(VERSION)"); print $0}' $${i}.tmp > $${i} && \
-		rm $${i}.tmp ; \
+		awk '{sub("\tmodchooser:.*$$","\tmodchooser: $(VERSION)"); print $0}' $${i}.tmp > $${i}.tmp2 && \
+		awk '{sub("/[^/]*@User$$", "/$(VERSION)@User"); print $0}' $${i}.tmp2 > $${i} && \
+		rm $${i}.tmp $${i}.tmp2; \
 	done
 
 docs: utility mods version
