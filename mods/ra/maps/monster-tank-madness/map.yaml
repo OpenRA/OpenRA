@@ -2404,10 +2404,10 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3EffGround: CreateEffect
-			Explosion: small_explosion
+			Explosions: small_explosion
 			InvalidImpactTypes: Water
 		Warhead@4EffWater: CreateEffect
-			Explosion: small_splash
+			Explosions: small_splash
 			ValidImpactTypes: Water
 
 Voices:

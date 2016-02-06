@@ -20,8 +20,8 @@ FireballLauncher:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 
 Flamer:
 	ReloadDelay: 50
@@ -47,8 +47,8 @@ Flamer:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
-		ImpactSound: firebl3.aud
+		Explosions: small_napalm
+		ImpactSounds: firebl3.aud
 
 Napalm:
 	ReloadDelay: 20
@@ -69,12 +69,12 @@ Napalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4Eff: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Grenade:
@@ -99,12 +99,12 @@ Grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 DepthCharge:
@@ -130,11 +130,11 @@ DepthCharge:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_splash
-		ImpactSound: h2obomb2.aud
+		Explosions: large_splash
+		ImpactSounds: h2obomb2.aud
 	Warhead@4EffHit: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom15.aud
 		ValidImpactTypes: WaterHit
 
 TeslaZap:
@@ -216,14 +216,14 @@ Crush:
 		Damage: 100
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		ImpactSound: squishy2.aud
+		ImpactSounds: squishy2.aud
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
-		ImpactSound: kaboom25.aud
+		Explosions: building
+		ImpactSounds: kaboom25.aud
 
 Claw:
 	ReloadDelay: 30
@@ -274,5 +274,5 @@ MADTankDetonate:
 		SmudgeType: Crater
 		Size: 7,6
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: mineblo1.aud
+		Explosions: med_explosion
+		ImpactSounds: mineblo1.aud

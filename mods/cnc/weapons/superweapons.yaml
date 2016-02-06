@@ -13,8 +13,8 @@ Atomic:
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff_impact: CreateEffect
-		Explosion: nuke_explosion
-		ImpactSound: nukexplo.aud
+		Explosions: nuke_explosion
+		ImpactSounds: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
 		Damage: 100
@@ -35,7 +35,7 @@ Atomic:
 		Size: 3
 		Delay: 3
 	Warhead@6Eff_areanukea: CreateEffect
-		ImpactSound: xplobig4.aud
+		ImpactSounds: xplobig4.aud
 		Delay: 3
 	Warhead@7Dam_areanukeb: SpreadDamage
 		Spread: 3c768

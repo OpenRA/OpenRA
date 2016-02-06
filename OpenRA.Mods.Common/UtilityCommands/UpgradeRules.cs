@@ -3432,6 +3432,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					node.Value.Nodes.RemoveAll(x => x.Key == "Charges");
 				}
 
+				// Enhance CreateEffectWarhead
+				if (engineVersion < 20160131)
+				{
+					if (node.Key.StartsWith("Warhead") && node.Value.Value == "CreateEffect")
+					{
+						// Add support for multiple explosions to CreateEffectWarhead
+						var explosionNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "Explosion");
+						if (explosionNode != null)
+							explosionNode.Key = "Explosions";
+
+						// Add support for multiple impact sounds to CreateEffectWarhead
+						var impactSoundNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ImpactSound");
+						if (impactSoundNode != null)
+							impactSoundNode.Key = "ImpactSounds";
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

@@ -1834,7 +1834,7 @@ Weapons:
 				Concrete: 0
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@2Eff: CreateEffect
-			Explosion: piffs
+			Explosions: piffs
 			InvalidImpactTypes: Water
 
 Voices:

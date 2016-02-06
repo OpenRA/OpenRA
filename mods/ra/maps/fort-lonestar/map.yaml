@@ -816,8 +816,7 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
-			Explosion: self_destruct
-			WaterExplosion: self_destruct
+			Explosions: self_destruct
 	MammothTusk:
 		ReloadDelay: 300
 		Range: 10c0
@@ -850,8 +849,7 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
-			Explosion: nuke
-			WaterExplosion: nuke
+			Explosions: nuke
 	TankNapalm:
 		ReloadDelay: 40
 		Range: 8c0
@@ -879,9 +877,8 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
-			Explosion: small_explosion
-			WaterExplosion: small_explosion
-			ImpactSound: firebl3.aud
+			Explosions: small_explosion
+			ImpactSounds: firebl3.aud
 	ParaBomb:
 		ReloadDelay: 5
 		Range: 5c0
@@ -901,9 +898,8 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
-			WaterExplosion: napalm
+			Explosions: napalm
+			ImpactSounds: firebl3.aud
 	155mm:
 		ReloadDelay: 10
 		Range: 7c5
@@ -931,9 +927,8 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
-			Explosion: small_napalm
-			WaterExplosion: small_napalm
-			ImpactSound: firebl3.aud
+			Explosions: small_napalm
+			ImpactSounds: firebl3.aud
 	FLAK-23:
 		ReloadDelay: 10
 		Range: 8c0
@@ -956,7 +951,7 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
-			Explosion: med_explosion
+			Explosions: med_explosion
 	SCUD:
 		ReloadDelay: 280
 		Range: 7c0
@@ -984,10 +979,13 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
-			Explosion: nuke
-			WaterExplosion: large_splash
-			ImpactSound: kaboom1.aud
-			WaterImpactSound: kaboom1.aud
+			Explosions: nuke
+			ImpactSounds: kaboom1.aud
+			ValidImpactTypes: Ground
+		Warhead@4Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: kaboom1.aud
+			ValidImpactTypes: Water
 	SilencedPPK:
 		ReloadDelay: 80
 		Range: 25c0
@@ -1004,7 +1002,7 @@ Weapons:
 			Damage: 150
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@2Eff: CreateEffect
-			Explosion: piffs
+			Explosions: piffs
 
 Voices:
 

@@ -19,7 +19,7 @@ LMG:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 Fremen_S:
 	ReloadDelay: 40
@@ -42,8 +42,8 @@ Fremen_S:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: EXPLSML2.WAV
+		Explosions: small_explosion
+		ImpactSounds: EXPLSML2.WAV
 
 M_LMG:
 	ReloadDelay: 40
@@ -66,7 +66,7 @@ M_LMG:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 M_HMG:
 	ReloadDelay: 40
@@ -88,7 +88,7 @@ M_HMG:
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 Fremen_L:
 	ReloadDelay: 40
@@ -111,7 +111,7 @@ Fremen_L:
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 
 HMG:
 	ReloadDelay: 20
@@ -134,7 +134,7 @@ HMG:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 HMGo:
 	ReloadDelay: 18
@@ -157,7 +157,7 @@ HMGo:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 HMG_muzzle:
 	ReloadDelay: 16
