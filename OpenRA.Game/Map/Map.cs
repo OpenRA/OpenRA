@@ -768,7 +768,12 @@ namespace OpenRA
 			if (Grid.MaximumTerrainHeight == 0)
 				return Contains((PPos)uv);
 
-			foreach (var puv in ProjectedCellsCovering(uv))
+			// If the cell has no valid projection, then we're off the map.
+			var projectedCells = ProjectedCellsCovering(uv);
+			if (projectedCells.Length == 0)
+				return false;
+
+			foreach (var puv in projectedCells)
 				if (!Contains(puv))
 					return false;
 			return true;
