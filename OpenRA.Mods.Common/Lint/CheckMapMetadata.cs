@@ -17,9 +17,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			if (map.MapFormat < Map.MinimumSupportedMapFormat)
-				emitError("Map format {0} is older than the minimum supported version {1}."
-					.F(map.MapFormat, Map.MinimumSupportedMapFormat));
+			if (map.MapFormat != Map.SupportedMapFormat)
+				emitError("Map format {0} does not match the supported version {1}."
+					.F(map.MapFormat, Map.SupportedMapFormat));
 
 			if (map.Author == null)
 				emitError("Map does not define a valid author.");
