@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning)
 		{
 			foreach (var filename in Game.ModData.Manifest.ChromeLayout)
-				CheckInner(MiniYaml.FromFile(filename), filename, emitError);
+				CheckInner(MiniYaml.FromStream(Game.ModData.ModFiles.Open(filename)), filename, emitError);
 		}
 
 		void CheckInner(List<MiniYamlNode> nodes, string filename, Action<string> emitError)
