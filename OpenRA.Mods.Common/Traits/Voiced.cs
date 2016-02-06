@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -16,8 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class VoicedInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
-		[Desc("Which voice set to use.")]
-		[VoiceSetReference] public readonly string VoiceSet = null;
+		[Desc("A collection of voice sets that can be used. One will be selected at random.")]
+		[VoiceSetReference] public readonly string[] VoiceSets = new string[0];
 
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;
@@ -29,22 +30,23 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly VoicedInfo Info;
 
+		public string VoiceSet { get; }
+
 		public Voiced(Actor self, VoicedInfo info)
 		{
 			Info = info;
+			VoiceSet = Info.VoiceSets.RandomOrDefault(Game.CosmeticRandom);
 		}
-
-		public string VoiceSet { get { return Info.VoiceSet; } }
 
 		public bool PlayVoice(Actor self, string phrase, string variant)
 		{
 			if (phrase == null)
 				return false;
 
-			if (string.IsNullOrEmpty(Info.VoiceSet))
+			if (string.IsNullOrEmpty(VoiceSet))
 				return false;
 
-			var type = Info.VoiceSet.ToLowerInvariant();
+			var type = VoiceSet.ToLowerInvariant();
 			var volume = Info.Volume;
 			return Game.Sound.PlayPredefined(self.World.Map.Rules, null, self, type, phrase, variant, true, WPos.Zero, volume, true);
 		}
@@ -54,19 +56,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (phrase == null)
 				return false;
 
-			if (string.IsNullOrEmpty(Info.VoiceSet))
+			if (string.IsNullOrEmpty(VoiceSet))
 				return false;
 
-			var type = Info.VoiceSet.ToLowerInvariant();
+			var type = VoiceSet.ToLowerInvariant();
 			return Game.Sound.PlayPredefined(self.World.Map.Rules, null, self, type, phrase, variant, false, self.CenterPosition, volume, true);
 		}
 
 		public bool HasVoice(Actor self, string voice)
 		{
-			if (string.IsNullOrEmpty(Info.VoiceSet))
+			if (string.IsNullOrEmpty(VoiceSet))
 				return false;
 
-			var voices = self.World.Map.Rules.Voices[Info.VoiceSet.ToLowerInvariant()];
+			var voices = self.World.Map.Rules.Voices[VoiceSet.ToLowerInvariant()];
 			return voices != null && voices.Voices.ContainsKey(voice);
 		}
 	}

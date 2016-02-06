@@ -239,7 +239,7 @@ SCRIN:
 	Selectable:
 		Bounds: 30,24
 	Voiced:
-		VoiceSet: Scrin
+		VoiceSets: Scrin
 	Aircraft:
 		MaximumPitch: 90
 		ROT: 3

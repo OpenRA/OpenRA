@@ -46,7 +46,7 @@ engineer:
 		CaptureTypes: building, husk
 	-AutoTarget:
 	Voiced:
-		VoiceSet: EngineerVoice
+		VoiceSets: EngineerVoice
 	Selectable:
 		Priority: 5
 
@@ -126,7 +126,7 @@ thumper:
 	Passenger:
 		PipType: Blue
 	Voiced:
-		VoiceSet: EngineerVoice
+		VoiceSets: EngineerVoice
 
 fremen:
 	Inherits: ^Infantry
@@ -164,7 +164,7 @@ fremen:
 		IsPlayerPalette: true
 	-MustBeDestroyed:
 	Voiced:
-		VoiceSet: FremenVoice
+		VoiceSets: FremenVoice
 
 grenadier:
 	Inherits: ^Infantry
@@ -222,7 +222,7 @@ sardaukar:
 		Weapon: M_HMG
 	AttackFrontal:
 	Voiced:
-		VoiceSet: GenericVoice
+		VoiceSets: GenericVoice
 	Explodes:
 		Weapon: SardDeath
 		EmptyWeapon: SardDeath
@@ -256,7 +256,7 @@ saboteur:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
 	Voiced:
-		VoiceSet: SaboteurVoice
+		VoiceSets: SaboteurVoice
 
 nsfremen:
 	Inherits: fremen

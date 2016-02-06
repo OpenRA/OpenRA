@@ -384,12 +384,12 @@ BRIDGEHUT:
 C1:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianMaleVoice
+		VoiceSets: CivilianMaleVoice
 
 C2:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C3:
 	Inherits: ^CivInfantry
@@ -397,7 +397,7 @@ C3:
 C4:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
@@ -405,7 +405,7 @@ C5:
 C6:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C7:
 	Inherits: ^CivInfantry
@@ -413,7 +413,7 @@ C7:
 C8:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 C9:
 	Inherits: ^CivInfantry
@@ -421,7 +421,7 @@ C9:
 C10:
 	Inherits: ^CivInfantry
 	Voiced:
-		VoiceSet: CivilianFemaleVoice
+		VoiceSets: CivilianFemaleVoice
 
 VICE:
 	Inherits: ^Viceroid

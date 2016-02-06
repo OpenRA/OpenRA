@@ -36,7 +36,7 @@ MEDIC:
 		BuildPaletteOrder: 70
 		Prerequisites: ~gapile
 	Voiced:
-		VoiceSet: Medic
+		VoiceSets: Medic
 	Mobile:
 		Speed: 56
 	Health:
@@ -69,7 +69,7 @@ JUMPJET:
 		BuildPaletteOrder: 40
 		Prerequisites: ~gapile, garadr
 	Voiced:
-		VoiceSet: JumpJet
+		VoiceSets: JumpJet
 	Mobile:
 		Speed: 56
 	Health:
@@ -104,7 +104,7 @@ GHOST:
 		Prerequisites: ~gapile, gatech
 		BuildLimit: 1
 	Voiced:
-		VoiceSet: Ghost
+		VoiceSets: Ghost
 	Mobile:
 		Speed: 56
 	Health:

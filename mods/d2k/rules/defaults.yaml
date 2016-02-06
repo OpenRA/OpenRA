@@ -92,7 +92,7 @@
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	Voiced:
-		VoiceSet: VehicleVoice
+		VoiceSets: VehicleVoice
 	Carryable:
 		CarryableUpgrades: notmobile
 	WithDecorationCarryable:
@@ -220,7 +220,7 @@
 		TerrainModifier:
 			Rough: 80
 	Voiced:
-		VoiceSet: InfantryVoice
+		VoiceSets: InfantryVoice
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld

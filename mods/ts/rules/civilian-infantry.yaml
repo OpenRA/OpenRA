@@ -5,7 +5,7 @@ WEEDGUY:
 	Tooltip:
 		Name: Chem Spray Infantry
 	Voiced:
-		VoiceSet: Weed
+		VoiceSets: Weed
 	Mobile:
 		Speed: 42
 	Health:
@@ -25,7 +25,7 @@ UMAGON:
 	Tooltip:
 		Name: Umagon
 	Voiced:
-		VoiceSet: Umagon
+		VoiceSets: Umagon
 	Mobile:
 		Speed: 71
 	Health:
@@ -51,7 +51,7 @@ CHAMSPY:
 	DisguiseToolTip:
 		Name: Chameleon Spy
 	Voiced:
-		VoiceSet: Spy
+		VoiceSets: Spy
 	Health:
 		HP: 120
 	Mobile:
@@ -82,7 +82,7 @@ MUTANT:
 	Tooltip:
 		Name: Mutant
 	Voiced:
-		VoiceSet: Mutant
+		VoiceSets: Mutant
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -107,7 +107,7 @@ MWMN:
 	Tooltip:
 		Name: Mutant Soldier
 	Voiced:
-		VoiceSet: CivilianFemale
+		VoiceSets: CivilianFemale
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -132,7 +132,7 @@ MUTANT3:
 	Tooltip:
 		Name: Mutant Sergeant
 	Voiced:
-		VoiceSet: Mutant
+		VoiceSets: Mutant
 	Health:
 		HP: 50
 	PoisonedByTiberium:
@@ -157,7 +157,7 @@ TRATOS:
 	Tooltip:
 		Name: Tratos
 	Voiced:
-		VoiceSet: Tratos
+		VoiceSets: Tratos
 	Health:
 		HP: 200
 	PoisonedByTiberium:
@@ -177,7 +177,7 @@ OXANNA:
 	Tooltip:
 		Name: Oxanna
 	Voiced:
-		VoiceSet: Oxanna
+		VoiceSets: Oxanna
 	Health:
 		HP: 50
 	Mobile:
@@ -195,7 +195,7 @@ SLAV:
 	Tooltip:
 		Name: Slavick
 	Voiced:
-		VoiceSet: Slavick
+		VoiceSets: Slavick
 	Health:
 		HP: 300
 	Mobile:
@@ -224,7 +224,7 @@ DOGGIE:
 	Mobile:
 		Speed: 113
 	Voiced:
-		VoiceSet: Fiend
+		VoiceSets: Fiend
 	Targetable:
 		TargetTypes: Ground
 	Armament:

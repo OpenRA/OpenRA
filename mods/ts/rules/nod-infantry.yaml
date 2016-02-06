@@ -10,7 +10,7 @@ E3:
 		Name: Rocket Infantry
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Voiced:
-		VoiceSet: Rocket
+		VoiceSets: Rocket
 	Health:
 		HP: 100
 	Mobile:
@@ -41,7 +41,7 @@ CYBORG:
 	Selectable:
 		Bounds: 16,31,0,-10
 	Voiced:
-		VoiceSet: Cyborg
+		VoiceSets: Cyborg
 	Mobile:
 		Speed: 56
 	Health:
@@ -75,7 +75,7 @@ CYC2:
 	Selectable:
 		Bounds: 16,32,-1,-12
 	Voiced:
-		VoiceSet: CyborgCommando
+		VoiceSets: CyborgCommando
 	Mobile:
 		Speed: 56
 	Health:
@@ -105,7 +105,7 @@ MHIJACK:
 		Name: Mutant Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Voiced:
-		VoiceSet: Hijacker
+		VoiceSets: Hijacker
 	Health:
 		HP: 300
 	PoisonedByTiberium:

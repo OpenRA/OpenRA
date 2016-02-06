@@ -2923,6 +2923,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Add support for multiple VoiceSets on an actor.
+				if (engineVersion < 20160206)
+				{
+					if (node.Key == "Voiced")
+					{
+						var subNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "VoiceSet");
+						if (subNode != null)
+							subNode.Key = "VoiceSets";
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
