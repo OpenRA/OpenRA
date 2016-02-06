@@ -28,17 +28,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
-			Game.ModData.SpriteSequenceLoader.OnMissingSpriteError = s => Console.WriteLine("\t" + s);
 
-			foreach (var t in Game.ModData.Manifest.TileSets)
+			modData.ModFiles.LoadFromManifest(modData.Manifest);
+			modData.SpriteSequenceLoader.OnMissingSpriteError = s => Console.WriteLine("\t" + s);
+
+			foreach (var t in modData.Manifest.TileSets)
 			{
-				var ts = new TileSet(Game.ModData, t);
+				var ts = new TileSet(modData, t);
 				Console.WriteLine("Tileset: " + ts.Name);
 				var sc = new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed));
-				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(MiniYaml.FromFile));
+				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
 				foreach (var n in nodes)
-					Game.ModData.SpriteSequenceLoader.ParseSequences(Game.ModData, ts, sc, n);
+					modData.SpriteSequenceLoader.ParseSequences(modData, ts, sc, n);
 			}
 		}
 	}
