@@ -67,6 +67,10 @@ namespace OpenRA.Mods.Common.Server
 			if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 				return;
 
+			// Does server have only one player?
+			if (server.Settings.DisableSinglePlayer && playerClients.Count() == 1)
+				return;
+
 			server.StartGame();
 		}
 
@@ -112,6 +116,13 @@ namespace OpenRA.Mods.Common.Server
 							server.LobbyInfo.ClientInSlot(sl.Key) == null))
 						{
 							server.SendOrderTo(conn, "Message", "Unable to start the game until required slots are full.");
+							return true;
+						}
+
+						if (server.Settings.DisableSinglePlayer &&
+							server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null).Count() == 1)
+						{
+							server.SendOrderTo(conn, "Message", "Unable to start the game until another player joins.");
 							return true;
 						}
 
@@ -373,8 +384,8 @@ namespace OpenRA.Mods.Common.Server
 						if (server.Map.RuleDefinitions.Any())
 							server.SendMessage("This map contains custom rules. Game experience may change.");
 
-						if (server.Settings.LockBots)
-							server.SendMessage("Bots have been disabled on this server.");
+						if (server.Settings.DisableSinglePlayer)
+							server.SendMessage("Singleplayer games have been disabled on this server.");
 						else if (server.MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 							server.SendMessage("Bots have been disabled on this map.");
 
@@ -923,8 +934,6 @@ namespace OpenRA.Mods.Common.Server
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
-			if (Game.Settings.Server.LockBots)
-				pr.AllowBots = false;
 			return new Session.Slot
 			{
 				PlayerReference = pr.Name,

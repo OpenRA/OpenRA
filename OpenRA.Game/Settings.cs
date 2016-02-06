@@ -70,8 +70,8 @@ namespace OpenRA
 		[Desc("Automatically restart when a game ends. Disable this when something else already takes care about it.")]
 		public bool DedicatedLoop = true;
 
-		[Desc("Disallow AI bots.")]
-		public bool LockBots = false;
+		[Desc("Disallow games where only one player plays with bots.")]
+		public bool DisableSinglePlayer = false;
 
 		public string TimestampFormat = "s";
 

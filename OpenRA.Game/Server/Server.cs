@@ -148,7 +148,8 @@ namespace OpenRA.Server
 					RandomSeed = randomSeed,
 					Map = settings.Map,
 					ServerName = settings.Name,
-					Dedicated = settings.Dedicated
+					Dedicated = settings.Dedicated,
+					DisableSingleplayer = settings.DisableSinglePlayer,
 				}
 			};
 
@@ -395,8 +396,8 @@ namespace OpenRA.Server
 				if (Map.RuleDefinitions.Any() && !LobbyInfo.IsSinglePlayer)
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
-				if (Settings.LockBots)
-					SendOrderTo(newConn, "Message", "Bots have been disabled on this server.");
+				if (Settings.DisableSinglePlayer)
+					SendOrderTo(newConn, "Message", "Singleplayer games have been disabled on this server.");
 				else if (MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 
