@@ -67,7 +67,6 @@ Assemblies:
 ChromeLayout:
 	d2k:chrome/ingame.yaml
 	./mods/ra/chrome/ingame-chat.yaml
-	./mods/ra/chrome/ingame-diplomacy.yaml
 	./mods/ra/chrome/ingame-fmvplayer.yaml
 	d2k:chrome/ingame-menu.yaml
 	./mods/ra/chrome/ingame-info.yaml

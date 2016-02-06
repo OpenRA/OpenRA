@@ -42,7 +42,7 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Enemies: BadGuy, USSR, Ukraine, Turkey
+		Enemies: BadGuy, USSR, Ukraine, Turkey, FriendlyMadTanks
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
@@ -71,6 +71,12 @@ Players:
 		Faction: soviet
 		Color: D1987C
 		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
+	PlayerReference@FriendlyMadTanks:
+		Name: FriendlyMadTanks
+		Faction: soviet
+		Color: D1987C
+		Allies: Greece
+		Enemies: BadGuy, USSR, Ukraine
 	PlayerReference@Outpost:
 		Name: Outpost
 		NonCombatant: True

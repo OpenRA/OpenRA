@@ -581,7 +581,6 @@
     <Compile Include="Widgets\Logic\Ingame\ClassicProductionLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ControlGroupLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\DebugMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />

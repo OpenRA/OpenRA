@@ -373,15 +373,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
 			}
 
-			var fragileAlliance = optionsBin.GetOrNull<CheckboxWidget>("FRAGILEALLIANCES_CHECKBOX");
-			if (fragileAlliance != null)
-			{
-				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
-				fragileAlliance.IsDisabled = () => Map.Status != MapStatus.Available || Map.Map.Options.FragileAlliances.HasValue || configurationDisabled();
-				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
-			}
-
 			var shortGame = optionsBin.GetOrNull<CheckboxWidget>("SHORTGAME_CHECKBOX");
 			if (shortGame != null)
 			{

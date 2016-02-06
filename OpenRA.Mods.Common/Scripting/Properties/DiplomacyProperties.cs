@@ -24,13 +24,5 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			return Player.IsAlliedWith(targetPlayer);
 		}
-
-		[Desc("Changes the current stance of the player against the target player. " +
-			"Allowed keywords for new stance: Ally, Neutral, Enemy.")]
-		public void SetStance(Player targetPlayer, string newStance)
-		{
-			var emergingStance = Enum<Stance>.Parse(newStance);
-			Player.SetStance(targetPlayer, emergingStance);
-		}
 	}
 }

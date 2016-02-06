@@ -157,17 +157,6 @@ namespace OpenRA
 			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
 		}
 
-		public void SetStance(Player target, Stance s)
-		{
-			var oldStance = Stances[target];
-			Stances[target] = s;
-			target.Shroud.UpdatePlayerStance(World, this, oldStance, s);
-			Shroud.UpdatePlayerStance(World, target, oldStance, s);
-
-			foreach (var nsc in World.ActorsWithTrait<INotifyStanceChanged>())
-				nsc.Trait.StanceChanged(nsc.Actor, this, target, oldStance, s);
-		}
-
 		public bool CanViewActor(Actor a)
 		{
 			return a.CanBeViewedByPlayer(this);

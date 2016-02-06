@@ -392,29 +392,6 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "fragilealliance",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						if (server.Map.Options.FragileAlliances.HasValue)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled alliance configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.FragileAlliances);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Diplomacy Changes."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.FragileAlliances ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
 				{ "allowcheats",
 					s =>
 					{
