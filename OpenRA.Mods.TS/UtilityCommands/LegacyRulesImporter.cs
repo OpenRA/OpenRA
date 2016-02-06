@@ -47,10 +47,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var terrainObjects = rulesIni.GetSection("TerrainTypes").Select(b => b.Value).Distinct();
 			Console.WriteLine("# Terrain Objects");
 			Console.WriteLine();
-			ImportStructures(terrainObjects);
+			ImportStructures(terrainObjects, true);
 		}
 
-		void ImportStructures(IEnumerable<string> structures)
+		void ImportStructures(IEnumerable<string> structures, bool useTerrainPalette = false)
 		{
 			foreach (var building in structures)
 			{
@@ -143,9 +143,32 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var buildup = artSection.GetValue("Buildup", string.Empty);
 					if (!string.IsNullOrEmpty(buildup) && buildup != "none")
 						Console.WriteLine("\tWithMakeAnimation:");
+
+
+					var terrainPalette = artSection.GetValue("TerrainPalette", string.Empty);
+					if (!string.IsNullOrEmpty(terrainPalette))
+						bool.TryParse(terrainPalette, out useTerrainPalette);
+
+					var remapable = artSection.GetValue("Remapable", string.Empty);
+					if (!string.IsNullOrEmpty(remapable) && remapable == "yes")
+						useTerrainPalette = false;
 				}
 
+				var isAnimated = rulesSection.GetValue("IsAnimated", string.Empty);
+				if (!string.IsNullOrEmpty(isAnimated) && isAnimated == "yes")
+					useTerrainPalette = false;
+
 				Console.WriteLine("\tRenderSprites:");
+				if (useTerrainPalette)
+				{
+					if (Game.ModData.DefaultRules.Actors.ContainsKey("world"))
+					{
+						var terrainPaletteDefintion = Game.ModData.DefaultRules.Actors["world"].TraitInfos<PaletteFromCurrentTilesetInfo>();
+						if (terrainPaletteDefintion.Any())
+							Console.WriteLine("\t\tPalette: " + terrainPaletteDefintion.Last().Name);
+					}
+				}
+
 				Console.WriteLine("\tWithSpriteBody:");
 				Console.WriteLine("\tAutoSelectionSize:");
 				Console.WriteLine("\tBodyOrientation:\n\t\tUseClassicPerspectiveFudge: False\n\t\tQuantizedFacings: 1");

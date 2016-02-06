@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Loads the palette specified in the tileset definition")]
-	class PaletteFromCurrentTilesetInfo : ITraitInfo
+	public class PaletteFromCurrentTilesetInfo : ITraitInfo
 	{
 		[FieldLoader.Require, PaletteDefinition]
 		[Desc("internal palette name")]
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PaletteFromCurrentTileset(init.World, this); }
 	}
 
-	class PaletteFromCurrentTileset : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	public class PaletteFromCurrentTileset : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromCurrentTilesetInfo info;
