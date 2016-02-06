@@ -81,10 +81,16 @@ namespace OpenRA.FileSystem
 			if (optional)
 				name = name.Substring(1);
 
-			Action a = () => Mount(OpenPackage(name), explicitName);
+			var modPackage = name.StartsWith("$");
+			if (modPackage)
+				name = name.Substring(1);
+
+			Action a = () => Mount(modPackage ? ModMetadata.AllMods[name].Package : OpenPackage(name), explicitName);
 			if (optional)
+			{
 				try { a(); }
 				catch { }
+			}
 			else
 				a();
 		}

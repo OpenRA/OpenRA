@@ -74,23 +74,23 @@ namespace OpenRA
 
 			MiniYaml packages;
 			if (yaml.TryGetValue("Packages", out packages))
-				Packages = packages.ToDictionary(x => Platform.ResolvePath(x), x => x.Value).AsReadOnly();
+				Packages = packages.ToDictionary(x => x.Value).AsReadOnly();
 
-			Rules = YamlList(yaml, "Rules", true);
-			Sequences = YamlList(yaml, "Sequences", true);
-			VoxelSequences = YamlList(yaml, "VoxelSequences", true);
-			Cursors = YamlList(yaml, "Cursors", true);
-			Chrome = YamlList(yaml, "Chrome", true);
-			Assemblies = YamlList(yaml, "Assemblies", true);
-			ChromeLayout = YamlList(yaml, "ChromeLayout", true);
-			Weapons = YamlList(yaml, "Weapons", true);
-			Voices = YamlList(yaml, "Voices", true);
-			Notifications = YamlList(yaml, "Notifications", true);
-			Music = YamlList(yaml, "Music", true);
-			Translations = YamlList(yaml, "Translations", true);
-			TileSets = YamlList(yaml, "TileSets", true);
-			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
-			Missions = YamlList(yaml, "Missions", true);
+			Rules = YamlList(yaml, "Rules");
+			Sequences = YamlList(yaml, "Sequences");
+			VoxelSequences = YamlList(yaml, "VoxelSequences");
+			Cursors = YamlList(yaml, "Cursors");
+			Chrome = YamlList(yaml, "Chrome");
+			Assemblies = YamlList(yaml, "Assemblies");
+			ChromeLayout = YamlList(yaml, "ChromeLayout");
+			Weapons = YamlList(yaml, "Weapons");
+			Voices = YamlList(yaml, "Voices");
+			Notifications = YamlList(yaml, "Notifications");
+			Music = YamlList(yaml, "Music");
+			Translations = YamlList(yaml, "Translations");
+			TileSets = YamlList(yaml, "TileSets");
+			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
+			Missions = YamlList(yaml, "Missions");
 
 			ServerTraits = YamlList(yaml, "ServerTraits");
 
@@ -101,10 +101,10 @@ namespace OpenRA
 				throw new InvalidDataException("`LobbyDefaults` section is not defined.");
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
-				{
-					var nd = my.ToDictionary();
-					return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
-				});
+			{
+				var nd = my.ToDictionary();
+				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
+			});
 
 			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
@@ -156,9 +156,6 @@ namespace OpenRA
 		{
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
-
-			if (parsePaths)
-				return yaml[key].Nodes.Select(node => Platform.ResolvePath(node.Key, node.Value.Value ?? string.Empty)).ToArray();
 
 			return yaml[key].ToDictionary().Keys.ToArray();
 		}
