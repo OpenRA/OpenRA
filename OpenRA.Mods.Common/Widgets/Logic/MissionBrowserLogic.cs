@@ -95,7 +95,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Add a group for each campaign
 			if (modData.Manifest.Missions.Any())
 			{
-				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(MiniYaml.FromFile));
+				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
+					m => MiniYaml.FromStream(modData.ModFiles.Open(m))));
+
 				foreach (var kv in yaml)
 				{
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();

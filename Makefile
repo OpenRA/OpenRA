@@ -254,15 +254,19 @@ test: utility mods
 	@echo
 	@echo "Testing Tiberian Sun mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@mono --debug OpenRA.Utility.exe ts --check-sequence-sprites
 	@echo
 	@echo "Testing Dune 2000 mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@mono --debug OpenRA.Utility.exe d2k --check-sequence-sprites
 	@echo
 	@echo "Testing Tiberian Dawn mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@mono --debug OpenRA.Utility.exe cnc --check-sequence-sprites
 	@echo
 	@echo "Testing Red Alert mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ra --check-yaml
+	@mono --debug OpenRA.Utility.exe ra --check-sequence-sprites
 
 
 ##### Launchers / Utilities #####

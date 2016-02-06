@@ -27,7 +27,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			Game.ModData = modData;
-			modData.MountFiles();
 
 			var map = new Map(args[1]);
 			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);

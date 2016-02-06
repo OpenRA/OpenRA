@@ -193,7 +193,7 @@ namespace OpenRA
 
 		public TileSet(ModData modData, string filepath)
 		{
-			var yaml = MiniYaml.DictFromFile(filepath);
+			var yaml = MiniYaml.DictFromStream(modData.ModFiles.Open(filepath));
 
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

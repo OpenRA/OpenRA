@@ -19,11 +19,13 @@ namespace OpenRA.Graphics
 	{
 		static Dictionary<string, Dictionary<string, Voxel>> units;
 
-		public static void Initialize(string[] voxelFiles, List<MiniYamlNode> voxelNodes)
+		public static void Initialize(ModData modData, string[] voxelFiles, List<MiniYamlNode> voxelNodes)
 		{
 			units = new Dictionary<string, Dictionary<string, Voxel>>();
 
-			var sequences = MiniYaml.Merge(voxelFiles.Select(MiniYaml.FromFile));
+			var sequences = MiniYaml.Merge(voxelFiles.Select(
+				s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
+
 			foreach (var s in sequences)
 				LoadVoxelsForUnit(s.Key, s.Value);
 

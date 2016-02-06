@@ -112,7 +112,7 @@ namespace OpenRA
 				return t;
 			};
 
-			var tree = MiniYaml.Merge(files.Select(MiniYaml.FromFile).Append(nodes))
+			var tree = MiniYaml.Merge(files.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))).Append(nodes))
 				.ToDictionaryWithConflictLog(n => n.Key, n => n.Value, "LoadYamlRules", null, null);
 			RaiseProgress();
 

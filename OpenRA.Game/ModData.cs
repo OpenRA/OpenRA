@@ -56,6 +56,8 @@ namespace OpenRA
 				LoadScreen.Display();
 			}
 
+			ModFiles.LoadFromManifest(Manifest);
+
 			WidgetLoader = new WidgetLoader(this);
 			RulesetCache = new RulesetCache(this);
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
@@ -86,17 +88,12 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		public void MountFiles()
-		{
-			ModFiles.LoadFromManifest(Manifest);
-		}
-
 		public void InitializeLoaders()
 		{
 			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
-			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
-			ChromeProvider.Initialize(Manifest.Chrome);
+			ChromeMetrics.Initialize(this);
+			ChromeProvider.Initialize(this);
 
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
@@ -133,7 +130,9 @@ namespace OpenRA
 				return;
 			}
 
-			var yaml = MiniYaml.Merge(Manifest.Translations.Select(MiniYaml.FromFile).Append(map.TranslationDefinitions));
+			var yaml = MiniYaml.Merge(Manifest.Translations
+				.Select(t => MiniYaml.FromStream(ModFiles.Open(t)))
+				.Append(map.TranslationDefinitions));
 			Languages = yaml.Select(t => t.Key).ToArray();
 
 			foreach (var y in yaml)
@@ -188,7 +187,7 @@ namespace OpenRA
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load();
 
-			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelProvider.Initialize(this, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 			VoxelLoader.Finish();
 
 			return map;
