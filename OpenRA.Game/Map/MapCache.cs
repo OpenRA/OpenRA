@@ -44,20 +44,27 @@ namespace OpenRA
 
 		public void LoadMaps()
 		{
+			// Utility mod that does not support maps
+			if (!modData.Manifest.Contains<MapGrid>())
+				return;
+
 			// Expand the dictionary (dir path, dir type) to a dictionary of (map path, dir type)
 			var mapPaths = modData.Manifest.MapFolders.SelectMany(kv =>
 				FindMapsIn(modData.ModFiles, kv.Key).ToDictionary(p => p, p => string.IsNullOrEmpty(kv.Value)
 					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value)));
 
+			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var path in mapPaths)
 			{
 				try
 				{
 					using (new Support.PerfTimer(path.Key))
 					{
-						var map = new Map(path.Key);
-						if (modData.Manifest.MapCompatibility.Contains(map.RequiresMod))
-							previews[map.Uid].UpdateFromMap(map, path.Value);
+						using (var package = modData.ModFiles.OpenPackage(path.Key))
+						{
+							var uid = Map.ComputeUID(package);
+							previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+						}
 					}
 				}
 				catch (Exception e)

@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
 namespace OpenRA
@@ -92,7 +93,7 @@ namespace OpenRA
 			return null;
 		}
 
-		public void SetMinimap(Sprite minimap)
+		internal void SetMinimap(Sprite minimap)
 		{
 			this.minimap = minimap;
 			generatingMinimap = false;
@@ -114,25 +115,89 @@ namespace OpenRA
 			Visibility = MapVisibility.Lobby;
 		}
 
-		public void UpdateFromMap(Map m, MapClassification classification)
+		public void UpdateFromMap(IReadOnlyPackage p, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
 		{
-			Path = m.Path;
-			Title = m.Title;
-			Type = m.Type;
-			Type = m.Type;
-			Author = m.Author;
-			Bounds = m.Bounds;
-			SpawnPoints = m.SpawnPoints.Value;
-			GridType = m.Grid.Type;
-			CustomPreview = m.CustomPreview;
-			Status = MapStatus.Available;
+			Dictionary<string, MiniYaml> yaml;
+			using (var yamlStream = p.GetStream("map.yaml"))
+			{
+				if (yamlStream == null)
+					throw new FileNotFoundException("Required file map.yaml not present in this map");
+
+				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
+			}
+
+			Path = p.Name;
+			GridType = gridType;
 			Class = classification;
-			Visibility = m.Visibility;
 
-			var players = new MapPlayers(m.PlayerDefinitions).Players;
-			PlayerCount = players.Count(x => x.Value.Playable);
+			MiniYaml temp;
+			if (yaml.TryGetValue("MapFormat", out temp))
+			{
+				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
+				if (format != Map.SupportedMapFormat)
+					throw new InvalidDataException("Map format {0} is not supported.".F(format));
+			}
 
-			SuitableForInitialMap = EvaluateUserFriendliness(players);
+			if (yaml.TryGetValue("Title", out temp))
+				Title = temp.Value;
+			if (yaml.TryGetValue("Type", out temp))
+				Type = temp.Value;
+			if (yaml.TryGetValue("Author", out temp))
+				Author = temp.Value;
+			if (yaml.TryGetValue("Bounds", out temp))
+				Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
+			if (yaml.TryGetValue("Visibility", out temp))
+				Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
+
+			string requiresMod = string.Empty;
+			if (yaml.TryGetValue("RequiresMod", out temp))
+				requiresMod = temp.Value;
+
+			Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ? MapStatus.Available : MapStatus.Unavailable;
+
+			try
+			{
+				// Actor definitions may change if the map format changes
+				MiniYaml actorDefinitions;
+				if (yaml.TryGetValue("Actors", out actorDefinitions))
+				{
+					var spawns = new List<CPos>();
+					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
+					{
+						var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+						spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
+					}
+
+					SpawnPoints = spawns.ToArray();
+				}
+				else
+					SpawnPoints = new CPos[0];
+			}
+			catch (Exception)
+			{
+				SpawnPoints = new CPos[0];
+				Status = MapStatus.Unavailable;
+			}
+
+			try
+			{
+				// Player definitions may change if the map format changes
+				MiniYaml playerDefinitions;
+				if (yaml.TryGetValue("Players", out playerDefinitions))
+				{
+					var players = new MapPlayers(playerDefinitions.Nodes).Players;
+					PlayerCount = players.Count(x => x.Value.Playable);
+					SuitableForInitialMap = EvaluateUserFriendliness(players);
+				}
+			}
+			catch (Exception)
+			{
+				Status = MapStatus.Unavailable;
+			}
+
+			if (p.Contains("map.png"))
+				using (var dataStream = p.GetStream("map.png"))
+					CustomPreview = new Bitmap(dataStream);
 		}
 
 		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
@@ -210,6 +275,7 @@ namespace OpenRA
 			if (!Directory.Exists(baseMapPath))
 				Directory.CreateDirectory(baseMapPath);
 
+			var modData = Game.ModData;
 			new Thread(() =>
 			{
 				// Request the filename from the server
@@ -247,7 +313,11 @@ namespace OpenRA
 						}
 
 						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
-						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath), MapClassification.User));
+						Game.RunAfterTick(() =>
+						{
+							using (var package = modData.ModFiles.OpenPackage(mapPath))
+								UpdateFromMap(package, MapClassification.User, null, GridType);
+						});
 					};
 
 					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);
