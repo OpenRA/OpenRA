@@ -59,8 +59,8 @@ Packages:
 	ts|uibits
 
 MapFolders:
-	./mods/ts/maps@System
-	~^maps/ts/{DEV_VERSION}@User
+	ts|maps: System
+	~^maps/ts/{DEV_VERSION}: User
 
 Rules:
 	ts|rules/ai.yaml

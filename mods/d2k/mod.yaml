@@ -25,8 +25,8 @@ Packages:
 	d2k|uibits
 
 MapFolders:
-	./mods/d2k/maps@System
-	~^maps/d2k/{DEV_VERSION}@User
+	d2k|maps: System
+	~^maps/d2k/{DEV_VERSION}: User
 
 Rules:
 	d2k|rules/misc.yaml

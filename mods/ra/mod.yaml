@@ -33,8 +33,8 @@ Packages:
 	ra|uibits
 
 MapFolders:
-	./mods/ra/maps@System
-	~^maps/ra/{DEV_VERSION}@User
+	ra|maps: System
+	~^maps/ra/{DEV_VERSION}: User
 
 Rules:
 	ra|rules/misc.yaml

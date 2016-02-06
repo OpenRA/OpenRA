@@ -70,7 +70,7 @@ namespace OpenRA
 			Mod.Id = modId;
 
 			// TODO: Use fieldloader
-			MapFolders = YamlDictionary(yaml, "MapFolders", true);
+			MapFolders = YamlDictionary(yaml, "MapFolders");
 
 			MiniYaml packages;
 			if (yaml.TryGetValue("Packages", out packages))
@@ -160,29 +160,12 @@ namespace OpenRA
 			return yaml[key].ToDictionary().Keys.ToArray();
 		}
 
-		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
+		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			var inner = new Dictionary<string, string>();
-			foreach (var node in yaml[key].Nodes)
-			{
-				var line = node.Key;
-				if (node.Value.Value != null)
-					line += ":" + node.Value.Value;
-
-				// '@' may be used in mod.yaml to indicate extra information (similar to trait @ tags).
-				// Applies to MapFolders (to indicate System and User directories) and Packages (to indicate package annotation).
-				if (line.Contains('@'))
-				{
-					var split = line.Split('@');
-					inner.Add(parsePaths ? Platform.ResolvePath(split[0]) : split[0], split[1]);
-				}
-				else
-					inner.Add(line, null);
-			}
-
+			var inner = yaml[key].ToDictionary(my => my.Value);
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 

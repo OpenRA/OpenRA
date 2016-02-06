@@ -33,8 +33,8 @@ Packages:
 	cnc|uibits
 
 MapFolders:
-	./mods/cnc/maps@System
-	~^maps/cnc/{DEV_VERSION}@User
+	cnc|maps: System
+	~^maps/cnc/{DEV_VERSION}: User
 
 Rules:
 	cnc|rules/misc.yaml
