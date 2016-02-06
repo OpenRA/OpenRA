@@ -179,7 +179,6 @@ namespace OpenRA.Mods.Common.Traits
 		static bool IsMovingInMyDirection(Actor self, Actor other)
 		{
 			if (!other.IsMoving()) return false;
-			if (self == null) return true;
 
 			var selfMobile = self.TraitOrDefault<Mobile>();
 			if (selfMobile == null) return false;
@@ -235,7 +234,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the check allows: we are not blocked by allied units moving in our direction.
 			if (!check.HasCellCondition(CellConditions.BlockedByMovers) &&
-				self != null &&
 				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
 				IsMovingInMyDirection(self, otherActor))
 				return false;
@@ -246,7 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// If we cannot crush the other actor in our way, we are blocked.
-			if (self == null || Crushes == null || Crushes.Count == 0)
+			if (Crushes == null || Crushes.Count == 0)
 				return true;
 
 			// If the other actor in our way cannot be crushed, we are blocked.
