@@ -167,6 +167,34 @@ namespace OpenRA
 			return videos;
 		}
 
+		public static string ComputeUID(IReadOnlyPackage package)
+		{
+			// UID is calculated by taking an SHA1 of the yaml and binary data
+			using (var ms = new MemoryStream())
+			{
+				// Read the relevant data into the buffer
+				using (var s = package.GetStream("map.yaml"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.yaml not present in this map");
+					s.CopyTo(ms);
+				}
+
+				using (var s = package.GetStream("map.bin"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.bin not present in this map");
+
+					s.CopyTo(ms);
+				}
+
+				// Take the SHA1
+				ms.Seek(0, SeekOrigin.Begin);
+				using (var csp = SHA1.Create())
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+			}
+		}
+
 		public Rectangle Bounds;
 
 		/// <summary>
@@ -399,7 +427,7 @@ namespace OpenRA
 			if (MapFormat < 8)
 				Save(path);
 
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		void PostInit()
@@ -604,7 +632,7 @@ namespace OpenRA
 			Container.Write(entries);
 
 			// Update UID to match the newly saved data
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()
@@ -913,24 +941,6 @@ namespace OpenRA
 			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
 
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
-		}
-
-		string ComputeHash()
-		{
-			// UID is calculated by taking an SHA1 of the yaml and binary data
-			using (var ms = new MemoryStream())
-			{
-				// Read the relevant data into the buffer
-				using (var s = Container.GetStream("map.yaml"))
-					s.CopyTo(ms);
-				using (var s = Container.GetStream("map.bin"))
-					s.CopyTo(ms);
-
-				// Take the SHA1
-				ms.Seek(0, SeekOrigin.Begin);
-				using (var csp = SHA1.Create())
-					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
-			}
 		}
 
 		public void FixOpenAreas(Ruleset rules)
