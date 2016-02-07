@@ -90,7 +90,7 @@ namespace OpenRA
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
 		}
 
-		public void InitializeFonts(Manifest m)
+		public void InitializeFonts(ModData modData)
 		{
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
@@ -100,8 +100,8 @@ namespace OpenRA
 				if (fontSheetBuilder != null)
 					fontSheetBuilder.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA);
-				Fonts = m.Fonts.ToDictionary(x => x.Key,
-					x => new SpriteFont(Platform.ResolvePath(x.Value.First), x.Value.Second, fontSheetBuilder)).AsReadOnly();
+				Fonts = modData.Manifest.Fonts.ToDictionary(x => x.Key,
+					x => new SpriteFont(x.Value.First, modData.ModFiles.Open(x.Value.First).ReadAllBytes(), x.Value.Second, fontSheetBuilder)).AsReadOnly();
 			}
 		}
 

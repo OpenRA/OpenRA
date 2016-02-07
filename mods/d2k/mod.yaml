@@ -172,7 +172,7 @@ Fonts:
 		Font:./mods/common/FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:d2k:Dune2k.ttf
+		Font:./mods/d2k/Dune2k.ttf
 		Size:32
 	MediumBold:
 		Font:./mods/common/FreeSansBold.ttf

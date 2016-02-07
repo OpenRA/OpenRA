@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		readonly Face face;
 		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
 
-		public SpriteFont(string name, int size, SheetBuilder builder)
+		public SpriteFont(string name, byte[] data, int size, SheetBuilder builder)
 		{
 			if (builder.Type != SheetType.BGRA)
 				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 			this.size = size;
 			this.builder = builder;
 
-			face = new Face(Library, name);
+			face = new Face(Library, data, 0);
 			face.SetPixelSizes((uint)size, (uint)size);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
