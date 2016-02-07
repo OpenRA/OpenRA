@@ -21,8 +21,6 @@ namespace OpenRA.FileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
-
-		static readonly Dictionary<string, Assembly> AssemblyCache = new Dictionary<string, Assembly>();
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
 		public IReadWritePackage CreatePackage(string filename, Dictionary<string, byte[]> content)
@@ -216,31 +214,6 @@ namespace OpenRA.FileSystem
 			}
 			else
 				return mountedPackages.Keys.Any(f => f.Contains(name));
-		}
-
-		public static Assembly ResolveAssembly(object sender, ResolveEventArgs e)
-		{
-			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-				if (assembly.FullName == e.Name)
-					return assembly;
-
-			var frags = e.Name.Split(',');
-			var filename = frags[0] + ".dll";
-
-			Assembly a;
-			if (AssemblyCache.TryGetValue(filename, out a))
-				return a;
-
-			if (Game.ModData.ModFiles.Exists(filename))
-				using (var s = Game.ModData.ModFiles.Open(filename))
-				{
-					var buf = s.ReadBytes((int)s.Length);
-					a = Assembly.Load(buf);
-					AssemblyCache.Add(filename, a);
-					return a;
-				}
-
-			return null;
 		}
 	}
 }

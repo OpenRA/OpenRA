@@ -42,8 +42,6 @@ namespace OpenRA.Utility
 				return;
 			}
 
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.FileSystem.ResolveAssembly;
-
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 
