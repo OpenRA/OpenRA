@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, Action<string> onSave, Action onExit, Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
 		{
+			var modData = Game.ModData;
 			var title = widget.Get<TextFieldWidget>("TITLE");
 			title.Text = map.Title;
 
@@ -59,14 +61,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Func<string, string> makeMapDirectory = dir =>
 			{
-				var f = Platform.UnresolvePath(dir);
-				if (f.StartsWith("~"))
-					f = f.Substring(1);
+				if (dir.StartsWith("~"))
+					dir = dir.Substring(1);
 
-				return f;
+				IReadOnlyPackage package;
+				string f;
+				if (modData.ModFiles.TryGetPackageContaining(dir, out package, out f))
+					dir = Path.Combine(package.Name, f);
+
+				return Platform.UnresolvePath(dir);
 			};
 
-			var mapDirectories = Game.ModData.Manifest.MapFolders
+			var mapDirectories = modData.Manifest.MapFolders
 				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
 
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
@@ -147,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (playerDefinitions != null)
 					map.PlayerDefinitions = playerDefinitions;
 
-				map.RequiresMod = Game.ModData.Manifest.Mod.Id;
+				map.RequiresMod = modData.Manifest.Mod.Id;
 
 				// Create the map directory if required
 				Directory.CreateDirectory(Platform.ResolvePath(directoryDropdown.Text));
@@ -156,13 +162,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Invalidate the old map metadata
 				if (map.Uid != null && combinedPath == map.Path)
-					Game.ModData.MapCache[map.Uid].Invalidate();
+					modData.MapCache[map.Uid].Invalidate();
 
 				map.Save(combinedPath);
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];
-				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, classification);
+				modData.MapCache[map.Uid].UpdateFromMap(map, classification);
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();
