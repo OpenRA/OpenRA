@@ -154,6 +154,14 @@ if [ $BUILD_WXWIDGETS ]; then
     --with-zlib=builtin --disable-richtext \
     --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION $MINSDK \
     --with-osx_cocoa CFLAGS="-Os" CXXFLAGS="-Os"
+
+  PATTERN="defined( __WXMAC__ )\$"
+  if [ "$(grep -c "$PATTERN" src/aui/tabart.cpp)" -ne "1" ]; then
+    echo "Incorrect pattern for a fix in tabart.cpp."
+    exit 1
+  fi
+  sed -i "" "s/$PATTERN/0/" src/aui/tabart.cpp
+
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
   cd ..
