@@ -206,7 +206,7 @@ if [ $BUILD_WXLUA ]; then
 
   # remove "Unable to call an unknown method..." error as it leads to a leak
   # see http://sourceforge.net/p/wxlua/mailman/message/34629522/ for details
-  sed -i '/Unable to call an unknown method/{N;s/.*/    \/\/ removed by ZBS build process/}' modules/wxlua/wxlbind.cpp
+  sed -i "" -e '/Unable to call an unknown method/{N' -e 's/.*/    \/\/ removed by ZBS build process/' -e '}' modules/wxlua/wxlbind.cpp
 
   cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DCMAKE_OSX_ARCHITECTURES=$MACOSX_ARCH -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION $MINSDK \
