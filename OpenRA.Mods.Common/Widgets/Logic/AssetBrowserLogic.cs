@@ -50,7 +50,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 
 			panel = widget;
-			assetSource = Game.ModData.ModFiles.MountedPackages.First();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
 			if (ticker != null)
