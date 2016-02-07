@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Sprite sprite;
 		Rectangle bounds;
 
-		public void Init(Manifest m, Dictionary<string, string> info)
+		public void Init(ModData modData, Dictionary<string, string> info)
 		{
 			var res = Game.Renderer.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);

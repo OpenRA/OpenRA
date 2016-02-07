@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Sprite stripe, logo;
 		string[] messages = { "Loading..." };
 
-		public override void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			// Avoid standard loading mechanisms so we
 			// can display the loadscreen as early as possible

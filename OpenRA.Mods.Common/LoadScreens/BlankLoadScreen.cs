@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 	{
 		public LaunchArguments Launch;
 
-		public virtual void Init(Manifest m, Dictionary<string, string> info) { }
+		public virtual void Init(ModData m, Dictionary<string, string> info) { }
 
 		public virtual void Display()
 		{

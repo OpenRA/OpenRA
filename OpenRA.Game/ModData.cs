@@ -53,7 +53,7 @@ namespace OpenRA
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Init(this, Manifest.LoadScreen.ToDictionary(my => my.Value));
 				LoadScreen.Display();
 			}
 
@@ -205,7 +205,7 @@ namespace OpenRA
 
 	public interface ILoadScreen : IDisposable
 	{
-		void Init(Manifest m, Dictionary<string, string> info);
+		void Init(ModData m, Dictionary<string, string> info);
 		void Display();
 		void StartGame(Arguments args);
 	}

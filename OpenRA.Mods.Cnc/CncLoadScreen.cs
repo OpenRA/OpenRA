@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc
 		Rectangle bounds;
 		Renderer r;
 
-		public override void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			loadInfo = info;
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc
 			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
-			versionText = m.Mod.Version;
+			versionText = modData.Manifest.Mod.Version;
 		}
 
 		bool setup;
