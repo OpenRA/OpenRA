@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (ammoPools == null)
 				return;
 
-			ammoPoolsReloadTimes = ammoPools.ToDictionary(x => x, y => y.Info.ReloadTicks);
+			ammoPoolsReloadTimes = ammoPools.ToDictionary(x => x, y => y.Info.ReloadDelay);
 		}
 
 		public override Activity Tick(Actor self)
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (sound != null)
 					Game.Sound.Play(sound, self.CenterPosition);
 
-				ammoPoolsReloadTimes[pool] = pool.Info.ReloadTicks;
+				ammoPoolsReloadTimes[pool] = pool.Info.ReloadDelay;
 			}
 
 			return needsReloading ? this : NextActivity;

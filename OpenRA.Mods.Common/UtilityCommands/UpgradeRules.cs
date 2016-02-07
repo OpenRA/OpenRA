@@ -617,6 +617,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Image";
 				}
 
+				if (engineVersion < 20160321)
+				{
+					var parentKey = parent != null ? parent.Key.Split('@').First() : null;
+					if (node.Key == "Ticks" && parentKey == "DrawLineToTarget")
+						node.Key = "Duration";
+					if (node.Key == "ReloadTicks")
+						node.Key = "ReloadDelay";
+					if (node.Key == "SelfReloadTicks")
+						node.Key = "SelfReloadDelay";
+					if (node.Key == "LoadTicksPerBale")
+						node.Key = "BaleLoadDelay";
+					if (node.Key == "UnloadTicksPerBale")
+						node.Key = "BaleUnloadDelay";
+					if (node.Key == "TicksToHold")
+						node.Key = "HoldDuration";
+					if (node.Key == "Ticks" && parentKey == "SelfHealing")
+						node.Key = "Delay";
+					if (node.Key == "TicksToWaitBeforeReducingMoveRadius")
+						node.Key = "ReduceMoveRadiusDelay";
+					if (node.Key == "MinIdleWaitTicks")
+						node.Key = "MinIdleDelay";
+					if (node.Key == "MaxIdleWaitTicks")
+						node.Key = "MaxIdleWaitDelay";
+					if (node.Key == "ReloadTime")
+						node.Key = "ReloadDelay";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
