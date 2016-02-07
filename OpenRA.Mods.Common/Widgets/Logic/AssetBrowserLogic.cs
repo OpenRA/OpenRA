@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class AssetBrowserLogic : ChromeLogic
 	{
-		static string[] allowedExtensions;
+		readonly string[] allowedExtensions;
+		readonly IEnumerable<IReadOnlyPackage> acceptablePackages;
 
 		readonly World world;
 
@@ -216,6 +217,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 				allowedExtensions = new string[0];
 
+			acceptablePackages = Game.ModData.ModFiles.MountedPackages.Where(p =>
+				p.Contents.Any(c => allowedExtensions.Contains(Path.GetExtension(c).ToLowerInvariant())));
+
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
@@ -342,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			var sources = new[] { (IReadOnlyPackage)null }.Concat(Game.ModData.ModFiles.MountedPackages);
+			var sources = new[] { (IReadOnlyPackage)null }.Concat(acceptablePackages);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}
