@@ -65,7 +65,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 					var move = newUnit.TraitOrDefault<IMove>();
 					if (move != null)
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, destination));
+						newUnit.QueueActivity(move.MoveTo(destination, 2));
 
 					newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
 
