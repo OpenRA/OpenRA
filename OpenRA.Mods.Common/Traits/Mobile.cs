@@ -232,6 +232,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (otherActor == ignoreActor)
 				return false;
 
+			// If self is null, we don't have a real actor - we're just checking what would happen theoretically.
+			// In such a scenario - we'll just assume any other actor in the cell will block us by default.
+			// If we have a real actor, we can then perform the extra checks that allow us to avoid being blocked.
+			if (self == null)
+				return true;
+
 			// If the check allows: we are not blocked by allied units moving in our direction.
 			if (!check.HasCellCondition(CellConditions.BlockedByMovers) &&
 				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
