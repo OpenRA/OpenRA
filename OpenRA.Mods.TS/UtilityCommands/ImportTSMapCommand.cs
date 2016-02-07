@@ -347,7 +347,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				var dy = rx + ry - fullSize.X - 1;
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 
-				var ar = new ActorReference(int.Parse(kv.Key) <= 7 ? "mpspawn" : "waypoint");
+				int wpindex;
+				var ar = new ActorReference((!int.TryParse(kv.Key, out wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
 				ar.Add(new LocationInit(cell));
 				ar.Add(new OwnerInit("Neutral"));
 
