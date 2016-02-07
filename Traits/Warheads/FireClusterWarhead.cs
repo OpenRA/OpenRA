@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.AS.Warheads
 				var args = new ProjectileArgs
 				{
 					Weapon = weapon,
-					Facing = Util.GetFacing(map.CenterOfCell(cell) - target.CenterPosition, 0),
+					Facing = (map.CenterOfCell(cell) - target.CenterPosition).Yaw.Facing,
 
 					DamageModifiers = firedBy.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),
