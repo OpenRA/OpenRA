@@ -343,9 +343,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			// TODO: Re-enable "All Packages" once list generation is done in a background thread
-			// var sources = new[] { (IPackage)null }.Concat(GlobalFileSystem.MountedFolders);
-			var sources = Game.ModData.ModFiles.MountedPackages;
+			var sources = new[] { (IReadOnlyPackage)null }.Concat(Game.ModData.ModFiles.MountedPackages);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
 			return true;
 		}
@@ -355,14 +353,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			assetList.RemoveChildren();
 			availableShps.Clear();
 
-			// TODO: This is too slow to run in the main thread
-			// var files = AssetSource != null ? AssetSource.AllFileNames() :
-			// GlobalFileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
-			if (assetSource == null)
-				return;
-
-			var files = assetSource.Contents.OrderBy(s => s);
-			foreach (var file in files)
+			var files = assetSource != null ? assetSource.Contents : Game.ModData.ModFiles.MountedPackages.SelectMany(f => f.Contents).Distinct();
+			foreach (var file in files.OrderBy(s => s))
 			{
 				if (allowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
 				{
