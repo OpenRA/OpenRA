@@ -82,17 +82,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					using (var preview = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "preview.png")))
-						if (preview.Width == 296 && preview.Height == 196)
-							previews.Add(mod.Id, sheetBuilder.Add(preview));
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("preview.png"))
+						using (var preview = new Bitmap(stream))
+							if (preview.Width == 296 && preview.Height == 196)
+								previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
 				catch (Exception) { }
 
 				try
 				{
-					using (var logo = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "logo.png")))
-						if (logo.Width == 96 && logo.Height == 96)
-							logos.Add(mod.Id, sheetBuilder.Add(logo));
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("logo.png"))
+						using (var logo = new Bitmap(stream))
+							if (logo.Width == 96 && logo.Height == 96)
+								logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
 				catch (Exception) { }
 			}

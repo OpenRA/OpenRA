@@ -124,7 +124,7 @@ namespace OpenRA
 		{
 			// Resolve mod package paths.
 			if (ModMetadata.AllMods.ContainsKey(package))
-				package = ModMetadata.CandidateModPaths[package];
+				package = ModMetadata.AllMods[package].Package.Name;
 
 			return ResolvePath(Path.Combine(package, target));
 		}

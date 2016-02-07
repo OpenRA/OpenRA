@@ -12,12 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA
 {
 	public class ModMetadata
 	{
-		public static readonly Dictionary<string, string> CandidateModPaths = GetCandidateMods();
 		public static readonly Dictionary<string, ModMetadata> AllMods = ValidateMods();
 
 		public string Id;
@@ -26,26 +26,40 @@ namespace OpenRA
 		public string Version;
 		public string Author;
 		public bool Hidden;
+
+		public Dictionary<string, string> RequiresMods;
 		public ContentInstaller Content;
+		public IReadOnlyPackage Package;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
 		{
 			var ret = new Dictionary<string, ModMetadata>();
-			foreach (var pair in CandidateModPaths)
+			foreach (var pair in GetCandidateMods())
 			{
 				try
 				{
-					var yamlPath = Path.Combine(pair.Value, "mod.yaml");
-					if (!File.Exists(yamlPath))
+					IReadOnlyPackage package = null;
+					if (Directory.Exists(pair.Value))
+						package = new Folder(pair.Value);
+					else
+						throw new InvalidDataException(pair.Value + " is not a valid mod package");
+
+					if (!package.Contains("mod.yaml"))
 						continue;
 
-					var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml")));
 					var nd = yaml.ToDictionary();
 					if (!nd.ContainsKey("Metadata"))
 						continue;
 
 					var metadata = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
 					metadata.Id = pair.Key;
+					metadata.Package = package;
+
+					if (nd.ContainsKey("RequiresMods"))
+						metadata.RequiresMods = nd["RequiresMods"].ToDictionary(my => my.Value);
+					else
+						metadata.RequiresMods = new Dictionary<string, string>();
 
 					if (nd.ContainsKey("ContentInstaller"))
 						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);

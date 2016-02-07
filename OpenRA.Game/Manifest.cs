@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -32,8 +33,6 @@ namespace OpenRA
 	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
 	public class Manifest
 	{
-		public static readonly Dictionary<string, Manifest> AllMods = LoadMods();
-
 		public readonly ModMetadata Mod;
 		public readonly string[]
 			Packages, Rules, ServerTraits,
@@ -60,13 +59,11 @@ namespace OpenRA
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
 
-		public Manifest(string modId, string modPath = null)
+		public Manifest(string modId)
 		{
-			if (modPath == null)
-				modPath = ModMetadata.CandidateModPaths[modId];
+			var package = ModMetadata.AllMods[modId].Package;
 
-			var path = Path.Combine(modPath, "mod.yaml");
-			yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
+			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"))).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = modId;
@@ -199,29 +196,6 @@ namespace OpenRA
 			}
 
 			return module;
-		}
-
-		static Dictionary<string, Manifest> LoadMods()
-		{
-			var ret = new Dictionary<string, Manifest>();
-			foreach (var mod in ModMetadata.CandidateModPaths)
-			{
-				if (!File.Exists(Path.Combine(mod.Value, "mod.yaml")))
-					continue;
-
-				try
-				{
-					var manifest = new Manifest(mod.Key, mod.Value);
-					ret.Add(mod.Key, manifest);
-				}
-				catch (Exception ex)
-				{
-					Log.Write("debug", "An exception occurred while trying to load mod {0}:", mod);
-					Log.Write("debug", ex.ToString());
-				}
-			}
-
-			return ret;
 		}
 	}
 }
