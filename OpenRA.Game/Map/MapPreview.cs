@@ -57,6 +57,8 @@ namespace OpenRA
 		MapCache cache;
 
 		public readonly string Uid;
+		public string Path { get; private set; }
+
 		public string Title { get; private set; }
 		public string Type { get; private set; }
 		public string Author { get; private set; }
@@ -65,12 +67,10 @@ namespace OpenRA
 		public MapGridType GridType { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Bitmap CustomPreview { get; private set; }
-		public Map Map { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
+		public MapVisibility Visibility { get; private set; }
 		public bool SuitableForInitialMap { get; private set; }
-
-		public MapRuleStatus RuleStatus { get; private set; }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -111,11 +111,12 @@ namespace OpenRA
 			GridType = gridType;
 			Status = MapStatus.Unavailable;
 			Class = MapClassification.Unknown;
+			Visibility = MapVisibility.Lobby;
 		}
 
 		public void UpdateFromMap(Map m, MapClassification classification)
 		{
-			Map = m;
+			Path = m.Path;
 			Title = m.Title;
 			Type = m.Type;
 			Type = m.Type;
@@ -126,6 +127,7 @@ namespace OpenRA
 			CustomPreview = m.CustomPreview;
 			Status = MapStatus.Available;
 			Class = classification;
+			Visibility = m.Visibility;
 
 			var players = new MapPlayers(m.PlayerDefinitions).Players;
 			PlayerCount = players.Count(x => x.Value.Playable);
@@ -135,7 +137,7 @@ namespace OpenRA
 
 		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
 		{
-			if (Status != MapStatus.Available || !Map.Visibility.HasFlag(MapVisibility.Lobby))
+			if (Status != MapStatus.Available || !Visibility.HasFlag(MapVisibility.Lobby))
 				return false;
 
 			// Other map types may have confusing settings or gameplay
@@ -168,7 +170,6 @@ namespace OpenRA
 						if (!r.downloading)
 						{
 							Status = MapStatus.Unavailable;
-							RuleStatus = MapRuleStatus.Invalid;
 							return;
 						}
 
@@ -228,7 +229,7 @@ namespace OpenRA
 							return;
 						}
 
-						mapPath = Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+						mapPath = System.IO.Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
 					}
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
@@ -246,11 +247,7 @@ namespace OpenRA
 						}
 
 						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
-						Game.RunAfterTick(() =>
-						{
-							UpdateFromMap(new Map(mapPath), MapClassification.User);
-							CacheRules();
-						});
+						Game.RunAfterTick(() => UpdateFromMap(new Map(mapPath), MapClassification.User));
 					};
 
 					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);
@@ -272,19 +269,9 @@ namespace OpenRA
 			download = null;
 		}
 
-		public void CacheRules()
-		{
-			if (RuleStatus != MapRuleStatus.Unknown)
-				return;
-
-			Map.PreloadRules();
-			RuleStatus = Map.InvalidCustomRules ? MapRuleStatus.Invalid : MapRuleStatus.Cached;
-		}
-
 		public void Invalidate()
 		{
 			Status = MapStatus.Unavailable;
-			RuleStatus = MapRuleStatus.Unknown;
 		}
 	}
 }

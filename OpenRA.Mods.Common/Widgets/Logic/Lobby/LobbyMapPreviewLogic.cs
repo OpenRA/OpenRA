@@ -25,79 +25,80 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
 			{
-				available.IsVisible = () => lobby.Map.Status == MapStatus.Available && lobby.Map.RuleStatus == MapRuleStatus.Cached;
+				available.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && (lobby.Map == null || !lobby.Map.InvalidCustomRules);
 
 				var preview = available.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Preview = () => lobby.Map;
-				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
+				preview.Preview = () => lobby.MapPreview;
+				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.MapPreview, mi);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.MapPreview);
 
 				var titleLabel = available.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (titleLabel != null)
 				{
 					var font = Game.Renderer.Fonts[titleLabel.Font];
 					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
-					titleLabel.GetText = () => title.Update(lobby.Map);
+					titleLabel.GetText = () => title.Update(lobby.MapPreview);
 				}
 
 				var typeLabel = available.GetOrNull<LabelWidget>("MAP_TYPE");
 				if (typeLabel != null)
-					typeLabel.GetText = () => lobby.Map.Type;
+					typeLabel.GetText = () => lobby.MapPreview.Type;
 
 				var authorLabel = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (authorLabel != null)
 				{
 					var font = Game.Renderer.Fonts[authorLabel.Font];
-					var author = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText("Created by {0}".F(lobby.Map.Author), authorLabel.Bounds.Width, font));
-					authorLabel.GetText = () => author.Update(lobby.Map);
+					var author = new CachedTransform<MapPreview, string>(
+						m => WidgetUtils.TruncateText("Created by {0}".F(lobby.MapPreview.Author), authorLabel.Bounds.Width, font));
+					authorLabel.GetText = () => author.Update(lobby.MapPreview);
 				}
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
 			if (invalid != null)
 			{
-				invalid.IsVisible = () => lobby.Map.Status == MapStatus.Available && lobby.Map.RuleStatus == MapRuleStatus.Invalid;
+				invalid.IsVisible = () => lobby.MapPreview.Status == MapStatus.Available && lobby.Map != null && lobby.Map.InvalidCustomRules;
 
 				var preview = invalid.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Preview = () => lobby.Map;
-				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
+				preview.Preview = () => lobby.MapPreview;
+				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.MapPreview, mi);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.MapPreview);
 
 				var title = invalid.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+					title.GetText = () => lobby.MapPreview.Title;
 
 				var type = invalid.GetOrNull<LabelWidget>("MAP_TYPE");
 				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+					type.GetText = () => lobby.MapPreview.Type;
 			}
 
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
 			if (download != null)
 			{
-				download.IsVisible = () => lobby.Map.Status == MapStatus.DownloadAvailable;
+				download.IsVisible = () => lobby.MapPreview.Status == MapStatus.DownloadAvailable;
 
 				var preview = download.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Preview = () => lobby.Map;
-				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
+				preview.Preview = () => lobby.MapPreview;
+				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.MapPreview, mi);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.MapPreview);
 
 				var title = download.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+					title.GetText = () => lobby.MapPreview.Title;
 
 				var type = download.GetOrNull<LabelWidget>("MAP_TYPE");
 				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+					type.GetText = () => lobby.MapPreview.Type;
 
 				var author = download.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (author != null)
-					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+					author.GetText = () => "Created by {0}".F(lobby.MapPreview.Author);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
 				{
-					install.OnClick = () => lobby.Map.Install();
+					install.OnClick = () => lobby.MapPreview.Install();
 					install.IsHighlighted = () => installHighlighted;
 				}
 			}
@@ -105,72 +106,72 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var progress = widget.GetOrNull("MAP_PROGRESS");
 			if (progress != null)
 			{
-				progress.IsVisible = () =>
-					(lobby.Map.Status != MapStatus.Available || lobby.Map.RuleStatus == MapRuleStatus.Unknown) &&
-					lobby.Map.Status != MapStatus.DownloadAvailable;
+				progress.IsVisible = () => lobby.MapPreview.Status != MapStatus.Available &&
+					lobby.MapPreview.Status != MapStatus.DownloadAvailable;
 
 				var preview = progress.Get<MapPreviewWidget>("MAP_PREVIEW");
-				preview.Preview = () => lobby.Map;
-				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
-				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
+				preview.Preview = () => lobby.MapPreview;
+				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.MapPreview, mi);
+				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.MapPreview);
 
 				var title = progress.GetOrNull<LabelWidget>("MAP_TITLE");
 				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+					title.GetText = () => lobby.MapPreview.Title;
 
 				var type = progress.GetOrNull<LabelWidget>("MAP_TYPE");
 				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+					type.GetText = () => lobby.MapPreview.Type;
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
-					statusSearching.IsVisible = () => lobby.Map.Status == MapStatus.Searching;
+					statusSearching.IsVisible = () => lobby.MapPreview.Status == MapStatus.Searching;
 
 				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
 				if (statusUnavailable != null)
-					statusUnavailable.IsVisible = () => lobby.Map.Status == MapStatus.Unavailable;
+					statusUnavailable.IsVisible = () => lobby.MapPreview.Status == MapStatus.Unavailable;
 
 				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
 				if (statusError != null)
-					statusError.IsVisible = () => lobby.Map.Status == MapStatus.DownloadError;
+					statusError.IsVisible = () => lobby.MapPreview.Status == MapStatus.DownloadError;
 
 				var statusDownloading = progress.GetOrNull<LabelWidget>("MAP_STATUS_DOWNLOADING");
 				if (statusDownloading != null)
 				{
-					statusDownloading.IsVisible = () => lobby.Map.Status == MapStatus.Downloading;
+					statusDownloading.IsVisible = () => lobby.MapPreview.Status == MapStatus.Downloading;
 					statusDownloading.GetText = () =>
 					{
-						if (lobby.Map.DownloadBytes == 0)
+						if (lobby.MapPreview.DownloadBytes == 0)
 							return "Connecting...";
 
 						// Server does not provide the total file length
-						if (lobby.Map.DownloadPercentage == 0)
-							return "Downloading {0} kB".F(lobby.Map.DownloadBytes / 1024);
+						if (lobby.MapPreview.DownloadPercentage == 0)
+							return "Downloading {0} kB".F(lobby.MapPreview.DownloadBytes / 1024);
 
-						return "Downloading {0} kB ({1}%)".F(lobby.Map.DownloadBytes / 1024, lobby.Map.DownloadPercentage);
+						return "Downloading {0} kB ({1}%)".F(lobby.MapPreview.DownloadBytes / 1024, lobby.MapPreview.DownloadPercentage);
 					};
 				}
 
 				var retry = progress.GetOrNull<ButtonWidget>("MAP_RETRY");
 				if (retry != null)
 				{
-					retry.IsVisible = () => (lobby.Map.Status == MapStatus.DownloadError || lobby.Map.Status == MapStatus.Unavailable) && lobby.Map != MapCache.UnknownMap;
+					retry.IsVisible = () => (lobby.MapPreview.Status == MapStatus.DownloadError || lobby.MapPreview.Status == MapStatus.Unavailable) &&
+						lobby.MapPreview != MapCache.UnknownMap;
 					retry.OnClick = () =>
 					{
-						if (lobby.Map.Status == MapStatus.DownloadError)
-							lobby.Map.Install();
-						else if (lobby.Map.Status == MapStatus.Unavailable)
-							Game.ModData.MapCache.QueryRemoteMapDetails(new[] { lobby.Map.Uid });
+						if (lobby.MapPreview.Status == MapStatus.DownloadError)
+							lobby.MapPreview.Install();
+						else if (lobby.MapPreview.Status == MapStatus.Unavailable)
+							Game.ModData.MapCache.QueryRemoteMapDetails(new[] { lobby.MapPreview.Uid });
 					};
 
-					retry.GetText = () => lobby.Map.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";
+					retry.GetText = () => lobby.MapPreview.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";
 				}
 
 				var progressbar = progress.GetOrNull<ProgressBarWidget>("MAP_PROGRESSBAR");
 				if (progressbar != null)
 				{
-					progressbar.IsIndeterminate = () => lobby.Map.DownloadPercentage == 0;
-					progressbar.GetPercentage = () => lobby.Map.DownloadPercentage;
+					progressbar.IsIndeterminate = () => lobby.MapPreview.DownloadPercentage == 0;
+					progressbar.GetPercentage = () => lobby.MapPreview.DownloadPercentage;
 					progressbar.IsVisible = () => !retry.IsVisible();
 				}
 			}

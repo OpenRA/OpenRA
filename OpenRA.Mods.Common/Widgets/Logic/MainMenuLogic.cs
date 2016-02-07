@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var hasCampaign = Game.ModData.Manifest.Missions.Any();
 			var hasMissions = Game.ModData.MapCache
-				.Any(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector));
+				.Any(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector));
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;
 
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var onSelect = new Action<string>(uid =>
 			{
 				RemoveShellmapUI();
-				LoadMapIntoEditor(Game.ModData.MapCache[uid].Map);
+				LoadMapIntoEditor(Game.ModData.MapCache[uid].Uid);
 			});
 
 			var newMapButton = widget.Get<ButtonWidget>("NEW_MAP_BUTTON");
@@ -242,12 +242,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
-		void LoadMapIntoEditor(Map map)
+		void LoadMapIntoEditor(string uid)
 		{
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
-				Game.CreateLocalServer(map.Uid),
+				Game.CreateLocalServer(uid),
 				"",
-				() => { Game.LoadEditor(map.Uid); },
+				() => { Game.LoadEditor(uid); },
 				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
 		}
 

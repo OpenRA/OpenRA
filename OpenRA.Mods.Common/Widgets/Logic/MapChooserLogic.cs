@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void RefreshMaps(MapClassification tab, MapVisibility filter)
 		{
 			tabMaps[tab] = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available &&
-				m.Class == tab && (m.Map.Visibility & filter) != 0).ToArray();
+				m.Class == tab && (m.Visibility & filter) != 0).ToArray();
 		}
 
 		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName, ScrollItemWidget itemTemplate)
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string DeleteMap(string map)
 		{
-			var path = Game.ModData.MapCache[map].Map.Path;
+			var path = Game.ModData.MapCache[map].Path;
 			try
 			{
 				if (File.Exists(path))

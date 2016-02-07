@@ -174,7 +174,8 @@ namespace OpenRA
 					if (bitmap == null)
 					{
 						createdPreview = true;
-						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[p.Map.Tileset], p.Map, modData.DefaultRules, true);
+						var map = new Map(p.Path);
+						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[map.Tileset], map, modData.DefaultRules, true);
 					}
 
 					Game.RunAfterTick(() =>
