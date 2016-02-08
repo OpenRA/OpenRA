@@ -27,6 +27,16 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
+		public ZipFile(FileSystem context, string filename, Stream stream, bool createOrClearContents = false)
+		{
+			Name = filename;
+
+			if (createOrClearContents)
+				pkg = SZipFile.Create(stream);
+			else
+				pkg = new SZipFile(stream);
+		}
+
 		public ZipFile(IReadOnlyFileSystem context, string filename, bool createOrClearContents = false)
 		{
 			Name = filename;

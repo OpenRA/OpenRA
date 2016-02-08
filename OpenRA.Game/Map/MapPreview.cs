@@ -60,6 +60,7 @@ namespace OpenRA
 
 		public readonly string Uid;
 		public IReadOnlyPackage Package { get; private set; }
+		IReadOnlyPackage parentPackage;
 
 		public string Title { get; private set; }
 		public string Type { get; private set; }
@@ -116,7 +117,7 @@ namespace OpenRA
 			Visibility = MapVisibility.Lobby;
 		}
 
-		public void UpdateFromMap(IReadOnlyPackage p, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
+		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
 		{
 			Dictionary<string, MiniYaml> yaml;
 			using (var yamlStream = p.GetStream("map.yaml"))
@@ -128,6 +129,7 @@ namespace OpenRA
 			}
 
 			Package = p;
+			parentPackage = parent;
 			GridType = gridType;
 			Class = classification;
 
@@ -270,11 +272,7 @@ namespace OpenRA
 				return;
 
 			Status = MapStatus.Downloading;
-			var baseMapPath = Platform.ResolvePath("^", "maps", Game.ModData.Manifest.Mod.Id);
-
-			// Create the map directory if it doesn't exist
-			if (!Directory.Exists(baseMapPath))
-				Directory.CreateDirectory(baseMapPath);
+			var mapInstallPackage = new Folder(Platform.ResolvePath("^", "maps", Game.ModData.Manifest.Mod.Id));
 
 			var modData = Game.ModData;
 			new Thread(() =>
@@ -282,7 +280,7 @@ namespace OpenRA
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
 				var mapUrl = Game.Settings.Game.MapRepository + Uid;
-				var mapPath = string.Empty;
+				var mapFilename = string.Empty;
 				try
 				{
 					var request = WebRequest.Create(mapUrl);
@@ -296,11 +294,11 @@ namespace OpenRA
 							return;
 						}
 
-						mapPath = System.IO.Path.Combine(baseMapPath, res.Headers["Content-Disposition"].Replace("attachment; filename = ", ""));
+						mapFilename = res.Headers["Content-Disposition"].Replace("attachment; filename = ", "");
 					}
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
-					Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+					Action<DownloadDataCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
 					{
 						download = null;
 
@@ -313,15 +311,16 @@ namespace OpenRA
 							return;
 						}
 
-						Log.Write("debug", "Downloaded map to '{0}'", mapPath);
+						mapInstallPackage.Update(mapFilename, i.Result);
+						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
 						Game.RunAfterTick(() =>
 						{
-							using (var package = modData.ModFiles.OpenPackage(mapPath))
-								UpdateFromMap(package, MapClassification.User, null, GridType);
+							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
+							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
 						});
 					};
 
-					download = new Download(mapUrl, mapPath, onDownloadProgress, onDownloadComplete);
+					download = new Download(mapUrl, onDownloadProgress, onDownloadComplete);
 				}
 				catch (Exception e)
 				{
@@ -352,6 +351,14 @@ namespace OpenRA
 				Package.Dispose();
 				Package = null;
 			}
+		}
+
+		public void Delete()
+		{
+			Invalidate();
+			var deleteFromPackage = parentPackage as IReadWritePackage;
+			if (deleteFromPackage != null)
+				deleteFromPackage.Delete(Package.Name);
 		}
 	}
 }

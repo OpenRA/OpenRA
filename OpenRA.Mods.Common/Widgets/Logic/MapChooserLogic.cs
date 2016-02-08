@@ -288,22 +288,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string DeleteMap(string map)
 		{
-			var path = modData.MapCache[map].Package.Name;
 			try
 			{
-				if (File.Exists(path))
-					File.Delete(path);
-				else if (Directory.Exists(path))
-					Directory.Delete(path, true);
-
-				modData.MapCache[map].Invalidate();
-
+				modData.MapCache[map].Delete();
 				if (selectedUid == map)
 					selectedUid = WidgetUtils.ChooseInitialMap(tabMaps[currentTab].Select(mp => mp.Uid).FirstOrDefault());
 			}
 			catch (Exception ex)
 			{
-				Game.Debug("Failed to delete map '{0}'. See the debug.log file for details.", path);
+				Game.Debug("Failed to delete map '{0}'. See the debug.log file for details.", map);
 				Log.Write("debug", ex.ToString());
 			}
 

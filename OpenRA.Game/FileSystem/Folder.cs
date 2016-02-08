@@ -33,6 +33,8 @@ namespace OpenRA.FileSystem
 			{
 				foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
 					yield return Path.GetFileName(filename);
+				foreach (var filename in Directory.GetDirectories(path))
+					yield return Path.GetFileName(filename);
 			}
 		}
 
@@ -59,7 +61,12 @@ namespace OpenRA.FileSystem
 
 		public void Delete(string filename)
 		{
-			var filePath = Path.Combine(path, filename);
+			// HACK: ZipFiles can't be loaded as read-write from a stream, so we are
+			// forced to bypass the parent package and load them with their full path
+			// in FileSystem.OpenPackage.  Their internal name therefore contains the
+			// full parent path too.  We need to be careful to not add a second path
+			// prefix to these hacked packages.
+			var filePath = filename.StartsWith(path) ? filename : Path.Combine(path, filename);
 			if (Directory.Exists(filePath))
 				Directory.Delete(filePath, true);
 			else if (File.Exists(filePath))

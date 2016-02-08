@@ -64,6 +64,32 @@ namespace OpenRA.FileSystem
 			return new Folder(Platform.ResolvePath(filename));
 		}
 
+		public IReadOnlyPackage OpenPackage(string filename, IReadOnlyPackage parent)
+		{
+			// HACK: limit support to zip and folder until we generalize the PackageLoader support
+			if (parent is Folder)
+			{
+				var path = Path.Combine(parent.Name, filename);
+
+				// HACK: work around SharpZipLib's lack of support for writing to in-memory files
+				if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+					return new ZipFile(this, path);
+				if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+					return new ZipFile(this, path);
+
+				var subFolder = Platform.ResolvePath(path);
+				if (Directory.Exists(subFolder))
+					return new Folder(subFolder);
+			}
+
+			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, parent.GetStream(filename));
+			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, parent.GetStream(filename));
+
+			return null;
+		}
+
 		public IReadWritePackage OpenWritablePackage(string filename)
 		{
 			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))

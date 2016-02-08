@@ -28,6 +28,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public string UiLabel;
 		}
 
+		class SaveDirectory
+		{
+			public readonly Folder Folder;
+			public readonly string DisplayName;
+			public readonly MapClassification Classification;
+
+			public SaveDirectory(Folder folder, MapClassification classification)
+			{
+				Folder = folder;
+				DisplayName = Platform.UnresolvePath(Folder.Name);
+				Classification = classification;
+			}
+		}
+
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, ModData modData, Action<string> onSave, Action onExit,
 			Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
@@ -60,58 +74,57 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					visibilityDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapVisibility, setupItem);
 			}
 
-			Func<string, string> makeMapDirectory = dir =>
-			{
-				if (dir.StartsWith("~"))
-					dir = dir.Substring(1);
+			var writableDirectories = new List<SaveDirectory>();
+			SaveDirectory selectedDirectory = null;
 
-				IReadOnlyPackage package;
-				string f;
-				if (modData.ModFiles.TryGetPackageContaining(dir, out package, out f))
-					dir = Path.Combine(package.Name, f);
-
-				return Platform.UnresolvePath(dir);
-			};
-
-			var mapDirectories = modData.Manifest.MapFolders
-				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
-
-			var mapPath = map.Package != null ? map.Package.Name : null;
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
-				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				Func<SaveDirectory, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
-						() => directoryDropdown.Text == option,
-						() => directoryDropdown.Text = option);
-					item.Get<LabelWidget>("LABEL").GetText = () => option;
+						() => selectedDirectory == option,
+						() => selectedDirectory = option);
+					item.Get<LabelWidget>("LABEL").GetText = () => option.DisplayName;
 					return item;
 				};
 
-				// TODO: This won't work for maps inside oramod packages
-				var mapDirectory = mapPath != null ? Platform.UnresolvePath(Path.GetDirectoryName(mapPath)) : null;
-				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
+				foreach (var kv in modData.MapCache.MapLocations)
+				{
+					var folder = kv.Key as Folder;
+					if (folder == null)
+						continue;
+
+					try
+					{
+						using (var fs = File.Create(Path.Combine(folder.Name, ".testwritable"), 1, FileOptions.DeleteOnClose))
+						{
+							// Do nothing: we just want to test whether we can create the file
+						}
+
+						writableDirectories.Add(new SaveDirectory(folder, kv.Value));
+					}
+					catch
+					{
+						// Directory is not writable
+					}
+				}
+
+				if (map.Package != null)
+					selectedDirectory = writableDirectories.FirstOrDefault(k => k.Folder.Contains(map.Package.Name));
 
 				// Prioritize MapClassification.User directories over system directories
-				if (initialDirectory == null)
-					initialDirectory = mapDirectories.OrderByDescending(kv => kv.Value).First().Key;
+				if (selectedDirectory == null)
+					selectedDirectory = writableDirectories.OrderByDescending(kv => kv.Classification).First();
 
-				directoryDropdown.Text = initialDirectory;
+				directoryDropdown.GetText = () => selectedDirectory == null ? "" : selectedDirectory.DisplayName;
 				directoryDropdown.OnClick = () =>
-					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories.Keys, setupItem);
+					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
 			}
 
-			var mapIsUnpacked = false;
-
-			// TODO: This won't work for maps inside oramod packages
-			if (mapPath != null)
-			{
-				var attr = File.GetAttributes(mapPath);
-				mapIsUnpacked = attr.HasFlag(FileAttributes.Directory);
-			}
+			var mapIsUnpacked = map.Package != null && map.Package is Folder;
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
-			filename.Text = mapIsUnpacked ? Path.GetFileName(mapPath) : Path.GetFileNameWithoutExtension(mapPath);
+			filename.Text = map.Package == null ? "" : mapIsUnpacked ? Path.GetFileName(map.Package.Name) : Path.GetFileNameWithoutExtension(map.Package.Name);
 			var fileType = mapIsUnpacked ? MapFileType.Unpacked : MapFileType.OraMap;
 
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
@@ -159,46 +172,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				map.RequiresMod = modData.Manifest.Mod.Id;
 
-				// Create the map directory if required
-				Directory.CreateDirectory(Platform.ResolvePath(directoryDropdown.Text));
-
-				// TODO: This won't work for maps inside oramod packages
-				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[fileType].Extension));
+				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
 
 				// Invalidate the old map metadata
-				if (map.Uid != null && combinedPath == mapPath)
+				if (map.Uid != null && map.Package != null && map.Package.Name == combinedPath)
 					modData.MapCache[map.Uid].Invalidate();
 
-				var package = map.Package as IReadWritePackage;
-				if (package == null || package.Name != combinedPath)
+				try
 				{
-					try
+					var package = map.Package as IReadWritePackage;
+					if (package == null || package.Name != combinedPath)
 					{
+						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)
-						{
-							if (File.Exists(combinedPath))
-								File.Delete(combinedPath);
-
 							package = new ZipFile(modData.DefaultFileSystem, combinedPath, true);
-						}
 						else
-						{
-							if (Directory.Exists(combinedPath))
-								Directory.Delete(combinedPath, true);
 							package = new Folder(combinedPath);
-						}
+					}
 
-						map.Save(package);
-					}
-					catch
-					{
-						Console.WriteLine("Failed to save map at {0}", combinedPath);
-					}
+					map.Save(package);
+				}
+				catch
+				{
+					Console.WriteLine("Failed to save map at {0}", combinedPath);
 				}
 
 				// Update the map cache so it can be loaded without restarting the game
-				var classification = mapDirectories[directoryDropdown.Text];
-				modData.MapCache[map.Uid].UpdateFromMap(map.Package, classification, null, map.Grid.Type);
+				modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();

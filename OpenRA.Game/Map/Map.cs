@@ -492,7 +492,7 @@ namespace OpenRA
 
 		public void Save(IReadWritePackage toPackage)
 		{
-			MapFormat = 8;
+			MapFormat = SupportedMapFormat;
 
 			var root = new List<MiniYamlNode>();
 			var fields = new[]
@@ -534,10 +534,12 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
 			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
 
+			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
 					toPackage.Update(file, Package.GetStream(file).ReadAllBytes());
 
+			// Update the package with the new map data
 			var s = root.WriteToString();
 			toPackage.Update("map.yaml", Encoding.UTF8.GetBytes(s));
 			toPackage.Update("map.bin", SaveBinaryData());
