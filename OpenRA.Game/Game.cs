@@ -235,8 +235,6 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.FileSystem.ResolveAssembly;
-
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");

@@ -108,7 +108,7 @@ namespace OpenRA.Test
 			var yaml = MiniYaml.Merge(sources.Select(s => MiniYaml.FromString(s)));
 			var allUnits = yaml.ToDictionary(node => node.Key, node => node.Value);
 			var unit = allUnits[name];
-			var creator = new ObjectCreator(new[] { typeof(ActorInfoTest).Assembly });
+			var creator = new ObjectCreator(typeof(ActorInfoTest).Assembly);
 			return new ActorInfo(creator, name, unit);
 		}
 	}
