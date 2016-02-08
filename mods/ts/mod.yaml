@@ -32,20 +32,20 @@ Packages:
 	~sidecd01.mix
 	~sidecd02.mix
 	~tibsun.mix
-	cache.mix
-	conquer.mix
-	isosnow.mix
-	isotemp.mix
-	local.mix
-	sidec01.mix: sidebar-gdi
-	sidec02.mix: sidebar-nod
-	sno.mix
-	snow.mix
-	sounds.mix
-	speech01.mix: speech-gdi
-	speech02.mix: speech-nod
-	tem.mix
-	temperat.mix
+	~cache.mix
+	~conquer.mix
+	~isosnow.mix
+	~isotemp.mix
+	~local.mix
+	~sidec01.mix: sidebar-gdi
+	~sidec02.mix: sidebar-nod
+	~sno.mix
+	~snow.mix
+	~sounds.mix
+	~speech01.mix: speech-gdi
+	~speech02.mix: speech-nod
+	~tem.mix
+	~temperat.mix
 # Firestorm
 	~scores01.mix
 	~expand01.mix
