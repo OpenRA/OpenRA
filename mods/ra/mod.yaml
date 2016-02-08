@@ -32,7 +32,7 @@ Packages:
 
 MapFolders:
 	./mods/ra/maps@System
-	~^maps/ra@User
+	~^maps/ra/{DEV_VERSION}@User
 
 Rules:
 	./mods/ra/rules/misc.yaml

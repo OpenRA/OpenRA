@@ -109,7 +109,7 @@ namespace OpenRA
 
 	public class Map
 	{
-		public const int MinimumSupportedMapFormat = 6;
+		public const int SupportedMapFormat = 8;
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
@@ -165,6 +165,34 @@ namespace OpenRA
 				FieldLoader.Load(videos, nodesDict["Videos"]);
 
 			return videos;
+		}
+
+		public static string ComputeUID(IReadOnlyPackage package)
+		{
+			// UID is calculated by taking an SHA1 of the yaml and binary data
+			using (var ms = new MemoryStream())
+			{
+				// Read the relevant data into the buffer
+				using (var s = package.GetStream("map.yaml"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.yaml not present in this map");
+					s.CopyTo(ms);
+				}
+
+				using (var s = package.GetStream("map.bin"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.bin not present in this map");
+
+					s.CopyTo(ms);
+				}
+
+				// Take the SHA1
+				ms.Seek(0, SeekOrigin.Begin);
+				using (var csp = SHA1.Create())
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+			}
 		}
 
 		public Rectangle Bounds;
@@ -284,72 +312,8 @@ namespace OpenRA
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetStream("map.yaml"), path));
 			FieldLoader.Load(this, yaml);
 
-			// Support for formats 1-3 dropped 2011-02-11.
-			// Use release-20110207 to convert older maps to format 4
-			// Use release-20110511 to convert older maps to format 5
-			// Use release-20141029 to convert older maps to format 6
-			if (MapFormat < MinimumSupportedMapFormat)
+			if (MapFormat != SupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
-
-			var nd = yaml.ToDictionary();
-
-			// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
-			if (MapFormat < 7)
-			{
-				MiniYaml useAsShellmap;
-				if (nd.TryGetValue("UseAsShellmap", out useAsShellmap) && bool.Parse(useAsShellmap.Value))
-					Visibility = MapVisibility.Shellmap;
-				else if (Type == "Mission" || Type == "Campaign")
-					Visibility = MapVisibility.MissionSelector;
-			}
-
-			// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
-			if (MapFormat < 8)
-			{
-				var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
-				if (players != null)
-				{
-					bool noteHexColors = false;
-					bool noteColorRamp = false;
-					foreach (var player in players.Value.Nodes)
-					{
-						var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
-						if (colorRampNode != null)
-						{
-							Color dummy;
-							var parts = colorRampNode.Value.Value.Split(',');
-							if (parts.Length == 3 || parts.Length == 4)
-							{
-								// Try to convert old normalized HSL value to a rgb hex color
-								try
-								{
-									HSLColor color = new HSLColor(
-										(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
-										(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
-										(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
-									colorRampNode.Value.Value = FieldSaver.FormatValue(color);
-									noteHexColors = true;
-								}
-								catch (Exception)
-								{
-									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-								}
-							}
-							else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
-								throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-
-							colorRampNode.Key = "Color";
-							noteColorRamp = true;
-						}
-					}
-
-					Console.WriteLine("Converted " + path + " to MapFormat 8.");
-					if (noteHexColors)
-						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
-					else if (noteColorRamp)
-						Console.WriteLine("ColorRamp is now called Color.");
-				}
-			}
 
 			SpawnPoints = Exts.Lazy(() =>
 			{
@@ -399,7 +363,7 @@ namespace OpenRA
 			if (MapFormat < 8)
 				Save(path);
 
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		void PostInit()
@@ -604,7 +568,7 @@ namespace OpenRA
 			Container.Write(entries);
 
 			// Update UID to match the newly saved data
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()
@@ -913,24 +877,6 @@ namespace OpenRA
 			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
 
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
-		}
-
-		string ComputeHash()
-		{
-			// UID is calculated by taking an SHA1 of the yaml and binary data
-			using (var ms = new MemoryStream())
-			{
-				// Read the relevant data into the buffer
-				using (var s = Container.GetStream("map.yaml"))
-					s.CopyTo(ms);
-				using (var s = Container.GetStream("map.bin"))
-					s.CopyTo(ms);
-
-				// Take the SHA1
-				ms.Seek(0, SeekOrigin.Begin);
-				using (var csp = SHA1.Create())
-					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
-			}
 		}
 
 		public void FixOpenAreas(Ruleset rules)

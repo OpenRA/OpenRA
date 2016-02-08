@@ -24,9 +24,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		public void Run(ModData modData, string[] args)
 		{
-			Game.ModData = modData;
-			var result = new Map(args[1]).Uid;
-			Console.WriteLine(result);
+			using (var package = modData.ModFiles.OpenPackage(args[1]))
+				Console.WriteLine(Map.ComputeUID(package));
 		}
 	}
 }

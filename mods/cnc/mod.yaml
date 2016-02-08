@@ -33,7 +33,7 @@ Packages:
 
 MapFolders:
 	./mods/cnc/maps@System
-	~^maps/cnc@User
+	~^maps/cnc/{DEV_VERSION}@User
 
 Rules:
 	./mods/cnc/rules/misc.yaml

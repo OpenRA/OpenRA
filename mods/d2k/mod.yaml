@@ -22,7 +22,7 @@ Packages:
 
 MapFolders:
 	d2k:maps@System
-	~^maps/d2k@User
+	~^maps/d2k/{DEV_VERSION}@User
 
 Rules:
 	d2k:rules/misc.yaml
