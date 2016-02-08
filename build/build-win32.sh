@@ -44,7 +44,6 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
-WXLUASTRIP="/strip"
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -86,7 +85,6 @@ for ARG in "$@"; do
     BUILD_ZBSTUDIO=true
     ;;
   debug)
-    WXLUASTRIP=""
     WXWIDGETSDEBUG="--enable-debug=max --enable-debug_gdb"
     WXLUABUILD="Debug"
     ;;
@@ -247,8 +245,9 @@ if [ $BUILD_WXLUA ]; then
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua51.dll" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
-  (cd modules/luamodule; make install$WXLUASTRIP)
+  (cd modules/luamodule; make install)
   [ -f "$INSTALL_DIR/bin/libwx.dll" ] || { echo "Error: libwx.dll isn't found"; exit 1; }
+  [ "$WXLUABUILD" != "Debug" ] && strip --strip-unneeded "$INSTALL_DIR/bin/libwx.dll"
   cd ../..
   rm -rf "$WXLUA_BASENAME"
 fi
