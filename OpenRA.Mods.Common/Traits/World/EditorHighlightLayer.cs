@@ -32,12 +32,12 @@ namespace OpenRA.Mods.Common.Traits
 		public EditorHighlightLayer(Actor self, EditorHighlightLayerInfo info)
 			: base(self, info)
 		{
-			overlaySprite = map.SequenceProvider.GetSequence(info.Image, info.HighlightSequence).GetSprite(0);
+			overlaySprite = Map.SequenceProvider.GetSequence(info.Image, info.HighlightSequence).GetSprite(0);
 		}
 
 		public void SetHighlightRegion(CPos start, CPos end)
 		{
-			OverlayRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			OverlayRegion = CellRegion.BoundingRegion(Map.Grid.Type, new[] { start, end });
 		}
 
 		public override void Clear()

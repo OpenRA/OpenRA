@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public abstract class EditorCellRegionLayer : IWorldLoaded, IPostRender
 	{
-		protected readonly EditorCellRegionLayerInfo info;
-		protected readonly Map map;
+		protected readonly EditorCellRegionLayerInfo Info;
+		protected readonly Map Map;
 		protected PaletteReference palette;
 
 		public EditorCellRegionLayer(Actor self, EditorCellRegionLayerInfo info)
@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Type != WorldType.Editor)
 				return;
 
-			this.info = info;
-			map = self.World.Map;
+			Info = info;
+			Map = self.World.Map;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.Type != WorldType.Editor)
 				return;
 
-			palette = wr.Palette(info.Palette);
+			palette = wr.Palette(Info.Palette);
 		}
 
 		public abstract void Clear();

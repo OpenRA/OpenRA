@@ -38,18 +38,18 @@ namespace OpenRA.Mods.Common.Traits
 		public EditorSelectionLayer(Actor self, EditorSelectionLayerInfo info)
 			: base(self, info)
 		{
-			copySprite = map.SequenceProvider.GetSequence(info.Image, info.CopySequence).GetSprite(0);
-			pasteSprite = map.SequenceProvider.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
+			copySprite = Map.SequenceProvider.GetSequence(info.Image, info.CopySequence).GetSprite(0);
+			pasteSprite = Map.SequenceProvider.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
 		}
 
 		public void SetCopyRegion(CPos start, CPos end)
 		{
-			CopyRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			CopyRegion = CellRegion.BoundingRegion(Map.Grid.Type, new[] { start, end });
 		}
 
 		public void SetPasteRegion(CPos start, CPos end)
 		{
-			PasteRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			PasteRegion = CellRegion.BoundingRegion(Map.Grid.Type, new[] { start, end });
 		}
 
 		public override void Clear()
