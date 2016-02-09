@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool IsZoomAllowed(float zoom)
 		{
-			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer.Spectating;
+			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
 		}
 
 		void Zoom(int direction)
