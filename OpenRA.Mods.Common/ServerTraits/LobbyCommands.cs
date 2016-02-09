@@ -889,6 +889,28 @@ namespace OpenRA.Mods.Common.Server
 
 						return true;
 					}
+				},
+				{ "sync_lobby",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set lobby info");
+							return true;
+						}
+
+						var lobbyInfo = Session.Deserialize(s);
+						if (lobbyInfo == null)
+						{
+							server.SendOrderTo(conn, "Message", "Invalid Lobby Info Sent");
+							return true;
+						}
+
+						server.LobbyInfo = lobbyInfo;
+
+						server.SyncLobbyInfo();
+						return true;
+					}
 				}
 			};
 

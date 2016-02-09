@@ -90,14 +90,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hideMenu = true;
 
-				if (world.LocalPlayer == null || (world.LocalPlayer.WinState != WinState.Won &&
-					(!world.IsGameOver || world.Map.Visibility == MapVisibility.MissionSelector)))
+				if (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Won)
 				{
 					Action restartAction = null;
-					if (world.IsReplay || world.Map.Visibility == MapVisibility.MissionSelector)
+					var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+					var exitDelay = iop != null ? iop.ExitDelay : 0;
+
+					if (world.LobbyInfo.IsSinglePlayer)
 					{
-						var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-						var exitDelay = iop != null ? iop.ExitDelay : 0;
 						restartAction = () =>
 						{
 							Ui.CloseWindow();
@@ -145,7 +145,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER");
 			surrenderButton.IsVisible = () => world.Type == WorldType.Regular;
-			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined) || hasError;
+			surrenderButton.IsDisabled = () =>
+				world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined ||
+				world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) || hasError;
 			surrenderButton.OnClick = () =>
 			{
 				hideMenu = true;
@@ -153,7 +155,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					title: "Surrender",
 					text: "Are you sure you want to surrender?",
 					onConfirm: onSurrender,
-					onCancel: showMenu);
+					onCancel: showMenu,
+					confirmText: "Surrender",
+					cancelText: "Stay");
 			};
 
 			var saveMapButton = menu.Get<ButtonWidget>("SAVE_MAP");
