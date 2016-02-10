@@ -17,7 +17,7 @@ WXWIDGETS_BASENAME="wxWidgets"
 WXWIDGETS_URL="https://github.com/pkulchenko/wxWidgets.git"
 
 WXLUA_BASENAME="wxlua"
-WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk"
+WXLUA_URL="https://github.com/pkulchenko/wxlua.git"
 
 LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
@@ -215,11 +215,11 @@ fi
 
 # build wxLua
 if [ $BUILD_WXLUA ]; then
-  svn co "$WXLUA_URL" "$WXLUA_BASENAME" || { echo "Error: failed to checkout wxLua"; exit 1; }
-  svn revert -R "$WXLUA_BASENAME"
+  git clone "$WXLUA_URL" "$WXLUA_BASENAME" || { echo "Error: failed to get wxWidgets"; exit 1; }
   cd "$WXLUA_BASENAME/wxLua"
+
   sed -i 's|:-/\(.\)/|:-\1:/|' "$INSTALL_DIR/bin/wx-config"
-  sed -i 's/execute_process(COMMAND/& sh/' build/CMakewxAppLib.cmake modules/wxstedit/build/CMakewxAppLib.cmake
+  sed -i 's/execute_process(COMMAND/& sh/' build/CMakewxAppLib.cmake
 
   # the following patches wxlua source to fix live coding support in wxlua apps
   # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html
