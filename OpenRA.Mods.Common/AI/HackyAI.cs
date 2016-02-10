@@ -231,8 +231,6 @@ namespace OpenRA.Mods.Common.AI
 
 		BitArray resourceTypeIndices;
 
-		RushFuzzy rushFuzzy = new RushFuzzy();
-
 		Cache<Player, Enemy> aggro = new Cache<Player, Enemy>(_ => new Enemy());
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -776,7 +774,7 @@ namespace OpenRA.Mods.Common.AI
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
-				if (rushFuzzy.CanAttack(ownUnits, enemies))
+				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
 					var target = enemies.Any() ? enemies.Random(Random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
