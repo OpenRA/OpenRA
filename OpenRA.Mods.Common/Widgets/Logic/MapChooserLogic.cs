@@ -317,7 +317,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (after != null)
 						after(newUid);
 				},
-				confirmText: "Delete");
+				confirmText: "Delete",
+				onCancel: () => { });
 		}
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
@@ -331,7 +332,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (after != null)
 						after(WidgetUtils.ChooseInitialMap(null));
 				},
-				confirmText: "Delete");
+				confirmText: "Delete",
+				onCancel: () => { });
 		}
 	}
 }
