@@ -162,7 +162,7 @@ Container@CONFIRM_PROMPT:
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: Abort
+			Text: Confirm
 		Button@OTHER_BUTTON:
 			Key: r
 			X: 210

@@ -21,7 +21,7 @@ Background@CONFIRM_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Abort
+			Text: Confirm
 			Font: Bold
 			Key: return
 		Button@OTHER_BUTTON:

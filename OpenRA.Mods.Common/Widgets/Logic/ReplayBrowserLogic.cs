@@ -410,7 +410,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (after != null)
 							after.Invoke();
 					},
-					confirmText: "Delete");
+					confirmText: "Delete",
+					onCancel: () => { });
 			};
 
 			{
@@ -450,7 +451,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (selectedReplay == null)
 								SelectFirstVisibleReplay();
 						},
-						confirmText: "Delete All");
+						confirmText: "Delete All",
+						onCancel: () => { });
 				};
 			}
 		}
