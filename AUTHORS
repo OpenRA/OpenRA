@@ -9,9 +9,17 @@ The plugin is maintained by
    > FireClusterWarhead
    > HealthPercentageFirepowerMultiplier
    > ChronoResourceTeleport
+   > PaletteFromJasc32File - 32bit format extension implementation
+
+ * Pavel Penev
+   > PaletteFromJasc32File - base JASC palette parser
 
  * scshunt (coppro)
    > ChronoResourceDelivery
+
+ Authors of documents used in this plugin:
+  * Apollo
+   > Jasc 32bit format idea
 
 The project owes thanks for OpenRA for it's modularity
 which allows this project to exist in the first place.
