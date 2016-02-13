@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -18,6 +20,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		int width;
 		int height;
+
+		Map map;
 
 		public bool ValidateArguments(string[] args)
 		{
@@ -43,9 +47,26 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			Game.ModData = modData;
-			var map = new Map(args[1]);
+			map = new Map(args[1]);
 			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, map.MapSize, width, height);
 			map.Resize(width, height);
+
+			var forRemoval = new List<MiniYamlNode>();
+
+			foreach (var kv in map.ActorDefinitions)
+			{
+				var actor = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var location = actor.InitDict.Get<LocationInit>().Value(null);
+				if (!map.Contains(location))
+				{
+					Console.WriteLine("Removing actor {0} located at {1} due being outside of the new map boundaries.".F(actor.Type, location));
+					forRemoval.Add(kv);
+				}
+			}
+
+			foreach (var kv in forRemoval)
+				map.ActorDefinitions.Remove(kv);
+
 			map.Save(map.Path);
 		}
 	}
