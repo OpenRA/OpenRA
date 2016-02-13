@@ -850,9 +850,10 @@ namespace OpenRA
 			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]));
 			MapSize = new int2(newSize);
 
-			var tl = new MPos(0, 0).ToCPos(this);
-			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
-			AllCells = new CellRegion(Grid.Type, tl, br);
+			var tl = new MPos(0, 0);
+			var br = new MPos(MapSize.X - 1, MapSize.Y - 1);
+			AllCells = new CellRegion(Grid.Type, tl.ToCPos(this), br.ToCPos(this));
+			SetBounds(new PPos(tl.U + 1, tl.V + 1), new PPos(br.U - 1, br.V - 1));
 		}
 
 		public void SetBounds(PPos tl, PPos br)
