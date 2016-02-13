@@ -80,7 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()];
+			WeaponInfo weaponInfo;
+
+			var weaponToLower = Weapon.ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weaponInfo))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			WeaponInfo = weaponInfo;
 			ModifiedRange = new WDist(Util.ApplyPercentageModifiers(
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
