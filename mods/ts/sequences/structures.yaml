@@ -735,29 +735,6 @@ nawall:
 		Offset: 0, 0
 		UseTilesetCode: false
 
-gatick:
-	Defaults:
-		Offset: 0, -13
-		UseTilesetCode: true
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	muzzle: gunfire
-		Length: *
-		Offset: 0, 0
-		UseTilesetCode: false
-	emp-overlay: emp_fx01
-		Length: *
-		Offset: 0, 0
-		UseTilesetCode: false
-		ZOffset: 512
-		BlendMode: Additive
-	make: gatickmk
-		Length: 24
-		ShadowStart: 24
-
 gaicbm:
 	Defaults:
 		Offset: 0, -12
