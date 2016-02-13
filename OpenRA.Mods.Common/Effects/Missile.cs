@@ -841,6 +841,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				yield return contrail;
 
+			if (anim == null)
+				yield break;
+
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
