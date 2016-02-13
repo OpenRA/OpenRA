@@ -30,6 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+			{
+				Target = Target.Invalid;
+				return;
+			}
+
 			DoAttack(self, Target);
 			IsAttacking = Target.IsValidFor(self);
 		}
