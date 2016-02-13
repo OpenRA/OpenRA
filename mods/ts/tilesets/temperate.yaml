@@ -58,7 +58,7 @@ Terrain:
 		RestrictPlayerColor: true
 	TerrainType@Veins:
 		Type: Veins
-		Color: 000000
+		Color: CD6600
 		TargetTypes: Ground
 	TerrainType@Tree:
 		Type: Tree
