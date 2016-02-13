@@ -86,7 +86,7 @@ function ProjectSetInterpreter(name)
   if id and interpreters[id] then
     selectInterpreter(id)
   else
-    DisplayOutputLn(("Can't find interpreter '%s'; using the default interpreter instead.")
+    DisplayOutputLn(("Can't load interpreter '%s'; using the default interpreter instead.")
       :format(name))
     local id = (
       -- interpreter is set and is (still) on the list of known interpreters
