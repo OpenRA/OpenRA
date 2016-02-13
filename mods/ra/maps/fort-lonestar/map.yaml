@@ -6,7 +6,7 @@ Title: Fort Lonestar
 
 Description: Survive multiple waves of attacking enemies.
 
-Author: Nuke'm Bro.
+Author: Nuke'm Bro, abcdefg30
 
 Tileset: TEMPERAT
 
@@ -23,12 +23,14 @@ Videos:
 Options:
 	Fog: True
 	Shroud: True
-	AllyBuildRadius: False
+	AllyBuildRadius: True
 	FragileAlliances: False
 	StartingCash: 50
 	TechLevel: Unrestricted
+	StartingUnitsClass: none
 	ConfigurableStartingUnits: False
 	ShortGame: False
+	Difficulties: Hard (4P), Normal (3P), Easy (2P), Very Easy (1P), Real tough guy, Endless mode
 
 Players:
 	PlayerReference@Neutral:
@@ -151,12 +153,6 @@ Actors:
 	Actor73: tc05
 		Location: 16,34
 		Owner: Neutral
-	Actor30: tent
-		Location: 36,26
-		Owner: Multi0
-	Actor84: brik
-		Location: 35,25
-		Owner: Neutral
 	Actor32: tc01
 		Location: 8,24
 		Owner: Neutral
@@ -165,27 +161,6 @@ Actors:
 		Owner: Neutral
 	Actor5: tc01
 		Location: 44,44
-		Owner: Neutral
-	Actor67: brik
-		Location: 29,25
-		Owner: Neutral
-	Actor41: brik
-		Location: 25,25
-		Owner: Neutral
-	Actor56: brik
-		Location: 26,25
-		Owner: Neutral
-	Actor85: brik
-		Location: 39,26
-		Owner: Neutral
-	Actor81: brik
-		Location: 38,25
-		Owner: Neutral
-	Actor65: brik
-		Location: 27,25
-		Owner: Neutral
-	Actor66: brik
-		Location: 28,25
 		Owner: Neutral
 	Actor51: t08
 		Location: 55,46
@@ -214,12 +189,6 @@ Actors:
 	Actor17: tc03
 		Location: 54,26
 		Owner: Neutral
-	Actor83: brik
-		Location: 36,25
-		Owner: Neutral
-	Actor197: brik
-		Location: 39,37
-		Owner: Neutral
 	Actor11: tc04
 		Location: 20,53
 		Owner: Neutral
@@ -234,15 +203,6 @@ Actors:
 		Owner: Neutral
 	Actor1: t05
 		Location: 29,16
-		Owner: Neutral
-	Actor82: brik
-		Location: 37,25
-		Owner: Neutral
-	Actor86: brik
-		Location: 39,27
-		Owner: Neutral
-	Actor80: brik
-		Location: 39,25
 		Owner: Neutral
 	Actor71: tc02
 		Location: 15,40
@@ -270,42 +230,6 @@ Actors:
 		Owner: Neutral
 	Actor52: t12
 		Location: 44,53
-		Owner: Neutral
-	Actor87: brik
-		Location: 39,28
-		Owner: Neutral
-	Actor91: brik
-		Location: 37,39
-		Owner: Neutral
-	Actor196: brik
-		Location: 39,38
-		Owner: Neutral
-	Actor195: brik
-		Location: 39,39
-		Owner: Neutral
-	Actor45: brik
-		Location: 25,28
-		Owner: Neutral
-	Actor92: brik
-		Location: 39,29
-		Owner: Neutral
-	Actor194: brik
-		Location: 38,39
-		Owner: Neutral
-	Actor55: brik
-		Location: 25,39
-		Owner: Neutral
-	Actor200: brik
-		Location: 28,39
-		Owner: Neutral
-	Actor233: brik
-		Location: 29,39
-		Owner: Neutral
-	Actor240: brik
-		Location: 39,35
-		Owner: Neutral
-	Actor199: brik
-		Location: 27,39
 		Owner: Neutral
 	Actor28: tc01
 		Location: 24,54
@@ -340,48 +264,114 @@ Actors:
 	Actor68: tc05
 		Location: 35,7
 		Owner: Neutral
-	Actor239: brik
-		Location: 39,36
+	WallTopLeft1: brik
+		Location: 25,28
 		Owner: Neutral
-	Actor89: brik
-		Location: 35,39
-		Owner: Neutral
-	Actor90: brik
-		Location: 36,39
-		Owner: Neutral
-	Actor237: brik
-		Location: 25,35
-		Owner: Neutral
-	Actor236: brik
-		Location: 25,36
-		Owner: Neutral
-	Actor235: brik
-		Location: 25,37
-		Owner: Neutral
-	Actor234: brik
-		Location: 25,38
-		Owner: Neutral
-	Actor44: brik
+	WallTopLeft2: brik
 		Location: 25,27
 		Owner: Neutral
-	Actor43: brik
+	WallTopLeft3: brik
 		Location: 25,26
 		Owner: Neutral
-	Actor198: brik
-		Location: 26,39
-		Owner: Neutral
-	Actor88: brik
+	WallTopLeft4: brik
 		Location: 25,29
 		Owner: Neutral
-	Actor100: tent
-		Location: 27,26
-		Owner: Multi3
-	Actor99: tent
-		Location: 27,36
-		Owner: Multi2
-	Actor31: tent
-		Location: 36,36
-		Owner: Multi1
+	WallTopLeft5: brik
+		Location: 29,25
+		Owner: Neutral
+	WallTopLeft6: brik
+		Location: 25,25
+		Owner: Neutral
+	WallTopLeft7: brik
+		Location: 26,25
+		Owner: Neutral
+	WallTopLeft8: brik
+		Location: 27,25
+		Owner: Neutral
+	WallTopLeft9: brik
+		Location: 28,25
+		Owner: Neutral
+	WallTopRight1: brik
+		Location: 35,25
+		Owner: Neutral
+	WallTopRight2: brik
+		Location: 36,25
+		Owner: Neutral
+	WallTopRight3: brik
+		Location: 37,25
+		Owner: Neutral
+	WallTopRight4: brik
+		Location: 38,25
+		Owner: Neutral
+	WallTopRight5: brik
+		Location: 39,25
+		Owner: Neutral
+	WallTopRight6: brik
+		Location: 39,26
+		Owner: Neutral
+	WallTopRight7: brik
+		Location: 39,27
+		Owner: Neutral
+	WallTopRight8: brik
+		Location: 39,28
+		Owner: Neutral
+	WallTopRight9: brik
+		Location: 39,29
+		Owner: Neutral
+	WallBottomRight1: brik
+		Location: 39,37
+		Owner: Neutral
+	WallBottomRight2: brik
+		Location: 37,39
+		Owner: Neutral
+	WallBottomRight3: brik
+		Location: 39,38
+		Owner: Neutral
+	WallBottomRight4: brik
+		Location: 39,39
+		Owner: Neutral
+	WallBottomRight5: brik
+		Location: 38,39
+		Owner: Neutral
+	WallBottomRight6: brik
+		Location: 39,35
+		Owner: Neutral
+	WallBottomRight7: brik
+		Location: 39,36
+		Owner: Neutral
+	WallBottomRight8: brik
+		Location: 35,39
+		Owner: Neutral
+	WallBottomRight9: brik
+		Location: 36,39
+		Owner: Neutral
+	WallBottomLeft1: brik
+		Location: 25,39
+		Owner: Neutral
+	WallBottomLeft2: brik
+		Location: 28,39
+		Owner: Neutral
+	WallBottomLeft3: brik
+		Location: 29,39
+		Owner: Neutral
+	WallBottomLeft4: brik
+		Location: 27,39
+		Owner: Neutral
+	WallBottomLeft5: brik
+		Location: 25,35
+		Owner: Neutral
+	WallBottomLeft6: brik
+		Location: 25,36
+		Owner: Neutral
+	WallBottomLeft7: brik
+		Location: 25,37
+		Owner: Neutral
+	WallBottomLeft8: brik
+		Location: 25,38
+		Owner: Neutral
+	WallBottomLeft9: brik
+		Location: 26,39
+		Owner: Neutral
 	Sniper1: sniper.soviets
 		Location: 9,26
 		Owner: Soviets
@@ -431,16 +421,16 @@ Actors:
 		Location: 30,30
 		Owner: Multi3
 	Spawn1: mpspawn
-		Location: 36,28
+		Location: 36,26
 		Owner: Neutral
 	Spawn2: mpspawn
-		Location: 27,28
+		Location: 27,26
 		Owner: Neutral
 	Spawn3: mpspawn
-		Location: 27,38
+		Location: 27,36
 		Owner: Neutral
 	Spawn4: mpspawn
-		Location: 36,38
+		Location: 36,36
 		Owner: Neutral
 	Entry1: waypoint
 		Location: 8,8
@@ -496,17 +486,14 @@ Smudges:
 Rules:
 	World:
 		CrateSpawner:
-			Maximum: 1
-			SpawnInterval: 2500
+			InitialSpawnDelay: 0
+			Maximum: 4
+			SpawnInterval: 1000
 			CrateActors: fortcrate
-		-SpawnMPUnits:
-		-MPStartLocations:
+		MPStartUnits@mcvonly:
+			BaseActor: tent
 		WeatherOverlay:
-			ParticleDensityFactor: 0.0007625
-			ChangingWindLevel: true
-			WindLevels: -5, -3, -2, 0, 2, 3, 5
 			WindTick: 150, 550
-			InstantWindChanges: false
 			UseSquares: false
 			ScatterDirection: 0, 0
 			Gravity: 8.00, 12.00
@@ -528,7 +515,7 @@ Rules:
 		LuaScript:
 			Scripts: fort-lonestar.lua
 		ScriptUpgradesCache:
-			Upgrades: unkillable
+			Upgrades: invulnerability
 	FORTCRATE:
 		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:
@@ -546,12 +533,29 @@ Rules:
 		GiveUnitCrateAction@e7:
 			Units: e7
 			SelectionShares: 10
+		GrantUpgradeCrateAction@ironcurtain:
+			SelectionShares: 10
+			Effect: invuln
+			Notification: ironcur9.aud
+			Upgrades: invulnerability
+			Duration: 1200
+		ExplodeCrateAction@bigboom:
+			Weapon: SCUD
+			SelectionShares: 5
+		GiveMcvCrateAction:
+			SelectionShares: 0
+			NoBaseSelectionShares: 1000
+			Units: mobiletent
+			ValidFactions: allies
 	Player:
-		PlayerResources:
-			InitialCash: 50
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
 		-EnemyWatcher:
+	^Infantry:
+		Inherits@IC: ^IronCurtainable
+	^Husk:
+		TransformOnCapture:
+			ForceHealthPercentage: 80
 	OILB:
 		Health:
 			HP: 3000
@@ -563,16 +567,50 @@ Rules:
 		CashTrickler:
 			Period: 250
 			Amount: 50
+	MOBILETENT:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 2000
+		Tooltip:
+			Name: Mobile Tent
+		Selectable:
+			Priority: 4
+		SelectionDecorations:
+			VisualBounds: 21,21
+		Health:
+			HP: 600
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 85
+			Crushes: wall, mine, crate, infantry
+		RevealsShroud:
+			Range: 4c0
+		MustBeDestroyed:
+			RequiredForShortGame: true
+		BaseBuilding:
+		Transforms:
+			IntoActor: tent
+			Offset: 0,0
+			Facing: 96
+			TransformSounds: placbldg.aud, build5.aud
+			NoTransformNotification: BuildingCannotPlaceAudio
+		RenderSprites:
+			Image: TRUK
 	TENT:
 		Health:
 			HP: 1000
 		Production:
-			Produces: Defense, Infantry, Soldier, Dog
+			Produces: Infantry, Soldier, Dog, Defense
 		-Sellable:
 		BaseProvider:
 			Range: 12c0
 		Power:
 			Amount: 0
+		ProductionBar@Defense:
+			ProductionType: Defense
+			Color: 8A8A8A
+		BaseBuilding:
 	FTUR:
 		Buildable:
 			Prerequisites: barracks
@@ -580,6 +618,7 @@ Rules:
 			Cost: 400
 		Power:
 			Amount: 0
+		GivesBuildableArea:
 	PBOX:
 		Buildable:
 			Prerequisites: barracks
@@ -591,6 +630,7 @@ Rules:
 			Type: Heavy
 		Power:
 			Amount: 0
+		GivesBuildableArea:
 	DOG:
 		Buildable:
 			Prerequisites: barracks
@@ -607,7 +647,6 @@ Rules:
 		Valued:
 			Cost: 40
 		Explodes:
-			Weapon: UnitExplodeSmall
 			Chance: 20
 	E3:
 		Buildable:
@@ -635,7 +674,6 @@ Rules:
 			Weapon: TankNapalm
 			Recoil: 200
 			RecoilRecovery: 38
-			LocalOffset: 0,85,0, 0,-85,0
 	MEDI:
 		Buildable:
 			Prerequisites: barracks
@@ -653,25 +691,24 @@ Rules:
 			Prerequisites: barracks
 		Health:
 			HP: 200
-		AutoTarget:
-			InitialStanceAI: Defend
 	SNIPER.soviets:
 		Inherits: SNIPER
 		Buildable:
 			Prerequisites: ~disabled
 		MustBeDestroyed:
-		DamageMultiplier@UNKILLABLE:
-			UpgradeTypes: unkillable
-			Modifier: 0, 0
+		Targetable:
+			TargetTypes: Disguise
+		AutoTarget:
+			InitialStanceAI: AttackAnything
 		RenderSprites:
 			Image: SNIPER
 	SPY:
 		Buildable:
-			Queue: Infantry
 			BuildPaletteOrder: 60
 			Prerequisites: barracks
 		Valued:
 			Cost: 300
+		-MustBeDestroyed:
 	FTRK:
 		-Armament@AA:
 		-Armament@AG:
@@ -694,22 +731,17 @@ Rules:
 	4TNK:
 		Health:
 			HP: 2500
-		Armor:
-			Type: Heavy
 		Mobile:
 			Speed: 56
 		RevealsShroud:
 			Range: 14c0
 		Turreted:
 			ROT: 1
-		AttackTurreted:
-			PrimaryWeapon: 120mm
-			SecondaryWeapon: MammothTusk
-			PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-			SecondaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-			PrimaryRecoil: 8
-			PrimaryRecoilRecovery: 0.7
-			SecondaryRecoil: 2
+		Armament@PRIMARY:
+			Recoil: 8
+			RecoilRecovery: 0c7
+		Armament@SECONDARY:
+			Recoil: 2
 		Explodes:
 			Weapon: napalm
 			EmptyWeapon: napalm
@@ -717,31 +749,27 @@ Rules:
 			Step: 2
 			Ticks: 1
 			HealIfBelow: 40%
-			DamageCooldown: 150
 	BADR.Bomber:
-		Inherits: ^Plane
-		AttackBomber:
-		Armament:
-			Weapon: ParaBomb
 		Health:
 			HP: 60
-		Armor:
-			Type: Light
 		Aircraft:
-			ROT: 5
 			Speed: 280
 		AmmoPool:
 			Ammo: 30
-		WithFacingSpriteBody:
-		WithShadow:
-		-Selectable:
-		-GainsExperience:
 		Tooltip:
 			Name: Mig Bomber
-		-EjectOnDeath:
-		AutoSelectionSize:
+		SpawnActorOnDeath:
+			Actor: MIG.Husk
 		RenderSprites:
 			Image: mig
+	MECH:
+		Buildable:
+			Prerequisites: barracks
+		Valued:
+			Cost: 1500
+	powerproxy.paratroopers:
+		ParatroopersPower:
+			DropItems: E1,E1,E1,E1,E2,E2
 	SILO:
 		Buildable:
 			Prerequisites: ~disabled
@@ -781,9 +809,6 @@ Rules:
 	TSLA:
 		Buildable:
 			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
 	HIJACKER:
 		Buildable:
 			Prerequisites: ~disabled
@@ -796,46 +821,34 @@ Weapons:
 	120mm:
 		ReloadDelay: 150
 		Range: 10c0
-		Report: cannon1.aud
 		Burst: 6
 		Projectile: Bullet
 			Speed: 204
-			High: true
+			Blockable: false
 			Inaccuracy: 1c682
 			Image: 120MM
 			ContrailLength: 50
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 256
 			Versus:
 				None: 75
-				Wood: 75
-				Light: 75
 				Concrete: 100
 			Damage: 150
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: self_destruct
 	MammothTusk:
 		ReloadDelay: 300
 		Range: 10c0
-		Report: missile6.aud
-		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
 			MaximumLaunchSpeed: 128
-			Arm: 2
-			High: true
-			Shadow: false
-			Proximity: true
+			Blockable: false
 			TrailImage: smokey
 			ContrailLength: 150
-			Inaccuracy: 853
-			Image: DRAGON
+			Inaccuracy: 0c853
 			ROT: 10
 			RangeLimit: 80
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 640
 			ValidTargets: Ground, Air
 			Versus:
@@ -845,9 +858,6 @@ Weapons:
 				Heavy: 100
 				Concrete: 200
 			Damage: 250
-			DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: nuke
 	TankNapalm:
@@ -861,8 +871,9 @@ Weapons:
 			Speed: 426
 			Image: 120MM
 			Inaccuracy: 2c512
-			Trail: smokey
+			TrailImage: smokey
 			ContrailLength: 2
+			Blockable: false
 		Warhead: SpreadDamage
 			Spread: 341
 			ValidTargets: Ground
@@ -882,11 +893,10 @@ Weapons:
 	ParaBomb:
 		ReloadDelay: 5
 		Range: 5c0
-		Report: chute1.aud
 		Projectile: GravityBomb
 			Image: BOMBLET
-			-OpenSequence:
-		Warhead: SpreadDamage
+			OpenSequence: idle # TODO: This crashes otherwise
+		Warhead@1Dam: SpreadDamage
 			Spread: 426
 			Versus:
 				None: 125
@@ -895,8 +905,6 @@ Weapons:
 				Concrete: 25
 			Damage: 200
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
 		Warhead@3Eff: CreateEffect
 			Explosions: napalm
 			ImpactSounds: firebl3.aud
@@ -904,28 +912,23 @@ Weapons:
 		ReloadDelay: 10
 		Range: 7c5
 		Burst: 20
-		MinRange: 3c0
 		-Report:
 		Projectile: Bullet
 			Speed: 170
-			Trail: fb4
+			TrailImage: fb4
 			Image: fb3
-			High: true
+			Blockable: false
 			Angle: 30
 			Inaccuracy: 1c682
 			ContrailLength: 2
-		Warhead: SpreadDamage
-			Spread: 426
+		Warhead@1Dam: SpreadDamage
 			Versus:
 				None: 80
 				Wood: 100
-				Light: 60
 				Heavy: 75
 				Concrete: 35
-			Damage: 10
+			Damage: 20
 			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
 			Explosions: small_napalm
 			ImpactSounds: firebl3.aud
@@ -936,7 +939,7 @@ Weapons:
 		ValidTargets: Air, Ground
 		Projectile: Bullet
 			Speed: 1c682
-			High: true
+			Blockable: false
 		Warhead: SpreadDamage
 			Spread: 213
 			ValidTargets: Air, Ground
@@ -955,54 +958,33 @@ Weapons:
 	SCUD:
 		ReloadDelay: 280
 		Range: 7c0
-		MinRange: 3c0
-		Report: missile1.aud
 		Projectile: Bullet
-			Speed: 170
 			Arm: 10
-			High: true
-			Shadow: false
-			Proximity: true
-			Trail: smokey
-			Inaccuracy: 426
-			Image: V2
+			TrailImage: smokey
+			Blockable: false
+			Inaccuracy: 0c426
 			Angle: 216
-		Warhead: SpreadDamage
+		Warhead@1Dam: SpreadDamage
 			Spread: 853
+			Falloff: 100, 37, 14, 5, 0
 			Versus:
 				None: 100
 				Wood: 90
 				Light: 80
 				Heavy: 70
 			Damage: 500
-			DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
+			AffectsParent: true
 		Warhead@3Eff: CreateEffect
 			Explosions: nuke
 			ImpactSounds: kaboom1.aud
-			ValidImpactTypes: Ground
-		Warhead@4Eff: CreateEffect
-			Explosions: large_splash
-			ImpactSounds: kaboom1.aud
-			ValidImpactTypes: Water
 	SilencedPPK:
-		ReloadDelay: 80
 		Range: 25c0
-		Report: silppk.aud
-		Projectile: Bullet
-			Speed: 1c682
-		Warhead: SpreadDamage
-			Spread: 128
+		ValidTargets: Infantry, Tank, Vehicle, Husk
+		InvalidTargets: Water, Structure, Wall
+		Warhead@1Dam: SpreadDamage
+			ValidTargets: Infantry, Tank, Vehicle, Husk
 			Versus:
-				Wood: 0
-				Light: 0
 				Heavy: 50
-				Concrete: 0
-			Damage: 150
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-		Warhead@2Eff: CreateEffect
-			Explosions: piffs
 
 Voices:
 
