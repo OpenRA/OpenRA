@@ -19,7 +19,8 @@ using System.Linq;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("This is an expanded JASC palette format aiming to have 32bit colors in a palette."
-		+ "It also supports loading proper (legacy) JASC palettes.")]
+		+ "It also supports loading proper (legacy) JASC palettes."
+		+ "For background transparency, please set your intended background color with an alpha value of 0.")]
 	class PaletteFromJasc32FileInfo : ITraitInfo
 	{
 		[FieldLoader.Require, PaletteDefinition]
@@ -60,8 +61,7 @@ namespace OpenRA.Mods.AS.Traits
 				if (lines[0] != "JASC-PAL")
 					throw new InvalidDataException("File {0} is not a valid JASC palatte!".F(info.Filename));
 
-				colors[0] = 0;
-				for (var i = 1; i < Palette.Size; i++)
+				for (var i = 0; i < Palette.Size; i++)
 				{
 					var split = lines[i + 3].Split(' ');
 					colors[i] = (split.Count() == 4)
