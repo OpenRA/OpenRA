@@ -170,8 +170,10 @@ namespace OpenRA.Mods.Common.Traits
 						self.Owner,
 						target - new WVec(0, 0, altitude),
 						Info.BeaconPalettePrefix,
+						Info.BeaconImage,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
+						Info.ClockSequence,
 							() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance);
 
 					w.Add(beacon);

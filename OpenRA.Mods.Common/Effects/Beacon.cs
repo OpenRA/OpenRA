@@ -51,20 +51,20 @@ namespace OpenRA.Mods.Common.Effects
 		}
 
 		// Support power beacons are expected to clean themselves up
-		public Beacon(Player owner, WPos position, string palettePrefix, string posterType, string posterPalette, Func<float> clockFraction)
+		public Beacon(Player owner, WPos position, string palettePrefix, string posterCollection, string posterType, string posterPalette, string clockSequence, Func<float> clockFraction)
 			: this(owner, position, -1, palettePrefix)
 		{
 			this.posterPalette = posterPalette;
 
 			if (posterType != null)
 			{
-				poster = new Animation(owner.World, "beacon");
+				poster = new Animation(owner.World, posterCollection);
 				poster.Play(posterType);
 
 				if (clockFraction != null)
 				{
-					clock = new Animation(owner.World, "beacon");
-					clock.PlayFetchIndex("clock", () => Exts.Clamp((int)(clockFraction() * (clock.CurrentSequence.Length - 1)), 0, clock.CurrentSequence.Length - 1));
+					clock = new Animation(owner.World, posterCollection);
+					clock.PlayFetchIndex(clockSequence, () => Exts.Clamp((int)(clockFraction() * (clock.CurrentSequence.Length - 1)), 0, clock.CurrentSequence.Length - 1));
 				}
 			}
 		}

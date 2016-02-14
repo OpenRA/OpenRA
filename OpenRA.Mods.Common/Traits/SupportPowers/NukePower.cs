@@ -135,8 +135,10 @@ namespace OpenRA.Mods.Common.Traits
 					order.Player,
 					targetPosition,
 					Info.BeaconPalettePrefix,
+					Info.BeaconImage,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
+					Info.ClockSequence,
 					() => missile.FractionComplete);
 
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
