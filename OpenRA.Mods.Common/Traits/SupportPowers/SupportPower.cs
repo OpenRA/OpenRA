@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for the icon.")]
 		[PaletteReference] public readonly string IconPalette = "chrome";
 
-		[Desc("Beacons are only supported on the Airstrike and Nuke powers")]
+		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
 
 		public readonly bool BeaconPaletteIsPlayerPalette = true;
