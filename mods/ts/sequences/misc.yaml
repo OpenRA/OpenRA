@@ -89,7 +89,7 @@ darken:
 		Length: 1
 
 pips:
-	medic: 
+	medic:
 		Start: 6
 	groups: pipsra #TODO: backfall to RA asset
 		Start: 8
