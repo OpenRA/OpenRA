@@ -20,15 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
 
-		[Desc("Group where Ground/WaterCorpseSequence is looked up.")]
-		public readonly string CorpseSequenceCollection = "explosion";
+		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
+		public readonly string Image = "explosion";
 
 		public readonly string GroundImpactSound = null;
-		[SequenceReference("CorpseSequenceCollection")] public readonly string GroundCorpseSequence = "corpse";
+		[SequenceReference("Image")] public readonly string GroundCorpseSequence = "corpse";
 		[PaletteReference] public readonly string GroundCorpsePalette = "effect";
 
 		public readonly string WaterImpactSound = null;
-		[SequenceReference("CorpseSequenceCollection")] public readonly string WaterCorpseSequence = null;
+		[SequenceReference("Image")] public readonly string WaterCorpseSequence = null;
 		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
 
 		public readonly int FallRate = 13;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			var sequence = terrain.IsWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = terrain.IsWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
 			if (sequence != null && palette != null)
-				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.OccupiesSpace.CenterPosition, sequence, palette)));
+				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.OccupiesSpace.CenterPosition, info.Image, sequence, palette)));
 
 			self.Kill(self);
 		}

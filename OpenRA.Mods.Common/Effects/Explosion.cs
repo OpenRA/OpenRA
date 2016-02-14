@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		WPos pos;
 
-		public Explosion(World world, WPos pos, string sequence, string palette)
+		public Explosion(World world, WPos pos, string image, string sequence, string palette)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.palette = palette;
-			anim = new Animation(world, "explosion");
+			anim = new Animation(world, image);
 			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
