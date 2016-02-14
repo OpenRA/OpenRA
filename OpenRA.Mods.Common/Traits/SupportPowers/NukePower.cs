@@ -21,8 +21,16 @@ namespace OpenRA.Mods.Common.Traits
 	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
 	{
 		[WeaponReference]
+		[Desc("Weapon to use for the impact.",
+			"But also image to use for the missile.",
+			"Requires an 'up' and a 'down' sequence on the image.")]
 		public readonly string MissileWeapon = "";
+
+		[Desc("Offset from the actor the missile spawns on.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
+
+		[Desc("Palette to use for the missile weapon image.")]
+		[PaletteReference] public readonly string MissilePalette = "effect";
 
 		[Desc("Travel time - split equally between ascent and descent")]
 		public readonly int FlightDelay = 400;
@@ -86,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
-			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo,
+			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, info.MissilePalette,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
 				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
