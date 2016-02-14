@@ -103,7 +103,7 @@ TurretGun:
 		Damage: 40
 		Versus:
 			None: 20
-			Wood: 25
+			Wood: 100
 			Light: 100
 			Heavy: 100
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath

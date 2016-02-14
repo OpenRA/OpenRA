@@ -83,7 +83,7 @@ Grenade:
 		Versus:
 			None: 100
 			Wood: 50
-			Light: 75
+			Light: 80
 			Heavy: 35
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
@@ -129,7 +129,7 @@ Laser:
 		Spread: 42
 		Damage: 360
 		Versus:
-			Wood: 50
+			Wood: 100
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch

@@ -94,7 +94,7 @@ APC:
 		ROT: 8
 		Speed: 128
 	Health:
-		HP: 200
+		HP: 210
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -301,7 +301,7 @@ JEEP:
 LTNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		Cost: 700
 	Tooltip:
 		Name: Light Tank
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -311,9 +311,9 @@ LTNK:
 		Queue: Vehicle.Nod
 	Mobile:
 		ROT: 7
-		Speed: 113
+		Speed: 110
 	Health:
-		HP: 350
+		HP: 340
 	Armor:
 		Type: Heavy
 	RevealsShroud:
