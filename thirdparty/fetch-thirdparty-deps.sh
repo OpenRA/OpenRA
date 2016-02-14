@@ -65,7 +65,7 @@ fi
 
 if [ ! -f SharpFont.dll ]; then
 	echo "Fetching SharpFont from NuGet"
-	get SharpFont 3.0.1
+	get SharpFont 3.1.0
 	cp ./SharpFont/lib/net20/SharpFont* .
 	cp ./SharpFont/config/SharpFont.dll.config .
 	rm -rf SharpFont SharpFont.Dependencies
@@ -88,7 +88,7 @@ fi
 
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from NuGet"
-	get Mono.Nat 1.2.21
+	get Mono.Nat 1.2.24
 	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat
 fi
