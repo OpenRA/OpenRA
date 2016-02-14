@@ -34,13 +34,9 @@ rallypoint:
 	circles: null
 
 beacon:
-	arrow: mouse
-		Start: 6
-		Offset: 1,-12
-		ZOffset: 2535
-	circles: ring
-		Length: 12
-		BlendMode: Additive
+	idle:
+		Length: 5
+		Tick: 200
 		ZOffset: 2047
 
 crate:
