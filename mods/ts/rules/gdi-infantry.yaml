@@ -47,6 +47,7 @@ MEDIC:
 		Weapon: Heal
 		TargetStances: Ally
 		ForceTargetStances: None
+		Cursor: heal
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: heal
