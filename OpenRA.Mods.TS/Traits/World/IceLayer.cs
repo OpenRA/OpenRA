@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
@@ -20,6 +21,8 @@ namespace OpenRA.Mods.TS.Traits
 	{
 		[Desc("Tileset IDs where the trait is activated.")]
 		public readonly string[] Tilesets = { "SNOW" };
+
+		public readonly string ImpassableTerrainType = "Water";
 
 		public readonly Dictionary<ushort, int> StrengthPerTile = new Dictionary<ushort, int>
 		{
@@ -79,11 +82,13 @@ namespace OpenRA.Mods.TS.Traits
 	{
 		readonly IceLayerInfo info;
 
-		public CellLayer<int> Strength;
+		public readonly CellLayer<int> Strength;
 
 		public IceLayer(Actor self, IceLayerInfo info)
 		{
 			this.info = info;
+
+			Strength = new CellLayer<int>(self.World.Map);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -91,7 +96,7 @@ namespace OpenRA.Mods.TS.Traits
 			if (!info.Tilesets.Contains(w.Map.Tileset))
 				return;
 
-			Strength = new CellLayer<int>(w.Map);
+			var updatedCells = new List<CPos>();
 
 			var mapTiles = w.Map.MapTiles.Value;
 			foreach (var cell in w.Map.AllCells)
@@ -99,8 +104,21 @@ namespace OpenRA.Mods.TS.Traits
 				var tile = mapTiles[cell];
 				var template = w.TileSet.Templates[tile.Type];
 				if (info.StrengthPerTile.ContainsKey(template.Id))
-					Strength[cell] = info.StrengthPerTile[template.Id];
+				{
+					var strength = info.StrengthPerTile[template.Id];
+					Strength[cell] = strength;
+
+					if (strength <= 2)
+					{
+						w.Map.CustomTerrain[cell] = w.TileSet.GetTerrainIndex(info.ImpassableTerrainType);
+						updatedCells.Add(cell);
+					}
+				}
 			}
+
+			var domainIndex = w.WorldActor.TraitOrDefault<DomainIndex>();
+			if (domainIndex != null)
+				domainIndex.UpdateCells(w, updatedCells);
 		}
 	}
 }

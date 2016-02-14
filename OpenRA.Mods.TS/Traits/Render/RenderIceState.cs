@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.TS.Traits
 {
 	[Desc("Displays ice strength above the tile.")]
-	class RenderIceStateInfo : ITraitInfo
+	class RenderIceStateInfo : ITraitInfo, Requires<IceLayerInfo>
 	{
 		public readonly Color Color = Color.White;
 		public readonly string Font = "TinyBold";
@@ -36,21 +36,17 @@ namespace OpenRA.Mods.TS.Traits
 
 		readonly SpriteFont font;
 		readonly Color color;
-
-		IceLayer icelayer;
+		readonly IceLayer icelayer;
 
 		public RenderIceState(Actor self, RenderIceStateInfo info)
 		{
 			color = info.Color;
 			font = Game.Renderer.Fonts[info.Font];
+			icelayer = self.Trait<IceLayer>();
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			icelayer = w.WorldActor.TraitOrDefault<IceLayer>();
-			if (icelayer == null)
-				return;
-
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
 
