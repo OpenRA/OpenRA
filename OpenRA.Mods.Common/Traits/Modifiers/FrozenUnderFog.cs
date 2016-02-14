@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated
+	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		[Sync] public int VisibilityHash;
 
@@ -60,16 +60,50 @@ namespace OpenRA.Mods.Common.Traits
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
 			{
+				if (IsInvalidPlayer(self, player))
+					return null;
+
 				var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
 				if (startsRevealed)
 					UpdateFrozenActor(self, frozenActor, playerIndex);
+
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
 			});
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			for (var i = 0; i < frozenStates.Count; i++)
+			{
+				var player = self.World.Players[i];
+				var state = frozenStates[i];
+				if (state != null)
+				{
+					// If we became an invalid player, remove our frozen actor
+					if (IsInvalidPlayer(self, player))
+					{
+						player.PlayerActor.Trait<FrozenActorLayer>().Remove(state.FrozenActor);
+						state = null;
+					}
+
+					continue;
+				}
+
+				if (IsInvalidPlayer(self, player))
+					continue;
+
+				var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
+				if (startsRevealed)
+					UpdateFrozenActor(self, frozenActor, i);
+
+				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
+				state = new FrozenState(frozenActor) { IsVisible = startsRevealed };
+			}
 		}
 
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
@@ -87,13 +121,19 @@ namespace OpenRA.Mods.Common.Traits
 			return frozenStates[byPlayer].IsVisible;
 		}
 
+		bool IsInvalidPlayer(Actor self, Player player)
+		{
+			// Unfortunately leaving spectators out would cause glitches
+			if (player.Spectating)
+				return false;
+
+			var stance = self.Owner.Stances[player];
+			return info.AlwaysVisibleStances.HasStance(stance);
+		}
+
 		public bool IsVisible(Actor self, Player byPlayer)
 		{
-			if (byPlayer == null)
-				return true;
-
-			var stance = self.Owner.Stances[byPlayer];
-			return info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
+			return byPlayer == null || IsInvalidPlayer(self, byPlayer) || IsVisibleInner(self, byPlayer);
 		}
 
 		public void Tick(Actor self)
@@ -106,6 +146,9 @@ namespace OpenRA.Mods.Common.Traits
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var state = frozenStates[playerIndex];
+				if (state == null)
+					continue;
+
 				var frozenActor = state.FrozenActor;
 				var isVisible = !frozenActor.Visible;
 				state.IsVisible = isVisible;
@@ -120,7 +163,11 @@ namespace OpenRA.Mods.Common.Traits
 			IRenderable[] renderables = null;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
-				var frozen = frozenStates[playerIndex].FrozenActor;
+				var state = frozenStates[playerIndex];
+				if (state == null)
+					continue;
+
+				var frozen = state.FrozenActor;
 				if (!frozen.NeedRenderables)
 					continue;
 
