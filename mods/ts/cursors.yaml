@@ -167,7 +167,7 @@ Cursors:
 		repair-blocked:
 			Start: 190
 			Length: 1
-		sell2:
+		sell2: # TODO: unused
 			Start: 139
 			Length: 10
 		powerdown-blocked:
