@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 			"CenterPosition to draw the trail sprite at the current position.")]
 		public readonly TrailType Type = TrailType.Cell;
 
+		[Desc("Should the trail be visible through fog.")]
+		public readonly bool VisibleThroughFog = false;
+
 		[Desc("Display a trail while stationary.")]
 		public readonly bool TrailWhileStationary = false;
 
@@ -76,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
-						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette)));
+						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));
 
 				cachedPosition = self.CenterPosition;
 				ticks = 0;
