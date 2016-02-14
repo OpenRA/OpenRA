@@ -1151,7 +1151,7 @@ namespace OpenRA
 			if (maxRange < minRange)
 				throw new ArgumentOutOfRangeException("maxRange", "Maximum range is less than the minimum range.");
 
-			if (maxRange > TilesByDistance.Length)
+			if (maxRange >= TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException("maxRange", "The requested range ({0}) exceeds the maximum allowed ({1})".F(maxRange, MaxTilesInCircleRange));
 
 			Func<CPos, bool> valid = Contains;
