@@ -59,6 +59,86 @@ Players:
 		Enemies: Creeps
 
 Actors:
+	Actor0: cabhut
+		Location: 104,-68
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor1: cabhut
+		Location: 95,-72
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor2: cabhut
+		Location: 169,68
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor3: cabhut
+		Location: 158,64
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor4: cabhut
+		Location: 116,56
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor5: cabhut
+		Location: 120,43
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor6: cabhut
+		Location: 179,-26
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor7: cabhut
+		Location: 172,-30
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor8: cabhut
+		Location: 145,-51
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor9: cabhut
+		Location: 149,-57
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor10: cabhut
+		Location: 95,28
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor11: cabhut
+		Location: 87,24
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor12: cabhut
+		Location: 174,2
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor13: cabhut
+		Location: 183,6
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor14: cabhut
+		Location: 239,2
+		Owner: Neutral
+		Health: 100
+		Facing: 96
+	Actor15: cabhut
+		Location: 229,-2
+		Owner: Neutral
+		Health: 100
+		Facing: 96
 	Actor16: tibtre01
 		Location: 133,-102
 		Owner: Neutral
@@ -575,9 +655,6 @@ Actors:
 	Actor187: tree05
 		Location: 158,62
 		Owner: Neutral
-	Actor188: tree06
-		Location: 159,70
-		Owner: Neutral
 	Actor189: tree07
 		Location: 156,72
 		Owner: Neutral
@@ -628,9 +705,6 @@ Actors:
 		Owner: Neutral
 	Actor205: tree24
 		Location: 86,41
-		Owner: Neutral
-	Actor206: tree21
-		Location: 87,29
 		Owner: Neutral
 	Actor207: tree20
 		Location: 86,29
@@ -741,555 +815,699 @@ Actors:
 		Location: 132,-4
 		Owner: Neutral
 	Actor243: trock05
-		Location: 76,-62
+		Location: 75,-62
 		Owner: Neutral
 	Actor244: trock01
-		Location: 13,8
+		Location: 12,8
 		Owner: Neutral
 	Actor245: trock04
-		Location: 75,-52
+		Location: 74,-52
 		Owner: Neutral
 	Actor246: trock05
-		Location: 127,-102
+		Location: 126,-102
 		Owner: Neutral
-	Actor247: trock01
-		Location: 84,-60
+	Actor625: lobrdg21
 		Owner: Neutral
-	Actor248: trock03
-		Location: 64,-39
+		Location: 95,-71
+	Actor250: trock01
+		Location: 83,-60
 		Owner: Neutral
-	Actor249: trock01
-		Location: 49,-25
+	Actor251: trock03
+		Location: 63,-39
 		Owner: Neutral
-	Actor250: trock05
-		Location: 114,-87
+	Actor252: trock01
+		Location: 48,-25
 		Owner: Neutral
-	Actor251: trock05
-		Location: 33,-6
+	Actor253: trock05
+		Location: 113,-87
 		Owner: Neutral
-	Actor252: trock04
-		Location: 25,2
+	Actor630: lobrdg03
 		Owner: Neutral
-	Actor253: trock02
-		Location: 121,-92
+		Location: 97,-71
+	Actor255: lobrdg02
+		Location: 96,-71
 		Owner: Neutral
-	Actor254: trock03
-		Location: 75,-47
+	Actor260: trock05
+		Location: 32,-6
 		Owner: Neutral
-	Actor255: trock02
-		Location: 70,-42
+	Actor261: trock04
+		Location: 24,2
 		Owner: Neutral
-	Actor256: trock01
-		Location: 68,-39
+	Actor262: trock02
+		Location: 120,-92
 		Owner: Neutral
-	Actor257: trock02
-		Location: 41,-13
+	Actor626: lobrdg19
 		Owner: Neutral
-	Actor258: trock04
-		Location: 33,-4
-		Owner: Neutral
-	Actor259: trock03
-		Location: 120,-89
-		Owner: Neutral
-	Actor260: trock04
-		Location: 115,-85
-		Owner: Neutral
-	Actor261: trock01
-		Location: 110,-79
-		Owner: Neutral
-	Actor262: trock03
-		Location: 96,-65
-		Owner: Neutral
-	Actor263: trock03
-		Location: 33,-2
-		Owner: Neutral
-	Actor264: trock03
-		Location: 127,-94
-		Owner: Neutral
-	Actor265: trock04
-		Location: 107,-75
-		Owner: Neutral
-	Actor266: trock02
-		Location: 106,-74
-		Owner: Neutral
-	Actor267: trock02
-		Location: 93,-60
-		Owner: Neutral
-	Actor268: trock05
-		Location: 95,-58
-		Owner: Neutral
+		Location: 104,-71
 	Actor269: trock03
-		Location: 115,-76
+		Location: 74,-47
 		Owner: Neutral
-	Actor270: trock05
-		Location: 23,15
+	Actor270: trock02
+		Location: 69,-42
 		Owner: Neutral
-	Actor271: trock05
-		Location: 138,-97
+	Actor271: trock01
+		Location: 67,-39
 		Owner: Neutral
-	Actor272: trock03
-		Location: 49,-9
+	Actor272: trock02
+		Location: 40,-13
 		Owner: Neutral
-	Actor273: trock03
-		Location: 26,14
+	Actor273: trock04
+		Location: 32,-4
 		Owner: Neutral
 	Actor274: trock03
-		Location: 141,-99
+		Location: 119,-89
 		Owner: Neutral
 	Actor275: trock04
-		Location: 127,-85
+		Location: 114,-85
 		Owner: Neutral
-	Actor276: trock03
-		Location: 121,-79
+	Actor276: trock01
+		Location: 109,-79
 		Owner: Neutral
-	Actor277: trock04
-		Location: 56,-11
+	Actor565: lobrdg03
 		Owner: Neutral
-	Actor278: trock05
-		Location: 60,-14
+		Location: 102,-71
+	Actor558: lobrdg05
 		Owner: Neutral
-	Actor279: trock03
-		Location: 58,-11
+		Location: 101,-71
+	Actor629: lobrdg02
 		Owner: Neutral
-	Actor280: trock02
-		Location: 50,-3
+		Location: 103,-71
+	Actor283: trock03
+		Location: 95,-65
 		Owner: Neutral
-	Actor281: trock04
-		Location: 142,-94
-		Owner: Neutral
-	Actor282: trock05
-		Location: 130,-81
-		Owner: Neutral
-	Actor283: trock02
-		Location: 33,15
-		Owner: Neutral
-	Actor284: trock02
-		Location: 124,-72
+	Actor284: trock03
+		Location: 32,-2
 		Owner: Neutral
 	Actor285: trock03
-		Location: 119,-67
+		Location: 126,-94
 		Owner: Neutral
-	Actor286: trock05
-		Location: 131,-77
+	Actor286: trock04
+		Location: 106,-75
 		Owner: Neutral
-	Actor287: trock04
-		Location: 32,23
-		Owner: Neutral
-	Actor288: trock03
-		Location: 137,-78
-		Owner: Neutral
-	Actor289: trock03
-		Location: 60,1
-		Owner: Neutral
-	Actor290: trock03
-		Location: 154,-90
-		Owner: Neutral
-	Actor291: trock02
-		Location: 142,-77
-		Owner: Neutral
-	Actor292: trock02
-		Location: 43,21
-		Owner: Neutral
-	Actor293: trock02
-		Location: 155,-86
+	Actor287: trock02
+		Location: 105,-74
 		Owner: Neutral
 	Actor294: trock02
-		Location: 126,-58
+		Location: 92,-60
 		Owner: Neutral
-	Actor295: trock03
-		Location: 48,21
+	Actor298: trock05
+		Location: 94,-58
 		Owner: Neutral
-	Actor296: trock04
-		Location: 128,-55
-		Owner: Neutral
-	Actor297: trock05
-		Location: 127,-54
-		Owner: Neutral
-	Actor298: trock02
-		Location: 145,-68
-		Owner: Neutral
-	Actor299: trock04
-		Location: 72,4
+	Actor299: trock03
+		Location: 114,-76
 		Owner: Neutral
 	Actor300: trock05
-		Location: 72,5
+		Location: 22,15
 		Owner: Neutral
-	Actor301: trock03
-		Location: 48,29
+	Actor301: trock05
+		Location: 137,-97
 		Owner: Neutral
-	Actor302: trock04
-		Location: 44,35
+	Actor302: trock03
+		Location: 48,-9
 		Owner: Neutral
-	Actor303: trock02
-		Location: 154,-74
+	Actor303: trock03
+		Location: 25,14
 		Owner: Neutral
-	Actor304: trock02
-		Location: 171,-84
+	Actor304: trock03
+		Location: 140,-99
 		Owner: Neutral
-	Actor305: trock01
-		Location: 68,19
+	Actor305: trock04
+		Location: 126,-85
 		Owner: Neutral
 	Actor306: trock03
-		Location: 75,13
+		Location: 120,-79
 		Owner: Neutral
-	Actor307: trock01
-		Location: 168,-77
+	Actor307: trock04
+		Location: 55,-11
 		Owner: Neutral
-	Actor308: trock02
-		Location: 70,21
+	Actor308: trock05
+		Location: 59,-14
 		Owner: Neutral
-	Actor309: trock02
-		Location: 84,9
+	Actor309: trock03
+		Location: 57,-11
 		Owner: Neutral
-	Actor310: trock03
-		Location: 56,38
+	Actor310: trock02
+		Location: 49,-3
 		Owner: Neutral
 	Actor311: trock04
-		Location: 68,28
+		Location: 141,-94
 		Owner: Neutral
 	Actor312: trock05
-		Location: 55,41
+		Location: 129,-81
 		Owner: Neutral
-	Actor313: trock05
-		Location: 70,30
+	Actor313: trock02
+		Location: 32,15
 		Owner: Neutral
-	Actor314: trock03
-		Location: 115,-12
+	Actor314: trock02
+		Location: 123,-72
 		Owner: Neutral
-	Actor315: trock02
-		Location: 60,44
+	Actor315: trock03
+		Location: 118,-67
 		Owner: Neutral
-	Actor316: trock04
-		Location: 166,-58
+	Actor316: trock05
+		Location: 130,-77
 		Owner: Neutral
-	Actor317: trock05
-		Location: 120,-12
+	Actor317: trock04
+		Location: 31,23
 		Owner: Neutral
 	Actor318: trock03
-		Location: 63,46
+		Location: 136,-78
 		Owner: Neutral
-	Actor319: trock02
-		Location: 173,-62
+	Actor319: trock03
+		Location: 59,1
 		Owner: Neutral
-	Actor320: trock02
-		Location: 153,-42
+	Actor320: trock03
+		Location: 153,-90
 		Owner: Neutral
-	Actor321: trock03
-		Location: 170,-57
+	Actor321: trock02
+		Location: 141,-77
 		Owner: Neutral
-	Actor322: trock01
-		Location: 156,-43
+	Actor322: trock02
+		Location: 42,21
 		Owner: Neutral
-	Actor323: trock01
-		Location: 173,-59
+	Actor323: trock02
+		Location: 154,-86
 		Owner: Neutral
 	Actor324: trock02
-		Location: 74,46
+		Location: 125,-58
 		Owner: Neutral
 	Actor325: trock03
-		Location: 184,-62
+		Location: 47,21
 		Owner: Neutral
 	Actor326: trock04
-		Location: 75,48
+		Location: 127,-55
 		Owner: Neutral
-	Actor327: veinhole
-		Location: 138,-13
+	Actor327: trock05
+		Location: 126,-54
 		Owner: Neutral
-	Actor328: trock03
-		Location: 145,-16
+	Actor328: trock02
+		Location: 144,-68
 		Owner: Neutral
-	Actor329: trock01
-		Location: 144,-16
+	Actor329: trock04
+		Location: 71,4
 		Owner: Neutral
 	Actor330: trock05
-		Location: 192,-62
+		Location: 71,5
 		Owner: Neutral
-	Actor331: trock04
-		Location: 191,-61
+	Actor331: trock03
+		Location: 47,29
 		Owner: Neutral
-	Actor332: trock01
-		Location: 68,63
+	Actor332: trock04
+		Location: 43,35
 		Owner: Neutral
 	Actor333: trock02
-		Location: 73,60
+		Location: 153,-74
 		Owner: Neutral
 	Actor334: trock02
-		Location: 69,63
+		Location: 170,-84
 		Owner: Neutral
-	Actor335: trock03
-		Location: 193,-48
-		Owner: Neutral
-	Actor336: trock04
-		Location: 88,61
+	Actor335: trock01
+		Location: 67,19
 		Owner: Neutral
 	Actor337: trock03
-		Location: 85,63
+		Location: 74,13
 		Owner: Neutral
-	Actor338: trock05
-		Location: 204,-46
+	Actor338: trock01
+		Location: 167,-77
 		Owner: Neutral
-	Actor339: trock05
-		Location: 81,77
+	Actor566: lobrdg23
 		Owner: Neutral
-	Actor340: trock02
-		Location: 206,-40
+		Location: 146,-57
+	Actor567: lobrdg13
 		Owner: Neutral
-	Actor341: trock03
-		Location: 208,-40
+		Location: 146,-56
+	Actor344: trock02
+		Location: 69,21
 		Owner: Neutral
-	Actor342: trock03
-		Location: 94,80
-		Owner: Neutral
-	Actor343: trock01
-		Location: 183,1
-		Owner: Neutral
-	Actor344: trock05
-		Location: 97,91
-		Owner: Neutral
-	Actor345: trock02
-		Location: 191,0
-		Owner: Neutral
-	Actor346: trock03
-		Location: 183,7
-		Owner: Neutral
-	Actor347: trock03
-		Location: 193,-1
-		Owner: Neutral
-	Actor348: trock05
-		Location: 138,55
-		Owner: Neutral
-	Actor349: trock01
-		Location: 107,85
-		Owner: Neutral
-	Actor350: trock02
-		Location: 225,-30
+	Actor347: lobrdg17
+		Location: 146,-55
 		Owner: Neutral
 	Actor351: trock02
-		Location: 140,55
+		Location: 83,9
 		Owner: Neutral
-	Actor352: trock03
-		Location: 217,-21
+	Actor354: lobrdg18
+		Location: 146,-53
 		Owner: Neutral
-	Actor353: trock04
-		Location: 212,-15
+	Actor355: lobrdg12
+		Location: 146,-52
 		Owner: Neutral
-	Actor354: trock04
-		Location: 141,56
+	Actor358: trock03
+		Location: 55,38
 		Owner: Neutral
-	Actor355: trock03
-		Location: 202,-3
+	Actor361: lobrdg13
+		Location: 146,-51
 		Owner: Neutral
-	Actor356: trock02
-		Location: 191,8
+	Actor362: lobrdg25
+		Location: 146,-50
 		Owner: Neutral
-	Actor357: trock03
-		Location: 143,55
+	Actor364: trock04
+		Location: 67,28
 		Owner: Neutral
-	Actor358: trock01
-		Location: 126,72
+	Actor365: trock05
+		Location: 54,41
 		Owner: Neutral
-	Actor359: trock05
-		Location: 213,-12
+	Actor367: trock05
+		Location: 69,30
 		Owner: Neutral
-	Actor360: trock04
-		Location: 106,95
+	Actor368: trock03
+		Location: 114,-12
 		Owner: Neutral
-	Actor361: trock05
-		Location: 205,-3
+	Actor369: trock02
+		Location: 59,44
 		Owner: Neutral
-	Actor362: trock01
-		Location: 198,6
+	Actor370: trock04
+		Location: 165,-58
 		Owner: Neutral
-	Actor363: trock03
-		Location: 150,54
+	Actor371: trock05
+		Location: 119,-12
 		Owner: Neutral
-	Actor364: trock02
-		Location: 111,93
+	Actor372: trock03
+		Location: 62,46
 		Owner: Neutral
-	Actor365: trock03
-		Location: 110,96
+	Actor373: trock02
+		Location: 172,-62
 		Owner: Neutral
-	Actor366: trock01
-		Location: 235,-26
-		Owner: Neutral
-	Actor367: trock03
-		Location: 201,8
-		Owner: Neutral
-	Actor368: trock02
-		Location: 200,8
-		Owner: Neutral
-	Actor369: trock04
-		Location: 214,-4
-		Owner: Neutral
-	Actor370: trock02
-		Location: 216,-4
-		Owner: Neutral
-	Actor371: trock03
-		Location: 212,2
-		Owner: Neutral
-	Actor372: trock01
-		Location: 188,28
-		Owner: Neutral
-	Actor373: trock04
-		Location: 165,52
-		Owner: Neutral
-	Actor374: trock03
-		Location: 156,60
+	Actor374: trock02
+		Location: 152,-42
 		Owner: Neutral
 	Actor375: trock03
-		Location: 140,76
+		Location: 169,-57
 		Owner: Neutral
-	Actor376: trock05
-		Location: 124,93
+	Actor376: trock01
+		Location: 155,-43
 		Owner: Neutral
-	Actor377: trock04
-		Location: 236,-18
+	Actor380: trock01
+		Location: 172,-59
 		Owner: Neutral
-	Actor378: trock05
-		Location: 237,-17
+	Actor636: lobrdg01
 		Owner: Neutral
-	Actor379: trock01
-		Location: 226,-6
+		Location: 89,25
+	Actor382: lobrdg01
+		Location: 88,25
 		Owner: Neutral
-	Actor380: trock02
-		Location: 216,5
+	Actor631: lobrdg09
 		Owner: Neutral
-	Actor381: trock03
-		Location: 211,9
+		Location: 98,-71
+	Actor637: lobrdg09
 		Owner: Neutral
-	Actor382: trock04
-		Location: 204,17
+		Location: 90,25
+	Actor638: lobrdg21
 		Owner: Neutral
-	Actor383: trock04
-		Location: 143,77
+		Location: 87,25
+	Actor634: lobrdg04
 		Owner: Neutral
-	Actor384: trock05
-		Location: 143,78
+		Location: 93,25
+	Actor633: lobrdg04
 		Owner: Neutral
-	Actor385: trock02
-		Location: 130,91
+		Location: 94,25
+	Actor635: lobrdg08
 		Owner: Neutral
-	Actor386: trock01
-		Location: 241,-18
+		Location: 92,25
+	Actor632: lobrdg19
 		Owner: Neutral
-	Actor387: trock04
-		Location: 215,8
+		Location: 95,25
+	Actor404: trock02
+		Location: 73,46
 		Owner: Neutral
-	Actor388: trock03
-		Location: 206,17
+	Actor405: trock03
+		Location: 183,-62
 		Owner: Neutral
-	Actor389: trock05
-		Location: 218,6
+	Actor407: trock04
+		Location: 74,48
 		Owner: Neutral
-	Actor390: trock02
-		Location: 179,46
+	Actor624: veinhole
 		Owner: Neutral
-	Actor391: trock02
-		Location: 176,49
+		Location: 138,-13
+	Actor409: trock03
+		Location: 144,-16
 		Owner: Neutral
-	Actor392: trock03
-		Location: 116,109
+	Actor410: trock01
+		Location: 143,-16
 		Owner: Neutral
-	Actor393: trock03
-		Location: 236,-10
+	Actor411: trock05
+		Location: 191,-62
 		Owner: Neutral
-	Actor394: trock03
-		Location: 202,25
+	Actor412: trock04
+		Location: 190,-61
 		Owner: Neutral
-	Actor395: trock01
-		Location: 182,45
+	Actor413: trock01
+		Location: 67,63
 		Owner: Neutral
-	Actor396: trock02
-		Location: 243,-15
-		Owner: Neutral
-	Actor397: trock04
-		Location: 179,49
-		Owner: Neutral
-	Actor398: trock05
-		Location: 176,52
-		Owner: Neutral
-	Actor399: trock02
-		Location: 160,69
-		Owner: Neutral
-	Actor400: trock03
-		Location: 228,3
-		Owner: Neutral
-	Actor401: trock03
-		Location: 172,58
-		Owner: Neutral
-	Actor402: trock04
-		Location: 138,92
-		Owner: Neutral
-	Actor403: trock05
-		Location: 138,93
-		Owner: Neutral
-	Actor404: trock03
-		Location: 247,-14
-		Owner: Neutral
-	Actor405: trock02
-		Location: 206,27
-		Owner: Neutral
-	Actor406: trock04
-		Location: 120,112
-		Owner: Neutral
-	Actor407: trock05
-		Location: 120,113
-		Owner: Neutral
-	Actor408: trock02
-		Location: 216,18
-		Owner: Neutral
-	Actor409: trock02
-		Location: 195,40
-		Owner: Neutral
-	Actor410: trock03
-		Location: 158,77
-		Owner: Neutral
-	Actor411: trock03
-		Location: 239,-2
-		Owner: Neutral
-	Actor412: trock03
-		Location: 201,36
-		Owner: Neutral
-	Actor413: trock04
-		Location: 194,43
-		Owner: Neutral
-	Actor414: trock05
-		Location: 222,16
+	Actor414: trock02
+		Location: 72,60
 		Owner: Neutral
 	Actor415: trock02
-		Location: 130,110
+		Location: 68,63
 		Owner: Neutral
-	Actor416: trock04
-		Location: 236,8
+	Actor416: lobrdg21
+		Location: 171,-29
 		Owner: Neutral
-	Actor417: trock05
-		Location: 196,51
+	Actor417: trock03
+		Location: 192,-48
 		Owner: Neutral
-	Actor418: trock03
-		Location: 193,53
+	Actor418: lobrdg09
+		Location: 173,-29
 		Owner: Neutral
-	Actor419: trock03
-		Location: 147,100
+	Actor419: lobrdg03
+		Location: 172,-29
 		Owner: Neutral
-	Actor420: trock02
-		Location: 246,3
+	Actor568: lobrdg19
 		Owner: Neutral
-	Actor421: trock03
-		Location: 138,112
+		Location: 179,-29
+	Actor583: lobrdg03
 		Owner: Neutral
-	Actor422: trock02
-		Location: 147,106
+		Location: 178,-29
+	Actor435: lobrdg23
+		Location: 156,-8
 		Owner: Neutral
-	Actor423: tuntop04
+	Actor436: trock04
+		Location: 87,61
+		Owner: Neutral
+	Actor437: trock03
+		Location: 84,63
+		Owner: Neutral
+	Actor577: lobrdg05
+		Owner: Neutral
+		Location: 177,-29
+	Actor464: lobrdg25
+		Location: 156,0
+		Owner: Neutral
+	Actor465: trock05
+		Location: 203,-46
+		Owner: Neutral
+	Actor467: trock05
+		Location: 80,77
+		Owner: Neutral
+	Actor639: lobrdg23
+		Owner: Neutral
+		Location: 117,44
+	Actor471: lobrdg13
+		Location: 117,45
+		Owner: Neutral
+	Actor476: lobrdg10
+		Location: 117,46
+		Owner: Neutral
+	Actor477: lobrdg10
+		Location: 117,47
+		Owner: Neutral
+	Actor640: lobrdg25
+		Owner: Neutral
+		Location: 117,55
+	Actor480: trock02
+		Location: 205,-40
+		Owner: Neutral
+	Actor483: lobrdg17
+		Location: 117,48
+		Owner: Neutral
+	Actor487: trock03
+		Location: 207,-40
+		Owner: Neutral
+	Actor496: lobrdg18
+		Location: 117,52
+		Owner: Neutral
+	Actor497: lobrdg11
+		Location: 117,53
+		Owner: Neutral
+	Actor502: lobrdg13
+		Location: 117,54
+		Owner: Neutral
+	Actor506: trock03
+		Location: 93,80
+		Owner: Neutral
+	Actor507: trock01
+		Location: 182,1
+		Owner: Neutral
+	Actor508: trock05
+		Location: 96,91
+		Owner: Neutral
+	Actor509: trock02
+		Location: 190,0
+		Owner: Neutral
+	Actor510: trock03
+		Location: 182,7
+		Owner: Neutral
+	Actor511: trock03
+		Location: 192,-1
+		Owner: Neutral
+	Actor512: trock05
+		Location: 137,55
+		Owner: Neutral
+	Actor513: trock01
+		Location: 106,85
+		Owner: Neutral
+	Actor514: trock02
+		Location: 224,-30
+		Owner: Neutral
+	Actor515: trock02
+		Location: 139,55
+		Owner: Neutral
+	Actor516: trock03
+		Location: 216,-21
+		Owner: Neutral
+	Actor517: trock04
+		Location: 211,-15
+		Owner: Neutral
+	Actor518: trock04
+		Location: 140,56
+		Owner: Neutral
+	Actor519: trock03
+		Location: 201,-3
+		Owner: Neutral
+	Actor520: trock02
+		Location: 190,8
+		Owner: Neutral
+	Actor521: trock03
+		Location: 142,55
+		Owner: Neutral
+	Actor522: trock01
+		Location: 125,72
+		Owner: Neutral
+	Actor523: trock05
+		Location: 212,-12
+		Owner: Neutral
+	Actor524: trock04
+		Location: 105,95
+		Owner: Neutral
+	Actor525: trock05
+		Location: 204,-3
+		Owner: Neutral
+	Actor526: trock01
+		Location: 197,6
+		Owner: Neutral
+	Actor527: trock03
+		Location: 149,54
+		Owner: Neutral
+	Actor528: trock02
+		Location: 110,93
+		Owner: Neutral
+	Actor529: trock03
+		Location: 109,96
+		Owner: Neutral
+	Actor530: trock01
+		Location: 234,-26
+		Owner: Neutral
+	Actor531: trock03
+		Location: 200,8
+		Owner: Neutral
+	Actor532: trock02
+		Location: 199,8
+		Owner: Neutral
+	Actor533: trock04
+		Location: 213,-4
+		Owner: Neutral
+	Actor534: trock02
+		Location: 215,-4
+		Owner: Neutral
+	Actor535: trock03
+		Location: 211,2
+		Owner: Neutral
+	Actor536: trock01
+		Location: 187,28
+		Owner: Neutral
+	Actor537: trock04
+		Location: 164,52
+		Owner: Neutral
+	Actor538: trock03
+		Location: 155,60
+		Owner: Neutral
+	Actor539: trock03
+		Location: 139,76
+		Owner: Neutral
+	Actor540: trock05
+		Location: 123,93
+		Owner: Neutral
+	Actor541: trock04
+		Location: 235,-18
+		Owner: Neutral
+	Actor542: trock05
+		Location: 236,-17
+		Owner: Neutral
+	Actor543: trock01
+		Location: 225,-6
+		Owner: Neutral
+	Actor544: trock02
+		Location: 215,5
+		Owner: Neutral
+	Actor545: trock03
+		Location: 210,9
+		Owner: Neutral
+	Actor546: trock04
+		Location: 203,17
+		Owner: Neutral
+	Actor547: trock04
+		Location: 142,77
+		Owner: Neutral
+	Actor548: trock05
+		Location: 142,78
+		Owner: Neutral
+	Actor549: trock02
+		Location: 129,91
+		Owner: Neutral
+	Actor550: trock01
+		Location: 240,-18
+		Owner: Neutral
+	Actor551: trock04
+		Location: 214,8
+		Owner: Neutral
+	Actor552: trock03
+		Location: 205,17
+		Owner: Neutral
+	Actor553: trock05
+		Location: 217,6
+		Owner: Neutral
+	Actor554: trock02
+		Location: 178,46
+		Owner: Neutral
+	Actor555: trock02
+		Location: 175,49
+		Owner: Neutral
+	Actor556: lobrdg02
+		Location: 159,65
+		Owner: Neutral
+	Actor557: lobrdg21
+		Location: 158,65
+		Owner: Neutral
+	Actor559: trock03
+		Location: 115,109
+		Owner: Neutral
+	Actor560: trock03
+		Location: 235,-10
+		Owner: Neutral
+	Actor561: trock03
+		Location: 201,25
+		Owner: Neutral
+	Actor562: trock01
+		Location: 181,45
+		Owner: Neutral
+	Actor564: lobrdg09
+		Location: 160,65
+		Owner: Neutral
+	Actor569: trock02
+		Location: 242,-15
+		Owner: Neutral
+	Actor570: trock04
+		Location: 178,49
+		Owner: Neutral
+	Actor571: trock05
+		Location: 175,52
+		Owner: Neutral
+	Actor578: trock02
+		Location: 159,69
+		Owner: Neutral
+	Actor579: trock03
+		Location: 227,3
+		Owner: Neutral
+	Actor580: trock03
+		Location: 171,58
+		Owner: Neutral
+	Actor581: lobrdg01
+		Location: 165,65
+		Owner: Neutral
+	Actor582: lobrdg08
+		Location: 164,65
+		Owner: Neutral
+	Actor587: trock04
+		Location: 137,92
+		Owner: Neutral
+	Actor588: trock05
+		Location: 137,93
+		Owner: Neutral
+	Actor589: trock03
+		Location: 246,-14
+		Owner: Neutral
+	Actor590: trock02
+		Location: 205,27
+		Owner: Neutral
+	Actor591: lobrdg03
+		Location: 167,65
+		Owner: Neutral
+	Actor592: lobrdg01
+		Location: 166,65
+		Owner: Neutral
+	Actor597: trock04
+		Location: 119,112
+		Owner: Neutral
+	Actor598: trock05
+		Location: 119,113
+		Owner: Neutral
+	Actor599: trock02
+		Location: 215,18
+		Owner: Neutral
+	Actor600: trock02
+		Location: 194,40
+		Owner: Neutral
+	Actor601: lobrdg19
+		Location: 168,65
+		Owner: Neutral
+	Actor606: trock03
+		Location: 157,77
+		Owner: Neutral
+	Actor607: trock03
+		Location: 238,-2
+		Owner: Neutral
+	Actor608: trock03
+		Location: 200,36
+		Owner: Neutral
+	Actor609: trock04
+		Location: 193,43
+		Owner: Neutral
+	Actor611: trock05
+		Location: 221,16
+		Owner: Neutral
+	Actor612: trock02
+		Location: 129,110
+		Owner: Neutral
+	Actor613: trock04
+		Location: 235,8
+		Owner: Neutral
+	Actor614: trock05
+		Location: 195,51
+		Owner: Neutral
+	Actor615: trock03
+		Location: 192,53
+		Owner: Neutral
+	Actor616: trock03
+		Location: 146,100
+		Owner: Neutral
+	Actor617: trock02
+		Location: 245,3
+		Owner: Neutral
+	Actor618: trock03
+		Location: 137,112
+		Owner: Neutral
+	Actor619: trock02
+		Location: 146,106
+		Owner: Neutral
+	Actor620: tuntop04
 		Owner: Neutral
 		Location: 145,5
-	Actor424: tuntop04
+	Actor621: tuntop04
 		Owner: Neutral
 		Location: 116,9
-	Actor425: tuntop02
+	Actor622: tuntop02
 		Owner: Neutral
 		Location: 144,-19
-	Actor426: tuntop02
+	Actor623: tuntop02
 		Owner: Neutral
 		Location: 115,-15
 

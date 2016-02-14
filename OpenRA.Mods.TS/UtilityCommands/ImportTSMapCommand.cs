@@ -38,10 +38,12 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		{
 			{ 0x01, "gasand" },
 			{ 0x03, "gawall" },
+
 			/*
 			{ 0x18, "bridge1" },
 			{ 0x19, "bridge2" },
 			*/
+
 			{ 0x1A, "nawall" },
 			{ 0x27, "tracks01" },
 			{ 0x28, "tracks02" },
@@ -80,7 +82,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x47, "palet02" },
 			{ 0x48, "palet03" },
 			{ 0x49, "palet04" },
-			/*
+
 			{ 0x4A, "lobrdg01" },
 			{ 0x4B, "lobrdg02" },
 			{ 0x4C, "lobrdg03" },
@@ -107,13 +109,18 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x61, "lobrdg24" },
 			{ 0x62, "lobrdg25" },
 			{ 0x63, "lobrdg26" },
+			/* Destroyed low bridges
 			{ 0x64, "lobrdg27" },
 			{ 0x65, "lobrdg28" },
+			*/
+
+			/* High bridge segments
 			{ 0x7A, "lobrdg1" },
 			{ 0x7B, "lobrdg2" },
 			{ 0x7C, "lobrdg3" },
 			{ 0x7D, "lobrdg4" },
 			*/
+
 			{ 0xA7, "veinhole" },
 			{ 0xA8, "srock01" },
 			{ 0xA9, "srock02" },
@@ -125,6 +132,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0xAF, "trock03" },
 			{ 0xB0, "trock04" },
 			{ 0xB1, "trock05" },
+
 			{ 0xBB, "veinholedummy" },
 			{ 0xBC, "crate" }
 		};

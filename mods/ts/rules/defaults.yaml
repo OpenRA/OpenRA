@@ -822,3 +822,18 @@
 		WallConnections: 0,-1, 0,3
 	LineBuildNode:
 		Connections: 0,-1, 0,1
+
+^LowBridge:
+	AlwaysVisible:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Road
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
+	Tooltip:
+		Name: Bridge
