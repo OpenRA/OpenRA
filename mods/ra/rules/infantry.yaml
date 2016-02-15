@@ -322,8 +322,6 @@ MEDI:
 		AttackSequence: heal
 	Voiced:
 		VoiceSet: MedicVoice
-	Selectable:
-		Priority: 5
 
 MECH:
 	Inherits: ^Soldier
@@ -361,8 +359,6 @@ MECH:
 		StandSequences: stand
 	Voiced:
 		VoiceSet: MechanicVoice
-	Selectable:
-		Priority: 5
 
 EINSTEIN:
 	Inherits: ^CivInfantry
