@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -45,7 +46,8 @@ namespace OpenRA
 		{
 			// Expand the dictionary (dir path, dir type) to a dictionary of (map path, dir type)
 			var mapPaths = modData.Manifest.MapFolders.SelectMany(kv =>
-				FindMapsIn(kv.Key).ToDictionary(p => p, p => string.IsNullOrEmpty(kv.Value) ? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value)));
+				FindMapsIn(modData.ModFiles, kv.Key).ToDictionary(p => p, p => string.IsNullOrEmpty(kv.Value)
+					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value)));
 
 			foreach (var path in mapPaths)
 			{
@@ -111,7 +113,7 @@ namespace OpenRA
 			new Download(url, _ => { }, onInfoComplete);
 		}
 
-		public static IEnumerable<string> FindMapsIn(string dir)
+		public static IEnumerable<string> FindMapsIn(FileSystem.FileSystem context, string dir)
 		{
 			string[] noMaps = { };
 
@@ -119,9 +121,15 @@ namespace OpenRA
 			if (dir.StartsWith("~"))
 				dir = dir.Substring(1);
 
-			dir = Platform.ResolvePath(dir);
-
-			if (!Directory.Exists(dir))
+			// HACK: We currently only support maps loaded from Folders
+			// This is a temporary workaround that resolves the filesystem paths to a system directory
+			IReadOnlyPackage package;
+			string filename;
+			if (context.TryGetPackageContaining(dir, out package, out filename))
+				dir = Path.Combine(package.Name, filename);
+			else if (Directory.Exists(Platform.ResolvePath(dir)))
+				dir = Platform.ResolvePath(dir);
+			else
 				return noMaps;
 
 			var dirsWithMaps = Directory.GetDirectories(dir)

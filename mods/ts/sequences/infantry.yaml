@@ -66,7 +66,7 @@ e1.gdi:
 		ShadowStart: 190
 	die6: electro
 		Length: *
-	icon: sidec01.mix:e1icon
+	icon: sidebar-gdi|e1icon
 
 e1.nod:
 	Defaults: e1
@@ -136,7 +136,7 @@ e1.nod:
 		ShadowStart: 190
 	die6: electro
 		Length: *
-	icon: sidec02.mix:e1icon
+	icon: sidebar-nod|e1icon
 
 e2:
 	Defaults:
@@ -477,7 +477,7 @@ engineer.gdi:
 		ShadowStart: 190
 	die6: electro
 		Length: *
-	icon: sidec01.mix:engnicon
+	icon: sidebar-gdi|engnicon
 
 engineer.nod:
 	Defaults: engineer
@@ -539,7 +539,7 @@ engineer.nod:
 		ShadowStart: 190
 	die6: electro
 		Length: *
-	icon: sidec02.mix:engnicon
+	icon: sidebar-nod|engnicon
 
 umagon:
 	Defaults:

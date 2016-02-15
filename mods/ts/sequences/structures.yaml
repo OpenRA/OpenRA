@@ -912,7 +912,7 @@ napuls.gdi:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec01.mix:empicon
+	icon: sidebar-gdi|empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -940,7 +940,7 @@ napuls.nod:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec02.mix:empicon
+	icon: sidebar-nod|empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1190,7 +1190,7 @@ proc.gdi:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec01.mix:reficon
+	icon: sidebar-gdi|reficon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1232,7 +1232,7 @@ proc.nod:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec02.mix:reficon
+	icon: sidebar-nod|reficon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1323,7 +1323,7 @@ gasilo.gdi:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec01.mix:siloicon
+	icon: sidebar-gdi|siloicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1367,7 +1367,7 @@ gasilo.nod:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec02.mix:siloicon
+	icon: sidebar-nod|siloicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1431,7 +1431,7 @@ gadept.gdi:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec01.mix:fixicon
+	icon: sidebar-gdi|fixicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1495,7 +1495,7 @@ gadept.nod:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidec02.mix:fixicon
+	icon: sidebar-nod|fixicon
 		Offset: 76, 66
 		UseTilesetCode: false
 

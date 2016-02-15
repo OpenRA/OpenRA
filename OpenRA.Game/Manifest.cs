@@ -35,11 +35,12 @@ namespace OpenRA
 	{
 		public readonly ModMetadata Mod;
 		public readonly string[]
-			Packages, Rules, ServerTraits,
+			Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
+		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
 		public readonly MiniYaml LobbyDefaults;
@@ -69,23 +70,27 @@ namespace OpenRA
 			Mod.Id = modId;
 
 			// TODO: Use fieldloader
-			MapFolders = YamlDictionary(yaml, "MapFolders", true);
-			Packages = YamlList(yaml, "Packages", true);
-			Rules = YamlList(yaml, "Rules", true);
-			Sequences = YamlList(yaml, "Sequences", true);
-			VoxelSequences = YamlList(yaml, "VoxelSequences", true);
-			Cursors = YamlList(yaml, "Cursors", true);
-			Chrome = YamlList(yaml, "Chrome", true);
-			Assemblies = YamlList(yaml, "Assemblies", true);
-			ChromeLayout = YamlList(yaml, "ChromeLayout", true);
-			Weapons = YamlList(yaml, "Weapons", true);
-			Voices = YamlList(yaml, "Voices", true);
-			Notifications = YamlList(yaml, "Notifications", true);
-			Music = YamlList(yaml, "Music", true);
-			Translations = YamlList(yaml, "Translations", true);
-			TileSets = YamlList(yaml, "TileSets", true);
-			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
-			Missions = YamlList(yaml, "Missions", true);
+			MapFolders = YamlDictionary(yaml, "MapFolders");
+
+			MiniYaml packages;
+			if (yaml.TryGetValue("Packages", out packages))
+				Packages = packages.ToDictionary(x => x.Value).AsReadOnly();
+
+			Rules = YamlList(yaml, "Rules");
+			Sequences = YamlList(yaml, "Sequences");
+			VoxelSequences = YamlList(yaml, "VoxelSequences");
+			Cursors = YamlList(yaml, "Cursors");
+			Chrome = YamlList(yaml, "Chrome");
+			Assemblies = YamlList(yaml, "Assemblies");
+			ChromeLayout = YamlList(yaml, "ChromeLayout");
+			Weapons = YamlList(yaml, "Weapons");
+			Voices = YamlList(yaml, "Voices");
+			Notifications = YamlList(yaml, "Notifications");
+			Music = YamlList(yaml, "Music");
+			Translations = YamlList(yaml, "Translations");
+			TileSets = YamlList(yaml, "TileSets");
+			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
+			Missions = YamlList(yaml, "Missions");
 
 			ServerTraits = YamlList(yaml, "ServerTraits");
 
@@ -96,10 +101,10 @@ namespace OpenRA
 				throw new InvalidDataException("`LobbyDefaults` section is not defined.");
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
-				{
-					var nd = my.ToDictionary();
-					return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
-				});
+			{
+				var nd = my.ToDictionary();
+				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
+			});
 
 			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
@@ -152,35 +157,15 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
 
-			if (parsePaths)
-				return yaml[key].Nodes.Select(node => Platform.ResolvePath(node.Key, node.Value.Value ?? string.Empty)).ToArray();
-
 			return yaml[key].ToDictionary().Keys.ToArray();
 		}
 
-		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
+		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			var inner = new Dictionary<string, string>();
-			foreach (var node in yaml[key].Nodes)
-			{
-				var line = node.Key;
-				if (node.Value.Value != null)
-					line += ":" + node.Value.Value;
-
-				// '@' may be used in mod.yaml to indicate extra information (similar to trait @ tags).
-				// Applies to MapFolders (to indicate System and User directories) and Packages (to indicate package annotation).
-				if (line.Contains('@'))
-				{
-					var split = line.Split('@');
-					inner.Add(parsePaths ? Platform.ResolvePath(split[0]) : split[0], split[1]);
-				}
-				else
-					inner.Add(line, null);
-			}
-
+			var inner = yaml[key].ToDictionary(my => my.Value);
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 

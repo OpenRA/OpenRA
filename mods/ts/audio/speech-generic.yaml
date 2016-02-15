@@ -1,7 +1,7 @@
 Speech:
 	Prefixes:
-		gdi: speech01.mix:
-		nod: speech02.mix:
+		gdi: speech-gdi|
+		nod: speech-nod|
 	Notifications:
 		AirUnitLost: 00-i074
 		AirstrikeReady: 00-n160

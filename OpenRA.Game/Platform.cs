@@ -100,14 +100,6 @@ namespace OpenRA
 		{
 			path = path.TrimEnd(new char[] { ' ', '\t' });
 
-			// If the path contains ':', chances are it is a package path.
-			// If it isn't, someone passed an already resolved path, which is wrong.
-			if (path.IndexOf(":", StringComparison.Ordinal) > 1)
-			{
-				var split = path.Split(':');
-				return ResolvePath(split[0], split[1]);
-			}
-
 			// paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^"))
 				path = SupportDir + path.Substring(1);
@@ -117,16 +109,6 @@ namespace OpenRA
 				path = GameDir + path.Substring(2);
 
 			return path;
-		}
-
-		/// <summary>Replaces package names with full paths. Avoid using this for non-package paths.</summary>
-		public static string ResolvePath(string package, string target)
-		{
-			// Resolve mod package paths.
-			if (ModMetadata.AllMods.ContainsKey(package))
-				package = ModMetadata.AllMods[package].Package.Name;
-
-			return ResolvePath(Path.Combine(package, target));
 		}
 
 		/// <summary>Replace special character prefixes with full paths.</summary>
