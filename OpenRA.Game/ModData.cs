@@ -92,6 +92,8 @@ namespace OpenRA
 			ChromeMetrics.Initialize(this);
 			ChromeProvider.Initialize(this);
 
+			Game.Sound.Initialize(SoundLoaders, fileSystem);
+
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
 			VoxelLoader = new VoxelLoader(fileSystem);
