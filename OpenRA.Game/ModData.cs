@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
@@ -36,6 +37,7 @@ namespace OpenRA
 
 		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
+		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
