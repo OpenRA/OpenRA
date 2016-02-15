@@ -49,3 +49,4 @@ Player:
 	PlayerStatistics:
 	PlaceBeacon:
 	ResourceStorageWarning:
+	InsufficientFundsWarning:

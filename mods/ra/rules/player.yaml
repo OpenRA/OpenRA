@@ -72,3 +72,4 @@ Player:
 		Image: iconchevrons
 		Sequence: veteran
 	ResourceStorageWarning:
+	InsufficientFundsWarning:
