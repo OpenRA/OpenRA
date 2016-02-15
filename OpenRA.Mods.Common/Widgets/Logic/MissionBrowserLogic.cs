@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 
+		readonly ModData modData;
 		readonly Action onStart;
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
 		{
-			var modData = Game.ModData;
+			modData = Game.ModData;
 			this.onStart = onStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (modData.Manifest.Missions.Any())
 			{
 				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
-					m => MiniYaml.FromStream(modData.ModFiles.Open(m))));
+					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m))));
 
 				foreach (var kv in yaml)
 				{
@@ -178,11 +179,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var briefingVideo = selectedMap.Videos.Briefing;
 			var briefingVideoVisible = briefingVideo != null;
-			var briefingVideoDisabled = !(briefingVideoVisible && Game.ModData.ModFiles.Exists(briefingVideo));
+			var briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
 
 			var infoVideo = selectedMap.Videos.BackgroundInfo;
 			var infoVideoVisible = infoVideo != null;
-			var infoVideoDisabled = !(infoVideoVisible && Game.ModData.ModFiles.Exists(infoVideo));
+			var infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
@@ -308,7 +309,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};
 
-			if (gameStartVideo != null && Game.ModData.ModFiles.Exists(gameStartVideo))
+			if (gameStartVideo != null && modData.DefaultFileSystem.Exists(gameStartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;
