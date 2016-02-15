@@ -182,7 +182,7 @@ namespace OpenRA
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
 				foreach (var entry in map.Rules.Music)
-					entry.Value.Load();
+					entry.Value.Load(DefaultFileSystem);
 
 			VoxelProvider.Initialize(this, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 			VoxelLoader.Finish();
