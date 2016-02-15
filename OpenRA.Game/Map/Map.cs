@@ -107,7 +107,7 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
-	public class Map
+	public class Map : IReadOnlyFileSystem
 	{
 		public const int SupportedMapFormat = 8;
 
@@ -1173,6 +1173,27 @@ namespace OpenRA
 		public IEnumerable<CPos> FindTilesInCircle(CPos center, int maxRange, bool allowOutsideBounds = false)
 		{
 			return FindTilesInAnnulus(center, 0, maxRange, allowOutsideBounds);
+		}
+
+		// Placeholders for future implementation
+		Stream IReadOnlyFileSystem.Open(string filename)
+		{
+			return Game.ModData.DefaultFileSystem.Open(filename);
+		}
+
+		bool IReadOnlyFileSystem.TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
+		{
+			return Game.ModData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
+		}
+
+		bool IReadOnlyFileSystem.TryOpen(string filename, out Stream s)
+		{
+			return Game.ModData.DefaultFileSystem.TryOpen(filename, out s);
+		}
+
+		bool IReadOnlyFileSystem.Exists(string filename)
+		{
+			return Game.ModData.DefaultFileSystem.Exists(filename);
 		}
 	}
 }
