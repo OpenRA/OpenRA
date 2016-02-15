@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var colors = new uint[Palette.Size];
-			using (var s = Game.ModData.ModFiles.Open(info.Filename))
+			using (var s = wr.World.Map.Open(info.Filename))
 			{
 				s.Seek(info.Offset, SeekOrigin.Begin);
 

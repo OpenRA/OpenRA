@@ -1176,22 +1176,22 @@ namespace OpenRA
 		}
 
 		// Placeholders for future implementation
-		Stream IReadOnlyFileSystem.Open(string filename)
+		public Stream Open(string filename)
 		{
 			return Game.ModData.DefaultFileSystem.Open(filename);
 		}
 
-		bool IReadOnlyFileSystem.TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
+		public bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
 		{
 			return Game.ModData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
 		}
 
-		bool IReadOnlyFileSystem.TryOpen(string filename, out Stream s)
+		public bool TryOpen(string filename, out Stream s)
 		{
 			return Game.ModData.DefaultFileSystem.TryOpen(filename, out s);
 		}
 
-		bool IReadOnlyFileSystem.Exists(string filename)
+		public bool Exists(string filename)
 		{
 			return Game.ModData.DefaultFileSystem.Exists(filename);
 		}

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
-				wr.AddPalette(info.Name, new ImmutablePalette(Game.ModData.ModFiles.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
+				wr.AddPalette(info.Name, new ImmutablePalette(world.Map.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames

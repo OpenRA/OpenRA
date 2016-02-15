@@ -13,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using Eluant;
 using OpenRA.Effects;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -165,7 +166,7 @@ namespace OpenRA.Mods.Common.Scripting
 			Stream s;
 			try
 			{
-				s = Game.ModData.ModFiles.Open(movie);
+				s = world.Map.Open(movie);
 			}
 			catch (FileNotFoundException e)
 			{
