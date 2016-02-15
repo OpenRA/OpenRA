@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly IEnumerable<IReadOnlyPackage> acceptablePackages;
 
 		readonly World world;
+		readonly ModData modData;
 
 		Widget panel;
 
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public AssetBrowserLogic(Widget widget, Action onExit, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
+			modData = Game.ModData;
 
 			panel = widget;
 
@@ -217,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 				allowedExtensions = new string[0];
 
-			acceptablePackages = Game.ModData.ModFiles.MountedPackages.Where(p =>
+			acceptablePackages = modData.ModFiles.MountedPackages.Where(p =>
 				p.Contents.Any(c => allowedExtensions.Contains(Path.GetExtension(c).ToLowerInvariant())));
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
@@ -309,7 +311,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (string.IsNullOrEmpty(filename))
 				return false;
 
-			if (!Game.ModData.ModFiles.Exists(filename))
+			if (!modData.DefaultFileSystem.Exists(filename))
 				return false;
 
 			if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
@@ -356,7 +358,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			assetList.RemoveChildren();
 			availableShps.Clear();
 
-			var files = assetSource != null ? assetSource.Contents : Game.ModData.ModFiles.MountedPackages.SelectMany(f => f.Contents).Distinct();
+			var files = assetSource != null ? assetSource.Contents : modData.ModFiles.MountedPackages.SelectMany(f => f.Contents).Distinct();
 			foreach (var file in files.OrderBy(s => s))
 			{
 				if (allowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
