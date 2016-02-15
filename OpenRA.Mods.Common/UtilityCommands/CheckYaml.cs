@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						try
 						{
 							var customPass = (ILintPass)modData.ObjectCreator.CreateBasic(customPassType);
-							customPass.Run(EmitError, EmitWarning);
+							customPass.Run(EmitError, EmitWarning, modData);
 						}
 						catch (Exception e)
 						{

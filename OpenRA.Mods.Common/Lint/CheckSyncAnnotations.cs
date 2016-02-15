@@ -18,9 +18,9 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckSyncAnnotations : ILintPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			var modTypes = Game.ModData.ObjectCreator.GetTypes();
+			var modTypes = modData.ObjectCreator.GetTypes();
 			CheckTypesWithSyncableMembersImplementSyncInterface(modTypes, emitWarning);
 			CheckTypesImplementingSyncInterfaceHaveSyncableMembers(modTypes, emitWarning);
 		}
