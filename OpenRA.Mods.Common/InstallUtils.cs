@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common
 {
@@ -55,15 +56,15 @@ namespace OpenRA.Mods.Common
 		}
 
 		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
-		public static bool ExtractFromPackage(string srcPath, string package, Dictionary<string, string[]> filesByDirectory,
+		public static bool ExtractFromPackage(FileSystem.FileSystem fileSystem, string srcPath, string package, Dictionary<string, string[]> filesByDirectory,
 			string destPath, bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
 		{
 			Directory.CreateDirectory(destPath);
 
 			Log.Write("debug", "Mounting {0}".F(srcPath));
-			Game.ModData.ModFiles.Mount(srcPath);
+			fileSystem.Mount(srcPath);
 			Log.Write("debug", "Mounting {0}".F(package));
-			Game.ModData.ModFiles.Mount(package);
+			fileSystem.Mount(package);
 
 			foreach (var directory in filesByDirectory)
 			{
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.Common
 
 					Directory.CreateDirectory(containingDir);
 
-					using (var sourceStream = Game.ModData.ModFiles.Open(file))
+					using (var sourceStream = fileSystem.Open(file))
 					using (var destStream = File.Create(dest))
 					{
 						Log.Write("debug", "Extracting {0} to {1}".F(file, dest));
