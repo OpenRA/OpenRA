@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var t in modData.Manifest.TileSets)
 			{
-				var ts = new TileSet(modData, t);
+				var ts = new TileSet(modData.DefaultFileSystem, t);
 				var frameCache = new FrameCache(modData.DefaultFileSystem, modData.SpriteLoaders);
 
 				Console.WriteLine("Tileset: " + ts.Name);

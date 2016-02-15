@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -191,9 +192,9 @@ namespace OpenRA
 		// Private default ctor for serialization comparison
 		TileSet() { }
 
-		public TileSet(ModData modData, string filepath)
+		public TileSet(IReadOnlyFileSystem fileSystem, string filepath)
 		{
-			var yaml = MiniYaml.DictFromStream(modData.ModFiles.Open(filepath));
+			var yaml = MiniYaml.DictFromStream(fileSystem.Open(filepath));
 
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

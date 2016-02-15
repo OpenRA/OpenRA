@@ -122,7 +122,8 @@ namespace OpenRA
 			return itemSet;
 		}
 
-		Dictionary<string, TileSet> LoadTileSets(IReadOnlyFileSystem fileSystem, Dictionary<string, TileSet> itemCache, Dictionary<string, SequenceCache> sequenceCaches, string[] files)
+		Dictionary<string, TileSet> LoadTileSets(IReadOnlyFileSystem fileSystem, Dictionary<string, TileSet> itemCache,
+			Dictionary<string, SequenceCache> sequenceCaches, string[] files)
 		{
 			var items = new Dictionary<string, TileSet>();
 
@@ -133,7 +134,7 @@ namespace OpenRA
 					items.Add(t.Id, t);
 				else
 				{
-					t = new TileSet(modData, file);
+					t = new TileSet(fileSystem, file);
 					itemCache.Add(file, t);
 
 					// every time we load a tile set, we create a sequence cache for it

@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public CreditsLogic(Widget widget, Action onExit)
 		{
 			var panel = widget.Get("CREDITS_PANEL");
+			var modData = Game.ModData;
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var template = scrollPanel.Get<LabelWidget>("CREDITS_TEMPLATE");
 			scrollPanel.RemoveChildren();
 
-			var lines = Game.ModData.ModFiles.Open("AUTHORS").ReadAllLines();
+			var lines = modData.DefaultFileSystem.Open("AUTHORS").ReadAllLines();
 			foreach (var l in lines)
 			{
 				// Improve the formatting
