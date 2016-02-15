@@ -372,7 +372,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.ModData.RulesetCache.Load(Game.ModData.DefaultFileSystem, this);
+					return Game.ModData.RulesetCache.Load(this, this);
 				}
 				catch (Exception e)
 				{
@@ -1178,22 +1178,30 @@ namespace OpenRA
 		// Placeholders for future implementation
 		public Stream Open(string filename)
 		{
+			if (Container.Contains(filename))
+				return Container.GetStream(filename);
+
 			return Game.ModData.DefaultFileSystem.Open(filename);
 		}
 
 		public bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
 		{
+			// Packages aren't supported inside maps
 			return Game.ModData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
 		}
 
 		public bool TryOpen(string filename, out Stream s)
 		{
+			s = Container.GetStream(filename);
+			if (s != null)
+				return true;
+
 			return Game.ModData.DefaultFileSystem.TryOpen(filename, out s);
 		}
 
 		public bool Exists(string filename)
 		{
-			return Game.ModData.DefaultFileSystem.Exists(filename);
+			return Container.Contains(filename) || Game.ModData.DefaultFileSystem.Exists(filename);
 		}
 	}
 }
