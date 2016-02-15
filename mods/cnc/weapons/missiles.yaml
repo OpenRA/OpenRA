@@ -19,7 +19,7 @@ Rockets:
 		Damage: 35
 		ValidTargets: Ground, Air
 		Versus:
-			None: 50
+			None: 30
 			Wood: 85
 			Light: 100
 			Heavy: 100
@@ -227,7 +227,7 @@ MammothMissiles:
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
-			Wood: 75
+			Wood: 100
 			Light: 100
 			Heavy: 90
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
@@ -294,7 +294,7 @@ TowerMissle:
 		ValidTargets: Ground
 		Versus:
 			None: 50
-			Wood: 25
+			Wood: 100
 			Light: 100
 			Heavy: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
@@ -326,7 +326,7 @@ SAMMissile:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		Damage: 30
+		Damage: 35
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
