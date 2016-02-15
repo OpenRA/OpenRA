@@ -85,7 +85,7 @@ namespace OpenRA.Mods.AS.Warheads
 			return weapon.IsValidAgainst(victim, firedBy);
 		}
 
-		new public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
+		public new bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
 			return weapon.IsValidAgainst(victim, firedBy);
 		}
