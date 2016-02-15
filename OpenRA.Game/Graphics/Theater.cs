@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 			sheetBuilder = new SheetBuilder(type, allocate);
 			random = new MersenneTwister();
 
-			var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
+			var frameCache = new FrameCache(Game.ModData.DefaultFileSystem, Game.ModData.SpriteLoaders);
 			foreach (var t in tileset.Templates)
 			{
 				var variants = new List<Sprite[]>();

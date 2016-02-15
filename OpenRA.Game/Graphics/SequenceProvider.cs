@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -46,9 +47,9 @@ namespace OpenRA.Graphics
 		readonly Lazy<Sequences> sequences;
 		public readonly SpriteCache SpriteCache;
 
-		public SequenceProvider(SequenceCache cache, Map map)
+		public SequenceProvider(IReadOnlyFileSystem fileSystem, SequenceCache cache, Map map)
 		{
-			sequences = Exts.Lazy(() => cache.LoadSequences(map));
+			sequences = Exts.Lazy(() => cache.LoadSequences(fileSystem, map));
 			SpriteCache = cache.SpriteCache;
 		}
 
@@ -106,25 +107,25 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
 
-		public SequenceCache(ModData modData, TileSet tileSet)
+		public SequenceCache(ModData modData, IReadOnlyFileSystem fileSystem, TileSet tileSet)
 		{
 			this.modData = modData;
 			this.tileSet = tileSet;
 
 			// Every time we load a tile set, we create a sequence cache for it
-			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
+			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 		}
 
-		public Sequences LoadSequences(Map map)
+		public Sequences LoadSequences(IReadOnlyFileSystem fileSystem, Map map)
 		{
 			using (new Support.PerfTimer("LoadSequences"))
-				return Load(map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
+				return Load(fileSystem, map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
 		}
 
-		Sequences Load(List<MiniYamlNode> sequenceNodes)
+		Sequences Load(IReadOnlyFileSystem fileSystem, List<MiniYamlNode> sequenceNodes)
 		{
 			var nodes = MiniYaml.Merge(modData.Manifest.Sequences
-				.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s)))
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s)))
 				.Append(sequenceNodes));
 
 			var items = new Dictionary<string, UnitSequences>();

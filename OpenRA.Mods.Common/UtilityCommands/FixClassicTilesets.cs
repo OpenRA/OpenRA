@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			modData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
+			modData.ModFiles.LoadFromManifest(modData.Manifest);
 
 			var imageField = typeof(TerrainTemplateInfo).GetField("Image");
 			var pickAnyField = typeof(TerrainTemplateInfo).GetField("PickAny");
@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var single = new int2(1, 1);
 			var exts = new[] { "" }.Concat(args[1].Split(','));
 
-			foreach (var t in Game.ModData.Manifest.TileSets)
+			foreach (var t in modData.Manifest.TileSets)
 			{
-				var ts = new TileSet(Game.ModData, t);
-				var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
+				var ts = new TileSet(modData, t);
+				var frameCache = new FrameCache(modData.DefaultFileSystem, modData.SpriteLoaders);
 
 				Console.WriteLine("Tileset: " + ts.Name);
 				foreach (var template in ts.Templates.Values)

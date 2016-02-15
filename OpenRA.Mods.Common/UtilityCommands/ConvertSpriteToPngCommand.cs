@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var palette = new ImmutablePalette(args[2], shadowIndex);
 
-			var frames = SpriteLoader.GetFrames(src, modData.SpriteLoaders);
+			var frames = SpriteLoader.GetFrames(modData.DefaultFileSystem, src, modData.SpriteLoaders);
 
 			var usePadding = !args.Contains("--nopadding");
 			var count = 0;

@@ -56,17 +56,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var maps = new List<Map>();
 				if (args.Length < 2)
 				{
-					Console.WriteLine("Testing mod: {0}".F(Game.ModData.Manifest.Mod.Title));
+					Console.WriteLine("Testing mod: {0}".F(modData.Manifest.Mod.Title));
 
 					// Run all rule checks on the default mod rules.
-					CheckRules(Game.ModData.DefaultRules);
+					CheckRules(modData, modData.DefaultRules);
 
 					// Run all generic (not mod-level) checks here.
-					foreach (var customPassType in Game.ModData.ObjectCreator.GetTypesImplementing<ILintPass>())
+					foreach (var customPassType in modData.ObjectCreator.GetTypesImplementing<ILintPass>())
 					{
 						try
 						{
-							var customPass = (ILintPass)Game.ModData.ObjectCreator.CreateBasic(customPassType);
+							var customPass = (ILintPass)modData.ObjectCreator.CreateBasic(customPassType);
 							customPass.Run(EmitError, EmitWarning);
 						}
 						catch (Exception e)
@@ -75,8 +75,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					Game.ModData.MapCache.LoadMaps();
-					maps.AddRange(Game.ModData.MapCache
+					modData.MapCache.LoadMaps();
+					maps.AddRange(modData.MapCache
 						.Where(m => m.Status == MapStatus.Available)
 						.Select(m => new Map(m.Path)));
 				}
@@ -90,14 +90,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					// Run all rule checks on the map if it defines custom rules.
 					if (testMap.RuleDefinitions.Any() || testMap.VoiceDefinitions.Any() || testMap.WeaponDefinitions.Any())
-						CheckRules(testMap.Rules, testMap);
+						CheckRules(modData, testMap.Rules, testMap);
 
 					// Run all map-level checks here.
-					foreach (var customMapPassType in Game.ModData.ObjectCreator.GetTypesImplementing<ILintMapPass>())
+					foreach (var customMapPassType in modData.ObjectCreator.GetTypesImplementing<ILintMapPass>())
 					{
 						try
 						{
-							var customMapPass = (ILintMapPass)Game.ModData.ObjectCreator.CreateBasic(customMapPassType);
+							var customMapPass = (ILintMapPass)modData.ObjectCreator.CreateBasic(customMapPassType);
 							customMapPass.Run(EmitError, EmitWarning, testMap);
 						}
 						catch (Exception e)
@@ -120,14 +120,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		void CheckRules(Ruleset rules, Map map = null)
+		void CheckRules(ModData modData, Ruleset rules, Map map = null)
 		{
-			foreach (var customRulesPassType in Game.ModData.ObjectCreator.GetTypesImplementing<ILintRulesPass>())
+			foreach (var customRulesPassType in modData.ObjectCreator.GetTypesImplementing<ILintRulesPass>())
 			{
 				try
 				{
-					Game.ModData.RulesetCache.Load(map);
-					var customRulesPass = (ILintRulesPass)Game.ModData.ObjectCreator.CreateBasic(customRulesPassType);
+					modData.RulesetCache.Load(modData.DefaultFileSystem, map);
+					var customRulesPass = (ILintRulesPass)modData.ObjectCreator.CreateBasic(customRulesPassType);
 					customRulesPass.Run(EmitError, EmitWarning, rules);
 				}
 				catch (Exception e)

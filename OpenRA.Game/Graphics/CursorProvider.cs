@@ -21,8 +21,9 @@ namespace OpenRA.Graphics
 
 		public CursorProvider(ModData modData)
 		{
+			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
-				s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
+				s => MiniYaml.FromStream(fileSystem.Open(s))));
 
 			var shadowIndex = new int[] { };
 
@@ -36,11 +37,11 @@ namespace OpenRA.Graphics
 
 			var palettes = new Dictionary<string, ImmutablePalette>();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palettes.Add(p.Key, new ImmutablePalette(modData.ModFiles.Open(p.Value.Value), shadowIndex));
+				palettes.Add(p.Key, new ImmutablePalette(fileSystem.Open(p.Value.Value), shadowIndex));
 
 			Palettes = palettes.AsReadOnly();
 
-			var frameCache = new FrameCache(modData.SpriteLoaders);
+			var frameCache = new FrameCache(fileSystem, modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				foreach (var sequence in s.Value.Nodes)

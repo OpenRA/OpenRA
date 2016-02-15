@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			Rules = Game.ModData.RulesetCache.Load();
+			Rules = modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var filename = args[1];
-			using (var stream = Game.ModData.ModFiles.Open(filename))
+			using (var stream = modData.ModFiles.Open(filename))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				Map.Description = ExtractBriefing(file);
 
-				Map.RequiresMod = Game.ModData.Manifest.Mod.Id;
+				Map.RequiresMod = modData.Manifest.Mod.Id;
 
 				SetBounds(Map, mapSection);
 

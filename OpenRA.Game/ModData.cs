@@ -72,7 +72,7 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.Load());
+			defaultRules = Exts.Lazy(() => RulesetCache.Load(DefaultFileSystem));
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}

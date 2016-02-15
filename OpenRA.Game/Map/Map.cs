@@ -372,7 +372,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.ModData.RulesetCache.Load(this);
+					return Game.ModData.RulesetCache.Load(Game.ModData.DefaultFileSystem, this);
 				}
 				catch (Exception e)
 				{
