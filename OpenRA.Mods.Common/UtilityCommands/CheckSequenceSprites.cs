@@ -28,8 +28,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-
-			modData.ModFiles.LoadFromManifest(modData.Manifest);
 			modData.SpriteSequenceLoader.OnMissingSpriteError = s => Console.WriteLine("\t" + s);
 
 			foreach (var t in modData.Manifest.TileSets)

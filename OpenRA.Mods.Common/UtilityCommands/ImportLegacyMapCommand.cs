@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Rules = modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var filename = args[1];
-			using (var stream = modData.ModFiles.Open(filename))
+			using (var stream = modData.DefaultFileSystem.Open(filename))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");

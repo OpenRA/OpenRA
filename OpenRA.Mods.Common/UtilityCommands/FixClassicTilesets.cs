@@ -31,7 +31,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			modData.ModFiles.LoadFromManifest(modData.Manifest);
 
 			var imageField = typeof(TerrainTemplateInfo).GetField("Image");
 			var pickAnyField = typeof(TerrainTemplateInfo).GetField("PickAny");
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (modData.ModFiles.TryOpen(template.Images[0] + ext, out s))
+						if (modData.DefaultFileSystem.TryOpen(template.Images[0] + ext, out s))
 							s.Dispose();
 						else
 							continue;
