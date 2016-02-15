@@ -124,4 +124,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType, out CVec facing);
 		void SetDirty();
 	}
+
+	[RequireExplicitImplementation]
+	interface INotifyInsufficientFunds
+	{
+		void InsufficientFunds(Actor self);
+		void SufficientFunds(Actor self);
+	}
 }
