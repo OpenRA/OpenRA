@@ -85,7 +85,7 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		public void InitializeLoaders()
+		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{
 			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
@@ -94,7 +94,7 @@ namespace OpenRA
 
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
-			VoxelLoader = new VoxelLoader();
+			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
 		}
@@ -164,11 +164,12 @@ namespace OpenRA
 
 			// Operate on a copy of the map to avoid gameplay state leaking into the cache
 			var map = new Map(MapCache[uid].Path);
+			var fileSystem = DefaultFileSystem;
 
 			LoadTranslations(map);
 
 			// Reinitialize all our assets
-			InitializeLoaders();
+			InitializeLoaders(fileSystem);
 			ModFiles.LoadFromManifest(Manifest);
 
 			// Mount map package so custom assets can be used.
@@ -182,9 +183,9 @@ namespace OpenRA
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
 				foreach (var entry in map.Rules.Music)
-					entry.Value.Load(DefaultFileSystem);
+					entry.Value.Load(fileSystem);
 
-			VoxelProvider.Initialize(this, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelProvider.Initialize(VoxelLoader, fileSystem, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 			VoxelLoader.Finish();
 
 			return map;

@@ -363,7 +363,7 @@ namespace OpenRA
 				return;
 			}
 
-			ModData.InitializeLoaders();
+			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
 
 			if (Cursor != null)
