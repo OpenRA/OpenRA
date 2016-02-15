@@ -170,6 +170,8 @@ World:
 	StartGameNotification:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
+	IceLayer:
+	RenderIceState:
 
 EditorWorld:
 	Inherits: ^BaseWorld
