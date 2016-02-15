@@ -21,7 +21,7 @@ namespace OpenRA.Widgets
 		{
 			data = new Dictionary<string, string>();
 			var metrics = MiniYaml.Merge(modData.Manifest.ChromeMetrics.Select(
-				y => MiniYaml.FromStream(modData.ModFiles.Open(y))));
+				y => MiniYaml.FromStream(modData.DefaultFileSystem.Open(y))));
 			foreach (var m in metrics)
 				foreach (var n in m.Value.Nodes)
 					data[n.Key] = n.Value.Value;

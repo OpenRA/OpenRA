@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			var res = Game.Renderer.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
-			using (var stream = modData.ModFiles.Open(info["Image"]))
+			using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
 			{
 				var sheet = new Sheet(SheetType.BGRA, stream);
 				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.Alpha);
