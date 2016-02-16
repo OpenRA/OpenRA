@@ -83,7 +83,7 @@ Grenade:
 		Versus:
 			None: 100
 			Wood: 50
-			Light: 75
+			Light: 80
 			Heavy: 35
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge

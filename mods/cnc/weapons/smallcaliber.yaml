@@ -25,7 +25,7 @@ HighV:
 			None: 100
 			Wood: 50
 			Light: 70
-			Heavy: 35
+			Heavy: 30
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
