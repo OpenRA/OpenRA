@@ -70,6 +70,7 @@ ide = {
       autoreload = true,
       indentguide = true,
       backspaceunindent = true,
+      linenumber = true,
     },
     debugger = {
       verbose = false,

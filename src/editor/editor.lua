@@ -721,7 +721,7 @@ function CreateEditor(bare)
   editor:SetMarginType(margin.LINENUMBER, wxstc.wxSTC_MARGIN_NUMBER)
   editor:SetMarginMask(margin.LINENUMBER, 0)
   editor:SetMarginWidth(margin.LINENUMBER,
-    math.floor(linenumlen * editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, "8")))
+    edcfg.linenumber and math.floor(linenumlen * editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, "8")) or 0)
 
   editor:SetMarginWidth(margin.MARKER, 18)
   editor:SetMarginType(margin.MARKER, wxstc.wxSTC_MARGIN_SYMBOL)
