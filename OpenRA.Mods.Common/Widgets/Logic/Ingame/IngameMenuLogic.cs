@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget menu;
 
 		[ObjectCreator.UseCtor]
-		public IngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer, IngameInfoPanel activePanel)
+		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer, IngameInfoPanel activePanel)
 		{
 			var leaving = false;
 			menu = widget.Get("INGAME_MENU");
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mpe != null)
 				mpe.Fade(mpe.Info.MenuEffect);
 
-			menu.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
+			menu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Mod.Version;
 
 			var hideMenu = false;
 			menu.Get("MENU_BUTTONS").IsVisible = () => !hideMenu;

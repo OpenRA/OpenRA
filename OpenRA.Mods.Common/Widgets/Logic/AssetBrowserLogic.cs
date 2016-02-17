@@ -48,11 +48,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int currentFrame;
 
 		[ObjectCreator.UseCtor]
-		public AssetBrowserLogic(Widget widget, Action onExit, World world, Dictionary<string, MiniYaml> logicArgs)
+		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
-			modData = Game.ModData;
-
+			this.modData = modData;
 			panel = widget;
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");

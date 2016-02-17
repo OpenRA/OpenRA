@@ -16,10 +16,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoBriefingLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoBriefingLogic(Widget widget, World world)
+		public GameInfoBriefingLogic(Widget widget, ModData modData, World world)
 		{
 			var previewWidget = widget.Get<MapPreviewWidget>("MAP_PREVIEW");
-			previewWidget.Preview = () => Game.ModData.MapCache[world.Map.Uid];
+			previewWidget.Preview = () => modData.MapCache[world.Map.Uid];
 
 			var mapDescriptionPanel = widget.Get<ScrollPanelWidget>("MAP_DESCRIPTION_PANEL");
 			var mapDescription = widget.Get<LabelWidget>("MAP_DESCRIPTION");

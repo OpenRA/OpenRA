@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MusicInfo currentSong = null;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, Ruleset modRules, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, ModData modData, Ruleset modRules, World world, Action onExit)
 		{
 			var panel = widget;
 
@@ -107,11 +107,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (installButton != null)
 			{
 				installButton.IsDisabled = () => world.Type != WorldType.Shellmap;
-				var args = new[] { "installMusic={0}".F(Game.ModData.Manifest.Mod.Id) };
+				var args = new[] { "installMusic={0}".F(modData.Manifest.Mod.Id) };
 				installButton.OnClick = () =>
 					Game.RunAfterTick(() => Game.InitializeMod("modchooser", new Arguments(args)));
 
-				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
+				var installData = modData.Manifest.Get<ContentInstaller>();
 				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
 			}
 

@@ -25,14 +25,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool allowPortForward;
 
 		[ObjectCreator.UseCtor]
-		public ServerCreationLogic(Widget widget, Action onExit, Action openLobby)
+		public ServerCreationLogic(Widget widget, ModData modData, Action onExit, Action openLobby)
 		{
 			panel = widget;
 			onCreate = openLobby;
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			preview = Game.ModData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
+			preview = modData.MapCache[WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map)];
 
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "initialMap", preview.Uid },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", () => { } },
-						{ "onSelect", (Action<string>)(uid => preview = Game.ModData.MapCache[uid]) },
+						{ "onSelect", (Action<string>)(uid => preview = modData.MapCache[uid]) },
 						{ "filter", MapVisibility.Lobby },
 						{ "onStart", () => { } }
 					});

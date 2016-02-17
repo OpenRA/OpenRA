@@ -18,10 +18,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class CreditsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CreditsLogic(Widget widget, Action onExit)
+		public CreditsLogic(Widget widget, ModData modData, Action onExit)
 		{
 			var panel = widget.Get("CREDITS_PANEL");
-			var modData = Game.ModData;
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{

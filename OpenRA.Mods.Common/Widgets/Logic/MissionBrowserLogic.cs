@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string gameSpeed;
 
 		[ObjectCreator.UseCtor]
-		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
+		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit)
 		{
-			modData = Game.ModData;
 			mapCache = new Cache<MapPreview, Map>(p => new Map(modData, p.Package));
+			this.modData = modData;
 			this.onStart = onStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (gameSpeedButton != null)
 			{
-				var speeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
 				gameSpeed = "default";
 
 				gameSpeedButton.GetText = () => speeds[gameSpeed].Name;

@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public MainMenuLogic(Widget widget, World world)
+		public MainMenuLogic(Widget widget, World world, ModData modData)
 		{
 			rootMenu = widget;
-			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = Game.ModData.Manifest.Mod.Version;
+			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Mod.Version;
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.Settings.Game.PreviousMod = Game.ModData.Manifest.Mod.Id;
+					Game.Settings.Game.PreviousMod = modData.Manifest.Mod.Id;
 					Game.InitializeMod("modchooser", null);
 				});
 			};
@@ -103,8 +103,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			var hasCampaign = Game.ModData.Manifest.Missions.Any();
-			var hasMissions = Game.ModData.MapCache
+			var hasCampaign = modData.Manifest.Missions.Any();
+			var hasMissions = modData.MapCache
 				.Any(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector));
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var onSelect = new Action<string>(uid =>
 			{
 				RemoveShellmapUI();
-				LoadMapIntoEditor(Game.ModData.MapCache[uid].Uid);
+				LoadMapIntoEditor(modData.MapCache[uid].Uid);
 			});
 
 			var newMapButton = widget.Get<ButtonWidget>("NEW_MAP_BUTTON");
