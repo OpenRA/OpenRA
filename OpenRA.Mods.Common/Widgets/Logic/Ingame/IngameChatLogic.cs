@@ -39,10 +39,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool teamChat;
 
 		[ObjectCreator.UseCtor]
-		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, Ruleset modRules)
+		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData)
 		{
 			this.orderManager = orderManager;
-			this.modRules = modRules;
+			this.modRules = modData.DefaultRules;
 
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 

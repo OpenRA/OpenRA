@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MusicInfo currentSong = null;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, ModData modData, Ruleset modRules, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, ModData modData, World world, Action onExit)
 		{
 			var panel = widget;
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.RunAfterTick(() => Game.InitializeMod("modchooser", new Arguments(args)));
 
 				var installData = modData.Manifest.Get<ContentInstaller>();
-				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
+				installButton.IsVisible = () => modData.DefaultRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
 			}
 
 			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");

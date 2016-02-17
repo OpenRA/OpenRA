@@ -86,9 +86,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public ScrollPanelWidget(Ruleset modRules)
+		public ScrollPanelWidget(ModData modData)
 		{
-			this.modRules = modRules;
+			this.modRules = modData.DefaultRules;
 
 			Layout = new ListLayout(this);
 		}

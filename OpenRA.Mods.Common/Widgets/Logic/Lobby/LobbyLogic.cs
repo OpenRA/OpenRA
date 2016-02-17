@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, OrderManager orderManager,
-			Action onExit, Action onStart, bool skirmishMode, Ruleset modRules)
+			Action onExit, Action onStart, bool skirmishMode)
 		{
 			MapPreview = MapCache.UnknownMap;
 			lobby = widget;
@@ -121,7 +121,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onStart = onStart;
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
-			this.modRules = modRules;
+
+			// TODO: This needs to be reworked to support per-map tech levels, bots, etc.
+			this.modRules = modData.DefaultRules;
 			shellmapWorld = worldRenderer.World;
 
 			orderManager.AddChatLine += AddChatLine;

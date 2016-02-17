@@ -46,9 +46,6 @@ namespace OpenRA
 
 		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node)
 		{
-			if (!args.ContainsKey("modRules"))
-				args = new WidgetArgs(args) { { "modRules", modData.DefaultRules } };
-
 			if (!args.ContainsKey("modData"))
 				args = new WidgetArgs(args) { { "modData", modData } };
 

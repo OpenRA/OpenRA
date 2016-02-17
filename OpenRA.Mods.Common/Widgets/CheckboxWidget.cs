@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
 
 		[ObjectCreator.UseCtor]
-		public CheckboxWidget(Ruleset modRules)
-			: base(modRules)
+		public CheckboxWidget(ModData modData)
+			: base(modData)
 		{
 			GetCheckType = () => CheckType;
 		}

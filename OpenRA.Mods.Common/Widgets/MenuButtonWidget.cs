@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly bool HideIngameUI = true;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonWidget(Ruleset modRules)
-			: base(modRules) { }
+		public MenuButtonWidget(ModData modData)
+			: base(modData) { }
 
 		protected MenuButtonWidget(MenuButtonWidget other)
 			: base(other)
