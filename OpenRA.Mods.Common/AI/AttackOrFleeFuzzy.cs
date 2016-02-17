@@ -18,24 +18,118 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	class AttackOrFleeFuzzy
+	sealed class AttackOrFleeFuzzy
 	{
-		MamdaniFuzzySystem fuzzyEngine;
-
-		public AttackOrFleeFuzzy()
+		static readonly string[] DefaultRulesNormalOwnHealth = new[]
 		{
-			InitializateFuzzyVariables();
-		}
+			"if ((OwnHealth is Normal) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Attack"
+		};
 
-		protected void AddFuzzyRule(string rule)
+		static readonly string[] DefaultRulesInjuredOwnHealth = new[]
 		{
-			fuzzyEngine.Rules.Add(fuzzyEngine.ParseRule(rule));
-		}
+			"if ((OwnHealth is Injured) " +
+			"and (EnemyHealth is NearDead) " +
+			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Attack",
 
-		protected void InitializateFuzzyVariables()
+			"if ((OwnHealth is Injured) " +
+			"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Attack",
+
+			"if ((OwnHealth is Injured) " +
+			"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and (RelativeAttackPower is Weak) " +
+			"and (RelativeSpeed is Slow)) " +
+			"then AttackOrFlee is Attack",
+
+			"if ((OwnHealth is Injured) " +
+			"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and (RelativeAttackPower is Weak) " +
+			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Flee",
+
+			"if ((OwnHealth is Injured) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
+			"and (RelativeSpeed is Slow)) " +
+			"then AttackOrFlee is Attack"
+		};
+
+		static readonly string[] DefaultRulesNearDeadOwnHealth = new[]
 		{
-			fuzzyEngine = new MamdaniFuzzySystem();
+			"if ((OwnHealth is NearDead) " +
+			"and (EnemyHealth is Injured) " +
+			"and (RelativeAttackPower is Equal) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal))) " +
+			"then AttackOrFlee is Attack",
 
+			"if ((OwnHealth is NearDead) " +
+			"and (EnemyHealth is NearDead) " +
+			"and (RelativeAttackPower is Weak) " +
+			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Flee",
+
+			"if ((OwnHealth is NearDead) " +
+			"and (EnemyHealth is Injured) " +
+			"and (RelativeAttackPower is Weak) " +
+			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Flee",
+
+			"if ((OwnHealth is NearDead) " +
+			"and (EnemyHealth is Normal) " +
+			"and (RelativeAttackPower is Weak) " +
+			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Flee",
+
+			"if (OwnHealth is NearDead) " +
+			"and (EnemyHealth is Normal) " +
+			"and (RelativeAttackPower is Equal) " +
+			"and (RelativeSpeed is Fast) " +
+			"then AttackOrFlee is Flee",
+
+			"if (OwnHealth is NearDead) " +
+			"and (EnemyHealth is Normal) " +
+			"and (RelativeAttackPower is Strong) " +
+			"and (RelativeSpeed is Fast) " +
+			"then AttackOrFlee is Flee",
+
+			"if (OwnHealth is NearDead) " +
+			"and (EnemyHealth is Injured) " +
+			"and (RelativeAttackPower is Equal) " +
+			"and (RelativeSpeed is Fast) " +
+			"then AttackOrFlee is Flee"
+		};
+
+		public static readonly AttackOrFleeFuzzy Default = new AttackOrFleeFuzzy(null, null, null);
+		public static readonly AttackOrFleeFuzzy Rush = new AttackOrFleeFuzzy(new[]
+		{
+			"if ((OwnHealth is Normal) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and (RelativeAttackPower is Strong) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Attack",
+
+			"if ((OwnHealth is Normal) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
+			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal)) " +
+			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
+			"then AttackOrFlee is Flee"
+		}, null, null);
+
+		readonly MamdaniFuzzySystem fuzzyEngine = new MamdaniFuzzySystem();
+
+		public AttackOrFleeFuzzy(
+			IEnumerable<string> rulesForNormalOwnHealth,
+			IEnumerable<string> rulesForInjuredOwnHealth,
+			IEnumerable<string> rulesForNeadDeadOwnHealth)
+		{
 			var playerHealthFuzzy = new FuzzyVariable("OwnHealth", 0.0, 100.0);
 			playerHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
 			playerHealthFuzzy.Terms.Add(new FuzzyTerm("Injured", new TrapezoidMembershipFunction(30, 50, 50, 70)));
@@ -65,112 +159,38 @@ namespace OpenRA.Mods.Common.AI
 			attackOrFleeFuzzy.Terms.Add(new FuzzyTerm("Flee", new TrapezoidMembershipFunction(25, 35, 35, 50)));
 			fuzzyEngine.Output.Add(attackOrFleeFuzzy);
 
-			AddingRulesForNormalOwnHealth();
-			AddingRulesForInjuredOwnHealth();
-			AddingRulesForNearDeadOwnHealth();
+			foreach (var rule in rulesForNormalOwnHealth ?? DefaultRulesNormalOwnHealth)
+				AddFuzzyRule(rule);
+			foreach (var rule in rulesForInjuredOwnHealth ?? DefaultRulesInjuredOwnHealth)
+				AddFuzzyRule(rule);
+			foreach (var rule in rulesForNeadDeadOwnHealth ?? DefaultRulesNearDeadOwnHealth)
+				AddFuzzyRule(rule);
 		}
 
-		protected virtual void AddingRulesForNormalOwnHealth()
+		void AddFuzzyRule(string rule)
 		{
-			AddFuzzyRule("if ((OwnHealth is Normal) " +
-				"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
-				"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
-				"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Attack");
-		}
-
-		protected virtual void AddingRulesForInjuredOwnHealth()
-		{
-			AddFuzzyRule("if ((OwnHealth is Injured) " +
-				"and (EnemyHealth is NearDead) " +
-				"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
-				"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Attack");
-
-			AddFuzzyRule("if ((OwnHealth is Injured) " +
-				"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
-				"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
-				"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Attack");
-
-			AddFuzzyRule("if ((OwnHealth is Injured) " +
-				"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
-				"and (RelativeAttackPower is Weak) " +
-				"and (RelativeSpeed is Slow)) " +
-				"then AttackOrFlee is Attack");
-
-			AddFuzzyRule("if ((OwnHealth is Injured) " +
-				"and ((EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
-				"and (RelativeAttackPower is Weak) " +
-				"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if ((OwnHealth is Injured) " +
-				"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
-				"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
-				"and (RelativeSpeed is Slow)) " +
-				"then AttackOrFlee is Attack");
-		}
-
-		protected virtual void AddingRulesForNearDeadOwnHealth()
-		{
-			AddFuzzyRule("if ((OwnHealth is NearDead) " +
-				"and (EnemyHealth is Injured) " +
-				"and (RelativeAttackPower is Equal) " +
-				"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal))) " +
-				"then AttackOrFlee is Attack");
-
-			AddFuzzyRule("if ((OwnHealth is NearDead) " +
-				"and (EnemyHealth is NearDead) " +
-				"and (RelativeAttackPower is Weak) " +
-				"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if ((OwnHealth is NearDead) " +
-				"and (EnemyHealth is Injured) " +
-				"and (RelativeAttackPower is Weak) " +
-				"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if ((OwnHealth is NearDead) " +
-				"and (EnemyHealth is Normal) " +
-				"and (RelativeAttackPower is Weak) " +
-				"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if (OwnHealth is NearDead) " +
-				"and (EnemyHealth is Normal) " +
-				"and (RelativeAttackPower is Equal) " +
-				"and (RelativeSpeed is Fast) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if (OwnHealth is NearDead) " +
-				"and (EnemyHealth is Normal) " +
-				"and (RelativeAttackPower is Strong) " +
-				"and (RelativeSpeed is Fast) " +
-				"then AttackOrFlee is Flee");
-
-			AddFuzzyRule("if (OwnHealth is NearDead) " +
-				"and (EnemyHealth is Injured) " +
-				"and (RelativeAttackPower is Equal) " +
-				"and (RelativeSpeed is Fast) " +
-				"then AttackOrFlee is Flee");
+			fuzzyEngine.Rules.Add(fuzzyEngine.ParseRule(rule));
 		}
 
 		public bool CanAttack(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
 		{
+			double attackChance;
 			var inputValues = new Dictionary<FuzzyVariable, double>();
-			inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), NormalizedHealth(ownUnits, 100));
-			inputValues.Add(fuzzyEngine.InputByName("EnemyHealth"), NormalizedHealth(enemyUnits, 100));
-			inputValues.Add(fuzzyEngine.InputByName("RelativeAttackPower"), RelativePower(ownUnits, enemyUnits));
-			inputValues.Add(fuzzyEngine.InputByName("RelativeSpeed"), RelativeSpeed(ownUnits, enemyUnits));
+			lock (fuzzyEngine)
+			{
+				inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), NormalizedHealth(ownUnits, 100));
+				inputValues.Add(fuzzyEngine.InputByName("EnemyHealth"), NormalizedHealth(enemyUnits, 100));
+				inputValues.Add(fuzzyEngine.InputByName("RelativeAttackPower"), RelativePower(ownUnits, enemyUnits));
+				inputValues.Add(fuzzyEngine.InputByName("RelativeSpeed"), RelativeSpeed(ownUnits, enemyUnits));
 
-			var result = fuzzyEngine.Calculate(inputValues);
-			var attackChance = result[fuzzyEngine.OutputByName("AttackOrFlee")];
+				var result = fuzzyEngine.Calculate(inputValues);
+				attackChance = result[fuzzyEngine.OutputByName("AttackOrFlee")];
+			}
+
 			return !double.IsNaN(attackChance) && attackChance < 30.0;
 		}
 
-		protected static float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
+		static float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
 		{
 			var sumOfMaxHp = 0;
 			var sumOfHp = 0;
@@ -189,7 +209,7 @@ namespace OpenRA.Mods.Common.AI
 			return (sumOfHp * normalizeByValue) / sumOfMaxHp;
 		}
 
-		protected float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBaseInfo>, a =>
 			{
@@ -206,12 +226,12 @@ namespace OpenRA.Mods.Common.AI
 			});
 		}
 
-		protected float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.TraitInfo<MobileInfo>().Speed);
 		}
 
-		protected static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
+		static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
 					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
 			if (!enemy.Any())
@@ -224,7 +244,7 @@ namespace OpenRA.Mods.Common.AI
 			return relative.Clamp(0.0f, 999.0f);
 		}
 
-		protected float SumOfValues<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
+		static float SumOfValues<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
 		{
 			var sum = 0;
 			foreach (var a in actors)
@@ -234,7 +254,7 @@ namespace OpenRA.Mods.Common.AI
 			return sum;
 		}
 
-		protected float Average<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
+		static float Average<TTraitInfo>(IEnumerable<Actor> actors, Func<Actor, int> getValue) where TTraitInfo : ITraitInfo
 		{
 			var sum = 0;
 			var countActors = 0;

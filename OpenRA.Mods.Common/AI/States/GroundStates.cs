@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.AI
 	{
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.ShouldFlee(owner, enemies => !owner.AttackOrFleeFuzzy.CanAttack(owner.Units, enemies));
+			return base.ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
 	}
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (enemyUnits.Any())
 			{
-				if (owner.AttackOrFleeFuzzy.CanAttack(owner.Units, enemyUnits))
+				if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 				{
 					foreach (var u in owner.Units)
 						owner.Bot.QueueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.TargetActor.Location });
