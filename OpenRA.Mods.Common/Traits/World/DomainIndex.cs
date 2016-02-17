@@ -98,13 +98,15 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var neighborDomain = domains[n];
 						if (CanTraverseTile(world, n))
+						{
 							neighborDomains.Add(neighborDomain);
 
-						// Set ourselves to the first non-dirty neighbor we find.
-						if (!found)
-						{
-							domains[cell] = neighborDomain;
-							found = true;
+							// Set ourselves to the first non-dirty neighbor we find.
+							if (!found)
+							{
+								domains[cell] = neighborDomain;
+								found = true;
+							}
 						}
 					}
 				}
