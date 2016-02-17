@@ -224,7 +224,7 @@ if [ $BUILD_WXLUA ]; then
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
   (cd modules/luamodule; make install)
   [ -f "$INSTALL_DIR/lib/libwx.dylib" ] || { echo "Error: libwx.dylib isn't found"; exit 1; }
-  [ "$WXLUABUILD" != "Debug" ] && strip -u -r "$INSTALL_DIR/bin/libwx.dylib"
+  [ "$WXLUABUILD" != "Debug" ] && strip -u -r "$INSTALL_DIR/lib/libwx.dylib"
   cd ../..
   rm -rf "$WXLUA_BASENAME"
 fi
