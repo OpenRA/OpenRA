@@ -101,9 +101,9 @@ if [ ! "$(which cmake)" ]; then
   exit 1
 fi
 
-# check for svn
-if [ ! "$(which svn)" ]; then
-  echo "Error: svn isn't found. Please install console SVN client."
+# check for git
+if [ ! "$(which git)" ]; then
+  echo "Error: git isn't found. Please install console GIT client."
   exit 1
 fi
 
