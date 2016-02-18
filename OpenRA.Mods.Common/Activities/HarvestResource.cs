@@ -21,12 +21,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly ResourceClaimLayer territory;
 		readonly ResourceLayer resLayer;
+		readonly BodyOrientation body;
 
 		public HarvestResource(Actor self)
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			facing = self.Trait<IFacing>();
+			body = self.Trait<BodyOrientation>();
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 		}
@@ -53,9 +55,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (harvInfo.HarvestFacings != 0)
 			{
 				var current = facing.Facing;
-				var desired = Util.QuantizeFacing(current, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
+				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
-					return Util.SequenceActivities(new Turn(self, desired), this);
+					return ActivityUtils.SequenceActivities(new Turn(self, desired), this);
 			}
 
 			var resource = resLayer.Harvest(self.Location);
@@ -71,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
+			return ActivityUtils.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }

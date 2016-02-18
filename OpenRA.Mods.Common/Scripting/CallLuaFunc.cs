@@ -12,7 +12,6 @@ using System;
 using Eluant;
 using OpenRA.Activities;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {

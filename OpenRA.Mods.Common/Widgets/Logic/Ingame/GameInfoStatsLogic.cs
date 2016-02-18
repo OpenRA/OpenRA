@@ -10,7 +10,6 @@
 
 using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoStatsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			var lp = world.LocalPlayer;
 
@@ -52,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var pp = p;
 				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = playerTemplate.Clone();
+				LobbyUtils.SetupClientWidget(item, client, orderManager, client.Bot == null);
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nameLabel.GetText = () =>
 				{
 					var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
-					if (client != null && client.State == Network.Session.ClientState.Disconnected)
+					if (client != null && client.State == Session.ClientState.Disconnected)
 						suffix = " (Gone)";
 
 					var sl = suffixLength.Update(suffix);

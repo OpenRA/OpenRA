@@ -6,6 +6,7 @@
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+	RenderDebugState:
 
 ^SpriteActor:
 	BodyOrientation:
@@ -43,7 +44,6 @@
 		Sequence: rank
 		Palette: ra
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
@@ -60,10 +60,8 @@
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: FFFFFF
-	WithDecoration@EMPDISABLE:
-		Image: emp
-		Sequence: idle
-		ReferencePoint: HCenter, VCenter
+	WithIdleOverlay@EMPDISABLE:
+		Sequence: emp-overlay
 		Palette: effect
 		UpgradeTypes: empdisable
 		ShowToEnemies: true
@@ -73,9 +71,27 @@
 		UpgradeTypes: empdisable
 		Modifier: 0
 
+^EmpDisableMobile:
+	Inherits: ^EmpDisable
+	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
+
+^Cloakable:
+	Cloak@CLOAKGENERATOR:
+		UpgradeTypes: cloakgenerator
+		UpgradeMinEnabledLevel: 1
+		InitialDelay: 0
+		CloakDelay: 90
+		IsPlayerPalette: true
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@3: ^Cloakable
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -101,12 +117,6 @@
 	Guardable:
 		Range: 3c0
 	Demolishable:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -177,6 +187,7 @@
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	Inherits@2: ^Cloakable
 	CombatDebugOverlay:
 	HiddenUnderShroud:
 	AppearsOnRadar:
@@ -206,12 +217,9 @@
 	Demolishable:
 	ScriptTriggers:
 	UpgradeManager:
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
+	Health:
+		Shape: Circle
+			Radius: 363
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -225,10 +233,12 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
+	Inherits@4: ^Cloakable
 	DrawLineToTarget:
 	Health:
-		Radius: 128
 		HP: 50
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: None
 	Valued:
@@ -288,7 +298,7 @@
 		CrushSound: squish6.aud
 	PoisonedByTiberium:
 	SpawnActorOnDeath:
-		Actor: vissml
+		Actor: visc_sml
 		Probability: 10
 		OwnerType: InternalName
 		InternalOwner: Creeps
@@ -305,12 +315,6 @@
 	DeathSounds@ZAPPED:
 		Voice: Zapped
 		DeathTypes: EnergyDeath
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -334,7 +338,7 @@
 
 ^Cyborg:
 	Inherits@1: ^Infantry
-	Inherits@2: ^EmpDisable
+	Inherits@2: ^EmpDisableMobile
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
@@ -361,7 +365,8 @@
 ^Vehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^EmpDisable
+	Inherits@3: ^EmpDisableMobile
+	Inherits@4: ^Cloakable
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -406,12 +411,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
 	MustBeDestroyed:
 	RenderSprites:
 	ThrowsShrapnel:
@@ -449,12 +448,17 @@
 
 ^CivilianVoxelVehicle:
 	Inherits: ^VoxelVehicle
-	-RenderSprites:
 	-MustBeDestroyed:
+
+^CivilianVoxelCrusher:
+	Inherits: ^CivilianVoxelVehicle
+	Mobile:
+		Crushes: wall, crate, infantry
 
 ^Aircraft:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^Cloakable
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: yes
@@ -469,6 +473,14 @@
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
+	Aircraft:
+		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
+		RepairBuildings: gadept
+		RearmBuildings: gahpad, nahpad
+		LandWhenIdle: no
+		Voice: Move
+		IdealSeparation: 853
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
@@ -489,31 +501,52 @@
 ^Helicopter:
 	Inherits: ^Aircraft
 	Aircraft:
-		RepairBuildings: gadept
-		RearmBuildings:
 		LandWhenIdle: no
 		CruiseAltitude: 2048
-		Voice: Move
-		AirborneUpgrades: airborne
 		CanHover: True
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 
 ^Plane:
 	Inherits: ^Aircraft
 	Aircraft:
-		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: no
 		CruiseAltitude: 2560
-		Voice: Move
-		AirborneUpgrades: airborne
 	ReturnOnIdle:
 
-^Viceroid:
+^AircraftHusk:
+	RenderVoxels:
+	RenderSprites:
+	WithVoxelBody:
+	BodyOrientation:
+		QuantizedFacings: 0
+		CameraPitch: 90
+	Aircraft:
+		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
+	Health:
+		HP: 280
+	Armor:
+		Type: Heavy
+	HiddenUnderFog:
+		Type: CenterPosition
+	AutoTargetIgnore:
+	ScriptTriggers:
+	Tooltip:
+		GenericName: Destroyed Aircraft
+	FallsToEarth:
+		Spins: true
+		Moves: true
+		Velocity: 86
+
+^Visceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	DrawLineToTarget:
 	Health:
-		Radius: 256
+		Shape: Circle
+			Radius: 256
 	Armor:
 		Type: Light
 	Mobile:
@@ -561,7 +594,7 @@
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
-	WithActiveAnimation:
+	WithIdleAnimation:
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -656,17 +689,24 @@
 	ActorLostNotification:
 
 ^Train:
-	Inherits@1: ^EmpDisable
+	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^Cloakable
 	RenderVoxels:
+	RenderSprites:
 	WithVoxelBody:
 	DrawLineToTarget:
 	Mobile:
 		TerrainSpeeds:
 			Rail: 100
+		Crushes: wall, crate, infantry
 		ROT: 5
 		Voice: Move
 		Speed: 113
+	Cargo:
+		Types: Infantry
+		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
 	Health:
 		HP: 100
 	Armor:
@@ -691,12 +731,6 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
-		InitialDelay: 0
-		CloakDelay: 90
-		IsPlayerPalette: true
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7
@@ -714,6 +748,8 @@
 		QuantizedFacings: 1
 
 ^Railway:
+	EditorOnlyTooltip:
+		Name: Railway
 	Inherits: ^TerrainOverlay
 
 ^Tunnel:
@@ -721,3 +757,51 @@
 	CustomSelectionSize:
 		CustomBounds: 220,220
 
+^Gate:
+	Inherits: ^Building
+	Valued:
+		Cost: 250
+	Health:
+		HP: 350
+	Armor:
+		Type: Heavy
+	LineBuildNode:
+		Types: wall, gate
+	-Building:
+	-Capturable:
+	-GivesBuildableArea:
+	-MustBeDestroyed:
+	-WithSpriteBody:
+	WithGateSpriteBody:
+	Power:
+	CanPowerDown:
+		IndicatorPalette: mouse
+	Tooltip:
+		Description: Automated barrier that opens for allied units.
+	Gate:
+		Adjacent: 4
+		BuildSounds: place2.aud
+		OpeningSound: gateup1.aud
+		ClosingSound: gatedwn1.aud
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		BlocksProjectilesHeight: 640
+
+^Gate_A:
+	Inherits: ^Gate
+	Gate:
+		Dimensions: 3,1
+		Footprint: xxx
+	WithGateSpriteBody:
+		WallConnections: -1,0, 3,0
+	LineBuildNode:
+		Connections: -1,0, 1,0
+
+^Gate_B:
+	Inherits: ^Gate
+	Gate:
+		Dimensions: 1,3
+		Footprint: x x x
+	WithGateSpriteBody:
+		WallConnections: 0,-1, 0,3
+	LineBuildNode:
+		Connections: 0,-1, 0,1

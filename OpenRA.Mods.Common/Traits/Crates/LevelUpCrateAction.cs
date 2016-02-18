@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var gainsExperience = recipient.TraitOrDefault<GainsExperience>();
 					if (gainsExperience != null)
-						gainsExperience.GiveLevels(((LevelUpCrateActionInfo)info).Levels);
+						gainsExperience.GiveLevels(info.Levels);
 				});
 			}
 

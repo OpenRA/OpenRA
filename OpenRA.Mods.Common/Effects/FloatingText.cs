@@ -29,11 +29,11 @@ namespace OpenRA.Mods.Common.Effects
 
 		public FloatingText(WPos pos, Color color, string text, int duration)
 		{
-			this.font = Game.Renderer.Fonts["TinyBold"];
+			font = Game.Renderer.Fonts["TinyBold"];
 			this.pos = pos;
 			this.color = color;
 			this.text = text;
-			this.remaining = duration;
+			remaining = duration;
 		}
 
 		public void Tick(World world)
@@ -49,7 +49,8 @@ namespace OpenRA.Mods.Common.Effects
 			if (wr.World.FogObscures(pos))
 				yield break;
 
-			yield return new TextRenderable(font, pos, 0, color, text);
+			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
+			yield return new TextRenderable(font, pos, 4096, color, text);
 		}
 
 		public static string FormatCashTick(int cashAmount)

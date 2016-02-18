@@ -10,10 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.FileSystem;
-using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -24,11 +21,12 @@ namespace OpenRA.Graphics
 
 		public CursorProvider(ModData modData)
 		{
-			var sequenceFiles = modData.Manifest.Cursors;
-			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
+			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
+				s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
+
 			var shadowIndex = new int[] { };
 
-			var nodesDict = sequences.ToDictionary();
+			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
 			if (nodesDict.ContainsKey("ShadowIndex"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
@@ -38,7 +36,7 @@ namespace OpenRA.Graphics
 
 			var palettes = new Dictionary<string, ImmutablePalette>();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palettes.Add(p.Key, new ImmutablePalette(GlobalFileSystem.Open(p.Value.Value), shadowIndex));
+				palettes.Add(p.Key, new ImmutablePalette(modData.ModFiles.Open(p.Value.Value), shadowIndex));
 
 			Palettes = palettes.AsReadOnly();
 

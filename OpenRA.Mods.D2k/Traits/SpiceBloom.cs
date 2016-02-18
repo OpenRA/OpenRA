@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
@@ -136,6 +135,7 @@ namespace OpenRA.Mods.D2k.Traits
 						.Select(a => a.GetInaccuracyModifier()).ToArray(),
 
 					Source = self.CenterPosition,
+					CurrentSource = () => self.CenterPosition,
 					SourceActor = self,
 					PassiveTarget = self.World.Map.CenterOfCell(cell.Value)
 				};

@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Activities
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		readonly Mobile mobile;
-		readonly IDisableMove[] moveDisablers;
 		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
 		readonly Actor ignoredActor;
@@ -43,7 +42,6 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () =>
 			{
@@ -55,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				return path;
 			};
 			this.destination = destination;
-			this.nearEnough = WDist.Zero;
+			nearEnough = WDist.Zero;
 		}
 
 		// HACK: for legacy code
@@ -65,7 +63,6 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPath(mobile.ToCell, destination, self);
@@ -76,7 +73,6 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
@@ -87,7 +83,6 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, Actor ignoredActor)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () =>
 			{
@@ -100,14 +95,13 @@ namespace OpenRA.Mods.Common.Activities
 			};
 
 			this.destination = destination;
-			this.nearEnough = WDist.Zero;
+			nearEnough = WDist.Zero;
 			this.ignoredActor = ignoredActor;
 		}
 
 		public Move(Actor self, Target target, WDist range)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			getPath = () =>
 			{
@@ -125,7 +119,6 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, Func<List<CPos>> getPath)
 		{
 			mobile = self.Trait<Mobile>();
-			moveDisablers = self.TraitsImplementing<IDisableMove>().ToArray();
 
 			this.getPath = getPath;
 
@@ -155,7 +148,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (moveDisablers.Any(d => d.MoveDisabled(self)))
+			if (mobile.IsTraitDisabled)
 				return this;
 
 			if (destination == mobile.ToCell)
@@ -189,7 +182,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				return Util.SequenceActivities(new Turn(self, firstFacing), this);
+				return ActivityUtils.SequenceActivities(new Turn(self, firstFacing), this);
 			}
 			else
 			{
@@ -227,12 +220,14 @@ namespace OpenRA.Mods.Common.Activities
 
 			var nextCell = path[path.Count - 1];
 
+			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
+
 			// Next cell in the move is blocked by another actor
-			if (!mobile.CanMoveFreelyInto(nextCell, ignoredActor, true))
+			if (containsTemporaryBlocker || !mobile.CanMoveFreelyInto(nextCell, ignoredActor, true))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
-				if ((mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange)
+				if (!containsTemporaryBlocker && (mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange)
 				{
 					path.Clear();
 					return null;

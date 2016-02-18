@@ -10,12 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -163,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 			NetWorth += t.Density * type.Info.ValuePerUnit;
 
 			var sprites = type.Variants[t.Variant];
-			var frame = int2.Lerp(0, sprites.Length - 1, t.Density - 1, type.Info.MaxDensity);
+			var frame = int2.Lerp(0, sprites.Length - 1, t.Density, type.Info.MaxDensity);
 			t.Sprite = sprites[frame];
 
 			return t;

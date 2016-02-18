@@ -103,19 +103,30 @@ SendAlliedUnits = function()
 	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 	Utils.Do(AlliedUnits, function(table)
 		Trigger.AfterDelay(table.delay, function()
-			Reinforcements.Reinforce(player, table.types, { StartEntryPoint.Location, StartMovePoint.Location }, 18)
+			local units = Reinforcements.Reinforce(player, table.types, { StartEntryPoint.Location, StartMovePoint.Location }, 18)
+
+			Utils.Do(units, function(unit)
+				if unit.Type == "e6" then
+					Engineer = unit
+					Trigger.OnKilled(unit, LandingPossible)
+				end
+			end)
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() InitialUnitsArrived = true end)
 end
 
-SuperTankDomeInfiltrated = function()
-	turkey.SetStance(player, "Ally")
-	turkey.SetStance(neutral, "Ally")
+LandingPossible = function()
+	if not beachReached and (USSRSpen.IsDead or Engineer.IsDead) and LstProduced < 1 then
+		 player.MarkFailedObjective(CrossRiver)
+	end
+end
 
+SuperTankDomeInfiltrated = function()
 	SuperTankAttack = true
 	Utils.Do(SuperTanks, function(tnk)
+		tnk.Owner = friendlyMadTanks
 		if not tnk.IsDead then
 			Trigger.ClearAll(tnk)
 			tnk.Stop()
@@ -263,6 +274,7 @@ InitPlayers = function()
 	ussr = Player.GetPlayer("USSR")
 	ukraine = Player.GetPlayer("Ukraine")
 	turkey = Player.GetPlayer("Turkey")
+	friendlyMadTanks = Player.GetPlayer("FriendlyMadTanks")
 
 	player.Cash = 0
 	ussr.Cash = 2000
@@ -278,7 +290,7 @@ InitObjectives = function()
 	end)
 
 	EliminateSuperTanks = player.AddPrimaryObjective("Eliminate these super tanks.")
-	CrossRiver = player.AddPrimaryObjective("Find a way to transport your forces to the mainland.")
+	CrossRiver = player.AddPrimaryObjective("Secure transport to the mainland.")
 	FindOutpost = player.AddPrimaryObjective("Find our outpost and start repairs on it.")
 	RescueCivilians = player.AddSecondaryObjective("Evacuate all civilians from the hospital.")
 	BadGuyObj = badguy.AddPrimaryObjective("Deny the destruction of the super tanks.")
@@ -398,6 +410,18 @@ InitTriggers = function()
 				if TestCamera.IsInWorld then TestCamera.Destroy() end
 				Trigger.RemoveProximityTrigger(id)
 			end
+		end
+	end)
+
+	LstProduced = 0
+	Trigger.OnKilled(USSRSpen, LandingPossible)
+	Trigger.OnProduction(USSRSpen, function(self, produced)
+		if produced.Type == "lst" then
+			LstProduced = LstProduced + 1
+			Trigger.OnKilled(produced, function()
+				LstProduced = LstProduced - 1
+				LandingPossible()
+			end)
 		end
 	end)
 end

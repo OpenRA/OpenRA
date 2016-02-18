@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
-	public class HuskInfo : IOccupySpaceInfo, IFacingInfo
+	public class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
 	{
 		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
 			this.info = info;
-			this.self = init.Self;
+			self = init.Self;
 
 			TopLeft = init.Get<LocationInit, CPos>();
 			CenterPosition = init.Contains<CenterPositionInit>() ? init.Get<CenterPositionInit, WPos>() : init.World.Map.CenterOfCell(TopLeft);

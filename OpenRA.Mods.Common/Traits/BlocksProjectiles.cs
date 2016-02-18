@@ -13,6 +13,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	public interface IBlocksProjectiles
+	{
+		WDist BlockingHeight { get; }
+	}
+
 	[Desc("This actor blocks bullets and missiles with 'Blockable' property.")]
 	public class BlocksProjectilesInfo : UpgradableTraitInfo
 	{
@@ -21,18 +27,47 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BlocksProjectiles(init.Self, this); }
 	}
 
-	public class BlocksProjectiles : UpgradableTrait<BlocksProjectilesInfo>
+	public class BlocksProjectiles : UpgradableTrait<BlocksProjectilesInfo>, IBlocksProjectiles
 	{
 		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
 			: base(info) { }
 
+		WDist IBlocksProjectiles.BlockingHeight { get { return Info.Height; } }
+
 		public static bool AnyBlockingActorAt(World world, WPos pos)
 		{
 			var dat = world.Map.DistanceAboveTerrain(pos);
+
 			return world.ActorMap.GetActorsAt(world.Map.CellContaining(pos))
-				.Any(a => a.TraitsImplementing<BlocksProjectiles>()
-					.Where(t => t.Info.Height.Length >= dat.Length)
+				.Any(a => a.TraitsImplementing<IBlocksProjectiles>()
+					.Where(t => t.BlockingHeight > dat)
 					.Any(Exts.IsTraitEnabled));
+		}
+
+		public static bool AnyBlockingActorsBetween(World world, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
+		{
+			var actors = world.FindActorsOnLine(start, end, width, overscan);
+			var length = (end - start).Length;
+
+			foreach (var a in actors)
+			{
+				var blockers = a.TraitsImplementing<IBlocksProjectiles>()
+					.Where(Exts.IsTraitEnabled).ToList();
+
+				if (!blockers.Any())
+					continue;
+
+				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
+				var dat = world.Map.DistanceAboveTerrain(hitPos);
+				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight > dat))
+				{
+					hit = hitPos;
+					return true;
+				}
+			}
+
+			hit = WPos.Zero;
+			return false;
 		}
 	}
 }

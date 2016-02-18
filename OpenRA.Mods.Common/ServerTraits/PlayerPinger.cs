@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;

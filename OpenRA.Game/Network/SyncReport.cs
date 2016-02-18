@@ -63,31 +63,29 @@ namespace OpenRA.Network
 			report.SyncedRandom = orderManager.World.SharedRandom.Last;
 			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
-			foreach (var a in orderManager.World.ActorsWithTrait<ISync>())
-			{
-				var sync = Sync.CalculateSyncHash(a.Trait);
-				if (sync != 0)
-					report.Traits.Add(new TraitReport()
-					{
-						ActorID = a.Actor.ActorID,
-						Type = a.Actor.Info.Name,
-						Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.PlayerName,
-						Trait = a.Trait.GetType().Name,
-						Hash = sync,
-						NamesValues = DumpSyncTrait(a.Trait)
-					});
-			}
+			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
+				foreach (var syncHash in actor.SyncHashes)
+					if (syncHash.Hash != 0)
+						report.Traits.Add(new TraitReport()
+						{
+							ActorID = actor.ActorID,
+							Type = actor.Info.Name,
+							Owner = (actor.Owner == null) ? "null" : actor.Owner.PlayerName,
+							Trait = syncHash.Trait.GetType().Name,
+							Hash = syncHash.Hash,
+							NamesValues = DumpSyncTrait(syncHash.Trait)
+						});
 
 			foreach (var e in orderManager.World.Effects)
 			{
 				var sync = e as ISync;
 				if (sync != null)
 				{
-					var hash = Sync.CalculateSyncHash(sync);
+					var hash = Sync.Hash(sync);
 					if (hash != 0)
 						report.Effects.Add(new EffectReport()
 						{
-							Name = sync.ToString().Split('.').Last(),
+							Name = sync.GetType().Name,
 							Hash = hash,
 							NamesValues = DumpSyncTrait(sync)
 						});
@@ -196,13 +194,20 @@ namespace OpenRA.Network
 
 			static Func<ISync, object> SerializableCopyOfMember(MemberExpression getMember, Type memberType, string name)
 			{
+				// We need to serialize a copy of the current value so if the sync report is generated, the values can
+				// be dumped as strings.
 				if (memberType.IsValueType)
 				{
-					// We can get a copy just by accessing the member since it is a value type.
+					// PERF: For value types we can avoid the overhead of calling ToString immediately. We can instead
+					// just box a copy of the current value into an object. This is faster than calling ToString. We
+					// can call ToString later when we generate the report. Most of the time, the sync report is never
+					// generated so we successfully avoid the overhead to calling ToString.
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
 					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { syncParam }).Compile();
 				}
 
+				// For reference types, we have to call ToString right away to get a snapshot of the value. We cannot
+				// delay, as calling ToString later may produce different results.
 				return MemberToString(getMember, memberType, name);
 			}
 

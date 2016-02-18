@@ -785,6 +785,25 @@ Smudges:
 	sc6 49,48 0:
 
 Rules:
+	^Palettes:
+		-PlayerColorPalette:
+		IndexedPlayerPalette:
+			BasePalette: terrain
+			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			PlayerIndex:
+				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+				AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
+				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+		IndexedPlayerPalette@units:
+			BasePalette: terrain
+			BaseName: player-units
+			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			PlayerIndex:
+				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+				AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
+				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
 	World:
 		-SpawnMPUnits:
 		-MPStartLocations:
@@ -804,18 +823,26 @@ Rules:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		RenderSprites:
+			PlayerPalette: player-units
 	^Tank:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		RenderSprites:
+			PlayerPalette: player-units
 	^Helicopter:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		RenderSprites:
+			PlayerPalette: player-units
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
+		RenderSprites:
+			PlayerPalette: player-units
 	^Plane:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -832,11 +859,13 @@ Rules:
 	^Wall:
 		Tooltip:
 			ShowOwnerRow: false
-	^Husk:
+	^CommonHuskDefaults:
 		Tooltip:
 			GenericVisibility: Enemy, Ally, Neutral
 			GenericStancePrefix: false
 			ShowOwnerRow: false
+		RenderSprites:
+			PlayerPalette: player-units
 	E2:
 		Buildable:
 			Prerequisites: ~pyle
@@ -857,12 +886,22 @@ Rules:
 			SearchFromOrderRadius: 24
 		Buildable:
 			Prerequisites: ~disabled
+		RenderSprites:
+			PlayerPalette: player
+	HARV.Husk:
+		RenderSprites:
+			PlayerPalette: player
 	LTNK:
 		Buildable:
 			Prerequisites: ~afld
 	MCV:
 		Buildable:
 			Prerequisites: ~disabled
+		RenderSprites:
+			PlayerPalette: player
+	MCV.Husk:
+		RenderSprites:
+			PlayerPalette: player
 	MTNK:
 		Buildable:
 			Prerequisites: ~disabled

@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 	public class ShpTDSprite
 	{
-		enum Format { Format20 = 0x20, Format40 = 0x40, Format80 = 0x80 }
+		enum Format { XORPrev = 0x20, XORLCW = 0x40, LCW = 0x80 }
 
 		class ImageHeader : ISpriteFrame
 		{
@@ -142,9 +142,9 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			for (var i = 0; i < imageCount; i++)
 			{
 				var h = headers[i];
-				if (h.Format == Format.Format20)
+				if (h.Format == Format.XORPrev)
 					h.RefImage = headers[i - 1];
-				else if (h.Format == Format.Format40 && !offsets.TryGetValue(h.RefOffset, out h.RefImage))
+				else if (h.Format == Format.XORLCW && !offsets.TryGetValue(h.RefOffset, out h.RefImage))
 					throw new InvalidDataException("Reference doesn't point to image data {0}->{1}".F(h.FileOffset, h.RefOffset));
 			}
 
@@ -166,8 +166,8 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 			switch (h.Format)
 			{
-				case Format.Format20:
-				case Format.Format40:
+				case Format.XORPrev:
+				case Format.XORLCW:
 					{
 						if (h.RefImage.Data == null)
 						{
@@ -177,14 +177,14 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 						}
 
 						h.Data = CopyImageData(h.RefImage.Data);
-						Format40.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
+						XORDeltaCompression.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
 						break;
 					}
 
-				case Format.Format80:
+				case Format.LCW:
 					{
 						var imageBytes = new byte[Size.Width * Size.Height];
-						Format80.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
+						LCWCompression.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
 						h.Data = imageBytes;
 						break;
 					}
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
 		{
-			var compressedFrames = frames.Select(f => Format80.Encode(f)).ToList();
+			var compressedFrames = frames.Select(f => LCWCompression.Encode(f)).ToList();
 
 			// note: end-of-file and all-zeroes headers
 			var dataOffset = 14 + (compressedFrames.Count + 2) * 8;
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 				foreach (var f in compressedFrames)
 				{
-					var ih = new ImageHeader { Format = Format.Format80, FileOffset = (uint)dataOffset };
+					var ih = new ImageHeader { Format = Format.LCW, FileOffset = (uint)dataOffset };
 					dataOffset += f.Length;
 
 					ih.WriteTo(bw);

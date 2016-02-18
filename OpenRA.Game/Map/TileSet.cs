@@ -53,6 +53,7 @@ namespace OpenRA
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
 		public readonly bool IsWater = false; // TODO: Remove this
 		public readonly Color Color;
+		public readonly bool RestrictPlayerColor = false;
 		public readonly string CustomCursor;
 
 		// Private default ctor for serialization comparison
@@ -73,14 +74,15 @@ namespace OpenRA
 		public readonly int2 Size;
 		public readonly bool PickAny;
 		public readonly string Category;
+		public readonly string Palette;
 
 		readonly TerrainTileInfo[] tileInfo;
 
 		public TerrainTemplateInfo(ushort id, string[] images, int2 size, byte[] tiles)
 		{
-			this.Id = id;
-			this.Images = images;
-			this.Size = size;
+			Id = id;
+			Images = images;
+			Size = size;
 		}
 
 		public TerrainTemplateInfo(TileSet tileSet, MiniYaml my)
@@ -166,6 +168,8 @@ namespace OpenRA
 
 	public class TileSet
 	{
+		public const string TerrainPaletteInternalName = "terrain";
+
 		public readonly string Name;
 		public readonly string Id;
 		public readonly int SheetSize = 512;
@@ -189,7 +193,7 @@ namespace OpenRA
 
 		public TileSet(ModData modData, string filepath)
 		{
-			var yaml = MiniYaml.DictFromFile(filepath);
+			var yaml = MiniYaml.DictFromStream(modData.ModFiles.Open(filepath));
 
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

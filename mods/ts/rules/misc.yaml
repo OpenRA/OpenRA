@@ -1,4 +1,6 @@
 mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -8,6 +10,8 @@ mpspawn:
 		QuantizedFacings: 1
 
 waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -32,6 +36,8 @@ waypoint:
 		Palette: colorpicker
 
 CAMERA:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
 	AlwaysVisible:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
@@ -138,6 +144,9 @@ CRAT0A:
 CRAT0B:
 	Inherits: ^Box
 
+CRAT0C:
+	Inherits: ^Box
+
 DRUM01:
 	Inherits: ^Drum
 
@@ -215,4 +224,3 @@ TUNTOP03:
 
 TUNTOP04:
 	Inherits: ^Tunnel
-

@@ -668,7 +668,7 @@ Actors:
 		Location: 99,56
 		Owner: Greece
 		SubCell: 3
-	GoalGuard5: e7
+	Tanya: e7
 		Location: 75,54
 		Owner: Greece
 		Facing: 128
@@ -878,7 +878,7 @@ Weapons:
 	M1CarbineInterior:
 		ReloadDelay: 20
 		Range: 3c0
-		Report: GUN11.AUD
+		Report: gun11.aud
 		Projectile: Bullet
 			Speed: 1c682
 		Warhead@1Dam: SpreadDamage
@@ -891,10 +891,10 @@ Weapons:
 				Concrete: 10
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@2Eff: CreateEffect
-			Explosion: piffs
+			Explosions: piffs
 			InvalidImpactTypes: Water
 		Warhead@3EffWater: CreateEffect
-			Explosion: water_piffs
+			Explosions: water_piffs
 			ValidImpactTypes: Water
 	FireballLauncherInterior:
 		ReloadDelay: 65
@@ -918,8 +918,8 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Scorch
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
+			Explosions: napalm
+			ImpactSounds: firebl3.aud
 	MissionBarrelExplodeInterior:
 		Warhead@1Dam: SpreadDamage
 			Spread: 350
@@ -938,8 +938,8 @@ Weapons:
 			Size: 2,1
 			Delay: 5
 		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
+			Explosions: napalm
+			ImpactSounds: firebl3.aud
 			Delay: 5
 
 Voices:

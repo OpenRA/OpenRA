@@ -1,5 +1,5 @@
 APC:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -27,12 +27,16 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 	-WithVoxelBody:
 	WithVoxelWaterBody:
 	LeavesTrails:
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
+		StationaryInterval: 18
+		MovingInterval: 6
 
 HVR:
 	Inherits: ^VoxelVehicle
@@ -60,7 +64,7 @@ HVR:
 	Health:
 		HP: 230
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 7c0
 	Armament:
@@ -78,9 +82,12 @@ HVR:
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
+		TrailWhileStationary: True
+		StationaryInterval: 18
+		MovingInterval: 6
 
 SMECH:
-	Inherits: ^Tank
+	Inherits: ^Vehicle
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -145,7 +152,7 @@ MMCH:
 		ROT: 5
 	AttackTurreted:
 		Voice: Attack
-	WithTurret:
+	WithSpriteTurret:
 		Recoils: no
 	Armament:
 		Weapon: 120mm
@@ -207,6 +214,8 @@ SONIC:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaweap, gatech
+	Targetable:
+		TargetTypes: Ground, Vehicle, Repair, Disruptor
 	Mobile:
 		ROT: 4
 		Speed: 56
@@ -227,4 +236,3 @@ SONIC:
 		Offset: -170,0,0
 	AutoTarget:
 	WithVoxelTurret:
-

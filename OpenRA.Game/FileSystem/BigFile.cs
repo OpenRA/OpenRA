@@ -15,19 +15,19 @@ using System.Linq;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BigFile : IFolder
+	public sealed class BigFile : IReadOnlyPackage
 	{
 		public string Name { get; private set; }
-		public int Priority { get; private set; }
-		readonly Dictionary<string, Entry> entries = new Dictionary<string, Entry>();
+		public IEnumerable<string> Contents { get { return index.Keys; } }
+
+		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 		readonly Stream s;
 
-		public BigFile(string filename, int priority)
+		public BigFile(FileSystem context, string filename)
 		{
 			Name = filename;
-			Priority = priority;
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 			try
 			{
 				if (s.ReadASCII(4) != "BIGF")
@@ -47,7 +47,7 @@ namespace OpenRA.FileSystem
 				for (var i = 0; i < entryCount; i++)
 				{
 					var entry = new Entry(s);
-					entries.Add(entry.Path, entry);
+					index.Add(entry.Path, entry);
 				}
 			}
 			catch
@@ -86,34 +86,14 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
-			return entries[filename].GetData();
+			return index[filename].GetData();
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
-			return entries.ContainsKey(filename);
-		}
-
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return entries.Keys.Select(filename => PackageEntry.HashFilename(filename, PackageHashType.Classic));
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			return Enumerable.Empty<uint>();
-		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			return entries.Keys;
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			throw new NotImplementedException();
+			return index.ContainsKey(filename);
 		}
 
 		public void Dispose()

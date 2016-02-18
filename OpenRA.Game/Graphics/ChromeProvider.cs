@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 		static Dictionary<string, Sheet> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
 
-		public static void Initialize(IEnumerable<string> chromeFiles)
+		public static void Initialize(ModData modData)
 		{
 			Deinitialize();
 
@@ -33,7 +33,8 @@ namespace OpenRA.Graphics
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 
-			var chrome = chromeFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal);
+			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
+				.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
 
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);
@@ -106,7 +107,9 @@ namespace OpenRA.Graphics
 				sheet = cachedSheets[mi.Src];
 			else
 			{
-				sheet = new Sheet(SheetType.BGRA, mi.Src);
+				using (var stream = Game.ModData.ModFiles.Open(mi.Src))
+					sheet = new Sheet(SheetType.BGRA, stream);
+
 				cachedSheets.Add(mi.Src, sheet);
 			}
 

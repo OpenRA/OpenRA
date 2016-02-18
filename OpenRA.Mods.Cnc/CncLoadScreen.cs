@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Widgets;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Cnc
 		Rectangle bounds;
 		Renderer r;
 
-		public override void Init(Manifest m, Dictionary<string, string> info)
+		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			loadInfo = info;
 
@@ -41,7 +42,9 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			sheet = new Sheet(SheetType.BGRA, Platform.ResolvePath(loadInfo["Image"]));
+			using (var stream = modData.ModFiles.Open(info["Image"]))
+				sheet = new Sheet(SheetType.BGRA, stream);
+
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
@@ -64,7 +67,7 @@ namespace OpenRA.Mods.Cnc
 			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
-			versionText = m.Mod.Version;
+			versionText = modData.Manifest.Mod.Version;
 		}
 
 		bool setup;
@@ -121,12 +124,12 @@ namespace OpenRA.Mods.Cnc
 			r.EndFrame(nih);
 		}
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
-			if (sheet != null)
+			if (disposing && sheet != null)
 				sheet.Dispose();
 
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 	}
 }

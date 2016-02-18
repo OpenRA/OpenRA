@@ -10,7 +10,6 @@
 
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -52,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.Play(info.DeploySound, location);
 
 					if (!string.IsNullOrEmpty(info.EffectSequence) && !string.IsNullOrEmpty(info.EffectPalette))
-						w.Add(new SpriteEffect(location, w, info.EffectSequence, info.EffectPalette));
+						w.Add(new SpriteEffect(location, w, info.EffectSequence, "idle", info.EffectPalette));
 
 					var actor = w.CreateActor(info.Actor, new TypeDictionary
 					{

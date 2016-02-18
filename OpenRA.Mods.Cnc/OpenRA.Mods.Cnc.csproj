@@ -84,11 +84,12 @@
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
-    <Compile Include="Traits\Render\WithReloadingTurret.cs" />
+    <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
+    <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown<SlotDropDownOption>("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
@@ -235,15 +235,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return ip;
 		}
 
-		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupClientWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
 		{
-			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;
-			var block = parent.Get("LATENCY");
-			block.IsVisible = () => visible;
+			var adminIndicator = parent.GetOrNull("ADMIN_INDICATOR");
+			if (adminIndicator != null)
+				adminIndicator.IsVisible = () => c.IsAdmin;
 
-			if (visible)
-				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
-					orderManager.LobbyInfo.PingFromClient(c));
+			var block = parent.GetOrNull("LATENCY");
+			if (block != null)
+			{
+				block.IsVisible = () => visible;
+
+				if (visible)
+					block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(
+						orderManager.LobbyInfo.PingFromClient(c));
+			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
 			tooltip.IsVisible = () => visible;
@@ -449,12 +455,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 
-		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map, bool forceDisable)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
 			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
 			status.IsVisible = () => true;
-			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || map.RuleStatus != MapRuleStatus.Cached;
+			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || forceDisable;
 
 			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
 			status.OnClick = () => orderManager.IssueOrder(Order.Command("state {0}".F(state)));
@@ -484,7 +490,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerName.GetText = () =>
 			{
 				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
-				if (client != null && client.State == Network.Session.ClientState.Disconnected)
+				if (client != null && client.State == Session.ClientState.Disconnected)
 					suffix = " (Gone)";
 
 				var sl = suffixLength.Update(suffix);

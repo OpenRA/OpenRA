@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-				return Util.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
+				return ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notify)
 					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, next);
 
-				return Util.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
+				return ActivityUtils.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
 			}
 
 			if (!isDocking)
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 				iao.OnDock(self, this);
 			}
 
-			return Util.SequenceActivities(new Wait(10), this);
+			return ActivityUtils.SequenceActivities(new Wait(10), this);
 		}
 
 		// Cannot be cancelled

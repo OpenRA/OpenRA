@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA
 {
@@ -25,44 +26,72 @@ namespace OpenRA
 		public string Version;
 		public string Author;
 		public bool Hidden;
+
+		public Dictionary<string, string> RequiresMods;
 		public ContentInstaller Content;
+		public IReadOnlyPackage Package;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
 		{
-			var basePath = Platform.ResolvePath(".", "mods");
-			var mods = Directory.GetDirectories(basePath)
-				.Select(x => x.Substring(basePath.Length + 1));
-
 			var ret = new Dictionary<string, ModMetadata>();
-			foreach (var m in mods)
+			foreach (var pair in GetCandidateMods())
 			{
 				try
 				{
-					var yamlPath = Platform.ResolvePath(".", "mods", m, "mod.yaml");
-					if (!File.Exists(yamlPath))
+					IReadOnlyPackage package = null;
+					if (Directory.Exists(pair.Value))
+						package = new Folder(pair.Value);
+					else
+						throw new InvalidDataException(pair.Value + " is not a valid mod package");
+
+					if (!package.Contains("mod.yaml"))
 						continue;
 
-					var yaml = new MiniYaml(null, MiniYaml.FromFile(yamlPath));
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml")));
 					var nd = yaml.ToDictionary();
 					if (!nd.ContainsKey("Metadata"))
 						continue;
 
-					var mod = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
-					mod.Id = m;
+					var metadata = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
+					metadata.Id = pair.Key;
+					metadata.Package = package;
+
+					if (nd.ContainsKey("RequiresMods"))
+						metadata.RequiresMods = nd["RequiresMods"].ToDictionary(my => my.Value);
+					else
+						metadata.RequiresMods = new Dictionary<string, string>();
 
 					if (nd.ContainsKey("ContentInstaller"))
-						mod.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
+						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
 
-					ret.Add(m, mod);
+					ret.Add(pair.Key, metadata);
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(m));
+					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(pair.Key));
 					Console.WriteLine(ex.Message);
 				}
 			}
 
 			return ret;
+		}
+
+		static Dictionary<string, string> GetCandidateMods()
+		{
+			// Get mods that are in the game folder.
+			var basePath = Platform.ResolvePath(Path.Combine(".", "mods"));
+			var mods = Directory.GetDirectories(basePath)
+				.ToDictionary(x => x.Substring(basePath.Length + 1));
+
+			// Get mods that are in the support folder.
+			var supportPath = Platform.ResolvePath(Path.Combine("^", "mods"));
+			if (!Directory.Exists(supportPath))
+				return mods;
+
+			foreach (var pair in Directory.GetDirectories(supportPath).ToDictionary(x => x.Substring(supportPath.Length + 1)))
+				mods.Add(pair.Key, pair.Value);
+
+			return mods;
 		}
 	}
 }

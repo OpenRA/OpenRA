@@ -1,7 +1,7 @@
 Minigun:
 	ReloadDelay: 21
 	Range: 4c0
-	Report: INFGUN3.AUD, GOSTGUN1.AUD, SLVKGUN1.AUD
+	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -14,17 +14,17 @@ Minigun:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 M1Carbine:
 	ReloadDelay: 20
 	Range: 4c0
-	Report: INFGUN3.AUD
+	Report: infgun3.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -37,17 +37,17 @@ M1Carbine:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Vulcan:
 	ReloadDelay: 60
 	Range: 4c0
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -60,10 +60,10 @@ Vulcan:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
@@ -71,7 +71,7 @@ Vulcan2:
 	ReloadDelay: 50
 	Burst: 3
 	Range: 6c0
-	Report: TSGUN4.AUD
+	Report: tsgun4.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -85,10 +85,10 @@ Vulcan2:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
@@ -96,7 +96,7 @@ Vulcan3:
 	ReloadDelay: 30
 	Burst: 3
 	Range: 4c0
-	Report: CYGUN1.AUD
+	Report: cygun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -109,17 +109,17 @@ Vulcan3:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 VulcanTower:
 	ReloadDelay: 26
 	Range: 6c0
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -132,10 +132,10 @@ VulcanTower:
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
@@ -143,7 +143,7 @@ JumpCannon:
 	ReloadDelay: 40
 	Burst: 2
 	Range: 5c0
-	Report: JUMPJET1.AUD
+	Report: jumpjet1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -156,17 +156,17 @@ JumpCannon:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 AssaultCannon:
 	ReloadDelay: 50
 	Range: 5c0
-	Report: TSGUN4.AUD
+	Report: tsgun4.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -179,10 +179,10 @@ AssaultCannon:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
@@ -191,7 +191,7 @@ RaiderCannon:
 	Range: 4c0
 	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
 	BurstDelay: 55
-	Report: CHAINGN1.AUD
+	Report: chaingn1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -204,17 +204,17 @@ RaiderCannon:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 HarpyClaw:
 	ReloadDelay: 36
 	Range: 5c0
-	Report: CYGUN1.AUD
+	Report: cygun1.aud
 	Projectile: Bullet
 		Speed: 1c682
 	ValidTargets: Ground, Air
@@ -229,17 +229,17 @@ HarpyClaw:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Pistola:
 	ReloadDelay: 20
 	Range: 3c0
-	Report: GUN18.AUD
+	Report: gun18.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -252,17 +252,17 @@ Pistola:
 			Concrete: 10
 		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piff
+		Explosions: piff
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piff
+		Explosions: water_piff
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
 Sniper:
 	ReloadDelay: 60
 	Range: 6c768
-	Report: SILENCER.AUD
+	Report: silencer.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -275,4 +275,3 @@ Sniper:
 			Heavy: 5
 			Concrete: 5
 		DamageTypes: Prone100Percent, TriggerProne, HeadshotDeath
-

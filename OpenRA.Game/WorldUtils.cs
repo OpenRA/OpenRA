@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -32,18 +31,35 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
-			using (new PerfSample("FindUnitsInCircle"))
+			// Target ranges are calculated in 2D, so ignore height differences
+			var vec = new WVec(r, r, WDist.Zero);
+			return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
+				a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
+		}
+
+		public static bool ContainsTemporaryBlocker(this World world, CPos cell, Actor ignoreActor = null)
+		{
+			var temporaryBlockers = world.ActorMap.GetActorsAt(cell);
+			foreach (var temporaryBlocker in temporaryBlockers)
 			{
-				// Target ranges are calculated in 2D, so ignore height differences
-				var vec = new WVec(r, r, WDist.Zero);
-				return world.ActorMap.ActorsInBox(origin - vec, origin + vec).Where(
-					a => (a.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
+				if (temporaryBlocker == ignoreActor)
+					continue;
+
+				var temporaryBlockerTraits = temporaryBlocker.TraitsImplementing<ITemporaryBlocker>();
+				foreach (var temporaryBlockerTrait in temporaryBlockerTraits)
+					if (temporaryBlockerTrait.IsBlocking(temporaryBlocker, cell))
+						return true;
 			}
+
+			return false;
 		}
 
 		public static void DoTimed<T>(this IEnumerable<T> e, Action<T> a, string text)
 		{
-			// Note - manual enumeration here for performance due to high call volume.
+			// PERF: This is a hot path and must run with minimal added overhead.
+			// Calling Stopwatch.GetTimestamp is a bit expensive, so we enumerate manually to allow us to call it only
+			// once per iteration in the normal case.
+			// See also: RunActivity
 			var longTickThresholdInStopwatchTicks = PerfTimer.LongTickThresholdInStopwatchTicks;
 			using (var enumerator = e.GetEnumerator())
 			{

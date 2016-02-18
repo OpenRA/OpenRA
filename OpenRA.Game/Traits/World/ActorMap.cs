@@ -183,7 +183,7 @@ namespace OpenRA.Traits
 				for (var col = 0; col < cols; col++)
 					bins[row * cols + col] = new Bin();
 
-			// Cache this delegate so it does not have to be allocated repeatedly.
+			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
 		}
 
@@ -219,6 +219,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> GetActorsAt(CPos a)
 		{
+			// PERF: Custom enumerator for efficiency - using `yield` is slower.
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
 				return Enumerable.Empty<Actor>();
@@ -534,6 +535,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Actor> ActorsInBox(WPos a, WPos b)
 		{
+			// PERF: Inline BinsInBox here to avoid allocations as this method is called often.
 			var left = Math.Min(a.X, b.X);
 			var top = Math.Min(a.Y, b.Y);
 			var right = Math.Max(a.X, b.X);
@@ -558,11 +560,6 @@ namespace OpenRA.Traits
 					}
 				}
 			}
-		}
-
-		public IEnumerable<Actor> ActorsInWorld()
-		{
-			return bins.SelectMany(bin => bin.Actors.Where(actor => actor.IsInWorld));
 		}
 	}
 }

@@ -1,0 +1,174 @@
+LMG:
+	ReloadDelay: 30
+	Range: 2c512
+	Report: MGUN2.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Falloff: 100, 50, 25, 0
+		Damage: 125
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+Fremen_S:
+	ReloadDelay: 40
+	Range: 2c512
+	Report: FREMODD1.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Falloff: 100, 50, 25, 0
+		Damage: 125
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: EXPLSML2.WAV
+
+M_LMG:
+	ReloadDelay: 40
+	Range: 2c512
+	Report: MGUN2.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Falloff: 100, 50, 25, 0
+		Damage: 125
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+M_HMG:
+	ReloadDelay: 40
+	Range: 3c512
+	Report: 20MMGUN1.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Falloff: 100, 50, 25, 0
+		Damage: 250
+		Versus:
+			none: 25
+			building: 50
+			wood: 65
+			heavy: 50
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+Fremen_L:
+	ReloadDelay: 40
+	Delay: 5
+	Range: 3c512
+	Report: BAZOOK2.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Falloff: 100, 50, 25, 0
+		Damage: 250
+		Versus:
+			none: 25
+			building: 50
+			wood: 65
+			heavy: 50
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+
+HMG:
+	ReloadDelay: 20
+	Range: 3c0
+	Report: 20MMGUN1.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 160
+		Falloff: 100, 60, 30, 0
+		Damage: 180
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+HMGo:
+	ReloadDelay: 18
+	Range: 3c0
+	Report: 20MMGUN1.WAV
+	Projectile: Bullet
+		Speed: 1c256
+	Warhead@1Dam: SpreadDamage
+		Spread: 160
+		Falloff: 100, 60, 30, 0
+		Damage: 180
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+HMG_muzzle:
+	ReloadDelay: 16
+	Range: 3c0
+	Burst: 3
+	BurstDelay: 2
+	Warhead@TargetValidation: SpreadDamage
+
+HMGo_muzzle:
+	ReloadDelay: 14
+	Range: 3c0
+	Burst: 3
+	BurstDelay: 2
+	Warhead@TargetValidation: SpreadDamage

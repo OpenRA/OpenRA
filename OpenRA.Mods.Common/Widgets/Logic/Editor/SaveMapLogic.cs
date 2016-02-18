@@ -12,16 +12,25 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
+using OpenRA.FileSystem;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SaveMapLogic : ChromeLogic
 	{
+		enum MapFileType { Unpacked, OraMap }
+
+		struct MapFileTypeInfo
+		{
+			public string Extension;
+			public string UiLabel;
+		}
+
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, Action<string> onSave, Action onExit, Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
 		{
+			var modData = Game.ModData;
 			var title = widget.Get<TextFieldWidget>("TITLE");
 			title.Text = map.Title;
 
@@ -52,14 +61,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Func<string, string> makeMapDirectory = dir =>
 			{
-				var f = Platform.UnresolvePath(dir);
-				if (f.StartsWith("~"))
-					f = f.Substring(1);
+				if (dir.StartsWith("~"))
+					dir = dir.Substring(1);
 
-				return f;
+				IReadOnlyPackage package;
+				string f;
+				if (modData.ModFiles.TryGetPackageContaining(dir, out package, out f))
+					dir = Path.Combine(package.Name, f);
+
+				return Platform.UnresolvePath(dir);
 			};
 
-			var mapDirectories = Game.ModData.Manifest.MapFolders
+			var mapDirectories = modData.Manifest.MapFolders
 				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
 
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
@@ -85,32 +98,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapDirectories.Keys, setupItem);
 			}
 
-			var filename = widget.Get<TextFieldWidget>("FILENAME");
-			filename.Text = Path.GetFileNameWithoutExtension(map.Path);
+			var mapIsUnpacked = false;
 
-			var fileTypes = new Dictionary<string, string>()
+			if (map.Path != null)
 			{
-				{ ".oramap", ".oramap" },
-				{ "(unpacked)", "" }
+				var attr = File.GetAttributes(map.Path);
+				mapIsUnpacked = attr.HasFlag(FileAttributes.Directory);
+			}
+
+			var filename = widget.Get<TextFieldWidget>("FILENAME");
+			filename.Text = mapIsUnpacked ? Path.GetFileName(map.Path) : Path.GetFileNameWithoutExtension(map.Path);
+			var fileType = mapIsUnpacked ? MapFileType.Unpacked : MapFileType.OraMap;
+
+			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
+			{
+				{ MapFileType.OraMap, new MapFileTypeInfo { Extension = ".oramap", UiLabel = ".oramap" } },
+				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = "(unpacked)" } }
 			};
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");
 			{
-				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				Func<KeyValuePair<MapFileType, MapFileTypeInfo>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
-						() => typeDropdown.Text == option,
-						() => typeDropdown.Text = option);
-					item.Get<LabelWidget>("LABEL").GetText = () => option;
+						() => fileType == option.Key,
+						() => { typeDropdown.Text = option.Value.UiLabel; fileType = option.Key; });
+					item.Get<LabelWidget>("LABEL").GetText = () => option.Value.UiLabel;
 					return item;
 				};
 
-				typeDropdown.Text = map.Path != null ? Path.GetExtension(map.Path) : ".oramap";
-				if (string.IsNullOrEmpty(typeDropdown.Text))
-					typeDropdown.Text = fileTypes.First(t => t.Value == "").Key;
+				typeDropdown.Text = fileTypes[fileType].UiLabel;
 
 				typeDropdown.OnClick = () =>
-					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes.Keys, setupItem);
+					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, setupItem);
 			}
 
 			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
@@ -133,22 +153,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (playerDefinitions != null)
 					map.PlayerDefinitions = playerDefinitions;
 
-				map.RequiresMod = Game.ModData.Manifest.Mod.Id;
+				map.RequiresMod = modData.Manifest.Mod.Id;
 
 				// Create the map directory if required
 				Directory.CreateDirectory(Platform.ResolvePath(directoryDropdown.Text));
 
-				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[typeDropdown.Text]));
+				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[fileType].Extension));
 
 				// Invalidate the old map metadata
 				if (map.Uid != null && combinedPath == map.Path)
-					Game.ModData.MapCache[map.Uid].Invalidate();
+					modData.MapCache[map.Uid].Invalidate();
 
 				map.Save(combinedPath);
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];
-				Game.ModData.MapCache[map.Uid].UpdateFromMap(map, classification);
+				modData.MapCache[map.Uid].UpdateFromMap(map, classification);
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();

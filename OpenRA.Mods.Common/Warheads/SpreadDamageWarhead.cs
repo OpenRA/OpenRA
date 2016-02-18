@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				var devMode = world.LocalPlayer.PlayerActor.TraitOrDefault<DeveloperMode>();
 				if (devMode != null && devMode.ShowCombatGeometry)
-					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range);
+					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range, DebugOverlayColor);
 			}
 
 			// This only finds actors where the center is within the search radius,
@@ -66,9 +65,8 @@ namespace OpenRA.Mods.Common.Warheads
 				if (healthInfo == null)
 					continue;
 
-				var localModifiers = damageModifiers;
-				var distance = Math.Max(0, (victim.CenterPosition - pos).Length - healthInfo.Radius.Length);
-				localModifiers = localModifiers.Append(GetDamageFalloff(distance));
+				var distance = healthInfo.Shape.DistanceFromEdge(pos, victim);
+				var localModifiers = damageModifiers.Append(GetDamageFalloff(distance.Length));
 
 				DoImpact(victim, firedBy, localModifiers);
 			}

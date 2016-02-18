@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -24,7 +22,7 @@ namespace OpenRA.Graphics
 		void Tick();
 	}
 
-	public class SoftwareCursor : ICursor
+	public sealed class SoftwareCursor : ICursor
 	{
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Cache<string, PaletteReference> paletteReferences;

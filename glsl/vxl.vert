@@ -1,9 +1,11 @@
 uniform mat4 View;
 uniform mat4 TransformMatrix;
 
-varying vec4 TexCoord;
-varying vec4 ChannelMask;
-varying vec4 NormalsMask;
+attribute vec4 aVertexPosition;
+attribute vec4 aVertexTexCoord;
+varying vec4 vTexCoord;
+varying vec4 vChannelMask;
+varying vec4 vNormalsMask;
 
 vec4 DecodeMask(float x)
 {
@@ -15,8 +17,8 @@ vec4 DecodeMask(float x)
 
 void main()
 {
-	gl_Position = View*TransformMatrix*gl_Vertex;
-	TexCoord = gl_MultiTexCoord0;
-	ChannelMask = DecodeMask(gl_MultiTexCoord0.z);
-	NormalsMask = DecodeMask(gl_MultiTexCoord0.w);
+	gl_Position = View*TransformMatrix*aVertexPosition;
+	vTexCoord = aVertexTexCoord;
+	vChannelMask = DecodeMask(aVertexTexCoord.z);
+	vNormalsMask = DecodeMask(aVertexTexCoord.w);
 }

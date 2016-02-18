@@ -8,7 +8,7 @@
 #
 # to check unit tests (requires NUnit version >= 2.6), run:
 #  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]
-#      Use NUNIT_CONSOLE if nunit[2|3]-console was not downloaded by `make dependencies` nor is it not in bin search paths
+#      Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths
 #      Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /
 #      Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)
 # to check the official mods for erroneous yaml files, run:
@@ -42,7 +42,7 @@
 
 ############################## TOOLCHAIN ###############################
 #
-CSC         = dmcs
+CSC         = mcs -sdk:4.0
 CSFLAGS     = -nologo -warn:4 -codepage:utf8 -unsafe -warnaserror
 DEFINE      = TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/Mono.Nat.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/MaxMind.GeoIP2.dll thirdparty/download/Eluant.dll thirdparty/download/SmarIrc4net.dll
@@ -117,7 +117,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
 
 pnull_SRCS := $(shell find OpenRA.Platforms.Null/ -iname '*.cs')
 pnull_TARGET = OpenRA.Platforms.Null.dll
@@ -140,9 +140,9 @@ mod_common: $(mod_common_TARGET)
 test_dll_SRCS := $(shell find OpenRA.Test/ -iname '*.cs')
 test_dll_TARGET = OpenRA.Test.dll
 test_dll_KIND = library
-test_dll_DEPS = $(game_TARGET)
+test_dll_DEPS = $(game_TARGET) $(mod_common_TARGET)
 test_dll_FLAGS = -warn:1
-test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(NUNIT_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+test_dll_LIBS = $(COMMON_LIBS) $(game_TARGET) $(mod_common_TARGET) $(NUNIT_LIBS)
 PROGRAMS += test_dll
 test_dll: $(test_dll_TARGET)
 
@@ -227,37 +227,46 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
+	@echo
+	@echo "Checking for explicit interface violations..."
+	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
 
-NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit-console.exe && echo mono thirdparty/download/nunit-console.exe || \
-	which nunit2-console 2>/dev/null || which nunit3-console 2>/dev/null || which nunit-console 2>/dev/null)
+NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
+	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
 nunit: test_dll
 	@echo
 	@echo "Checking unit tests..."
 	@if [ "$(NUNIT_CONSOLE)" = "" ] ; then \
-		echo 'nunit[2|3]-console not found!'; \
+		echo 'nunit[3|2]-console not found!'; \
 		echo 'Was "make dependencies" called or is NUnit installed?'>&2; \
-		echo 'see "make help"'; \
+		echo 'See "make help".'; \
 		exit 1; \
 	fi
 	@if $(NUNIT_CONSOLE) --help | head -n 1 | grep -E "NUnit version (1|2\.[0-5])";then \
 		echo 'NUnit version >= 2.6 required'>&2; \
+		echo 'Try "make dependencies" first to use NUnit from NuGet.'>&2; \
+		echo 'See "make help".'; \
 		exit 1; \
 	fi
-	@$(NUNIT_CONSOLE) $(test_dll_TARGET)
+	@$(NUNIT_CONSOLE) --noresult OpenRA.Test.nunit
 
 test: utility mods
 	@echo
 	@echo "Testing Tiberian Sun mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@mono --debug OpenRA.Utility.exe ts --check-sequence-sprites
 	@echo
 	@echo "Testing Dune 2000 mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@mono --debug OpenRA.Utility.exe d2k --check-sequence-sprites
 	@echo
 	@echo "Testing Tiberian Dawn mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@mono --debug OpenRA.Utility.exe cnc --check-sequence-sprites
 	@echo
 	@echo "Testing Red Alert mod MiniYAML..."
 	@mono --debug OpenRA.Utility.exe ra --check-yaml
+	@mono --debug OpenRA.Utility.exe ra --check-sequence-sprites
 
 
 ##### Launchers / Utilities #####
@@ -330,7 +339,6 @@ cli-dependencies:
 	@./thirdparty/fetch-thirdparty-deps.sh
 	@ $(CP_R) thirdparty/download/*.dll .
 	@ $(CP_R) thirdparty/download/*.dll.config .
-	@ $(CP) thirdparty/SDL2-CS.dll.config .
 
 linux-dependencies: cli-dependencies linux-native-dependencies
 
@@ -354,8 +362,9 @@ all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
-		awk '{sub("\tmodchooser:.*$$","\tmodchooser: $(VERSION)"); print $0}' $${i}.tmp > $${i} && \
-		rm $${i}.tmp ; \
+		awk '{sub("\tmodchooser:.*$$","\tmodchooser: $(VERSION)"); print $0}' $${i}.tmp > $${i}.tmp2 && \
+		awk '{sub("/[^/]*@User$$", "/$(VERSION)@User"); print $0}' $${i}.tmp2 > $${i} && \
+		rm $${i}.tmp $${i}.tmp2; \
 	done
 
 docs: utility mods version
@@ -394,6 +403,7 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenAL-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
@@ -479,8 +489,8 @@ help:
 	@echo '  make all [DEBUG=false]'
 	@echo
 	@echo 'to check unit tests (requires NUnit version >= 2.6), run:'
-	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
-	@echo '     Use NUNIT_CONSOLE if nunit[2|3]-console was not downloaded by `make dependencies` nor is it not in bin search paths'
+	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[3|2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
+	@echo '     Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths'
 	@echo '     Use NUNIT_LIBS_PATH if NUnit libs are not in search paths. Include trailing /'
 	@echo '     Use NUNIT_LIBS if NUnit libs have different names (such as including a prefix or suffix)'
 	@echo

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -29,14 +30,12 @@ namespace OpenRA
 		}
 	}
 
-	// Describes what is to be loaded in order to run a mod
+	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
 	public class Manifest
 	{
-		public static readonly Dictionary<string, Manifest> AllMods = LoadMods();
-
 		public readonly ModMetadata Mod;
 		public readonly string[]
-			Folders, Rules, ServerTraits,
+			Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
@@ -49,43 +48,49 @@ namespace OpenRA
 		public readonly Dictionary<string, string> RequiresMods;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
+		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
 
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
-			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SpriteFormats", "RequiresMods" };
+			"ServerTraits", "LoadScreen", "LobbyDefaults", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
+			"RequiresMods" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
 
-		public Manifest(string mod)
+		public Manifest(string modId)
 		{
-			var path = Platform.ResolvePath(".", "mods", mod, "mod.yaml");
-			yaml = new MiniYaml(null, MiniYaml.FromFile(path)).ToDictionary();
+			var package = ModMetadata.AllMods[modId].Package;
+
+			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"))).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
-			Mod.Id = mod;
+			Mod.Id = modId;
 
 			// TODO: Use fieldloader
-			Folders = YamlList(yaml, "Folders", true);
-			MapFolders = YamlDictionary(yaml, "MapFolders", true);
-			Packages = YamlDictionary(yaml, "Packages", true);
-			Rules = YamlList(yaml, "Rules", true);
-			Sequences = YamlList(yaml, "Sequences", true);
-			VoxelSequences = YamlList(yaml, "VoxelSequences", true);
-			Cursors = YamlList(yaml, "Cursors", true);
-			Chrome = YamlList(yaml, "Chrome", true);
-			Assemblies = YamlList(yaml, "Assemblies", true);
-			ChromeLayout = YamlList(yaml, "ChromeLayout", true);
-			Weapons = YamlList(yaml, "Weapons", true);
-			Voices = YamlList(yaml, "Voices", true);
-			Notifications = YamlList(yaml, "Notifications", true);
-			Music = YamlList(yaml, "Music", true);
-			Translations = YamlList(yaml, "Translations", true);
-			TileSets = YamlList(yaml, "TileSets", true);
-			ChromeMetrics = YamlList(yaml, "ChromeMetrics", true);
-			Missions = YamlList(yaml, "Missions", true);
+			MapFolders = YamlDictionary(yaml, "MapFolders");
+
+			MiniYaml packages;
+			if (yaml.TryGetValue("Packages", out packages))
+				Packages = packages.ToDictionary(x => x.Value).AsReadOnly();
+
+			Rules = YamlList(yaml, "Rules");
+			Sequences = YamlList(yaml, "Sequences");
+			VoxelSequences = YamlList(yaml, "VoxelSequences");
+			Cursors = YamlList(yaml, "Cursors");
+			Chrome = YamlList(yaml, "Chrome");
+			Assemblies = YamlList(yaml, "Assemblies");
+			ChromeLayout = YamlList(yaml, "ChromeLayout");
+			Weapons = YamlList(yaml, "Weapons");
+			Voices = YamlList(yaml, "Voices");
+			Notifications = YamlList(yaml, "Notifications");
+			Music = YamlList(yaml, "Music");
+			Translations = YamlList(yaml, "Translations");
+			TileSets = YamlList(yaml, "TileSets");
+			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
+			Missions = YamlList(yaml, "Missions");
 
 			ServerTraits = YamlList(yaml, "ServerTraits");
 
@@ -96,22 +101,23 @@ namespace OpenRA
 				throw new InvalidDataException("`LobbyDefaults` section is not defined.");
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
-				{
-					var nd = my.ToDictionary();
-					return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
-				});
+			{
+				var nd = my.ToDictionary();
+				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
+			});
 
 			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
 			// Allow inherited mods to import parent maps.
-			var compat = new List<string>();
-			compat.Add(mod);
+			var compat = new List<string> { Mod.Id };
 
 			if (yaml.ContainsKey("SupportsMapsFrom"))
-				foreach (var c in yaml["SupportsMapsFrom"].Value.Split(','))
-					compat.Add(c.Trim());
+				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
+
+			if (yaml.ContainsKey("SoundFormats"))
+				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", yaml["SoundFormats"].Value);
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
@@ -151,18 +157,15 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return new string[] { };
 
-			var list = yaml[key].ToDictionary().Keys.ToArray();
-			return parsePaths ? list.Select(Platform.ResolvePath).ToArray() : list;
+			return yaml[key].ToDictionary().Keys.ToArray();
 		}
 
-		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
+		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.ContainsKey(key))
 				return new ReadOnlyDictionary<string, string>();
 
-			Func<string, string> keySelector = parsePaths ? (Func<string, string>)Platform.ResolvePath : k => k;
-			var inner = yaml[key].ToDictionary(keySelector, my => my.Value);
-
+			var inner = yaml[key].ToDictionary(my => my.Value);
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 
@@ -178,33 +181,6 @@ namespace OpenRA
 			}
 
 			return module;
-		}
-
-		static Dictionary<string, Manifest> LoadMods()
-		{
-			var basePath = Platform.ResolvePath(".", "mods");
-			var mods = Directory.GetDirectories(basePath)
-				.Select(x => x.Substring(basePath.Length + 1));
-
-			var ret = new Dictionary<string, Manifest>();
-			foreach (var mod in mods)
-			{
-				if (!File.Exists(Platform.ResolvePath(".", "mods", mod, "mod.yaml")))
-					continue;
-
-				try
-				{
-					var manifest = new Manifest(mod);
-					ret.Add(mod, manifest);
-				}
-				catch (Exception ex)
-				{
-					Log.Write("debug", "An exception occurred while trying to load mod {0}:", mod);
-					Log.Write("debug", ex.ToString());
-				}
-			}
-
-			return ret;
 		}
 	}
 }

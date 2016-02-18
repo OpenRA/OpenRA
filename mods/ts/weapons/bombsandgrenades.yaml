@@ -19,13 +19,13 @@ Grenade:
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_grey_explosion
-		ImpactSound: expnew13.aud
+		Explosions: large_grey_explosion
+		ImpactSounds: expnew13.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -51,13 +51,13 @@ Bomb:
 			Concrete: 100
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: expnew09.aud
+		Explosions: large_explosion
+		ImpactSounds: expnew09.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -65,7 +65,7 @@ Bomb:
 RPGTower:
 	ReloadDelay: 80
 	Range: 8c0
-	Report: GLNCH4.AUD
+	Report: glnch4.aud
 	Projectile: Bullet
 		Speed: 384
 		Blockable: false
@@ -84,14 +84,13 @@ RPGTower:
 			Concrete: 70
 		DamageTypes: Prone70Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_clsn
-		ImpactSound: expnew14.aud
+		Explosions: large_clsn
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
-

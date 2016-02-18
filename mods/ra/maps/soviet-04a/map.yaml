@@ -746,6 +746,12 @@ Rules:
 	AGUN:
 		Buildable:
 			Prerequisites: ~disabled
+	SPEN:
+		Buildable:
+			Prerequisites: ~disabled
+	SYRD:
+		Buildable:
+			Prerequisites: ~disabled
 
 Sequences:
 

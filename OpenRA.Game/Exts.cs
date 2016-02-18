@@ -113,6 +113,7 @@ namespace OpenRA
 
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (k & mod) == mod;
 		}
 
@@ -324,6 +325,15 @@ namespace OpenRA
 				root += 1;
 
 			return root;
+		}
+
+		public static int IntegerDivisionRoundingAwayFromZero(int dividend, int divisor)
+		{
+			int remainder;
+			var quotient = Math.DivRem(dividend, divisor, out remainder);
+			if (remainder == 0)
+				return quotient;
+			return quotient + (Math.Sign(dividend) == Math.Sign(divisor) ? 1 : -1);
 		}
 
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)

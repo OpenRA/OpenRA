@@ -45,7 +45,7 @@ BIKE:
 	Health:
 		HP: 150
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 5c0
 	Armament@PRIMARY:
@@ -226,6 +226,8 @@ SAPC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
+		LoadingUpgrades: notmobile
+		EjectOnDeath: true
 
 SUBTANK:
 	Inherits: ^VoxelTank
@@ -281,6 +283,7 @@ STNK:
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,128, 213,-43,128
@@ -290,4 +293,3 @@ STNK:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	-MustBeDestroyed:
-

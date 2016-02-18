@@ -64,12 +64,12 @@ namespace OpenRA.Widgets
 
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.LineRenderer.FillRect(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+			Game.Renderer.RgbaColorRenderer.FillRect(new float2(r.Left, r.Top), new float2(r.Right, r.Bottom), c);
 		}
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.LineRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
+			Game.Renderer.RgbaColorRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
 
 		public static int[] GetBorderSizes(string collection)
@@ -79,7 +79,12 @@ namespace OpenRA.Widgets
 			return new[] { (int)ss[0].Size.Y, (int)ss[1].Size.Y, (int)ss[2].Size.X, (int)ss[3].Size.X };
 		}
 
-		static bool HasFlags(this PanelSides a, PanelSides b) { return (a & b) == b; }
+		static bool HasFlags(this PanelSides a, PanelSides b)
+		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
+			return (a & b) == b;
+		}
+
 		public static Rectangle InflateBy(this Rectangle rect, int l, int t, int r, int b)
 		{
 			return Rectangle.FromLTRB(rect.Left - l, rect.Top - t,
@@ -250,7 +255,7 @@ namespace OpenRA.Widgets
 			if (string.IsNullOrEmpty(initialUid) || Game.ModData.MapCache[initialUid].Status != MapStatus.Available)
 			{
 				var selected = Game.ModData.MapCache.Where(x => x.SuitableForInitialMap).RandomOrDefault(Game.CosmeticRandom) ??
-					Game.ModData.MapCache.First(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Lobby));
+					Game.ModData.MapCache.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
 				return selected.Uid;
 			}
 

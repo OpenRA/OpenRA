@@ -2,7 +2,7 @@ Flamethrower:
 	ReloadDelay: 55
 	Range: 2c512
 	InvalidTargets: Wall
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -18,14 +18,14 @@ Flamethrower:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
-		ImpactSound: flamer2.aud
+		Explosions: small_napalm
+		ImpactSounds: flamer2.aud
 
 BigFlamer:
 	ReloadDelay: 50
 	Range: 3c512
 	InvalidTargets: Wall
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
@@ -43,13 +43,13 @@ BigFlamer:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: med_napalm
-		ImpactSound: flamer2.aud
+		Explosions: med_napalm
+		ImpactSounds: flamer2.aud
 
 Chemspray:
 	ReloadDelay: 65
 	Range: 3c0
-	Report: FLAMER2.AUD
+	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
@@ -64,8 +64,8 @@ Chemspray:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: chemball
-		ImpactSound: xplos.aud
+		Explosions: chemball
+		ImpactSounds: xplos.aud
 
 Grenade:
 	ReloadDelay: 50
@@ -89,8 +89,8 @@ Grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_poof
-		ImpactSound: xplos.aud
+		Explosions: small_poof
+		ImpactSounds: xplos.aud
 
 Napalm:
 	ValidTargets: Ground, Water
@@ -114,17 +114,17 @@ Napalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: med_napalm
-		ImpactSound: flamer2.aud
+		Explosions: med_napalm
+		ImpactSounds: flamer2.aud
 
 Laser:
 	ReloadDelay: 1
 	Range: 7c512
-	Charges: true
-	Report: OBELRAY1.AUD
+	Report: obelray1.aud
 	Projectile: LaserZap
-		BeamWidth: 2
+		Width: 85
 		HitAnim: laserfire
+		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 360
@@ -155,8 +155,8 @@ TiberiumExplosion:
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
-		Explosion: chemball
-		ImpactSound: xplosml2.aud
+		Explosions: chemball
+		ImpactSounds: xplosml2.aud
 
 Heal:
 	ReloadDelay: 4
@@ -236,6 +236,5 @@ Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
-		ImpactSound: xplobig6.aud
-
+		Explosions: building
+		ImpactSounds: xplobig6.aud

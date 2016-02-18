@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -38,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var spriteBody = host.TraitOrDefault<WithSpriteBody>();
 			if (spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				spriteBody.PlayCustomAnimation(host, info.Sequence);
+				spriteBody.PlayCustomAnimation(host, info.Sequence, () => spriteBody.CancelCustomAnimation(host));
 		}
 	}
 }

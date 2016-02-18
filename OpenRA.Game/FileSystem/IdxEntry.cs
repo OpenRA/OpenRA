@@ -15,80 +15,31 @@ namespace OpenRA.FileSystem
 {
 	public class IdxEntry
 	{
-		public const string DefaultExtension = "wav";
-
-		public readonly uint Hash;
-		public readonly string Name;
-		public readonly string Extension;
+		public readonly string Filename;
 		public readonly uint Offset;
 		public readonly uint Length;
 		public readonly uint SampleRate;
 		public readonly uint Flags;
 		public readonly uint ChunkSize;
 
-		public IdxEntry(uint hash, uint offset, uint length, uint sampleRate, uint flags, uint chuckSize)
-		{
-			Hash = hash;
-			Offset = offset;
-			Length = length;
-			SampleRate = sampleRate;
-			Flags = flags;
-			ChunkSize = chuckSize;
-		}
-
 		public IdxEntry(Stream s)
 		{
-			var asciiname = s.ReadASCII(16);
-
-			var pos = asciiname.IndexOf('\0');
+			var name = s.ReadASCII(16);
+			var pos = name.IndexOf('\0');
 			if (pos != 0)
-				asciiname = asciiname.Substring(0, pos);
+				name = name.Substring(0, pos);
 
-			Name = asciiname;
-			Extension = DefaultExtension;
+			Filename = string.Concat(name, ".wav");
 			Offset = s.ReadUInt32();
 			Length = s.ReadUInt32();
 			SampleRate = s.ReadUInt32();
 			Flags = s.ReadUInt32();
 			ChunkSize = s.ReadUInt32();
-			Hash = HashFilename(string.Concat(Name, ".", Extension), PackageHashType.CRC32);
-		}
-
-		public void Write(BinaryWriter w)
-		{
-			w.Write(Name.PadRight(16, '\0'));
-			w.Write(Offset);
-			w.Write(Length);
-			w.Write(SampleRate);
-			w.Write(Flags);
-			w.Write(ChunkSize);
 		}
 
 		public override string ToString()
 		{
-			string filename;
-			if (names.TryGetValue(Hash, out filename))
-				return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(filename, Offset, Length);
-			else
-				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
-		}
-
-		public static uint HashFilename(string name, PackageHashType type)
-		{
-			return PackageEntry.HashFilename(name, type);
-		}
-
-		static Dictionary<uint, string> names = new Dictionary<uint, string>();
-
-		public static void AddStandardName(string s)
-		{
-			// RA1 and TD
-			var hash = HashFilename(s, PackageHashType.Classic);
-			names.Add(hash, s);
-
-			// TS
-			var crcHash = HashFilename(s, PackageHashType.CRC32);
-			names.Add(crcHash, s);
+			return "{0} - offset 0x{1:x8} - length 0x{2:x8}".F(Filename, Offset, Length);
 		}
 	}
 }

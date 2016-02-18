@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits;
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.D2k.Activities
 			{
 				case State.Intercept:
 					state = State.LockCarryable;
-					return Util.SequenceActivities(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)), this);
+					return ActivityUtils.SequenceActivities(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)), this);
 
 				case State.LockCarryable:
 					// Last check
@@ -75,13 +76,13 @@ namespace OpenRA.Mods.D2k.Activities
 						return this;
 					}
 
-					return Util.SequenceActivities(movement.MoveTo(cargo.Location, 0), this);
+					return ActivityUtils.SequenceActivities(movement.MoveTo(cargo.Location, 0), this);
 
 				case State.Turn: // Align facing and Land
 					if (selfFacing.Facing != cargoFacing.Facing)
-						return Util.SequenceActivities(new Turn(self, cargoFacing.Facing), this);
+						return ActivityUtils.SequenceActivities(new Turn(self, cargoFacing.Facing), this);
 					state = State.Pickup;
-					return Util.SequenceActivities(new HeliLand(self, false), new Wait(10), this);
+					return ActivityUtils.SequenceActivities(new HeliLand(self, false), new Wait(10), this);
 
 				case State.Pickup:
 					// Remove our carryable from world

@@ -202,6 +202,7 @@ Rules:
 			SpawnInterval: 125
 			WaterChance: 100
 			CrateActors: unitcrate
+			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
 	UNITCRATE:
@@ -270,7 +271,7 @@ Weapons:
 		ReloadDelay: 200
 		Range: 32c0
 		Burst: 4
-		Report: TURRET1
+		Report: turret1.aud
 		Projectile: Bullet
 			Speed: 546
 			High: true
@@ -288,17 +289,20 @@ Weapons:
 			Damage: 250
 			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		Warhead@1Eff: CreateEffect
-			Explosion: large_explosion
-			WaterExplosion: large_splash
-			ImpactSound: kaboom12.aud
-			WaterImpactSound: splash9.aud
-		Warhead@2Smu: LeaveSmudge
+			Explosions: large_explosion
+			ImpactSounds: kaboom12.aud
+			ValidImpactTypes: Ground
+		Warhead@2Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: splash9.aud
+			ValidImpactTypes: Water
+		Warhead@3Smu: LeaveSmudge
 			SmudgeType: Crater
 	SubMissile:
 		ReloadDelay: 250
 		Range: 32c0
 		Burst: 4
-		Report: MISSILE6
+		Report: missile6.aud
 		Projectile: Bullet
 			Speed: 409
 			High: true
@@ -316,11 +320,14 @@ Weapons:
 			Damage: 400
 			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		Warhead@1Eff: CreateEffect
-			Explosion: large_explosion
-			WaterExplosion: large_splash
-			ImpactSound: kaboom12.aud
-			WaterImpactSound: splash9.aud
-		Warhead@2Smu: LeaveSmudge
+			Explosions: large_explosion
+			ImpactSounds: kaboom12.aud
+			ValidImpactTypes: Ground
+		Warhead@2Eff: CreateEffect
+			Explosions: large_splash
+			ImpactSounds: splash9.aud
+			ValidImpactTypes: Water
+		Warhead@3Smu: LeaveSmudge
 			SmudgeType: Crater
 
 Voices:

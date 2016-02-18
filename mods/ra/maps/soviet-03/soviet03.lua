@@ -150,7 +150,7 @@ Trigger.OnEnteredFootprint(SpyHideout1Trigger, function(a, id)
 		spyHideout1Trigger = true
 		Trigger.RemoveFootprintTrigger(id)
 		Actor.Create("camera", true, { Owner = player, Location = SpyHideout1.Location })
-		if not TheSpy.IsDead and SpyHideout1.IsDead then
+		if not TheSpy.IsDead and not SpyHideout1.IsDead then
 			TheSpy.EnterTransport(SpyHideout1)
 		end
 	end

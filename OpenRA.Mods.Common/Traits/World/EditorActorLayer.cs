@@ -11,10 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -164,10 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
-				{
 					Players.Players.Remove(name);
-					worldRenderer.World.Players.RemoveAll(pp => pp.InternalName == name);
-				}
 			}
 
 			for (var index = 0; index < newCount; index++)
@@ -195,14 +190,14 @@ namespace OpenRA.Mods.Common.Traits
 		void UpdateNeighbours(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
 			// Include actors inside the footprint too
-			var cells = OpenRA.Traits.Util.ExpandFootprint(footprint.Keys, true);
+			var cells = Util.ExpandFootprint(footprint.Keys, true);
 			foreach (var p in cells.SelectMany(c => PreviewsAt(c)))
 				p.ReplaceInit(new RuntimeNeighbourInit(NeighbouringPreviews(p.Footprint)));
 		}
 
 		Dictionary<CPos, string[]> NeighbouringPreviews(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
-			var cells = OpenRA.Traits.Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
+			var cells = Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
 			return cells.ToDictionary(c => c, c => PreviewsAt(c).Select(p => p.Info.Name).ToArray());
 		}
 

@@ -30,6 +30,7 @@ GAPOWR:
 		Amount: 100
 	InfiltrateForPowerOutage:
 	AffectedByPowerOutage:
+	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
@@ -108,6 +109,15 @@ GAPILE:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 88, 56, 0, -8
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 GAWEAP:
 	Inherits: ^Building
@@ -159,6 +169,15 @@ GAWEAP:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 154, 100, -2, -12
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 GAHPAD:
 	Inherits: ^Building
@@ -203,6 +222,15 @@ GAHPAD:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 88, 66, 0, -5
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 GADEPT:
 	Inherits: ^Building
@@ -278,6 +306,8 @@ GARADR:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -347,6 +377,8 @@ GAPLUG:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	DisabledOverlay:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
@@ -428,4 +460,3 @@ GAPLUG:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 115,104,0,-24
-

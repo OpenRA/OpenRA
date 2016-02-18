@@ -12,9 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
+using System.Reflection;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA
 {
@@ -24,27 +25,31 @@ namespace OpenRA
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
+		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly RulesetCache RulesetCache;
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
+		public FS ModFiles = new FS();
 
-		Lazy<Ruleset> defaultRules;
+		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
-			ObjectCreator = new ObjectCreator(Manifest);
+			ModFiles.LoadFromManifest(Manifest);
+
+			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Init(this, Manifest.LoadScreen.ToDictionary(my => my.Value));
 				LoadScreen.Display();
 			}
 
@@ -53,17 +58,8 @@ namespace OpenRA
 			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
-			var spriteLoaders = new List<ISpriteLoader>();
-			foreach (var format in Manifest.SpriteFormats)
-			{
-				var loader = ObjectCreator.FindType(format + "Loader");
-				if (loader == null || !loader.GetInterfaces().Contains(typeof(ISpriteLoader)))
-					throw new InvalidOperationException("Unable to find a sprite loader for type '{0}'.".F(format));
-
-				spriteLoaders.Add((ISpriteLoader)ObjectCreator.CreateBasic(loader));
-			}
-
-			SpriteLoaders = spriteLoaders.ToArray();
+			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
+			SpriteLoaders = GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
@@ -87,23 +83,33 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		public void MountFiles()
-		{
-			GlobalFileSystem.LoadFromManifest(Manifest);
-		}
-
 		public void InitializeLoaders()
 		{
 			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
-			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
-			ChromeProvider.Initialize(Manifest.Chrome);
+			ChromeMetrics.Initialize(this);
+			ChromeProvider.Initialize(this);
 
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
 			VoxelLoader = new VoxelLoader();
 
 			CursorProvider = new CursorProvider(this);
+		}
+
+		TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
+		{
+			var loaders = new List<TLoader>();
+			foreach (var format in formats)
+			{
+				var loader = ObjectCreator.FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
+					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
+
+				loaders.Add((TLoader)ObjectCreator.CreateBasic(loader));
+			}
+
+			return loaders.ToArray();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }
@@ -119,10 +125,10 @@ namespace OpenRA
 				return;
 			}
 
-			var yaml = Manifest.Translations.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal);
+			var yaml = MiniYaml.Merge(Manifest.Translations
+				.Select(t => MiniYaml.FromStream(ModFiles.Open(t)))
+				.Append(map.TranslationDefinitions));
 			Languages = yaml.Select(t => t.Key).ToArray();
-
-			yaml = MiniYaml.MergeLiberal(map.TranslationDefinitions, yaml);
 
 			foreach (var y in yaml)
 			{
@@ -155,16 +161,16 @@ namespace OpenRA
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 
 			// Operate on a copy of the map to avoid gameplay state leaking into the cache
-			var map = new Map(MapCache[uid].Map.Path);
+			var map = new Map(MapCache[uid].Path);
 
 			LoadTranslations(map);
 
 			// Reinitialize all our assets
 			InitializeLoaders();
-			GlobalFileSystem.LoadFromManifest(Manifest);
+			ModFiles.LoadFromManifest(Manifest);
 
-			// Mount map package so custom assets can be used. TODO: check priority.
-			GlobalFileSystem.Mount(GlobalFileSystem.OpenPackage(map.Path, null, int.MaxValue));
+			// Mount map package so custom assets can be used.
+			ModFiles.Mount(ModFiles.OpenPackage(map.Path));
 
 			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();
@@ -176,7 +182,7 @@ namespace OpenRA
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load();
 
-			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelProvider.Initialize(this, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 			VoxelLoader.Finish();
 
 			return map;
@@ -195,7 +201,7 @@ namespace OpenRA
 
 	public interface ILoadScreen : IDisposable
 	{
-		void Init(Manifest m, Dictionary<string, string> info);
+		void Init(ModData m, Dictionary<string, string> info);
 		void Display();
 		void StartGame(Arguments args);
 	}

@@ -20,9 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorImage = "poweroff";
-		public readonly string IndicatorSequence = "offline";
+		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "offline";
 
-		public readonly string IndicatorPalette = "chrome";
+		[PaletteReference] public readonly string IndicatorPalette = "chrome";
+
+		public readonly string PowerupSound = null;
+		public readonly string PowerdownSound = null;
+
+		public readonly string PowerupSpeech = null;
+		public readonly string PowerdownSpeech = null;
 
 		public override object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
@@ -45,7 +51,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsTraitDisabled && order.OrderString == "PowerDown")
 			{
 				disabled = !disabled;
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", disabled ? "EnablePower" : "DisablePower", self.Owner.Faction.InternalName);
+
+				if (Info.PowerupSound != null && disabled)
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerupSound, self.Owner.Faction.InternalName);
+
+				if (Info.PowerdownSound != null && !disabled)
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerdownSound, self.Owner.Faction.InternalName);
+
+				if (Info.PowerupSpeech != null && disabled)
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
+
+				if (Info.PowerdownSpeech != null && !disabled)
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerdownSpeech, self.Owner.Faction.InternalName);
+
 				power.UpdateActor(self);
 
 				if (disabled)
@@ -68,7 +86,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!disabled || !Info.CancelWhenDisabled)
 				return;
 			disabled = false;
-			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "EnablePower", self.Owner.Faction.InternalName);
+
+			if (Info.PowerupSound != null)
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
+
+			if (Info.PowerupSpeech != null)
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
+
 			power.UpdateActor(self);
 		}
 	}

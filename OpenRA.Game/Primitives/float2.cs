@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct float2
+	public struct float2 : IEquatable<float2>
 	{
 		public float X, Y;
 
@@ -72,13 +72,13 @@ namespace OpenRA
 
 		public static bool operator ==(float2 me, float2 other) { return me.X == other.X && me.Y == other.Y; }
 		public static bool operator !=(float2 me, float2 other) { return !(me == other); }
+
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as float2?;
-			return o != null && o == this;
-		}
+		public bool Equals(float2 other) { return this == other; }
+		public override bool Equals(object obj) { return obj is float2 && Equals((float2)obj); }
+
+		public override string ToString() { return X + "," + Y; }
 
 		public static readonly float2 Zero = new float2(0, 0);
 
@@ -92,7 +92,6 @@ namespace OpenRA
 		public static float Dot(float2 a, float2 b) { return a.X * b.X + a.Y * b.Y; }
 		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
 
-		public override string ToString() { return "{0},{1}".F(X, Y); }
 		public int2 ToInt2() { return new int2((int)X, (int)Y); }
 
 		public static float2 Max(float2 a, float2 b) { return new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }

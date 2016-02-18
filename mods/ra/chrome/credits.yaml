@@ -17,6 +17,7 @@ Background@CREDITS_PANEL:
 			Y: 50
 			Width: PARENT_RIGHT - 30
 			Height: 345
+			TopBottomSpacing: 18
 			Children:
 				Label@CREDITS_TEMPLATE:
 					X: 8
@@ -30,4 +31,3 @@ Background@CREDITS_PANEL:
 			Text: Close
 			Font: Bold
 			Key: escape
-

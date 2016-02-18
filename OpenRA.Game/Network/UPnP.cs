@@ -22,7 +22,7 @@ namespace OpenRA.Network
 		{
 			try
 			{
-				NatUtility.Logger = Log.Channels["server"].Writer;
+				NatUtility.Logger = Log.Channel("server").Writer;
 				NatUtility.Verbose = Game.Settings.Server.VerboseNatDiscovery;
 				NatUtility.DeviceFound += DeviceFound;
 				Game.Settings.Server.NatDeviceAvailable = false;

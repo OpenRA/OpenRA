@@ -22,6 +22,7 @@ Container@CREDITS_PANEL:
 					Y: 15
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 30
+					TopBottomSpacing: 18
 					Children:
 						Label@CREDITS_TEMPLATE:
 							X: 8
@@ -33,4 +34,3 @@ Container@CREDITS_PANEL:
 			Height: 35
 			Text: Back
 			Key: escape
-

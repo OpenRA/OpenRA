@@ -15,13 +15,14 @@ DPOD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5c0
+		Range: 0
 		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
 		UnloadVoice: Move
+		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
 	AttackHeli:
@@ -47,6 +48,7 @@ DSHP:
 		LandableTerrainTypes: Clear
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
+		IdealSeparation: 1275
 	Health:
 		HP: 200
 	Armor:
@@ -59,7 +61,9 @@ DSHP:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers:
+		EjectOnDeath: true
+	SpawnActorOnDeath:
+		Actor: DSHP.Husk
 
 ORCA:
 	Inherits: ^Helicopter
@@ -75,9 +79,9 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 186
+		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
@@ -85,7 +89,7 @@ ORCA:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 2c0
 		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
@@ -99,9 +103,8 @@ ORCA:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	SpawnActorOnDeath:
+		Actor: ORCA.Husk
 
 ORCAB:
 	Inherits: ^Plane
@@ -122,6 +125,7 @@ ORCAB:
 		ROT: 3
 		Speed: 96
 		AirborneUpgrades: airborne
+		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
@@ -145,9 +149,11 @@ ORCAB:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
 		UpgradeMinEnabledLevel: 1
+	SpawnActorOnDeath:
+		Actor: ORCAB.Husk
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -168,6 +174,7 @@ ORCATRAN:
 		LandableTerrainTypes: Clear
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
+		IdealSeparation: 1275
 	Health:
 		HP: 200
 	Armor:
@@ -180,9 +187,9 @@ ORCATRAN:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		EjectOnDeath: true
+	SpawnActorOnDeath:
+		Actor: ORCATRAN.Husk
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -204,6 +211,7 @@ TRNSPORT:
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
+		MoveIntoShroud: false
 	Health:
 		HP: 175
 	Armor:
@@ -212,11 +220,10 @@ TRNSPORT:
 		Range: 2c0
 		Type: CenterPosition
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
 	Selectable:
 		Bounds: 44,32,0,-8
+	SpawnActorOnDeath:
+		Actor: TRNSPORT.Husk
 
 SCRIN:
 	Inherits: ^Plane
@@ -238,6 +245,7 @@ SCRIN:
 		ROT: 3
 		Speed: 168
 		AirborneUpgrades: airborne
+		MoveIntoShroud: false
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 	Health:
@@ -260,6 +268,9 @@ SCRIN:
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
 	RenderSprites:
+	DeathSounds:
+	SpawnActorOnDeath:
+		Actor: SCRIN.Husk
 
 APACHE:
 	Inherits: ^Helicopter
@@ -275,9 +286,9 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		ROT: 5
 		Speed: 130
+		MoveIntoShroud: false
 	Health:
 		HP: 225
 	Armor:
@@ -299,9 +310,8 @@ APACHE:
 	WithSpriteRotorOverlay:
 		Offset: 85,0,384
 	RenderSprites:
-	Hovers@AIRBORNE:
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+	SpawnActorOnDeath:
+		Actor: APACHE.Husk
 
 HUNTER:
 	Inherits@1: ^GainsExperience
@@ -314,13 +324,11 @@ HUNTER:
 		HP: 500
 	Armor:
 		Type: Light
-	DemoTruck:
+	AttackSuicides:
 	Explodes:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
 	Aircraft:
-		RearmBuildings:
-		RepairBuildings:
 		ROT: 16
 		Speed: 355
 		CruiseAltitude: 256
@@ -334,7 +342,9 @@ HUNTER:
 	RenderSprites:
 		Image: GGHUNT
 	WithFacingSpriteBody:
-	Hovers:
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	DrawLineToTarget:
@@ -344,4 +354,3 @@ HUNTER:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
-

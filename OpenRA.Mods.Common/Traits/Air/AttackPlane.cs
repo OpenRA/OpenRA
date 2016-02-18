@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AttackPlaneInfo : AttackFrontalInfo
+	public class AttackPlaneInfo : AttackFrontalInfo, Requires<AircraftInfo>
 	{
 		[Desc("Delay, in game ticks, before turning to attack.")]
 		public readonly int AttackTurnDelay = 50;
@@ -25,11 +25,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackPlane : AttackFrontal
 	{
 		public readonly AttackPlaneInfo AttackPlaneInfo;
+		readonly AircraftInfo aircraftInfo;
 
 		public AttackPlane(Actor self, AttackPlaneInfo info)
 			: base(self, info)
 		{
 			AttackPlaneInfo = info;
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
@@ -40,7 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 		protected override bool CanAttack(Actor self, Target target)
 		{
 			// Don't fire while landed or when outside the map.
-			return base.CanAttack(self, target) && self.CenterPosition.Z > 0 && self.World.Map.Contains(self.Location);
+			return base.CanAttack(self, target)
+				&& self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length >= aircraftInfo.MinAirborneAltitude
+				&& self.World.Map.Contains(self.Location);
 		}
 	}
 }

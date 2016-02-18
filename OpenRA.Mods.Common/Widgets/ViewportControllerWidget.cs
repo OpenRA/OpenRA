@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -128,9 +127,10 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			var underCursor = world.ScreenMap.ActorsAt(worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
+			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos);
+			var underCursor = world.ScreenMap.ActorsAt(worldPixel)
 				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITooltipInfo>())
-				.WithHighestSelectionPriority();
+				.WithHighestSelectionPriority(worldPixel);
 
 			if (underCursor != null)
 			{
@@ -140,9 +140,9 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos))
+			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, worldPixel)
 				.Where(a => a.TooltipInfo != null && a.IsValid)
-				.WithHighestSelectionPriority();
+				.WithHighestSelectionPriority(worldPixel);
 
 			if (frozen != null)
 			{

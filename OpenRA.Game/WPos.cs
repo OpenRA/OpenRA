@@ -40,6 +40,20 @@ namespace OpenRA
 		/// </summary>
 		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
+		/// <summary>
+		/// Returns the linear interpolation between points 'a' and 'b'
+		/// </summary>
+		public static WPos Lerp(WPos a, WPos b, long mul, long div)
+		{
+			// The intermediate variables may need more precision than
+			// an int can provide, so we can't use WPos.
+			var x = (int)(a.X + (b.X - a.X) * mul / div);
+			var y = (int)(a.Y + (b.Y - a.Y) * mul / div);
+			var z = (int)(a.Z + (b.Z - a.Z) * mul / div);
+
+			return new WPos(x, y, z);
+		}
+
 		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)
 		{
 			// Start with a linear lerp between the points
@@ -67,7 +81,7 @@ namespace OpenRA
 		{
 			WPos a;
 			WVec b;
-			if (!left.TryGetClrValue<WPos>(out a) || !right.TryGetClrValue<WVec>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WPos.Add(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
 
 			return new LuaCustomClrObject(a + b);
@@ -77,19 +91,19 @@ namespace OpenRA
 		{
 			WPos a;
 			var rightType = right.WrappedClrType();
-			if (!left.TryGetClrValue<WPos>(out a))
+			if (!left.TryGetClrValue(out a))
 				throw new LuaException("Attempted to call WPos.Subtract(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType));
 
 			if (rightType == typeof(WPos))
 			{
 				WPos b;
-				right.TryGetClrValue<WPos>(out b);
+				right.TryGetClrValue(out b);
 				return new LuaCustomClrObject(a - b);
 			}
 			else if (rightType == typeof(WVec))
 			{
 				WVec b;
-				right.TryGetClrValue<WVec>(out b);
+				right.TryGetClrValue(out b);
 				return new LuaCustomClrObject(a - b);
 			}
 
@@ -99,7 +113,7 @@ namespace OpenRA
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			WPos a, b;
-			if (!left.TryGetClrValue<WPos>(out a) || !right.TryGetClrValue<WPos>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				return false;
 
 			return a == b;

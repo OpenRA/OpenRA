@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -106,6 +103,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
 		{
+			// If the produced Actor doesn't occupy space, it can't be in range
+			if (produced.OccupiesSpace == null)
+				return;
+
+			// We don't grant upgrades when disabled
+			if (self.IsDisabled())
+				return;
+
 			// Work around for actors produced within the region not triggering until the second tick
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.LengthSquared)
 			{

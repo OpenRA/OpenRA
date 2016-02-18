@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.GrantUpgradeSequence))
-				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence);
+				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence, () => wsb.CancelCustomAnimation(self));
 
 			Game.Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
@@ -121,15 +121,15 @@ namespace OpenRA.Mods.Common.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				this.range = power.info.Range;
+				range = power.info.Range;
 				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
-				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
-					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				if (mi.Button == MouseButton.Left && power.UnitsInRange(cell).Any())
+					yield return new Order(order, manager.Self, false) { TargetLocation = cell, SuppressVisualFeedback = true };
 			}
 
 			public void Tick(World world)
@@ -149,15 +149,15 @@ namespace OpenRA.Mods.Common.Traits
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var pal = wr.Palette("terrain");
+				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
-			public string GetCursor(World world, CPos xy, MouseInput mi)
+			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return power.UnitsInRange(xy).Any() ? "ability" : "move-blocked";
+				return power.UnitsInRange(cell).Any() ? "ability" : "move-blocked";
 			}
 		}
 	}

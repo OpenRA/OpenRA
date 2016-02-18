@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using OpenRA.GameRules;
 using OpenRA.Traits;
 
 namespace OpenRA.Test
@@ -27,6 +26,12 @@ namespace OpenRA.Test
 	class MockDInfo : MockTraitInfo, Requires<MockEInfo> { }
 	class MockEInfo : MockTraitInfo, Requires<MockFInfo> { }
 	class MockFInfo : MockTraitInfo, Requires<MockDInfo> { }
+
+	class MockA2Info : MockTraitInfo { }
+	class MockB2Info : MockTraitInfo { }
+	class MockC2Info : MockTraitInfo { }
+
+	class MockStringInfo : MockTraitInfo { public string AString = null; }
 
 	[TestFixture]
 	public class ActorInfoTest
@@ -60,11 +65,14 @@ namespace OpenRA.Test
 			}
 			catch (Exception e)
 			{
+				// Is.StringContaining is deprecated in NUnit 3, but we need to support NUnit 2 so we ignore the warning.
+				#pragma warning disable CS0618
 				Assert.That(e.Message, Is.StringContaining("MockA"));
 				Assert.That(e.Message, Is.StringContaining("MockB"));
 				Assert.That(e.Message, Is.StringContaining("MockC"));
 				Assert.That(e.Message, Is.StringContaining("MockInherit"), "Should recognize base classes");
 				Assert.That(e.Message, Is.StringContaining("IMock"), "Should recognize interfaces");
+				#pragma warning restore CS0618
 			}
 		}
 
@@ -87,6 +95,21 @@ namespace OpenRA.Test
 
 				Assert.That(count, Is.EqualTo(Math.Floor(count)), "Should be symmetrical");
 			}
+		}
+
+		// This needs to match the logic used in RulesetCache.LoadYamlRules
+		ActorInfo CreateActorInfoFromYaml(string name, string mapYaml, params string[] yamls)
+		{
+			var nodes = mapYaml == null ? new List<MiniYamlNode>() : MiniYaml.FromString(mapYaml);
+			var sources = yamls.ToList();
+			if (mapYaml != null)
+				sources.Add(mapYaml);
+
+			var yaml = MiniYaml.Merge(sources.Select(s => MiniYaml.FromString(s)));
+			var allUnits = yaml.ToDictionary(node => node.Key, node => node.Value);
+			var unit = allUnits[name];
+			var creator = new ObjectCreator(typeof(ActorInfoTest).Assembly);
+			return new ActorInfo(creator, name, unit);
 		}
 	}
 }

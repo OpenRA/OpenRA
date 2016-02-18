@@ -2,7 +2,7 @@ Maverick:
 	ReloadDelay: 30
 	Range: 9c0
 	MinRange: 3c0
-	Report: MISSILE7.AUD
+	Report: missile7.aud
 	Burst: 2
 	BurstDelay: 7
 	ValidTargets: Ground, Water
@@ -28,19 +28,19 @@ Maverick:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Dragon:
 	ReloadDelay: 50
 	Range: 5c0
 	MinRange: 0c512
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		MaximumLaunchSpeed: 213
@@ -65,19 +65,19 @@ Dragon:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 HellfireAG:
 	ReloadDelay: 60
 	Range: 4c0
 	MinRange: 1c256
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Ground, Water
@@ -103,19 +103,19 @@ HellfireAG:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 HellfireAA:
 	ReloadDelay: 60
 	Range: 4c0
 	MinRange: 1c256
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 10
 	ValidTargets: Air
@@ -141,18 +141,18 @@ HellfireAA:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 MammothTusk:
 	ReloadDelay: 60
 	Range: 8c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile
@@ -177,22 +177,22 @@ MammothTusk:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 	Warhead@5EffAir: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 
 Nike:
 	ReloadDelay: 15
 	Range: 7c512
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
@@ -214,13 +214,13 @@ Nike:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 
 RedEye:
 	ReloadDelay: 50
 	Range: 7c512
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 3
@@ -243,14 +243,14 @@ RedEye:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 
 SubMissile:
 	ReloadDelay: 300
 	Range: 16c0
 	Burst: 2
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Projectile: Bullet
 		Speed: 102
 		Blockable: false
@@ -271,18 +271,18 @@ SubMissile:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Stinger:
 	ReloadDelay: 60
 	Range: 9c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 0
 	ValidTargets: Ground, Water
@@ -307,22 +307,22 @@ Stinger:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@5EffAir: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 StingerAA:
 	ReloadDelay: 60
 	Range: 9c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	Burst: 2
 	BurstDelay: 0
 	ValidTargets: Air
@@ -347,27 +347,27 @@ StingerAA:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@5EffAir: CreateEffect
-		Explosion: med_explosion_air
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 		ValidImpactTypes: Air, AirHit
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
-	Report: TORPEDO1.AUD
+	Report: torpedo1.aud
 	ValidTargets: Water, Underwater, Bridge
 	Burst: 2
 	BurstDelay: 20
 	Projectile: Missile
-		Image: MISSILE
+		Image: torpedo
 		Arm: 3
 		MaximumLaunchSpeed: 85
 		TrailImage: bubbles
@@ -388,23 +388,23 @@ TorpTube:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: large_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water, WaterHit
 	Warhead@4EffWaterHit: CreateEffect
-		Explosion: artillery_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
 		ValidImpactTypes: WaterHit
 	Warhead@5EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 SCUD:
 	ReloadDelay: 240
 	Range: 10c0
 	MinRange: 3c0
-	Report: MISSILE1.AUD
+	Report: missile1.aud
 	Projectile: Bullet
 		Speed: 170
 		Blockable: false
@@ -427,18 +427,18 @@ SCUD:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 APTusk:
 	ReloadDelay: 60
 	Range: 6c0
-	Report: MISSILE6.AUD
+	Report: missile6.aud
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		MaximumLaunchSpeed: 298
@@ -463,11 +463,10 @@ APTusk:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
-

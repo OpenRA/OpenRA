@@ -59,7 +59,7 @@ Section "-Reg" Reg
 	; Replay file association
 	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
 	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
-	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=%1"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=$\"%1$\""
 	
 	; OpenRA URL Scheme
 	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
@@ -99,6 +99,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
+	File "${SRCDIR}\OpenAL-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\MaxMind.Db.dll"
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
@@ -215,6 +216,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\eluant.dll
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL2-CS.dll
+	Delete $INSTDIR\OpenAL-CS.dll
 	Delete $INSTDIR\SmarIrc4net.dll
 	RMDir /r $INSTDIR\Support
 	

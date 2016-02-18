@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))
 					Game.Sound.Play(attack.info.ChargeAudio, self.CenterPosition);
 
-				return Util.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
+				return ActivityUtils.SequenceActivities(new Wait(attack.info.InitialChargeDelay), new ChargeFire(attack, target), this);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				attack.DoAttack(self, target);
 
-				return Util.SequenceActivities(new Wait(attack.info.ChargeDelay), this);
+				return ActivityUtils.SequenceActivities(new Wait(attack.info.ChargeDelay), this);
 			}
 		}
 	}

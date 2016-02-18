@@ -95,7 +95,7 @@ namespace OpenRA
 
 		public static string GameDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
 
-		/// <summary>Replace special character prefixes with full paths</summary>
+		/// <summary>Replaces special character prefixes with full paths.</summary>
 		public static string ResolvePath(string path)
 		{
 			path = path.TrimEnd(new char[] { ' ', '\t' });
@@ -111,7 +111,7 @@ namespace OpenRA
 			return path;
 		}
 
-		/// <summary>Replace special character prefixes with full paths</summary>
+		/// <summary>Replace special character prefixes with full paths.</summary>
 		public static string ResolvePath(params string[] path)
 		{
 			return ResolvePath(path.Aggregate(Path.Combine));

@@ -10,12 +10,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -226,6 +223,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void DirtyCells(IEnumerable<PPos> cells)
 		{
+			// PERF: Many cells in the shroud change every tick. We only track the changes here and defer the real work
+			// we need to do until we render. This allows us to avoid wasted work.
 			cellsDirty.UnionWith(cells);
 		}
 
@@ -240,12 +239,12 @@ namespace OpenRA.Mods.Common.Traits
 					shroud.CellsChanged += DirtyCells;
 
 				// Needs the anonymous function to ensure the correct overload is chosen
-				if (shroud != null && shroud.ShroudEnabled)
+				if (shroud != null)
 					visibleUnderShroud = puv => currentShroud.IsExplored(puv);
 				else
 					visibleUnderShroud = puv => map.Contains(puv);
 
-				if (shroud != null && shroud.FogEnabled)
+				if (shroud != null)
 					visibleUnderFog = puv => currentShroud.IsVisible(puv);
 				else
 					visibleUnderFog = puv => map.Contains(puv);

@@ -41,6 +41,8 @@ namespace OpenRA
 		public bool Equals(WAngle other) { return other == this; }
 		public override bool Equals(object obj) { return obj is WAngle && Equals((WAngle)obj); }
 
+		public int Facing { get { return Angle / 4; } }
+
 		public int Sin() { return new WAngle(Angle - 256).Cos(); }
 
 		public int Cos()

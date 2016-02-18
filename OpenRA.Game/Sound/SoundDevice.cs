@@ -37,10 +37,6 @@ namespace OpenRA
 			Engine = engine;
 			Device = device;
 			Label = label;
-
-			// Limit label to 32 characters
-			if (Label.Length > 32)
-				Label = "..." + Label.Substring(Label.Length - 32);
 		}
 	}
 

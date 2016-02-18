@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -58,6 +59,12 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
 		public readonly bool Blockable = true;
 
+		[Desc("Width of projectile (used for finding blocking actors).")]
+		public readonly WDist Width = new WDist(1);
+
+		[Desc("Extra search radius beyond path for blocking actors.")]
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
+
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
@@ -69,6 +76,9 @@ namespace OpenRA.Mods.Common.Effects
 
 		[Desc("Vertical rate of turn.")]
 		public readonly int VerticalRateOfTurn = 6;
+
+		[Desc("Gravity applied while in free fall.")]
+		public readonly int Gravity = 10;
 
 		[Desc("Run out of fuel after being activated this many ticks. Zero for unlimited fuel.")]
 		public readonly int RangeLimit = 0;
@@ -104,6 +114,10 @@ namespace OpenRA.Mods.Common.Effects
 		public readonly bool TrailWhenDeactivated = false;
 
 		public readonly int ContrailLength = 0;
+
+		public readonly int ContrailZOffset = 2047;
+
+		public readonly WDist ContrailWidth = new WDist(64);
 
 		public readonly Color ContrailColor = Color.White;
 
@@ -142,8 +156,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly ProjectileArgs args;
 		readonly Animation anim;
 
-		// NOTE: Might be desirable to unhardcode the number -10
-		readonly WVec gravity = new WVec(0, 0, -10);
+		readonly WVec gravity;
 
 		int ticks;
 
@@ -181,13 +194,14 @@ namespace OpenRA.Mods.Common.Effects
 
 			pos = args.Source;
 			hFacing = args.Facing;
+			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 
 			var world = args.SourceActor.World;
 
 			if (info.Inaccuracy.Length > 0)
 			{
-				var inaccuracy = OpenRA.Traits.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -209,7 +223,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 			{
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
-				contrail = new ContrailRenderable(world, color, info.ContrailLength, info.ContrailDelay, 0);
+				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
 			}
 
 			trailPalette = info.TrailPalette;
@@ -295,7 +309,7 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				// Set vertical facing so that the missile faces its target
 				var vDist = new WVec(-tarDistVec.Z, -relTarHorDist, 0);
-				vFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, 0);
+				vFacing = (sbyte)vDist.Yaw.Facing;
 
 				// Do not accept -1 as valid vertical facing since it is usually a numerical error
 				// and will lead to premature descent and crashing into the ground
@@ -533,7 +547,7 @@ namespace OpenRA.Mods.Common.Effects
 				{
 					// Aim for the target
 					var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
-					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 
 					// Do not accept -1  as valid vertical facing since it is usually a numerical error
 					// and will lead to premature descent and crashing into the ground
@@ -626,7 +640,7 @@ namespace OpenRA.Mods.Common.Effects
 							{
 								// Aim for the target
 								var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-								desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 									desiredVFacing = 0;
 							}
@@ -636,7 +650,7 @@ namespace OpenRA.Mods.Common.Effects
 					{
 						// Aim for the target
 						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-						desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 							desiredVFacing = 0;
 					}
@@ -646,7 +660,7 @@ namespace OpenRA.Mods.Common.Effects
 					// Aim to attain cruise altitude as soon as possible while having the absolute value
 					// of vertical facing bound by the maximum vertical rate of turn
 					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-					desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 					ChangeSpeed();
@@ -657,7 +671,7 @@ namespace OpenRA.Mods.Common.Effects
 				// Aim to attain cruise altitude as soon as possible while having the absolute value
 				// of vertical facing bound by the maximum vertical rate of turn
 				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-				desiredVFacing = (sbyte)OpenRA.Traits.Util.GetFacing(vDist, vFacing);
+				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 				ChangeSpeed();
@@ -681,7 +695,8 @@ namespace OpenRA.Mods.Common.Effects
 			var relTarHgt = tarDistVec.Z;
 
 			// Compute which direction the projectile should be facing
-			var desiredHFacing = OpenRA.Traits.Util.GetFacing(tarDistVec + predVel, hFacing);
+			var velVec = tarDistVec + predVel;
+			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
 
 			if (allowPassBy && System.Math.Abs(desiredHFacing - hFacing) >= System.Math.Abs(desiredHFacing + 128 - hFacing))
 			{
@@ -709,8 +724,8 @@ namespace OpenRA.Mods.Common.Effects
 				desiredHFacing = hFacing;
 
 			// Compute new direction the projectile will be facing
-			hFacing = OpenRA.Traits.Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
-			vFacing = OpenRA.Traits.Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
+			hFacing = Util.TickFacing(hFacing, desiredHFacing, info.HorizontalRateOfTurn);
+			vFacing = Util.TickFacing(vFacing, desiredVFacing, info.VerticalRateOfTurn);
 
 			// Compute the projectile's guided displacement
 			return new WVec(0, -1024 * speed, 0)
@@ -751,10 +766,10 @@ namespace OpenRA.Mods.Common.Effects
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)
-			var fac1 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
+			var yaw1 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
 			tarVel = newTarPos - targetPosition;
-			var fac2 = OpenRA.Traits.Util.GetFacing(tarVel, hFacing);
-			predVel = tarVel.Rotate(WRot.FromFacing(fac2 - fac1));
+			var yaw2 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
+			predVel = tarVel.Rotate(WRot.FromYaw(yaw2 - yaw1));
 			targetPosition = newTarPos;
 
 			// Compute current distance from target position
@@ -768,10 +783,21 @@ namespace OpenRA.Mods.Common.Effects
 			else
 				move = HomingTick(world, tarDistVec, relTarHorDist);
 
-			renderFacing = WAngle.ArcTan(move.Z - move.Y, move.X).Angle / 4 - 64;
+			renderFacing = new WVec(move.X, move.Y - move.Z, 0).Yaw.Facing;
 
 			// Move the missile
+			var lastPos = pos;
 			pos += move;
+
+			// Check for walls or other blocking obstacles
+			var shouldExplode = false;
+			WPos blockedPos;
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
+				info.TargetExtraSearchRadius, out blockedPos))
+			{
+				pos = blockedPos;
+				shouldExplode = true;
+			}
 
 			// Create the smoke trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
@@ -784,14 +810,10 @@ namespace OpenRA.Mods.Common.Effects
 				contrail.Update(pos);
 
 			var cell = world.Map.CellContaining(pos);
-
-			// NOTE: High speeds might cause the missile to miss the target or fly through obstacles
-			//       In that case, big moves should probably be decomposed into multiple smaller ones with hit checks
 			var height = world.Map.DistanceAboveTerrain(pos);
-			var shouldExplode = (height.Length < 0) // Hit the ground
-				|| (relTarDist < info.CloseEnough.Length) // Within range
+			shouldExplode |= height.Length < 0 // Hit the ground
+				|| relTarDist < info.CloseEnough.Length // Within range
 				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
-				|| (info.Blockable && BlocksProjectiles.AnyBlockingActorAt(world, pos)) // Hit a wall or other blocking obstacle
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
@@ -818,6 +840,9 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (info.ContrailLength > 0)
 				yield return contrail;
+
+			if (anim == null)
+				yield break;
 
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))

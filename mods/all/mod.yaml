@@ -7,7 +7,7 @@ Metadata:
 
 RequiresMods:
 
-Folders:
+Packages:
 	.
 
 Cursors:
@@ -32,6 +32,8 @@ ChromeMetrics:
 Fonts:
 
 LobbyDefaults:
+
+SoundFormats:
 
 SpriteFormats:
 

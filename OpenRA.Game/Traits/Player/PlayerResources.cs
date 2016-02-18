@@ -17,7 +17,6 @@ namespace OpenRA.Traits
 	{
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
 		public readonly int DefaultCash = 5000;
-		public readonly int AdviceInterval = 250;
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
@@ -27,14 +26,12 @@ namespace OpenRA.Traits
 		const float DisplayCashFracPerFrame = .07f;
 		const int DisplayCashDeltaPerFrame = 37;
 		readonly Player owner;
-		int adviceInterval;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
 			owner = self.Owner;
 
 			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
-			adviceInterval = info.AdviceInterval;
 		}
 
 		[Sync] public int Cash;
@@ -44,7 +41,6 @@ namespace OpenRA.Traits
 
 		public int DisplayCash;
 		public int DisplayResources;
-		public bool AlertSilo;
 
 		public int Earned;
 		public int Spent;
@@ -61,8 +57,6 @@ namespace OpenRA.Traits
 
 			if (Resources > ResourceCapacity)
 			{
-				nextSiloAdviceTime = 0;
-
 				Earned -= Resources - ResourceCapacity;
 				Resources = ResourceCapacity;
 			}
@@ -126,7 +120,6 @@ namespace OpenRA.Traits
 			return true;
 		}
 
-		int nextSiloAdviceTime = 0;
 		int nextCashTickTime = 0;
 
 		public void Tick(Actor self)
@@ -140,19 +133,6 @@ namespace OpenRA.Traits
 
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
-
-			if (--nextSiloAdviceTime <= 0)
-			{
-				if (Resources > 0.8 * ResourceCapacity)
-				{
-					Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", "SilosNeeded", owner.Faction.InternalName);
-					AlertSilo = true;
-				}
-				else
-					AlertSilo = false;
-
-				nextSiloAdviceTime = adviceInterval;
-			}
 
 			var diff = Math.Abs(Cash - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * DisplayCashFracPerFrame), DisplayCashDeltaPerFrame), diff);

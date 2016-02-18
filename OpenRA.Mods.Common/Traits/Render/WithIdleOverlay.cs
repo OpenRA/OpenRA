@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -69,7 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-			overlay = new Animation(self.World, rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self),
+				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete);
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
 					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence)));
@@ -79,8 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => IsTraitDisabled || !buildComplete,
-				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete,
-				p => WithTurret.ZOffsetFromCenter(self, p, 1));
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}

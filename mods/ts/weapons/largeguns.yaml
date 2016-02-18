@@ -1,7 +1,7 @@
 90mm:
 	ReloadDelay: 50
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 682
 		Image: 120mm
@@ -19,13 +19,13 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_clsn
-		ImpactSound: expnew14.aud
+		Explosions: medium_clsn
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
@@ -33,7 +33,7 @@
 120mm:
 	ReloadDelay: 80
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 1c512
 	Warhead@1Dam: SpreadDamage
@@ -47,13 +47,13 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_clsn
-		ImpactSound: expnew14.aud
+		Explosions: large_clsn
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -61,7 +61,7 @@
 120mmx:
 	ReloadDelay: 80
 	Range: 6c768
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Burst: 2
 	BurstDelay: 5
 	Projectile: Bullet
@@ -81,13 +81,13 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_clsn
-		ImpactSound: expnew14.aud
+		Explosions: medium_clsn
+		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -95,7 +95,7 @@
 155mm:
 	ReloadDelay: 110
 	Range: 18c0
-	Report: 120MMF.AUD
+	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 170
 		Image: 120mm
@@ -115,14 +115,13 @@
 			Concrete: 35
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: expnew06.aud
+		Explosions: large_explosion
+		ImpactSounds: expnew06.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
-

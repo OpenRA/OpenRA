@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string Sequence = "resources";
 		[SequenceReference("Sequence")] public readonly string[] Variants = { };
-		[PaletteReference] public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 		public readonly int ResourceType = 1;
 
 		public readonly int ValuePerUnit = 0;
@@ -43,7 +43,7 @@ namespace OpenRA.Traits
 
 		public ResourceType(ResourceTypeInfo info, World world)
 		{
-			this.Info = info;
+			Info = info;
 			Variants = new Dictionary<string, Sprite[]>();
 			foreach (var v in info.Variants)
 			{

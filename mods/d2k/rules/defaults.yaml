@@ -6,6 +6,7 @@
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+	RenderDebugState:
 
 ^SpriteActor:
 	BodyOrientation:
@@ -47,7 +48,6 @@
 		Sequence: rank
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
@@ -58,6 +58,8 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 		Crushes: crate, spicebloom
 		TerrainSpeeds:
 			Sand: 100
@@ -92,6 +94,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	Carryable:
+		CarryableUpgrades: notmobile
 	WithDecorationCarryable:
 		Image: pips
 		Sequence: pickup-indicator
@@ -157,7 +160,8 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Health:
-		Radius: 96
+		Shape: Circle
+			Radius: 96
 	Armor:
 		Type: none
 	RevealsShroud:
@@ -229,8 +233,6 @@
 	ActorLostNotification:
 	AttackMove:
 	DrawLineToTarget:
-	Voiced:
-		VoiceSet: GenericVoice
 	WithFacingSpriteBody:
 	WithShadow:
 
@@ -284,12 +286,11 @@
 
 ^Defense:
 	Inherits: ^Building
-	WithTurret:
+	WithSpriteTurret:
 	AttackTurreted:
 	AutoTarget:
 	RenderRangeCircle:
 	-GivesBuildableArea:
-	-WithCrumbleOverlay:
 	-WithMakeAnimation:
 	-WithSpriteBody:
 	WithWallSpriteBody:
@@ -301,4 +302,3 @@
 		Range: 2c0, 4c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
-

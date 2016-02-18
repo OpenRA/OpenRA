@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var colors = new uint[Palette.Size];
-			using (var s = GlobalFileSystem.Open(info.Filename))
+			using (var s = Game.ModData.ModFiles.Open(info.Filename))
 			{
 				s.Seek(info.Offset, SeekOrigin.Begin);
 

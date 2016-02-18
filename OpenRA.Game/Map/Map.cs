@@ -16,7 +16,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Support;
@@ -64,7 +63,6 @@ namespace OpenRA
 		public bool? Fog;
 		public bool? Shroud;
 		public bool? AllyBuildRadius;
-		public bool? FragileAlliances;
 		public int? StartingCash;
 		public string TechLevel;
 		public bool ConfigurableStartingUnits = true;
@@ -87,8 +85,6 @@ namespace OpenRA
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (StartingCash.HasValue)
 				settings.StartingCash = StartingCash.Value;
-			if (FragileAlliances.HasValue)
-				settings.FragileAlliances = FragileAlliances.Value;
 			if (ShortGame.HasValue)
 				settings.ShortGame = ShortGame.Value;
 		}
@@ -113,43 +109,7 @@ namespace OpenRA
 
 	public class Map
 	{
-		public const int MinimumSupportedMapFormat = 6;
-
-		static readonly int[][] CellCornerHalfHeights = new int[][]
-		{
-			// Flat
-			new[] { 0, 0, 0, 0 },
-
-			// Slopes (two corners high)
-			new[] { 0, 0, 1, 1 },
-			new[] { 1, 0, 0, 1 },
-			new[] { 1, 1, 0, 0 },
-			new[] { 0, 1, 1, 0 },
-
-			// Slopes (one corner high)
-			new[] { 0, 0, 0, 1 },
-			new[] { 1, 0, 0, 0 },
-			new[] { 0, 1, 0, 0 },
-			new[] { 0, 0, 1, 0 },
-
-			// Slopes (three corners high)
-			new[] { 1, 0, 1, 1 },
-			new[] { 1, 1, 0, 1 },
-			new[] { 1, 1, 1, 0 },
-			new[] { 0, 1, 1, 1 },
-
-			// Slopes (two corners high, one corner double high)
-			new[] { 1, 0, 1, 2 },
-			new[] { 2, 1, 0, 1 },
-			new[] { 1, 2, 1, 0 },
-			new[] { 0, 1, 2, 1 },
-
-			// Slopes (two corners high, alternating)
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 },
-			new[] { 1, 0, 1, 0 },
-			new[] { 0, 1, 0, 1 }
-		};
+		public const int SupportedMapFormat = 8;
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
@@ -157,7 +117,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
-		[FieldLoader.Ignore] public IFolder Container;
+		[FieldLoader.Ignore] public IReadWritePackage Container;
 		public string Path { get; private set; }
 
 		// Yaml map data
@@ -205,6 +165,34 @@ namespace OpenRA
 				FieldLoader.Load(videos, nodesDict["Videos"]);
 
 			return videos;
+		}
+
+		public static string ComputeUID(IReadOnlyPackage package)
+		{
+			// UID is calculated by taking an SHA1 of the yaml and binary data
+			using (var ms = new MemoryStream())
+			{
+				// Read the relevant data into the buffer
+				using (var s = package.GetStream("map.yaml"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.yaml not present in this map");
+					s.CopyTo(ms);
+				}
+
+				using (var s = package.GetStream("map.bin"))
+				{
+					if (s == null)
+						throw new FileNotFoundException("Required file map.bin not present in this map");
+
+					s.CopyTo(ms);
+				}
+
+				// Take the SHA1
+				ms.Seek(0, SeekOrigin.Begin);
+				using (var csp = SHA1.Create())
+					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
+			}
 		}
 
 		public Rectangle Bounds;
@@ -258,13 +246,12 @@ namespace OpenRA
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
 
-		public WVec[][] CellCorners { get; private set; }
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
 
 		void AssertExists(string filename)
 		{
-			using (var s = Container.GetContent(filename))
+			using (var s = Container.GetStream(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
@@ -277,7 +264,7 @@ namespace OpenRA
 		{
 			var size = new Size(width, height);
 			Grid = Game.ModData.Manifest.Get<MapGrid>();
-			var tileRef = new TerrainTile(tileset.Templates.First().Key, (byte)0);
+			var tileRef = new TerrainTile(tileset.Templates.First().Key, 0);
 
 			Title = "Name your map here";
 			Description = "Describe your map here";
@@ -317,80 +304,16 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			Container = GlobalFileSystem.OpenPackage(path, null, int.MaxValue);
+			Container = Game.ModData.ModFiles.OpenWritablePackage(path);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetContent("map.yaml"), path));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetStream("map.yaml"), path));
 			FieldLoader.Load(this, yaml);
 
-			// Support for formats 1-3 dropped 2011-02-11.
-			// Use release-20110207 to convert older maps to format 4
-			// Use release-20110511 to convert older maps to format 5
-			// Use release-20141029 to convert older maps to format 6
-			if (MapFormat < MinimumSupportedMapFormat)
+			if (MapFormat != SupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
-
-			var nd = yaml.ToDictionary();
-
-			// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
-			if (MapFormat < 7)
-			{
-				MiniYaml useAsShellmap;
-				if (nd.TryGetValue("UseAsShellmap", out useAsShellmap) && bool.Parse(useAsShellmap.Value))
-					Visibility = MapVisibility.Shellmap;
-				else if (Type == "Mission" || Type == "Campaign")
-					Visibility = MapVisibility.MissionSelector;
-			}
-
-			// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
-			if (MapFormat < 8)
-			{
-				var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
-				if (players != null)
-				{
-					bool noteHexColors = false;
-					bool noteColorRamp = false;
-					foreach (var player in players.Value.Nodes)
-					{
-						var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
-						if (colorRampNode != null)
-						{
-							Color dummy;
-							var parts = colorRampNode.Value.Value.Split(',');
-							if (parts.Length == 3 || parts.Length == 4)
-							{
-								// Try to convert old normalized HSL value to a rgb hex color
-								try
-								{
-									HSLColor color = new HSLColor(
-										(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
-										(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
-										(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
-									colorRampNode.Value.Value = FieldSaver.FormatValue(color);
-									noteHexColors = true;
-								}
-								catch (Exception)
-								{
-									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-								}
-							}
-							else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
-								throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-
-							colorRampNode.Key = "Color";
-							noteColorRamp = true;
-						}
-					}
-
-					Console.WriteLine("Converted " + path + " to MapFormat 8.");
-					if (noteHexColors)
-						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
-					else if (noteColorRamp)
-						Console.WriteLine("ColorRamp is now called Color.");
-				}
-			}
 
 			SpawnPoints = Exts.Lazy(() =>
 			{
@@ -428,8 +351,8 @@ namespace OpenRA
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
-			if (Container.Exists("map.png"))
-				using (var dataStream = Container.GetContent("map.png"))
+			if (Container.Contains("map.png"))
+				using (var dataStream = Container.GetStream("map.png"))
 					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
@@ -440,7 +363,7 @@ namespace OpenRA
 			if (MapFormat < 8)
 				Save(path);
 
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		void PostInit()
@@ -473,18 +396,6 @@ namespace OpenRA
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
-
-			var leftDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = Grid.Type == MapGridType.RectangularIsometric ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
-			CellCorners = CellCornerHalfHeights.Select(ramp => new WVec[]
-			{
-				leftDelta + new WVec(0, 0, 512 * ramp[0]),
-				topDelta + new WVec(0, 0, 512 * ramp[1]),
-				rightDelta + new WVec(0, 0, 512 * ramp[2]),
-				bottomDelta + new WVec(0, 0, 512 * ramp[3])
-			}).ToArray();
 		}
 
 		void InitializeCellProjection()
@@ -604,7 +515,7 @@ namespace OpenRA
 
 			foreach (var field in fields)
 			{
-				var f = this.GetType().GetField(field);
+				var f = GetType().GetField(field);
 				if (f.GetValue(this) == null)
 					continue;
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
@@ -635,12 +546,12 @@ namespace OpenRA
 			// Add any custom assets
 			if (Container != null)
 			{
-				foreach (var file in Container.AllFileNames())
+				foreach (var file in Container.Contents)
 				{
 					if (file == "map.bin" || file == "map.yaml")
 						continue;
 
-					entries.Add(file, Container.GetContent(file).ReadAllBytes());
+					entries.Add(file, Container.GetStream(file).ReadAllBytes());
 				}
 			}
 
@@ -650,20 +561,20 @@ namespace OpenRA
 				Path = toPath;
 
 				// Create a new map package
-				Container = GlobalFileSystem.CreatePackage(Path, int.MaxValue, entries);
+				Container = Game.ModData.ModFiles.CreatePackage(Path, entries);
 			}
 
 			// Update existing package
 			Container.Write(entries);
 
 			// Update UID to match the newly saved data
-			Uid = ComputeHash();
+			Uid = ComputeUID(Container);
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()
 		{
 			var tiles = new CellLayer<TerrainTile>(this);
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.TilesOffset > 0)
@@ -695,7 +606,7 @@ namespace OpenRA
 		public CellLayer<byte> LoadMapHeight()
 		{
 			var tiles = new CellLayer<byte>(this);
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.HeightsOffset > 0)
@@ -717,7 +628,7 @@ namespace OpenRA
 		{
 			var resources = new CellLayer<ResourceTile>(this);
 
-			using (var s = Container.GetContent("map.bin"))
+			using (var s = Container.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.ResourcesOffset > 0)
@@ -821,7 +732,12 @@ namespace OpenRA
 			if (Grid.MaximumTerrainHeight == 0)
 				return Contains((PPos)uv);
 
-			foreach (var puv in ProjectedCellsCovering(uv))
+			// If the cell has no valid projection, then we're off the map.
+			var projectedCells = ProjectedCellsCovering(uv);
+			if (projectedCells.Length == 0)
+				return false;
+
+			foreach (var puv in projectedCells)
 				if (!Contains(puv))
 					return false;
 			return true;
@@ -915,10 +831,14 @@ namespace OpenRA
 
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
 		{
-			return Traits.Util.GetFacing(CenterOfCell(towards) - CenterOfCell(cell), fallbackfacing);
+			var delta = CenterOfCell(towards) - CenterOfCell(cell);
+			if (delta.HorizontalLengthSquared == 0)
+				return fallbackfacing;
+
+			return delta.Yaw.Facing;
 		}
 
-		public void Resize(int width, int height)		// editor magic.
+		public void Resize(int width, int height)
 		{
 			var oldMapTiles = MapTiles.Value;
 			var oldMapResources = MapResources.Value;
@@ -930,9 +850,10 @@ namespace OpenRA
 			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]));
 			MapSize = new int2(newSize);
 
-			var tl = new MPos(0, 0).ToCPos(this);
-			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
-			AllCells = new CellRegion(Grid.Type, tl, br);
+			var tl = new MPos(0, 0);
+			var br = new MPos(MapSize.X - 1, MapSize.Y - 1);
+			AllCells = new CellRegion(Grid.Type, tl.ToCPos(this), br.ToCPos(this));
+			SetBounds(new PPos(tl.U + 1, tl.V + 1), new PPos(br.U - 1, br.V - 1));
 		}
 
 		public void SetBounds(PPos tl, PPos br)
@@ -957,24 +878,6 @@ namespace OpenRA
 			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
 
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
-		}
-
-		string ComputeHash()
-		{
-			// UID is calculated by taking an SHA1 of the yaml and binary data
-			using (var ms = new MemoryStream())
-			{
-				// Read the relevant data into the buffer
-				using (var s = Container.GetContent("map.yaml"))
-					s.CopyTo(ms);
-				using (var s = Container.GetContent("map.bin"))
-					s.CopyTo(ms);
-
-				// Take the SHA1
-				ms.Seek(0, SeekOrigin.Begin);
-				using (var csp = SHA1.Create())
-					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
-			}
 		}
 
 		public void FixOpenAreas(Ruleset rules)
@@ -1023,7 +926,7 @@ namespace OpenRA
 			var uv = cell.ToMPos(this);
 			var terrainIndex = cachedTerrainIndexes[uv];
 
-			// Cache terrain indexes per cell on demand.
+			// PERF: Cache terrain indexes per cell on demand.
 			if (terrainIndex == InvalidCachedTerrainIndex)
 			{
 				var custom = CustomTerrain[uv];
@@ -1249,7 +1152,7 @@ namespace OpenRA
 			if (maxRange < minRange)
 				throw new ArgumentOutOfRangeException("maxRange", "Maximum range is less than the minimum range.");
 
-			if (maxRange > TilesByDistance.Length)
+			if (maxRange >= TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException("maxRange", "The requested range ({0}) exceeds the maximum allowed ({1})".F(maxRange, MaxTilesInCircleRange));
 
 			Func<CPos, bool> valid = Contains;

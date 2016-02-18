@@ -15,14 +15,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Return to a player owned RearmBuildings. If none available, head back to base and circle over it.")]
-	class ReturnOnIdleInfo : TraitInfo<ReturnOnIdle> { }
-
-	class ReturnOnIdle : INotifyIdle
+	public class ReturnOnIdleInfo : ITraitInfo, Requires<AircraftInfo>
 	{
+		public object Create(ActorInitializer init) { return new ReturnOnIdle(init.Self, this); }
+	}
+
+	public class ReturnOnIdle : INotifyIdle
+	{
+		readonly AircraftInfo aircraftInfo;
+
+		public ReturnOnIdle(Actor self, ReturnOnIdleInfo info)
+		{
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
+		}
+
 		public void TickIdle(Actor self)
 		{
 			// We're on the ground, let's stay there.
-			if (self.CenterPosition.Z == 0)
+			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude)
 				return;
 
 			var airfield = ReturnToBase.ChooseAirfield(self, true);

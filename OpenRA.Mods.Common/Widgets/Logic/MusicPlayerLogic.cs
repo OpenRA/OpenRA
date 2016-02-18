@@ -38,6 +38,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable || musicPlaylist.CurrentSongIsBackground || currentSong == null;
 			panel.Get("NO_MUSIC_LABEL").IsVisible = () => !musicPlaylist.IsMusicAvailable;
 
+			if (musicPlaylist.IsMusicAvailable)
+			{
+				panel.Get<LabelWidget>("MUTE_LABEL").GetText = () =>
+				{
+					if (Game.Settings.Sound.Mute)
+						return "Audio has been muted in settings.";
+
+					return "";
+				};
+			}
+
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;

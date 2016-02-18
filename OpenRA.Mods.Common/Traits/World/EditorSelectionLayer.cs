@@ -8,14 +8,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteReference]
 		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = "terrain";
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[Desc("Sequence image where the selection overlay types are defined.")]
 		public readonly string Image = "editor-overlay";

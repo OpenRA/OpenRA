@@ -10,8 +10,8 @@
 
 using System.Drawing;
 using System.IO;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 					for (var j = 0; j < height; j++)
 					{
 						var length = s.ReadUInt16() - 2;
-						Format2.DecodeInto(s.ReadBytes(length), Data, dataWidth * j);
+						RLEZerosCompression.DecodeInto(s.ReadBytes(length), Data, dataWidth * j);
 					}
 				}
 				else

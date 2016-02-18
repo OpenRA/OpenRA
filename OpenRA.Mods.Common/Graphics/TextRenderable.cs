@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var size = font.Measure(text).ToFloat2();
 			var offset = wr.ScreenPxPosition(pos) - 0.5f * size;
-			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + size, Color.Red);
+			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + size, 1 / wr.Viewport.Zoom, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }

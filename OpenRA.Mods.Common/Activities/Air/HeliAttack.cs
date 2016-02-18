@@ -61,18 +61,18 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				self.SetTargetLine(newTarget, Color.Green);
-				return Util.SequenceActivities(new HeliFly(self, newTarget));
+				return ActivityUtils.SequenceActivities(new HeliFly(self, newTarget));
 			}
 
 			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
-				return Util.SequenceActivities(new HeliReturnToBase(self), NextActivity);
+				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self), NextActivity);
 
 			var dist = target.CenterPosition - self.CenterPosition;
 
 			// Can rotate facing while ascending
-			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
 
 			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))

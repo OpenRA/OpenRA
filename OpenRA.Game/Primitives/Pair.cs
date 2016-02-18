@@ -8,12 +8,13 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace OpenRA.Primitives
 {
-	public struct Pair<T, U>
+	public struct Pair<T, U> : IEquatable<Pair<T, U>>
 	{
 		public T First;
 		public U Second;
@@ -37,16 +38,10 @@ namespace OpenRA.Primitives
 			return !(a == b);
 		}
 
-		public override bool Equals(object obj)
-		{
-			var o = obj as Pair<T, U>?;
-			return o != null && o == this;
-		}
+		public override int GetHashCode() { return First.GetHashCode() ^ Second.GetHashCode(); }
 
-		public override int GetHashCode()
-		{
-			return First.GetHashCode() ^ Second.GetHashCode();
-		}
+		public bool Equals(Pair<T, U> other) { return this == other; }
+		public override bool Equals(object obj) { return obj is Pair<T, U> && Equals((Pair<T, U>)obj); }
 
 		public Pair<T, U> WithFirst(T t) { return new Pair<T, U>(t, Second); }
 		public Pair<T, U> WithSecond(U u) { return new Pair<T, U>(First, u); }

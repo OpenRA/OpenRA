@@ -1,5 +1,5 @@
 MCV:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -17,7 +17,6 @@ MCV:
 		Type: Light
 	Mobile:
 		Speed: 85
-		Crushes: wall, crate, infantry
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
@@ -100,7 +99,7 @@ HARV:
 			nod: harv.nod
 
 LPST:
-	Inherits: ^VoxelVehicle
+	Inherits: ^VoxelTank
 	-AppearsOnRadar:
 	-GainsExperience:
 	Buildable:
@@ -127,7 +126,7 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	DeployToUpgrade:
-		DeployedUpgrades: deployed
+		DeployedUpgrades: deployed, notmobile
 		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
@@ -141,13 +140,9 @@ LPST:
 	WithSpriteBody@deployed:
 		UpgradeTypes: undeployed
 		UpgradeMaxEnabledLevel: 0
-	DisableOnUpgrade:
-		UpgradeTypes: undeployed
-		UpgradeMaxEnabledLevel: 0
 	DetectCloaked:
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
 		Range: 18c0
 	RenderDetectionCircle:
-		DrawUpdateLine: true
-
+		TrailCount: 3

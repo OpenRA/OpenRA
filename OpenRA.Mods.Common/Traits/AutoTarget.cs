@@ -135,24 +135,27 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Actor ScanForTarget(Actor self, Actor currentTarget, bool allowMove)
+		public Actor ScanForTarget(Actor self, bool allowMove)
 		{
 			if (nextScanTime <= 0)
 			{
-				var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-				if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
+				nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
+
+				// If we can't attack right now, there's no need to try and find a target.
+				var attackStances = attack.UnforcedAttackTargetStances();
+				if (attackStances != OpenRA.Traits.Stance.None)
 				{
-					nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
-					return ChooseTarget(self, range, allowMove);
+					var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
+					return ChooseTarget(self, attackStances, range, allowMove);
 				}
 			}
 
-			return currentTarget;
+			return null;
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMove)
 		{
-			var targetActor = ScanForTarget(self, null, allowMove);
+			var targetActor = ScanForTarget(self, allowMove);
 			if (targetActor != null)
 				Attack(self, targetActor, allowMove);
 		}
@@ -165,44 +168,65 @@ namespace OpenRA.Mods.Common.Traits
 			attack.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, WDist range, bool allowMove)
+		Actor ChooseTarget(Actor self, Stance attackStances, WDist range, bool allowMove)
 		{
-			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range)
-				.Where(a =>
-					!a.TraitsImplementing<IPreventsAutoTarget>().Any(t => t.PreventsAutoTarget(a, self)));
+			var actorsByArmament = new Dictionary<Armament, List<Actor>>();
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, range);
+			foreach (var actor in actorsInRange)
+			{
+				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
+				// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
+				// allied units, this helps significantly reduce the cost of auto target scans. This is important as
+				// these groups will continuously rescan their allies until an enemy finally comes into range.
+				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
+					continue;
+
+				if (PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+					continue;
+
+				// Select only the first compatible armament for each actor: if this actor is selected
+				// it will be thanks to the first armament anyways, since that is the first selection
+				// criterion
+				var target = Target.FromActor(actor);
+				var armaments = attack.ChooseArmamentsForTarget(target, false);
+				if (!allowMove)
+					armaments = armaments.Where(arm =>
+						target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
+						!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange));
+
+				var armament = armaments.FirstOrDefault();
+				if (armament == null)
+					continue;
+
+				List<Actor> actors;
+				if (actorsByArmament.TryGetValue(armament, out actors))
+					actors.Add(actor);
+				else
+					actorsByArmament.Add(armament, new List<Actor> { actor });
+			}
 
 			// Armaments are enumerated in attack.Armaments in construct order
 			// When autotargeting, first choose targets according to the used armament construct order
 			// And then according to distance from actor
 			// This enables preferential treatment of certain armaments
 			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
-			var actorByArmament = inRange
-
-				// Select only the first compatible armament for each actor: if this actor is selected
-				// it will be thanks to the first armament anyways, since that is the first selection
-				// criterion
-				.Select(a =>
-				{
-					var target = Target.FromActor(a);
-					return new KeyValuePair<Armament, Actor>(
-						attack.ChooseArmamentsForTarget(target, false)
-							.FirstOrDefault(arm => allowMove
-								|| (target.IsInRange(self.CenterPosition, arm.MaxRange())
-								&& !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange))), a);
-				})
-
-				.Where(kv => kv.Key != null && self.Owner.CanTargetActor(kv.Value))
-				.GroupBy(kv => kv.Key, kv => kv.Value)
-				.ToDictionary(kv => kv.Key, kv => kv.ClosestTo(self));
-
 			foreach (var arm in attack.Armaments)
 			{
-				Actor actor;
-				if (actorByArmament.TryGetValue(arm, out actor))
-					return actor;
+				List<Actor> actors;
+				if (actorsByArmament.TryGetValue(arm, out actors))
+					return actors.ClosestTo(self);
 			}
 
 			return null;
+		}
+
+		bool PreventsAutoTarget(Actor attacker, Actor target)
+		{
+			foreach (var pat in target.TraitsImplementing<IPreventsAutoTarget>())
+				if (pat.PreventsAutoTarget(target, attacker))
+					return true;
+
+			return false;
 		}
 	}
 

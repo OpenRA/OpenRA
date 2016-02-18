@@ -139,7 +139,6 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
@@ -157,6 +156,7 @@
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
+    <Compile Include="Effects\AreaBeam.cs" />
     <Compile Include="Effects\Missile.cs" />
     <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
@@ -176,6 +176,10 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="HitShapes\IHitShape.cs" />
+    <Compile Include="HitShapes\Rectangle.cs" />
+    <Compile Include="HitShapes\Capsule.cs" />
+    <Compile Include="HitShapes\Circle.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
@@ -195,6 +199,8 @@
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Orders\EnterTransportTargeter.cs" />
+    <Compile Include="Orders\EnterTransportsTargeter.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\GlobalButtonOrderGenerator.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
@@ -205,7 +211,6 @@
     <Compile Include="Scripting\Properties\AircraftProperties.cs" />
     <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
-    <Compile Include="ServerTraits\ColorValidator.cs" />
     <Compile Include="ServerTraits\LobbyCommands.cs" />
     <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
@@ -265,6 +270,7 @@
     <Compile Include="Traits\Attack\AttackFrontal.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
     <Compile Include="Traits\Attack\AttackOmni.cs" />
+    <Compile Include="Traits\Attack\AttackSuicides.cs" />
     <Compile Include="Traits\Attack\AttackTurreted.cs" />
     <Compile Include="Traits\Attack\AttackWander.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
@@ -281,6 +287,7 @@
     <Compile Include="Traits\Buildings\Exit.cs" />
     <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Buildings\FreeActor.cs" />
+    <Compile Include="Traits\Buildings\Gate.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
@@ -292,6 +299,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
     <Compile Include="Traits\CaptureNotification.cs" />
@@ -381,6 +389,7 @@
     <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Player\ProvidesPrerequisite.cs" />
     <Compile Include="Traits\Player\ProvidesTechPrerequisite.cs" />
+    <Compile Include="Traits\Player\ResourceStorageWarning.cs" />
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
@@ -402,6 +411,8 @@
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
+    <Compile Include="Traits\Render\RenderUtils.cs" />
+    <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
     <Compile Include="Traits\Render\RenderSprites.cs" />
     <Compile Include="Traits\Render\WithWallSpriteBody.cs" />
@@ -411,9 +422,8 @@
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
-    <Compile Include="Traits\Render\WithBarrel.cs" />
+    <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
-    <Compile Include="Traits\Render\WithActiveAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithSiloAnimation.cs" />
@@ -425,7 +435,7 @@
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingAnimation.cs" />
-    <Compile Include="Traits\Render\WithDockingOverlay.cs" />
+    <Compile Include="Traits\Render\WithDockedOverlay.cs" />
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />
     <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
@@ -440,7 +450,7 @@
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
-    <Compile Include="Traits\Render\WithTurret.cs" />
+    <Compile Include="Traits\Render\WithSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
@@ -476,13 +486,11 @@
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
-    <Compile Include="Traits\TransformOnPassenger.cs" />
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
     <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
-    <Compile Include="Traits\Upgrades\DisableMovementOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
@@ -533,11 +541,11 @@
     <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
+    <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GenerateMinimapCommand.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
-    <Compile Include="UtilityCommands\LegacyMapImporter.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
@@ -572,7 +580,6 @@
     <Compile Include="Widgets\Logic\Ingame\ClassicProductionLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ControlGroupLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\DebugMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
@@ -710,6 +717,20 @@
     <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
     <Compile Include="EditorBrushes\EditorCopyPasteBrush.cs" />
     <Compile Include="Traits\World\EditorSelectionLayer.cs" />
+    <Compile Include="Graphics\DetectionCircleRenderable.cs" />
+    <Compile Include="Traits\Render\WithIdleAnimation.cs" />
+    <Compile Include="FileFormats\VqaReader.cs" />
+    <Compile Include="FileFormats\LCWCompression.cs" />
+    <Compile Include="FileFormats\XORDeltaCompression.cs" />
+    <Compile Include="FileFormats\RLEZerosCompression.cs" />
+    <Compile Include="FileFormats\IniFile.cs" />
+    <Compile Include="Orders\GuardOrderGenerator.cs" />
+    <Compile Include="UtilityCommands\CheckExplicitInterfacesCommand.cs" />
+    <Compile Include="FileFormats\LZOCompression.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="Traits\Render\WithGateSpriteBody.cs" />
+    <Compile Include="ColorValidator.cs" />
+    <Compile Include="UtilityCommands\ResizeMapCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

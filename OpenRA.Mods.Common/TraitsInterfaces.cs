@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
@@ -19,14 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public interface ISpriteBodyInfo : ITraitInfo { }
-	public interface ISpriteBody
-	{
-		void PlayCustomAnimation(Actor self, string newAnimation, Action after);
-		void PlayCustomAnimationRepeating(Actor self, string name);
-		void PlayCustomAnimationBackwards(Actor self, string name, Action after);
-	}
-
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
@@ -85,9 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IProductionIconOverlay
 	{
-		Sprite Sprite();
-		string Palette();
-		float Scale();
+		Sprite Sprite { get; }
+		string Palette { get; }
 		float2 Offset(float2 iconSize);
 		bool IsOverlayActive(ActorInfo ai);
 	}
@@ -125,5 +115,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IPreventsAutoTarget
 	{
 		bool PreventsAutoTarget(Actor self, Actor attacker);
+	}
+
+	[RequireExplicitImplementation]
+	interface IWallConnector
+	{
+		bool AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType, out CVec facing);
+		void SetDirty();
 	}
 }

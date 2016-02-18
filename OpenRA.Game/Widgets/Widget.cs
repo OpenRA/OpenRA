@@ -108,6 +108,9 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
+		/// <summary>Possibly handle keyboard input (if this widget has keyboard focus)</summary>
+		/// <returns><c>true</c>, if keyboard input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
+		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
 			if (KeyboardFocusWidget != null)
@@ -261,6 +264,7 @@ namespace OpenRA.Widgets
 
 		public virtual Rectangle GetEventBounds()
 		{
+			// PERF: Avoid LINQ.
 			var bounds = EventBounds;
 			foreach (var child in Children)
 				if (child.IsVisible())
@@ -344,6 +348,10 @@ namespace OpenRA.Widgets
 
 		public virtual void MouseEntered() { }
 		public virtual void MouseExited() { }
+
+		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
+		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
+		/// <param name="mi">Mouse input data</param>
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
 
 		public bool HandleMouseInputOuter(MouseInput mi)
@@ -502,7 +510,7 @@ namespace OpenRA.Widgets
 
 		public Widget GetOrNull(string id)
 		{
-			if (this.Id == id)
+			if (Id == id)
 				return this;
 
 			foreach (var child in Children)

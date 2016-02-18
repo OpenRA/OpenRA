@@ -40,6 +40,8 @@ MSLO:
 		CameraActor: camera
 		FlashType: Nuke
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	RequiresPower:
 	DisabledOverlay:
 	SupportPowerChargeBar:
@@ -58,7 +60,7 @@ GAP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
-		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: atek, ~structures.allies, ~techlevel.high
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
@@ -169,6 +171,14 @@ SPEN:
 	ProvidesPrerequisite@buildingname:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 SYRD:
 	Inherits: ^Building
@@ -256,6 +266,14 @@ SYRD:
 	ProvidesPrerequisite@buildingname:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 IRON:
 	Inherits: ^ScienceBuilding
@@ -274,6 +292,8 @@ IRON:
 		Dimensions: 2,1
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Selectable:
 		Bounds: 48,28,0,2
@@ -322,6 +342,8 @@ PDOX:
 		Dimensions: 2,2
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 1000
@@ -394,6 +416,8 @@ TSLA:
 	SelectionDecorations:
 		VisualBounds: 24,36,0,4
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 400
@@ -439,6 +463,8 @@ AGUN:
 		VisualBounds: 24,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 400
@@ -467,6 +493,8 @@ AGUN:
 		Range: 6c0
 	WithBuildingExplosion:
 		Sequences: building, building_napalm, large_explosion, self_destruct
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 DOME:
 	Inherits: ^Building
@@ -486,6 +514,8 @@ DOME:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 1000
@@ -618,7 +648,7 @@ GUN:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 12
-		InitialFacing: 50
+		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
@@ -633,6 +663,8 @@ GUN:
 		Range: 7c0
 	WithBuildingExplosion:
 		Sequences: building, building_napalm, large_explosion, self_destruct
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 FTUR:
 	Inherits: ^Defense
@@ -713,13 +745,15 @@ SAM:
 		Amount: -40
 	DetectCloaked:
 		Range: 5c0
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ATEK:
 	Inherits: ^ScienceBuilding
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
-		Prerequisites: weap, dome, ~structures.allies, ~techlevel.unrestricted
+		Prerequisites: weap, dome, ~structures.allies, ~techlevel.high
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -845,6 +879,14 @@ WEAP:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: vehicles.upgraded
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 FACT:
 	Inherits: ^Building
@@ -962,8 +1004,7 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
-		Minimum: 500
-		SoundToVictim: credit1.aud
+		Notification: CreditsStolen
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
 	Power:
@@ -1031,6 +1072,7 @@ HPAD:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
 		MoveIntoWorld: false
+		Facing: 224
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
@@ -1074,6 +1116,14 @@ HPAD:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 AFLD:
 	Inherits: ^Building
@@ -1183,6 +1233,14 @@ AFLD:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 POWR:
 	Inherits: ^Building
@@ -1267,7 +1325,7 @@ STEK:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
-		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.unrestricted
+		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.high
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -1354,12 +1412,20 @@ BARR:
 		Proxy: barracks.upgraded
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 KENN:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 25
+		BuildPaletteOrder: 175
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
 		Cost: 100
@@ -1394,6 +1460,14 @@ KENN:
 	ProvidesPrerequisite@buildingname:
 	WithBuildingExplosion:
 		Sequences: building, building_napalm, large_explosion, self_destruct
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 TENT:
 	Inherits: ^Building
@@ -1466,6 +1540,14 @@ TENT:
 		Proxy: barracks.upgraded
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 FIX:
 	Inherits: ^Building
@@ -1588,8 +1670,6 @@ CYCL:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Chain-Link Barrier
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1603,8 +1683,6 @@ BARB:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Barbed-Wire Fence
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1618,8 +1696,6 @@ WOOD:
 	Inherits: ^Wall
 	Tooltip:
 		Name: Wooden Fence
-	Health:
-		HP: 100
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1646,4 +1722,3 @@ ANYPOWER:
 	Tooltip:
 		Name: Power Plant
 		Description: Power Plant
-

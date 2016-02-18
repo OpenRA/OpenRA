@@ -38,9 +38,16 @@ namespace OpenRA
 
 		public readonly MersenneTwister SharedRandom;
 
-		public readonly List<Player> Players = new List<Player>();
+		public Player[] Players = new Player[0];
 
-		public void AddPlayer(Player p) { Players.Add(p); }
+		public void SetPlayers(IEnumerable<Player> players, Player localPlayer)
+		{
+			if (Players.Length > 0)
+				throw new InvalidOperationException("Players are fixed once they have been set.");
+			Players = players.ToArray();
+			SetLocalPlayer(localPlayer);
+		}
+
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
@@ -82,12 +89,18 @@ namespace OpenRA
 			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }
 		}
 
-		public void SetLocalPlayer(string pr)
+		void SetLocalPlayer(Player localPlayer)
 		{
+			if (localPlayer == null)
+				return;
+
+			if (!Players.Contains(localPlayer))
+				throw new ArgumentException("The local player must be one of the players in the world.", "localPlayer");
+
 			if (IsReplay)
 				return;
 
-			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+			LocalPlayer = localPlayer;
 			RenderPlayer = LocalPlayer;
 		}
 
@@ -183,7 +196,7 @@ namespace OpenRA
 		public void LoadComplete(WorldRenderer wr)
 		{
 			// ScreenMap must be initialized before anything else
-			using (new Support.PerfTimer("ScreenMap.WorldLoaded"))
+			using (new PerfTimer("ScreenMap.WorldLoaded"))
 				ScreenMap.WorldLoaded(this, wr);
 
 			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
@@ -192,7 +205,7 @@ namespace OpenRA
 				if (wlh == ScreenMap)
 					continue;
 
-				using (new Support.PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
+				using (new PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
 					wlh.WorldLoaded(this, wr);
 			}
 
@@ -200,7 +213,9 @@ namespace OpenRA
 			foreach (var player in Players)
 				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
-			var rc = OrderManager.Connection as ReplayRecorderConnection;
+			var echo = OrderManager.Connection as EchoConnection;
+			var rc = echo != null ? echo.Recorder : null;
+
 			if (rc != null)
 				rc.Metadata = new ReplayMetadata(gameInfo);
 		}
@@ -249,6 +264,7 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
+		public bool ShouldTick { get { return Type != WorldType.Shellmap || Game.Settings.Game.ShowShellmap; } }
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }
@@ -271,7 +287,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			if (!Paused && (Type != WorldType.Shellmap || Game.Settings.Game.ShowShellmap))
+			if (!Paused)
 			{
 				WorldTick++;
 
@@ -325,18 +341,19 @@ namespace OpenRA
 
 				// hash all the actors
 				foreach (var a in Actors)
-					ret += n++ * (int)(1 + a.ActorID) * Sync.CalculateSyncHash(a);
+					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
 
 				// hash all the traits that tick
-				foreach (var x in ActorsWithTrait<ISync>())
-					ret += n++ * (int)(1 + x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
+				foreach (var actor in ActorsHavingTrait<ISync>())
+					foreach (var syncHash in actor.SyncHashes)
+						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash;
 
 				// TODO: don't go over all effects
 				foreach (var e in Effects)
 				{
 					var sync = e as ISync;
 					if (sync != null)
-						ret += n++ * Sync.CalculateSyncHash(sync);
+						ret += n++ * Sync.Hash(sync);
 				}
 
 				// Hash the shared rng
@@ -358,7 +375,7 @@ namespace OpenRA
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
 		{
-			return TraitDict.ActorsHavingTrait<T>(predicate);
+			return TraitDict.ActorsHavingTrait(predicate);
 		}
 
 		public void OnPlayerWinStateChanged(Player player)
@@ -392,14 +409,21 @@ namespace OpenRA
 		}
 	}
 
-	public struct TraitPair<T>
+	public struct TraitPair<T> : IEquatable<TraitPair<T>>
 	{
-		public Actor Actor;
-		public T Trait;
+		public readonly Actor Actor;
+		public readonly T Trait;
 
-		public override string ToString()
-		{
-			return "{0}->{1}".F(Actor.Info.Name, Trait.GetType().Name);
-		}
+		public TraitPair(Actor actor, T trait) { Actor = actor; Trait = trait; }
+
+		public static bool operator ==(TraitPair<T> me, TraitPair<T> other) { return me.Actor == other.Actor && Equals(me.Trait, other.Trait); }
+		public static bool operator !=(TraitPair<T> me, TraitPair<T> other) { return !(me == other); }
+
+		public override int GetHashCode() { return Actor.GetHashCode() ^ Trait.GetHashCode(); }
+
+		public bool Equals(TraitPair<T> other) { return this == other; }
+		public override bool Equals(object obj) { return obj is TraitPair<T> && Equals((TraitPair<T>)obj); }
+
+		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Trait.GetType().Name); }
 	}
 }

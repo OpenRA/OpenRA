@@ -10,9 +10,8 @@
 
 using System;
 using System.Drawing;
-using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -38,19 +37,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Action onComplete;
 
-		readonly World world;
-
-		[ObjectCreator.UseCtor]
-		public VqaPlayerWidget(World world)
-		{
-			this.world = world;
-		}
-
 		public void Load(string filename)
 		{
 			if (filename == cachedVideo)
 				return;
-			var video = new VqaReader(GlobalFileSystem.Open(filename));
+			var video = new VqaReader(Game.ModData.ModFiles.Open(filename));
 
 			cachedVideo = filename;
 			Open(video);
@@ -202,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Sound.StopVideo();
 			video.Reset();
 			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
-			world.AddFrameEndTask(_ => onComplete());
+			Game.RunAfterTick(onComplete);
 		}
 
 		public void CloseVideo()

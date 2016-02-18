@@ -1,7 +1,7 @@
 FACT:
 	Inherits: ^BaseBuilding
 	Valued:
-		Cost: 2000
+		Cost: 4000
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
@@ -9,7 +9,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1400
+		HP: 2000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -129,7 +129,7 @@ NUK2:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
 	Building:
@@ -236,7 +236,7 @@ PYLE:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.GDI
 	Building:
@@ -277,7 +277,7 @@ HAND:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.Nod
 	Building:
@@ -317,7 +317,7 @@ AFLD:
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.Nod
 	Building:
@@ -360,7 +360,7 @@ WEAP:
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.GDI
 	Building:
@@ -402,7 +402,7 @@ HPAD:
 		Name: Helipad
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Queue: Building.GDI, Building.Nod
 	Building:
@@ -460,6 +460,8 @@ HQ:
 		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
@@ -502,7 +504,7 @@ FIX:
 		Name: Repair Facility
 		Description: Repairs vehicles
 	Buildable:
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 60
 		Prerequisites: vehicleproduction
 		Queue: Building.GDI, Building.Nod
 	Building:
@@ -513,7 +515,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 400
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -547,6 +549,8 @@ EYE:
 		Bounds: 48,36,0,12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
@@ -598,6 +602,8 @@ TMPL:
 		Bounds: 72,48,0,16
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 2000
@@ -652,7 +658,7 @@ GUN:
 		HasMinibib: Yes
 	Turreted:
 		ROT: 12
-		InitialFacing: 50
+		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
 	Armament:
@@ -666,6 +672,8 @@ GUN:
 		Range: 3c0
 	Power:
 		Amount: -20
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 SAM:
 	Inherits: ^Defense
@@ -706,6 +714,8 @@ SAM:
 	-RenderDetectionCircle:
 	Power:
 		Amount: -20
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 OBLI:
 	Inherits: ^Defense
@@ -834,7 +844,7 @@ ATWR:
 	DetectCloaked:
 		Range: 5c0
 	Power:
-		Amount: -40
+		Amount: -50
 
 SBAG:
 	Inherits: ^Wall
@@ -849,8 +859,6 @@ SBAG:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.GDI
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	LineBuild:
@@ -874,8 +882,6 @@ CYCL:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.Nod
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	LineBuild:
@@ -940,4 +946,3 @@ ANYHQ:
 	Tooltip:
 		Name: a communications center
 		Description: a communications center
-

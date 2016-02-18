@@ -205,7 +205,7 @@ siege_tank:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
@@ -290,6 +290,8 @@ sonic_tank:
 		Actor: sonic_tank.husk
 	AttractsWorms:
 		Intensity: 600
+	Targetable:
+		TargetTypes: Ground, Vehicle, C4, Sonictank
 
 devastator:
 	Inherits: ^Tank
@@ -465,7 +467,7 @@ deviator:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeMed
@@ -507,9 +509,7 @@ combat_tank_o:
 		Weapon: 80mm_O
 	Mobile:
 		Speed: 85
-		ROT: 5
 	Health:
 		HP: 1800
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk
-

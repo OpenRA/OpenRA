@@ -11,8 +11,8 @@
 using System;
 using System.Drawing;
 using System.IO;
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 		[Flags] enum FormatFlags : int
 		{
 			PaletteTable = 1,
-			SkipFormat80 = 2,
+			NotLCWCompressed = 2,
 			VariableLengthTable = 4
 		}
 
@@ -70,14 +70,14 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 				// Decode image data
 				var compressed = s.ReadBytes(dataLeft);
-				if ((flags & FormatFlags.SkipFormat80) == 0)
+				if ((flags & FormatFlags.NotLCWCompressed) == 0)
 				{
 					var temp = new byte[dataSize];
-					Format80.DecodeInto(compressed, temp);
+					LCWCompression.DecodeInto(compressed, temp);
 					compressed = temp;
 				}
 
-				Format2.DecodeInto(compressed, Data, 0);
+				RLEZerosCompression.DecodeInto(compressed, Data, 0);
 
 				// Lookup values in lookup table
 				for (var j = 0; j < Data.Length; j++)

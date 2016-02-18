@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasPrerequisites(IEnumerable<string> prerequisites)
 		{
-			var ownedPrereqs = TechTree.GatherOwnedPrerequisites(player);
+			var ownedPrereqs = GatherOwnedPrerequisites(player);
 			return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!")
 					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 		}
@@ -119,12 +119,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			public Watcher(string key, string[] prerequisites, int limit, ITechTreeElement watcher)
 			{
-				this.Key = key;
+				Key = key;
 				this.prerequisites = prerequisites;
 				this.watcher = watcher;
-				this.hasPrerequisites = false;
+				hasPrerequisites = false;
 				this.limit = limit;
-				this.hidden = false;
+				hidden = false;
 			}
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)

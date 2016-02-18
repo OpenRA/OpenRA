@@ -41,11 +41,11 @@ Player:
 	PlayerResources:
 	ActorGroupProxy:
 	DeveloperMode:
-	GpsWatcher:
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:
+		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
-
+	ResourceStorageWarning:

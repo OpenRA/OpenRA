@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Player firedBy;
 		readonly Animation anim;
 		readonly WeaponInfo weapon;
+		readonly string weaponPalette;
 		readonly string flashType;
 
 		readonly WPos ascendSource;
@@ -35,12 +36,14 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
+		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette,
+			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
+			this.weaponPalette = weaponPalette;
 			this.delay = delay;
-			this.turn = delay / 2;
+			turn = delay / 2;
 			this.flashType = flashType;
 
 			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * turn);
@@ -91,7 +94,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, wr.Palette("effect"));
+			return anim.Render(pos, wr.Palette(weaponPalette));
 		}
 
 		public float FractionComplete { get { return ticks * 1f / delay; } }

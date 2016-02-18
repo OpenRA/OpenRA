@@ -68,21 +68,25 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// Drop the target once none of the weapons are effective against it
-			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack);
-			if (!armaments.Any())
+			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack).ToList();
+			if (armaments.Count == 0)
 				return NextActivity;
 
 			// Update ranges
 			minRange = armaments.Max(a => a.Weapon.MinRange);
 			maxRange = armaments.Min(a => a.MaxRange());
 
-			// Try to move within range
-			if (move != null && (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)))
-				return Util.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+			if (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange))
+			{
+				// Try to move within range, drop the target otherwise
+				if (move == null)
+					return NextActivity;
+				return ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+			}
 
-			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
+			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
-				return Util.SequenceActivities(new Turn(self, desiredFacing), this);
+				return ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
 
 			attack.DoAttack(self, Target, armaments);
 

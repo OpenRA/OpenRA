@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] XmasImages = { };
 
 		[SequenceReference] public readonly string IdleSequence = "idle";
-		public readonly string WaterSequence = null;
-		public readonly string LandSequence = null;
+		[SequenceReference] public readonly string WaterSequence = null;
+		[SequenceReference] public readonly string LandSequence = null;
 
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class WithCrateBody : INotifyParachuteLanded
+	class WithCrateBody : INotifyParachuteLanded, INotifyAddedToWorld
 	{
 		readonly Actor self;
 		readonly Animation anim;
@@ -57,7 +57,21 @@ namespace OpenRA.Mods.Common.Traits
 			rs.Add(anim);
 		}
 
-		public void OnLanded()
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			// Don't change animations while still in air
+			if (!self.IsAtGroundLevel())
+				return;
+
+			PlaySequence();
+		}
+
+		void INotifyParachuteLanded.OnLanded()
+		{
+			PlaySequence();
+		}
+
+		void PlaySequence()
 		{
 			var sequence = self.World.Map.GetTerrainInfo(self.Location).IsWater ? info.WaterSequence : info.LandSequence;
 			if (!string.IsNullOrEmpty(sequence))

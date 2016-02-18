@@ -11,10 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.FileSystem;
+using System.Runtime.Serialization;
 
 namespace OpenRA.Utility
 {
+	[Serializable]
 	public class NoSuchCommandException : Exception
 	{
 		public readonly string Command;
@@ -22,6 +23,12 @@ namespace OpenRA.Utility
 			: base("No such command '{0}'".F(command))
 		{
 			Command = command;
+		}
+
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			base.GetObjectData(info, context);
+			info.AddValue("Command", Command);
 		}
 	}
 
@@ -34,8 +41,6 @@ namespace OpenRA.Utility
 				PrintUsage(null);
 				return;
 			}
-
-			AppDomain.CurrentDomain.AssemblyResolve += GlobalFileSystem.ResolveAssembly;
 
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);

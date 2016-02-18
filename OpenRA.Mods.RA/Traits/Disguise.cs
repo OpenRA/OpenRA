@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new[] { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(new HashSet<string> { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
 			}
 		}
 
@@ -120,12 +120,12 @@ namespace OpenRA.Mods.RA.Traits
 			return order.OrderString == "Disguise" ? info.Voice : null;
 		}
 
-		public Color RadarColorOverride(Actor self)
+		public Color RadarColorOverride(Actor self, Color color)
 		{
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return self.Owner.Color.RGB;
+				return color;
 
-			return AsPlayer.Color.RGB;
+			return color = Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerStanceColor(self) : AsPlayer.Color.RGB;
 		}
 
 		public void DisguiseAs(Actor target)

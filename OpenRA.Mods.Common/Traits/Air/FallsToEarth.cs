@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
@@ -16,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Causes aircraft husks that are spawned in the air to crash to the ground.")]
-	public class FallsToEarthInfo : ITraitInfo, IRulesetLoaded
+	public class FallsToEarthInfo : ITraitInfo, IRulesetLoaded, Requires<AircraftInfo>
 	{
 		[WeaponReference]
 		public readonly string Explosion = "UnitExplode";

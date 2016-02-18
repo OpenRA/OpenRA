@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 							.Select(a => a.GetRangeModifier()).ToArray(),
 
 						Source = self.CenterPosition,
+						CurrentSource = () => self.CenterPosition,
 						SourceActor = self,
 						PassiveTarget = self.CenterPosition + new WVec(range, 0, 0).Rotate(rotation)
 					};

@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
@@ -30,7 +31,7 @@ namespace OpenRA
 
 			Directory.SetCurrentDirectory(executableDirectory);
 
-			var psi = new ProcessStartInfo(processName, string.Join(" ", args));
+			var psi = new ProcessStartInfo(processName, string.Join(" ", args.Select(arg => "\"" + arg + "\"")));
 
 			try
 			{

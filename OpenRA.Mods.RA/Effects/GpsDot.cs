@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -20,10 +19,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
+	[Desc("Attach this to actors to render pictograms while hidden.")]
 	class GpsDotInfo : ITraitInfo
 	{
-		public readonly string String = "Infantry";
-		public readonly string IndicatorPalettePrefix = "player";
+		[Desc("Sprite collection for symbols.")]
+		public readonly string Image = "gpsdot";
+
+		[Desc("Sprite used for this actor.")]
+		[SequenceReference("Image")] public readonly string String = "Infantry";
+
+		[PaletteReference(true)] public readonly string IndicatorPalettePrefix = "player";
 
 		public object Create(ActorInitializer init)
 		{
@@ -37,20 +42,29 @@ namespace OpenRA.Mods.RA.Effects
 		readonly GpsDotInfo info;
 		readonly Animation anim;
 
-		readonly Dictionary<Player, bool> showToPlayer = new Dictionary<Player, bool>();
+		readonly PlayerDictionary<DotState> dotStates;
+		readonly Lazy<HiddenUnderFog> huf;
+		readonly Lazy<FrozenUnderFog> fuf;
+		readonly Lazy<Disguise> disguise;
+		readonly Lazy<Cloak> cloak;
+		readonly Cache<Player, FrozenActorLayer> frozen;
 
-		Lazy<HiddenUnderFog> huf;
-		Lazy<FrozenUnderFog> fuf;
-		Lazy<Disguise> disguise;
-		Lazy<Cloak> cloak;
-		Cache<Player, GpsWatcher> watcher;
-		Cache<Player, FrozenActorLayer> frozen;
+		class DotState
+		{
+			public readonly GpsWatcher Gps;
+			public bool IsTargetable;
+			public bool ShouldRender;
+			public DotState(GpsWatcher gps)
+			{
+				Gps = gps;
+			}
+		}
 
 		public GpsDot(Actor self, GpsDotInfo info)
 		{
 			this.self = self;
 			this.info = info;
-			anim = new Animation(self.World, "gpsdot");
+			anim = new Animation(self.World, info.Image);
 			anim.PlayRepeating(info.String);
 
 			self.World.AddFrameEndTask(w => w.Add(this));
@@ -60,19 +74,19 @@ namespace OpenRA.Mods.RA.Effects
 			disguise = Exts.Lazy(() => self.TraitOrDefault<Disguise>());
 			cloak = Exts.Lazy(() => self.TraitOrDefault<Cloak>());
 
-			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
-
-			showToPlayer = self.World.Players.ToDictionary(x => x, x => false);
+			dotStates = new PlayerDictionary<DotState>(self.World, player => new DotState(player.PlayerActor.Trait<GpsWatcher>()));
 		}
 
 		public bool IsDotVisible(Player toPlayer)
 		{
-			return showToPlayer[toPlayer];
+			return dotStates[toPlayer].IsTargetable;
 		}
 
-		bool ShouldShowIndicator(Player toPlayer)
+		bool IsTargetableBy(Player toPlayer, out bool shouldRenderIndicator)
 		{
+			shouldRenderIndicator = false;
+
 			if (cloak.Value != null && cloak.Value.Cloaked)
 				return false;
 
@@ -81,19 +95,27 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (huf.Value != null && !huf.Value.IsVisible(self, toPlayer)
 				&& toPlayer.Shroud.IsExplored(self.CenterPosition))
+			{
+				var f1 = FrozenActorForPlayer(toPlayer);
+				shouldRenderIndicator = f1 == null || !f1.HasRenderables;
 				return true;
+			}
 
 			if (fuf.Value == null)
 				return false;
 
-			var f = frozen[toPlayer].FromID(self.ActorID);
-			if (f == null)
+			var f2 = FrozenActorForPlayer(toPlayer);
+			if (f2 == null)
 				return false;
 
-			if (f.HasRenderables || f.NeedRenderables)
-				return false;
+			shouldRenderIndicator = !f2.HasRenderables;
 
-			return f.Visible && !f.Shrouded;
+			return f2.Visible && !f2.Shrouded;
+		}
+
+		FrozenActor FrozenActorForPlayer(Player player)
+		{
+			return frozen[player].FromID(self.ActorID);
 		}
 
 		public void Tick(World world)
@@ -104,16 +126,19 @@ namespace OpenRA.Mods.RA.Effects
 			if (!self.IsInWorld || self.IsDead)
 				return;
 
-			foreach (var player in self.World.Players)
+			for (var playerIndex = 0; playerIndex < dotStates.Count; playerIndex++)
 			{
-				var gps = watcher[player];
-				showToPlayer[player] = (gps.Granted || gps.GrantedAllies) && ShouldShowIndicator(player);
+				var state = dotStates[playerIndex];
+				var shouldRender = false;
+				var targetable = (state.Gps.Granted || state.Gps.GrantedAllies) && IsTargetableBy(world.Players[playerIndex], out shouldRender);
+				state.IsTargetable = targetable;
+				state.ShouldRender = targetable && shouldRender;
 			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (self.World.RenderPlayer == null || !showToPlayer[self.World.RenderPlayer] || self.Disposed)
+			if (self.World.RenderPlayer == null || !dotStates[self.World.RenderPlayer].ShouldRender || self.Disposed)
 				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);

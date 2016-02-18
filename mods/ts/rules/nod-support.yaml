@@ -25,6 +25,24 @@ NAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+NAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: nahand, ~structures.nod
+	Tooltip:
+		Name: Nod Gate
+
+NAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: nahand, ~structures.nod
+	Tooltip:
+		Name: Nod Gate
+
 NALASR:
 	Inherits: ^Defense
 	Valued:
@@ -52,17 +70,19 @@ NALASR:
 	Turreted:
 		ROT: 10
 		InitialFacing: 300
-		Offset: 298,-171,0
+		Offset: 298,-171,288
 	AttackTurreted:
 	Armament:
 		Weapon: TurretLaserFire
-		LocalOffset: 0, 0, 200
+		LocalOffset: 352, 0, 224
 	RenderVoxels:
 	WithVoxelTurret:
 	Power:
 		Amount: -40
 	SelectionDecorations:
 		VisualBounds: 40, 36, -8, -8
+	BodyOrientation:
+		QuantizedFacings: 0
 
 NAOBEL:
 	Inherits: ^Defense
@@ -93,8 +113,7 @@ NAOBEL:
 		LocalOffset: 1400,210,800
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
-		ReloadTime: 50
-		InitialChargeDelay: 50
+		InitialChargeDelay: 120
 	WithChargeOverlay:
 		Sequence: active
 		Palette: player
@@ -134,7 +153,7 @@ NASAM:
 		ROT: 10
 		InitialFacing: 50
 	AttackTurreted:
-	WithTurret:
+	WithSpriteTurret:
 		Recoils: no
 	Armament:
 		Weapon: RedEye2
@@ -149,7 +168,7 @@ GATICK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Deployed Tick Tank
+		Name: Tick Tank
 	Health:
 		HP: 350
 	Armor:
@@ -158,18 +177,18 @@ GATICK:
 		Range: 5c0
 	Turreted:
 		ROT: 6
-		InitialFacing: 128
-		Offset: 170,0,213
+		InitialFacing: 224
+		Offset: 0,96,224
 	Armament@PRIMARY:
 		Weapon: 90mm
-		LocalOffset: 384,0,128
+		LocalOffset: 448,0,348
 		UpgradeTypes: eliteweapon
 		UpgradeMaxEnabledLevel: 0
 		UpgradeMaxAcceptedLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
-		LocalOffset: 384,0,128
+		LocalOffset: 448,0,348
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
@@ -177,7 +196,7 @@ GATICK:
 		QuantizedFacings: 32
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: 170,0,0
+		LocalOffset: 128,0,348
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: ttnk
@@ -253,6 +272,8 @@ NAMISL:
 		Amount: -50
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	RequiresPower:
 	DisabledOverlay:
 	ProvidesPrerequisite@buildingname:
@@ -278,4 +299,3 @@ NAMISL:
 		CameraActor: camera
 	SelectionDecorations:
 		VisualBounds: 75,48
-

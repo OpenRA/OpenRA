@@ -21,10 +21,6 @@ namespace OpenRA.Graphics
 		public static readonly Func<IRenderable, int> RenderableScreenZPositionComparisonKey =
 			r => ZPosition(r.Pos, r.ZOffset);
 
-		const int RangeCircleSegments = 32;
-		static readonly int[][] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
-		static readonly int[][] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
-
 		public readonly Size TileSize;
 		public readonly World World;
 		public readonly Theater Theater;
@@ -98,10 +94,7 @@ namespace OpenRA.Graphics
 
 		List<IFinalizedRenderable> GenerateRenderables()
 		{
-			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-				.Append(World.WorldActor);
-
-			// Include player actor for the rendered player
+			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight).Append(World.WorldActor);
 			if (World.RenderPlayer != null)
 				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
@@ -109,19 +102,14 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
+			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			// Effects are drawn on top of all actors
-			// HACK: Effects aren't interleaved with actors.
-			var effectRenderables = World.Effects
-				.SelectMany(e => e.Render(this));
-
 			if (World.OrderGenerator != null)
-				effectRenderables = effectRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
+				worldRenderables = worldRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			var renderables = worldRenderables.Concat(effectRenderables)
-				.Select(r => r.PrepareRender(this)).ToList();
+			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			return renderables;
@@ -183,47 +171,29 @@ namespace OpenRA.Graphics
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
-			if (World.Type == WorldType.Regular && Game.Settings.Game.AlwaysShowStatusBars)
+			if (World.Type == WorldType.Regular)
 			{
 				foreach (var g in World.ActorsHavingTrait<Selectable>().Where(a => !a.Disposed
 					&& !World.FogObscures(a)
 					&& !World.Selection.Actors.Contains(a)))
+				{
+					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
+						new SelectionBarsRenderable(g, false, false).Render(this);
 
-					DrawRollover(g);
+					if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
+						new SelectionBarsRenderable(g, true, true).Render(this);
+
+					if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
+					{
+						if (g.GetDamageState() != DamageState.Undamaged)
+							new SelectionBarsRenderable(g, true, true).Render(this);
+						else
+							new SelectionBarsRenderable(g, false, true).Render(this);
+					}
+				}
 			}
 
 			Game.Renderer.Flush();
-		}
-
-		public void DrawRollover(Actor unit)
-		{
-			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit).Render(this);
-		}
-
-		public void DrawRangeCircle(WPos pos, WDist range, Color c)
-		{
-			var offset = new WVec(range.Length, 0, 0);
-			for (var i = 0; i < RangeCircleSegments; i++)
-			{
-				var pa = pos + offset.Rotate(RangeCircleStartRotations[i]);
-				var pb = pos + offset.Rotate(RangeCircleEndRotations[i]);
-				Game.Renderer.WorldLineRenderer.DrawLine(ScreenPosition(pa), ScreenPosition(pb), c);
-			}
-		}
-
-		public void DrawTargetMarker(Color c, float2 location)
-		{
-			var tl = new float2(-1 / Viewport.Zoom, -1 / Viewport.Zoom);
-			var br = new float2(1 / Viewport.Zoom, 1 / Viewport.Zoom);
-			var bl = new float2(tl.X, br.Y);
-			var tr = new float2(br.X, tl.Y);
-
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(location + tl, location + tr, c);
-			wlr.DrawLine(location + tr, location + br, c);
-			wlr.DrawLine(location + br, location + bl, c);
-			wlr.DrawLine(location + bl, location + tl, c);
 		}
 
 		public void RefreshPalette()
@@ -249,7 +219,7 @@ namespace OpenRA.Graphics
 		public void ScreenVectorComponents(WVec vec, out float x, out float y, out float z)
 		{
 			x = TileSize.Width * vec.X / 1024f;
-			y = TileSize.Height * vec.Y / 1024f;
+			y = TileSize.Height * (vec.Y - vec.Z) / 1024f;
 			z = TileSize.Height * vec.Z / 1024f;
 		}
 
@@ -266,7 +236,7 @@ namespace OpenRA.Graphics
 			// Round to nearest pixel
 			float x, y, z;
 			ScreenVectorComponents(vec, out x, out y, out z);
-			return new int2((int)Math.Round(x), (int)Math.Round(y - z));
+			return new int2((int)Math.Round(x), (int)Math.Round(y));
 		}
 
 		public float ScreenZPosition(WPos pos, int offset)

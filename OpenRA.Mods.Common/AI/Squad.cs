@@ -30,8 +30,6 @@ namespace OpenRA.Mods.Common.AI
 		internal Target Target;
 		internal StateMachine FuzzyStateMachine;
 
-		internal AttackOrFleeFuzzy AttackOrFleeFuzzy = new AttackOrFleeFuzzy();
-
 		public Squad(HackyAI bot, SquadType type) : this(bot, type, null) { }
 
 		public Squad(HackyAI bot, SquadType type, Actor target)

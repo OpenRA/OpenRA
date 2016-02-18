@@ -31,6 +31,12 @@ Container@LOBBY_MUSIC_BIN:
 			Width: 268
 			Height: PARENT_BOTTOM
 			Children:
+				Label@MUTE_LABEL:
+					X: 25
+					Y: 10
+					Width: 300
+					Height: 20
+					Font: Small
 				Label@TITLE_LABEL:
 					Y: 45
 					Width: PARENT_RIGHT

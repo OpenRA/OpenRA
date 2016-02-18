@@ -36,19 +36,11 @@ namespace OpenRA.Mods.Common.Graphics
 			if (nodes.TryGetValue("Defaults", out defaults))
 			{
 				nodes.Remove("Defaults");
-				nodes = nodes.ToDictionary(kv => kv.Key, kv => MiniYaml.MergeStrict(kv.Value, defaults));
-
-				// Merge 'Defaults' animation image value. An example follows.
-				//
-				// - Before -
-				// stand:
-				// 	Facings: 8
-				//
-				// - After -
-				// stand: e1
-				// 	Facings: 8
 				foreach (var n in nodes)
+				{
+					n.Value.Nodes = MiniYaml.Merge(new[] { defaults.Nodes, n.Value.Nodes });
 					n.Value.Value = n.Value.Value ?? defaults.Value;
+				}
 			}
 
 			foreach (var kvp in nodes)
@@ -75,7 +67,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		readonly Sprite[] sprites;
-		readonly bool reverseFacings, transpose;
+		readonly bool reverseFacings, transpose, useClassicFacingFudge;
 
 		protected readonly ISpriteSequenceLoader Loader;
 
@@ -122,25 +114,32 @@ namespace OpenRA.Mods.Common.Graphics
 
 			try
 			{
-				Start = LoadField<int>(d, "Start", 0);
-				ShadowStart = LoadField<int>(d, "ShadowStart", -1);
-				ShadowZOffset = LoadField<WDist>(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
-				ZOffset = LoadField<WDist>(d, "ZOffset", WDist.Zero).Length;
-				Tick = LoadField<int>(d, "Tick", 40);
-				transpose = LoadField<bool>(d, "Transpose", false);
+				Start = LoadField(d, "Start", 0);
+				ShadowStart = LoadField(d, "ShadowStart", -1);
+				ShadowZOffset = LoadField(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
+				ZOffset = LoadField(d, "ZOffset", WDist.Zero).Length;
+				Tick = LoadField(d, "Tick", 40);
+				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
-				var flipX = LoadField<bool>(d, "FlipX", false);
-				var flipY = LoadField<bool>(d, "FlipY", false);
+				useClassicFacingFudge = LoadField(d, "UseClassicFacingFudge", false);
 
-				Facings = LoadField<int>(d, "Facings", 1);
+				var flipX = LoadField(d, "FlipX", false);
+				var flipY = LoadField(d, "FlipY", false);
+
+				Facings = LoadField(d, "Facings", 1);
 				if (Facings < 0)
 				{
 					reverseFacings = true;
 					Facings = -Facings;
 				}
 
-				var offset = LoadField<float2>(d, "Offset", float2.Zero);
-				var blendMode = LoadField<BlendMode>(d, "BlendMode", BlendMode.Alpha);
+				if (useClassicFacingFudge && Facings != 32)
+					throw new InvalidOperationException(
+						"{0}: Sequence {1}.{2}: UseClassicFacingFudge is only valid for 32 facings"
+						.F(info.Nodes[0].Location, sequence, animation));
+
+				var offset = LoadField(d, "Offset", float2.Zero);
+				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
 
 				MiniYaml combine;
 				if (d.TryGetValue("Combine", out combine))
@@ -150,22 +149,25 @@ namespace OpenRA.Mods.Common.Graphics
 					{
 						var sd = sub.Value.ToDictionary();
 
-						// Allow per-sprite offset, start, and length
-						var subStart = LoadField<int>(sd, "Start", 0);
-						var subOffset = LoadField<float2>(sd, "Offset", float2.Zero);
-						var subFlipX = LoadField<bool>(sd, "FlipX", false);
-						var subFlipY = LoadField<bool>(sd, "FlipY", false);
+						// Allow per-sprite offset, flipping, start, and length
+						var subStart = LoadField(sd, "Start", 0);
+						var subOffset = LoadField(sd, "Offset", float2.Zero);
+						var subFlipX = LoadField(sd, "FlipX", false);
+						var subFlipY = LoadField(sd, "FlipY", false);
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
 						var subSprites = cache[subSrc].Select(
-							s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, subFlipX, subFlipY), s.Offset + subOffset + offset, s.Channel, blendMode));
+							s => new Sprite(s.Sheet,
+								FlipRectangle(s.Bounds, subFlipX, subFlipY),
+								new float2(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y) + subOffset + offset,
+								s.Channel, blendMode));
 
 						var subLength = 0;
 						MiniYaml subLengthYaml;
 						if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
 							subLength = subSprites.Count() - subStart;
 						else
-							subLength = LoadField<int>(sd, "Length", 1);
+							subLength = LoadField(sd, "Length", 1);
 
 						combined = combined.Concat(subSprites.Skip(subStart).Take(subLength));
 					}
@@ -178,24 +180,27 @@ namespace OpenRA.Mods.Common.Graphics
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
-						s => new Sprite(s.Sheet, FlipRectangle(s.Bounds, flipX, flipY), s.Offset + offset, s.Channel, blendMode)).ToArray();
+						s => new Sprite(s.Sheet,
+							FlipRectangle(s.Bounds, flipX, flipY),
+							new float2(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y) + offset,
+							s.Channel, blendMode)).ToArray();
 				}
 
 				MiniYaml length;
 				if (d.TryGetValue("Length", out length) && length.Value == "*")
 					Length = sprites.Length - Start;
 				else
-					Length = LoadField<int>(d, "Length", 1);
+					Length = LoadField(d, "Length", 1);
 
 				// Plays the animation forwards, and then in reverse
-				if (LoadField<bool>(d, "Reverses", false))
+				if (LoadField(d, "Reverses", false))
 				{
 					var frames = Frames ?? Exts.MakeArray(Length, i => Start + i);
 					Frames = frames.Concat(frames.Skip(1).Take(frames.Length - 2).Reverse()).ToArray();
 					Length = 2 * Length - 2;
 				}
 
-				Stride = LoadField<int>(d, "Stride", Length);
+				Stride = LoadField(d, "Stride", Length);
 
 				if (Length > Stride)
 					throw new InvalidOperationException(
@@ -237,8 +242,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual Sprite GetSprite(int start, int frame, int facing)
 		{
-			var f = OpenRA.Traits.Util.QuantizeFacing(facing, Facings);
-
+			var f = Util.QuantizeFacing(facing, Facings, useClassicFacingFudge);
 			if (reverseFacings)
 				f = (Facings - f) % Facings;
 

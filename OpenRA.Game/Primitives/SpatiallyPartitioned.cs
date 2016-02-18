@@ -25,19 +25,27 @@ namespace OpenRA.Primitives
 		public SpatiallyPartitioned(int width, int height, int binSize)
 		{
 			this.binSize = binSize;
-			rows = height / binSize + 1;
-			cols = width / binSize + 1;
+			rows = Exts.IntegerDivisionRoundingAwayFromZero(height, binSize);
+			cols = Exts.IntegerDivisionRoundingAwayFromZero(width, binSize);
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
+		}
+
+		void ValidateBounds(Rectangle bounds)
+		{
+			if (bounds.Width <= 0 || bounds.Height <= 0)
+				throw new ArgumentException("bounds must be non-empty.", "bounds");
 		}
 
 		public void Add(T item, Rectangle bounds)
 		{
+			ValidateBounds(bounds);
 			itemBounds.Add(item, bounds);
 			MutateBins(item, bounds, addItem);
 		}
 
 		public void Update(T item, Rectangle bounds)
 		{
+			ValidateBounds(bounds);
 			MutateBins(item, itemBounds[item], removeItem);
 			MutateBins(item, itemBounds[item] = bounds, addItem);
 		}
@@ -58,15 +66,21 @@ namespace OpenRA.Primitives
 			return new Rectangle(col * binSize, row * binSize, binSize, binSize);
 		}
 
+		void BoundsToBinRowsAndCols(Rectangle bounds, out int minRow, out int maxRow, out int minCol, out int maxCol)
+		{
+			minRow = Math.Max(0, bounds.Top / binSize);
+			minCol = Math.Max(0, bounds.Left / binSize);
+			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Bottom, binSize));
+			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Right, binSize));
+		}
+
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
 		{
-			var top = Math.Max(0, bounds.Top / binSize);
-			var left = Math.Max(0, bounds.Left / binSize);
-			var bottom = Math.Min(rows - 1, bounds.Bottom / binSize);
-			var right = Math.Min(cols - 1, bounds.Right / binSize);
+			int minRow, maxRow, minCol, maxCol;
+			BoundsToBinRowsAndCols(bounds, out minRow, out maxRow, out minCol, out maxCol);
 
-			for (var row = top; row <= bottom; row++)
-				for (var col = left; col <= right; col++)
+			for (var row = minRow; row < maxRow; row++)
+				for (var col = minCol; col < maxCol; col++)
 					action(BinAt(row, col), actor, bounds);
 		}
 
@@ -81,14 +95,16 @@ namespace OpenRA.Primitives
 
 		public IEnumerable<T> InBox(Rectangle box)
 		{
-			var left = (box.Left / binSize).Clamp(0, cols - 1);
-			var right = (box.Right / binSize).Clamp(0, cols - 1);
-			var top = (box.Top / binSize).Clamp(0, rows - 1);
-			var bottom = (box.Bottom / binSize).Clamp(0, rows - 1);
+			int minRow, maxRow, minCol, maxCol;
+			BoundsToBinRowsAndCols(box, out minRow, out maxRow, out minCol, out maxCol);
 
-			var items = new HashSet<T>();
-			for (var row = top; row <= bottom; row++)
-				for (var col = left; col <= right; col++)
+			// We want to return any items intersecting the box.
+			// If the box covers multiple bins, we must handle items that are contained in multiple bins and avoid
+			// returning them more than once. We shall use a set to track these.
+			// PERF: If we are only looking inside one bin, we can avoid the cost of performing this tracking.
+			var items = minRow >= maxRow || minCol >= maxCol ? null : new HashSet<T>();
+			for (var row = minRow; row < maxRow; row++)
+				for (var col = minCol; col < maxCol; col++)
 				{
 					var binBounds = BinBounds(row, col);
 					foreach (var kvp in BinAt(row, col))
@@ -96,10 +112,12 @@ namespace OpenRA.Primitives
 						var item = kvp.Key;
 						var bounds = kvp.Value;
 
-						// Return items that intersect the box. We also want to avoid returning the same item many times.
-						// If the item is contained wholly within this bin, we're good as we know it won't show up in any others.
-						// Otherwise it may appear in another bin. We use a set of seen items to avoid yielding it again.
-						if (bounds.IntersectsWith(box) && (binBounds.Contains(bounds) || items.Add(item)))
+						// If the item is in the bin, we must check it intersects the box before returning it.
+						// We shall track it in the set of items seen so far to avoid returning it again if it appears
+						// in another bin.
+						// PERF: If the item is wholly contained within the bin, we can avoid the cost of tracking it.
+						if (bounds.IntersectsWith(box) &&
+							(items == null || binBounds.Contains(bounds) || items.Add(item)))
 							yield return item;
 					}
 				}

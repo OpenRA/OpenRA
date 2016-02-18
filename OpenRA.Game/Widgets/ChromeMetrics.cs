@@ -17,12 +17,11 @@ namespace OpenRA.Widgets
 	{
 		static Dictionary<string, string> data = new Dictionary<string, string>();
 
-		public static void Initialize(IEnumerable<string> yaml)
+		public static void Initialize(ModData modData)
 		{
 			data = new Dictionary<string, string>();
-			var metrics = yaml.Select(y => MiniYaml.FromFile(y))
-				.Aggregate(MiniYaml.MergeLiberal);
-
+			var metrics = MiniYaml.Merge(modData.Manifest.ChromeMetrics.Select(
+				y => MiniYaml.FromStream(modData.ModFiles.Open(y))));
 			foreach (var m in metrics)
 				foreach (var n in m.Value.Nodes)
 					data[n.Key] = n.Value.Value;

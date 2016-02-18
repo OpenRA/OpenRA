@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -32,7 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			GlobalFileSystem.LoadFromManifest(Game.ModData.Manifest);
+			modData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 
 			var imageField = typeof(TerrainTemplateInfo).GetField("Image");
 			var pickAnyField = typeof(TerrainTemplateInfo).GetField("PickAny");
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (GlobalFileSystem.TryOpen(template.Images[0] + ext, out s))
+						if (modData.ModFiles.TryOpen(template.Images[0] + ext, out s))
 							s.Dispose();
 						else
 							continue;

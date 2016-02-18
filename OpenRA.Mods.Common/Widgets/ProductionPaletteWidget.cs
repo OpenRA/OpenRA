@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
 			this.orderManager = orderManager;
-			this.World = world;
+			World = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -182,15 +182,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (icon == null)
 				return false;
 
-			// Only support left and right clicks
-			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right)
-				return false;
-
 			// Eat mouse-up events
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
-			return HandleEvent(icon, mi.Button == MouseButton.Left, mi.Modifiers.HasModifier(Modifiers.Shift));
+			return HandleEvent(icon, mi.Button, mi.Modifiers);
 		}
 
 		protected bool PickUpCompletedBuildingIcon(ProductionIcon icon, ProductionItem item)
@@ -216,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, bool handleMultiple)
+		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, int handleCount)
 		{
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
@@ -237,15 +233,14 @@ namespace OpenRA.Mods.Common.Widgets
 				// Queue a new item
 				Game.Sound.Play(TabClick);
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
-				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name,
-					handleMultiple ? 5 : 1));
+				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
 				return true;
 			}
 
 			return false;
 		}
 
-		bool HandleRightClick(ProductionItem item, ProductionIcon icon, bool handleMultiple)
+		bool HandleRightClick(ProductionItem item, ProductionIcon icon, int handleCount)
 		{
 			if (item == null)
 				return false;
@@ -256,8 +251,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Instant cancel of things we have not started yet and things that are finished
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
-				World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name,
-					handleMultiple ? 5 : 1));
+				World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name, handleCount));
 			}
 			else
 			{
@@ -269,11 +263,28 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		bool HandleEvent(ProductionIcon icon, bool isLeftClick, bool handleMultiple)
+		bool HandleMiddleClick(ProductionItem item, ProductionIcon icon, int handleCount)
 		{
+			if (item == null)
+				return false;
+
+			// Directly cancel, skipping "on-hold"
+			Game.Sound.Play(TabClick);
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
+			World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name, handleCount));
+
+			return true;
+		}
+
+		bool HandleEvent(ProductionIcon icon, MouseButton btn, Modifiers modifiers)
+		{
+			var startCount = modifiers.HasModifier(Modifiers.Shift) ? 5 : 1;
+			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? CurrentQueue.QueueLength : startCount;
 			var item = icon.Queued.FirstOrDefault();
-			var handled = isLeftClick ? HandleLeftClick(item, icon, handleMultiple)
-				: HandleRightClick(item, icon, handleMultiple);
+			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount)
+				: btn == MouseButton.Right ? HandleRightClick(item, icon, cancelCount)
+				: btn == MouseButton.Middle ? HandleMiddleClick(item, icon, cancelCount)
+				: false;
 
 			if (!handled)
 				Game.Sound.Play(DisabledTabClick);
@@ -288,7 +299,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var hotkey = Hotkey.FromKeyInput(e);
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, true, false) : false;
+			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, Modifiers.None) : false;
 		}
 
 		public void RefreshIcons()
@@ -363,8 +374,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buildableItems = CurrentQueue.BuildableItems();
 
-			var pio = currentQueue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().FirstOrDefault();
-			var pioOffset = pio != null ? pio.Offset(IconSize) : new float2(0, 0);
+			var pios = currentQueue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>();
 
 			// Icons
 			foreach (var icon in icons.Values)
@@ -372,8 +382,9 @@ namespace OpenRA.Mods.Common.Widgets
 				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, icon.Palette);
 
 				// Draw the ProductionIconOverlay's sprite
-				if (pio != null && pio.IsOverlayActive(icon.Actor))
-					WidgetUtils.DrawSHPCentered(pio.Sprite(), icon.Pos + iconOffset + pioOffset, worldRenderer.Palette(pio.Palette()), pio.Scale());
+				var pio = pios.FirstOrDefault(p => p.IsOverlayActive(icon.Actor));
+				if (pio != null)
+					WidgetUtils.DrawSHPCentered(pio.Sprite, icon.Pos + iconOffset + pio.Offset(IconSize), worldRenderer.Palette(pio.Palette), 1f);
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -407,17 +418,17 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
-														 icon.Pos + holdOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + holdOffset,
+							Color.White, Color.Black, 1);
 					else if (!waiting)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
-														 icon.Pos + timeOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + timeOffset,
+							Color.White, Color.Black, 1);
 
 					if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
-														 icon.Pos + queuedOffset,
-														 Color.White, Color.Black, 1);
+							icon.Pos + queuedOffset,
+							Color.White, Color.Black, 1);
 				}
 			}
 		}

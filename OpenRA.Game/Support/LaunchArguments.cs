@@ -21,12 +21,15 @@ namespace OpenRA
 		[Desc("Automatically start playing the given replay file.")]
 		public string Replay;
 
+		[Desc("Dump performance data into cpu.csv and render.csv in the logs folder.")]
+		public bool Benchmark;
+
 		public LaunchArguments(Arguments args)
 		{
 			if (args == null)
 				return;
 
-			foreach (var f in this.GetType().GetFields())
+			foreach (var f in GetType().GetFields())
 				if (args.Contains("Launch" + "." + f.Name))
 					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
 		}

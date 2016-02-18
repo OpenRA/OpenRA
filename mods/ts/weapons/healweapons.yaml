@@ -1,11 +1,12 @@
 Heal:
 	ReloadDelay: 80
 	Range: 2c849
-	Report: HEALER1.AUD
+	Report: healer1.aud
 	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
+		DebugOverlayColor: 00FF00
 		Spread: 213
 		Damage: -50
 		ValidTargets: Infantry
@@ -13,11 +14,12 @@ Heal:
 Repair:
 	ReloadDelay: 80
 	Range: 1c819
-	Report: REPAIR11.AUD
+	Report: repair11.aud
 	ValidTargets: Repair
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
+		DebugOverlayColor: 00FF00
 		Spread: 213
 		Damage: -50
 		ValidTargets: Repair
@@ -27,4 +29,3 @@ TiberiumHeal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: -2
-

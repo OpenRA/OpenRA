@@ -10,11 +10,9 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Meebey.SmartIrc4net;
-using OpenRA;
 using OpenRA.Primitives;
 
 namespace OpenRA.Chat
@@ -66,7 +64,7 @@ namespace OpenRA.Chat
 		}
 	}
 
-	public class GlobalChat : IDisposable
+	public sealed class GlobalChat : IDisposable
 	{
 		readonly IrcClient client = new IrcClient();
 		volatile Channel channel;
@@ -107,6 +105,8 @@ namespace OpenRA.Chat
 			client.OnDevoice += (_, e) => SetUserVoiced(e.Whom, false);
 			client.OnPart += OnPart;
 			client.OnQuit += OnQuit;
+
+			TrySetNickname(Game.Settings.Player.Name);
 		}
 
 		void SetUserOp(string whom, bool isOp)
@@ -225,9 +225,17 @@ namespace OpenRA.Chat
 
 		void OnKick(object sender, KickEventArgs e)
 		{
-			Disconnect();
-			connectionStatus = ChatConnectionStatus.Error;
-			AddNotification("Error: You were kicked from the chat by {0}".F(e.Who));
+			if (e.Whom == client.Nickname)
+			{
+				Disconnect();
+				connectionStatus = ChatConnectionStatus.Error;
+				AddNotification("You were kicked from the chat by {0}. ({1})".F(e.Who, e.KickReason));
+			}
+			else
+			{
+				Users.Remove(e.Whom);
+				AddNotification("{0} was kicked from the chat by {1}. ({2})".F(e.Whom, e.Who, e.KickReason));
+			}
 		}
 
 		void OnJoin(object sender, JoinEventArgs e)

@@ -15,7 +15,14 @@ namespace OpenRA.Traits
 	/* attributes used by OpenRA.Lint to understand the rules */
 
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class ActorReferenceAttribute : Attribute { }
+	public sealed class ActorReferenceAttribute : Attribute
+	{
+		public Type[] RequiredTraits;
+		public ActorReferenceAttribute(params Type[] requiredTraits)
+		{
+			RequiredTraits = requiredTraits;
+		}
+	}
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class WeaponReferenceAttribute : Attribute { }

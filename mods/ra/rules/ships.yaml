@@ -60,7 +60,7 @@ MSUB:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
-		Prerequisites: ~spen, stek, ~techlevel.unrestricted
+		Prerequisites: ~spen, stek, ~techlevel.high
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -149,7 +149,7 @@ DD:
 	AttackTurreted:
 	SelectionDecorations:
 		VisualBounds: 38,38
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
@@ -162,7 +162,7 @@ CA:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
-		Prerequisites: ~syrd, atek, ~techlevel.unrestricted
+		Prerequisites: ~syrd, atek, ~techlevel.high
 	Valued:
 		Cost: 2400
 	Tooltip:
@@ -204,9 +204,9 @@ CA:
 	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 44,44
-	WithTurret@PRIMARY:
+	WithSpriteTurret@PRIMARY:
 		Turret: primary
-	WithTurret@SECONDARY:
+	WithSpriteTurret@SECONDARY:
 		Turret: secondary
 	AutoTarget:
 
@@ -226,6 +226,8 @@ LST:
 	Armor:
 		Type: Heavy
 	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
 		ROT: 10
 		Speed: 113
 	RevealsShroud:
@@ -239,6 +241,7 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 		PassengerFacing: 0
+		LoadingUpgrades: notmobile
 	-Chronoshiftable:
 
 PT:
@@ -277,10 +280,9 @@ PT:
 	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 36,36
-	WithTurret:
+	WithSpriteTurret:
 	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
-

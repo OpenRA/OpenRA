@@ -1,15 +1,9 @@
-# requires Dune 2000/DATA/Music copied to OpenRA/Content/d2k
-AMBUSH: The Ambush
-	Extension: AUD
+# requires Dune 2000/DATA/Music copied to OpenRA/Content/d2k/Music
 ARAKATAK: Attack on Arrakis
-	Extension: AUD
-ATREGAIN: The Atreides Gain
 	Extension: AUD
 ENTORDOS: Enter the Ordos
 	Extension: AUD
 FIGHTPWR: Fight for Power
-	Extension: AUD
-FREMEN: The Fremen
 	Extension: AUD
 HARK_BAT: Harkonnen Battle
 	Extension: AUD
@@ -27,11 +21,17 @@ ROBOTIX: Robotix
 SCORE: Score
 	Extension: AUD
 	Hidden: true
-SOLDAPPR: The Soldiers Approach
-	Extension: AUD
 SPICESCT: Spice Scouting
 	Extension: AUD
-UNDERCON: Under Construction
+AMBUSH: The Ambush
+	Extension: AUD
+ATREGAIN: The Atreides Gain
+	Extension: AUD
+FREMEN: The Fremen
+	Extension: AUD
+SOLDAPPR: The Soldiers Approach
 	Extension: AUD
 WAITGAME: The Waiting Game
+	Extension: AUD
+UNDERCON: Under Construction
 	Extension: AUD

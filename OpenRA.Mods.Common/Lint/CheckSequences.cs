@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -29,13 +28,13 @@ namespace OpenRA.Mods.Common.Lint
 			if (map != null && !map.SequenceDefinitions.Any())
 				return;
 
+			var modData = Game.ModData;
 			this.emitError = emitError;
 
 			var sequenceSource = map != null ? map.SequenceDefinitions : new List<MiniYamlNode>();
-			sequenceDefinitions = MiniYaml.MergeLiberal(sequenceSource,
-				Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Aggregate(MiniYaml.MergeLiberal));
+			sequenceDefinitions = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))).Append(sequenceSource));
 
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+			var rules = map == null ? modData.DefaultRules : map.Rules;
 			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
 

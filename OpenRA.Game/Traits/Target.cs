@@ -22,7 +22,6 @@ namespace OpenRA.Traits
 
 		TargetType type;
 		Actor actor;
-		IEnumerable<ITargetable> targetable;
 		FrozenActor frozen;
 		WPos pos;
 		int generation;
@@ -48,7 +47,6 @@ namespace OpenRA.Traits
 			return new Target
 			{
 				actor = a,
-				targetable = a.TraitsImplementing<ITargetable>(),
 				type = TargetType.Actor,
 				generation = a.Generation,
 			};
@@ -83,8 +81,7 @@ namespace OpenRA.Traits
 			if (targeter == null || Type == TargetType.Invalid)
 				return false;
 
-			var targeted = this.actor;
-			if (targeted != null && !targetable.Any(t => t.IsTraitEnabled() && t.TargetableBy(targeted, targeter)))
+			if (actor != null && !actor.IsTargetableBy(targeter))
 				return false;
 
 			return true;
@@ -94,7 +91,25 @@ namespace OpenRA.Traits
 		// TODO: either replace based on target type or put in singleton trait
 		public bool RequiresForceFire
 		{
-			get { return targetable != null && targetable.Any(Exts.IsTraitEnabled) && targetable.Where(Exts.IsTraitEnabled).All(t => t.RequiresForceFire); }
+			get
+			{
+				if (actor == null)
+					return false;
+
+				// PERF: Avoid LINQ.
+				var isTargetable = false;
+				foreach (var targetable in actor.Targetables)
+				{
+					if (!targetable.IsTraitEnabled())
+						continue;
+
+					isTargetable = true;
+					if (!targetable.RequiresForceFire)
+						return false;
+				}
+
+				return isTargetable;
+			}
 		}
 
 		// Representative position - see Positions for the full set of targetable positions.
@@ -126,8 +141,7 @@ namespace OpenRA.Traits
 				switch (Type)
 				{
 					case TargetType.Actor:
-						var targetable = actor.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled);
-						if (!targetable.Any())
+						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
 							return new[] { actor.CenterPosition };
 
 						var targetablePositions = actor.TraitOrDefault<ITargetablePositions>();

@@ -19,22 +19,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Activities
 {
-	enum AttackState { Burrowed, EmergingAboveGround, ReturningUnderground }
+	enum AttackState { Uninitialized, Burrowed, Attacking }
 
 	class SwallowActor : Activity
 	{
 		const int NearEnough = 1;
 
-		readonly CPos location;
 		readonly Target target;
 		readonly Sandworm sandworm;
+		readonly UpgradeManager manager;
 		readonly WeaponInfo weapon;
-		readonly WithSpriteBody withSpriteBody;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
 		readonly IPositionable positionable;
 
 		int countdown;
+		CPos burrowLocation;
 		AttackState stance;
 
 		public SwallowActor(Actor self, Target target, WeaponInfo weapon)
@@ -44,128 +44,133 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			withSpriteBody = self.Trait<WithSpriteBody>();
+			manager = self.Trait<UpgradeManager>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
-			countdown = swallow.Info.AttackTime;
-
-			withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.BurrowedSequence);
-			stance = AttackState.Burrowed;
-			location = target.Actor.Location;
 		}
 
-		bool WormAttack(Actor worm)
+		bool AttackTargets(Actor self, IEnumerable<Actor> targets)
 		{
 			var targetLocation = target.Actor.Location;
-
-			// The target has moved too far away
-			if ((location - targetLocation).Length > NearEnough)
-				return false;
-
-			var lunch = worm.World.ActorMap.GetActorsAt(targetLocation)
-				.Where(t => !t.Equals(worm) && weapon.IsValidAgainst(t, worm));
-
-			if (!lunch.Any())
-				return false;
-
-			stance = AttackState.EmergingAboveGround;
-			sandworm.IsAttacking = true;
-
-			foreach (var actor in lunch)
+			foreach (var t in targets)
 			{
-				var actor1 = actor;	// loop variable in closure hazard
+				var targetClose = t; // loop variable in closure hazard
 
-				actor.World.AddFrameEndTask(_ =>
+				self.World.AddFrameEndTask(_ =>
+				{
+					// Don't use Kill() because we don't want any of its side-effects (husks, etc)
+					targetClose.Dispose();
+
+					// Harvester insurance
+					if (targetClose.Info.HasTraitInfo<HarvesterInfo>())
 					{
-						actor1.Dispose();
-
-						// Harvester insurance
-						if (!actor1.Info.HasTraitInfo<HarvesterInfo>())
-							return;
-
-						var insurance = actor1.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
-
+						var insurance = targetClose.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
 						if (insurance != null)
-							actor1.World.AddFrameEndTask(__ => insurance.TryActivate());
-					});
+							self.World.AddFrameEndTask(__ => insurance.TryActivate());
+					}
+				});
 			}
 
-			positionable.SetPosition(worm, targetLocation);
+			positionable.SetPosition(self, targetLocation);
 
-			var attackPosition = worm.CenterPosition;
-			var affectedPlayers = lunch.Select(x => x.Owner).Distinct().ToList();
-
-			PlayAttack(worm, attackPosition, affectedPlayers);
-			foreach (var notify in worm.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(worm, target, null, null);
-
-			return true;
-		}
-
-		// List because IEnumerable gets evaluated too late.
-		void PlayAttack(Actor self, WPos attackPosition, List<Player> affectedPlayers)
-		{
-			withSpriteBody.PlayCustomAnimation(self, sandworm.Info.MouthSequence);
+			var attackPosition = self.CenterPosition;
+			var affectedPlayers = targets.Select(x => x.Owner).Distinct().ToList();
 			Game.Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
 
 			Game.RunAfterDelay(1000, () =>
 			{
-				if (Game.IsCurrentWorld(self.World))
-					foreach (var affectedPlayer in affectedPlayers)
-						NotifyPlayer(affectedPlayer, attackPosition);
+				if (!Game.IsCurrentWorld(self.World))
+					return;
+
+				foreach (var player in affectedPlayers)
+				{
+					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
+
+					if (player == player.World.RenderPlayer)
+						radarPings.Add(() => true, attackPosition, Color.Red, 50);
+				}
 			});
-		}
 
-		void NotifyPlayer(Player player, WPos location)
-		{
-			Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
+			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
+				notify.Attacking(self, target, null, null);
 
-			if (player == player.World.RenderPlayer)
-				radarPings.Add(() => true, location, Color.Red, 50);
+			return true;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (countdown > 0)
+			switch (stance)
 			{
-				countdown--;
-				return this;
-			}
+				case AttackState.Uninitialized:
+					GrantUpgrades(self);
+					stance = AttackState.Burrowed;
+					countdown = swallow.Info.AttackDelay;
+					burrowLocation = self.Location;
+					break;
+				case AttackState.Burrowed:
+					if (--countdown > 0)
+						return this;
 
-			// Wait for the worm to get back underground
-			if (stance == AttackState.ReturningUnderground)
-			{
-				sandworm.IsAttacking = false;
+					var targetLocation = target.Actor.Location;
 
-				// There is a chance that the worm would just go away after attacking
-				if (self.World.SharedRandom.Next() % 100 <= sandworm.Info.ChanceToDisappear)
-				{
-					self.CancelActivity();
-					self.World.AddFrameEndTask(w => self.Kill(self));
-				}
-				else
-					withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.IdleSequence);
+					// The target has moved too far away
+					if ((burrowLocation - targetLocation).Length > NearEnough)
+					{
+						RevokeUpgrades(self);
+						return NextActivity;
+					}
 
-				return NextActivity;
-			}
+					// The target reached solid ground
+					if (!positionable.CanEnterCell(targetLocation, null, false))
+					{
+						RevokeUpgrades(self);
+						return NextActivity;
+					}
 
-			// Wait for the worm to get in position
-			if (stance == AttackState.Burrowed)
-			{
-				// This is so that the worm cancels an attack against a target that has reached solid rock
-				if (!positionable.CanEnterCell(target.Actor.Location, null, false))
+					var targets = self.World.ActorMap.GetActorsAt(targetLocation)
+						.Where(t => !t.Equals(self) && weapon.IsValidAgainst(t, self));
+
+					if (!targets.Any())
+					{
+						RevokeUpgrades(self);
+						return NextActivity;
+					}
+
+					stance = AttackState.Attacking;
+					countdown = swallow.Info.ReturnDelay;
+					sandworm.IsAttacking = true;
+					AttackTargets(self, targets);
+
+					break;
+				case AttackState.Attacking:
+					if (--countdown > 0)
+						return this;
+
+					sandworm.IsAttacking = false;
+
+					// There is a chance that the worm would just go away after attacking
+					if (self.World.SharedRandom.Next(100) <= sandworm.Info.ChanceToDisappear)
+					{
+						self.CancelActivity();
+						self.World.AddFrameEndTask(w => self.Dispose());
+					}
+
+					RevokeUpgrades(self);
 					return NextActivity;
-
-				if (!WormAttack(self))
-				{
-					withSpriteBody.DefaultAnimation.ReplaceAnim(sandworm.Info.IdleSequence);
-					return NextActivity;
-				}
-
-				countdown = swallow.Info.ReturnTime;
-				stance = AttackState.ReturningUnderground;
 			}
 
 			return this;
+		}
+
+		void GrantUpgrades(Actor self)
+		{
+			foreach (var up in swallow.Info.AttackingUpgrades)
+				manager.GrantUpgrade(self, up, this);
+		}
+
+		void RevokeUpgrades(Actor self)
+		{
+			foreach (var up in swallow.Info.AttackingUpgrades)
+				manager.RevokeUpgrade(self, up, this);
 		}
 	}
 }

@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
@@ -78,7 +77,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
-			result.AddRange(Player.World.ActorMap.ActorsInWorld()
+			result.AddRange(Player.World.Actors
 				.Where(actor => actor.Owner == Player && !actor.IsDead && actor.IsInWorld && actor.Info.Name == ai.Name));
 
 			return result.ToArray();

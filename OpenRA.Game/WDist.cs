@@ -23,7 +23,7 @@ namespace OpenRA
 	public struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
 	{
 		public readonly int Length;
-		public long LengthSquared { get { return (long)Length * (long)Length; } }
+		public long LengthSquared { get { return (long)Length * Length; } }
 
 		public WDist(int r) { Length = r; }
 		public static readonly WDist Zero = new WDist(0);
@@ -57,7 +57,7 @@ namespace OpenRA
 
 		public static bool TryParse(string s, out WDist result)
 		{
-			result = WDist.Zero;
+			result = Zero;
 
 			if (string.IsNullOrEmpty(s))
 				return false;
@@ -103,14 +103,19 @@ namespace OpenRA
 
 		public int CompareTo(WDist other) { return Length.CompareTo(other.Length); }
 
-		public override string ToString() { return Length.ToString(); }
+		public override string ToString()
+		{
+			var absLength = Math.Abs(Length);
+			var absValue = (absLength / 1024).ToString() + "c" + (absLength % 1024).ToString();
+			return Length < 0 ? "-" + absValue : absValue;
+		}
 
 		#region Scripting interface
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Add(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a + b);
@@ -120,7 +125,7 @@ namespace OpenRA
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Subtract(WDist, WDist) with invalid arguments.");
 
 			return new LuaCustomClrObject(a - b);
@@ -130,7 +135,7 @@ namespace OpenRA
 		{
 			WDist a;
 			WDist b;
-			if (!left.TryGetClrValue<WDist>(out a) || !right.TryGetClrValue<WDist>(out b))
+			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
 				throw new LuaException("Attempted to call WDist.Equals(WDist, WDist) with invalid arguments.");
 
 			return a == b;
@@ -143,7 +148,7 @@ namespace OpenRA
 				switch (key.ToString())
 				{
 					case "Length": return Length;
-					case "Range": Game.Debug("WRange.Range is deprecated. Use WDist.Length instead"); return Length;
+					case "Range": Game.Debug("WDist.Range is deprecated. Use WDist.Length instead"); return Length;
 					default: throw new LuaException("WDist does not define a member '{0}'".F(key));
 				}
 			}

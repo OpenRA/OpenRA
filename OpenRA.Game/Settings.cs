@@ -20,6 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
+	public enum StatusBarsType { Standard, DamageShow, AlwaysShow }
 
 	public class ServerSettings
 	{
@@ -69,8 +70,8 @@ namespace OpenRA
 		[Desc("Automatically restart when a game ends. Disable this when something else already takes care about it.")]
 		public bool DedicatedLoop = true;
 
-		[Desc("Disallow AI bots.")]
-		public bool LockBots = false;
+		[Desc("Disallow games where only one player plays with bots.")]
+		public bool DisableSinglePlayer = false;
 
 		public string TimestampFormat = "s";
 
@@ -95,13 +96,25 @@ namespace OpenRA
 	public class GraphicSettings
 	{
 		public string Renderer = "Default";
+
+		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
+
+		[Desc("Screen resolution in fullscreen mode.")]
 		public int2 FullscreenSize = new int2(0, 0);
+
+		[Desc("Screen resolution in windowed mode.")]
 		public int2 WindowedSize = new int2(1024, 768);
+
 		public bool HardwareCursors = true;
+
 		public bool PixelDouble = false;
 		public bool CursorDouble = false;
+
+		[Desc("Add a frame rate limiter. It is recommended to not disable this.")]
 		public bool CapFramerate = true;
+
+		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
 		public int BatchSize = 8192;
@@ -126,6 +139,7 @@ namespace OpenRA
 		public string Device = null;
 
 		public bool CashTicks = true;
+		public bool Mute = false;
 	}
 
 	public class PlayerSettings
@@ -153,8 +167,8 @@ namespace OpenRA
 		public int JoystickScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
-		public bool AlwaysShowStatusBars = false;
-		public bool TeamHealthColors = false;
+		public StatusBarsType StatusBars = StatusBarsType.Standard;
+		public bool UsePlayerStanceColors = false;
 		public bool DrawTargetLine = true;
 
 		public bool AllowDownloading = true;
@@ -197,12 +211,14 @@ namespace OpenRA
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
-		public Hotkey ToggleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
+		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
+		public Hotkey TogglePlayerStanceColorsKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
 		public Hotkey HideUserInterfaceKey = new Hotkey(Keycode.H, Modifiers.Ctrl | Modifiers.Shift);
 		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
+		public Hotkey ToggleMuteKey = new Hotkey(Keycode.M, Modifiers.None);
 
 		public Hotkey Production01Key = new Hotkey(Keycode.F1, Modifiers.None);
 		public Hotkey Production02Key = new Hotkey(Keycode.F2, Modifiers.None);

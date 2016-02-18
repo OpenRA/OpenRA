@@ -40,6 +40,12 @@ gacnst:
 		Length: 10
 	damaged-idle-front: gtcnst_b
 		Length: 10
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: facticon
 		Offset: 0,0
 		UseTilesetCode: false
@@ -89,6 +95,12 @@ gapowr:
 	make: gtpowrmk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: powricon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -133,6 +145,12 @@ gapile:
 	make: gtpilemk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: brrkicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -204,6 +222,12 @@ gaweap:
 		Start: 2
 		Length: 1
 		ZOffset: -1024
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: weapicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -231,6 +255,12 @@ napowr:
 	make: ntpowrmk
 		Length: 19
 		ShadowStart: 19
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: npwricon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -258,6 +288,12 @@ naapwr:
 	make: ntapwrmk
 		Length: 19
 		ShadowStart: 19
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: apwricon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -294,6 +330,12 @@ nahand:
 	make: nthandmk
 		Length: 15
 		ShadowStart: 15
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: handicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -350,6 +392,12 @@ naweap:
 	dead-bib: ntweapbb
 		Start: 2
 		ZOffset: -1024
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: nwepicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -377,6 +425,12 @@ naradr:
 	make: ntradrmk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: nradicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -403,6 +457,12 @@ natech:
 	make: nttechmk
 		Length: 18
 		ShadowStart: 18
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: ntchicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -430,6 +490,12 @@ natmpl:
 	make: nttmplmk
 		Length: 17
 		ShadowStart: 17
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: tmplicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -459,6 +525,12 @@ garadr:
 	make: gtradrmk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: radricon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -486,6 +558,12 @@ gatech:
 	make: gttechmk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: techicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -524,6 +602,120 @@ gawall:
 		Offset: 0, 0
 		UseTilesetCode: false
 
+gagate_a:
+	Defaults:
+		Offset: -24, -24
+		UseTilesetCode: true
+	idle:
+		Length: 10
+		ShadowStart: 21
+	damaged-idle:
+		Start: 10
+		Length: 10
+		ShadowStart: 31
+	dead:
+		Start: 20
+		Tick: 400
+		ShadowStart: 41
+	make:
+		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 9
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: gateicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+gagate_b:
+	Defaults:
+		Offset: 24, -24
+		UseTilesetCode: true
+	idle:
+		Length: 10
+		ShadowStart: 21
+	damaged-idle:
+		Start: 10
+		Length: 10
+		ShadowStart: 31
+	dead:
+		Start: 20
+		Tick: 400
+		ShadowStart: 41
+	make:
+		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
+		Length: 9
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: gat2icon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+nagate_a:
+	Defaults:
+		Offset: -24, -24
+		UseTilesetCode: true
+		Tick: 80
+	idle:
+		Length: 7
+		ShadowStart: 15
+	damaged-idle:
+		Start: 7
+		Length: 7
+		ShadowStart: 22
+	dead:
+		Start: 14
+		Tick: 400
+		ShadowStart: 29
+	make:
+		Frames: 6, 5, 4, 3, 2, 1
+		Length: 6
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: ngaticon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+nagate_b:
+	Defaults:
+		Offset: 24, -24
+		UseTilesetCode: true
+		Tick: 80
+	idle:
+		Length: 7
+		ShadowStart: 15
+	damaged-idle:
+		Start: 7
+		Length: 7
+		ShadowStart: 22
+	dead:
+		Start: 14
+		Tick: 400
+		ShadowStart: 29
+	make:
+		Frames: 6, 5, 4, 3, 2, 1
+		Length: 6
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: nga2icon
+		Offset: 0, 0
+		UseTilesetCode: false
+
 nawall:
 	Defaults:
 		Offset: 0, -12
@@ -556,6 +748,12 @@ gatick:
 		Length: *
 		Offset: 0, 0
 		UseTilesetCode: false
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	make: gatickmk
 		Length: 24
 		ShadowStart: 24
@@ -569,6 +767,12 @@ gaicbm:
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	make: gaicbmmk
 		Length: 30
 		ShadowStart: 30
@@ -586,6 +790,12 @@ gaarty:
 		Length: *
 		Offset: 0, 0
 		UseTilesetCode: false
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	make: gaartymk
 		Length: 16
 		ShadowStart: 16
@@ -606,12 +816,19 @@ naobel:
 	active: ntobel_b
 		Length: 12
 		Tick: 200
+		ZOffset: 2
 	idle-lights: ntobel_a
 		Length: 12
 		Tick: 80
 	make: ntobelmk
 		Length: 19
 		ShadowStart: 19
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: obliicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -632,6 +849,12 @@ nalasr:
 	make: ntlasrmk
 		Length: 21
 		ShadowStart: 21
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: plticon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -655,6 +878,12 @@ nasam:
 	make: ntsammk
 		Length: 8
 		ShadowStart: 8
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: samicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -677,7 +906,13 @@ napuls.gdi:
 	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
-	icon: sidec01.mix:empicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-gdi|empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -699,7 +934,13 @@ napuls.nod:
 	make: ntpulsmk
 		Length: 20
 		ShadowStart: 20
-	icon: sidec02.mix:empicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-nod|empicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -726,6 +967,12 @@ nastlh:
 	make: ntstlhmk
 		Length: 18
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: clckicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -783,6 +1030,12 @@ gactwr:
 	muzzle7: mgun-ne
 		Length: *
 		UseTilesetCode: false
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: towricon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -839,6 +1092,12 @@ gahpad:
 		Length: 18
 		ShadowStart: 18
 		ZOffset: -1c511
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: heliicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -883,11 +1142,16 @@ nahpad:
 	make: nthpadmk
 		Length: 20
 		ShadowStart: 20
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: nhpdicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
-# TODO: unused narefn_a
 proc.gdi:
 	Defaults: ntrefn
 		Offset: -12, -42
@@ -906,6 +1170,9 @@ proc.gdi:
 		ShadowStart: 20
 	flame: ntrefn_b
 		Length: *
+	unload-overlay: narefn_a
+		Length: *
+		ZOffset: 1024
 	idle-redlights: ntrefn_c
 		Length: 16
 		Tick: 120
@@ -917,11 +1184,16 @@ proc.gdi:
 	damaged-bib: ntrefnbb
 		Start: 1
 		ZOffset: -1024
-	icon: sidec01.mix:reficon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-gdi|reficon
 		Offset: 0, 0
 		UseTilesetCode: false
 
-# TODO: unused narefn_a
 proc.nod:
 	Defaults: ntrefn
 		Offset: -12, -42
@@ -940,6 +1212,9 @@ proc.nod:
 		ShadowStart: 20
 	flame: ntrefn_b
 		Length: *
+	unload-overlay: narefn_a
+		Length: *
+		ZOffset: 1024
 	idle-redlights: ntrefn_c
 		Length: 16
 		Tick: 120
@@ -951,7 +1226,13 @@ proc.nod:
 	damaged-bib: ntrefnbb
 		Start: 1
 		ZOffset: -1024
-	icon: sidec02.mix:reficon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-nod|reficon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -992,6 +1273,12 @@ nawast:
 	damaged-bib: ntwastbb
 		Start: 1
 		ZOffset: -1024
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: wasticon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -1030,7 +1317,13 @@ gasilo.gdi:
 	make: gtsilomk
 		Length: 18
 		ShadowStart: 20
-	icon: sidec01.mix:siloicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-gdi|siloicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1068,7 +1361,13 @@ gasilo.nod:
 	make: gtsilomk
 		Length: 18
 		ShadowStart: 20
-	icon: sidec02.mix:siloicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-nod|siloicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1126,7 +1425,13 @@ gadept.gdi:
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
-	icon: sidec01.mix:fixicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-gdi|fixicon
 		Offset: 0, 0
 		UseTilesetCode: false
 
@@ -1184,7 +1489,13 @@ gadept.nod:
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
-	icon: sidec02.mix:fixicon
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: sidebar-nod|fixicon
 		Offset: 76, 66
 		UseTilesetCode: false
 
@@ -1215,6 +1526,12 @@ namisl:
 		Start: 10
 		Length: 10
 		Tick: 80
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: msslicon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -1274,6 +1591,12 @@ gaplug:
 	make: gtplugmk
 		Length: 17
 		ShadowStart: 17
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: plugicon
 		Offset: 0, 0
 		UseTilesetCode: false

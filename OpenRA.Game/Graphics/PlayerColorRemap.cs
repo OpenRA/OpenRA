@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 		{
 			// Increase luminosity if required to represent the full ramp
 			var rampRange = (byte)((1 - rampFraction) * c.L);
-			var c1 = new HSLColor(c.H, c.S, (byte)Math.Max(rampRange, c.L)).RGB;
+			var c1 = new HSLColor(c.H, c.S, Math.Max(rampRange, c.L)).RGB;
 			var c2 = new HSLColor(c.H, c.S, (byte)Math.Max(0, c.L - rampRange)).RGB;
 			var baseIndex = ramp[0];
 			var remapRamp = ramp.Select(r => r - ramp[0]);

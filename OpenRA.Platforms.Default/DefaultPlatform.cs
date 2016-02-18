@@ -8,9 +8,7 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
-using System.Reflection;
 using OpenRA;
 
 [assembly: Platform(typeof(OpenRA.Platforms.Default.DeviceFactory))]

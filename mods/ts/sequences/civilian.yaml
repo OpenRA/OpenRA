@@ -919,6 +919,12 @@ gaspot:
 	make: gaspotmk
 		Length: 14
 		ShadowStart: 14
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: spoticon
 		Offset: 0, 0
 		UseTilesetCode: false
@@ -935,6 +941,12 @@ galite:
 	lighting: alphatst
 		BlendMode: DoubleMultiplicative
 		UseTilesetCode: false
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
 	icon: liteicon
 		Offset: 0, 0
 		UseTilesetCode: false

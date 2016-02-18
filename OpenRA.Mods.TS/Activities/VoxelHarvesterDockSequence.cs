@@ -17,24 +17,52 @@ namespace OpenRA.Mods.TS.Activities
 	public class VoxelHarvesterDockSequence : HarvesterDockSequence
 	{
 		readonly WithVoxelUnloadBody body;
+		readonly WithDockingOverlay spriteOverlay;
 
 		public VoxelHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			body = self.Trait<WithVoxelUnloadBody>();
+			spriteOverlay = refinery.TraitOrDefault<WithDockingOverlay>();
 		}
 
 		public override Activity OnStateDock(Actor self)
 		{
 			body.Docked = true;
-			dockingState = State.Loop;
+
+			if (spriteOverlay != null && !spriteOverlay.Visible)
+			{
+				spriteOverlay.Visible = true;
+				spriteOverlay.WithOffset.Animation.PlayThen(spriteOverlay.Info.Sequence, () => {
+					dockingState = State.Loop;
+					spriteOverlay.Visible = false;
+				});
+			}
+			else
+				dockingState = State.Loop;
+
 			return this;
 		}
 
 		public override Activity OnStateUndock(Actor self)
 		{
-			body.Docked = false;
-			dockingState = State.Complete;
+			dockingState = State.Wait;
+
+			if (spriteOverlay != null && !spriteOverlay.Visible)
+			{
+				spriteOverlay.Visible = true;
+				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () => {
+					dockingState = State.Complete;
+					body.Docked = false;
+					spriteOverlay.Visible = false;
+				});
+			}
+			else
+			{
+				dockingState = State.Complete;
+				body.Docked = false;
+			}
+
 			return this;
 		}
 	}

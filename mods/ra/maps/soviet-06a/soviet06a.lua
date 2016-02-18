@@ -21,6 +21,7 @@ Trigger.OnEnteredFootprint(TruckGoalTrigger, function(a, id)
 	if not truckGoalTrigger and a.Owner == player and a.Type == "truk" then
 		truckGoalTrigger = true
 		player.MarkCompletedObjective(sovietObjective)
+		player.MarkCompletedObjective(SaveAllTrucks)
 	end
 end)
 
@@ -51,9 +52,11 @@ Trigger.OnEnteredFootprint(CameraBaseTrigger, function(a, id)
 end)
 
 Trigger.OnAllKilled(Trucks, function()
-	if not controlCenterTrigger then
-		enemy.MarkCompletedObjective(alliedObjective)
-	end
+	enemy.MarkCompletedObjective(alliedObjective)
+end)
+
+Trigger.OnAnyKilled(Trucks, function()
+	player.MarkFailedObjective(SaveAllTrucks)
 end)
 
 Trigger.OnKilled(Apwr, function(building)
@@ -135,6 +138,7 @@ WorldLoaded = function()
 	alliedObjective = enemy.AddPrimaryObjective("Destroy all Soviet troops.")
 	sovietObjective = player.AddPrimaryObjective("Escort the Convoy.")
 	sovietObjective2 = player.AddSecondaryObjective("Destroy the Allied radar dome to stop enemy\nreinforcements.")
+	SaveAllTrucks = player.AddSecondaryObjective("Keep all trucks alive.")
 end
 
 Tick = function()

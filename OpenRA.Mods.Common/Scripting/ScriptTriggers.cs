@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Eluant;
-using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -43,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
-		readonly Dictionary<Trigger, List<Triggerable>> triggers = new Dictionary<Trigger, List<Triggerable>>();
+		readonly List<Triggerable>[] triggerables = Exts.MakeArray(Enum.GetValues(typeof(Trigger)).Length, _ => new List<Triggerable>());
 
 		struct Triggerable : IDisposable
 		{
@@ -68,19 +66,21 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			this.world = world;
 			this.self = self;
+		}
 
-			foreach (Trigger t in Enum.GetValues(typeof(Trigger)))
-				triggers.Add(t, new List<Triggerable>());
+		List<Triggerable> Triggerables(Trigger trigger)
+		{
+			return triggerables[(int)trigger];
 		}
 
 		public void RegisterCallback(Trigger trigger, LuaFunction func, ScriptContext context)
 		{
-			triggers[trigger].Add(new Triggerable(func, context, self));
+			Triggerables(trigger).Add(new Triggerable(func, context, self));
 		}
 
 		public bool HasAnyCallbacksFor(Trigger trigger)
 		{
-			return triggers[trigger].Count > 0;
+			return Triggerables(trigger).Count > 0;
 		}
 
 		public void TickIdle(Actor self)
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnIdle])
+			foreach (var f in Triggerables(Trigger.OnIdle))
 			{
 				try
 				{
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnDamaged])
+			foreach (var f in Triggerables(Trigger.OnDamaged))
 			{
 				try
 				{
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in triggers[Trigger.OnKilled])
+			foreach (var f in Triggerables(Trigger.OnKilled))
 			{
 				try
 				{
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in triggers[Trigger.OnProduction])
+			foreach (var f in Triggerables(Trigger.OnProduction))
 			{
 				try
 				{
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnPlayerWon])
+			foreach (var f in Triggerables(Trigger.OnPlayerWon))
 			{
 				try
 				{
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnPlayerLost])
+			foreach (var f in Triggerables(Trigger.OnPlayerLost))
 			{
 				try
 				{
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnObjectiveAdded])
+			foreach (var f in Triggerables(Trigger.OnObjectiveAdded))
 			{
 				try
 				{
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnObjectiveCompleted])
+			foreach (var f in Triggerables(Trigger.OnObjectiveCompleted))
 			{
 				try
 				{
@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnObjectiveFailed])
+			foreach (var f in Triggerables(Trigger.OnObjectiveFailed))
 			{
 				try
 				{
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnCapture])
+			foreach (var f in Triggerables(Trigger.OnCapture))
 			{
 				try
 				{
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnInfiltrated])
+			foreach (var f in Triggerables(Trigger.OnInfiltrated))
 			{
 				try
 				{
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnAddedToWorld])
+			foreach (var f in Triggerables(Trigger.OnAddedToWorld))
 			{
 				try
 				{
@@ -343,7 +343,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in triggers[Trigger.OnRemovedFromWorld])
+			foreach (var f in Triggerables(Trigger.OnRemovedFromWorld))
 			{
 				try
 				{
@@ -366,7 +366,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return;
 
 			// Run Lua callbacks
-			foreach (var f in triggers[Trigger.OnOtherProduction])
+			foreach (var f in Triggerables(Trigger.OnOtherProduction))
 			{
 				try
 				{
@@ -390,7 +390,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (world.Disposing)
 				return;
 
-			foreach (var f in triggers[Trigger.OnDiscovered])
+			foreach (var f in Triggerables(Trigger.OnDiscovered))
 			{
 				try
 				{
@@ -404,7 +404,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			}
 
-			foreach (var f in triggers[Trigger.OnPlayerDiscovered])
+			foreach (var f in Triggerables(Trigger.OnPlayerDiscovered))
 			{
 				try
 				{
@@ -424,7 +424,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			world.AddFrameEndTask(w =>
 			{
-				var triggerables = triggers[trigger];
+				var triggerables = Triggerables(trigger);
 				foreach (var f in triggerables)
 					f.Dispose();
 				triggerables.Clear();

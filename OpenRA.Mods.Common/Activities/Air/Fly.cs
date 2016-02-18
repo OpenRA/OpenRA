@@ -70,9 +70,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
-			var desiredFacing = Util.GetFacing(d, plane.Facing);
-
 			// Don't turn until we've reached the cruise altitude
+			var desiredFacing = d.Yaw.Facing;
 			var targetAltitude = plane.CenterPosition.Z + plane.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(plane.CenterPosition).Length;
 			if (plane.CenterPosition.Z < targetAltitude)
 				desiredFacing = plane.Facing;

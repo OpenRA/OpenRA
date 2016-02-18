@@ -38,7 +38,7 @@ namespace OpenRA
 
 			// The bottom edge is trickier: cells at MPos.V > bottomRight.V may have
 			// been projected into this region if they have height > 0.
-			// Each height step is equivalent to 512 WRange units, which is one MPos
+			// Each height step is equivalent to 512 WDist units, which is one MPos
 			// step for isometric cells, but only half a MPos step for classic cells. Doh!
 			var maxHeight = map.Grid.MaximumTerrainHeight;
 			var heightOffset = map.Grid.Type == MapGridType.RectangularIsometric ? maxHeight : maxHeight / 2;

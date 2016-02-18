@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common
 {
@@ -38,17 +37,33 @@ namespace OpenRA.Mods.Common
 			return volumes.FirstOrDefault(isValidDisk);
 		}
 
-		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
-		public static bool ExtractFromPackage(string srcPath, string package, string annotation, Dictionary<string, string[]> filesByDirectory,
-			string destPath, bool overwrite, Action<string> onProgress, Action<string> onError)
+		static string GetFileName(string path, ContentInstaller.FilenameCase caseModifier)
 		{
-			if (!Directory.Exists(destPath))
-				Directory.CreateDirectory(destPath);
+			// Gets the file path, splitting on both / and \
+			var index = path.LastIndexOfAny(new[] { '\\', '/' });
+			var output = path.Substring(index + 1);
+
+			switch (caseModifier)
+			{
+				case ContentInstaller.FilenameCase.ForceLower:
+					return output.ToLowerInvariant();
+				case ContentInstaller.FilenameCase.ForceUpper:
+					return output.ToUpperInvariant();
+				default:
+					return output;
+			}
+		}
+
+		// TODO: The package should be mounted into its own context to avoid name collisions with installed files
+		public static bool ExtractFromPackage(string srcPath, string package, Dictionary<string, string[]> filesByDirectory,
+			string destPath, bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
+		{
+			Directory.CreateDirectory(destPath);
 
 			Log.Write("debug", "Mounting {0}".F(srcPath));
-			GlobalFileSystem.Mount(srcPath);
+			Game.ModData.ModFiles.Mount(srcPath);
 			Log.Write("debug", "Mounting {0}".F(package));
-			GlobalFileSystem.Mount(package, annotation);
+			Game.ModData.ModFiles.Mount(package);
 
 			foreach (var directory in filesByDirectory)
 			{
@@ -57,7 +72,7 @@ namespace OpenRA.Mods.Common
 				foreach (var file in directory.Value)
 				{
 					var containingDir = Path.Combine(destPath, targetDir);
-					var dest = Path.Combine(containingDir, file.ToLowerInvariant());
+					var dest = Path.Combine(containingDir, GetFileName(file, caseModifier));
 					if (File.Exists(dest))
 					{
 						if (overwrite)
@@ -71,7 +86,7 @@ namespace OpenRA.Mods.Common
 
 					Directory.CreateDirectory(containingDir);
 
-					using (var sourceStream = GlobalFileSystem.Open(file))
+					using (var sourceStream = Game.ModData.ModFiles.Open(file))
 					using (var destStream = File.Create(dest))
 					{
 						Log.Write("debug", "Extracting {0} to {1}".F(file, dest));
@@ -85,8 +100,10 @@ namespace OpenRA.Mods.Common
 		}
 
 		public static bool CopyFiles(string srcPath, Dictionary<string, string[]> files, string destPath,
-			bool overwrite, Action<string> onProgress, Action<string> onError)
+			bool overwrite, ContentInstaller.FilenameCase caseModifier, Action<string> onProgress, Action<string> onError)
 		{
+			Directory.CreateDirectory(destPath);
+
 			foreach (var folder in files)
 			{
 				var targetDir = folder.Key;
@@ -100,9 +117,9 @@ namespace OpenRA.Mods.Common
 						return false;
 					}
 
-					var destFile = Path.GetFileName(file);
+					var destFile = GetFileName(file, caseModifier);
 					var containingDir = Path.Combine(destPath, targetDir);
-					var dest = Path.Combine(containingDir, destFile.ToLowerInvariant());
+					var dest = Path.Combine(containingDir, destFile);
 					if (File.Exists(dest) && !overwrite)
 					{
 						Log.Write("debug", "Skipping {0}".F(dest));

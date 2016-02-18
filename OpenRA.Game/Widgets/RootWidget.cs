@@ -27,13 +27,13 @@ namespace OpenRA.Widgets
 
 				if (hk == Game.Settings.Keys.DevReloadChromeKey)
 				{
-					ChromeProvider.Initialize(Game.ModData.Manifest.Chrome);
+					ChromeProvider.Initialize(Game.ModData);
 					return true;
 				}
 
 				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
 				{
-					foreach (var child in this.Children)
+					foreach (var child in Children)
 						child.Visible ^= true;
 
 					return true;

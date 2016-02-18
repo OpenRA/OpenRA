@@ -30,14 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string Palette = "chrome";
 
 		[Desc("Point on the production icon's used as reference for offsetting the overlay. ",
-			"Possible values are any combination of Top, VCenter, Bottom and Left, HCenter, Right separated by a comma.")]
+			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
 		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
-
-		[Desc("Pixel offset relative to the icon's reference point.")]
-		public readonly int2 Offset = int2.Zero;
-
-		[Desc("Visual scale of the overlay.")]
-		public readonly float Scale = 1f;
 
 		public object Create(ActorInitializer init) { return new VeteranProductionIconOverlay(init, this); }
 	}
@@ -76,55 +70,30 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Sprite Sprite()
+		Sprite IProductionIconOverlay.Sprite { get { return sprite; } }
+		string IProductionIconOverlay.Palette { get { return info.Palette; } }
+		float2 IProductionIconOverlay.Offset(float2 iconSize)
 		{
-			return sprite;
+			float x = 0;
+			float y = 0;
+			if (info.ReferencePoint.HasFlag(ReferencePoints.Top))
+				y -= iconSize.Y / 2 - sprite.Size.Y / 2;
+			else if (info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
+				y += iconSize.Y / 2 - sprite.Size.Y / 2;
+
+			if (info.ReferencePoint.HasFlag(ReferencePoints.Left))
+				x -= iconSize.X / 2 - sprite.Size.X / 2;
+			else if (info.ReferencePoint.HasFlag(ReferencePoints.Right))
+				x += iconSize.X / 2 - sprite.Size.X / 2;
+
+			return new float2(x, y);
 		}
 
-		public string Palette()
-		{
-			return info.Palette;
-		}
-
-		public float Scale()
-		{
-			return info.Scale;
-		}
-
-		public float2 Offset(float2 iconSize)
-		{
-			float offsetX = 0, offsetY = 0;
-			switch (info.ReferencePoint & (ReferencePoints)3)
-			{
-				case ReferencePoints.Top:
-					offsetY = (-iconSize.Y + sprite.Size.Y) / 2;
-					break;
-				case ReferencePoints.VCenter:
-					break;
-				case ReferencePoints.Bottom:
-					offsetY = (iconSize.Y - sprite.Size.Y) / 2;
-					break;
-			}
-
-			switch (info.ReferencePoint & (ReferencePoints)(3 << 2))
-			{
-				case ReferencePoints.Left:
-					offsetX = (-iconSize.X + sprite.Size.X) / 2;
-					break;
-				case ReferencePoints.HCenter:
-					break;
-				case ReferencePoints.Right:
-					offsetX = (iconSize.X - sprite.Size.X) / 2;
-					break;
-			}
-
-			return new float2(offsetX, offsetY) + info.Offset;
-		}
-
-		public bool IsOverlayActive(ActorInfo ai)
+		bool IProductionIconOverlay.IsOverlayActive(ActorInfo ai)
 		{
 			bool isActive;
-			overlayActive.TryGetValue(ai, out isActive);
+			if (!overlayActive.TryGetValue(ai, out isActive))
+				return false;
 
 			return isActive;
 		}

@@ -42,7 +42,7 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Enemies: BadGuy, USSR, Ukraine, Turkey
+		Enemies: BadGuy, USSR, Ukraine, Turkey, FriendlyMadTanks
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
@@ -71,6 +71,12 @@ Players:
 		Faction: soviet
 		Color: D1987C
 		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
+	PlayerReference@FriendlyMadTanks:
+		Name: FriendlyMadTanks
+		Faction: soviet
+		Color: D1987C
+		Allies: Greece
+		Enemies: BadGuy, USSR, Ukraine
 	PlayerReference@Outpost:
 		Name: Outpost
 		NonCombatant: True
@@ -2115,6 +2121,9 @@ Rules:
 			GenericVisibility: Enemy
 			ShowOwnerRow: false
 		AnnounceOnSeen:
+	^TechBuilding:
+		Tooltip:
+			ShowOwnerRow: false
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy
@@ -2160,6 +2169,8 @@ Rules:
 			CargoType: Demitri
 		RenderSprites:
 			Image: DELPHI
+		Voiced:
+			VoiceSet: DemitriVoice
 	TRAN:
 		RevealsShroud:
 			Range: 0c0
@@ -2209,7 +2220,7 @@ Rules:
 			MuzzleSequence: muzzle
 		AttackTurreted:
 		WithMuzzleOverlay:
-		WithTurret:
+		WithSpriteTurret:
 		AutoTarget:
 		Explodes:
 			Weapon: MiniNuke
@@ -2380,7 +2391,7 @@ Weapons:
 	SuperTankPrimary:
 		ROF: 70
 		Range: 4c768
-		Report: TURRET1.AUD
+		Report: turret1.aud
 		Burst: 2
 		InvalidTargets: Air, Infantry
 		Projectile: Bullet
@@ -2399,13 +2410,29 @@ Weapons:
 		Warhead@2Smu: LeaveSmudge
 			SmudgeType: Crater
 		Warhead@3EffGround: CreateEffect
-			Explosion: small_explosion
+			Explosions: small_explosion
 			InvalidImpactTypes: Water
 		Warhead@4EffWater: CreateEffect
-			Explosion: small_splash
+			Explosions: small_splash
 			ValidImpactTypes: Water
 
 Voices:
+	DemitriVoice:
+		Variants:
+			allies: .r01,.r03
+			england: .r01,.r03
+			france: .r01,.r03
+			germany: .r01,.r03
+			soviet: .r01,.r03
+			russia: .r01,.r03
+			ukraine: .r01,.r03
+		Voices:
+			Select: await1,ready,report1,yessir1
+			Action: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
+			Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
+			Burned: dedman10
+			Zapped: dedman6
+		DisableVariants: Die, Burned, Zapped
 
 Music:
 

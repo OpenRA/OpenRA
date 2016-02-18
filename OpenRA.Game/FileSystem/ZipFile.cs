@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -17,21 +16,20 @@ using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class ZipFile : IFolder
+	public sealed class ZipFile : IReadWritePackage
 	{
-		readonly string filename;
-		readonly int priority;
+		public string Name { get; private set; }
 		SZipFile pkg;
 
 		static ZipFile()
 		{
-			ZipConstants.DefaultCodePage = Encoding.Default.CodePage;
+			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFile(string filename, int priority)
+		public ZipFile(FileSystem context, string filename)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
+
 			try
 			{
 				// Pull the file into memory, don't keep it open.
@@ -44,10 +42,9 @@ namespace OpenRA.FileSystem
 		}
 
 		// Create a new zip with the specified contents.
-		public ZipFile(string filename, int priority, Dictionary<string, byte[]> contents)
+		public ZipFile(FileSystem context, string filename, Dictionary<string, byte[]> contents)
 		{
-			this.priority = priority;
-			this.filename = filename;
+			Name = filename;
 
 			if (File.Exists(filename))
 				File.Delete(filename);
@@ -56,7 +53,7 @@ namespace OpenRA.FileSystem
 			Write(contents);
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			var entry = pkg.GetEntry(filename);
 			if (entry == null)
@@ -71,36 +68,25 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public IEnumerable<uint> ClassicHashes()
+		public IEnumerable<string> Contents
 		{
-			foreach (ZipEntry entry in pkg)
-				yield return PackageEntry.HashFilename(entry.Name, PackageHashType.Classic);
+			get
+			{
+				foreach (ZipEntry entry in pkg)
+					yield return entry.Name;
+			}
 		}
 
-		public IEnumerable<uint> CrcHashes()
-		{
-			yield break;
-		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			foreach (ZipEntry entry in pkg)
-				yield return entry.Name;
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return pkg.GetEntry(filename) != null;
 		}
-
-		public int Priority { get { return 500 + priority; } }
-		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// TODO: Clear existing content?
 			pkg.Close();
-			pkg = SZipFile.Create(filename);
+			pkg = SZipFile.Create(Name);
 			pkg.BeginUpdate();
 
 			foreach (var kvp in contents)
@@ -108,7 +94,7 @@ namespace OpenRA.FileSystem
 
 			pkg.CommitUpdate();
 			pkg.Close();
-			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
+			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(Name)));
 		}
 
 		public void Dispose()

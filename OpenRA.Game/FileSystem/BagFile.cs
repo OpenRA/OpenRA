@@ -19,19 +19,17 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BagFile : IFolder
+	public sealed class BagFile : IReadOnlyPackage
 	{
-		static readonly uint[] Nothing = { };
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
 
-		readonly string bagFilename;
 		readonly Stream s;
-		readonly int bagFilePriority;
-		readonly Dictionary<uint, IdxEntry> index;
+		readonly Dictionary<string, IdxEntry> index;
 
-		public BagFile(string filename, int priority)
+		public BagFile(FileSystem context, string filename)
 		{
-			bagFilename = filename;
-			bagFilePriority = priority;
+			Name = filename;
 
 			// A bag file is always accompanied with an .idx counterpart
 			// For example: audio.bag requires the audio.idx file
@@ -39,23 +37,20 @@ namespace OpenRA.FileSystem
 
 			// Build the index and dispose the stream, it is no longer needed after this
 			List<IdxEntry> entries;
-			using (var indexStream = GlobalFileSystem.Open(indexFilename))
+			using (var indexStream = context.Open(indexFilename))
 				entries = new IdxReader(indexStream).Entries;
 
-			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
+			index = entries.ToDictionaryWithConflictLog(x => x.Filename,
 				"{0} (bag format)".F(filename),
 				null, x => "(offs={0}, len={1})".F(x.Offset, x.Length));
 
-			s = GlobalFileSystem.Open(filename);
+			s = context.Open(filename);
 		}
 
-		public int Priority { get { return 1000 + bagFilePriority; } }
-		public string Name { get { return bagFilename; } }
-
-		public Stream GetContent(uint hash)
+		public Stream GetStream(string filename)
 		{
 			IdxEntry entry;
-			if (!index.TryGetValue(hash, out entry))
+			if (!index.TryGetValue(filename, out entry))
 				return null;
 
 			s.Seek(entry.Offset, SeekOrigin.Begin);
@@ -118,65 +113,9 @@ namespace OpenRA.FileSystem
 			return mergedStream;
 		}
 
-		uint? FindMatchingHash(string filename)
+		public bool Contains(string filename)
 		{
-			var hash = IdxEntry.HashFilename(filename, PackageHashType.CRC32);
-			if (index.ContainsKey(hash))
-				return hash;
-
-			// Maybe we were given a raw hash?
-			uint raw;
-			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
-				return null;
-
-			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
-				return raw;
-
-			return null;
-		}
-
-		public Stream GetContent(string filename)
-		{
-			var hash = FindMatchingHash(filename);
-			return hash.HasValue ? GetContent(hash.Value) : null;
-		}
-
-		public bool Exists(string filename)
-		{
-			return FindMatchingHash(filename).HasValue;
-		}
-
-		public IEnumerable<uint> ClassicHashes()
-		{
-			return Nothing;
-		}
-
-		public IEnumerable<uint> CrcHashes()
-		{
-			return index.Keys;
-		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			var lookup = new Dictionary<uint, string>();
-			if (GlobalFileSystem.Exists("global mix database.dat"))
-			{
-				var db = new XccGlobalDatabase(GlobalFileSystem.Open("global mix database.dat"));
-				foreach (var e in db.Entries)
-				{
-					var hash = IdxEntry.HashFilename(e, PackageHashType.CRC32);
-					if (!lookup.ContainsKey(hash))
-						lookup.Add(hash, e);
-				}
-			}
-
-			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
-		}
-
-		public void Write(Dictionary<string, byte[]> contents)
-		{
-			GlobalFileSystem.Unmount(this);
-			throw new NotImplementedException("Updating bag files unsupported");
+			return index.ContainsKey(filename);
 		}
 
 		public void Dispose()

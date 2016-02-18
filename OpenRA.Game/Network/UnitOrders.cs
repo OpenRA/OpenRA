@@ -265,29 +265,6 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "SetStance":
-					{
-						if (!Game.OrderManager.LobbyInfo.GlobalSettings.FragileAlliances)
-							return;
-
-						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);
-						var newStance = (Stance)order.ExtraData;
-
-						order.Player.SetStance(targetPlayer, newStance);
-
-						Game.Debug("{0} has set diplomatic stance vs {1} to {2}",
-							order.Player.PlayerName, targetPlayer.PlayerName, newStance);
-
-						// automatically declare war reciprocally
-						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
-						{
-							targetPlayer.SetStance(order.Player, newStance);
-							Game.Debug("{0} has reciprocated", targetPlayer.PlayerName);
-						}
-
-						break;
-					}
-
 				case "Ping":
 					{
 						orderManager.IssueOrder(Order.Pong(order.TargetString));

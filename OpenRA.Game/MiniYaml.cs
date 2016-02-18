@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 
 namespace OpenRA
 {
@@ -80,6 +79,11 @@ namespace OpenRA
 		{
 			return "{{YamlNode: {0} @ {1}}}".F(Key, Location);
 		}
+
+		public MiniYamlNode Clone()
+		{
+			return new MiniYamlNode(Key, Value.Clone());
+		}
 	}
 
 	public class MiniYaml
@@ -89,6 +93,11 @@ namespace OpenRA
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
 		public string Value;
 		public List<MiniYamlNode> Nodes;
+
+		public MiniYaml Clone()
+		{
+			return new MiniYaml(Value, Nodes.Select(n => n.Clone()).ToList());
+		}
 
 		public Dictionary<string, MiniYaml> ToDictionary()
 		{
@@ -127,16 +136,6 @@ namespace OpenRA
 		{
 			Value = value;
 			Nodes = nodes ?? new List<MiniYamlNode>();
-		}
-
-		public static MiniYaml FromDictionary<K, V>(Dictionary<K, V> dict)
-		{
-			return new MiniYaml(null, dict.Select(x => new MiniYamlNode(x.Key.ToString(), new MiniYaml(x.Value.ToString()))).ToList());
-		}
-
-		public static MiniYaml FromList<T>(List<T> list)
-		{
-			return new MiniYaml(null, list.Select(x => new MiniYamlNode(x.ToString(), new MiniYaml(null))).ToList());
 		}
 
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
@@ -230,12 +229,6 @@ namespace OpenRA
 			return ret;
 		}
 
-		public static List<MiniYamlNode> FromFileInPackage(string path)
-		{
-			using (var stream = GlobalFileSystem.Open(path))
-				return FromLines(stream.ReadAllLines(), path);
-		}
-
 		public static Dictionary<string, MiniYaml> DictFromFile(string path)
 		{
 			return FromFile(path).ToDictionary(x => x.Key, x => x.Value);
@@ -262,90 +255,115 @@ namespace OpenRA
 			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
 		}
 
-		public static List<MiniYamlNode> MergeStrict(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)
 		{
-			return Merge(a, b, false);
+			if (!sources.Any())
+				return new List<MiniYamlNode>();
+
+			var tree = sources.Where(s => s != null).Aggregate(MergePartial)
+				.ToDictionary(n => n.Key, n => n.Value);
+
+			var resolved = new Dictionary<string, MiniYaml>();
+			foreach (var kv in tree)
+			{
+				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
+				inherited.Add(kv.Key, new MiniYamlNode.SourceLocation());
+
+				var children = ResolveInherits(kv.Key, kv.Value, tree, inherited);
+				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
+			}
+
+			return resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)).ToList();
 		}
 
-		public static List<MiniYamlNode> MergeLiberal(List<MiniYamlNode> a, List<MiniYamlNode> b)
+		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes,
+			Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			return Merge(a, b, true);
+			var existingNode = existingNodes.FirstOrDefault(n => n.Key == overrideNode.Key);
+			if (existingNode != null)
+			{
+				existingNode.Value = MiniYaml.MergePartial(existingNode.Value, overrideNode.Value);
+				existingNode.Value.Nodes = ResolveInherits(existingNode.Key, existingNode.Value, tree, inherited);
+			}
+			else
+				existingNodes.Add(overrideNode.Clone());
 		}
 
-		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool allowUnresolvedRemoves = false)
+		static List<MiniYamlNode> ResolveInherits(string key, MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			if (a.Count == 0)
-				return b;
+			var resolved = new List<MiniYamlNode>();
 
-			if (b.Count == 0)
-				return a;
+			// Inheritance is tracked from parent->child, but not from child->parentsiblings.
+			inherited = new Dictionary<string, MiniYamlNode.SourceLocation>(inherited);
+
+			foreach (var n in node.Nodes)
+			{
+				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
+				{
+					MiniYaml parent;
+					if (!tree.TryGetValue(n.Value.Value, out parent))
+						throw new YamlException(
+							"{0}: Parent type `{1}` not found".F(n.Location, n.Value.Value));
+
+					if (inherited.ContainsKey(n.Value.Value))
+						throw new YamlException("{0}: Parent type `{1}` was already inherited by this yaml tree at {2} (note: may be from a derived tree)"
+							.F(n.Location, n.Value.Value, inherited[n.Value.Value]));
+
+					inherited.Add(n.Value.Value, n.Location);
+					foreach (var r in ResolveInherits(n.Key, parent, tree, inherited))
+						MergeIntoResolved(r, resolved, tree, inherited);
+				}
+				else if (n.Key.StartsWith("-"))
+				{
+					var removed = n.Key.Substring(1);
+					if (resolved.RemoveAll(r => r.Key == removed) == 0)
+						throw new YamlException("{0}: There are no elements with key `{1}` to remove".F(n.Location, removed));
+				}
+				else
+					MergeIntoResolved(n, resolved, tree, inherited);
+			}
+
+			return resolved;
+		}
+
+		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
+		{
+			if (existingNodes == null)
+				return overrideNodes;
+
+			if (overrideNodes == null)
+				return existingNodes;
+
+			return new MiniYaml(overrideNodes.Value ?? existingNodes.Value, MergePartial(existingNodes.Nodes, overrideNodes.Nodes));
+		}
+
+		static List<MiniYamlNode> MergePartial(List<MiniYamlNode> existingNodes, List<MiniYamlNode> overrideNodes)
+		{
+			if (existingNodes.Count == 0)
+				return overrideNodes;
+
+			if (overrideNodes.Count == 0)
+				return existingNodes;
 
 			var ret = new List<MiniYamlNode>();
 
-			var dictA = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var allKeys = dictA.Keys.Union(dictB.Keys);
+			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var allKeys = existingDict.Keys.Union(overrideDict.Keys);
 
-			var keys = allKeys.Where(x => x.Length == 0 || x[0] != '-').ToList();
-			var removeKeys = allKeys.Where(x => x.Length > 0 && x[0] == '-')
-				.Select(k => k.Substring(1)).ToHashSet();
-
-			foreach (var key in keys)
+			foreach (var key in allKeys)
 			{
-				MiniYamlNode aa, bb;
-				dictA.TryGetValue(key, out aa);
-				dictB.TryGetValue(key, out bb);
+				MiniYamlNode existingNode, overrideNode;
+				existingDict.TryGetValue(key, out existingNode);
+				overrideDict.TryGetValue(key, out overrideNode);
 
-				if (removeKeys.Contains(key))
-					removeKeys.Remove(key);
-				else
-				{
-					var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
-					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, allowUnresolvedRemoves), loc);
-					ret.Add(merged);
-				}
-			}
-
-			if (removeKeys.Any())
-			{
-				if (allowUnresolvedRemoves)
-				{
-					// Add the removal nodes back for the next pass to deal with
-					foreach (var k in removeKeys)
-					{
-						var key = "-" + k;
-						MiniYamlNode rem;
-						if (!dictA.TryGetValue(key, out rem))
-							rem = dictB[key];
-						ret.Add(rem);
-					}
-				}
-				else
-					throw new YamlException("Bogus yaml removals: {0}".F(removeKeys.JoinWith(", ")));
+				var loc = overrideNode == null ? default(MiniYamlNode.SourceLocation) : overrideNode.Location;
+				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
+					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), loc);
+				ret.Add(merged);
 			}
 
 			return ret;
-		}
-
-		public static MiniYaml MergeLiberal(MiniYaml a, MiniYaml b)
-		{
-			return Merge(a, b, true);
-		}
-
-		public static MiniYaml MergeStrict(MiniYaml a, MiniYaml b)
-		{
-			return Merge(a, b, false);
-		}
-
-		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool allowUnresolvedRemoves)
-		{
-			if (a == null)
-				return b;
-
-			if (b == null)
-				return a;
-
-			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, allowUnresolvedRemoves));
 		}
 
 		public IEnumerable<string> ToLines(string name)

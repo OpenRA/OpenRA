@@ -8,10 +8,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -38,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Particles are drawn in squares when enabled, otherwise with lines.")]
 		public readonly bool UseSquares = true;
 
-		[Desc("Works only with squares enabled. Size min. and max. value in pixels.")]
+		[Desc("Size / width of the particle in px.")]
 		public readonly int[] ParticleSize = { 1, 3 };
 
 		[Desc("Scatters falling direction on the x-axis. Scatter min. and max. value in px/tick.")]
@@ -290,11 +288,11 @@ namespace OpenRA.Mods.Common.Traits
 				var tempPos = new float2(item.PosX + topLeft.X, item.PosY + topLeft.Y);
 
 				if (info.UseSquares)
-					Game.Renderer.WorldQuadRenderer.FillRect(new RectangleF(tempPos.X, tempPos.Y, item.Size, item.Size), item.Color);
+					Game.Renderer.WorldRgbaColorRenderer.FillRect(tempPos, tempPos + new float2(item.Size, item.Size), item.Color);
 				else
 				{
 					var tempPosTail = new float2(topLeft.X + item.PosX - currentWindXOffset, item.PosY - (item.Gravity * 2 / 3) + topLeft.Y);
-					Game.Renderer.WorldLineRenderer.DrawLine(tempPos, tempPosTail, item.Color, item.TailColor);
+					Game.Renderer.WorldRgbaColorRenderer.DrawLine(tempPos, tempPosTail, item.Size, item.TailColor);
 				}
 			}
 		}

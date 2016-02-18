@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.ToCell);
 
 			if ((nearest - mobile.ToCell).LengthSquared > 2)
-				return Util.SequenceActivities(new MoveAdjacentTo(self, target), this);
+				return ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			if (!capturable.CaptureInProgress)
 				capturable.BeginCapture(self);

@@ -13,13 +13,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
-	public class FrozenActorLayerInfo : ITraitInfo
+	public class FrozenActorLayerInfo : Requires<ShroudInfo>, ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self); }
+		[Desc("Size of partition bins (cells)")]
+		public readonly int BinSize = 10;
+
+		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self, this); }
 	}
 
 	public class FrozenActor
@@ -28,38 +32,55 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
-		readonly IRemoveFrozenActor[] removeFrozenActors;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
-		public Player Owner;
+		public Player Owner { get; private set; }
 
-		public ITooltipInfo TooltipInfo;
-		public Player TooltipOwner;
+		public ITooltipInfo TooltipInfo { get; private set; }
+		public Player TooltipOwner { get; private set; }
+		readonly ITooltip tooltip;
 
-		public int HP;
-		public DamageState DamageState;
+		public int HP { get; private set; }
+		public DamageState DamageState { get; private set; }
+		readonly IHealth health;
 
 		public bool Visible = true;
 		public bool Shrouded { get; private set; }
-		public bool NeedRenderables { get; private set; }
-		public bool IsRendering { get; private set; }
+		public bool NeedRenderables { get; set; }
+		public IRenderable[] Renderables = NoRenderables;
+		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+
+		int flashTicks;
 
 		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud, bool startsRevealed)
 		{
 			actor = self;
 			this.shroud = shroud;
 			NeedRenderables = startsRevealed;
-			removeFrozenActors = self.TraitsImplementing<IRemoveFrozenActor>().ToArray();
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
 				.Where(m => shroud.Contains(m))
 				.ToArray();
 
+			if (Footprint.Length == 0)
+				throw new ArgumentException(("This frozen actor has no footprint.\n" +
+					"Actor Name: {0}\n" +
+					"Actor Location: {1}\n" +
+					"Input footprint: [{2}]\n" +
+					"Input footprint (after shroud.Contains): [{3}]")
+					.F(actor.Info.Name,
+					actor.Location.ToString(),
+					footprint.Select(p => p.ToString()).JoinWith("|"),
+					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
+
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
-			TargetTypes = self.TraitsImplementing<ITargetable>().Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes).ToHashSet();
+			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
+
+			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+			health = self.TraitOrDefault<IHealth>();
 
 			UpdateVisibility();
 		}
@@ -69,27 +90,36 @@ namespace OpenRA.Traits
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
 
-		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+		public void RefreshState()
+		{
+			Owner = actor.Owner;
 
-		int flashTicks;
-		IRenderable[] renderables = NoRenderables;
+			if (health != null)
+			{
+				HP = health.HP;
+				DamageState = health.DamageState;
+			}
+
+			if (tooltip != null)
+			{
+				TooltipInfo = tooltip.TooltipInfo;
+				TooltipOwner = tooltip.Owner;
+			}
+		}
 
 		public void Tick()
 		{
-			UpdateVisibility();
-
 			if (flashTicks > 0)
 				flashTicks--;
 		}
 
-		void UpdateVisibility()
+		public void UpdateVisibility()
 		{
 			var wasVisible = Visible;
 			Shrouded = true;
-
-			// We are doing the following LINQ manually for performance since this is a hot path.
-			// Visible = !Footprint.Any(shroud.IsVisible);
 			Visible = true;
+
+			// PERF: Avoid LINQ.
 			foreach (var puv in Footprint)
 			{
 				if (shroud.IsVisible(puv))
@@ -103,8 +133,7 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
-			if (Visible && !wasVisible)
-				NeedRenderables = true;
+			NeedRenderables |= Visible && !wasVisible;
 		}
 
 		public void Flash()
@@ -114,41 +143,20 @@ namespace OpenRA.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (NeedRenderables)
-			{
-				NeedRenderables = false;
-				if (!actor.Disposed)
-				{
-					IsRendering = true;
-					renderables = actor.Render(wr).ToArray();
-					IsRendering = false;
-				}
-			}
-
 			if (Shrouded)
 				return NoRenderables;
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
 				var highlight = wr.Palette("highlight");
-				return renderables.Concat(renderables.Where(r => !r.IsDecoration)
+				return Renderables.Concat(Renderables.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight)));
 			}
 
-			return renderables;
+			return Renderables;
 		}
 
-		public bool HasRenderables { get { return !Shrouded && renderables.Any(); } }
-
-		public bool ShouldBeRemoved(Player owner)
-		{
-			// We use a loop here for performance reasons
-			foreach (var rfa in removeFrozenActors)
-				if (rfa.RemoveActor(actor, owner))
-					return true;
-
-			return false;
-		}
+		public bool HasRenderables { get { return !Shrouded && Renderables.Any(); } }
 
 		public override string ToString()
 		{
@@ -161,52 +169,126 @@ namespace OpenRA.Traits
 		[Sync] public int VisibilityHash;
 		[Sync] public int FrozenHash;
 
+		readonly int binSize;
 		readonly World world;
 		readonly Player owner;
-		readonly Dictionary<uint, FrozenActor> frozen;
+		readonly Dictionary<uint, FrozenActor> frozenActorsById;
+		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
+		readonly bool[] dirtyBins;
+		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
 
-		public FrozenActorLayer(Actor self)
+		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
+			binSize = info.BinSize;
 			world = self.World;
 			owner = self.Owner;
-			frozen = new Dictionary<uint, FrozenActor>();
+			frozenActorsById = new Dictionary<uint, FrozenActor>();
+
+			// PERF: Partition the map into a series of coarse-grained bins and track changes in the shroud against
+			// bin - marking that bin dirty if it changes. This is fairly cheap to track and allows us to perform the
+			// expensive visibility update for frozen actors in these regions.
+			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
+				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
+			var maxX = world.Map.MapSize.X / binSize + 1;
+			var maxY = world.Map.MapSize.Y / binSize + 1;
+			dirtyBins = new bool[maxX * maxY];
+			self.Trait<Shroud>().CellsChanged += cells =>
+			{
+				foreach (var cell in cells)
+				{
+					var x = cell.U / binSize;
+					var y = cell.V / binSize;
+					dirtyBins[y * maxX + x] = true;
+				}
+			};
 		}
 
 		public void Add(FrozenActor fa)
 		{
-			frozen.Add(fa.ID, fa);
+			frozenActorsById.Add(fa.ID, fa);
 			world.ScreenMap.Add(owner, fa);
+			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
+		}
+
+		public void Remove(FrozenActor fa)
+		{
+			partitionedFrozenActorIds.Remove(fa.ID);
+			world.ScreenMap.Remove(owner, fa);
+			frozenActorsById.Remove(fa.ID);
+		}
+
+		Rectangle FootprintBounds(FrozenActor fa)
+		{
+			var p1 = fa.Footprint[0];
+			var minU = p1.U;
+			var maxU = p1.U;
+			var minV = p1.V;
+			var maxV = p1.V;
+			foreach (var p in fa.Footprint)
+			{
+				if (minU > p.U)
+					minU = p.U;
+				else if (maxU < p.U)
+					maxU = p.U;
+
+				if (minV > p.V)
+					minV = p.V;
+				else if (maxV < p.V)
+					maxV = p.V;
+			}
+
+			return Rectangle.FromLTRB(minU, minV, maxU + 1, maxV + 1);
 		}
 
 		public void Tick(Actor self)
 		{
-			var remove = new List<uint>();
+			UpdateDirtyFrozenActorsFromDirtyBins();
+
+			var frozenActorsToRemove = new List<FrozenActor>();
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
-			// TODO: Track shroud updates using Shroud.CellsChanged
-			// and then only tick FrozenActors that might have changed
-			foreach (var kvp in frozen)
+			foreach (var kvp in frozenActorsById)
 			{
-				var hash = (int)kvp.Key;
+				var id = kvp.Key;
+				var hash = (int)id;
 				FrozenHash += hash;
 
 				var frozenActor = kvp.Value;
 				frozenActor.Tick();
+				if (dirtyFrozenActorIds.Contains(id))
+					frozenActor.UpdateVisibility();
 
-				if (frozenActor.ShouldBeRemoved(owner))
-					remove.Add(kvp.Key);
-				else if (frozenActor.Visible)
+				if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
-					remove.Add(kvp.Key);
+					frozenActorsToRemove.Add(frozenActor);
 			}
 
-			foreach (var actorID in remove)
+			dirtyFrozenActorIds.Clear();
+
+			foreach (var fa in frozenActorsToRemove)
+				Remove(fa);
+		}
+
+		void UpdateDirtyFrozenActorsFromDirtyBins()
+		{
+			// Check which bins on the map were dirtied due to changes in the shroud and gather the frozen actors whose
+			// footprint overlap with these bins.
+			var maxX = world.Map.MapSize.X / binSize + 1;
+			var maxY = world.Map.MapSize.Y / binSize + 1;
+			for (var y = 0; y < maxY; y++)
 			{
-				world.ScreenMap.Remove(owner, frozen[actorID]);
-				frozen.Remove(actorID);
+				for (var x = 0; x < maxX; x++)
+				{
+					if (!dirtyBins[y * maxX + x])
+						continue;
+					var box = new Rectangle(x * binSize, y * binSize, binSize, binSize);
+					dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.InBox(box));
+				}
 			}
+
+			Array.Clear(dirtyBins, 0, dirtyBins.Length);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
@@ -218,11 +300,11 @@ namespace OpenRA.Traits
 
 		public FrozenActor FromID(uint id)
 		{
-			FrozenActor ret;
-			if (!frozen.TryGetValue(id, out ret))
+			FrozenActor fa;
+			if (!frozenActorsById.TryGetValue(id, out fa))
 				return null;
 
-			return ret;
+			return fa;
 		}
 	}
 }

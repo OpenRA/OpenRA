@@ -31,14 +31,14 @@ namespace OpenRA.Test
 						{
 							Assert.That(cell, Is.EqualTo(cell.ToMPos(gridType).ToCPos(gridType)));
 						}
-						catch (Exception e)
+						catch
 						{
 							// Known problem on isometric mods that shouldn't be visible to players as these are outside the map.
 							if (gridType == MapGridType.RectangularIsometric && y > x)
 								continue;
 
 							Console.WriteLine("Coordinate {0} on grid type {1} failed to convert back.".F(cell, gridType));
-							throw e;
+							throw;
 						}
 					}
 				}

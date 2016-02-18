@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -19,68 +18,6 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public enum AlternateTransportsMode { None, Force, Default, Always }
-
-	public class EnterTransportTargeter : EnterAlliedActorTargeter<CargoInfo>
-	{
-		readonly AlternateTransportsMode mode;
-
-		public EnterTransportTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
-			AlternateTransportsMode mode)
-			: base(order, priority, canTarget, useEnterCursor) { this.mode = mode; }
-
-		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
-		{
-			switch (mode)
-			{
-				case AlternateTransportsMode.None:
-					break;
-				case AlternateTransportsMode.Force:
-					if (modifiers.HasModifier(TargetModifiers.ForceMove))
-						return false;
-					break;
-				case AlternateTransportsMode.Default:
-					if (!modifiers.HasModifier(TargetModifiers.ForceMove))
-						return false;
-					break;
-				case AlternateTransportsMode.Always:
-					return false;
-			}
-
-			return base.CanTargetActor(self, target, modifiers, ref cursor);
-		}
-	}
-
-	public class EnterTransportsTargeter : EnterAlliedActorTargeter<CargoInfo>
-	{
-		readonly AlternateTransportsMode mode;
-
-		public EnterTransportsTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
-			AlternateTransportsMode mode)
-			: base(order, priority, canTarget, useEnterCursor) { this.mode = mode; }
-
-		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
-		{
-			switch (mode)
-			{
-				case AlternateTransportsMode.None:
-					return false;
-				case AlternateTransportsMode.Force:
-					if (!modifiers.HasModifier(TargetModifiers.ForceMove))
-						return false;
-					break;
-				case AlternateTransportsMode.Default:
-					if (modifiers.HasModifier(TargetModifiers.ForceMove))
-						return false;
-					break;
-				case AlternateTransportsMode.Always:
-					break;
-			}
-
-			return base.CanTargetActor(self, target, modifiers, ref cursor);
-		}
-	}
 
 	[Desc("This actor can enter Cargo actors.")]
 	public class PassengerInfo : ITraitInfo
@@ -101,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
 		[Desc("Upgrade types to grant to transport.")]
-		public readonly string[] GrantUpgrades = { };
+		[UpgradeGrantedReference] public readonly string[] GrantUpgrades = { };
 
 		[VoiceReference] public readonly string Voice = "Action";
 

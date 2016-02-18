@@ -65,7 +65,7 @@ fi
 
 if [ ! -f SharpFont.dll ]; then
 	echo "Fetching SharpFont from NuGet"
-	get SharpFont 3.0.1
+	get SharpFont 3.1.0
 	cp ./SharpFont/lib/net20/SharpFont* .
 	cp ./SharpFont/config/SharpFont.dll.config .
 	rm -rf SharpFont SharpFont.Dependencies
@@ -73,24 +73,22 @@ fi
 
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from NuGet"
-	get NUnit 2.6.4
-	cp ./NUnit/lib/nunit.framework* .
+	get NUnit 3.0.1
+	cp ./NUnit/lib/net40/nunit.framework* .
 	rm -rf NUnit
 fi
 
-if [ ! -f nunit-console.exe ]; then
-	echo "Fetching NUnit.Runners from NuGet"
-	get NUnit.Runners 2.6.4
-	cp ./NUnit.Runners/tools/nunit-console.exe .
-	chmod +x nunit-console.exe
-	cp ./NUnit.Runners/tools/nunit-console.exe.config .
-	cp -R ./NUnit.Runners/tools/lib .
-	rm -rf NUnit.Runners
+if [ ! -f nunit3-console.exe ]; then
+	echo "Fetching NUnit.Console from NuGet"
+	get NUnit.Console 3.0.1
+	cp -R ./NUnit.Console/tools/* .
+	chmod +x nunit3-console.exe
+	rm -rf NUnit.Console
 fi
 
 if [ ! -f Mono.Nat.dll ]; then
 	echo "Fetching Mono.Nat from NuGet"
-	get Mono.Nat 1.2.21
+	get Mono.Nat 1.2.24
 	cp ./Mono.Nat/lib/net40/Mono.Nat.dll .
 	rm -rf Mono.Nat
 fi
@@ -102,14 +100,21 @@ if [ ! -f FuzzyLogicLibrary.dll ]; then
 	rm -rf FuzzyLogicLibrary
 fi
 
-if [ ! -f SDL2-CS.dll ]; then
+if [ ! -f SDL2-CS.dll -o ! -f SDL2-CS.dll.config ]; then
 	echo "Fetching SDL2-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20150709/SDL2-CS.dll
+	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll
+	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll.config
+fi
+
+if [ ! -f OpenAL-CS.dll -o ! -f OpenAL-CS.dll.config ]; then
+	echo "Fetching OpenAL-CS from GitHub."
+	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll
+	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll.config
 fi
 
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
-	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20151127/Eluant.dll
+	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20160124/Eluant.dll
 fi
 
 if [ ! -f SmarIrc4net.dll ]; then

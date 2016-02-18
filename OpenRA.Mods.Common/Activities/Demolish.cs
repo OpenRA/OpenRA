@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -20,7 +19,6 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor target;
 		readonly IDemolishable[] demolishables;
-		readonly EnterBehaviour enterBehaviour;
 		readonly int delay;
 		readonly int flashes;
 		readonly int flashesDelay;
@@ -31,11 +29,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Demolish(Actor self, Actor target, EnterBehaviour enterBehaviour, int delay,
 			int flashes, int flashesDelay, int flashInterval, int flashDuration)
-			: base(self, target)
+			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
 			demolishables = target.TraitsImplementing<IDemolishable>().ToArray();
-			this.enterBehaviour = enterBehaviour;
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
@@ -56,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (target.IsDead)
 					return;
 
-				if (cloak != null && cloak.Info.UncloakOnDemolish)
+				if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Demolish))
 					cloak.Uncloak();
 
 				for (var f = 0; f < flashes; f++)
@@ -75,11 +72,6 @@ namespace OpenRA.Mods.Common.Activities
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
 						demolishables.Do(d => d.Demolish(target, self));
 				}));
-
-				if (enterBehaviour == EnterBehaviour.Suicide)
-					self.Kill(self);
-				else if (enterBehaviour == EnterBehaviour.Dispose)
-					self.Dispose();
 			});
 		}
 	}

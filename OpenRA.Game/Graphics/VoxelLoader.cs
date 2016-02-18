@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -90,12 +89,14 @@ namespace OpenRA.Graphics
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)s.Channel + 1];
-			return new Vertex[4]
+			return new Vertex[6]
 			{
 				new Vertex(coord(0, 0), s.Left, s.Top, channelP, channelC),
 				new Vertex(coord(su, 0), s.Right, s.Top, channelP, channelC),
 				new Vertex(coord(su, sv), s.Right, s.Bottom, channelP, channelC),
-				new Vertex(coord(0, sv), s.Left, s.Bottom, channelP, channelC)
+				new Vertex(coord(su, sv), s.Right, s.Bottom, channelP, channelC),
+				new Vertex(coord(0, sv), s.Left, s.Bottom, channelP, channelC),
+				new Vertex(coord(0, 0), s.Left, s.Top, channelP, channelC)
 			};
 		}
 
@@ -217,9 +218,9 @@ namespace OpenRA.Graphics
 		{
 			VxlReader vxl;
 			HvaReader hva;
-			using (var s = GlobalFileSystem.Open(files.First + ".vxl"))
+			using (var s = Game.ModData.ModFiles.Open(files.First + ".vxl"))
 				vxl = new VxlReader(s);
-			using (var s = GlobalFileSystem.Open(files.Second + ".hva"))
+			using (var s = Game.ModData.ModFiles.Open(files.Second + ".hva"))
 				hva = new HvaReader(s, files.Second + ".hva");
 			return new Voxel(this, vxl, hva);
 		}

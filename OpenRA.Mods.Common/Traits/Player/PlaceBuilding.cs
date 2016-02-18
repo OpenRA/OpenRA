@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Primitives;
@@ -20,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlaceBuildingInfo : ITraitInfo
 	{
 		[Desc("Palette to use for rendering the placement sprite.")]
-		[PaletteReference] public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;

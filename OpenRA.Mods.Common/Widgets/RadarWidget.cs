@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class RadarWidget : Widget
+	public sealed class RadarWidget : Widget, IDisposable
 	{
 		public string WorldInteractionController = null;
 		public int AnimationLength = 5;
@@ -208,6 +208,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void MarkShroudDirty(IEnumerable<PPos> projectedCellsChanged)
 		{
+			// PERF: Many cells in the shroud change every tick. We only track the changes here and defer the real work
+			// we need to do until we render. This allows us to avoid wasted work.
 			dirtyShroudCells.UnionWith(projectedCellsChanged);
 		}
 
@@ -217,7 +219,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return null;
 
 			var cell = MinimapPixelToCell(pos);
-			var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell)));
+			var worldPixel = worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell));
+			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel);
 
 			var mi = new MouseInput
 			{
@@ -226,7 +229,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Modifiers = Game.GetModifierKeys()
 			};
 
-			var cursor = world.OrderGenerator.GetCursor(world, cell, mi);
+			var cursor = world.OrderGenerator.GetCursor(world, cell, worldPixel, mi);
 			if (cursor == null)
 				return "default";
 
@@ -305,7 +308,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
-				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
 				Game.Renderer.DisableScissor();
 			}
 		}
@@ -315,22 +318,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (radarPings == null)
 				return;
 
-			var lr = Game.Renderer.LineRenderer;
-			var oldWidth = lr.LineWidth;
-			lr.LineWidth = 2;
-
 			foreach (var radarPing in radarPings.Pings.Where(e => e.IsVisible()))
 			{
 				var c = radarPing.Color;
 				var pingCell = world.Map.CellContaining(radarPing.Position);
 				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
-
-				lr.DrawLine(points[0], points[1], c);
-				lr.DrawLine(points[1], points[2], c);
-				lr.DrawLine(points[2], points[0], c);
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 2, c);
 			}
-
-			lr.LineWidth = oldWidth;
 		}
 
 		public override void Tick()
@@ -451,6 +445,12 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Removed();
 			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
+			Dispose();
+		}
+
+		public void Dispose()
+		{
+			radarSheet.Dispose();
 		}
 	}
 }

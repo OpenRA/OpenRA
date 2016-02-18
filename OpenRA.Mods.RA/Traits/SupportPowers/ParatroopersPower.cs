@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Traits
 {
 	public class ParatroopersPowerInfo : SupportPowerInfo
 	{
-		[ActorReference]
+		[ActorReference(typeof(AircraftInfo))]
 		public readonly string UnitType = "badr";
 		public readonly int SquadSize = 1;
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Spawn and remove the plane this far outside the map.")]
 		public readonly WDist Cordon = new WDist(5120);
 
-		[ActorReference]
+		[ActorReference(typeof(PassengerInfo))]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
 		public readonly string[] DropItems = { };
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Traits
 			var info = Info as ParatroopersPowerInfo;
 
 			if (randomize)
-				dropFacing = Util.QuantizeFacing(self.World.SharedRandom.Next(256), info.QuantizedFacings) * (256 / info.QuantizedFacings);
+				dropFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromFacing(dropFacing);

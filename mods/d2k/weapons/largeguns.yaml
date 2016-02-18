@@ -1,0 +1,166 @@
+110mm_Gun:
+	ReloadDelay: 35
+	Range: 5c0
+	Report: TURRET1.WAV
+	Projectile: Bullet
+		Speed: 875
+		Blockable: false
+		Shadow: no
+		Inaccuracy: 380
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Falloff: 100, 50, 25, 0
+		Damage: 290
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			heavy: 75
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+		ImpactSounds: EXPLSML4.WAV
+
+80mm_A:
+	ReloadDelay: 50
+	Range: 4c0
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 562
+		Inaccuracy: 380
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Falloff: 100, 50, 25, 0
+		Damage: 270
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			heavy: 75
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+
+80mm_H:
+	ReloadDelay: 55
+	Range: 4c0
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 562
+		Inaccuracy: 380
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Falloff: 100, 50, 25, 0
+		Damage: 270
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			heavy: 75
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+
+80mm_O:
+	ReloadDelay: 45
+	Range: 4c0
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 562
+		Inaccuracy: 380
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Falloff: 100, 50, 25, 0
+		Damage: 270
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			heavy: 75
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+
+DevBullet:
+	ReloadDelay: 75
+	Range: 4c0
+	Report: TANKHVY1.WAV
+	Projectile: Bullet
+		Speed: 281
+		Blockable: true
+		Image: doubleblastbullet
+	Warhead@1Dam: SpreadDamage
+		Spread: 384
+		Falloff: 100, 50, 25, 0
+		Damage: 650
+		Versus:
+			none: 50
+			building: 75
+			wood: 60
+			invulnerable: 0
+			cy: 40
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: shockwave
+		ImpactSounds: EXPLMD1.WAV
+
+155mm:
+	ReloadDelay: 80
+	Range: 5c512
+	Report: MORTAR1.WAV
+	Projectile: Bullet
+		Speed: 192
+		Blockable: false
+		Shadow: yes
+		Angle: 62
+		Inaccuracy: 768
+		ContrailLength: 20
+		Image: 155mm
+	Warhead@1Dam: SpreadDamage
+		Spread: 416
+		Falloff: 100, 65, 35, 20, 0
+		Damage: 450
+		Versus:
+			none: 125
+			wood: 70
+			light: 30
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: EXPLMD2.WAV

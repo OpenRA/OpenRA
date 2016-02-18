@@ -9,7 +9,6 @@
 #endregion
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

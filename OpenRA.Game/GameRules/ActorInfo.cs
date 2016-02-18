@@ -31,34 +31,24 @@ namespace OpenRA
 		readonly TypeDictionary traits = new TypeDictionary();
 		List<ITraitInfo> constructOrderCache = null;
 
-		public ActorInfo(string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits)
+		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
 			try
 			{
-				var allParents = new HashSet<string>();
-				var abstractActorType = name.StartsWith("^");
-
-				// Guard against circular inheritance
-				allParents.Add(name);
-				var mergedNode = MergeWithParents(node, allUnits, allParents).ToDictionary();
-
 				Name = name;
 
-				foreach (var t in mergedNode)
+				var abstractActorType = name.StartsWith("^");
+				foreach (var t in node.Nodes)
 				{
-					if (t.Key[0] == '-')
-						throw new YamlException("Bogus trait removal: " + t.Key);
-
-					if (t.Key != "Inherits" && !t.Key.StartsWith("Inherits@"))
-						try
-						{
-							traits.Add(LoadTraitInfo(t.Key.Split('@')[0], t.Value));
-						}
-						catch (FieldLoader.MissingFieldsException e)
-						{
-							if (!abstractActorType)
-								throw new YamlException(e.Message);
-						}
+					try
+					{
+						traits.Add(LoadTraitInfo(creator, t.Key.Split('@')[0], t.Value));
+					}
+					catch (FieldLoader.MissingFieldsException e)
+					{
+						if (!abstractActorType)
+							throw new YamlException(e.Message);
+					}
 				}
 			}
 			catch (YamlException e)
@@ -74,42 +64,12 @@ namespace OpenRA
 				traits.Add(t);
 		}
 
-		static Dictionary<string, MiniYaml> GetParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits)
-		{
-			return node.Nodes.Where(n => n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
-				.ToDictionary(n => n.Value.Value, n =>
-			{
-				MiniYaml i;
-					if (!allUnits.TryGetValue(n.Value.Value, out i))
-						throw new YamlException(
-							"Bogus inheritance -- parent type {0} does not exist".F(n.Value.Value));
-
-				return i;
-			});
-		}
-
-		static MiniYaml MergeWithParents(MiniYaml node, Dictionary<string, MiniYaml> allUnits, HashSet<string> allParents)
-		{
-			var parents = GetParents(node, allUnits);
-
-			foreach (var kv in parents)
-			{
-				if (!allParents.Add(kv.Key))
-					throw new YamlException(
-						"Bogus inheritance -- duplicate inheritance of {0}.".F(kv.Key));
-
-				node = MiniYaml.MergeStrict(node, MergeWithParents(kv.Value, allUnits, allParents));
-			}
-
-			return node;
-		}
-
-		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
+		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
 		{
 			if (!string.IsNullOrEmpty(my.Value))
 				throw new YamlException("Junk value `{0}` on trait node {1}"
 				.F(my.Value, traitName));
-			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
+			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
 			try
 			{
 				FieldLoader.Load(info, my);
@@ -191,9 +151,9 @@ namespace OpenRA
 					i.Name.Replace("Init", ""), i));
 		}
 
-		public bool HasTraitInfo<T>() where T : ITraitInfo { return traits.Contains<T>(); }
-		public T TraitInfo<T>() where T : ITraitInfo { return traits.Get<T>(); }
-		public T TraitInfoOrDefault<T>() where T : ITraitInfo { return traits.GetOrDefault<T>(); }
-		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfo { return traits.WithInterface<T>(); }
+		public bool HasTraitInfo<T>() where T : ITraitInfoInterface { return traits.Contains<T>(); }
+		public T TraitInfo<T>() where T : ITraitInfoInterface { return traits.Get<T>(); }
+		public T TraitInfoOrDefault<T>() where T : ITraitInfoInterface { return traits.GetOrDefault<T>(); }
+		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfoInterface { return traits.WithInterface<T>(); }
 	}
 }

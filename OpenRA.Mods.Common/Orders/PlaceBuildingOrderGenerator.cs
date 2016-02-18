@@ -12,18 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using Util = OpenRA.Traits.Util;
 
 namespace OpenRA.Mods.Common.Orders
 {
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
-		readonly Actor producer;
+		readonly ProductionQueue queue;
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
 		readonly PlaceBuildingInfo placeBuildingInfo;
@@ -37,16 +35,17 @@ namespace OpenRA.Mods.Common.Orders
 
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
 		{
-			producer = queue.Actor;
-			placeBuildingInfo = producer.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
+			var world = queue.Actor.World;
+			this.queue = queue;
+			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			building = name;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
-				producer.World.Selection.Clear();
+				world.Selection.Clear();
 
-			var map = producer.World.Map;
-			var tileset = producer.World.TileSet.Id.ToLowerInvariant();
+			var map = world.Map;
+			var tileset = world.TileSet.Id.ToLowerInvariant();
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();
@@ -54,20 +53,20 @@ namespace OpenRA.Mods.Common.Orders
 			var buildableInfo = info.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
 			faction = buildableInfo.ForceFaction
-				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : producer.Owner.Faction.InternalName);
+				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
 
 			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 
-			buildingInfluence = producer.World.WorldActor.Trait<BuildingInfluence>();
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
 
-			var ret = InnerOrder(world, xy, mi).ToArray();
+			var ret = InnerOrder(world, cell, mi).ToArray();
 
 			// If there was a successful placement order
 			if (ret.Any(o => o.OrderString == "PlaceBuilding"
@@ -78,15 +77,16 @@ namespace OpenRA.Mods.Common.Orders
 			return ret;
 		}
 
-		IEnumerable<Order> InnerOrder(World world, CPos xy, MouseInput mi)
+		IEnumerable<Order> InnerOrder(World world, CPos cell, MouseInput mi)
 		{
 			if (world.Paused)
 				yield break;
 
+			var owner = queue.Actor.Owner;
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
-				var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
+				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
 
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
@@ -94,30 +94,30 @@ namespace OpenRA.Mods.Common.Orders
 					orderType = "PlacePlug";
 					if (!AcceptsPlug(topLeft, plugInfo))
 					{
-						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 						yield break;
 					}
 				}
 				else
 				{
 					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
-						|| !buildingInfo.IsCloseEnoughToBase(world, producer.Owner, building, topLeft))
+						|| !buildingInfo.IsCloseEnoughToBase(world, owner, building, topLeft))
 					{
 						foreach (var order in ClearBlockersOrders(world, topLeft))
 							yield return order;
 
-						Game.Sound.PlayNotification(world.Map.Rules, producer.Owner, "Speech", "BuildingCannotPlaceAudio", producer.Owner.Faction.InternalName);
+						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 						yield break;
 					}
 
-					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>())
+					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
 						orderType = "LineBuild";
 				}
 
-				yield return new Order(orderType, producer.Owner.PlayerActor, false)
+				yield return new Order(orderType, owner.PlayerActor, false)
 				{
 					TargetLocation = topLeft,
-					TargetActor = producer,
+					TargetActor = queue.Actor,
 					TargetString = building,
 					SuppressVisualFeedback = true
 				};
@@ -126,6 +126,9 @@ namespace OpenRA.Mods.Common.Orders
 
 		public void Tick(World world)
 		{
+			if (queue.CurrentItem() == null || queue.CurrentItem().Item != building)
+				world.CancelInputMode();
+
 			if (preview == null)
 				return;
 
@@ -148,12 +151,12 @@ namespace OpenRA.Mods.Common.Orders
 		{
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-
+			var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
-				foreach (var r in dec.Render(wr, world, actorInfo, world.Map.CenterOfCell(xy)))
+				foreach (var r in dec.Render(wr, world, actorInfo, offset))
 					yield return r;
 
 			var cells = new Dictionary<CPos, bool>();
@@ -172,8 +175,11 @@ namespace OpenRA.Mods.Common.Orders
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
-				foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
-					cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
+				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
+					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
+						cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
+				else
+					cells.Add(topLeft, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
 			}
 			else
 			{
@@ -182,7 +188,7 @@ namespace OpenRA.Mods.Common.Orders
 					var td = new TypeDictionary()
 					{
 						new FactionInit(faction),
-						new OwnerInit(producer.Owner),
+						new OwnerInit(queue.Actor.Owner),
 						new HideBibPreviewInit()
 					};
 
@@ -194,7 +200,6 @@ namespace OpenRA.Mods.Common.Orders
 					initialized = true;
 				}
 
-				var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
 				var previewRenderables = preview
 					.SelectMany(p => p.Render(wr, offset))
 					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
@@ -219,7 +224,7 @@ namespace OpenRA.Mods.Common.Orders
 			}
 		}
 
-		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }
+		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
@@ -228,8 +233,8 @@ namespace OpenRA.Mods.Common.Orders
 				.Where(world.Map.Contains).ToList();
 
 			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
-				.Where(a => a.Owner == producer.Owner && a.IsIdle)
-				.Select(a => new TraitPair<Mobile> { Actor = a, Trait = a.TraitOrDefault<Mobile>() });
+				.Where(a => a.Owner == queue.Actor.Owner && a.IsIdle)
+				.Select(a => new TraitPair<Mobile>(a, a.TraitOrDefault<Mobile>()));
 
 			foreach (var blocker in blockers.Where(x => x.Trait != null))
 			{

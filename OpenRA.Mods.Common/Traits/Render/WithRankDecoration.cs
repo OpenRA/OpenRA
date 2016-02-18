@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override void UpgradeLevelChanged(Actor self, int oldLevel, int newLevel)
 		{
-			PlaySingleFrame(newLevel - 1);
+			Anim.PlayFetchIndex(Info.Sequence, () => newLevel - 1);
 		}
 	}
 }

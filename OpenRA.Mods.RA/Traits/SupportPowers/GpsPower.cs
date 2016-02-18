@@ -17,94 +17,31 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	[Desc("Required for GpsPower. Attach this to the player actor.")]
-	class GpsWatcherInfo : ITraitInfo
-	{
-		public object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
-	}
-
-	class GpsWatcher : ISync, IFogVisibilityModifier
-	{
-		[Sync] public bool Launched = false;
-		[Sync] public bool GrantedAllies = false;
-		[Sync] public bool Granted = false;
-		public Player Owner;
-
-		List<Actor> actors = new List<Actor> { };
-
-		public GpsWatcher(Player owner) { Owner = owner; }
-
-		public void GpsRem(Actor atek)
-		{
-			actors.Remove(atek);
-			RefreshGps(atek);
-		}
-
-		public void GpsAdd(Actor atek)
-		{
-			actors.Add(atek);
-			RefreshGps(atek);
-		}
-
-		public void Launch(Actor atek, SupportPowerInfo info)
-		{
-			atek.World.Add(new DelayedAction(((GpsPowerInfo)info).RevealDelay * 25,
-					() =>
-					{
-						Launched = true;
-						RefreshGps(atek);
-					}));
-		}
-
-		public void RefreshGps(Actor atek)
-		{
-			RefreshGranted();
-
-			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
-				i.Trait.RefreshGranted();
-
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(atek.World.RenderPlayer))
-				atek.Owner.Shroud.ExploreAll(atek.World);
-		}
-
-		void RefreshGranted()
-		{
-			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = Owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(Owner));
-
-			if (Granted || GrantedAllies)
-				Owner.Shroud.ExploreAll(Owner.World);
-		}
-
-		public bool HasFogVisibility()
-		{
-			return Granted || GrantedAllies;
-		}
-
-		public bool IsVisible(Actor actor)
-		{
-			var gpsDot = actor.TraitOrDefault<GpsDot>();
-			if (gpsDot == null)
-				return false;
-
-			return gpsDot.IsDotVisible(Owner);
-		}
-	}
-
+	[Desc("Requires `GpsWatcher` on the player actor.")]
 	class GpsPowerInfo : SupportPowerInfo
 	{
 		public readonly int RevealDelay = 0;
 
+		public readonly string DoorImage = "atek";
+		[SequenceReference("DoorImage")] public readonly string DoorSequence = "active";
+		[PaletteReference] public readonly string DoorPalette = "effect";
+
+		public readonly string SatelliteImage = "sputnik";
+		[SequenceReference("SatelliteImage")] public readonly string SatelliteSequence = "idle";
+		[PaletteReference] public readonly string SatellitePalette = "effect";
+
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifyStanceChanged, INotifySold, INotifyOwnerChanged
+	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged
 	{
+		readonly GpsPowerInfo info;
 		GpsWatcher owner;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
 		{
+			this.info = info;
 			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);
 		}
@@ -122,9 +59,9 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				Game.Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
 
-				w.Add(new SatelliteLaunch(self));
+				w.Add(new SatelliteLaunch(self, info));
 
-				owner.Launch(self, Info);
+				owner.Launch(self, info);
 			});
 		}
 
@@ -136,12 +73,7 @@ namespace OpenRA.Mods.RA.Traits
 		void RemoveGps(Actor self)
 		{
 			// Extra function just in case something needs to be added later
-			owner.GpsRem(self);
-		}
-
-		public void StanceChanged(Actor self, Player a, Player b, Stance oldStance, Stance newStance)
-		{
-			owner.RefreshGps(self);
+			owner.GpsRemove(self);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

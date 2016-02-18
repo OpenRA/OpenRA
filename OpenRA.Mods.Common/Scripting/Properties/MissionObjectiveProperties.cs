@@ -8,11 +8,9 @@
  */
 #endregion
 
-using System;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {

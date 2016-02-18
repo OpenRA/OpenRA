@@ -335,11 +335,14 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 						Button@KICK:
 							X: 180
-							Y: 2
 							Width: 25
-							Height: 23
-							Text: X
-							Font: Bold
+							Height: 25
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 7
+									Y: 7
 						Label@SPECTATOR:
 							X: 210
 							Width: 341

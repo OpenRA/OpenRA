@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ColorPickerLogic(Widget widget, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
 			string actorType;
-			if (!ChromeMetrics.TryGet<string>("ColorPickerActorType", out actorType))
+			if (!ChromeMetrics.TryGet("ColorPickerActorType", out actorType))
 				actorType = "mcv";
 
 			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
@@ -56,7 +56,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 			// Set the initial state
+			var validator = Game.ModData.Manifest.Get<ColorValidator>();
+			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
 			mixer.Set(initialColor);
+
 			hueSlider.Value = initialColor.H / 255f;
 			onChange(mixer.Color);
 		}

@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -22,19 +24,18 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
-	public class CombatDebugOverlay : IPostRender, INotifyDamage
+	public class CombatDebugOverlay : IPostRender, INotifyDamage, INotifyCreated
 	{
 		readonly DeveloperMode devMode;
 
 		readonly HealthInfo healthInfo;
-		readonly BlocksProjectilesInfo blockInfo;
+		IBlocksProjectiles[] allBlockers;
 		Lazy<AttackBase> attack;
 		Lazy<BodyOrientation> coords;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
-			blockInfo = self.Info.TraitInfoOrDefault<BlocksProjectilesInfo>();
 			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
 			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
 
@@ -42,25 +43,32 @@ namespace OpenRA.Mods.Common.Traits
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
 		}
 
+		public void Created(Actor self)
+		{
+			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
+		}
+
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
 
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			var iz = 1 / wr.Viewport.Zoom;
+
 			if (healthInfo != null)
-				wr.DrawRangeCircle(self.CenterPosition, healthInfo.Radius, Color.Red);
+				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
 
-			var wlr = Game.Renderer.WorldLineRenderer;
-
-			if (blockInfo != null)
+			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
+			if (blockers.Count > 0)
 			{
 				var hc = Color.Orange;
-				var height = new WVec(0, 0, blockInfo.Height.Length);
+				var height = new WVec(0, 0, blockers.Max(b => b.BlockingHeight.Length));
 				var ha = wr.ScreenPosition(self.CenterPosition);
 				var hb = wr.ScreenPosition(self.CenterPosition + height);
-				wlr.DrawLine(ha, hb, hc);
-				wr.DrawTargetMarker(hc, ha);
-				wr.DrawTargetMarker(hc, hb);
+				wcr.DrawLine(ha, hb, iz, hc);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
+				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
 			}
 
 			// No armaments to draw
@@ -83,8 +91,8 @@ namespace OpenRA.Mods.Common.Traits
 					var o = wr.ScreenPosition(pos);
 					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
 					var b = wr.ScreenPosition(pos + db * 224 / db.Length);
-					wlr.DrawLine(o, a, c);
-					wlr.DrawLine(o, b, c);
+					wcr.DrawLine(o, a, iz, c);
+					wcr.DrawLine(o, b, iz, c);
 				}
 
 				return;
@@ -99,8 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					var sm = wr.ScreenPosition(muzzle);
 					var sd = wr.ScreenPosition(muzzle + dirOffset);
-					wlr.DrawLine(sm, sd, c);
-					wr.DrawTargetMarker(c, sm);
+					wcr.DrawLine(sm, sd, iz, c);
+					TargetLineRenderable.DrawTargetMarker(wr, c, sm);
 				}
 			}
 		}

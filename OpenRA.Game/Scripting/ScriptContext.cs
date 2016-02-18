@@ -11,12 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Eluant;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -67,7 +65,19 @@ namespace OpenRA.Scripting
 		}
 	}
 
-	// For global-level bindings
+	/// <summary>
+	/// Provides global bindings in Lua code.
+	/// </summary>
+	/// <remarks>
+	/// Instance methods and properties declared in derived classes will be made available in Lua. Use
+	/// <see cref="ScriptGlobalAttribute"/> on your derived class to specify the name exposed in Lua. It is recommended
+	/// to apply <see cref="DescAttribute"/> against each method or property to provide a description of what it does.
+	///
+	/// Any parameters to your method that are <see cref="LuaValue"/>s will be disposed automatically when your method
+	/// completes. If you need to return any of these values, or need them to live longer than your method, you must
+	/// use <see cref="LuaValue.CopyReference"/> to get your own copy of the value. Any copied values you return will
+	/// be disposed automatically, but you assume responsibility for disposing any other copies.
+	/// </remarks>
 	public abstract class ScriptGlobal : ScriptObjectWrapper
 	{
 		protected override string DuplicateKeyError(string memberName) { return "Table '{0}' defines multiple members '{1}'".F(Name, memberName); }
@@ -77,14 +87,30 @@ namespace OpenRA.Scripting
 		public ScriptGlobal(ScriptContext context)
 			: base(context)
 		{
-			// The 'this.' resolves the actual (subclass) type
-			var type = this.GetType();
+			// GetType resolves the actual (subclass) type
+			var type = GetType();
 			var names = type.GetCustomAttributes<ScriptGlobalAttribute>(true);
 			if (names.Length != 1)
-				throw new InvalidOperationException("[LuaGlobal] attribute not found for global table '{0}'".F(type));
+				throw new InvalidOperationException("[ScriptGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
 			Bind(new[] { this });
+		}
+
+		protected IEnumerable<T> FilteredObjects<T>(IEnumerable<T> objects, LuaFunction filter)
+		{
+			if (filter != null)
+			{
+				objects = objects.Where(a =>
+				{
+					using (var luaObject = a.ToLuaValue(Context))
+					using (var filterResult = filter.Call(luaObject))
+					using (var result = filterResult.First())
+						return result.ToBoolean();
+				});
+			}
+
+			return objects;
 		}
 	}
 
@@ -133,7 +159,7 @@ namespace OpenRA.Scripting
 				.ToArray();
 
 			runtime.Globals["GameDir"] = Platform.GameDir;
-			runtime.DoBuffer(GlobalFileSystem.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
@@ -172,7 +198,7 @@ namespace OpenRA.Scripting
 			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
 			{
 				foreach (var s in scripts)
-					loadScript.Call(s, GlobalFileSystem.Open(s).ReadAllText()).Dispose();
+					loadScript.Call(s, Game.ModData.ModFiles.Open(s).ReadAllText()).Dispose();
 			}
 		}
 

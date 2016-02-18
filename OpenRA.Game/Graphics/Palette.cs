@@ -57,7 +57,7 @@ namespace OpenRA.Graphics
 			var b = new Bitmap(Size, 1, PixelFormat.Format32bppArgb);
 			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
 								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-			var temp = new uint[Palette.Size];
+			var temp = new uint[Size];
 			palette.CopyToArray(temp, 0);
 			Marshal.Copy((int[])(object)temp, 0, data.Scan0, Size);
 			b.UnlockBits(data);

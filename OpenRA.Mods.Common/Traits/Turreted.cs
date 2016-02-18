@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -110,7 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			DesiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, TurretFacing);
+			var delta = target.CenterPosition - self.CenterPosition;
+			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
 			return TurretFacing == DesiredFacing.Value;
 		}
@@ -122,18 +122,18 @@ namespace OpenRA.Mods.Common.Traits
 			return body.LocalToWorld(Offset.Rotate(bodyOrientation));
 		}
 
-		// Orientation in unit-space
-		public WRot LocalOrientation(Actor self)
+		// Orientation in world-space
+		public WRot WorldOrientation(Actor self)
 		{
 			// Hack: turretFacing is relative to the world, so subtract the body yaw
-			var local = WRot.FromYaw(WAngle.FromFacing(TurretFacing) - self.Orientation.Yaw);
+			var world = WRot.FromYaw(WAngle.FromFacing(TurretFacing));
 
 			if (QuantizedFacings == 0)
-				return local;
+				return world;
 
 			// Quantize orientation to match a rendered sprite
 			// Implies no pitch or yaw
-			var facing = Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
+			var facing = body.QuantizeFacing(world.Yaw.Angle / 4, QuantizedFacings);
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 

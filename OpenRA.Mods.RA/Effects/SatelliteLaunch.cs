@@ -11,20 +11,23 @@
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
 	class SatelliteLaunch : IEffect
 	{
+		readonly GpsPowerInfo info;
 		readonly Animation doors;
 		readonly WPos pos;
 		int frame = 0;
 
-		public SatelliteLaunch(Actor a)
+		public SatelliteLaunch(Actor a, GpsPowerInfo info)
 		{
-			doors = new Animation(a.World, "atek");
+			this.info = info;
 
-			doors.PlayThen("active",
+			doors = new Animation(a.World, info.DoorImage);
+			doors.PlayThen(info.DoorSequence,
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 
 			pos = a.CenterPosition;
@@ -35,12 +38,12 @@ namespace OpenRA.Mods.RA.Effects
 			doors.Tick();
 
 			if (++frame == 19)
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info)));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return doors.Render(pos, wr.Palette("effect"));
+			return doors.Render(pos, wr.Palette(info.DoorPalette));
 		}
 	}
 }

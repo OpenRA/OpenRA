@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System.IO;
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;

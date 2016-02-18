@@ -9,17 +9,19 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using OpenRA.FileFormats;
-using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public interface ISoundLoader
+	{
+		bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate);
+	}
+
 	public sealed class Sound : IDisposable
 	{
 		readonly ISoundEngine soundEngine;
@@ -31,7 +33,7 @@ namespace OpenRA
 
 		public Sound(string engineName)
 		{
-			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
+			var enginePath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + engineName + ".dll"));
 			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
 		}
 
@@ -48,28 +50,24 @@ namespace OpenRA
 
 		ISoundSource LoadSound(string filename)
 		{
-			if (!GlobalFileSystem.Exists(filename))
+			if (!Game.ModData.ModFiles.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
-			if (filename.ToLowerInvariant().EndsWith("wav"))
-				using (var s = GlobalFileSystem.Open(filename))
-					return LoadWave(new WavLoader(s));
+			using (var stream = Game.ModData.ModFiles.Open(filename))
+			{
+				byte[] rawData;
+				int channels;
+				int sampleBits;
+				int sampleRate;
+				foreach (var loader in Game.ModData.SoundLoaders)
+					if (loader.TryParseSound(stream, filename, out rawData, out channels, out sampleBits, out sampleRate))
+						return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 
-			using (var s = GlobalFileSystem.Open(filename))
-				return LoadSoundRaw(AudLoader.LoadSound(s), 1, 16, 22050);
-		}
-
-		ISoundSource LoadWave(WavLoader wave)
-		{
-			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
-		}
-
-		ISoundSource LoadSoundRaw(byte[] rawData, int channels, int sampleBits, int sampleRate)
-		{
-			return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
+				throw new InvalidDataException(filename + " is not a valid sound file!");
+			}
 		}
 
 		public void Initialize()
@@ -113,6 +111,16 @@ namespace OpenRA
 			soundEngine.StopAllSounds();
 		}
 
+		public void MuteAudio()
+		{
+			soundEngine.Volume = 0f;
+		}
+
+		public void UnmuteAudio()
+		{
+			soundEngine.Volume = 1f;
+		}
+
 		public ISound Play(string name) { return Play(null, name, true, WPos.Zero, 1f); }
 		public ISound Play(string name, WPos pos) { return Play(null, name, false, pos, 1f); }
 		public ISound Play(string name, float volumeModifier) { return Play(null, name, true, WPos.Zero, volumeModifier); }
@@ -124,7 +132,7 @@ namespace OpenRA
 
 		public void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{
-			rawSource = LoadSoundRaw(raw, channels, sampleBits, sampleRate);
+			rawSource = soundEngine.AddSoundSourceFromMemory(raw, channels, sampleBits, sampleRate);
 			video = soundEngine.Play2D(rawSource, false, true, WPos.Zero, InternalSoundVolume, false);
 		}
 

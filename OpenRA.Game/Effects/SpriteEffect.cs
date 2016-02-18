@@ -15,16 +15,22 @@ namespace OpenRA.Effects
 {
 	public class SpriteEffect : IEffect
 	{
+		readonly World world;
 		readonly string palette;
 		readonly Animation anim;
 		readonly WPos pos;
+		readonly bool visibleThroughFog;
+		readonly bool scaleSizeWithZoom;
 
-		public SpriteEffect(WPos pos, World world, string image, string palette)
+		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
 		{
+			this.world = world;
 			this.pos = pos;
 			this.palette = palette;
+			this.scaleSizeWithZoom = scaleSizeWithZoom;
+			this.visibleThroughFog = visibleThroughFog;
 			anim = new Animation(world, image);
-			anim.PlayThen("idle", () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
 		public void Tick(World world)
@@ -34,7 +40,11 @@ namespace OpenRA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, WVec.Zero, 0, wr.Palette(palette), 1f / wr.Viewport.Zoom);
+			if (world.FogObscures(pos) && !visibleThroughFog)
+				return SpriteRenderable.None;
+
+			var zoom = scaleSizeWithZoom ? 1f / wr.Viewport.Zoom : 1f;
+			return anim.Render(pos, WVec.Zero, 0, wr.Palette(palette), zoom);
 		}
 	}
 }

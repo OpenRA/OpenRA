@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ObserverSupportPowerIconsWidget : Widget
 	{
-		public Func<Player> GetPlayer;
-		Animation icon;
-		World world;
-		WorldRenderer worldRenderer;
-		Dictionary<string, Animation> clocks;
+		readonly Animation icon;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+		readonly Dictionary<string, Animation> clocks;
+		readonly int timestep;
 
 		public int IconWidth = 32;
 		public int IconHeight = 24;
@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string ClockAnimation = "clock";
 		public string ClockSequence = "idle";
 		public string ClockPalette = "chrome";
+		public Func<Player> GetPlayer;
 
 		[ObjectCreator.UseCtor]
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
@@ -41,6 +42,14 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<string, Animation>();
 			icon = new Animation(world, "icon");
+
+			// Timers should be synced to the effective game time, not the playback time.
+			GameSpeed speed;
+			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+				timestep = speed.Timestep;
+			else
+				timestep = world.Timestep;
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
@@ -51,6 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 			world = other.world;
 			worldRenderer = other.worldRenderer;
 			clocks = other.clocks;
+			timestep = other.timestep;
 
 			IconWidth = other.IconWidth;
 			IconHeight = other.IconHeight;
@@ -94,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(item, world.Timestep);
+				var text = GetOverlayForItem(item, timestep);
 				tiny.DrawTextWithContrast(text,
 					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);

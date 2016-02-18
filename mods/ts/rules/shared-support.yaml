@@ -28,7 +28,7 @@ NAPULS:
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
-	WithTurret:
+	WithSpriteTurret:
 		Sequence: turret
 	Power:
 		Amount: -150
@@ -39,4 +39,3 @@ NAPULS:
 		FactionImages:
 			gdi: napuls.gdi
 			nod: napuls.nod
-

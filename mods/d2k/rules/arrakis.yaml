@@ -69,8 +69,20 @@ sandworm:
 			Spice: 100
 	Targetable:
 		TargetTypes: Ground
-	WithFacingSpriteBody:
-	WithAttackOverlay:
+	WithSpriteBody:
+	WithIdleAnimation:
+		Interval: 160
+		Sequences: lightninga, lightningb, lightningc, lightningd, lightninge, lightningf
+		UpgradeTypes: attacking
+		UpgradeMaxEnabledLevel: 0
+	AmbientSound:
+		SoundFile: WRMSIGN1.WAV
+		Interval: 160
+		UpgradeTypes: attacking
+		UpgradeMaxEnabledLevel: 0
+	WithAttackOverlay@mouth:
+		Sequence: mouth
+	WithAttackOverlay@sand:
 		Sequence: sand
 	HiddenUnderFog:
 	AppearsOnRadar:
@@ -88,6 +100,16 @@ sandworm:
 		PingRadar: True
 	RevealsShroud:
 		Range: 5c0
+	LeavesTrails:
+		Image: sandtrail
+		Sequences: traila, trailb, trailc
+		Palette: effect
+		Type: CenterPosition
+		TerrainTypes: Sand, Dune, SpiceSand, Spice
+		MovingInterval: 3
+		UpgradeTypes: attacking
+		UpgradeMaxEnabledLevel: 0
+	UpgradeManager:
 
 sietch:
 	Inherits: ^Building
@@ -112,4 +134,3 @@ sietch:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
-

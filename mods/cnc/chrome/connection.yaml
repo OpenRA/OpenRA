@@ -26,7 +26,6 @@ Container@CONNECTING_PANEL:
 					Align: Center
 		Button@ABORT_BUTTON:
 			Key: escape
-			X: 230
 			Y: 89
 			Width: 140
 			Height: 35
@@ -46,7 +45,6 @@ Container@CONNECTIONFAILED_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Connection Failed
 		Background@CONNECTION_BACKGROUND:
 			Width: 370
 			Height: 85
@@ -79,17 +77,16 @@ Container@CONNECTIONFAILED_PANEL:
 					Width: 155
 					MaxLength: 20
 					Height: 25
-		Button@RETRY_BUTTON:
-			Key: return
-			Y: 84
-			Width: 140
-			Height: 35
-			Text: Retry
 		Button@ABORT_BUTTON:
 			Key: escape
-			X: 230
 			Y: 84
 			Width: 140
 			Height: 35
 			Text: Abort
-
+		Button@RETRY_BUTTON:
+			Key: return
+			X: 230
+			Y: 84
+			Width: 140
+			Height: 35
+			Text: Retry

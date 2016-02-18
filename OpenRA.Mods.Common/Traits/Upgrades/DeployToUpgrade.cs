@@ -64,18 +64,18 @@ namespace OpenRA.Mods.Common.Traits
 		readonly UpgradeManager manager;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
-		readonly Lazy<ISpriteBody> body;
+		readonly Lazy<WithSpriteBody> body;
 
 		DeployState deployState;
 
 		public DeployToUpgrade(ActorInitializer init, DeployToUpgradeInfo info)
 		{
-			this.self = init.Self;
+			self = init.Self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			body = Exts.Lazy(self.TraitOrDefault<ISpriteBody>);
+			body = Exts.Lazy(self.TraitOrDefault<WithSpriteBody>);
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}

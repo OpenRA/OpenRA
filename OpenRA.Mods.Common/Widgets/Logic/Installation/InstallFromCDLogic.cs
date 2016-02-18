@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			new Thread(() =>
 			{
-				using (var cabExtractor = new InstallShieldCABExtractor(source))
+				using (var cabExtractor = new InstallShieldCABExtractor(Game.ModData.ModFiles, source))
 				{
 					var denom = installData.InstallShieldCABFileIds.Count;
 					var extractFiles = installData.ExtractFilesFromCD;
@@ -131,8 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
 						var destFile = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
-						var annotation = archive.Length > 1 ? archive[1] : null;
-						InstallUtils.ExtractFromPackage(source, destFile, annotation, extractFiles, destDir, overwrite, onProgress, onError);
+						InstallUtils.ExtractFromPackage(source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
 						progressBar.Percentage += installPercent;
 					}
 				}
@@ -157,7 +156,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var packageToExtract = installData.PackageToExtractFromCD.Split(':');
 			var extractPackage = packageToExtract.First();
-			var annotation = packageToExtract.Length > 1 ? packageToExtract.Last() : null;
 
 			var extractFiles = installData.ExtractFilesFromCD;
 
@@ -183,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					if (!InstallUtils.CopyFiles(source, copyFiles, dest, overwrite, onProgress, onError))
+					if (!InstallUtils.CopyFiles(source, copyFiles, dest, overwrite, installData.OutputFilenameCase, onProgress, onError))
 					{
 						onError("Copying files from CD failed.");
 						return;
@@ -191,7 +189,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, annotation, extractFiles, dest, overwrite, onProgress, onError))
+						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest,
+							overwrite, installData.OutputFilenameCase, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");
 							return;

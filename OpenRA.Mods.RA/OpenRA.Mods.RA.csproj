@@ -86,13 +86,11 @@
     <Compile Include="Scripting\Properties\InfiltrateProperties.cs" />
     <Compile Include="Scripting\Properties\DisguiseProperties.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="Traits\Buildings\Fake.cs" />
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />
-    <Compile Include="Traits\DemoTruck.cs" />
     <Compile Include="Traits\Disguise.cs" />
-    <Compile Include="Traits\GpsRemoveFrozenActor.cs" />
+    <Compile Include="Traits\FrozenUnderFogUpdatedByGps.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
@@ -110,11 +108,13 @@
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
+    <Compile Include="Traits\GpsWatcher.cs" />
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
+    <Compile Include="ImportRedAlertLegacyMapCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

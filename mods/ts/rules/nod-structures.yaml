@@ -31,6 +31,7 @@ NAPOWR:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
+	PowerTooltip:
 	DisabledOverlay:
 	SelectionDecorations:
 		VisualBounds: 88, 80, 2, -12
@@ -69,6 +70,7 @@ NAAPWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	DisabledOverlay:
+	PowerTooltip:
 	SelectionDecorations:
 		VisualBounds: 100, 74, 0, -12
 
@@ -116,6 +118,15 @@ NAHAND:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 116, 78, 3, -8
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NAWEAP:
 	Inherits: ^Building
@@ -163,6 +174,15 @@ NAWEAP:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 149, 116, -3, -20
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NAHPAD:
 	Inherits: ^Building
@@ -207,6 +227,15 @@ NAHPAD:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 78, 54, 0, -8
+	WithDecoration@primary:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-primary
+		Palette: ra
+		ReferencePoint: Top
+		ZOffset: 256
+		UpgradeTypes: primary
+		UpgradeMinEnabledLevel: 1
 
 NARADR:
 	Inherits: ^Building
@@ -233,6 +262,8 @@ NARADR:
 	RequiresPower:
 	CanPowerDown:
 		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 	ProvidesRadar:
 	InfiltrateForExploration:
 	DetectCloaked:
@@ -352,6 +383,8 @@ NASTLH:
 		Amount: -350
 	RequiresPower:
 	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
 	UpgradeActorsNear:
 		Upgrades: cloakgenerator
@@ -373,7 +406,7 @@ NAWAST:
 		Description: Processes Veins\ninto useable resources.
 	Buildable:
 		BuildPaletteOrder: 110
-		Prerequisites: namisl
+		Prerequisites: namisl, ~structures.nod
 		Queue: Building
 		BuildLimit: 1
 	Building:

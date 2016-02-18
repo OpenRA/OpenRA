@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
@@ -41,11 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var warhead = e.Warhead as DamageWarhead;
 
-			// Killed by some non-standard means
-			if (warhead == null)
-				return;
-
-			if (warhead.DamageTypes.Overlaps(info.DeathTypes))
+			// If the warhead is null, the actor was killed by some non-standard means
+			if (info.DeathTypes.Count == 0 || (warhead != null && warhead.DamageTypes.Overlaps(info.DeathTypes)))
 				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}

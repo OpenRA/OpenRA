@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var hash = 0;
 				foreach (var objective in objectives)
-					hash ^= Sync.Hash(objective.State);
+					hash ^= Sync.HashUsingHashCode(objective.State);
 				return hash;
 			}
 		}

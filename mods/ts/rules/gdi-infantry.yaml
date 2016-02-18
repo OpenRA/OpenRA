@@ -47,6 +47,8 @@ MEDIC:
 		Weapon: Heal
 		TargetStances: Ally
 		ForceTargetStances: None
+		Cursor: heal
+		OutsideRangeCursor: heal
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: heal
@@ -126,4 +128,3 @@ GHOST:
 		AttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
-

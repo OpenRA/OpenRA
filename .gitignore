@@ -75,3 +75,6 @@ StyleCopViolations.xml
 # NUnit
 /TestResult.xml
 /lib/
+
+# Support directory
+/Support

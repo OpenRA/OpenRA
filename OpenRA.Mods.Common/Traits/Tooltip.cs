@@ -12,12 +12,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Shown in the build palette widget.")]
-	public class TooltipInfo : ITraitInfo, ITooltipInfo
+	public abstract class TooltipInfoBase : ITraitInfo
 	{
 		[Translate] public readonly string Description = "";
 		[Translate] public readonly string Name = "";
 
+		public abstract object Create(ActorInitializer init);
+	}
+
+	[Desc("Shown in map editor.")]
+	public class EditorOnlyTooltipInfo : TooltipInfoBase
+	{
+		public override object Create(ActorInitializer init) { return this; }
+	}
+
+	[Desc("Shown in the build palette widget.")]
+	public class TooltipInfo : TooltipInfoBase, ITooltipInfo
+	{
 		[Desc("An optional generic name (i.e. \"Soldier\" or \"Structure\")" +
 			"to be shown to chosen players.")]
 		[Translate] public readonly string GenericName = null;
@@ -34,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence of the actor that contains the cameo.")]
 		public readonly string Icon = "icon";
 
-		public virtual object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
 
 		public string TooltipForPlayerStance(Stance stance)
 		{

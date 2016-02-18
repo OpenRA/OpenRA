@@ -179,7 +179,6 @@ namespace OpenRA.Network
 			public int Timestep = 40;
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
-			public bool FragileAlliances = false; // Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;
 			public bool AllowSpectators = true;
 			public bool Dedicated;
@@ -196,6 +195,7 @@ namespace OpenRA.Network
 			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;
+			public bool DisableSingleplayer;
 
 			public static Global Deserialize(MiniYaml data)
 			{

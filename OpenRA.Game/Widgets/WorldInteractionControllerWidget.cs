@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Orders;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Widgets
@@ -23,41 +22,55 @@ namespace OpenRA.Widgets
 	{
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
-		int2? dragStart, dragEnd;
-		int2 lastMousePosition;
+		int2 dragStart, mousePos;
+		bool isDragging = false;
+
+		bool IsValidDragbox
+		{
+			get
+			{
+				return isDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
+			}
+		}
 
 		[ObjectCreator.UseCtor]
 		public WorldInteractionControllerWidget(World world, WorldRenderer worldRenderer)
 		{
-			this.World = world;
+			World = world;
 			this.worldRenderer = worldRenderer;
+		}
+
+		void DrawRollover(Actor unit)
+		{
+			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
+			if (unit.Info.HasTraitInfo<SelectableInfo>())
+				new SelectionBarsRenderable(unit, true, true).Render(worldRenderer);
 		}
 
 		public override void Draw()
 		{
-			if (!IsDragging)
+			if (IsValidDragbox)
+			{
+				// Render actors in the dragbox
+				Game.Renderer.WorldRgbaColorRenderer.DrawRect(dragStart, mousePos,
+					1 / worldRenderer.Viewport.Zoom, Color.White);
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos))
+					DrawRollover(u);
+			}
+			else
 			{
 				// Render actors under the mouse pointer
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, lastMousePosition, lastMousePosition))
-					worldRenderer.DrawRollover(u);
-
-				return;
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, mousePos, mousePos))
+					DrawRollover(u);
 			}
-
-			// Render actors in the dragbox
-			var selbox = SelectionBox;
-			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
-			foreach (var u in SelectActorsInBoxWithDeadzone(World, selbox.Value.First, selbox.Value.Second))
-				worldRenderer.DrawRollover(u);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			var xy = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			mousePos = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
-			var hasBox = SelectionBox != null;
 			var multiClick = mi.MultiTapCount >= 2;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
@@ -65,21 +78,18 @@ namespace OpenRA.Widgets
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragStart = xy;
+				dragStart = mousePos;
+				isDragging = true;
 
 				// Place buildings, use support powers, and other non-unit things
 				if (!(World.OrderGenerator is UnitOrderGenerator))
 				{
 					ApplyOrders(World, mi);
-					dragStart = dragEnd = null;
+					isDragging = false;
 					YieldMouseFocus(mi);
-					lastMousePosition = xy;
 					return true;
 				}
 			}
-
-			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move && dragStart.HasValue)
-				dragEnd = xy;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
@@ -87,17 +97,16 @@ namespace OpenRA.Widgets
 				{
 					if (useClassicMouseStyle && HasMouseFocus)
 					{
-						if (!hasBox && World.Selection.Actors.Any() && !multiClick)
+						if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 						{
-							if (!(World.ScreenMap.ActorsAt(xy).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
+							if (!(World.ScreenMap.ActorsAt(mousePos).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
 								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))) && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
-								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, xy, mi)))
+								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, mousePos, mi)))
 							{
 								// Order units instead of selecting
 								ApplyOrders(World, mi);
-								dragStart = dragEnd = null;
+								isDragging = false;
 								YieldMouseFocus(mi);
-								lastMousePosition = xy;
 								return true;
 							}
 						}
@@ -105,8 +114,8 @@ namespace OpenRA.Widgets
 
 					if (multiClick)
 					{
-						var unit = World.ScreenMap.ActorsAt(xy)
-							.WithHighestSelectionPriority();
+						var unit = World.ScreenMap.ActorsAt(mousePos)
+							.WithHighestSelectionPriority(mousePos);
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
 						{
@@ -120,22 +129,35 @@ namespace OpenRA.Widgets
 							}
 						}
 					}
-					else if (dragStart.HasValue)
+					else
 					{
-						// Select actors in the dragbox
-						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart.Value, xy);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						/* The block below does three things:
+						// 1. Allows actor selection using a selection box regardless of input mode.
+						// 2. Allows actor deselection with a single click in the default input mode (UnitOrderGenerator).
+						// 3. Prevents units from getting deselected when exiting input modes (eg. AttackMove or Guard).
+						//
+						// We cannot check for UnitOrderGenerator here since it's the default order generator that gets activated in
+						// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,
+						// only by dragging an empty selection box.
+						*/
+						if (isDragging && (!(World.OrderGenerator is GenericSelectTarget) || IsValidDragbox))
+						{
+							var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos);
+							World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
+						}
 					}
+
+					World.CancelInputMode();
 				}
 
-				dragStart = dragEnd = null;
+				isDragging = false;
 				YieldMouseFocus(mi);
 			}
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
 			{
 				// Don't do anything while selecting
-				if (!hasBox)
+				if (!IsValidDragbox)
 				{
 					if (useClassicMouseStyle)
 						World.Selection.Clear();
@@ -144,26 +166,7 @@ namespace OpenRA.Widgets
 				}
 			}
 
-			lastMousePosition = xy;
-
 			return true;
-		}
-
-		bool IsDragging
-		{
-			get
-			{
-				return dragStart.HasValue && dragEnd.HasValue && (dragStart.Value - dragEnd.Value).Length > Game.Settings.Game.SelectionDeadzone;
-			}
-		}
-
-		public Pair<int2, int2>? SelectionBox
-		{
-			get
-			{
-				if (!IsDragging) return null;
-				return Pair.New(dragStart.Value, dragEnd.Value);
-			}
 		}
 
 		void ApplyOrders(World world, MouseInput mi)
@@ -172,7 +175,8 @@ namespace OpenRA.Widgets
 				return;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			var orders = world.OrderGenerator.Order(world, cell, mi).ToArray();
+			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			var orders = world.OrderGenerator.Order(world, cell, worldPixel, mi).ToArray();
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
@@ -192,7 +196,7 @@ namespace OpenRA.Widgets
 					else if (o.TargetLocation != CPos.Zero)
 					{
 						var pos = world.Map.CenterOfCell(cell);
-						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "moveflash")));
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "idle", "moveflash", true, true)));
 						flashed = true;
 					}
 				}
@@ -206,10 +210,11 @@ namespace OpenRA.Widgets
 			return Sync.CheckSyncUnchanged(World, () =>
 			{
 				// Always show an arrow while selecting
-				if (SelectionBox != null)
+				if (IsValidDragbox)
 					return null;
 
 				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
+				var worldPixel = worldRenderer.Viewport.ViewToWorldPx(screenPos);
 
 				var mi = new MouseInput
 				{
@@ -218,7 +223,7 @@ namespace OpenRA.Widgets
 					Modifiers = Game.GetModifierKeys()
 				};
 
-				return World.OrderGenerator.GetCursor(World, cell, mi);
+				return World.OrderGenerator.GetCursor(World, cell, worldPixel, mi);
 			});
 		}
 
@@ -275,10 +280,14 @@ namespace OpenRA.Widgets
 
 					World.Selection.Combine(World, newSelection, true, false);
 				}
-				else if (key == Game.Settings.Keys.ToggleStatusBarsKey)
-					return ToggleStatusBars();
+				else if (key == Game.Settings.Keys.CycleStatusBarsKey)
+					return CycleStatusBars();
 				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
 					return TogglePixelDouble();
+				else if (key == Game.Settings.Keys.ToggleMuteKey)
+					return ToggleMute();
+				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
+					return TogglePlayerStanceColors();
 			}
 
 			return false;
@@ -291,7 +300,7 @@ namespace OpenRA.Widgets
 
 		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByOwnerAndSelectionClass(world.ActorMap.ActorsInWorld(), player, selectionClasses);
+			return SelectActorsByOwnerAndSelectionClass(world.Actors.Where(a => a.IsInWorld), player, selectionClasses);
 		}
 
 		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)
@@ -319,9 +328,15 @@ namespace OpenRA.Widgets
 				.SubsetWithHighestSelectionPriority();
 		}
 
-		bool ToggleStatusBars()
+		bool CycleStatusBars()
 		{
-			Game.Settings.Game.AlwaysShowStatusBars ^= true;
+			if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
+				Game.Settings.Game.StatusBars = StatusBarsType.DamageShow;
+			else if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
+				Game.Settings.Game.StatusBars = StatusBarsType.AlwaysShow;
+			else if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
+				Game.Settings.Game.StatusBars = StatusBarsType.Standard;
+
 			return true;
 		}
 
@@ -329,6 +344,32 @@ namespace OpenRA.Widgets
 		{
 			Game.Settings.Graphics.PixelDouble ^= true;
 			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+
+			return true;
+		}
+
+		bool ToggleMute()
+		{
+			Game.Settings.Sound.Mute ^= true;
+
+			if (Game.Settings.Sound.Mute)
+			{
+				Game.Sound.MuteAudio();
+				Game.Debug("Audio muted");
+			}
+			else
+			{
+				Game.Sound.UnmuteAudio();
+				Game.Debug("Audio unmuted");
+			}
+
+			return true;
+		}
+
+		bool TogglePlayerStanceColors()
+		{
+			Game.Settings.Game.UsePlayerStanceColors ^= true;
+
 			return true;
 		}
 	}

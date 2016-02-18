@@ -73,12 +73,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.PromptConfirmAction(
-						"Restart Now?",
-						"Some changes will not be applied until\nthe game is restarted. Restart now?",
-						Game.Restart,
-						closeAndExit,
-						"Restart Now",
-						"Restart Later");
+						title: "Restart Now?",
+						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
+						onConfirm: Game.Restart,
+						onCancel: closeAndExit,
+						confirmText: "Restart Now",
+						cancelText: "Restart Later");
 				else
 					closeAndExit();
 			};
@@ -153,9 +153,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
-			BindCheckboxPref(panel, "ALWAYS_SHOW_STATUS_BARS_CHECKBOX", gs, "AlwaysShowStatusBars");
 			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
-			BindCheckboxPref(panel, "TEAM_HEALTH_COLORS_CHECKBOX", gs, "TeamHealthColors");
+			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
 			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
@@ -165,6 +164,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+
+			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
+			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
+			statusBarsDropDown.GetText = () => gs.StatusBars.ToString() == "Standard" ?
+				"Standard" : gs.StatusBars.ToString() == "DamageShow" ? "Show On Damage" : "Always Show";
 
 			// Update zoom immediately
 			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
@@ -301,22 +305,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
+			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");
 			BindSliderPref(panel, "VIDEO_VOLUME", ss, "VideoVolume");
 
-			// Update volume immediately
-			panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
-			panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
-			panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
+			var muteCheckbox = panel.Get<CheckboxWidget>("MUTE_SOUND");
+			var muteCheckboxOnClick = muteCheckbox.OnClick;
+			muteCheckbox.OnClick = () =>
+			{
+				muteCheckboxOnClick();
+
+				if (ss.Mute)
+					Game.Sound.MuteAudio();
+				else
+					Game.Sound.UnmuteAudio();
+			};
+
+			if (!ss.Mute)
+			{
+				panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
+				panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
+				panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
+			}
 
 			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
 			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices);
-			audioDeviceDropdown.GetText = () => soundDevice.Label;
+
+			var deviceFont = Game.Renderer.Fonts[audioDeviceDropdown.Font];
+			var deviceLabel = new CachedTransform<SoundDevice, string>(
+				s => WidgetUtils.TruncateText(s.Label, audioDeviceDropdown.UsableWidth, deviceFont));
+			audioDeviceDropdown.GetText = () => deviceLabel.Update(soundDevice);
 
 			return () =>
 			{
@@ -335,6 +358,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
 				ss.CashTicks = dss.CashTicks;
+				ss.Mute = dss.Mute;
 				ss.Device = dss.Device;
 				ss.Engine = dss.Engine;
 
@@ -344,6 +368,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.MusicVolume = ss.MusicVolume;
 				panel.Get<SliderWidget>("VIDEO_VOLUME").Value = ss.VideoVolume;
 				Game.Sound.VideoVolume = ss.VideoVolume;
+				Game.Sound.UnmuteAudio();
 				soundDevice = Game.Sound.AvailableDevices().First();
 			};
 		}
@@ -408,8 +433,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "PreviousProductionTabKey", "Previous production tab" },
 					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
-					{ "ToggleStatusBarsKey", "Toggle status bars" },
+					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+					{ "ToggleMuteKey", "Toggle audio mute" },
+					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" },
 
 					{ "MapScrollUp", "Map scroll up" },
 					{ "MapScrollDown", "Map scroll down" },
@@ -622,7 +649,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => soundDevice == options[o],
 					() => soundDevice = options[o]);
 
-				item.Get<LabelWidget>("LABEL").GetText = () => options[o].Label;
+				var deviceLabel = item.Get<LabelWidget>("LABEL");
+				var font = Game.Renderer.Fonts[deviceLabel.Font];
+				var label = WidgetUtils.TruncateText(options[o].Label, deviceLabel.Bounds.Width, font);
+				deviceLabel.GetText = () => label;
 				return item;
 			};
 
@@ -666,6 +696,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
+			return true;
+		}
+
+		static bool ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		{
+			var options = new Dictionary<string, StatusBarsType>()
+			{
+				{ "Standard", StatusBarsType.Standard },
+				{ "Show On Damage", StatusBarsType.DamageShow },
+				{ "Always Show", StatusBarsType.AlwaysShow },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.StatusBars == options[o],
+					() => s.StatusBars = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 			return true;
 		}
 

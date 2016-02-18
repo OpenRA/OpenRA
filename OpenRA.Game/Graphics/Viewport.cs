@@ -22,6 +22,7 @@ namespace OpenRA.Graphics
 	{
 		public static bool Includes(this ScrollDirection d, ScrollDirection s)
 		{
+			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (d & s) == s;
 		}
 
@@ -140,7 +141,7 @@ namespace OpenRA.Graphics
 							ramp = ti.RampType;
 					}
 
-					var corners = map.CellCorners[ramp];
+					var corners = map.Grid.CellCorners[ramp];
 					var pos = map.CenterOfCell(uv.ToCPos(map));
 					var screen = corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
 

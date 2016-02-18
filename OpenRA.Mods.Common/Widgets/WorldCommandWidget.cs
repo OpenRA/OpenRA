@@ -12,6 +12,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Primitives;
@@ -184,7 +185,8 @@ namespace OpenRA.Mods.Common.Widgets
 				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<GuardInfo>());
 
 			if (actors.Any())
-				world.OrderGenerator = new GuardOrderGenerator(actors);
+				world.OrderGenerator = new GuardOrderGenerator(actors,
+					"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
 
 			return true;
 		}

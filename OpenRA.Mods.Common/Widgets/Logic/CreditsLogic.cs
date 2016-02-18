@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using OpenRA.FileSystem;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -32,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var template = scrollPanel.Get<LabelWidget>("CREDITS_TEMPLATE");
 			scrollPanel.RemoveChildren();
 
-			var lines = GlobalFileSystem.Open("AUTHORS").ReadAllLines();
+			var lines = Game.ModData.ModFiles.Open("AUTHORS").ReadAllLines();
 			foreach (var l in lines)
 			{
 				// Improve the formatting

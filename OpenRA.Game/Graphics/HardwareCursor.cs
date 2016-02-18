@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class HardwareCursor : ICursor
+	public sealed class HardwareCursor : ICursor
 	{
 		readonly Dictionary<string, IHardwareCursor[]> hardwareCursors = new Dictionary<string, IHardwareCursor[]>();
 		readonly CursorProvider cursorProvider;

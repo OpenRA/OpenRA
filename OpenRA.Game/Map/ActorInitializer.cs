@@ -86,12 +86,12 @@ namespace OpenRA
 		Player player;
 
 		public OwnerInit() { }
-		public OwnerInit(string playerName) { this.PlayerName = playerName; }
+		public OwnerInit(string playerName) { PlayerName = playerName; }
 
 		public OwnerInit(Player player)
 		{
 			this.player = player;
-			this.PlayerName = player.InternalName;
+			PlayerName = player.InternalName;
 		}
 
 		public Player Value(World world)

@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void RefreshMaps(MapClassification tab, MapVisibility filter)
 		{
 			tabMaps[tab] = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available &&
-				m.Class == tab && (m.Map.Visibility & filter) != 0).ToArray();
+				m.Class == tab && (m.Visibility & filter) != 0).ToArray();
 		}
 
 		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName, ScrollItemWidget itemTemplate)
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string DeleteMap(string map)
 		{
-			var path = Game.ModData.MapCache[map].Map.Path;
+			var path = Game.ModData.MapCache[map].Path;
 			try
 			{
 				if (File.Exists(path))
@@ -309,31 +309,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void DeleteOneMap(string map, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete map",
-				"Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
-				() =>
+				title: "Delete map",
+				text: "Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
+				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);
 					if (after != null)
 						after(newUid);
 				},
-				null,
-				"Delete");
+				confirmText: "Delete",
+				onCancel: () => { });
 		}
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
 			ConfirmationDialogs.PromptConfirmAction(
-				"Delete maps",
-				"Delete all maps on this page?",
-				() =>
+				title: "Delete maps",
+				text: "Delete all maps on this page?",
+				onConfirm: () =>
 				{
 					maps.Do(m => DeleteMap(m));
 					if (after != null)
 						after(WidgetUtils.ChooseInitialMap(null));
 				},
-				null,
-				"Delete");
+				confirmText: "Delete",
+				onCancel: () => { });
 		}
 	}
 }

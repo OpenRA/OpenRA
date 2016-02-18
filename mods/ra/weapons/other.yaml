@@ -20,8 +20,8 @@ FireballLauncher:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 
 Flamer:
 	ReloadDelay: 50
@@ -47,8 +47,8 @@ Flamer:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
-		ImpactSound: firebl3.aud
+		Explosions: small_napalm
+		ImpactSounds: firebl3.aud
 
 Napalm:
 	ReloadDelay: 20
@@ -69,12 +69,12 @@ Napalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 		InvalidImpactTypes: Water
 	Warhead@4Eff: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Grenade:
@@ -99,12 +99,12 @@ Grenade:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 DepthCharge:
@@ -130,18 +130,17 @@ DepthCharge:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: large_splash
-		ImpactSound: h2obomb2.aud
+		Explosions: large_splash
+		ImpactSounds: h2obomb2.aud
 	Warhead@4EffHit: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom15.aud
 		ValidImpactTypes: WaterHit
 
 TeslaZap:
 	ReloadDelay: 3
-	Charges: true
 	Range: 8c512
-	Report: TESLA1.AUD
+	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -154,8 +153,7 @@ TeslaZap:
 PortaTesla:
 	ReloadDelay: 70
 	Range: 6c0
-	Report: TESLA1.AUD
-	Charges: yes
+	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -167,8 +165,7 @@ PortaTesla:
 TTankZap:
 	ReloadDelay: 120
 	Range: 7c0
-	Report: TESLA1.AUD
-	Charges: yes
+	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -181,7 +178,7 @@ DogJaw:
 	ValidTargets: Infantry
 	ReloadDelay: 10
 	Range: 3c0
-	Report: DOGG5P.AUD
+	Report: dogg5p.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 100
@@ -191,7 +188,7 @@ DogJaw:
 Heal:
 	ReloadDelay: 80
 	Range: 4c0
-	Report: HEAL2.AUD
+	Report: heal2.aud
 	ValidTargets: Infantry
 	Projectile: Bullet
 		Speed: 1c682
@@ -199,11 +196,12 @@ Heal:
 		Spread: 213
 		Damage: -50
 		ValidTargets: Infantry
+		DebugOverlayColor: 00FF00
 
 Repair:
 	ReloadDelay: 80
 	Range: 4c0
-	Report: FIXIT1.AUD
+	Report: fixit1.aud
 	ValidTargets: Repair
 	Projectile: Bullet
 		Speed: 1c682
@@ -211,20 +209,21 @@ Repair:
 		Spread: 213
 		Damage: -20
 		ValidTargets: Repair
+		DebugOverlayColor: 00FF00
 
 Crush:
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		ImpactSound: squishy2.aud
+		ImpactSounds: squishy2.aud
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
-		ImpactSound: kaboom25.aud
+		Explosions: building
+		ImpactSounds: kaboom25.aud
 
 Claw:
 	ReloadDelay: 30
@@ -275,6 +274,5 @@ MADTankDetonate:
 		SmudgeType: Crater
 		Size: 7,6
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: mineblo1.aud
-
+		Explosions: med_explosion
+		ImpactSounds: mineblo1.aud

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[PaletteReference] public readonly string SmokePalette = "effect";
 
-		[PaletteReference] public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}

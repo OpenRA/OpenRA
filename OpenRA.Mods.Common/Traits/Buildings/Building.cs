@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
-		public object Create(ActorInitializer init) { return new Building(init, this); }
+		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
 
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
@@ -154,9 +154,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
-			this.self = init.Self;
-			this.topLeft = init.Get<LocationInit, CPos>();
-			this.Info = info;
+			self = init.Self;
+			topLeft = init.Get<LocationInit, CPos>();
+			Info = info;
 
 			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
@@ -179,18 +179,22 @@ namespace OpenRA.Mods.Common.Traits
 				NotifyBuildingComplete(self);
 		}
 
-		public void AddedToWorld(Actor self)
+		public virtual void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+
+			if (!self.Bounds.Size.IsEmpty)
+				self.World.ScreenMap.Add(self);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+
+			if (!self.Bounds.Size.IsEmpty)
+				self.World.ScreenMap.Remove(self);
 		}
 
 		public void NotifyBuildingComplete(Actor self)
@@ -199,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			BuildComplete = true;
-			Locked = false;
+			Unlock();
 
 			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
 				notify.BuildingComplete(self);

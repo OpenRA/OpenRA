@@ -9,7 +9,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
@@ -18,17 +17,26 @@ namespace OpenRA.Graphics
 	{
 		readonly WPos pos;
 		readonly Actor actor;
+		readonly bool displayHealth;
+		readonly bool displayExtra;
 
-		public SelectionBarsRenderable(Actor actor)
-			: this(actor.CenterPosition, actor) { }
+		public SelectionBarsRenderable(Actor actor, bool displayHealth, bool displayExtra)
+			: this(actor.CenterPosition, actor)
+		{
+			this.displayHealth = displayHealth;
+			this.displayExtra = displayExtra;
+		}
 
 		public SelectionBarsRenderable(WPos pos, Actor actor)
+			: this()
 		{
 			this.pos = pos;
 			this.actor = actor;
 		}
 
 		public WPos Pos { get { return pos; } }
+		public bool DisplayHealth { get { return displayHealth; } }
+		public bool DisplayExtra { get { return displayExtra; } }
 
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return 0; } }
@@ -55,50 +63,30 @@ namespace OpenRA.Graphics
 
 		void DrawSelectionBar(WorldRenderer wr, float2 start, float2 end, float value, Color barColor)
 		{
+			var iz = 1 / wr.Viewport.Zoom;
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var p = new float2(0, -4 / wr.Viewport.Zoom);
-			var q = new float2(0, -3 / wr.Viewport.Zoom);
-			var r = new float2(0, -2 / wr.Viewport.Zoom);
+			var p = new float2(0, -4 * iz);
+			var q = new float2(0, -3 * iz);
+			var r = new float2(0, -2 * iz);
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
 			var z = float2.Lerp(start, end, value);
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(start + p, end + p, c);
-			wlr.DrawLine(start + q, end + q, c2);
-			wlr.DrawLine(start + r, end + r, c);
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			wcr.DrawLine(start + p, end + p, iz, c);
+			wcr.DrawLine(start + q, end + q, iz, c2);
+			wcr.DrawLine(start + r, end + r, iz, c);
 
-			wlr.DrawLine(start + p, z + p, barColor2);
-			wlr.DrawLine(start + q, z + q, barColor);
-			wlr.DrawLine(start + r, z + r, barColor2);
+			wcr.DrawLine(start + p, z + p, iz, barColor2);
+			wcr.DrawLine(start + q, z + q, iz, barColor);
+			wcr.DrawLine(start + r, z + r, iz, barColor2);
 		}
 
 		Color GetHealthColor(IHealth health)
 		{
-			var player = actor.World.RenderPlayer ?? actor.World.LocalPlayer;
-
-			if (Game.Settings.Game.TeamHealthColors && player != null && !player.Spectating)
-			{
-				var apparentOwner = actor.EffectiveOwner != null && actor.EffectiveOwner.Disguised
-					? actor.EffectiveOwner.Owner
-					: actor.Owner;
-
-				// For friendly spies, treat the unit's owner as the actual owner
-				if (actor.Owner.IsAlliedWith(actor.World.RenderPlayer))
-					apparentOwner = actor.Owner;
-
-				if (apparentOwner == player)
-					return Color.LimeGreen;
-
-				if (apparentOwner.IsAlliedWith(player))
-					return Color.Yellow;
-
-				if (apparentOwner.NonCombatant)
-					return Color.Tan;
-
-				return Color.Red;
-			}
+			if (Game.Settings.Game.UsePlayerStanceColors)
+				return actor.Owner.PlayerStanceColor(actor);
 			else
 				return health.DamageState == DamageState.Critical ? Color.Red :
 					health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
@@ -111,9 +99,10 @@ namespace OpenRA.Graphics
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var p = new float2(0, -4 / wr.Viewport.Zoom);
-			var q = new float2(0, -3 / wr.Viewport.Zoom);
-			var r = new float2(0, -2 / wr.Viewport.Zoom);
+			var iz = 1 / wr.Viewport.Zoom;
+			var p = new float2(0, -4 * iz);
+			var q = new float2(0, -3 * iz);
+			var r = new float2(0, -2 * iz);
 
 			var healthColor = GetHealthColor(health);
 			var healthColor2 = Color.FromArgb(
@@ -124,14 +113,14 @@ namespace OpenRA.Graphics
 
 			var z = float2.Lerp(start, end, (float)health.HP / health.MaxHP);
 
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.DrawLine(start + p, end + p, c);
-			wlr.DrawLine(start + q, end + q, c2);
-			wlr.DrawLine(start + r, end + r, c);
+			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			wcr.DrawLine(start + p, end + p, iz, c);
+			wcr.DrawLine(start + q, end + q, iz, c2);
+			wcr.DrawLine(start + r, end + r, iz, c);
 
-			wlr.DrawLine(start + p, z + p, healthColor2);
-			wlr.DrawLine(start + q, z + q, healthColor);
-			wlr.DrawLine(start + r, z + r, healthColor2);
+			wcr.DrawLine(start + p, z + p, iz, healthColor2);
+			wcr.DrawLine(start + q, z + q, iz, healthColor);
+			wcr.DrawLine(start + r, z + r, iz, healthColor2);
 
 			if (health.DisplayHP != health.HP)
 			{
@@ -143,9 +132,9 @@ namespace OpenRA.Graphics
 					deltaColor.B / 2);
 				var zz = float2.Lerp(start, end, (float)health.DisplayHP / health.MaxHP);
 
-				wlr.DrawLine(z + p, zz + p, deltaColor2);
-				wlr.DrawLine(z + q, zz + q, deltaColor);
-				wlr.DrawLine(z + r, zz + r, deltaColor2);
+				wcr.DrawLine(z + p, zz + p, iz, deltaColor2);
+				wcr.DrawLine(z + q, zz + q, iz, deltaColor);
+				wcr.DrawLine(z + r, zz + r, iz, deltaColor2);
 			}
 		}
 
@@ -164,8 +153,11 @@ namespace OpenRA.Graphics
 			var start = new float2(bounds.Left + 1, bounds.Top);
 			var end = new float2(bounds.Right - 1, bounds.Top);
 
-			DrawHealthBar(wr, health, start, end);
-			DrawExtraBars(wr, start, end);
+			if (DisplayHealth)
+				DrawHealthBar(wr, health, start, end);
+
+			if (DisplayExtra)
+				DrawExtraBars(wr, start, end);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

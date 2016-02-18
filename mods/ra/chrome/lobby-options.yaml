@@ -18,52 +18,47 @@ Background@LOBBY_OPTIONS_BIN:
 			Height: PARENT_BOTTOM-75
 			Children:
 				Checkbox@EXPLORED_MAP_CHECKBOX:
-					Width: 140
+					Width: 150
 					Height: 20
 					Text: Explored Map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
-					Width: 140
+					Width: 150
 					Height: 20
 					Text: Fog of War
-				Checkbox@SHORTGAME_CHECKBOX:
-					X: 150
-					Width: 140
-					Height: 20
-					Text: Short Game
 				Checkbox@CRATES_CHECKBOX:
-					X: 150
-					Y: 35
-					Width: 140
+					X: 170
+					Width: 225
 					Height: 20
 					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 290
-					Width: 140
+					X: 170
+					Y: 35
+					Width: 225
 					Height: 20
 					Text: Build off Allies' ConYards
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					X: 290
-					Y: 35
-					Width: 140
+				Checkbox@SHORTGAME_CHECKBOX:
+					X: 400
+					Width: 150
 					Height: 20
-					Text: Diplomacy Changes
+					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					Y: 70
-					Width: 140
+					X: 400
+					Y: 35
+					Width: 150
 					Height: 20
 					Text: Debug Menu
 				Label@DIFFICULTY_DESC:
-					X: PARENT_RIGHT - WIDTH - 145
+					X: PARENT_RIGHT - WIDTH - 165
 					Y: 70
-					Width: 120
+					Width: 160
 					Height: 25
 					Text: Mission Difficulty:
 					Align: Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
 					Y: 70
-					Width: 140
+					Width: 160
 					Height: 25
 					Font: Regular
 				Label@STARTINGCASH_DESC:
@@ -75,12 +70,12 @@ Background@LOBBY_OPTIONS_BIN:
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X: 85
 					Y: 110
-					Width: 130
+					Width: 160
 					Height: 25
 					Font: Regular
 					Text: $5000
 				Label@STARTINGUNITS_DESC:
-					X: PARENT_RIGHT - WIDTH - 145
+					X: PARENT_RIGHT - WIDTH - 165
 					Y: 110
 					Width: 120
 					Height: 25
@@ -89,13 +84,13 @@ Background@LOBBY_OPTIONS_BIN:
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
 					Y: 110
-					Width: 140
+					Width: 160
 					Height: 25
 					Font: Regular
 				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
 					X: 85
 					Y: 150
-					Width: 130
+					Width: 160
 					Height: 25
 					Font: Regular
 					Text: 10
@@ -106,7 +101,7 @@ Background@LOBBY_OPTIONS_BIN:
 					Text: Tech Level:
 					Align: Right
 				Label@GAMESPEED_DESC:
-					X: PARENT_RIGHT - WIDTH - 145
+					X: PARENT_RIGHT - WIDTH - 165
 					Y: 150
 					Width: 120
 					Height: 25
@@ -115,6 +110,6 @@ Background@LOBBY_OPTIONS_BIN:
 				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
 					Y: 150
-					Width: 140
+					Width: 160
 					Height: 25
 					Font: Regular

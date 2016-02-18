@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using Eluant;
-using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -26,14 +23,6 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool IsAlliedWith(Player targetPlayer)
 		{
 			return Player.IsAlliedWith(targetPlayer);
-		}
-
-		[Desc("Changes the current stance of the player against the target player. " +
-			"Allowed keywords for new stance: Ally, Neutral, Enemy.")]
-		public void SetStance(Player targetPlayer, string newStance)
-		{
-			var emergingStance = Enum<Stance>.Parse(newStance);
-			Player.SetStance(targetPlayer, emergingStance);
 		}
 	}
 }

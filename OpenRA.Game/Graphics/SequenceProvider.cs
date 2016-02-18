@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace OpenRA.Graphics
 {
@@ -50,8 +48,8 @@ namespace OpenRA.Graphics
 
 		public SequenceProvider(SequenceCache cache, Map map)
 		{
-			this.sequences = Exts.Lazy(() => cache.LoadSequences(map));
-			this.SpriteCache = cache.SpriteCache;
+			sequences = Exts.Lazy(() => cache.LoadSequences(map));
+			SpriteCache = cache.SpriteCache;
 		}
 
 		public ISpriteSequence GetSequence(string unitName, string sequenceName)
@@ -125,11 +123,9 @@ namespace OpenRA.Graphics
 
 		Sequences Load(List<MiniYamlNode> sequenceNodes)
 		{
-			var sequenceFiles = modData.Manifest.Sequences;
-
-			var nodes = sequenceFiles
-				.Select(s => MiniYaml.FromFile(s))
-				.Aggregate(sequenceNodes, MiniYaml.MergeLiberal);
+			var nodes = MiniYaml.Merge(modData.Manifest.Sequences
+				.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s)))
+				.Append(sequenceNodes));
 
 			var items = new Dictionary<string, UnitSequences>();
 			foreach (var n in nodes)

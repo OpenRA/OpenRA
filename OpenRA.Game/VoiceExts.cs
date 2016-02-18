@@ -8,8 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -63,12 +61,14 @@ namespace OpenRA
 					continue;
 
 				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
+				{
 					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
 					{
 						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
 							orderSubject.Owner.Faction.InternalName))
 							return;
 					}
+				}
 			}
 		}
 	}

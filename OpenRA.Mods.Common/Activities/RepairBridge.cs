@@ -16,11 +16,13 @@ namespace OpenRA.Mods.Common.Activities
 	class RepairBridge : Enter
 	{
 		readonly BridgeHut hut;
+		readonly string notification;
 
-		public RepairBridge(Actor self, Actor target)
-			: base(self, target)
+		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour, string notification)
+			: base(self, target, enterBehaviour)
 		{
 			hut = target.Trait<BridgeHut>();
+			this.notification = notification;
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -32,8 +34,10 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
 				return;
+
 			hut.Repair(self);
-			self.Dispose();
+
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", notification, self.Owner.Faction.InternalName);
 		}
 	}
 }

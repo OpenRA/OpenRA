@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AircraftInfo : IPositionableInfo, IFacingInfo, IOccupySpaceInfo, IMoveInfo, ICruiseAltitudeInfo,
+	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IOccupySpaceInfo, IMoveInfo, ICruiseAltitudeInfo,
 		UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
+		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
 		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { "hpad", "afld" };
+		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 		public readonly int InitialFacing = 0;
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
@@ -54,6 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 		[UpgradeGrantedReference]
 		[Desc("The upgrades to grant to self while airborne.")]
 		public readonly string[] AirborneUpgrades = { };
+
+		[UpgradeGrantedReference]
+		[Desc("The upgrades to grant to self while at cruise altitude.")]
+		public readonly string[] CruisingUpgrades = { };
 
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
@@ -93,6 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UpgradeManager um;
 		IDisposable reservation;
+		IEnumerable<int> speedModifiers;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -100,29 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int ROT { get { return Info.ROT; } }
 
 		bool airborne;
-		bool IsAirborne
-		{
-			get
-			{
-				return airborne;
-			}
-
-			set
-			{
-				if (airborne == value)
-					return;
-				airborne = value;
-				if (um != null)
-				{
-					if (airborne)
-						foreach (var u in Info.AirborneUpgrades)
-							um.GrantUpgrade(self, u, this);
-					else
-						foreach (var u in Info.AirborneUpgrades)
-							um.RevokeUpgrade(self, u, this);
-				}
-			}
-		}
+		bool cruising;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -142,15 +125,22 @@ namespace OpenRA.Mods.Common.Traits
 			IsPlane = !info.CanHover;
 		}
 
-		public void Created(Actor self) { um = self.TraitOrDefault<UpgradeManager>(); }
+		public void Created(Actor self)
+		{
+			um = self.TraitOrDefault<UpgradeManager>();
+			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
+		}
 
 		public void AddedToWorld(Actor self)
 		{
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 			self.World.ScreenMap.Add(self);
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= Info.MinAirborneAltitude)
-				IsAirborne = true;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			if (altitude.Length >= Info.MinAirborneAltitude)
+				OnAirborneAltitudeReached();
+			if (altitude == Info.CruiseAltitude)
+				OnCruisingAltitudeReached();
 		}
 
 		bool firstTick = true;
@@ -179,13 +169,11 @@ namespace OpenRA.Mods.Common.Traits
 		public void Repulse()
 		{
 			var repulsionForce = GetRepulsionForce();
-
-			var repulsionFacing = Util.GetFacing(repulsionForce, -1);
-			if (repulsionFacing == -1)
+			if (repulsionForce.HorizontalLengthSquared == 0)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
-			SetPosition(self, CenterPosition + FlyStep(speed, repulsionFacing));
+			SetPosition(self, CenterPosition + FlyStep(speed, repulsionForce.Yaw.Facing));
 		}
 
 		public virtual WVec GetRepulsionForce()
@@ -198,11 +186,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (altitude != Info.CruiseAltitude.Length)
 				return WVec.Zero;
 
-			var repulsionForce = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
-				.Where(a => !a.IsDead && a.Info.HasTraitInfo<AircraftInfo>()
-					&& a.Info.TraitInfo<AircraftInfo>().CruiseAltitude == Info.CruiseAltitude)
-				.Select(GetRepulsionForce)
-				.Aggregate(WVec.Zero, (a, b) => a + b);
+			// PERF: Avoid LINQ.
+			var repulsionForce = WVec.Zero;
+			foreach (var actor in self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation))
+			{
+				if (actor.IsDead)
+					continue;
+
+				var ai = actor.Info.TraitInfoOrDefault<AircraftInfo>();
+				if (ai == null || !ai.Repulsable || ai.CruiseAltitude != Info.CruiseAltitude)
+					continue;
+
+				repulsionForce += GetRepulsionForce(actor);
+			}
 
 			if (Info.CanHover)
 				return repulsionForce;
@@ -288,12 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeed
 		{
-			get
-			{
-				var modifiers = self.TraitsImplementing<ISpeedModifier>()
-					.Select(m => m.GetSpeedModifier());
-				return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
-			}
+			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
@@ -363,7 +354,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.ScreenMap.Update(self);
 			self.World.ActorMap.UpdatePosition(self, this);
-			IsAirborne = self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= Info.MinAirborneAltitude;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			var isAirborne = altitude.Length >= Info.MinAirborneAltitude;
+			if (isAirborne && !airborne)
+				OnAirborneAltitudeReached();
+			else if (!isAirborne && airborne)
+				OnAirborneAltitudeLeft();
+			var isCruising = altitude == Info.CruiseAltitude;
+			if (isCruising && !cruising)
+				OnCruisingAltitudeReached();
+			else if (!isCruising && cruising)
+				OnCruisingAltitudeLeft();
 		}
 
 		#endregion
@@ -423,7 +424,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsPlane)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
-			return Util.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
+			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)
@@ -438,11 +439,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// TODO: Ignore repulsion when moving
 			if (IsPlane)
-				return Util.SequenceActivities(
+				return ActivityUtils.SequenceActivities(
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
 
-			return Util.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
+			return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
@@ -537,7 +538,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (IsPlane)
 					{
-						self.QueueActivity(order.Queued, Util.SequenceActivities(
+						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
 							new ReturnToBase(self, order.TargetActor),
 							new ResupplyAircraft(self)));
 					}
@@ -604,8 +605,57 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 			self.World.ScreenMap.Remove(self);
-			IsAirborne = false;
+			OnCruisingAltitudeLeft();
+			OnAirborneAltitudeLeft();
 		}
+
+		#region Airborne upgrades
+
+		void OnAirborneAltitudeReached()
+		{
+			if (airborne)
+				return;
+			airborne = true;
+			if (um != null)
+				foreach (var u in Info.AirborneUpgrades)
+					um.GrantUpgrade(self, u, this);
+		}
+
+		void OnAirborneAltitudeLeft()
+		{
+			if (!airborne)
+				return;
+			airborne = false;
+			if (um != null)
+				foreach (var u in Info.AirborneUpgrades)
+					um.RevokeUpgrade(self, u, this);
+		}
+
+		#endregion
+
+		#region Cruising upgrades
+
+		void OnCruisingAltitudeReached()
+		{
+			if (cruising)
+				return;
+			cruising = true;
+			if (um != null)
+				foreach (var u in Info.CruisingUpgrades)
+					um.GrantUpgrade(self, u, this);
+		}
+
+		void OnCruisingAltitudeLeft()
+		{
+			if (!cruising)
+				return;
+			cruising = false;
+			if (um != null)
+				foreach (var u in Info.CruisingUpgrades)
+					um.RevokeUpgrade(self, u, this);
+		}
+
+		#endregion
 
 		public void Disposing(Actor self)
 		{

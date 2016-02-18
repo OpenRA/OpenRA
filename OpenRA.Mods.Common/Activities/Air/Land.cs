@@ -43,8 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var desiredFacing = Util.GetFacing(d, plane.Facing);
-			Fly.FlyToward(self, plane, desiredFacing, WDist.Zero);
+			Fly.FlyToward(self, plane, d.Yaw.Facing, WDist.Zero);
 
 			return this;
 		}

@@ -2,7 +2,7 @@
 # see travis-ci.org for details
 
 language: csharp
-mono: 4.0.0
+mono: 4.2.1
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
 sudo: false
@@ -10,6 +10,7 @@ sudo: false
 cache:
   directories:
   - thirdparty/download
+  - Support/Content
 
 addons:
   apt:
@@ -26,14 +27,18 @@ env:
 
 # Fetch dependencies
 # Run the build script
+# Fetch mod assets
 # Check source code with StyleCop
 # call OpenRA to check for YAML errors
+# Run the NUnit tests
 script:
  - travis_retry make all-dependencies
  - make all
+ - travis_retry ./thirdparty/fetch-travis-assets.sh
  - make check
  - make check-scripts
  - make test
+ - make nunit
 
 # Automatically update the trait documentation and Lua API
 after_success:

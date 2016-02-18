@@ -54,7 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 			inAttackRange = false;
 
 			var f = facing.Value.Facing;
-			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, f);
+			var delta = target.CenterPosition - self.CenterPosition;
+			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 			facingTarget = Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance;
 
 			// Bombs drop anywhere in range

@@ -182,6 +182,8 @@ E6:
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice
+	Selectable:
+		Priority: 5
 
 SPY:
 	Inherits: ^Soldier
@@ -218,7 +220,6 @@ SPY:
 		Sequence: pip-disguise
 		Palette: effect
 		ReferencePoint: Top, Right
-		Offset: 4, -2
 		ZOffset: 256
 		UpgradeTypes: disguise
 		UpgradeMinEnabledLevel: 1
@@ -250,7 +251,7 @@ E7:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
-		Prerequisites: ~tent, atek, ~techlevel.unrestricted
+		Prerequisites: ~tent, atek, ~techlevel.high
 		BuildLimit: 1
 	Valued:
 		Cost: 1200
@@ -459,7 +460,7 @@ HIJACKER:
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
-		UncloakOnMove: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		CloakTypes: Cloak, Hijacker
 		IsPlayerPalette: true
 	Mobile:
@@ -471,7 +472,7 @@ SHOK:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
-		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.unrestricted
+		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -539,7 +540,7 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound:
 		UncloakSound:
-		UncloakOnMove: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
@@ -592,7 +593,8 @@ Ant:
 		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
-		Radius: 469
+		Shape: Circle
+			Radius: 469
 	Mobile:
 		Speed: 99
 		ROT: 12
@@ -610,4 +612,3 @@ Ant:
 		UseDeathTypeSuffix: false
 	Voiced:
 		VoiceSet: AntVoice
-

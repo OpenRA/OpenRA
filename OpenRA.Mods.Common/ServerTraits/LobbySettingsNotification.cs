@@ -25,9 +25,6 @@ namespace OpenRA.Mods.Common.Server
 			var defaults = new Session.Global();
 			FieldLoader.Load(defaults, Game.ModData.Manifest.LobbyDefaults);
 
-			if (server.LobbyInfo.GlobalSettings.FragileAlliances != defaults.FragileAlliances)
-				server.SendOrderTo(conn, "Message", "Diplomacy Changes: {0}".F(server.LobbyInfo.GlobalSettings.FragileAlliances));
-
 			if (server.LobbyInfo.GlobalSettings.AllowCheats != defaults.AllowCheats)
 				server.SendOrderTo(conn, "Message", "Allow Cheats: {0}".F(server.LobbyInfo.GlobalSettings.AllowCheats));
 

@@ -1,46 +1,44 @@
 Background@COLOR_CHOOSER:
 	Logic: ColorPickerLogic
 	Background: panel-black
-	Width: 234
-	Height: 105
+	Width: 311
+	Height: 140
 	Children:
-		LogicTicker@ANIMATE_PREVIEW:
+		Button@RANDOM_BUTTON:
+			Key: tab
+			X: 235
+			Y: 109
+			Width: 70
+			Height: 25
+			Text: Random
 		Background@HUEBG:
 			Background: panel-black
 			X: 5
 			Y: 5
-			Width: 148
-			Height: 13
+			Width: 225
+			Height: 17
 			Children:
 				HueSlider@HUE:
 					X: 2
 					Y: 2
-					Width: 144
-					Height: 9
+					Width: PARENT_RIGHT - 4
+					Height: PARENT_BOTTOM - 4
 					Ticks: 5
 		Background@MIXERBG:
 			Background: panel-black
 			X: 5
-			Y: 23
-			Width: 148
-			Height: 76
+			Y: 27
+			Width: 225
+			Height: 107
 			Children:
 				ColorMixer@MIXER:
 					X: 2
 					Y: 2
-					Width: 144
-					Height: 72
+					Width: PARENT_RIGHT - 4
+					Height: PARENT_BOTTOM - 4
 		ActorPreview@PREVIEW:
-			X: 153
-			Y: 1
+			X: 230
+			Y: 21
 			Width: 80
 			Height: 73
 			Animate: true
-		Button@RANDOM_BUTTON:
-			Key: tab
-			X: 158
-			Y: 74
-			Width: 70
-			Height: 25
-			Text: Random
-

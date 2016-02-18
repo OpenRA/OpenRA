@@ -28,84 +28,87 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MapCache.LoadMaps();
+			modData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);
 
 			Console.WriteLine("Processing Rules:");
-			foreach (var filename in Game.ModData.Manifest.Rules)
+			foreach (var filename in modData.Manifest.Rules)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeActorRules(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Weapons:");
-			foreach (var filename in Game.ModData.Manifest.Weapons)
+			foreach (var filename in modData.Manifest.Weapons)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Tilesets:");
-			foreach (var filename in Game.ModData.Manifest.TileSets)
+			foreach (var filename in modData.Manifest.TileSets)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeTileset(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Cursors:");
-			foreach (var filename in Game.ModData.Manifest.Cursors)
+			foreach (var filename in modData.Manifest.Cursors)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeCursors(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Chrome Metrics:");
-			foreach (var filename in Game.ModData.Manifest.ChromeMetrics)
+			foreach (var filename in modData.Manifest.ChromeMetrics)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeChromeMetrics(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Chrome Layout:");
-			foreach (var filename in Game.ModData.Manifest.ChromeLayout)
+			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
 				Console.WriteLine("\t" + filename);
 				var yaml = MiniYaml.FromFile(filename);
 				UpgradeRules.UpgradeChromeLayout(engineDate, ref yaml, null, 0);
 
 				using (var file = new StreamWriter(filename))
-					file.WriteLine(yaml.WriteToString());
+					file.Write(yaml.WriteToString());
 			}
 
 			Console.WriteLine("Processing Maps:");
-			var maps = Game.ModData.MapCache
+			var mapPaths = modData.MapCache
 				.Where(m => m.Status == MapStatus.Available)
-				.Select(m => m.Map);
+				.Select(m => m.Path);
 
-			foreach (var map in maps)
+			foreach (var path in mapPaths)
 			{
-				Console.WriteLine("\t" + map.Path);
+				Console.WriteLine("\t" + path);
+				UpgradeRules.UpgradeMapFormat(modData, path);
+
+				var map = new Map(path);
 				UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);

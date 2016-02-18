@@ -9,9 +9,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -52,6 +50,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				"specifies in its rule definitions.\n" +
 				"* Individual players expose a collection of properties and commands that query information or modify their state.\n" +
 				"The properties and commands available on each actor depends on the traits that the actor specifies in its rule definitions.\n");
+			Console.WriteLine();
+			Console.WriteLine("For a basic guide about map scripts see the [`Map Scripting` wiki page](https://github.com/OpenRA/OpenRA/wiki/Map-scripting).");
 			Console.WriteLine();
 
 			var tables = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>()

@@ -55,7 +55,7 @@ namespace OpenRA.FileFormats
 				{
 					var pn = (byte*)tempPn;
 					var i = blen * 4;
-					for (; i > klen; i--) pn[i - 1] = (byte)sign;
+					for (; i > klen; i--) pn[i - 1] = sign;
 					for (; i > 0; i--) pn[i - 1] = key[klen - i];
 				}
 			}

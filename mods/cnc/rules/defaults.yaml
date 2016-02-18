@@ -6,6 +6,7 @@
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
+	RenderDebugState:
 
 ^SpriteActor:
 	BodyOrientation:
@@ -47,7 +48,6 @@
 		Sequence: rank
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		Offset: 2, 2
 		UpgradeTypes: rank
 		ZOffset: 256
 		UpgradeMinEnabledLevel: 1
@@ -98,6 +98,8 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -133,9 +135,9 @@
 		Bounds: 24,24
 	Aircraft:
 		RepairBuildings: hpad
-		RearmBuildings:
 		LandWhenIdle: false
 		AirborneUpgrades: airborne
+		CruisingUpgrades: cruising
 		CanHover: True
 	HiddenUnderFog:
 		Type: CenterPosition
@@ -151,17 +153,22 @@
 		GenericName: Helicopter
 	WithFacingSpriteBody:
 	WithShadow:
-	Hovers:
+	Hovers@CRUISING:
+		UpgradeTypes: cruising
+		UpgradeMinEnabledLevel: 1
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Health:
-		Radius: 128
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -201,6 +208,17 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	PoisonedByTiberium:
+		UpgradeTypes: hazmatsuits
+		UpgradeMaxEnabledLevel: 0
+	GlobalUpgradable@BIO:
+		Upgrades: hazmatsuits
+		Prerequisites: bio
+	WithDecoration@HAZMAT:
+		Image: pips
+		Sequence: pip-hazmat
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hazmatsuits
+		UpgradeMinEnabledLevel: 1
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
@@ -220,7 +238,7 @@
 		DamageCooldown: 125
 		UpgradeTypes: hospitalheal
 		UpgradeMinEnabledLevel: 1
-	GlobalUpgradable:
+	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
 	DetectCloaked:
@@ -284,13 +302,15 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Health:
-		Radius: 128
 		HP: 1000
+		Shape: Circle
+			Radius: 128
 	Armor:
 		Type: Wood
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 50
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -337,8 +357,9 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Health:
-		Radius: 427
 		HP: 300
+		Shape: Circle
+			Radius: 427
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -393,6 +414,7 @@
 		UseLocation: yes
 	HiddenUnderFog:
 		Type: CenterPosition
+		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
@@ -574,6 +596,11 @@
 	Guardable:
 	FrozenUnderFog:
 	ScriptTriggers:
+	Health:
+		HP: 100
+		Shape: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -663,6 +690,8 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
@@ -676,6 +705,8 @@
 		Explosion: HeliCrash
 	Tooltip:
 		GenericName: Destroyed Helicopter
+	BodyOrientation:
+		UseClassicFacingFudge: True
 
 ^Bridge:
 	AlwaysVisible:
@@ -713,4 +744,3 @@
 	-GivesBuildableArea:
 	MustBeDestroyed:
 		RequiredForShortGame: false
-

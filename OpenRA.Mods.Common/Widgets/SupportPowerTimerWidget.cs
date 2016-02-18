@@ -23,27 +23,43 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Format = "{0}: {1}";
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
-		readonly World world;
+		readonly int timestep;
 		readonly IEnumerable<SupportPowerInstance> powers;
 		Pair<string, Color>[] texts;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
 		{
-			this.world = world;
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
 				.Where(p => p.Instances.Any() && p.Info.DisplayTimer && !p.Disabled);
+
+			// Timers in replays should be synced to the effective game time, not the playback time.
+			timestep = world.Timestep;
+			if (world.IsReplay)
+			{
+				GameSpeed speed;
+				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+					timestep = speed.Timestep;
+			}
 		}
 
 		public override void Tick()
 		{
 			texts = powers.Select(p =>
 			{
-				var time = WidgetUtils.FormatTime(p.RemainingTime, false, world.Timestep);
+				var time = WidgetUtils.FormatTime(p.RemainingTime, false, timestep);
 				var text = Format.F(p.Info.Description, time);
-				var color = !p.Ready || Game.LocalTick % 50 < 25 ? p.Instances[0].Self.Owner.Color.RGB : Color.White;
+				var self = p.Instances[0].Self;
+				var playerColor = self.Owner.Color.RGB;
+
+				if (Game.Settings.Game.UsePlayerStanceColors)
+					playerColor = self.Owner.PlayerStanceColor(self);
+
+				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
+
 				return Pair.New(text, color);
 			}).ToArray();
 		}

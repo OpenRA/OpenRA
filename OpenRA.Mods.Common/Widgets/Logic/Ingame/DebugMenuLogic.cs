@@ -126,6 +126,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showAstarCostCheckbox.IsChecked = () => dbgOverlay != null ? dbgOverlay.Visible : false;
 				showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.Visible ^= true; };
 			}
+
+			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
+			if (showActorTagsCheckbox != null)
+			{
+				showActorTagsCheckbox.IsChecked = () => devTrait.ShowActorTags;
+				showActorTagsCheckbox.OnClick = () => devTrait.ShowActorTags ^= true;
+			}
 		}
 
 		public void Order(World world, string order)

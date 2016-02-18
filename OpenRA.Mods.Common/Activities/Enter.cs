@@ -24,7 +24,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove move;
 		readonly int maxTries = 0;
+		readonly EnterBehaviour enterBehaviour;
 		readonly bool targetCenter;
+
 		public Target Target { get { return target; } }
 		Target target;
 		State nextState = State.ApproachingOrEntering; // Hint/starting point for next state
@@ -33,11 +35,12 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, int maxTries = 1, bool targetCenter = false)
+		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool targetCenter = false)
 		{
-			this.move = self.Trait<IMove>();
+			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
+			this.enterBehaviour = enterBehaviour;
 			this.targetCenter = targetCenter;
 		}
 
@@ -215,6 +218,11 @@ namespace OpenRA.Mods.Common.Activities
 
 					OnInside(self);
 
+					if (enterBehaviour == EnterBehaviour.Suicide)
+						self.Kill(self);
+					else if (enterBehaviour == EnterBehaviour.Dispose)
+						self.Dispose();
+
 					// Return if Abort(Actor) or Done(self) was called from OnInside.
 					if (nextState >= State.Exiting)
 						return State.Inside;
@@ -244,10 +252,10 @@ namespace OpenRA.Mods.Common.Activities
 		Activity CanceledTick(Actor self)
 		{
 			if (inner == null)
-				return Util.RunActivity(self, NextActivity);
+				return ActivityUtils.RunActivity(self, NextActivity);
 			inner.Cancel(self);
 			inner.Queue(NextActivity);
-			return Util.RunActivity(self, inner);
+			return ActivityUtils.RunActivity(self, inner);
 		}
 
 		public override Activity Tick(Actor self)
@@ -264,7 +272,12 @@ namespace OpenRA.Mods.Common.Activities
 				return CanceledTick(self);
 
 			// Run inner activity/InsideTick
-			inner = inner == this ? InsideTick(self) : Util.RunActivity(self, inner);
+			inner = inner == this ? InsideTick(self) : ActivityUtils.RunActivity(self, inner);
+
+			// If we are finished, move on to next activity
+			if (inner == null && nextState == State.Done)
+				return NextActivity;
+
 			return this;
 		}
 	}

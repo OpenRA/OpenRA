@@ -6,12 +6,11 @@ Background@CONNECTIONFAILED_PANEL:
 	Height: 160
 	Children:
 		LogicTicker@CONNECTION_FAILED_TICKER:
-		Label@CONNECTION_FAILED_TITLE:
+		Label@TITLE:
 			X: 0
 			Y: 20
 			Width: 450
 			Height: 25
-			Text: Connection Failed
 			Align: Center
 			Font: Bold
 		Label@CONNECTING_DESC:
@@ -43,7 +42,7 @@ Background@CONNECTIONFAILED_PANEL:
 			MaxLength: 20
 			Height: 25
 		Button@RETRY_BUTTON:
-			X: PARENT_RIGHT - 360
+			X: PARENT_RIGHT - 430
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
@@ -89,4 +88,3 @@ Background@CONNECTING_PANEL:
 			Text: Abort
 			Font: Bold
 			Key: escape
-

@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 
 		public VoxelRenderProxy(Sprite sprite, Sprite shadowSprite, float2[] projectedShadowBounds, float shadowDirection)
 		{
-			this.Sprite = sprite;
+			Sprite = sprite;
 			ShadowSprite = shadowSprite;
 			ProjectedShadowBounds = projectedShadowBounds;
 			ShadowDirection = shadowDirection;
@@ -263,7 +263,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("AmbientLight", ambientLight, 3);
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
-			shader.Render(() => renderer.DrawBatch(Game.ModData.VoxelLoader.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.QuadList));
+			shader.Render(() => renderer.DrawBatch(Game.ModData.VoxelLoader.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList));
 		}
 
 		public void BeginFrame()

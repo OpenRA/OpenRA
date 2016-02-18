@@ -25,6 +25,24 @@ GAWALL:
 	LineBuild:
 		NodeTypes: wall, turret
 
+GAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: gapile, ~structures.gdi
+	Tooltip:
+		Name: GDI Gate
+
+GAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: gapile, ~structures.gdi
+	Tooltip:
+		Name: GDI Gate
+
 GACTWR:
 	Inherits: ^Defense
 	-WithSpriteBody:
@@ -62,17 +80,19 @@ GACTWR:
 		UpgradeMinEnabledLevel: 1
 	CanPowerDown:
 		IndicatorPalette: mouse
-	WithTurret@VULC:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	WithSpriteTurret@VULC:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
 		Recoils: no
 		Sequence: turret-vulcan
-	WithTurret@ROCKET:
+	WithSpriteTurret@ROCKET:
 		UpgradeTypes: tower.rocket
 		UpgradeMinEnabledLevel: 1
 		Recoils: no
 		Sequence: turret-rocket
-	WithTurret@SAM:
+	WithSpriteTurret@SAM:
 		UpgradeTypes: tower.sam
 		UpgradeMinEnabledLevel: 1
 		Recoils: no
@@ -223,4 +243,3 @@ GAPLUG3:
 		Type: plug.ioncannon
 	Power:
 		Amount: -100
-

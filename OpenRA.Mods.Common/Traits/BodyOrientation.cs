@@ -9,8 +9,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Fudge the coordinate system angles like the early games.")]
 		public readonly bool UseClassicPerspectiveFudge = true;
+
+		[Desc("Fudge the coordinate system angles like the early games.")]
+		public readonly bool UseClassicFacingFudge = false;
 
 		public WVec LocalToWorld(WVec vec)
 		{
@@ -44,10 +45,15 @@ namespace OpenRA.Mods.Common.Traits
 				return orientation;
 
 			// Map yaw to the closest facing
-			var facing = Util.QuantizeFacing(orientation.Yaw.Angle / 4, facings) * (256 / facings);
+			var facing = QuantizeFacing(orientation.Yaw.Angle / 4, facings);
 
 			// Roll and pitch are always zero if yaw is quantized
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
+		}
+
+		public int QuantizeFacing(int facing, int facings)
+		{
+			return Util.QuantizeFacing(facing, facings, UseClassicFacingFudge) * (256 / facings);
 		}
 
 		public object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
@@ -77,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 				// If a sprite actor has neither custom QuantizedFacings nor a trait implementing IQuantizeBodyOrientationInfo, throw
 				if (qboi == null)
 				{
-					if (self.Info.HasTraitInfo<ISpriteBodyInfo>())
+					if (self.Info.HasTraitInfo<WithSpriteBodyInfo>())
 						throw new InvalidOperationException("Actor '" + self.Info.Name + "' has a sprite body but no facing quantization."
 							+ " Either add the QuantizeFacingsFromSequence trait or set custom QuantizedFacings on BodyOrientation.");
 					else
@@ -98,6 +104,16 @@ namespace OpenRA.Mods.Common.Traits
 		public WRot QuantizeOrientation(Actor self, WRot orientation)
 		{
 			return info.QuantizeOrientation(orientation, quantizedFacings.Value);
+		}
+
+		public int QuantizeFacing(int facing)
+		{
+			return info.QuantizeFacing(facing, quantizedFacings.Value);
+		}
+
+		public int QuantizeFacing(int facing, int facings)
+		{
+			return info.QuantizeFacing(facing, facings);
 		}
 	}
 }

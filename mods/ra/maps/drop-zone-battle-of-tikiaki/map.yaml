@@ -296,6 +296,7 @@ Rules:
 			Maximum: 3
 			SpawnInterval: 125
 			CrateActors: unitcrate
+			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
 	UNITCRATE:
@@ -329,8 +330,6 @@ Rules:
 	APC:
 		Health:
 			HP: 1000
-		RevealsShroud:
-			Range: 40c0
 		MustBeDestroyed:
 			RequiredForShortGame: true
 		-AttackMove:
@@ -343,7 +342,7 @@ Rules:
 		Explodes:
 			Weapon: CrateNuke
 			EmptyWeapon: CrateNuke
-		DemoTruck:
+		AttackSuicides:
 	SHOK:
 		Health:
 			HP: 800

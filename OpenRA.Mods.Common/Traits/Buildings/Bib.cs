@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference] public readonly string Sequence = "bib";
-		[PaletteReference] public readonly string Palette = "terrain";
+		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 		public readonly bool HasMinibib = false;
 
 		public object Create(ActorInitializer init) { return new Bib(init.Self, this); }

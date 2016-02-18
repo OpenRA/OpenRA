@@ -8,12 +8,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -34,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return NextActivity;
 
-			return Util.SequenceActivities(
+			return ActivityUtils.SequenceActivities(
 				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
 		}
 	}

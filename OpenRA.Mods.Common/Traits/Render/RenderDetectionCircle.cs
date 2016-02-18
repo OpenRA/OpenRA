@@ -19,14 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RenderDetectionCircleInfo : ITraitInfo, Requires<DetectCloakedInfo>
 	{
-		[Desc("Draw a rotating radar scanner update line, disabled by default.")]
-		public readonly bool DrawUpdateLine = false;
-
 		[Desc("WAngle the Radar update line advances per tick.")]
 		public readonly WAngle UpdateLineTick = new WAngle(-1);
 
-		[Desc("Number of trailing Radar update lines, will only draw one line if zero.")]
-		public readonly int LineTrailLength = 3;
+		[Desc("Number of trailing Radar update lines.")]
+		public readonly int TrailCount = 0;
 
 		[Desc("Color of the circle and scanner update line.")]
 		public readonly Color Color = Color.FromArgb(128, Color.LimeGreen);
@@ -62,34 +59,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (range == WDist.Zero)
 				yield break;
 
-			yield return new RangeCircleRenderable(
+			yield return new DetectionCircleRenderable(
 				self.CenterPosition,
 				range,
 				0,
+				info.TrailCount,
+				info.UpdateLineTick,
+				lineAngle,
 				info.Color,
 				info.ContrastColor);
-
-			if (info.DrawUpdateLine)
-			{
-				for (var i = info.LineTrailLength; i >= 0; i--)
-				{
-					var angle = lineAngle - new WAngle(i * (info.UpdateLineTick.Angle <= 512 ? 1 : -1));
-					var length = range.Length * new WVec(angle.Cos(), angle.Sin(), 0) / 1024;
-					var alpha = info.Color.A - (info.LineTrailLength > 0 ? i * info.Color.A / info.LineTrailLength : 0);
-					yield return new BeamRenderable(
-						self.CenterPosition,
-						0,
-						length,
-						3,
-						Color.FromArgb(alpha, info.ContrastColor));
-					yield return new BeamRenderable(
-						self.CenterPosition,
-						0,
-						length,
-						1,
-						Color.FromArgb(alpha, info.Color));
-				}
-			}
 		}
 
 		public void Tick(Actor self)

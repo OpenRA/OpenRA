@@ -8,31 +8,33 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can give this unit the order to follow and protect friendly units with the Guardable trait.")]
-	public class GuardInfo : ITraitInfo
+	public class GuardInfo : ITraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Guard(this); }
 	}
 
-	public class Guard : IResolveOrder, IOrderVoice
+	public class Guard : IResolveOrder, IOrderVoice, INotifyCreated
 	{
 		readonly GuardInfo info;
+		IMove move;
 
 		public Guard(GuardInfo info)
 		{
 			this.info = info;
+		}
+
+		public void Created(Actor self)
+		{
+			move = self.Trait<IMove>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -50,69 +52,12 @@ namespace OpenRA.Mods.Common.Traits
 			self.SetTargetLine(target, Color.Yellow);
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(false, new AttackMoveActivity(self, self.Trait<IMove>().MoveFollow(self, target, WDist.Zero, range)));
+			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Guard" ? info.Voice : null;
-		}
-	}
-
-	public class GuardOrderGenerator : IOrderGenerator
-	{
-		readonly IEnumerable<Actor> subjects;
-
-		public GuardOrderGenerator(IEnumerable<Actor> subjects)
-		{
-			this.subjects = subjects;
-		}
-
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
-		{
-			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
-			{
-				world.CancelInputMode();
-				yield break;
-			}
-
-			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
-
-			if (target == null || subjects.All(s => s.IsDead))
-				yield break;
-
-			foreach (var subject in subjects)
-				if (subject != target)
-					yield return new Order("Guard", subject, false) { TargetActor = target };
-		}
-
-		public void Tick(World world)
-		{
-			if (subjects.All(s => s.IsDead || !s.Info.HasTraitInfo<GuardInfo>()))
-				world.CancelInputMode();
-		}
-
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
-
-		public string GetCursor(World world, CPos xy, MouseInput mi)
-		{
-			if (!subjects.Any())
-				return null;
-
-			var multiple = subjects.Count() > 1;
-			var canGuard = FriendlyGuardableUnits(world, mi)
-				.Any(a => multiple || a != subjects.First());
-
-			return canGuard ? "guard" : "move-blocked";
-		}
-
-		static IEnumerable<Actor> FriendlyGuardableUnits(World world, MouseInput mi)
-		{
-			return world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && !a.IsDead &&
-					a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) &&
-					a.Info.HasTraitInfo<GuardableInfo>());
 		}
 	}
 }

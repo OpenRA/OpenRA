@@ -8,9 +8,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using OpenRA.Primitives;
 

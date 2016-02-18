@@ -1,7 +1,7 @@
 Speech:
 	Prefixes:
-		gdi: speech01.mix:
-		nod: speech02.mix:
+		gdi: speech-gdi|
+		nod: speech-nod|
 	Notifications:
 		AirUnitLost: 00-i074
 		AirstrikeReady: 00-n160
@@ -25,6 +25,8 @@ Speech:
 		ConstructionComplete: 00-i018
 		CriticalStructureLost: 00-i196
 		CriticalUnitLost: 00-i194
+		DisablePower: 00-i232
+		EnablePower: 00-i230
 		EmPulseCannonReady: 00-i158
 		EstablishingBattleControlStandBy: 01-n006
 		FireStormDefenseOffline: 00-i170

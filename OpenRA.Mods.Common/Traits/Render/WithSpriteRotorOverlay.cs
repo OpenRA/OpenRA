@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -60,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			rotorAnim.PlayRepeating(info.Sequence);
 			rs.Add(new AnimationWithOffset(rotorAnim,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				null, () => false, p => ZOffsetFromCenter(self, p, 1)));
+				null, p => ZOffsetFromCenter(self, p, 1)));
 		}
 
 		public void Tick(Actor self)
