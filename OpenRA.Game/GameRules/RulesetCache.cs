@@ -18,7 +18,7 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public sealed class RulesetCache : IDisposable
+	public sealed class RulesetCache
 	{
 		static readonly List<MiniYamlNode> NoMapRules = new List<MiniYamlNode>();
 
@@ -30,7 +30,6 @@ namespace OpenRA
 		readonly Dictionary<string, SoundInfo> notificationCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, MusicInfo> musicCache = new Dictionary<string, MusicInfo>();
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
-		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
 		public event EventHandler LoadingProgress;
 		void RaiseProgress()
@@ -85,9 +84,10 @@ namespace OpenRA
 					k => new MusicInfo(k.Key, k.Value));
 
 			using (new PerfTimer("TileSets"))
-				tileSets = LoadTileSets(fileSystem, tileSetCache, sequenceCaches, m.TileSets);
+				tileSets = LoadTileSets(fileSystem, tileSetCache, m.TileSets);
 
-			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(fileSystem, kvp.Value, map));
+			// TODO: only initialize, and then cache, the provider for the given map
+			var sequences = tileSets.ToDictionary(t => t.Key, t => new SequenceProvider(fileSystem, modData, t.Value, map));
 			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
 		}
 
@@ -122,8 +122,7 @@ namespace OpenRA
 			return itemSet;
 		}
 
-		Dictionary<string, TileSet> LoadTileSets(IReadOnlyFileSystem fileSystem, Dictionary<string, TileSet> itemCache,
-			Dictionary<string, SequenceCache> sequenceCaches, string[] files)
+		Dictionary<string, TileSet> LoadTileSets(IReadOnlyFileSystem fileSystem, Dictionary<string, TileSet> itemCache, string[] files)
 		{
 			var items = new Dictionary<string, TileSet>();
 
@@ -136,23 +135,11 @@ namespace OpenRA
 				{
 					t = new TileSet(fileSystem, file);
 					itemCache.Add(file, t);
-
-					// every time we load a tile set, we create a sequence cache for it
-					var sc = new SequenceCache(modData, fileSystem, t);
-					sequenceCaches.Add(t.Id, sc);
-
 					items.Add(t.Id, t);
 				}
 			}
 
 			return items;
-		}
-
-		public void Dispose()
-		{
-			foreach (var cache in sequenceCaches.Values)
-				cache.Dispose();
-			sequenceCaches.Clear();
 		}
 	}
 }

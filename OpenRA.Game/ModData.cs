@@ -192,7 +192,6 @@ namespace OpenRA
 		{
 			if (LoadScreen != null)
 				LoadScreen.Dispose();
-			RulesetCache.Dispose();
 			MapCache.Dispose();
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
