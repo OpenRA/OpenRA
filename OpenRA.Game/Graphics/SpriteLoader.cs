@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -34,11 +35,11 @@ namespace OpenRA.Graphics
 		public readonly SheetBuilder SheetBuilder;
 		readonly Cache<string, Sprite[]> sprites;
 
-		public SpriteCache(ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
+		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
 
-			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(filename, loaders, sheetBuilder));
+			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(fileSystem, filename, loaders, sheetBuilder));
 		}
 
 		public Sprite[] this[string filename] { get { return sprites[filename]; } }
@@ -48,9 +49,9 @@ namespace OpenRA.Graphics
 	{
 		readonly Cache<string, ISpriteFrame[]> frames;
 
-		public FrameCache(ISpriteLoader[] loaders)
+		public FrameCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(filename, loaders));
+			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(fileSystem, filename, loaders));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
@@ -58,14 +59,14 @@ namespace OpenRA.Graphics
 
 	public static class SpriteLoader
 	{
-		public static Sprite[] GetSprites(string filename, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
+		public static Sprite[] GetSprites(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
-			return GetFrames(filename, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
+			return GetFrames(fileSystem, filename, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
 		}
 
-		public static ISpriteFrame[] GetFrames(string filename, ISpriteLoader[] loaders)
+		public static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders)
 		{
-			using (var stream = Game.ModData.ModFiles.Open(filename))
+			using (var stream = fileSystem.Open(filename))
 			{
 				ISpriteFrame[] frames;
 				foreach (var loader in loaders)

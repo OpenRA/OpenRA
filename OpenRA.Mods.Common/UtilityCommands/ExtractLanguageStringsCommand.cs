@@ -29,13 +29,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.RulesetCache.Load();
+			modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var types = Game.ModData.ObjectCreator.GetTypes();
 			var translatableFields = types.SelectMany(t => t.GetFields())
 				.Where(f => f.HasAttribute<TranslateAttribute>()).Distinct();
 
-			foreach (var filename in Game.ModData.Manifest.ChromeLayout)
+			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
 				Console.WriteLine("# {0}:", filename);
 				var yaml = MiniYaml.FromFile(filename);

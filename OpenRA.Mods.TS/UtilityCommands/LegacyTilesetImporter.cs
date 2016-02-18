@@ -70,10 +70,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					for (var i = 1; i <= sectionCount; i++, templateIndex++)
 					{
 						var templateFilename = "{0}{1:D2}.{2}".F(sectionFilename, i, extension);
-						if (!Game.ModData.ModFiles.Exists(templateFilename))
+						if (!modData.DefaultFileSystem.Exists(templateFilename))
 							continue;
 
-						using (var s = Game.ModData.ModFiles.Open(templateFilename))
+						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
 							Console.WriteLine("\tTemplate@{0}:", templateIndex);
 							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							for (var v = 'a'; v <= 'z'; v++)
 							{
 								var variant = "{0}{1:D2}{2}.{3}".F(sectionFilename, i, v, extension);
-								if (Game.ModData.ModFiles.Exists(variant))
+								if (modData.DefaultFileSystem.Exists(variant))
 									images.Add(variant);
 							}
 

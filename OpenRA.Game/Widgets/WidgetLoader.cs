@@ -24,7 +24,7 @@ namespace OpenRA
 		{
 			this.modData = modData;
 
-			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromStream(modData.ModFiles.Open(a))))
+			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a))))
 				foreach (var w in file)
 				{
 					var key = w.Key.Substring(w.Key.IndexOf('@') + 1);

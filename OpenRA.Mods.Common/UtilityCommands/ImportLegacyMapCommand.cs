@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			MapSize = mapSize;
 		}
 
+		public ModData ModData;
 		public Map Map;
 		public Ruleset Rules;
 		public List<string> Players = new List<string>();
@@ -42,13 +43,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
 		public virtual void Run(ModData modData, string[] args)
 		{
+			ModData = modData;
+
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-
-			Rules = Game.ModData.RulesetCache.Load();
+			Rules = modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var filename = args[1];
-			using (var stream = Game.ModData.ModFiles.Open(filename))
+			using (var stream = modData.DefaultFileSystem.Open(filename))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");
@@ -66,7 +68,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				Map.Description = ExtractBriefing(file);
 
-				Map.RequiresMod = Game.ModData.Manifest.Mod.Id;
+				Map.RequiresMod = modData.Manifest.Mod.Id;
 
 				SetBounds(Map, mapSection);
 

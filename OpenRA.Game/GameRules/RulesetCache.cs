@@ -11,13 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Support;
 
 namespace OpenRA
 {
-	public sealed class RulesetCache : IDisposable
+	public sealed class RulesetCache
 	{
 		static readonly List<MiniYamlNode> NoMapRules = new List<MiniYamlNode>();
 
@@ -29,7 +30,6 @@ namespace OpenRA
 		readonly Dictionary<string, SoundInfo> notificationCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, MusicInfo> musicCache = new Dictionary<string, MusicInfo>();
 		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
-		readonly Dictionary<string, SequenceCache> sequenceCaches = new Dictionary<string, SequenceCache>();
 
 		public event EventHandler LoadingProgress;
 		void RaiseProgress()
@@ -47,7 +47,7 @@ namespace OpenRA
 		/// Cache and return the Ruleset for a given map.
 		/// If a map isn't specified then return the default mod Ruleset.
 		/// </summary>
-		public Ruleset Load(Map map = null)
+		public Ruleset Load(IReadOnlyFileSystem fileSystem, Map map = null)
 		{
 			var m = modData.Manifest;
 
@@ -59,38 +59,39 @@ namespace OpenRA
 			Dictionary<string, TileSet> tileSets;
 
 			using (new PerfTimer("Actors"))
-				actors = LoadYamlRules(actorCache, m.Rules,
+				actors = LoadYamlRules(fileSystem, actorCache, m.Rules,
 					map != null ? map.RuleDefinitions : NoMapRules,
 					k => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Weapons"))
-				weapons = LoadYamlRules(weaponCache, m.Weapons,
+				weapons = LoadYamlRules(fileSystem, weaponCache, m.Weapons,
 					map != null ? map.WeaponDefinitions : NoMapRules,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Voices"))
-				voices = LoadYamlRules(voiceCache, m.Voices,
+				voices = LoadYamlRules(fileSystem, voiceCache, m.Voices,
 					map != null ? map.VoiceDefinitions : NoMapRules,
 					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Notifications"))
-				notifications = LoadYamlRules(notificationCache, m.Notifications,
+				notifications = LoadYamlRules(fileSystem, notificationCache, m.Notifications,
 					map != null ? map.NotificationDefinitions : NoMapRules,
 					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Music"))
-				music = LoadYamlRules(musicCache, m.Music,
+				music = LoadYamlRules(fileSystem, musicCache, m.Music,
 					map != null ? map.MusicDefinitions : NoMapRules,
 					k => new MusicInfo(k.Key, k.Value));
 
 			using (new PerfTimer("TileSets"))
-				tileSets = LoadTileSets(tileSetCache, sequenceCaches, m.TileSets);
+				tileSets = LoadTileSets(fileSystem, tileSetCache, m.TileSets);
 
-			var sequences = sequenceCaches.ToDictionary(kvp => kvp.Key, kvp => new SequenceProvider(kvp.Value, map));
+			// TODO: only initialize, and then cache, the provider for the given map
+			var sequences = tileSets.ToDictionary(t => t.Key, t => new SequenceProvider(fileSystem, modData, t.Value, map));
 			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
 		}
 
-		Dictionary<string, T> LoadYamlRules<T>(
+		Dictionary<string, T> LoadYamlRules<T>(IReadOnlyFileSystem fileSystem,
 			Dictionary<string, T> itemCache,
 			string[] files, List<MiniYamlNode> nodes,
 			Func<MiniYamlNode, T> f)
@@ -112,7 +113,7 @@ namespace OpenRA
 				return t;
 			};
 
-			var tree = MiniYaml.Merge(files.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))).Append(nodes))
+			var tree = MiniYaml.Merge(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s))).Append(nodes))
 				.ToDictionaryWithConflictLog(n => n.Key, n => n.Value, "LoadYamlRules", null, null);
 			RaiseProgress();
 
@@ -121,7 +122,7 @@ namespace OpenRA
 			return itemSet;
 		}
 
-		Dictionary<string, TileSet> LoadTileSets(Dictionary<string, TileSet> itemCache, Dictionary<string, SequenceCache> sequenceCaches, string[] files)
+		Dictionary<string, TileSet> LoadTileSets(IReadOnlyFileSystem fileSystem, Dictionary<string, TileSet> itemCache, string[] files)
 		{
 			var items = new Dictionary<string, TileSet>();
 
@@ -132,25 +133,13 @@ namespace OpenRA
 					items.Add(t.Id, t);
 				else
 				{
-					t = new TileSet(modData, file);
+					t = new TileSet(fileSystem, file);
 					itemCache.Add(file, t);
-
-					// every time we load a tile set, we create a sequence cache for it
-					var sc = new SequenceCache(modData, t);
-					sequenceCaches.Add(t.Id, sc);
-
 					items.Add(t.Id, t);
 				}
 			}
 
 			return items;
-		}
-
-		public void Dispose()
-		{
-			foreach (var cache in sequenceCaches.Values)
-				cache.Dispose();
-			sequenceCaches.Clear();
 		}
 	}
 }

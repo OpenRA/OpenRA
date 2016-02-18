@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckChromeLogic : ILintPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			foreach (var filename in Game.ModData.Manifest.ChromeLayout)
-				CheckInner(MiniYaml.FromStream(Game.ModData.ModFiles.Open(filename)), filename, emitError);
+			foreach (var filename in modData.Manifest.ChromeLayout)
+				CheckInner(MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename)), filename, emitError);
 		}
 
 		void CheckInner(List<MiniYamlNode> nodes, string filename, Action<string> emitError)

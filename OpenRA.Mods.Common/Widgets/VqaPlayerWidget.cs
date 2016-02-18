@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (filename == cachedVideo)
 				return;
-			var video = new VqaReader(Game.ModData.ModFiles.Open(filename));
+			var video = new VqaReader(Game.ModData.DefaultFileSystem.Open(filename));
 
 			cachedVideo = filename;
 			Open(video);

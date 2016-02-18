@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -41,15 +42,22 @@ namespace OpenRA.Graphics
 		IReadOnlyDictionary<string, ISpriteSequence> ParseSequences(ModData modData, TileSet tileSet, SpriteCache cache, MiniYamlNode node);
 	}
 
-	public class SequenceProvider
+	public class SequenceProvider : IDisposable
 	{
+		readonly ModData modData;
+		readonly TileSet tileSet;
 		readonly Lazy<Sequences> sequences;
-		public readonly SpriteCache SpriteCache;
+		readonly Lazy<SpriteCache> spriteCache;
+		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
 
-		public SequenceProvider(SequenceCache cache, Map map)
+		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
+
+		public SequenceProvider(IReadOnlyFileSystem fileSystem, ModData modData, TileSet tileSet, Map map)
 		{
-			sequences = Exts.Lazy(() => cache.LoadSequences(map));
-			SpriteCache = cache.SpriteCache;
+			this.modData = modData;
+			this.tileSet = tileSet;
+			sequences = Exts.Lazy(() => LoadSequences(fileSystem, map));
+			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 		}
 
 		public ISpriteSequence GetSequence(string unitName, string sequenceName)
@@ -88,43 +96,16 @@ namespace OpenRA.Graphics
 			return unitSeq.Value.Keys;
 		}
 
-		public void Preload()
-		{
-			SpriteCache.SheetBuilder.Current.CreateBuffer();
-			foreach (var unitSeq in sequences.Value.Values)
-				foreach (var seq in unitSeq.Value.Values) { }
-			SpriteCache.SheetBuilder.Current.ReleaseBuffer();
-		}
-	}
-
-	public sealed class SequenceCache : IDisposable
-	{
-		readonly ModData modData;
-		readonly TileSet tileSet;
-		readonly Lazy<SpriteCache> spriteCache;
-		public SpriteCache SpriteCache { get { return spriteCache.Value; } }
-
-		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
-
-		public SequenceCache(ModData modData, TileSet tileSet)
-		{
-			this.modData = modData;
-			this.tileSet = tileSet;
-
-			// Every time we load a tile set, we create a sequence cache for it
-			spriteCache = Exts.Lazy(() => new SpriteCache(modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
-		}
-
-		public Sequences LoadSequences(Map map)
+		public Sequences LoadSequences(IReadOnlyFileSystem fileSystem, Map map)
 		{
 			using (new Support.PerfTimer("LoadSequences"))
-				return Load(map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
+				return Load(fileSystem, map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
 		}
 
-		Sequences Load(List<MiniYamlNode> sequenceNodes)
+		Sequences Load(IReadOnlyFileSystem fileSystem, List<MiniYamlNode> sequenceNodes)
 		{
 			var nodes = MiniYaml.Merge(modData.Manifest.Sequences
-				.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s)))
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s)))
 				.Append(sequenceNodes));
 
 			var items = new Dictionary<string, UnitSequences>();
@@ -147,6 +128,14 @@ namespace OpenRA.Graphics
 			}
 
 			return new ReadOnlyDictionary<string, UnitSequences>(items);
+		}
+
+		public void Preload()
+		{
+			SpriteCache.SheetBuilder.Current.CreateBuffer();
+			foreach (var unitSeq in sequences.Value.Values)
+				foreach (var seq in unitSeq.Value.Values) { }
+			SpriteCache.SheetBuilder.Current.ReleaseBuffer();
 		}
 
 		public void Dispose()

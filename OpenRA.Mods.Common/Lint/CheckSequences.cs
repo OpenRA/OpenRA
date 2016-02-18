@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Lint
 			this.emitError = emitError;
 
 			var sequenceSource = map != null ? map.SequenceDefinitions : new List<MiniYamlNode>();
-			sequenceDefinitions = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.ModFiles.Open(s))).Append(sequenceSource));
+			sequenceDefinitions = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(map.Open(s))).Append(sequenceSource));
 
 			var rules = map == null ? modData.DefaultRules : map.Rules;
 			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();

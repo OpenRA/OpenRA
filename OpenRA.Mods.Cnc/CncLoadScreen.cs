@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc
 			r = Game.Renderer;
 			if (r == null) return;
 
-			using (var stream = modData.ModFiles.Open(info["Image"]))
+			using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
 				sheet = new Sheet(SheetType.BGRA, stream);
 
 			var res = r.Resolution;

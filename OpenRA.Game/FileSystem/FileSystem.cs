@@ -17,7 +17,15 @@ using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
-	public class FileSystem
+	public interface IReadOnlyFileSystem
+	{
+		Stream Open(string filename);
+		bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename);
+		bool TryOpen(string filename, out Stream s);
+		bool Exists(string filename);
+	}
+
+	public class FileSystem : IReadOnlyFileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();

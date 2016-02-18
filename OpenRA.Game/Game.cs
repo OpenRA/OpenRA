@@ -342,8 +342,6 @@ namespace OpenRA
 
 			ModData = new ModData(mod, !Settings.Server.Dedicated);
 
-			Sound.Initialize();
-
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
@@ -363,7 +361,7 @@ namespace OpenRA
 				return;
 			}
 
-			ModData.InitializeLoaders();
+			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
 
 			if (Cursor != null)

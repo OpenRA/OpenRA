@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 			progressBar.Percentage = 0;
+			var modData = Game.ModData;
 
 			new Thread(() =>
 			{
@@ -131,7 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
 						var destFile = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
-						InstallUtils.ExtractFromPackage(source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
+						InstallUtils.ExtractFromPackage(modData.ModFiles, source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
 						progressBar.Percentage += installPercent;
 					}
 				}
@@ -150,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			retryButton.IsDisabled = () => true;
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
-
+			var modData = Game.ModData;
 			var dest = Platform.ResolvePath("^", "Content", modId);
 			var copyFiles = installData.CopyFilesFromCD;
 
@@ -189,7 +190,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest,
+						if (!InstallUtils.ExtractFromPackage(modData.ModFiles, source, extractPackage, extractFiles, dest,
 							overwrite, installData.OutputFilenameCase, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");

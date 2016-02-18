@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
@@ -36,6 +37,7 @@ namespace OpenRA
 
 		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
+		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
@@ -70,7 +72,7 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.Load());
+			defaultRules = Exts.Lazy(() => RulesetCache.Load(DefaultFileSystem));
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}
@@ -83,16 +85,18 @@ namespace OpenRA
 				LoadScreen.Display();
 		}
 
-		public void InitializeLoaders()
+		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{
 			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(this);
 			ChromeProvider.Initialize(this);
 
+			Game.Sound.Initialize(SoundLoaders, fileSystem);
+
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
-			VoxelLoader = new VoxelLoader();
+			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
 		}
@@ -166,11 +170,7 @@ namespace OpenRA
 			LoadTranslations(map);
 
 			// Reinitialize all our assets
-			InitializeLoaders();
-			ModFiles.LoadFromManifest(Manifest);
-
-			// Mount map package so custom assets can be used.
-			ModFiles.Mount(ModFiles.OpenPackage(map.Path));
+			InitializeLoaders(map);
 
 			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();
@@ -180,9 +180,9 @@ namespace OpenRA
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
 				foreach (var entry in map.Rules.Music)
-					entry.Value.Load();
+					entry.Value.Load(map);
 
-			VoxelProvider.Initialize(this, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelProvider.Initialize(VoxelLoader, map, Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
 			VoxelLoader.Finish();
 
 			return map;
@@ -192,7 +192,6 @@ namespace OpenRA
 		{
 			if (LoadScreen != null)
 				LoadScreen.Dispose();
-			RulesetCache.Dispose();
 			MapCache.Dispose();
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();

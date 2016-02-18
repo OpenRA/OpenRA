@@ -198,7 +198,7 @@ namespace OpenRA.Scripting
 			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
 			{
 				foreach (var s in scripts)
-					loadScript.Call(s, Game.ModData.ModFiles.Open(s).ReadAllText()).Dispose();
+					loadScript.Call(s, world.Map.Open(s).ReadAllText()).Dispose();
 			}
 		}
 

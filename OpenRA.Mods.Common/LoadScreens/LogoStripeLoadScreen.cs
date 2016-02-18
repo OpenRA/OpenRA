@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 			if (info.ContainsKey("Image"))
 			{
-				using (var stream = modData.ModFiles.Open(info["Image"]))
+				using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
 					sheet = new Sheet(SheetType.BGRA, stream);
 
 				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);

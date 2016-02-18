@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
 {
@@ -19,20 +20,20 @@ namespace OpenRA.Graphics
 	{
 		static Dictionary<string, Dictionary<string, Voxel>> units;
 
-		public static void Initialize(ModData modData, string[] voxelFiles, List<MiniYamlNode> voxelNodes)
+		public static void Initialize(VoxelLoader loader, IReadOnlyFileSystem fileSystem, string[] voxelFiles, List<MiniYamlNode> voxelNodes)
 		{
 			units = new Dictionary<string, Dictionary<string, Voxel>>();
 
 			var sequences = MiniYaml.Merge(voxelFiles.Select(
-				s => MiniYaml.FromStream(modData.ModFiles.Open(s))));
+				s => MiniYaml.FromStream(fileSystem.Open(s))));
 
 			foreach (var s in sequences)
-				LoadVoxelsForUnit(s.Key, s.Value);
+				LoadVoxelsForUnit(loader, s.Key, s.Value);
 
-			Game.ModData.VoxelLoader.RefreshBuffer();
+			loader.RefreshBuffer();
 		}
 
-		static Voxel LoadVoxel(string unit, MiniYaml info)
+		static Voxel LoadVoxel(VoxelLoader voxelLoader, string unit, MiniYaml info)
 		{
 			var vxl = unit;
 			var hva = unit;
@@ -46,15 +47,15 @@ namespace OpenRA.Graphics
 					hva = fields[1].Trim();
 			}
 
-			return Game.ModData.VoxelLoader.Load(vxl, hva);
+			return voxelLoader.Load(vxl, hva);
 		}
 
-		static void LoadVoxelsForUnit(string unit, MiniYaml sequences)
+		static void LoadVoxelsForUnit(VoxelLoader loader, string unit, MiniYaml sequences)
 		{
 			Game.ModData.LoadScreen.Display();
 			try
 			{
-				var seq = sequences.ToDictionary(my => LoadVoxel(unit, my));
+				var seq = sequences.ToDictionary(my => LoadVoxel(loader, unit, my));
 				units.Add(unit, seq);
 			}
 			catch (FileNotFoundException) { } // Do nothing; we can crash later if we actually wanted art

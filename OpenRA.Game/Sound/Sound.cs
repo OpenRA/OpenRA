@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 
@@ -48,21 +49,21 @@ namespace OpenRA
 			throw new InvalidOperationException("Platform DLL is missing PlatformAttribute to tell us what type to use!");
 		}
 
-		ISoundSource LoadSound(string filename)
+		ISoundSource LoadSound(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem, string filename)
 		{
-			if (!Game.ModData.ModFiles.Exists(filename))
+			if (!fileSystem.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
-			using (var stream = Game.ModData.ModFiles.Open(filename))
+			using (var stream = fileSystem.Open(filename))
 			{
 				byte[] rawData;
 				int channels;
 				int sampleBits;
 				int sampleRate;
-				foreach (var loader in Game.ModData.SoundLoaders)
+				foreach (var loader in loaders)
 					if (loader.TryParseSound(stream, filename, out rawData, out channels, out sampleBits, out sampleRate))
 						return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
 
@@ -70,9 +71,9 @@ namespace OpenRA
 			}
 		}
 
-		public void Initialize()
+		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
-			sounds = new Cache<string, ISoundSource>(LoadSound);
+			sounds = new Cache<string, ISoundSource>(s => LoadSound(loaders, fileSystem, s));
 			music = null;
 			currentMusic = null;
 			video = null;

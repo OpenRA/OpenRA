@@ -38,17 +38,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				remap[i] = i;
 
 			var srcMod = args[1].Split(':')[0];
+			var srcModData = new ModData(srcMod);
+			Game.ModData = srcModData;
 
-			Game.ModData = new ModData(srcMod);
-			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
-			var srcRules = Game.ModData.RulesetCache.Load();
+			var srcRules = srcModData.RulesetCache.Load(srcModData.DefaultFileSystem);
 			var srcPaletteInfo = srcRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
-			Game.ModData = new ModData(destMod);
-			Game.ModData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
-			var destRules = Game.ModData.RulesetCache.Load();
+			var destModData = new ModData(destMod);
+			Game.ModData = destModData;
+			var destRules = destModData.RulesetCache.Load(destModData.DefaultFileSystem);
 			var destPaletteInfo = destRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;
 			var shadowIndex = new int[] { };
