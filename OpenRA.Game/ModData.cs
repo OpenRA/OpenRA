@@ -197,7 +197,7 @@ namespace OpenRA
 			using (new Support.PerfTimer("Map.PreloadRules"))
 				map.PreloadRules();
 			using (new Support.PerfTimer("Map.SequenceProvider.Preload"))
-				map.SequenceProvider.Preload();
+				map.Rules.Sequences.Preload();
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))

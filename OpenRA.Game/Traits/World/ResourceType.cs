@@ -48,7 +48,7 @@ namespace OpenRA.Traits
 			Variants = new Dictionary<string, Sprite[]>();
 			foreach (var v in info.Variants)
 			{
-				var seq = world.Map.SequenceProvider.GetSequence(Info.Sequence, v);
+				var seq = world.Map.Rules.Sequences.GetSequence(Info.Sequence, v);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				Variants.Add(v, sprites);
 			}

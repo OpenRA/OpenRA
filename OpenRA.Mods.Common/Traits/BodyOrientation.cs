@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 						throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
 				}
 
-				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.SequenceProvider, faction);
+				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.Rules.Sequences, faction);
 			});
 		}
 

@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets
 					continue;
 
 				var rsi = actor.TraitInfo<RenderSpritesInfo>();
-				var icon = new Animation(world, rsi.GetImage(actor, world.Map.SequenceProvider, faction));
+				var icon = new Animation(world, rsi.GetImage(actor, world.Map.Rules.Sequences, faction));
 				icon.Play(actor.TraitInfo<TooltipInfo>().Icon);
 				var bi = actor.TraitInfo<BuildableInfo>();
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (IconWidth + IconSpacing), 0);

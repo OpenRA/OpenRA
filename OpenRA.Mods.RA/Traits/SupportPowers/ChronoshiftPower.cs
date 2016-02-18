@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
-				tile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				tile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -196,9 +196,9 @@ namespace OpenRA.Mods.RA.Traits
 				range = info.Range;
 
 				var tileset = manager.Self.World.TileSet.Id.ToLowerInvariant();
-				validTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
-				invalidTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
-				sourceTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				validTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
+				invalidTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
+				sourceTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
