@@ -32,7 +32,9 @@ carryall.reinforce:
 		UpgradeMinEnabledLevel: 1
 	SpawnActorOnDeath:
 		Actor: carryall.husk
-	Carryall:
+	AutoCarryall:
+		LoadingDelay: 10
+		UnloadingDelay: 15
 		Automatic: False
 	RenderSprites:
 		Image: carryall
@@ -43,7 +45,7 @@ carryall.reinforce:
 
 carryall:
 	Inherits: carryall.reinforce
-	Carryall:
+	AutoCarryall:
 		Automatic: True
 	Buildable:
 		Queue: Aircraft

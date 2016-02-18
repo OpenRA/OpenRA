@@ -12,7 +12,6 @@
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.D2k.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -61,8 +60,9 @@ namespace OpenRA.Mods.D2k.Traits
 			carryable.Reserve(carrier);
 
 			carrier.Trait<Carryall>().AttachCarryable(cargo);
+			var carrierInfo = carrier.Info.TraitInfo<CarryallInfo>();
 
-			carrier.QueueActivity(new DeliverUnit(carrier));
+			carrier.QueueActivity(new DeliverUnit(carrier, carrierInfo.UnLoadingDelay));
 			carrier.QueueActivity(new HeliFly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 

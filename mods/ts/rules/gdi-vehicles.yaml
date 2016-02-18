@@ -166,6 +166,8 @@ MMCH:
 	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8
+	Carryable:
+		CarryableHeight: 400
 
 HMEC:
 	Inherits: ^VoxelTank
@@ -204,6 +206,8 @@ HMEC:
 		TickRate: 1
 	Selectable:
 		Bounds: 40, 40, 0, -8
+	Carryable:
+		CarryableHeight: 500
 
 SONIC:
 	Inherits: ^VoxelTank

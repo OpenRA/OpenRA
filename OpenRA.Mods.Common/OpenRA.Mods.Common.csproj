@@ -741,6 +741,12 @@
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Radar\JamsRadar.cs" />
     <Compile Include="AI\DummyAI.cs" />
+    <Compile Include="Traits\AutoCarryable.cs" />
+    <Compile Include="Traits\AutoCarryall.cs" />
+    <Compile Include="Traits\Carryable.cs" />
+    <Compile Include="Traits\Carryall.cs" />
+    <Compile Include="Activities\DeliverUnit.cs" />
+    <Compile Include="Activities\PickupUnit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
