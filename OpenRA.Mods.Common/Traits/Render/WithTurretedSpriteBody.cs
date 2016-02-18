@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), wsb.Sequence));
 
-			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
 		}
 	}
 

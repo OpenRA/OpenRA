@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -41,6 +42,37 @@ namespace OpenRA.Mods.Common.Graphics
 		public T Get<T>() where T : IActorInit { return dict.Get<T>(); }
 		public U Get<T, U>() where T : IActorInit<U> { return dict.Get<T>().Value(World); }
 		public bool Contains<T>() where T : IActorInit { return dict.Contains<T>(); }
+
+		public Func<WRot> GetOrientation()
+		{
+			var ifacing = Actor.TraitInfoOrDefault<IFacingInfo>();
+			if (ifacing == null)
+				return () => WRot.Zero;
+			var dynamicFacingInit = dict.GetOrDefault<DynamicFacingInit>();
+			if (dynamicFacingInit != null)
+			{
+				var dynamicFacing = dynamicFacingInit.Value(null);
+				return () => WRot.FromFacing(dynamicFacing());
+			}
+
+			var facinginit = dict.GetOrDefault<FacingInit>();
+			var facing = facinginit != null ? facinginit.Value(null) : ifacing.GetInitialFacing();
+			var orientation = WRot.FromFacing(facing);
+			return () => orientation;
+		}
+
+		public Func<int> GetFacing()
+		{
+			var ifacing = Actor.TraitInfoOrDefault<IFacingInfo>();
+			if (ifacing == null)
+				return () => 0;
+			var idynamicFacingInit = dict.GetOrDefault<DynamicFacingInit>();
+			if (idynamicFacingInit != null)
+				return idynamicFacingInit.Value(null);
+			var ifacingInit = dict.GetOrDefault<FacingInit>();
+			var facing = ifacingInit != null ? ifacingInit.Value(null) : ifacing.GetInitialFacing();
+			return () => facing;
+		}
 
 		public DamageState GetDamageState()
 		{

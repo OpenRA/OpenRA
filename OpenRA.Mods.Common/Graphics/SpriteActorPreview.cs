@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 
@@ -17,12 +18,12 @@ namespace OpenRA.Mods.Common.Graphics
 	public class SpriteActorPreview : IActorPreview
 	{
 		readonly Animation animation;
-		readonly WVec offset;
-		readonly int zOffset;
+		readonly Func<WVec> offset;
+		readonly Func<int> zOffset;
 		readonly PaletteReference pr;
 		readonly float scale;
 
-		public SpriteActorPreview(Animation animation, WVec offset, int zOffset, PaletteReference pr, float scale)
+		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, PaletteReference pr, float scale)
 		{
 			this.animation = animation;
 			this.offset = offset;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
 		{
-			return animation.Render(pos, offset, zOffset, pr, scale);
+			return animation.Render(pos, offset(), zOffset(), pr, scale);
 		}
 	}
 }

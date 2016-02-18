@@ -195,6 +195,7 @@
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
+    <Compile Include="ActorInitializer.cs" />
     <Compile Include="ShroudExts.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />

@@ -11,7 +11,6 @@
 
 using System.Linq;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -48,39 +47,6 @@ namespace OpenRA
 		T Value(World world);
 	}
 
-	public class FacingInit : IActorInit<int>
-	{
-		[FieldFromYamlKey] readonly int value = 128;
-		public FacingInit() { }
-		public FacingInit(int init) { value = init; }
-		public int Value(World world) { return value; }
-	}
-
-	public class LocationInit : IActorInit<CPos>
-	{
-		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
-		public LocationInit() { }
-		public LocationInit(CPos init) { value = init; }
-		public CPos Value(World world) { return value; }
-	}
-
-	public class SubCellInit : IActorInit<SubCell>
-	{
-		[FieldFromYamlKey] readonly int value = (int)SubCell.FullCell;
-		public SubCellInit() { }
-		public SubCellInit(int init) { value = init; }
-		public SubCellInit(SubCell init) { value = (int)init; }
-		public SubCell Value(World world) { return (SubCell)value; }
-	}
-
-	public class CenterPositionInit : IActorInit<WPos>
-	{
-		[FieldFromYamlKey] readonly WPos value = WPos.Zero;
-		public CenterPositionInit() { }
-		public CenterPositionInit(WPos init) { value = init; }
-		public WPos Value(World world) { return value; }
-	}
-
 	public class OwnerInit : IActorInit<Player>
 	{
 		[FieldFromYamlKey] public readonly string PlayerName = "Neutral";
@@ -104,13 +70,11 @@ namespace OpenRA
 		}
 	}
 
-	// Allows maps / transformations to specify the faction variant of an actor.
-	public class FactionInit : IActorInit<string>
+	public class LocationInit : IActorInit<CPos>
 	{
-		[FieldFromYamlKey] public readonly string Faction;
-
-		public FactionInit() { }
-		public FactionInit(string faction) { Faction = faction; }
-		public string Value(World world) { return Faction; }
+		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
+		public LocationInit() { }
+		public LocationInit(CPos init) { value = init; }
+		public CPos Value(World world) { return value; }
 	}
 }
