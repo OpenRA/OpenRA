@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowOnRamps)
 			{
 				var tile = world.Map.MapTiles.Value[cell];
-				var tileInfo = world.TileSet.GetTileInfo(tile);
+				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
 				if (tileInfo != null && tileInfo.RampType > 0)
 					return false;
 			}
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
-			world.Map.CustomTerrain[cell] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(t.Info.TerrainType);
 
 			return new CellContents
 			{

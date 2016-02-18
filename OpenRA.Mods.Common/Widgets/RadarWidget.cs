@@ -140,12 +140,12 @@ namespace OpenRA.Mods.Common.Widgets
 			int leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
-				var type = world.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
+				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
 				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
 				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
 			}
 			else
-				leftColor = rightColor = world.TileSet[custom].Color.ToArgb();
+				leftColor = rightColor = world.Map.Rules.TileSet[custom].Color.ToArgb();
 
 			var stride = radarSheet.Size.Width;
 

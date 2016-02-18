@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 			mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-			movementClass = (uint)mobile.Info.GetMovementClass(self.World.TileSet);
+			movementClass = (uint)mobile.Info.GetMovementClass(self.World.Map.Rules.TileSet);
 
 			if (target.IsValidFor(self))
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);

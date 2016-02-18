@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.self = self;
 
-			var tileset = self.World.TileSet.Id.ToLowerInvariant();
+			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Traits
 				minelayer = self;
 				minefieldStart = xy;
 
-				var tileset = self.World.TileSet.Id.ToLowerInvariant();
+				var tileset = self.World.Map.Tileset.ToLowerInvariant();
 				tileOk = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 				tileBlocked = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 			}

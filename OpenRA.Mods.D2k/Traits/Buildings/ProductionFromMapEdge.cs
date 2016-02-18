@@ -47,7 +47,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
-			var passable = mobileInfo != null ? (uint)mobileInfo.GetMovementClass(self.World.TileSet) : 0;
+			var passable = mobileInfo != null ? (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet) : 0;
 			var destination = rp != null ? rp.Location : self.Location;
 
 			var location = spawnLocation;

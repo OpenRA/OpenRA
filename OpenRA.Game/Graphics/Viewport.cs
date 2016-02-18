@@ -149,7 +149,7 @@ namespace OpenRA.Graphics
 			var world = worldRenderer.Viewport.ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
 			var candidates = CandidateMouseoverCells(world).ToList();
-			var tileSet = worldRenderer.World.TileSet;
+			var tileSet = worldRenderer.World.Map.Rules.TileSet;
 
 			foreach (var uv in candidates)
 			{

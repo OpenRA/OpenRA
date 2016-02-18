@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Correlate the tile "image" aka subtile with its position to find the template origin
 			var tile = w.Map.MapTiles.Value[cell].Type;
 			var index = w.Map.MapTiles.Value[cell].Index;
-			var template = w.TileSet.Templates[tile];
+			var template = w.Map.Rules.TileSet.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
 

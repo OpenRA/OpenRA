@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public RadarColorFromTerrain(Actor self, string terrain)
 		{
-			c = self.World.TileSet[self.World.TileSet.GetTerrainIndex(terrain)].Color;
+			var tileSet = self.World.Map.Rules.TileSet;
+			c = tileSet[tileSet.GetTerrainIndex(terrain)].Color;
 		}
 
 		public bool VisibleOnRadar(Actor self) { return true; }

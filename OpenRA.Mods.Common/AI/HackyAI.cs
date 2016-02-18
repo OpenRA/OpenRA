@@ -308,9 +308,10 @@ namespace OpenRA.Mods.Common.AI
 			attackForceTicks = Random.Next(0, Info.AttackForceInterval);
 			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
 
-			resourceTypeIndices = new BitArray(World.TileSet.TerrainInfo.Length); // Big enough
+			var tileset = World.Map.Rules.TileSet;
+			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
-				resourceTypeIndices.Set(World.TileSet.GetTerrainIndex(t.TerrainType), true);
+				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 		}
 
 		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
@@ -672,7 +673,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var harvInfo = harvester.Info.TraitInfo<HarvesterInfo>();
 			var mobileInfo = harvester.Info.TraitInfo<MobileInfo>();
-			var passable = (uint)mobileInfo.GetMovementClass(World.TileSet);
+			var passable = (uint)mobileInfo.GetMovementClass(World.Map.Rules.TileSet);
 
 			var path = pathfinder.FindPath(
 				PathSearch.Search(World, mobileInfo, harvester, true,

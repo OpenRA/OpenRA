@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Orders
 				world.Selection.Clear();
 
 			var map = world.Map;
-			var tileset = world.TileSet.Id.ToLowerInvariant();
+			var tileset = world.Map.Tileset.ToLowerInvariant();
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();

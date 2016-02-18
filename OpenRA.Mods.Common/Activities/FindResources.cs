@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
-			var passable = (uint)mobileInfo.GetMovementClass(self.World.TileSet);
+			var passable = (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet);
 			List<CPos> path;
 			using (var search = PathSearch.Search(self.World, mobileInfo, self, true,
 				loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))

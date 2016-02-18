@@ -17,7 +17,7 @@ namespace OpenRA.Graphics
 {
 	sealed class TerrainRenderer : IDisposable
 	{
-		readonly World world;
+		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
 		readonly Theater theater;
 		readonly CellLayer<TerrainTile> mapTiles;
@@ -25,19 +25,19 @@ namespace OpenRA.Graphics
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
-			this.world = world;
+			map = world.Map;
 			theater = wr.Theater;
-			mapTiles = world.Map.MapTiles.Value;
-			mapHeight = world.Map.MapHeight.Value;
+			mapTiles = map.MapTiles.Value;
+			mapHeight = map.MapHeight.Value;
 
-			foreach (var template in world.TileSet.Templates)
+			foreach (var template in map.Rules.TileSet.Templates)
 			{
 				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
 				spriteLayers.GetOrAdd(palette, pal =>
-					new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(palette), wr.World.Type != WorldType.Editor));
+					new TerrainSpriteLayer(world, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(palette), world.Type != WorldType.Editor));
 			}
 
-			foreach (var cell in world.Map.AllCells)
+			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
 			mapTiles.CellEntryChanged += UpdateCell;
@@ -47,7 +47,7 @@ namespace OpenRA.Graphics
 		public void UpdateCell(CPos cell)
 		{
 			var tile = mapTiles[cell];
-			var palette = world.TileSet.Templates[tile.Type].Palette ?? TileSet.TerrainPaletteInternalName;
+			var palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? TileSet.TerrainPaletteInternalName;
 			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);

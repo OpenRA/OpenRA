@@ -158,9 +158,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTerrainType)
 				return true;
 
-			var tileSet = self.World.TileSet;
 			var tiles = self.World.Map.MapTiles.Value;
-			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[self.Location])].Type;
+			var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
 
 			return info.AllowedTerrainTypes.Contains(terrainType);
 		}
@@ -174,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Map.Contains(self.Location))
 			{
 				var tile = self.World.Map.MapTiles.Value[self.Location];
-				var ti = self.World.TileSet.GetTileInfo(tile);
+				var ti = self.World.Map.Rules.TileSet.GetTileInfo(tile);
 				if (ti != null)
 					ramp = ti.RampType;
 			}

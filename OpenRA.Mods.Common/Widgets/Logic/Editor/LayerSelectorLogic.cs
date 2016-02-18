@@ -57,8 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				layerPreview.GetPalette = () => resource.Palette;
 
 				var variant = resource.Variants.FirstOrDefault();
-				var sequenceProvider = rules.Sequences;
-				var sequence = sequenceProvider.GetSequence("resources", variant);
+				var sequence = rules.Sequences.GetSequence("resources", variant);
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
 

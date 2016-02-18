@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Traits
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
 
-				var tileset = manager.Self.World.TileSet.Id.ToLowerInvariant();
+				var tileset = world.Map.Tileset.ToLowerInvariant();
 				validTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
 				invalidTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
 				sourceTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);

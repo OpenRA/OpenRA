@@ -50,9 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var map = wr.World.Map;
-			var tileSet = wr.World.TileSet;
+			var tileSet = wr.World.Map.Rules.TileSet;
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
-			var colors = wr.World.TileSet.HeightDebugColors;
+			var colors = tileSet.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
