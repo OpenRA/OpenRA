@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
 	{
-		[WeaponReference]
+		[WeaponReference, FieldLoader.Require]
 		[Desc("Weapon to use for the impact.",
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
