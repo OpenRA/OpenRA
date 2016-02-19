@@ -780,6 +780,7 @@ debugger.handle = function(command, server, options)
   local gprint = _G.print
   _G.print = function (...) if verbose then DisplayOutputLn(...) end end
 
+  PackageEventHandle("onDebuggerCommand", debugger, command, server or debugger.server, options)
   debugger.running = true
   statusUpdate("running")
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end

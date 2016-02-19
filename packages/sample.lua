@@ -56,6 +56,7 @@ local events = {
   onDebuggerClose =    function(self, debugger) end,
   onDebuggerActivate = function(self, debugger, file, line, editor) end,
   onDebuggerStatusUpdate = function(self, debugger, status) end,
+  onDebuggerCommand =  function(self, debugger, command, server, options) end,
   onIdle =             function(self, event) end,
   onIdleOnce =         function(self, event) end,
   onAppFocusLost =     function(self, app) end,
