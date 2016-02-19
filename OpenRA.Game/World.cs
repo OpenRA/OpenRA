@@ -30,6 +30,7 @@ namespace OpenRA
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
+		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
 		readonly List<ISync> syncedEffects = new List<ISync>();
 
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
@@ -285,6 +286,11 @@ namespace OpenRA
 		public void Add(IEffect e)
 		{
 			effects.Add(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Add(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Add(se);
@@ -293,6 +299,11 @@ namespace OpenRA
 		public void Remove(IEffect e)
 		{
 			effects.Remove(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Remove(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Remove(se);
@@ -301,6 +312,7 @@ namespace OpenRA
 		public void RemoveAll(Predicate<IEffect> predicate)
 		{
 			effects.RemoveAll(predicate);
+			unpartitionedEffects.RemoveAll(e => predicate((IEffect)e));
 			syncedEffects.RemoveAll(e => predicate((IEffect)e));
 		}
 
@@ -361,6 +373,7 @@ namespace OpenRA
 
 		public IEnumerable<Actor> Actors { get { return actors.Values; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+		public IEnumerable<IEffect> UnpartitionedEffects { get { return unpartitionedEffects; } }
 		public IEnumerable<ISync> SyncedEffects { get { return syncedEffects; } }
 
 		public Actor GetActorById(uint actorId)
