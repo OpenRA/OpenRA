@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly SpriteFont font;
 		readonly string text;
+		readonly int duration;
+		TextRenderable textRenderable;
+		Rectangle bounds;
 		Color color;
 		int remaining;
 		WPos pos;
@@ -34,15 +37,25 @@ namespace OpenRA.Mods.Common.Effects
 			this.pos = pos;
 			this.color = color;
 			this.text = text;
+			this.duration = duration;
 			remaining = duration;
+
+			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
+			textRenderable = new TextRenderable(font, pos, 4096, color, text);
+			bounds = textRenderable.ScreenBounds(null);
 		}
 
 		public void Tick(World world)
 		{
+			if (remaining == duration)
+				world.ScreenMap.Add(this, pos, bounds);
+
 			if (--remaining <= 0)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			pos += Velocity;
+			textRenderable = new TextRenderable(font, pos, textRenderable.ZOffset, color, text);
+			world.ScreenMap.Update(this, pos, bounds);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr) { return SpriteRenderable.None; }
@@ -52,8 +65,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (wr.World.FogObscures(pos) || wr.World.ShroudObscures(pos))
 				yield break;
 
-			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
-			yield return new TextRenderable(font, pos, 4096, color, text);
+			yield return textRenderable;
 		}
 
 		public static string FormatCashTick(int cashAmount)

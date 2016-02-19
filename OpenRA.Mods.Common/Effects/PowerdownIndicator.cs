@@ -29,12 +29,13 @@ namespace OpenRA.Mods.Common.Effects
 
 			anim = new Animation(a.World, canPowerDown.Info.IndicatorImage);
 			anim.PlayRepeating(canPowerDown.Info.IndicatorSequence);
+			a.World.ScreenMap.Add(this, a.CenterPosition, anim.Image.Bounds);
 		}
 
 		void IEffect.Tick(World world)
 		{
 			if (!a.IsInWorld || a.IsDead || !canPowerDown.Disabled)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			anim.Tick();
 		}

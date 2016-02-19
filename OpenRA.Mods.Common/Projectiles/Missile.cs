@@ -247,6 +247,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				anim = new Animation(world, info.Image, () => renderFacing);
 				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
+				world.ScreenMap.Add(this, pos, anim.Image.Bounds);
 			}
 
 			if (info.ContrailLength > 0)
@@ -861,6 +862,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				ticksToNextSmoke = info.TrailInterval;
 			}
 
+			if (anim != null)
+				world.ScreenMap.Update(this, pos, anim.Image.Bounds);
+
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
@@ -883,7 +887,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
-			world.AddFrameEndTask(w => w.Remove(this));
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			// Don't blow up in our launcher's face!
 			if (ticks <= info.Arm)

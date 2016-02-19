@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim = new Animation(self.World, info.Image);
 			anim.PlayRepeating(info.String);
 
-			self.World.AddFrameEndTask(w => w.Add(this));
+			self.World.AddFrameEndTask(w => { w.Add(this); w.ScreenMap.Add(this, self.CenterPosition, anim.Image.Bounds); });
 
 			huf = Exts.Lazy(() => self.TraitOrDefault<HiddenUnderFog>());
 			fuf = Exts.Lazy(() => self.TraitOrDefault<FrozenUnderFog>());
@@ -122,7 +122,9 @@ namespace OpenRA.Mods.Cnc.Effects
 		void IEffect.Tick(World world)
 		{
 			if (self.Disposed)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+
+			world.ScreenMap.Update(this, self.CenterPosition, anim.Image.Bounds);
 
 			for (var playerIndex = 0; playerIndex < dotStates.Count; playerIndex++)
 			{

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -33,6 +34,7 @@ namespace OpenRA.Traits
 		readonly Func<Actor, bool> actorIsInWorld = a => a.IsInWorld;
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedActors;
+		readonly SpatiallyPartitioned<IEffect> partitionedEffects;
 		WorldRenderer worldRenderer;
 
 		public ScreenMap(World world, ScreenMapInfo info)
@@ -43,6 +45,7 @@ namespace OpenRA.Traits
 			partitionedFrozenActors = new Cache<Player, SpatiallyPartitioned<FrozenActor>>(
 				_ => new SpatiallyPartitioned<FrozenActor>(width, height, info.BinSize));
 			partitionedActors = new SpatiallyPartitioned<Actor>(width, height, info.BinSize);
+			partitionedEffects = new SpatiallyPartitioned<IEffect>(width, height, info.BinSize);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
@@ -68,6 +71,13 @@ namespace OpenRA.Traits
 			partitionedFrozenActors[viewer].Add(fa, FrozenActorBounds(fa));
 		}
 
+		public void Add(IEffect effect, WPos position, Rectangle bounds)
+		{
+			var screenPos = worldRenderer.ScreenPxPosition(position);
+			var screenBounds = new Rectangle(screenPos.X - bounds.Width / 2, screenPos.Y - bounds.Height / 2, bounds.Width, bounds.Height);
+			partitionedEffects.Add(effect, screenBounds);
+		}
+
 		public void Remove(Player viewer, FrozenActor fa)
 		{
 			partitionedFrozenActors[viewer].Remove(fa);
@@ -83,9 +93,25 @@ namespace OpenRA.Traits
 			partitionedActors.Update(a, ActorBounds(a));
 		}
 
+		public void Update(IEffect effect, WPos position, Rectangle bounds)
+		{
+			if (!partitionedEffects.Contains(effect))
+				return;
+
+			var screenPos = worldRenderer.ScreenPxPosition(position);
+			var screenBounds = new Rectangle(screenPos.X - bounds.Width / 2, screenPos.Y - bounds.Height / 2, bounds.Width, bounds.Height);
+			partitionedEffects.Update(effect, screenBounds);
+		}
+
 		public void Remove(Actor a)
 		{
 			partitionedActors.Remove(a);
+		}
+
+		public void Remove(IEffect e)
+		{
+			if (e != null && partitionedEffects.Contains(e))
+				partitionedEffects.Remove(e);
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 worldPx)
@@ -120,6 +146,11 @@ namespace OpenRA.Traits
 			return ActorsInBox(RectWithCorners(a, b));
 		}
 
+		public IEnumerable<IEffect> EffectsInBox(int2 a, int2 b)
+		{
+			return partitionedEffects.InBox(RectWithCorners(a, b));
+		}
+
 		public IEnumerable<Actor> ActorsInBox(Rectangle r)
 		{
 			return partitionedActors.InBox(r).Where(actorIsInWorld);
@@ -128,6 +159,11 @@ namespace OpenRA.Traits
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, int2 a, int2 b)
 		{
 			return FrozenActorsInBox(p, RectWithCorners(a, b));
+		}
+
+		public IEnumerable<IEffect> EffectsInBox(Rectangle r)
+		{
+			return partitionedEffects.InBox(r);
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsInBox(Player p, Rectangle r)

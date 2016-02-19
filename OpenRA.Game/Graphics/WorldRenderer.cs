@@ -110,7 +110,8 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
-			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
+			var effectRenderables = World.ScreenMap.EffectsInBox(Viewport.TopLeft, Viewport.BottomRight);
+			worldRenderables = worldRenderables.Concat(effectRenderables.SelectMany(e => e.Render(this)));
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
 			Game.Renderer.WorldModelRenderer.BeginFrame();

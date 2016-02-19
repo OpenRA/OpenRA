@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -55,6 +56,12 @@ namespace OpenRA.Mods.Cnc.Projectiles
 			ticksUntilRemove = info.Duration;
 			damageDuration = info.DamageDuration > info.Duration ? info.Duration : info.DamageDuration;
 			target = args.PassiveTarget;
+
+			var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+			zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
+				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
+			var world = args.SourceActor.World;
+			world.ScreenMap.Add(this, pos, zap.ScreenBounds(null));
 		}
 
 		public void Tick(World world)
@@ -67,7 +74,10 @@ namespace OpenRA.Mods.Cnc.Projectiles
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 
 			if (damageDuration-- > 0)
+			{
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
+				world.ScreenMap.Update(this, target, zap.ScreenBounds(null));
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

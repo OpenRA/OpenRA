@@ -32,13 +32,15 @@ namespace OpenRA.Mods.Common.Effects
 			rb = building.Trait<RepairableBuilding>();
 			anim = new Animation(building.World, rb.Info.IndicatorImage, () => !rb.RepairActive || rb.IsTraitDisabled);
 
+			building.World.ScreenMap.Add(this, building.CenterPosition, anim.Image.Bounds);
+
 			CycleRepairer();
 		}
 
 		void IEffect.Tick(World world)
 		{
 			if (!building.IsInWorld || building.IsDead || !rb.Repairers.Any())
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			anim.Tick();
 		}

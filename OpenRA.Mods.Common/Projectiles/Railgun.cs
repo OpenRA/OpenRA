@@ -145,17 +145,21 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.BeamColor = beamColor;
 			this.HelixColor = helixColor;
 
+			var world = args.SourceActor.World;
 			if (!string.IsNullOrEmpty(info.HitAnim))
-				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+			{
+				hitanim = new Animation(world, info.HitAnim);
+				world.ScreenMap.Add(this, target, hitanim.Image.Bounds);
+			}
 
-			CalculateVectors();
+			CalculateVectors(world);
 		}
 
-		void CalculateVectors()
+		void CalculateVectors(World world)
 		{
 			// Check for blocking actors
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, target, args.Source,
 					info.BeamWidth, info.BlockerScanRadius, out blockedPos))
 				target = blockedPos;
 
@@ -197,7 +201,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (ticks == 0)
 			{
 				if (hitanim != null)
+				{
 					hitanim.PlayThen(info.HitAnimSequence, () => animationComplete = true);
+					world.ScreenMap.Update(this, target, hitanim.Image.Bounds);
+				}
 				else
 					animationComplete = true;
 
@@ -215,7 +222,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				hitanim.Tick();
 
 			if (ticks++ > info.Duration && animationComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
