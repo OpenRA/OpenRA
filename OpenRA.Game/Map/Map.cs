@@ -1178,7 +1178,8 @@ namespace OpenRA
 		// Placeholders for future implementation
 		public Stream Open(string filename)
 		{
-			if (Container.Contains(filename))
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|") && Container.Contains(filename))
 				return Container.GetStream(filename);
 
 			return Game.ModData.DefaultFileSystem.Open(filename);
@@ -1192,16 +1193,24 @@ namespace OpenRA
 
 		public bool TryOpen(string filename, out Stream s)
 		{
-			s = Container.GetStream(filename);
-			if (s != null)
-				return true;
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|"))
+			{
+				s = Container.GetStream(filename);
+				if (s != null)
+					return true;
+			}
 
 			return Game.ModData.DefaultFileSystem.TryOpen(filename, out s);
 		}
 
 		public bool Exists(string filename)
 		{
-			return Container.Contains(filename) || Game.ModData.DefaultFileSystem.Exists(filename);
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|") && Container.Contains(filename))
+				return true;
+
+			return Game.ModData.DefaultFileSystem.Exists(filename);
 		}
 	}
 }
