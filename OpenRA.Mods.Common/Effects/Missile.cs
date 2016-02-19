@@ -664,6 +664,11 @@ namespace OpenRA.Mods.Common.Effects
 					// of vertical facing bound by the maximum vertical rate of turn
 					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
 					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+
+					// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
+					if (-diffClfMslHgt > info.CruiseAltitude.Length)
+						desiredVFacing = -desiredVFacing;
+
 					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 					ChangeSpeed();
@@ -675,6 +680,11 @@ namespace OpenRA.Mods.Common.Effects
 				// of vertical facing bound by the maximum vertical rate of turn
 				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
 				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+
+				// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
+				if (-diffClfMslHgt > info.CruiseAltitude.Length)
+					desiredVFacing = -desiredVFacing;
+
 				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 				ChangeSpeed();
