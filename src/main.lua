@@ -81,6 +81,7 @@ ide = {
       maxdatalength = 400,
       maxdatanum = 400,
       maxdatalevel = 3,
+      refuseonconflict = true,
     },
     default = {
       name = 'untitled',

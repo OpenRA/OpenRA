@@ -556,9 +556,12 @@ debugger.listen = function(start)
 
   copas.autoclose = false
   copas.addserver(server, function (skt)
+      local options = debugger.options or {}
+      if options.refuseonconflict == nil then options.refuseonconflict = ide.config.debugger.refuseonconflict end
+
       -- pull any pending data not processed yet
       if debugger.running then debugger.update() end
-      if debugger.server then
+      if debugger.server and options.refuseonconflict then
         DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
       end
@@ -573,7 +576,6 @@ debugger.listen = function(start)
         debugger.terminate()
       end)
 
-      local options = debugger.options or {}
       -- this may be a remote call without using an interpreter and as such
       -- debugger.options may not be set, but runonstart is still configured.
       if options.runstart == nil then options.runstart = ide.config.debugger.runonstart end
