@@ -769,19 +769,25 @@ local function nameOutputTab(name)
   if index ~= -1 then nbk:SetPageText(index, name) end
 end
 
+local function statusUpdate(status)
+  PackageEventHandle("onDebuggerStatusUpdate", debugger, status)
+  local text = ({running = TR("Output (running)"), suspended = TR("Output (suspended)")})[status]
+  nameOutputTab(text or TR("Output"))
+end
+
 debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local gprint = _G.print
   _G.print = function (...) if verbose then DisplayOutputLn(...) end end
 
-  nameOutputTab(TR("Output (running)"))
   debugger.running = true
+  statusUpdate("running")
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server, options)
   if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
   debugger.running = false
   -- only set suspended if the debugging hasn't been terminated
-  if debugger.server then nameOutputTab(TR("Output (suspended)")) end
+  statusUpdate(debugger.server and "suspended" or nil)
 
   _G.print = gprint
   return file, line, err
@@ -1393,7 +1399,7 @@ function DebuggerStop(resetpid)
   if (debugger.server) then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
-    nameOutputTab(debugger.pid and TR("Output (running)") or TR("Output"))
+    statusUpdate(debugger.pid and "running" or nil)
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
       DebuggerToggleBreakpoint(ed, ln)
