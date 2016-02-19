@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time after detonation to remove the camera")]
 		public readonly int CameraRemoveDelay = 25;
 
+		[Desc("Corresponds to `Type` from `FlashPaletteEffect` on the world actor.")]
 		public readonly string FlashType = null;
 
 		[SequenceReference]
