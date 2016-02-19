@@ -640,9 +640,6 @@ debugger.listen = function(start)
                   DisplayOutputLn("Output filter failed: "..res)
                   return
                 end
-              elseif m then
-                local max = 240
-                m = #m < max+4 and m or m:sub(1,max) .. "...\n"
               end
               if m then DisplayOutputNoMarker(m) end
             end})
