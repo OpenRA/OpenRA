@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.63,
+  _VERSION = 0.632,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -292,14 +292,15 @@ local function stack(start)
     i = 1
     while true do
       local name, value = debug.getlocal(f, -i)
-      if not name then break end
+      -- `not name` should be enough, but LuaJIT 2.0.0 incorrectly reports `(*temporary)` names here
+      if not name or name ~= "(*vararg)" then break end
       locals[name:gsub("%)$"," "..i..")")] = {value, tostring(value)}
       i = i + 1
     end
     -- get upvalues
     i = 1
     local ups = {}
-    while func and true do -- check for func as it may be nil for tail calls
+    while func do -- check for func as it may be nil for tail calls
       local name, value = debug.getupvalue(func, i)
       if not name then break end
       ups[name] = {value, tostring(value)}
@@ -979,6 +980,10 @@ local function debugger_loop(sev, svars, sfile, sline)
   end
 end
 
+local function output(stream, data)
+  return server:send("204 Output " .. stream .. " " .. tostring(#data) .. "\n" .. data)
+end
+
 local function connect(controller_host, controller_port)
   local sock, err = socket.tcp()
   if not sock then return nil, err end
@@ -1449,6 +1454,9 @@ local function handle(params, client, options)
       if status == "200" then
         print("Stream "..stream.." redirected")
         outputs[stream] = type(options) == 'table' and options.handler or nil
+      -- the client knows when she is doing, so install the handler
+      elseif type(options) == 'table' and options.handler then
+        outputs[stream] = options.handler
       else
         print("Unknown error")
         return nil, nil, "Debugger error: can't redirect "..stream
@@ -1603,6 +1611,7 @@ mobdebug.coro = coro
 mobdebug.done = done
 mobdebug.pause = function() step_into = true end
 mobdebug.yield = nil -- callback
+mobdebug.output = output
 mobdebug.onexit = os and os.exit or done
 mobdebug.basedir = function(b) if b then basedir = b end return basedir end
 
