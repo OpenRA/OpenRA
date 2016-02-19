@@ -60,6 +60,7 @@ ide.proto.Debugger = {__index = {
   IsConnected = function(self) return self.server end,
   GetHostName = function(self) return self.hostname end,
   GetPortNumber = function(self) return self.portnumber end,
+  ActivateDocument = function(self, file, line) self.activate = {file, line} end,
 }}
 
 ide.proto.ID = {
