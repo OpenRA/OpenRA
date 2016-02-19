@@ -561,6 +561,7 @@ debugger.listen = function(start)
         return
       end
 
+      -- error handler is set per-copas-thread
       copas.setErrorHandler(function(error)
         -- ignore errors that happen because debugging session is
         -- terminated during handshake (server == nil in this case).
@@ -644,6 +645,8 @@ debugger.listen = function(start)
               if m then DisplayOutputNoMarker(m) end
             end})
       end
+
+      if PackageEventHandle("onDebuggerPreLoad", debugger, options) == false then return end
 
       if (options.startwith) then
         local file, line, err = debugger.loadfile(options.startwith)
@@ -752,6 +755,8 @@ debugger.listen = function(start)
       -- refresh toolbar and menus in case the main app is not active
       ide:GetMainFrame():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
       ide:GetToolBar():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+
+      PackageEventHandle("onDebuggerLoad", debugger, options)
     end)
   debugger.listening = server
 end
