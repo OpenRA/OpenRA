@@ -573,10 +573,10 @@ debugger.listen = function(start)
       local options = debugger.options or {}
       -- this may be a remote call without using an interpreter and as such
       -- debugger.options may not be set, but runonstart is still configured.
-      if not options.runstart then options.runstart = ide.config.debugger.runonstart end
+      if options.runstart == nil then options.runstart = ide.config.debugger.runonstart end
 
       -- support allowediting as set in the interpreter or config
-      if not options.allowediting then options.allowediting = ide.config.debugger.allowediting end
+      if options.allowediting == nil then options.allowediting = ide.config.debugger.allowediting end
 
       if not debugger.scratchpad and not options.allowediting then
         SetAllEditorsReadOnly(true)
