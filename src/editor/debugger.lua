@@ -401,6 +401,8 @@ local function activateDocument(file, line, activatehow)
     end
   end
 
+  PackageEventHandle("onDebuggerActivate", debugger, file, line, activated)
+
   return activated ~= nil
 end
 
