@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];
-				modData.MapCache[map.Uid].UpdateFromMap(map, classification);
+				modData.MapCache[map.Uid].UpdateFromMap(map.Container, classification, null, map.Grid.Type);
 
 				Console.WriteLine("Saved current map at {0}", combinedPath);
 				Ui.CloseWindow();

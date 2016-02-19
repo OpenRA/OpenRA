@@ -169,6 +169,11 @@ namespace OpenRA
 			return new ReadOnlyDictionary<string, string>(inner);
 		}
 
+		public bool Contains<T>() where T : IGlobalModData
+		{
+			return modules.Contains<T>();
+		}
+
 		public T Get<T>() where T : IGlobalModData
 		{
 			var module = modules.GetOrDefault<T>();
