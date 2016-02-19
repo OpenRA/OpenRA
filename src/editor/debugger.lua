@@ -1389,18 +1389,21 @@ end
 
 function DebuggerStop(resetpid)
   if (debugger.server) then
-    debugger.server = nil
-    SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil)
-    ClearAllCurrentLineMarkers()
-    DebuggerScratchpadOff()
-    debuggerToggleViews(false)
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
     nameOutputTab(debugger.pid and TR("Output (running)") or TR("Output"))
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
       DebuggerToggleBreakpoint(ed, ln)
+    end
+    if PackageEventHandle("onDebuggerPreClose", debugger) ~= false then
+      debugger.server = nil
+      SetAllEditorsReadOnly(false)
+      ShellSupportRemote(nil)
+      ClearAllCurrentLineMarkers()
+      DebuggerScratchpadOff()
+      debuggerToggleViews(false)
+      PackageEventHandle("onDebuggerClose", debugger)
     end
   else
     -- it's possible that the application couldn't start, or that the
