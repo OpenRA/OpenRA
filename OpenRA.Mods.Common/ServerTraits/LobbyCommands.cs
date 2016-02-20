@@ -948,7 +948,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static void LoadMap(S server)
 		{
-			server.Map = new Map(server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Path);
+			server.Map = new Map(server.ModData, server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Package);
 
 			server.MapPlayers = new MapPlayers(server.Map.PlayerDefinitions);
 			server.LobbyInfo.Slots = server.MapPlayers.Players

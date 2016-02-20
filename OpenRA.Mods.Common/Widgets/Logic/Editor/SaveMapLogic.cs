@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapDirectories = modData.Manifest.MapFolders
 				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
 
-			var mapPath = map.Package.Name;
+			var mapPath = map.Package != null ? map.Package.Name : null;
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
 				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>

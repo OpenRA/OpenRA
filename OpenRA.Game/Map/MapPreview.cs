@@ -58,7 +58,7 @@ namespace OpenRA
 		MapCache cache;
 
 		public readonly string Uid;
-		public string Path { get; private set; }
+		public IReadOnlyPackage Package { get; private set; }
 
 		public string Title { get; private set; }
 		public string Type { get; private set; }
@@ -126,7 +126,7 @@ namespace OpenRA
 				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
 			}
 
-			Path = p.Name;
+			Package = p;
 			GridType = gridType;
 			Class = classification;
 

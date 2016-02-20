@@ -100,21 +100,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			Console.WriteLine("Processing Maps:");
-			var mapPaths = modData.MapCache
-				.Where(m => m.Status == MapStatus.Available)
-				.Select(m => m.Path);
+			var mapPreviews = modData.MapCache
+				.Where(m => m.Status == MapStatus.Available);
 
-			foreach (var path in mapPaths)
+			foreach (var p in mapPreviews)
 			{
-				Console.WriteLine("\t" + path);
-				UpgradeRules.UpgradeMapFormat(modData, path);
+				var package = (IReadWritePackage)p.Package;
+				Console.WriteLine("\t" + package.Name);
+				UpgradeRules.UpgradeMapFormat(modData, package);
 
-				var map = new Map(path);
+				var map = new Map(modData, package);
 				UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
 				UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
-				map.Save((IReadWritePackage)map.Package);
+				map.Save(package);
 			}
 		}
 	}

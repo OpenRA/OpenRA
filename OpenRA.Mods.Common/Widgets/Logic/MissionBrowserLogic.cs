@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget missionList;
 		readonly ScrollItemWidget headerTemplate;
 		readonly ScrollItemWidget template;
-		readonly Cache<MapPreview, Map> mapCache = new Cache<MapPreview, Map>(p => new Map(p.Path));
+		readonly Cache<MapPreview, Map> mapCache;
 
 		MapPreview selectedMapPreview;
 		Map selectedMap;
@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
 		{
 			modData = Game.ModData;
+			mapCache = new Cache<MapPreview, Map>(p => new Map(modData, p.Package));
 			this.onStart = onStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
@@ -108,8 +109,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
 
 					var previews = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Path)))
-						.OrderBy(p => missionMapPaths.IndexOf(Path.GetFullPath(p.Path)));
+						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(p.Package.Name))
+						.OrderBy(p => missionMapPaths.IndexOf(p.Package.Name));
 
 					CreateMissionGroup(kv.Key, previews);
 					allPreviews.AddRange(previews);
