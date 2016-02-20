@@ -695,14 +695,23 @@ function ide:RemovePanel(panel)
   end
 end
 
+function ide:IsPanelDocked(panel)
+  local layout = self:GetSetting("/view", "uimgrlayout")
+  return layout and not layout:find(panel)
+end
 function ide:AddPanelDocked(notebook, ctrl, panel, name, conf, activate)
   notebook:AddPage(ctrl, name, activate ~= false)
   panels[name] = {ctrl, panel, name, conf}
   return notebook
 end
-function ide:IsPanelDocked(panel)
-  local layout = self:GetSetting("/view", "uimgrlayout")
-  return layout and not layout:find(panel)
+function ide:AddPanelFlex(notebook, ctrl, panel, name, conf)
+  local nb
+  if self:IsPanelDocked(panel) then
+    nb = self:AddPanelDocked(notebook, ctrl, panel, name, conf, false)
+  else
+    self:AddPanel(ctrl, panel, name, conf)
+  end
+  return nb
 end
 
 function ide:IsValidCtrl(ctrl)
