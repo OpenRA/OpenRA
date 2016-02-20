@@ -77,16 +77,21 @@ namespace OpenRA.Mods.Common
 			return WPos.Lerp(w.Map.CenterOfCell(from), w.Map.CenterOfCell(to), 1, 2);
 		}
 
-		/* pretty crap */
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)
 		{
-			var items = ts.ToList();
-			while (items.Count > 0)
+			// Fisher-Yates
+			var items = ts.ToArray();
+			for (var i = 0; i < items.Length - 1; i++)
 			{
-				var t = items.Random(random);
-				yield return t;
-				items.Remove(t);
+				var j = random.Next(items.Length - i);
+				var item = items[i + j];
+				items[i + j] = items[i];
+				items[i] = item;
+				yield return item;
 			}
+
+			if (items.Length > 0)
+				yield return items[items.Length - 1];
 		}
 
 		static IEnumerable<CPos> Neighbours(CPos c, bool allowDiagonal)
