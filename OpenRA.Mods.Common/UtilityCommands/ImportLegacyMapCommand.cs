@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ValidateMapFormat(format);
 
 				var tileset = GetTileset(mapSection);
-				Map = new Map(Rules.TileSets[tileset], MapSize, MapSize)
+				Map = new Map(modData, Rules.TileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios"

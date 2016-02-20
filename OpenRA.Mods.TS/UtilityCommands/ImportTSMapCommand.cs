@@ -221,7 +221,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 			fullSize = new int2(iniSize[2], iniSize[3]);
 
-			var map = new Map(modData.DefaultRules.TileSets[tileset], size.Width, size.Height);
+			var map = new Map(Game.ModData, modData.DefaultRules.TileSets[tileset], size.Width, size.Height);
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename));
 			map.Author = "Westwood Studios";
 			map.Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]);

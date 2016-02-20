@@ -309,7 +309,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			tileSet = rules.TileSets["ARRAKIS"];
 
-			map = new Map(tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new Map(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"
