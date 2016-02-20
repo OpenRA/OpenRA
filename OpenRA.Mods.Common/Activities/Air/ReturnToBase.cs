@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Add 10% to the turning radius to ensure we have enough room
 			var speed = plane.MovementSpeed * 32 / 35;
-			var turnRadius = (int)(141 * speed / planeInfo.ROT / (float)Math.PI);
+			var turnRadius = CalculateTurnRadius(speed);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns
 			var angle = WAngle.FromFacing(plane.Facing);
@@ -111,12 +112,24 @@ namespace OpenRA.Mods.Common.Activities
 					return new FlyCircle(self);
 			}
 
-			return ActivityUtils.SequenceActivities(
-				new Fly(self, Target.FromPos(w1)),
-				new Fly(self, Target.FromPos(w2)),
-				new Fly(self, Target.FromPos(w3)),
-				new Land(self, Target.FromActor(dest)),
-				NextActivity);
+			List<Activity> landingProcedures = new List<Activity>();
+
+			var turnRadius = CalculateTurnRadius(planeInfo.Speed);
+
+			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
+			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
+
+			// Fix a problem when the airplane is send to resupply near the airport
+			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
+			landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+			landingProcedures.Add(NextActivity);
+
+			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
+		}
+
+		int CalculateTurnRadius(int speed)
+		{
+			return (int)(141 * speed / planeInfo.ROT / (float)Math.PI);
 		}
 	}
 }
