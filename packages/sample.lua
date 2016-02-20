@@ -1,5 +1,4 @@
-local G = ...
-local id = G.ID("sample.samplemenu")
+local id = ID("sample.samplemenu")
 
 local P = {
   name = "Sample plugin",
