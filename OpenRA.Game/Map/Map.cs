@@ -302,10 +302,6 @@ namespace OpenRA
 			PostInit();
 		}
 
-		/// <summary>Initializes a map loaded from disk.</summary>
-		public Map(string path)
-			: this(Game.ModData, Game.ModData.ModFiles.OpenPackage(path)) { }
-
 		public Map(ModData modData, IReadOnlyPackage package)
 		{
 			this.modData = modData;
