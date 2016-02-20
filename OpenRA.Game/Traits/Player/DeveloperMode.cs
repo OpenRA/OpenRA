@@ -75,6 +75,7 @@ namespace OpenRA.Traits
 		public bool ShowDebugGeometry;
 		public bool ShowDepthPreview;
 		public bool ShowActorTags;
+		public bool ShowCustomTerrain;
 
 		public bool EnableAll;
 
