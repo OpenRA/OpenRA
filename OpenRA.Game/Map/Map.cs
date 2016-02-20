@@ -357,12 +357,6 @@ namespace OpenRA
 
 			PostInit();
 
-			// The Uid is calculated from the data on-disk, so
-			// format changes must be flushed to disk.
-			// TODO: this isn't very nice
-			if (MapFormat < 8)
-				Save(path);
-
 			Uid = ComputeUID(Container);
 		}
 
