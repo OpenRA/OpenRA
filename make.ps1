@@ -113,7 +113,17 @@ elseif ($command -eq "version")
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
 			sc $mod $replacement
-			$replacement = (gc $mod) -Replace "modchooser:.*", ("modchooser: {0}" -f $version)
+
+			# The tab is a workaround for not replacing inside of "Packages:"
+			$replacement = (gc $mod) -Replace "	modchooser:.*", ("	modchooser: {0}" -f $version)
+			sc $mod $replacement
+
+			$prefix = $(gc $mod) | Where { $_.ToString().EndsWith(": User") }
+			if ($prefix -and $prefix.LastIndexOf("/") -ne -1)
+			{
+				$prefix = $prefix.Substring(0, $prefix.LastIndexOf("/"))
+			}
+			$replacement = (gc $mod) -Replace ".*: User", ("{0}/{1}: User" -f $prefix, $version)
 			sc $mod $replacement
 		}
 		echo ("Version strings set to '{0}'." -f $version)
