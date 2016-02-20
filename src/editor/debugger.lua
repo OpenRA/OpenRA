@@ -1044,6 +1044,7 @@ debugger.quickeval = function(var, callback)
     end)
   end
 end
+debugger.refreshPanels = function() return updateStackAndWatches() end
 
 local width, height = 360, 200
 
