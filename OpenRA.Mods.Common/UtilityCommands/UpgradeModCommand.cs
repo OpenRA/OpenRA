@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -113,7 +114,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
 				UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
-				map.Save(map.Path);
+				map.Save((IReadWritePackage)map.Package);
 			}
 		}
 	}

@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapDirectories = modData.Manifest.MapFolders
 				.ToDictionary(kv => makeMapDirectory(kv.Key), kv => Enum<MapClassification>.Parse(kv.Value));
 
+			var mapPath = map.Package.Name;
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
 				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -86,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				};
 
-				var mapDirectory = map.Path != null ? Platform.UnresolvePath(Path.GetDirectoryName(map.Path)) : null;
+				// TODO: This won't work for maps inside oramod packages
+				var mapDirectory = mapPath != null ? Platform.UnresolvePath(Path.GetDirectoryName(mapPath)) : null;
 				var initialDirectory = mapDirectories.Keys.FirstOrDefault(f => f == mapDirectory);
 
 				// Prioritize MapClassification.User directories over system directories
@@ -100,14 +102,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var mapIsUnpacked = false;
 
-			if (map.Path != null)
+			// TODO: This won't work for maps inside oramod packages
+			if (mapPath != null)
 			{
-				var attr = File.GetAttributes(map.Path);
+				var attr = File.GetAttributes(mapPath);
 				mapIsUnpacked = attr.HasFlag(FileAttributes.Directory);
 			}
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
-			filename.Text = mapIsUnpacked ? Path.GetFileName(map.Path) : Path.GetFileNameWithoutExtension(map.Path);
+			filename.Text = mapIsUnpacked ? Path.GetFileName(mapPath) : Path.GetFileNameWithoutExtension(mapPath);
 			var fileType = mapIsUnpacked ? MapFileType.Unpacked : MapFileType.OraMap;
 
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
@@ -158,13 +161,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Create the map directory if required
 				Directory.CreateDirectory(Platform.ResolvePath(directoryDropdown.Text));
 
+				// TODO: This won't work for maps inside oramod packages
 				var combinedPath = Platform.ResolvePath(Path.Combine(directoryDropdown.Text, filename.Text + fileTypes[fileType].Extension));
 
 				// Invalidate the old map metadata
-				if (map.Uid != null && combinedPath == map.Path)
+				if (map.Uid != null && combinedPath == mapPath)
 					modData.MapCache[map.Uid].Invalidate();
 
-				map.Save(combinedPath);
+				var package = modData.ModFiles.CreatePackage(combinedPath);
+				map.Save(package);
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];

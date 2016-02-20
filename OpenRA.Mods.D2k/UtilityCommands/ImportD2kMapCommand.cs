@@ -35,9 +35,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			if (map == null)
 				return;
 
-			var fileName = Path.GetFileNameWithoutExtension(args[1]);
-			var dest = fileName + ".oramap";
-			map.Save(dest);
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = modData.ModFiles.CreatePackage(dest);
+			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 	}

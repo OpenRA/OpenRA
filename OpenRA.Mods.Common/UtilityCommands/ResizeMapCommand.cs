@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in forRemoval)
 				map.ActorDefinitions.Remove(kv);
 
-			map.Save(map.Path);
+			map.Save((IReadWritePackage)map.Package);
 		}
 	}
 }

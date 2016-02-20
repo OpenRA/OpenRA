@@ -171,9 +171,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 
-			var fileName = Path.GetFileNameWithoutExtension(filename);
-			var dest = fileName + ".oramap";
-			map.Save(dest);
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = modData.ModFiles.CreatePackage(dest);
+			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 

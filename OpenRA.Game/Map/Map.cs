@@ -120,7 +120,6 @@ namespace OpenRA
 		public readonly SubCell LastSubCell;
 
 		public IReadOnlyPackage Package { get; private set; }
-		public string Path { get { return Package.Name; } }
 
 		// Yaml map data
 		public string Uid { get; private set; }
@@ -492,11 +491,6 @@ namespace OpenRA
 		public Ruleset PreloadRules()
 		{
 			return rules.Value;
-		}
-
-		public void Save(string toPath)
-		{
-			Save(modData.ModFiles.CreatePackage(toPath, new Dictionary<string, byte[]>()));
 		}
 
 		public void Save(IReadWritePackage toContainer)

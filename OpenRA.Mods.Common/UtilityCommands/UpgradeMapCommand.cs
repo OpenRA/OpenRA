@@ -8,6 +8,8 @@
  */
 #endregion
 
+using OpenRA.FileSystem;
+
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class UpgradeMapCommand : IUtilityCommand
@@ -33,7 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
 			UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
-			map.Save(args[1]);
+			map.Save((IReadWritePackage)map.Package);
 		}
 	}
 }
