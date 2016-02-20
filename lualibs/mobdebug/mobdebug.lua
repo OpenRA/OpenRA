@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.632,
+  _VERSION = 0.633,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -1203,7 +1203,8 @@ local function handle(params, client, options)
       elseif status == "204" then
         local _, _, stream, size = string.find(breakpoint, "^204 Output (%w+) (%d+)$")
         if stream and size then
-          local msg = client:receive(tonumber(size))
+          local size = tonumber(size)
+          local msg = size > 0 and client:receive(size) or ""
           print(msg)
           if outputs[stream] then outputs[stream](msg) end
           -- this was just the output, so go back reading the response
@@ -1384,7 +1385,8 @@ local function handle(params, client, options)
         elseif status == "204" then
           local _, _, stream, size = string.find(params, "^204 Output (%w+) (%d+)$")
           if stream and size then
-            local msg = client:receive(tonumber(size))
+            local size = tonumber(size)
+            local msg = size > 0 and client:receive(size) or ""
             print(msg)
             if outputs[stream] then outputs[stream](msg) end
             -- this was just the output, so go back reading the response
