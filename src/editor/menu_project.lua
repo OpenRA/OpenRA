@@ -75,7 +75,7 @@ local function selectInterpreter(id)
 
   ide.interpreter = interpreters[id]
 
-  DebuggerShutdown()
+  ide:GetDebugger():Shutdown()
 
   ide:SetStatus(ide.interpreter.name or "", 4)
   if changed then ReloadLuaAPI() end
@@ -379,7 +379,7 @@ frame:Connect(ID_STARTDEBUG, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STOPDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () DebuggerShutdown() end)
+  function () ide:GetDebugger():Stop() end)
 frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     event:Enable(debugger.server ~= nil or debugger.pid ~= nil)

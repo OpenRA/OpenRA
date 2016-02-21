@@ -812,7 +812,7 @@ debugger.exec = function(command, func)
           if out then out = nil end
           if line == nil then
             if err then DisplayOutputLn(err) end
-            DebuggerStop()
+            debugger:Teardown()
             return
           elseif not debugger.server then
             -- it is possible that while debugger.handle call was executing
@@ -945,7 +945,7 @@ debugger.terminate = function()
     else -- otherwise, try graceful exit for the remote process
       debugger.breaknow("exit")
     end
-    DebuggerStop()
+    debugger:Teardown()
   end
 end
 debugger.step = function() debugger.exec("step") end
@@ -1392,7 +1392,8 @@ function DebuggerAttachDefault(options)
   if not debugger.listening then debugger.listen() end
 end
 
-function DebuggerShutdown()
+function debugger:Stop()
+  local debugger = self
   -- terminate the local session (if still active)
   if debugger.pid and killProcess(debugger.pid) then
     debugger.pid = nil
@@ -1401,7 +1402,13 @@ function DebuggerShutdown()
   end
 end
 
-function DebuggerStop(resetpid)
+function debugger:Shutdown()
+  self:Stop()
+  PackageEventHandle("onDebuggerShutdown", debugger)
+end
+
+function debugger:Teardown(resetpid)
+  local debugger = self
   if (debugger.server) then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
