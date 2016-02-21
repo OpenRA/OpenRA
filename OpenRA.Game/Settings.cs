@@ -92,6 +92,8 @@ namespace OpenRA
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
+		public bool SendSystemInformation = true;
+		public string UUID = System.Guid.NewGuid().ToString();
 	}
 
 	public class GraphicSettings
@@ -179,7 +181,7 @@ namespace OpenRA
 		public Modifiers ZoomModifier = Modifiers.Ctrl;
 
 		public bool FetchNews = true;
-		public string NewsUrl = "http://www.openra.net/gamenews";
+		public string NewsUrl = "http://master.openra.net/gamenews";
 	}
 
 	public class KeySettings

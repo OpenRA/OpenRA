@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (newsButton != null)
 				{
 					if (!fetchedNews)
-						new Download(Game.Settings.Game.NewsUrl, cacheFile, e => { },
+						new Download(Game.Settings.Game.NewsUrl + SysInfoQuery(), cacheFile, e => { },
 							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews,
 							() => newsButton.AttachPanel(newsPanel)));
 
@@ -250,6 +250,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"",
 				() => { Game.LoadEditor(uid); },
 				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
+		}
+
+		string SysInfoQuery()
+		{
+			if (!Game.Settings.Debug.SendSystemInformation)
+				return null;
+
+			return "?id={0}&platform={1}&os={2}&runtime={3}&lang={4}&version={5}&mod={6}&modversion={7}".F(
+				Uri.EscapeUriString(Game.Settings.Debug.UUID),
+				Uri.EscapeUriString(Platform.CurrentPlatform.ToString()),
+				Uri.EscapeUriString(Environment.OSVersion.ToString()),
+				Uri.EscapeUriString(Platform.RuntimeVersion),
+				Uri.EscapeUriString(System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName),
+				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
 		}
 
 		void SetNewsStatus(string message)
