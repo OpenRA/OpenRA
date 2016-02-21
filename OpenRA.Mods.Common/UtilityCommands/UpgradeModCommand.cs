@@ -60,6 +60,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			modData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);
+			if (engineDate < UpgradeRules.MinimumSupportedVersion)
+			{
+				Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
+					UpgradeRules.MinimumSupportedVersion);
+				return;
+			}
 
 			ProcessYaml("Rules", modData.Manifest.Rules, modData, engineDate, UpgradeRules.UpgradeActorRules);
 			ProcessYaml("Weapons", modData.Manifest.Weapons, modData, engineDate, UpgradeRules.UpgradeWeaponRules);
