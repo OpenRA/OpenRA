@@ -12,13 +12,13 @@ Packages:
 	.
 	$cnc: cnc
 	./mods/common: common
-	speech.mix
-	conquer.mix
-	sounds.mix
-	tempicnh.mix
-	temperat.mix
-	winter.mix
-	desert.mix
+	~speech.mix
+	~conquer.mix
+	~sounds.mix
+	~tempicnh.mix
+	~temperat.mix
+	~winter.mix
+	~desert.mix
 	~movies-gdi.mix
 	~movies-nod.mix
 	~movies.mix
