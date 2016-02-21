@@ -264,20 +264,19 @@ local function debuggerToggleViews(show)
   if show then debugger.toggleview.shown = true end
 end
 
-local function killClient()
-  if (debugger.pid and wx.wxProcess.Exists(debugger.pid)) then
+local function killProcess(pid)
+  if (pid and wx.wxProcess.Exists(pid)) then
     -- using SIGTERM for some reason kills not only the debugee process,
     -- but also some system processes, which leads to a blue screen crash
     -- (at least on Windows Vista SP2)
-    local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+    local ret = wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutputLn(TR("Program stopped (pid: %d)."):format(debugger.pid))
+      DisplayOutputLn(TR("Program stopped (pid: %d)."):format(pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d.")
-        :format(debugger.pid, ret))
+      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
     end
   end
-  debugger.pid = nil
+  return true
 end
 
 local function activateDocument(file, line, activatehow)
@@ -941,8 +940,8 @@ end
 
 debugger.terminate = function()
   if debugger.server then
-    if debugger.pid then -- if there is PID, try local kill
-      killClient()
+    if debugger.pid and killProcess(debugger.pid) then -- if there is PID, try local kill
+      debugger.pid = nil
     else -- otherwise, try graceful exit for the remote process
       debugger.breaknow("exit")
     end
@@ -1390,13 +1389,16 @@ DebuggerRefreshPanels = updateStackAndWatches
 
 function DebuggerAttachDefault(options)
   debugger.options = options
-  if (debugger.listening) then return end
-  debugger.listen()
+  if not debugger.listening then debugger.listen() end
 end
 
 function DebuggerShutdown()
-  if debugger.server then debugger.terminate() end
-  if debugger.pid then killClient() end
+  -- terminate the local session (if still active)
+  if debugger.pid and killProcess(debugger.pid) then
+    debugger.pid = nil
+  else -- otherwise, terminate the debugger
+    debugger.terminate()
+  end
 end
 
 function DebuggerStop(resetpid)
