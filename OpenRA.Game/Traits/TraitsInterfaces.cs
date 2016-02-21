@@ -301,11 +301,17 @@ namespace OpenRA.Traits
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
 
+	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
-		void OnCrush(Actor crusher);
-		void WarnCrush(Actor crusher);
-		bool CrushableBy(HashSet<string> crushClasses, Player owner);
+		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyCrushed
+	{
+		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
 	}
 
 	public interface ITraitInfoInterface { }

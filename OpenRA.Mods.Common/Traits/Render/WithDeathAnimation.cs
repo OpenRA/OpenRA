@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Is only used if UseDeathTypeSuffix is `True`.")]
 		public readonly Dictionary<string, int> DeathTypes = new Dictionary<string, int>();
 
+		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]
+		[SequenceReference] public readonly string FallbackSequence = null;
+
 		public static object LoadDeathTypes(MiniYaml yaml)
 		{
 			var md = yaml.ToDictionary();
@@ -57,10 +60,11 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
 	}
 
-	public class WithDeathAnimation : INotifyKilled
+	public class WithDeathAnimation : INotifyKilled, INotifyCrushed
 	{
 		public readonly WithDeathAnimationInfo Info;
 		readonly RenderSprites rs;
+		bool crushed;
 
 		public WithDeathAnimation(Actor self, WithDeathAnimationInfo info)
 		{
@@ -70,10 +74,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			// Killed by some non-standard means. This includes being crushed
-			// by a vehicle (Actors with Crushable trait will spawn CrushedSequence instead).
-			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
+			// Actors with Crushable trait will spawn CrushedSequence.
+			if (crushed)
 				return;
+
+			var palette = Info.DeathSequencePalette;
+			if (Info.DeathPaletteIsPlayerPalette)
+				palette += self.Owner.InternalName;
+
+			// Killed by some non-standard means
+			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
+			{
+				if (Info.FallbackSequence != null)
+					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette);
+
+				return;
+			}
 
 			var sequence = Info.DeathSequence;
 			if (Info.UseDeathTypeSuffix)
@@ -86,20 +102,28 @@ namespace OpenRA.Mods.Common.Traits
 				sequence += Info.DeathTypes[damageType];
 			}
 
-			var palette = Info.DeathSequencePalette;
-			if (Info.DeathPaletteIsPlayerPalette)
-				palette += self.Owner.InternalName;
-
-			SpawnDeathAnimation(self, sequence, palette);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, palette);
 		}
 
-		public void SpawnDeathAnimation(Actor self, string sequence, string palette)
+		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette)
 		{
-			self.World.AddFrameEndTask(w =>
-			{
-				if (!self.Disposed)
-					w.Add(new Corpse(w, self.CenterPosition, rs.GetImage(self), sequence, palette));
-			});
+			self.World.AddFrameEndTask(w => w.Add(new Corpse(w, pos, image, sequence, palette)));
 		}
+
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		{
+			crushed = true;
+
+			if (Info.CrushedSequence == null)
+				return;
+
+			var crushPalette = Info.CrushedSequencePalette;
+			if (Info.CrushedPaletteIsPlayerPalette)
+				crushPalette += self.Owner.InternalName;
+
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, crushPalette);
+		}
+
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
 	}
 }

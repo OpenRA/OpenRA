@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var crushable in crushables)
 			{
 				lacksCrushability = false;
-				if (!crushable.CrushableBy(Crushes, self.Owner))
+				if (!crushable.CrushableBy(otherActor, self, Crushes))
 					return true;
 			}
 
@@ -594,10 +594,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(b => b.CrushableBy(Info.Crushes, self.Owner)));
-			foreach (var crushable in crushables)
-				crushable.WarnCrush(self);
+			var actors = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self).ToList();
+			if (!AnyCrushables(actors))
+				return;
+
+			var notifiers = actors.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
+			foreach (var notifyCrushed in notifiers)
+				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.Crushes);
 		}
 
 		public void FinishedMoving(Actor self)
@@ -606,10 +609,26 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
-			var crushables = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Where(c => c.CrushableBy(Info.Crushes, self.Owner)));
-			foreach (var crushable in crushables)
-				crushable.OnCrush(self);
+			var actors = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self).ToList();
+			if (!AnyCrushables(actors))
+				return;
+
+			var notifiers = actors.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
+			foreach (var notifyCrushed in notifiers)
+				notifyCrushed.Trait.OnCrush(notifyCrushed.Actor, self, Info.Crushes);
+		}
+
+		bool AnyCrushables(List<Actor> actors)
+		{
+			var crushables = actors.SelectMany(a => a.TraitsImplementing<ICrushable>().Select(t => new TraitPair<ICrushable>(a, t))).ToList();
+			if (crushables.Count == 0)
+				return false;
+
+			foreach (var crushes in crushables)
+				if (!crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
+					return false;
+
+			return true;
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
