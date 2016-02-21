@@ -18,17 +18,18 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliReturnToBase : Activity
 	{
 		readonly Aircraft heli;
+		readonly ReloadAmmo[] reloadAmmo;
 
 		public HeliReturnToBase(Actor self)
 		{
 			heli = self.Trait<Aircraft>();
+			reloadAmmo = self.TraitsImplementing<ReloadAmmo>().Where(x => x.Info.UpgradeMinEnabledLevel > 0).ToArray();
 		}
 
 		public Actor ChooseHelipad(Actor self)
 		{
-			var rearmBuildings = heli.Info.RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
-				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
+				a => reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(a.Info.Name)) && !Reservable.IsReserved(a));
 		}
 
 		public override Activity Tick(Actor self)
@@ -41,10 +42,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (dest == null)
 			{
-				var rearmBuildings = heli.Info.RearmBuildings;
 				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
-									.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
-									.ClosestTo(self);
+					.Where(a => a.Owner == self.Owner && reloadAmmo.Any(x => x.Info.RearmBuildings.Contains(a.Info.Name)))
+					.ClosestTo(self);
 
 				if (nearestHpad == null)
 					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);

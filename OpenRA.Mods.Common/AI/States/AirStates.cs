@@ -118,8 +118,10 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool ReloadsAutomatically(Actor a)
 		{
-			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.Info.SelfReloads);
+			var reloadsAmmo = a.TraitsImplementing<ReloadAmmo>().Where(Exts.IsTraitEnabled);
+
+			// We assume UpgradeMinEnabledLevel = 0 means this is enabled all the time, therefore self-reloading
+			return reloadsAmmo.Any(x => x.Info.UpgradeMinEnabledLevel == 0);
 		}
 
 		protected static bool IsRearm(Actor a)
@@ -129,7 +131,7 @@ namespace OpenRA.Mods.Common.AI
 				return false;
 
 			var type = activity.GetType();
-			if (type == typeof(Rearm) || type == typeof(ResupplyAircraft))
+			if (type == typeof(ResupplyAircraft))
 				return true;
 
 			var next = activity.NextActivity;
@@ -137,7 +139,7 @@ namespace OpenRA.Mods.Common.AI
 				return false;
 
 			var nextType = next.GetType();
-			if (nextType == typeof(Rearm) || nextType == typeof(ResupplyAircraft))
+			if (nextType == typeof(ResupplyAircraft))
 				return true;
 
 			return false;

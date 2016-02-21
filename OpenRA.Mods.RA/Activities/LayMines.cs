@@ -25,6 +25,7 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Minelayer minelayer;
 		readonly MinelayerInfo info;
 		readonly AmmoPool[] ammoPools;
+		readonly ReloadAmmo[] reload;
 		readonly IMove movement;
 		readonly HashSet<string> rearmBuildings;
 
@@ -32,9 +33,10 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			minelayer = self.TraitOrDefault<Minelayer>();
 			info = self.Info.TraitInfo<MinelayerInfo>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => p.Info.Name == info.AmmoPoolName).ToArray();
+			reload = self.TraitsImplementing<ReloadAmmo>().Where(r => r.Info.UpgradeMinEnabledLevel > 0).ToArray();
 			movement = self.Trait<IMove>();
-			rearmBuildings = info.RearmBuildings;
+			rearmBuildings = reload.First().Info.RearmBuildings;
 		}
 
 		public override Activity Tick(Actor self)
@@ -42,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (ammoPools != null && ammoPools.Any(p => p.Info.Name == info.AmmoPoolName && !p.HasAmmo()))
+			if (ammoPools != null && ammoPools.Any(p => !p.HasAmmo()) && reload != null)
 			{
 				// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
 				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
@@ -55,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 				return ActivityUtils.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self),
+					new Wait(reload.First().Info.ReloadTicks * (ammoPools.First().Info.Ammo / ammoPools.First().Info.ReloadCount)),
 					new Repair(rearmTarget),
 					this);
 			}
