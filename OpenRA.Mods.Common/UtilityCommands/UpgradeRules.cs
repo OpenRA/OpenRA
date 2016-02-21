@@ -3680,6 +3680,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
+			yaml.Nodes.First(n => n.Key == "MapFormat").Value = new MiniYaml(Map.SupportedMapFormat.ToString());
+
 			var entries = new Dictionary<string, byte[]>();
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
 			foreach (var file in package.Contents)
@@ -3689,6 +3691,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				entries.Add(file, package.GetStream(file).ReadAllBytes());
 			}
+
+			package.Write(entries);
 		}
 	}
 }
