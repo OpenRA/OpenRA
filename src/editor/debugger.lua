@@ -405,6 +405,8 @@ local function activateDocument(file, line, activatehow)
   return activated ~= nil
 end
 
+function debugger:ActivateDocument(...) return activateDocument(...) end
+
 local function reSetBreakpoints()
   -- remove all breakpoints that may still be present from the last session
   -- this only matters for those remote clients that reload scripts
