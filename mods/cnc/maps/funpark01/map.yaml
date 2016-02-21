@@ -479,7 +479,7 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:
@@ -493,6 +493,13 @@ Rules:
 		-ActorLostNotification:
 	^CivBuilding:
 		AnnounceOnSeen:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuildingHusk:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
 	OLDLST:
 		Inherits: LST
 		-WithRoof:

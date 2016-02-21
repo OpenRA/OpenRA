@@ -508,8 +508,9 @@
 	Health:
 		HP: 400
 	Tooltip:
-		Name: Civilian Building
-		GenericVisibility: None
+		GenericName: Civilian Building
+		GenericStancePrefix: false
+		ShowOwnerRow: false
 	FrozenUnderFog:
 		StartsRevealed: true
 
@@ -521,8 +522,9 @@
 		Footprint: x
 	WithSpriteBody:
 	Tooltip:
-		Name: Civilian Building (Destroyed)
-		GenericVisibility: None
+		GenericName: Civilian Building (Destroyed)
+		GenericStancePrefix: false
+		ShowOwnerRow: false
 	FrozenUnderFog:
 		StartsRevealed: true
 	ScriptTriggers:
@@ -543,7 +545,7 @@
 	Inherits: ^CivBuilding
 	-Selectable:
 	Tooltip:
-		Name: Field
+		GenericName: Field
 	-WithBuildingExplosion:
 	-Targetable:
 	-Demolishable:

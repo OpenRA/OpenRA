@@ -780,7 +780,15 @@ Rules:
 			ShowOwnerRow: false
 	^Building:
 		Tooltip:
-			GenericVisibility: Enemy
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuilding:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
+			ShowOwnerRow: false
+	^CivBuildingHusk:
+		Tooltip:
+			GenericVisibility: Enemy, Neutral
 			ShowOwnerRow: false
 	^Wall:
 		Tooltip:

@@ -7,6 +7,8 @@ V20:
 		Actor: V20.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Sala's House
 
 V20.Husk:
 	Inherits: ^CivBuildingHusk
@@ -15,6 +17,8 @@ V20.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Sala's House (Destroyed)
 
 V21:
 	Inherits: ^CivBuilding
@@ -25,6 +29,8 @@ V21:
 		Actor: V21.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Abdul's House
 
 V21.Husk:
 	Inherits: ^CivBuildingHusk
@@ -33,6 +39,8 @@ V21.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Abdul's House (Destroyed)
 
 V22:
 	Inherits: ^CivBuilding
@@ -43,6 +51,8 @@ V22:
 		Actor: V22.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Pablo's Wicked Pub
 
 V22.Husk:
 	Inherits: ^CivBuildingHusk
@@ -51,6 +61,8 @@ V22.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Pablo's Wicked Pub (Destroyed)
 
 V23:
 	Inherits: ^CivBuilding
@@ -58,11 +70,15 @@ V23:
 		Actor: V23.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Village Well
 
 V23.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Village Well (Destroyed)
 
 V24:
 	Inherits: ^CivBuilding
@@ -73,6 +89,8 @@ V24:
 		Actor: V24.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Camel Trader
 
 V24.Husk:
 	Inherits: ^CivBuildingHusk
@@ -81,6 +99,8 @@ V24.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Camel Trader (Destroyed)
 
 V25:
 	Inherits: ^CivBuilding
@@ -113,6 +133,8 @@ V26:
 		Actor: V26.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Ali's House
 
 V26.Husk:
 	Inherits: ^CivBuildingHusk
@@ -121,6 +143,8 @@ V26.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Ali's House (Destroyed)
 
 V27:
 	Inherits: ^CivBuilding
@@ -128,11 +152,15 @@ V27:
 		Actor: V27.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Trader Ted's
 
 V27.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Trader Ted's (Destroyed)
 
 V28:
 	Inherits: ^CivBuilding
@@ -140,11 +168,15 @@ V28:
 		Actor: V28.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Menelik's House
 
 V28.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Menelik's House (Destroyed)
 
 V29:
 	Inherits: ^CivBuilding
@@ -152,11 +184,15 @@ V29:
 		Actor: V29.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Prestor John's House
 
 V29.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Prestor John's House (Destroyed)
 
 V30:
 	Inherits: ^CivBuilding
@@ -167,6 +203,8 @@ V30:
 		Actor: V30.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Village Well
 
 V30.Husk:
 	Inherits: ^CivBuildingHusk
@@ -175,6 +213,8 @@ V30.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Village Well (Destroyed)
 
 V31:
 	Inherits: ^CivBuilding
@@ -185,6 +225,8 @@ V31:
 		Actor: V31.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Witch Doctor's Hut
 
 V31.Husk:
 	Inherits: ^CivBuildingHusk
@@ -193,6 +235,8 @@ V31.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Witch Doctor's Hut (Destroyed)
 
 V32:
 	Inherits: ^CivBuilding
@@ -203,6 +247,8 @@ V32:
 		Actor: V32.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Rikitikitembo's Hut
 
 V32.Husk:
 	Inherits: ^CivBuildingHusk
@@ -211,6 +257,8 @@ V32.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Rikitikitembo's Hut (Destroyed)
 
 V33:
 	Inherits: ^CivBuilding
@@ -221,6 +269,8 @@ V33:
 		Actor: V33.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Roarke's Hut
 
 V33.Husk:
 	Inherits: ^CivBuildingHusk
@@ -229,6 +279,8 @@ V33.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Roarke's Hut (Destroyed)
 
 V34:
 	Inherits: ^CivBuilding
@@ -236,11 +288,15 @@ V34:
 		Actor: V34.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Mubasa's Hut
 
 V34.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Mubasa's Hut (Destroyed)
 
 V35:
 	Inherits: ^CivBuilding
@@ -248,11 +304,15 @@ V35:
 		Actor: V35.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Aksum's Hut
 
 V35.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Aksum's Hut (Destroyed)
 
 V36:
 	Inherits: ^CivBuilding
@@ -260,11 +320,15 @@ V36:
 		Actor: V36.Husk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Mambo's Hut
 
 V36.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: Mambo's Hut (Destroyed)
 
 V37:
 	Inherits: ^CivBuilding
@@ -275,6 +339,8 @@ V37:
 		Dimensions: 5,2
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: The Studio
 
 V37.Husk:
 	Inherits: ^CivBuildingHusk
@@ -283,3 +349,5 @@ V37.Husk:
 		Dimensions: 5,2
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+	Tooltip:
+		Name: The Studio (Destroyed)
