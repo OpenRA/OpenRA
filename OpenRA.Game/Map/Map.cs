@@ -19,6 +19,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -139,16 +140,16 @@ namespace OpenRA
 		public Lazy<CPos[]> SpawnPoints;
 
 		// Yaml map data
-		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> MusicDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public readonly string[] RuleDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] SequenceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] VoxelSequenceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] WeaponDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] VoiceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] MusicDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] NotificationDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] TranslationDefinitions = { };
 
+		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
@@ -180,6 +181,13 @@ namespace OpenRA
 			using (var s = Package.GetStream(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
+		}
+
+		void LoadFileList(MiniYaml yaml, string section, ref string[] files)
+		{
+			MiniYamlNode node;
+			if ((node = yaml.Nodes.FirstOrDefault(n => n.Key == section)) != null)
+				files = FieldLoader.GetValue<string[]>(section, node.Value.Value);
 		}
 
 		/// <summary>
@@ -251,16 +259,16 @@ namespace OpenRA
 				return spawns.ToArray();
 			});
 
-			RuleDefinitions = MiniYaml.NodesOrEmpty(yaml, "Rules");
-			SequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Sequences");
-			VoxelSequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
-			WeaponDefinitions = MiniYaml.NodesOrEmpty(yaml, "Weapons");
-			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
-			MusicDefinitions = MiniYaml.NodesOrEmpty(yaml, "Music");
-			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
-			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
-			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
+			LoadFileList(yaml, "Rules", ref RuleDefinitions);
+			LoadFileList(yaml, "Sequences", ref SequenceDefinitions);
+			LoadFileList(yaml, "VoxelSequences", ref VoxelSequenceDefinitions);
+			LoadFileList(yaml, "Weapons", ref WeaponDefinitions);
+			LoadFileList(yaml, "Voices", ref VoiceDefinitions);
+			LoadFileList(yaml, "Music", ref MusicDefinitions);
+			LoadFileList(yaml, "Notifications", ref NotificationDefinitions);
+			LoadFileList(yaml, "Translations", ref TranslationDefinitions);
 
+			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
 
 			MapTiles = Exts.Lazy(LoadMapTiles);
@@ -438,14 +446,22 @@ namespace OpenRA
 
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
-			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
-			root.Add(new MiniYamlNode("Sequences", null, SequenceDefinitions));
-			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));
-			root.Add(new MiniYamlNode("Weapons", null, WeaponDefinitions));
-			root.Add(new MiniYamlNode("Voices", null, VoiceDefinitions));
-			root.Add(new MiniYamlNode("Music", null, MusicDefinitions));
-			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
-			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
+
+			var fileFields = new[]
+			{
+				Pair.New("Rules", RuleDefinitions),
+				Pair.New("Sequences", SequenceDefinitions),
+				Pair.New("VoxelSequences", VoxelSequenceDefinitions),
+				Pair.New("Weapons", WeaponDefinitions),
+				Pair.New("Voices", VoiceDefinitions),
+				Pair.New("Music", MusicDefinitions),
+				Pair.New("Notifications", NotificationDefinitions),
+				Pair.New("Translations", TranslationDefinitions)
+			};
+
+			foreach (var kv in fileFields)
+				if (kv.Second.Any())
+					root.Add(new MiniYamlNode(kv.First, FieldSaver.FormatValue(kv.Second)));
 
 			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)

@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 	{
 		static Dictionary<string, Dictionary<string, Voxel>> units;
 
-		public static void Initialize(VoxelLoader loader, IReadOnlyFileSystem fileSystem, string[] voxelFiles, List<MiniYamlNode> voxelNodes)
+		public static void Initialize(VoxelLoader loader, IReadOnlyFileSystem fileSystem, IEnumerable<string> voxelFiles)
 		{
 			units = new Dictionary<string, Dictionary<string, Voxel>>();
 

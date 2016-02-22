@@ -25,6 +25,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 3;
 		}
 
+		delegate void UpgradeAction(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
+
+		static void ProcessYaml(Map map, IEnumerable<string> files, int engineDate, UpgradeAction processFile)
+		{
+		    foreach (var filename in files)
+		    {
+		        if (!map.Package.Contains(filename))
+		            continue;
+
+		        var yaml = MiniYaml.FromStream(map.Package.GetStream(filename));
+		        processFile(engineDate, ref yaml, null, 0);
+		        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(yaml.WriteToString()));
+		    }
+		}
+
 		public static void UpgradeMap(ModData modData, IReadWritePackage package, int engineDate)
 		{
 			UpgradeRules.UpgradeMapFormat(modData, package);
@@ -37,8 +52,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var map = new Map(modData, package);
-			UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
-			UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
+			ProcessYaml(map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
+			ProcessYaml(map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
 			UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
 			UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
 			map.Save(package);
