@@ -74,22 +74,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			ProcessYaml("Chrome Metrics", modData.Manifest.ChromeMetrics, modData, engineDate, UpgradeRules.UpgradeChromeMetrics);
 			ProcessYaml("Chrome Layout", modData.Manifest.ChromeLayout, modData, engineDate, UpgradeRules.UpgradeChromeLayout);
 
+			// The map cache won't be valid if there was a map format upgrade, so walk the map packages manually
+			// Only upgrade system maps - user maps must be updated manually using --upgrade-map
 			Console.WriteLine("Processing Maps:");
-			var mapPreviews = modData.MapCache
-				.Where(m => m.Status == MapStatus.Available);
-
-			foreach (var p in mapPreviews)
+			foreach (var kv in modData.Manifest.MapFolders)
 			{
-				var package = (IReadWritePackage)p.Package;
-				Console.WriteLine("\t" + package.Name);
-				UpgradeRules.UpgradeMapFormat(modData, package);
+				var name = kv.Key;
+				var classification = string.IsNullOrEmpty(kv.Value)
+					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value);
 
-				var map = new Map(modData, package);
-				UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
-				UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
-				UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
-				UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
-				map.Save(package);
+				if (classification != MapClassification.System)
+					continue;
+
+				var optional = name.StartsWith("~");
+				if (optional)
+					name = name.Substring(1);
+
+				try
+				{
+					using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
+					{
+						foreach (var map in package.Contents)
+						{
+							try
+							{
+								using (var mapPackage = modData.ModFiles.OpenPackage(map, package))
+								{
+									if (mapPackage != null)
+										UpgradeMapCommand.UpgradeMap(modData, (IReadWritePackage)mapPackage, engineDate);
+								}
+							}
+							catch (Exception e)
+							{
+								Console.WriteLine("Failed to upgrade map {0}", map);
+								Console.WriteLine("Error was: {0}", e.ToString());
+							}
+						}
+					}
+				}
+				catch { }
 			}
 		}
 	}
