@@ -155,7 +155,6 @@ namespace OpenRA
 		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
 
 		[FieldLoader.Ignore] public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> SmudgeDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 2;
@@ -268,7 +267,6 @@ namespace OpenRA
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
-			SmudgeDefinitions = MiniYaml.NodesOrEmpty(yaml, "Smudges");
 
 			MapTiles = Exts.Lazy(LoadMapTiles);
 			MapResources = Exts.Lazy(LoadResourceTiles);
@@ -445,7 +443,6 @@ namespace OpenRA
 
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
-			root.Add(new MiniYamlNode("Smudges", null, SmudgeDefinitions));
 			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
 			root.Add(new MiniYamlNode("Sequences", null, SequenceDefinitions));
 			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));

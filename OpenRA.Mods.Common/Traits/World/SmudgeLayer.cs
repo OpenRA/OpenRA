@@ -18,6 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public struct MapSmudge
+	{
+		public string Type;
+		public int Depth;
+	}
+
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : ITraitInfo
 	{
@@ -35,6 +41,33 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string SmokePalette = "effect";
 
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
+		[FieldLoader.LoadUsing("LoadInitialSmudges")]
+		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
+
+		public static object LoadInitialSmudges(MiniYaml yaml)
+		{
+			MiniYaml smudgeYaml;
+			var nd = yaml.ToDictionary();
+			var smudges = new Dictionary<CPos, MapSmudge>();
+			if (nd.TryGetValue("InitialSmudges", out smudgeYaml))
+			{
+				foreach (var node in smudgeYaml.Nodes)
+				{
+					try
+					{
+						var cell = FieldLoader.GetValue<CPos>("key", node.Key);
+						var parts = node.Value.Value.Split(',');
+						var type = parts[0];
+						var depth = FieldLoader.GetValue<int>("depth", parts[1]);
+						smudges.Add(cell, new MapSmudge { Type = type, Depth = depth });
+					}
+					catch { }
+				}
+			}
+
+			return smudges;
+		}
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}
@@ -85,28 +118,21 @@ namespace OpenRA.Mods.Common.Traits
 			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), wr.World.Type != WorldType.Editor);
 
 			// Add map smudges
-			foreach (var s in w.Map.SmudgeDefinitions)
+			foreach (var kv in Info.InitialSmudges)
 			{
-				var name = s.Key;
-				var vals = name.Split(' ');
-				var type = vals[0];
-
-				if (!smudges.ContainsKey(type))
+				var s = kv.Value;
+				if (!smudges.ContainsKey(s.Type))
 					continue;
-
-				var loc = vals[1].Split(',');
-				var cell = new CPos(Exts.ParseIntegerInvariant(loc[0]), Exts.ParseIntegerInvariant(loc[1]));
-				var depth = Exts.ParseIntegerInvariant(vals[2]);
 
 				var smudge = new Smudge
 				{
-					Type = type,
-					Depth = depth,
-					Sprite = smudges[type][depth]
+					Type = s.Type,
+					Depth = s.Depth,
+					Sprite = smudges[s.Type][s.Depth]
 				};
 
-				tiles.Add(cell, smudge);
-				render.Update(cell, smudge.Sprite);
+				tiles.Add(kv.Key, smudge);
+				render.Update(kv.Key, smudge.Sprite);
 			}
 		}
 
