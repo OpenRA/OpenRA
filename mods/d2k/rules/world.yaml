@@ -54,7 +54,6 @@
 		PipColor: green
 		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
-	LoadWidgetAtGameStart:
 
 World:
 	Inherits: ^BaseWorld
@@ -151,9 +150,11 @@ World:
 	RadarPings:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
 
 EditorWorld:
 	Inherits: ^BaseWorld
+	LoadWidgetAtGameStart:
 	EditorActorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:

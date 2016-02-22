@@ -47,8 +47,6 @@
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
-	LoadWidgetAtGameStart:
-		ShellmapRoot: MENU_BACKGROUND
 
 World:
 	Inherits: ^BaseWorld
@@ -149,9 +147,12 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 	RadarPings:
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
 
 EditorWorld:
 	Inherits: ^BaseWorld
+	LoadWidgetAtGameStart:
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
