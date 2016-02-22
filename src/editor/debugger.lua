@@ -1045,7 +1045,6 @@ debugger.quickeval = function(var, callback)
     end)
   end
 end
-debugger.refreshPanels = function() return updateStackAndWatches() end
 
 local width, height = 360, 200
 
@@ -1387,7 +1386,7 @@ debuggerCreateWatchWindow()
 ----------------------------------------------
 -- public api
 
-DebuggerRefreshPanels = updateStackAndWatches
+function debugger:RefreshPanels() return updateStackAndWatches() end
 
 function DebuggerAttachDefault(options)
   debugger.options = options
