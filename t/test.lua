@@ -67,7 +67,7 @@ package {
     runtests()
   end,
   onIdleOnce = function() G.ide:GetOutput():GotoLine(G.ide:GetOutput():GetLineCount()-1) end,
-  onAppDone = function()
+  onAppShutdown = function()
     local ini = G.ide.config.ini
     if ini then G.FileRemove(ini) end
   end,

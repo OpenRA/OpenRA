@@ -924,7 +924,7 @@ local function closeWindow(event)
 
   event:Skip()
 
-  PackageEventHandle("onAppDone")
+  PackageEventHandle("onAppShutdown")
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 

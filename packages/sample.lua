@@ -56,7 +56,7 @@ local events = {
   onAppFocusSet =      function(self, app) end,
   onAppLoad =          function(self, app) end,
   onAppClose =         function(self, app) end,
-  onAppDone =          function(self, app) end, -- the last event right before exiting
+  onAppShutdown =      function(self, app) end, -- the last event right before exiting
 }
 
 --[[ Uncomment this to see event names printed in the Output window
