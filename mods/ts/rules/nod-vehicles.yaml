@@ -27,7 +27,7 @@ BGGY:
 		Voice: Attack
 	AutoTarget:
 	WithMuzzleOverlay:
-	-PoisonedByTiberium:
+	-DamagedByTerrain:
 
 BIKE:
 	Inherits: ^VoxelVehicle
@@ -257,7 +257,7 @@ WEED:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	-GainsExperience:
-	-PoisonedByTiberium:
+	-DamagedByTerrain:
 
 SAPC:
 	Inherits: ^VoxelTank

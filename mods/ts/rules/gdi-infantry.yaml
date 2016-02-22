@@ -113,8 +113,9 @@ GHOST:
 		Speed: 56
 	Health:
 		HP: 200
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Passenger:
 	RevealsShroud:
 		Range: 6c0

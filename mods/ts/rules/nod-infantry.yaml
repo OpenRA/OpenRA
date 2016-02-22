@@ -109,8 +109,9 @@ MHIJACK:
 		VoiceSet: Hijacker
 	Health:
 		HP: 300
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 99
 	-Crushable:

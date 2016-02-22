@@ -210,9 +210,11 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		UpgradeTypes: hazmatsuits
 		UpgradeMaxEnabledLevel: 0
+		Terrain: Tiberium, BlueTiberium
+		Weapon: Tiberium
 	GlobalUpgradable@BIO:
 		Upgrades: hazmatsuits
 		Prerequisites: bio
@@ -416,8 +418,9 @@
 	Guard:
 		Voice: Move
 	Guardable:
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: Heal
+		Terrain: Tiberium, BlueTiberium
 	Voiced:
 		VoiceSet: DinoVoice
 

@@ -325,6 +325,7 @@
     <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
+    <Compile Include="Traits\DamagedByTerrain.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />

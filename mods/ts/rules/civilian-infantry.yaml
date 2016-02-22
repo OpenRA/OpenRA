@@ -35,8 +35,9 @@ UMAGON:
 		Speed: 71
 	Health:
 		HP: 150
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -90,8 +91,9 @@ MUTANT:
 		VoiceSet: Mutant
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -115,8 +117,9 @@ MWMN:
 		VoiceSet: CivilianFemale
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -140,8 +143,9 @@ MUTANT3:
 		VoiceSet: Mutant
 	Health:
 		HP: 50
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -165,8 +169,9 @@ TRATOS:
 		VoiceSet: Tratos
 	Health:
 		HP: 200
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 71
 	RevealsShroud:
@@ -220,8 +225,9 @@ DOGGIE:
 		HP: 250
 		Shape: Circle
 			Radius: 213
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Valued:
 		Cost: 100
 	Armor:

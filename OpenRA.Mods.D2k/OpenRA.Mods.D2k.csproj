@@ -79,7 +79,6 @@
     <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
-    <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
     <Compile Include="Traits\Player\HarvesterInsurance.cs" />
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
