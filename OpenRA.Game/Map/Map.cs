@@ -102,23 +102,18 @@ namespace OpenRA
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
+			var requiredFiles = new[] { "map.yaml", "map.bin" };
+			var contents = package.Contents.ToList();
+			foreach (var required in requiredFiles)
+				if (!contents.Contains(required))
+					throw new FileNotFoundException("Required file {0} not present in this map".F(required));
+
 			using (var ms = new MemoryStream())
 			{
-				// Read the relevant data into the buffer
-				using (var s = package.GetStream("map.yaml"))
-				{
-					if (s == null)
-						throw new FileNotFoundException("Required file map.yaml not present in this map");
-					s.CopyTo(ms);
-				}
-
-				using (var s = package.GetStream("map.bin"))
-				{
-					if (s == null)
-						throw new FileNotFoundException("Required file map.bin not present in this map");
-
-					s.CopyTo(ms);
-				}
+				foreach (var filename in contents)
+					if (filename.EndsWith(".yaml") || filename.EndsWith(".bin") || filename.EndsWith(".lua"))
+						using (var s = package.GetStream(filename))
+							s.CopyTo(ms);
 
 				// Take the SHA1
 				ms.Seek(0, SeekOrigin.Begin);
