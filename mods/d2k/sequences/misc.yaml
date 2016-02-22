@@ -58,7 +58,7 @@ explosion:
 		Length: 12
 		Tick: 1600
 
-large_trail: 
+large_trail:
 	idle: DATA.R8
 		Start: 3873
 		Length: 4
@@ -333,7 +333,7 @@ shrapnel4:
 		Start: 3303
 		Length: 1
 		ZOffset: 1023
-		
+
 mpspawn:
 	idle: mpspawn.shp
 		Length: *
