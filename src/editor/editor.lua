@@ -810,7 +810,7 @@ function CreateEditor(bare)
   function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
   function editor:BreakpointToggle(line, ...)
     line = line or self:GetCurrentLine()
-    return DebuggerToggleBreakpoint(self, line, ...)
+    return ide:GetDebugger():BreakpointToggle(self, line, ...)
   end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
@@ -851,7 +851,7 @@ function CreateEditor(bare)
       local line = editor:LineFromPosition(event:GetPosition())
       local marginno = event:GetMargin()
       if marginno == margin.MARKER then
-        DebuggerToggleBreakpoint(editor, line)
+        ide:GetDebugger():BreakpointToggle(editor, line)
       elseif marginno == margin.FOLD then
         local header = bit.band(editor:GetFoldLevel(line),
           wxstc.wxSTC_FOLDLEVELHEADERFLAG) == wxstc.wxSTC_FOLDLEVELHEADERFLAG
