@@ -82,8 +82,8 @@ TTNK:
 		HP: 350
 	Armor:
 		Type: Light
-	AttackFrontal:
-		Voice: Attack
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 256,0,256
@@ -100,12 +100,67 @@ TTNK:
 	WithMuzzleOverlay:
 	RevealsShroud:
 		Range: 5c0
-	Transforms:
-		IntoActor: gatick
-		Facing: 159
-		TransformSounds: place2.aud
-		NoTransformSounds:
-		Voice: Move
+	RenderSprites:
+		Image: ttnk
+	DeployToUpgrade:
+		DeployedUpgrades: deployed, notmobile
+		UndeployedUpgrades: undeployed
+		DeployAnimation: make
+		Facing: 160
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	WithVoxelBody:
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
+	WithSpriteBody@deployed:
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
+	AttackFrontal:
+		Voice: Attack
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 1
+	Turreted:
+		ROT: 6
+		Turret: deployed
+		InitialFacing: 128
+		Offset: -20, -130, 180
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 128, 0, 256
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 90mm
+		LocalOffset: 384,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		MuzzleSequence: muzzle
+	Armament@deployedElite:
+		Name: deployed
+		Turret: deployed
+		Weapon: 120mmx
+		LocalOffset: 384,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		MuzzleSequence: muzzle
+	Armor@deployed:
+		Type: Concrete
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
 
 ART2:
 	Inherits: ^VoxelTank

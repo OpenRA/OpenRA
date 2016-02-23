@@ -163,49 +163,6 @@ NASAM:
 	SelectionDecorations:
 		VisualBounds: 40, 36, -3, -8
 
-GATICK:
-	Inherits: ^DeployedVehicle
-	Valued:
-		Cost: 800
-	Tooltip:
-		Name: Tick Tank
-	Health:
-		HP: 350
-	Armor:
-		Type: Concrete
-	RevealsShroud:
-		Range: 5c0
-	Turreted:
-		ROT: 6
-		InitialFacing: 224
-		Offset: 0,96,224
-	Armament@PRIMARY:
-		Weapon: 90mm
-		LocalOffset: 448,0,348
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
-		MuzzleSequence: muzzle
-	Armament@ELITE:
-		Weapon: 120mmx
-		LocalOffset: 448,0,348
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
-		MuzzleSequence: muzzle
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderVoxels:
-	WithVoxelBarrel:
-		LocalOffset: 128,0,348
-	WithVoxelTurret:
-	Transforms:
-		IntoActor: ttnk
-		Facing: 159
-		TransformSounds: place2.aud
-		NoTransformSounds:
-		Voice: Move
-	WithMuzzleOverlay:
-
 GAARTY:
 	Inherits@1: ^DeployedVehicle
 	Valued:

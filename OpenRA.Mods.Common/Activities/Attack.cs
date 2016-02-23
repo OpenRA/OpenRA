@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -19,8 +20,11 @@ namespace OpenRA.Mods.Common.Activities
 	/* non-turreted attack */
 	public class Attack : Activity
 	{
+		[Flags]
+		enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
+
 		protected readonly Target Target;
-		readonly AttackBase attack;
+		readonly AttackBase[] attackTraits;
 		readonly IMove move;
 		readonly IFacing facing;
 		readonly IPositionable positionable;
@@ -28,6 +32,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		WDist minRange;
 		WDist maxRange;
+		Activity turnActivity;
+		Activity moveActivity;
+		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
 		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
 		{
@@ -35,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			this.forceAttack = forceAttack;
 
-			attack = self.Trait<AttackBase>();
+			attackTraits = self.TraitsImplementing<AttackBase>().ToArray();
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
 
@@ -44,9 +51,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var ret = InnerTick(self, attack);
-			attack.IsAttacking = ret == this;
-			return ret;
+			turnActivity = moveActivity = null;
+			attackStatus = AttackStatus.UnableToAttack;
+
+			foreach (var attack in attackTraits.Where(x => !x.IsTraitDisabled))
+			{
+				var activity = InnerTick(self, attack);
+				attack.IsAttacking = activity == this;
+			}
+
+			if (attackStatus.HasFlag(AttackStatus.Attacking))
+				return this;
+
+			if (attackStatus.HasFlag(AttackStatus.NeedsToTurn))
+				return turnActivity;
+
+			if (attackStatus.HasFlag(AttackStatus.NeedsToMove))
+				return moveActivity;
+
+			return NextActivity;
 		}
 
 		protected virtual Activity InnerTick(Actor self, AttackBase attack)
@@ -82,13 +105,21 @@ namespace OpenRA.Mods.Common.Activities
 				// Try to move within range, drop the target otherwise
 				if (move == null)
 					return NextActivity;
-				return ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+
+				attackStatus |= AttackStatus.NeedsToMove;
+				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+				return NextActivity;
 			}
 
 			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
-				return ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
+			{
+				attackStatus |= AttackStatus.NeedsToTurn;
+				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
+				return NextActivity;
+			}
 
+			attackStatus |= AttackStatus.Attacking;
 			attack.DoAttack(self, Target, armaments);
 
 			return this;

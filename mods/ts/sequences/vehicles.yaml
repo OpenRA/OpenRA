@@ -135,6 +135,17 @@ sonic:
 	icon: soniicon
 
 ttnk:
+	idle: gatick
+		ShadowStart: 3
+		Offset: 0, -12
+	damaged-idle: gatick
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12
+	make: gatickmk
+		Length: 24
+		ShadowStart: 24
+		Offset: 0, -12
 	muzzle: gunfire
 		Length: *
 	emp-overlay: emp_fx01

@@ -150,6 +150,12 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x03, new byte[] { 0x7E } }
 		};
 
+		private static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
+		{
+			{ "gadpsa", "lpst" },
+			{ "gatick", "ttnk" }
+		};
+
 		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
 		public void Run(ModData modData, string[] args)
 		{
@@ -388,9 +394,17 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var structuresSection = file.GetSection(type, true);
 			foreach (var kv in structuresSection)
 			{
+				var isDeployed = false;
 				var entries = kv.Value.Split(',');
 
 				var name = entries[1].ToLowerInvariant();
+
+				if (DeployableActors.ContainsKey(name))
+				{
+					name = DeployableActors[name];
+					isDeployed = true;
+				}
+
 				var health = short.Parse(entries[2]);
 				var rx = int.Parse(entries[3]);
 				var ry = int.Parse(entries[4]);
@@ -407,6 +421,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					new HealthInit(100 * health / 256),
 					new FacingInit(facing),
 				};
+
+				if (isDeployed)
+					ar.Add(new DeployStateInit(DeployState.Deployed));
 
 				if (!map.Rules.Actors.ContainsKey(name))
 					Console.WriteLine("Ignoring unknown actor type: `{0}`".F(name));
