@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ValidateMapFormat(format);
 
 				var tileset = GetTileset(mapSection);
-				Map = new Map(Rules.TileSets[tileset], MapSize, MapSize)
+				Map = new Map(modData, Rules.TileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios"
@@ -94,9 +94,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			Map.FixOpenAreas(Rules);
 
-			var fileName = Path.GetFileNameWithoutExtension(args[1]);
-			var dest = fileName + ".oramap";
-			Map.Save(dest);
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = modData.ModFiles.CreatePackage(dest);
+			Map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 

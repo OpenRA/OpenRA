@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -3602,94 +3603,91 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		internal static void UpgradeMapFormat(ModData modData, string path)
+		internal static void UpgradeMapFormat(ModData modData, IReadWritePackage package)
 		{
-			using (var package = modData.ModFiles.OpenWritablePackage(path))
+			if (package == null)
+				return;
+
+			var yamlStream = package.GetStream("map.yaml");
+			if (yamlStream == null)
+				return;
+
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, package.Name));
+			var nd = yaml.ToDictionary();
+			var mapFormat = FieldLoader.GetValue<int>("MapFormat", nd["MapFormat"].Value);
+			if (mapFormat < 6)
+				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(mapFormat, package.Name));
+
+			// Nothing to do
+			if (mapFormat >= 8)
+				return;
+
+			// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
+			if (mapFormat < 7)
 			{
-				if (package == null)
-					return;
+				MiniYaml useAsShellmap;
+				if (nd.TryGetValue("UseAsShellmap", out useAsShellmap) && bool.Parse(useAsShellmap.Value))
+					yaml.Nodes.Add(new MiniYamlNode("Visibility", new MiniYaml("Shellmap")));
+				else if (nd["Type"].Value == "Mission" || nd["Type"].Value == "Campaign")
+					yaml.Nodes.Add(new MiniYamlNode("Visibility", new MiniYaml("MissionSelector")));
+			}
 
-				var yamlStream = package.GetStream("map.yaml");
-				if (yamlStream == null)
-					return;
-
-				var yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, path));
-				var nd = yaml.ToDictionary();
-				var mapFormat = FieldLoader.GetValue<int>("MapFormat", nd["MapFormat"].Value);
-				if (mapFormat < 6)
-					throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(mapFormat, path));
-
-				// Nothing to do
-				if (mapFormat >= 8)
-					return;
-
-				// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
-				if (mapFormat < 7)
+			// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
+			if (mapFormat < 8)
+			{
+				var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
+				if (players != null)
 				{
-					MiniYaml useAsShellmap;
-					if (nd.TryGetValue("UseAsShellmap", out useAsShellmap) && bool.Parse(useAsShellmap.Value))
-						yaml.Nodes.Add(new MiniYamlNode("Visibility", new MiniYaml("Shellmap")));
-					else if (nd["Type"].Value == "Mission" || nd["Type"].Value == "Campaign")
-						yaml.Nodes.Add(new MiniYamlNode("Visibility", new MiniYaml("MissionSelector")));
-				}
-
-				// Format 7 -> 8 replaced normalized HSL triples with rgb(a) hex colors
-				if (mapFormat < 8)
-				{
-					var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
-					if (players != null)
+					bool noteHexColors = false;
+					bool noteColorRamp = false;
+					foreach (var player in players.Value.Nodes)
 					{
-						bool noteHexColors = false;
-						bool noteColorRamp = false;
-						foreach (var player in players.Value.Nodes)
+						var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
+						if (colorRampNode != null)
 						{
-							var colorRampNode = player.Value.Nodes.FirstOrDefault(n => n.Key == "ColorRamp");
-							if (colorRampNode != null)
+							Color dummy;
+							var parts = colorRampNode.Value.Value.Split(',');
+							if (parts.Length == 3 || parts.Length == 4)
 							{
-								Color dummy;
-								var parts = colorRampNode.Value.Value.Split(',');
-								if (parts.Length == 3 || parts.Length == 4)
+								// Try to convert old normalized HSL value to a rgb hex color
+								try
 								{
-									// Try to convert old normalized HSL value to a rgb hex color
-									try
-									{
-										HSLColor color = new HSLColor(
-											(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
-											(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
-											(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
-										colorRampNode.Value.Value = FieldSaver.FormatValue(color);
-										noteHexColors = true;
-									}
-									catch (Exception)
-									{
-										throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-									}
+									HSLColor color = new HSLColor(
+										(byte)Exts.ParseIntegerInvariant(parts[0].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[1].Trim()).Clamp(0, 255),
+										(byte)Exts.ParseIntegerInvariant(parts[2].Trim()).Clamp(0, 255));
+									colorRampNode.Value.Value = FieldSaver.FormatValue(color);
+									noteHexColors = true;
 								}
-								else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
-									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + path);
-
-								colorRampNode.Key = "Color";
-								noteColorRamp = true;
+								catch (Exception)
+								{
+									throw new InvalidDataException("Invalid ColorRamp value.\n File: " + package.Name);
+								}
 							}
+							else if (parts.Length != 1 || !HSLColor.TryParseRGB(parts[0], out dummy))
+								throw new InvalidDataException("Invalid ColorRamp value.\n File: " + package.Name);
+
+							colorRampNode.Key = "Color";
+							noteColorRamp = true;
 						}
-
-						Console.WriteLine("Converted " + path + " to MapFormat 8.");
-						if (noteHexColors)
-							Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
-						else if (noteColorRamp)
-							Console.WriteLine("ColorRamp is now called Color.");
 					}
-				}
 
-				var entries = new Dictionary<string, byte[]>();
-				entries.Add("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
-				foreach (var file in package.Contents)
-				{
-					if (file == "map.yaml")
-						continue;
-
-					entries.Add(file, package.GetStream(file).ReadAllBytes());
+					Console.WriteLine("Converted " + package.Name + " to MapFormat 8.");
+					if (noteHexColors)
+						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
+					else if (noteColorRamp)
+						Console.WriteLine("ColorRamp is now called Color.");
 				}
+			}
+
+			var entries = new Dictionary<string, byte[]>();
+			entries.Add("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
+			foreach (var file in package.Contents)
+			{
+				if (file == "map.yaml")
+					continue;
+
+				entries.Add(file, package.GetStream(file).ReadAllBytes());
 			}
 		}
 	}

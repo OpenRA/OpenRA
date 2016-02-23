@@ -166,7 +166,7 @@ namespace OpenRA
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 
 			// Operate on a copy of the map to avoid gameplay state leaking into the cache
-			var map = new Map(MapCache[uid].Path);
+			var map = new Map(this, MapCache[uid].Package);
 
 			LoadTranslations(map);
 

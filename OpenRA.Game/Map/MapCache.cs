@@ -61,11 +61,9 @@ namespace OpenRA
 				{
 					using (new Support.PerfTimer(path.Key))
 					{
-						using (var package = modData.ModFiles.OpenPackage(path.Key))
-						{
-							var uid = Map.ComputeUID(package);
-							previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
-						}
+						var package = modData.ModFiles.OpenPackage(path.Key);
+						var uid = Map.ComputeUID(package);
+						previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
 					}
 				}
 				catch (Exception e)
@@ -190,7 +188,7 @@ namespace OpenRA
 					if (bitmap == null)
 					{
 						createdPreview = true;
-						var map = new Map(p.Path);
+						var map = new Map(modData, p.Package);
 						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[map.Tileset], map, modData.DefaultRules, true);
 					}
 

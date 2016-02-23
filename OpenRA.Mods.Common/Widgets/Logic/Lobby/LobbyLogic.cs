@@ -738,14 +738,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (MapPreview.Uid == uid)
 				return;
 
-			MapPreview = Game.ModData.MapCache[uid];
+			var modData = Game.ModData;
+			MapPreview = modData.MapCache[uid];
 			Map = null;
 			if (MapPreview.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
 				new Thread(_ =>
 				{
-					var currentMap = Map = new Map(MapPreview.Path);
+					var currentMap = Map = new Map(modData, MapPreview.Package);
 					currentMap.PreloadRules();
 					Game.RunAfterTick(() =>
 					{

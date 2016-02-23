@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			Game.ModData = modData;
 
-			var map = new Map(args[1]);
+			var map = new Map(modData, modData.ModFiles.OpenPackage(args[1]));
 			var minimap = Minimap.RenderMapPreview(map.Rules.TileSets[map.Tileset], map, true);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".png";

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			Game.ModData = modData;
-			map = new Map(args[1]);
+			map = new Map(modData, modData.ModFiles.OpenPackage(args[1]));
 			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, map.MapSize, width, height);
 			map.Resize(width, height);
 
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in forRemoval)
 				map.ActorDefinitions.Remove(kv);
 
-			map.Save(map.Path);
+			map.Save((IReadWritePackage)map.Package);
 		}
 	}
 }

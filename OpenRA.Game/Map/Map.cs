@@ -114,12 +114,13 @@ namespace OpenRA
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
+		readonly ModData modData;
 
 		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
 		public readonly SubCell DefaultSubCell;
 		public readonly SubCell LastSubCell;
-		[FieldLoader.Ignore] public IReadWritePackage Container;
-		public string Path { get; private set; }
+
+		public IReadOnlyPackage Package { get; private set; }
 
 		// Yaml map data
 		public string Uid { get; private set; }
@@ -252,7 +253,7 @@ namespace OpenRA
 
 		void AssertExists(string filename)
 		{
-			using (var s = Container.GetStream(filename))
+			using (var s = Package.GetStream(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
 		}
@@ -261,10 +262,11 @@ namespace OpenRA
 		/// Initializes a new map created by the editor or importer.
 		/// The map will not receive a valid UID until after it has been saved and reloaded.
 		/// </summary>
-		public Map(TileSet tileset, int width, int height)
+		public Map(ModData modData, TileSet tileset, int width, int height)
 		{
+			this.modData = modData;
 			var size = new Size(width, height);
-			Grid = Game.ModData.Manifest.Get<MapGrid>();
+			Grid = modData.Manifest.Get<MapGrid>();
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, 0);
 
 			Title = "Name your map here";
@@ -301,20 +303,19 @@ namespace OpenRA
 			PostInit();
 		}
 
-		/// <summary>Initializes a map loaded from disk.</summary>
-		public Map(string path)
+		public Map(ModData modData, IReadOnlyPackage package)
 		{
-			Path = path;
-			Container = Game.ModData.ModFiles.OpenWritablePackage(path);
+			this.modData = modData;
+			Package = package;
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Container.GetStream("map.yaml"), path));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
 			FieldLoader.Load(this, yaml);
 
 			if (MapFormat != SupportedMapFormat)
-				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, path));
+				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, package.Name));
 
 			SpawnPoints = Exts.Lazy(() =>
 			{
@@ -346,25 +347,19 @@ namespace OpenRA
 			MapResources = Exts.Lazy(LoadResourceTiles);
 			MapHeight = Exts.Lazy(LoadMapHeight);
 
-			Grid = Game.ModData.Manifest.Get<MapGrid>();
+			Grid = modData.Manifest.Get<MapGrid>();
 
 			SubCellOffsets = Grid.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
-			if (Container.Contains("map.png"))
-				using (var dataStream = Container.GetStream("map.png"))
+			if (Package.Contains("map.png"))
+				using (var dataStream = Package.GetStream("map.png"))
 					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
 
-			// The Uid is calculated from the data on-disk, so
-			// format changes must be flushed to disk.
-			// TODO: this isn't very nice
-			if (MapFormat < 8)
-				Save(path);
-
-			Uid = ComputeUID(Container);
+			Uid = ComputeUID(Package);
 		}
 
 		void PostInit()
@@ -373,7 +368,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return Game.ModData.RulesetCache.Load(this, this);
+					return modData.RulesetCache.Load(this, this);
 				}
 				catch (Exception e)
 				{
@@ -381,7 +376,7 @@ namespace OpenRA
 					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 				}
 
-				return Game.ModData.DefaultRules;
+				return modData.DefaultRules;
 			});
 
 			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
@@ -495,7 +490,7 @@ namespace OpenRA
 			return rules.Value;
 		}
 
-		public void Save(string toPath)
+		public void Save(IReadWritePackage toContainer)
 		{
 			MapFormat = 8;
 
@@ -545,37 +540,31 @@ namespace OpenRA
 			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
 
 			// Add any custom assets
-			if (Container != null)
+			if (Package != null)
 			{
-				foreach (var file in Container.Contents)
+				foreach (var file in Package.Contents)
 				{
 					if (file == "map.bin" || file == "map.yaml")
 						continue;
 
-					entries.Add(file, Container.GetStream(file).ReadAllBytes());
+					entries.Add(file, Package.GetStream(file).ReadAllBytes());
 				}
 			}
 
 			// Saving the map to a new location
-			if (toPath != Path || Container == null)
-			{
-				Path = toPath;
-
-				// Create a new map package
-				Container = Game.ModData.ModFiles.CreatePackage(Path, entries);
-			}
+			Package = toContainer;
 
 			// Update existing package
-			Container.Write(entries);
+			toContainer.Write(entries);
 
 			// Update UID to match the newly saved data
-			Uid = ComputeUID(Container);
+			Uid = ComputeUID(toContainer);
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()
 		{
 			var tiles = new CellLayer<TerrainTile>(this);
-			using (var s = Container.GetStream("map.bin"))
+			using (var s = Package.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.TilesOffset > 0)
@@ -607,7 +596,7 @@ namespace OpenRA
 		public CellLayer<byte> LoadMapHeight()
 		{
 			var tiles = new CellLayer<byte>(this);
-			using (var s = Container.GetStream("map.bin"))
+			using (var s = Package.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.HeightsOffset > 0)
@@ -629,7 +618,7 @@ namespace OpenRA
 		{
 			var resources = new CellLayer<ResourceTile>(this);
 
-			using (var s = Container.GetStream("map.bin"))
+			using (var s = Package.GetStream("map.bin"))
 			{
 				var header = new BinaryDataHeader(s, MapSize);
 				if (header.ResourcesOffset > 0)
@@ -1180,16 +1169,16 @@ namespace OpenRA
 		public Stream Open(string filename)
 		{
 			// Explicit package paths never refer to a map
-			if (!filename.Contains("|") && Container.Contains(filename))
-				return Container.GetStream(filename);
+			if (!filename.Contains("|") && Package.Contains(filename))
+				return Package.GetStream(filename);
 
-			return Game.ModData.DefaultFileSystem.Open(filename);
+			return modData.DefaultFileSystem.Open(filename);
 		}
 
 		public bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
 		{
 			// Packages aren't supported inside maps
-			return Game.ModData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
+			return modData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
 		}
 
 		public bool TryOpen(string filename, out Stream s)
@@ -1197,21 +1186,21 @@ namespace OpenRA
 			// Explicit package paths never refer to a map
 			if (!filename.Contains("|"))
 			{
-				s = Container.GetStream(filename);
+				s = Package.GetStream(filename);
 				if (s != null)
 					return true;
 			}
 
-			return Game.ModData.DefaultFileSystem.TryOpen(filename, out s);
+			return modData.DefaultFileSystem.TryOpen(filename, out s);
 		}
 
 		public bool Exists(string filename)
 		{
 			// Explicit package paths never refer to a map
-			if (!filename.Contains("|") && Container.Contains(filename))
+			if (!filename.Contains("|") && Package.Contains(filename))
 				return true;
 
-			return Game.ModData.DefaultFileSystem.Exists(filename);
+			return modData.DefaultFileSystem.Exists(filename);
 		}
 	}
 }
