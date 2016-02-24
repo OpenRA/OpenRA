@@ -44,7 +44,8 @@ namespace OpenRA.FileSystem
 
 		public bool Contains(string filename)
 		{
-			return File.Exists(Path.Combine(path, filename));
+			var combined = Path.Combine(path, filename);
+			return combined.StartsWith(path) && File.Exists(combined);
 		}
 
 		public void Update(string filename, byte[] contents)
