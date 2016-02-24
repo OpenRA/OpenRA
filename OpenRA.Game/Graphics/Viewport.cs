@@ -54,8 +54,15 @@ namespace OpenRA.Graphics
 
 		ProjectedCellRegion allCells;
 		bool allCellsDirty = true;
+		readonly float[] availableZoomSteps = new[] { 2f, 1f, 0.5f, 0.25f };
 
 		float zoom = 1f;
+
+		public float[] AvailableZoomSteps
+		{
+			get { return availableZoomSteps; }
+		}
+
 		public float Zoom
 		{
 			get
@@ -65,7 +72,8 @@ namespace OpenRA.Graphics
 
 			set
 			{
-				zoom = value;
+				var newValue = ClosestTo(AvailableZoomSteps, value);
+				zoom = newValue;
 				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
 				cellsDirty = true;
 				allCellsDirty = true;
@@ -74,6 +82,23 @@ namespace OpenRA.Graphics
 
 		public static int TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
+
+		float ClosestTo(float[] collection, float target)
+		{
+			var closestValue = collection.First();
+			var subtractResult = Math.Abs(closestValue - target);
+
+			foreach (var element in collection)
+			{
+				if (Math.Abs(element - target) < subtractResult)
+				{
+					subtractResult = Math.Abs(element - target);
+					closestValue = element;
+				}
+			}
+
+			return closestValue;
+		}
 
 		public ScrollDirection GetBlockedDirections()
 		{

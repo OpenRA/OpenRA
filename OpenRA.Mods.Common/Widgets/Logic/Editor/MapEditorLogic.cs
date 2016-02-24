@@ -36,13 +36,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var zoomDropdown = widget.GetOrNull<DropDownButtonWidget>("ZOOM_BUTTON");
 			if (zoomDropdown != null)
 			{
-				var selectedZoom = Game.Settings.Graphics.PixelDouble ? 2f : 1f;
-				var selectedLabel = selectedZoom.ToString();
+				var selectedZoom = (Game.Settings.Graphics.PixelDouble ? 2f : 1f).ToString();
+
+				zoomDropdown.SelectedItem = selectedZoom;
 				Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (zoom, itemTemplate) =>
 				{
-					var item = ScrollItemWidget.Setup(itemTemplate,
-						() => selectedZoom == zoom,
-						() => { worldRenderer.Viewport.Zoom = selectedZoom = zoom; selectedLabel = zoom.ToString(); });
+					var item = ScrollItemWidget.Setup(
+						itemTemplate,
+						() =>
+						{
+							return float.Parse(zoomDropdown.SelectedItem) == zoom;
+						},
+						() =>
+						{
+							zoomDropdown.SelectedItem = selectedZoom = zoom.ToString();
+							worldRenderer.Viewport.Zoom = float.Parse(selectedZoom);
+						});
 
 					var label = zoom.ToString();
 					item.Get<LabelWidget>("LABEL").GetText = () => label;
@@ -50,9 +59,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				};
 
-				var options = new[] { 2f, 1f, 0.5f, 0.25f };
+				var options = worldRenderer.Viewport.AvailableZoomSteps;
 				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-				zoomDropdown.GetText = () => selectedLabel;
+				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
 				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelDoubleKey;
 				zoomDropdown.OnKeyPress = e =>
 				{
@@ -60,9 +69,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (key != Game.Settings.Keys.TogglePixelDoubleKey)
 						return;
 
-					var selected = (options.IndexOf(selectedZoom) + 1) % options.Length;
-					worldRenderer.Viewport.Zoom = selectedZoom = options[selected];
-					selectedLabel = selectedZoom.ToString();
+					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;
+					var zoom = options[selected];
+					worldRenderer.Viewport.Zoom = zoom;
+					selectedZoom = zoom.ToString();
+					zoomDropdown.SelectedItem = zoom.ToString();
 				};
 			}
 
