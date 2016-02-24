@@ -946,7 +946,7 @@ debugger.terminate = function()
     if debugger.pid and killProcess(debugger.pid) then -- if there is PID, try local kill
       debugger.pid = nil
     else -- otherwise, try graceful exit for the remote process
-      debugger.breaknow("exit")
+      debugger.detach("exit")
     end
     debugger:Teardown()
   end
@@ -995,12 +995,12 @@ end
 debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
-debugger.detach = function()
+debugger.detach = function(cmd)
   if debugger.running then
-    debugger.handleDirect("done")
+    debugger.handleDirect(cmd or "done")
     debugger.server = nil
   else
-    debugger.exec("done")
+    debugger.exec(cmd or "done")
   end
 end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
