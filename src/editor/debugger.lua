@@ -783,12 +783,13 @@ debugger.handle = function(command, server, options)
   local gprint = _G.print
   _G.print = function (...) if verbose then DisplayOutputLn(...) end end
 
+  local ip, port = debugger.socket:getpeername()
   PackageEventHandle("onDebuggerCommand", debugger, command, server or debugger.server, options)
   debugger.running = true
   statusUpdate("running")
-  if verbose then DisplayOutputLn("Debugger sent (command):", command) end
+  if verbose then ide:Print(("[%s:%s] Debugger sent (command):"):format(ip, port), command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server, options)
-  if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
+  if verbose then ide:Print(("[%s:%s] Debugger received (file, line, err):"):format(ip, port), file, line, err) end
   debugger.running = false
   -- only set suspended if the debugging hasn't been terminated
   statusUpdate(debugger.server and "suspended" or nil)
