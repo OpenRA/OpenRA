@@ -69,11 +69,13 @@ if (!(Test-Path "nunit.framework.dll"))
 
 if (!(Test-Path "windows/SDL2.dll"))
 {
-	echo "Fetching SDL2 from NuGet."
-	./nuget.exe install sdl2 -Version 2.0.3 -ExcludeVersion
-	cp sdl2.redist/build/native/bin/Win32/dynamic/SDL2.dll ./windows/
-	rmdir sdl2 -Recurse
-	rmdir sdl2.redist -Recurse
+	echo "Fetching SDL2 from libsdl.org"
+	$target = Join-Path $pwd.ToString() "SDL2-2.0.4-win32-x86.zip"
+	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/SDL2-2.0.4-win32-x86.zip", $target)
+	$destination = Join-Path $pwd.ToString() "windows"
+	Add-Type -assembly "system.io.compression.filesystem"
+	[io.compression.zipfile]::ExtractToDirectory($target, $destination)
+	rm SDL2-2.0.4-win32-x86.zip
 }
 
 if (!(Test-Path "Mono.Nat.dll"))
