@@ -41,6 +41,8 @@ namespace OpenRA
 		public int Length { get { return (int)Exts.ISqrt(LengthSquared); } }
 		public long HorizontalLengthSquared { get { return (long)X * X + (long)Y * Y; } }
 		public int HorizontalLength { get { return (int)Exts.ISqrt(HorizontalLengthSquared); } }
+		public long VerticalLengthSquared { get { return (long)Z * Z; } }
+		public int VerticalLength { get { return (int)Exts.ISqrt(VerticalLengthSquared); } }
 
 		public WVec Rotate(WRot rot)
 		{
