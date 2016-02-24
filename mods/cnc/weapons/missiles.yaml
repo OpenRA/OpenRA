@@ -12,7 +12,7 @@ Rockets:
 		HorizontalRateOfTurn: 15
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 298
+		Speed: 298
 		RangeLimit: 20
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -46,7 +46,7 @@ BikeRockets:
 		HorizontalRateOfTurn: 10
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 213
+		Speed: 213
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -81,7 +81,7 @@ OrcaAGMissiles:
 		HorizontalRateOfTurn: 20
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 256
+		Speed: 256
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -115,7 +115,7 @@ OrcaAAMissiles:
 		HorizontalRateOfTurn: 20
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 298
+		Speed: 298
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -146,7 +146,7 @@ MammothMissiles:
 		HorizontalRateOfTurn: 20
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 341
+		Speed: 341
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
@@ -219,7 +219,7 @@ MammothMissiles:
 		HorizontalRateOfTurn: 10
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 213
+		Speed: 213
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -251,7 +251,7 @@ BoatMissile:
 		HorizontalRateOfTurn: 10
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 170
+		Speed: 170
 		RangeLimit: 60
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
@@ -286,7 +286,7 @@ TowerMissle:
 		HorizontalRateOfTurn: 20
 		TrailImage: smokey
 		ContrailLength: 8
-		MaximumLaunchSpeed: 298
+		Speed: 298
 		RangeLimit: 40
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
@@ -314,7 +314,7 @@ SAMMissile:
 		Blockable: false
 		Image: MISSILE
 		HorizontalRateOfTurn: 20
-		MaximumLaunchSpeed: 426
+		Speed: 426
 		RangeLimit: 35
 		TrailImage: smokey
 		ContrailLength: 8
@@ -375,7 +375,7 @@ Patriot:
 		TrailImage: smokey
 		ContrailLength: 8
 		HorizontalRateOfTurn: 20
-		MaximumLaunchSpeed: 300
+		Speed: 300
 		RangeLimit: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 682

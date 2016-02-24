@@ -14,6 +14,8 @@ Bazooka:
 		HorizontalRateOfTurn: 8
 		RangeLimit: 50
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
@@ -58,6 +60,8 @@ HoverMissile:
 		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -101,6 +105,8 @@ MammothTusk:
 		MaximumLaunchSpeed: 213
 		RangeLimit: 50
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
@@ -140,6 +146,8 @@ BikeMissile:
 		MaximumLaunchSpeed: 213
 		RangeLimit: 50
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
@@ -180,6 +188,8 @@ Dragon:
 		HorizontalRateOfTurn: 8
 		RangeLimit: 50
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -224,6 +234,8 @@ Hellfire:
 		HorizontalRateOfTurn: 8
 		RangeLimit: 35
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 85
 		Damage: 30
@@ -267,6 +279,8 @@ RedEye2:
 		HorizontalRateOfTurn: 5
 		RangeLimit: 100
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 33

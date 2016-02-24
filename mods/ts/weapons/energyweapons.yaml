@@ -111,6 +111,8 @@ CyCannon:
 		HorizontalRateOfTurn: 2
 		Shadow: true
 		Image: TORPEDO
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120

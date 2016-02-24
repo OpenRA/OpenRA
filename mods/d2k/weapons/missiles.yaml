@@ -3,7 +3,7 @@ Bazooka:
 	Range: 3c0
 	Report: ROCKET1.WAV
 	Projectile: Missile
-		MaximumLaunchSpeed: 281
+		Speed: 281
 		Inaccuracy: 256
 		Image: RPG
 		HorizontalRateOfTurn: 1
@@ -42,7 +42,7 @@ Rocket:
 		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
-		MaximumLaunchSpeed: 343
+		Speed: 343
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
@@ -81,7 +81,7 @@ TowerMissile:
 		Image: MISSILE2
 		TrailImage: large_trail
 		TrailInterval: 1
-		MaximumLaunchSpeed: 320
+		Speed: 320
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
@@ -111,7 +111,7 @@ mtank_pri:
 	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		MaximumLaunchSpeed: 281
+		Speed: 281
 		RangeLimit: 50
 		HorizontalRateOfTurn: 3
 		Blockable: false
@@ -146,7 +146,7 @@ DeviatorMissile:
 	Range: 5c0
 	Report: MISSLE1.WAV
 	Projectile: Missile
-		MaximumLaunchSpeed: 281
+		Speed: 281
 		RangeLimit: 40
 		HorizontalRateOfTurn: 3
 		Blockable: false

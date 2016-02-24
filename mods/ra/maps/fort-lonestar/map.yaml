@@ -841,8 +841,8 @@ Weapons:
 		Range: 10c0
 		ValidTargets: Ground, Air
 		Projectile: Missile
-			MaximumLaunchSpeed: 128
 			Blockable: false
+			Speed: 128
 			TrailImage: smokey
 			ContrailLength: 150
 			Inaccuracy: 0c853
