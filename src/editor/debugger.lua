@@ -1405,9 +1405,9 @@ function debugger:Shutdown()
   PackageEventHandle("onDebuggerShutdown", self)
 end
 
-function debugger:Teardown(resetpid)
+function debugger:Teardown()
   local debugger = self
-  if (debugger.server) then
+  if debugger.server then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
     statusUpdate(debugger.pid and "running" or nil)
@@ -1430,8 +1430,6 @@ function debugger:Teardown(resetpid)
     -- no debugger.server, but scratchpad may still be on. Turn it off.
     DebuggerScratchpadOff()
   end
-  -- reset pid for "running" (not debugged) processes
-  if resetpid then debugger.pid = nil end
 end
 
 local function debuggerMakeFileName(editor)

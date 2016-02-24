@@ -197,6 +197,7 @@ function ide:GetProjectStartFile()
   return MergeFullPath(projectdir, startfile), startfile
 end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
+function ide:SetLaunchedProcess(pid) if self.debugger then self.debugger.pid = pid end end
 function ide:GetProjectTree() return self.filetree.projtreeCtrl end
 function ide:GetOutlineTree() return self.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end

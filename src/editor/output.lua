@@ -321,7 +321,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         if editor then editor:SetFocus() end
       end
       unHideWindow(0)
-      ide:GetDebugger():Teardown(true)
+      ide:SetLaunchedProcess(nil)
       nameTab(errorlog, TR("Output"))
       DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
         :format(TimeGet() - customprocs[pid].started, pid))

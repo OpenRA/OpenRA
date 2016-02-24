@@ -238,9 +238,10 @@ local function runInterpreter(wfilename, withdebugger)
 
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
-  debugger.pid = ide.interpreter:frun(wfilename, withdebugger)
-  if debugger.pid then OutputEnableInput() end
-  return debugger.pid
+  local pid = ide.interpreter:frun(wfilename, withdebugger)
+  if pid then OutputEnableInput() end
+  ide:SetLaunchedProcess(pid)
+  return pid
 end
 
 function ProjectRun(skipcheck)
