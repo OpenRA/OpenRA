@@ -25,6 +25,7 @@ namespace OpenRA.FileSystem
 
 	public interface IReadWritePackage : IReadOnlyPackage
 	{
-		void Write(Dictionary<string, byte[]> contents);
+		void Update(string filename, byte[] contents);
+		void Delete(string filename);
 	}
 }

@@ -18,16 +18,6 @@ namespace OpenRA.FileSystem
 	{
 		readonly string path;
 
-		// Create a new folder package
-		public Folder(string path, Dictionary<string, byte[]> contents)
-		{
-			this.path = path;
-			if (Directory.Exists(path))
-				Directory.Delete(path, true);
-
-			Write(contents);
-		}
-
 		public Folder(string path)
 		{
 			this.path = path;
@@ -57,15 +47,22 @@ namespace OpenRA.FileSystem
 			return File.Exists(Path.Combine(path, filename));
 		}
 
-		public void Write(Dictionary<string, byte[]> contents)
+		public void Update(string filename, byte[] contents)
 		{
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
-			foreach (var file in contents)
-				using (var dataStream = File.Create(Path.Combine(path, file.Key)))
-				using (var writer = new BinaryWriter(dataStream))
-					writer.Write(file.Value);
+			using (var s = File.Create(Path.Combine(path, filename)))
+				s.Write(contents, 0, contents.Length);
+		}
+
+		public void Delete(string filename)
+		{
+			var filePath = Path.Combine(path, filename);
+			if (Directory.Exists(filePath))
+				Directory.Delete(filePath, true);
+			else if (File.Exists(filePath))
+				File.Delete(filePath);
 		}
 
 		public void Dispose() { }

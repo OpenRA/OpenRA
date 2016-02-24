@@ -490,7 +490,7 @@ namespace OpenRA
 			return rules.Value;
 		}
 
-		public void Save(IReadWritePackage toContainer)
+		public void Save(IReadWritePackage toPackage)
 		{
 			MapFormat = 8;
 
@@ -534,31 +534,17 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
 			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
 
-			var entries = new Dictionary<string, byte[]>();
-			entries.Add("map.bin", SaveBinaryData());
-			var s = root.WriteToString();
-			entries.Add("map.yaml", Encoding.UTF8.GetBytes(s));
-
-			// Add any custom assets
-			if (Package != null)
-			{
+			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
-				{
-					if (file == "map.bin" || file == "map.yaml")
-						continue;
+					toPackage.Update(file, Package.GetStream(file).ReadAllBytes());
 
-					entries.Add(file, Package.GetStream(file).ReadAllBytes());
-				}
-			}
-
-			// Saving the map to a new location
-			Package = toContainer;
-
-			// Update existing package
-			toContainer.Write(entries);
+			var s = root.WriteToString();
+			toPackage.Update("map.yaml", Encoding.UTF8.GetBytes(s));
+			toPackage.Update("map.bin", SaveBinaryData());
+			Package = toPackage;
 
 			// Update UID to match the newly saved data
-			Uid = ComputeUID(toContainer);
+			Uid = ComputeUID(toPackage);
 		}
 
 		public CellLayer<TerrainTile> LoadMapTiles()

@@ -169,8 +169,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (map.Uid != null && combinedPath == mapPath)
 					modData.MapCache[map.Uid].Invalidate();
 
-				var package = modData.ModFiles.CreatePackage(combinedPath);
-				map.Save(package);
+				var package = map.Package as IReadWritePackage;
+				if (package == null || package.Name != combinedPath)
+				{
+					try
+					{
+						if (fileType == MapFileType.OraMap)
+						{
+							if (File.Exists(combinedPath))
+								File.Delete(combinedPath);
+
+							package = new ZipFile(modData.DefaultFileSystem, combinedPath, true);
+						}
+						else
+						{
+							if (Directory.Exists(combinedPath))
+								Directory.Delete(combinedPath, true);
+							package = new Folder(combinedPath);
+						}
+
+						map.Save(package);
+					}
+					catch
+					{
+						Console.WriteLine("Failed to save map at {0}", combinedPath);
+					}
+				}
 
 				// Update the map cache so it can be loaded without restarting the game
 				var classification = mapDirectories[directoryDropdown.Text];

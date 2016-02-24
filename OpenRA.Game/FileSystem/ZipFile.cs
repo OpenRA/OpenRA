@@ -27,31 +27,14 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFile(FileSystem context, string filename)
+		public ZipFile(IReadOnlyFileSystem context, string filename, bool createOrClearContents = false)
 		{
 			Name = filename;
 
-			try
-			{
-				// Pull the file into memory, don't keep it open.
-				pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
-			}
-			catch (ZipException e)
-			{
-				Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
-			}
-		}
-
-		// Create a new zip with the specified contents.
-		public ZipFile(FileSystem context, string filename, Dictionary<string, byte[]> contents)
-		{
-			Name = filename;
-
-			if (File.Exists(filename))
-				File.Delete(filename);
-
-			pkg = SZipFile.Create(filename);
-			Write(contents);
+			if (createOrClearContents)
+				pkg = SZipFile.Create(filename);
+			else
+				pkg = new SZipFile(filename);
 		}
 
 		public Stream GetStream(string filename)
@@ -83,19 +66,18 @@ namespace OpenRA.FileSystem
 			return pkg.GetEntry(filename) != null;
 		}
 
-		public void Write(Dictionary<string, byte[]> contents)
+		public void Update(string filename, byte[] contents)
 		{
-			// TODO: Clear existing content?
-			pkg.Close();
-			pkg = SZipFile.Create(Name);
 			pkg.BeginUpdate();
-
-			foreach (var kvp in contents)
-				pkg.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
-
+			pkg.Add(new StaticMemoryDataSource(contents), filename);
 			pkg.CommitUpdate();
-			pkg.Close();
-			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(Name)));
+		}
+
+		public void Delete(string filename)
+		{
+			pkg.BeginUpdate();
+			pkg.Delete(filename);
+			pkg.CommitUpdate();
 		}
 
 		public void Dispose()

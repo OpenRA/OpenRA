@@ -34,17 +34,6 @@ namespace OpenRA.FileSystem
 
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
-		public IReadWritePackage CreatePackage(string filename)
-		{
-			var content = new Dictionary<string, byte[]>();
-			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, content);
-			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, content);
-
-			return new Folder(filename, content);
-		}
-
 		public IReadOnlyPackage OpenPackage(string filename)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
