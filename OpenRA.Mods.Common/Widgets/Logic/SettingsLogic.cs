@@ -382,6 +382,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
+			BindCheckboxPref(panel, "ALLOW_ZOOM_CHECKBOX", gs, "AllowZoom");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
@@ -400,6 +401,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
 			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+
+			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
+			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
+			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
 
 			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
@@ -564,6 +569,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
 				gs.UIScrollSpeed = dgs.UIScrollSpeed;
+				gs.AllowZoom = dgs.AllowZoom;
+				gs.ZoomModifier = dgs.ZoomModifier;
 
 				foreach (var f in ks.GetType().GetFields())
 				{
@@ -631,6 +638,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.MouseScroll == options[o],
 					() => s.MouseScroll = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		static bool ShowZoomModifierDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		{
+			var options = new Dictionary<string, Modifiers>()
+			{
+				{ "Alt", Modifiers.Alt },
+				{ "Ctrl", Modifiers.Ctrl },
+				{ "Meta", Modifiers.Meta },
+				{ "Shift", Modifiers.Shift },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.ZoomModifier == options[o],
+					() => s.ZoomModifier = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

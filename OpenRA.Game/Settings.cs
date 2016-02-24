@@ -175,6 +175,9 @@ namespace OpenRA
 		public bool AllowDownloading = true;
 		public string MapRepository = "http://resource.openra.net/map/";
 
+		public bool AllowZoom = true;
+		public Modifiers ZoomModifier = Modifiers.Ctrl;
+
 		public bool FetchNews = true;
 		public string NewsUrl = "http://www.openra.net/gamenews";
 	}
