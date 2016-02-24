@@ -1396,11 +1396,8 @@ end
 function debugger:Stop()
   local debugger = self
   -- terminate the local session (if still active)
-  if debugger.pid and killProcess(debugger.pid) then
-    debugger.pid = nil
-  else -- otherwise, terminate the debugger
-    debugger.terminate()
-  end
+  if debugger.pid and killProcess(debugger.pid) then debugger.pid = nil end
+  debugger.terminate()
 end
 
 function debugger:Shutdown()
