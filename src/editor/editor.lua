@@ -368,9 +368,10 @@ function EditorCallTip(editor, pos, x, y)
   -- full match to avoid calltip about coroutine.status for "status" vars
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
   local limit = ide.config.acandtip.maxlength
-  if ide.debugger and ide.debugger.server then
+  local debugger = ide:GetDebugger()
+  if debugger and debugger.server then
     if var then
-      ide.debugger.quickeval(var, function(val)
+      debugger:quickeval(var, function(val)
         if #val > limit then val = val:sub(1, limit-3).."..." end
         -- check if the mouse position is specified and the mouse has moved,
         -- then don't show the tooltip as it's already too late for it.
@@ -1437,7 +1438,7 @@ function CreateEditor(bare)
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
 
-      local debugger = ide.debugger
+      local debugger = ide:GetDebugger()
       menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
         and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
 
@@ -1457,7 +1458,7 @@ function CreateEditor(bare)
   editor:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       if pos ~= wxstc.wxSTC_INVALID_POSITION then
-        ide:GetDebugger().runto(editor, editor:LineFromPosition(pos))
+        ide:GetDebugger():runto(editor, editor:LineFromPosition(pos))
       end
     end)
 
@@ -1519,7 +1520,7 @@ function CreateEditor(bare)
     function(event) ShellExecuteCode(value) end)
 
   editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event) DebuggerScratchpadOn(editor) end)
+    function(event) ide:GetDebugger():ScratchpadOn(editor) end)
 
   return editor
 end
