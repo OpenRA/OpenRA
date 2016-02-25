@@ -10,8 +10,8 @@ local mobdebug = require "mobdebug"
 local unpack = table.unpack or unpack
 
 local ide = ide
-local debugger = setmetatable(ide.debugger, ide.proto.Debugger)
-debugger.server = nil -- DebuggerServer object when debugging, else nil
+local protodeb = setmetatable(ide:GetDebugger(), ide.proto.Debugger)
+local debugger = protodeb
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
@@ -61,6 +61,14 @@ local function trimToMaxLength(...)
 end
 
 local q = EscapeMagic
+
+function debugger:init(init)
+  local o = {}
+  -- merge known self and init values
+  for k, v in pairs(self) do o[k] = v end
+  for k, v in pairs(init or {}) do o[k] = v end
+  return setmetatable(o, {__index = protodeb})
+end
 
 function debugger:updateWatchesSync(onlyitem)
   local debugger = self
@@ -607,14 +615,16 @@ function debugger:listen(start)
         SetAllEditorsReadOnly(true)
       end
 
-      debugger.server = copas.wrap(skt)
-      debugger.socket = skt
-      debugger.loop = false
-      debugger.scratchable = false
-      debugger.stats = {line = 0}
-      debugger.missing = {}
-      debugger.editormap = {}
-      debugger.runtocursor = nil
+      debugger = ide:SetDebugger(debugger:init({
+          server = copas.wrap(skt),
+          socket = skt,
+          loop = false,
+          scratchable = false,
+          stats = {line = 0},
+          missing = {},
+          editormap = {},
+          runtocursor = nil,
+      }))
 
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = ide:GetProjectStartFile() or options.startwith
@@ -1776,3 +1786,5 @@ function debugger:ScratchpadOff()
 
   return true
 end
+
+debugger = ide:SetDebugger(setmetatable({}, {__index = protodeb}))
