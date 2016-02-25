@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -25,6 +26,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 2;
 		}
 
+		delegate void UpgradeAction(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
+
+		void ProcessYaml(string type, IEnumerable<string> files, ModData modData, int engineDate, UpgradeAction processFile)
+		{
+			Console.WriteLine("Processing {0}:", type);
+			foreach (var filename in files)
+			{
+				Console.WriteLine("\t" + filename);
+				string name;
+				IReadOnlyPackage package;
+				if (!modData.ModFiles.TryGetPackageContaining(filename, out package, out name) || !(package is Folder))
+				{
+					Console.WriteLine("\t\tFile cannot be opened for writing! Ignoring...");
+					continue;
+				}
+
+				var yaml = MiniYaml.FromStream(package.GetStream(name));
+				processFile(engineDate, ref yaml, null, 0);
+
+				// Generate the on-disk path
+				var path = Path.Combine(package.Name, name);
+				using (var file = new StreamWriter(path))
+					file.Write(yaml.WriteToString());
+			}
+		}
+
 		[Desc("CURRENTENGINE", "Upgrade mod rules to the latest engine version.")]
 		public void Run(ModData modData, string[] args)
 		{
@@ -33,72 +60,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			modData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);
-
-			Console.WriteLine("Processing Rules:");
-			foreach (var filename in modData.Manifest.Rules)
+			if (engineDate < UpgradeRules.MinimumSupportedVersion)
 			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeActorRules(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
+				Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
+					UpgradeRules.MinimumSupportedVersion);
+				return;
 			}
 
-			Console.WriteLine("Processing Weapons:");
-			foreach (var filename in modData.Manifest.Weapons)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeWeaponRules(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Tilesets:");
-			foreach (var filename in modData.Manifest.TileSets)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeTileset(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Cursors:");
-			foreach (var filename in modData.Manifest.Cursors)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeCursors(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Chrome Metrics:");
-			foreach (var filename in modData.Manifest.ChromeMetrics)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeChromeMetrics(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
-			}
-
-			Console.WriteLine("Processing Chrome Layout:");
-			foreach (var filename in modData.Manifest.ChromeLayout)
-			{
-				Console.WriteLine("\t" + filename);
-				var yaml = MiniYaml.FromFile(filename);
-				UpgradeRules.UpgradeChromeLayout(engineDate, ref yaml, null, 0);
-
-				using (var file = new StreamWriter(filename))
-					file.Write(yaml.WriteToString());
-			}
+			ProcessYaml("Rules", modData.Manifest.Rules, modData, engineDate, UpgradeRules.UpgradeActorRules);
+			ProcessYaml("Weapons", modData.Manifest.Weapons, modData, engineDate, UpgradeRules.UpgradeWeaponRules);
+			ProcessYaml("Tilesets", modData.Manifest.TileSets, modData, engineDate, UpgradeRules.UpgradeTileset);
+			ProcessYaml("Cursors", modData.Manifest.Cursors, modData, engineDate, UpgradeRules.UpgradeCursors);
+			ProcessYaml("Chrome Metrics", modData.Manifest.ChromeMetrics, modData, engineDate, UpgradeRules.UpgradeChromeMetrics);
+			ProcessYaml("Chrome Layout", modData.Manifest.ChromeLayout, modData, engineDate, UpgradeRules.UpgradeChromeLayout);
 
 			Console.WriteLine("Processing Maps:");
 			var mapPreviews = modData.MapCache

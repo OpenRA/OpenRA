@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -28,11 +29,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
+			var engineDate = Exts.ParseIntegerInvariant(args[2]);
+			if (engineDate < UpgradeRules.MinimumSupportedVersion)
+			{
+				Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
+					UpgradeRules.MinimumSupportedVersion);
+				return;
+			}
+
 			var package = modData.ModFiles.OpenWritablePackage(args[1]);
 			UpgradeRules.UpgradeMapFormat(modData, package);
 
 			var map = new Map(modData, package);
-			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 			UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 			UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
