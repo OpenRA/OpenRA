@@ -144,7 +144,13 @@ namespace OpenRA.FileSystem
 					packagesForFile.RemoveAll(p => p == package);
 
 				mountedPackages.Remove(package);
-				explicitMounts.Remove(package.Name);
+				var explicitKeys = explicitMounts.Where(kv => kv.Value == package)
+					.Select(kv => kv.Key)
+					.ToList();
+
+				foreach (var key in explicitKeys)
+					explicitMounts.Remove(key);
+
 				package.Dispose();
 			}
 			else
