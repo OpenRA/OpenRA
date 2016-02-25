@@ -289,7 +289,8 @@ function debugger:toggleViews(show)
 end
 
 local function killProcess(pid)
-  if (pid and wx.wxProcess.Exists(pid)) then
+  if not pid then return false end
+  if wx.wxProcess.Exists(pid) then
     -- using SIGTERM for some reason kills not only the debugee process,
     -- but also some system processes, which leads to a blue screen crash
     -- (at least on Windows Vista SP2)
@@ -298,6 +299,7 @@ local function killProcess(pid)
       DisplayOutputLn(TR("Program stopped (pid: %d)."):format(pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
       DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
+      return false
     end
   end
   return true
@@ -984,8 +986,8 @@ end
 function debugger:terminate()
   local debugger = self
   if debugger.server then
-    if debugger.pid and killProcess(debugger.pid) then -- if there is PID, try local kill
-      debugger.pid = nil
+    if killProcess(ide:GetLaunchedProcess()) then -- if there is PID, try local kill
+      ide:SetLaunchedProcess(nil)
     else -- otherwise, try graceful exit for the remote process
       debugger:detach("exit")
     end
@@ -1460,7 +1462,7 @@ end
 function debugger:Stop()
   local debugger = self
   -- terminate the local session (if still active)
-  if debugger.pid and killProcess(debugger.pid) then debugger.pid = nil end
+  if killProcess(ide:GetLaunchedProcess()) then ide:SetLaunchedProcess(nil) end
   debugger:terminate()
 end
 
