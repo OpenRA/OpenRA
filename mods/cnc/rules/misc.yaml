@@ -112,3 +112,4 @@ FLARE:
 		Name: Flare
 	BodyOrientation:
 		QuantizedFacings: 1
+	AutoSelectionSize:
