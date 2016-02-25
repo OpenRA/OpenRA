@@ -21,13 +21,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SettingsLogic : ChromeLogic
 	{
 		enum PanelType { Display, Audio, Input, Advanced }
-		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
-		Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
-		PanelType settingsPanel = PanelType.Display;
-		Widget panelContainer, tabContainer;
-
-		WorldRenderer worldRenderer;
-		SoundDevice soundDevice;
 
 		static readonly string OriginalSoundDevice;
 		static readonly string OriginalSoundEngine;
@@ -35,6 +28,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string OriginalGraphicsRenderer;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
+
+		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
+		readonly Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
+		readonly Widget panelContainer, tabContainer;
+
+		readonly ModData modData;
+		readonly WorldRenderer worldRenderer;
+
+		SoundDevice soundDevice;
+		PanelType settingsPanel = PanelType.Display;
 
 		static SettingsLogic()
 		{
@@ -48,9 +51,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
+		public SettingsLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
+			this.modData = modData;
 
 			panelContainer = widget.Get("SETTINGS_PANEL");
 			tabContainer = widget.Get("TAB_CONTAINER");
@@ -158,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
 			languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
@@ -714,7 +718,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
+		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown, IEnumerable<string> languages)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -726,7 +730,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, languages, setupItem);
 			return true;
 		}
 

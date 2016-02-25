@@ -23,9 +23,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer, Ruleset modRules)
+		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
-			var tileset = modRules.TileSets[worldRenderer.World.Map.Tileset];
+			var rules = worldRenderer.World.Map.Rules;
+			var tileset = rules.TileSets[worldRenderer.World.Map.Tileset];
 
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");

@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MapPreview MapPreview { get; private set; }
 		public Map Map { get; private set; }
 
+		readonly ModData modData;
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
@@ -110,16 +111,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		internal LobbyLogic(Widget widget, WorldRenderer worldRenderer, OrderManager orderManager,
-			Action onExit, Action onStart, bool skirmishMode, Ruleset modRules)
+		internal LobbyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, OrderManager orderManager,
+			Action onExit, Action onStart, bool skirmishMode)
 		{
 			MapPreview = MapCache.UnknownMap;
 			lobby = widget;
+			this.modData = modData;
 			this.orderManager = orderManager;
 			this.onStart = onStart;
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
-			this.modRules = modRules;
+
+			// TODO: This needs to be reworked to support per-map tech levels, bots, etc.
+			this.modRules = modData.DefaultRules;
 			shellmapWorld = worldRenderer.World;
 
 			orderManager.AddChatLine += AddChatLine;
@@ -511,7 +515,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var gameSpeed = optionsBin.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");
 			if (gameSpeed != null)
 			{
-				var speeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
 
 				gameSpeed.IsDisabled = configurationDisabled;
 				gameSpeed.GetText = () =>
@@ -738,7 +742,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (MapPreview.Uid == uid)
 				return;
 
-			var modData = Game.ModData;
 			MapPreview = modData.MapCache[uid];
 			Map = null;
 			if (MapPreview.Status == MapStatus.Available)
@@ -768,7 +771,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}).Start();
 			}
 			else if (Game.Settings.Game.AllowDownloading)
-				Game.ModData.MapCache.QueryRemoteMapDetails(new[] { uid });
+				modData.MapCache.QueryRemoteMapDetails(new[] { uid });
 		}
 
 		void UpdatePlayerList()

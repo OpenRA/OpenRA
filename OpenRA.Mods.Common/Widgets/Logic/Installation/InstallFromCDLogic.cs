@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromCDLogic : ChromeLogic
 	{
+		readonly ModData modData;
 		readonly string modId;
 		readonly Widget panel;
 		readonly ProgressBarWidget progressBar;
@@ -30,8 +31,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContentInstaller installData;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromCDLogic(Widget widget, Action afterInstall, string modId)
+		public InstallFromCDLogic(Widget widget, ModData modData, Action afterInstall, string modId)
 		{
+			this.modData = modData;
 			this.modId = modId;
 			installData = ModMetadata.AllMods[modId].Content;
 			this.afterInstall = afterInstall;
@@ -92,11 +94,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 			progressBar.Percentage = 0;
-			var modData = Game.ModData;
 
 			new Thread(() =>
 			{
-				using (var cabExtractor = new InstallShieldCABExtractor(Game.ModData.ModFiles, source))
+				using (var cabExtractor = new InstallShieldCABExtractor(modData.ModFiles, source))
 				{
 					var denom = installData.InstallShieldCABFileIds.Count;
 					var extractFiles = installData.ExtractFilesFromCD;
@@ -152,7 +153,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			retryButton.IsDisabled = () => true;
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
-			var modData = Game.ModData;
 			var dest = Platform.ResolvePath("^", "Content", modId);
 			var copyFiles = installData.CopyFilesFromCD;
 

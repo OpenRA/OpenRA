@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ColorPickerLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
+		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
 			string actorType;
 			if (!ChromeMetrics.TryGet("ColorPickerActorType", out actorType))
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 			// Set the initial state
-			var validator = Game.ModData.Manifest.Get<ColorValidator>();
+			var validator = modData.Manifest.Get<ColorValidator>();
 			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
 			mixer.Set(initialColor);
 

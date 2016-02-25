@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string HotkeyName;
 
 		[ObjectCreator.UseCtor]
-		public ProductionTypeButtonWidget(Ruleset modRules)
-			: base(modRules) { }
+		public ProductionTypeButtonWidget(ModData modData)
+			: base(modData) { }
 
 		protected ProductionTypeButtonWidget(ProductionTypeButtonWidget other)
 			: base(other)

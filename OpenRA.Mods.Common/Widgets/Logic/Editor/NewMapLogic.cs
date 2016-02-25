@@ -20,14 +20,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget panel;
 
 		[ObjectCreator.UseCtor]
-		public NewMapLogic(Action onExit, Action<string> onSelect, Ruleset modRules, Widget widget, World world)
+		public NewMapLogic(Action onExit, Action<string> onSelect, Widget widget, World world)
 		{
 			panel = widget;
 
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
-			var tilesets = modRules.TileSets.Select(t => t.Key).ToList();
+			var tilesets = world.Map.Rules.TileSets.Select(t => t.Key).ToList();
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modRules.TileSets[tilesetDropDown.Text];
+				var tileset = world.Map.Rules.TileSets[tilesetDropDown.Text];
 				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new PPos(1, 1);
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.SetBounds(tl, br);
 
 				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();
-				map.FixOpenAreas(modRules);
+				map.FixOpenAreas(world.Map.Rules);
 
 				Action<string> afterSave = uid =>
 				{

@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Common.Widgets
 		protected readonly Ruleset ModRules;
 
 		[ObjectCreator.UseCtor]
-		public ButtonWidget(Ruleset modRules)
+		public ButtonWidget(ModData modData)
 		{
-			ModRules = modRules;
+			ModRules = modData.DefaultRules;
 
 			GetText = () => Text;
 			GetColor = () => TextColor;

@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncMainMenuLogic : MainMenuLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncMainMenuLogic(Widget widget, World world)
-			: base(widget, world)
+		public CncMainMenuLogic(Widget widget, World world, ModData modData)
+			: base(widget, world, modData)
 		{
 			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
 			shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;

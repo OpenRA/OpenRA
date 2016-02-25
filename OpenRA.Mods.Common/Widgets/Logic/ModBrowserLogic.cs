@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int modOffset = 0;
 
 		[ObjectCreator.UseCtor]
-		public ModBrowserLogic(Widget widget)
+		public ModBrowserLogic(Widget widget, ModData modData)
 		{
 			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
 			modPrerequisitesFulfilled = new Cache<string, bool>(Game.IsModInstalled);
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modChooserPanel = widget;
 			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
-			loadButton.IsDisabled = () => selectedMod.Id == Game.ModData.Manifest.Mod.Id;
+			loadButton.IsDisabled = () => selectedMod.Id == modData.Manifest.Mod.Id;
 
 			modChooserPanel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 

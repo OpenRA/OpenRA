@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int blinkTick;
 
 		[ObjectCreator.UseCtor]
-		internal LobbyMapPreviewLogic(Widget widget, OrderManager orderManager, LobbyLogic lobby)
+		internal LobbyMapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, LobbyLogic lobby)
 		{
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (lobby.MapPreview.Status == MapStatus.DownloadError)
 							lobby.MapPreview.Install();
 						else if (lobby.MapPreview.Status == MapStatus.Unavailable)
-							Game.ModData.MapCache.QueryRemoteMapDetails(new[] { lobby.MapPreview.Uid });
+							modData.MapCache.QueryRemoteMapDetails(new[] { lobby.MapPreview.Uid });
 					};
 
 					retry.GetText = () => lobby.MapPreview.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";

@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;
+		readonly ModData modData;
 
 		MapClassification currentTab;
 
@@ -38,9 +39,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string mapFilter;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(Widget widget, string initialMap, MapClassification initialTab, Action onExit, Action<string> onSelect, MapVisibility filter)
+		internal MapChooserLogic(Widget widget, ModData modData, string initialMap,
+			MapClassification initialTab, Action onExit, Action<string> onSelect, MapVisibility filter)
 		{
 			this.widget = widget;
+			this.modData = modData;
 			this.onSelect = onSelect;
 
 			var approving = new Action(() => { Ui.CloseWindow(); onSelect(selectedUid); });
@@ -93,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
-			deleteMapButton.IsDisabled = () => Game.ModData.MapCache[selectedUid].Class != MapClassification.User;
+			deleteMapButton.IsDisabled = () => modData.MapCache[selectedUid].Class != MapClassification.User;
 			deleteMapButton.IsVisible = () => currentTab == MapClassification.User;
 			deleteMapButton.OnClick = () =>
 			{
@@ -102,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					RefreshMaps(currentTab, filter);
 					EnumerateMaps(currentTab, itemTemplate);
 					if (!tabMaps[currentTab].Any())
-						SwitchTab(Game.ModData.MapCache[newUid].Class, itemTemplate);
+						SwitchTab(modData.MapCache[newUid].Class, itemTemplate);
 				});
 			};
 
@@ -114,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					RefreshMaps(currentTab, filter);
 					EnumerateMaps(currentTab, itemTemplate);
-					SwitchTab(Game.ModData.MapCache[newUid].Class, itemTemplate);
+					SwitchTab(modData.MapCache[newUid].Class, itemTemplate);
 				});
 			};
 
@@ -143,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RefreshMaps(MapClassification tab, MapVisibility filter)
 		{
-			tabMaps[tab] = Game.ModData.MapCache.Where(m => m.Status == MapStatus.Available &&
+			tabMaps[tab] = modData.MapCache.Where(m => m.Status == MapStatus.Available &&
 				m.Class == tab && (m.Visibility & filter) != 0).ToArray();
 		}
 
@@ -285,7 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string DeleteMap(string map)
 		{
-			var path = Game.ModData.MapCache[map].Package.Name;
+			var path = modData.MapCache[map].Package.Name;
 			try
 			{
 				if (File.Exists(path))
@@ -293,7 +296,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else if (Directory.Exists(path))
 					Directory.Delete(path, true);
 
-				Game.ModData.MapCache[map].Invalidate();
+				modData.MapCache[map].Invalidate();
 
 				if (selectedUid == map)
 					selectedUid = WidgetUtils.ChooseInitialMap(tabMaps[currentTab].Select(mp => mp.Uid).FirstOrDefault());
@@ -311,7 +314,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			ConfirmationDialogs.PromptConfirmAction(
 				title: "Delete map",
-				text: "Delete the map '{0}'?".F(Game.ModData.MapCache[map].Title),
+				text: "Delete the map '{0}'?".F(modData.MapCache[map].Title),
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		volatile bool cancelLoadingReplays;
 
 		[ObjectCreator.UseCtor]
-		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
+		public ReplayBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart)
 		{
 			panel = widget;
 
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
-			var mod = Game.ModData.Manifest.Mod;
+			var mod = modData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			if (Directory.Exists(dir))
