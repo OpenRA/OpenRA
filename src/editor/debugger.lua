@@ -1476,7 +1476,7 @@ function debugger:teardown()
   if debugger.server then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
-    statusUpdate(debugger, debugger.pid and "running" or nil)
+    statusUpdate(debugger, ide:GetLaunchedProcess() and "running" or nil)
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
       debugger:BreakpointToggle(ed, ln)

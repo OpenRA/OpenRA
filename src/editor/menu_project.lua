@@ -256,17 +256,17 @@ local debuggers = {
 
 function ProjectDebug(skipcheck, debtype)
   local debugger = ide:GetDebugger()
-  if (debugger.server ~= nil) then
+  if (debugger:IsConnected()) then
     if (debugger.scratchpad and debugger.scratchpad.paused) then
       debugger.scratchpad.paused = nil
       debugger.scratchpad.updated = true
       ShellSupportRemote(nil) -- disable remote while Scratchpad running
-    elseif (not debugger.running) then
+    elseif (not debugger:IsRunning()) then
       debugger:run()
     end
   else
     local debcall = (debuggers[debtype or "debug"]):
-      format(debugger.hostname, debugger.portnumber)
+      format(debugger:GetHostName(), debugger:GetPortNumber())
     local fname = getNameToRun(skipcheck)
     if not fname then return end
     return runInterpreter(fname, debcall) -- this may be pid or nil
@@ -321,9 +321,7 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectRun() end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
-    local debugger = ide:GetDebugger()
-    event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
+    event:Enable(ide:GetDebugger():IsConnected() == nil and ide:GetLaunchedProcess() == nil and ide:GetEditor() ~= nil)
   end)
 
 frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -343,8 +341,8 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
     -- allowed to turn it into a scratchpad) and we are not debugging anything
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
                  (ide.interpreter.scratchextloop ~= nil) and -- nil == no scratchpad support
-                 (editor ~= nil) and ((debugger.server == nil or debugger.scratchable)
-                 and debugger.pid == nil or debugger.scratchpad ~= nil))
+                 (editor ~= nil) and ((debugger:IsConnected() == nil or debugger.scratchable)
+                 and ide:GetLaunchedProcess() == nil or debugger.scratchpad ~= nil))
     local isscratchpad = debugger.scratchpad ~= nil
     menuBar:Check(ID_RUNNOW, isscratchpad)
     local tool = ide:GetToolBar():FindTool(ID_RUNNOW)
@@ -375,14 +373,11 @@ frame:Connect(ID_STARTDEBUG, wx.wxEVT_UPDATE_UI,
     local editor = GetEditor()
     local debugger = ide:GetDebugger()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
-      ((debugger.server == nil and debugger.pid == nil and editor ~= nil) or
-       (debugger.server ~= nil and not debugger.running)) and
+      ((debugger:IsConnected() == nil and ide:GetLaunchedProcess() == nil and editor ~= nil) or
+       (debugger:IsConnected() ~= nil and not debugger:IsRunning())) and
       (not debugger.scratchpad or debugger.scratchpad.paused))
-    local label = (debugger.server ~= nil)
-      and debugMenuRun.continue or debugMenuRun.start
-    if debugMenu:GetLabel(ID_STARTDEBUG) ~= label then
-      debugMenu:SetLabel(ID_STARTDEBUG, label)
-    end
+    local label = (debugger:IsConnected() ~= nil) and debugMenuRun.continue or debugMenuRun.start
+    if debugMenu:GetLabel(ID_STARTDEBUG) ~= label then debugMenu:SetLabel(ID_STARTDEBUG, label) end
   end)
 
 frame:Connect(ID_STOPDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -390,12 +385,10 @@ frame:Connect(ID_STOPDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()
-    event:Enable(debugger.server ~= nil or debugger.pid ~= nil)
-    local label = (debugger.server == nil and debugger.pid ~= nil)
+    event:Enable(debugger:IsConnected() ~= nil or ide:GetLaunchedProcess() ~= nil)
+    local label = (debugger:IsConnected() == nil and ide:GetLaunchedProcess() ~= nil)
       and debugMenuStop.process or debugMenuStop.debugging
-    if debugMenu:GetLabel(ID_STOPDEBUG) ~= label then
-      debugMenu:SetLabel(ID_STOPDEBUG, label)
-    end
+    if debugMenu:GetLabel(ID_STOPDEBUG) ~= label then debugMenu:SetLabel(ID_STOPDEBUG, label) end
   end)
 
 frame:Connect(ID_DETACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -403,7 +396,7 @@ frame:Connect(ID_DETACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.scratchpad))
+    event:Enable(debugger:IsConnected() ~= nil and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -413,50 +406,45 @@ frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_RUNTO, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+    event:Enable((debugger:IsConnected() ~= nil) and (not debugger:IsRunning())
+      and (ide:GetEditor() ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () ide:GetDebugger():step() end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+    event:Enable((debugger:IsConnected() ~= nil) and (not debugger:IsRunning())
+      and (ide:GetEditor() ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEPOVER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () ide:GetDebugger():over() end)
 frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+    event:Enable((debugger:IsConnected() ~= nil) and (not debugger:IsRunning())
+      and (ide:GetEditor() ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEPOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () ide:GetDebugger():out() end)
 frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+    event:Enable((debugger:IsConnected() ~= nil) and (not debugger:IsRunning())
+      and (ide:GetEditor() ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () ide:GetDebugger():trace() end)
 frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
     local debugger = ide:GetDebugger()
-    event:Enable((debugger.server ~= nil) and (not debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+    event:Enable((debugger:IsConnected() ~= nil) and (not debugger:IsRunning())
+      and (ide:GetEditor() ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -473,8 +461,8 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()
-    event:Enable(debugger.server ~= nil
-      and (debugger.running
+    event:Enable(debugger:IsConnected() ~= nil
+      and (debugger:IsRunning()
            or (debugger.scratchpad and not debugger.scratchpad.paused)))
   end)
 

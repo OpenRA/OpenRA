@@ -463,7 +463,7 @@ function ClosePage(selection)
     end
     -- check if the debugger is running and is using the current window;
     -- abort the debugger if the current marker is in the window being closed
-    if debugger and debugger.server and
+    if debugger and debugger:IsConnected() and
       (editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE) >= 0) then
       debugger:Stop()
     end

@@ -369,7 +369,7 @@ function EditorCallTip(editor, pos, x, y)
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
   local limit = ide.config.acandtip.maxlength
   local debugger = ide:GetDebugger()
-  if debugger and debugger.server then
+  if debugger and debugger:IsConnected() then
     if var then
       debugger:quickeval(var, function(val)
         if #val > limit then val = val:sub(1, limit-3).."..." end
