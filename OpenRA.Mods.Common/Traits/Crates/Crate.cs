@@ -156,11 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
-			if (self.IsInWorld)
-			{
-				self.World.ScreenMap.Update(self);
-				self.World.ActorMap.UpdatePosition(self, this);
-			}
+			self.World.UpdateMaps(self, this);
 		}
 
 		// Sets only the location (Location)
@@ -206,11 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
 			if (cs != null)
@@ -219,11 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
 
 			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
 			if (cs != null)

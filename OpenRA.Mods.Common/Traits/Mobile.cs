@@ -429,31 +429,17 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
-			if (self.IsInWorld)
-			{
-				if (!self.Bounds.Size.IsEmpty)
-					self.World.ScreenMap.Update(self);
-
-				self.World.ActorMap.UpdatePosition(self, this);
-			}
+			self.World.UpdateMaps(self, this);
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, this); } }
