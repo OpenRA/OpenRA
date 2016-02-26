@@ -53,7 +53,7 @@ namespace OpenRA
 		public readonly bool downloading;
 	}
 
-	public class MapPreview
+	public class MapPreview : IDisposable
 	{
 		static readonly CPos[] NoSpawns = new CPos[] { };
 		MapCache cache;
@@ -343,6 +343,15 @@ namespace OpenRA
 		public void Invalidate()
 		{
 			Status = MapStatus.Unavailable;
+		}
+
+		public void Dispose()
+		{
+			if (Package != null)
+			{
+				Package.Dispose();
+				Package = null;
+			}
 		}
 	}
 }
