@@ -710,7 +710,16 @@ QTNK:
 		Range: 6c0
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
-	MadTank:
+	AttackSeismic:
+	AttackDetonates:
+		ChargeDelay: 96
+		DetonationDelay: 42
+		ChargeSound: madchrg2.aud
+		DetonationSound: madexplo.aud
+		DetonationWeapon: MADTankDetonate
+	WithChargeAnimation:
+		ChargeSequence: piston
+		Repeating: true
 	-EjectOnDeath:
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair, Vehicle
