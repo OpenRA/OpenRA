@@ -13,7 +13,7 @@ using System.Drawing;
 using NUnit.Framework;
 using OpenRA.Primitives;
 
-namespace OpenRA.Test.OpenRA.Game
+namespace OpenRA.Test
 {
 	[TestFixture]
 	class SpatiallyPartitionedTest
