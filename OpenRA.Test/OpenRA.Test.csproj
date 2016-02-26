@@ -50,6 +50,7 @@
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\CoordinateTest.cs" />
+    <Compile Include="OpenRA.Game\PriorityQueueTest.cs" />
     <Compile Include="OpenRA.Game\SpatiallyPartitionedTest.cs" />
     <Compile Include="OpenRA.Mods.Common\ShapeTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
