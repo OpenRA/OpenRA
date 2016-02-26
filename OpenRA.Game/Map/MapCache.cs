@@ -57,17 +57,21 @@ namespace OpenRA
 			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var path in mapPaths)
 			{
+				IReadOnlyPackage package;
 				try
 				{
 					using (new Support.PerfTimer(path.Key))
 					{
-						var package = modData.ModFiles.OpenPackage(path.Key);
+						package = modData.ModFiles.OpenPackage(path.Key);
 						var uid = Map.ComputeUID(package);
 						previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
 					}
 				}
 				catch (Exception e)
 				{
+					if (package != null)
+						package.Dispose();
+
 					Console.WriteLine("Failed to load map: {0}", path);
 					Console.WriteLine("Details: {0}", e);
 					Log.Write("debug", "Failed to load map: {0}", path);
