@@ -61,9 +61,11 @@ namespace OpenRA
 				{
 					using (new Support.PerfTimer(path.Key))
 					{
-						var package = modData.ModFiles.OpenPackage(path.Key);
-						var uid = Map.ComputeUID(package);
-						previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+						using (var package = modData.ModFiles.OpenPackage(path.Key))
+						{
+							var uid = Map.ComputeUID(package);
+							previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+						}
 					}
 				}
 				catch (Exception e)
