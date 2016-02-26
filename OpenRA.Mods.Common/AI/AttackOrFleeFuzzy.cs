@@ -131,41 +131,44 @@ namespace OpenRA.Mods.Common.AI
 			IEnumerable<string> rulesForInjuredOwnHealth,
 			IEnumerable<string> rulesForNeadDeadOwnHealth)
 		{
-			var playerHealthFuzzy = new FuzzyVariable("OwnHealth", 0.0, 100.0);
-			playerHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
-			playerHealthFuzzy.Terms.Add(new FuzzyTerm("Injured", new TrapezoidMembershipFunction(30, 50, 50, 70)));
-			playerHealthFuzzy.Terms.Add(new FuzzyTerm("Normal", new TrapezoidMembershipFunction(50, 80, 100, 100)));
-			fuzzyEngine.Input.Add(playerHealthFuzzy);
+			lock (fuzzyEngine)
+			{
+				var playerHealthFuzzy = new FuzzyVariable("OwnHealth", 0.0, 100.0);
+				playerHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
+				playerHealthFuzzy.Terms.Add(new FuzzyTerm("Injured", new TrapezoidMembershipFunction(30, 50, 50, 70)));
+				playerHealthFuzzy.Terms.Add(new FuzzyTerm("Normal", new TrapezoidMembershipFunction(50, 80, 100, 100)));
+				fuzzyEngine.Input.Add(playerHealthFuzzy);
 
-			var enemyHealthFuzzy = new FuzzyVariable("EnemyHealth", 0.0, 100.0);
-			enemyHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
-			enemyHealthFuzzy.Terms.Add(new FuzzyTerm("Injured", new TrapezoidMembershipFunction(30, 50, 50, 70)));
-			enemyHealthFuzzy.Terms.Add(new FuzzyTerm("Normal", new TrapezoidMembershipFunction(50, 80, 100, 100)));
-			fuzzyEngine.Input.Add(enemyHealthFuzzy);
+				var enemyHealthFuzzy = new FuzzyVariable("EnemyHealth", 0.0, 100.0);
+				enemyHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
+				enemyHealthFuzzy.Terms.Add(new FuzzyTerm("Injured", new TrapezoidMembershipFunction(30, 50, 50, 70)));
+				enemyHealthFuzzy.Terms.Add(new FuzzyTerm("Normal", new TrapezoidMembershipFunction(50, 80, 100, 100)));
+				fuzzyEngine.Input.Add(enemyHealthFuzzy);
 
-			var relativeAttackPowerFuzzy = new FuzzyVariable("RelativeAttackPower", 0.0, 1000.0);
-			relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Weak", new TrapezoidMembershipFunction(0, 0, 70, 90)));
-			relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Equal", new TrapezoidMembershipFunction(85, 100, 100, 115)));
-			relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Strong", new TrapezoidMembershipFunction(110, 150, 150, 1000)));
-			fuzzyEngine.Input.Add(relativeAttackPowerFuzzy);
+				var relativeAttackPowerFuzzy = new FuzzyVariable("RelativeAttackPower", 0.0, 1000.0);
+				relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Weak", new TrapezoidMembershipFunction(0, 0, 70, 90)));
+				relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Equal", new TrapezoidMembershipFunction(85, 100, 100, 115)));
+				relativeAttackPowerFuzzy.Terms.Add(new FuzzyTerm("Strong", new TrapezoidMembershipFunction(110, 150, 150, 1000)));
+				fuzzyEngine.Input.Add(relativeAttackPowerFuzzy);
 
-			var relativeSpeedFuzzy = new FuzzyVariable("RelativeSpeed", 0.0, 1000.0);
-			relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Slow", new TrapezoidMembershipFunction(0, 0, 70, 90)));
-			relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Equal", new TrapezoidMembershipFunction(85, 100, 100, 115)));
-			relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Fast", new TrapezoidMembershipFunction(110, 150, 150, 1000)));
-			fuzzyEngine.Input.Add(relativeSpeedFuzzy);
+				var relativeSpeedFuzzy = new FuzzyVariable("RelativeSpeed", 0.0, 1000.0);
+				relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Slow", new TrapezoidMembershipFunction(0, 0, 70, 90)));
+				relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Equal", new TrapezoidMembershipFunction(85, 100, 100, 115)));
+				relativeSpeedFuzzy.Terms.Add(new FuzzyTerm("Fast", new TrapezoidMembershipFunction(110, 150, 150, 1000)));
+				fuzzyEngine.Input.Add(relativeSpeedFuzzy);
 
-			var attackOrFleeFuzzy = new FuzzyVariable("AttackOrFlee", 0.0, 50.0);
-			attackOrFleeFuzzy.Terms.Add(new FuzzyTerm("Attack", new TrapezoidMembershipFunction(0, 15, 15, 30)));
-			attackOrFleeFuzzy.Terms.Add(new FuzzyTerm("Flee", new TrapezoidMembershipFunction(25, 35, 35, 50)));
-			fuzzyEngine.Output.Add(attackOrFleeFuzzy);
+				var attackOrFleeFuzzy = new FuzzyVariable("AttackOrFlee", 0.0, 50.0);
+				attackOrFleeFuzzy.Terms.Add(new FuzzyTerm("Attack", new TrapezoidMembershipFunction(0, 15, 15, 30)));
+				attackOrFleeFuzzy.Terms.Add(new FuzzyTerm("Flee", new TrapezoidMembershipFunction(25, 35, 35, 50)));
+				fuzzyEngine.Output.Add(attackOrFleeFuzzy);
 
-			foreach (var rule in rulesForNormalOwnHealth ?? DefaultRulesNormalOwnHealth)
-				AddFuzzyRule(rule);
-			foreach (var rule in rulesForInjuredOwnHealth ?? DefaultRulesInjuredOwnHealth)
-				AddFuzzyRule(rule);
-			foreach (var rule in rulesForNeadDeadOwnHealth ?? DefaultRulesNearDeadOwnHealth)
-				AddFuzzyRule(rule);
+				foreach (var rule in rulesForNormalOwnHealth ?? DefaultRulesNormalOwnHealth)
+					AddFuzzyRule(rule);
+				foreach (var rule in rulesForInjuredOwnHealth ?? DefaultRulesInjuredOwnHealth)
+					AddFuzzyRule(rule);
+				foreach (var rule in rulesForNeadDeadOwnHealth ?? DefaultRulesNearDeadOwnHealth)
+					AddFuzzyRule(rule);
+			}
 		}
 
 		void AddFuzzyRule(string rule)
