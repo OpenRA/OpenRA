@@ -70,12 +70,22 @@ if (!(Test-Path "nunit.framework.dll"))
 if (!(Test-Path "windows/SDL2.dll"))
 {
 	echo "Fetching SDL2 from libsdl.org"
-	$target = Join-Path $pwd.ToString() "SDL2-2.0.4-win32-x86.zip"
-	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/SDL2-2.0.4-win32-x86.zip", $target)
-	$destination = Join-Path $pwd.ToString() "windows"
-	Add-Type -assembly "system.io.compression.filesystem"
-	[io.compression.zipfile]::ExtractToDirectory($target, $destination)
+	
+	# Download zip:
+	$zipFileName = "SDL2-2.0.4-win32-x86.zip"
+	$target = Join-Path $pwd.ToString() $zipFileName
+	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/" + $zipFileName, $target)
+	
+	# Extract zip:
+	$shell_app=new-object -com shell.application
+	$currentPath = (Get-Location).Path
+	$zipFile = $shell_app.namespace($currentPath + "\$zipFileName")
+	$destination = $shell_app.namespace($currentPath + "\windows")
+	$destination.Copyhere($zipFile.items())
+	
+	# Remove junk files:
 	rm SDL2-2.0.4-win32-x86.zip
+	rm -path "$currentPath\windows\README-SDL.txt"
 }
 
 if (!(Test-Path "Mono.Nat.dll"))
