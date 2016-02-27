@@ -680,9 +680,10 @@ CACRSH05:
 	Inherits: CACRSH01
 
 CAHOSP:
-	Inherits: ^CivBuilding
+	Inherits: ^BasicBuilding
 	Tooltip:
 		Name: Civilian Hospital
+		Description: Gives friendly units a medkit to heal themselves.
 	Building:
 		Footprint: xxx xxx xxx xxx
 		Dimensions: 3, 4
@@ -692,6 +693,9 @@ CAHOSP:
 		HP: 800
 	RenderSprites:
 		Palette: player
+	Capturable:
+	CaptureNotification:
+	ProvidesPrerequisite@BuildingName:
 
 CAPYR01:
 	Inherits: ^CivBuilding
