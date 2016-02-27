@@ -17,6 +17,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Server;
+using OpenRA.Traits;
 using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.Common.Server
@@ -586,8 +587,8 @@ namespace OpenRA.Mods.Common.Server
 
 						if (s != null && !server.Map.Options.Difficulties.Contains(s))
 						{
-							server.SendOrderTo(conn, "Message", "Unsupported difficulty selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported difficulties: {0}".F(server.Map.Options.Difficulties.JoinWith(",")));
+							server.SendOrderTo(conn, "Message", "Invalid difficulty selected: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(server.Map.Options.Difficulties.JoinWith(", ")));
 							return true;
 						}
 
@@ -614,12 +615,17 @@ namespace OpenRA.Mods.Common.Server
 						}
 
 						var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
-						var selectedClass = startUnitsInfo.Where(u => u.Class == s).Select(u => u.ClassName).FirstOrDefault();
-						var className = selectedClass != null ? selectedClass : s;
+						var selectedClass = startUnitsInfo.Where(u => u.Class == s).FirstOrDefault();
+						if (selectedClass == null)
+						{
+							server.SendOrderTo(conn, "Message", "Invalid starting units option selected: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startUnitsInfo.Select(su => su.ClassName).JoinWith(", ")));
+							return true;
+						}
 
-						server.LobbyInfo.GlobalSettings.StartingUnitsClass = s;
+						server.LobbyInfo.GlobalSettings.StartingUnitsClass = selectedClass.Class;
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, className));
+						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, selectedClass.ClassName));
 
 						return true;
 					}
@@ -639,9 +645,18 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						server.LobbyInfo.GlobalSettings.StartingCash = Exts.ParseIntegerInvariant(s);
+						var startingCashOptions = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>().SelectableCash;
+						var requestedCash = Exts.ParseIntegerInvariant(s);
+						if (!startingCashOptions.Contains(requestedCash))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid starting cash value selected: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startingCashOptions.JoinWith(", ")));
+							return true;
+						}
+
+						server.LobbyInfo.GlobalSettings.StartingCash = requestedCash;
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, s));
+						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, requestedCash));
 
 						return true;
 					}
@@ -658,6 +673,14 @@ namespace OpenRA.Mods.Common.Server
 						if (server.Map.Options.TechLevel != null)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
+							return true;
+						}
+
+						var techlevels = server.Map.Rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().Select(t => t.Name);
+						if (!techlevels.Contains(s))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid tech level selected: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(techlevels.JoinWith(", ")));
 							return true;
 						}
 
@@ -773,6 +796,16 @@ namespace OpenRA.Mods.Common.Server
 						// Map has disabled faction changes
 						if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 							return true;
+
+						var factions = server.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+							.Where(f => f.Selectable).Select(f => f.InternalName);
+
+						if (!factions.Contains(parts[1]))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid faction selected: {0}".F(parts[1]));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(factions.JoinWith(", ")));
+							return true;
+						}
 
 						targetClient.Faction = parts[1];
 						server.SyncLobbyClients();
