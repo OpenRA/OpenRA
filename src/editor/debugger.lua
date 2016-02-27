@@ -764,7 +764,7 @@ function debugger:listen(start)
       end
 
       if (not options.noshell and not debugger.scratchpad) then
-        ShellSupportRemote(function(...) return ide:GetDebugger():shell(...) end)
+        ShellSupportRemote(debugger:GetConsole())
       end
 
       debugger:toggleViews(true)

@@ -454,7 +454,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
       debugger:breaknow()
       if debugger.scratchpad then
         debugger.scratchpad.paused = true
-        ShellSupportRemote(debugger.shell)
+        ShellSupportRemote(debugger:GetConsole())
       end
     end
   end)
