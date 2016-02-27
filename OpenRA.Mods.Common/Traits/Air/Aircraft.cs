@@ -134,9 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
+
 			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
 			if (altitude.Length >= Info.MinAirborneAltitude)
 				OnAirborneAltitudeReached();
@@ -353,8 +352,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld)
 				return;
 
-			self.World.ScreenMap.Update(self);
-			self.World.ActorMap.UpdatePosition(self, this);
+			self.World.UpdateMaps(self, this);
+
 			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
 			var isAirborne = altitude.Length >= Info.MinAirborneAltitude;
 			if (isAirborne && !airborne)
@@ -603,9 +602,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void RemovedFromWorld(Actor self)
 		{
 			UnReserve();
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
+
 			OnCruisingAltitudeLeft();
 			OnAirborneAltitudeLeft();
 		}

@@ -194,6 +194,35 @@ namespace OpenRA
 					player.Shroud.ExploreAll(this);
 		}
 
+		public void AddToMaps(Actor self, IOccupySpace ios)
+		{
+			ActorMap.AddInfluence(self, ios);
+			ActorMap.AddPosition(self, ios);
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Add(self);
+		}
+
+		public void UpdateMaps(Actor self, IOccupySpace ios)
+		{
+			if (!self.IsInWorld)
+				return;
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Update(self);
+
+			ActorMap.UpdatePosition(self, ios);
+		}
+
+		public void RemoveFromMaps(Actor self, IOccupySpace ios)
+		{
+			ActorMap.RemoveInfluence(self, ios);
+			ActorMap.RemovePosition(self, ios);
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Remove(self);
+		}
+
 		public void LoadComplete(WorldRenderer wr)
 		{
 			// ScreenMap must be initialized before anything else

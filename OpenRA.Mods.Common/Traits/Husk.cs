@@ -106,22 +106,18 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = pos;
 			TopLeft = self.World.Map.CellContaining(pos);
 			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.UpdatePosition(self, this);
-			self.World.ScreenMap.Update(self);
+
+			self.World.UpdateMaps(self, this);
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
 		}
 
 		public bool Disabled
