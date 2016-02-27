@@ -186,6 +186,7 @@ FLARE:
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false
+	AutoSelectionSize:
 
 MINE:
 	Inherits@1: ^SpriteActor
