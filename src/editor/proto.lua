@@ -60,6 +60,10 @@ ide.proto.Debugger = {__index = {
   IsConnected = function(self) return self.server end,
   GetHostName = function(self) return self.hostname end,
   GetPortNumber = function(self) return self.portnumber end,
+  GetConsole = function(self)
+    local debugger = self
+    return function(...) return debugger:shell(...) end
+  end
 }}
 
 ide.proto.ID = {
