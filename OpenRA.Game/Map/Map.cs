@@ -250,6 +250,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
+		public List<CPos> AllEdgeCells { get; private set; }
 
 		void AssertExists(string filename)
 		{
@@ -392,6 +393,8 @@ namespace OpenRA
 			CustomTerrain = new CellLayer<byte>(this);
 			foreach (var uv in AllCells.MapCoords)
 				CustomTerrain[uv] = byte.MaxValue;
+
+			AllEdgeCells = UpdateEdgeCells();
 		}
 
 		void InitializeCellProjection()
@@ -1056,20 +1059,44 @@ namespace OpenRA
 			return edge.V == Bounds.Bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V);
 		}
 
+		public CPos ChooseClosestMatchingEdgeCell(CPos cell, Func<CPos, bool> match)
+		{
+			return AllEdgeCells.OrderBy(c => (cell - c).Length).FirstOrDefault(c => match(c));
+		}
+
+		List<CPos> UpdateEdgeCells()
+		{
+			var edgeCells = new List<CPos>();
+			var unProjected = new List<MPos>();
+			var bottom = Bounds.Bottom - 1;
+			for (var u = Bounds.Left; u < Bounds.Right; u++)
+			{
+				unProjected = Unproject(new PPos(u, Bounds.Top));
+				if (unProjected.Any())
+					edgeCells.Add(unProjected.MinBy(x => x.V).ToCPos(Grid.Type));
+
+				unProjected = Unproject(new PPos(u, bottom));
+				if (unProjected.Any())
+					edgeCells.Add(unProjected.MaxBy(x => x.V).ToCPos(Grid.Type));
+			}
+
+			for (var v = Bounds.Top; v < Bounds.Bottom; v++)
+			{
+				unProjected = Unproject(new PPos(Bounds.Left, v));
+				if (unProjected.Any())
+					edgeCells.Add((v == bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V)).ToCPos(Grid.Type));
+
+				unProjected = Unproject(new PPos(Bounds.Right - 1, v));
+				if (unProjected.Any())
+					edgeCells.Add((v == bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V)).ToCPos(Grid.Type));
+			}
+
+			return edgeCells;
+		}
+
 		public CPos ChooseRandomEdgeCell(MersenneTwister rand)
 		{
-			List<MPos> cells;
-			do
-			{
-				var isU = rand.Next(2) == 0;
-				var edge = rand.Next(2) == 0;
-				var u = isU ? rand.Next(Bounds.Left, Bounds.Right) : (edge ? Bounds.Left : Bounds.Right);
-				var v = !isU ? rand.Next(Bounds.Top, Bounds.Bottom) : (edge ? Bounds.Top : Bounds.Bottom);
-
-				cells = Unproject(new PPos(u, v));
-			} while (!cells.Any());
-
-			return cells.Random(rand).ToCPos(Grid.Type);
+			return AllEdgeCells.Random(rand);
 		}
 
 		public WDist DistanceToEdge(WPos pos, WVec dir)
