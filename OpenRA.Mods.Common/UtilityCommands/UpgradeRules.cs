@@ -778,7 +778,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					Console.WriteLine("Converted " + package.Name + " to MapFormat 8.");
 					if (noteHexColors)
 						Console.WriteLine("ColorRamp is now called Color and uses rgb(a) hex value - rrggbb[aa].");
 					else if (noteColorRamp)
@@ -949,9 +948,97 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					rules.Value.Nodes.Add(playerNode);
 			}
 
-			yaml.Nodes.First(n => n.Key == "MapFormat").Value = new MiniYaml(Map.SupportedMapFormat.ToString());
+			// Format 9 -> 10 extracted map rules, sequences, voxelsequences, weapons, voices, music, notifications,
+			// and translations to external files, moved smudges to SmudgeLayer, and uses map.png for all maps
+			if (mapFormat < 10)
+			{
+				ExtractSmudges(yaml);
+				ExtractOrRemoveRules(package, yaml, "Rules", "rules.yaml");
+				ExtractOrRemoveRules(package, yaml, "Sequences", "sequences.yaml");
+				ExtractOrRemoveRules(package, yaml, "VoxelSequences", "voxels.yaml");
+				ExtractOrRemoveRules(package, yaml, "Weapons", "weapons.yaml");
+				ExtractOrRemoveRules(package, yaml, "Voices", "voices.yaml");
+				ExtractOrRemoveRules(package, yaml, "Music", "music.yaml");
+				ExtractOrRemoveRules(package, yaml, "Notifications", "notifications.yaml");
+				ExtractOrRemoveRules(package, yaml, "Translations", "translations.yaml");
+
+				if (package.Contains("map.png"))
+					yaml.Nodes.Add(new MiniYamlNode("LockPreview", new MiniYaml("True")));
+			}
+
+			if (mapFormat < Map.SupportedMapFormat)
+			{
+				yaml.Nodes.First(n => n.Key == "MapFormat").Value = new MiniYaml(Map.SupportedMapFormat.ToString());
+				Console.WriteLine("Converted {0} to MapFormat {1}.", package.Name, Map.SupportedMapFormat);
+			}
 
 			package.Update("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
+		}
+
+		static void ExtractSmudges(MiniYaml yaml)
+		{
+			var smudges = yaml.Nodes.FirstOrDefault(n => n.Key == "Smudges");
+			if (smudges == null || !smudges.Value.Nodes.Any())
+				return;
+
+			var scorches = new List<MiniYamlNode>();
+			var craters = new List<MiniYamlNode>();
+			foreach (var s in smudges.Value.Nodes)
+			{
+				// loc=type,loc,depth
+				var parts = s.Key.Split(' ');
+				var value = "{0},{1}".F(parts[0], parts[2]);
+				var node = new MiniYamlNode(parts[1], value);
+				if (parts[0].StartsWith("sc"))
+					scorches.Add(node);
+				else if (parts[0].StartsWith("cr"))
+					craters.Add(node);
+			}
+
+			var rulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+			if (rulesNode == null)
+			{
+				rulesNode = new MiniYamlNode("Rules", new MiniYaml("", new List<MiniYamlNode>()));
+				yaml.Nodes.Add(rulesNode);
+			}
+
+			var worldNode = rulesNode.Value.Nodes.FirstOrDefault(n => n.Key == "World");
+			if (worldNode == null)
+			{
+				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+				rulesNode.Value.Nodes.Add(rulesNode);
+			}
+
+			if (scorches.Any())
+			{
+				var initialScorches = new MiniYamlNode("InitialSmudges", new MiniYaml("", scorches));
+				var smudgeLayer = new MiniYamlNode("SmudgeLayer@SCORCH", new MiniYaml("", new List<MiniYamlNode>() { initialScorches }));
+				worldNode.Value.Nodes.Add(smudgeLayer);
+			}
+
+			if (craters.Any())
+			{
+				var initialCraters = new MiniYamlNode("InitialSmudges", new MiniYaml("", craters));
+				var smudgeLayer = new MiniYamlNode("SmudgeLayer@CRATER", new MiniYaml("", new List<MiniYamlNode>() { initialCraters }));
+				worldNode.Value.Nodes.Add(smudgeLayer);
+			}
+		}
+
+		static void ExtractOrRemoveRules(IReadWritePackage package, MiniYaml yaml, string key, string filename)
+		{
+			var node = yaml.Nodes.FirstOrDefault(n => n.Key == key);
+			if (node == null)
+				return;
+
+			if (node.Value.Nodes.Any())
+			{
+				var rulesText = node.Value.Nodes.ToLines(false).JoinWith("\n");
+				package.Update(filename, System.Text.Encoding.ASCII.GetBytes(rulesText));
+				node.Value.Value = filename;
+				node.Value.Nodes.Clear();
+			}
+			else
+				yaml.Nodes.Remove(node);
 		}
 	}
 }

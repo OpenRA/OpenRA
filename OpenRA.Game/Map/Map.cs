@@ -68,7 +68,7 @@ namespace OpenRA
 
 	public class Map : IReadOnlyFileSystem
 	{
-		public const int SupportedMapFormat = 9;
+		public const int SupportedMapFormat = 10;
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
