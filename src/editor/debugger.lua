@@ -1485,11 +1485,11 @@ function debugger:teardown()
       SetAllEditorsReadOnly(false)
       ShellSupportRemote(nil)
       ClearAllCurrentLineMarkers()
-      debugger:ScratchpadOff()
       debugger:toggleViews(false)
       PackageEventHandle("onDebuggerClose", debugger)
     end
     debugger.server = nil
+    debugger:ScratchpadOff()
   else
     -- it's possible that the application couldn't start, or that the
     -- debugger in the application didn't start, which means there is
