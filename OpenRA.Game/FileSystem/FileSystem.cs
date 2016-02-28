@@ -32,6 +32,9 @@ namespace OpenRA.FileSystem
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
 
+		// Mod packages that should not be disposed
+		readonly List<IReadOnlyPackage> modPackages = new List<IReadOnlyPackage>();
+
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
 		public IReadOnlyPackage OpenPackage(string filename)
@@ -106,18 +109,25 @@ namespace OpenRA.FileSystem
 			if (optional)
 				name = name.Substring(1);
 
-			var modPackage = name.StartsWith("$");
-			if (modPackage)
-				name = name.Substring(1);
-
-			Action a = () => Mount(modPackage ? ModMetadata.AllMods[name].Package : OpenPackage(name), explicitName);
-			if (optional)
+			try
 			{
-				try { a(); }
-				catch { }
+				IReadOnlyPackage package;
+				if (name.StartsWith("$"))
+				{
+					name = name.Substring(1);
+					package = ModMetadata.AllMods[name].Package;
+					modPackages.Add(package);
+				}
+				else
+					package = OpenPackage(name);
+
+				Mount(package, explicitName);
 			}
-			else
-				a();
+			catch
+			{
+				if (!optional)
+					throw;
+			}
 		}
 
 		public void Mount(IReadOnlyPackage package, string explicitName = null)
@@ -166,7 +176,11 @@ namespace OpenRA.FileSystem
 				foreach (var key in explicitKeys)
 					explicitMounts.Remove(key);
 
-				package.Dispose();
+				// Mod packages aren't owned by us, so we shouldn't dispose them
+				if (modPackages.Contains(package))
+					modPackages.Remove(package);
+				else
+					package.Dispose();
 			}
 			else
 				mountedPackages[package] = mountCount;
@@ -177,10 +191,13 @@ namespace OpenRA.FileSystem
 		public void UnmountAll()
 		{
 			foreach (var package in mountedPackages.Keys)
-				package.Dispose();
+				if (!modPackages.Contains(package))
+					package.Dispose();
 
 			mountedPackages.Clear();
 			explicitMounts.Clear();
+			modPackages.Clear();
+
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
