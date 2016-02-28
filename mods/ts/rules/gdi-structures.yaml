@@ -139,6 +139,7 @@ GAWEAP:
 		Bounds: 154, 96, -2, -12
 	Health:
 		HP: 1000
+		TargetablePositionOffset: 576, -432, 0
 	RevealsShroud:
 		Range: 4c0
 	Armor:
