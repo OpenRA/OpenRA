@@ -272,8 +272,15 @@ namespace OpenRA
 				return;
 
 			Status = MapStatus.Downloading;
-			var mapInstallPackage = new Folder(Platform.ResolvePath("^", "maps", Game.ModData.Manifest.Mod.Id));
+			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
+			if (installLocation.Key == null || !(installLocation.Key is IReadWritePackage))
+			{
+				Log.Write("debug", "Map install directory not found");
+				Status = MapStatus.DownloadError;
+				return;
+			}
 
+			var mapInstallPackage = installLocation.Key as IReadWritePackage;
 			var modData = Game.ModData;
 			new Thread(() =>
 			{
