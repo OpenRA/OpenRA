@@ -182,6 +182,7 @@ GAARTY:
 		Weapon: 155mm
 		LocalOffset: 811,0,0
 		MuzzleSequence: muzzle
+		IgnoreTargetOffset: true
 	BodyOrientation:
 		QuantizedFacings: 32
 	RenderVoxels:

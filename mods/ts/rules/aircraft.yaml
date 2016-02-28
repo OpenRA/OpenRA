@@ -149,6 +149,7 @@ ORCAB:
 		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
+		IgnoreTargetOffset: true
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
