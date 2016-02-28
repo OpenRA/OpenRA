@@ -26,6 +26,8 @@ namespace OpenRA
 	public sealed class MapCache : IEnumerable<MapPreview>, IDisposable
 	{
 		public static readonly MapPreview UnknownMap = new MapPreview(null, MapGridType.Rectangular, null);
+		public readonly IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations;
+
 		readonly Cache<string, MapPreview> previews;
 		readonly ModData modData;
 		readonly SheetBuilder sheetBuilder;
@@ -41,6 +43,36 @@ namespace OpenRA
 			var gridType = Exts.Lazy(() => modData.Manifest.Get<MapGrid>().Type);
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(uid, gridType.Value, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
+
+			// Enumerate map directories
+			var mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
+			foreach (var kv in modData.Manifest.MapFolders)
+			{
+				var name = kv.Key;
+				var classification = string.IsNullOrEmpty(kv.Value)
+					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value);
+
+				IReadOnlyPackage package;
+				var optional = name.StartsWith("~");
+				if (optional)
+					name = name.Substring(1);
+
+				try
+				{
+					package = modData.ModFiles.OpenPackage(name);
+				}
+				catch
+				{
+					if (optional)
+						continue;
+
+					throw;
+				}
+
+				mapLocations.Add(package, classification);
+			}
+
+			MapLocations = new ReadOnlyDictionary<IReadOnlyPackage, MapClassification>(mapLocations);
 		}
 
 		public void LoadMaps()
@@ -49,29 +81,33 @@ namespace OpenRA
 			if (!modData.Manifest.Contains<MapGrid>())
 				return;
 
-			// Expand the dictionary (dir path, dir type) to a dictionary of (map path, dir type)
-			var mapPaths = modData.Manifest.MapFolders.SelectMany(kv =>
-				FindMapsIn(modData.ModFiles, kv.Key).ToDictionary(p => p, p => string.IsNullOrEmpty(kv.Value)
-					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value)));
-
-			var mapGrid = modData.Manifest.Get<MapGrid>();
-			foreach (var path in mapPaths)
+			var mapGrid = Game.ModData.Manifest.Get<MapGrid>();
+			foreach (var kv in MapLocations)
 			{
-				try
+				foreach (var map in kv.Key.Contents)
 				{
-					using (new Support.PerfTimer(path.Key))
+					IReadOnlyPackage mapPackage = null;
+					try
 					{
-						var package = modData.ModFiles.OpenPackage(path.Key);
-						var uid = Map.ComputeUID(package);
-						previews[uid].UpdateFromMap(package, path.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+						using (new Support.PerfTimer(map))
+						{
+							mapPackage = modData.ModFiles.OpenPackage(map, kv.Key);
+							if (mapPackage == null)
+								continue;
+
+							var uid = Map.ComputeUID(mapPackage);
+							previews[uid].UpdateFromMap(mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
+						}
 					}
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine("Failed to load map: {0}", path);
-					Console.WriteLine("Details: {0}", e);
-					Log.Write("debug", "Failed to load map: {0}", path);
-					Log.Write("debug", "Details: {0}", e);
+					catch (Exception e)
+					{
+						if (mapPackage != null)
+							mapPackage.Dispose();
+						Console.WriteLine("Failed to load map: {0}", map);
+						Console.WriteLine("Details: {0}", e);
+						Log.Write("debug", "Failed to load map: {0}", map);
+						Log.Write("debug", "Details: {0}", e);
+					}
 				}
 			}
 		}
@@ -117,31 +153,6 @@ namespace OpenRA
 			};
 
 			new Download(url, _ => { }, onInfoComplete);
-		}
-
-		public static IEnumerable<string> FindMapsIn(FileSystem.FileSystem context, string dir)
-		{
-			string[] noMaps = { };
-
-			// Ignore optional flag
-			if (dir.StartsWith("~"))
-				dir = dir.Substring(1);
-
-			// HACK: We currently only support maps loaded from Folders
-			// This is a temporary workaround that resolves the filesystem paths to a system directory
-			IReadOnlyPackage package;
-			string filename;
-			if (context.TryGetPackageContaining(dir, out package, out filename))
-				dir = Path.Combine(package.Name, filename);
-			else if (Directory.Exists(Platform.ResolvePath(dir)))
-				dir = Platform.ResolvePath(dir);
-			else
-				return noMaps;
-
-			var dirsWithMaps = Directory.GetDirectories(dir)
-				.Where(d => Directory.GetFiles(d, "map.yaml").Any() && Directory.GetFiles(d, "map.bin").Any());
-
-			return dirsWithMaps.Concat(Directory.GetFiles(dir, "*.oramap"));
 		}
 
 		void LoadAsyncInternal()
@@ -268,6 +279,9 @@ namespace OpenRA
 				sheetBuilder.Dispose();
 				return;
 			}
+
+			foreach (var p in previews.Values)
+				p.Dispose();
 
 			// We need to let the loader thread exit before we can dispose our sheet builder.
 			// Ideally we should dispose our resources before returning, but we don't to block waiting on the loader thread to exit.

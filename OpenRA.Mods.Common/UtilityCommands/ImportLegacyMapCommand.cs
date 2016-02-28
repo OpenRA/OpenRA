@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
@@ -95,7 +96,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Map.FixOpenAreas(Rules);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			var package = modData.ModFiles.CreatePackage(dest);
+			var package = new ZipFile(modData.ModFiles, dest, true);
 			Map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}

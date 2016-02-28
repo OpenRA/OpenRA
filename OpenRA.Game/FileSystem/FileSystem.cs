@@ -34,17 +34,6 @@ namespace OpenRA.FileSystem
 
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
-		public IReadWritePackage CreatePackage(string filename)
-		{
-			var content = new Dictionary<string, byte[]>();
-			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, content);
-			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename, content);
-
-			return new Folder(filename, content);
-		}
-
 		public IReadOnlyPackage OpenPackage(string filename)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
@@ -73,6 +62,32 @@ namespace OpenRA.FileSystem
 					return new Folder(Path.Combine(((Folder)parent).Name, subPath));
 
 			return new Folder(Platform.ResolvePath(filename));
+		}
+
+		public IReadOnlyPackage OpenPackage(string filename, IReadOnlyPackage parent)
+		{
+			// HACK: limit support to zip and folder until we generalize the PackageLoader support
+			if (parent is Folder)
+			{
+				var path = Path.Combine(parent.Name, filename);
+
+				// HACK: work around SharpZipLib's lack of support for writing to in-memory files
+				if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+					return new ZipFile(this, path);
+				if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+					return new ZipFile(this, path);
+
+				var subFolder = Platform.ResolvePath(path);
+				if (Directory.Exists(subFolder))
+					return new Folder(subFolder);
+			}
+
+			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, parent.GetStream(filename));
+			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
+				return new ZipFile(this, filename, parent.GetStream(filename));
+
+			return null;
 		}
 
 		public IReadWritePackage OpenWritablePackage(string filename)
@@ -144,7 +159,13 @@ namespace OpenRA.FileSystem
 					packagesForFile.RemoveAll(p => p == package);
 
 				mountedPackages.Remove(package);
-				explicitMounts.Remove(package.Name);
+				var explicitKeys = explicitMounts.Where(kv => kv.Value == package)
+					.Select(kv => kv.Key)
+					.ToList();
+
+				foreach (var key in explicitKeys)
+					explicitMounts.Remove(key);
+
 				package.Dispose();
 			}
 			else

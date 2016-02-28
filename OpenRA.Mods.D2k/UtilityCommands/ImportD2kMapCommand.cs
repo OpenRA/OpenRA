@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				return;
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			var package = modData.ModFiles.CreatePackage(dest);
+			var package = new ZipFile(modData.DefaultFileSystem, dest, true);
 			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
