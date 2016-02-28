@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.633,
+  _VERSION = "0.6331",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -981,7 +981,7 @@ local function debugger_loop(sev, svars, sfile, sline)
 end
 
 local function output(stream, data)
-  return server:send("204 Output " .. stream .. " " .. tostring(#data) .. "\n" .. data)
+  if server then return server:send("204 Output "..stream.." "..tostring(#data).."\n"..data) end
 end
 
 local function connect(controller_host, controller_port)
