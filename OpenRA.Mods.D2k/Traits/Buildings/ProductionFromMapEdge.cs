@@ -10,6 +10,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -17,17 +18,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Produce a unit on the closest map edge cell and move into the world.")]
-	class ProductionFromMapEdgeInfo : ProductionInfo
+	class ProductionFromMapEdgeInfo : ProductionInfo, UsesInit<ProductionSpawnLocationInit>
 	{
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
 	class ProductionFromMapEdge : Production, INotifyCreated
 	{
+		readonly CPos? spawnLocation;
 		RallyPoint rp;
 
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
-			: base(init, info) { }
+			: base(init, info)
+		{
+			if (init.Contains<ProductionSpawnLocationInit>())
+				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -36,7 +42,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
-			var location = self.World.Map.ChooseClosestEdgeCell(self.Location);
+			var location = spawnLocation.HasValue ? spawnLocation.Value : self.World.Map.ChooseClosestEdgeCell(self.Location);
+
 			var pos = self.World.Map.CenterOfCell(location);
 
 			// If aircraft, spawn at cruise altitude
@@ -83,5 +90,13 @@ namespace OpenRA.Mods.D2k.Traits
 
 			return true;
 		}
+	}
+
+	public class ProductionSpawnLocationInit : IActorInit<CPos>
+	{
+		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
+		public ProductionSpawnLocationInit() { }
+		public ProductionSpawnLocationInit(CPos init) { value = init; }
+		public CPos Value(World world) { return value; }
 	}
 }
