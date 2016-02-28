@@ -26,11 +26,13 @@ namespace OpenRA.Mods.D2k.Traits
 	class ProductionFromMapEdge : Production, INotifyCreated
 	{
 		readonly CPos? spawnLocation;
+		readonly DomainIndex domainIndex;
 		RallyPoint rp;
 
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info)
 		{
+			domainIndex = init.Self.World.WorldActor.Trait<DomainIndex>();
 			if (init.Contains<ProductionSpawnLocationInit>())
 				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
 		}
@@ -42,25 +44,41 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
-			var location = spawnLocation.HasValue ? spawnLocation.Value : self.World.Map.ChooseClosestEdgeCell(self.Location);
+			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
+			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
-			var pos = self.World.Map.CenterOfCell(location);
+			var passable = mobileInfo != null ? (uint)mobileInfo.GetMovementClass(self.World.TileSet) : 0;
+			var destination = rp != null ? rp.Location : self.Location;
+
+			var location = spawnLocation;
+			if (!location.HasValue)
+			{
+				if (aircraftInfo != null)
+					location = self.World.Map.ChooseClosestEdgeCell(self.Location);
+
+				if (mobileInfo != null)
+					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
+						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, passable));
+			}
+
+			// No suitable spawn location could be found, so production has failed.
+			if (!location.HasValue)
+				return false;
+
+			var pos = self.World.Map.CenterOfCell(location.Value);
 
 			// If aircraft, spawn at cruise altitude
-			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
-			var destination = rp != null ? rp.Location : self.Location;
-
-			var initialFacing = self.World.Map.FacingBetween(location, destination, 0);
+			var initialFacing = self.World.Map.FacingBetween(location.Value, destination, 0);
 
 			self.World.AddFrameEndTask(w =>
 				{
 					var td = new TypeDictionary
 					{
 						new OwnerInit(self.Owner),
-						new LocationInit(location),
+						new LocationInit(location.Value),
 						new CenterPositionInit(pos),
 						new FacingInit(initialFacing)
 					};
