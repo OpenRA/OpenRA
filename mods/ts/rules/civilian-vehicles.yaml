@@ -10,6 +10,12 @@
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 600
+		TargetablePositionOffset: 0, 0, 160
+		Shape: Rectangle
+			TopLeft: -208, -320
+			BottomRight: 208, 320
+			VerticalTopOffset: 160
+			VerticalBottomOffset: -160
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -63,6 +69,12 @@ ICBM:
 		Name: Ballistic Missile Launcher
 	Health:
 		HP: 500
+		TargetablePositionOffset: 0, 0, 160
+		Shape: Rectangle
+			TopLeft: -160, -400
+			BottomRight: 160, 400
+			VerticalTopOffset: 160
+			VerticalBottomOffset: -160
 	Armor:
 		Type: Light
 	Mobile:
@@ -87,8 +99,6 @@ BUS:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -110,8 +120,6 @@ PICK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -133,8 +141,6 @@ CAR:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-	Health:
-		HP: 100
 	Armor:
 		Type: Light
 	RevealsShroud:
