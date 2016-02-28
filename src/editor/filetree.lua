@@ -387,6 +387,7 @@ local function treeSetConnectorsAndIcons(tree)
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function (event)
+      tree:Toggle(event:GetItem())
       tree:ActivateItem(event:GetItem())
     end)
 
