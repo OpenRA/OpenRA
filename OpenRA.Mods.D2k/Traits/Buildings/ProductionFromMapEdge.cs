@@ -74,37 +74,37 @@ namespace OpenRA.Mods.D2k.Traits
 			var initialFacing = self.World.Map.FacingBetween(location.Value, destination, 0);
 
 			self.World.AddFrameEndTask(w =>
+			{
+				var td = new TypeDictionary
 				{
-					var td = new TypeDictionary
-					{
-						new OwnerInit(self.Owner),
-						new LocationInit(location.Value),
-						new CenterPositionInit(pos),
-						new FacingInit(initialFacing)
-					};
+					new OwnerInit(self.Owner),
+					new LocationInit(location.Value),
+					new CenterPositionInit(pos),
+					new FacingInit(initialFacing)
+				};
 
-					if (factionVariant != null)
-						td.Add(new FactionInit(factionVariant));
+				if (factionVariant != null)
+					td.Add(new FactionInit(factionVariant));
 
-					var newUnit = self.World.CreateActor(producee.Name, td);
+				var newUnit = self.World.CreateActor(producee.Name, td);
 
-					var move = newUnit.TraitOrDefault<IMove>();
-					if (move != null)
-						newUnit.QueueActivity(move.MoveTo(destination, 2));
+				var move = newUnit.TraitOrDefault<IMove>();
+				if (move != null)
+					newUnit.QueueActivity(move.MoveTo(destination, 2));
 
-					newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
+				newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
 
-					if (!self.IsDead)
-						foreach (var t in self.TraitsImplementing<INotifyProduction>())
-							t.UnitProduced(self, newUnit, destination);
+				if (!self.IsDead)
+					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+						t.UnitProduced(self, newUnit, destination);
 
-					var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
-					foreach (var notify in notifyOthers)
-						notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
+				foreach (var notify in notifyOthers)
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-					foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
-						t.BuildingComplete(newUnit);
-				});
+				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+					t.BuildingComplete(newUnit);
+			});
 
 			return true;
 		}
