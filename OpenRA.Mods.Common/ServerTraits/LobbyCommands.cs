@@ -519,7 +519,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Crates.HasValue)
+						var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+						if (crateSpawner == null || crateSpawner.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration.");
 							return true;
@@ -1015,6 +1016,9 @@ namespace OpenRA.Mods.Common.Server
 			var gs = server.LobbyInfo.GlobalSettings;
 			var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
 			gs.AllowCheats = devMode.Enabled;
+
+			var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}
 

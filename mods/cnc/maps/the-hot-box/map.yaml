@@ -21,7 +21,6 @@ Type: Drop Zone
 Videos:
 
 Options:
-	Crates: True
 	Fog: False
 	Shroud: False
 	AllyBuildRadius: False

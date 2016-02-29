@@ -215,7 +215,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	Crates: true
 	StartingUnitsClass: none
 	FragileAlliances: false
 	Shroud: true

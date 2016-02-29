@@ -58,7 +58,6 @@ namespace OpenRA
 
 	public class MapOptions
 	{
-		public bool? Crates;
 		public bool? Creeps;
 		public bool? Fog;
 		public bool? Shroud;
@@ -71,8 +70,6 @@ namespace OpenRA
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
-			if (Crates.HasValue)
-				settings.Crates = Crates.Value;
 			if (Creeps.HasValue)
 				settings.Creeps = Creeps.Value;
 			if (Fog.HasValue)

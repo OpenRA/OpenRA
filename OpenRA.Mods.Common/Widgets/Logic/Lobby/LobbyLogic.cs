@@ -361,8 +361,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var crates = optionsBin.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
 			if (crates != null)
 			{
+				var cratesLocked = new CachedTransform<Map, bool>(map =>
+				{
+					var crateSpawner = map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+					return crateSpawner == null || crateSpawner.Locked;
+				});
+
 				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
-				crates.IsDisabled = () => configurationDisabled() || Map.Options.Crates.HasValue;
+				crates.IsDisabled = () => configurationDisabled() || cratesLocked.Update(Map);
 				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}

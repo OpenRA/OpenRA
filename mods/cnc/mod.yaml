@@ -163,7 +163,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	Crates: true
 	StartingUnitsClass: light
 	FragileAlliances: false
 	Shroud: true
