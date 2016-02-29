@@ -19,7 +19,7 @@ Rockets:
 		Damage: 35
 		ValidTargets: Ground, Air
 		Versus:
-			None: 50
+			None: 30
 			Wood: 85
 			Light: 100
 			Heavy: 100
@@ -326,7 +326,7 @@ SAMMissile:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		Damage: 30
+		Damage: 35
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
