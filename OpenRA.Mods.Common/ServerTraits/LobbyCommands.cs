@@ -545,7 +545,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Creeps.HasValue)
+						var mapCreeps = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
+						if (mapCreeps == null || mapCreeps.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Creeps spawning configuration.");
 							return true;

@@ -376,8 +376,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var creeps = optionsBin.GetOrNull<CheckboxWidget>("CREEPS_CHECKBOX");
 			if (creeps != null)
 			{
+				var creepsLocked = new CachedTransform<Map, bool>(map =>
+				{
+					var mapCreeps = map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
+					return mapCreeps == null || mapCreeps.Locked;
+				});
+
 				creeps.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Creeps;
-				creeps.IsDisabled = () => configurationDisabled() || Map.Options.Creeps.HasValue;
+				creeps.IsDisabled = () => configurationDisabled() || creepsLocked.Update(Map);
 				creeps.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"creeps {0}".F(!orderManager.LobbyInfo.GlobalSettings.Creeps)));
 			}

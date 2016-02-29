@@ -72,6 +72,7 @@ World:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
+	MapCreeps:
 	SpawnMapActors:
 	MPStartLocations:
 	CreateMPPlayers:

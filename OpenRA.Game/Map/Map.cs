@@ -58,7 +58,6 @@ namespace OpenRA
 
 	public class MapOptions
 	{
-		public bool? Creeps;
 		public bool? AllyBuildRadius;
 		public string TechLevel;
 		public string[] Difficulties = { };
@@ -66,8 +65,6 @@ namespace OpenRA
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
-			if (Creeps.HasValue)
-				settings.Creeps = Creeps.Value;
 			if (AllyBuildRadius.HasValue)
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (ShortGame.HasValue)
