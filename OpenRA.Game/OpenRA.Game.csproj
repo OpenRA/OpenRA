@@ -255,6 +255,7 @@
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
     <Compile Include="Traits\ActivityUtils.cs" />
+    <Compile Include="FileSystem\ZipFolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
