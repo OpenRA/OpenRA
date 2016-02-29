@@ -61,7 +61,6 @@ namespace OpenRA
 		public bool? Creeps;
 		public bool? AllyBuildRadius;
 		public string TechLevel;
-		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
 		public bool? ShortGame;
 
@@ -118,7 +117,6 @@ namespace OpenRA
 		public string Description;
 		public string Author;
 		public string Tileset;
-		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
 		public bool InvalidCustomRules { get; private set; }
 

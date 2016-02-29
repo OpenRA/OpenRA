@@ -18,7 +18,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. Both are defined at MPStartUnits. Attach this to the world actor.")]
-	public class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo> { }
+	public class SpawnMPUnitsInfo : TraitInfo<SpawnMPUnits>, Requires<MPStartLocationsInfo>, Requires<MPStartUnitsInfo>
+	{
+		public readonly string StartingUnitsClass = "none";
+
+		[Desc("Prevent the starting units option from being changed in the lobby.")]
+		public bool Locked = false;
+	}
 
 	public class SpawnMPUnits : IWorldLoaded
 	{

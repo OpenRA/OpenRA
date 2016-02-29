@@ -429,19 +429,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
 			if (startingUnits != null)
 			{
-				var startUnitsInfo = modRules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
-				var classes = startUnitsInfo.Select(a => a.Class).Distinct();
+				var startUnitsInfos = new CachedTransform<Map, IEnumerable<MPStartUnitsInfo>>(
+					map => map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>());
+
+				var startUnitsLocked = new CachedTransform<Map, bool>(map =>
+				{
+					var spawnUnitsInfo = map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+					return spawnUnitsInfo == null || spawnUnitsInfo.Locked;
+				});
+
 				Func<string, string> className = c =>
 				{
-					var selectedClass = startUnitsInfo.Where(s => s.Class == c).Select(u => u.ClassName).FirstOrDefault();
+					var selectedClass = startUnitsInfos.Update(Map).Where(s => s.Class == c).Select(u => u.ClassName).FirstOrDefault();
 					return selectedClass != null ? selectedClass : c;
 				};
 
-				startingUnits.IsDisabled = () => configurationDisabled() || !Map.Options.ConfigurableStartingUnits;
+				startingUnits.IsDisabled = () => configurationDisabled() || startUnitsLocked.Update(Map);
 				startingUnits.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || !Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+					Map == null || startUnitsLocked.Update(Map) ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
+					var classes = startUnitsInfos.Update(Map).Select(a => a.Class).Distinct();
 					var options = classes.Select(c => new DropDownOption
 					{
 						Title = className(c),

@@ -617,7 +617,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (!server.Map.Options.ConfigurableStartingUnits)
+						var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+						if (startingUnits == null || startingUnits.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration.");
 							return true;
@@ -1029,6 +1030,9 @@ namespace OpenRA.Mods.Common.Server
 
 			var resources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
 			gs.StartingCash = resources.DefaultCash;
+
+			var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
 
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}

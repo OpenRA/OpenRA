@@ -163,7 +163,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	StartingUnitsClass: light
 	TechLevel: Unrestricted
 
 ChromeMetrics:
