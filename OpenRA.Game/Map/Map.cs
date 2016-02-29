@@ -60,7 +60,6 @@ namespace OpenRA
 	{
 		public bool? Creeps;
 		public bool? AllyBuildRadius;
-		public int? StartingCash;
 		public string TechLevel;
 		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
@@ -72,8 +71,6 @@ namespace OpenRA
 				settings.Creeps = Creeps.Value;
 			if (AllyBuildRadius.HasValue)
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
-			if (StartingCash.HasValue)
-				settings.StartingCash = StartingCash.Value;
 			if (ShortGame.HasValue)
 				settings.ShortGame = ShortGame.Value;
 		}

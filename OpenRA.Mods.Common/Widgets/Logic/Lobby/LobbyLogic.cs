@@ -465,12 +465,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startingCash = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGCASH_DROPDOWNBUTTON");
 			if (startingCash != null)
 			{
-				startingCash.IsDisabled = () => configurationDisabled() || Map.Options.StartingCash.HasValue;
+				var playerResources = new CachedTransform<Map, PlayerResourcesInfo>(
+					map => map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>());
+
+				startingCash.IsDisabled = () => configurationDisabled() || playerResources.Update(Map).DefaultCashLocked;
 				startingCash.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
+					Map == null || playerResources.Update(Map).DefaultCashLocked ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
-					var options = modRules.Actors["player"].TraitInfo<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
+					var options = playerResources.Update(Map).SelectableCash.Select(c => new DropDownOption
 					{
 						Title = "${0}".F(c),
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.StartingCash == c,
@@ -776,11 +779,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							// Tell the server that we have the map
 							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
-
-							// Restore default starting cash if the last map set it to something invalid
-							var pri = modRules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-							if (!currentMap.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
-								orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 						}
 					});
 				}).Start();

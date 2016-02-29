@@ -648,13 +648,14 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.StartingCash.HasValue)
+						var playerResources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
+						if (playerResources.DefaultCashLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration.");
 							return true;
 						}
 
-						var startingCashOptions = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>().SelectableCash;
+						var startingCashOptions = playerResources.SelectableCash;
 						var requestedCash = Exts.ParseIntegerInvariant(s);
 						if (!startingCashOptions.Contains(requestedCash))
 						{
@@ -1025,6 +1026,9 @@ namespace OpenRA.Mods.Common.Server
 			var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
 			gs.Fog = shroud.FogEnabled;
 			gs.Shroud = !shroud.ExploredMapEnabled;
+
+			var resources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
+			gs.StartingCash = resources.DefaultCash;
 
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}
