@@ -89,6 +89,7 @@ World:
 		SmokePercentage: 0
 	MapCreeps:
 	SpawnMapActors:
+	MapBuildRadius:
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:

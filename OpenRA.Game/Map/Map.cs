@@ -58,15 +58,12 @@ namespace OpenRA
 
 	public class MapOptions
 	{
-		public bool? AllyBuildRadius;
 		public string TechLevel;
 		public string[] Difficulties = { };
 		public bool? ShortGame;
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
-			if (AllyBuildRadius.HasValue)
-				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (ShortGame.HasValue)
 				settings.ShortGame = ShortGame.Value;
 		}

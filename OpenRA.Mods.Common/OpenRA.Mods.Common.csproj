@@ -733,6 +733,7 @@
     <Compile Include="ColorValidator.cs" />
     <Compile Include="UtilityCommands\ResizeMapCommand.cs" />
     <Compile Include="Traits\World\MapCreeps.cs" />
+    <Compile Include="Traits\World\MapBuildRadius.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -391,8 +391,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allybuildradius = optionsBin.GetOrNull<CheckboxWidget>("ALLYBUILDRADIUS_CHECKBOX");
 			if (allybuildradius != null)
 			{
+				var allyBuildRadiusLocked = new CachedTransform<Map, bool>(map =>
+				{
+					var mapBuildRadius = map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+					return mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked;
+				});
+
 				allybuildradius.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius;
-				allybuildradius.IsDisabled = () => configurationDisabled() || Map.Options.AllyBuildRadius.HasValue;
+				allybuildradius.IsDisabled = () => configurationDisabled() || allyBuildRadiusLocked.Update(Map);
 				allybuildradius.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
 			}

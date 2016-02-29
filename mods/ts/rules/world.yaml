@@ -98,6 +98,7 @@ World:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	SpawnMapActors:
+	MapBuildRadius:
 	CreateMPPlayers:
 	MPStartUnits@MCV:
 		Class: none

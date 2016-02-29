@@ -120,6 +120,7 @@ World:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	SpawnMapActors:
+	MapBuildRadius:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none

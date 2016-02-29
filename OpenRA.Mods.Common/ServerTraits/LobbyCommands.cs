@@ -569,7 +569,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.AllyBuildRadius.HasValue)
+						var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+						if (mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration.");
 							return true;
@@ -1034,6 +1035,9 @@ namespace OpenRA.Mods.Common.Server
 
 			var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
 			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
+
+			var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}
