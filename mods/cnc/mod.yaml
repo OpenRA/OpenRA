@@ -163,7 +163,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	AllowCheats: false
 	Crates: true
 	StartingUnitsClass: light
 	FragileAlliances: false

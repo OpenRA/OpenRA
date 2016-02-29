@@ -58,7 +58,6 @@ namespace OpenRA
 
 	public class MapOptions
 	{
-		public bool? Cheats;
 		public bool? Crates;
 		public bool? Creeps;
 		public bool? Fog;
@@ -72,8 +71,6 @@ namespace OpenRA
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
-			if (Cheats.HasValue)
-				settings.AllowCheats = Cheats.Value;
 			if (Crates.HasValue)
 				settings.Crates = Crates.Value;
 			if (Creeps.HasValue)

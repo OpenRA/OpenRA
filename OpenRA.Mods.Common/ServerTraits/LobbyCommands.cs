@@ -408,7 +408,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Cheats.HasValue)
+						var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
+						if (devMode.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration.");
 							return true;
@@ -1011,6 +1012,9 @@ namespace OpenRA.Mods.Common.Server
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
 
+			var gs = server.LobbyInfo.GlobalSettings;
+			var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
+			gs.AllowCheats = devMode.Enabled;
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}
 

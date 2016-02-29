@@ -14,17 +14,46 @@ namespace OpenRA.Traits
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo
 	{
+		[Desc("Default value of the developer mode checkbox in the lobby.")]
+		public bool Enabled = false;
+
+		[Desc("Prevent the developer mode state from being changed in the lobby.")]
+		public bool Locked = false;
+
+		[Desc("Default cash bonus granted by the give cash cheat.")]
 		public int Cash = 20000;
+
+		[Desc("Growth steps triggered by the grow resources button.")]
 		public int ResourceGrowth = 100;
+
+		[Desc("Enable the fast build cheat by default.")]
 		public bool FastBuild;
+
+		[Desc("Enable the fast support powers cheat by default.")]
 		public bool FastCharge;
+
+		[Desc("Enable the disable visibility cheat by default.")]
 		public bool DisableShroud;
-		public bool PathDebug;
+
+		[Desc("Enable the unlimited power cheat by default.")]
 		public bool UnlimitedPower;
+
+		[Desc("Enable the build anywhere cheat by default.")]
 		public bool BuildAnywhere;
+
+		[Desc("Enable the path debug overlay by default.")]
+		public bool PathDebug;
+
+		[Desc("Enable the combat geometry overlay by default.")]
 		public bool ShowCombatGeometry;
+
+		[Desc("Enable the debug geometry overlay by default.")]
 		public bool ShowDebugGeometry;
+
+		[Desc("Enable the depth buffer overlay by default.")]
 		public bool ShowDepthPreview;
+
+		[Desc("Enable the actor tags overlay by default.")]
 		public bool ShowActorTags;
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }

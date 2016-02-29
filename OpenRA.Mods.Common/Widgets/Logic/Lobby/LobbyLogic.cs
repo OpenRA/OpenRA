@@ -349,8 +349,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			if (allowCheats != null)
 			{
+				var cheatsLocked = new CachedTransform<Map, bool>(
+					map => map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Locked);
+
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-				allowCheats.IsDisabled = () => configurationDisabled() || Map.Options.Cheats.HasValue;
+				allowCheats.IsDisabled = () => configurationDisabled() || cheatsLocked.Update(Map);
 				allowCheats.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}

@@ -156,7 +156,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	AllowCheats: false
 	Crates: true
 	StartingUnitsClass: none
 	FragileAlliances: false
