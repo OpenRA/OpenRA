@@ -58,6 +58,7 @@ ide.proto.Interpreter = {__index = {
 ide.proto.Debugger = {__index = {
   IsRunning = function(self) return self.running end,
   IsConnected = function(self) return self.server end,
+  IsListening = function(self) return self.listening end,
   GetHostName = function(self) return self.hostname end,
   GetPortNumber = function(self) return self.portnumber end,
   GetConsole = function(self)

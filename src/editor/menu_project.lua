@@ -362,9 +362,8 @@ frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
-    local debugger = ide:GetDebugger()
     event:Enable(ide.interpreter and ide.interpreter.fattachdebug and true or false)
-    ide.frame.menuBar:Check(event:GetId(), debugger.listening and true or false)
+    ide.frame.menuBar:Check(event:GetId(), ide:GetDebugger():IsListening() and true or false)
   end)
 
 frame:Connect(ID_STARTDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectDebug() end)
