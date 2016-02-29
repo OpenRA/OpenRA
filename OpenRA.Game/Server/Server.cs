@@ -154,8 +154,6 @@ namespace OpenRA.Server
 				}
 			};
 
-			FieldLoader.Load(LobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
-
 			new Thread(_ =>
 			{
 				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
@@ -608,10 +606,7 @@ namespace OpenRA.Server
 				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
 				if (!Conns.Any())
-				{
-					FieldLoader.Load(LobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
-				}
 
 				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyClients();

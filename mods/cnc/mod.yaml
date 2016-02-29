@@ -162,8 +162,6 @@ ServerTraits:
 	MasterServerPinger
 	LobbySettingsNotification
 
-LobbyDefaults:
-
 ChromeMetrics:
 	common|metrics.yaml
 	cnc|metrics.yaml

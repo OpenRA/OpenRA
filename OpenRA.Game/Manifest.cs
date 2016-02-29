@@ -44,7 +44,6 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
-		public readonly MiniYaml LobbyDefaults;
 
 		public readonly Dictionary<string, string> RequiresMods;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
@@ -97,9 +96,6 @@ namespace OpenRA
 
 			if (!yaml.TryGetValue("LoadScreen", out LoadScreen))
 				throw new InvalidDataException("`LoadScreen` section is not defined.");
-
-			if (!yaml.TryGetValue("LobbyDefaults", out LobbyDefaults))
-				throw new InvalidDataException("`LobbyDefaults` section is not defined.");
 
 			Fonts = yaml["Fonts"].ToDictionary(my =>
 			{
