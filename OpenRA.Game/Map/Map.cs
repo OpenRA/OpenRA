@@ -59,8 +59,6 @@ namespace OpenRA
 	public class MapOptions
 	{
 		public bool? Creeps;
-		public bool? Fog;
-		public bool? Shroud;
 		public bool? AllyBuildRadius;
 		public int? StartingCash;
 		public string TechLevel;
@@ -72,10 +70,6 @@ namespace OpenRA
 		{
 			if (Creeps.HasValue)
 				settings.Creeps = Creeps.Value;
-			if (Fog.HasValue)
-				settings.Fog = Fog.Value;
-			if (Shroud.HasValue)
-				settings.Shroud = Shroud.Value;
 			if (AllyBuildRadius.HasValue)
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (StartingCash.HasValue)

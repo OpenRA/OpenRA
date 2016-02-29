@@ -432,7 +432,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Shroud.HasValue)
+						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+						if (shroud.ExploredMapLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration.");
 							return true;
@@ -455,7 +456,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Fog.HasValue)
+						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+						if (shroud.FogLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration.");
 							return true;
@@ -1019,6 +1021,11 @@ namespace OpenRA.Mods.Common.Server
 
 			var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
 			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
+
+			var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+			gs.Fog = shroud.FogEnabled;
+			gs.Shroud = !shroud.ExploredMapEnabled;
+
 			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
 		}
 

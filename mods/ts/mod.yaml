@@ -217,8 +217,6 @@ ServerTraits:
 LobbyDefaults:
 	StartingUnitsClass: none
 	FragileAlliances: false
-	Shroud: true
-	Fog: true
 
 ChromeMetrics:
 	common|metrics.yaml

@@ -168,8 +168,6 @@ ServerTraits:
 LobbyDefaults:
 	StartingUnitsClass: none
 	FragileAlliances: false
-	Shroud: true
-	Fog: true
 	TechLevel: Unrestricted
 
 ChromeMetrics:

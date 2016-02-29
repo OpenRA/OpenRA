@@ -562,8 +562,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var exploredMap = optionsBin.GetOrNull<CheckboxWidget>("EXPLORED_MAP_CHECKBOX");
 			if (exploredMap != null)
 			{
+				var exploredMapLocked = new CachedTransform<Map, bool>(
+					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().ExploredMapLocked);
+
 				exploredMap.IsChecked = () => !orderManager.LobbyInfo.GlobalSettings.Shroud;
-				exploredMap.IsDisabled = () => configurationDisabled() || Map.Options.Shroud.HasValue;
+				exploredMap.IsDisabled = () => configurationDisabled() || exploredMapLocked.Update(Map);
 				exploredMap.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
 			}
@@ -571,8 +574,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var enableFog = optionsBin.GetOrNull<CheckboxWidget>("FOG_CHECKBOX");
 			if (enableFog != null)
 			{
+				var fogLocked = new CachedTransform<Map, bool>(
+					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().FogLocked);
+
 				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
-				enableFog.IsDisabled = () => configurationDisabled() || Map.Options.Fog.HasValue;
+				enableFog.IsDisabled = () => configurationDisabled() || fogLocked.Update(Map);
 				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			}
