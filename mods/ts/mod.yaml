@@ -216,7 +216,6 @@ ServerTraits:
 
 LobbyDefaults:
 	StartingUnitsClass: none
-	FragileAlliances: false
 
 ChromeMetrics:
 	common|metrics.yaml

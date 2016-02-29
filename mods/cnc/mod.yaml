@@ -164,7 +164,6 @@ ServerTraits:
 
 LobbyDefaults:
 	StartingUnitsClass: light
-	FragileAlliances: false
 	TechLevel: Unrestricted
 
 ChromeMetrics:
