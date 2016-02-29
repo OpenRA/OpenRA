@@ -406,8 +406,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var shortGame = optionsBin.GetOrNull<CheckboxWidget>("SHORTGAME_CHECKBOX");
 			if (shortGame != null)
 			{
+				var shortGameLocked = new CachedTransform<Map, bool>(
+					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>().ShortGameLocked);
+
 				shortGame.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.ShortGame;
-				shortGame.IsDisabled = () => configurationDisabled() || Map.Options.ShortGame.HasValue;
+				shortGame.IsDisabled = () => configurationDisabled() || shortGameLocked.Update(Map);
 				shortGame.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shortgame {0}".F(!orderManager.LobbyInfo.GlobalSettings.ShortGame)));
 			}
@@ -415,12 +418,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
-				difficulty.IsVisible = () => Map != null && Map.Options.Difficulties.Any();
-				difficulty.IsDisabled = configurationDisabled;
+				var mapOptions = new CachedTransform<Map, MapOptionsInfo>(
+					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>());
+
+				difficulty.IsVisible = () => Map != null && mapOptions.Update(Map).Difficulties.Any();
+				difficulty.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).DifficultyLocked;
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
 				{
-					var options = Map.Options.Difficulties.Select(d => new DropDownOption
+					var options = mapOptions.Update(Map).Difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
@@ -514,19 +520,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var techLevel = optionsBin.GetOrNull<DropDownButtonWidget>("TECHLEVEL_DROPDOWNBUTTON");
 			if (techLevel != null)
 			{
-				var techTraits = modRules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().ToList();
-				techLevel.IsVisible = () => techTraits.Count > 0;
+				var mapOptions = new CachedTransform<Map, MapOptionsInfo>(
+					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>());
 
+				var techLevels = new CachedTransform<Map, List<ProvidesTechPrerequisiteInfo>>(
+					map => map.Rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().ToList());
+
+				techLevel.IsVisible = () => Map != null && techLevels.Update(Map).Any();
 				var techLevelDescription = optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC");
 				if (techLevelDescription != null)
-					techLevelDescription.IsVisible = () => techTraits.Count > 0;
+					techLevelDescription.IsVisible = techLevel.IsVisible;
 
-				techLevel.IsDisabled = () => configurationDisabled() || Map.Options.TechLevel != null || techTraits.Count <= 1;
+				techLevel.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).TechLevelLocked;
 				techLevel.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || Map.Options.TechLevel != null ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
+					Map == null || mapOptions.Update(Map).TechLevelLocked ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
 				techLevel.OnMouseDown = _ =>
 				{
-					var options = techTraits.Select(c => new DropDownOption
+					var options = techLevels.Update(Map).Select(c => new DropDownOption
 					{
 						Title = "{0}".F(c.Name),
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.TechLevel == c.Name,

@@ -190,7 +190,7 @@ namespace OpenRA.Network
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
-			public string TechLevel = "none";
+			public string TechLevel;
 			public string StartingUnitsClass;
 			public string GameSpeedType = "default";
 			public bool ShortGame = true;

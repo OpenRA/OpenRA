@@ -75,6 +75,7 @@ World:
 	MapCreeps:
 	SpawnMapActors:
 	MapBuildRadius:
+	MapOptions:
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:

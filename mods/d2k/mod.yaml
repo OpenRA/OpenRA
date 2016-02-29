@@ -156,8 +156,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	StartingUnitsClass: none
-	TechLevel: Unrestricted
 
 ChromeMetrics:
 	common|metrics.yaml

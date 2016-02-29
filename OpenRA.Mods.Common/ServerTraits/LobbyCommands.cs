@@ -348,7 +348,6 @@ namespace OpenRA.Mods.Common.Server
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
-						SetDefaultDifficulty(server);
 
 						// Reset client states
 						foreach (var c in server.LobbyInfo.Clients)
@@ -587,19 +586,23 @@ namespace OpenRA.Mods.Common.Server
 				{ "difficulty",
 					s =>
 					{
-						if (!server.Map.Options.Difficulties.Any())
-							return true;
-
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
-						if (s != null && !server.Map.Options.Difficulties.Contains(s))
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.DifficultyLocked || !mapOptions.Difficulties.Any())
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled difficulty configuration.");
+							return true;
+						}
+
+						if (s != null && !mapOptions.Difficulties.Contains(s))
 						{
 							server.SendOrderTo(conn, "Message", "Invalid difficulty selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(server.Map.Options.Difficulties.JoinWith(", ")));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(mapOptions.Difficulties.JoinWith(", ")));
 							return true;
 						}
 
@@ -683,7 +686,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.TechLevel != null)
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.TechLevelLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
 							return true;
@@ -939,7 +943,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.ShortGame.HasValue)
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.ShortGameLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled short game configuration.");
 							return true;
@@ -990,7 +995,6 @@ namespace OpenRA.Mods.Common.Server
 		public void ServerStarted(S server)
 		{
 			LoadMap(server);
-			SetDefaultDifficulty(server);
 		}
 
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
@@ -1039,19 +1043,10 @@ namespace OpenRA.Mods.Common.Server
 			var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
 			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
-			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
-		}
-
-		static void SetDefaultDifficulty(S server)
-		{
-			if (!server.Map.Options.Difficulties.Any())
-			{
-				server.LobbyInfo.GlobalSettings.Difficulty = null;
-				return;
-			}
-
-			if (!server.Map.Options.Difficulties.Contains(server.LobbyInfo.GlobalSettings.Difficulty))
-				server.LobbyInfo.GlobalSettings.Difficulty = server.Map.Options.Difficulties.First();
+			var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+			gs.ShortGame = mapOptions.ShortGameEnabled;
+			gs.TechLevel = mapOptions.TechLevel;
+			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
 		}
 
 		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)

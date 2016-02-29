@@ -99,6 +99,7 @@ World:
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartUnits@MCV:
 		Class: none

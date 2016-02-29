@@ -121,6 +121,7 @@ World:
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none

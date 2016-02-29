@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -177,7 +178,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedMapPreview = preview;
 
 			// Cache the rules on a background thread to avoid jank
-			new Thread(() => selectedMap.PreloadRules()).Start();
+			var difficultyDisabled = true;
+			var difficulties = new string[0];
+
+			new Thread(() =>
+			{
+				selectedMap.PreloadRules();
+				var mapOptions = selectedMap.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+
+				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+				difficulties = mapOptions.Difficulties;
+				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
+			}).Start();
 
 			var briefingVideo = selectedMap.Videos.Briefing;
 			var briefingVideoVisible = briefingVideo != null;
@@ -204,13 +216,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (difficultyButton != null)
 			{
-				difficultyButton.IsDisabled = () => !selectedMap.Options.Difficulties.Any();
-
-				difficulty = selectedMap.Options.Difficulties.FirstOrDefault();
+				difficultyButton.IsDisabled = () => difficultyDisabled;
 				difficultyButton.GetText = () => difficulty ?? "Normal";
 				difficultyButton.OnMouseDown = _ =>
 				{
-					var options = selectedMap.Options.Difficulties.Select(d => new DropDownOption
+					var options = difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => difficulty == d,

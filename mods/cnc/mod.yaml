@@ -163,7 +163,6 @@ ServerTraits:
 	LobbySettingsNotification
 
 LobbyDefaults:
-	TechLevel: Unrestricted
 
 ChromeMetrics:
 	common|metrics.yaml

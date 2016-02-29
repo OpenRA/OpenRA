@@ -56,19 +56,6 @@ namespace OpenRA
 		}
 	}
 
-	public class MapOptions
-	{
-		public string TechLevel;
-		public string[] Difficulties = { };
-		public bool? ShortGame;
-
-		public void UpdateServerSettings(Session.Global settings)
-		{
-			if (ShortGame.HasValue)
-				settings.ShortGame = ShortGame.Value;
-		}
-	}
-
 	public class MapVideos
 	{
 		public string BackgroundInfo;
@@ -120,18 +107,6 @@ namespace OpenRA
 				return WVec.Zero;
 
 			return SubCellOffsets[(int)subCell];
-		}
-
-		[FieldLoader.LoadUsing("LoadOptions")] public MapOptions Options;
-
-		static object LoadOptions(MiniYaml y)
-		{
-			var options = new MapOptions();
-			var nodesDict = y.ToDictionary();
-			if (nodesDict.ContainsKey("Options"))
-				FieldLoader.Load(options, nodesDict["Options"]);
-
-			return options;
 		}
 
 		[FieldLoader.LoadUsing("LoadVideos")] public MapVideos Videos;
@@ -253,7 +228,6 @@ namespace OpenRA
 			MapSize = new int2(size);
 			Tileset = tileset.Id;
 			Videos = new MapVideos();
-			Options = new MapOptions();
 
 			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
 
@@ -495,9 +469,6 @@ namespace OpenRA
 			}
 
 			root.Add(new MiniYamlNode("Videos", FieldSaver.SaveDifferences(Videos, new MapVideos())));
-
-			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
-
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));

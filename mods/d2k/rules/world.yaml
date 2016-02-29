@@ -90,6 +90,7 @@ World:
 	MapCreeps:
 	SpawnMapActors:
 	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:
