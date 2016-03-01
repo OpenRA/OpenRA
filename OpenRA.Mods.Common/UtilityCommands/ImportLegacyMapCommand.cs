@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public ModData ModData;
 		public Map Map;
-		public Ruleset Rules;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
 
@@ -49,7 +48,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Rules = modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var filename = args[1];
 			using (var stream = modData.DefaultFileSystem.Open(filename))
@@ -62,7 +60,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ValidateMapFormat(format);
 
 				var tileset = GetTileset(mapSection);
-				Map = new Map(modData, Rules.TileSets[tileset], MapSize, MapSize)
+				Map = new Map(modData, modData.DefaultRules.TileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios"
@@ -93,7 +91,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Map.PlayerDefinitions = MapPlayers.ToMiniYaml();
 			}
 
-			Map.FixOpenAreas(Rules);
+			Map.FixOpenAreas();
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 			var package = new ZipFile(modData.ModFiles, dest, true);
@@ -180,9 +178,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public virtual void ReadActors(IniFile file)
 		{
-			LoadActors(file, "STRUCTURES", Players, MapSize, Rules, Map);
-			LoadActors(file, "UNITS", Players, MapSize, Rules, Map);
-			LoadActors(file, "INFANTRY", Players, MapSize, Rules, Map);
+			LoadActors(file, "STRUCTURES", Players, MapSize, Map);
+			LoadActors(file, "UNITS", Players, MapSize, Map);
+			LoadActors(file, "INFANTRY", Players, MapSize, Map);
 		}
 
 		public abstract void LoadPlayer(IniFile file, string section);
@@ -298,7 +296,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				mapPlayers.Players[section] = pr;
 		}
 
-		public static void LoadActors(IniFile file, string section, List<string> players, int mapSize, Ruleset rules, Map map)
+		public static void LoadActors(IniFile file, string section, List<string> players, int mapSize, Map map)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
@@ -334,7 +332,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var actorCount = map.ActorDefinitions.Count;
 
-					if (!rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
+					if (!map.Rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
 						Console.WriteLine("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
 					else
 						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, actor.Save()));

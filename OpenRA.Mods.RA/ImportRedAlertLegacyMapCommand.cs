@@ -226,7 +226,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 		public override void ReadActors(IniFile file)
 		{
 			base.ReadActors(file);
-			LoadActors(file, "SHIPS", Players, MapSize, Rules, Map);
+			LoadActors(file, "SHIPS", Players, MapSize, Map);
 		}
 	}
 }

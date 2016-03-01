@@ -858,10 +858,10 @@ namespace OpenRA
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
 		}
 
-		public void FixOpenAreas(Ruleset rules)
+		public void FixOpenAreas()
 		{
 			var r = new Random();
-			var tileset = rules.TileSets[Tileset];
+			var tileset = Rules.TileSets[Tileset];
 
 			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
 			{
