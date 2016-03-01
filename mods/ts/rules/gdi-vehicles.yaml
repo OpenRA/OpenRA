@@ -1,7 +1,7 @@
 APC:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Amphibious APC
 		Description: Armored infantry transport.\nCan move on water.\n  Unarmed

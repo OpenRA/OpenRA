@@ -15,7 +15,7 @@ GAWALL:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 225
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
@@ -49,7 +49,7 @@ GACTWR:
 	WithWallSpriteBody:
 		Type: wall
 	Valued:
-		Cost: 600
+		Cost: 200
 	Tooltip:
 		Name: Component Tower
 		Description: Modular tower for base defenses.

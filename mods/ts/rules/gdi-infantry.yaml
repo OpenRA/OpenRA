@@ -37,6 +37,8 @@ MEDIC:
 		Prerequisites: ~gapile
 	Voiced:
 		VoiceSet: Medic
+	RevealsShroud:
+		Range: 6c0		
 	Mobile:
 		Speed: 56
 	Health:
@@ -105,6 +107,8 @@ GHOST:
 		BuildLimit: 1
 	Voiced:
 		VoiceSet: Ghost
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 56
 	Health:

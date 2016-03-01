@@ -54,7 +54,7 @@ HARV:
 		Bounds: 36,36
 	Harvester:
 		DeliveryBuildings: proc
-		Capacity: 20
+		Capacity: 28
 		Resources: Tiberium, BlueTiberium
 		UnloadTicksPerBale: 1
 		SearchFromProcRadius: 36
