@@ -91,16 +91,24 @@ function StylesGetDefault()
 end
 
 local markers = {
-  breakpoint = {0, wxstc.wxSTC_MARK_CIRCLE, wx.wxColour(196, 64, 64), wx.wxColour(220, 64, 64)},
-  bookmark = {1, wxstc.wxSTC_MARK_SHORTARROW, wx.wxColour(16, 96, 128), wx.wxColour(96, 160, 220)},
-  currentline = {2, wxstc.wxSTC_MARK_ARROW, wx.wxColour(16, 128, 16), wx.wxColour(64, 220, 64)},
-  message = {3, wxstc.wxSTC_MARK_CHARACTER+(' '):byte(), wx.wxBLACK, wx.wxColour(220, 220, 220)},
-  output = {4, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240)},
-  prompt = {5, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxColour(220, 220, 220)},
-  error = {6, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220)},
-  searchmatchfile = {7, wxstc.wxSTC_MARK_EMPTY, wx.wxBLACK, wx.wxColour(196, 0, 0)},
+  breakpoint = {0, wxstc.wxSTC_MARK_CIRCLE, {196, 64, 64}, {220, 64, 64}},
+  bookmark = {1, wxstc.wxSTC_MARK_SHORTARROW, {16, 96, 128}, {96, 160, 220}},
+  currentline = {2, wxstc.wxSTC_MARK_ARROW, {16, 128, 16}, {64, 220, 64}},
+  message = {3, wxstc.wxSTC_MARK_CHARACTER+(' '):byte(), {0, 0, 0}, {220, 220, 220}},
+  output = {4, wxstc.wxSTC_MARK_BACKGROUND, {0, 0, 0}, {240, 240, 240}},
+  prompt = {5, wxstc.wxSTC_MARK_ARROWS, {0, 0, 0}, {220, 220, 220}},
+  error = {6, wxstc.wxSTC_MARK_BACKGROUND, {0, 0, 0}, {255, 220, 220}},
+  searchmatchfile = {7, wxstc.wxSTC_MARK_EMPTY, {0, 0, 0}, {196, 0, 0}},
 }
-function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
+
+local function tint(c)
+  return ide.config.markertint and ide:GetTintedColor(c, ide.config.imagetint) or c
+end
+
+function StylesGetMarker(marker)
+  local id, ch, fg, bg = unpack(markers[marker] or {})
+  return id, ch, fg and wx.wxColour(unpack(tint(fg))), bg and wx.wxColour(unpack(tint(bg)))
+end
 function StylesRemoveMarker(marker) markers[marker] = nil end
 function StylesAddMarker(marker, ch, fg, bg)
   if type(fg) ~= "table" or type(bg) ~= "table" then return end
@@ -111,7 +119,7 @@ function StylesAddMarker(marker, ch, fg, bg)
     num = #nums + 1
     if num > 24 then return end -- 24 markers with no pre-defined functions
   end
-  markers[marker] = {num, ch, wx.wxColour(unpack(fg)), wx.wxColour(unpack(bg))}
+  markers[marker] = {num, ch, fg, bg}
   return num
 end
 
@@ -231,8 +239,8 @@ local specialmapping = {
     for m, style in pairs(markers) do
       local id, ch, fg, bg = StylesGetMarker(m)
       if style.ch then ch = style.ch end
-      if style.fg then fg = wx.wxColour(unpack(style.fg)) end
-      if style.bg then bg = wx.wxColour(unpack(style.bg)) end
+      if style.fg then fg = wx.wxColour(unpack(tint(style.fg))) end
+      if style.bg then bg = wx.wxColour(unpack(tint(style.bg))) end
       editor:MarkerDefine(id, ch, fg, bg)
     end
   end,
