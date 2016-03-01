@@ -505,6 +505,25 @@ local function iconFilter(bitmap, tint)
   return wx.wxBitmap(img)
 end
 
+function ide:GetTintedColor(color, tint)
+  if type(tint) == 'function' then return tint(color) end
+  if type(tint) ~= 'table' or #tint ~= 3 then return color end
+  if type(color) ~= 'table' then return color end
+
+  local tr, tg, tb = tint[1]/255, tint[2]/255, tint[3]/255
+  local pi = 0.299*tr + 0.587*tg + 0.114*tb -- pixel intensity
+  local perc = (tint[0] or tintdef)/tintdef
+  tr, tg, tb = tr*perc, tg*perc, tb*perc
+
+  local r, g, b = color[1]/255, color[2]/255, color[3]/255
+  local gs = (r + g + b) / 3
+  local weight = 1-4*(gs-0.5)*(gs-0.5)
+  r = math.max(0, math.min(255, math.floor(255 * (gs + (tr-pi) * weight))))
+  g = math.max(0, math.min(255, math.floor(255 * (gs + (tg-pi) * weight))))
+  b = math.max(0, math.min(255, math.floor(255 * (gs + (tb-pi) * weight))))
+  return {r, g, b}
+end
+
 local icons = {} -- icon cache to avoid reloading the same icons
 function ide:GetBitmap(id, client, size)
   local im = self.config.imagemap
