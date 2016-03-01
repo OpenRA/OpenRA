@@ -56,15 +56,6 @@ namespace OpenRA
 		}
 	}
 
-	public class MapVideos
-	{
-		public string BackgroundInfo;
-		public string Briefing;
-		public string GameStart;
-		public string GameWon;
-		public string GameLost;
-	}
-
 	[Flags]
 	public enum MapVisibility
 	{
@@ -107,18 +98,6 @@ namespace OpenRA
 				return WVec.Zero;
 
 			return SubCellOffsets[(int)subCell];
-		}
-
-		[FieldLoader.LoadUsing("LoadVideos")] public MapVideos Videos;
-
-		static object LoadVideos(MiniYaml y)
-		{
-			var videos = new MapVideos();
-			var nodesDict = y.ToDictionary();
-			if (nodesDict.ContainsKey("Videos"))
-				FieldLoader.Load(videos, nodesDict["Videos"]);
-
-			return videos;
 		}
 
 		public static string ComputeUID(IReadOnlyPackage package)
@@ -227,7 +206,6 @@ namespace OpenRA
 
 			MapSize = new int2(size);
 			Tileset = tileset.Id;
-			Videos = new MapVideos();
 
 			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
 
@@ -468,9 +446,7 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
 
-			root.Add(new MiniYamlNode("Videos", FieldSaver.SaveDifferences(Videos, new MapVideos())));
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
-
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
 			root.Add(new MiniYamlNode("Smudges", null, SmudgeDefinitions));
 			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));

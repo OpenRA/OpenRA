@@ -735,6 +735,7 @@
     <Compile Include="Traits\World\MapCreeps.cs" />
     <Compile Include="Traits\World\MapBuildRadius.cs" />
     <Compile Include="Traits\World\MapOptions.cs" />
+    <Compile Include="Traits\World\MissionData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

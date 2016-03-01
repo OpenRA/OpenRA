@@ -181,6 +181,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var difficultyDisabled = true;
 			var difficulties = new string[0];
 
+			var briefingVideo = "";
+			var briefingVideoVisible = false;
+			var briefingVideoDisabled = true;
+
+			var infoVideo = "";
+			var infoVideoVisible = false;
+			var infoVideoDisabled = true;
+
 			new Thread(() =>
 			{
 				selectedMap.PreloadRules();
@@ -189,15 +197,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
 				difficulties = mapOptions.Difficulties;
 				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
+
+				var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				if (missionData != null)
+				{
+					briefingVideo = missionData.BriefingVideo;
+					briefingVideoVisible = briefingVideo != null;
+					briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
+
+					infoVideo = missionData.BackgroundVideo;
+					infoVideoVisible = infoVideo != null;
+					infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
+				}
 			}).Start();
-
-			var briefingVideo = selectedMap.Videos.Briefing;
-			var briefingVideoVisible = briefingVideo != null;
-			var briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
-
-			var infoVideo = selectedMap.Videos.BackgroundInfo;
-			var infoVideoVisible = infoVideo != null;
-			var infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
@@ -314,18 +326,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedMap.InvalidCustomRules)
 				return;
 
-			var gameStartVideo = selectedMap.Videos.GameStart;
 			var orders = new[] {
 				Order.Command("gamespeed {0}".F(gameSpeed)),
 				Order.Command("difficulty {0}".F(difficulty)),
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};
 
-			if (gameStartVideo != null && modData.DefaultFileSystem.Exists(gameStartVideo))
+			var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;
-				PlayVideo(fsPlayer, gameStartVideo, PlayingVideo.GameStart, () =>
+				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
 					Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);
