@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -31,12 +32,19 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SmokeTrailWhenDamagedInfo info;
 		readonly BodyOrientation body;
+		readonly Func<int> getFacing;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
 		{
 			this.info = info;
 			body = self.Trait<BodyOrientation>();
+			var facing = self.TraitOrDefault<IFacing>();
+
+			if (facing != null)
+				getFacing = () => facing.Facing;
+			else
+				getFacing = () => 0;
 		}
 
 		public void Tick(Actor self)
@@ -48,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);
-					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite, info.Palette, info.Sequence)));
+					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, getFacing, info.Sprite, info.Palette, info.Sequence)));
 				}
 
 				ticks = info.Interval;

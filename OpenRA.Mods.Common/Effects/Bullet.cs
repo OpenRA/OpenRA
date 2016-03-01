@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail, trailPalette, info.TrailSequences.Random(world.SharedRandom))));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, () => GetEffectiveFacing(), info.Trail, trailPalette, info.TrailSequences.Random(world.SharedRandom))));
 				smokeTicks = info.TrailInterval;
 			}
 
