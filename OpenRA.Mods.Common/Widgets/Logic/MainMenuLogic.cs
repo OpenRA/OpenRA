@@ -257,11 +257,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!Game.Settings.Debug.SendSystemInformation)
 				return null;
 
-			return "?id={0}&platform={1}&os={2}&runtime={3}&lang={4}&version={5}&mod={6}&modversion={7}".F(
+			return "?id={0}&platform={1}&os={2}&runtime={3}&gl={4}&lang={5}&version={6}&mod={7}&modversion={8}".F(
 				Uri.EscapeUriString(Game.Settings.Debug.UUID),
 				Uri.EscapeUriString(Platform.CurrentPlatform.ToString()),
 				Uri.EscapeUriString(Environment.OSVersion.ToString()),
 				Uri.EscapeUriString(Platform.RuntimeVersion),
+				Uri.EscapeUriString(Game.Renderer.GLVersion),
 				Uri.EscapeUriString(System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName),
 				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
 				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),

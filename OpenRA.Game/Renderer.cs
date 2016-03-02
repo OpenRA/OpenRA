@@ -273,5 +273,10 @@ namespace OpenRA
 		{
 			return Device.SetClipboardText(text);
 		}
+
+		public string GLVersion
+		{
+			get { return Device.GLVersion; }
+		}
 	}
 }

@@ -78,6 +78,8 @@ namespace OpenRA
 
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
 		void SetHardwareCursor(IHardwareCursor cursor);
+
+		string GLVersion { get; }
 	}
 
 	public interface IVertexBuffer<T> : IDisposable
