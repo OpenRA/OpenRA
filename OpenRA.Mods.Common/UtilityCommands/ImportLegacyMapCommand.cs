@@ -67,8 +67,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Author = "Westwood Studios"
 				};
 
-				Map.Description = ExtractBriefing(file);
-
 				Map.RequiresMod = modData.Manifest.Mod.Id;
 
 				SetBounds(Map, mapSection);
@@ -77,6 +75,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ReadTrees(file);
 
 				LoadVideos(file, "BASIC");
+				LoadBriefing(file);
 
 				ReadActors(file);
 
@@ -120,17 +119,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public abstract void ValidateMapFormat(int format);
 
-		static string ExtractBriefing(IniFile file)
+		void LoadBriefing(IniFile file)
 		{
 			var briefingSection = file.GetSection("Briefing", true);
 			if (briefingSection == null)
-				return string.Empty;
+				return;
 
 			var briefing = new StringBuilder();
 			foreach (var s in briefingSection)
 				briefing.AppendLine(s.Value);
 
-			return briefing.Replace("\n", " ").ToString();
+			if (briefing.Length == 0)
+				return;
+
+			var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+			if (worldNode == null)
+			{
+				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+				Rules.Nodes.Add(worldNode);
+			}
+
+			var missionData = worldNode.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
+			if (missionData == null)
+			{
+				missionData = new MiniYamlNode("MissionData", new MiniYaml("", new List<MiniYamlNode>()));
+				worldNode.Value.Nodes.Add(missionData);
+			}
+
+			missionData.Value.Nodes.Add(new MiniYamlNode("Briefing", briefing.Replace("\n", " ").ToString()));
 		}
 
 		static void SetBounds(Map map, IniSection mapSection)

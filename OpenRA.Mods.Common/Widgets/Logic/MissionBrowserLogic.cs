@@ -189,16 +189,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var infoVideoVisible = false;
 			var infoVideoDisabled = true;
 
+			var map = selectedMap;
 			new Thread(() =>
 			{
-				selectedMap.PreloadRules();
-				var mapOptions = selectedMap.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+				map.PreloadRules();
+				var mapOptions = map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
 
 				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
 				difficulties = mapOptions.Difficulties;
 				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
 
-				var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				var missionData = map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
 				if (missionData != null)
 				{
 					briefingVideo = missionData.BriefingVideo;
@@ -208,6 +209,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					infoVideo = missionData.BackgroundVideo;
 					infoVideoVisible = infoVideo != null;
 					infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
+
+					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
+					var height = descriptionFont.Measure(briefing).Y;
+					Game.RunAfterTick(() =>
+					{
+						if (map == selectedMap)
+						{
+							description.Text = briefing;
+							description.Bounds.Height = height;
+							descriptionPanel.Layout.AdjustChildren();
+						}
+					});
 				}
 			}).Start();
 
@@ -219,12 +232,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			startInfoVideoButton.IsDisabled = () => infoVideoDisabled || playingVideo != PlayingVideo.None;
 			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info, () => StopVideo(videoPlayer));
 
-			var text = selectedMap.Description != null ? selectedMap.Description.Replace("\\n", "\n") : "";
-			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
-			description.Text = text;
-			description.Bounds.Height = descriptionFont.Measure(text).Y;
 			descriptionPanel.ScrollToTop();
-			descriptionPanel.Layout.AdjustChildren();
 
 			if (difficultyButton != null)
 			{

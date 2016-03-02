@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -24,12 +25,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapDescriptionPanel = widget.Get<ScrollPanelWidget>("MAP_DESCRIPTION_PANEL");
 			var mapDescription = widget.Get<LabelWidget>("MAP_DESCRIPTION");
 			var mapFont = Game.Renderer.Fonts[mapDescription.Font];
-			var text = world.Map.Description != null ? world.Map.Description.Replace("\\n", "\n") : "";
-			text = WidgetUtils.WrapText(text, mapDescription.Bounds.Width, mapFont);
-			mapDescription.Text = text;
-			mapDescription.Bounds.Height = mapFont.Measure(text).Y;
-			mapDescriptionPanel.ScrollToTop();
-			mapDescriptionPanel.Layout.AdjustChildren();
+
+			var missionData = world.Map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null)
+			{
+				var text = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
+				mapDescription.Text = text;
+				mapDescription.Bounds.Height = mapFont.Measure(text).Y;
+				mapDescriptionPanel.ScrollToTop();
+				mapDescriptionPanel.Layout.AdjustChildren();
+			}
 		}
 	}
 }

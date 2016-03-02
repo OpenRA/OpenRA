@@ -75,7 +75,7 @@ Background@SAVE_MAP_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 350
-	Height: 335
+	Height: 300
 	Children:
 		Label@LABEL_TITLE:
 			X: (PARENT_RIGHT - WIDTH)/2
@@ -111,58 +111,45 @@ Background@SAVE_MAP_PANEL:
 			Width: 220
 			MaxLength: 50
 			Height: 25
-		Label@DESCRIPTION_LABEL:
-			X: 10
-			Y: 129
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: Description:
-		TextField@DESCRIPTION:
-			X: 110
-			Y: 130
-			Width: 220
-			MaxLength: 50
-			Height: 25
 		Label@VISIBILITY_LABEL:
 			X: 10
-			Y: 164
+			Y: 129
 			Width: 95
 			Height: 25
 			Align: Right
 			Text: Visibility:
 		DropDownButton@VISIBILITY_DROPDOWN:
 			X: 110
-			Y: 165
+			Y: 130
 			Width: 220
 			Height: 25
 		Label@DIRECTORY_LABEL:
 			X: 10
-			Y: 199
+			Y: 164
 			Width: 95
 			Height: 25
 			Align: Right
 			Text: Directory:
 		DropDownButton@DIRECTORY_DROPDOWN:
 			X: 110
-			Y: 200
+			Y: 165
 			Width: 220
 			Height: 25
 		Label@FILENAME_LABEL:
 			X: 10
-			Y: 234
+			Y: 199
 			Width: 95
 			Height: 25
 			Align: Right
 			Text: Filename:
 		TextField@FILENAME:
 			X: 110
-			Y: 235
+			Y: 200
 			Width: 105
 			Height: 25
 		DropDownButton@TYPE_DROPDOWN:
 			X: 220
-			Y: 235
+			Y: 200
 			Width: 110
 			Height: 25
 		Button@SAVE_BUTTON:

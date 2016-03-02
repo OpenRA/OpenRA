@@ -86,7 +86,6 @@ namespace OpenRA
 
 		public string Title;
 		public string Type = "Conquest";
-		public string Description;
 		public string Author;
 		public string Tileset;
 		public Bitmap CustomPreview;
@@ -201,7 +200,6 @@ namespace OpenRA
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, 0);
 
 			Title = "Name your map here";
-			Description = "Describe your map here";
 			Author = "Your name here";
 
 			MapSize = new int2(size);
@@ -429,7 +427,6 @@ namespace OpenRA
 				"MapFormat",
 				"RequiresMod",
 				"Title",
-				"Description",
 				"Author",
 				"Tileset",
 				"MapSize",

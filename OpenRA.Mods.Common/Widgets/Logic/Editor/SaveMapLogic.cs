@@ -52,10 +52,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var author = widget.Get<TextFieldWidget>("AUTHOR");
 			author.Text = map.Author;
 
-			// TODO: This should use a multi-line textfield once they exist
-			var description = widget.Get<TextFieldWidget>("DESCRIPTION");
-			description.Text = map.Description;
-
 			// TODO: This should use a multi-selection dropdown once they exist
 			var visibilityDropdown = widget.Get<DropDownButtonWidget>("VISIBILITY_DROPDOWN");
 			{
@@ -160,7 +156,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				map.Title = title.Text;
-				map.Description = description.Text;
 				map.Author = author.Text;
 				map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), visibilityDropdown.Text);
 

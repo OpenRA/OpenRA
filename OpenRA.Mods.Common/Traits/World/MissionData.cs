@@ -17,6 +17,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Defines the FMVs that can be played by missions.")]
 	public class MissionDataInfo : TraitInfo<MissionData>
 	{
+		[Desc("Briefing text displayed in the mission browser.")]
+		public readonly string Briefing;
+
 		[Desc("Played by the \"Background Info\" button in the mission browser.")]
 		public readonly string BackgroundVideo;
 
