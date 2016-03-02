@@ -357,7 +357,7 @@ frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
     if event:IsChecked() then
       if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
     else
-      ide:GetDebugger():listen(false) -- stop listening
+      ide:GetDebugger():Listen(false) -- stop listening
     end
   end)
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,

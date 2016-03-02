@@ -561,7 +561,7 @@ function debugger:mapRemotePath(basedir, file, line, method)
   return nil
 end
 
-function debugger:listen(start)
+function debugger:Listen(start)
   if start == false then
     if debugger.listening then
       debugger:terminate() -- terminate if running
@@ -1456,7 +1456,7 @@ end
 function DebuggerAttachDefault(options)
   local debugger = ide:GetDebugger()
   debugger.options = options
-  if not debugger.listening then debugger:listen() end
+  if not debugger.listening then debugger:Listen() end
 end
 
 function debugger:Stop()
