@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		int CalculateTurnRadius(int speed)
 		{
-			return (int)(141 * speed / planeInfo.ROT / (float)Math.PI);
+			return (int)(141 * speed / planeInfo.TurnSpeed / (float)Math.PI);
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (desiredFacing == facing.Facing)
 				return NextActivity;
-			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.ROT);
+			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
 
 			return this;
 		}

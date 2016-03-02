@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
 	{
 		public readonly string Turret = "primary";
-		[Desc("Rate of Turning")]
-		public readonly int ROT = 255;
+		[Desc("Speed at which the turret turns.")]
+		public readonly int TurnSpeed = 255;
 		public readonly int InitialFacing = 128;
 
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		void MoveTurret()
 		{
 			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
-			TurretFacing = Util.TickFacing(TurretFacing, df, info.ROT);
+			TurretFacing = Util.TickFacing(TurretFacing, df, info.TurnSpeed);
 		}
 
 		public bool FaceTarget(Actor self, Target target)

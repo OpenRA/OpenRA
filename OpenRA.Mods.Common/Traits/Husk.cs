@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public WPos CenterPosition { get; private set; }
 		[Sync] public int Facing { get; set; }
 
-		public int ROT { get { return 0; } }
+		public int TurnSpeed { get { return 0; } }
 
 		public Husk(ActorInitializer init, HuskInfo info)
 		{

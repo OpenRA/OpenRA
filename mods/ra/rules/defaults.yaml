@@ -79,7 +79,7 @@
 			Ore: 70
 			Gems: 70
 			Beach: 40
-		ROT: 5
+		TurnSpeed: 5
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24, 24

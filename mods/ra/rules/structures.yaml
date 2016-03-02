@@ -475,7 +475,7 @@ AGUN:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 15
+		TurnSpeed: 15
 		InitialFacing: 224
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -554,7 +554,7 @@ PBOX:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -601,7 +601,7 @@ HBOX:
 		CloakDelay: 60
 		IsPlayerPalette: true
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -647,7 +647,7 @@ GUN:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 12
+		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -687,7 +687,7 @@ FTUR:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 		Offset: 0,0,112
 	Armament:
 		Weapon: FireballLauncher
@@ -730,7 +730,7 @@ SAM:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 30
+		TurnSpeed: 30
 		InitialFacing: 0
 	-WithSpriteBody:
 	WithTurretedSpriteBody:

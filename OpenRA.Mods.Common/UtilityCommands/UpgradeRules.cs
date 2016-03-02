@@ -599,6 +599,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160301)
+				{
+					// Renamed ROT -> TurnSpeed
+					if (node.Key == "ROT")
+						node.Key = "TurnSpeed";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

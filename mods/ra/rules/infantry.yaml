@@ -597,7 +597,7 @@ Ant:
 			Radius: 469
 	Mobile:
 		Speed: 99
-		ROT: 12
+		TurnSpeed: 12
 		SharesCell: no
 	AutoTarget:
 		ScanRadius: 5

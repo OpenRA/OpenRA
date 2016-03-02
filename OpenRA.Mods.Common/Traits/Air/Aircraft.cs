@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 		public readonly int InitialFacing = 0;
-		public readonly int ROT = 255;
+		public readonly int TurnSpeed = 255;
 		public readonly int Speed = 1;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne")]
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public int ROT { get { return Info.ROT; } }
+		public int TurnSpeed { get { return Info.TurnSpeed; } }
 
 		bool airborne;
 		bool cruising;

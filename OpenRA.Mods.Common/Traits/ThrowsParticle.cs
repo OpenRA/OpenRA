@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speed to throw the particle (horizontal WPos/tick)")]
 		public readonly int Velocity = 75;
 
-		[Desc("Maximum rotation rate")]
-		public readonly float ROT = 15;
+		[Desc("Speed at which the particle turns.")]
+		public readonly float TurnSpeed = 15;
 
 		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// Facing rotation
-			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.ROT / 1024;
+			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024;
 
 			var anim = new Animation(init.World, rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);

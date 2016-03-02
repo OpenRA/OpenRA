@@ -736,7 +736,7 @@ Rules:
 		RevealsShroud:
 			Range: 14c0
 		Turreted:
-			ROT: 1
+			TurnSpeed: 1
 		Armament@PRIMARY:
 			Recoil: 8
 			RecoilRecovery: 0c7
