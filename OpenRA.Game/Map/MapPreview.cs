@@ -69,7 +69,7 @@ namespace OpenRA
 		public CPos[] SpawnPoints { get; private set; }
 		public MapGridType GridType { get; private set; }
 		public Rectangle Bounds { get; private set; }
-		public Bitmap CustomPreview { get; private set; }
+		public Bitmap Preview { get; private set; }
 		public MapStatus Status { get; private set; }
 		public MapClassification Class { get; private set; }
 		public MapVisibility Visibility { get; private set; }
@@ -200,7 +200,7 @@ namespace OpenRA
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
-					CustomPreview = new Bitmap(dataStream);
+					Preview = new Bitmap(dataStream);
 		}
 
 		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
@@ -253,11 +253,11 @@ namespace OpenRA
 						SpawnPoints = spawns;
 						GridType = r.map_grid_type;
 
-						CustomPreview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}
 					catch (Exception) { }
 
-					if (CustomPreview != null)
+					if (Preview != null)
 						cache.CacheMinimap(this);
 				}
 

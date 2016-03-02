@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Briefing tab
-			if (world.Map.CustomPreview != null)
+			if (world.Map.Exists("map.png"))
 			{
 				numTabs++;
 				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));

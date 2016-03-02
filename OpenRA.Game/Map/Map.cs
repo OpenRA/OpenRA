@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -89,7 +90,7 @@ namespace OpenRA
 		public string Type = "Conquest";
 		public string Author;
 		public string Tileset;
-		public Bitmap CustomPreview;
+		public bool LockPreview;
 		public bool InvalidCustomRules { get; private set; }
 
 		public WVec OffsetOfSubCell(SubCell subCell)
@@ -281,10 +282,6 @@ namespace OpenRA
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
-			if (Package.Contains("map.png"))
-				using (var dataStream = Package.GetStream("map.png"))
-					CustomPreview = new Bitmap(dataStream);
-
 			PostInit();
 
 			Uid = ComputeUID(Package);
@@ -444,6 +441,10 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
 
+			// Save LockPreview field only if it's set
+			if (LockPreview)
+				root.Add(new MiniYamlNode("LockPreview", "True"));
+
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
 
@@ -467,6 +468,9 @@ namespace OpenRA
 			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
 					toPackage.Update(file, Package.GetStream(file).ReadAllBytes());
+
+			if (!LockPreview)
+				toPackage.Update("map.png", SavePreview());
 
 			// Update the package with the new map data
 			var s = root.WriteToString();
@@ -613,6 +617,84 @@ namespace OpenRA
 			}
 
 			return dataStream.ToArray();
+		}
+
+		public byte[] SavePreview()
+		{
+			var tileset = Rules.TileSets[Tileset];
+			var resources = Rules.Actors["world"].TraitInfos<ResourceTypeInfo>()
+				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
+
+			using (var stream = new MemoryStream())
+			{
+				var isRectangularIsometric = Grid.Type == MapGridType.RectangularIsometric;
+
+				// Fudge the heightmap offset by adding as much extra as we need / can.
+				// This tries to correct for our incorrect assumption that MPos == PPos
+				var heightOffset = Math.Min(Grid.MaximumTerrainHeight, MapSize.Y - Bounds.Bottom);
+				var width = Bounds.Width;
+				var height = Bounds.Height + heightOffset;
+
+				var bitmapWidth = width;
+				if (isRectangularIsometric)
+					bitmapWidth = 2 * bitmapWidth - 1;
+
+				using (var bitmap = new Bitmap(bitmapWidth, height))
+				{
+					var bitmapData = bitmap.LockBits(bitmap.Bounds(),
+						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+					unsafe
+					{
+						var colors = (int*)bitmapData.Scan0;
+						var stride = bitmapData.Stride / 4;
+						Color leftColor, rightColor;
+
+						for (var y = 0; y < height; y++)
+						{
+							for (var x = 0; x < width; x++)
+							{
+								var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
+								var resourceType = MapResources.Value[uv].Type;
+								if (resourceType != 0)
+								{
+									// Cell contains resources
+									string res;
+									if (!resources.TryGetValue(resourceType, out res))
+										continue;
+
+									leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
+								}
+								else
+								{
+									// Cell contains terrain
+									var type = tileset.GetTileInfo(MapTiles.Value[uv]);
+									leftColor = type != null ? type.LeftColor : Color.Black;
+									rightColor = type != null ? type.RightColor : Color.Black;
+								}
+
+								if (isRectangularIsometric)
+								{
+									// Odd rows are shifted right by 1px
+									var dx = uv.V & 1;
+									if (x + dx > 0)
+										colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
+
+									if (2 * x + dx < stride)
+										colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
+								}
+								else
+									colors[y * stride + x] = leftColor.ToArgb();
+							}
+						}
+					}
+
+					bitmap.UnlockBits(bitmapData);
+					bitmap.Save(stream, ImageFormat.Png);
+				}
+
+				return stream.ToArray();
+			}
 		}
 
 		public bool Contains(CPos cell)

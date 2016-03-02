@@ -121,7 +121,6 @@
     <Compile Include="Graphics\CursorSequence.cs" />
     <Compile Include="Graphics\HardwarePalette.cs" />
     <Compile Include="Graphics\MappedImage.cs" />
-    <Compile Include="Graphics\Minimap.cs" />
     <Compile Include="Graphics\SequenceProvider.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
