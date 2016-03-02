@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Get the Rods back (a)
-
-Description: Nod has captured classified GDI property.\n\nYou must find and retrieve the stolen equipment.\n\nIt is being transported in a shipping crate.\n\nUse the new APC to strategically transport infantry through Nod forces.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 7,24,51,36
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	BackgroundInfo: bkground.vqa
-	Briefing: gdi4b.vqa
-	GameStart: nitejump.vqa
-	GameWon: burdet1.vqa
-	GameLost: gameover.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
@@ -503,10 +483,34 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: fist226m
+		MissionData:
+			Briefing: Nod has captured classified GDI property.\n\nYou must find and retrieve the stolen equipment.\n\nIt is being transported in a shipping crate.\n\nUse the new APC to strategically transport infantry through Nod forces.
+			BackgroundVideo: bkground.vqa
+			BriefingVideo: gdi4b.vqa
+			StartVideo: nitejump.vqa
+			WinVideo: burdet1.vqa
+			LossVideo: gameover.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Warthog Hunt
-
-Description: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 4,12,57,45
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	BackgroundInfo: sethpre.vqa
-	Briefing: nod5.vqa
-	GameStart: samsite.vqa
-	GameWon: insites.vqa
-	GameLost: flag.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@GDI:
@@ -418,6 +398,14 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -429,6 +417,22 @@ Rules:
 		MusicPlaylist:
 			StartingMusic: airstrik
 			VictoryMusic: nod_win1
+		MissionData:
+			Briefing: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
+			BackgroundVideo: sethpre.vqa
+			BriefingVideo: nod5.vqa
+			StartVideo: samsite.vqa
+			WinVideo: insites.vqa
+			LossVideo: flag.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

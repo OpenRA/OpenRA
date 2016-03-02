@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: shellmap
-
-Description: CNC Shellmap
 
 Author: Chris Forbes
 
@@ -17,10 +15,6 @@ Bounds: 8,1,80,45
 Visibility: Shellmap
 
 Type: Shellmap
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Nod:

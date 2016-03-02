@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: C&C64 Special Ops - GDI 1
-
-Description: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the dropoff area. With the SAMs gone you will then get an airstrike.  Take out the Obelisk and an MCV will be delivered to help you to locate and destroy the biochem facility.
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 2,9,48,53
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	GameStart: obel.vqa
-	GameWon: orcabomb.vqa
-	GameLost: cutout.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 10000
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
@@ -758,10 +740,32 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: aoi
+		MissionData:
+			Briefing: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the dropoff area. With the SAMs gone you will then get an airstrike.  Take out the Obelisk and an MCV will be delivered to help you to locate and destroy the biochem facility.
+			StartVideo: obel.vqa
+			WinVideo: orcabomb.vqa
+			LossVideo: cutout.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 10000
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

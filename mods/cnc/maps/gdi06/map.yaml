@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Infiltrate Nod Base
-
-Description: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 15,1,47,61
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: gdi6.vqa
-	GameStart: nitejump.vqa
-	GameWon: sabotage.vqa
-	GameLost: gdilose.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: True
 
 Players:
 	PlayerReference@Neutral:
@@ -1085,10 +1065,34 @@ Rules:
 			Green: 0.85
 			Blue: 1.5
 			Ambient: 0.35
+		MissionData:
+			Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
+			BriefingVideo: gdi6.vqa
+			StartVideo: nitejump.vqa
+			WinVideo: sabotage.vqa
+			LossVideo: gdilose.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: True
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

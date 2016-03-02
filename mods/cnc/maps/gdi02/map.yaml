@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Knock out the Refinery
-
-Description: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 31,31,31,31
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: gdi2.vqa
-	GameWon: flag.vqa
-	GameLost: gameover.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@GDI:
@@ -669,10 +651,32 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: befeared
+		MissionData:
+			Briefing: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
+			BriefingVideo: gdi2.vqa
+			WinVideo: flag.vqa
+			LossVideo: gameover.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy
