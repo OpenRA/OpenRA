@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ts
 
 Title: Town of Karasjok
-
-Description: Dark 2-5 player map with a decent amount of Tiberium.
 
 Author: Crash
 
@@ -17,10 +15,6 @@ Bounds: 2,4,116,226
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:
