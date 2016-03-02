@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: d2k
 
 Title: Oasis Conquest
-
-Description: 2v2v2 or FFA
 
 Author: Janitor
 
@@ -17,10 +15,6 @@ Bounds: 16,16,96,96
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:
