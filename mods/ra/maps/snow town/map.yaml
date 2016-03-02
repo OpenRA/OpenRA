@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Snow Town
-
-Description: 3v3
 
 Author: MicroBit
 
@@ -17,10 +15,6 @@ Bounds: 16,16,96,96
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

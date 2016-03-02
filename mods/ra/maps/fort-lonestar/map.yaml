@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Fort Lonestar
-
-Description: Survive multiple waves of attacking enemies.
 
 Author: Nuke'm Bro, abcdefg30
 
@@ -17,20 +15,6 @@ Bounds: 8,8,48,48
 Visibility: Lobby
 
 Type: Minigame
-
-Videos:
-
-Options:
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: True
-	FragileAlliances: False
-	StartingCash: 50
-	TechLevel: Unrestricted
-	StartingUnitsClass: none
-	ConfigurableStartingUnits: False
-	ShortGame: False
-	Difficulties: Hard (4P), Normal (3P), Easy (2P), Very Easy (1P), Real tough guy, Endless mode
 
 Players:
 	PlayerReference@Neutral:
@@ -516,6 +500,17 @@ Rules:
 			Scripts: fort-lonestar.lua
 		ScriptUpgradesCache:
 			Upgrades: invulnerability
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: True
+		SpawnMPUnits:
+			Locked: True
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Unrestricted
+			Difficulties: Hard (4P), Normal (3P), Easy (2P), Very Easy (1P), Real tough guy, Endless mode
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	FORTCRATE:
 		Inherits: ^Crate
 		SupportPowerCrateAction@parabombs:
@@ -551,6 +546,14 @@ Rules:
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
 		-EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 50
 	^Infantry:
 		Inherits@IC: ^IronCurtainable
 	^Husk:
@@ -895,7 +898,7 @@ Weapons:
 		Range: 5c0
 		Projectile: GravityBomb
 			Image: BOMBLET
-			OpenSequence: idle # TODO: This crashes otherwise
+			OpenSequence: idle
 		Warhead@1Dam: SpreadDamage
 			Spread: 426
 			Versus:

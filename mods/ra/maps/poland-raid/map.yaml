@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Poland Raid
-
-Description: Great FFA map. There is lot of resources to control.
 
 Author: s1w
 
@@ -17,10 +15,6 @@ Bounds: 16,16,96,96
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

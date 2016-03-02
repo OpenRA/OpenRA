@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Intervention!
-
-Description: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
 
 Author: Antares79
 
@@ -17,19 +15,6 @@ Bounds: 16,16,128,128
 Visibility: MissionSelector
 
 Type: Mission
-
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 2000
-	ConfigurableStartingUnits: False
-	Difficulties: Medium, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -2220,6 +2205,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		-EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 2000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -2228,6 +2221,15 @@ Rules:
 			Scripts: intervention.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Medium, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	CAMERA:
 		RevealsShroud:
 			Range: 18c0
