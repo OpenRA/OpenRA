@@ -1013,6 +1013,33 @@ namespace OpenRA.Mods.Common.Server
 			};
 		}
 
+		public static void LoadMapSettings(Session.Global gs, Map map)
+		{
+			var devMode = map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
+			gs.AllowCheats = devMode.Enabled;
+
+			var crateSpawner = map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
+
+			var shroud = map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+			gs.Fog = shroud.FogEnabled;
+			gs.Shroud = !shroud.ExploredMapEnabled;
+
+			var resources = map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
+			gs.StartingCash = resources.DefaultCash;
+
+			var startingUnits = map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
+
+			var mapBuildRadius = map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
+
+			var mapOptions = map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+			gs.ShortGame = mapOptions.ShortGameEnabled;
+			gs.TechLevel = mapOptions.TechLevel;
+			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+		}
+
 		static void LoadMap(S server)
 		{
 			server.Map = new Map(server.ModData, server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Package);
@@ -1023,30 +1050,7 @@ namespace OpenRA.Mods.Common.Server
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
 
-			var gs = server.LobbyInfo.GlobalSettings;
-			var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
-			gs.AllowCheats = devMode.Enabled;
-
-			var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
-			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
-
-			var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
-			gs.Fog = shroud.FogEnabled;
-			gs.Shroud = !shroud.ExploredMapEnabled;
-
-			var resources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-			gs.StartingCash = resources.DefaultCash;
-
-			var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
-			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
-
-			var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
-			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
-
-			var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-			gs.ShortGame = mapOptions.ShortGameEnabled;
-			gs.TechLevel = mapOptions.TechLevel;
-			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+			LoadMapSettings(server.LobbyInfo.GlobalSettings, server.Map);
 		}
 
 		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)
