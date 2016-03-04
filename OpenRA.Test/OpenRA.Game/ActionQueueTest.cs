@@ -14,7 +14,7 @@ using System.Linq;
 using NUnit.Framework;
 using OpenRA.Primitives;
 
-namespace OpenRA.Test.OpenRA.Game
+namespace OpenRA.Test
 {
 	[TestFixture]
 	class ActionQueueTest
