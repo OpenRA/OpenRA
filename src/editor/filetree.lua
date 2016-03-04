@@ -226,7 +226,9 @@ local function treeSetConnectorsAndIcons(tree)
 
     -- refresh the folder
     if (tree:IsDirectory(item_id) or tree:IsDirMapped(item_id)) then
-      if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
+      if wx.wxDirExists(name) then
+        treeAddDir(tree,item_id,name)
+        tree:Toggle(item_id)
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
     else -- open file
       if wx.wxFileExists(name) then LoadFile(name,nil,true)
@@ -387,7 +389,6 @@ local function treeSetConnectorsAndIcons(tree)
     end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function (event)
-      tree:Toggle(event:GetItem())
       tree:ActivateItem(event:GetItem())
     end)
 
