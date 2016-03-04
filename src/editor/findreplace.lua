@@ -900,7 +900,9 @@ function findReplace:createPanel()
     if findReplace.infiles then
       findReplace:RunInFiles(false)
     else
-      findReplace:Find()
+      local reverse = (wx.wxGetKeyState(wx.WXK_SHIFT)
+          and not wx.wxGetKeyState(wx.WXK_ALT) and not wx.wxGetKeyState(wx.WXK_CONTROL))
+      findReplace:Find(reverse)
     end
   end
 
