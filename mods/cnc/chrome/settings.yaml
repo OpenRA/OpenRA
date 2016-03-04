@@ -551,7 +551,7 @@ Container@SETTINGS_PANEL:
 							Height: 30
 							Font: Tiny
 							WordWrap: True
-							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help priorise future development.
+							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 						Label@DEBUG_TITLE:
 							Y: 170
 							Width: PARENT_RIGHT
