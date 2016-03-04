@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
 		public readonly int TurnSpeed = 255;
-		public readonly int InitialFacing = 128;
+		public readonly int InitialFacing = 0;
 
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
 		public readonly int RealignDelay = 40;
