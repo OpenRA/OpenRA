@@ -523,6 +523,13 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Show Performance Text
+						Checkbox@PERFGRAPH_CHECKBOX:
+							X: 15
+							Y: 100
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Show Performance Graph
 						Checkbox@FETCH_NEWS_CHECKBOX:
 							X: 310
 							Y: 40
@@ -530,43 +537,51 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Fetch Community News
-						Checkbox@PERFGRAPH_CHECKBOX:
+						Checkbox@SENDSYSINFO_CHECKBOX:
 							X: 310
 							Y: 70
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Show Performance Graph
+							Text: Send System Information
+						Label@SENDSYSINFO_DESC:
+							X: 310
+							Y: 85
+							Width: 250
+							Height: 30
+							Font: Tiny
+							WordWrap: True
+							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help priorise future development.
 						Label@DEBUG_TITLE:
-							Y: 140
+							Y: 170
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Debug
 							Align: Center
 						Checkbox@BOTDEBUG_CHECKBOX:
 							X: 15
-							Y: 160
+							Y: 190
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Bot Debug Messages
 						Checkbox@VERBOSE_NAT_CHECKBOX:
 							X: 310
-							Y: 160
+							Y: 190
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Detailed NAT logging
 						Checkbox@CHECKUNSYNCED_CHECKBOX:
 							X: 15
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Check Sync around Unsynced Code
 						Checkbox@LUADEBUG_CHECKBOX:
 							X: 310
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular

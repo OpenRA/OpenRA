@@ -395,5 +395,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			return new Shader(name);
 		}
+
+		public string GLVersion { get { return OpenGL.Version; } }
 	}
 }

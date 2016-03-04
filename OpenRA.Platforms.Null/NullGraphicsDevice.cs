@@ -60,6 +60,8 @@ namespace OpenRA.Platforms.Null
 
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot) { return null; }
 		public void SetHardwareCursor(IHardwareCursor cursor) { }
+
+		public string GLVersion { get { return "(null)"; } }
 	}
 
 	public class NullShader : IShader

@@ -33,6 +33,8 @@ namespace OpenRA.Platforms.Default
 
 		public static GLFeatures Features { get; private set; }
 
+		public static string Version { get; private set; }
+
 		public const int GL_FALSE = 0;
 
 		// ClearBufferMask
@@ -452,8 +454,8 @@ namespace OpenRA.Platforms.Default
 		{
 			try
 			{
-				var versionString = glGetString(GL_VERSION);
-				var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
+				Version = glGetString(GL_VERSION);
+				var version = Version.Contains(" ") ? Version.Split(' ')[0].Split('.') : Version.Split('.');
 
 				var major = 0;
 				if (version.Length > 0)
