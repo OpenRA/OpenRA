@@ -68,7 +68,7 @@ NALASR:
 	DetectCloaked:
 		Range: 3c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 300
 		Offset: 298,-171,288
 	AttackTurreted:
@@ -150,7 +150,7 @@ NASAM:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 50
 	AttackTurreted:
 	WithSpriteTurret:
@@ -176,7 +176,7 @@ GAARTY:
 	RevealsShroud:
 		Range: 9c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 		InitialFacing: 128
 		Offset: 0,0,171
 	Armament:

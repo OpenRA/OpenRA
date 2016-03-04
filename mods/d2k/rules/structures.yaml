@@ -687,7 +687,7 @@ medium_gun_turret:
 		QuantizedFacings: 32
 	WithMuzzleOverlay:
 	Turreted:
-		ROT: 6
+		TurnSpeed: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: 110mm_Gun
@@ -731,7 +731,7 @@ large_gun_turret:
 		Weapon: TowerMissile
 		LocalOffset: 256,384,768, 256,-384,768
 	Turreted:
-		ROT: 8
+		TurnSpeed: 8
 		InitialFacing: 128
 	RequiresPower:
 	CanPowerDown:

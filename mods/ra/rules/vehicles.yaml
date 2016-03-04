@@ -52,7 +52,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 	Armament:
 		Weapon: 25mm
 		Recoil: 85
@@ -89,7 +89,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 90mm
 		Recoil: 128
@@ -128,7 +128,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 105mm
 		Recoil: 128
@@ -169,7 +169,7 @@ V2RL:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 2
+		TurnSpeed: 2
 	Armament@PRIMARY:
 		Weapon: 120mm
 		LocalOffset: 900,180,340, 900,-180,340
@@ -215,7 +215,7 @@ ARTY:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 2
+		TurnSpeed: 2
 		Speed: 85
 	RevealsShroud:
 		Range: 5c0
@@ -332,14 +332,14 @@ JEEP:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 170
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: 0,0,85
 	Armament:
 		Weapon: M60mg
@@ -595,12 +595,12 @@ FTRK:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 128
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: -298,0,298
 	Armament@AA:
 		Weapon: FLAK-23-AA
@@ -744,7 +744,7 @@ STNK:
 		Weapon: APTusk
 		LocalOffset: 400,0,0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	AttackTurreted:
 	WithSpriteTurret:
 	Cargo:

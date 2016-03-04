@@ -117,7 +117,7 @@ LPST:
 		Type: Wood
 	Mobile:
 		Speed: 85
-		ROT: 5
+		TurnSpeed: 5
 	RevealsShroud:
 		Range: 7c0
 	RenderSprites:

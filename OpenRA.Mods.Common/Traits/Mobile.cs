@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int InitialFacing = 0;
 
-		[Desc("Rate of Turning")]
-		public readonly int ROT = 255;
+		[Desc("Speed at which the actor turns.")]
+		public readonly int TurnSpeed = 255;
 
 		public readonly int Speed = 1;
 
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.Traits
 			set { facing = value; }
 		}
 
-		public int ROT { get { return Info.ROT; } }
+		public int TurnSpeed { get { return Info.TurnSpeed; } }
 
 		[Sync] public WPos CenterPosition { get; private set; }
 		[Sync] public CPos FromCell { get { return fromCell; } }

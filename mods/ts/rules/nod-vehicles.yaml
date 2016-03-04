@@ -10,7 +10,7 @@ BGGY:
 		BuildPaletteOrder: 40
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 142
 	Health:
 		HP: 220
@@ -40,7 +40,7 @@ BIKE:
 		BuildPaletteOrder: 30
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 170
 	Health:
 		HP: 150
@@ -75,7 +75,7 @@ TTNK:
 		BuildPaletteOrder: 60
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
@@ -122,7 +122,7 @@ TTNK:
 		UpgradeMinEnabledLevel: 1
 		UpgradeMaxAcceptedLevel: 1
 	Turreted:
-		ROT: 6
+		TurnSpeed: 6
 		Turret: deployed
 		InitialFacing: 128
 		Offset: -20, -130, 180
@@ -179,7 +179,7 @@ ART2:
 		Type: Light
 	Mobile:
 		Speed: 71
-		ROT: 2
+		TurnSpeed: 2
 	RevealsShroud:
 		Range: 9c0
 	RenderVoxels:
@@ -206,7 +206,7 @@ REPAIR:
 		HP: 200
 	Mobile:
 		Speed: 85
-		ROT: 5
+		TurnSpeed: 5
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -241,7 +241,7 @@ WEED:
 		DeliverVoice: Move
 	Mobile:
 		Speed: 71
-		ROT: 5
+		TurnSpeed: 5
 	Health:
 		HP: 600
 	SelfHealing:
@@ -268,7 +268,7 @@ SAPC:
 		BuildPaletteOrder: 30
 		Prerequisites: ~naweap, natech
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 71
 	Health:
 		HP: 175
@@ -296,7 +296,7 @@ SUBTANK:
 		BuildPaletteOrder: 40
 		Prerequisites: ~naweap, natech
 	Mobile:
-		ROT: 6
+		TurnSpeed: 6
 		Speed: 71
 		Crushes: wall, crate, infantry
 	Health:
@@ -323,7 +323,7 @@ STNK:
 		Prerequisites: ~naweap, natech
 		Queue: Vehicle
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:

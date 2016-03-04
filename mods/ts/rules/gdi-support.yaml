@@ -73,7 +73,7 @@ GACTWR:
 		UpgradeTypes: tower
 		UpgradeMinEnabledLevel: 1
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 50
 	AttackTurreted:
 		UpgradeTypes: tower

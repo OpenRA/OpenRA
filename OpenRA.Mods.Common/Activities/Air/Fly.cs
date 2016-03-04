@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			var move = plane.FlyStep(plane.Facing);
 			var altitude = plane.CenterPosition.Z;
 
-			plane.Facing = Util.TickFacing(plane.Facing, desiredFacing, plane.ROT);
+			plane.Facing = Util.TickFacing(plane.Facing, desiredFacing, plane.TurnSpeed);
 
 			if (altitude != desiredAltitude.Length)
 			{

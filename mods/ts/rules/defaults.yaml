@@ -396,7 +396,7 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Veins: 50
-		ROT: 5
+		TurnSpeed: 5
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
@@ -568,7 +568,7 @@
 		Type: Light
 	Mobile:
 		Speed: 113
-		ROT: 16
+		TurnSpeed: 16
 		Crushes: crate
 		SharesCell: no
 		TerrainSpeeds:
@@ -717,7 +717,7 @@
 		TerrainSpeeds:
 			Rail: 100
 		Crushes: wall, crate, infantry
-		ROT: 5
+		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
 	Cargo:

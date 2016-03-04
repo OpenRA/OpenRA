@@ -2204,7 +2204,7 @@ Rules:
 		RevealsShroud:
 			Range: 6c0
 		Turreted:
-			ROT: 1
+			TurnSpeed: 1
 		Armament@PRIMARY:
 			Weapon: SuperTankPrimary
 			LocalOffset: 900,180,340, 900,-180,340

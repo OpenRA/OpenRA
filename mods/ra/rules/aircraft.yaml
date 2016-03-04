@@ -8,7 +8,7 @@ BADR:
 		Type: Light
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
@@ -45,7 +45,7 @@ BADR.Bomber:
 		Type: Light
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
@@ -101,7 +101,7 @@ MIG:
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 223
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -161,7 +161,7 @@ YAK:
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -208,7 +208,7 @@ TRAN:
 		Type: CenterPosition
 	Aircraft:
 		InitialFacing: 224
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 		AltitudeVelocity: 0c100
@@ -257,7 +257,7 @@ HELI:
 	Aircraft:
 		LandWhenIdle: false
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 149
 	AutoTarget:
 		InitialStance: HoldFire
@@ -308,7 +308,7 @@ HIND:
 	Aircraft:
 		LandWhenIdle: false
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire
@@ -338,7 +338,7 @@ U2:
 		Type: Heavy
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56

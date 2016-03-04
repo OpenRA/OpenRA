@@ -1724,7 +1724,7 @@ Rules:
 		RevealsShroud:
 			Range: 0c0
 		Turreted:
-			ROT: 15
+			TurnSpeed: 15
 			InitialFacing: 224
 		RenderSprites:
 			Image: AGUN

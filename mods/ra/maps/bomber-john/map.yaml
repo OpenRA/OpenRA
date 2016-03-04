@@ -827,7 +827,7 @@ Rules:
 			Speed: 128
 			WaitAverage: 1
 			WaitSpread: 1
-			ROT: 900
+			TurnSpeed: 900
 		RevealsShroud:
 			Range: 40c0
 		MustBeDestroyed:

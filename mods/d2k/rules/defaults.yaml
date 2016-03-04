@@ -70,7 +70,7 @@
 			Spice: 100
 			SpiceBlobs: 100
 			Dune: 50
-		ROT: 5
+		TurnSpeed: 5
 	SelectionDecorations:
 	Selectable:
 		Bounds: 32,32

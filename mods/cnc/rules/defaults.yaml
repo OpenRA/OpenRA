@@ -66,7 +66,7 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Beach: 50
-		ROT: 5
+		TurnSpeed: 5
 	SelectionDecorations:
 	Selectable:
 		Bounds: 24,24
@@ -112,7 +112,7 @@
 			Tiberium: 70
 			BlueTiberium: 70
 			Beach: 70
-		ROT: 5
+		TurnSpeed: 5
 	Tooltip:
 		GenericName: Tank
 

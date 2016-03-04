@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			helicopter.SetPosition(self, helicopter.CenterPosition + move);
 
 			var desiredFacing = helicopter.Facing + 64;
-			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT / 3);
+			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.TurnSpeed / 3);
 
 			return this;
 		}

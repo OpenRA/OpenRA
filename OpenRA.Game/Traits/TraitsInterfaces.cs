@@ -296,7 +296,7 @@ namespace OpenRA.Traits
 
 	public interface IFacing
 	{
-		int ROT { get; }
+		int TurnSpeed { get; }
 		int Facing { get; set; }
 	}
 
