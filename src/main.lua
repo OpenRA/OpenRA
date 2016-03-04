@@ -182,6 +182,7 @@ ide = {
     hotexit = false,
     imagetint = nil,
     markertint = true,
+    menuicon = true,
     -- file exclusion lists
     excludelist = {".svn/", ".git/", ".hg/", "CVS/", "*.pyc", "*.pyo", "*.exe", "*.dll", "*.obj","*.o", "*.a", "*.lib", "*.so", "*.dylib", "*.ncb", "*.sdf", "*.suo", "*.pdb", "*.idb", ".DS_Store", "*.class", "*.psd", "*.db"},
     binarylist = {"*.jpg", "*.jpeg", "*.png", "*.gif", "*.ttf", "*.tga", "*.dds", "*.ico", "*.eot", "*.pdf", "*.swf", "*.jar", "*.zip", ".gz", ".rar"},
@@ -619,6 +620,23 @@ for _, file in ipairs({
     "menu_view", "menu_project", "menu_tools", "menu_help",
     "print", "inspect" }) do
   dofile("src/editor/"..file..".lua")
+end
+
+if ide.config.menuicon then -- check if any menu items need to have icons
+  for id, iconmap in pairs(ide.config.toolbar.iconmap or {}) do
+    local menuitem, menu, pos = ide:FindMenuItem(id)
+    local bmp = ide:GetBitmap(iconmap[1], "TOOLBAR", wx.wxSize(16,16))
+    if menuitem and bmp then
+      -- on Windows bitmaps need to be removed and then added, as items don't have icons initially
+      if ide.osname == 'Windows' then
+        menu:Remove(menuitem)
+        menuitem:SetBitmap(bmp)
+        menu:Insert(pos, menuitem)
+      else
+        menuitem:SetBitmap(bmp)
+      end
+    end
+  end
 end
 
 -- register all the plugins
