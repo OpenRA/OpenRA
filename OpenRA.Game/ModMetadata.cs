@@ -38,9 +38,9 @@ namespace OpenRA
 			var ret = new Dictionary<string, ModMetadata>();
 			foreach (var pair in GetCandidateMods())
 			{
+				IReadOnlyPackage package = null;
 				try
 				{
-					IReadOnlyPackage package = null;
 					if (Directory.Exists(pair.Second))
 						package = new Folder(pair.Second);
 					else
@@ -56,12 +56,18 @@ namespace OpenRA
 					}
 
 					if (!package.Contains("mod.yaml"))
+					{
+						package.Dispose();
 						continue;
+					}
 
 					var yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml")));
 					var nd = yaml.ToDictionary();
 					if (!nd.ContainsKey("Metadata"))
+					{
+						package.Dispose();
 						continue;
+					}
 
 					var metadata = FieldLoader.Load<ModMetadata>(nd["Metadata"]);
 					metadata.Id = pair.First;
@@ -81,6 +87,8 @@ namespace OpenRA
 				}
 				catch (Exception ex)
 				{
+					if (package != null)
+						package.Dispose();
 					Console.WriteLine("An exception occurred when trying to load ModMetadata for `{0}`:".F(pair.First));
 					Console.WriteLine(ex.Message);
 				}
