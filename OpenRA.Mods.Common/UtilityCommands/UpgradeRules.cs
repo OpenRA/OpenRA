@@ -650,7 +650,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 					else
 					{
-						if (node.Key == "MaximumLaunchSpeed" && parent.Value.Value == "Missile")
+						if (node.Key == "MaximumLaunchSpeed" && parent != null && parent.Value.Value == "Missile")
 							node.Key = "Speed";
 					}
 				}
