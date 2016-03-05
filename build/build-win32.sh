@@ -23,11 +23,11 @@ LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
 LUASOCKET_URL="https://github.com/diegonehab/luasocket/archive/$LUASOCKET_FILENAME"
 
-OPENSSL_BASENAME="openssl-1.0.2f"
+OPENSSL_BASENAME="openssl-1.0.2g"
 OPENSSL_FILENAME="$OPENSSL_BASENAME.tar.gz"
 OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_FILENAME"
 
-LUASEC_BASENAME="luasec-0.6alpha"
+LUASEC_BASENAME="luasec-0.6"
 LUASEC_FILENAME="$LUASEC_BASENAME.zip"
 LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
 
