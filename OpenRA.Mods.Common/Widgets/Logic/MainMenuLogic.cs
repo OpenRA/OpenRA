@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!Game.Settings.Debug.SendSystemInformation)
 				return null;
 
-			return "?id={0}&platform={1}&os={2}&runtime={3}&gl={4}&lang={5}&version={6}&mod={7}&modversion={8}".F(
+			return "?id={0}&platform={1}&os={2}&runtime={3}&gl={4}&lang={5}&version={6}&mod={7}&modversion={8}&haswritepermission={9}".F(
 				Uri.EscapeUriString(Game.Settings.Debug.UUID),
 				Uri.EscapeUriString(Platform.CurrentPlatform.ToString()),
 				Uri.EscapeUriString(Environment.OSVersion.ToString()),
@@ -266,7 +266,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Uri.EscapeUriString(System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName),
 				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
 				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version),
+				Uri.EscapeUriString(TestWritePermissions().ToString()));
+		}
+
+		byte TestWritePermissions()
+		{
+			try
+			{
+				using (var fs = File.Create(Path.Combine(".", "mods", ".testwritable"), 1, FileOptions.DeleteOnClose))
+					return 1;
+			}
+			catch
+			{
+				return 0;
+			}
 		}
 
 		void SetNewsStatus(string message)
