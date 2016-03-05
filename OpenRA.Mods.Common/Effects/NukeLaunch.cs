@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		readonly WeaponInfo weapon;
 		readonly string weaponPalette;
+		readonly string downSequence;
 		readonly string flashType;
 
 		readonly WPos ascendSource;
@@ -37,12 +38,13 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		int ticks;
 
-		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette,
+		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
 			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.weaponPalette = weaponPalette;
+			this.downSequence = downSequence;
 			this.delay = delay;
 			turn = delay / 2;
 			this.flashType = flashType;
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 			descendTarget = targetPos;
 
 			anim = new Animation(firedBy.World, name);
-			anim.PlayRepeating("up");
+			anim.PlayRepeating(upSequence);
 
 			pos = launchPos;
 			if (weapon.Report != null && weapon.Report.Any())
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.Common.Effects
 			anim.Tick();
 
 			if (ticks == turn)
-				anim.PlayRepeating("down");
+				anim.PlayRepeating(downSequence);
 
 			if (ticks <= turn)
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
