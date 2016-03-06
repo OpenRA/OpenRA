@@ -289,6 +289,7 @@ if [ $BUILD_LUASEC ]; then
   RANLIB="$(which ranlib)" bash Configure mingw shared
   make
   make install_sw INSTALLTOP="$INSTALL_DIR"
+  strip --strip-unneeded "$INSTALL_DIR/bin/libeay32.dll" "$INSTALL_DIR/bin/ssleay32.dll"
   cd ..
   rm -rf "$OPENSSL_FILENAME" "$OPENSSL_BASENAME"
 
@@ -306,6 +307,7 @@ if [ $BUILD_LUASEC ]; then
   mkdir -p "$INSTALL_DIR/share/lua/$LUAD/ssl"
   cp src/https.lua "$INSTALL_DIR/share/lua/$LUAD/ssl"
   [ -f "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" ] || { echo "Error: luasec.dll isn't found"; exit 1; }
+  strip --strip-unneeded "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll"
   cd ..
   rm -rf "$LUASEC_FILENAME" "$LUASEC_BASENAME"
 fi
