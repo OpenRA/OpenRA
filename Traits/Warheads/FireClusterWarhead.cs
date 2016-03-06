@@ -53,14 +53,14 @@ namespace OpenRA.Mods.AS.Warheads
 					Weapon = weapon,
 					Facing = (map.CenterOfCell(cell) - target.CenterPosition).Yaw.Facing,
 
-					DamageModifiers = firedBy.TraitsImplementing<IFirepowerModifier>()
-						.Select(a => a.GetFirepowerModifier()).ToArray(),
+					DamageModifiers = !firedBy.IsDead ? firedBy.TraitsImplementing<IFirepowerModifier>()
+						.Select(a => a.GetFirepowerModifier()).ToArray() : null,
 
-					InaccuracyModifiers = firedBy.TraitsImplementing<IInaccuracyModifier>()
-						.Select(a => a.GetInaccuracyModifier()).ToArray(),
+					InaccuracyModifiers = !firedBy.IsDead ? firedBy.TraitsImplementing<IInaccuracyModifier>()
+						.Select(a => a.GetInaccuracyModifier()).ToArray() : null,
 
-					RangeModifiers = firedBy.TraitsImplementing<IRangeModifier>()
-						.Select(a => a.GetRangeModifier()).ToArray(),
+					RangeModifiers = !firedBy.IsDead ? firedBy.TraitsImplementing<IRangeModifier>()
+						.Select(a => a.GetRangeModifier()).ToArray() : null,
 
 					Source = target.CenterPosition,
 					SourceActor = firedBy,
