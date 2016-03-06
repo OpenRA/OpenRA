@@ -146,6 +146,11 @@ namespace OpenRA.Mods.Common.Server
 						if (slot.Closed || server.LobbyInfo.ClientInSlot(s) != null)
 							return false;
 
+						// If the previous slot had a locked spawn then we must not carry that to the new slot
+						var oldSlot = client.Slot != null ? server.LobbyInfo.Slots[client.Slot] : null;
+						if (oldSlot != null && oldSlot.LockSpawn)
+							client.SpawnPoint = 0;
+
 						client.Slot = s;
 						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
 
