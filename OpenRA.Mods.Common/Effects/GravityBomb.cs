@@ -56,10 +56,10 @@ namespace OpenRA.Mods.Common.Effects
 			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Velocity);
 			acceleration = new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
 
-			anim = new Animation(args.SourceActor.World, info.Image);
-
 			if (!string.IsNullOrEmpty(info.Image))
 			{
+				anim = new Animation(args.SourceActor.World, info.Image);
+
 				if (!string.IsNullOrEmpty(info.OpenSequence))
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
 				else
@@ -85,6 +85,9 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (anim == null)
+				yield break;
+
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
