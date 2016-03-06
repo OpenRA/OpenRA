@@ -286,7 +286,7 @@ if [ $BUILD_LUASEC ]; then
   wget --no-check-certificate -c "$OPENSSL_URL" -O "$OPENSSL_FILENAME" || { echo "Error: failed to download OpenSSL"; exit 1; }
   tar -xzf "$OPENSSL_FILENAME"
   cd "$OPENSSL_BASENAME"
-  bash Configure mingw shared
+  RANLIB="$(which ranlib)" bash Configure mingw shared
   make
   make install_sw INSTALLTOP="$INSTALL_DIR"
   cd ..
