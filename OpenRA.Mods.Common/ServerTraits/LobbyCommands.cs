@@ -875,6 +875,22 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
+						// Check if any other slot has locked the requested spawn
+						if (spawnPoint > 0)
+						{
+							var spawnLockedByAnotherSlot = server.LobbyInfo.Slots.Where(ss => ss.Value.LockSpawn).Any(ss =>
+							{
+								var pr = PlayerReferenceForSlot(server, ss.Value);
+								return pr != null && pr.Spawn == spawnPoint;
+							});
+
+							if (spawnLockedByAnotherSlot)
+							{
+								server.SendOrderTo(conn, "Message", "The spawn point is locked to another player slot.");
+								return true;
+							}
+						}
+
 						targetClient.SpawnPoint = spawnPoint;
 						server.SyncLobbyClients();
 						return true;
@@ -1036,6 +1052,14 @@ namespace OpenRA.Mods.Common.Server
 			// Validate whether color is allowed and get an alternative if it isn't
 			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
 				client.Color = SanitizePlayerColor(server, client.Color, client.Index);
+		}
+
+		public PlayerReference PlayerReferenceForSlot(S server, Session.Slot slot)
+		{
+			if (slot == null)
+				return null;
+
+			return server.MapPlayers.Players[slot.PlayerReference];
 		}
 	}
 }
