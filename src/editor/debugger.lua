@@ -308,6 +308,7 @@ end
 function debugger:ActivateDocument(file, line, activatehow)
   local debugger = self
   if not file then return end
+  line = tonumber(line)
 
   -- file can be a filename or serialized file content; deserialize first.
   -- check if the filename starts with '"' and is deserializable
