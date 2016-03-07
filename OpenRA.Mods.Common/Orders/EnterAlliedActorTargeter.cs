@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!target.Info.HasTraitInfo<T>() || !canTarget(target))
+			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
