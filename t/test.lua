@@ -3,6 +3,14 @@ local G = ... -- this now points to the global environment in the script
 local env = {}
 G.setmetatable(env, {__index = G})
 
+local pkg = package {
+  onIdleOnce = function() G.ide:GetOutput():GotoLine(G.ide:GetOutput():GetLineCount()-1) end,
+  onAppShutdown = function()
+    local ini = G.ide.config.ini
+    if ini then G.FileRemove(ini) end
+  end,
+}
+
 local function runtests()
   -- add a test function to detect loops
   function limit (limit, func)
@@ -46,7 +54,7 @@ local function runtests()
       print(("Error loading test file '%s': '%s'."):format(file, err))
     else
       setfenv(testfn, env)
-      local ok, err = pcall(testfn)
+      local ok, err = pcall(testfn, pkg)
       if not ok then
         print(("Error executing test file '%s': '%s'."):format(file, err))
       end
@@ -56,19 +64,12 @@ local function runtests()
   tw.report()
 end
 
-package {
-  onAppLoad = function()
-    local start = G.TimeGet()
-    G.setfenv(runtests, env)
-    G.print = function(s, ...)
-      G.DisplayOutput(s, ...)
-      G.DisplayOutputLn(s:match("ok %d") and (" -- %.3fs"):format(G.TimeGet()-start) or "")
-    end
-    runtests()
-  end,
-  onIdleOnce = function() G.ide:GetOutput():GotoLine(G.ide:GetOutput():GetLineCount()-1) end,
-  onAppShutdown = function()
-    local ini = G.ide.config.ini
-    if ini then G.FileRemove(ini) end
-  end,
-}
+pkg.onAppLoad = function()
+  local start = G.TimeGet()
+  G.setfenv(runtests, env)
+  G.print = function(s, ...)
+    G.DisplayOutput(s, ...)
+    G.DisplayOutputLn(s:match("ok %d") and (" -- %.3fs"):format(G.TimeGet()-start) or "")
+  end
+  runtests()
+end
