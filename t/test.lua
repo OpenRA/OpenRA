@@ -40,10 +40,9 @@ local function runtests()
 
   -- find all test files and load them
   local files = FileSysGetRecursive("t", true, "*.lua")
-  for k, v in ipairs(files) do
-    if v:find("[/\\]test%.lua$") then files[k] = nil end
+  for k = #files, 1, -1 do
+    if files[k]:find("[/\\]test%.lua$") then table.remove(files, k) end
   end
-  table.sort(files)
 
   -- load test module in the environment for tests
   local tw = require "testwell"
