@@ -53,6 +53,7 @@ local function runtests()
       print(("Error loading test file '%s': '%s'."):format(file, err))
     else
       setfenv(testfn, env)
+      print("# "..file)
       local ok, err = pcall(testfn, pkg)
       if not ok then
         print(("Error executing test file '%s': '%s'."):format(file, err))
