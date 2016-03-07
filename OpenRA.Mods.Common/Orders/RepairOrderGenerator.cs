@@ -45,6 +45,10 @@ namespace OpenRA.Mods.Common.Orders
 			if (underCursor.Info.HasTraitInfo<RepairableBuildingInfo>())
 				yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
 
+			// Don't command allied units
+			if (underCursor.Owner != world.LocalPlayer)
+				yield break;
+
 			// Test for generic Repairable (used on units).
 			var repairable = underCursor.TraitOrDefault<Repairable>();
 			if (repairable == null)
