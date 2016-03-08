@@ -14,7 +14,7 @@ Bounds: 2,4,130,242
 
 Visibility: Lobby
 
-Categories: Conquest
+Categories: Conquest, Playable, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
