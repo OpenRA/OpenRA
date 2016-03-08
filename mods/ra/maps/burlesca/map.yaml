@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ra
 
@@ -209,21 +209,3 @@ Actors:
 	Actor54: mine
 		Location: 6,19
 		Owner: Neutral
-
-Smudges:
-
-Rules:
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
