@@ -61,7 +61,7 @@ local function runtests()
     end
   end
 
-  tw.report()
+  pkg.report = tw.report
 end
 
 pkg.onAppLoad = function()
