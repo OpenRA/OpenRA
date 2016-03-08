@@ -411,7 +411,7 @@ frame:Connect(ID_RUNTO, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () ide:GetDebugger():step() end)
+  function () ide:GetDebugger():Step() end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()
@@ -420,7 +420,7 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STEPOVER, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () ide:GetDebugger():over() end)
+  function () ide:GetDebugger():Over() end)
 frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()
@@ -429,7 +429,7 @@ frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_STEPOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () ide:GetDebugger():out() end)
+  function () ide:GetDebugger():Out() end)
 frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
   function (event)
     local debugger = ide:GetDebugger()

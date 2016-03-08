@@ -995,7 +995,7 @@ function debugger:terminate()
     debugger:teardown()
   end
 end
-function debugger:step() return self:exec("step") end
+function debugger:Step() return self:exec("step") end
 function debugger:trace()
   local debugger = self
   debugger.loop = true
@@ -1040,8 +1040,8 @@ function debugger:wait()
   -- wait for all results to come back
   while debugger.running do debugger:update() end
 end
-function debugger:over() return self:exec("over") end
-function debugger:out() return self:exec("out") end
+function debugger:Over() return self:exec("over") end
+function debugger:Out() return self:exec("out") end
 function debugger:run() return self:exec("run") end
 function debugger:detach(cmd)
   local debugger = self
