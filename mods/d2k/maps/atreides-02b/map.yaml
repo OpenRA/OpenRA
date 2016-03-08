@@ -175,9 +175,9 @@ Rules:
 	carryall.reinforce:
 		Cargo:
 			MaxWeight: 10
-	construction_yard:
-		Production:
-			Produces: Building
+	upgrade.conyard:
+		Buildable:
+			Prerequisites: ~disabled
 	concreteb:
 		Buildable:
 			Prerequisites: ~disabled

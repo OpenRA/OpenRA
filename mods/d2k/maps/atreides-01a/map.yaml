@@ -145,9 +145,9 @@ Rules:
 		WormManager:
 			Minimum: 1
 			Maximum: 1
-	construction_yard:
-		Production:
-			Produces: Building
+	upgrade.conyard:
+		Buildable:
+			Prerequisites: ~disabled
 	concreteb:
 		Buildable:
 			Prerequisites: ~disabled

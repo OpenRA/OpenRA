@@ -1,6 +1,8 @@
 Player:
 	AlwaysVisible:
 	TechTree:
+	Production:
+		Produces: Building, Upgrade
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildSpeed: 1.0
@@ -16,7 +18,6 @@ Player:
 		QueuedAudio: Upgrading
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
-		SpeedUp: true
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: 1.0

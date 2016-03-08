@@ -183,7 +183,7 @@ Rules:
 			Prerequisites: ~disabled
 	outpost:
 		Buildable:
-			Prerequisites: barracks
+			Prerequisites: construction_yard, barracks
 	quad:
 		Buildable:
 			Prerequisites: upgrade.light
