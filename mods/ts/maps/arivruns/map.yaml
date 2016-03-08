@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ts
 
@@ -1293,23 +1293,4 @@ Actors:
 		Owner: Neutral
 		Location: 115,-15
 
-Smudges:
-
-Rules:
-	World:
-		GlobalLightingPaletteEffect:
-			Ambient: 0.72
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml
