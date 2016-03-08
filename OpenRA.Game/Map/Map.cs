@@ -153,7 +153,7 @@ namespace OpenRA
 
 	public class Map : IReadOnlyFileSystem
 	{
-		public const int SupportedMapFormat = 10;
+		public const int SupportedMapFormat = 11;
 
 		/// <summary>Defines the order of the fields in map.yaml</summary>
 		static readonly MapField[] YamlFields =
@@ -166,7 +166,7 @@ namespace OpenRA
 			new MapField("MapSize"),
 			new MapField("Bounds"),
 			new MapField("Visibility"),
-			new MapField("Type"),
+			new MapField("Categories"),
 			new MapField("LockPreview", required: false, ignoreIfValue: "False"),
 			new MapField("Players", "PlayerDefinitions"),
 			new MapField("Actors", "ActorDefinitions"),
@@ -192,7 +192,7 @@ namespace OpenRA
 		public bool LockPreview;
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
-		public string Type = "Conquest";
+		public string[] Categories = { "Conquest" };
 
 		public int2 MapSize { get; private set; }
 
