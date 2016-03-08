@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: ts
 
@@ -14,7 +14,7 @@ Bounds: 2,4,146,288
 
 Visibility: Lobby
 
-Type: Conquest
+Categories: Conquest
 
 Players:
 	PlayerReference@Neutral:
