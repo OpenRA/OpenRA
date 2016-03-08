@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: d2k
 
@@ -82,24 +82,4 @@ Actors:
 		Location: 71,13
 		Owner: Creeps
 
-Smudges:
-
-Rules:
-	World:
-		WormManager:
-			Minimum: 1
-			Maximum: 2
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml
