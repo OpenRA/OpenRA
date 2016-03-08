@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -177,15 +178,51 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedMapPreview = preview;
 
 			// Cache the rules on a background thread to avoid jank
-			new Thread(() => selectedMap.PreloadRules()).Start();
+			var difficultyDisabled = true;
+			var difficulties = new string[0];
 
-			var briefingVideo = selectedMap.Videos.Briefing;
-			var briefingVideoVisible = briefingVideo != null;
-			var briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
+			var briefingVideo = "";
+			var briefingVideoVisible = false;
+			var briefingVideoDisabled = true;
 
-			var infoVideo = selectedMap.Videos.BackgroundInfo;
-			var infoVideoVisible = infoVideo != null;
-			var infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
+			var infoVideo = "";
+			var infoVideoVisible = false;
+			var infoVideoDisabled = true;
+
+			var map = selectedMap;
+			new Thread(() =>
+			{
+				map.PreloadRules();
+				var mapOptions = map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+
+				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+				difficulties = mapOptions.Difficulties;
+				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
+
+				var missionData = map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				if (missionData != null)
+				{
+					briefingVideo = missionData.BriefingVideo;
+					briefingVideoVisible = briefingVideo != null;
+					briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
+
+					infoVideo = missionData.BackgroundVideo;
+					infoVideoVisible = infoVideo != null;
+					infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
+
+					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
+					var height = descriptionFont.Measure(briefing).Y;
+					Game.RunAfterTick(() =>
+					{
+						if (map == selectedMap)
+						{
+							description.Text = briefing;
+							description.Bounds.Height = height;
+							descriptionPanel.Layout.AdjustChildren();
+						}
+					});
+				}
+			}).Start();
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
@@ -195,22 +232,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			startInfoVideoButton.IsDisabled = () => infoVideoDisabled || playingVideo != PlayingVideo.None;
 			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info, () => StopVideo(videoPlayer));
 
-			var text = selectedMap.Description != null ? selectedMap.Description.Replace("\\n", "\n") : "";
-			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
-			description.Text = text;
-			description.Bounds.Height = descriptionFont.Measure(text).Y;
 			descriptionPanel.ScrollToTop();
-			descriptionPanel.Layout.AdjustChildren();
 
 			if (difficultyButton != null)
 			{
-				difficultyButton.IsDisabled = () => !selectedMap.Options.Difficulties.Any();
-
-				difficulty = selectedMap.Options.Difficulties.FirstOrDefault();
+				difficultyButton.IsDisabled = () => difficultyDisabled;
 				difficultyButton.GetText = () => difficulty ?? "Normal";
 				difficultyButton.OnMouseDown = _ =>
 				{
-					var options = selectedMap.Options.Difficulties.Select(d => new DropDownOption
+					var options = difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => difficulty == d,
@@ -304,18 +334,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (selectedMap.InvalidCustomRules)
 				return;
 
-			var gameStartVideo = selectedMap.Videos.GameStart;
 			var orders = new[] {
 				Order.Command("gamespeed {0}".F(gameSpeed)),
 				Order.Command("difficulty {0}".F(difficulty)),
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};
 
-			if (gameStartVideo != null && modData.DefaultFileSystem.Exists(gameStartVideo))
+			var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;
-				PlayVideo(fsPlayer, gameStartVideo, PlayingVideo.GameStart, () =>
+				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
 					Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);

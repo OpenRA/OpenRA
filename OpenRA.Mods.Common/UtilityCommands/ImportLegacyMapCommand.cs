@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public ModData ModData;
 		public Map Map;
-		public Ruleset Rules;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
+		public MiniYaml Rules = new MiniYaml("");
 
 		public bool ValidateArguments(string[] args)
 		{
@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Rules = modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var filename = args[1];
 			using (var stream = modData.DefaultFileSystem.Open(filename))
@@ -62,13 +61,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ValidateMapFormat(format);
 
 				var tileset = GetTileset(mapSection);
-				Map = new Map(modData, Rules.TileSets[tileset], MapSize, MapSize)
+				Map = new Map(modData, modData.DefaultRules.TileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios"
 				};
-
-				Map.Description = ExtractBriefing(file);
 
 				Map.RequiresMod = modData.Manifest.Mod.Id;
 
@@ -77,7 +74,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ReadPacks(file, filename);
 				ReadTrees(file);
 
-				Map.Videos = LoadVideos(file, "BASIC");
+				LoadVideos(file, "BASIC");
+				LoadBriefing(file);
 
 				ReadActors(file);
 
@@ -93,7 +91,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Map.PlayerDefinitions = MapPlayers.ToMiniYaml();
 			}
 
-			Map.FixOpenAreas(Rules);
+			Map.FixOpenAreas();
+
+			Map.RuleDefinitions = Rules.Nodes;
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 			var package = new ZipFile(modData.ModFiles, dest, true);
@@ -119,17 +119,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public abstract void ValidateMapFormat(int format);
 
-		static string ExtractBriefing(IniFile file)
+		void LoadBriefing(IniFile file)
 		{
 			var briefingSection = file.GetSection("Briefing", true);
 			if (briefingSection == null)
-				return string.Empty;
+				return;
 
 			var briefing = new StringBuilder();
 			foreach (var s in briefingSection)
 				briefing.AppendLine(s.Value);
 
-			return briefing.Replace("\n", " ").ToString();
+			if (briefing.Length == 0)
+				return;
+
+			var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+			if (worldNode == null)
+			{
+				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+				Rules.Nodes.Add(worldNode);
+			}
+
+			var missionData = worldNode.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
+			if (missionData == null)
+			{
+				missionData = new MiniYamlNode("MissionData", new MiniYaml("", new List<MiniYamlNode>()));
+				worldNode.Value.Nodes.Add(missionData);
+			}
+
+			missionData.Value.Nodes.Add(new MiniYamlNode("Briefing", briefing.Replace("\n", " ").ToString()));
 		}
 
 		static void SetBounds(Map map, IniSection mapSection)
@@ -146,10 +163,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public abstract void ReadPacks(IniFile file, string filename);
 
-		static MapVideos LoadVideos(IniFile file, string section)
+		void LoadVideos(IniFile file, string section)
 		{
-			var videos = new MapVideos();
-
+			var videos = new List<MiniYamlNode>();
 			foreach (var s in file.GetSection(section))
 			{
 				if (s.Value != "x" && s.Value != "<none>")
@@ -157,32 +173,49 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					switch (s.Key)
 					{
 					case "Intro":
-						videos.BackgroundInfo = s.Value.ToLower() + ".vqa";
+						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLower() + ".vqa"));
 						break;
 					case "Brief":
-						videos.Briefing = s.Value.ToLower() + ".vqa";
+						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLower() + ".vqa"));
 						break;
 					case "Action":
-						videos.GameStart = s.Value.ToLower() + ".vqa";
+						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLower() + ".vqa"));
 						break;
 					case "Win":
-						videos.GameWon = s.Value.ToLower() + ".vqa";
+						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLower() + ".vqa"));
 						break;
 					case "Lose":
-						videos.GameLost = s.Value.ToLower() + ".vqa";
+						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLower() + ".vqa"));
 						break;
 					}
 				}
 			}
 
-			return videos;
+			if (videos.Any())
+			{
+				var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+				if (worldNode == null)
+				{
+					worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+					Rules.Nodes.Add(worldNode);
+				}
+
+				var missionData = worldNode.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
+				if (missionData == null)
+				{
+					missionData = new MiniYamlNode("MissionData", new MiniYaml("", new List<MiniYamlNode>()));
+					worldNode.Value.Nodes.Add(missionData);
+				}
+
+				missionData.Value.Nodes.AddRange(videos);
+			}
 		}
 
 		public virtual void ReadActors(IniFile file)
 		{
-			LoadActors(file, "STRUCTURES", Players, MapSize, Rules, Map);
-			LoadActors(file, "UNITS", Players, MapSize, Rules, Map);
-			LoadActors(file, "INFANTRY", Players, MapSize, Rules, Map);
+			LoadActors(file, "STRUCTURES", Players, MapSize, Map);
+			LoadActors(file, "UNITS", Players, MapSize, Map);
+			LoadActors(file, "INFANTRY", Players, MapSize, Map);
 		}
 
 		public abstract void LoadPlayer(IniFile file, string section);
@@ -298,7 +331,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				mapPlayers.Players[section] = pr;
 		}
 
-		public static void LoadActors(IniFile file, string section, List<string> players, int mapSize, Ruleset rules, Map map)
+		public static void LoadActors(IniFile file, string section, List<string> players, int mapSize, Map map)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
@@ -334,7 +367,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var actorCount = map.ActorDefinitions.Count;
 
-					if (!rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
+					if (!map.Rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
 						Console.WriteLine("Ignoring unknown actor type: `{0}`".F(parts[1].ToLowerInvariant()));
 					else
 						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, actor.Save()));

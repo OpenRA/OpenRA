@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Sudanese Prison Break (a)
-
-Description: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
 
 Author: Westwood Studios
 
@@ -17,23 +15,6 @@ Bounds: 13,16,42,33
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: nod3.vqa
-	GameStart: dessweep.vqa
-	GameWon: desflees.vqa
-	GameLost: flag.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 4000
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -471,6 +452,14 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 4000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -482,6 +471,21 @@ Rules:
 		MusicPlaylist:
 			StartingMusic: chrg226m
 			VictoryMusic: nod_win1
+		MissionData:
+			Briefing: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
+			BriefingVideo: nod3.vqa
+			StartVideo: dessweep.vqa
+			WinVideo: desflees.vqa
+			LossVideo: flag.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

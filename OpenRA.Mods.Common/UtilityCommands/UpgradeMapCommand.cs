@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -23,13 +25,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 3;
 		}
 
-		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
-		public void Run(ModData modData, string[] args)
+		public static void UpgradeMap(ModData modData, IReadWritePackage package, int engineDate)
 		{
-			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			UpgradeRules.UpgradeMapFormat(modData, package);
 
-			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 			if (engineDate < UpgradeRules.MinimumSupportedVersion)
 			{
 				Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
@@ -37,15 +36,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return;
 			}
 
-			var package = modData.ModFiles.OpenWritablePackage(args[1]);
-			UpgradeRules.UpgradeMapFormat(modData, package);
-
 			var map = new Map(modData, package);
 			UpgradeRules.UpgradeWeaponRules(engineDate, ref map.WeaponDefinitions, null, 0);
 			UpgradeRules.UpgradeActorRules(engineDate, ref map.RuleDefinitions, null, 0);
 			UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
 			UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
 			map.Save(package);
+		}
+
+		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
+		public void Run(ModData modData, string[] args)
+		{
+			// HACK: The engine code assumes that Game.modData is set.
+			Game.ModData = modData;
+
+			var package = modData.ModFiles.OpenWritablePackage(args[1]);
+			var engineDate = Exts.ParseIntegerInvariant(args[2]);
+			UpgradeMap(modData, package, engineDate);
 		}
 	}
 }

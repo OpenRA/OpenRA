@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: d2k
 
 Title: Atreides 02b
-
-Description: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 2,2,48,48
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: A_BR02_E.VQA
-
-Options:
-	Crates: False
-	Creeps: True
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Low
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -161,6 +143,14 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -172,6 +162,21 @@ Rules:
 		WormManager:
 			Minimum: 1
 			Maximum: 1
+		MissionData:
+			Briefing: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
+			BriefingVideo: A_BR02_E.VQA
+		MapCreeps:
+			Locked: True
+			Enabled: True
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Low
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	carryall.reinforce:
 		Cargo:
 			MaxWeight: 10

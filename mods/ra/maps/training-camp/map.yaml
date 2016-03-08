@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Training camp
-
-Description: Defeat your enemys by capturing their buildings.
 
 Author: Holloweye
 
@@ -17,18 +15,6 @@ Bounds: 16,16,32,32
 Visibility: Lobby
 
 Type: Minigame
-
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 100
-	TechLevel: Unrestricted
-	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -811,11 +797,25 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Unrestricted
 	Player:
 		ClassicProductionQueue@Infantry:
 			BuildSpeed: 1
 		ClassicProductionQueue@Vehicle:
 			BuildSpeed: 1
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 100
 	OILB:
 		Health:
 			HP: 6000

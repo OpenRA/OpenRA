@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ts
 
 Title: Defend Crash Site
-
-Description: Whatever is contained in this craft, it is apparent that Nod doesn't want GDI to have it.
 
 Author: Westwood Studios
 
@@ -17,10 +15,6 @@ Bounds: 2,12,52,150
 Visibility: Shellmap
 
 Type: Shellmap
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ts
 
 Title: Tiberium Garden Redux
-
-Description: Large two-to-five player skirmish map remake of Tiberium Garden from Tiberian Dawn featuring abandoned structures from the First Tiberium War.
 
 Author: Westwood Studios
 
@@ -17,10 +15,6 @@ Bounds: 2,4,86,176
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

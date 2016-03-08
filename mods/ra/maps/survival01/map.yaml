@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Survival 01
-
-Description: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
 
 Author: Nuke'm Bro
 
@@ -17,19 +15,6 @@ Bounds: 4,4,88,56
 Visibility: MissionSelector
 
 Type: Mission
-
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Medium, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -1217,6 +1202,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		-EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -1225,6 +1218,15 @@ Rules:
 			Scripts: survival01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Easy, Medium, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy

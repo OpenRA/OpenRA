@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Server
 				return;
 
 			var defaults = new Session.Global();
-			FieldLoader.Load(defaults, Game.ModData.Manifest.LobbyDefaults);
+			LobbyCommands.LoadMapSettings(defaults, server.Map);
 
 			if (server.LobbyInfo.GlobalSettings.AllowCheats != defaults.AllowCheats)
 				server.SendOrderTo(conn, "Message", "Allow Cheats: {0}".F(server.LobbyInfo.GlobalSettings.AllowCheats));

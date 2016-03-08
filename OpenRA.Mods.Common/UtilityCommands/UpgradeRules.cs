@@ -728,10 +728,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (mapFormat < 6)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(mapFormat, package.Name));
 
-			// Nothing to do
-			if (mapFormat >= 8)
-				return;
-
 			// Format 6 -> 7 combined the Selectable and UseAsShellmap flags into the Class enum
 			if (mapFormat < 7)
 			{
@@ -788,6 +784,169 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					else if (noteColorRamp)
 						Console.WriteLine("ColorRamp is now called Color.");
 				}
+			}
+
+			// Format 8 -> 9 moved map options and videos from the map file itself to traits
+			if (mapFormat < 9)
+			{
+				var rules = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+				var worldNode = rules.Value.Nodes.FirstOrDefault(n => n.Key == "World");
+				if (worldNode == null)
+					worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+
+				var playerNode = rules.Value.Nodes.FirstOrDefault(n => n.Key == "Player");
+				if (playerNode == null)
+					playerNode = new MiniYamlNode("Player", new MiniYaml("", new List<MiniYamlNode>()));
+
+				var visibilityNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Visibility");
+				if (visibilityNode != null)
+				{
+					var visibility = FieldLoader.GetValue<MapVisibility>("Visibility", visibilityNode.Value.Value);
+					if (visibility.HasFlag(MapVisibility.MissionSelector))
+					{
+						var missionData = new MiniYamlNode("MissionData", new MiniYaml("", new List<MiniYamlNode>()));
+						worldNode.Value.Nodes.Add(missionData);
+
+						var description = yaml.Nodes.FirstOrDefault(n => n.Key == "Description");
+						if (description != null)
+							missionData.Value.Nodes.Add(new MiniYamlNode("Briefing", description.Value.Value));
+
+						var videos = yaml.Nodes.FirstOrDefault(n => n.Key == "Videos");
+						if (videos != null && videos.Value.Nodes.Any())
+						{
+							var backgroundVideo = videos.Value.Nodes.FirstOrDefault(n => n.Key == "BackgroundInfo");
+							if (backgroundVideo != null)
+								missionData.Value.Nodes.Add(new MiniYamlNode("BackgroundVideo", backgroundVideo.Value.Value));
+
+							var briefingVideo = videos.Value.Nodes.FirstOrDefault(n => n.Key == "Briefing");
+							if (briefingVideo != null)
+								missionData.Value.Nodes.Add(new MiniYamlNode("BriefingVideo", briefingVideo.Value.Value));
+
+							var startVideo = videos.Value.Nodes.FirstOrDefault(n => n.Key == "GameStart");
+							if (startVideo != null)
+								missionData.Value.Nodes.Add(new MiniYamlNode("StartVideo", startVideo.Value.Value));
+
+							var winVideo = videos.Value.Nodes.FirstOrDefault(n => n.Key == "GameWon");
+							if (winVideo != null)
+								missionData.Value.Nodes.Add(new MiniYamlNode("WinVideo", winVideo.Value.Value));
+
+							var lossVideo = videos.Value.Nodes.FirstOrDefault(n => n.Key == "GameLost");
+							if (lossVideo != null)
+								missionData.Value.Nodes.Add(new MiniYamlNode("LossVideo", lossVideo.Value.Value));
+						}
+					}
+				}
+
+				var mapOptions = yaml.Nodes.FirstOrDefault(n => n.Key == "Options");
+				if (mapOptions != null)
+				{
+					var cheats = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Cheats");
+					if (cheats != null)
+					{
+						worldNode.Value.Nodes.Add(new MiniYamlNode("DeveloperMode", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("Locked", "True"),
+							new MiniYamlNode("Enabled", cheats.Value.Value)
+						})));
+					}
+
+					var crates = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Crates");
+					if (crates != null && !worldNode.Value.Nodes.Any(n => n.Key == "-CrateSpawner"))
+					{
+						if (!FieldLoader.GetValue<bool>("crates", crates.Value.Value))
+							worldNode.Value.Nodes.Add(new MiniYamlNode("-CrateSpawner", new MiniYaml("")));
+					}
+
+					var creeps = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Creeps");
+					if (creeps != null)
+					{
+						worldNode.Value.Nodes.Add(new MiniYamlNode("MapCreeps", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("Locked", "True"),
+							new MiniYamlNode("Enabled", creeps.Value.Value)
+						})));
+					}
+
+					var fog = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Fog");
+					var shroud = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Shroud");
+					if (fog != null || shroud != null)
+					{
+						var shroudNode = new MiniYamlNode("Shroud", new MiniYaml("", new List<MiniYamlNode>()));
+						playerNode.Value.Nodes.Add(shroudNode);
+
+						if (fog != null)
+						{
+							shroudNode.Value.Nodes.Add(new MiniYamlNode("FogLocked", "True"));
+							shroudNode.Value.Nodes.Add(new MiniYamlNode("FogEnabled", fog.Value.Value));
+						}
+
+						if (shroud != null)
+						{
+							var enabled = FieldLoader.GetValue<bool>("shroud", shroud.Value.Value);
+							shroudNode.Value.Nodes.Add(new MiniYamlNode("ExploredMapLocked", "True"));
+							shroudNode.Value.Nodes.Add(new MiniYamlNode("ExploredMapEnabled", FieldSaver.FormatValue(!enabled)));
+						}
+					}
+
+					var allyBuildRadius = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "AllyBuildRadius");
+					if (allyBuildRadius != null)
+					{
+						worldNode.Value.Nodes.Add(new MiniYamlNode("MapBuildRadius", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("AllyBuildRadiusLocked", "True"),
+							new MiniYamlNode("AllyBuildRadiusEnabled", allyBuildRadius.Value.Value)
+						})));
+					}
+
+					var startingCash = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "StartingCash");
+					if (startingCash != null)
+					{
+						playerNode.Value.Nodes.Add(new MiniYamlNode("PlayerResources", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("DefaultCashLocked", "True"),
+							new MiniYamlNode("DefaultCash", startingCash.Value.Value)
+						})));
+					}
+
+					var startingUnits = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "ConfigurableStartingUnits");
+					if (startingUnits != null && !worldNode.Value.Nodes.Any(n => n.Key == "-SpawnMPUnits"))
+					{
+						worldNode.Value.Nodes.Add(new MiniYamlNode("SpawnMPUnits", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("Locked", "True"),
+						})));
+					}
+
+					var techLevel = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "TechLevel");
+					var difficulties = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "Difficulties");
+					var shortGame = mapOptions.Value.Nodes.FirstOrDefault(n => n.Key == "ShortGame");
+					if (techLevel != null || difficulties != null || shortGame != null)
+					{
+						var optionsNode = new MiniYamlNode("MapOptions", new MiniYaml("", new List<MiniYamlNode>()));
+						worldNode.Value.Nodes.Add(optionsNode);
+
+						if (techLevel != null)
+						{
+							optionsNode.Value.Nodes.Add(new MiniYamlNode("TechLevelLocked", "True"));
+							optionsNode.Value.Nodes.Add(new MiniYamlNode("TechLevel", techLevel.Value.Value));
+						}
+
+						if (difficulties != null)
+							optionsNode.Value.Nodes.Add(new MiniYamlNode("Difficulties", difficulties.Value.Value));
+
+						if (shortGame != null)
+						{
+							optionsNode.Value.Nodes.Add(new MiniYamlNode("ShortGameLocked", "True"));
+							optionsNode.Value.Nodes.Add(new MiniYamlNode("ShortGameEnabled", shortGame.Value.Value));
+						}
+					}
+				}
+
+				if (worldNode.Value.Nodes.Any() && !rules.Value.Nodes.Contains(worldNode))
+					rules.Value.Nodes.Add(worldNode);
+
+				if (playerNode.Value.Nodes.Any() && !rules.Value.Nodes.Contains(playerNode))
+					rules.Value.Nodes.Add(playerNode);
 			}
 
 			yaml.Nodes.First(n => n.Key == "MapFormat").Value = new MiniYaml(Map.SupportedMapFormat.ToString());

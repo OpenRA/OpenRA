@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Take Białystok
-
-Description: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 14,14,48,44
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	BackgroundInfo: bkground.vqa
-	Briefing: gdi4a.vqa
-	GameStart: nodsweep.vqa
-	GameWon: burdet1.vqa
-	GameLost: gameover.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -801,10 +781,34 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: ind
+		MissionData:
+			Briefing: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
+			BackgroundVideo: bkground.vqa
+			BriefingVideo: gdi4a.vqa
+			StartVideo: nodsweep.vqa
+			WinVideo: burdet1.vqa
+			LossVideo: gameover.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Oum Hadjer (b)
-
-Description: A small village friendly to our cause has been increasingly harassed by GDI, and the Brotherhood wishes you to assist them in their efforts.\n\nSeek out the enemy village and destroy it. The event will be disguised as a GDI attack.
 
 Author: Westwood Studios
 
@@ -17,21 +15,6 @@ Bounds: 7,17,52,44
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: nod4b.vqa
-	GameLost: nodlose.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@GDI:
@@ -516,6 +499,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -527,6 +518,19 @@ Rules:
 		MusicPlaylist:
 			StartingMusic: warfare
 			VictoryMusic: nod_win1
+		MissionData:
+			Briefing: A small village friendly to our cause has been increasingly harassed by GDI, and the Brotherhood wishes you to assist them in their efforts.\n\nSeek out the enemy village and destroy it. The event will be disguised as a GDI attack.
+			BriefingVideo: nod4b.vqa
+			LossVideo: nodlose.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

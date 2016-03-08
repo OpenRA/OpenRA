@@ -154,16 +154,14 @@ namespace OpenRA.Server
 				}
 			};
 
-			FieldLoader.Load(LobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
-
-			foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
-				t.ServerStarted(this);
-
-			Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
-			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
-
 			new Thread(_ =>
 			{
+				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
+					t.ServerStarted(this);
+
+				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
+				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
+
 				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for (;;)
 				{
@@ -608,10 +606,7 @@ namespace OpenRA.Server
 				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
 				if (!Conns.Any())
-				{
-					FieldLoader.Load(LobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
-				}
 
 				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyClients();

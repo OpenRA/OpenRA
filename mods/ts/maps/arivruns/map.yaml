@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ts
 
 Title: A River Runs Near It
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -17,10 +15,6 @@ Bounds: 2,4,130,242
 Visibility: Lobby
 
 Type: Conquest
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

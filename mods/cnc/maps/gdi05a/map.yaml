@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Repair the GDI base (a)
-
-Description: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
 
 Author: Westwood Studios
 
@@ -17,25 +15,6 @@ Bounds: 8,21,49,39
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	BackgroundInfo: podium.vqa
-	Briefing: gdi5.vqa
-	GameStart: seige.vqa
-	GameWon: nodlose.vqa
-	GameLost: gdilose.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 2000
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Nod:
@@ -814,11 +793,36 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: rain
+		MissionData:
+			Briefing: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
+			BackgroundVideo: podium.vqa
+			BriefingVideo: gdi5.vqa
+			StartVideo: seige.vqa
+			WinVideo: nodlose.vqa
+			LossVideo: gdilose.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	Player:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
 		EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 2000
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

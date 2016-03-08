@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Drop Zone W
-
-Description: Pick up the crates with the naval mobile HQ to get units to kill the other players. v0.2
 
 Author: riderr3
 
@@ -17,18 +15,6 @@ Bounds: 16,16,32,32
 Visibility: Lobby
 
 Type: Drop Zone
-
-Videos:
-
-Options:
-	Crates: True
-	Fog: False
-	Shroud: False
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Unrestricted
-	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -205,6 +191,12 @@ Rules:
 			InitialSpawnDelay: 0
 		-SpawnMPUnits:
 		-MPStartLocations:
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Unrestricted
 	UNITCRATE:
 		Inherits: ^Crate
 		GiveUnitCrateAction@pt:
@@ -253,6 +245,15 @@ Rules:
 		-GivesBounty:
 	MSUB:
 		-GivesBounty:
+	Player:
+		Shroud:
+			FogLocked: True
+			FogEnabled: False
+			ExploredMapLocked: True
+			ExploredMapEnabled: True
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 
 Sequences:
 	lst:

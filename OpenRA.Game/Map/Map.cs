@@ -56,50 +56,6 @@ namespace OpenRA
 		}
 	}
 
-	public class MapOptions
-	{
-		public bool? Cheats;
-		public bool? Crates;
-		public bool? Creeps;
-		public bool? Fog;
-		public bool? Shroud;
-		public bool? AllyBuildRadius;
-		public int? StartingCash;
-		public string TechLevel;
-		public bool ConfigurableStartingUnits = true;
-		public string[] Difficulties = { };
-		public bool? ShortGame;
-
-		public void UpdateServerSettings(Session.Global settings)
-		{
-			if (Cheats.HasValue)
-				settings.AllowCheats = Cheats.Value;
-			if (Crates.HasValue)
-				settings.Crates = Crates.Value;
-			if (Creeps.HasValue)
-				settings.Creeps = Creeps.Value;
-			if (Fog.HasValue)
-				settings.Fog = Fog.Value;
-			if (Shroud.HasValue)
-				settings.Shroud = Shroud.Value;
-			if (AllyBuildRadius.HasValue)
-				settings.AllyBuildRadius = AllyBuildRadius.Value;
-			if (StartingCash.HasValue)
-				settings.StartingCash = StartingCash.Value;
-			if (ShortGame.HasValue)
-				settings.ShortGame = ShortGame.Value;
-		}
-	}
-
-	public class MapVideos
-	{
-		public string BackgroundInfo;
-		public string Briefing;
-		public string GameStart;
-		public string GameWon;
-		public string GameLost;
-	}
-
 	[Flags]
 	public enum MapVisibility
 	{
@@ -110,7 +66,7 @@ namespace OpenRA
 
 	public class Map : IReadOnlyFileSystem
 	{
-		public const int SupportedMapFormat = 8;
+		public const int SupportedMapFormat = 9;
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
@@ -130,10 +86,8 @@ namespace OpenRA
 
 		public string Title;
 		public string Type = "Conquest";
-		public string Description;
 		public string Author;
 		public string Tileset;
-		public bool AllowStartUnitConfig = true;
 		public Bitmap CustomPreview;
 		public bool InvalidCustomRules { get; private set; }
 
@@ -143,30 +97,6 @@ namespace OpenRA
 				return WVec.Zero;
 
 			return SubCellOffsets[(int)subCell];
-		}
-
-		[FieldLoader.LoadUsing("LoadOptions")] public MapOptions Options;
-
-		static object LoadOptions(MiniYaml y)
-		{
-			var options = new MapOptions();
-			var nodesDict = y.ToDictionary();
-			if (nodesDict.ContainsKey("Options"))
-				FieldLoader.Load(options, nodesDict["Options"]);
-
-			return options;
-		}
-
-		[FieldLoader.LoadUsing("LoadVideos")] public MapVideos Videos;
-
-		static object LoadVideos(MiniYaml y)
-		{
-			var videos = new MapVideos();
-			var nodesDict = y.ToDictionary();
-			if (nodesDict.ContainsKey("Videos"))
-				FieldLoader.Load(videos, nodesDict["Videos"]);
-
-			return videos;
 		}
 
 		public static string ComputeUID(IReadOnlyPackage package)
@@ -270,13 +200,10 @@ namespace OpenRA
 			var tileRef = new TerrainTile(tileset.Templates.First().Key, 0);
 
 			Title = "Name your map here";
-			Description = "Describe your map here";
 			Author = "Your name here";
 
 			MapSize = new int2(size);
 			Tileset = tileset.Id;
-			Videos = new MapVideos();
-			Options = new MapOptions();
 
 			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
 
@@ -500,7 +427,6 @@ namespace OpenRA
 				"MapFormat",
 				"RequiresMod",
 				"Title",
-				"Description",
 				"Author",
 				"Tileset",
 				"MapSize",
@@ -517,12 +443,7 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
 
-			root.Add(new MiniYamlNode("Videos", FieldSaver.SaveDifferences(Videos, new MapVideos())));
-
-			root.Add(new MiniYamlNode("Options", FieldSaver.SaveDifferences(Options, new MapOptions())));
-
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
-
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
 			root.Add(new MiniYamlNode("Smudges", null, SmudgeDefinitions));
 			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
@@ -858,10 +779,10 @@ namespace OpenRA
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
 		}
 
-		public void FixOpenAreas(Ruleset rules)
+		public void FixOpenAreas()
 		{
 			var r = new Random();
-			var tileset = rules.TileSets[Tileset];
+			var tileset = Rules.TileSets[Tileset];
 
 			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
 			{

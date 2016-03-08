@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: 04a: Behind the lines
-
-Description: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 38,45,72,46
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: soviet4.vqa
-	GameStart: sovmcv.vqa
-	GameWon: radrraid.vqa
-	GameLost: allymorf.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Medium
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -647,6 +627,14 @@ Rules:
 		-EnemyWatcher:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -655,6 +643,21 @@ Rules:
 			Scripts: soviet04a.lua, soviet04a-AI.lua, soviet04a-reinforcements_teams.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
+			BriefingVideo: soviet4.vqa
+			StartVideo: sovmcv.vqa
+			WinVideo: radrraid.vqa
+			LossVideo: allymorf.vqa
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Medium
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy

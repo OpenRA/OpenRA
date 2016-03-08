@@ -214,14 +214,6 @@ ServerTraits:
 	MasterServerPinger
 	LobbySettingsNotification
 
-LobbyDefaults:
-	AllowCheats: true
-	Crates: true
-	StartingUnitsClass: none
-	FragileAlliances: false
-	Shroud: true
-	Fog: true
-
 ChromeMetrics:
 	common|metrics.yaml
 	ts|metrics.yaml

@@ -53,8 +53,6 @@ Fonts:
 		Font: common|FreeSansBold.ttf
 		Size:10
 
-LobbyDefaults:
-
 SoundFormats:
 
 SpriteFormats: ShpTD

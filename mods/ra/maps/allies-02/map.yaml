@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: 02:   Five to one
-
-Description: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
 Author: Westwood Studios
 
@@ -17,23 +15,6 @@ Bounds: 43,44,50,42
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: ally2.vqa
-	GameStart: mcv.vqa
-	GameWon: montpass.vqa
-	GameLost: frozen.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5700
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard, Real tough guy
-	ShortGame: False
 
 Players:
 	PlayerReference@USSR:
@@ -698,6 +679,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		-EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5700
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -706,6 +695,19 @@ Rules:
 			Scripts: allies02.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
+			BriefingVideo: ally2.vqa
+			StartVideo: mcv.vqa
+			WinVideo: montpass.vqa
+			LossVideo: frozen.vqa
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Easy, Normal, Hard, Real tough guy
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

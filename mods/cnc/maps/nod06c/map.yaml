@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Steal The Detonator (c)
-
-Description: GDI has imported a Nuclear Detonator in an attempt to sway a few local political leaders. Penetrate the base and steal the detonator. A chopper will be sent to meet you at a designated landing zone. Look for the landing flare once you have stolen the device.
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 15,16,44,42
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: nod6.vqa
-	GameStart: sundial.vqa
-	GameLost: banner.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 4000
-	ConfigurableStartingUnits: False
-	ShortGame: False
 
 Players:
 	PlayerReference@GDI:
@@ -512,6 +494,14 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 4000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -523,6 +513,20 @@ Rules:
 		MusicPlaylist:
 			StartingMusic: rout
 			VictoryMusic: nod_win1
+		MissionData:
+			Briefing: GDI has imported a Nuclear Detonator in an attempt to sway a few local political leaders. Penetrate the base and steal the detonator. A chopper will be sent to meet you at a designated landing zone. Look for the landing flare once you have stolen the device.
+			BriefingVideo: nod6.vqa
+			StartVideo: sundial.vqa
+			LossVideo: banner.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

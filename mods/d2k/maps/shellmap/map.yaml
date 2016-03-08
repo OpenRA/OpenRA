@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: d2k
 
 Title: D2k Shellmap
-
-Description: Static Shellmap
 
 Author: Westwood Studios
 
@@ -17,10 +15,6 @@ Bounds: 16,16,80,80
 Visibility: Shellmap
 
 Type: Shellmap
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

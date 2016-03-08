@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Bomber John
-
-Description: Lay mines, wait for them to explode, kill your enemies.
 
 Author: Holloweye
 
@@ -17,18 +15,6 @@ Bounds: 16,16,24,24
 Visibility: Lobby
 
 Type: Minigame
-
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 60
-	TechLevel: Unrestricted
-	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@Neutral:
@@ -772,6 +758,12 @@ Rules:
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Unrestricted
 	APWR:
 		Buildable:
 			Prerequisites: ~disabled
@@ -808,6 +800,14 @@ Rules:
 	Player:
 		ClassicProductionQueue@Building:
 			BuildSpeed: 0.4
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 60
 	MNLYR:
 		Inherits: ^Tank
 		Buildable:

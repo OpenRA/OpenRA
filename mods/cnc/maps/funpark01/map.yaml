@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: cnc
 
 Title: Strange Behavior
-
-Description: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 10,5,45,52
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: generic.vqa
-	GameStart: dino.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -361,7 +343,7 @@ Actors:
 		Location: 21,15
 		Owner: Civilian
 	Actor117: v06
-		Owner: Neutral # TREX can't attack it
+		Owner: Neutral
 		Location: 21,8
 	Actor100: v07
 		Location: 12,12
@@ -443,6 +425,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -453,6 +443,20 @@ Rules:
 			PanelName: MISSION_OBJECTIVES
 		MusicPlaylist:
 			StartingMusic: j1
+		MissionData:
+			Briefing: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
+			BriefingVideo: generic.vqa
+			StartVideo: dino.vqa
+		MapCreeps:
+			Locked: True
+			Enabled: False
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			Difficulties: Easy, Normal
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Vehicle:
 		Tooltip:
 			GenericVisibility: Enemy

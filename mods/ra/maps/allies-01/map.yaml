@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: 01:   In the thick of it
-
-Description: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 49,45,30,36
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	BackgroundInfo: prolog.vqa
-	Briefing: ally1.vqa
-	GameStart: landing.vqa
-	GameWon: snowbomb.vqa
-	GameLost: bmap.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
 
 Players:
 	PlayerReference@USSR:
@@ -470,6 +452,14 @@ Rules:
 		MissionObjectives:
 			EarlyGameOver: true
 		-EnemyWatcher:
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 0
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -478,6 +468,16 @@ Rules:
 			Scripts: allies01.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
+			BackgroundVideo: prolog.vqa
+			BriefingVideo: ally1.vqa
+			StartVideo: landing.vqa
+			WinVideo: snowbomb.vqa
+			LossVideo: bmap.vqa
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
 	TRAN.Extraction:
 		Inherits: TRAN
 		WithFacingSpriteBody:

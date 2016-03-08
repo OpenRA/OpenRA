@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: d2k
 
 Title: Atreides 03a
-
-Description: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
 
 Author: Westwood Studios
 
@@ -17,22 +15,6 @@ Bounds: 2,2,64,64
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: A_BR03_E.VQA
-
-Options:
-	Crates: False
-	Creeps: True
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 3000
-	TechLevel: Low
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -158,6 +140,14 @@ Rules:
 		-ConquestVictoryConditions:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 3000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -169,6 +159,21 @@ Rules:
 		WormManager:
 			Minimum: 1
 			Maximum: 1
+		MissionData:
+			Briefing: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
+			BriefingVideo: A_BR03_E.VQA
+		MapCreeps:
+			Locked: True
+			Enabled: True
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Low
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	carryall.reinforce:
 		Cargo:
 			MaxWeight: 10

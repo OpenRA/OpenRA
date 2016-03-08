@@ -16,8 +16,14 @@ namespace OpenRA.Traits
 {
 	public class PlayerResourcesInfo : ITraitInfo
 	{
+		[Desc("Starting cash options that are available in the lobby options.")]
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
+
+		[Desc("Default starting cash option: should be one of the SelectableCash options.")]
 		public readonly int DefaultCash = 5000;
+
+		[Desc("Force the DefaultCash option by disabling changes in the lobby.")]
+		public readonly bool DefaultCashLocked = false;
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}

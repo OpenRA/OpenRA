@@ -348,7 +348,6 @@ namespace OpenRA.Mods.Common.Server
 
 						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
-						SetDefaultDifficulty(server);
 
 						// Reset client states
 						foreach (var c in server.LobbyInfo.Clients)
@@ -408,7 +407,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Cheats.HasValue)
+						var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
+						if (devMode.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration.");
 							return true;
@@ -431,7 +431,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Shroud.HasValue)
+						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+						if (shroud.ExploredMapLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration.");
 							return true;
@@ -454,7 +455,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Fog.HasValue)
+						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+						if (shroud.FogLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration.");
 							return true;
@@ -518,7 +520,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Crates.HasValue)
+						var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+						if (crateSpawner == null || crateSpawner.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration.");
 							return true;
@@ -541,7 +544,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.Creeps.HasValue)
+						var mapCreeps = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
+						if (mapCreeps == null || mapCreeps.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Creeps spawning configuration.");
 							return true;
@@ -564,7 +568,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.AllyBuildRadius.HasValue)
+						var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+						if (mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration.");
 							return true;
@@ -581,19 +586,23 @@ namespace OpenRA.Mods.Common.Server
 				{ "difficulty",
 					s =>
 					{
-						if (!server.Map.Options.Difficulties.Any())
-							return true;
-
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
 							return true;
 						}
 
-						if (s != null && !server.Map.Options.Difficulties.Contains(s))
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.DifficultyLocked || !mapOptions.Difficulties.Any())
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled difficulty configuration.");
+							return true;
+						}
+
+						if (s != null && !mapOptions.Difficulties.Contains(s))
 						{
 							server.SendOrderTo(conn, "Message", "Invalid difficulty selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(server.Map.Options.Difficulties.JoinWith(", ")));
+							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(mapOptions.Difficulties.JoinWith(", ")));
 							return true;
 						}
 
@@ -613,7 +622,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (!server.Map.Options.ConfigurableStartingUnits)
+						var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+						if (startingUnits == null || startingUnits.Locked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration.");
 							return true;
@@ -644,13 +654,14 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.StartingCash.HasValue)
+						var playerResources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
+						if (playerResources.DefaultCashLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration.");
 							return true;
 						}
 
-						var startingCashOptions = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>().SelectableCash;
+						var startingCashOptions = playerResources.SelectableCash;
 						var requestedCash = Exts.ParseIntegerInvariant(s);
 						if (!startingCashOptions.Contains(requestedCash))
 						{
@@ -675,7 +686,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.TechLevel != null)
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.TechLevelLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
 							return true;
@@ -931,7 +943,8 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Map.Options.ShortGame.HasValue)
+						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+						if (mapOptions.ShortGameLocked)
 						{
 							server.SendOrderTo(conn, "Message", "Map has disabled short game configuration.");
 							return true;
@@ -982,7 +995,6 @@ namespace OpenRA.Mods.Common.Server
 		public void ServerStarted(S server)
 		{
 			LoadMap(server);
-			SetDefaultDifficulty(server);
 		}
 
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
@@ -1001,6 +1013,33 @@ namespace OpenRA.Mods.Common.Server
 			};
 		}
 
+		public static void LoadMapSettings(Session.Global gs, Map map)
+		{
+			var devMode = map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
+			gs.AllowCheats = devMode.Enabled;
+
+			var crateSpawner = map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
+			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
+
+			var shroud = map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
+			gs.Fog = shroud.FogEnabled;
+			gs.Shroud = !shroud.ExploredMapEnabled;
+
+			var resources = map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
+			gs.StartingCash = resources.DefaultCash;
+
+			var startingUnits = map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
+			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
+
+			var mapBuildRadius = map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
+			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
+
+			var mapOptions = map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+			gs.ShortGame = mapOptions.ShortGameEnabled;
+			gs.TechLevel = mapOptions.TechLevel;
+			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+		}
+
 		static void LoadMap(S server)
 		{
 			server.Map = new Map(server.ModData, server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Package);
@@ -1011,19 +1050,7 @@ namespace OpenRA.Mods.Common.Server
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
 
-			server.Map.Options.UpdateServerSettings(server.LobbyInfo.GlobalSettings);
-		}
-
-		static void SetDefaultDifficulty(S server)
-		{
-			if (!server.Map.Options.Difficulties.Any())
-			{
-				server.LobbyInfo.GlobalSettings.Difficulty = null;
-				return;
-			}
-
-			if (!server.Map.Options.Difficulties.Contains(server.LobbyInfo.GlobalSettings.Difficulty))
-				server.LobbyInfo.GlobalSettings.Difficulty = server.Map.Options.Difficulties.First();
+			LoadMapSettings(server.LobbyInfo.GlobalSettings, server.Map);
 		}
 
 		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)

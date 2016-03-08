@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: 05:   Distant Thunder
-
-Description: Khalkis island contains a large quantity of ore that we need.\n\nThe Allies are well aware of our plans, and intend to establish their own base there. See to it that they fail.\n\nIn addition, capture their radar center so we can track Allied activity in this area.
 
 Author: Westwood Studios
 
@@ -17,24 +15,6 @@ Bounds: 20,42,90,50
 Visibility: MissionSelector
 
 Type: Campaign
-
-Videos:
-	Briefing: soviet5.vqa
-	GameStart: double.vqa
-	GameWon: strafe.vqa
-	GameLost: sovbatl.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Medium
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
 
 Players:
 	PlayerReference@Neutral:
@@ -629,6 +609,14 @@ Rules:
 		-EnemyWatcher:
 		MissionObjectives:
 			EarlyGameOver: true
+		Shroud:
+			FogLocked: True
+			FogEnabled: True
+			ExploredMapLocked: True
+			ExploredMapEnabled: False
+		PlayerResources:
+			DefaultCashLocked: True
+			DefaultCash: 5000
 	World:
 		-CrateSpawner:
 		-SpawnMPUnits:
@@ -637,6 +625,21 @@ Rules:
 			Scripts: soviet05.lua, soviet05-AI.lua, soviet05-reinforcements_teams.lua
 		ObjectivesPanel:
 			PanelName: MISSION_OBJECTIVES
+		MissionData:
+			Briefing: Khalkis island contains a large quantity of ore that we need.\n\nThe Allies are well aware of our plans, and intend to establish their own base there. See to it that they fail.\n\nIn addition, capture their radar center so we can track Allied activity in this area.
+			BriefingVideo: soviet5.vqa
+			StartVideo: double.vqa
+			WinVideo: strafe.vqa
+			LossVideo: sovbatl.vqa
+		MapBuildRadius:
+			AllyBuildRadiusLocked: True
+			AllyBuildRadiusEnabled: False
+		MapOptions:
+			TechLevelLocked: True
+			TechLevel: Medium
+			Difficulties: Easy, Normal, Hard
+			ShortGameLocked: True
+			ShortGameEnabled: False
 	^Infantry:
 		Tooltip:
 			GenericVisibility: Enemy

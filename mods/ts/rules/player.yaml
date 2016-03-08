@@ -42,6 +42,7 @@ Player:
 	PlayerResources:
 	ActorGroupProxy:
 	DeveloperMode:
+		Enabled: true
 	Shroud:
 	FrozenActorLayer:
 	BaseAttackNotifier:

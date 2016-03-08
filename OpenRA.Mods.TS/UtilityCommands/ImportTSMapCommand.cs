@@ -236,7 +236,6 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(map.Grid.Type, size));
 			map.MapHeight = Exts.Lazy(() => new CellLayer<byte>(map.Grid.Type, size));
 
-			map.Options = new MapOptions();
 			map.RequiresMod = modData.Manifest.Mod.Id;
 
 			return map;

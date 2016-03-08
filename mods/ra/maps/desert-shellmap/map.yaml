@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 9
 
 RequiresMod: ra
 
 Title: Desert Shellmap
-
-Description: Desert Shellmap
 
 Author: Scott_NZ
 
@@ -17,10 +15,6 @@ Bounds: 1,1,126,126
 Visibility: Shellmap
 
 Type: Shellmap
-
-Videos:
-
-Options:
 
 Players:
 	PlayerReference@Neutral:

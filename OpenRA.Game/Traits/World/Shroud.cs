@@ -18,6 +18,18 @@ namespace OpenRA.Traits
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : ITraitInfo
 	{
+		[Desc("Default value of the fog checkbox in the lobby.")]
+		public bool FogEnabled = true;
+
+		[Desc("Prevent the fog enabled state from being changed in the lobby.")]
+		public bool FogLocked = false;
+
+		[Desc("Default value of the explore map checkbox in the lobby.")]
+		public bool ExploredMapEnabled = false;
+
+		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
+		public bool ExploredMapLocked = false;
+
 		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 

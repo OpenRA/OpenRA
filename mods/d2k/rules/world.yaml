@@ -87,7 +87,10 @@ World:
 		Type: SandCrater
 		Sequence: sandcraters
 		SmokePercentage: 0
+	MapCreeps:
 	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:
