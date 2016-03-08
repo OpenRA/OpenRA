@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: cnc
 
@@ -15,6 +15,8 @@ Bounds: 10,5,45,52
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -407,156 +409,8 @@ Actors:
 		Location: 16,50
 		Owner: Neutral
 
-Smudges:
+Rules: rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civilian: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		EnemyWatcher:
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 0
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: scj01ea.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: j1
-		MissionData:
-			Briefing: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
-			BriefingVideo: generic.vqa
-			StartVideo: dino.vqa
-		MapCreeps:
-			Locked: True
-			Enabled: False
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			Difficulties: Easy, Normal
-			ShortGameLocked: True
-			ShortGameEnabled: False
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^CivInfantry:
-		-ActorLostNotification:
-	^CivBuilding:
-		AnnounceOnSeen:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^CivBuildingHusk:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	OLDLST:
-		Inherits: LST
-		-WithRoof:
-		-Selectable:
-		RejectsOrders:
-		Cargo:
-			Types: disabled
-	TREX:
-		Health:
-			HP: 750
-		Mobile:
-			Speed: 34
-		AutoTarget:
-			ScanRadius: 5
-	TRIC:
-		Health:
-			HP: 700
-		Mobile:
-			Speed: 18
-		AutoTarget:
-			ScanRadius: 5
-	STEG:
-		Health:
-			HP: 600
-		Mobile:
-			Speed: 32
-	^DINO:
-		Tooltip:
-			ShowOwnerRow: false
-		MustBeDestroyed:
+Sequences: sequences.yaml
 
-Sequences:
-	oldlst:
-		idle: lst
-			Start: 0
-			Facings: 1
-			ZOffset: -1024
-		icon: lsticnh.tem
-			AddExtension: False
-
-VoxelSequences:
-
-Weapons:
-	Teeth:
-		Range: 1c900
-		Warhead@1Dam: SpreadDamage
-			Versus:
-				Wood: 35
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

@@ -1,0 +1,6 @@
+BoatMissile:
+	Warhead: SpreadDamage
+		Versus:
+			Heavy: 50
+		Damage: 50
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath

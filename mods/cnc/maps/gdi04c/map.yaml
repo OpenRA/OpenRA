@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: cnc
 
@@ -15,6 +15,8 @@ Bounds: 14,14,48,44
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -738,167 +740,6 @@ Actors:
 		Location: 28,47
 		Owner: Neutral
 
-Smudges:
-	sc5 58,38 0:
-	sc6 55,37 0:
-	sc5 56,34 0:
-	sc5 47,34 0:
-	sc6 54,33 0:
-	sc3 47,33 0:
-	sc4 46,33 0:
-	sc2 55,32 0:
-	cr1 23,32 0:
-	sc3 48,31 0:
-	sc2 47,31 0:
+Rules: rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-		IndexedPlayerPalette@units:
-			BasePalette: terrain
-			BaseName: player-units
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		LuaScript:
-			Scripts: gdi04c.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: ind
-		MissionData:
-			Briefing: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
-			BackgroundVideo: bkground.vqa
-			BriefingVideo: gdi4a.vqa
-			StartVideo: nodsweep.vqa
-			WinVideo: burdet1.vqa
-			LossVideo: gameover.vqa
-		MapCreeps:
-			Locked: True
-			Enabled: False
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			ShortGameLocked: True
-			ShortGameEnabled: False
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 0
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^CivInfantry:
-		Health:
-			HP: 125
-	^CivBuilding:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^CivBuildingHusk:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^Bridge:
-		DamageMultiplier@INVULNERABLE:
-			Modifier: 0
-	HARV:
-		RenderSprites:
-			PlayerPalette: player
-	MCV:
-		RenderSprites:
-			PlayerPalette: player
-	HARV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	MCV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	Rockets:
-		Range: 5c0
-		Warhead: SpreadDamage
-			Versus:
-				None: 10
-				Light: 66
-				Heavy: 66
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml
