@@ -387,7 +387,7 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
 
-						if (server.Map.RuleDefinitions.Any())
+						if (server.Map.RuleDefinitions != null)
 							server.SendMessage("This map contains custom rules. Game experience may change.");
 
 						if (server.Settings.DisableSinglePlayer)

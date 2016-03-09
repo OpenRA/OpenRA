@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA
 {
@@ -374,6 +375,21 @@ namespace OpenRA
 			if (Nodes != null)
 				foreach (var line in Nodes.ToLines(false))
 					yield return "\t" + line;
+		}
+
+		public static List<MiniYamlNode> Load(IReadOnlyFileSystem fileSystem, IEnumerable<string> files, MiniYaml mapRules)
+		{
+			if (mapRules != null && mapRules.Value != null)
+			{
+				var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
+				files = files.Append(mapFiles);
+			}
+
+			var yaml = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s)));
+			if (mapRules != null && mapRules.Nodes.Any())
+				yaml = yaml.Append(mapRules.Nodes);
+
+			return MiniYaml.Merge(yaml);
 		}
 	}
 

@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					testMap.PreloadRules();
 
 					// Run all rule checks on the map if it defines custom rules.
-					if (testMap.RuleDefinitions.Any() || testMap.VoiceDefinitions.Any() || testMap.WeaponDefinitions.Any())
+					if (testMap.RuleDefinitions != null || testMap.VoiceDefinitions != null || testMap.WeaponDefinitions != null)
 						CheckRules(modData, testMap.Rules, testMap);
 
 					// Run all map-level checks here.

@@ -53,11 +53,16 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, UnitSequences> sequenceCache = new Dictionary<string, UnitSequences>();
 
-		public SequenceProvider(IReadOnlyFileSystem fileSystem, ModData modData, TileSet tileSet, Map map)
+		public SequenceProvider(IReadOnlyFileSystem fileSystem, ModData modData, TileSet tileSet, MiniYaml additionalSequences)
 		{
 			this.modData = modData;
 			this.tileSet = tileSet;
-			sequences = Exts.Lazy(() => LoadSequences(fileSystem, map));
+			sequences = Exts.Lazy(() =>
+			{
+				using (new Support.PerfTimer("LoadSequences"))
+					return Load(fileSystem, additionalSequences);
+			});
+
 			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 		}
 
@@ -97,17 +102,9 @@ namespace OpenRA.Graphics
 			return unitSeq.Value.Keys;
 		}
 
-		public Sequences LoadSequences(IReadOnlyFileSystem fileSystem, Map map)
+		Sequences Load(IReadOnlyFileSystem fileSystem, MiniYaml additionalSequences)
 		{
-			using (new Support.PerfTimer("LoadSequences"))
-				return Load(fileSystem, map != null ? map.SequenceDefinitions : new string[0]);
-		}
-
-		Sequences Load(IReadOnlyFileSystem fileSystem, string[] mapSequences)
-		{
-			var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Append(mapSequences)
-				.Select(s => MiniYaml.FromStream(fileSystem.Open(s))));
-
+			var nodes = MiniYaml.Load(fileSystem, modData.Manifest.Sequences, additionalSequences);
 			var items = new Dictionary<string, UnitSequences>();
 			foreach (var n in nodes)
 			{

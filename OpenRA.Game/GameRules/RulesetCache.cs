@@ -21,8 +21,6 @@ namespace OpenRA
 {
 	public sealed class RulesetCache
 	{
-		static readonly string[] NoMapRules = new string[0];
-
 		readonly ModData modData;
 
 		readonly Dictionary<string, ActorInfo> actorCache = new Dictionary<string, ActorInfo>();
@@ -44,11 +42,13 @@ namespace OpenRA
 			this.modData = modData;
 		}
 
-		/// <summary>
-		/// Cache and return the Ruleset for a given map.
-		/// If a map isn't specified then return the default mod Ruleset.
-		/// </summary>
-		public Ruleset Load(IReadOnlyFileSystem fileSystem, Map map = null)
+		public Ruleset Load(IReadOnlyFileSystem fileSystem,
+			MiniYaml additionalRules,
+			MiniYaml additionalWeapons,
+			MiniYaml additionalVoices,
+			MiniYaml additionalNotifications,
+			MiniYaml additionalMusic,
+			MiniYaml additionalSequences)
 		{
 			var m = modData.Manifest;
 
@@ -60,46 +60,58 @@ namespace OpenRA
 			Dictionary<string, TileSet> tileSets;
 
 			using (new PerfTimer("Actors"))
-				actors = LoadYamlRules(fileSystem, actorCache, m.Rules,
-					map != null ? map.RuleDefinitions : NoMapRules,
+				actors = LoadYamlRules(fileSystem, actorCache, m.Rules, additionalRules,
 					k => new ActorInfo(Game.ModData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Weapons"))
-				weapons = LoadYamlRules(fileSystem, weaponCache, m.Weapons,
-					map != null ? map.WeaponDefinitions : NoMapRules,
+				weapons = LoadYamlRules(fileSystem, weaponCache, m.Weapons, additionalWeapons,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 
 			using (new PerfTimer("Voices"))
-				voices = LoadYamlRules(fileSystem, voiceCache, m.Voices,
-					map != null ? map.VoiceDefinitions : NoMapRules,
+				voices = LoadYamlRules(fileSystem, voiceCache, m.Voices, additionalVoices,
 					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Notifications"))
-				notifications = LoadYamlRules(fileSystem, notificationCache, m.Notifications,
-					map != null ? map.NotificationDefinitions : NoMapRules,
+				notifications = LoadYamlRules(fileSystem, notificationCache, m.Notifications, additionalNotifications,
 					k => new SoundInfo(k.Value));
 
 			using (new PerfTimer("Music"))
-				music = LoadYamlRules(fileSystem, musicCache, m.Music,
-					map != null ? map.MusicDefinitions : NoMapRules,
+				music = LoadYamlRules(fileSystem, musicCache, m.Music, additionalMusic,
 					k => new MusicInfo(k.Key, k.Value));
 
 			using (new PerfTimer("TileSets"))
 				tileSets = LoadTileSets(fileSystem, tileSetCache, m.TileSets);
 
 			// TODO: only initialize, and then cache, the provider for the given map
-			var sequences = tileSets.ToDictionary(t => t.Key, t => new SequenceProvider(fileSystem, modData, t.Value, map));
+			var sequences = tileSets.ToDictionary(t => t.Key, t => new SequenceProvider(fileSystem, modData, t.Value, additionalSequences));
 			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
+		}
+
+		/// <summary>
+		/// Cache and return the Ruleset for a given map.
+		/// If a map isn't specified then return the default mod Ruleset.
+		/// </summary>
+		public Ruleset Load(IReadOnlyFileSystem fileSystem, Map map = null)
+		{
+			return map != null ? Load(fileSystem, map.RuleDefinitions, map.WeaponDefinitions,
+				map.VoiceDefinitions, map.NotificationDefinitions, map.MusicDefinitions,
+				map.SequenceDefinitions) : Load(fileSystem, null, null, null, null, null, null);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(IReadOnlyFileSystem fileSystem,
 			Dictionary<string, T> itemCache,
-			string[] files, string[] mapFiles,
+			IEnumerable<string> files, MiniYaml mapRules,
 			Func<MiniYamlNode, T> f)
 		{
 			RaiseProgress();
 
-			var inputKey = string.Concat(string.Join("|", files.Append(mapFiles)), "|");
+			if (mapRules != null && mapRules.Value != null)
+				files = files.Append(FieldLoader.GetValue<string[]>("value", mapRules.Value));
+
+			var inputKey = string.Join("|", files);
+			if (mapRules != null && mapRules.Nodes.Any())
+				inputKey += "|" + mapRules.Nodes.WriteToString();
+
 			Func<MiniYamlNode, T> wrap = wkv =>
 			{
 				var key = inputKey + wkv.Value.ToLines(wkv.Key).JoinWith("|");
@@ -114,8 +126,9 @@ namespace OpenRA
 				return t;
 			};
 
-			var tree = MiniYaml.Merge(files.Append(mapFiles).Select(s => MiniYaml.FromStream(fileSystem.Open(s))))
-				.ToDictionaryWithConflictLog(n => n.Key, n => n.Value, "LoadYamlRules", null, null);
+			var tree = MiniYaml.Load(fileSystem, files, mapRules).ToDictionaryWithConflictLog(
+				n => n.Key, n => n.Value, "LoadYamlRules", null, null);
+
 			RaiseProgress();
 
 			var itemSet = tree.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => wrap(new MiniYamlNode(kv.Key, kv.Value)));

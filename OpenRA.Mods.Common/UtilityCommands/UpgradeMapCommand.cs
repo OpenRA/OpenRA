@@ -27,17 +27,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		delegate void UpgradeAction(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
 
-		static void ProcessYaml(Map map, IEnumerable<string> files, int engineDate, UpgradeAction processFile)
+		static void ProcessYaml(Map map, MiniYaml yaml, int engineDate, UpgradeAction processYaml)
 		{
-		    foreach (var filename in files)
-		    {
-		        if (!map.Package.Contains(filename))
-		            continue;
+			if (yaml == null)
+				return;
 
-		        var yaml = MiniYaml.FromStream(map.Package.GetStream(filename));
-		        processFile(engineDate, ref yaml, null, 0);
-		        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(yaml.WriteToString()));
-		    }
+			if (yaml.Value != null)
+			{
+				var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
+			    foreach (var filename in files)
+			    {
+			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename));
+					processYaml(engineDate, ref fileNodes, null, 0);
+			        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
+			    }
+			}
+
+			processYaml(engineDate, ref yaml.Nodes, null, 1);
 		}
 
 		public static void UpgradeMap(ModData modData, IReadWritePackage package, int engineDate)

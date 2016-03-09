@@ -26,18 +26,17 @@ namespace OpenRA.Mods.Common.Lint
 
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			if (map != null && !map.SequenceDefinitions.Any())
+			if (map.SequenceDefinitions == null)
 				return;
 
 			var modData = Game.ModData;
 			this.emitError = emitError;
 
-			var mapSequences = map != null ? map.SequenceDefinitions : new string[0];
-			sequenceDefinitions = MiniYaml.Merge(modData.Manifest.Sequences.Append(mapSequences).Select(s => MiniYaml.FromStream(map.Open(s))));
+			sequenceDefinitions = MiniYaml.Load(map, modData.Manifest.Sequences, map.SequenceDefinitions);
 
-			var rules = map == null ? modData.DefaultRules : map.Rules;
+			var rules = map.Rules;
 			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
-			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
+			var sequenceProviders = new[] { rules.Sequences[map.Tileset] };
 
 			foreach (var actorInfo in rules.Actors)
 			{
