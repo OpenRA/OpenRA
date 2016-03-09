@@ -1085,17 +1085,18 @@ function debugger:breakpoint(file, line, state)
   end
   return debugger:handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
-function debugger:quickeval(var, callback)
+function debugger:EvalAsync(var, callback)
   local debugger = self
-  if debugger.server and not debugger.running
+  if debugger.server and not debugger.running and callback
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     copas.addthread(function()
       local debugger = debugger
       local _, values, err = debugger:evaluate(var)
-      local val = err
-        and err:gsub("%[.-%]:%d+:%s*","error: ")
-        or (var .. " = " .. (#values > 0 and values[1] or 'nil'))
-      if callback then callback(val) end
+      if err then
+        callback(nil, (err:gsub("%[.-%]:%d+:%s*","error: ")))
+      else
+        callback(#values > 0 and values[1] or 'nil')
+      end
     end)
   end
 end

@@ -26,9 +26,15 @@ pkg.onDebuggerActivate = function(self, debugger, file, line)
     return
   end
   local afile, aline, cmd, args = unpack(commands[command])
-  is(file, afile, "Filename is reported as expected after debugger activation ("..command.."/"..#commands..")")
-  is(line, aline, "Line number is reported as expected after debugger activation ("..command.."/"..#commands..")")
+  is(file, afile, "Filename is reported as expected after debugger activation ("..command.."/"..#commands..").")
+  is(line, aline, "Line number is reported as expected after debugger activation ("..command.."/"..#commands..").")
   if debugger:IsRunning() then debugger:Wait() end
+  if command == 1 then
+    debugger:EvalAsync("1+2", function(val)
+        is(val, "3", "Asynchronous expression evaluation in debugger returns expected result.")
+      end)
+    debugger:Wait()
+  end
   debugger[cmd](debugger, unpack(args or {}))
   command = command + 1
 end

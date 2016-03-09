@@ -371,7 +371,9 @@ function EditorCallTip(editor, pos, x, y)
   local debugger = ide:GetDebugger()
   if debugger and debugger:IsConnected() then
     if var then
-      debugger:quickeval(var, function(val)
+      debugger:EvalAsync(var, function(val, err)
+        -- val == `nil` if there is any error
+        val = val ~= nil and (var.." = "..val) or err
         if #val > limit then val = val:sub(1, limit-3).."..." end
         -- check if the mouse position is specified and the mouse has moved,
         -- then don't show the tooltip as it's already too late for it.
