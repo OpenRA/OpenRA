@@ -1554,4 +1554,10 @@ Actors:
 		Location: 134,73
 		Owner: Neutral
 
-Rules: rules.yaml
+Rules:
+	World:
+		GlobalLightingPaletteEffect:
+			Red: 0.5
+			Green: 0.7
+			Blue: 0.7
+			Ambient: 0.78
