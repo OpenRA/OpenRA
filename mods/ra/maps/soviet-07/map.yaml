@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ra
 
@@ -15,6 +15,8 @@ Bounds: 40,43,70,45
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -787,167 +789,6 @@ Actors:
 		Owner: Neutral
 		Location: 45,52
 
-Smudges:
+Rules: rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 0
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet07.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MissionData:
-			Briefing: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
-			BriefingVideo: soviet7.vqa
-			StartVideo: countdwn.vqa
-			WinVideo: averted.vqa
-			LossVideo: nukestok.vqa
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			Difficulties: Easy, Normal, Hard
-			ShortGameLocked: True
-			ShortGameEnabled: False
-	^Infantry:
-		-GivesBounty:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	BARL:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplodeInterior
-	BRL3:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplodeInterior
-	CAMERA:
-		RevealsShroud:
-			Range: 6c0
-	E1:
-		Armament@PRIMARY:
-			Weapon: M1CarbineInterior
-	FTUR:
-		Armament:
-			Weapon: FireballLauncherInterior
-			LocalOffset: 512,0,0
-		Valued:
-			Cost: 0
-		Power:
-			Amount: 0
-		-Sellable:
-	PBOX:
-		-AutoTarget:
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	M1CarbineInterior:
-		ReloadDelay: 20
-		Range: 3c0
-		Report: gun11.aud
-		Projectile: Bullet
-			Speed: 1c682
-		Warhead@1Dam: SpreadDamage
-			Spread: 128
-			Damage: 15
-			Versus:
-				Wood: 25
-				Light: 30
-				Heavy: 10
-				Concrete: 10
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-		Warhead@2Eff: CreateEffect
-			Explosions: piffs
-			InvalidImpactTypes: Water
-		Warhead@3EffWater: CreateEffect
-			Explosions: water_piffs
-			ValidImpactTypes: Water
-	FireballLauncherInterior:
-		ReloadDelay: 65
-		Range: 3c0
-		Burst: 2
-		BurstDelay: 20
-		Projectile: Bullet
-			Speed: 204
-			Trail: fb2
-			Image: FB1
-		Warhead@1Dam: SpreadDamage
-			Spread: 213
-			Damage: 150
-			Versus:
-				None: 90
-				Wood: 50
-				Light: 60
-				Heavy: 25
-				Concrete: 50
-			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
-		Warhead@3Eff: CreateEffect
-			Explosions: napalm
-			ImpactSounds: firebl3.aud
-	MissionBarrelExplodeInterior:
-		Warhead@1Dam: SpreadDamage
-			Spread: 350
-			Damage: 250
-			Falloff: 1000, 368, 135, 50, 18, 7, 0
-			Delay: 5
-			Versus:
-				None: 120
-				Wood: 200
-				Light: 50
-				Heavy: 25
-				Concrete: 10
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 2,1
-			Delay: 5
-		Warhead@3Eff: CreateEffect
-			Explosions: napalm
-			ImpactSounds: firebl3.aud
-			Delay: 5
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

@@ -1,0 +1,20 @@
+MissionColt:
+	ReloadDelay: 6
+	Range: 7c0
+	Report: gun5.aud
+	Projectile: Bullet
+		High: true
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 50
+		Versus:
+			None: 0
+			Wood: 10
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water

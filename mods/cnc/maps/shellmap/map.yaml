@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: cnc
 
@@ -977,36 +977,4 @@ Actors:
 		Owner: Nod
 		Facing: 192
 
-Smudges:
-
-Rules:
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		MenuPaletteEffect:
-			Effect: Desaturated
-		LuaScript:
-			Scripts: shellmap.lua
-		MusicPlaylist:
-			BackgroundMusic: map1
-	LST:
-		Mobile:
-			Speed: 42
-	BOAT:
-		Mobile:
-			Speed: 42
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

@@ -21,7 +21,7 @@ namespace OpenRA
 {
 	public sealed class RulesetCache
 	{
-		static readonly List<MiniYamlNode> NoMapRules = new List<MiniYamlNode>();
+		static readonly string[] NoMapRules = new string[0];
 
 		readonly ModData modData;
 
@@ -94,12 +94,12 @@ namespace OpenRA
 
 		Dictionary<string, T> LoadYamlRules<T>(IReadOnlyFileSystem fileSystem,
 			Dictionary<string, T> itemCache,
-			string[] files, List<MiniYamlNode> nodes,
+			string[] files, string[] mapFiles,
 			Func<MiniYamlNode, T> f)
 		{
 			RaiseProgress();
 
-			var inputKey = string.Concat(string.Join("|", files), "|", nodes.WriteToString());
+			var inputKey = string.Concat(string.Join("|", files.Append(mapFiles)), "|");
 			Func<MiniYamlNode, T> wrap = wkv =>
 			{
 				var key = inputKey + wkv.Value.ToLines(wkv.Key).JoinWith("|");
@@ -114,7 +114,7 @@ namespace OpenRA
 				return t;
 			};
 
-			var tree = MiniYaml.Merge(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s))).Append(nodes))
+			var tree = MiniYaml.Merge(files.Append(mapFiles).Select(s => MiniYaml.FromStream(fileSystem.Open(s))))
 				.ToDictionaryWithConflictLog(n => n.Key, n => n.Value, "LoadYamlRules", null, null);
 			RaiseProgress();
 

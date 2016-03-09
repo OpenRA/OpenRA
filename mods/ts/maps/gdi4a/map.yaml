@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ts
 
@@ -1736,33 +1736,4 @@ Actors:
 		Owner: Neutral
 		Location: 111,13
 
-Smudges:
-
-Rules:
-	World:
-		-StartGameNotification:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		MusicPlaylist:
-			BackgroundMusic: intro
-		GlobalLightingPaletteEffect:
-			Red: 1.1
-			Green: 1.1
-			Blue: 1
-			Ambient: 0.55
-		LuaScript:
-			Scripts: map.lua
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

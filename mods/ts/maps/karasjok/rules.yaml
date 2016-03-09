@@ -1,0 +1,6 @@
+World:
+	GlobalLightingPaletteEffect:
+		Red: 0.5
+		Blue: 0.7
+		Green: 0.7
+		Ambient: 0.78

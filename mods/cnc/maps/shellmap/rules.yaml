@@ -1,0 +1,18 @@
+World:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	-CrateSpawner:
+	MenuPaletteEffect:
+		Effect: Desaturated
+	LuaScript:
+		Scripts: shellmap.lua
+	MusicPlaylist:
+		BackgroundMusic: map1
+
+LST:
+	Mobile:
+		Speed: 42
+
+BOAT:
+	Mobile:
+		Speed: 42

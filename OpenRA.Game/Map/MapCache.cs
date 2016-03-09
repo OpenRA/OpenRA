@@ -193,28 +193,8 @@ namespace OpenRA
 				// Render the minimap into the shared sheet
 				foreach (var p in todo)
 				{
-					// The rendering is thread safe because it only reads from the passed instances and writes to a new bitmap
-					var createdPreview = false;
-					var bitmap = p.CustomPreview;
-					if (bitmap == null)
-					{
-						createdPreview = true;
-						var map = new Map(modData, p.Package);
-						bitmap = Minimap.RenderMapPreview(modData.DefaultRules.TileSets[map.Tileset], map, modData.DefaultRules, true);
-					}
-
-					Game.RunAfterTick(() =>
-					{
-						try
-						{
-							p.SetMinimap(sheetBuilder.Add(bitmap));
-						}
-						finally
-						{
-							if (createdPreview)
-								bitmap.Dispose();
-						}
-					});
+					if (p.Preview != null)
+						Game.RunAfterTick(() => p.SetMinimap(sheetBuilder.Add(p.Preview)));
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);

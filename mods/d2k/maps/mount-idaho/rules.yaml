@@ -1,0 +1,4 @@
+World:
+	WormManager:
+		Minimum: 1
+		Maximum: 2

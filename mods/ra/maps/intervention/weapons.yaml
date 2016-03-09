@@ -1,0 +1,7 @@
+Nike:
+	Range: 9c0
+
+Maverick:
+	Warhead@1Dam: SpreadDamage
+		Damage: 175
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath

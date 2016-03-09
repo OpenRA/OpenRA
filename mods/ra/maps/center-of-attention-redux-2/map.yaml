@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ra
 
@@ -880,32 +880,4 @@ Actors:
 		Location: 121,96
 		Owner: Creeps
 
-Smudges:
-
-Rules:
-	OILB.Strong:
-		Inherits: OILB
-		Health:
-			HP: 6000
-		RenderSprites:
-			Image: OILB
-	OILB.Weak:
-		Inherits: OILB
-		Health:
-			HP: 900
-		RenderSprites:
-			Image: OILB
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

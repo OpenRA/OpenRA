@@ -1,0 +1,21 @@
+miner: 
+	idle: 
+		Start: 0
+		Length: 1
+		ZOffset: -512
+	damaged-idle: 
+		Start: 1
+		Length: *
+		ZOffset: -512
+	damaged-build: 
+		Start: 1
+		Length: *
+		ZOffset: -512
+	icon: jmin
+		Start: 0
+mnlyr: 
+	icon: mnlyicon
+brick: 
+	idle: 
+		Start: 0
+		Length: *

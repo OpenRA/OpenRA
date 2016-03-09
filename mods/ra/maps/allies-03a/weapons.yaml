@@ -1,0 +1,3 @@
+BarrelExplode:
+	Warhead@1Dam:
+		ValidTargets: Ground, Prisoner

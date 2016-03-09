@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: d2k
 
@@ -15,6 +15,8 @@ Bounds: 2,2,48,48
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -166,79 +168,4 @@ Actors:
 		Owner: Neutral
 		Location: 30,28
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 5000
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: atreides02a.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		WormManager:
-			Minimum: 1
-			Maximum: 1
-		MissionData:
-			Briefing: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
-			BriefingVideo: A_BR02_E.VQA
-		MapCreeps:
-			Locked: True
-			Enabled: True
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			TechLevelLocked: True
-			TechLevel: Low
-			Difficulties: Easy, Normal, Hard
-			ShortGameLocked: True
-			ShortGameEnabled: False
-	carryall.reinforce:
-		Cargo:
-			MaxWeight: 10
-	construction_yard:
-		Production:
-			Produces: Building
-	concreteb:
-		Buildable:
-			Prerequisites: ~disabled
-	heavy_factory:
-		Buildable:
-			Prerequisites: ~disabled
-	medium_gun_turret:
-		Buildable:
-			Prerequisites: ~disabled
-	wall:
-		Buildable:
-			Prerequisites: ~disabled
-	outpost:
-		Buildable:
-			Prerequisites: barracks
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

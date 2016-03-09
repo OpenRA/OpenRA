@@ -1,0 +1,27 @@
+ParaBomb:
+	ROF: 5
+	Range: 7c0
+	Report: chute1.aud
+	Projectile: GravityBomb
+		Image: BOMBLET
+		-OpenSequence:
+	Warhead@1Dam: SpreadDamage
+		Spread: 150
+		Damage: 3500
+		Versus:
+			None: 125
+			Wood: 100
+			Light: 60
+			Heavy: 50
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: napalm
+		ImpactSounds: splash9.aud
+		ValidImpactTypes: Water

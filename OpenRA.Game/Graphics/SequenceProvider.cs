@@ -100,14 +100,13 @@ namespace OpenRA.Graphics
 		public Sequences LoadSequences(IReadOnlyFileSystem fileSystem, Map map)
 		{
 			using (new Support.PerfTimer("LoadSequences"))
-				return Load(fileSystem, map != null ? map.SequenceDefinitions : new List<MiniYamlNode>());
+				return Load(fileSystem, map != null ? map.SequenceDefinitions : new string[0]);
 		}
 
-		Sequences Load(IReadOnlyFileSystem fileSystem, List<MiniYamlNode> sequenceNodes)
+		Sequences Load(IReadOnlyFileSystem fileSystem, string[] mapSequences)
 		{
-			var nodes = MiniYaml.Merge(modData.Manifest.Sequences
-				.Select(s => MiniYaml.FromStream(fileSystem.Open(s)))
-				.Append(sequenceNodes));
+			var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Append(mapSequences)
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s))));
 
 			var items = new Dictionary<string, UnitSequences>();
 			foreach (var n in nodes)

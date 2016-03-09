@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -19,6 +20,7 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -66,7 +68,7 @@ namespace OpenRA
 
 	public class Map : IReadOnlyFileSystem
 	{
-		public const int SupportedMapFormat = 9;
+		public const int SupportedMapFormat = 10;
 
 		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
@@ -88,7 +90,7 @@ namespace OpenRA
 		public string Type = "Conquest";
 		public string Author;
 		public string Tileset;
-		public Bitmap CustomPreview;
+		public bool LockPreview;
 		public bool InvalidCustomRules { get; private set; }
 
 		public WVec OffsetOfSubCell(SubCell subCell)
@@ -102,23 +104,18 @@ namespace OpenRA
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
+			var requiredFiles = new[] { "map.yaml", "map.bin" };
+			var contents = package.Contents.ToList();
+			foreach (var required in requiredFiles)
+				if (!contents.Contains(required))
+					throw new FileNotFoundException("Required file {0} not present in this map".F(required));
+
 			using (var ms = new MemoryStream())
 			{
-				// Read the relevant data into the buffer
-				using (var s = package.GetStream("map.yaml"))
-				{
-					if (s == null)
-						throw new FileNotFoundException("Required file map.yaml not present in this map");
-					s.CopyTo(ms);
-				}
-
-				using (var s = package.GetStream("map.bin"))
-				{
-					if (s == null)
-						throw new FileNotFoundException("Required file map.bin not present in this map");
-
-					s.CopyTo(ms);
-				}
+				foreach (var filename in contents)
+					if (filename.EndsWith(".yaml") || filename.EndsWith(".bin") || filename.EndsWith(".lua"))
+						using (var s = package.GetStream(filename))
+							s.CopyTo(ms);
 
 				// Take the SHA1
 				ms.Seek(0, SeekOrigin.Begin);
@@ -144,18 +141,17 @@ namespace OpenRA
 		public Lazy<CPos[]> SpawnPoints;
 
 		// Yaml map data
-		[FieldLoader.Ignore] public List<MiniYamlNode> RuleDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> SequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequenceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> WeaponDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> VoiceDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> MusicDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> NotificationDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> TranslationDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public readonly string[] RuleDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] SequenceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] VoxelSequenceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] WeaponDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] VoiceDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] MusicDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] NotificationDefinitions = { };
+		[FieldLoader.Ignore] public readonly string[] TranslationDefinitions = { };
 
+		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> SmudgeDefinitions = new List<MiniYamlNode>();
 
 		// Binary map data
 		[FieldLoader.Ignore] public byte TileFormat = 2;
@@ -186,6 +182,13 @@ namespace OpenRA
 			using (var s = Package.GetStream(filename))
 				if (s == null)
 					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
+		}
+
+		void LoadFileList(MiniYaml yaml, string section, ref string[] files)
+		{
+			MiniYamlNode node;
+			if ((node = yaml.Nodes.FirstOrDefault(n => n.Key == section)) != null)
+				files = FieldLoader.GetValue<string[]>(section, node.Value.Value);
 		}
 
 		/// <summary>
@@ -257,18 +260,17 @@ namespace OpenRA
 				return spawns.ToArray();
 			});
 
-			RuleDefinitions = MiniYaml.NodesOrEmpty(yaml, "Rules");
-			SequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Sequences");
-			VoxelSequenceDefinitions = MiniYaml.NodesOrEmpty(yaml, "VoxelSequences");
-			WeaponDefinitions = MiniYaml.NodesOrEmpty(yaml, "Weapons");
-			VoiceDefinitions = MiniYaml.NodesOrEmpty(yaml, "Voices");
-			MusicDefinitions = MiniYaml.NodesOrEmpty(yaml, "Music");
-			NotificationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Notifications");
-			TranslationDefinitions = MiniYaml.NodesOrEmpty(yaml, "Translations");
-			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
+			LoadFileList(yaml, "Rules", ref RuleDefinitions);
+			LoadFileList(yaml, "Sequences", ref SequenceDefinitions);
+			LoadFileList(yaml, "VoxelSequences", ref VoxelSequenceDefinitions);
+			LoadFileList(yaml, "Weapons", ref WeaponDefinitions);
+			LoadFileList(yaml, "Voices", ref VoiceDefinitions);
+			LoadFileList(yaml, "Music", ref MusicDefinitions);
+			LoadFileList(yaml, "Notifications", ref NotificationDefinitions);
+			LoadFileList(yaml, "Translations", ref TranslationDefinitions);
 
+			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
-			SmudgeDefinitions = MiniYaml.NodesOrEmpty(yaml, "Smudges");
 
 			MapTiles = Exts.Lazy(LoadMapTiles);
 			MapResources = Exts.Lazy(LoadResourceTiles);
@@ -279,10 +281,6 @@ namespace OpenRA
 			SubCellOffsets = Grid.SubCellOffsets;
 			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
 			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
-
-			if (Package.Contains("map.png"))
-				using (var dataStream = Package.GetStream("map.png"))
-					CustomPreview = new Bitmap(dataStream);
 
 			PostInit();
 
@@ -443,22 +441,36 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
 			}
 
+			// Save LockPreview field only if it's set
+			if (LockPreview)
+				root.Add(new MiniYamlNode("LockPreview", "True"));
+
 			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
 			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
-			root.Add(new MiniYamlNode("Smudges", null, SmudgeDefinitions));
-			root.Add(new MiniYamlNode("Rules", null, RuleDefinitions));
-			root.Add(new MiniYamlNode("Sequences", null, SequenceDefinitions));
-			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequenceDefinitions));
-			root.Add(new MiniYamlNode("Weapons", null, WeaponDefinitions));
-			root.Add(new MiniYamlNode("Voices", null, VoiceDefinitions));
-			root.Add(new MiniYamlNode("Music", null, MusicDefinitions));
-			root.Add(new MiniYamlNode("Notifications", null, NotificationDefinitions));
-			root.Add(new MiniYamlNode("Translations", null, TranslationDefinitions));
+
+			var fileFields = new[]
+			{
+				Pair.New("Rules", RuleDefinitions),
+				Pair.New("Sequences", SequenceDefinitions),
+				Pair.New("VoxelSequences", VoxelSequenceDefinitions),
+				Pair.New("Weapons", WeaponDefinitions),
+				Pair.New("Voices", VoiceDefinitions),
+				Pair.New("Music", MusicDefinitions),
+				Pair.New("Notifications", NotificationDefinitions),
+				Pair.New("Translations", TranslationDefinitions)
+			};
+
+			foreach (var kv in fileFields)
+				if (kv.Second.Any())
+					root.Add(new MiniYamlNode(kv.First, FieldSaver.FormatValue(kv.Second)));
 
 			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
 					toPackage.Update(file, Package.GetStream(file).ReadAllBytes());
+
+			if (!LockPreview)
+				toPackage.Update("map.png", SavePreview());
 
 			// Update the package with the new map data
 			var s = root.WriteToString();
@@ -605,6 +617,84 @@ namespace OpenRA
 			}
 
 			return dataStream.ToArray();
+		}
+
+		public byte[] SavePreview()
+		{
+			var tileset = Rules.TileSets[Tileset];
+			var resources = Rules.Actors["world"].TraitInfos<ResourceTypeInfo>()
+				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
+
+			using (var stream = new MemoryStream())
+			{
+				var isRectangularIsometric = Grid.Type == MapGridType.RectangularIsometric;
+
+				// Fudge the heightmap offset by adding as much extra as we need / can.
+				// This tries to correct for our incorrect assumption that MPos == PPos
+				var heightOffset = Math.Min(Grid.MaximumTerrainHeight, MapSize.Y - Bounds.Bottom);
+				var width = Bounds.Width;
+				var height = Bounds.Height + heightOffset;
+
+				var bitmapWidth = width;
+				if (isRectangularIsometric)
+					bitmapWidth = 2 * bitmapWidth - 1;
+
+				using (var bitmap = new Bitmap(bitmapWidth, height))
+				{
+					var bitmapData = bitmap.LockBits(bitmap.Bounds(),
+						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+					unsafe
+					{
+						var colors = (int*)bitmapData.Scan0;
+						var stride = bitmapData.Stride / 4;
+						Color leftColor, rightColor;
+
+						for (var y = 0; y < height; y++)
+						{
+							for (var x = 0; x < width; x++)
+							{
+								var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
+								var resourceType = MapResources.Value[uv].Type;
+								if (resourceType != 0)
+								{
+									// Cell contains resources
+									string res;
+									if (!resources.TryGetValue(resourceType, out res))
+										continue;
+
+									leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
+								}
+								else
+								{
+									// Cell contains terrain
+									var type = tileset.GetTileInfo(MapTiles.Value[uv]);
+									leftColor = type != null ? type.LeftColor : Color.Black;
+									rightColor = type != null ? type.RightColor : Color.Black;
+								}
+
+								if (isRectangularIsometric)
+								{
+									// Odd rows are shifted right by 1px
+									var dx = uv.V & 1;
+									if (x + dx > 0)
+										colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
+
+									if (2 * x + dx < stride)
+										colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
+								}
+								else
+									colors[y * stride + x] = leftColor.ToArgb();
+							}
+						}
+					}
+
+					bitmap.UnlockBits(bitmapData);
+					bitmap.Save(stream, ImageFormat.Png);
+				}
+
+				return stream.ToArray();
+			}
 		}
 
 		public bool Contains(CPos cell)

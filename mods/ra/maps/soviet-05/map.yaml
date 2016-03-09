@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: ra
 
@@ -15,6 +15,8 @@ Bounds: 20,42,90,50
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -601,151 +603,4 @@ Actors:
 		Location: 21,80
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		-EnemyWatcher:
-		MissionObjectives:
-			EarlyGameOver: true
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 5000
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet05.lua, soviet05-AI.lua, soviet05-reinforcements_teams.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MissionData:
-			Briefing: Khalkis island contains a large quantity of ore that we need.\n\nThe Allies are well aware of our plans, and intend to establish their own base there. See to it that they fail.\n\nIn addition, capture their radar center so we can track Allied activity in this area.
-			BriefingVideo: soviet5.vqa
-			StartVideo: double.vqa
-			WinVideo: strafe.vqa
-			LossVideo: sovbatl.vqa
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			TechLevelLocked: True
-			TechLevel: Medium
-			Difficulties: Easy, Normal, Hard
-			ShortGameLocked: True
-			ShortGameEnabled: False
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	AFLD:
-		ParatroopersPower@paratroopers:
-			DropItems: E1,E1,E1,E2,E2
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~tent
-	E4:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	SPY:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	MCV:
-		Buildable:
-			Prerequisites: ~disabled
-	FTRK:
-		Buildable:
-			Prerequisites: ~disabled
-	TRUK:
-		Buildable:
-			Prerequisites: ~disabled
-	APC:
-		Buildable:
-			Prerequisites: ~disabled
-	DOME.IGNORE:
-		Inherits: DOME
-		RenderSprites:
-			Image: DOME
-		AutoTargetIgnore:
-		Buildable:
-			Prerequisites: ~disabled
-	powerproxy.paratroopers:
-		ParatroopersPower:
-			DropItems: E1,E1,E1,E1,E1
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

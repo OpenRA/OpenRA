@@ -1,4 +1,4 @@
-MapFormat: 9
+MapFormat: 10
 
 RequiresMod: cnc
 
@@ -15,6 +15,8 @@ Bounds: 15,1,47,61
 Visibility: MissionSelector
 
 Type: Campaign
+
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -1014,206 +1016,8 @@ Actors:
 		Owner: GDI
 		Location: 55,61
 
-Smudges:
+Rules: rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-		IndexedPlayerPalette@units:
-			BasePalette: terrain
-			BaseName: player-units
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		LuaScript:
-			Scripts: gdi06.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			BackgroundMusic: rain-ambient
-			StartingMusic: rain
-		WeatherOverlay:
-			ParticleDensityFactor: 0.0007625
-			ChangingWindLevel: true
-			WindLevels: -5, -3, -2, 0, 2, 3, 5
-			WindTick: 150, 550
-			InstantWindChanges: false
-			UseSquares: false
-			ScatterDirection: 0, 0
-			Gravity: 8.00, 12.00
-			SwingOffset: 0, 0
-			SwingSpeed: 0, 0
-			SwingAmplitude: 0, 0
-			ParticleColors: 304074, 28386C, 202C60, 182C54
-			LineTailAlphaValue: 150
-			ParticleSize: 1, 1
-		GlobalLightingPaletteEffect:
-			Red: 0.75
-			Green: 0.85
-			Blue: 1.5
-			Ambient: 0.35
-		MissionData:
-			Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
-			BriefingVideo: gdi6.vqa
-			StartVideo: nitejump.vqa
-			WinVideo: sabotage.vqa
-			LossVideo: gdilose.vqa
-		MapCreeps:
-			Locked: True
-			Enabled: False
-		MapBuildRadius:
-			AllyBuildRadiusLocked: True
-			AllyBuildRadiusEnabled: False
-		MapOptions:
-			Difficulties: Easy, Normal, Hard
-			ShortGameLocked: True
-			ShortGameEnabled: True
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		Shroud:
-			FogLocked: True
-			FogEnabled: True
-			ExploredMapLocked: True
-			ExploredMapEnabled: False
-		PlayerResources:
-			DefaultCashLocked: True
-			DefaultCash: 0
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy, Neutral
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	FLARE:
-		RevealsShroud:
-			Range: 5c0
-	OLDLST:
-		Inherits: LST
-		-WithRoof:
-		-Selectable:
-		RejectsOrders:
-		Cargo:
-			Types: disabled
-	SAM:
-		SpawnActorOnDeath:
-			Actor: e1
-	RMBO:
-		MustBeDestroyed:
-			RequiredForShortGame: true
-		AutoTarget:
-			TargetWhenIdle: false
-			TargetWhenDamaged: true
-		Health:
-			HP: 150
-	RMBO.easy:
-		Inherits: RMBO
-		Health:
-			HP: 300
-		SelfHealing:
-			Ticks: 10
-			HealIfBelow: 50%
-			DamageCooldown: 200
-		RenderSprites:
-			Image: RMBO
-	RMBO.hard:
-		Inherits: RMBO
-		AutoTarget:
-			TargetWhenDamaged: false
-		RenderSprites:
-			Image: RMBO
-	E3.sticky:
-		Inherits: E3
-		AutoTarget:
-			AllowMovement: false
-		RenderSprites:
-			Image: E3
-	HARV:
-		RenderSprites:
-			PlayerPalette: player
-	MCV:
-		RenderSprites:
-			PlayerPalette: player
-	HARV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	MCV.Husk:
-		RenderSprites:
-			PlayerPalette: player
+Sequences: sequences.yaml
 
-Sequences:
-	oldlst:
-		idle: lst
-			Start: 0
-			Facings: 1
-			ZOffset: -1024
-		icon: lsticnh.tem
-			AddExtension: False
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-	rain-ambient: Rain (ambient)
-		Hidden: true
-
-Notifications:
-
-Translations:
+Music: music.yaml

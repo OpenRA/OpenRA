@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public ModData ModData;
 		public Map Map;
+		public IReadWritePackage Package;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
 		public MiniYaml Rules = new MiniYaml("");
@@ -51,6 +52,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 
 			var filename = args[1];
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			Package = new ZipFile(modData.ModFiles, dest, true);
 			using (var stream = modData.DefaultFileSystem.Open(filename))
 			{
 				var file = new IniFile(stream);
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				ReadActors(file);
 
-				LoadSmudges(file, "SMUDGE", MapSize, Map);
+				LoadSmudges(file, "SMUDGE");
 
 				var waypoints = file.GetSection("Waypoints");
 				LoadWaypoints(Map, waypoints, MapSize);
@@ -93,11 +96,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			Map.FixOpenAreas();
 
-			Map.RuleDefinitions = Rules.Nodes;
+			if (Rules.Nodes.Any())
+			{
+				// HACK: bypassing the readonly modifier here is still better than leaving this mutable by everyone
+				typeof(Map).GetField("RuleDefinitions").SetValue(Map, new[] { "rules.yaml" });
 
-			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			var package = new ZipFile(modData.ModFiles, dest, true);
-			Map.Save(package);
+				var rulesText = Rules.Nodes.ToLines(false).JoinWith("\n");
+				Package.Update("rules.yaml", System.Text.Encoding.ASCII.GetBytes(rulesText));
+			}
+
+			Map.Save(Package);
 			Console.WriteLine(dest + " saved.");
 		}
 
@@ -271,16 +279,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		static void LoadSmudges(IniFile file, string section, int mapSize, Map map)
+		void LoadSmudges(IniFile file, string section)
 		{
+			var scorches = new List<MiniYamlNode>();
+			var craters = new List<MiniYamlNode>();
 			foreach (var s in file.GetSection(section, true))
 			{
 				// loc=type,loc,depth
 				var parts = s.Value.Split(',');
 				var loc = Exts.ParseIntegerInvariant(parts[1]);
-				var key = "{0} {1},{2} {3}".F(parts[0].ToLowerInvariant(), loc % mapSize, loc / mapSize, Exts.ParseIntegerInvariant(parts[2]));
-				map.SmudgeDefinitions.Add(new MiniYamlNode(key, ""));
+				var type = parts[0].ToLowerInvariant();
+				var key = "{0},{1}".F(loc % MapSize, loc / MapSize);
+				var value = "{0},{1}".F(type, parts[2]);
+				var node = new MiniYamlNode(key, value);
+				if (type.StartsWith("sc"))
+					scorches.Add(node);
+				else if (type.StartsWith("cr"))
+					craters.Add(node);
 			}
+
+			var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+			if (worldNode == null)
+				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+
+			if (scorches.Any())
+			{
+				var initialScorches = new MiniYamlNode("InitialSmudges", new MiniYaml("", scorches));
+				var smudgeLayer = new MiniYamlNode("SmudgeLayer@SCORCH", new MiniYaml("", new List<MiniYamlNode>() { initialScorches }));
+				worldNode.Value.Nodes.Add(smudgeLayer);
+			}
+
+			if (craters.Any())
+			{
+				var initialCraters = new MiniYamlNode("InitialSmudges", new MiniYaml("", craters));
+				var smudgeLayer = new MiniYamlNode("SmudgeLayer@CRATER", new MiniYaml("", new List<MiniYamlNode>() { initialCraters }));
+				worldNode.Value.Nodes.Add(smudgeLayer);
+			}
+
+			if (worldNode.Value.Nodes.Any() && !Rules.Nodes.Contains(worldNode))
+				Rules.Nodes.Add(worldNode);
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
