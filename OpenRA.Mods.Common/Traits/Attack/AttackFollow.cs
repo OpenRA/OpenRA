@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
-				attack = self.Trait<AttackFollow>();
+				attack = self.TraitsImplementing<AttackFollow>().Where(af => !af.IsTraitDisabled).First();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				// HACK: Mobile.OnRails is horrible. Blergh.

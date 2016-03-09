@@ -20,12 +20,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}
 
-	public class AttackTurreted : AttackFollow
+	public class AttackTurreted : AttackFollow, INotifyCreated
 	{
 		protected Turreted[] turrets;
 
 		public AttackTurreted(Actor self, AttackTurretedInfo info)
-			: base(self, info)
+			: base(self, info) { }
+
+		public void Created(Actor self)
 		{
 			turrets = self.TraitsImplementing<Turreted>().ToArray();
 		}
@@ -35,11 +37,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!base.CanAttack(self, target))
 				return false;
 
+			// Rotate all turrets to make sure upgrading a turret does not change the turret's facing.
+			var faceTarget = false;
 			foreach (var t in turrets)
-				if (t.FaceTarget(self, target))
-					return true;
+				if (t.FaceTarget(self, target) && !t.IsTraitDisabled)
+					faceTarget = true;
 
-			return false;
+			return faceTarget;
 		}
 	}
 }
