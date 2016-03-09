@@ -296,7 +296,8 @@ namespace OpenRA
 			{
 				try
 				{
-					return Ruleset.LoadFromMap(modData, this);
+					return Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
+						VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
 				}
 				catch (Exception e)
 				{

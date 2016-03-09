@@ -53,10 +53,11 @@ namespace OpenRA
 		public readonly bool downloading;
 	}
 
-	public class MapPreview : IDisposable
+	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
 		static readonly CPos[] NoSpawns = new CPos[] { };
 		MapCache cache;
+		ModData modData;
 
 		public readonly string Uid;
 		public IReadOnlyPackage Package { get; private set; }
@@ -65,6 +66,8 @@ namespace OpenRA
 		public string Title { get; private set; }
 		public string Type { get; private set; }
 		public string Author { get; private set; }
+		public string TileSet { get; private set; }
+		public MapPlayers Players { get; private set; }
 		public int PlayerCount { get; private set; }
 		public CPos[] SpawnPoints { get; private set; }
 		public MapGridType GridType { get; private set; }
@@ -74,6 +77,10 @@ namespace OpenRA
 		public MapClassification Class { get; private set; }
 		public MapVisibility Visibility { get; private set; }
 		public bool SuitableForInitialMap { get; private set; }
+
+		Lazy<Ruleset> rules;
+		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+		public bool InvalidCustomRules { get; private set; }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -101,9 +108,11 @@ namespace OpenRA
 			generatingMinimap = false;
 		}
 
-		public MapPreview(string uid, MapGridType gridType, MapCache cache)
+		public MapPreview(ModData modData, string uid, MapGridType gridType, MapCache cache)
 		{
 			this.cache = cache;
+			this.modData = modData;
+
 			Uid = uid;
 			Title = "Unknown Map";
 			Type = "Unknown";
@@ -145,6 +154,8 @@ namespace OpenRA
 				Title = temp.Value;
 			if (yaml.TryGetValue("Type", out temp))
 				Type = temp.Value;
+			if (yaml.TryGetValue("Tileset", out temp))
+				TileSet = temp.Value;
 			if (yaml.TryGetValue("Author", out temp))
 				Author = temp.Value;
 			if (yaml.TryGetValue("Bounds", out temp))
@@ -188,9 +199,9 @@ namespace OpenRA
 				MiniYaml playerDefinitions;
 				if (yaml.TryGetValue("Players", out playerDefinitions))
 				{
-					var players = new MapPlayers(playerDefinitions.Nodes).Players;
-					PlayerCount = players.Count(x => x.Value.Playable);
-					SuitableForInitialMap = EvaluateUserFriendliness(players);
+					Players = new MapPlayers(playerDefinitions.Nodes);
+					PlayerCount = Players.Players.Count(x => x.Value.Playable);
+					SuitableForInitialMap = EvaluateUserFriendliness(Players.Players);
 				}
 			}
 			catch (Exception)
@@ -198,9 +209,39 @@ namespace OpenRA
 				Status = MapStatus.Unavailable;
 			}
 
+			rules = Exts.Lazy(() =>
+			{
+				try
+				{
+					var ruleDefinitions = LoadRuleSection(yaml, "Rules");
+					var weaponDefinitions = LoadRuleSection(yaml, "Weapons");
+					var voiceDefinitions = LoadRuleSection(yaml, "Voices");
+					var musicDefinitions = LoadRuleSection(yaml, "Music");
+					var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
+					var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
+					return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+						voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+				}
+				catch
+				{
+					InvalidCustomRules = true;
+				}
+
+				return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
+			});
+
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
 					Preview = new Bitmap(dataStream);
+		}
+
+		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
+		{
+			MiniYaml node;
+			if (!yaml.TryGetValue(section, out node))
+				return null;
+
+			return node;
 		}
 
 		bool EvaluateUserFriendliness(Dictionary<string, PlayerReference> players)
@@ -366,6 +407,43 @@ namespace OpenRA
 			var deleteFromPackage = parentPackage as IReadWritePackage;
 			if (deleteFromPackage != null)
 				deleteFromPackage.Delete(Package.Name);
+		}
+
+		Stream IReadOnlyFileSystem.Open(string filename)
+		{
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|") && Package.Contains(filename))
+				return Package.GetStream(filename);
+
+			return modData.DefaultFileSystem.Open(filename);
+		}
+
+		bool IReadOnlyFileSystem.TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
+		{
+			// Packages aren't supported inside maps
+			return modData.DefaultFileSystem.TryGetPackageContaining(path, out package, out filename);
+		}
+
+		bool IReadOnlyFileSystem.TryOpen(string filename, out Stream s)
+		{
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|"))
+			{
+				s = Package.GetStream(filename);
+				if (s != null)
+					return true;
+			}
+
+			return modData.DefaultFileSystem.TryOpen(filename, out s);
+		}
+
+		bool IReadOnlyFileSystem.Exists(string filename)
+		{
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|") && Package.Contains(filename))
+				return true;
+
+			return modData.DefaultFileSystem.Exists(filename);
 		}
 	}
 }

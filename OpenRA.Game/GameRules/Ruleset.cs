@@ -148,7 +148,9 @@ namespace OpenRA
 			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, ts, sequences);
 		}
 
-		public static Ruleset LoadFromMap(ModData modData, Map map)
+		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, string tileSet,
+			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications,
+			MiniYaml mapMusic, MiniYaml mapSequences)
 		{
 			var m = modData.Manifest;
 			var dr = modData.DefaultRules;
@@ -156,27 +158,27 @@ namespace OpenRA
 			Ruleset ruleset = null;
 			Action f = () =>
 			{
-				var actors = MergeOrDefault("Manifest,Rules", map, m.Rules, map.RuleDefinitions, dr.Actors,
+				var actors = MergeOrDefault("Rules", fileSystem, m.Rules, mapRules, dr.Actors,
 					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
 
-				var weapons = MergeOrDefault("Manifest,Weapons", map, m.Weapons, map.WeaponDefinitions, dr.Weapons,
+				var weapons = MergeOrDefault("Weapons", fileSystem, m.Weapons, mapWeapons, dr.Weapons,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 
-				var voices = MergeOrDefault("Manifest,Voices", map, m.Voices, map.VoiceDefinitions, dr.Voices,
+				var voices = MergeOrDefault("Voices", fileSystem, m.Voices, mapVoices, dr.Voices,
 					k => new SoundInfo(k.Value));
 
-				var notifications = MergeOrDefault("Manifest,Notifications", map, m.Notifications, map.NotificationDefinitions, dr.Notifications,
+				var notifications = MergeOrDefault("Notifications", fileSystem, m.Notifications, mapNotifications, dr.Notifications,
 					k => new SoundInfo(k.Value));
 
-				var music = MergeOrDefault("Manifest,Music", map, m.Music, map.NotificationDefinitions, dr.Music,
+				var music = MergeOrDefault("Music", fileSystem, m.Music, mapMusic, dr.Music,
 					k => new MusicInfo(k.Key, k.Value));
 
 				// TODO: Add support for merging custom tileset modifications
-				var ts = modData.DefaultTileSets[map.Tileset];
+				var ts = modData.DefaultTileSets[tileSet];
 
 				// TODO: Top-level dictionary should be moved into the Ruleset instead of in its own object
-				var sequences = map.SequenceDefinitions == null ? modData.DefaultSequences[map.Tileset] :
-					new SequenceProvider(map, modData, ts, map.SequenceDefinitions);
+				var sequences = mapSequences == null ? modData.DefaultSequences[tileSet] :
+					new SequenceProvider(fileSystem, modData, ts, mapSequences);
 
 				// TODO: Add support for custom voxel sequences
 				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences);
