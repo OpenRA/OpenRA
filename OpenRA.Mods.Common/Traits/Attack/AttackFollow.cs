@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AttackActivity : Activity
 		{
-			readonly AttackFollow attack;
+			readonly AttackFollow[] attackArray;
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
-				attack = self.Trait<AttackFollow>();
+				attackArray = self.TraitsImplementing<AttackFollow>().ToArray();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				// HACK: Mobile.OnRails is horrible. Blergh.
@@ -93,9 +94,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.IsDisabled())
 					return this;
 
-				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
-				if (weapon != null)
+				var attack = SelectActiveAttack(target, forceAttack).FirstOrDefault();
+				if (attack.Key != null)
 				{
+					var weapon = attack.Value;
 					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<IMoveInfo>())
 						|| (target.Type == TargetType.FrozenActor && target.FrozenActor.Info.HasTraitInfo<IMoveInfo>());
 
@@ -106,10 +108,10 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackFollow modify that field is a horrible hack.
-					if (hasTicked && attack.Target.Type == TargetType.Invalid)
+					if (hasTicked && attack.Key.Target.Type == TargetType.Invalid)
 						return NextActivity;
 
-					attack.Target = target;
+					attack.Key.Target = target;
 					hasTicked = true;
 
 					if (move != null)
@@ -121,9 +123,19 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (!onRailsHack)
-					attack.Target = Target.Invalid;
+					attack.Key.Target = Target.Invalid;
 
 				return NextActivity;
+			}
+
+			IEnumerable<KeyValuePair<AttackFollow, Armament>> SelectActiveAttack(Target t, bool forceAttack)
+			{
+				foreach (var a in attackArray)
+					if (!a.IsTraitDisabled)
+						foreach (var w in a.ChooseArmamentsForTarget(t, forceAttack))
+							yield return new KeyValuePair<AttackFollow, Armament>(a, w);
+
+				yield break;
 			}
 		}
 	}

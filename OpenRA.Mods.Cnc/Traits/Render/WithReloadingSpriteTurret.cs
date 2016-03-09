@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public override void Tick(Actor self)
 		{
 			if (Info.AimSequence != null)
-				sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
+				sequence = Attack.Any(a => a.IsAttacking && !a.IsTraitDisabled) ? Info.AimSequence : Info.Sequence;
 
 			var currentAmmo = ammoPool.GetAmmoCount();
 			if (reloadStages < 0)

@@ -20,14 +20,23 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}
 
-	public class AttackTurreted : AttackFollow
+	public class AttackTurreted : AttackFollow, INotifyCreated
 	{
 		protected Turreted[] turrets;
 
 		public AttackTurreted(Actor self, AttackTurretedInfo info)
-			: base(self, info)
+			: base(self, info) { }
+
+		protected void SetupTurrets(Actor self)
 		{
-			turrets = self.TraitsImplementing<Turreted>().ToArray();
+			var armamentturrets = getArmaments().Select(x => x.Info.Turret).ToHashSet();
+
+			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToArray();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			SetupTurrets(self);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)
@@ -38,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Don't break early from this loop - we want to bring all turrets to bear!
 			var turretReady = false;
 			foreach (var t in turrets)
-				if (t.FaceTarget(self, target))
+				if (t.FaceTarget(self, target, this) && !t.IsTraitDisabled)
 					turretReady = true;
 
 			return turretReady && base.CanAttack(self, target);

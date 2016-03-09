@@ -11,12 +11,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
+	public class TurretedInfo : UpgradableTraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -29,10 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
+		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, INotifyCreated, IDeathActorInitModifier, IActorPreviewInitModifier
+	public class Turreted : UpgradableTrait<TurretedInfo>, ITick, ISync, INotifyCreated, IDeathActorInitModifier, IActorPreviewInitModifier
 	{
 		readonly TurretedInfo info;
 		AttackTurreted attack;
@@ -85,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
+			: base(info)
 		{
 			this.info = info;
 			TurretFacing = TurretFacingFromInit(init, info.InitialFacing, info.Turret)();
@@ -92,7 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			attack = self.TraitOrDefault<AttackTurreted>();
 			facing = self.TraitOrDefault<IFacing>();
 			body = self.Trait<BodyOrientation>();
 		}
@@ -100,23 +101,22 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual void Tick(Actor self)
 		{
 			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
-			if (attack != null)
+			if (attack == null)
 			{
-				if (!attack.IsAttacking)
+				if (realignTick < info.RealignDelay)
+					realignTick++;
+				else if (info.RealignDelay > -1)
 				{
-					if (realignTick < info.RealignDelay)
-						realignTick++;
-					else if (info.RealignDelay > -1)
-						DesiredFacing = null;
-
-					MoveTurret();
+					DesiredFacing = null;
+					realignTick = 0;
 				}
-			}
-			else
-			{
-				realignTick = 0;
+
 				MoveTurret();
+				return;
 			}
+
+			if (!attack.IsAttacking || attack.IsTraitDisabled)
+				attack = null;
 		}
 
 		void MoveTurret()
@@ -125,10 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 			TurretFacing = Util.TickFacing(TurretFacing, df, info.TurnSpeed);
 		}
 
-		public bool FaceTarget(Actor self, Target target)
+		public bool FaceTarget(Actor self, Target target, AttackTurreted at)
 		{
 			if (self.IsDisabled())
 				return false;
+
+			attack = at;
 
 			var delta = target.CenterPosition - self.CenterPosition;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;

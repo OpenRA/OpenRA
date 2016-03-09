@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteTurret : UpgradableTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, ITick, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
-		protected readonly AttackBase Attack;
+		protected readonly AttackBase[] Attack;
 		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<BodyOrientation>();
-			Attack = self.TraitOrDefault<AttackBase>();
+			Attack = self.TraitsImplementing<AttackBase>().ToArray();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.AimSequence == null)
 				return;
 
-			var sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
+			var sequence = Attack.Any(a => a.IsAttacking && !a.IsTraitDisabled) ? Info.AimSequence : Info.Sequence;
 			DefaultAnimation.ReplaceAnim(sequence);
 		}
 
