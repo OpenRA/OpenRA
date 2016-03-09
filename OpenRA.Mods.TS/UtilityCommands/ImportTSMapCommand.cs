@@ -165,8 +165,6 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var filename = args[1];
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var map = GenerateMapHeader(filename, file, modData);
-			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			var package = new ZipFile(modData.DefaultFileSystem, dest, true);
 
 			ReadTiles(map, file);
 			ReadActors(map, file, "Structures");
@@ -175,11 +173,13 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			ReadTerrainActors(map, file);
 			ReadWaypoints(map, file);
 			ReadOverlay(map, file);
-			ReadLighting(map, package, file);
+			ReadLighting(map, file);
 
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = new ZipFile(modData.DefaultFileSystem, dest, true);
 			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
@@ -431,12 +431,11 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			}
 		}
 
-		void ReadLighting(Map map, IReadWritePackage package, IniFile file)
+		void ReadLighting(Map map, IniFile file)
 		{
 			var lightingTypes = new[] { "Red", "Green", "Blue", "Ambient" };
 			var lightingSection = file.GetSection("Lighting");
-			var lightingNode = new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", new List<MiniYamlNode>()));
-			var worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>() { lightingNode }));
+			var lightingNodes = new List<MiniYamlNode>();
 
 			foreach (var kv in lightingSection)
 			{
@@ -444,19 +443,18 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				{
 					var val = FieldLoader.GetValue<float>(kv.Key, kv.Value);
 					if (val != 1.0f)
-						lightingNode.Value.Nodes.Add(new MiniYamlNode(kv.Key, FieldSaver.FormatValue(val)));
+						lightingNodes.Add(new MiniYamlNode(kv.Key, FieldSaver.FormatValue(val)));
 				}
 				else
 					Console.WriteLine("Ignoring unknown lighting type: `{0}`".F(kv.Key));
 			}
 
-			if (lightingNode.Value.Nodes.Any())
+			if (lightingNodes.Any())
 			{
-				// HACK: bypassing the readonly modifier here is still better than leaving this mutable by everyone
-				typeof(Map).GetField("RuleDefinitions").SetValue(map, new[] { "rules.yaml" });
-
-				var rulesText = new List<MiniYamlNode>() { worldNode }.ToLines(false).JoinWith("\n");
-				package.Update("rules.yaml", System.Text.Encoding.ASCII.GetBytes(rulesText));
+				map.RuleDefinitions.Nodes.Add(new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()
+				{
+					new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", lightingNodes))
+				})));
 			}
 		}
 	}

@@ -201,6 +201,10 @@ namespace OpenRA
 			MapSize = new int2(size);
 			Tileset = tileset.Id;
 
+			// Empty rules that can be added to by the importers.
+			// Will be dropped on save if nothing is added to it
+			RuleDefinitions = new MiniYaml("");
+
 			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
 
 			MapTiles = Exts.Lazy(() =>
