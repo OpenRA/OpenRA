@@ -219,7 +219,7 @@ function debugger:updateStackAndWatches()
   local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger:update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
     copas.addthread(function()
         local debugger = debugger
@@ -233,7 +233,7 @@ function debugger:updateWatches(item)
   local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger:update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
     copas.addthread(function()
         local debugger = debugger
@@ -246,7 +246,7 @@ function debugger:updateStack()
   local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger:update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
     copas.addthread(function()
         local debugger = debugger
@@ -458,7 +458,7 @@ function debugger:shell(expression, isstatement)
   local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger:update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running
   and (not debugger.scratchpad or debugger.scratchpad.paused) then
     copas.addthread(function()
@@ -591,7 +591,7 @@ function debugger:Listen(start)
       if options.refuseonconflict == nil then options.refuseonconflict = ide.config.debugger.refuseonconflict end
 
       -- pull any pending data not processed yet
-      if debugger.running then debugger:update() end
+      if debugger.running then debugger:Update() end
       if debugger.server and options.refuseonconflict then
         DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
@@ -947,7 +947,7 @@ do
     -- force editor update that performs wrapping recalculation.
     if ide.config.editor.usewrap then editor:Update(); editor:Refresh() end
   end
-  function debugger:update()
+  function debugger:Update()
     local debugger = self
     if debugger.server or debugger.listening and TimeGet() > nextupdate then
       copas.step(0)
@@ -1027,18 +1027,18 @@ function debugger:RunTo(editor, line)
       -- but only if this location is different
       if ed and ln and not same then
         debugger:BreakpointToggle(ed, ln)
-        debugger:wait()
+        debugger:Wait()
       end
       if not same then
         debugger:BreakpointToggle(editor, line)
-        debugger:wait()
+        debugger:Wait()
       end
     end)
 end
-function debugger:wait()
+function debugger:Wait()
   local debugger = self
   -- wait for all results to come back
-  while debugger.running do debugger:update() end
+  while debugger.running do debugger:Update() end
 end
 function debugger:Over() return self:exec("over") end
 function debugger:Out() return self:exec("out") end
@@ -1277,7 +1277,7 @@ local function debuggerCreateWatchWindow()
   function watchCtrl:CopyItemValue(item)
     local expr = self:GetItemFullExpression(item)
 
-    if debugger.running then debugger:update() end
+    if debugger.running then debugger:Update() end
     if debugger.server and not debugger.running
     and (not debugger.scratchpad or debugger.scratchpad.paused) then
       copas.addthread(function()
@@ -1293,7 +1293,7 @@ local function debuggerCreateWatchWindow()
     local expr, itemupd = self:GetItemFullExpression(item)
 
     local debugger = ide:GetDebugger()
-    if debugger.running then debugger:update() end
+    if debugger.running then debugger:Update() end
     if debugger.server and not debugger.running
     and (not debugger.scratchpad or debugger.scratchpad.paused) then
       copas.addthread(function()

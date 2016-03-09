@@ -1042,7 +1042,7 @@ local cma, cman = 0, 1
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
     local debugger = ide:GetDebugger()
-    if (debugger.update) then debugger:update() end
+    debugger:Update()
     if (debugger.scratchpad) then debugger:ScratchpadRefresh() end
     if IndicateIfNeeded() then event:RequestMore(true) end
     PackageEventHandleOnce("onIdleOnce", event)

@@ -28,7 +28,7 @@ pkg.onDebuggerActivate = function(self, debugger, file, line)
   local afile, aline, cmd, args = unpack(commands[command])
   is(file, afile, "Filename is reported as expected after debugger activation ("..command.."/"..#commands..")")
   is(line, aline, "Line number is reported as expected after debugger activation ("..command.."/"..#commands..")")
-  if debugger:IsRunning() then debugger:wait() end
+  if debugger:IsRunning() then debugger:Wait() end
   debugger[cmd](debugger, unpack(args or {}))
   command = command + 1
 end
