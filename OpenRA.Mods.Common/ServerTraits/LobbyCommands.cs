@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Server
 							client.SpawnPoint = 0;
 
 						client.Slot = s;
-						S.SyncClientToPlayerReference(client, server.MapPlayers.Players[s]);
+						S.SyncClientToPlayerReference(client, server.Map.Players.Players[s]);
 
 						if (!slot.LockColor)
 							client.PreferredColor = client.Color = SanitizePlayerColor(server, client.Color, client.Index, conn);
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.Common.Server
 							var tileset = server.Map.Rules.TileSet;
 							var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color);
 							var playerColors = server.LobbyInfo.Clients.Select(c => c.Color.RGB)
-								.Concat(server.MapPlayers.Players.Values.Select(p => p.Color.RGB));
+								.Concat(server.Map.Players.Players.Values.Select(p => p.Color.RGB));
 							bot.Color = bot.PreferredColor = validator.RandomValidColor(server.Random, terrainColors, playerColors);
 
 							server.LobbyInfo.Clients.Add(bot);
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Server
 							bot.Bot = botType;
 						}
 
-						S.SyncClientToPlayerReference(bot, server.MapPlayers.Players[parts[0]]);
+						S.SyncClientToPlayerReference(bot, server.Map.Players.Players[parts[0]]);
 						server.SyncLobbyClients();
 						server.SyncLobbySlots();
 						return true;
@@ -370,9 +370,9 @@ namespace OpenRA.Mods.Common.Server
 							if (c.Slot != null)
 							{
 								// Remove Bot from slot if slot forbids bots
-								if (c.Bot != null && !server.MapPlayers.Players[c.Slot].AllowBots)
+								if (c.Bot != null && !server.Map.Players.Players[c.Slot].AllowBots)
 									server.LobbyInfo.Clients.Remove(c);
-								S.SyncClientToPlayerReference(c, server.MapPlayers.Players[c.Slot]);
+								S.SyncClientToPlayerReference(c, server.Map.Players.Players[c.Slot]);
 							}
 							else if (c.Bot != null)
 								server.LobbyInfo.Clients.Remove(c);
@@ -387,12 +387,12 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SendMessage("{0} changed the map to {1}.".F(client.Name, server.Map.Title));
 
-						if (server.Map.RuleDefinitions != null)
+						if (server.Map.Rules.Actors != server.ModData.DefaultRules.Actors)
 							server.SendMessage("This map contains custom rules. Game experience may change.");
 
 						if (server.Settings.DisableSinglePlayer)
 							server.SendMessage("Singleplayer games have been disabled on this server.");
-						else if (server.MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+						else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 							server.SendMessage("Bots have been disabled on this map.");
 
 						return true;
@@ -875,7 +875,7 @@ namespace OpenRA.Mods.Common.Server
 
 						int spawnPoint;
 						if (!Exts.TryParseIntegerInvariant(parts[1], out spawnPoint)
-							|| spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Value.Length)
+							|| spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Length)
 						{
 							Log.Write("server", "Invalid spawn point: {0}", parts[1]);
 							return true;
@@ -1042,10 +1042,9 @@ namespace OpenRA.Mods.Common.Server
 
 		static void LoadMap(S server)
 		{
-			server.Map = new Map(server.ModData, server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map].Package);
+			server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map];
 
-			server.MapPlayers = new MapPlayers(server.Map.PlayerDefinitions);
-			server.LobbyInfo.Slots = server.MapPlayers.Players
+			server.LobbyInfo.Slots = server.Map.Players.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
@@ -1067,7 +1066,7 @@ namespace OpenRA.Mods.Common.Server
 			var tileset = server.Map.Rules.TileSet;
 			var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color).ToList();
 			var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color.RGB)
-				.Concat(server.MapPlayers.Players.Values.Select(p => p.Color.RGB)).ToList();
+				.Concat(server.Map.Players.Players.Values.Select(p => p.Color.RGB)).ToList();
 
 			return validator.MakeValid(askColor.RGB, server.Random, terrainColors, playerColors, onError);
 		}
@@ -1086,7 +1085,7 @@ namespace OpenRA.Mods.Common.Server
 			if (slot == null)
 				return null;
 
-			return server.MapPlayers.Players[slot.PlayerReference];
+			return server.Map.Players.Players[slot.PlayerReference];
 		}
 	}
 }
