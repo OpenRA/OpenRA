@@ -262,7 +262,7 @@ function ProjectDebug(skipcheck, debtype)
       debugger.scratchpad.updated = true
       ShellSupportRemote(nil) -- disable remote while Scratchpad running
     elseif (not debugger:IsRunning()) then
-      debugger:run()
+      debugger:Run()
     end
   else
     local debcall = (debuggers[debtype or "debug"]):
@@ -401,7 +401,7 @@ frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = GetEditor()
-    ide:GetDebugger():runto(editor, editor:GetCurrentLine())
+    ide:GetDebugger():RunTo(editor, editor:GetCurrentLine())
   end)
 frame:Connect(ID_RUNTO, wx.wxEVT_UPDATE_UI,
   function (event)

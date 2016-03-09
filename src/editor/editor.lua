@@ -1458,7 +1458,7 @@ function CreateEditor(bare)
   editor:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       if pos ~= wxstc.wxSTC_INVALID_POSITION then
-        ide:GetDebugger():runto(editor, editor:LineFromPosition(pos))
+        ide:GetDebugger():RunTo(editor, editor:LineFromPosition(pos))
       end
     end)
 

@@ -1,10 +1,11 @@
 local pkg = ...
+local unpack = table.unpack or unpack
 local debugger = ide:GetDebugger()
 -- start debugger server
 debugger:Listen()
 -- save a test file and then load it
 local debugfile = MergeFullPath(wx.wxFileName.GetCwd(), "debug.lua")
-FileWrite(debugfile, "print('step 1')\nprint('step 2')\n")
+FileWrite(debugfile, "local a = 1+2\na = 2+3\na = 3+4\na = 4+5\n")
 ok(wx.wxFileExists(debugfile), "File created before starting debugging.")
 local editor = ActivateFile(debugfile)
 
@@ -13,7 +14,8 @@ ProjectDebug()
 
 local commands = {
   {debugfile, 1, "Step"},
-  {debugfile, 2, "Step"},
+  {debugfile, 2, "RunTo", {editor, 4-1}},
+  {debugfile, 4, "Run"},
 }
 local command = 1
 
@@ -23,10 +25,11 @@ pkg.onDebuggerActivate = function(self, debugger, file, line)
     debugger:Step()
     return
   end
-  local afile, aline, cmd = unpack(commands[command])
+  local afile, aline, cmd, args = unpack(commands[command])
   is(file, afile, "Filename is reported as expected after debugger activation ("..command.."/"..#commands..")")
   is(line, aline, "Line number is reported as expected after debugger activation ("..command.."/"..#commands..")")
-  debugger[cmd](debugger)
+  if debugger:IsRunning() then debugger:wait() end
+  debugger[cmd](debugger, unpack(args or {}))
   command = command + 1
 end
 pkg.onDebuggerClose = function()

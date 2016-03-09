@@ -779,7 +779,7 @@ function debugger:Listen(start)
       else
         if (options.runstart) then
           ClearAllCurrentLineMarkers()
-          debugger:run()
+          debugger:Run()
         end
         if (options.run) then
           local file, line = debugger:handle("run")
@@ -1001,7 +1001,7 @@ function debugger:trace()
   debugger.loop = true
   debugger:exec("step")
 end
-function debugger:runto(editor, line)
+function debugger:RunTo(editor, line)
   local debugger = self
 
   -- check if the location is valid for a breakpoint
@@ -1015,7 +1015,7 @@ function debugger:runto(editor, line)
   if bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
   and not same then
     debugger.runtocursor = nil
-    debugger:run()
+    debugger:Run()
     return
   end
 
@@ -1042,7 +1042,7 @@ function debugger:wait()
 end
 function debugger:Over() return self:exec("over") end
 function debugger:Out() return self:exec("out") end
-function debugger:run() return self:exec("run") end
+function debugger:Run() return self:exec("run") end
 function debugger:detach(cmd)
   local debugger = self
   if debugger.running then
