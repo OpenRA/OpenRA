@@ -1045,9 +1045,10 @@ function debugger:Out() return self:exec("out") end
 function debugger:Run() return self:exec("run") end
 function debugger:detach(cmd)
   local debugger = self
+  if not debugger.server then return end
   if debugger.running then
     debugger:handleDirect(cmd or "done")
-    debugger.server = nil
+    debugger:teardown()
   else
     debugger:exec(cmd or "done")
   end
