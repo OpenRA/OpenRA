@@ -807,7 +807,7 @@ function CreateEditor(bare)
     else
       editor:MarkerAdd(line, marker)
     end
-    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line, not isset)
+    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line+1, not isset)
   end
 
   function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end

@@ -15,6 +15,7 @@ local P = {
 -- For `onFiletreeActivate` event it means that no further processing is done.
 -- For `onEditorCharAdded` event it means that no further processing is done
 -- (but the character is still added to the editor).
+-- line numbers are 1-based in callbacks
 
 local events = {
   onRegister =         function(self) end,
