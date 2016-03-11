@@ -31,8 +31,8 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class ActorInfoTest
 	{
-		[TestCase(TestName = "Sort traits in order of dependency")]
-		public void TraitsInConstructOrderA()
+		[TestCase(TestName = "Trait ordering sorts in dependency order correctly")]
+		public void TraitOrderingSortsCorrectly()
 		{
 			var actorInfo = new ActorInfo("test", new MockCInfo(), new MockBInfo(), new MockAInfo());
 
@@ -43,48 +43,28 @@ namespace OpenRA.Test
 			Assert.That(i[2].GetType().Name, Is.EqualTo("MockCInfo"));
 		}
 
-		[TestCase(TestName = "Exception reports missing dependencies")]
-		public void TraitsInConstructOrderB()
+		[TestCase(TestName = "Trait ordering exception reports missing dependencies")]
+		public void TraitOrderingReportsMissingDependencies()
 		{
 			var actorInfo = new ActorInfo("test", new MockBInfo(), new MockCInfo());
+			var ex = Assert.Throws<Exception>(() => actorInfo.TraitsInConstructOrder());
 
-			try
-			{
-				actorInfo.TraitsInConstructOrder();
-				throw new Exception("Exception not thrown!");
-			}
-			catch (Exception e)
-			{
-				// Is.StringContaining is deprecated in NUnit 3, but we need to support NUnit 2 so we ignore the warning.
-				#pragma warning disable CS0618
-				Assert.That(e.Message, Is.StringContaining("MockA"));
-				Assert.That(e.Message, Is.StringContaining("MockB"));
-				Assert.That(e.Message, Is.StringContaining("MockC"));
-				Assert.That(e.Message, Is.StringContaining("MockInherit"), "Should recognize base classes");
-				Assert.That(e.Message, Is.StringContaining("IMock"), "Should recognize interfaces");
-				#pragma warning restore CS0618
-			}
+			StringAssert.Contains(typeof(MockAInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockBInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockCInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockInheritInfo).Name, ex.Message, "Exception message did not report a missing dependency (from a base class).");
+			StringAssert.Contains(typeof(IMock).Name, ex.Message, "Exception message did not report a missing dependency (from an interface).");
 		}
 
-		[TestCase(TestName = "Exception reports cyclic dependencies")]
-		public void TraitsInConstructOrderC()
+		[TestCase(TestName = "Trait ordering exception reports cyclic dependencies")]
+		public void TraitOrderingReportsCyclicDependencies()
 		{
 			var actorInfo = new ActorInfo("test", new MockDInfo(), new MockEInfo(), new MockFInfo());
+			var ex = Assert.Throws<Exception>(() => actorInfo.TraitsInConstructOrder());
 
-			try
-			{
-				actorInfo.TraitsInConstructOrder();
-				throw new Exception("Exception not thrown!");
-			}
-			catch (Exception e)
-			{
-				var count = (
-					new Regex("MockD").Matches(e.Message).Count +
-					new Regex("MockE").Matches(e.Message).Count +
-					new Regex("MockF").Matches(e.Message).Count) / 3.0;
-
-				Assert.That(count, Is.EqualTo(Math.Floor(count)), "Should be symmetrical");
-			}
+			StringAssert.Contains(typeof(MockDInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(typeof(MockEInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(typeof(MockFInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
 		}
 	}
 }
