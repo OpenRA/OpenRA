@@ -5,9 +5,10 @@ local debugger = ide:GetDebugger()
 debugger:Listen()
 -- save a test file and then load it
 local debugfile = MergeFullPath(wx.wxFileName.GetCwd(), "debug.lua")
-FileWrite(debugfile, "local a = 1+2\na = 2+3\na = 3+4\na = 4+5\n")
+FileWrite(debugfile, "local a = 1+2\na = 2+3\na = 3+4\na = 4+5\na = 5+6")
 ok(wx.wxFileExists(debugfile), "File created before starting debugging.")
 local editor = ActivateFile(debugfile)
+editor:BreakpointToggle(4)
 
 ide:GetMenuBar():Check(ID_CLEAROUTPUT, false)
 ProjectDebug()
@@ -16,6 +17,7 @@ local commands = {
   {debugfile, 1, "Step"},
   {debugfile, 2, "RunTo", {editor, 4-1}},
   {debugfile, 4, "Run"},
+  {debugfile, 5, "Stop"},
 }
 local command = 1
 
@@ -41,11 +43,9 @@ end
 pkg.onDebuggerClose = function()
   local doc = ide:IsValidCtrl(editor) and ide:GetDocument(editor)
   if doc then doc:Close() end
-  FileRemove(debugfile)
-  ok(not wx.wxFileExists(debugfile), "File removed after completing debugging.")
 
   pkg.onDebuggerActivate = nil
   pkg.onDebuggerClose = nil
-
   pkg:report()
 end
+pkg.onAppClose = function() FileRemove(debugfile) end
