@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = "0.6331",
+  _VERSION = "0.634",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -1174,8 +1174,12 @@ end
 
 -- Handles server debugging commands
 local function handle(params, client, options)
-  local _, _, command = string.find(params, "^([a-z]+)")
+  -- when `options.verbose` is not provided, use normal `print`; verbose output can be
+  -- disabled (`options.verbose == false`) or redirected (`options.verbose == function()...end`)
+  local verbose = not options or options.verbose ~= nil and options.verbose
+  local print = verbose and (type(verbose) == "function" and verbose or print) or function() end
   local file, line, watch_idx
+  local _, _, command = string.find(params, "^([a-z]+)")
   if command == "run" or command == "step" or command == "out"
   or command == "over" or command == "exit" then
     client:send(string.upper(command) .. "\n")
