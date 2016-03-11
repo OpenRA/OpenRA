@@ -10,8 +10,8 @@ local mobdebug = require "mobdebug"
 local unpack = table.unpack or unpack
 
 local ide = ide
-local debugger = setmetatable(ide.debugger, ide.proto.Debugger)
-debugger.server = nil -- DebuggerServer object when debugging, else nil
+local protodeb = setmetatable(ide:GetDebugger(), ide.proto.Debugger)
+local debugger = protodeb
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
@@ -62,7 +62,16 @@ end
 
 local q = EscapeMagic
 
-local function updateWatchesSync(onlyitem)
+function debugger:init(init)
+  local o = {}
+  -- merge known self and init values
+  for k, v in pairs(self) do o[k] = v end
+  for k, v in pairs(init or {}) do o[k] = v end
+  return setmetatable(o, {__index = protodeb})
+end
+
+function debugger:updateWatchesSync(onlyitem)
+  local debugger = self
   local watchCtrl = debugger.watchCtrl
   local pane = ide.frame.uimgr:GetPane("watchpanel")
   local shown = watchCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and watchCtrl:IsShown())
@@ -82,7 +91,7 @@ local function updateWatchesSync(onlyitem)
 
       local expression = watchCtrl:GetItemExpression(item)
       if expression then
-        local _, values, error = debugger.evaluate(expression)
+        local _, values, error = debugger:evaluate(expression)
         local curchildren = watchCtrl:GetItemChildren(item)
         if error then
           error = error:gsub("%[.-%]:%d+:%s+","")
@@ -124,13 +133,14 @@ end
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
 local callData = {}
 
-local function updateStackSync()
+function debugger:updateStackSync()
+  local debugger = self
   local stackCtrl = debugger.stackCtrl
   local pane = ide.frame.uimgr:GetPane("stackpanel")
   local shown = stackCtrl and (pane:IsOk() and pane:IsShown() or not pane:IsOk() and stackCtrl:IsShown())
   local canupdate = debugger.server and not debugger.running and not debugger.scratchpad
   if shown and canupdate then
-    local stack, _, err = debugger.stack()
+    local stack, _, err = debugger:stack()
     if not stack or #stack == 0 then
       stackCtrl:DeleteAll()
       if err then -- report an error if any
@@ -205,34 +215,48 @@ local function updateStackSync()
   end
 end
 
-local function updateStackAndWatches()
+function debugger:updateStackAndWatches()
+  local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger.update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateStackSync() updateWatchesSync() end)
+    copas.addthread(function()
+        local debugger = debugger
+        debugger:updateStackSync()
+        debugger:updateWatchesSync()
+      end)
   end
 end
 
-local function updateWatches(item)
+function debugger:updateWatches(item)
+  local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger.update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateWatchesSync(item) end)
+    copas.addthread(function()
+        local debugger = debugger
+        debugger:updateWatchesSync(item)
+      end)
   end
 end
 
-local function updateStack()
+function debugger:updateStack()
+  local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger.update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateStackSync() end)
+    copas.addthread(function()
+        local debugger = debugger
+        debugger:updateStackSync()
+      end)
   end
 end
 
-local function debuggerToggleViews(show)
+function debugger:toggleViews(show)
+  local debugger = self
   -- don't toggle if the current state is the same as the new one
   local shown = debugger.toggleview.shown
   if (show and shown) or (not show and not shown) then return end
@@ -264,24 +288,27 @@ local function debuggerToggleViews(show)
   if show then debugger.toggleview.shown = true end
 end
 
-local function killClient()
-  if (debugger.pid and wx.wxProcess.Exists(debugger.pid)) then
+local function killProcess(pid)
+  if not pid then return false end
+  if wx.wxProcess.Exists(pid) then
     -- using SIGTERM for some reason kills not only the debugee process,
     -- but also some system processes, which leads to a blue screen crash
     -- (at least on Windows Vista SP2)
-    local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+    local ret = wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutputLn(TR("Program stopped (pid: %d)."):format(debugger.pid))
+      DisplayOutputLn(TR("Program stopped (pid: %d)."):format(pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d.")
-        :format(debugger.pid, ret))
+      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
+      return false
     end
   end
-  debugger.pid = nil
+  return true
 end
 
-local function activateDocument(file, line, activatehow)
+function debugger:ActivateDocument(file, line, activatehow)
+  local debugger = self
   if not file then return end
+  line = tonumber(line)
 
   -- file can be a filename or serialized file content; deserialize first.
   -- check if the filename starts with '"' and is deserializable
@@ -330,7 +357,7 @@ local function activateDocument(file, line, activatehow)
         if debugger.runtocursor then
           local ed, ln = unpack(debugger.runtocursor)
           if ed:GetId() == editor:GetId() and ln == line then
-            DebuggerToggleBreakpoint(ed, ln)
+            debugger:BreakpointToggle(ed, ln)
             debugger.runtocursor = nil
           end
         end
@@ -367,8 +394,8 @@ local function activateDocument(file, line, activatehow)
           local filePath = document.filePath
           local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
           while filePath and line ~= -1 do
-            debugger.handle("delb " .. filePath .. " " .. (line+1))
-            debugger.handle("setb " .. file .. " " .. (line+1))
+            debugger:handle("delb " .. filePath .. " " .. (line+1))
+            debugger:handle("setb " .. file .. " " .. (line+1))
             line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
           end
         end
@@ -401,14 +428,17 @@ local function activateDocument(file, line, activatehow)
     end
   end
 
+  PackageEventHandle("onDebuggerActivate", debugger, file, line, activated)
+
   return activated ~= nil
 end
 
-local function reSetBreakpoints()
+function debugger:reSetBreakpoints()
+  local debugger = self
   -- remove all breakpoints that may still be present from the last session
   -- this only matters for those remote clients that reload scripts
   -- without resetting their breakpoints
-  debugger.handle("delallb")
+  debugger:handle("delallb")
 
   -- go over all windows and find all breakpoints
   if (not debugger.scratchpad) then
@@ -417,20 +447,22 @@ local function reSetBreakpoints()
       local filePath = document.filePath
       local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
       while filePath and line ~= -1 do
-        debugger.handle("setb " .. filePath .. " " .. (line+1))
+        debugger:handle("setb " .. filePath .. " " .. (line+1))
         line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
       end
     end
   end
 end
 
-debugger.shell = function(expression, isstatement)
+function debugger:shell(expression, isstatement)
+  local debugger = self
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise this function does nothing.
-  if debugger.running then debugger.update() end
+  if debugger.running then debugger:Update() end
   if debugger.server and not debugger.running
   and (not debugger.scratchpad or debugger.scratchpad.paused) then
-    copas.addthread(function ()
+    copas.addthread(function()
+        local debugger = debugger
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
         -- 'values' has a list of serialized results returned.
@@ -440,9 +472,9 @@ debugger.shell = function(expression, isstatement)
         -- this may need to be taken into account by other debuggers.
         local addedret, forceexpression = true, expression:match("^%s*=%s*")
         expression = expression:gsub("^%s*=%s*","")
-        local _, values, err = debugger.evaluate(expression)
+        local _, values, err = debugger:evaluate(expression)
         if not forceexpression and err then
-          _, values, err = debugger.execute(expression)
+          _, values, err = debugger:execute(expression)
           addedret = false
         end
 
@@ -471,7 +503,7 @@ debugger.shell = function(expression, isstatement)
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
         if isstatement and not err and not addedret and #values == 0 then
-          updateStackSync() updateWatchesSync()
+          debugger:updateStackSync() debugger:updateWatchesSync()
         end
       end)
   elseif debugger.server then
@@ -479,9 +511,9 @@ debugger.shell = function(expression, isstatement)
   end
 end
 
-local function stoppedAtBreakpoint(file, line)
+function debugger:stoppedAtBreakpoint(file, line)
   -- if this document can be activated and the current line has a breakpoint
-  local editor = activateDocument(file, line, activate.CHECKONLY)
+  local editor = self:ActivateDocument(file, line, activate.CHECKONLY)
   if not editor then return false end
 
   local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
@@ -489,7 +521,8 @@ local function stoppedAtBreakpoint(file, line)
   return breakpoint > -1 and breakpoint == current
 end
 
-local function mapRemotePath(basedir, file, line, method)
+function debugger:mapRemotePath(basedir, file, line, method)
+  local debugger = self
   if not file then return end
 
   -- file is /foo/bar/my.lua; basedir is d:\local\path\
@@ -514,12 +547,12 @@ local function mapRemotePath(basedir, file, line, method)
   end
 
   -- if found a local mapping under basedir
-  local activated = longestpath and activateDocument(longestpath, line, method or activate.NOREPORT)
+  local activated = longestpath and debugger:ActivateDocument(longestpath, line, method or activate.NOREPORT)
   if activated then
     -- find remote basedir by removing the tail from remote file
-    debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
+    debugger:handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
     -- reset breakpoints again as remote basedir has changed
-    reSetBreakpoints()
+    debugger:reSetBreakpoints()
     DisplayOutputLn(TR("Mapped remote request for '%s' to '%s'.")
       :format(remotedir, debugger.basedir))
 
@@ -529,10 +562,10 @@ local function mapRemotePath(basedir, file, line, method)
   return nil
 end
 
-debugger.listen = function(start)
+function debugger:Listen(start)
   if start == false then
     if debugger.listening then
-      debugger.terminate() -- terminate if running
+      debugger:terminate() -- terminate if running
       copas.removeserver(debugger.listening)
       DisplayOutputLn(TR("Debugger server stopped at %s:%d.")
         :format(debugger.hostname, debugger.portnumber))
@@ -554,23 +587,26 @@ debugger.listen = function(start)
 
   copas.autoclose = false
   copas.addserver(server, function (skt)
+      local options = debugger.options or {}
+      if options.refuseonconflict == nil then options.refuseonconflict = ide.config.debugger.refuseonconflict end
+
       -- pull any pending data not processed yet
-      if debugger.running then debugger.update() end
-      if debugger.server then
+      if debugger.running then debugger:Update() end
+      if debugger.server and options.refuseonconflict then
         DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
       end
 
+      -- error handler is set per-copas-thread
       copas.setErrorHandler(function(error)
         -- ignore errors that happen because debugging session is
         -- terminated during handshake (server == nil in this case).
         if debugger.server then
           DisplayOutputLn(TR("Can't start debugging session due to internal error '%s'."):format(error))
         end
-        debugger.terminate()
+        debugger:terminate()
       end)
 
-      local options = debugger.options or {}
       -- this may be a remote call without using an interpreter and as such
       -- debugger.options may not be set, but runonstart is still configured.
       if options.runstart == nil then options.runstart = ide.config.debugger.runonstart end
@@ -582,14 +618,16 @@ debugger.listen = function(start)
         SetAllEditorsReadOnly(true)
       end
 
-      debugger.server = copas.wrap(skt)
-      debugger.socket = skt
-      debugger.loop = false
-      debugger.scratchable = false
-      debugger.stats = {line = 0}
-      debugger.missing = {}
-      debugger.editormap = {}
-      debugger.runtocursor = nil
+      debugger = ide:SetDebugger(debugger:init({
+          server = copas.wrap(skt),
+          socket = skt,
+          loop = false,
+          scratchable = false,
+          stats = {line = 0},
+          missing = {},
+          editormap = {},
+          runtocursor = nil,
+      }))
 
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = ide:GetProjectStartFile() or options.startwith
@@ -598,7 +636,7 @@ debugger.listen = function(start)
       if not startfile then
         DisplayOutputLn(TR("Can't start debugging without an opened file or with the current file not being saved ('%s').")
           :format(ide.config.default.fullname))
-        return debugger.terminate()
+        return debugger:terminate()
       end
 
       local startpath = wx.wxFileName(startfile):GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
@@ -608,19 +646,19 @@ debugger.listen = function(start)
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
-      debugger.handle("basedir " .. debugger.basedir)
+      debugger:handle("basedir " .. debugger.basedir)
 
       local init = options.init or ide.config.debugger.init
       if init then
-        local _, _, err = debugger.execute(init)
+        local _, _, err = debugger:execute(init)
         if err then DisplayOutputLn(TR("Ignored error in debugger initialization code: %s."):format(err)) end
       end
 
-      reSetBreakpoints()
+      debugger:reSetBreakpoints()
 
       local redirect = ide.config.debugger.redirect or options.redirect
       if redirect then
-        debugger.handle("output stdout " .. redirect, nil,
+        debugger:handle("output stdout " .. redirect, nil,
           { handler = function(m)
               -- if it's an error returned, then handle the error
               if m and m:find("stack traceback:", 1, true) then
@@ -645,17 +683,19 @@ debugger.listen = function(start)
             end})
       end
 
+      if PackageEventHandle("onDebuggerPreLoad", debugger, options) == false then return end
+
       if (options.startwith) then
-        local file, line, err = debugger.loadfile(options.startwith)
+        local file, line, err = debugger:loadfile(options.startwith)
         if err then
           DisplayOutputLn(TR("Can't run the entry point script ('%s').")
             :format(options.startwith)
             .." "..TR("Compilation error")
             ..":\n"..err)
-          return debugger.terminate()
+          return debugger:terminate()
         elseif options.runstart and not debugger.scratchpad then
-          if stoppedAtBreakpoint(file, line) then
-            activateDocument(file, line)
+          if debugger:stoppedAtBreakpoint(file, line) then
+            debugger:ActivateDocument(file, line)
             options.runstart = false
           end
         elseif file and line then
@@ -663,7 +703,7 @@ debugger.listen = function(start)
             :format(file, line))
         end
       elseif not (options.run or debugger.scratchpad) then
-        local file, line, err = debugger.loadfile(startfile)
+        local file, line, err = debugger:loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
         -- OR (2) it can "refuse" to load it if the client was started
         -- with start() method, which can't load new files
@@ -672,26 +712,26 @@ debugger.listen = function(start)
           DisplayOutputLn(TR("Can't start debugging for '%s'."):format(startfile)
             .." "..TR("Compilation error")
             ..":\n"..err)
-          return debugger.terminate()
+          return debugger:terminate()
         elseif options.runstart then
-          local file = (mapRemotePath(basedir, file, line or 0, activate.CHECKONLY)
+          local file = (debugger:mapRemotePath(basedir, file, line or 0, activate.CHECKONLY)
             or file or startfile)
 
-          if stoppedAtBreakpoint(file, line or 0) then
-            activateDocument(file, line or 0)
+          if debugger:stoppedAtBreakpoint(file, line or 0) then
+            debugger:ActivateDocument(file, line or 0)
             options.runstart = false
           end
         elseif file and line then
-          local activated = activateDocument(file, line, activate.NOREPORT)
+          local activated = debugger:ActivateDocument(file, line, activate.NOREPORT)
 
           -- if not found, check using full file path and reset basedir
           if not activated and not wx.wxIsAbsolutePath(file) then
-            activated = activateDocument(startpath..file, line, activate.NOREPORT)
+            activated = debugger:ActivateDocument(startpath..file, line, activate.NOREPORT)
             if activated then
               debugger.basedir = startpath
-              debugger.handle("basedir " .. debugger.basedir)
+              debugger:handle("basedir " .. debugger.basedir)
               -- reset breakpoints again as basedir has changed
-              reSetBreakpoints()
+              debugger:reSetBreakpoints()
             end
           end
 
@@ -701,7 +741,7 @@ debugger.listen = function(start)
           -- when autoactivation is disabled.
           if not activated and (not wx.wxFileName(file):FileExists()
                                 or wx.wxIsAbsolutePath(file)) then
-            if mapRemotePath(basedir, file, line, activate.NOREPORT) then
+            if debugger:mapRemotePath(basedir, file, line, activate.NOREPORT) then
               activated = true
             end
           end
@@ -716,7 +756,7 @@ debugger.listen = function(start)
           debugger.scratchable = ide.interpreter.scratchextloop ~= nil
         else
           debugger.scratchable = true
-          local activated = activateDocument(startfile, 0) -- find the appropriate line
+          local activated = debugger:ActivateDocument(startfile, 0) -- find the appropriate line
           if not activated then
             DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
               :format(startfile, '?'))
@@ -725,12 +765,12 @@ debugger.listen = function(start)
       end
 
       if (not options.noshell and not debugger.scratchpad) then
-        ShellSupportRemote(debugger.shell)
+        ShellSupportRemote(debugger:GetConsole())
       end
 
-      debuggerToggleViews(true)
-      updateStackSync()
-      updateWatchesSync()
+      debugger:toggleViews(true)
+      debugger:updateStackSync()
+      debugger:updateWatchesSync()
 
       DisplayOutputLn(TR("Debugging session started in '%s'."):format(debugger.basedir))
 
@@ -739,11 +779,11 @@ debugger.listen = function(start)
       else
         if (options.runstart) then
           ClearAllCurrentLineMarkers()
-          debugger.run()
+          debugger:Run()
         end
         if (options.run) then
-          local file, line = debugger.handle("run")
-          activateDocument(file, line)
+          local file, line = debugger:handle("run")
+          debugger:ActivateDocument(file, line)
         end
       end
 
@@ -752,6 +792,8 @@ debugger.listen = function(start)
       -- refresh toolbar and menus in case the main app is not active
       ide:GetMainFrame():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
       ide:GetToolBar():UpdateWindowUI(wx.wxUPDATE_UI_FROMIDLE)
+
+      PackageEventHandle("onDebuggerLoad", debugger, options)
     end)
   debugger.listening = server
 end
@@ -762,27 +804,37 @@ local function nameOutputTab(name)
   if index ~= -1 then nbk:SetPageText(index, name) end
 end
 
-debugger.handle = function(command, server, options)
-  local verbose = ide.config.debugger.verbose
-  local gprint = _G.print
-  _G.print = function (...) if verbose then DisplayOutputLn(...) end end
+local function statusUpdate(debugger, status)
+  PackageEventHandle("onDebuggerStatusUpdate", debugger, status)
+  local text = ({running = TR("Output (running)"), suspended = TR("Output (suspended)")})[status]
+  nameOutputTab(text or TR("Output"))
+end
 
-  nameOutputTab(TR("Output (running)"))
+function debugger:handle(command, server, options)
+  local debugger = self
+  local verbose = ide.config.debugger.verbose
+  options = options or {}
+  options.verbose = verbose and (function(...) ide:Print(...) end) or false
+
+  local ip, port = debugger.socket:getpeername()
+  PackageEventHandle("onDebuggerCommand", debugger, command, server or debugger.server, options)
   debugger.running = true
-  if verbose then DisplayOutputLn("Debugger sent (command):", command) end
+  statusUpdate(debugger, "running")
+  if verbose then ide:Print(("[%s:%s] Debugger sent (command):"):format(ip, port), command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server, options)
-  if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
+  if verbose then ide:Print(("[%s:%s] Debugger received (file, line, err):"):format(ip, port), file, line, err) end
   debugger.running = false
   -- only set suspended if the debugging hasn't been terminated
-  if debugger.server then nameOutputTab(TR("Output (suspended)")) end
+  statusUpdate(debugger, debugger.server and "suspended" or nil)
 
-  _G.print = gprint
   return file, line, err
 end
 
-debugger.exec = function(command, func)
+function debugger:exec(command, func)
+  local debugger = self
   if debugger.server and not debugger.running then
-    copas.addthread(function ()
+    copas.addthread(function()
+        local debugger = debugger
         -- execute a custom function (if any) in the context of this thread
         if type(func) == 'function' then func() end
         local out
@@ -793,24 +845,24 @@ debugger.exec = function(command, func)
           -- and it needs to be visible during tracing
           if not debugger.loop then ClearAllCurrentLineMarkers() end
           debugger.breaking = false
-          local file, line, err = debugger.handle(out or command)
+          local file, line, err = debugger:handle(out or command)
           if out then out = nil end
           if line == nil then
             if err then DisplayOutputLn(err) end
-            DebuggerStop()
+            debugger:teardown()
             return
           elseif not debugger.server then
             -- it is possible that while debugger.handle call was executing
             -- the debugging was terminated; simply return in this case.
             return
           else
-            if activateDocument(file, line) then
+            if debugger:ActivateDocument(file, line) then
               debugger.stats.line = debugger.stats.line + 1
               if debugger.loop then
-                updateStackSync()
-                updateWatchesSync()
+                debugger:updateStackSync()
+                debugger:updateWatchesSync()
               else
-                updateStackAndWatches()
+                debugger:updateStackAndWatches()
                 return
               end
             else
@@ -822,7 +874,7 @@ debugger.exec = function(command, func)
               if debugger.breaking then
                 DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
                   :format(file, line))
-                updateStackAndWatches()
+                debugger:updateStackAndWatches()
                 return
               end
               -- redo now; if the call is from the debugger, then repeat
@@ -846,34 +898,41 @@ debugger.exec = function(command, func)
   end
 end
 
-debugger.handleAsync = function(command)
+function debugger:handleAsync(command)
+  local debugger = self
   if debugger.server and not debugger.running then
-    copas.addthread(function () debugger.handle(command) end)
+    copas.addthread(function()
+        local debugger = debugger
+        debugger:handle(command)
+      end)
   end
 end
-debugger.handleDirect = function(command)
+function debugger:handleDirect(command)
+  local debugger = self
   local sock = debugger.socket
   if debugger.server and sock then
     local running = debugger.running
     -- this needs to be short as it will block the UI
     sock:settimeout(0.25)
-    debugger.handle(command, sock)
+    debugger:handle(command, sock)
     sock:settimeout(0)
     -- restore running status
     debugger.running = running
   end
 end
 
-debugger.loadfile = function(file)
-  local f, l, err = debugger.handle("load " .. file)
+function debugger:loadfile(file)
+  local debugger = self
+  local f, l, err = debugger:handle("load " .. file)
   if not f and wx.wxFileExists(file) and err and err:find("Cannot open file") then
     local content = FileRead(file)
-    if content then return debugger.loadstring(file, content) end
+    if content then return debugger:loadstring(file, content) end
   end
   return f, l, err
 end
-debugger.loadstring = function(file, string)
-  return debugger.handle("loadstring '" .. file .. "' " .. string)
+function debugger:loadstring(file, string)
+  local debugger = self
+  return debugger:handle("loadstring '" .. file .. "' " .. string)
 end
 
 do
@@ -887,7 +946,8 @@ do
     -- force editor update that performs wrapping recalculation.
     if ide.config.editor.usewrap then editor:Update(); editor:Refresh() end
   end
-  debugger.update = function()
+  function debugger:Update()
+    local debugger = self
     if debugger.server or debugger.listening and TimeGet() > nextupdate then
       copas.step(0)
       nextupdate = TimeGet() + nextupdatedelta
@@ -905,12 +965,12 @@ do
           editor:SetReadOnly(true)
         end
         forceUpdateOnWrap(editor)
-        activateDocument(file, line)
+        debugger:ActivateDocument(file, line)
       else
         local editor = LoadFile(file)
         if editor then
           forceUpdateOnWrap(editor)
-          activateDocument(file, line)
+          debugger:ActivateDocument(file, line)
         end
       end
     end
@@ -923,22 +983,26 @@ local function isemptyline(editor, line)
   or (text:find("^%s*%-%-") ~= nil and text:find("^%s*%-%-%[=*%[") == nil)
 end
 
-debugger.terminate = function()
+function debugger:terminate()
+  local debugger = self
   if debugger.server then
-    if debugger.pid then -- if there is PID, try local kill
-      killClient()
+    if killProcess(ide:GetLaunchedProcess()) then -- if there is PID, try local kill
+      ide:SetLaunchedProcess(nil)
     else -- otherwise, try graceful exit for the remote process
-      debugger.breaknow("exit")
+      debugger:detach("exit")
     end
-    DebuggerStop()
+    debugger:teardown()
   end
 end
-debugger.step = function() debugger.exec("step") end
-debugger.trace = function()
+function debugger:Step() return self:exec("step") end
+function debugger:trace()
+  local debugger = self
   debugger.loop = true
-  debugger.exec("step")
+  debugger:exec("step")
 end
-debugger.runto = function(editor, line)
+function debugger:RunTo(editor, line)
+  local debugger = self
+
   -- check if the location is valid for a breakpoint
   if isemptyline(editor, line+1) then return end
 
@@ -950,45 +1014,49 @@ debugger.runto = function(editor, line)
   if bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
   and not same then
     debugger.runtocursor = nil
-    debugger.run()
+    debugger:Run()
     return
   end
 
   -- save the location of the breakpoint
   debugger.runtocursor = {editor, line}
   -- set breakpoint and execute run
-  debugger.exec("run", function()
+  debugger:exec("run", function()
       -- if run-to-cursor location is already set, then remove the breakpoint,
       -- but only if this location is different
       if ed and ln and not same then
-        DebuggerToggleBreakpoint(ed, ln)
-        debugger.wait()
+        debugger:BreakpointToggle(ed, ln)
+        debugger:Wait()
       end
       if not same then
-        DebuggerToggleBreakpoint(editor, line)
-        debugger.wait()
+        debugger:BreakpointToggle(editor, line)
+        debugger:Wait()
       end
     end)
 end
-debugger.wait = function()
+function debugger:Wait()
+  local debugger = self
   -- wait for all results to come back
-  while debugger.running do debugger.update() end
+  while debugger.running do debugger:Update() end
 end
-debugger.over = function() debugger.exec("over") end
-debugger.out = function() debugger.exec("out") end
-debugger.run = function() debugger.exec("run") end
-debugger.detach = function()
+function debugger:Over() return self:exec("over") end
+function debugger:Out() return self:exec("out") end
+function debugger:Run() return self:exec("run") end
+function debugger:detach(cmd)
+  local debugger = self
+  if not debugger.server then return end
   if debugger.running then
-    debugger.handleDirect("done")
-    debugger.server = nil
+    debugger:handleDirect(cmd or "done")
+    debugger:teardown()
   else
-    debugger.exec("done")
+    debugger:exec(cmd or "done")
   end
 end
-debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
-debugger.execute = function(expression) return debugger.handle('exec ' .. expression) end
-debugger.stack = function() return debugger.handle('stack') end
-debugger.breaknow = function(command)
+function debugger:evaluate(expression) return self:handle('eval ' .. expression) end
+function debugger:execute(expression) return self:handle('exec ' .. expression) end
+function debugger:stack() return self:handle('stack') end
+function debugger:breaknow(command)
+  local debugger = self
   -- stop if we're running a "trace" command
   debugger.loop = false
 
@@ -1000,7 +1068,7 @@ debugger.breaknow = function(command)
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    local file, line, err = debugger.handle(command or "suspend", debugger.socket)
+    local file, line, err = debugger:handle(command or "suspend", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
@@ -1010,21 +1078,25 @@ debugger.breaknow = function(command)
     return file, line, err
   end
 end
-debugger.breakpoint = function(file, line, state)
+function debugger:breakpoint(file, line, state)
+  local debugger = self
   if debugger.running then
-    return debugger.handleDirect((state and "asetb " or "adelb ") .. file .. " " .. line)
+    return debugger:handleDirect((state and "asetb " or "adelb ") .. file .. " " .. line)
   end
-  return debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
+  return debugger:handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
-debugger.quickeval = function(var, callback)
-  if debugger.server and not debugger.running
+function debugger:EvalAsync(var, callback)
+  local debugger = self
+  if debugger.server and not debugger.running and callback
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
-    copas.addthread(function ()
-      local _, values, err = debugger.evaluate(var)
-      local val = err
-        and err:gsub("%[.-%]:%d+:%s*","error: ")
-        or (var .. " = " .. (#values > 0 and values[1] or 'nil'))
-      if callback then callback(val) end
+    copas.addthread(function()
+      local debugger = debugger
+      local _, values, err = debugger:evaluate(var)
+      if err then
+        callback(nil, (err:gsub("%[.-%]:%d+:%s*","error: ")))
+      else
+        callback(#values > 0 and values[1] or 'nil')
+      end
     end)
   end
 end
@@ -1051,6 +1123,7 @@ local function debuggerCreateStackWindow()
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
+  local debugger = ide:GetDebugger()
   debugger.stackCtrl = stackCtrl
 
   stackCtrl:SetImageList(debugger.imglist)
@@ -1094,8 +1167,9 @@ local function debuggerCreateStackWindow()
     end)
 
   stackCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
+      local debugger = ide:GetDebugger()
       if debugger.needrefresh.stack then
-        updateStack()
+        debugger:updateStack()
         debugger.needrefresh.stack = false
       end
     end)
@@ -1132,6 +1206,7 @@ local function debuggerCreateWatchWindow()
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
     + wx.wxTR_HIDE_ROOT + wx.wxTR_EDIT_LABELS + wx.wxNO_BORDER)
 
+  local debugger = ide:GetDebugger()
   debugger.watchCtrl = watchCtrl
 
   local root = watchCtrl:AddRoot("Watch")
@@ -1144,7 +1219,8 @@ local function debuggerCreateWatchWindow()
     expressions[item:GetValue()] = expr
     self:SetItemText(item, expr .. ' = ' .. (value or '?'))
     self:SelectItem(item, true)
-    if not value then updateWatches(item) end
+    local debugger = ide:GetDebugger()
+    if not value then debugger:updateWatches(item) end
   end
 
   function watchCtrl:GetItemExpression(item)
@@ -1202,11 +1278,12 @@ local function debuggerCreateWatchWindow()
   function watchCtrl:CopyItemValue(item)
     local expr = self:GetItemFullExpression(item)
 
-    if debugger.running then debugger.update() end
+    if debugger.running then debugger:Update() end
     if debugger.server and not debugger.running
     and (not debugger.scratchpad or debugger.scratchpad.paused) then
-      copas.addthread(function ()
-        local _, values, error = debugger.evaluate(expr)
+      copas.addthread(function()
+        local debugger = debugger
+        local _, values, error = debugger:evaluate(expr)
         ide:CopyToClipboard(error and error:gsub("%[.-%]:%d+:%s+","")
           or (#values == 0 and 'nil' or values[1]))
       end)
@@ -1216,17 +1293,19 @@ local function debuggerCreateWatchWindow()
   function watchCtrl:UpdateItemValue(item, value)
     local expr, itemupd = self:GetItemFullExpression(item)
 
-    if debugger.running then debugger.update() end
+    local debugger = ide:GetDebugger()
+    if debugger.running then debugger:Update() end
     if debugger.server and not debugger.running
     and (not debugger.scratchpad or debugger.scratchpad.paused) then
-      copas.addthread(function ()
-        local _, _, err = debugger.execute(expr..'='..value)
+      copas.addthread(function()
+        local debugger = debugger
+        local _, _, err = debugger:execute(expr..'='..value)
         if err then
           watchCtrl:SetItemText(item, 'error: '..err:gsub("%[.-%]:%d+:%s+",""))
         elseif itemupd then
-          updateWatchesSync(itemupd)
+          debugger:updateWatchesSync(itemupd)
         end
-        updateStackSync()
+        debugger:updateStackSync()
       end)
     end
   end
@@ -1262,11 +1341,10 @@ local function debuggerCreateWatchWindow()
 
   watchCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
       if debugger.needrefresh.watches then
-        updateWatches()
+        debugger:updateWatches()
         debugger.needrefresh.watches = false
       end
     end)
-
 
   local item
   -- wx.wxEVT_CONTEXT_MENU is only triggered over tree items on OSX,
@@ -1369,42 +1447,57 @@ debuggerCreateWatchWindow()
 ----------------------------------------------
 -- public api
 
-DebuggerRefreshPanels = updateStackAndWatches
+function debugger:PanelsRefresh() return self:updateStackAndWatches() end
+
+function debugger:BreakpointSet(...) return self:breakpoint(...) end
+
+function debugger:OutputSet(stream, mode, options)
+  return self:handle(("output %s %s"):format(stream, mode), nil, options)
+end
 
 function DebuggerAttachDefault(options)
+  local debugger = ide:GetDebugger()
   debugger.options = options
-  if (debugger.listening) then return end
-  debugger.listen()
+  if not debugger.listening then debugger:Listen() end
 end
 
-function DebuggerShutdown()
-  if debugger.server then debugger.terminate() end
-  if debugger.pid then killClient() end
+function debugger:Stop()
+  local debugger = self
+  -- terminate the local session (if still active)
+  if killProcess(ide:GetLaunchedProcess()) then ide:SetLaunchedProcess(nil) end
+  debugger:terminate()
 end
 
-function DebuggerStop(resetpid)
-  if (debugger.server) then
-    debugger.server = nil
-    SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil)
-    ClearAllCurrentLineMarkers()
-    DebuggerScratchpadOff()
-    debuggerToggleViews(false)
+function debugger:Shutdown()
+  self:Stop()
+  PackageEventHandle("onDebuggerShutdown", self)
+end
+
+function debugger:teardown()
+  local debugger = self
+  if debugger.server then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
-    nameOutputTab(debugger.pid and TR("Output (running)") or TR("Output"))
+    statusUpdate(debugger, ide:GetLaunchedProcess() and "running" or nil)
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
-      DebuggerToggleBreakpoint(ed, ln)
+      debugger:BreakpointToggle(ed, ln)
     end
+    if PackageEventHandle("onDebuggerPreClose", debugger) ~= false then
+      SetAllEditorsReadOnly(false)
+      ShellSupportRemote(nil)
+      ClearAllCurrentLineMarkers()
+      debugger:toggleViews(false)
+      PackageEventHandle("onDebuggerClose", debugger)
+    end
+    debugger.server = nil
+    debugger:ScratchpadOff()
   else
     -- it's possible that the application couldn't start, or that the
     -- debugger in the application didn't start, which means there is
     -- no debugger.server, but scratchpad may still be on. Turn it off.
-    DebuggerScratchpadOff()
+    debugger:ScratchpadOff()
   end
-  -- reset pid for "running" (not debugged) processes
-  if resetpid then debugger.pid = nil end
 end
 
 local function debuggerMakeFileName(editor)
@@ -1413,7 +1506,8 @@ local function debuggerMakeFileName(editor)
   or ide.config.default.fullname
 end
 
-function DebuggerToggleBreakpoint(editor, line, value)
+function debugger:BreakpointToggle(editor, line, value)
+  local debugger = self
   local isset = bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
   if value ~= nil and isset == value then return end
   local filePath = debugger.editormap and debugger.editormap[editor]
@@ -1425,19 +1519,20 @@ function DebuggerToggleBreakpoint(editor, line, value)
     if same then debugger.runtocursor = nil end
 
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
-    if debugger.server then debugger.breakpoint(filePath, line+1, false) end
+    if debugger.server then debugger:breakpoint(filePath, line+1, false) end
   else
     if isemptyline(editor, line+1) then return end
 
     editor:MarkerAdd(line, BREAKPOINT_MARKER)
-    if debugger.server then debugger.breakpoint(filePath, line+1, true) end
+    if debugger.server then debugger:breakpoint(filePath, line+1, true) end
   end
   PackageEventHandle("onEditorMarkerUpdate", editor, BREAKPOINT_MARKER, line+1, not isset)
 end
 
 -- scratchpad functions
 
-function DebuggerRefreshScratchpad()
+function debugger:ScratchpadRefresh()
+  local debugger = self
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 
     local scratchpadEditor = debugger.scratchpad.editor
@@ -1453,7 +1548,7 @@ function DebuggerRefreshScratchpad()
       -- don't try too frequently to avoid overwhelming the debugger
       local now = TimeGet()
       if now - debugger.scratchpad.running > 0.250 then
-        debugger.breaknow()
+        debugger:breaknow()
         debugger.scratchpad.running = now
       end
     else
@@ -1472,6 +1567,7 @@ function DebuggerRefreshScratchpad()
       local extloop = ide.interpreter.scratchextloop
 
       local function reloadScratchpadCode()
+        local debugger = debugger
         debugger.scratchpad.running = TimeGet()
         debugger.scratchpad.updated = false
         debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
@@ -1487,16 +1583,16 @@ function DebuggerRefreshScratchpad()
         local _, _, err
         if extloop then -- if the execution is controlled by an external loop
           if debugger.scratchpad.runs == 1
-          then _, _, err = debugger.loadstring(filePath, code)
-          else _, _, err = debugger.execute(code) end
-        else   _, _, err = debugger.loadstring(filePath, code .. stopper) end
+          then _, _, err = debugger:loadstring(filePath, code)
+          else _, _, err = debugger:execute(code) end
+        else   _, _, err = debugger:loadstring(filePath, code .. stopper) end
 
         -- when execute() is used, it's not possible to distinguish between
         -- compilation and run-time error, so just report as "Scratchpad error"
         local prefix = extloop and TR("Scratchpad error") or TR("Compilation error")
 
         if not err then
-          _, _, err = debugger.handle("run")
+          _, _, err = debugger:handle("run")
           prefix = TR("Execution error")
         end
         if err and not err:find(errormsg) then
@@ -1519,10 +1615,11 @@ end
 
 local numberStyle = wxstc.wxSTC_LUA_NUMBER
 
-function DebuggerScratchpadOn(editor)
+function debugger:ScratchpadOn(editor)
+  local debugger = self
+
   -- first check if there is already scratchpad editor.
   -- this may happen when more than one editor is being added...
-
   if debugger.scratchpad and debugger.scratchpad.editors then
     debugger.scratchpad.editors[editor] = true
   else
@@ -1535,7 +1632,7 @@ function DebuggerScratchpadOn(editor)
       ClearAllCurrentLineMarkers()
       SetAllEditorsReadOnly(false)
       ShellSupportRemote(nil) -- disable remote shell
-      DebuggerRefreshScratchpad()
+      debugger:ScratchpadRefresh()
     elseif not ProjectDebug(true, "scratchpad") then
       debugger.scratchpad = nil
       return
@@ -1668,7 +1765,8 @@ function DebuggerScratchpadOn(editor)
   return true
 end
 
-function DebuggerScratchpadOff()
+function debugger:ScratchpadOff()
+  local debugger = self
   if not debugger.scratchpad then return end
 
   for scratchpadEditor in pairs(debugger.scratchpad.editors) do
@@ -1683,7 +1781,7 @@ function DebuggerScratchpadOff()
   wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
 
   debugger.scratchpad = nil
-  debugger.terminate()
+  debugger:terminate()
 
   -- disable menu if it is still enabled
   -- (as this may be called when the debugger is being shut down)
@@ -1692,3 +1790,5 @@ function DebuggerScratchpadOff()
 
   return true
 end
+
+debugger = ide:SetDebugger(setmetatable({}, {__index = protodeb}))

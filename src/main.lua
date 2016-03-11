@@ -81,6 +81,7 @@ ide = {
       maxdatalength = 400,
       maxdatanum = 400,
       maxdatalevel = 3,
+      refuseonconflict = true,
     },
     default = {
       name = 'untitled',
@@ -503,6 +504,7 @@ do
           num = num + 1
           local name = 'config'..num..'package'
           ide.packages[name] = setmetatable(p, ide.proto.Plugin)
+          return ide.packages[name] -- this returns the package object, so it can be referenced
         -- package can be included as "package 'file.lua'" or "package 'folder/'"
         elseif type(p) == 'string' then
           local config = ide.configqueue[#ide.configqueue]

@@ -455,17 +455,17 @@ function ClosePage(selection)
 
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
     DynamicWordsRemoveAll(editor)
-    local debugger = ide.debugger
+    local debugger = ide:GetDebugger()
     -- check if the window with the scratchpad running is being closed
     if debugger and debugger.scratchpad and debugger.scratchpad.editors
     and debugger.scratchpad.editors[editor] then
-      DebuggerScratchpadOff()
+      debugger:ScratchpadOff()
     end
     -- check if the debugger is running and is using the current window;
     -- abort the debugger if the current marker is in the window being closed
-    if debugger and debugger.server and
+    if debugger and debugger:IsConnected() and
       (editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE) >= 0) then
-      debugger.terminate()
+      debugger:Stop()
     end
     PackageEventHandle("onEditorClose", editor)
     removePage(ide.openDocuments[id].index)
@@ -902,7 +902,7 @@ local function closeWindow(event)
   -- process is likely to terminate before child processes are terminated,
   -- which may lead to a crash when EVT_END_PROCESS event is called.
   DetachChildProcess()
-  DebuggerShutdown()
+  ide:GetDebugger():Shutdown()
 
   SettingsSaveAll()
   if ide.config.hotexit then saveHotExit() end
@@ -1041,9 +1041,9 @@ end
 local cma, cman = 0, 1
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
-    local debugger = ide.debugger
-    if (debugger.update) then debugger.update() end
-    if (debugger.scratchpad) then DebuggerRefreshScratchpad() end
+    local debugger = ide:GetDebugger()
+    debugger:Update()
+    if (debugger.scratchpad) then debugger:ScratchpadRefresh() end
     if IndicateIfNeeded() then event:RequestMore(true) end
     PackageEventHandleOnce("onIdleOnce", event)
     PackageEventHandle("onIdle", event)

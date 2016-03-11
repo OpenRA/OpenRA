@@ -368,9 +368,12 @@ function EditorCallTip(editor, pos, x, y)
   -- full match to avoid calltip about coroutine.status for "status" vars
   local tip = GetTipInfo(editor, funccall or var, false, not funccall)
   local limit = ide.config.acandtip.maxlength
-  if ide.debugger and ide.debugger.server then
+  local debugger = ide:GetDebugger()
+  if debugger and debugger:IsConnected() then
     if var then
-      ide.debugger.quickeval(var, function(val)
+      debugger:EvalAsync(var, function(val, err)
+        -- val == `nil` if there is any error
+        val = val ~= nil and (var.." = "..val) or err
         if #val > limit then val = val:sub(1, limit-3).."..." end
         -- check if the mouse position is specified and the mouse has moved,
         -- then don't show the tooltip as it's already too late for it.
@@ -804,13 +807,13 @@ function CreateEditor(bare)
     else
       editor:MarkerAdd(line, marker)
     end
-    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line, not isset)
+    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line+1, not isset)
   end
 
   function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
   function editor:BreakpointToggle(line, ...)
     line = line or self:GetCurrentLine()
-    return DebuggerToggleBreakpoint(self, line, ...)
+    return ide:GetDebugger():BreakpointToggle(self, line, ...)
   end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
@@ -851,7 +854,7 @@ function CreateEditor(bare)
       local line = editor:LineFromPosition(event:GetPosition())
       local marginno = event:GetMargin()
       if marginno == margin.MARKER then
-        DebuggerToggleBreakpoint(editor, line)
+        editor:BreakpointToggle(line)
       elseif marginno == margin.FOLD then
         local header = bit.band(editor:GetFoldLevel(line),
           wxstc.wxSTC_FOLDLEVELHEADERFLAG) == wxstc.wxSTC_FOLDLEVELHEADERFLAG
@@ -1437,7 +1440,7 @@ function CreateEditor(bare)
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
 
-      local debugger = ide.debugger
+      local debugger = ide:GetDebugger()
       menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
         and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
 
@@ -1457,7 +1460,7 @@ function CreateEditor(bare)
   editor:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
       if pos ~= wxstc.wxSTC_INVALID_POSITION then
-        ide:GetDebugger().runto(editor, editor:LineFromPosition(pos))
+        ide:GetDebugger():RunTo(editor, editor:LineFromPosition(pos))
       end
     end)
 
@@ -1519,7 +1522,7 @@ function CreateEditor(bare)
     function(event) ShellExecuteCode(value) end)
 
   editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event) DebuggerScratchpadOn(editor) end)
+    function(event) ide:GetDebugger():ScratchpadOn(editor) end)
 
   return editor
 end

@@ -95,6 +95,7 @@ function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
 function ide:GetToolBar() return self.frame.toolBar end
 function ide:GetDebugger() return self.debugger end
+function ide:SetDebugger(deb) self.debugger = deb; return deb end
 function ide:GetMainFrame() return self.frame end
 function ide:GetUIManager() return self.frame.uimgr end
 function ide:GetDocument(ed) return ed and self.openDocuments[ed:GetId()] end
@@ -197,6 +198,7 @@ function ide:GetProjectStartFile()
   return MergeFullPath(projectdir, startfile), startfile
 end
 function ide:GetLaunchedProcess() return self.debugger and self.debugger.pid end
+function ide:SetLaunchedProcess(pid) if self.debugger then self.debugger.pid = pid; return pid end end
 function ide:GetProjectTree() return self.filetree.projtreeCtrl end
 function ide:GetOutlineTree() return self.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
@@ -714,14 +716,23 @@ function ide:RemovePanel(panel)
   end
 end
 
+function ide:IsPanelDocked(panel)
+  local layout = self:GetSetting("/view", "uimgrlayout")
+  return layout and not layout:find(panel)
+end
 function ide:AddPanelDocked(notebook, ctrl, panel, name, conf, activate)
   notebook:AddPage(ctrl, name, activate ~= false)
   panels[name] = {ctrl, panel, name, conf}
   return notebook
 end
-function ide:IsPanelDocked(panel)
-  local layout = self:GetSetting("/view", "uimgrlayout")
-  return layout and not layout:find(panel)
+function ide:AddPanelFlex(notebook, ctrl, panel, name, conf)
+  local nb
+  if self:IsPanelDocked(panel) then
+    nb = self:AddPanelDocked(notebook, ctrl, panel, name, conf, false)
+  else
+    self:AddPanel(ctrl, panel, name, conf)
+  end
+  return nb
 end
 
 function ide:IsValidCtrl(ctrl)

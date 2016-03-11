@@ -15,6 +15,7 @@ local P = {
 -- For `onFiletreeActivate` event it means that no further processing is done.
 -- For `onEditorCharAdded` event it means that no further processing is done
 -- (but the character is still added to the editor).
+-- line numbers are 1-based in callbacks
 
 local events = {
   onRegister =         function(self) end,
@@ -50,6 +51,13 @@ local events = {
   onProjectClose =     function(self, project) end,
   onInterpreterLoad =  function(self, interpreter) end,
   onInterpreterClose = function(self, interpreter) end,
+  onDebuggerPreLoad =  function(self, debugger, options) end, -- return false
+  onDebuggerLoad =     function(self, debugger, options) end,
+  onDebuggerPreClose = function(self, debugger) end, -- return false
+  onDebuggerClose =    function(self, debugger) end,
+  onDebuggerActivate = function(self, debugger, file, line, editor) end,
+  onDebuggerStatusUpdate = function(self, debugger, status) end,
+  onDebuggerCommand =  function(self, debugger, command, server, options) end,
   onIdle =             function(self, event) end,
   onIdleOnce =         function(self, event) end,
   onAppFocusLost =     function(self, app) end,
