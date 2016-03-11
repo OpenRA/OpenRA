@@ -28,20 +28,9 @@ namespace OpenRA.Test
 	class MockEInfo : MockTraitInfo, Requires<MockFInfo> { }
 	class MockFInfo : MockTraitInfo, Requires<MockDInfo> { }
 
-	class MockA2Info : MockTraitInfo { }
-	class MockB2Info : MockTraitInfo { }
-	class MockC2Info : MockTraitInfo { }
-
-	class MockStringInfo : MockTraitInfo { public string AString = null; }
-
 	[TestFixture]
 	public class ActorInfoTest
 	{
-		[SetUp]
-		public void SetUp()
-		{
-		}
-
 		[TestCase(TestName = "Sort traits in order of dependency")]
 		public void TraitsInConstructOrderA()
 		{
@@ -96,21 +85,6 @@ namespace OpenRA.Test
 
 				Assert.That(count, Is.EqualTo(Math.Floor(count)), "Should be symmetrical");
 			}
-		}
-
-		// This needs to match the logic used in RulesetCache.LoadYamlRules
-		ActorInfo CreateActorInfoFromYaml(string name, string mapYaml, params string[] yamls)
-		{
-			var nodes = mapYaml == null ? new List<MiniYamlNode>() : MiniYaml.FromString(mapYaml);
-			var sources = yamls.ToList();
-			if (mapYaml != null)
-				sources.Add(mapYaml);
-
-			var yaml = MiniYaml.Merge(sources.Select(s => MiniYaml.FromString(s)));
-			var allUnits = yaml.ToDictionary(node => node.Key, node => node.Value);
-			var unit = allUnits[name];
-			var creator = new ObjectCreator(typeof(ActorInfoTest).Assembly);
-			return new ActorInfo(creator, name, unit);
 		}
 	}
 }
