@@ -127,7 +127,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				try
 				{
-					modData.RulesetCache.Load(map ?? modData.DefaultFileSystem, map);
 					var customRulesPass = (ILintRulesPass)modData.ObjectCreator.CreateBasic(customRulesPassType);
 					customRulesPass.Run(EmitError, EmitWarning, rules);
 				}

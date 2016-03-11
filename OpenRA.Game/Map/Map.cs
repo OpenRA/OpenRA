@@ -295,7 +295,7 @@ namespace OpenRA
 			{
 				try
 				{
-					return modData.RulesetCache.Load(this, this);
+					return Ruleset.LoadFromMap(modData, this);
 				}
 				catch (Exception e)
 				{
@@ -303,7 +303,7 @@ namespace OpenRA
 					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 				}
 
-				return modData.DefaultRules;
+				return Ruleset.LoadDefaultsForTileSet(modData, Tileset);
 			});
 
 			var tl = new MPos(0, 0).ToCPos(this);

@@ -30,7 +30,6 @@ namespace OpenRA
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
-		public readonly RulesetCache RulesetCache;
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
@@ -63,8 +62,6 @@ namespace OpenRA
 			}
 
 			WidgetLoader = new WidgetLoader(this);
-			RulesetCache = new RulesetCache(this);
-			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
 			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
@@ -79,7 +76,7 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.Load(DefaultFileSystem));
+			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTileSets = Exts.Lazy(() =>
 			{
 				var items = new Dictionary<string, TileSet>();
@@ -104,11 +101,13 @@ namespace OpenRA
 
 		// HACK: Only update the loading screen if we're in the main thread.
 		int initialThreadId;
-		void HandleLoadingProgress(object sender, EventArgs e)
+		internal void HandleLoadingProgress()
 		{
-			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
+			if (LoadScreen != null && IsOnMainThread)
 				LoadScreen.Display();
 		}
+
+		internal bool IsOnMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId; } }
 
 		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{

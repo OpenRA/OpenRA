@@ -30,7 +30,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			modData.RulesetCache.Load(modData.DefaultFileSystem);
 
 			var types = Game.ModData.ObjectCreator.GetTypes();
 			var translatableFields = types.SelectMany(t => t.GetFields())
