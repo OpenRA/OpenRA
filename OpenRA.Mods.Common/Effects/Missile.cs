@@ -524,7 +524,7 @@ namespace OpenRA.Mods.Common.Effects
 		int HomingInnerTick(int predClfDist, int diffClfMslHgt, int relTarHorDist, int lastHtChg, int lastHt,
 			int nxtRelTarHorDist, int relTarHgt, int vFacing, bool targetPassedBy)
 		{
-			int desiredVFacing = vFacing;
+			var desiredVFacing = vFacing;
 
 			// Incline coming up -> attempt to reach the incline so that after predClfDist
 			// the height above the terrain is positive but as close to 0 as possible
@@ -642,30 +642,23 @@ namespace OpenRA.Mods.Common.Effects
 							else
 							{
 								// Aim for the target
-								var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
-									desiredVFacing = 0;
+								var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
+								desiredVFacing = CalculateDesiredVFacingForDescent(vDist, vFacing);
 							}
 						}
 					}
 					else
 					{
 						// Aim for the target
-						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
-						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
-							desiredVFacing = 0;
+						var vDist = new WVec(-relTarHgt, relTarHorDist, 0);
+						desiredVFacing = CalculateDesiredVFacingForDescent(vDist, vFacing);
 					}
 				}
 				else
 				{
 					// Aim to attain cruise altitude as soon as possible while having the absolute value
 					// of vertical facing bound by the maximum vertical rate of turn
-					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
-
+					desiredVFacing = CalculateDesiredVFacingForAscent(vFacing, diffClfMslHgt);
 					ChangeSpeed();
 				}
 			}
@@ -673,14 +666,27 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				// Aim to attain cruise altitude as soon as possible while having the absolute value
 				// of vertical facing bound by the maximum vertical rate of turn
-				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
-				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
-
+				desiredVFacing = CalculateDesiredVFacingForAscent(vFacing, diffClfMslHgt);
 				ChangeSpeed();
 			}
 
 			return desiredVFacing;
+		}
+
+		int CalculateDesiredVFacingForDescent(WVec vDist, int vFacing)
+		{
+			var desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+			if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
+				desiredVFacing = 0;
+
+			return desiredVFacing;
+		}
+
+		int CalculateDesiredVFacingForAscent(int vFacing, int diffClfMslHgt)
+		{
+			var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
+			var desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+			return desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 		}
 
 		WVec HomingTick(World world, WVec tarDistVec, int relTarHorDist)

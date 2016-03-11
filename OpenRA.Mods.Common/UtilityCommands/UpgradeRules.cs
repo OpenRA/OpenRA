@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (node.Key == "Color")
 					{
-						if (parent.Key.StartsWith("FixedColorPalette"))
+						if (parent != null && parent.Key.StartsWith("FixedColorPalette"))
 							TryUpdateHSLColor(ref node.Value.Value);
 						else
 							TryUpdateColor(ref node.Value.Value);
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 							if (disableMovementOnUpgradeNode != null)
 							{
-								if (addUpgradeTypeFromTrait(disableMovementOnUpgradeNode))
+								if (parent != null && addUpgradeTypeFromTrait(disableMovementOnUpgradeNode))
 									parent.Value.Nodes.Remove(disableMovementOnUpgradeNode);
 								else
 								{
