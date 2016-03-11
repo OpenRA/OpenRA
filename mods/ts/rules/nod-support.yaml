@@ -15,7 +15,7 @@ NAWALL:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 225
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
@@ -46,7 +46,7 @@ NAGATE_B:
 NALASR:
 	Inherits: ^Defense
 	Valued:
-		Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Laser Turret
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -57,14 +57,13 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
-	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
-		Range: 5c0
+		Range: 7c0
 	DetectCloaked:
 		Range: 3c0
 	Turreted:
@@ -103,9 +102,9 @@ NAOBEL:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 600
+		HP: 725
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 8c0
 	Armament:
@@ -128,7 +127,7 @@ NAOBEL:
 NASAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: S.A.M. Site
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -142,9 +141,9 @@ NASAM:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 500
+		HP: 600
 	Armor:
-		Type: Light
+		Type: Wood
 	BodyOrientation:
 		QuantizedFacings: 32
 	RenderRangeCircle:
