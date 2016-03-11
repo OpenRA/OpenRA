@@ -169,10 +169,9 @@ namespace OpenRA
 		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
 		[FieldLoader.Ignore] CellLayer<List<MPos>> inverseCellProjection;
 
-		[FieldLoader.Ignore] Lazy<TileSet> cachedTileSet;
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
-		public SequenceProvider SequenceProvider { get { return Rules.Sequences[Tileset]; } }
+		public SequenceProvider SequenceProvider { get { return Rules.Sequences; } }
 
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
@@ -307,8 +306,6 @@ namespace OpenRA
 				return modData.DefaultRules;
 			});
 
-			cachedTileSet = Exts.Lazy(() => Rules.TileSets[Tileset]);
-
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
 			AllCells = new CellRegion(Grid.Type, tl, br);
@@ -388,7 +385,7 @@ namespace OpenRA
 			// Odd-height ramps get bumped up a level to the next even height layer
 			if ((height & 1) == 1)
 			{
-				var ti = cachedTileSet.Value.GetTileInfo(MapTiles.Value[uv]);
+				var ti = Rules.TileSet.GetTileInfo(MapTiles.Value[uv]);
 				if (ti != null && ti.RampType != 0)
 					height += 1;
 			}
@@ -624,7 +621,7 @@ namespace OpenRA
 
 		public byte[] SavePreview()
 		{
-			var tileset = Rules.TileSets[Tileset];
+			var tileset = Rules.TileSet;
 			var resources = Rules.Actors["world"].TraitInfos<ResourceTypeInfo>()
 				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
 
@@ -875,7 +872,7 @@ namespace OpenRA
 		public void FixOpenAreas()
 		{
 			var r = new Random();
-			var tileset = Rules.TileSets[Tileset];
+			var tileset = Rules.TileSet;
 
 			for (var j = Bounds.Top; j < Bounds.Bottom; j++)
 			{
@@ -923,7 +920,7 @@ namespace OpenRA
 			{
 				var custom = CustomTerrain[uv];
 				terrainIndex = cachedTerrainIndexes[uv] =
-					custom != byte.MaxValue ? custom : cachedTileSet.Value.GetTerrainIndex(MapTiles.Value[uv]);
+					custom != byte.MaxValue ? custom : Rules.TileSet.GetTerrainIndex(MapTiles.Value[uv]);
 			}
 
 			return (byte)terrainIndex;
@@ -931,7 +928,7 @@ namespace OpenRA
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
 		{
-			return cachedTileSet.Value[GetTerrainIndex(cell)];
+			return Rules.TileSet[GetTerrainIndex(cell)];
 		}
 
 		public CPos Clamp(CPos cell)

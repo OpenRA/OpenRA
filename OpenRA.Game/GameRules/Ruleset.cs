@@ -24,8 +24,8 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
 		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
-		public readonly IReadOnlyDictionary<string, TileSet> TileSets;
-		public readonly IReadOnlyDictionary<string, SequenceProvider> Sequences;
+		public readonly TileSet TileSet;
+		public readonly SequenceProvider Sequences;
 
 		public Ruleset(
 			IDictionary<string, ActorInfo> actors,
@@ -33,16 +33,16 @@ namespace OpenRA
 			IDictionary<string, SoundInfo> voices,
 			IDictionary<string, SoundInfo> notifications,
 			IDictionary<string, MusicInfo> music,
-			IDictionary<string, TileSet> tileSets,
-			IDictionary<string, SequenceProvider> sequences)
+			TileSet tileSet,
+			SequenceProvider sequences)
 		{
 			Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
 			Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
 			Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
 			Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
 			Music = new ReadOnlyDictionary<string, MusicInfo>(music);
-			TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
-			Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
+			TileSet = tileSet;
+			Sequences = sequences;
 
 			foreach (var a in Actors.Values)
 			{

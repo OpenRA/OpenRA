@@ -35,10 +35,16 @@ namespace OpenRA
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles = new FS();
+		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
-		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, TileSet>> defaultTileSets;
+		public IReadOnlyDictionary<string, TileSet> DefaultTileSets { get { return defaultTileSets.Value; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
+		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
@@ -74,6 +80,24 @@ namespace OpenRA
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
 			defaultRules = Exts.Lazy(() => RulesetCache.Load(DefaultFileSystem));
+			defaultTileSets = Exts.Lazy(() =>
+			{
+				var items = new Dictionary<string, TileSet>();
+
+				foreach (var file in Manifest.TileSets)
+				{
+					var t = new TileSet(DefaultFileSystem, file);
+					items.Add(t.Id, t);
+				}
+
+				return (IReadOnlyDictionary<string, TileSet>)(new ReadOnlyDictionary<string, TileSet>(items));
+			});
+
+			defaultSequences = Exts.Lazy(() =>
+			{
+				var items = DefaultTileSets.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Value, null));
+				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
+			});
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}

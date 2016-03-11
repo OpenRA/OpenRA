@@ -28,7 +28,6 @@ namespace OpenRA
 		readonly Dictionary<string, SoundInfo> voiceCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, SoundInfo> notificationCache = new Dictionary<string, SoundInfo>();
 		readonly Dictionary<string, MusicInfo> musicCache = new Dictionary<string, MusicInfo>();
-		readonly Dictionary<string, TileSet> tileSetCache = new Dictionary<string, TileSet>();
 
 		public event EventHandler LoadingProgress;
 		void RaiseProgress()
@@ -43,6 +42,7 @@ namespace OpenRA
 		}
 
 		public Ruleset Load(IReadOnlyFileSystem fileSystem,
+			TileSet tileSet,
 			MiniYaml additionalRules,
 			MiniYaml additionalWeapons,
 			MiniYaml additionalVoices,
@@ -57,7 +57,6 @@ namespace OpenRA
 			Dictionary<string, SoundInfo> voices;
 			Dictionary<string, SoundInfo> notifications;
 			Dictionary<string, MusicInfo> music;
-			Dictionary<string, TileSet> tileSets;
 
 			using (new PerfTimer("Actors"))
 				actors = LoadYamlRules(fileSystem, actorCache, m.Rules, additionalRules,
@@ -79,12 +78,8 @@ namespace OpenRA
 				music = LoadYamlRules(fileSystem, musicCache, m.Music, additionalMusic,
 					k => new MusicInfo(k.Key, k.Value));
 
-			using (new PerfTimer("TileSets"))
-				tileSets = LoadTileSets(fileSystem, tileSetCache, m.TileSets);
-
-			// TODO: only initialize, and then cache, the provider for the given map
-			var sequences = tileSets.ToDictionary(t => t.Key, t => new SequenceProvider(fileSystem, modData, t.Value, additionalSequences));
-			return new Ruleset(actors, weapons, voices, notifications, music, tileSets, sequences);
+			var sequences = tileSet != null ? new SequenceProvider(fileSystem, modData, tileSet, additionalSequences) : null;
+			return new Ruleset(actors, weapons, voices, notifications, music, tileSet, sequences);
 		}
 
 		/// <summary>
@@ -93,9 +88,9 @@ namespace OpenRA
 		/// </summary>
 		public Ruleset Load(IReadOnlyFileSystem fileSystem, Map map = null)
 		{
-			return map != null ? Load(fileSystem, map.RuleDefinitions, map.WeaponDefinitions,
-				map.VoiceDefinitions, map.NotificationDefinitions, map.MusicDefinitions,
-				map.SequenceDefinitions) : Load(fileSystem, null, null, null, null, null, null);
+			return map != null ? Load(fileSystem, modData.DefaultTileSets[map.Tileset], map.RuleDefinitions,
+				map.WeaponDefinitions,map.VoiceDefinitions, map.NotificationDefinitions, map.MusicDefinitions,
+				map.SequenceDefinitions) : Load(fileSystem, null, null, null, null, null, null, null);
 		}
 
 		Dictionary<string, T> LoadYamlRules<T>(IReadOnlyFileSystem fileSystem,

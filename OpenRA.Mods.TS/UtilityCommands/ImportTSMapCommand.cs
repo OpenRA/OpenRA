@@ -228,7 +228,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 			fullSize = new int2(iniSize[2], iniSize[3]);
 
-			var map = new Map(Game.ModData, modData.DefaultRules.TileSets[tileset], size.Width, size.Height);
+			var map = new Map(Game.ModData, modData.DefaultTileSets[tileset], size.Width, size.Height);
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename));
 			map.Author = "Westwood Studios";
 			map.Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]);
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 		void ReadTiles(Map map, IniFile file)
 		{
-			var tileset = Game.ModData.DefaultRules.TileSets[map.Tileset];
+			var tileset = Game.ModData.DefaultTileSets[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
 
 			var data = Convert.FromBase64String(mapSection.Aggregate(string.Empty, (a, b) => a + b.Value));

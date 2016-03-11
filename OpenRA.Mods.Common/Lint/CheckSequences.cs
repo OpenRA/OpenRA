@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			var rules = map.Rules;
 			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
-			var sequenceProviders = new[] { rules.Sequences[map.Tileset] };
+			var sequenceProviders = new[] { rules.Sequences };
 
 			foreach (var actorInfo in rules.Actors)
 			{

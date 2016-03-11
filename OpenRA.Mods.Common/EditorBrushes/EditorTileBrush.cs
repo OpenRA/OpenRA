@@ -100,8 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var mapTiles = map.MapTiles.Value;
 			var mapHeight = map.MapHeight.Value;
 
-			var rules = map.Rules;
-			var tileset = rules.TileSets[map.Tileset];
+			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
 			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
 
@@ -139,8 +138,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var queue = new Queue<CPos>();
 			var touched = new CellLayer<bool>(map);
 
-			var rules = map.Rules;
-			var tileset = rules.TileSets[map.Tileset];
+			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
 
 			Action<CPos> maybeEnqueue = newCell =>
