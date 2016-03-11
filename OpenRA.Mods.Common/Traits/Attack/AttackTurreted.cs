@@ -32,14 +32,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			if (!base.CanAttack(self, target))
+			if (target.Type == TargetType.Invalid)
 				return false;
 
+			// Don't break early from this loop - we want to bring all turrets to bear!
+			var turretReady = false;
 			foreach (var t in turrets)
 				if (t.FaceTarget(self, target))
-					return true;
+					turretReady = true;
 
-			return false;
+			return turretReady && base.CanAttack(self, target);
 		}
 	}
 }

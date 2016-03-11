@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return false;
 			}
 
-			return turret.FaceTarget(self, target);
+			return true;
 		}
 
 		public void TickIdle(Actor self)
