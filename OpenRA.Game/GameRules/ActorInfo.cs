@@ -100,7 +100,7 @@ namespace OpenRA
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type))));
+			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type)) && !unresolved.Any(u1 => testResolve(d, u1.Type))));
 
 			// Re-evaluate the vars above until sorted
 			while (more.Any())
@@ -122,14 +122,14 @@ namespace OpenRA
 					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
 				}
 
-				throw new Exception(exceptionString);
+				throw new YamlException(exceptionString);
 			}
 
 			constructOrderCache = resolved.Select(r => r.Trait).ToList();
 			return constructOrderCache;
 		}
 
-		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		public static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()
