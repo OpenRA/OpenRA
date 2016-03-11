@@ -813,8 +813,8 @@ end
 function debugger:handle(command, server, options)
   local debugger = self
   local verbose = ide.config.debugger.verbose
-  local gprint = _G.print
-  _G.print = function (...) if verbose then DisplayOutputLn(...) end end
+  options = options or {}
+  options.verbose = verbose and (function(...) ide:Print(...) end) or false
 
   local ip, port = debugger.socket:getpeername()
   PackageEventHandle("onDebuggerCommand", debugger, command, server or debugger.server, options)
@@ -827,7 +827,6 @@ function debugger:handle(command, server, options)
   -- only set suspended if the debugging hasn't been terminated
   statusUpdate(debugger, debugger.server and "suspended" or nil)
 
-  _G.print = gprint
   return file, line, err
 end
 
