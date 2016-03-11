@@ -392,7 +392,7 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", motd);
 				}
 
-				if (Map.RuleDefinitions.Any() && !LobbyInfo.IsSinglePlayer)
+				if (Map.RuleDefinitions != null && !LobbyInfo.IsSinglePlayer)
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (Settings.DisableSinglePlayer)

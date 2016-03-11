@@ -130,8 +130,7 @@ namespace OpenRA
 				return;
 			}
 
-			var yaml = MiniYaml.Merge(Manifest.Translations.Append(map.TranslationDefinitions)
-				.Select(t => MiniYaml.FromStream(map.Open(t))));
+			var yaml = MiniYaml.Load(map, Manifest.Translations, map.TranslationDefinitions);
 			Languages = yaml.Select(t => t.Key).ToArray();
 
 			foreach (var y in yaml)
@@ -182,7 +181,7 @@ namespace OpenRA
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load(map);
 
-			VoxelProvider.Initialize(VoxelLoader, map, Manifest.VoxelSequences.Append(map.VoxelSequenceDefinitions));
+			VoxelProvider.Initialize(VoxelLoader, map, MiniYaml.Load(map, Manifest.VoxelSequences, map.VoxelSequenceDefinitions));
 			VoxelLoader.Finish();
 
 			return map;

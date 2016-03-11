@@ -948,20 +948,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					rules.Value.Nodes.Add(playerNode);
 			}
 
-			// Format 9 -> 10 extracted map rules, sequences, voxelsequences, weapons, voices, music, notifications,
-			// and translations to external files, moved smudges to SmudgeLayer, and uses map.png for all maps
+			// Format 9 -> 10 moved smudges to SmudgeLayer, and uses map.png for all maps
 			if (mapFormat < 10)
 			{
 				ExtractSmudges(yaml);
-				ExtractOrRemoveRules(package, yaml, "Rules", "rules.yaml");
-				ExtractOrRemoveRules(package, yaml, "Sequences", "sequences.yaml");
-				ExtractOrRemoveRules(package, yaml, "VoxelSequences", "voxels.yaml");
-				ExtractOrRemoveRules(package, yaml, "Weapons", "weapons.yaml");
-				ExtractOrRemoveRules(package, yaml, "Voices", "voices.yaml");
-				ExtractOrRemoveRules(package, yaml, "Music", "music.yaml");
-				ExtractOrRemoveRules(package, yaml, "Notifications", "notifications.yaml");
-				ExtractOrRemoveRules(package, yaml, "Translations", "translations.yaml");
-
 				if (package.Contains("map.png"))
 					yaml.Nodes.Add(new MiniYamlNode("LockPreview", new MiniYaml("True")));
 			}
@@ -1022,23 +1012,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var smudgeLayer = new MiniYamlNode("SmudgeLayer@CRATER", new MiniYaml("", new List<MiniYamlNode>() { initialCraters }));
 				worldNode.Value.Nodes.Add(smudgeLayer);
 			}
-		}
-
-		static void ExtractOrRemoveRules(IReadWritePackage package, MiniYaml yaml, string key, string filename)
-		{
-			var node = yaml.Nodes.FirstOrDefault(n => n.Key == key);
-			if (node == null)
-				return;
-
-			if (node.Value.Nodes.Any())
-			{
-				var rulesText = node.Value.Nodes.ToLines(false).JoinWith("\n");
-				package.Update(filename, System.Text.Encoding.ASCII.GetBytes(rulesText));
-				node.Value.Value = filename;
-				node.Value.Nodes.Clear();
-			}
-			else
-				yaml.Nodes.Remove(node);
 		}
 	}
 }

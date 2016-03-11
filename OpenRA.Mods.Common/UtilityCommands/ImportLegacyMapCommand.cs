@@ -33,10 +33,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public ModData ModData;
 		public Map Map;
-		public IReadWritePackage Package;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
-		public MiniYaml Rules = new MiniYaml("");
 
 		public bool ValidateArguments(string[] args)
 		{
@@ -52,8 +50,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 
 			var filename = args[1];
-			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			Package = new ZipFile(modData.ModFiles, dest, true);
 			using (var stream = modData.DefaultFileSystem.Open(filename))
 			{
 				var file = new IniFile(stream);
@@ -67,7 +63,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Map = new Map(modData, modData.DefaultRules.TileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
-					Author = "Westwood Studios"
+					Author = "Westwood Studios",
 				};
 
 				Map.RequiresMod = modData.Manifest.Mod.Id;
@@ -96,16 +92,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			Map.FixOpenAreas();
 
-			if (Rules.Nodes.Any())
-			{
-				// HACK: bypassing the readonly modifier here is still better than leaving this mutable by everyone
-				typeof(Map).GetField("RuleDefinitions").SetValue(Map, new[] { "rules.yaml" });
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = new ZipFile(modData.ModFiles, dest, true);
 
-				var rulesText = Rules.Nodes.ToLines(false).JoinWith("\n");
-				Package.Update("rules.yaml", System.Text.Encoding.ASCII.GetBytes(rulesText));
-			}
-
-			Map.Save(Package);
+			Map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 
@@ -140,11 +130,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (briefing.Length == 0)
 				return;
 
-			var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+			var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
 			if (worldNode == null)
 			{
 				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
-				Rules.Nodes.Add(worldNode);
+				Map.RuleDefinitions.Nodes.Add(worldNode);
 			}
 
 			var missionData = worldNode.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
@@ -201,11 +191,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (videos.Any())
 			{
-				var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+				var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
 				if (worldNode == null)
 				{
 					worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
-					Rules.Nodes.Add(worldNode);
+					Map.RuleDefinitions.Nodes.Add(worldNode);
 				}
 
 				var missionData = worldNode.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
@@ -298,7 +288,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					craters.Add(node);
 			}
 
-			var worldNode = Rules.Nodes.FirstOrDefault(n => n.Key == "World");
+			var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
 			if (worldNode == null)
 				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
 
@@ -316,8 +306,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				worldNode.Value.Nodes.Add(smudgeLayer);
 			}
 
-			if (worldNode.Value.Nodes.Any() && !Rules.Nodes.Contains(worldNode))
-				Rules.Nodes.Add(worldNode);
+			if (worldNode.Value.Nodes.Any() && !Map.RuleDefinitions.Nodes.Contains(worldNode))
+				Map.RuleDefinitions.Nodes.Add(worldNode);
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.

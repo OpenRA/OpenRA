@@ -1293,4 +1293,7 @@ Actors:
 		Owner: Neutral
 		Location: 115,-15
 
-Rules: rules.yaml
+Rules:
+	World:
+		GlobalLightingPaletteEffect:
+			Ambient: 0.72

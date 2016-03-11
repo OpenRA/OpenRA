@@ -1737,3 +1737,9 @@ Actors:
 		Location: 111,13
 
 Rules: rules.yaml
+	World:
+		GlobalLightingPaletteEffect:
+			Red: 1.1
+			Green: 1.1
+			Blue: 1
+			Ambient: 0.55
