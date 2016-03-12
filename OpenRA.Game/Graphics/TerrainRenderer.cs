@@ -47,6 +47,8 @@ namespace OpenRA.Graphics
 		public void UpdateCell(CPos cell)
 		{
 			var tile = mapTiles[cell];
+			if (!world.TileSet.Templates.ContainsKey(tile.Type))
+				return;
 			var palette = world.TileSet.Templates[tile.Type].Palette ?? TileSet.TerrainPaletteInternalName;
 			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
