@@ -81,6 +81,7 @@ namespace OpenRA
 		Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 		public bool InvalidCustomRules { get; private set; }
+		public bool RulesLoaded { get; private set; }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -225,9 +226,12 @@ namespace OpenRA
 				catch
 				{
 					InvalidCustomRules = true;
+					return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
 				}
-
-				return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
+				finally
+				{
+					RulesLoaded = true;
+				}
 			});
 
 			if (p.Contains("map.png"))
