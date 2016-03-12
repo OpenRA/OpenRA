@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SmokeTrailWhenDamagedInfo info;
 		readonly BodyOrientation body;
-		readonly Func<int> getFacing;
+		readonly int getFacing;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 			var facing = self.TraitOrDefault<IFacing>();
 
 			if (facing != null)
-				getFacing = () => facing.Facing;
+				getFacing = facing.Facing;
 			else
-				getFacing = () => 0;
+				getFacing = 0;
 		}
 
 		public void Tick(Actor self)
