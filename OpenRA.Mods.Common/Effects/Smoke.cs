@@ -24,15 +24,15 @@ namespace OpenRA.Mods.Common.Effects
 		readonly string palette;
 
 		public Smoke(World world, WPos pos, string trail, string palette, string sequence)
-			: this(world, pos, () => 0, trail, palette, sequence) { }
+			: this(world, pos, 0, trail, palette, sequence) { }
 
-		public Smoke(World world, WPos pos, Func<int> facingFunc, string trail, string palette, string sequence)
+		public Smoke(World world, WPos pos, int facing, string trail, string palette, string sequence)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.palette = palette;
 
-			anim = new Animation(world, trail, facingFunc);
+			anim = new Animation(world, trail, () => facing);
 			anim.PlayThen(sequence,
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
