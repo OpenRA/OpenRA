@@ -3,27 +3,13 @@ Background@SIMPLE_TOOLTIP:
 	Background: dialog3
 	Height: 34
 	Children:
+		Container@LINE_HEIGHT:
+			Y: 5
+			Height: 19
 		Label@LABEL:
 			X: 5
-			Y: 3
+			Y: 0-2
 			Height: 23
-			Font: Bold
-
-Background@TWO_LINE_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: dialog3
-	Height: 54
-	Children:
-		Label@LABEL:
-			X: 5
-			Y: 3
-			Height: 46
-			Font: Bold
-		Label@HOTKEY:
-			Visible: false
-			Y: 3
-			Height: 23
-			TextColor: FFFF00
 			Font: Bold
 
 Background@BUTTON_TOOLTIP:

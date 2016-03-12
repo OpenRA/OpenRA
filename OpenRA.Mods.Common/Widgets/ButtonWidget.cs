@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs { { "button", this } });
+				new WidgetArgs { { "button", this }, { "getText", GetTooltipText } });
 		}
 
 		public override void MouseExited()

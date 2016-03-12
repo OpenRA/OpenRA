@@ -294,7 +294,7 @@ Container@EDITOR_WORLD_ROOT:
 									Visible: false
 									Width: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: TWO_LINE_TOOLTIP
+									TooltipTemplate: SIMPLE_TOOLTIP
 									IgnoreChildMouseOver: true
 									Children:
 										ActorPreview@ACTOR_PREVIEW:
