@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Map")]
 	public class MapGlobal : ScriptGlobal
 	{
-		SpawnMapActors sma;
+		readonly SpawnMapActors sma;
 		public MapGlobal(ScriptContext context)
 			: base(context)
 		{
