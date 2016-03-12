@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
-			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.DefaultSubCell : SubCell.FullCell;
+			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
 
@@ -397,7 +397,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.SharesCell)
 			{
 				if (preferred <= SubCell.FullCell)
-					return self.World.Map.DefaultSubCell;
+					return self.World.Map.Grid.DefaultSubCell;
 			}
 			else
 			{
@@ -776,7 +776,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: solve/reduce cell is full problem
 			if (subCell == SubCell.Invalid)
-				subCell = self.World.Map.DefaultSubCell;
+				subCell = self.World.Map.Grid.DefaultSubCell;
 
 			// Reserve the exit cell
 			SetPosition(self, cell, subCell);

@@ -74,10 +74,6 @@ namespace OpenRA
 		public readonly MapGrid Grid;
 		readonly ModData modData;
 
-		[FieldLoader.Ignore] public readonly WVec[] SubCellOffsets;
-		public readonly SubCell DefaultSubCell;
-		public readonly SubCell LastSubCell;
-
 		public IReadOnlyPackage Package { get; private set; }
 
 		// Yaml map data
@@ -92,14 +88,6 @@ namespace OpenRA
 		public string Tileset;
 		public bool LockPreview;
 		public bool InvalidCustomRules { get; private set; }
-
-		public WVec OffsetOfSubCell(SubCell subCell)
-		{
-			if (subCell == SubCell.Invalid || subCell == SubCell.Any)
-				return WVec.Zero;
-
-			return SubCellOffsets[(int)subCell];
-		}
 
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
@@ -273,10 +261,6 @@ namespace OpenRA
 			MapHeight = Exts.Lazy(LoadMapHeight);
 
 			Grid = modData.Manifest.Get<MapGrid>();
-
-			SubCellOffsets = Grid.SubCellOffsets;
-			LastSubCell = (SubCell)(SubCellOffsets.Length - 1);
-			DefaultSubCell = (SubCell)Grid.SubCellDefaultIndex;
 
 			PostInit();
 
@@ -760,8 +744,8 @@ namespace OpenRA
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
 		{
 			var index = (int)subCell;
-			if (index >= 0 && index <= SubCellOffsets.Length)
-				return CenterOfCell(cell) + SubCellOffsets[index];
+			if (index >= 0 && index <= Grid.SubCellOffsets.Length)
+				return CenterOfCell(cell) + Grid.SubCellOffsets[index];
 			return CenterOfCell(cell);
 		}
 

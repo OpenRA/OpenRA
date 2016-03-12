@@ -190,8 +190,8 @@ namespace OpenRA.Mods.Common.Activities
 				mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var from = self.World.Map.CenterOfSubCell(mobile.FromCell, mobile.FromSubCell);
 				var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
-					(self.World.Map.OffsetOfSubCell(mobile.FromSubCell) +
-					self.World.Map.OffsetOfSubCell(mobile.ToSubCell)) / 2;
+					(self.World.Map.Grid.OffsetOfSubCell(mobile.FromSubCell) +
+					self.World.Map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 				var move = new MoveFirstHalf(
 					this,
 					from,
@@ -381,15 +381,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				var fromSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.FromSubCell);
-				var toSubcellOffset = self.World.Map.OffsetOfSubCell(mobile.ToSubCell);
+				var fromSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(mobile.FromSubCell);
+				var toSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
 					{
-						var nextSubcellOffset = self.World.Map.OffsetOfSubCell(nextCell.Value.Second);
+						var nextSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
 							Move,
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,

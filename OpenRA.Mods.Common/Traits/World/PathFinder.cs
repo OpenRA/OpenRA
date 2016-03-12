@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			var targetCell = world.Map.CellContaining(target);
 
 			// Correct for SubCell offset
-			target -= world.Map.OffsetOfSubCell(srcSub);
+			target -= world.Map.Grid.OffsetOfSubCell(srcSub);
 
 			// Select only the tiles that are within range from the requested SubCell
 			// This assumes that the SubCell does not change during the path traversal

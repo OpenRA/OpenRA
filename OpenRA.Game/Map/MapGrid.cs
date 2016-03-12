@@ -12,6 +12,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -22,7 +23,8 @@ namespace OpenRA
 		public readonly MapGridType Type = MapGridType.Rectangular;
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly byte MaximumTerrainHeight = 0;
-		public readonly byte SubCellDefaultIndex = byte.MaxValue;
+		public readonly SubCell DefaultSubCell = (SubCell)byte.MaxValue;
+
 		public readonly WVec[] SubCellOffsets =
 		{
 			new WVec(0, 0, 0),       // full cell - index 0
@@ -76,9 +78,10 @@ namespace OpenRA
 			FieldLoader.Load(this, yaml);
 
 			// The default subcell index defaults to the middle entry
-			if (SubCellDefaultIndex == byte.MaxValue)
-				SubCellDefaultIndex = (byte)(SubCellOffsets.Length / 2);
-			else if (SubCellDefaultIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || SubCellDefaultIndex >= SubCellOffsets.Length)
+			var defaultSubCellIndex = (byte)DefaultSubCell;
+			if (defaultSubCellIndex == byte.MaxValue)
+				DefaultSubCell = (SubCell)(SubCellOffsets.Length / 2);
+			else if (defaultSubCellIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || defaultSubCellIndex >= SubCellOffsets.Length)
 				throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 
 			var leftDelta = Type == MapGridType.RectangularIsometric ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
@@ -92,6 +95,14 @@ namespace OpenRA
 				rightDelta + new WVec(0, 0, 512 * ramp[2]),
 				bottomDelta + new WVec(0, 0, 512 * ramp[3])
 			}).ToArray();
+		}
+
+		public WVec OffsetOfSubCell(SubCell subCell)
+		{
+			if (subCell == SubCell.Invalid || subCell == SubCell.Any)
+				return WVec.Zero;
+
+			return SubCellOffsets[(int)subCell];
 		}
 	}
 }
