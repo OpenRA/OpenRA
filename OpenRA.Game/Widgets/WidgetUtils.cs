@@ -249,8 +249,6 @@ namespace OpenRA.Widgets
 			return trimmed;
 		}
 
-		public static Action Once(Action a) { return () => { if (a != null) { a(); a = null; } }; }
-
 		public static string ChooseInitialMap(string initialUid)
 		{
 			if (string.IsNullOrEmpty(initialUid) || Game.ModData.MapCache[initialUid].Status != MapStatus.Available)

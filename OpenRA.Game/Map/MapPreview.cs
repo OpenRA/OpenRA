@@ -210,6 +210,9 @@ namespace OpenRA
 				Status = MapStatus.Unavailable;
 			}
 
+			// Note: multiple threads may try to access the value at the same time
+			// We rely on the thread-safety guarantees given by Lazy<T> to prevent race conitions.
+			// If you're thinking about replacing this, then you must be careful to keep this safe.
 			rules = Exts.Lazy(() =>
 			{
 				try

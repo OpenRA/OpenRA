@@ -65,6 +65,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget chatLabel;
 		bool teamChat;
 
+		bool addBotOnMapLoad;
+
 		int lobbyChatUnreadMessages;
 		int globalChatLastReadMessages;
 		int globalChatUnreadMessages;
@@ -201,9 +203,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
 
-				var botNames = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
 				{
+					var botNames = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -711,16 +713,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Add a bot on the first lobbyinfo update
 			if (skirmishMode)
-			{
-				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
-				{
-					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-					var bot = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					if (slot != null && bot != null)
-						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
-				});
-			}
+				addBotOnMapLoad = true;
 		}
 
 		public override void Tick()
@@ -796,6 +789,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var currentMap = Map;
 				new Task(() =>
 				{
+					// Force map rules to be loaded on this background thread
 					var unused = currentMap.Rules;
 					Game.RunAfterTick(() =>
 					{
@@ -806,6 +800,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						// Tell the server that we have the map
 						if (!currentMap.InvalidCustomRules)
 							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+
+						if (addBotOnMapLoad)
+						{
+							var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
+							var bot = currentMap.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+							var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+							if (slot != null && bot != null)
+								orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
+
+							addBotOnMapLoad = false;
+						}
 					});
 				}).Start();
 			}
@@ -837,7 +842,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (Game.IsHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -856,7 +861,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
