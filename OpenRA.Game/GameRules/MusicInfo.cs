@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 
@@ -35,19 +36,24 @@ namespace OpenRA.GameRules
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
 		}
 
-		public void Load(IReadOnlyFileSystem filesystem)
+		public void Load(IReadOnlyFileSystem fileSystem)
 		{
-			if (!filesystem.Exists(Filename))
+			Stream stream;
+			if (!fileSystem.TryOpen(Filename, out stream))
 				return;
 
 			Exists = true;
-			using (var s = filesystem.Open(Filename))
+			ISoundFormat soundFormat;
+			foreach (var loader in Game.ModData.SoundLoaders)
 			{
-				if (Filename.ToLowerInvariant().EndsWith("wav"))
-					Length = (int)WavReader.WaveLength(s);
-				else
-					Length = (int)AudReader.SoundLength(s);
+				if (loader.TryParseSound(stream, out soundFormat))
+				{
+					Length = (int)soundFormat.LengthInSeconds;
+					break;
+				}
 			}
+
+			stream.Dispose();
 		}
 	}
 }
