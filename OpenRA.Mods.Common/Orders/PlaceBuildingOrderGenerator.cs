@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Orders
 				world.Selection.Clear();
 
 			var map = world.Map;
-			var tileset = world.TileSet.Id.ToLowerInvariant();
+			var tileset = world.Map.Tileset.ToLowerInvariant();
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();
@@ -56,8 +56,8 @@ namespace OpenRA.Mods.Common.Orders
 			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
 
-			buildOk = map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-			buildBlocked = map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+			buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}

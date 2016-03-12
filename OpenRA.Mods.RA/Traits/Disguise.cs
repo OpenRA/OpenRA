@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA.Traits
 			var oldEffectiveOwner = AsPlayer;
 
 			var renderSprites = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
-			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.SequenceProvider, newOwner.Faction.InternalName);
+			AsSprite = renderSprites == null ? null : renderSprites.GetImage(actorInfo, self.World.Map.Rules.Sequences, newOwner.Faction.InternalName);
 			AsPlayer = newOwner;
 			AsTooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault();
 

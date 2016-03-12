@@ -171,7 +171,6 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] Lazy<Ruleset> rules;
 		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
-		public SequenceProvider SequenceProvider { get { return Rules.Sequences; } }
 
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;

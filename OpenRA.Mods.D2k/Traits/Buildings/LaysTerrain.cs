@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 			this.info = info;
 			layer = self.World.WorldActor.Trait<BuildableTerrainLayer>();
 			bi = self.World.WorldActor.Trait<BuildingInfluence>();
-			template = self.World.TileSet.Templates[info.Template];
+			template = self.World.Map.Rules.TileSet.Templates[info.Template];
 		}
 
 		public void AddedToWorld(Actor self)

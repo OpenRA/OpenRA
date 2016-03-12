@@ -130,8 +130,9 @@ namespace OpenRA.Mods.Common.Traits
 		byte GetTerrainType(CPos cell)
 		{
 			var dx = cell - self.Location;
-			var index = dx.X + self.World.TileSet.Templates[template].Size.X * dx.Y;
-			return self.World.TileSet.GetTerrainIndex(new TerrainTile(template, (byte)index));
+			var tileSet = self.World.Map.Rules.TileSet;
+			var index = dx.X + tileSet.Templates[template].Size.X * dx.Y;
+			return tileSet.GetTerrainIndex(new TerrainTile(template, (byte)index));
 		}
 
 		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)

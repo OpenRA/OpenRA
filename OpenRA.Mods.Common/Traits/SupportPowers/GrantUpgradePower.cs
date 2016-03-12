@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 				this.order = order;
 				this.power = power;
 				range = power.info.Range;
-				tile = world.Map.SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
+				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)

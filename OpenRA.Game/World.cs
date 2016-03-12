@@ -109,8 +109,6 @@ namespace OpenRA
 
 		public readonly Map Map;
 
-		public readonly TileSet TileSet;
-
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 		public readonly WorldType Type;
@@ -159,8 +157,6 @@ namespace OpenRA
 			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
-
-			TileSet = map.Rules.TileSet;
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";

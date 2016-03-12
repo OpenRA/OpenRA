@@ -94,10 +94,11 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			world = self.World;
 
-			var types = world.Map.SequenceProvider.Sequences(Info.Sequence);
+			var sequenceProvider = world.Map.Rules.Sequences;
+			var types = sequenceProvider.Sequences(Info.Sequence);
 			foreach (var t in types)
 			{
-				var seq = world.Map.SequenceProvider.GetSequence(Info.Sequence, t);
+				var seq = sequenceProvider.GetSequence(Info.Sequence, t);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				smudges.Add(t, sprites);
 			}

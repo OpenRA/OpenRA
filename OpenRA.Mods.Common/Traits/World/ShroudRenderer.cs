@@ -121,10 +121,11 @@ namespace OpenRA.Mods.Common.Traits
 			shroudSprites = new Sprite[variantCount * variantStride];
 			fogSprites = new Sprite[variantCount * variantStride];
 
+			var sequenceProvider = map.Rules.Sequences;
 			for (var j = 0; j < variantCount; j++)
 			{
-				var shroud = map.SequenceProvider.GetSequence(info.Sequence, info.ShroudVariants[j]);
-				var fog = map.SequenceProvider.GetSequence(info.Sequence, info.FogVariants[j]);
+				var shroud = sequenceProvider.GetSequence(info.Sequence, info.ShroudVariants[j]);
+				var fog = sequenceProvider.GetSequence(info.Sequence, info.FogVariants[j]);
 				for (var i = 0; i < info.Index.Length; i++)
 				{
 					shroudSprites[j * variantStride + i] = shroud.GetSprite(i);
@@ -134,8 +135,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (info.OverrideFullShroud != null)
 				{
 					var i = (j + 1) * variantStride - 1;
-					shroudSprites[i] = map.SequenceProvider.GetSequence(info.Sequence, info.OverrideFullShroud).GetSprite(0);
-					fogSprites[i] = map.SequenceProvider.GetSequence(info.Sequence, info.OverrideFullFog).GetSprite(0);
+					shroudSprites[i] = sequenceProvider.GetSequence(info.Sequence, info.OverrideFullShroud).GetSprite(0);
+					fogSprites[i] = sequenceProvider.GetSequence(info.Sequence, info.OverrideFullFog).GetSprite(0);
 				}
 			}
 

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			rotationBuffer = new uint[info.RotationRange];
-			tilesetId = world.TileSet.Id;
+			tilesetId = world.Map.Rules.TileSet.Id;
 
 			validTileset = IsValidTileset();
 		}

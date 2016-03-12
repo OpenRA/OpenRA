@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Map = self.World.Map;
-			Tileset = self.World.TileSet;
+			Tileset = self.World.Map.Rules.TileSet;
 
 			Tiles = new CellLayer<CellContents>(Map);
 			Resources = self.TraitsImplementing<ResourceType>()

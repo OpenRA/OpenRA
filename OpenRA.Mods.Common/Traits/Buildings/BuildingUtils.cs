@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var tile = world.Map.MapTiles.Value[cell];
-			var tileInfo = world.TileSet.GetTileInfo(tile);
+			var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
 
 			// TODO: This is bandaiding over bogus tilesets.
 			if (tileInfo != null && tileInfo.RampType > 0)

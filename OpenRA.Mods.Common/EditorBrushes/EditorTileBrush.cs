@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
-			preview.Template = world.TileSet.Templates.First(t => t.Value.Id == template).Value;
+			preview.Template = world.Map.Rules.TileSet.Templates.First(t => t.Value.Id == template).Value;
 			var grid = world.Map.Grid;
 			bounds = worldRenderer.Theater.TemplateBounds(preview.Template, grid.TileSize, grid.Type);
 

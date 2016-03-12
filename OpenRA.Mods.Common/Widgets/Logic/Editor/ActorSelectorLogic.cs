@@ -97,9 +97,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var filter = actor.TraitInfoOrDefault<EditorTilesetFilterInfo>();
 				if (filter != null)
 				{
-					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.TileSet.Id))
+					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.Map.Rules.TileSet.Id))
 						continue;
-					if (filter.RequireTilesets != null && !filter.RequireTilesets.Contains(world.TileSet.Id))
+					if (filter.RequireTilesets != null && !filter.RequireTilesets.Contains(world.Map.Rules.TileSet.Id))
 						continue;
 				}
 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch
 				{
 					Log.Write("debug", "Map editor ignoring actor {0}, because of missing sprites for tileset {1}.",
-						actor.Name, world.TileSet.Id);
+						actor.Name, world.Map.Rules.TileSet.Id);
 					continue;
 				}
 			}

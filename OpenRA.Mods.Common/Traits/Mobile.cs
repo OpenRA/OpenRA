@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				// PERF: This struct allows us to cache the terrain info for the tileset used by the world.
 				// This allows us to speed up some performance-sensitive pathfinding calculations.
 				World = world;
-				TerrainInfos = info.TilesetTerrainInfo[world.TileSet];
+				TerrainInfos = info.TilesetTerrainInfo[world.Map.Rules.TileSet];
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.TileSet], cell);
+			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
 		}
 
 		int MovementCostForCell(Map map, TerrainInfo[] terrainInfos, CPos cell)
@@ -630,7 +630,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (index == byte.MaxValue)
 				return 0;
 
-			var terrainSpeed = Info.TilesetTerrainInfo[self.World.TileSet][index].Speed;
+			var terrainSpeed = Info.TilesetTerrainInfo[self.World.Map.Rules.TileSet][index].Speed;
 			if (terrainSpeed == 0)
 				return 0;
 

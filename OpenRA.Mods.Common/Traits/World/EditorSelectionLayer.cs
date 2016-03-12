@@ -53,8 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			this.info = info;
 			map = self.World.Map;
-			copySprite = map.SequenceProvider.GetSequence(info.Image, info.CopySequence).GetSprite(0);
-			pasteSprite = map.SequenceProvider.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
+			copySprite = map.Rules.Sequences.GetSequence(info.Image, info.CopySequence).GetSprite(0);
+			pasteSprite = map.Rules.Sequences.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

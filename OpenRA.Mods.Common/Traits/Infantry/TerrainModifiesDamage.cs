@@ -48,11 +48,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var world = self.World;
 			var map = world.Map;
-			var tileSet = world.TileSet;
 
 			var tiles = map.MapTiles.Value;
 			var pos = map.CellContaining(self.CenterPosition);
-			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[pos])].Type;
+			var terrainType = map.GetTerrainInfo(pos).Type;
 
 			if (!Info.TerrainModifier.ContainsKey(terrainType))
 				return FullDamage;

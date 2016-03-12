@@ -43,8 +43,8 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			this.self = self;
 
-			var tileset = self.World.TileSet.Id.ToLowerInvariant();
-			tile = self.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			var tileset = self.World.Map.Tileset.ToLowerInvariant();
+			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -140,9 +140,9 @@ namespace OpenRA.Mods.RA.Traits
 				minelayer = self;
 				minefieldStart = xy;
 
-				var tileset = self.World.TileSet.Id.ToLowerInvariant();
-				tileOk = self.World.Map.SequenceProvider.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-				tileBlocked = self.World.Map.SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
+				var tileset = self.World.Map.Tileset.ToLowerInvariant();
+				tileOk = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				tileBlocked = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)

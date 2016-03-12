@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
-			var sequenceProvider = init.World.Map.SequenceProvider;
+			var sequenceProvider = init.World.Map.Rules.Sequences;
 			var faction = init.Get<FactionInit, string>();
 			var ownerName = init.Get<OwnerInit>().PlayerName;
 			var image = GetImage(init.Actor, sequenceProvider, faction);
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = info.GetImage(self.Info, self.World.Map.SequenceProvider, faction);
+			return cachedImage = info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
 		}
 
 		public void UpdatePalette()
