@@ -357,6 +357,8 @@ namespace OpenRA.Mods.Common.Server
 						//  - Observers remain as observers
 						//  - Players who now lack a slot are made observers
 						//  - Bots who now lack a slot are dropped
+						//  - Bots who are not defined in the map rules are dropped
+						var botNames = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
 						var i = 0;
 						foreach (var os in oldSlots)
@@ -370,7 +372,7 @@ namespace OpenRA.Mods.Common.Server
 							if (c.Slot != null)
 							{
 								// Remove Bot from slot if slot forbids bots
-								if (c.Bot != null && !server.Map.Players.Players[c.Slot].AllowBots)
+								if (c.Bot != null && (!server.Map.Players.Players[c.Slot].AllowBots || !botNames.Contains(c.Bot)))
 									server.LobbyInfo.Clients.Remove(c);
 								S.SyncClientToPlayerReference(c, server.Map.Players.Players[c.Slot]);
 							}
