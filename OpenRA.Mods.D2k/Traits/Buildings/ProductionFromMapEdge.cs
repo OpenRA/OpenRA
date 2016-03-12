@@ -10,6 +10,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -17,62 +18,103 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Produce a unit on the closest map edge cell and move into the world.")]
-	class ProductionFromMapEdgeInfo : ProductionInfo
+	class ProductionFromMapEdgeInfo : ProductionInfo, UsesInit<ProductionSpawnLocationInit>
 	{
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production
+	class ProductionFromMapEdge : Production, INotifyCreated
 	{
+		readonly CPos? spawnLocation;
+		readonly DomainIndex domainIndex;
+		RallyPoint rp;
+
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
-			: base(init, info) { }
+			: base(init, info)
+		{
+			domainIndex = init.Self.World.WorldActor.Trait<DomainIndex>();
+			if (init.Contains<ProductionSpawnLocationInit>())
+				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			rp = self.TraitOrDefault<RallyPoint>();
+		}
 
 		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
-			var location = self.World.Map.ChooseClosestEdgeCell(self.Location);
-			var pos = self.World.Map.CenterOfCell(location);
+			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
+			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
+
+			var passable = mobileInfo != null ? (uint)mobileInfo.GetMovementClass(self.World.TileSet) : 0;
+			var destination = rp != null ? rp.Location : self.Location;
+
+			var location = spawnLocation;
+			if (!location.HasValue)
+			{
+				if (aircraftInfo != null)
+					location = self.World.Map.ChooseClosestEdgeCell(self.Location);
+
+				if (mobileInfo != null)
+					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
+						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, passable));
+			}
+
+			// No suitable spawn location could be found, so production has failed.
+			if (!location.HasValue)
+				return false;
+
+			var pos = self.World.Map.CenterOfCell(location.Value);
 
 			// If aircraft, spawn at cruise altitude
-			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
-			var initialFacing = self.World.Map.FacingBetween(location, self.Location, 0);
+			var initialFacing = self.World.Map.FacingBetween(location.Value, destination, 0);
 
 			self.World.AddFrameEndTask(w =>
+			{
+				var td = new TypeDictionary
 				{
-					var td = new TypeDictionary
-					{
-						new OwnerInit(self.Owner),
-						new LocationInit(location),
-						new CenterPositionInit(pos),
-						new FacingInit(initialFacing)
-					};
+					new OwnerInit(self.Owner),
+					new LocationInit(location.Value),
+					new CenterPositionInit(pos),
+					new FacingInit(initialFacing)
+				};
 
-					if (factionVariant != null)
-						td.Add(new FactionInit(factionVariant));
+				if (factionVariant != null)
+					td.Add(new FactionInit(factionVariant));
 
-					var newUnit = self.World.CreateActor(producee.Name, td);
+				var newUnit = self.World.CreateActor(producee.Name, td);
 
-					var move = newUnit.TraitOrDefault<IMove>();
-					if (move != null)
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, self.Location));
+				var move = newUnit.TraitOrDefault<IMove>();
+				if (move != null)
+					newUnit.QueueActivity(move.MoveTo(destination, 2));
 
-					newUnit.SetTargetLine(Target.FromCell(self.World, self.Location), Color.Green, false);
+				newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
 
-					if (!self.IsDead)
-						foreach (var t in self.TraitsImplementing<INotifyProduction>())
-							t.UnitProduced(self, newUnit, self.Location);
+				if (!self.IsDead)
+					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+						t.UnitProduced(self, newUnit, destination);
 
-					var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
-					foreach (var notify in notifyOthers)
-						notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
+				foreach (var notify in notifyOthers)
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
 
-					foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
-						t.BuildingComplete(newUnit);
-				});
+				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
+					t.BuildingComplete(newUnit);
+			});
 
 			return true;
 		}
+	}
+
+	public class ProductionSpawnLocationInit : IActorInit<CPos>
+	{
+		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
+		public ProductionSpawnLocationInit() { }
+		public ProductionSpawnLocationInit(CPos init) { value = init; }
+		public CPos Value(World world) { return value; }
 	}
 }
