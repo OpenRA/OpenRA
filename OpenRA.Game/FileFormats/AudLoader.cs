@@ -46,12 +46,29 @@ namespace OpenRA.FileFormats
 
 	public class AudLoader : ISoundLoader
 	{
+		bool IsAud(Stream s)
+		{
+			var start = s.Position;
+			s.Position += 10;
+			var readFlag = s.ReadByte();
+			var readFormat = s.ReadByte();
+			s.Position = start;
+
+			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
+				return false;
+
+			return Enum.IsDefined(typeof(SoundFormat), readFormat);
+		}
+
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
 		{
 			try
 			{
-				sound = new AudFormat(stream);
-				return true;
+				if (IsAud(stream))
+				{
+					sound = new AudFormat(stream);
+					return true;
+				}
 			}
 			catch
 			{
@@ -69,10 +86,10 @@ namespace OpenRA.FileFormats
 		public int SampleBits { get { return 16; } }
 		public int SampleRate { get { return sampleRate; } }
 		public float LengthInSeconds { get { return AudReader.SoundLength(stream); } }
-		public Stream GetPCMInputStream() { return new MemoryStream(rawData); }
+		public Stream GetPCMInputStream() { return new MemoryStream(rawData.Value); }
 
 		int sampleRate;
-		byte[] rawData;
+		Lazy<byte[]> rawData;
 
 		Stream stream;
 
@@ -81,15 +98,20 @@ namespace OpenRA.FileFormats
 			this.stream = stream;
 
 			var position = stream.Position;
-			try
+			rawData = Exts.Lazy(() =>
 			{
-				if (!AudReader.LoadSound(stream, out rawData, out sampleRate))
-					throw new InvalidDataException();
-			}
-			finally
-			{
-				stream.Position = position;
-			}
+				try
+				{
+					byte[] data;
+					if (!AudReader.LoadSound(stream, out data, out sampleRate))
+						throw new InvalidDataException();
+					return data;
+				}
+				finally
+				{
+					stream.Position = position;
+				}
+			});
 		}
 	}
 
