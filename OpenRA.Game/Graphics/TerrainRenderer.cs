@@ -47,7 +47,10 @@ namespace OpenRA.Graphics
 		public void UpdateCell(CPos cell)
 		{
 			var tile = mapTiles[cell];
-			var palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? TileSet.TerrainPaletteInternalName;
+			var palette = TileSet.TerrainPaletteInternalName;
+			if (map.Rules.TileSet.Templates.ContainsKey(tile.Type))
+				palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? palette;
+
 			var sprite = theater.TileSprite(tile);
 			foreach (var kv in spriteLayers)
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);
