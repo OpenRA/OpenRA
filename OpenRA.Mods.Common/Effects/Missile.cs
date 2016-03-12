@@ -447,7 +447,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (!world.Map.Contains(world.Map.CellContaining(posProbe)))
 					break;
 
-				var ht = world.Map.MapHeight.Value[world.Map.CellContaining(posProbe)] * 512;
+				var ht = world.Map.Height[world.Map.CellContaining(posProbe)] * 512;
 
 				curDist += stepSize;
 				if (ht > predClfHgt)

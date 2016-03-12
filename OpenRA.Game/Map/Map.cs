@@ -146,9 +146,9 @@ namespace OpenRA
 
 		public int2 MapSize;
 
-		[FieldLoader.Ignore] public Lazy<CellLayer<TerrainTile>> MapTiles;
-		[FieldLoader.Ignore] public Lazy<CellLayer<ResourceTile>> MapResources;
-		[FieldLoader.Ignore] public Lazy<CellLayer<byte>> MapHeight;
+		[FieldLoader.Ignore] public CellLayer<TerrainTile> Tiles;
+		[FieldLoader.Ignore] public CellLayer<ResourceTile> Resources;
+		[FieldLoader.Ignore] public CellLayer<byte> Height;
 
 		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
 		[FieldLoader.Ignore] CellLayer<short> cachedTerrainIndexes;
@@ -192,25 +192,16 @@ namespace OpenRA
 			// Will be dropped on save if nothing is added to it
 			RuleDefinitions = new MiniYaml("");
 
-			MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(Grid.Type, size));
-
-			MapTiles = Exts.Lazy(() =>
+			Tiles = new CellLayer<TerrainTile>(Grid.Type, size);
+			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
+			Height = new CellLayer<byte>(Grid.Type, size);
+			if (Grid.MaximumTerrainHeight > 0)
 			{
-				var ret = new CellLayer<TerrainTile>(Grid.Type, size);
-				ret.Clear(tileRef);
-				if (Grid.MaximumTerrainHeight > 0)
-					ret.CellEntryChanged += UpdateProjection;
-				return ret;
-			});
+				Height.CellEntryChanged += UpdateProjection;
+				Tiles.CellEntryChanged += UpdateProjection;
+			}
 
-			MapHeight = Exts.Lazy(() =>
-			{
-				var ret = new CellLayer<byte>(Grid.Type, size);
-				ret.Clear(0);
-				if (Grid.MaximumTerrainHeight > 0)
-					ret.CellEntryChanged += UpdateProjection;
-				return ret;
-			});
+			Tiles.Clear(tileRef);
 
 			SpawnPoints = Exts.Lazy(() => new CPos[0]);
 
@@ -256,11 +247,63 @@ namespace OpenRA
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
 
-			MapTiles = Exts.Lazy(LoadMapTiles);
-			MapResources = Exts.Lazy(LoadResourceTiles);
-			MapHeight = Exts.Lazy(LoadMapHeight);
-
 			Grid = modData.Manifest.Get<MapGrid>();
+
+			var size = new Size(MapSize.X, MapSize.Y);
+			Tiles = new CellLayer<TerrainTile>(Grid.Type, size);
+			Resources = new CellLayer<ResourceTile>(Grid.Type, size);
+			Height = new CellLayer<byte>(Grid.Type, size);
+
+			using (var s = Package.GetStream("map.bin"))
+			{
+				var header = new BinaryDataHeader(s, MapSize);
+				if (header.TilesOffset > 0)
+				{
+					s.Position = header.TilesOffset;
+					for (var i = 0; i < MapSize.X; i++)
+					{
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var tile = s.ReadUInt16();
+							var index = s.ReadUInt8();
+
+							// TODO: Remember to remove this when rewriting tile variants / PickAny
+							if (index == byte.MaxValue)
+								index = (byte)(i % 4 + (j % 4) * 4);
+
+							Tiles[new MPos(i, j)] = new TerrainTile(tile, index);
+						}
+					}
+				}
+
+				if (header.ResourcesOffset > 0)
+				{
+					s.Position = header.ResourcesOffset;
+					for (var i = 0; i < MapSize.X; i++)
+					{
+						for (var j = 0; j < MapSize.Y; j++)
+						{
+							var type = s.ReadUInt8();
+							var density = s.ReadUInt8();
+							Resources[new MPos(i, j)] = new ResourceTile(type, density);
+						}
+					}
+				}
+
+				if (header.HeightsOffset > 0)
+				{
+					s.Position = header.HeightsOffset;
+					for (var i = 0; i < MapSize.X; i++)
+						for (var j = 0; j < MapSize.Y; j++)
+							Height[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, Grid.MaximumTerrainHeight);
+				}
+			}
+
+			if (Grid.MaximumTerrainHeight > 0)
+			{
+				Tiles.CellEntryChanged += UpdateProjection;
+				Height.CellEntryChanged += UpdateProjection;
+			}
 
 			PostInit();
 
@@ -361,7 +404,7 @@ namespace OpenRA
 
 		PPos[] ProjectCellInner(MPos uv)
 		{
-			var mapHeight = MapHeight.Value;
+			var mapHeight = Height;
 			if (!mapHeight.Contains(uv))
 				return NoProjectedCells;
 
@@ -372,7 +415,7 @@ namespace OpenRA
 			// Odd-height ramps get bumped up a level to the next even height layer
 			if ((height & 1) == 1)
 			{
-				var ti = Rules.TileSet.GetTileInfo(MapTiles.Value[uv]);
+				var ti = Rules.TileSet.GetTileInfo(Tiles[uv]);
 				if (ti != null && ti.RampType != 0)
 					height += 1;
 			}
@@ -469,84 +512,6 @@ namespace OpenRA
 			Uid = ComputeUID(toPackage);
 		}
 
-		public CellLayer<TerrainTile> LoadMapTiles()
-		{
-			var tiles = new CellLayer<TerrainTile>(this);
-			using (var s = Package.GetStream("map.bin"))
-			{
-				var header = new BinaryDataHeader(s, MapSize);
-				if (header.TilesOffset > 0)
-				{
-					s.Position = header.TilesOffset;
-					for (var i = 0; i < MapSize.X; i++)
-					{
-						for (var j = 0; j < MapSize.Y; j++)
-						{
-							var tile = s.ReadUInt16();
-							var index = s.ReadUInt8();
-
-							// TODO: Remember to remove this when rewriting tile variants / PickAny
-							if (index == byte.MaxValue)
-								index = (byte)(i % 4 + (j % 4) * 4);
-
-							tiles[new MPos(i, j)] = new TerrainTile(tile, index);
-						}
-					}
-				}
-			}
-
-			if (Grid.MaximumTerrainHeight > 0)
-				tiles.CellEntryChanged += UpdateProjection;
-
-			return tiles;
-		}
-
-		public CellLayer<byte> LoadMapHeight()
-		{
-			var tiles = new CellLayer<byte>(this);
-			using (var s = Package.GetStream("map.bin"))
-			{
-				var header = new BinaryDataHeader(s, MapSize);
-				if (header.HeightsOffset > 0)
-				{
-					s.Position = header.HeightsOffset;
-					for (var i = 0; i < MapSize.X; i++)
-						for (var j = 0; j < MapSize.Y; j++)
-							tiles[new MPos(i, j)] = s.ReadUInt8().Clamp((byte)0, Grid.MaximumTerrainHeight);
-				}
-			}
-
-			if (Grid.MaximumTerrainHeight > 0)
-				tiles.CellEntryChanged += UpdateProjection;
-
-			return tiles;
-		}
-
-		public CellLayer<ResourceTile> LoadResourceTiles()
-		{
-			var resources = new CellLayer<ResourceTile>(this);
-
-			using (var s = Package.GetStream("map.bin"))
-			{
-				var header = new BinaryDataHeader(s, MapSize);
-				if (header.ResourcesOffset > 0)
-				{
-					s.Position = header.ResourcesOffset;
-					for (var i = 0; i < MapSize.X; i++)
-					{
-						for (var j = 0; j < MapSize.Y; j++)
-						{
-							var type = s.ReadUInt8();
-							var density = s.ReadUInt8();
-							resources[new MPos(i, j)] = new ResourceTile(type, density);
-						}
-					}
-				}
-			}
-
-			return resources;
-		}
-
 		public byte[] SaveBinaryData()
 		{
 			var dataStream = new MemoryStream();
@@ -575,7 +540,7 @@ namespace OpenRA
 					{
 						for (var j = 0; j < MapSize.Y; j++)
 						{
-							var tile = MapTiles.Value[new MPos(i, j)];
+							var tile = Tiles[new MPos(i, j)];
 							writer.Write(tile.Type);
 							writer.Write(tile.Index);
 						}
@@ -586,7 +551,7 @@ namespace OpenRA
 				if (heightsOffset != 0)
 					for (var i = 0; i < MapSize.X; i++)
 						for (var j = 0; j < MapSize.Y; j++)
-							writer.Write(MapHeight.Value[new MPos(i, j)]);
+							writer.Write(Height[new MPos(i, j)]);
 
 				// Resource data
 				if (resourcesOffset != 0)
@@ -595,7 +560,7 @@ namespace OpenRA
 					{
 						for (var j = 0; j < MapSize.Y; j++)
 						{
-							var tile = MapResources.Value[new MPos(i, j)];
+							var tile = Resources[new MPos(i, j)];
 							writer.Write(tile.Type);
 							writer.Write(tile.Index);
 						}
@@ -642,7 +607,7 @@ namespace OpenRA
 							for (var x = 0; x < width; x++)
 							{
 								var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-								var resourceType = MapResources.Value[uv].Type;
+								var resourceType = Resources[uv].Type;
 								if (resourceType != 0)
 								{
 									// Cell contains resources
@@ -655,7 +620,7 @@ namespace OpenRA
 								else
 								{
 									// Cell contains terrain
-									var type = tileset.GetTileInfo(MapTiles.Value[uv]);
+									var type = tileset.GetTileInfo(Tiles[uv]);
 									leftColor = type != null ? type.LeftColor : Color.Black;
 									rightColor = type != null ? type.RightColor : Color.Black;
 								}
@@ -737,7 +702,7 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
-			var z = MapHeight.Value.Contains(cell) ? 512 * MapHeight.Value[cell] : 0;
+			var z = Height.Contains(cell) ? 512 * Height[cell] : 0;
 			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), z);
 		}
 
@@ -816,14 +781,14 @@ namespace OpenRA
 
 		public void Resize(int width, int height)
 		{
-			var oldMapTiles = MapTiles.Value;
-			var oldMapResources = MapResources.Value;
-			var oldMapHeight = MapHeight.Value;
+			var oldMapTiles = Tiles;
+			var oldMapResources = Resources;
+			var oldMapHeight = Height;
 			var newSize = new Size(width, height);
 
-			MapTiles = Exts.Lazy(() => CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[MPos.Zero]));
-			MapResources = Exts.Lazy(() => CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]));
-			MapHeight = Exts.Lazy(() => CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]));
+			Tiles = CellLayer.Resize(oldMapTiles, newSize, oldMapTiles[MPos.Zero]);
+			Resources = CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]);
+			Height = CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]);
 			MapSize = new int2(newSize);
 
 			var tl = new MPos(0, 0);
@@ -865,8 +830,8 @@ namespace OpenRA
 			{
 				for (var i = Bounds.Left; i < Bounds.Right; i++)
 				{
-					var type = MapTiles.Value[new MPos(i, j)].Type;
-					var index = MapTiles.Value[new MPos(i, j)].Index;
+					var type = Tiles[new MPos(i, j)].Type;
+					var index = Tiles[new MPos(i, j)].Index;
 					if (!tileset.Templates.ContainsKey(type))
 					{
 						Console.WriteLine("Unknown Tile ID {0}".F(type));
@@ -878,7 +843,7 @@ namespace OpenRA
 						continue;
 
 					index = (byte)r.Next(0, template.TilesCount);
-					MapTiles.Value[new MPos(i, j)] = new TerrainTile(type, index);
+					Tiles[new MPos(i, j)] = new TerrainTile(type, index);
 				}
 			}
 		}
@@ -896,7 +861,7 @@ namespace OpenRA
 				// Invalidate the entry for a cell if anything could cause the terrain index to change.
 				Action<CPos> invalidateTerrainIndex = c => cachedTerrainIndexes[c] = InvalidCachedTerrainIndex;
 				CustomTerrain.CellEntryChanged += invalidateTerrainIndex;
-				MapTiles.Value.CellEntryChanged += invalidateTerrainIndex;
+				Tiles.CellEntryChanged += invalidateTerrainIndex;
 			}
 
 			var uv = cell.ToMPos(this);
@@ -907,7 +872,7 @@ namespace OpenRA
 			{
 				var custom = CustomTerrain[uv];
 				terrainIndex = cachedTerrainIndexes[uv] =
-					custom != byte.MaxValue ? custom : Rules.TileSet.GetTerrainIndex(MapTiles.Value[uv]);
+					custom != byte.MaxValue ? custom : Rules.TileSet.GetTerrainIndex(Tiles[uv]);
 			}
 
 			return (byte)terrainIndex;
@@ -1157,7 +1122,7 @@ namespace OpenRA
 
 			Func<CPos, bool> valid = Contains;
 			if (allowOutsideBounds)
-				valid = MapTiles.Value.Contains;
+				valid = Tiles.Contains;
 
 			for (var i = minRange; i <= maxRange; i++)
 			{

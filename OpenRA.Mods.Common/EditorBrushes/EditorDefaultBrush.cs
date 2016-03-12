@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
 
-			var mapResources = world.Map.MapResources.Value;
+			var mapResources = world.Map.Resources;
 			ResourceType type;
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);

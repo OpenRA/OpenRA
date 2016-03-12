@@ -20,15 +20,11 @@ namespace OpenRA.Graphics
 		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
 		readonly Theater theater;
-		readonly CellLayer<TerrainTile> mapTiles;
-		readonly CellLayer<byte> mapHeight;
 
 		public TerrainRenderer(World world, WorldRenderer wr)
 		{
 			map = world.Map;
 			theater = wr.Theater;
-			mapTiles = map.MapTiles.Value;
-			mapHeight = map.MapHeight.Value;
 
 			foreach (var template in map.Rules.TileSet.Templates)
 			{
@@ -40,13 +36,13 @@ namespace OpenRA.Graphics
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
-			mapTiles.CellEntryChanged += UpdateCell;
-			mapHeight.CellEntryChanged += UpdateCell;
+			map.Tiles.CellEntryChanged += UpdateCell;
+			map.Height.CellEntryChanged += UpdateCell;
 		}
 
 		public void UpdateCell(CPos cell)
 		{
-			var tile = mapTiles[cell];
+			var tile = map.Tiles[cell];
 			var palette = TileSet.TerrainPaletteInternalName;
 			if (map.Rules.TileSet.Templates.ContainsKey(tile.Type))
 				palette = map.Rules.TileSet.Templates[tile.Type].Palette ?? palette;
@@ -67,8 +63,8 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
-			mapTiles.CellEntryChanged -= UpdateCell;
-			mapHeight.CellEntryChanged -= UpdateCell;
+			map.Tiles.CellEntryChanged -= UpdateCell;
+			map.Height.CellEntryChanged -= UpdateCell;
 
 			foreach (var kv in spriteLayers.Values)
 				kv.Dispose();

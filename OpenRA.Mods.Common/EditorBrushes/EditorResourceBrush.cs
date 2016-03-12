@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var type = (byte)ResourceType.ResourceType;
 				var index = (byte)ResourceType.MaxDensity;
-				world.Map.MapResources.Value[cell] = new ResourceTile(type, index);
+				world.Map.Resources[cell] = new ResourceTile(type, index);
 			}
 
 			return true;
@@ -77,11 +77,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool AllowResourceAt(CPos cell)
 		{
-			var mapResources = world.Map.MapResources.Value;
+			var mapResources = world.Map.Resources;
 			if (!mapResources.Contains(cell))
 				return false;
 
-			var tile = world.Map.MapTiles.Value[cell];
+			var tile = world.Map.Tiles[cell];
 			var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
 			if (tileInfo == null)
 				return false;

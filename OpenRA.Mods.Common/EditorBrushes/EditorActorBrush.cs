@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				// Check the actor is inside the map
-				if (!footprint.All(c => world.Map.MapTiles.Value.Contains(cell + locationOffset + c)))
+				if (!footprint.All(c => world.Map.Tiles.Contains(cell + locationOffset + c)))
 					return true;
 
 				var newActorReference = new ActorReference(Actor.Name);

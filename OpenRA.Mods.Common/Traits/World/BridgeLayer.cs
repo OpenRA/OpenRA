@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Take all templates to overlay from the map
-			foreach (var cell in w.Map.AllCells.Where(cell => bridgeTypes.ContainsKey(w.Map.MapTiles.Value[cell].Type)))
+			foreach (var cell in w.Map.AllCells.Where(cell => bridgeTypes.ContainsKey(w.Map.Tiles[cell].Type)))
 				ConvertBridgeToActor(w, cell);
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.MapTiles.Value[cell].Type;
-			var index = w.Map.MapTiles.Value[cell].Index;
+			var tile = w.Map.Tiles[cell].Type;
+			var index = w.Map.Tiles[cell].Index;
 			var template = w.Map.Rules.TileSet.Templates[tile];
 			var ni = cell.X - index % template.Size.X;
 			var nj = cell.Y - index / template.Size.X;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
-			var mapTiles = w.Map.MapTiles.Value;
+			var mapTiles = w.Map.Tiles;
 
 			// For each subtile in the template
 			for (byte ind = 0; ind < template.Size.X * template.Size.Y; ind++)

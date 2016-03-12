@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				{
 					var type = ms.ReadUInt8();
 					var index = ms.ReadUInt8();
-					Map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(type, index);
+					Map.Tiles[new CPos(i, j)] = new TerrainTile(type, index);
 				}
 			}
 		}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (overlayResourceMapping.ContainsKey(type))
 					res = overlayResourceMapping[type];
 
-				Map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
+				Map.Resources[cell] = new ResourceTile(res.First, res.Second);
 				if (overlayActors.Contains(type))
 				{
 					var ar = new ActorReference(type)

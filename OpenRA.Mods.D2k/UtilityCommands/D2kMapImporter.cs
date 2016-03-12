@@ -336,13 +336,13 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 				var locationOnMap = GetCurrentTilePositionOnMap();
 
-				map.MapTiles.Value[locationOnMap] = tile;
+				map.Tiles[locationOnMap] = tile;
 
 				// Spice
 				if (tileSpecialInfo == 1)
-					map.MapResources.Value[locationOnMap] = new ResourceTile(1, 1);
+					map.Resources[locationOnMap] = new ResourceTile(1, 1);
 				if (tileSpecialInfo == 2)
-					map.MapResources.Value[locationOnMap] = new ResourceTile(1, 2);
+					map.Resources[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
 				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))

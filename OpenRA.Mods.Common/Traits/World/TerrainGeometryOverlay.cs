@@ -57,11 +57,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
-				if (!map.MapHeight.Value.Contains(uv))
+				if (!map.Height.Contains(uv))
 					continue;
 
-				var height = (int)map.MapHeight.Value[uv];
-				var tile = map.MapTiles.Value[uv];
+				var height = (int)map.Height[uv];
+				var tile = map.Tiles[uv];
 				var ti = tileSet.GetTileInfo(tile);
 				var ramp = ti != null ? ti.RampType : 0;
 
