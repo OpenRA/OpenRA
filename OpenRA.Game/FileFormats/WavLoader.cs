@@ -16,12 +16,26 @@ namespace OpenRA.FileFormats
 {
 	public class WavLoader : ISoundLoader
 	{
+		bool IsWave(Stream s)
+		{
+			var start = s.Position;
+			var type = s.ReadASCII(4);
+			s.Position += 4;
+			var format = s.ReadASCII(4);
+			s.Position = start;
+
+			return type == "RIFF" && format == "WAVE";
+		}
+
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
 		{
 			try
 			{
-				sound = new WavFormat(stream);
-				return true;
+				if (IsWave(stream))
+				{
+					sound = new WavFormat(stream);
+					return true;
+				}
 			}
 			catch
 			{
@@ -35,39 +49,36 @@ namespace OpenRA.FileFormats
 
 	public class WavFormat : ISoundFormat
 	{
-		public int Channels { get { return channels; } }
-		public int SampleBits { get { return sampleBits; } }
-		public int SampleRate { get { return sampleRate; } }
+		public int Channels { get { return reader.Value.Channels; } }
+		public int SampleBits { get { return reader.Value.BitsPerSample; } }
+		public int SampleRate { get { return reader.Value.SampleRate; } }
 		public float LengthInSeconds { get { return WavReader.WaveLength(stream); } }
-		public Stream GetPCMInputStream() { return new MemoryStream(rawData); }
+		public Stream GetPCMInputStream() { return new MemoryStream(reader.Value.RawOutput); }
 
-		int channels;
-		int sampleBits;
-		int sampleRate;
-		byte[] rawData;
+		Lazy<WavReader> reader;
 
 		readonly Stream stream;
 
 		public WavFormat(Stream stream)
 		{
 			this.stream = stream;
-			var wavReader = new WavReader();
 
 			var position = stream.Position;
-			try
+			reader = Exts.Lazy(() =>
 			{
-				if (!wavReader.LoadSound(stream))
-					throw new InvalidDataException();
-			}
-			finally
-			{
-				stream.Position = position;
-			}
+				var wavReader = new WavReader();
+				try
+				{
+					if (!wavReader.LoadSound(stream))
+						throw new InvalidDataException();
+				}
+				finally
+				{
+					stream.Position = position;
+				}
 
-			rawData = wavReader.RawOutput;
-			channels = wavReader.Channels;
-			sampleBits = wavReader.BitsPerSample;
-			sampleRate = wavReader.SampleRate;
+				return wavReader;
+			});
 		}
 	}
 
