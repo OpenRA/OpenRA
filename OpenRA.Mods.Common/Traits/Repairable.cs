@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner == self.Owner &&
+					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
 					info.RepairBuildings.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
