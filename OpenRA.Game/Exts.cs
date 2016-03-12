@@ -361,7 +361,7 @@ namespace OpenRA
 
 		public static Dictionary<TKey, TElement> ToDictionaryWithConflictLog<TSource, TKey, TElement>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
-			string debugName, Func<TKey, string> logKey, Func<TElement, string> logValue)
+			string debugName, Func<TKey, string> logKey = null, Func<TElement, string> logValue = null)
 		{
 			// Fall back on ToString() if null functions are provided:
 			logKey = logKey ?? (s => s.ToString());

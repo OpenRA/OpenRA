@@ -308,7 +308,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		{
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
 
-			tileSet = rules.TileSets["ARRAKIS"];
+			tileSet = Game.ModData.DefaultTileSets["ARRAKIS"];
 
 			map = new Map(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{

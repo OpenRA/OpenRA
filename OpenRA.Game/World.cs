@@ -160,7 +160,7 @@ namespace OpenRA
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 
-			TileSet = map.Rules.TileSets[Map.Tileset];
+			TileSet = map.Rules.TileSet;
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";

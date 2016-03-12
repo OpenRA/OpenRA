@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -24,25 +27,25 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, SoundInfo> Voices;
 		public readonly IReadOnlyDictionary<string, SoundInfo> Notifications;
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
-		public readonly IReadOnlyDictionary<string, TileSet> TileSets;
-		public readonly IReadOnlyDictionary<string, SequenceProvider> Sequences;
+		public readonly TileSet TileSet;
+		public readonly SequenceProvider Sequences;
 
 		public Ruleset(
-			IDictionary<string, ActorInfo> actors,
-			IDictionary<string, WeaponInfo> weapons,
-			IDictionary<string, SoundInfo> voices,
-			IDictionary<string, SoundInfo> notifications,
-			IDictionary<string, MusicInfo> music,
-			IDictionary<string, TileSet> tileSets,
-			IDictionary<string, SequenceProvider> sequences)
+			IReadOnlyDictionary<string, ActorInfo> actors,
+			IReadOnlyDictionary<string, WeaponInfo> weapons,
+			IReadOnlyDictionary<string, SoundInfo> voices,
+			IReadOnlyDictionary<string, SoundInfo> notifications,
+			IReadOnlyDictionary<string, MusicInfo> music,
+			TileSet tileSet,
+			SequenceProvider sequences)
 		{
-			Actors = new ReadOnlyDictionary<string, ActorInfo>(actors);
-			Weapons = new ReadOnlyDictionary<string, WeaponInfo>(weapons);
-			Voices = new ReadOnlyDictionary<string, SoundInfo>(voices);
-			Notifications = new ReadOnlyDictionary<string, SoundInfo>(notifications);
-			Music = new ReadOnlyDictionary<string, MusicInfo>(music);
-			TileSets = new ReadOnlyDictionary<string, TileSet>(tileSets);
-			Sequences = new ReadOnlyDictionary<string, SequenceProvider>(sequences);
+			Actors = actors;
+			Weapons = weapons;
+			Voices = voices;
+			Notifications = notifications;
+			Music = music;
+			TileSet = tileSet;
+			Sequences = sequences;
 
 			foreach (var a in Actors.Values)
 			{
@@ -80,5 +83,120 @@ namespace OpenRA
 		}
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
+
+		static IReadOnlyDictionary<string, T> MergeOrDefault<T>(string name, IReadOnlyFileSystem fileSystem, IEnumerable<string> files, MiniYaml additional,
+			IReadOnlyDictionary<string, T> defaults, Func<MiniYamlNode, T> makeObject)
+		{
+			if (additional == null && defaults != null)
+				return defaults;
+
+			var result = MiniYaml.Load(fileSystem, files, additional)
+				.ToDictionaryWithConflictLog(k => k.Key.ToLowerInvariant(), makeObject, "LoadFromManifest<" + name + ">");
+
+			return new ReadOnlyDictionary<string, T>(result);
+		}
+
+		public static Ruleset LoadDefaults(ModData modData)
+		{
+			var m = modData.Manifest;
+			var fs = modData.DefaultFileSystem;
+
+			Ruleset ruleset = null;
+			Action f = () =>
+			{
+				var actors = MergeOrDefault("Manifest,Rules", fs, m.Rules, null, null,
+					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
+
+				var weapons = MergeOrDefault("Manifest,Weapons", fs, m.Weapons, null, null,
+					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+
+				var voices = MergeOrDefault("Manifest,Voices", fs, m.Voices, null, null,
+					k => new SoundInfo(k.Value));
+
+				var notifications = MergeOrDefault("Manifest,Notifications", fs, m.Notifications, null, null,
+					k => new SoundInfo(k.Value));
+
+				var music = MergeOrDefault("Manifest,Music", fs, m.Music, null, null,
+					k => new MusicInfo(k.Key, k.Value));
+
+				// The default ruleset does not include a preferred tileset or sequence set
+				ruleset = new Ruleset(actors, weapons, voices, notifications, music, null, null);
+			};
+
+			if (modData.IsOnMainThread)
+			{
+				modData.HandleLoadingProgress();
+
+				var loader = new Task(f);
+				loader.Start();
+
+				// Animate the loadscreen while we wait
+				while (!loader.Wait(40))
+					modData.HandleLoadingProgress();
+			}
+			else
+				f();
+
+			return ruleset;
+		}
+
+		public static Ruleset LoadDefaultsForTileSet(ModData modData, string tileSet)
+		{
+			var dr = modData.DefaultRules;
+			var ts = modData.DefaultTileSets[tileSet];
+			var sequences = modData.DefaultSequences[tileSet];
+			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, ts, sequences);
+		}
+
+		public static Ruleset LoadFromMap(ModData modData, Map map)
+		{
+			var m = modData.Manifest;
+			var dr = modData.DefaultRules;
+
+			Ruleset ruleset = null;
+			Action f = () =>
+			{
+				var actors = MergeOrDefault("Manifest,Rules", map, m.Rules, map.RuleDefinitions, dr.Actors,
+					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
+
+				var weapons = MergeOrDefault("Manifest,Weapons", map, m.Weapons, map.WeaponDefinitions, dr.Weapons,
+					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+
+				var voices = MergeOrDefault("Manifest,Voices", map, m.Voices, map.VoiceDefinitions, dr.Voices,
+					k => new SoundInfo(k.Value));
+
+				var notifications = MergeOrDefault("Manifest,Notifications", map, m.Notifications, map.NotificationDefinitions, dr.Notifications,
+					k => new SoundInfo(k.Value));
+
+				var music = MergeOrDefault("Manifest,Music", map, m.Music, map.NotificationDefinitions, dr.Music,
+					k => new MusicInfo(k.Key, k.Value));
+
+				// TODO: Add support for merging custom tileset modifications
+				var ts = modData.DefaultTileSets[map.Tileset];
+
+				// TODO: Top-level dictionary should be moved into the Ruleset instead of in its own object
+				var sequences = map.SequenceDefinitions == null ? modData.DefaultSequences[map.Tileset] :
+					new SequenceProvider(map, modData, ts, map.SequenceDefinitions);
+
+				// TODO: Add support for custom voxel sequences
+				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences);
+			};
+
+			if (modData.IsOnMainThread)
+			{
+				modData.HandleLoadingProgress();
+
+				var loader = new Task(f);
+				loader.Start();
+
+				// Animate the loadscreen while we wait
+				while (!loader.Wait(40))
+					modData.HandleLoadingProgress();
+			}
+			else
+				f();
+
+			return ruleset;
+		}
 	}
 }

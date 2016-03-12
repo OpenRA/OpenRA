@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
 			var variant = resource.Variants.FirstOrDefault();
-			var sequenceProvider = wr.World.Map.Rules.Sequences[world.TileSet.Id];
+			var sequenceProvider = wr.World.Map.Rules.Sequences;
 			var sequence = sequenceProvider.GetSequence("resources", variant);
 			var sprite = sequence.GetSprite(resource.MaxDensity - 1);
 			preview.GetSprite = () => sprite;

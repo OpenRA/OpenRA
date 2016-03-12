@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
 			var rules = worldRenderer.World.Map.Rules;
-			var tileset = rules.TileSets[worldRenderer.World.Map.Tileset];
+			var tileset = rules.TileSet;
 
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");

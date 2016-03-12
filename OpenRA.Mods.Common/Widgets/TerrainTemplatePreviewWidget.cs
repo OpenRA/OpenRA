@@ -48,14 +48,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public TerrainTemplatePreviewWidget(WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
-			tileset = world.Map.Rules.TileSets[world.Map.Tileset];
+			tileset = world.Map.Rules.TileSet;
 		}
 
 		protected TerrainTemplatePreviewWidget(TerrainTemplatePreviewWidget other)
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
-			tileset = other.worldRenderer.World.Map.Rules.TileSets[other.worldRenderer.World.Map.Tileset];
+			tileset = other.worldRenderer.World.Map.Rules.TileSet;
 			Template = other.Template;
 			GetScale = other.GetScale;
 		}

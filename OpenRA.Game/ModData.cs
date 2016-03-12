@@ -30,15 +30,20 @@ namespace OpenRA
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
-		public readonly RulesetCache RulesetCache;
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles = new FS();
+		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
-		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, TileSet>> defaultTileSets;
+		public IReadOnlyDictionary<string, TileSet> DefaultTileSets { get { return defaultTileSets.Value; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
+		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
@@ -57,8 +62,6 @@ namespace OpenRA
 			}
 
 			WidgetLoader = new WidgetLoader(this);
-			RulesetCache = new RulesetCache(this);
-			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
 			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
@@ -73,18 +76,38 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.Load(DefaultFileSystem));
+			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
+			defaultTileSets = Exts.Lazy(() =>
+			{
+				var items = new Dictionary<string, TileSet>();
+
+				foreach (var file in Manifest.TileSets)
+				{
+					var t = new TileSet(DefaultFileSystem, file);
+					items.Add(t.Id, t);
+				}
+
+				return (IReadOnlyDictionary<string, TileSet>)(new ReadOnlyDictionary<string, TileSet>(items));
+			});
+
+			defaultSequences = Exts.Lazy(() =>
+			{
+				var items = DefaultTileSets.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Value, null));
+				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
+			});
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
 		int initialThreadId;
-		void HandleLoadingProgress(object sender, EventArgs e)
+		internal void HandleLoadingProgress()
 		{
-			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
+			if (LoadScreen != null && IsOnMainThread)
 				LoadScreen.Display();
 		}
+
+		internal bool IsOnMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId; } }
 
 		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{

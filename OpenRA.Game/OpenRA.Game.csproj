@@ -215,7 +215,6 @@
     <Compile Include="Primitives\ReadOnlyList.cs" />
     <Compile Include="ModMetadata.cs" />
     <Compile Include="GameRules\Ruleset.cs" />
-    <Compile Include="GameRules\RulesetCache.cs" />
     <Compile Include="Support\MersenneTwister.cs" />
     <Compile Include="GameInformation.cs" />
     <Compile Include="Map\CellLayer.cs" />

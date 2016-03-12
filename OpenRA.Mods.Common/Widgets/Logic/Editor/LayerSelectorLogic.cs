@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LayerSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
-		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		readonly ScrollPanelWidget layerTemplateList;
@@ -29,8 +28,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
-			world = worldRenderer.World;
-
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			layerTemplateList = widget.Get<ScrollPanelWidget>("LAYERTEMPLATE_LIST");
@@ -60,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				layerPreview.GetPalette = () => resource.Palette;
 
 				var variant = resource.Variants.FirstOrDefault();
-				var sequenceProvider = rules.Sequences[world.TileSet.Id];
+				var sequenceProvider = rules.Sequences;
 				var sequence = sequenceProvider.GetSequence("resources", variant);
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
