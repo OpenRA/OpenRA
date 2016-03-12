@@ -10,12 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
+	public class TurretedInfo : UpgradableTraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -28,13 +29,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
+		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : ITick, ISync, INotifyCreated, IDeathActorInitModifier
+	public class Turreted : UpgradableTrait<TurretedInfo>, ITick, ISync, INotifyCreated, IDeathActorInitModifier
 	{
 		readonly TurretedInfo info;
-		AttackTurreted attack;
+		AttackTurreted[] attack;
 		IFacing facing;
 		BodyOrientation body;
 
@@ -68,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
+			: base(info)
 		{
 			this.info = info;
 			TurretFacing = GetInitialTurretFacing(init, info.InitialFacing, info.Turret);
@@ -75,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			attack = self.TraitOrDefault<AttackTurreted>();
+			attack = self.TraitsImplementing<AttackTurreted>().ToArray();
 			facing = self.TraitOrDefault<IFacing>();
 			body = self.Trait<BodyOrientation>();
 		}
@@ -85,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
 			if (attack != null)
 			{
-				if (!attack.IsAttacking)
+				if (attack.Where(a => a.IsAttacking && !a.IsTraitDisabled).Count() == 0)
 				{
 					if (realignTick < info.RealignDelay)
 						realignTick++;
