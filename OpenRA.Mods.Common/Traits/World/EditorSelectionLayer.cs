@@ -15,15 +15,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorSelectionLayerInfo : ITraitInfo
+	public class EditorSelectionLayerInfo : EditorCellRegionLayerInfo
 	{
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
-		[Desc("Sequence image where the selection overlay types are defined.")]
-		public readonly string Image = "editor-overlay";
-
 		[SequenceReference("Image")]
 		[Desc("Sequence to use for the copy overlay.")]
 		public readonly string CopySequence = "copy";
@@ -32,58 +25,42 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence to use for the paste overlay.")]
 		public readonly string PasteSequence = "paste";
 
-		public virtual object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
 	}
 
-	public class EditorSelectionLayer : IWorldLoaded, IPostRender
+	public class EditorSelectionLayer : EditorCellRegionLayer
 	{
-		readonly EditorSelectionLayerInfo info;
-		readonly Map map;
 		readonly Sprite copySprite;
 		readonly Sprite pasteSprite;
-		PaletteReference palette;
 
 		public CellRegion CopyRegion { get; private set; }
 		public CellRegion PasteRegion { get; private set; }
 
 		public EditorSelectionLayer(Actor self, EditorSelectionLayerInfo info)
+			: base(self, info)
 		{
-			if (self.World.Type != WorldType.Editor)
-				return;
-
-			this.info = info;
-			map = self.World.Map;
-			copySprite = map.SequenceProvider.GetSequence(info.Image, info.CopySequence).GetSprite(0);
-			pasteSprite = map.SequenceProvider.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
-		}
-
-		public void WorldLoaded(World w, WorldRenderer wr)
-		{
-			if (w.Type != WorldType.Editor)
-				return;
-
-			palette = wr.Palette(info.Palette);
+			copySprite = Map.SequenceProvider.GetSequence(info.Image, info.CopySequence).GetSprite(0);
+			pasteSprite = Map.SequenceProvider.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
 		}
 
 		public void SetCopyRegion(CPos start, CPos end)
 		{
-			CopyRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			CopyRegion = CellRegion.BoundingRegion(Map.Grid.Type, new[] { start, end });
 		}
 
 		public void SetPasteRegion(CPos start, CPos end)
 		{
-			PasteRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			PasteRegion = CellRegion.BoundingRegion(Map.Grid.Type, new[] { start, end });
 		}
 
-		public void Clear()
+		public override void Clear()
 		{
 			CopyRegion = PasteRegion = null;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		public override void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return;
+			base.RenderAfterWorld(wr, self);
 
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)

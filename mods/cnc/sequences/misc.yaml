@@ -242,6 +242,8 @@ editor-overlay:
 		Start: 0
 	paste: overlay
 		Start: 1
+	highlight: overlay
+		Start: 0
 
 poweroff:
 	offline:
