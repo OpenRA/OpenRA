@@ -113,7 +113,12 @@ namespace OpenRA.Mods.Common.Traits
 			var delta = target.CenterPosition - self.CenterPosition;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
-			return TurretFacing == DesiredFacing.Value;
+			return HasAchievedDesiredFacing;
+		}
+
+		public bool HasAchievedDesiredFacing
+		{
+			get { return DesiredFacing != null && TurretFacing == DesiredFacing.Value; }
 		}
 
 		// Turret offset in world-space
