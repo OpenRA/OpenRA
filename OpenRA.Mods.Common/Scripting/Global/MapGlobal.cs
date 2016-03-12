@@ -78,6 +78,19 @@ namespace OpenRA.Mods.Common.Scripting
 			return Context.World.Map.ChooseRandomEdgeCell(Context.World.SharedRandom);
 		}
 
+		[Desc("Returns the closest cell on the visible border of the map from the given cell.")]
+		public CPos ClosestEdgeCell(CPos givenCell)
+		{
+			return Context.World.Map.ChooseClosestEdgeCell(givenCell);
+		}
+
+		[Desc("Returns the first cell on the visible border of the map from the given cell,",
+			"matching the filter function called as function(CPos cell).")]
+		public CPos ClosestMatchingEdgeCell(CPos givenCell, LuaFunction filter)
+		{
+			return FilteredObjects(Context.World.Map.AllEdgeCells.OrderBy(c => (givenCell - c).Length), filter).FirstOrDefault();
+		}
+
 		[Desc("Returns the center of a cell in world coordinates.")]
 		public WPos CenterOfCell(CPos cell)
 		{
