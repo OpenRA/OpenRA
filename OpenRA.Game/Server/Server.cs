@@ -51,8 +51,7 @@ namespace OpenRA.Server
 		public List<string> TempBans = new List<string>();
 
 		// Managed by LobbyCommands
-		public Map Map;
-		public MapPlayers MapPlayers;
+		public MapPreview Map;
 
 		readonly int randomSeed;
 		readonly TcpListener listener;
@@ -323,7 +322,7 @@ namespace OpenRA.Server
 				}
 
 				if (client.Slot != null)
-					SyncClientToPlayerReference(client, MapPlayers.Players[client.Slot]);
+					SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 
@@ -392,12 +391,12 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", motd);
 				}
 
-				if (Map.RuleDefinitions != null && !LobbyInfo.IsSinglePlayer)
+				if (Map.Rules != ModData.DefaultRules && !LobbyInfo.IsSinglePlayer)
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (Settings.DisableSinglePlayer)
 					SendOrderTo(newConn, "Message", "Singleplayer games have been disabled on this server.");
-				else if (MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 
 				if (handshake.Mod == "{DEV_VERSION}")

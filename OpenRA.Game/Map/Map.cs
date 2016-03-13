@@ -295,7 +295,8 @@ namespace OpenRA
 			{
 				try
 				{
-					return Ruleset.LoadFromMap(modData, this);
+					return Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
+						VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
 				}
 				catch (Exception e)
 				{
@@ -1190,7 +1191,6 @@ namespace OpenRA
 			return FindTilesInAnnulus(center, 0, maxRange, allowOutsideBounds);
 		}
 
-		// Placeholders for future implementation
 		public Stream Open(string filename)
 		{
 			// Explicit package paths never refer to a map

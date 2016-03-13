@@ -43,11 +43,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget missionList;
 		readonly ScrollItemWidget headerTemplate;
 		readonly ScrollItemWidget template;
-		readonly Cache<MapPreview, Map> mapCache;
 
-		MapPreview selectedMapPreview;
-		Map selectedMap;
-
+		MapPreview selectedMap;
 		PlayingVideo playingVideo;
 
 		string difficulty;
@@ -56,7 +53,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit)
 		{
-			mapCache = new Cache<MapPreview, Map>(p => new Map(modData, p.Package));
 			this.modData = modData;
 			this.onStart = onStart;
 
@@ -67,12 +63,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
-				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMapPreview.Title : title.Text;
+				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : title.Text;
 
-			widget.Get("MISSION_INFO").IsVisible = () => selectedMapPreview != null;
+			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
-			previewWidget.Preview = () => selectedMapPreview;
+			previewWidget.Preview = () => selectedMap;
 			previewWidget.IsVisible = () => playingVideo == PlayingVideo.None;
 
 			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
@@ -132,11 +128,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (allPreviews.Any())
 				SelectMap(allPreviews.First());
 
-			// Preload map and preview data to reduce jank
+			// Preload map preview and rules to reduce jank
 			new Thread(() =>
 			{
 				foreach (var p in allPreviews)
-					modData.MapCache[mapCache[p].Uid].GetMinimap();
+				{
+					p.GetMinimap();
+					var unused = p.Rules;
+				}
 			}).Start();
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
@@ -163,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var preview = p;
 
 				var item = ScrollItemWidget.Setup(template,
-					() => selectedMapPreview != null && selectedMapPreview.Uid == preview.Uid,
+					() => selectedMap != null && selectedMap.Uid == preview.Uid,
 					() => SelectMap(preview),
 					StartMissionClicked);
 
@@ -174,8 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectMap(MapPreview preview)
 		{
-			selectedMap = mapCache[preview];
-			selectedMapPreview = preview;
+			selectedMap = preview;
 
 			// Cache the rules on a background thread to avoid jank
 			var difficultyDisabled = true;
@@ -189,17 +187,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var infoVideoVisible = false;
 			var infoVideoDisabled = true;
 
-			var map = selectedMap;
 			new Thread(() =>
 			{
-				map.PreloadRules();
-				var mapOptions = map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+				var mapOptions = preview.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
 
 				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
 				difficulties = mapOptions.Difficulties;
 				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
 
-				var missionData = map.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				var missionData = preview.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
 				if (missionData != null)
 				{
 					briefingVideo = missionData.BriefingVideo;
@@ -214,7 +210,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var height = descriptionFont.Measure(briefing).Y;
 					Game.RunAfterTick(() =>
 					{
-						if (map == selectedMap)
+						if (preview == selectedMap)
 						{
 							description.Text = briefing;
 							description.Bounds.Height = height;
@@ -348,11 +344,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
-					Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);
+					Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
 				});
 			}
 			else
-				Game.CreateAndStartLocalServer(selectedMapPreview.Uid, orders, onStart);
+				Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
 		}
 
 		class DropDownOption
