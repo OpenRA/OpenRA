@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("A beacon that is constructed from a circle sprite that is animated once and a moving arrow sprite.")]
 	public class PlaceBeaconInfo : ITraitInfo
 	{
 		public readonly int Duration = 30 * 25;
