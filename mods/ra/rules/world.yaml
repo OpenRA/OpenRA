@@ -173,7 +173,7 @@ World:
 
 EditorWorld:
 	Inherits: ^BaseWorld
-	LoadWidgetAtGameStart:
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
+	LoadWidgetAtGameStart:
