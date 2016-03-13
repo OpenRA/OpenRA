@@ -7,6 +7,13 @@
 -- like Lua itself.
 --
 
+local m = {
+  _NAME = "testwell",
+  _VERSION = "0.2",
+  _COPYRIGHT = "Paul Kulchenko",
+  _DESCRIPTION = "Simple testing library",
+}
+
 local pairs = pairs
 local tostring = tostring
 local type = type
@@ -45,11 +52,15 @@ function tb:ok(test, name, more)
   self.good_test = self.good_test + (test and 1 or 0)
   self.skip_test = self.skip_test + (test == nil and 1 or 0)
   name = tostring(name or '')
-  local out = ''
-  if not test then
-    out = "not "
+  local out
+  if test == nil then
+    out = "skip "
+  elseif test then
+    out = "ok "
+  else
+    out = "not ok "
   end
-  out = out .. "ok " .. self.curr_test
+  out = out .. self.curr_test
   if name ~= '' then
     out = out .. " - " .. name
   end
@@ -175,8 +186,6 @@ return { _NAME = n, _COPYRIGHT = c, _DESCRIPTION = d, _VERSION = v, serialize = 
 end)() ---- end of Serpent module
 
 -----------------------------------------------------------
-
-local m = {}
 
 function m.ok(test, name)
   tb:ok(test, name)
