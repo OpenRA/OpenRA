@@ -157,7 +157,7 @@ World:
 
 EditorWorld:
 	Inherits: ^BaseWorld
-	LoadWidgetAtGameStart:
 	EditorActorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

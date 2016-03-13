@@ -175,8 +175,8 @@ World:
 
 EditorWorld:
 	Inherits: ^BaseWorld
-	LoadWidgetAtGameStart:
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 		Palette: placebuilding
+	LoadWidgetAtGameStart:
