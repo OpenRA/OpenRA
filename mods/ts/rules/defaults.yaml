@@ -240,7 +240,7 @@
 		HP: 50
 		Shape: Circle
 			Radius: 128
-			VerticalTopOffset: 512
+			VerticalTopOffset: 608
 	Armor:
 		Type: None
 	Valued:
