@@ -66,6 +66,8 @@ namespace OpenRA.Mods.Common.Effects
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
 				else
 					anim.PlayRepeating(info.Sequence);
+
+				args.SourceActor.World.ScreenMap.Add(this, pos, anim.Image.Bounds);
 			}
 		}
 
@@ -77,12 +79,15 @@ namespace OpenRA.Mods.Common.Effects
 			if (pos.Z <= args.PassiveTarget.Z)
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 			}
 
 			if (anim != null)
+			{
 				anim.Tick();
+				world.ScreenMap.Update(this, pos, anim.Image.Bounds);
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

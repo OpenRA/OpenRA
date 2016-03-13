@@ -34,7 +34,9 @@ namespace OpenRA.Mods.Common.Effects
 
 			anim = new Animation(world, trail, () => facing);
 			anim.PlayThen(sequence,
-				() => world.AddFrameEndTask(w => w.Remove(this)));
+				() => world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+
+			world.ScreenMap.Add(this, pos, anim.Image.Bounds);
 		}
 
 		public void Tick(World world) { anim.Tick(); }

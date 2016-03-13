@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
@@ -46,8 +47,12 @@ namespace OpenRA.Mods.Common.Effects
 			arrow.Play("arrow");
 			circles.Play("circles");
 
+			var bounds = Rectangle.Union(arrow.Image.Bounds, circles.Image.Bounds);
+
+			owner.World.ScreenMap.Add(this, position, bounds);
+
 			if (duration > 0)
-				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
+				owner.World.Add(new DelayedAction(duration, () => { owner.World.Remove(this); owner.World.ScreenMap.Remove(this); }));
 		}
 
 		// Support power beacons are expected to clean themselves up

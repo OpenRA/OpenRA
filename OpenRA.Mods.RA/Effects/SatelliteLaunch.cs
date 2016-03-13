@@ -29,9 +29,10 @@ namespace OpenRA.Mods.RA.Effects
 
 			doors = new Animation(a.World, info.DoorImage);
 			doors.PlayThen(info.DoorSequence,
-				() => a.World.AddFrameEndTask(w => w.Remove(this)));
+				() => a.World.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
 
 			pos = a.CenterPosition;
+			a.World.ScreenMap.Add(this, pos, doors.Image.Bounds);
 		}
 
 		public void Tick(World world)

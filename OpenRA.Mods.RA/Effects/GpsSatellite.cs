@@ -29,6 +29,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			anim = new Animation(world, info.SatelliteImage);
 			anim.PlayRepeating(info.SatelliteSequence);
+
+			world.ScreenMap.Add(this, pos, anim.Image.Bounds);
 		}
 
 		public void Tick(World world)
@@ -36,8 +38,10 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 			pos += new WVec(0, 0, 427);
 
+			world.ScreenMap.Update(this, pos, anim.Image.Bounds);
+
 			if (pos.Z > pos.Y)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
