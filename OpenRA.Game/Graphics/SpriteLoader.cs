@@ -78,13 +78,22 @@ namespace OpenRA.Graphics
 		{
 			using (var stream = fileSystem.Open(filename))
 			{
-				ISpriteFrame[] frames;
-				foreach (var loader in loaders)
-					if (loader.TryParseSprite(stream, out frames))
-						return frames;
+				var spriteFrames = GetFrames(stream, loaders);
+				if (spriteFrames == null)
+					throw new InvalidDataException(filename + " is not a valid sprite file!");
 
-				throw new InvalidDataException(filename + " is not a valid sprite file!");
+				return spriteFrames;
 			}
+		}
+
+		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders)
+		{
+			ISpriteFrame[] frames;
+			foreach (var loader in loaders)
+				if (loader.TryParseSprite(stream, out frames))
+					return frames;
+
+			return null;
 		}
 	}
 }
