@@ -36,7 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec SpawnOffset = WVec.Zero;
 
 		[Desc("Palette to use for the missile weapon image.")]
-		[PaletteReference] public readonly string MissilePalette = "effect";
+		[PaletteReference("IsPlayerPalette")] public readonly string MissilePalette = "effect";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Travel time - split equally between ascent and descent")]
 		public readonly int FlightDelay = 400;
@@ -101,7 +104,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
-			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, info.MissilePalette, info.MissileUp, info.MissileDown,
+			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
+			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
 				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
