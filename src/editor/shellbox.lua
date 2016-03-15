@@ -211,6 +211,9 @@ DisplayShellPrompt = function (...)
   out:MarkerAdd(out:GetLineCount()-1, PROMPT_MARKER)
 end
 
+function out:Print(...) return DisplayShell(...) end
+function out:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...)) end
+
 local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
               or err
