@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: cnc
 
@@ -14,7 +14,7 @@ Bounds: 7,24,51,36
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
 LockPreview: True
 
