@@ -223,7 +223,7 @@ local function filterTraceError(err, addedret)
   return err
 end
 
-local function createenv ()
+local function createenv()
   local env = {}
   setmetatable(env,{__index = _G})
 
@@ -286,12 +286,14 @@ local function createenv ()
     end
   end
 
-  local os = { exit = function()
-    ide.frame:AddPendingEvent(wx.wxCommandEvent(
-      wx.wxEVT_COMMAND_MENU_SELECTED, ID_EXIT))
-  end }
+  local os = {
+    exit = function()
+      ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED, ID_EXIT))
+    end,
+  }
   env.os = setmetatable(os, {__index = _G.os})
-  env.print = DisplayShell
+  env.io = setmetatable({write = function(...) out:Write(...) end}, {__index = _G.io})
+  env.print = function(...) out:Print(...) end
   env.dofile = dofile
   env.loadfile = loadfile
   env.RELFILE = relativeFilename
