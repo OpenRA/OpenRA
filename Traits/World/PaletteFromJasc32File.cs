@@ -68,6 +68,9 @@ namespace OpenRA.Mods.AS.Traits
 						? (uint)Color.FromArgb(int.Parse(split[3]), int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb()
 						: (uint)Color.FromArgb(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb();
 				}
+
+				foreach (var i in info.ShadowIndex)
+					colors[i] = 140u << 24;
 			}
 
 			wr.AddPalette(info.Name, new ImmutablePalette(colors), info.AllowModifiers);
