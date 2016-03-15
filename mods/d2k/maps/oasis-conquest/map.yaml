@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: d2k
 
@@ -14,7 +14,7 @@ Bounds: 16,16,96,96
 
 Visibility: Lobby
 
-Type: Conquest
+Categories: Conquest
 
 Players:
 	PlayerReference@Neutral:
