@@ -146,16 +146,10 @@ local function getNextHistoryMatch(promptText)
   assert(false, "getNextHistoryMatch coudn't find a proper match")
 end
 
-local function shellPrint(marker, ...)
-  local cnt = select('#',...)
-  if cnt == 0 then return end -- return if nothing to print
-
-  local isPrompt = marker and (getPromptLine() > -1)
-
-  local text = ''
-  for i=1,cnt do
-    local x = select(i,...)
-    text = text .. tostring(x)..(i < cnt and "\t" or "")
+local function concat(sep, ...)
+  local text = ""
+  for i=1, select('#',...) do
+    text = text .. (i > 1 and sep or "") .. tostring(select(i,...))
   end
 
   -- split the text into smaller chunks as one large line
@@ -171,16 +165,21 @@ local function shellPrint(marker, ...)
         end
       end)
   end
+  return text
+end
 
-  -- add "\n" if it is missing
-  text = text:gsub("\n+$", "") .. "\n"
-
+local partial = false
+local function shellPrint(marker, text)
+  if not text or text == "" then return end -- return if nothing to print
+  local isPrompt = marker and (getPromptLine() > -1)
   local lines = out:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
-  local insertLineAt = isPrompt and getPromptLine() or out:GetLineCount()-1
-  local insertAt = isPrompt and out:PositionFromLine(getPromptLine()) or out:GetLength()
+  local insertLineAt = isPrompt and not partial and getPromptLine() or out:GetLineCount()-1
+  local insertAt = isPrompt and not partial and out:PositionFromLine(getPromptLine()) or out:GetLength()
   out:InsertTextDyn(insertAt, out.useraw and text or FixUTF8(text, function (s) return '\\'..string.byte(s) end))
   local linesAdded = out:GetLineCount() - lines
+
+  partial = text:find("\n$") == nil
 
   if marker then
     if promptLine then out:MarkerDelete(promptLine, PROMPT_MARKER) end
@@ -196,16 +195,16 @@ local function shellPrint(marker, ...)
 end
 
 DisplayShell = function (...)
-  shellPrint(OUTPUT_MARKER, ...)
+  shellPrint(OUTPUT_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
 end
 DisplayShellErr = function (...)
-  shellPrint(ERROR_MARKER, ...)
+  shellPrint(ERROR_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
 end
 DisplayShellMsg = function (...)
-  shellPrint(MESSAGE_MARKER, ...)
+  shellPrint(MESSAGE_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
 end
 DisplayShellDirect = function (...)
-  shellPrint(nil, ...)
+  shellPrint(nil, concat("\t", ...):gsub("\n+$", "").."\n")
 end
 DisplayShellPrompt = function (...)
   -- don't print anything; just mark the line with a prompt mark
