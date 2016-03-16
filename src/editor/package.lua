@@ -763,3 +763,14 @@ end
 function ide:RemoveTool(name)
   return ToolsRemoveTool(name)
 end
+
+local timers = {}
+local function evhandler(event)
+  local callback = timers[event:GetId()]
+  if callback then callback() end
+end
+function ide:AddTimer(ctrl, callback)
+  table.insert(timers, callback or function() end)
+  ctrl:Connect(wx.wxEVT_TIMER, evhandler)
+  return wx.wxTimer(ctrl, #timers)
+end
