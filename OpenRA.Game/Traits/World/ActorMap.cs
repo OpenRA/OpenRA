@@ -249,9 +249,9 @@ namespace OpenRA.Traits
 				return preferredSubCell;
 
 			if (!AnyActorsAt(cell))
-				return map.DefaultSubCell;
+				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
 
@@ -264,9 +264,9 @@ namespace OpenRA.Traits
 				return preferredSubCell;
 
 			if (!AnyActorsAt(cell))
-				return map.DefaultSubCell;
+				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 			return SubCell.Invalid;
