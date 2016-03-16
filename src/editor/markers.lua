@@ -101,7 +101,7 @@ local function createMarkersWindow()
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   markers.markersCtrl = ctrl
-  ide.timers.markers = wx.wxTimer(ctrl)
+  ide.timers.markers = ide:AddTimer(ctrl, function() markersRefresh() end)
 
   ctrl:AddRoot("Markers")
   ctrl:SetImageList(markers.imglist)
@@ -148,7 +148,6 @@ local function createMarkersWindow()
     return true
   end
 
-  ctrl:Connect(wx.wxEVT_TIMER, function() markersRefresh() end)
   ctrl:Connect(wx.wxEVT_LEFT_DOWN, activateByPosition)
   ctrl:Connect(wx.wxEVT_LEFT_DCLICK, activateByPosition)
   ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)

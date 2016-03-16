@@ -210,8 +210,7 @@ function ide:SetStatusFor(text, interval, field)
   interval = interval or 2
   local statusbar = self:GetStatusBar()
   if not ide.timers.status then
-    ide.timers.status = wx.wxTimer(statusbar)
-    statusbar:Connect(wx.wxEVT_TIMER, function(event) if statusreset then statusreset() end end)
+    ide.timers.status = ide:AddTimer(statusbar, function(event) if statusreset then statusreset() end end)
   end
   statusreset = function()
     if statusbar:GetStatusText(field) == text then statusbar:SetStatusText("", field) end

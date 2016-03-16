@@ -30,11 +30,8 @@ protocol.client.requestloading = "Could you please load this file for me: %s"
 protocol.server.answerok = "Sure. You may now leave."
 
 if success then -- ok, server was started, we are solo
-  --TODO: if multiple files are to be opened, each file is handled one by one - we could create a single string instead...
-  ide.idletimer = wx.wxTimer(wx.wxGetApp())
-  ide.idletimer:Start(delay,false)
   svr:settimeout(0) -- don't block
-  wx.wxGetApp():Connect(wx.wxEVT_TIMER, function()
+  ide.timers.idle = ide:AddTimer(wx.wxGetApp(), function()
       if ide.exitingProgram then -- if exiting, terminate the timer loop
         wx.wxGetApp():Disconnect(wx.wxEVT_TIMER)
         return
@@ -58,6 +55,7 @@ if success then -- ok, server was started, we are solo
         end
       end
     end)
+  ide.timers.idle:Start(delay,false)
 else -- something different is running on our port
   local cln = socket.udp()
   cln:setpeername("127.0.0.1",port)

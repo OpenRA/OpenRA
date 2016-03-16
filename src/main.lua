@@ -615,7 +615,7 @@ end
 -- Load App
 
 for _, file in ipairs({
-    "settings", "singleinstance", "iofilters", "package", "markup",
+    "settings", "package", "singleinstance", "iofilters", "markup",
     "gui", "filetree", "output", "debugger", "outline", "commandbar",
     "editor", "findreplace", "commands", "autocomplete", "shellbox", "markers",
     "menu_file", "menu_edit", "menu_search",

@@ -267,8 +267,8 @@ local function createOutlineWindow()
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
 
   outline.outlineCtrl = ctrl
-  ide.timers.outline = wx.wxTimer(ctrl, REFRESH)
-  ide.timers.symbolindex = wx.wxTimer(ctrl, REINDEX)
+  ide.timers.outline = ide:AddTimer(ctrl, function() outlineRefresh(GetEditor(), false) end)
+  ide.timers.symbolindex = ide:AddTimer(ctrl, function() ide:DoWhenIdle(indexFromQueue) end)
 
   ctrl:AddRoot("Outline")
   ctrl:SetImageList(outline.imglist)
@@ -317,10 +317,6 @@ local function createOutlineWindow()
     return true
   end
 
-  ctrl:Connect(wx.wxEVT_TIMER, function(event)
-      if event:GetId() == REFRESH then outlineRefresh(GetEditor(), false) end
-      if event:GetId() == REINDEX then ide:DoWhenIdle(indexFromQueue) end
-    end)
   ctrl:Connect(wx.wxEVT_LEFT_DOWN, activateByPosition)
   ctrl:Connect(wx.wxEVT_LEFT_DCLICK, activateByPosition)
   ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)

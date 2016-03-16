@@ -928,8 +928,6 @@ local function closeWindow(event)
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
-frame:Connect(wx.wxEVT_TIMER, function() saveAutoRecovery() end)
-
 local function restoreFocus()
   -- check if the window is shown before returning focus to it,
   -- as it may lead to a recursion in event handlers on OSX (wxwidgets 2.9.5).
@@ -1021,7 +1019,7 @@ ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
   end)
 
 if ide.config.autorecoverinactivity then
-  ide.timers.session = wx.wxTimer(frame)
+  ide.timers.session = ide:AddTimer(frame, function() saveAutoRecovery() end)
   -- check at least 5s to be never more than 5s off
   ide.timers.session:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
 end
