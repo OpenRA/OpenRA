@@ -24,24 +24,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
 		{
-			var lp = world.LocalPlayer;
+			var player = world.RenderPlayer ?? world.LocalPlayer;
 
 			var checkbox = widget.Get<CheckboxWidget>("STATS_CHECKBOX");
-			checkbox.IsChecked = () => lp.WinState != WinState.Undefined;
-			checkbox.GetCheckType = () => lp.WinState == WinState.Won ?
-				"checked" : "crossed";
-			if (lp.HasObjectives)
-			{
-				var mo = lp.PlayerActor.Trait<MissionObjectives>();
-				checkbox.GetText = () => mo.Objectives.First().Description;
-			}
-
+			var missionLabel = widget.Get<LabelWidget>("MISSION");
 			var statusLabel = widget.Get<LabelWidget>("STATS_STATUS");
+			checkbox.IsVisible = () => player != null && !player.NonCombatant;
+			missionLabel.IsVisible = () => player != null && !player.NonCombatant;
+			statusLabel.IsVisible = () => player != null && !player.NonCombatant;
 
-			statusLabel.GetText = () => lp.WinState == WinState.Won ? "Accomplished" :
-				lp.WinState == WinState.Lost ? "Failed" : "In progress";
-			statusLabel.GetColor = () => lp.WinState == WinState.Won ? Color.LimeGreen :
-				lp.WinState == WinState.Lost ? Color.Red : Color.White;
+			if (player != null && !player.NonCombatant)
+			{
+				checkbox.IsChecked = () => player.WinState != WinState.Undefined;
+				checkbox.GetCheckType = () => player.WinState == WinState.Won ?
+					"checked" : "crossed";
+				if (player.HasObjectives)
+				{
+					var mo = player.PlayerActor.Trait<MissionObjectives>();
+					checkbox.GetText = () => mo.Objectives.First().Description;
+				}
+
+				statusLabel.GetText = () => player.WinState == WinState.Won ? "Accomplished" :
+					player.WinState == WinState.Lost ? "Failed" : "In progress";
+				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
+					player.WinState == WinState.Lost ? Color.Red : Color.White;
+			}
 
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
@@ -73,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var flag = item.Get<ImageWidget>("FACTIONFLAG");
 				flag.GetImageCollection = () => "flags";
-				if (lp.Stances[pp] == Stance.Ally || lp.WinState != WinState.Undefined)
+				if (player == null || player.Stances[pp] == Stance.Ally || player.WinState != WinState.Undefined)
 				{
 					flag.GetImageName = () => pp.Faction.InternalName;
 					item.Get<LabelWidget>("FACTION").GetText = () => pp.Faction.Name;
