@@ -1184,7 +1184,7 @@ local function debuggerCreateStackWindow()
 
     local file, line = coords[1], coords[2]
     if file:match("@") then file = string.sub(file, 2) end
-    file = GetFullPathIfExists(debugger.basedir, file)
+    file = GetFullPathIfExists(ide:GetDebugger().basedir, file)
     if file then
       local editor = LoadFile(file,nil,true)
       editor:SetFocus()
@@ -1278,6 +1278,7 @@ local function debuggerCreateWatchWindow()
   function watchCtrl:CopyItemValue(item)
     local expr = self:GetItemFullExpression(item)
 
+    local debugger = ide:GetDebugger()
     if debugger.running then debugger:Update() end
     if debugger.server and not debugger.running
     and (not debugger.scratchpad or debugger.scratchpad.paused) then
@@ -1340,6 +1341,7 @@ local function debuggerCreateWatchWindow()
     end)
 
   watchCtrl:Connect(wx.wxEVT_SET_FOCUS, function(event)
+      local debugger = ide:GetDebugger()
       if debugger.needrefresh.watches then
         debugger:updateWatches()
         debugger.needrefresh.watches = false
@@ -1383,6 +1385,7 @@ local function debuggerCreateWatchWindow()
     function (event) watchCtrl:CopyItemValue(item or watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_COPYWATCHVALUE, wx.wxEVT_UPDATE_UI, function (event)
     -- allow copying only when the debugger is available
+    local debugger = ide:GetDebugger()
     event:Enable(item:IsOk() and debugger.server and not debugger.running
      and (not debugger.scratchpad or debugger.scratchpad.paused))
   end)
