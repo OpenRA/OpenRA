@@ -475,3 +475,18 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)
     event:Enable(ide.interpreter and ide.interpreter.takeparameters and true or false)
   end)
+
+-- save and restore command line parameters
+ide:AddPackage("core.project", {
+    onAppLoad = function(self, app)
+      local settings = self:GetSettings()
+      if settings.arg then ide.config.arg.any = settings.arg end
+    end,
+    onAppClose = function(self, app)
+      local settings = self:GetSettings()
+      if settings.arg ~= ide.config.arg.any then
+        settings.arg = ide.config.arg.any
+        self:SetSettings(settings)
+      end
+    end,
+})
