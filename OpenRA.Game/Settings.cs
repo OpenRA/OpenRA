@@ -269,6 +269,11 @@ namespace OpenRA
 		public Hotkey SupportPower05Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 		public Hotkey SupportPower06Key = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 
+		public Hotkey ReplaySpeedSlowKey = new Hotkey(Keycode.F5, Modifiers.None);
+		public Hotkey ReplaySpeedRegularKey = new Hotkey(Keycode.F6, Modifiers.None);
+		public Hotkey ReplaySpeedFastKey = new Hotkey(Keycode.F7, Modifiers.None);
+		public Hotkey ReplaySpeedMaxKey = new Hotkey(Keycode.F8, Modifiers.None);
+
 		static readonly Func<KeySettings, Hotkey>[] ProductionKeys = GetKeys(24, "Production");
 		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
 
