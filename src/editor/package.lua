@@ -560,6 +560,7 @@ function ide:AddPackage(name, package)
   return self.packages[name]
 end
 function ide:RemovePackage(name) self.packages[name] = nil end
+function ide:GetPackage(name) return self.packages[name] end
 
 function ide:AddWatch(watch, value)
   local mgr = self.frame.uimgr
