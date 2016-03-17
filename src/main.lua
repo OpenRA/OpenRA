@@ -264,6 +264,9 @@ if not wx.wxMOD_CONTROL then wx.wxMOD_CONTROL = 0x02 end
 if not wx.wxMOD_RAW_CONTROL then
   wx.wxMOD_RAW_CONTROL = ide.osname == 'Macintosh' and 0x10 or wx.wxMOD_CONTROL
 end
+if not wx.WXK_RAW_CONTROL then
+  wx.WXK_RAW_CONTROL = ide.osname == 'Macintosh' and 396 or wx.WXK_CONTROL
+end
 -- ArchLinux running 2.8.12.2 doesn't have wx.wxMOD_SHIFT defined
 if not wx.wxMOD_SHIFT then wx.wxMOD_SHIFT = 0x04 end
 -- wxDIR_NO_FOLLOW is missing in wxlua 2.8.12 as well
@@ -770,6 +773,59 @@ ide.frame:SetMenuBar(ide.frame.menuBar)
 ide:Print() -- flush pending output (if any)
 
 PackageEventHandle("onAppLoad")
+
+-- this provides a workaround for Ctrl-(Shift-)Tab not navigating over tabs on OSX
+-- http://trac.wxwidgets.org/ticket/17064
+if ide.osname == 'Macintosh' then
+  local frame = ide.frame
+  local focus
+  ide.timers.ctrltab = ide:AddTimer(frame, function(event)
+      local mouse = wx.wxGetMouseState()
+      -- if anything other that Ctrl (along with Shift) is pressed, then cancel the timer
+      if not ide:IsValidCtrl(focus)
+      or not wx.wxGetKeyState(wx.WXK_RAW_CONTROL)
+      or wx.wxGetKeyState(wx.WXK_ALT) or wx.wxGetKeyState(wx.WXK_CONTROL)
+      or mouse:LeftDown() or mouse:RightDown() or mouse:MiddleDown() then
+        ide.timers.ctrltab:Stop()
+        return
+      end
+      local ctrl = frame:FindFocus()
+      if not ctrl then return end
+      local nb = focus:GetParent():DynamicCast("wxAuiNotebook")
+      -- when moving backward from the very first tab, the focus moves
+      -- to wxAuiTabCtrl on OSX, so need to take that into account
+      if nb:GetId() ~= ctrl:GetParent():GetId()
+      or ctrl:GetClassInfo():GetClassName() == "wxAuiTabCtrl" then
+        local frwd = not wx.wxGetKeyState(wx.WXK_SHIFT)
+        if not frwd and nb:GetSelection() == 0
+        or frwd and nb:GetSelection() == nb:GetPageCount()-1 then
+          nb:AdvanceSelection(frwd)
+          focus = nb:GetPage(nb:GetSelection())
+          focus:SetFocus()
+        end
+        -- don't cancel the timer as the user may be cycling through tabs
+      end
+    end)
+
+  frame:Connect(wx.wxEVT_CHAR_HOOK, function(event)
+      local key = event:GetKeyCode()
+      if key == wx.WXK_RAW_CONTROL then
+        local ctrl = frame:FindFocus()
+        local parent = ctrl and ctrl:GetParent()
+        if parent and parent:GetClassInfo():GetClassName() == "wxAuiNotebook" then
+          local nb = parent:DynamicCast("wxAuiNotebook")
+          focus = nb:GetPage(nb:GetSelection())
+          focus:SetFocus()
+          ide.timers.ctrltab:Start(20) -- check periodically
+        end
+      elseif key == wx.WXK_SHIFT then -- Shift
+        -- do nothing; timer is already started if needed
+      else
+        ide.timers.ctrltab:Stop()
+      end
+      event:Skip()
+    end)
+end
 
 -- The status bar content is drawn incorrectly if it is shown
 -- after being initially hidden.
