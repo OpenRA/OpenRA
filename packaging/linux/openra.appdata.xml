@@ -1,48 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
   <id>openra.desktop</id>
-  <pkgname>openra</pkgname>
-  <name>OpenRA</name>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
+  <name>OpenRA</name>
   <summary>Reimagining of early Westwood real-time strategy games</summary>
-  <developer_name>The OpenRA developers</developer_name>
   <description>
     <p>
-      OpenRA is a Libre/Free Real Time Strategy project
-      that recreates the classic Command &amp; Conquer titles.
+      OpenRA is a Libre/Free Real Time Strategy project that recreates and reimagines
+      the classic Command &amp; Conquer titles.  The primary focus is cross-platform
+      multiplayer between Windows, OS X, and Linux; however, a growing number of the
+      original campaign missions are included, and there is support for skirmish games
+      against AI bots.
     </p>
     <p>
-      It includes recreations of Tiberian Dawn, Red Alert,
-      and Dune 2000. These are not intended to be perfect
-      copies, but instead combine the classic gameplay of
-      the originals with modern improvements such as unit
-      veterancy and the fog of war.
+      In a world where Hitler was assassinated and the Third Reich never existed,
+      the Soviet Union seeks power over all of Europe. Allied against this Evil Empire,
+      the free world faces a Cold War turned hot. The Red Alert mod fuses the quick
+      and fun gameplay of the original C&amp;C: Red Alert, with balance improvements
+      and new gameplay features inspired by modern RTS games.
+    </p>
+    <p>
+      Join the Global Defense Initiative or the Brotherhood of Nod in our recreation of
+      the classic game that started it all! The Tiberian Dawn mod modernizes the original
+      Command &amp; Conquer gameplay by introducing features from later games, including
+      per-factory production queues, unit veterancy, and capturable tech structures.
+    </p>
+    <p>
+      Three great houses fight for the precious spice, melange. He who controls the spice
+      controls the universe! In the Dune 2000 mod you must establish a foothold on the
+      desert planet Arrakis, surviving its harsh environmental conditions while protecting
+      your harvesting operations from giant sandworms and ruthless enemy factions.
     </p>
   </description>
-  <url type="bugtracker">http://bugs.openra.net</url>
-  <url type="donation">https://www.bountysource.com/teams/openra</url>
-  <url type="faq">http://wiki.openra.net/FAQ</url>
-  <url type="help">http://wiki.openra</url>
-  <url type="homepage">http://www.openra</url>
-  <icon type="cached">openra.png</icon>
-  <icon type="remote" width="128" height="138">http://www.openra.net/images/soviet-logo-fallback.png</icon>
-  <icon type="local" width="128" height="128">/usr/share/icons/hicolor/128x128/apps/openra.png</icon>
-  <categories>
-​    <category>Game</category>
-​    <category>StrategyGame</category>
-​  </categories>
   <screenshots>
     <screenshot type="default">
+      <image>http://www.openra.net/images/appdata/modchooser.png</image>
+      <caption>Mod selection screen</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://www.openra.net/images/appdata/ingame-ra.png</image>
       <caption>Red Alert mod</caption>
-      <image height="296" width="196">http://www.openra.net/images/appdata/ra.png</image>
     </screenshot>
     <screenshot>
+      <image>http://www.openra.net/images/appdata/ingame-cnc.png</image>
       <caption>Tiberian Dawn mod</caption>
-      <image height="296" width="196">http://www.openra.net/images/appdata/cnc.png</image>
     </screenshot>
     <screenshot>
-      <caption>Dune 2000 mod</caption>
-      <image height="296" width="196">http://www.openra.net/images/appdata/d2k.png</image>
+      <image>http://www.openra.net/images/appdata/ingame-d2k.png</image>
+      <caption>Dune 2000 Mod</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://www.openra.net/images/appdata/multiplayer.png</image>
+      <caption>Multiplayer lobby in the Tiberian Dawn mod</caption>
     </screenshot>
   </screenshots>
+  <url type="homepage">http://www.openra.net</url>
+  <update_contact>paul_at_chote.net</update_contact>
 </component>
