@@ -155,8 +155,7 @@ namespace OpenRA
 		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
 		[FieldLoader.Ignore] CellLayer<List<MPos>> inverseCellProjection;
 
-		[FieldLoader.Ignore] Lazy<Ruleset> rules;
-		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+		public Ruleset Rules { get; private set; }
 
 		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
 		[FieldLoader.Ignore] public CellRegion AllCells;
@@ -301,21 +300,19 @@ namespace OpenRA
 
 		void PostInit()
 		{
-			rules = Exts.Lazy(() =>
+			try
 			{
-				try
-				{
-					return Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-						VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
-				}
-				catch (Exception e)
-				{
-					InvalidCustomRules = true;
-					Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
-				}
+				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
+			}
+			catch (Exception e)
+			{
+				InvalidCustomRules = true;
+				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
+				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
+			}
 
-				return Ruleset.LoadDefaultsForTileSet(modData, Tileset);
-			});
+			Rules.Sequences.Preload();
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
@@ -421,11 +418,6 @@ namespace OpenRA
 				candidates.Add(new PPos(uv.U, uv.V - height));
 
 			return candidates.Where(c => mapHeight.Contains((MPos)c)).ToArray();
-		}
-
-		public Ruleset PreloadRules()
-		{
-			return rules.Value;
 		}
 
 		public void Save(IReadWritePackage toPackage)
@@ -647,7 +639,7 @@ namespace OpenRA
 		{
 			// The first check ensures that the cell is within the valid map region, avoiding
 			// potential crashes in deeper code.  All CellLayers have the same geometry, and
-			// CustomTerrain is convenient (cellProjection may be null and others are Lazy).
+			// CustomTerrain is convenient.
 			return CustomTerrain.Contains(uv) && ContainsAllProjectedCellsCovering(uv);
 		}
 
