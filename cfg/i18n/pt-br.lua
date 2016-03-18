@@ -120,7 +120,7 @@ return {
   ["E&xit"] = "Sair", -- src\editor\menu_file.lua
   ["Enable Indexing"] = nil, -- src\editor\outline.lua
   ["Enter Lua code and press Enter to run it."] = "Digite o código Lua e pressione Enter para executá-lo.", -- src\editor\shellbox.lua
-  ["Enter command line parameters (use Cancel to clear)"] = "Digite os parâmetros da linha de comandos (use Cancelar para limpar)", -- src\editor\menu_project.lua
+  ["Enter command line parameters"] = "Digite os parâmetros da linha de comandos", -- src\editor\menu_project.lua
   ["Enter replacement text"] = "Digite o texto para substituir", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Erro ao carregar arquivo de API: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Erro ao carregar arquivo de configuração: %s", -- src\editor\style.lua

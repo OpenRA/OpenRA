@@ -117,7 +117,7 @@ return {
   ["E&xit"] = "离开", -- src\editor\menu_file.lua
   ["Enable Indexing"] = "启用索引", -- src\editor\outline.lua
   ["Enter Lua code and press Enter to run it."] = "输入Lua代码然后按 <Enter> 以执行", -- src\editor\shellbox.lua
-  ["Enter command line parameters (use Cancel to clear)"] = "输入命令行参数(使用'取消'进行清除)", -- src\editor\menu_project.lua
+  ["Enter command line parameters"] = "输入命令行参数", -- src\editor\menu_project.lua
   ["Enter replacement text"] = "输入替换文本", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "导入API档时出错误: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "导入configuration档时出错误: %s", -- src\editor\style.lua

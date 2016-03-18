@@ -467,9 +467,10 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    local params = wx.wxGetTextFromUser(TR("Enter command line parameters (use Cancel to clear)"),
+    local params = ide:GetTextFromUser(TR("Enter command line parameters"),
       TR("Command line parameters"), ide.config.arg.any or "")
-    ide.config.arg.any = params and #params > 0 and params or nil
+    -- params is `nil` when the dialog is canceled
+    if params then ide.config.arg.any = #params > 0 and params or nil end
   end)
 frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)

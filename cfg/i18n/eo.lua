@@ -119,7 +119,7 @@ return {
   ["E&xit"] = "&Eliri", -- src\editor\menu_file.lua
   ["Enable Indexing"] = nil, -- src\editor\outline.lua
   ["Enter Lua code and press Enter to run it."] = "Enigu fontkodon de Lua kaj premu enenklavon por plenumi ĝin.", -- src\editor\shellbox.lua
-  ["Enter command line parameters (use Cancel to clear)"] = "Enigu komandliniajn parametrojn (uzu nulig-butonon por viŝi)", -- src\editor\menu_project.lua
+  ["Enter command line parameters"] = "Enigu komandliniajn parametrojn", -- src\editor\menu_project.lua
   ["Enter replacement text"] = "Enigu anstataŭigan tekston", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Eraro okazis dum ŝargado de API-a dosiero: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Eraro okazis dum ŝargado de agorda dosiero: %s", -- src\editor\style.lua

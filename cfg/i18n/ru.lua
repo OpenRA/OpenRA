@@ -118,7 +118,7 @@ return {
   ["E&xit"] = "Вы&ход", -- src\editor\menu_file.lua
   ["Enable Indexing"] = "Разрешить индекcирование", -- src\editor\outline.lua
   ["Enter Lua code and press Enter to run it."] = "Введите код на Lua и нажмите Enter для выполнения.", -- src\editor\shellbox.lua
-  ["Enter command line parameters (use Cancel to clear)"] = "Введите параметры командной строки (Cancel чтобы очистить)", -- src\editor\menu_project.lua
+  ["Enter command line parameters"] = "Введите параметры командной строки", -- src\editor\menu_project.lua
   ["Enter replacement text"] = "Введите текст замены", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Ошибка загрузки файла определений API: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Ошибка загрузки файла конфигурации: %s", -- src\editor\style.lua

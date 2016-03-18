@@ -119,7 +119,7 @@ return {
   ["E&xit"] = "Salir", -- src\editor\menu_file.lua
   ["Enable Indexing"] = "Habilitar indexación", -- src\editor\outline.lua
   ["Enter Lua code and press Enter to run it."] = "Introduce código Lua y pulsa <Entrer> para ejecutarlo.", -- src\editor\shellbox.lua
-  ["Enter command line parameters (use Cancel to clear)"] = "Introduce parámetros de línea de comandos (usa Cancel para limpiar)", -- src\editor\menu_project.lua
+  ["Enter command line parameters"] = "Introduce parámetros de línea de comandos", -- src\editor\menu_project.lua
   ["Enter replacement text"] = "Introduce el texto de remplazo", -- src\editor\editor.lua
   ["Error while loading API file: %s"] = "Error mientras se cargaba el archivo de API: %s", -- src\editor\autocomplete.lua
   ["Error while loading configuration file: %s"] = "Error mientras se cargaba el fichero de configuración: %s", -- src\editor\style.lua
