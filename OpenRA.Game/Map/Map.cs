@@ -161,13 +161,6 @@ namespace OpenRA
 		[FieldLoader.Ignore] public CellRegion AllCells;
 		public List<CPos> AllEdgeCells { get; private set; }
 
-		void AssertExists(string filename)
-		{
-			using (var s = Package.GetStream(filename))
-				if (s == null)
-					throw new InvalidOperationException("Required file {0} not present in this map".F(filename));
-		}
-
 		/// <summary>
 		/// Initializes a new map created by the editor or importer.
 		/// The map will not receive a valid UID until after it has been saved and reloaded.
@@ -208,8 +201,8 @@ namespace OpenRA
 			this.modData = modData;
 			Package = package;
 
-			AssertExists("map.yaml");
-			AssertExists("map.bin");
+			if (!Package.Contains("map.yaml") || !Package.Contains("map.bin"))
+				throw new InvalidDataException("Not a valid map\n File: {1}".F(package.Name));
 
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
 			FieldLoader.Load(this, yaml);
