@@ -99,7 +99,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
 				{
-					install.OnClick = () => lobby.Map.Install();
+					install.OnClick = () => lobby.Map.Install(
+						() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 					install.IsHighlighted = () => installHighlighted;
 				}
 			}
@@ -160,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					retry.OnClick = () =>
 					{
 						if (lobby.Map.Status == MapStatus.DownloadError)
-							lobby.Map.Install();
+							lobby.Map.Install(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 						else if (lobby.Map.Status == MapStatus.Unavailable)
 							modData.MapCache.QueryRemoteMapDetails(new[] { lobby.Map.Uid });
 					};

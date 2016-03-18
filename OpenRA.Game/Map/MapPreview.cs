@@ -314,7 +314,7 @@ namespace OpenRA
 			});
 		}
 
-		public void Install()
+		public void Install(Action onSuccess)
 		{
 			if (Status != MapStatus.DownloadAvailable || !Game.Settings.Game.AllowDownloading)
 				return;
@@ -372,6 +372,7 @@ namespace OpenRA
 						{
 							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
 							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+							onSuccess();
 						});
 					};
 
