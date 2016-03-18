@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -46,14 +47,18 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (worldActor.HasTraitInfo<MPStartLocationsInfo>())
 			{
-				var multiPlayers = players.Count(p => p.Value.Playable);
-				var spawns = map.ActorDefinitions.Where(a => a.Value.Value == "mpspawn");
-				var spawnCount = spawns.Count();
+				var playerCount = players.Count(p => p.Value.Playable);
+				var spawns = new List<CPos>();
+				foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+				{
+					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+					spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
+				}
 
-				if (multiPlayers > spawnCount)
-					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(multiPlayers, spawnCount));
+				if (playerCount > spawns.Count)
+					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(playerCount, spawns.Count));
 
-				if (map.SpawnPoints.Value.Distinct().Count() != spawnCount)
+				if (spawns.Distinct().Count() != spawns.Count)
 					emitError("Duplicate spawn point locations detected.");
 			}
 

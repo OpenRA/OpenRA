@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var br = new PPos(width, height + maxTerrainHeight);
 				map.SetBounds(tl, br);
 
-				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();
+				map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
 				map.FixOpenAreas();
 
 				Action<string> afterSave = uid =>

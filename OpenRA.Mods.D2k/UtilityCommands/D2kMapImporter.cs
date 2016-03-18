@@ -263,6 +263,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		Size mapSize;
 		TileSet tileSet;
 		List<TerrainTemplateInfo> tileSetsFromYaml;
+		int playerCount;
 
 		D2kMapImporter(string filename, string tileset, Ruleset rules)
 		{
@@ -293,13 +294,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		public static Map Import(string filename, string mod, string tileset, Ruleset rules)
 		{
-			var map = new D2kMapImporter(filename, tileset, rules).map;
+			var importer = new D2kMapImporter(filename, tileset, rules);
+			var map = importer.map;
 			if (map == null)
 				return null;
 
 			map.RequiresMod = mod;
-			var players = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length);
-			map.PlayerDefinitions = players.ToMiniYaml();
 
 			return map;
 		}
@@ -324,6 +324,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
 			tileSetsFromYaml = tileSet.Templates.Where(t => t.Value.Frames != null
 				&& t.Value.Images[0].ToLower() == tilesetName.ToLower()).Select(ts => ts.Value).ToList();
+
+			var players = new MapPlayers(map.Rules, playerCount);
+			map.PlayerDefinitions = players.ToMiniYaml();
 		}
 
 		void FillMap()
@@ -356,7 +359,11 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 						new LocationInit(locationOnMap),
 						new OwnerInit(kvp.Second)
 					};
+
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
+
+					if (kvp.First == "mpspawn")
+						playerCount++;
 				}
 			}
 		}

@@ -38,7 +38,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var spawns = world.Map.SpawnPoints.Value;
+			var spawns = world.Actors.Where(a => a.Info.Name == "mpspawn")
+				.Select(a => a.Location)
+				.ToArray();
+
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
 					.Select(c => spawns[c.SpawnPoint - 1]).ToList();
 			var available = spawns.Except(taken).ToList();

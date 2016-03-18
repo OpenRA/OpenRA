@@ -126,8 +126,6 @@ namespace OpenRA
 		/// </summary>
 		public WPos ProjectedBottomRight;
 
-		public Lazy<CPos[]> SpawnPoints;
-
 		// Yaml map data
 		[FieldLoader.Ignore] public readonly MiniYaml RuleDefinitions;
 		[FieldLoader.Ignore] public readonly MiniYaml SequenceDefinitions;
@@ -203,8 +201,6 @@ namespace OpenRA
 
 			Tiles.Clear(tileRef);
 
-			SpawnPoints = Exts.Lazy(() => new CPos[0]);
-
 			PostInit();
 		}
 
@@ -221,19 +217,6 @@ namespace OpenRA
 
 			if (MapFormat != SupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, package.Name));
-
-			SpawnPoints = Exts.Lazy(() =>
-			{
-				var spawns = new List<CPos>();
-				foreach (var kv in ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
-				{
-					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-
-					spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
-				}
-
-				return spawns.ToArray();
-			});
 
 			RuleDefinitions = LoadRuleSection(yaml, "Rules");
 			SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
