@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -27,8 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
-		public MapPreview MapPreview { get; private set; }
-		public Map Map { get; private set; }
+		public MapPreview Map { get; private set; }
 
 		readonly ModData modData;
 		readonly Action onStart;
@@ -65,6 +64,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly LabelWidget chatLabel;
 		bool teamChat;
+
+		bool addBotOnMapLoad;
 
 		int lobbyChatUnreadMessages;
 		int globalChatLastReadMessages;
@@ -114,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		internal LobbyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, OrderManager orderManager,
 			Action onExit, Action onStart, bool skirmishMode)
 		{
-			MapPreview = MapCache.UnknownMap;
+			Map = MapCache.UnknownMap;
 			lobby = widget;
 			this.modData = modData;
 			this.orderManager = orderManager;
@@ -163,7 +164,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
 				panel == PanelType.Kick || panel == PanelType.ForceStart ||
-				Map == null || Map.InvalidCustomRules ||
+				!Map.RulesLoaded || Map.InvalidCustomRules ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
@@ -176,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var onSelect = new Action<string>(uid =>
 					{
 						// Don't select the same map again
-						if (uid == MapPreview.Uid)
+						if (uid == Map.Uid)
 							return;
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
@@ -186,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", MapPreview.Uid },
+						{ "initialMap", Map.Uid },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", DoNothing },
 						{ "onSelect", Game.IsHost ? onSelect : null },
@@ -202,9 +203,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
 
-				var botNames = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 				slotsButton.OnMouseDown = _ =>
 				{
+					var botNames = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -302,7 +303,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var optionsTab = lobby.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
-			optionsTab.IsDisabled = () => Map == null || Map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsTab.IsDisabled = () => !Map.RulesLoaded || Map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
 			optionsTab.OnClick = () => panel = PanelType.Options;
 
 			var playersTab = lobby.Get<ButtonWidget>("PLAYERS_TAB");
@@ -349,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			if (allowCheats != null)
 			{
-				var cheatsLocked = new CachedTransform<Map, bool>(
+				var cheatsLocked = new CachedTransform<MapPreview, bool>(
 					map => map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Locked);
 
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
@@ -361,7 +362,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var crates = optionsBin.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
 			if (crates != null)
 			{
-				var cratesLocked = new CachedTransform<Map, bool>(map =>
+				var cratesLocked = new CachedTransform<MapPreview, bool>(map =>
 				{
 					var crateSpawner = map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
 					return crateSpawner == null || crateSpawner.Locked;
@@ -376,7 +377,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var creeps = optionsBin.GetOrNull<CheckboxWidget>("CREEPS_CHECKBOX");
 			if (creeps != null)
 			{
-				var creepsLocked = new CachedTransform<Map, bool>(map =>
+				var creepsLocked = new CachedTransform<MapPreview, bool>(map =>
 				{
 					var mapCreeps = map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
 					return mapCreeps == null || mapCreeps.Locked;
@@ -391,7 +392,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allybuildradius = optionsBin.GetOrNull<CheckboxWidget>("ALLYBUILDRADIUS_CHECKBOX");
 			if (allybuildradius != null)
 			{
-				var allyBuildRadiusLocked = new CachedTransform<Map, bool>(map =>
+				var allyBuildRadiusLocked = new CachedTransform<MapPreview, bool>(map =>
 				{
 					var mapBuildRadius = map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
 					return mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked;
@@ -406,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var shortGame = optionsBin.GetOrNull<CheckboxWidget>("SHORTGAME_CHECKBOX");
 			if (shortGame != null)
 			{
-				var shortGameLocked = new CachedTransform<Map, bool>(
+				var shortGameLocked = new CachedTransform<MapPreview, bool>(
 					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>().ShortGameLocked);
 
 				shortGame.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.ShortGame;
@@ -418,10 +419,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
-				var mapOptions = new CachedTransform<Map, MapOptionsInfo>(
+				var mapOptions = new CachedTransform<MapPreview, MapOptionsInfo>(
 					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>());
 
-				difficulty.IsVisible = () => Map != null && mapOptions.Update(Map).Difficulties.Any();
+				difficulty.IsVisible = () => Map.RulesLoaded && mapOptions.Update(Map).Difficulties.Any();
 				difficulty.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).DifficultyLocked;
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
@@ -447,10 +448,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
 			if (startingUnits != null)
 			{
-				var startUnitsInfos = new CachedTransform<Map, IEnumerable<MPStartUnitsInfo>>(
+				var startUnitsInfos = new CachedTransform<MapPreview, IEnumerable<MPStartUnitsInfo>>(
 					map => map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>());
 
-				var startUnitsLocked = new CachedTransform<Map, bool>(map =>
+				var startUnitsLocked = new CachedTransform<MapPreview, bool>(map =>
 				{
 					var spawnUnitsInfo = map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
 					return spawnUnitsInfo == null || spawnUnitsInfo.Locked;
@@ -463,8 +464,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				startingUnits.IsDisabled = () => configurationDisabled() || startUnitsLocked.Update(Map);
-				startingUnits.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || startUnitsLocked.Update(Map) ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+				startingUnits.GetText = () => Map.Status != MapStatus.Available ||
+					!Map.RulesLoaded || startUnitsLocked.Update(Map) ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
 					var classes = startUnitsInfos.Update(Map).Select(a => a.Class).Distinct();
@@ -491,12 +492,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startingCash = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGCASH_DROPDOWNBUTTON");
 			if (startingCash != null)
 			{
-				var playerResources = new CachedTransform<Map, PlayerResourcesInfo>(
+				var playerResources = new CachedTransform<MapPreview, PlayerResourcesInfo>(
 					map => map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>());
 
 				startingCash.IsDisabled = () => configurationDisabled() || playerResources.Update(Map).DefaultCashLocked;
-				startingCash.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || playerResources.Update(Map).DefaultCashLocked ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
+				startingCash.GetText = () => Map.Status != MapStatus.Available ||
+					!Map.RulesLoaded || playerResources.Update(Map).DefaultCashLocked ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
 					var options = playerResources.Update(Map).SelectableCash.Select(c => new DropDownOption
@@ -520,20 +521,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var techLevel = optionsBin.GetOrNull<DropDownButtonWidget>("TECHLEVEL_DROPDOWNBUTTON");
 			if (techLevel != null)
 			{
-				var mapOptions = new CachedTransform<Map, MapOptionsInfo>(
+				var mapOptions = new CachedTransform<MapPreview, MapOptionsInfo>(
 					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>());
 
-				var techLevels = new CachedTransform<Map, List<ProvidesTechPrerequisiteInfo>>(
+				var techLevels = new CachedTransform<MapPreview, List<ProvidesTechPrerequisiteInfo>>(
 					map => map.Rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().ToList());
 
-				techLevel.IsVisible = () => Map != null && techLevels.Update(Map).Any();
+				techLevel.IsVisible = () => Map.RulesLoaded && techLevels.Update(Map).Any();
 				var techLevelDescription = optionsBin.GetOrNull<LabelWidget>("TECHLEVEL_DESC");
 				if (techLevelDescription != null)
 					techLevelDescription.IsVisible = techLevel.IsVisible;
 
 				techLevel.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).TechLevelLocked;
-				techLevel.GetText = () => MapPreview.Status != MapStatus.Available ||
-					Map == null || mapOptions.Update(Map).TechLevelLocked ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
+				techLevel.GetText = () => Map.Status != MapStatus.Available ||
+					!Map.RulesLoaded || mapOptions.Update(Map).TechLevelLocked ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
 				techLevel.OnMouseDown = _ =>
 				{
 					var options = techLevels.Update(Map).Select(c => new DropDownOption
@@ -562,7 +563,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gameSpeed.IsDisabled = configurationDisabled;
 				gameSpeed.GetText = () =>
 				{
-					if (MapPreview.Status != MapStatus.Available)
+					if (Map.Status != MapStatus.Available)
 						return "Not Available";
 
 					GameSpeed speed;
@@ -595,7 +596,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var exploredMap = optionsBin.GetOrNull<CheckboxWidget>("EXPLORED_MAP_CHECKBOX");
 			if (exploredMap != null)
 			{
-				var exploredMapLocked = new CachedTransform<Map, bool>(
+				var exploredMapLocked = new CachedTransform<MapPreview, bool>(
 					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().ExploredMapLocked);
 
 				exploredMap.IsChecked = () => !orderManager.LobbyInfo.GlobalSettings.Shroud;
@@ -607,7 +608,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var enableFog = optionsBin.GetOrNull<CheckboxWidget>("FOG_CHECKBOX");
 			if (enableFog != null)
 			{
-				var fogLocked = new CachedTransform<Map, bool>(
+				var fogLocked = new CachedTransform<MapPreview, bool>(
 					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().FogLocked);
 
 				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
@@ -712,16 +713,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Add a bot on the first lobbyinfo update
 			if (skirmishMode)
-			{
-				Game.LobbyInfoChanged += WidgetUtils.Once(() =>
-				{
-					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-					var bot = modRules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					if (slot != null && bot != null)
-						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
-				});
-			}
+				addBotOnMapLoad = true;
 		}
 
 		public override void Tick()
@@ -787,28 +779,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void UpdateCurrentMap()
 		{
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
-			if (MapPreview.Uid == uid)
+			if (Map.Uid == uid)
 				return;
 
-			MapPreview = modData.MapCache[uid];
-			Map = null;
-			if (MapPreview.Status == MapStatus.Available)
+			Map = modData.MapCache[uid];
+			if (Map.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
-				new Thread(_ =>
+				var currentMap = Map;
+				new Task(() =>
 				{
-					var currentMap = Map = new Map(modData, MapPreview.Package);
-					currentMap.PreloadRules();
+					// Force map rules to be loaded on this background thread
+					var unused = currentMap.Rules;
 					Game.RunAfterTick(() =>
 					{
 						// Map may have changed in the meantime
 						if (currentMap != Map)
 							return;
 
+						// Tell the server that we have the map
 						if (!currentMap.InvalidCustomRules)
-						{
-							// Tell the server that we have the map
 							orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)));
+
+						if (addBotOnMapLoad)
+						{
+							var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
+							var bot = currentMap.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+							var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+							if (slot != null && bot != null)
+								orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
+
+							addBotOnMapLoad = false;
 						}
 					});
 				}).Start();
@@ -841,7 +842,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (Game.IsHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -860,15 +861,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, modRules);
+						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, MapPreview);
-					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, MapPreview);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, MapPreview, Map == null || Map.InvalidCustomRules);
+					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
+					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map, !Map.RulesLoaded || Map.InvalidCustomRules);
 				}
 				else
 				{
