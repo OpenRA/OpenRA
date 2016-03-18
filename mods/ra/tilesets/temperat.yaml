@@ -3,6 +3,7 @@ General:
 	Id: TEMPERAT
 	Palette: temperat.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
+	HeightDebugColors: AA0000
 
 Terrain:
 	TerrainType@Beach:

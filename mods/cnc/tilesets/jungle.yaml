@@ -3,6 +3,7 @@ General:
 	Id: JUNGLE
 	Palette: jungle.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
+	HeightDebugColors: AA0000
 
 Terrain:
 	TerrainType@Beach:
