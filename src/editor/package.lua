@@ -204,6 +204,12 @@ function ide:GetOutlineTree() return self.outline.outlineCtrl end
 function ide:GetWatch() return self.debugger and self.debugger.watchCtrl end
 function ide:GetStack() return self.debugger and self.debugger.stackCtrl end
 
+function ide:GetTextFromUser(message, caption, value)
+  local dlg = wx.wxTextEntryDialog(ide:GetMainFrame(), message, caption, value)
+  local res = dlg:ShowModal()
+  return res == wx.wxID_OK and dlg:GetValue() or nil, res
+end
+
 local statusreset
 function ide:SetStatusFor(text, interval, field)
   field = field or 0
