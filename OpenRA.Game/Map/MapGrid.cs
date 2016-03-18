@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace OpenRA
 		public readonly Size TileSize = new Size(24, 24);
 		public readonly byte MaximumTerrainHeight = 0;
 		public readonly SubCell DefaultSubCell = (SubCell)byte.MaxValue;
+
+		public readonly int MaximumTileSearchRange = 50;
 
 		public readonly WVec[] SubCellOffsets =
 		{
@@ -73,6 +76,8 @@ namespace OpenRA
 			new[] { 0, 1, 0, 1 }
 		};
 
+		internal readonly CVec[][] TilesByDistance;
+
 		public MapGrid(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
@@ -95,6 +100,47 @@ namespace OpenRA
 				rightDelta + new WVec(0, 0, 512 * ramp[2]),
 				bottomDelta + new WVec(0, 0, 512 * ramp[3])
 			}).ToArray();
+
+			TilesByDistance = CreateTilesByDistance();
+		}
+
+		CVec[][] CreateTilesByDistance()
+		{
+			var ts = new List<CVec>[MaximumTileSearchRange + 1];
+			for (var i = 0; i < MaximumTileSearchRange + 1; i++)
+				ts[i] = new List<CVec>();
+
+			for (var j = -MaximumTileSearchRange; j <= MaximumTileSearchRange; j++)
+				for (var i = -MaximumTileSearchRange; i <= MaximumTileSearchRange; i++)
+					if (MaximumTileSearchRange * MaximumTileSearchRange >= i * i + j * j)
+						ts[Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
+
+			// Sort each integer-distance group by the actual distance
+			foreach (var list in ts)
+			{
+				list.Sort((a, b) =>
+				{
+					var result = a.LengthSquared.CompareTo(b.LengthSquared);
+					if (result != 0)
+						return result;
+
+					// If the lengths are equal, use other means to sort them.
+					// Try the hash code first because it gives more
+					// random-appearing results than X or Y that would always
+					// prefer the leftmost/topmost position.
+					result = a.GetHashCode().CompareTo(b.GetHashCode());
+					if (result != 0)
+						return result;
+
+					result = a.X.CompareTo(b.X);
+					if (result != 0)
+						return result;
+
+					return a.Y.CompareTo(b.Y);
+				});
+			}
+
+			return ts.Select(list => list.ToArray()).ToArray();
 		}
 
 		public WVec OffsetOfSubCell(SubCell subCell)

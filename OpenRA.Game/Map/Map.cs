@@ -70,7 +70,6 @@ namespace OpenRA
 	{
 		public const int SupportedMapFormat = 10;
 
-		public const int MaxTilesInCircleRange = 50;
 		public readonly MapGrid Grid;
 		readonly ModData modData;
 
@@ -1102,47 +1101,6 @@ namespace OpenRA
 			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
-		static readonly CVec[][] TilesByDistance = InitTilesByDistance(MaxTilesInCircleRange);
-
-		static CVec[][] InitTilesByDistance(int max)
-		{
-			var ts = new List<CVec>[max + 1];
-			for (var i = 0; i < max + 1; i++)
-				ts[i] = new List<CVec>();
-
-			for (var j = -max; j <= max; j++)
-				for (var i = -max; i <= max; i++)
-					if (max * max >= i * i + j * j)
-						ts[Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
-
-			// Sort each integer-distance group by the actual distance
-			foreach (var list in ts)
-			{
-				list.Sort((a, b) =>
-				{
-					var result = a.LengthSquared.CompareTo(b.LengthSquared);
-					if (result != 0)
-						return result;
-
-					// If the lengths are equal, use other means to sort them.
-					// Try the hash code first because it gives more
-					// random-appearing results than X or Y that would always
-					// prefer the leftmost/topmost position.
-					result = a.GetHashCode().CompareTo(b.GetHashCode());
-					if (result != 0)
-						return result;
-
-					result = a.X.CompareTo(b.X);
-					if (result != 0)
-						return result;
-
-					return a.Y.CompareTo(b.Y);
-				});
-			}
-
-			return ts.Select(list => list.ToArray()).ToArray();
-		}
-
 		// Both ranges are inclusive because everything that calls it is designed for maxRange being inclusive:
 		// it rounds the actual distance up to the next integer so that this call
 		// will return any cells that intersect with the requested range circle.
@@ -1152,8 +1110,9 @@ namespace OpenRA
 			if (maxRange < minRange)
 				throw new ArgumentOutOfRangeException("maxRange", "Maximum range is less than the minimum range.");
 
-			if (maxRange >= TilesByDistance.Length)
-				throw new ArgumentOutOfRangeException("maxRange", "The requested range ({0}) exceeds the maximum allowed ({1})".F(maxRange, MaxTilesInCircleRange));
+			if (maxRange >= Grid.TilesByDistance.Length)
+				throw new ArgumentOutOfRangeException("maxRange",
+					"The requested range ({0}) cannot exceed the value of MaximumTileSearchRange ({1})".F(maxRange, Grid.MaximumTileSearchRange));
 
 			Func<CPos, bool> valid = Contains;
 			if (allowOutsideBounds)
@@ -1161,7 +1120,7 @@ namespace OpenRA
 
 			for (var i = minRange; i <= maxRange; i++)
 			{
-				foreach (var offset in TilesByDistance[i])
+				foreach (var offset in Grid.TilesByDistance[i])
 				{
 					var t = offset + center;
 					if (valid(t))
