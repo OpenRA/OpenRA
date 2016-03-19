@@ -740,6 +740,6 @@ Actors:
 		Location: 28,47
 		Owner: Neutral
 
-Rules: rules.yaml
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
 Weapons: weapons.yaml

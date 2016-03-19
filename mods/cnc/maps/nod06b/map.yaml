@@ -586,4 +586,4 @@ Actors:
 		Owner: GDI
 		SubCell: 1
 
-Rules: rules.yaml
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

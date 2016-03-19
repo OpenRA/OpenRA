@@ -373,4 +373,4 @@ Actors:
 		Location: 26,13
 		Owner: GDI
 
-Rules: rules.yaml
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

@@ -712,6 +712,6 @@ Actors:
 		Owner: Nod
 		Location: 26,14
 
-Rules: rules.yaml
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
 Sequences: sequences.yaml

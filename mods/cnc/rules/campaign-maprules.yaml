@@ -1,0 +1,28 @@
+World:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	-CrateSpawner:
+	ObjectivesPanel:
+		PanelName: MISSION_OBJECTIVES
+	MapCreeps:
+		Locked: True
+		Enabled: False
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		ShortGameLocked: True
+		ShortGameEnabled: False
+
+Player:
+	-ConquestVictoryConditions:
+	MissionObjectives:
+		EarlyGameOver: true
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 5000

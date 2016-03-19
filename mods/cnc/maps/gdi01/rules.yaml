@@ -1,29 +1,6 @@
-^Palettes:
-	-PlayerColorPalette:
-	IndexedPlayerPalette:
-		BasePalette: terrain
-		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-		PlayerIndex:
-			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	IndexedPlayerPalette@units:
-		BasePalette: terrain
-		BaseName: player-units
-		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-		PlayerIndex:
-			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-
 World:
-	-SpawnMPUnits:
-	-MPStartLocations:
-	-CrateSpawner:
 	LuaScript:
 		Scripts: gdi01.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MusicPlaylist:
 		StartingMusic: aoi
 	MissionData:
@@ -33,83 +10,6 @@ World:
 		StartVideo: landing.vqa
 		WinVideo: consyard.vqa
 		LossVideo: gameover.vqa
-	MapCreeps:
-		Locked: True
-		Enabled: False
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 5000
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	RenderSprites:
-		PlayerPalette: player-units
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	RenderSprites:
-		PlayerPalette: player-units
-
-^Helicopter:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	RenderSprites:
-		PlayerPalette: player-units
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	RenderSprites:
-		PlayerPalette: player-units
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Ship:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^CommonHuskDefaults:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-	RenderSprites:
-		PlayerPalette: player-units
 
 NUKE:
 	-Sellable:
@@ -203,19 +103,3 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
-
-HARV:
-	RenderSprites:
-		PlayerPalette: player
-
-MCV:
-	RenderSprites:
-		PlayerPalette: player
-
-HARV.Husk:
-	RenderSprites:
-		PlayerPalette: player
-
-MCV.Husk:
-	RenderSprites:
-		PlayerPalette: player
