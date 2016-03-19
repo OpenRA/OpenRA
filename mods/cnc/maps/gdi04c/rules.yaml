@@ -33,10 +33,10 @@ Player:
 ^Palettes:
 	IndexedPlayerPalette:
 		PlayerIndex:
-			Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
 	IndexedPlayerPalette@units:
 		PlayerIndex:
-			Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
 
 ^CivInfantry:
 	Health:
