@@ -226,8 +226,9 @@ namespace OpenRA
 					return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
 						voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
 				}
-				catch
+				catch (Exception e)
 				{
+					Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
 					InvalidCustomRules = true;
 					return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
 				}
