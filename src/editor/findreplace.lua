@@ -679,7 +679,7 @@ local icons = {
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
     infiles = {
-      ID_FINDNEXT, ID_SEPARATOR,
+      ID_FIND, ID_SEPARATOR,
       ID_FINDOPTCONTEXT, ID_FINDOPTMULTIRESULTS, ID_FINDOPTWORD,
       ID_FINDOPTCASE, ID_FINDOPTREGEX, ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
@@ -694,7 +694,7 @@ local icons = {
       ID_SEPARATOR, ID_FINDOPTSTATUS,
     },
     infiles = {
-      ID_FINDNEXT, ID_FINDREPLACEALL, ID_SEPARATOR,
+      ID_FIND, ID_FINDREPLACEALL, ID_SEPARATOR,
       ID_FINDOPTCONTEXT, ID_FINDOPTMULTIRESULTS, ID_FINDOPTWORD,
       ID_FINDOPTCASE, ID_FINDOPTREGEX, ID_FINDOPTSUBDIR,
       ID_FINDOPTSCOPE, ID_FINDSETDIR,
@@ -1069,10 +1069,12 @@ function findReplace:createPanel()
   scope:Connect(wx.wxEVT_KEY_DOWN, keyHandle)
 
   local function notSearching(event) event:Enable(not self.oveditor) end
+  ctrl:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, notSearching)
   ctrl:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, notSearching)
   ctrl:Connect(ID_FINDREPLACENEXT, wx.wxEVT_UPDATE_UI, notSearching)
   ctrl:Connect(ID_FINDREPLACEALL, wx.wxEVT_UPDATE_UI, notSearching)
 
+  ctrl:Connect(ID_FIND, wx.wxEVT_COMMAND_MENU_SELECTED, findNext)
   ctrl:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, findNext)
   ctrl:Connect(ID_FINDREPLACENEXT, wx.wxEVT_COMMAND_MENU_SELECTED, findReplaceNext)
   ctrl:Connect(ID_FINDREPLACEALL, wx.wxEVT_COMMAND_MENU_SELECTED, findReplaceAll)

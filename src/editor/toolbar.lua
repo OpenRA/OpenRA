@@ -39,7 +39,7 @@ ide.config.toolbar.iconmap = {
   [ID.VIEWCALLSTACK] = {"DEBUG-CALLSTACK", TR("View the stack window")},
   [ID.VIEWWATCHWINDOW] = {"DEBUG-WATCH", TR("View the watch window")},
   -- search toolbar
-  [ID.FINDNEXT] = {"FIND", TR("Find")},
+  [ID.FINDNEXT] = {"FIND-NEXT", TR("Find next")},
   [ID.FINDREPLACENEXT] = {"FIND-REPLACE-NEXT", TR("Replace next instance")},
   [ID.FINDREPLACEALL] = {"FIND-AND-REPLACE", TR("Replace all")},
   [ID.FINDSETDIR] = {"FIND-OPT-SETDIR", TR("Set search directory")},
