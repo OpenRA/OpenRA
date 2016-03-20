@@ -30,7 +30,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The upgrades to grant while attacking.")]
 		public readonly string[] AttackingUpgrades = { "attacking" };
 
-		public readonly string WormAttackSound = "Worm.wav";
+		public readonly string WormAttackSound = "WORM.WAV";
 
 		public readonly string WormAttackNotification = "WormAttack";
 
