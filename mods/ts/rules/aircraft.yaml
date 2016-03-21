@@ -144,7 +144,7 @@ ORCAB:
 		Ammo: 10
 		PipCount: 2
 		ReloadCount: 5
-		ReloadTicks: 200
+		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:

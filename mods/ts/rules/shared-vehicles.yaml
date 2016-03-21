@@ -56,7 +56,7 @@ HARV:
 		DeliveryBuildings: proc
 		Capacity: 28
 		Resources: Tiberium, BlueTiberium
-		UnloadTicksPerBale: 1
+		BaleUnloadDelay: 1
 		SearchFromProcRadius: 36
 		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
@@ -75,7 +75,7 @@ HARV:
 	Health:
 		HP: 1000
 	SelfHealing:
-		Ticks: 10
+		Delay: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
 	Armor:
