@@ -169,8 +169,9 @@ local function concat(sep, ...)
 end
 
 local partial = false
-local function shellPrint(marker, text)
+local function shellPrint(marker, text, newline)
   if not text or text == "" then return end -- return if nothing to print
+  if newline then text = text:gsub("\n+$", "").."\n" end
   local isPrompt = marker and (getPromptLine() > -1)
   local lines = out:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
@@ -194,25 +195,15 @@ local function shellPrint(marker, text)
   out:EnsureVisibleEnforcePolicy(out:GetLineCount()-1)
 end
 
-DisplayShell = function (...)
-  shellPrint(OUTPUT_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
-end
-DisplayShellErr = function (...)
-  shellPrint(ERROR_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
-end
-DisplayShellMsg = function (...)
-  shellPrint(MESSAGE_MARKER, concat("\t", ...):gsub("\n+$", "").."\n")
-end
-DisplayShellDirect = function (...)
-  shellPrint(nil, concat("\t", ...):gsub("\n+$", "").."\n")
-end
-DisplayShellPrompt = function (...)
+DisplayShell = function (...) shellPrint(OUTPUT_MARKER, concat("\t", ...), true) end
+DisplayShellErr = function (...) shellPrint(ERROR_MARKER, concat("\t", ...), true) end
+DisplayShellMsg = function (...) shellPrint(MESSAGE_MARKER, concat("\t", ...), true) end
+DisplayShellDirect = function (...) shellPrint(nil, concat("\t", ...), true) end
   -- don't print anything; just mark the line with a prompt mark
-  out:MarkerAdd(out:GetLineCount()-1, PROMPT_MARKER)
-end
+DisplayShellPrompt = function (...) out:MarkerAdd(out:GetLineCount()-1, PROMPT_MARKER) end
 
 function out:Print(...) return DisplayShell(...) end
-function out:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...)) end
+function out:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...), false) end
 
 local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
