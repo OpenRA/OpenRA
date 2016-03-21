@@ -186,6 +186,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (ammoPool != null && !ammoPool.HasAmmo())
 				return null;
 
+			if (turret != null && !turret.HasAchievedDesiredFacing)
+				return null;
+
 			if (!target.IsInRange(self.CenterPosition, MaxRange()))
 				return null;
 
