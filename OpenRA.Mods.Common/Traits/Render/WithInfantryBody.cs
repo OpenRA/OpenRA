@@ -74,7 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
 			if (sequence != null)
-				DefaultAnimation.PlayFetchIndex(NormalizeInfantrySequence(self, sequence), () => 0);
+			{
+				var normalized = NormalizeInfantrySequence(self, sequence);
+				DefaultAnimation.PlayRepeating(normalized);
+			}
 		}
 
 		public void Created(Actor self)
