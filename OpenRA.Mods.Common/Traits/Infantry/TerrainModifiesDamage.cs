@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 			var world = self.World;
 			var map = world.Map;
 
-			var tiles = map.MapTiles.Value;
 			var pos = map.CellContaining(self.CenterPosition);
 			var terrainType = map.GetTerrainInfo(pos).Type;
 

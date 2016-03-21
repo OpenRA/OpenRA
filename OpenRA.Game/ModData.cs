@@ -186,18 +186,14 @@ namespace OpenRA
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 
-			// Operate on a copy of the map to avoid gameplay state leaking into the cache
-			var map = new Map(this, MapCache[uid].Package);
+			Map map;
+			using (new Support.PerfTimer("Map"))
+				map = new Map(this, MapCache[uid].Package);
 
 			LoadTranslations(map);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);
-
-			using (new Support.PerfTimer("Map.PreloadRules"))
-				map.PreloadRules();
-			using (new Support.PerfTimer("Map.SequenceProvider.Preload"))
-				map.Rules.Sequences.Preload();
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))

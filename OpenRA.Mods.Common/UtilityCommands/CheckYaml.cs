@@ -87,7 +87,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				foreach (var testMap in maps)
 				{
 					Console.WriteLine("Testing map: {0}".F(testMap.Title));
-					testMap.PreloadRules();
 
 					// Run all rule checks on the map if it defines custom rules.
 					if (testMap.RuleDefinitions != null || testMap.VoiceDefinitions != null || testMap.WeaponDefinitions != null)

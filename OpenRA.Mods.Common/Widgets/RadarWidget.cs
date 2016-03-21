@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var cell in world.Map.AllCells)
 				UpdateTerrainCell(cell);
 
-			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
+			world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 		}
 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets
 			int leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
-				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
+				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.Tiles[uv]);
 				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
 				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
 			}
@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Removed()
 		{
 			base.Removed();
-			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
+			world.Map.Tiles.CellEntryChanged -= UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
 			Dispose();
 		}

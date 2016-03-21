@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 
 			for (var j = 0; j < MapSize; j++)
 				for (var i = 0; i < MapSize; i++)
-					Map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
+					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
 		static string[] overlayActors = new string[]
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
-					Map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
+					Map.Resources[cell] = new ResourceTile(res.First, res.Second);
 
 					if (o != 255 && overlayActors.Contains(redAlertOverlayNames[o]))
 					{

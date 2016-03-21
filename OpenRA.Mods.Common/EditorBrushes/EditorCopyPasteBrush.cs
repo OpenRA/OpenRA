@@ -94,9 +94,9 @@ namespace OpenRA.Mods.Common.Widgets
 		void Copy(CellRegion source, CVec offset)
 		{
 			var gridType = worldRenderer.World.Map.Grid.Type;
-			var mapTiles = worldRenderer.World.Map.MapTiles.Value;
-			var mapHeight = worldRenderer.World.Map.MapHeight.Value;
-			var mapResources = worldRenderer.World.Map.MapResources.Value;
+			var mapTiles = worldRenderer.World.Map.Tiles;
+			var mapHeight = worldRenderer.World.Map.Height;
+			var mapResources = worldRenderer.World.Map.Resources;
 
 			var dest = new CellRegion(gridType, source.TopLeft + offset, source.BottomRight + offset);
 

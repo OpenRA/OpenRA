@@ -232,9 +232,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename));
 			map.Author = "Westwood Studios";
 			map.Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]);
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(map.Grid.Type, size));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(map.Grid.Type, size));
-			map.MapHeight = Exts.Lazy(() => new CellLayer<byte>(map.Grid.Type, size));
+			map.Resources = new CellLayer<ResourceTile>(map.Grid.Type, size);
+			map.Tiles = new CellLayer<TerrainTile>(map.Grid.Type, size);
+			map.Height = new CellLayer<byte>(map.Grid.Type, size);
 
 			map.RequiresMod = modData.Manifest.Mod.Id;
 
@@ -268,13 +268,13 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				var mapCell = new MPos(dx / 2, dy);
 				var cell = mapCell.ToCPos(map);
 
-				if (map.MapTiles.Value.Contains(cell))
+				if (map.Tiles.Contains(cell))
 				{
 					if (!tileset.Templates.ContainsKey(tilenum))
 						tilenum = subtile = 0;
 
-					map.MapTiles.Value[cell] = new TerrainTile(tilenum, subtile);
-					map.MapHeight.Value[cell] = z;
+					map.Tiles[cell] = new TerrainTile(tilenum, subtile);
+					map.Height[cell] = z;
 				}
 			}
 		}
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var rx = (ushort)((dx + dy) / 2 + 1);
 					var ry = (ushort)(dy - rx + fullSize.X + 1);
 
-					if (!map.MapResources.Value.Contains(uv))
+					if (!map.Resources.Contains(uv))
 						continue;
 
 					var idx = rx + 512 * ry;
@@ -331,7 +331,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 					if (resourceType != 0)
 					{
-						map.MapResources.Value[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
+						map.Resources[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
 						continue;
 					}
 

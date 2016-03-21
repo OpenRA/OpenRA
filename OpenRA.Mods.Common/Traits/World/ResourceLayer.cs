@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in w.Map.AllCells)
 			{
 				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
+				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out t))
 					continue;
 
 				if (!AllowResourceAt(t, cell))
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!rt.Info.AllowOnRamps)
 			{
-				var tile = world.Map.MapTiles.Value[cell];
+				var tile = world.Map.Tiles[cell];
 				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
 				if (tileInfo != null && tileInfo.RampType > 0)
 					return false;

@@ -161,8 +161,7 @@ namespace OpenRA.Graphics
 					var ramp = 0;
 					if (map.Contains(uv))
 					{
-						var tile = map.MapTiles.Value[uv];
-						var ti = tileSet.GetTileInfo(tile);
+						var ti = tileSet.GetTileInfo(map.Tiles[uv]);
 						if (ti != null)
 							ramp = ti.RampType;
 					}

@@ -97,8 +97,8 @@ namespace OpenRA.Mods.Common.Widgets
 		void PaintCell(CPos cell, bool isMoving)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
-			var mapHeight = map.MapHeight.Value;
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
 
 			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void FloodFillWithBrush(CPos cell, bool isMoving)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
+			var mapTiles = map.Tiles;
 			var replace = mapTiles[cell];
 
 			if (replace.Type == Template)
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
+			var mapTiles = map.Tiles;
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
 			{

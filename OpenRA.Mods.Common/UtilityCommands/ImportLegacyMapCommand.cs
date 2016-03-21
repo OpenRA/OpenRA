@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public Map Map;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
+		int spawnCount;
 
 		public bool ValidateArguments(string[] args)
 		{
@@ -81,12 +82,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				LoadSmudges(file, "SMUDGE");
 
 				var waypoints = file.GetSection("Waypoints");
-				LoadWaypoints(Map, waypoints, MapSize);
+				LoadWaypoints(waypoints);
 
 				// Create default player definitions only if there are no players to import
-				MapPlayers = new MapPlayers(Map.Rules, (Players.Count == 0) ? Map.SpawnPoints.Value.Length : 0);
+				MapPlayers = new MapPlayers(Map.Rules, Players.Count == 0 ? spawnCount : 0);
 				foreach (var p in Players)
 					LoadPlayer(file, p);
+
 				Map.PlayerDefinitions = MapPlayers.ToMiniYaml();
 			}
 
@@ -235,13 +237,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return new int2(offset % mapSize, offset / mapSize);
 		}
 
-		static void LoadWaypoints(Map map, IniSection waypointSection, int mapSize)
+		void LoadWaypoints(IniSection waypointSection)
 		{
-			var actorCount = map.ActorDefinitions.Count;
+			var actorCount = Map.ActorDefinitions.Count;
 			var wps = waypointSection
 				.Where(kv => Exts.ParseIntegerInvariant(kv.Value) > 0)
 				.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
-					LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), mapSize)));
+					LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), MapSize)));
 
 			// Add waypoint actors
 			foreach (var kv in wps)
@@ -254,7 +256,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit("Neutral")
 					};
 
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					Map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					spawnCount++;
 				}
 				else
 				{
@@ -264,7 +267,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit("Neutral")
 					};
 
-					map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					Map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
 				}
 			}
 		}
