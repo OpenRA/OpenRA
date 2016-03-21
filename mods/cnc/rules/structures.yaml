@@ -764,7 +764,7 @@ OBLI:
 		FireDelay: 0
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
-		ReloadTime: 40
+		ReloadDelay: 40
 		InitialChargeDelay: 50
 	-EmitInfantryOnSell:
 	DetectCloaked:
