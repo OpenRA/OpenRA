@@ -16,7 +16,7 @@ MISS:
 
 Player:
 	StrategicVictoryConditions:
-		TicksToHold: 3000
+		HoldDuration: 3000
 		ResetOnHoldLost: true
 		RatioRequired: 0.65
 		CriticalRatioRequired: 0.65

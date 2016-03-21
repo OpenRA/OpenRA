@@ -159,7 +159,7 @@ MINVV:
 		Description: Bomb (Hotkey B)
 	SelfHealing:
 		Step: -1
-		Ticks: 1
+		Delay: 1
 		HealIfBelow: 101%
 		DamageCooldown: 0
 	Explodes:

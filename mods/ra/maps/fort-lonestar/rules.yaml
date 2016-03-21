@@ -306,7 +306,7 @@ V2RL:
 		EmptyWeapon: napalm
 	SelfHealing:
 		Step: 2
-		Ticks: 1
+		Delay: 1
 		HealIfBelow: 40%
 
 BADR.Bomber:
