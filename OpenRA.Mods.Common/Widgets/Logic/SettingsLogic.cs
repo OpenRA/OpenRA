@@ -467,7 +467,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var hotkeys = new Dictionary<string, string>()
 				{
 					{ "ObserverCombinedView", "All Players" },
-					{ "ObserverWorldView", "Disable Shroud" }
+					{ "ObserverWorldView", "Disable Shroud" },
+					{ "PauseKey", "Pause/Play" },
+					{ "ReplaySpeedSlowKey", "Slow speed" },
+					{ "ReplaySpeedRegularKey", "Regular speed" },
+					{ "ReplaySpeedFastKey", "Fast speed" },
+					{ "ReplaySpeedMaxKey", "Maximum speed" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
