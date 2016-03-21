@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Common.AI
 					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.MaxTilesInCircleRange);
+					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.Grid.MaximumTileSearchRange);
 			}
 
 			// Can't find a build location
