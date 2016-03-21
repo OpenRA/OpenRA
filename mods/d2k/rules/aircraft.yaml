@@ -38,7 +38,7 @@ carryall.reinforce:
 		Image: carryall
 	SelfHealing:
 		Step: 5
-		Ticks: 3
+		Delay: 3
 		HealIfBelow: 50%
 
 carryall:

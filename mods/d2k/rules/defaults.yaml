@@ -38,7 +38,7 @@
 		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
 		Step: 2
-		Ticks: 125
+		Delay: 125
 		HealIfBelow: 1
 		DamageCooldown: 125
 		UpgradeTypes: selfheal
