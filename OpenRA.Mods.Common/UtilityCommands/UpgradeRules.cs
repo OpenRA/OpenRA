@@ -606,6 +606,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "TurnSpeed";
 				}
 
+				if (engineVersion < 20160320)
+				{
+					// Renamed Parachutable.CorpseSequenceCollection to Image
+					if (node.Key == "CorpseSequenceCollection")
+						node.Key = "Image";
+
+					// Renamed WithBuildingExplosion.SequenceCollection to Image
+					if (node.Key == "SequenceCollection")
+						node.Key = "Image";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

@@ -18,8 +18,11 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class CreateEffectWarhead : Warhead
 	{
-		[Desc("List of explosion effects that can be used.")]
-		public readonly string[] Explosions = new string[0];
+		[Desc("List of explosion sequences that can be used.")]
+		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
+
+		[Desc("Image containing explosion effect sequence.")]
+		public readonly string Image = "explosion";
 
 		[Desc("Palette to use for explosion effect."), PaletteReference("UsePlayerPalette")]
 		public readonly string ExplosionPalette = "effect";
@@ -101,8 +104,8 @@ namespace OpenRA.Mods.Common.Warheads
 				palette += firedBy.Owner.InternalName;
 
 			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
-			if (explosion != null)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, explosion, palette)));
+			if (Image != null && explosion != null)
+				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Image, explosion, palette)));
 
 			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
 			if (impactSound != null)
