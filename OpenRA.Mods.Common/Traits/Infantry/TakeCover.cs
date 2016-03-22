@@ -74,6 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 				localOffset = WVec.Zero;
 		}
 
+		public override bool HasAchievedDesiredFacing
+		{
+			get { return true; }
+		}
+
 		public int GetDamageModifier(Actor attacker, IWarhead warhead)
 		{
 			if (!IsProne)

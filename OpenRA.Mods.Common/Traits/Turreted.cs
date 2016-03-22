@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			return HasAchievedDesiredFacing;
 		}
 
-		public bool HasAchievedDesiredFacing
+		public virtual bool HasAchievedDesiredFacing
 		{
 			get { return DesiredFacing != null && TurretFacing == DesiredFacing.Value; }
 		}
