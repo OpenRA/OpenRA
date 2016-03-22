@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# ZBS binary directory
+# exit if the command line is empty
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 LIBRARY..."
+  exit 0
+fi
+
+# binary directory
 BIN_DIR="$(dirname "$PWD")/bin"
 
 # temporary installation directory for dependencies
@@ -37,12 +43,6 @@ LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
 
 WINAPI_BASENAME="winapi"
 WINAPI_URL="https://github.com/stevedonovan/winapi.git"
-
-# exit if the command line is empty
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 LIBRARY..."
-  exit 0
-fi
 
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"

@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# ZBS binary directory
+# exit if the command line is empty
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 LIBRARY..."
+  exit 0
+fi
+
+# binary directory
 BIN_DIR="$(dirname "$PWD")/bin"
 
 # temporary installation directory for dependencies
@@ -32,12 +38,6 @@ WXLUA_URL="https://github.com/pkulchenko/wxlua.git"
 LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
 LUASOCKET_URL="https://github.com/diegonehab/luasocket/archive/$LUASOCKET_FILENAME"
-
-# exit if the command line is empty
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 LIBRARY..."
-  exit 0
-fi
 
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
