@@ -736,6 +736,7 @@
     <Compile Include="Traits\World\MapOptions.cs" />
     <Compile Include="Traits\World\MissionData.cs" />
     <Compile Include="UtilityCommands\ExtractMapRules.cs" />
+    <Compile Include="Traits\ScriptTags.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

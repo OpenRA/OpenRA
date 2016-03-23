@@ -79,12 +79,14 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
+		readonly ScriptTags scriptTags;
 
 		public GeneralProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
+			scriptTags = self.TraitOrDefault<ScriptTags>();
 		}
 
 		[Desc("The actor position in cell coordinates.")]
@@ -161,6 +163,27 @@ namespace OpenRA.Mods.Common.Scripting
 
 				autotarget.Stance = stance;
 			}
+		}
+
+		[Desc("Specifies whether or not the actor supports 'tags'.")]
+		public bool IsTaggable { get { return scriptTags != null; } }
+
+		[Desc("Add a tag to the actor. Returns true on success, false otherwise (for example the actor may already have the given tag).")]
+		public bool AddTag(string tag)
+		{
+			return IsTaggable && scriptTags.AddTag(tag);
+		}
+
+		[Desc("Remove a tag from the actor. Returns true on success, false otherwise (tag was not present).")]
+		public bool RemoveTag(string tag)
+		{
+			return IsTaggable && scriptTags.RemoveTag(tag);
+		}
+
+		[Desc("Specifies whether or not the actor has a particular tag.")]
+		public bool HasTag(string tag)
+		{
+			return IsTaggable && scriptTags.HasTag(tag);
 		}
 	}
 }
