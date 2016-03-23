@@ -43,13 +43,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string RearmSound = null;
 
 		[Desc("Time to reload per ReloadCount on airfield etc.")]
-		public readonly int ReloadTicks = 25 * 2;
+		public readonly int ReloadDelay = 50;
 
 		[Desc("Whether or not ammo is replenished on its own.")]
 		public readonly bool SelfReloads = false;
 
 		[Desc("Time to reload per ReloadCount when actor 'SelfReloads'.")]
-		public readonly int SelfReloadTicks = 25 * 2;
+		public readonly int SelfReloadDelay = 50;
 
 		[Desc("Whether or not reload timer should be reset when ammo has been fired.")]
 		public readonly bool ResetOnFire = false;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				CurrentAmmo = Info.Ammo;
 
-			RemainingTicks = Info.SelfReloadTicks;
+			RemainingTicks = Info.SelfReloadDelay;
 			PreviousAmmo = GetAmmoCount();
 		}
 
@@ -112,13 +112,13 @@ namespace OpenRA.Mods.Common.Traits
 			// Resets the tick counter if ammo was fired.
 			if (Info.ResetOnFire && GetAmmoCount() < PreviousAmmo)
 			{
-				RemainingTicks = Info.SelfReloadTicks;
+				RemainingTicks = Info.SelfReloadDelay;
 				PreviousAmmo = GetAmmoCount();
 			}
 
 			if (!FullAmmo() && --RemainingTicks == 0)
 			{
-				RemainingTicks = Info.SelfReloadTicks;
+				RemainingTicks = Info.SelfReloadDelay;
 
 				for (var i = 0; i < Info.ReloadCount; i++)
 					GiveAmmo();

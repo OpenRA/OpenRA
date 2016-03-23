@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	class SelfHealingInfo : UpgradableTraitInfo, Requires<HealthInfo>
 	{
 		public readonly int Step = 5;
-		public readonly int Ticks = 5;
+		public readonly int Delay = 5;
 		public readonly float HealIfBelow = .5f;
 		public readonly int DamageCooldown = 0;
 
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--ticks <= 0)
 			{
-				ticks = Info.Ticks;
+				ticks = Info.Delay;
 				self.InflictDamage(self, -Info.Step, null);
 			}
 		}

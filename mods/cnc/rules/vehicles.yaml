@@ -55,8 +55,8 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		LoadTicksPerBale: 12
-		UnloadTicksPerBale: 6
+		BaleLoadDelay: 12
+		BaleUnloadDelay: 6
 		SearchFromProcRadius: 25
 		SearchFromOrderRadius: 15
 	Mobile:
@@ -410,7 +410,7 @@ HTNK:
 	WithMuzzleOverlay:
 	AutoTarget:
 	SelfHealing:
-		Ticks: 10
+		Delay: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
 	SpawnActorOnDeath:
@@ -486,7 +486,7 @@ MLRS:
 		PipCount: 0
 		SelfReloads: true
 		ReloadCount: 1
-		SelfReloadTicks: 45
+		SelfReloadDelay: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary

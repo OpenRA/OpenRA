@@ -55,7 +55,7 @@ MEDIC:
 	WithInfantryBody:
 		AttackSequence: heal
 	SelfHealing:
-		Ticks: 60
+		Delay: 60
 	Passenger:
 		PipType: Red
 

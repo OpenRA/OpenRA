@@ -27,7 +27,7 @@
 		Voice: Attack
 	AutoTarget:
 	SelfHealing:
-		Ticks: 10
+		Delay: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
 	WithVoxelTurret:

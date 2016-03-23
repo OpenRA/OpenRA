@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
 
-		public readonly int LoadTicksPerBale = 4;
+		public readonly int BaleLoadDelay = 4;
 
 		[Desc("How fast it can dump it's carryage.")]
-		public readonly int UnloadTicksPerBale = 4;
+		public readonly int BaleUnloadDelay = 4;
 
 		[Desc("How many squares to show the fill level.")]
 		public readonly int PipCount = 7;
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
-				currentUnloadTicks = Info.UnloadTicksPerBale;
+				currentUnloadTicks = Info.BaleUnloadDelay;
 			}
 
 			return contents.Count == 0;

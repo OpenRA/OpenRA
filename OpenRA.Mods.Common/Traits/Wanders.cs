@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int WanderMoveRadius = 1;
 
 		[Desc("Number of ticks to wait before decreasing the effective move radius.")]
-		public readonly int TicksToWaitBeforeReducingMoveRadius = 5;
+		public readonly int ReduceMoveRadiusDelay = 5;
 
 		[Desc("Minimum amount of ticks the actor will sit idly before starting to wander.")]
-		public readonly int MinMoveDelayInTicks = 0;
+		public readonly int MinMoveDelay = 0;
 
 		[Desc("Maximum amount of ticks the actor will sit idly before starting to wander.")]
-		public readonly int MaxMoveDelayInTicks = 0;
+		public readonly int MaxMoveDelay = 0;
 
 		public abstract object Create(ActorInitializer init);
 	}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void OnBecomingIdle(Actor self)
 		{
-			countdown = self.World.SharedRandom.Next(info.MinMoveDelayInTicks, info.MaxMoveDelayInTicks);
+			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
 		}
 
 		public void TickIdle(Actor self)
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.World.Map.Contains(targetCell))
 			{
 				// If MoveRadius is too big there might not be a valid cell to order the attack to (if actor is on a small island and can't leave)
-				if (++ticksIdle % info.TicksToWaitBeforeReducingMoveRadius == 0)
+				if (++ticksIdle % info.ReduceMoveRadiusDelay == 0)
 					effectiveMoveRadius--;
 
 				return CPos.Zero; // We'll be back the next tick; better to sit idle for a few seconds than prolong this tick indefinitely with a loop

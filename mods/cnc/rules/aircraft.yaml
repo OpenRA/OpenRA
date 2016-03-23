@@ -80,7 +80,7 @@ HELI:
 		PipCount: 5
 		SelfReloads: true
 		ReloadCount: 10
-		SelfReloadTicks: 200
+		SelfReloadDelay: 200
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	WithMuzzleOverlay:
@@ -129,7 +129,7 @@ ORCA:
 		PipCount: 6
 		SelfReloads: true
 		ReloadCount: 2
-		SelfReloadTicks: 100
+		SelfReloadDelay: 100
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	AutoTarget:

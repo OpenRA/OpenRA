@@ -233,8 +233,8 @@ WEED:
 		DeliveryBuildings: nawast
 		Capacity: 7
 		Resources: Veins
-		UnloadTicksPerBale: 20
-		LoadTicksPerBale: 40
+		BaleUnloadDelay: 20
+		BaleLoadDelay: 40
 		SearchFromProcRadius: 72
 		SearchFromOrderRadius: 36
 		HarvestVoice: Attack
@@ -245,7 +245,7 @@ WEED:
 	Health:
 		HP: 600
 	SelfHealing:
-		Ticks: 10
+		Delay: 10
 		HealIfBelow: 50%
 		DamageCooldown: 200
 	Armor:

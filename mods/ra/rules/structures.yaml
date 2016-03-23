@@ -434,7 +434,7 @@ TSLA:
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
-		ReloadTime: 120
+		ReloadDelay: 120
 	Power:
 		Amount: -100
 	DetectCloaked:

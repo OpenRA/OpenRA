@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxCharges = 1;
 
 		[Desc("Reload time for all charges (in ticks).")]
-		public readonly int ReloadTime = 120;
+		public readonly int ReloadDelay = 120;
 
 		[Desc("Delay for initial charge attack (in ticks).")]
 		public readonly int InitialChargeDelay = 22;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
-			timeToRecharge = info.ReloadTime;
+			timeToRecharge = info.ReloadDelay;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
