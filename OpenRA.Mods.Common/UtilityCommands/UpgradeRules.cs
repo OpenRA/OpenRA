@@ -708,6 +708,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Migrated EmitInfantryOnSell to use int percentage instead of float
+				if (engineVersion < 20160324)
+				{
+					if (node.Key == "EmitInfantryOnSell")
+					{
+						var valueNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ValuePercent");
+						var minHPNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinHpPercent");
+
+						if (valueNode != null)
+						{
+							// The ValuePercent value is now an int percentage, but was previously geared towards
+							// percentage rather than float and divided by 100 internally so division by 100 is NOT needed.
+							var oldValue = FieldLoader.GetValue<float>("ValuePercent", valueNode.Value.Value);
+							var newValue = (int)oldValue;
+							valueNode.Value.Value = newValue.ToString();
+						}
+
+						if (minHPNode != null)
+						{
+							// The MinHpPercent value is now an int percentage, but was previously geared towards
+							// percentage rather than float and divided by 100 internally so division by 100 is NOT needed.
+							var oldValue = FieldLoader.GetValue<float>("MinHpPercent", minHPNode.Value.Value);
+							var newValue = (int)oldValue;
+							minHPNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
