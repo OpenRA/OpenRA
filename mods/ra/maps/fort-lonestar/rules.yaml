@@ -307,7 +307,7 @@ V2RL:
 	SelfHealing:
 		Step: 2
 		Delay: 1
-		HealIfBelow: 40%
+		HealIfBelow: 40
 
 BADR.Bomber:
 	Health:

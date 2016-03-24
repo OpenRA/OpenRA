@@ -39,7 +39,7 @@ carryall.reinforce:
 	SelfHealing:
 		Step: 5
 		Delay: 3
-		HealIfBelow: 50%
+		HealIfBelow: 50
 
 carryall:
 	Inherits: carryall.reinforce

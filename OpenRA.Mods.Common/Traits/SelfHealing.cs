@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int Step = 5;
 		public readonly int Delay = 5;
-		public readonly float HealIfBelow = .5f;
+		[Desc("Heal if current health is below this percentage of full health.")]
+		public readonly int HealIfBelow = 50;
 		public readonly int DamageCooldown = 0;
 
 		public override object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead || IsTraitDisabled)
 				return;
 
-			if (health.HP >= Info.HealIfBelow * health.MaxHP)
+			if (health.HP >= Info.HealIfBelow * health.MaxHP / 100)
 				return;
 
 			if (damageTicks > 0)

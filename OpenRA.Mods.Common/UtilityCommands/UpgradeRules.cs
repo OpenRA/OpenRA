@@ -692,6 +692,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Migrated SelfHealing to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key == "SelfHealing")
+					{
+						var healIfBelowNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "HealIfBelow");
+						if (healIfBelowNode != null)
+						{
+							// The HealIfBelow value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("HealIfBelow", healIfBelowNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							healIfBelowNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
