@@ -676,6 +676,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Migrated Minelayer.MinefieldDepth to use WDist instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("Minelayer"))
+					{
+						var depthNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinefieldDepth");
+						if (depthNode != null)
+						{
+							// The MinefieldDepth value is now a WDist, so multiply the float value with 1024.
+							var oldValue = FieldLoader.GetValue<float>("MinefieldDepth", depthNode.Value.Value);
+							var newValue = (int)(oldValue * 1024);
+							depthNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
