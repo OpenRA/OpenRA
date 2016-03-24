@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ResetOnHoldLost = true;
 
 		[Desc("Percentage of all strategic points the player has to hold to win.")]
-		public readonly float RatioRequired = 0.5f;
+		public readonly int RatioRequired = 50;
 
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public readonly int NotificationDelay = 1500;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int Total { get { return AllPoints.Count(); } }
 		int Owned { get { return AllPoints.Count(a => WorldUtils.AreMutualAllies(player, a.Owner)); } }
 
-		public bool Holding { get { return Owned >= info.RatioRequired * Total; } }
+		public bool Holding { get { return Owned >= info.RatioRequired * Total / 100; } }
 
 		public void Tick(Actor self)
 		{

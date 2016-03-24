@@ -660,6 +660,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("StrategicVictoryConditions"))
+					{
+						var ratioNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "RatioRequired");
+						if (ratioNode != null)
+						{
+							// The RatioRequired value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("RatioRequired", ratioNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							ratioNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
