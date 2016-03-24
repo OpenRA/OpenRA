@@ -85,13 +85,16 @@ return {
       :gsub("%b()","()") -- remove all function calls
     )
 
+    local func = (isfndef(str) or str:match("%W+function%s*%(")) and 1 or 0
     local term = str:match("^%s*(%w+)%W*")
     local terminc = term and incindent[term] and 1 or 0
     -- fix 'if' not terminated with 'then'
     -- or 'then' not started with 'if'
     if (term == 'if' or term == 'elseif') and not str:match("%f[%w]then%f[%W]")
     or (term == 'for') and not str:match("%S%s+do%f[%W]")
-    or (term == 'while') and not str:match("%f[%w]do%f[%W]") then
+    or (term == 'while') and not str:match("%f[%w]do%f[%W]")
+    -- if this is a function definition, then don't increment the level
+    or func == 1 then
       terminc = 0
     elseif not (term == 'if' or term == 'elseif') and str:match("%f[%w]then%f[%W]")
     or not (term == 'for') and str:match("%S%s+do%f[%W]")
@@ -100,7 +103,6 @@ return {
     end
     local _, opened = str:gsub("([%{%(])", "%1")
     local _, closed = str:gsub("([%}%)])", "%1")
-    local func = (isfndef(str) or str:match("%W+function%s*%(")) and 1 or 0
     -- ended should only be used to negate term and func effects
     local anon = str:match("%W+function%s*%(.+%Wend%W")
     local ended = (terminc + func > 0) and (str:match("%W+end%s*$") or anon) and 1 or 0
