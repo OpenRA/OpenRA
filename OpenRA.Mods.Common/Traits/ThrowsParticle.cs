@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Velocity = 75;
 
 		[Desc("Speed at which the particle turns.")]
-		public readonly float TurnSpeed = 15;
+		public readonly int TurnSpeed = 15;
 
 		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
@@ -53,8 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 		int tick = 0;
 		int length;
 
-		float facing;
-		float rotation;
+		WAngle facing;
+		WAngle rotation;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: Carry orientation over from the parent instead of just facing
 			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			facing = Turreted.GetInitialTurretFacing(init, 0);
+			facing = WAngle.FromFacing(Turreted.GetInitialTurretFacing(init, 0));
 
 			// Calculate final position
 			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
@@ -76,23 +76,23 @@ namespace OpenRA.Mods.Common.Traits
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// Facing rotation
-			rotation = WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024;
+			rotation = WAngle.FromFacing(WDist.FromPDF(Game.CosmeticRandom, 2).Length * info.TurnSpeed / 1024);
 
-			var anim = new Animation(init.World, rs.GetImage(self), () => (int)facing);
+			var anim = new Animation(init.World, rs.GetImage(self), () => facing.Angle / 4);
 			anim.PlayRepeating(info.Anim);
 			rs.Add(new AnimationWithOffset(anim, () => pos, null));
 		}
 
 		public void Tick(Actor self)
 		{
-			if (tick == length)
+			if (tick >= length)
 				return;
 
 			pos = WVec.LerpQuadratic(initialPos, finalPos, angle, tick++, length);
 
 			// Spin the particle
 			facing += rotation;
-			rotation *= .9f;
+			rotation = new WAngle(rotation.Angle * 90 / 100);
 		}
 	}
 }
