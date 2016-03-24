@@ -644,6 +644,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ReloadDelay";
 				}
 
+				// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("ProductionQueue") || node.Key.StartsWith("ClassicProductionQueue"))
+					{
+						var buildSpeedNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "BuildSpeed");
+						if (buildSpeedNode != null)
+						{
+							// The BuildSpeed value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("BuildSpeed", buildSpeedNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							buildSpeedNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

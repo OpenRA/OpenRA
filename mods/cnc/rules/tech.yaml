@@ -65,7 +65,7 @@ BIO:
 		Type: Biolab
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	RallyPoint:
