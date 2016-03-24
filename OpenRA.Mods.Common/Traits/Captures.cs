@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
-		public readonly float SabotageHPRemoval = 0.5f;
+		public readonly int SabotageHPRemoval = 50;
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var health = target.Trait<Health>();
-				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP;
+				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP / 100;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? "enter" : "capture";
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var health = target.Info.TraitInfoOrDefault<HealthInfo>();
-				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP;
+				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP / 100;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? "enter" : "capture";

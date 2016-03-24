@@ -736,6 +736,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Migrated Captures and Capturable to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key == "Captures")
+					{
+						var sabotageHPRemNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "SabotageHPRemoval");
+						if (sabotageHPRemNode != null)
+						{
+							// The SabotageHPRemoval value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("SabotageHPRemoval", sabotageHPRemNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							sabotageHPRemNode.Value.Value = newValue.ToString();
+						}
+					}
+
+					if (node.Key == "Capturable")
+					{
+						var captThreshNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "CaptureThreshold");
+						if (captThreshNode != null)
+						{
+							// The CaptureThreshold value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("CaptureThreshold", captThreshNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							captThreshNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

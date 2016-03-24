@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
-		public readonly float CaptureThreshold = 0.5f;
+		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
 
 		public object Create(ActorInitializer init) { return new Capturable(this); }

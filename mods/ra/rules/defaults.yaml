@@ -112,7 +112,7 @@
 		AllowUnsuitableCell: false
 	Capturable:
 		Type: vehicle
-		CaptureThreshold: 1
+		CaptureThreshold: 100
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
@@ -620,7 +620,7 @@
 	Capturable:
 		Type: husk
 		AllowAllies: true
-		CaptureThreshold: 1.0
+		CaptureThreshold: 100
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	DisabledOverlay:

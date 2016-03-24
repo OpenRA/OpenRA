@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (actor.IsDead || capturable.BeingCaptured)
 					return;
 
-				var lowEnoughHealth = health.HP <= capturable.Info.CaptureThreshold * health.MaxHP;
+				var lowEnoughHealth = health.HP <= capturable.Info.CaptureThreshold * health.MaxHP / 100;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
 				{
 					var oldOwner = actor.Owner;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 				else
 				{
-					var damage = (int)(health.MaxHP * capturesInfo.SabotageHPRemoval);
+					var damage = health.MaxHP * capturesInfo.SabotageHPRemoval / 100;
 					actor.InflictDamage(self, damage, null);
 				}
 

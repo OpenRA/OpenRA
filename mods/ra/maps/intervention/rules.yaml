@@ -42,7 +42,7 @@ MISS:
 		AllowAllies: False
 		AllowNeutral: False
 		AllowEnemies: True
-		CaptureThreshold: 1.0
+		CaptureThreshold: 100
 
 E6.MOD:
 	Inherits: E6
