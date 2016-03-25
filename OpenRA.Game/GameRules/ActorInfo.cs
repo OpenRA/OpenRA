@@ -100,9 +100,15 @@ namespace OpenRA
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type)) && !unresolved.Any(u1 => testResolve(d, u1.Type))));
 
-			// Re-evaluate the vars above until sorted
+			// This query detects which unresolved traits can be immediately resolved as all their direct dependencies are met.
+			var more = unresolved.Where(u =>
+				u.Dependencies.All(d => // To be resolvable, all dependencies must be satisfied according to the following conditions:
+					resolved.Exists(r => testResolve(d, r.Type)) && // There must exist a resolved trait that meets the dependency.
+					!unresolved.Any(u1 => testResolve(d, u1.Type)))); // All matching traits that meet this dependency must be resolved first.
+
+			// Continue resolving traits as long as possible.
+			// Each time we resolve some traits, this means dependencies for other traits may then be possible to satisfy in the next pass.
 			while (more.Any())
 				resolved.AddRange(more);
 
