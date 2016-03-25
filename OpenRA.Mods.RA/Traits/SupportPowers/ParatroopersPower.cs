@@ -73,7 +73,12 @@ namespace OpenRA.Mods.RA.Traits
 			if (randomize)
 				dropFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
+			var utLower = info.UnitType.ToLowerInvariant();
+			ActorInfo unitType;
+			if (!self.World.Map.Rules.Actors.TryGetValue(utLower, out unitType))
+				throw new YamlException("Actors ruleset does not include the entry '{0}'".F(utLower));
+
+			var altitude = unitType.TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromFacing(dropFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
 			target = target + new WVec(0, 0, altitude);
