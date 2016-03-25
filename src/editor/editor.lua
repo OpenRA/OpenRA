@@ -324,7 +324,8 @@ end
 
 local function callTipFitAndShow(editor, pos, tip)
   local point = editor:PointFromPosition(pos)
-  local height = editor:TextHeight(pos)
+  local sline = editor:LineFromPosition(pos)
+  local height = editor:TextHeight(sline)
   local maxlines = math.max(1, math.floor(
     math.max(editor:GetSize():GetHeight()-point:GetY()-height, point:GetY())/height-1
   ))
@@ -344,7 +345,7 @@ local function callTipFitAndShow(editor, pos, tip)
   end
   tip = table.concat(lines, '')
 
-  local startpos = editor:PositionFromLine(editor:LineFromPosition(pos))
+  local startpos = editor:PositionFromLine(sline)
   local afterwidth = editor:GetSize():GetWidth()-point:GetX()
   if maxwidth > afterwidth then
     local charwidth = editor:TextWidth(wxstc.wxSTC_STYLE_DEFAULT, 'A')
