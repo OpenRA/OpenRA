@@ -474,8 +474,17 @@ function debugger:shell(expression, isstatement)
         expression = expression:gsub("^%s*=%s*","")
         local _, values, err = debugger:evaluate(expression)
         if not forceexpression and err then
-          _, values, err = debugger:execute(expression)
-          addedret = false
+          local _, values2, err2 = debugger:execute(expression)
+          -- since the remote execution may fail during compilation- and run-time,
+          -- and some expressions may fail in both cases, try to report the "best" error.
+          -- for example, `x[1]` fails as statement, and may also fail if `x` is `nil`.
+          -- in this case, the first (expression) error is returned if it's not a
+          -- statement and compiles as an expression without errors.
+          -- the order of statement and expression checks can't be reversed as errors from
+          -- code fragments that fail with both, will be always reported as expressions.
+          if not (err2 and not isstatement and loadstring("return "..expression)) then
+            addedret, values, err = false, values2, err2
+          end
         end
 
         if err then
