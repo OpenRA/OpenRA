@@ -25,19 +25,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
-
-			var checkbox = widget.Get<CheckboxWidget>("STATS_CHECKBOX");
-			var missionLabel = widget.Get<LabelWidget>("MISSION");
-			var statusLabel = widget.Get<LabelWidget>("STATS_STATUS");
-			checkbox.IsVisible = () => player != null && !player.NonCombatant;
-			missionLabel.IsVisible = () => player != null && !player.NonCombatant;
-			statusLabel.IsVisible = () => player != null && !player.NonCombatant;
+			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
 
 			if (player != null && !player.NonCombatant)
 			{
+				var checkbox = widget.Get<CheckboxWidget>("STATS_CHECKBOX");
+				var statusLabel = widget.Get<LabelWidget>("STATS_STATUS");
+
 				checkbox.IsChecked = () => player.WinState != WinState.Undefined;
 				checkbox.GetCheckType = () => player.WinState == WinState.Won ?
 					"checked" : "crossed";
+
 				if (player.HasObjectives)
 				{
 					var mo = player.PlayerActor.Trait<MissionObjectives>();
@@ -49,8 +47,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
 					player.WinState == WinState.Lost ? Color.Red : Color.White;
 			}
+			else
+			{
+				// Expand the stats window to cover the hidden objectives
+				var objectiveGroup = widget.Get("OBJECTIVE");
+				var statsHeader = widget.Get("STATS_HEADERS");
 
-			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
+				objectiveGroup.Visible = false;
+				statsHeader.Bounds.Y -= objectiveGroup.Bounds.Height;
+				playerPanel.Bounds.Y -= objectiveGroup.Bounds.Height;
+				playerPanel.Bounds.Height += objectiveGroup.Bounds.Height;
+			}
+
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
 			playerPanel.RemoveChildren();
 

@@ -3,28 +3,31 @@ Container@SKIRMISH_STATS:
 	Width: PARENT_RIGHT
 	Logic: GameInfoStatsLogic
 	Children:
-		Label@MISSION:
-			X: 20
-			Y: 20
-			Width: 482
-			Height: 25
-			Font: MediumBold
-			Text: Mission:
-		Label@STATS_STATUS:
-			X: 100
-			Y: 20
-			Width: PARENT_RIGHT - 10
-			Height: 25
-			Font: MediumBold
-		Checkbox@STATS_CHECKBOX:
-			X: 20
-			Y: 55
-			Width: 482
-			Height: 20
-			Font: Bold
-			Text: Destroy all opposition!
-			Disabled: yes
-			TextColorDisabled: FFFFFF
+		Container@OBJECTIVE:
+			Height: 75
+			Children:
+				Label@MISSION:
+					X: 20
+					Y: 20
+					Width: 482
+					Height: 25
+					Font: MediumBold
+					Text: Mission:
+				Label@STATS_STATUS:
+					X: 100
+					Y: 20
+					Width: PARENT_RIGHT - 10
+					Height: 25
+					Font: MediumBold
+				Checkbox@STATS_CHECKBOX:
+					X: 20
+					Y: 55
+					Width: 482
+					Height: 20
+					Font: Bold
+					Text: Destroy all opposition!
+					Disabled: yes
+					TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:
 			X: 22
 			Y: 80
