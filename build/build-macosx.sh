@@ -39,6 +39,10 @@ LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
 LUASOCKET_URL="https://github.com/diegonehab/luasocket/archive/$LUASOCKET_FILENAME"
 
+LUASEC_BASENAME="luasec-0.6"
+LUASEC_FILENAME="$LUASEC_BASENAME.zip"
+LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
+
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -63,6 +67,9 @@ for ARG in "$@"; do
     ;;
   wxlua)
     BUILD_WXLUA=true
+    ;;
+  luasec)
+    BUILD_LUASEC=true
     ;;
   luasocket)
     BUILD_LUASOCKET=true
@@ -252,6 +259,27 @@ if [ $BUILD_LUASOCKET ]; then
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
 
+# build LuaSec
+if [ $BUILD_LUASEC ]; then
+  # build LuaSec
+  wget --no-check-certificate -c "$LUASEC_URL" -O "$LUASEC_FILENAME" || { echo "Error: failed to download LuaSec"; exit 1; }
+  unzip "$LUASEC_FILENAME"
+  # the folder in the archive is "luasec-luasec-....", so need to fix
+  mv "luasec-$LUASEC_BASENAME" $LUASEC_BASENAME
+  cd "$LUASEC_BASENAME"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/ssl.dylib" \
+    src/luasocket/{timeout.c,buffer.c,io.c,usocket.c} src/{context.c,x509.c,ssl.c} -Isrc \
+    -lssl -lcrypto \
+    || { echo "Error: failed to build LuaSec"; exit 1; }
+  cp src/ssl.lua "$INSTALL_DIR/share/lua/$LUAD"
+  mkdir -p "$INSTALL_DIR/share/lua/$LUAD/ssl"
+  cp src/https.lua "$INSTALL_DIR/share/lua/$LUAD/ssl"
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/ssl.dylib" ] || { echo "Error: ssl.dylib isn't found"; exit 1; }
+  strip -u -r "$INSTALL_DIR/lib/lua/$LUAD/ssl.dylib"
+  cd ..
+  rm -rf "$LUASEC_FILENAME" "$LUASEC_BASENAME"
+fi
+
 # now copy the compiled dependencies to ZBS binary directory
 mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1; }
 
@@ -261,10 +289,17 @@ if [ $BUILD_LUA ]; then
   cp "$INSTALL_DIR/bin/lua$LUAS" "$INSTALL_DIR/lib/liblua$LUAS.dylib" "$BIN_DIR"
 fi
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR"
+
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}
   cp "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dylib" "$BIN_DIR/clibs$LUAS/mime"
   cp "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dylib" "$BIN_DIR/clibs$LUAS/socket"
+fi
+
+if [ $BUILD_LUASEC ]; then
+  cp "$INSTALL_DIR/lib/lua/$LUAD/ssl.dylib" "$BIN_DIR/clibs$LUAS"
+  cp "$INSTALL_DIR/share/lua/$LUAD/ssl.lua" ../lualibs
+  cp "$INSTALL_DIR/share/lua/$LUAD/ssl/https.lua" ../lualibs/ssl
 fi
 
 echo "*** Build has been successfully completed ***"

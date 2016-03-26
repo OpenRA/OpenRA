@@ -306,7 +306,7 @@ if [ $BUILD_LUASEC ]; then
   cp src/ssl.lua "$INSTALL_DIR/share/lua/$LUAD"
   mkdir -p "$INSTALL_DIR/share/lua/$LUAD/ssl"
   cp src/https.lua "$INSTALL_DIR/share/lua/$LUAD/ssl"
-  [ -f "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" ] || { echo "Error: luasec.dll isn't found"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll" ] || { echo "Error: ssl.dll isn't found"; exit 1; }
   strip --strip-unneeded "$INSTALL_DIR/lib/lua/$LUAD/ssl.dll"
   cd ..
   rm -rf "$LUASEC_FILENAME" "$LUASEC_BASENAME"
