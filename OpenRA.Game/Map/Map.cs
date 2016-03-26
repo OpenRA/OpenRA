@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileSystem;
@@ -66,27 +67,184 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
+	class MapField
+	{
+		enum Type { Normal, NodeList, MiniYaml }
+		readonly FieldInfo field;
+		readonly PropertyInfo property;
+		readonly Type type;
+
+		readonly string key;
+		readonly string fieldName;
+		readonly bool required;
+		readonly string ignoreIfValue;
+
+		public MapField(string key, string fieldName = null, bool required = true, string ignoreIfValue = null)
+		{
+			this.key = key;
+			this.fieldName = fieldName ?? key;
+			this.required = required;
+			this.ignoreIfValue = ignoreIfValue;
+
+			field = typeof(Map).GetField(this.fieldName);
+			property = typeof(Map).GetProperty(this.fieldName);
+			if (field == null && property == null)
+				throw new InvalidOperationException("Map does not have a field/property " + fieldName);
+
+			var t = field != null ? field.FieldType : property.PropertyType;
+			type = t == typeof(List<MiniYamlNode>) ? Type.NodeList :
+				t == typeof(MiniYaml) ? Type.MiniYaml : Type.Normal;
+		}
+
+		public void Deserialize(Map map, List<MiniYamlNode> nodes)
+		{
+			var node = nodes.FirstOrDefault(n => n.Key == key);
+			if (node == null)
+			{
+				if (required)
+					throw new YamlException("Required field `{0}` not found in map.yaml".F(key));
+				return;
+			}
+
+			if (field != null)
+			{
+				if (type == Type.NodeList)
+					field.SetValue(map, node.Value.Nodes);
+				else if (type == Type.MiniYaml)
+					field.SetValue(map, node.Value);
+				else
+					FieldLoader.LoadField(map, fieldName, node.Value.Value);
+			}
+
+			if (property != null)
+			{
+				if (type == Type.NodeList)
+					property.SetValue(map, node.Value.Nodes, null);
+				else if (type == Type.MiniYaml)
+					property.SetValue(map, node.Value, null);
+				else
+					FieldLoader.LoadField(map, fieldName, node.Value.Value);
+			}
+		}
+
+		public void Serialize(Map map, List<MiniYamlNode> nodes)
+		{
+			var value = field != null ? field.GetValue(map) : property.GetValue(map, null);
+			if (type == Type.NodeList)
+			{
+				var listValue = (List<MiniYamlNode>)value;
+				if (required || listValue.Any())
+					nodes.Add(new MiniYamlNode(key, null, listValue));
+			}
+			else if (type == Type.MiniYaml)
+			{
+				var yamlValue = (MiniYaml)value;
+				if (required || (yamlValue != null && (yamlValue.Value != null || yamlValue.Nodes.Any())))
+					nodes.Add(new MiniYamlNode(key, yamlValue));
+			}
+			else
+			{
+				var formattedValue = FieldSaver.FormatValue(value);
+				if (required || formattedValue != ignoreIfValue)
+					nodes.Add(new MiniYamlNode(key, formattedValue));
+			}
+		}
+	}
+
 	public class Map : IReadOnlyFileSystem
 	{
 		public const int SupportedMapFormat = 10;
 
-		public readonly MapGrid Grid;
-		readonly ModData modData;
+		/// <summary>Defines the order of the fields in map.yaml</summary>
+		static readonly MapField[] YamlFields =
+		{
+			new MapField("MapFormat"),
+			new MapField("RequiresMod"),
+			new MapField("Title"),
+			new MapField("Author"),
+			new MapField("Tileset"),
+			new MapField("MapSize"),
+			new MapField("Bounds"),
+			new MapField("Visibility"),
+			new MapField("Type"),
+			new MapField("LockPreview", required: false, ignoreIfValue: "False"),
+			new MapField("Players", "PlayerDefinitions"),
+			new MapField("Actors", "ActorDefinitions"),
+			new MapField("Rules", "RuleDefinitions", required: false),
+			new MapField("Sequences", "SequenceDefinitions", required: false),
+			new MapField("VoxelSequences", "VoxelSequenceDefinitions", required: false),
+			new MapField("Weapons", "WeaponDefinitions", required: false),
+			new MapField("Voices", "VoiceDefinitions", required: false),
+			new MapField("Music", "MusicDefinitions", required: false),
+			new MapField("Notifications", "NotificationDefinitions", required: false),
+			new MapField("Translations", "TranslationDefinitions", required: false)
+		};
 
-		public IReadOnlyPackage Package { get; private set; }
+		// Format versions
+		public int MapFormat { get; private set; }
+		public readonly byte TileFormat = 2;
 
-		// Yaml map data
-		public string Uid { get; private set; }
-		public int MapFormat;
-		public MapVisibility Visibility = MapVisibility.Lobby;
+		// Standard yaml metadata
 		public string RequiresMod;
-
 		public string Title;
-		public string Type = "Conquest";
 		public string Author;
 		public string Tileset;
 		public bool LockPreview;
+		public Rectangle Bounds;
+		public MapVisibility Visibility = MapVisibility.Lobby;
+		public string Type = "Conquest";
+
+		public int2 MapSize { get; private set; }
+
+		// Player and actor yaml. Public for access by the map importers and lint checks.
+		public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
+		public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
+
+		// Custom map yaml. Public for access by the map importers and lint checks
+		public readonly MiniYaml RuleDefinitions;
+		public readonly MiniYaml SequenceDefinitions;
+		public readonly MiniYaml VoxelSequenceDefinitions;
+		public readonly MiniYaml WeaponDefinitions;
+		public readonly MiniYaml VoiceDefinitions;
+		public readonly MiniYaml MusicDefinitions;
+		public readonly MiniYaml NotificationDefinitions;
+		public readonly MiniYaml TranslationDefinitions;
+
+		// Generated data
+		public readonly MapGrid Grid;
+		public IReadOnlyPackage Package { get; private set; }
+		public string Uid { get; private set; }
+
+		public Ruleset Rules { get; private set; }
 		public bool InvalidCustomRules { get; private set; }
+
+		/// <summary>
+		/// The top-left of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedTopLeft { get; private set; }
+
+		/// <summary>
+		/// The bottom-right of the playable area in projected world coordinates
+		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
+		/// </summary>
+		public WPos ProjectedBottomRight { get; private set; }
+
+		public CellLayer<TerrainTile> Tiles { get; private set; }
+		public CellLayer<ResourceTile> Resources { get; private set; }
+		public CellLayer<byte> Height { get; private set; }
+		public CellLayer<byte> CustomTerrain { get; private set; }
+
+		public ProjectedCellRegion ProjectedCellBounds { get; private set; }
+		public CellRegion AllCells { get; private set; }
+		public List<CPos> AllEdgeCells { get; private set; }
+
+		// Internal data
+		readonly ModData modData;
+		CellLayer<short> cachedTerrainIndexes;
+		bool initializedCellProjection;
+		CellLayer<PPos[]> cellProjection;
+		CellLayer<List<MPos>> inverseCellProjection;
 
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
@@ -110,55 +268,6 @@ namespace OpenRA
 					return new string(csp.ComputeHash(ms).SelectMany(a => a.ToString("x2")).ToArray());
 			}
 		}
-
-		public Rectangle Bounds;
-
-		/// <summary>
-		/// The top-left of the playable area in projected world coordinates
-		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
-		/// </summary>
-		public WPos ProjectedTopLeft;
-
-		/// <summary>
-		/// The bottom-right of the playable area in projected world coordinates
-		/// This is a hacky workaround for legacy functionality.  Do not use for new code.
-		/// </summary>
-		public WPos ProjectedBottomRight;
-
-		// Yaml map data
-		[FieldLoader.Ignore] public readonly MiniYaml RuleDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml SequenceDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml VoxelSequenceDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml WeaponDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml VoiceDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml MusicDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml NotificationDefinitions;
-		[FieldLoader.Ignore] public readonly MiniYaml TranslationDefinitions;
-
-		[FieldLoader.Ignore] public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
-		[FieldLoader.Ignore] public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
-
-		// Binary map data
-		[FieldLoader.Ignore] public byte TileFormat = 2;
-
-		public int2 MapSize;
-
-		[FieldLoader.Ignore] public CellLayer<TerrainTile> Tiles;
-		[FieldLoader.Ignore] public CellLayer<ResourceTile> Resources;
-		[FieldLoader.Ignore] public CellLayer<byte> Height;
-
-		[FieldLoader.Ignore] public CellLayer<byte> CustomTerrain;
-		[FieldLoader.Ignore] CellLayer<short> cachedTerrainIndexes;
-
-		[FieldLoader.Ignore] bool initializedCellProjection;
-		[FieldLoader.Ignore] CellLayer<PPos[]> cellProjection;
-		[FieldLoader.Ignore] CellLayer<List<MPos>> inverseCellProjection;
-
-		public Ruleset Rules { get; private set; }
-
-		[FieldLoader.Ignore] public ProjectedCellRegion ProjectedCellBounds;
-		[FieldLoader.Ignore] public CellRegion AllCells;
-		public List<CPos> AllEdgeCells { get; private set; }
 
 		/// <summary>
 		/// Initializes a new map created by the editor or importer.
@@ -204,19 +313,11 @@ namespace OpenRA
 				throw new InvalidDataException("Not a valid map\n File: {1}".F(package.Name));
 
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
-			FieldLoader.Load(this, yaml);
+			foreach (var field in YamlFields)
+				field.Deserialize(this, yaml.Nodes);
 
 			if (MapFormat != SupportedMapFormat)
 				throw new InvalidDataException("Map format {0} is not supported.\n File: {1}".F(MapFormat, package.Name));
-
-			RuleDefinitions = LoadRuleSection(yaml, "Rules");
-			SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-			VoxelSequenceDefinitions = LoadRuleSection(yaml, "VoxelSequences");
-			WeaponDefinitions = LoadRuleSection(yaml, "Weapons");
-			VoiceDefinitions = LoadRuleSection(yaml, "Voices");
-			MusicDefinitions = LoadRuleSection(yaml, "Music");
-			NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
-			TranslationDefinitions = LoadRuleSection(yaml, "Translations");
 
 			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
 			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
@@ -282,12 +383,6 @@ namespace OpenRA
 			PostInit();
 
 			Uid = ComputeUID(Package);
-		}
-
-		MiniYaml LoadRuleSection(MiniYaml yaml, string section)
-		{
-			var node = yaml.Nodes.FirstOrDefault(n => n.Key == section);
-			return node != null ? node.Value : null;
 		}
 
 		void PostInit()
@@ -417,49 +512,8 @@ namespace OpenRA
 			MapFormat = SupportedMapFormat;
 
 			var root = new List<MiniYamlNode>();
-			var fields = new[]
-			{
-				"MapFormat",
-				"RequiresMod",
-				"Title",
-				"Author",
-				"Tileset",
-				"MapSize",
-				"Bounds",
-				"Visibility",
-				"Type",
-			};
-
-			foreach (var field in fields)
-			{
-				var f = GetType().GetField(field);
-				if (f.GetValue(this) == null)
-					continue;
-				root.Add(new MiniYamlNode(field, FieldSaver.FormatValue(this, f)));
-			}
-
-			// Save LockPreview field only if it's set
-			if (LockPreview)
-				root.Add(new MiniYamlNode("LockPreview", "True"));
-
-			root.Add(new MiniYamlNode("Players", null, PlayerDefinitions));
-			root.Add(new MiniYamlNode("Actors", null, ActorDefinitions));
-
-			var ruleSections = new[]
-			{
-				new MiniYamlNode("Rules", RuleDefinitions),
-				new MiniYamlNode("Sequences", SequenceDefinitions),
-				new MiniYamlNode("VoxelSequences", VoxelSequenceDefinitions),
-				new MiniYamlNode("Weapons", WeaponDefinitions),
-				new MiniYamlNode("Voices", VoiceDefinitions),
-				new MiniYamlNode("Music", MusicDefinitions),
-				new MiniYamlNode("Notifications", NotificationDefinitions),
-				new MiniYamlNode("Translations", TranslationDefinitions)
-			};
-
-			foreach (var section in ruleSections)
-				if (section.Value != null && (section.Value.Value != null || section.Value.Nodes.Any()))
-					root.Add(section);
+			foreach (var field in YamlFields)
+				field.Serialize(this, root);
 
 			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)
