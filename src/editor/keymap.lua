@@ -48,6 +48,7 @@ ide.config.keymap = {
   [ID.AUTOCOMPLETEENABLE] = "",
   [ID.COMMENT]          = "Ctrl-U",
   [ID.FOLD]             = "F12",
+  [ID.FOLDLINE]         = "Shift-F12",
   [ID.CLEARDYNAMICWORDS] = "",
   [ID.REINDENT]         = "Ctrl-I",
   [ID.BOOKMARKTOGGLE]   = "Ctrl-F2",

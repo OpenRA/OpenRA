@@ -30,6 +30,7 @@ editMenu:Append(ID_SOURCE, TR("Source"), wx.wxMenu {
   { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { ID_REINDENT, TR("Correct &Indentation")..KSC(ID_REINDENT), TR("Re-indent selected lines") },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
+  { ID_FOLDLINE, TR("Fold/Unfold Current &Line")..KSC(ID_FOLDLINE), TR("Fold or unfold current line") },
   { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
 })
 editMenu:Append(ID_BOOKMARK, TR("Bookmark"), wx.wxMenu {
@@ -373,13 +374,21 @@ frame:Connect(ID_REINDENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     processSelection(editor, function(buf) reIndent(editor, buf) end)
   end)
 
-frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI,
-  function(event)
-    local editor = GetEditorWithFocus()
-    event:Enable(editor and editor:CanFold() or false)
-  end)
+local function canfold(event)
+  local editor = GetEditorWithFocus()
+  event:Enable(editor and editor:CanFold() or false)
+end
+
+frame:Connect(ID_FOLD, wx.wxEVT_UPDATE_UI, canfold)
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) GetEditorWithFocus():FoldSome() end)
+
+frame:Connect(ID_FOLDLINE, wx.wxEVT_UPDATE_UI, canfold)
+frame:Connect(ID_FOLDLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    local editor = GetEditorWithFocus()
+    editor:ToggleFold(editor:GetCurrentLine())
+  end)
 
 local BOOKMARK_MARKER = StylesGetMarker("bookmark")
 
