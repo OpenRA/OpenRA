@@ -11,6 +11,7 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Scripting;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -32,14 +33,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			var hasObjectives = hasError || (lp != null && iop != null && iop.PanelName != null);
+			var hasObjectivesPanel = hasError || (iop != null && iop.PanelName != null);
 
-			if (hasObjectives)
+			if (hasObjectivesPanel)
 			{
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				objectivesTabButton.GetText = () => "Objectives";
-				objectivesTabButton.IsVisible = () => lp != null && numTabs > 1 && !hasError;
+				objectivesTabButton.IsVisible = () => numTabs > 1 && !hasError;
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
 				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
 
@@ -54,7 +55,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Briefing tab
-			if (world.Map.Exists("map.png"))
+			var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
 			{
 				numTabs++;
 				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
