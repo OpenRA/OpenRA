@@ -112,7 +112,7 @@ namespace OpenRA
 			}
 		}
 
-		public void QueryRemoteMapDetails(IEnumerable<string> uids)
+		public void QueryRemoteMapDetails(IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null)
 		{
 			var maps = uids.Distinct()
 				.Select(uid => previews[uid])
@@ -144,7 +144,7 @@ namespace OpenRA
 				{
 					var yaml = MiniYaml.FromString(data);
 					foreach (var kv in yaml)
-						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value);
+						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
 				}
 				catch
 				{

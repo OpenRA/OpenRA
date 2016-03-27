@@ -17,6 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
@@ -51,6 +52,9 @@ namespace OpenRA
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
+		public readonly string tileset;
+		public readonly string rules;
+		public readonly string players_block;
 	}
 
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
@@ -334,7 +338,7 @@ namespace OpenRA
 			return true;
 		}
 
-		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml)
+		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
 		{
 			var newData = innerData.Clone();
 			newData.Status = status;
@@ -358,14 +362,31 @@ namespace OpenRA
 					newData.Author = r.author;
 					newData.PlayerCount = r.players;
 					newData.Bounds = r.bounds;
+					newData.TileSet = r.tileset;
 
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 					newData.SpawnPoints = spawns;
 					newData.GridType = r.map_grid_type;
-
 					newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+
+					var playersString = Encoding.UTF8.GetString(Convert.FromBase64String(r.players_block));
+					newData.Players = new MapPlayers(MiniYaml.FromString(playersString));
+
+					newData.SetRulesetGenerator(modData, () =>
+					{
+						var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
+						var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
+						var ruleDefinitions = LoadRuleSection(rulesYaml, "Rules");
+						var weaponDefinitions = LoadRuleSection(rulesYaml, "Weapons");
+						var voiceDefinitions = LoadRuleSection(rulesYaml, "Voices");
+						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
+						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
+						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
+						return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+					});
 				}
 				catch (Exception) { }
 
@@ -374,6 +395,9 @@ namespace OpenRA
 
 				if (innerData.Preview != null)
 					cache.CacheMinimap(this);
+
+				if (parseMetadata != null)
+					parseMetadata(this);
 			}
 
 			// Update the status and class unconditionally
