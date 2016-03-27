@@ -36,6 +36,18 @@
 	RenderSprites:
 		PlayerPalette: player-units
 
+C17:
+	RenderSprites:
+		PlayerPalette: player-units
+	Contrail@1:
+		UsePlayerColor: False
+	Contrail@2:
+		UsePlayerColor: False
+	Contrail@3:
+		UsePlayerColor: False
+	Contrail@4:
+		UsePlayerColor: False
+
 HARV:
 	RenderSprites:
 		PlayerPalette: player
