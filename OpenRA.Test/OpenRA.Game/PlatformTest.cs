@@ -23,6 +23,7 @@ namespace OpenRA.Test
 		[SetUp]
 		public void SetUp()
 		{
+			Platform.Initialize(Arguments.Empty);
 			supportDir = Platform.SupportDir;
 			gameDir = Platform.GameDir;
 		}

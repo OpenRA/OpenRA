@@ -63,11 +63,26 @@ namespace OpenRA
 			}
 		}
 
-		public static string SupportDir { get { return supportDir.Value; } }
-		static Lazy<string> supportDir = Exts.Lazy(GetSupportDir);
+		public static string SupportDir { get; private set; }
 
-		static string GetSupportDir()
+		public static void Initialize(Arguments args)
 		{
+			SupportDir = FindSupportDir(args);
+		}
+
+		static string FindSupportDir(Arguments args)
+		{
+			// Check for support directory overrides
+			if (args.Contains("SupportDir"))
+			{
+				var path = args.GetValue("SupportDir", "");
+				var separator = Path.DirectorySeparatorChar.ToString();
+				if (!path.EndsWith(separator))
+					path += separator;
+
+				return path;
+			}
+
 			// Use a local directory in the game root if it exists
 			if (Directory.Exists("Support"))
 				return "Support" + Path.DirectorySeparatorChar;

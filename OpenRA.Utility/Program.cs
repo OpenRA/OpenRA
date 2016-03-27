@@ -53,6 +53,7 @@ namespace OpenRA.Utility
 				return;
 			}
 
+			Platform.Initialize(Arguments.Empty);
 			Game.InitializeSettings(Arguments.Empty);
 			var modData = new ModData(modName);
 			args = args.Skip(1).ToArray();

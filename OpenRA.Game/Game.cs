@@ -238,7 +238,7 @@ namespace OpenRA
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
-
+			Platform.Initialize(args);
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");
