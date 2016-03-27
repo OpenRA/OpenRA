@@ -861,7 +861,7 @@ function CreateEditor(bare)
           wxstc.wxSTC_FOLDLEVELHEADERFLAG) == wxstc.wxSTC_FOLDLEVELHEADERFLAG
         if wx.wxGetKeyState(wx.WXK_SHIFT) and wx.wxGetKeyState(wx.WXK_CONTROL) then
           editor:FoldSome()
-        elseif header then
+        elseif header or wx.wxGetKeyState(wx.WXK_SHIFT) then
           editor:ToggleFold(line)
         end
       end
