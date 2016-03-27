@@ -652,7 +652,6 @@ ProjectUpdateInterpreters()
 
 -- load rest of settings
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
-SettingsRestoreView()
 SettingsRestoreFileHistory(SetFileHistory)
 SettingsRestoreEditorSettings()
 SettingsRestoreProjectSession(FileTreeSetProjects)
@@ -661,6 +660,7 @@ SettingsRestoreFileSession(function(tabs, params)
   then return SetOpenTabs(params)
   else return SetOpenFiles(tabs, params) end
 end)
+SettingsRestoreView()
 
 -- ---------------------------------------------------------------------------
 -- Load the filenames
