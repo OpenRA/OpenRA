@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string selectedUid;
 		Action<string> onSelect;
 
-		string gameMode;
+		string category;
 		string mapFilter;
 
 		[ObjectCreator.UseCtor]
@@ -170,30 +170,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (gameModeDropdown != null)
 			{
-				var gameModes = tabMaps[tab]
-					.GroupBy(m => m.Type)
-					.Select(g => Pair.New(g.Key, g.Count())).ToList();
+				var categoryDict = new Dictionary<string, int>();
+				foreach (var map in tabMaps[tab])
+				{
+					foreach (var category in map.Categories)
+					{
+						var count = 0;
+						categoryDict.TryGetValue(category, out count);
+						categoryDict[category] = count + 1;
+					}
+				}
+
+				// Order categories alphabetically
+				var categories = categoryDict
+					.Select(kv => Pair.New(kv.Key, kv.Value))
+					.OrderBy(p => p.First)
+					.ToList();
 
 				// 'all game types' extra item
-				gameModes.Insert(0, Pair.New(null as string, tabMaps[tab].Count()));
+				categories.Insert(0, Pair.New(null as string, tabMaps[tab].Count()));
 
-				Func<Pair<string, int>, string> showItem = x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
+				Func<Pair<string, int>, string> showItem = x => "{0} ({1})".F(x.First ?? "All Maps", x.Second);
 
 				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
-						() => gameMode == ii.First,
-						() => { gameMode = ii.First; EnumerateMaps(tab, itemTemplate); });
+						() => category == ii.First,
+						() => { category = ii.First; EnumerateMaps(tab, itemTemplate); });
 					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
 
 				gameModeDropdown.OnClick = () =>
-					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, gameModes, setupItem);
+					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, categories, setupItem);
 
 				gameModeDropdown.GetText = () =>
 				{
-					var item = gameModes.FirstOrDefault(m => m.First == gameMode);
+					var item = categories.FirstOrDefault(m => m.First == category);
 					if (item == default(Pair<string, int>))
 						item.First = "No matches";
 
@@ -209,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playerCountFilter = -1;
 
 			var maps = tabMaps[tab]
-				.Where(m => gameMode == null || m.Type == gameMode)
+				.Where(m => category == null || m.Categories.Contains(category))
 				.Where(m => mapFilter == null ||
 					(m.Title != null && m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
 					(m.Author != null && m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
@@ -251,7 +264,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
-					detailsWidget.GetText = () => "{0} ({1} players)".F(preview.Type, preview.PlayerCount);
+				{
+					var type = preview.Categories.FirstOrDefault();
+					var details = "";
+					if (type != null)
+						details = type + " ";
+
+					details += "({0} players)".F(preview.PlayerCount);
+					detailsWidget.GetText = () => details;
+				}
 
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)

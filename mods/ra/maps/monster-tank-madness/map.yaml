@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: ra
 
@@ -14,7 +14,7 @@ Bounds: 19,16,87,88
 
 Visibility: MissionSelector
 
-Type: Mission
+Categories: Mission
 
 LockPreview: True
 

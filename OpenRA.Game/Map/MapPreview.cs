@@ -44,7 +44,7 @@ namespace OpenRA
 	{
 		public readonly string title;
 		public readonly string author;
-		public readonly string map_type;
+		public readonly string[] categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
 		public readonly int[] spawnpoints = { };
@@ -64,7 +64,7 @@ namespace OpenRA
 		IReadOnlyPackage parentPackage;
 
 		public string Title { get; private set; }
-		public string Type { get; private set; }
+		public string[] Categories { get; private set; }
 		public string Author { get; private set; }
 		public string TileSet { get; private set; }
 		public MapPlayers Players { get; private set; }
@@ -116,7 +116,7 @@ namespace OpenRA
 
 			Uid = uid;
 			Title = "Unknown Map";
-			Type = "Unknown";
+			Categories = new[] { "Unknown" };
 			Author = "Unknown Author";
 			PlayerCount = 0;
 			Bounds = Rectangle.Empty;
@@ -153,8 +153,8 @@ namespace OpenRA
 
 			if (yaml.TryGetValue("Title", out temp))
 				Title = temp.Value;
-			if (yaml.TryGetValue("Type", out temp))
-				Type = temp.Value;
+			if (yaml.TryGetValue("Categories", out temp))
+				Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
 			if (yaml.TryGetValue("Tileset", out temp))
 				TileSet = temp.Value;
 			if (yaml.TryGetValue("Author", out temp))
@@ -257,7 +257,7 @@ namespace OpenRA
 				return false;
 
 			// Other map types may have confusing settings or gameplay
-			if (Type != "Conquest")
+			if (!Categories.Contains("Conquest"))
 				return false;
 
 			// Maps with bots disabled confuse new players
@@ -290,7 +290,7 @@ namespace OpenRA
 						}
 
 						Title = r.title;
-						Type = r.map_type;
+						Categories = r.categories;
 						Author = r.author;
 						PlayerCount = r.players;
 						Bounds = r.bounds;

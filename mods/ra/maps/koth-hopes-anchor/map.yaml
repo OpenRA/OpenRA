@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: ra
 
@@ -14,7 +14,7 @@ Bounds: 2,2,110,124
 
 Visibility: Lobby
 
-Type: KotH
+Categories: KotH
 
 Players:
 	PlayerReference@Neutral:

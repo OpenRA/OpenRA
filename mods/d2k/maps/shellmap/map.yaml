@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: d2k
 
@@ -14,7 +14,7 @@ Bounds: 16,16,80,80
 
 Visibility: Shellmap
 
-Type: Shellmap
+Categories: Shellmap
 
 Players:
 	PlayerReference@Neutral:

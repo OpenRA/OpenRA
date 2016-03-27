@@ -994,6 +994,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					yaml.Nodes.Add(new MiniYamlNode("LockPreview", new MiniYaml("True")));
 			}
 
+			// Format 10 -> 11 replaced the single map type field with a list of categories
+			if (mapFormat < 11)
+			{
+				var type = yaml.Nodes.First(n => n.Key == "Type");
+				yaml.Nodes.Add(new MiniYamlNode("Categories", type.Value));
+				yaml.Nodes.Remove(type);
+			}
+
 			if (mapFormat < Map.SupportedMapFormat)
 			{
 				yaml.Nodes.First(n => n.Key == "MapFormat").Value = new MiniYaml(Map.SupportedMapFormat.ToString());
