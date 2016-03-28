@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -43,7 +44,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var typeLabel = available.GetOrNull<LabelWidget>("MAP_TYPE");
 				if (typeLabel != null)
-					typeLabel.GetText = () => lobby.Map.Type;
+				{
+					var type = new CachedTransform<MapPreview, string>(m => lobby.Map.Categories.FirstOrDefault() ?? "");
+					typeLabel.GetText = () => type.Update(lobby.Map);
+				}
 
 				var authorLabel = available.GetOrNull<LabelWidget>("MAP_AUTHOR");
 				if (authorLabel != null)
@@ -65,13 +69,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
 				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
-				var title = invalid.GetOrNull<LabelWidget>("MAP_TITLE");
-				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+				var titleLabel = invalid.GetOrNull<LabelWidget>("MAP_TITLE");
+				if (titleLabel != null)
+					titleLabel.GetText = () => lobby.Map.Title;
 
-				var type = invalid.GetOrNull<LabelWidget>("MAP_TYPE");
-				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+				var typeLabel = invalid.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (typeLabel != null)
+				{
+					var type = new CachedTransform<MapPreview, string>(m => lobby.Map.Categories.FirstOrDefault() ?? "");
+					typeLabel.GetText = () => type.Update(lobby.Map);
+				}
 			}
 
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
@@ -84,17 +91,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
 				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
-				var title = download.GetOrNull<LabelWidget>("MAP_TITLE");
-				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+				var titleLabel = download.GetOrNull<LabelWidget>("MAP_TITLE");
+				if (titleLabel != null)
+					titleLabel.GetText = () => lobby.Map.Title;
 
-				var type = download.GetOrNull<LabelWidget>("MAP_TYPE");
-				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+				var typeLabel = download.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (typeLabel != null)
+				{
+					var type = new CachedTransform<MapPreview, string>(m => lobby.Map.Categories.FirstOrDefault() ?? "");
+					typeLabel.GetText = () => type.Update(lobby.Map);
+				}
 
-				var author = download.GetOrNull<LabelWidget>("MAP_AUTHOR");
-				if (author != null)
-					author.GetText = () => "Created by {0}".F(lobby.Map.Author);
+				var authorLabel = download.GetOrNull<LabelWidget>("MAP_AUTHOR");
+				if (authorLabel != null)
+					authorLabel.GetText = () => "Created by {0}".F(lobby.Map.Author);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
@@ -116,13 +126,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
 				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
-				var title = progress.GetOrNull<LabelWidget>("MAP_TITLE");
-				if (title != null)
-					title.GetText = () => lobby.Map.Title;
+				var titleLabel = progress.GetOrNull<LabelWidget>("MAP_TITLE");
+				if (titleLabel != null)
+					titleLabel.GetText = () => lobby.Map.Title;
 
-				var type = progress.GetOrNull<LabelWidget>("MAP_TYPE");
-				if (type != null)
-					type.GetText = () => lobby.Map.Type;
+				var typeLabel = progress.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (typeLabel != null)
+				if (typeLabel != null)
+				{
+					var type = new CachedTransform<MapPreview, string>(m => lobby.Map.Categories.FirstOrDefault() ?? "");
+					typeLabel.GetText = () => type.Update(lobby.Map);
+				}
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)

@@ -688,7 +688,7 @@
 	Capturable:
 		Type: husk
 		AllowAllies: yes
-		CaptureThreshold: 1.0
+		CaptureThreshold: 100
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	Tooltip:

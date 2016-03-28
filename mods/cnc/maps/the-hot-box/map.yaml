@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: cnc
 
@@ -14,7 +14,7 @@ Bounds: 16,16,36,36
 
 Visibility: Lobby
 
-Type: Drop Zone
+Categories: Drop Zone
 
 Players:
 	PlayerReference@Neutral:

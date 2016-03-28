@@ -192,7 +192,7 @@ V2RL:
 	SelfHealing:
 		Step: 1
 		Delay: 3
-		HealIfBelow: 50%
+		HealIfBelow: 50
 		DamageCooldown: 150
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4

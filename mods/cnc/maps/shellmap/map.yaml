@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: cnc
 
@@ -14,7 +14,7 @@ Bounds: 8,1,80,45
 
 Visibility: Shellmap
 
-Type: Shellmap
+Categories: Shellmap
 
 Players:
 	PlayerReference@Nod:

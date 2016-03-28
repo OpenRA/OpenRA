@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -28,8 +29,8 @@ namespace OpenRA.Mods.Common.Lint
 			if (map.Title == null)
 				emitError("Map does not define a valid title.");
 
-			if (map.Type == null)
-				emitError("Map does not define a valid type.");
+			if (!map.Categories.Any())
+				emitError("Map does not define any categories.");
 		}
 	}
 }

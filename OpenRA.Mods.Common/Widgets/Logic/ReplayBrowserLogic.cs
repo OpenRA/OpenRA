@@ -83,7 +83,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
 			if (type != null)
-				type.GetText = () => selectedReplay.GameInfo.MapPreview.Type;
+			{
+				var mapType = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
+				type.GetText = () => mapType.Update(selectedReplay.GameInfo.MapPreview);
+			}
 
 			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds);
 

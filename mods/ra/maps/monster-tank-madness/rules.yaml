@@ -160,7 +160,7 @@ PBOX:
 	SelfHealing:
 		Step: 1
 		Delay: 1
-		HealIfBelow: 100%
+		HealIfBelow: 100
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4

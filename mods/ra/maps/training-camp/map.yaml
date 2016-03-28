@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: ra
 
@@ -14,7 +14,7 @@ Bounds: 16,16,32,32
 
 Visibility: Lobby
 
-Type: Minigame
+Categories: Minigame
 
 Players:
 	PlayerReference@Neutral:

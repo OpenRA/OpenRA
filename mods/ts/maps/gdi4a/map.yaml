@@ -1,4 +1,4 @@
-MapFormat: 10
+MapFormat: 11
 
 RequiresMod: ts
 
@@ -14,7 +14,7 @@ Bounds: 2,12,52,150
 
 Visibility: Shellmap
 
-Type: Shellmap
+Categories: Shellmap
 
 Players:
 	PlayerReference@Neutral:

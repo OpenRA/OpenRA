@@ -418,7 +418,7 @@
 	ActorLostNotification:
 	Capturable:
 		Type: Vehicle
-		CaptureThreshold: 1
+		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
 		Voice: Move
