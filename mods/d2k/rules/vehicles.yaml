@@ -337,6 +337,11 @@ devastator:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50%
+	AttackDetonates:
+		ChargeDelay: 125
+		DetonationWeapon: PlasmaExplosion
+	WithChargeOverlay:
+		Repeating: true
 
 raider:
 	Inherits: ^Vehicle

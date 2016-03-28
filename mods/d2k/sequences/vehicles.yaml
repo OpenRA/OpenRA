@@ -205,6 +205,11 @@ devastator:
 		Tick: 80
 		Facings: -32
 		BlendMode: Additive
+	active: DATA.R8
+		Start: 3586
+		Length: 35
+		Tick: 120
+		BlendMode: Additive
 	icon: DATA.R8
 		Start: 4028
 		Offset: -30,-24

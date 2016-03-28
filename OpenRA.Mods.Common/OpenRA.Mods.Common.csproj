@@ -266,6 +266,7 @@
     <Compile Include="Traits\AttackMove.cs" />
     <Compile Include="Traits\Attack\AttackBase.cs" />
     <Compile Include="Traits\Attack\AttackCharge.cs" />
+    <Compile Include="Traits\Attack\AttackDetonates.cs" />
     <Compile Include="Traits\Attack\AttackFollow.cs" />
     <Compile Include="Traits\Attack\AttackFrontal.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />

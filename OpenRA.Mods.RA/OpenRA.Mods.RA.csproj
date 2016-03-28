@@ -86,6 +86,7 @@
     <Compile Include="Scripting\Properties\InfiltrateProperties.cs" />
     <Compile Include="Scripting\Properties\DisguiseProperties.cs" />
     <Compile Include="Traits\Attack\AttackLeap.cs" />
+    <Compile Include="Traits\Attack\AttackSeismic.cs" />
     <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Traits\Infiltration\InfiltrateForPowerOutage.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
     <Compile Include="Traits\Infiltration\Infiltrates.cs" />
-    <Compile Include="Traits\MadTank.cs" />
     <Compile Include="Traits\Mine.cs" />
     <Compile Include="Traits\Minelayer.cs" />
     <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />

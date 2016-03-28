@@ -321,3 +321,20 @@ BloomSpawn:
 		Image: null
 	Warhead@1Eff: CreateEffect
 		Explosions: bloomspawn
+
+PlasmaExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 2c0
+		Falloff: 100, 37, 0
+		Damage: 2000
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosion: devastator
