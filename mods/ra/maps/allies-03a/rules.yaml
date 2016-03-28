@@ -52,7 +52,7 @@ World:
 
 ^Building:
 	Capturable:
-		CaptureThreshold: 0.25
+		CaptureThreshold: 25
 	Tooltip:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false

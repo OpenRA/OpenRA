@@ -644,9 +644,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ReloadDelay";
 				}
 
-				// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
-				if (engineVersion < 20160325)
+				// Got rid of most remaining usages of float in a bid to further reduce desync risk
+				if (engineVersion < 20160328)
 				{
+					// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
 					if (node.Key.StartsWith("ProductionQueue") || node.Key.StartsWith("ClassicProductionQueue"))
 					{
 						var buildSpeedNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "BuildSpeed");
@@ -658,11 +659,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							buildSpeedNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
 					if (node.Key.StartsWith("StrategicVictoryConditions"))
 					{
 						var ratioNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "RatioRequired");
@@ -674,11 +672,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							ratioNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated Minelayer.MinefieldDepth to use WDist instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated Minelayer.MinefieldDepth to use WDist instead of float
 					if (node.Key.StartsWith("Minelayer"))
 					{
 						var depthNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinefieldDepth");
@@ -688,6 +683,69 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var oldValue = FieldLoader.GetValue<float>("MinefieldDepth", depthNode.Value.Value);
 							var newValue = (int)(oldValue * 1024);
 							depthNode.Value.Value = newValue.ToString();
+						}
+					}
+
+					// Migrated SelfHealing to use int percentage instead of float
+					if (node.Key == "SelfHealing")
+					{
+						var healIfBelowNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "HealIfBelow");
+						if (healIfBelowNode != null)
+						{
+							// The HealIfBelow value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("HealIfBelow", healIfBelowNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							healIfBelowNode.Value.Value = newValue.ToString();
+						}
+					}
+
+					// Migrated EmitInfantryOnSell to use int percentage instead of float
+					if (node.Key == "EmitInfantryOnSell")
+					{
+						var valueNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ValuePercent");
+						var minHPNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinHpPercent");
+
+						if (valueNode != null)
+						{
+							// The ValuePercent value is now an int percentage, but was previously geared towards
+							// percentage rather than float and divided by 100 internally so division by 100 is NOT needed.
+							var oldValue = FieldLoader.GetValue<float>("ValuePercent", valueNode.Value.Value);
+							var newValue = (int)oldValue;
+							valueNode.Value.Value = newValue.ToString();
+						}
+
+						if (minHPNode != null)
+						{
+							// The MinHpPercent value is now an int percentage, but was previously geared towards
+							// percentage rather than float and divided by 100 internally so division by 100 is NOT needed.
+							var oldValue = FieldLoader.GetValue<float>("MinHpPercent", minHPNode.Value.Value);
+							var newValue = (int)oldValue;
+							minHPNode.Value.Value = newValue.ToString();
+						}
+					}
+
+					// Migrated Captures and Capturable to use int percentage instead of float
+					if (node.Key == "Captures")
+					{
+						var sabotageHPRemNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "SabotageHPRemoval");
+						if (sabotageHPRemNode != null)
+						{
+							// The SabotageHPRemoval value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("SabotageHPRemoval", sabotageHPRemNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							sabotageHPRemNode.Value.Value = newValue.ToString();
+						}
+					}
+
+					if (node.Key == "Capturable")
+					{
+						var captThreshNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "CaptureThreshold");
+						if (captThreshNode != null)
+						{
+							// The CaptureThreshold value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("CaptureThreshold", captThreshNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							captThreshNode.Value.Value = newValue.ToString();
 						}
 					}
 				}

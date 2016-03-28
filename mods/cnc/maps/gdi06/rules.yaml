@@ -70,7 +70,7 @@ RMBO.easy:
 		HP: 300
 	SelfHealing:
 		Delay: 10
-		HealIfBelow: 50%
+		HealIfBelow: 50
 		DamageCooldown: 200
 	RenderSprites:
 		Image: RMBO

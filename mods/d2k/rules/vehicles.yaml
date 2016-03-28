@@ -44,7 +44,7 @@ mcv:
 	SelfHealing:
 		Step: 5
 		Delay: 3
-		HealIfBelow: 50%
+		HealIfBelow: 50
 
 harvester:
 	Inherits: ^Vehicle
@@ -95,7 +95,7 @@ harvester:
 	SelfHealing:
 		Step: 5
 		Delay: 3
-		HealIfBelow: 50%
+		HealIfBelow: 50
 
 trike:
 	Inherits: ^Vehicle
@@ -336,7 +336,7 @@ devastator:
 	SelfHealing:
 		Step: 5
 		Delay: 3
-		HealIfBelow: 50%
+		HealIfBelow: 50
 
 raider:
 	Inherits: ^Vehicle

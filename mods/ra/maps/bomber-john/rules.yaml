@@ -160,7 +160,7 @@ MINVV:
 	SelfHealing:
 		Step: -1
 		Delay: 1
-		HealIfBelow: 101%
+		HealIfBelow: 101
 		DamageCooldown: 0
 	Explodes:
 		Weapon: CrateNuke

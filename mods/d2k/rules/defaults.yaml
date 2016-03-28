@@ -254,7 +254,7 @@
 		Adjacent: 3
 	GivesBuildableArea:
 	Capturable:
-		CaptureThreshold: 1.0
+		CaptureThreshold: 100
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
