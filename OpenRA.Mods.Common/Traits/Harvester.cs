@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
-					proc => !IsEmpty && proc.Trait<IAcceptResources>().AllowDocking);
+					proc => proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -385,9 +385,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (order.TargetActor != OwnerLinkedProc)
 					LinkProc(self, OwnerLinkedProc = order.TargetActor);
-
-				if (IsEmpty)
-					return;
 
 				idleSmart = true;
 
