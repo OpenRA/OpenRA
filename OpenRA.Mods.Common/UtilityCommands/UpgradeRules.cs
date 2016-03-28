@@ -644,9 +644,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ReloadDelay";
 				}
 
-				// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
-				if (engineVersion < 20160325)
+				// Got rid of most remaining usages of float in a bid to further reduce desync risk
+				if (engineVersion < 20160328)
 				{
+					// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
 					if (node.Key.StartsWith("ProductionQueue") || node.Key.StartsWith("ClassicProductionQueue"))
 					{
 						var buildSpeedNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "BuildSpeed");
@@ -658,11 +659,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							buildSpeedNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
 					if (node.Key.StartsWith("StrategicVictoryConditions"))
 					{
 						var ratioNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "RatioRequired");
@@ -674,11 +672,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							ratioNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated Minelayer.MinefieldDepth to use WDist instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated Minelayer.MinefieldDepth to use WDist instead of float
 					if (node.Key.StartsWith("Minelayer"))
 					{
 						var depthNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinefieldDepth");
@@ -690,11 +685,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							depthNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated SelfHealing to use int percentage instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated SelfHealing to use int percentage instead of float
 					if (node.Key == "SelfHealing")
 					{
 						var healIfBelowNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "HealIfBelow");
@@ -706,11 +698,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							healIfBelowNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated EmitInfantryOnSell to use int percentage instead of float
-				if (engineVersion < 20160324)
-				{
+					// Migrated EmitInfantryOnSell to use int percentage instead of float
 					if (node.Key == "EmitInfantryOnSell")
 					{
 						var valueNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "ValuePercent");
@@ -734,11 +723,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							minHPNode.Value.Value = newValue.ToString();
 						}
 					}
-				}
 
-				// Migrated Captures and Capturable to use int percentage instead of float
-				if (engineVersion < 20160325)
-				{
+					// Migrated Captures and Capturable to use int percentage instead of float
 					if (node.Key == "Captures")
 					{
 						var sabotageHPRemNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "SabotageHPRemoval");
