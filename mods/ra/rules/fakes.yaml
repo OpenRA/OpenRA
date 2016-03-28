@@ -24,6 +24,58 @@ FACF:
 	Armor:
 		Type: Wood
 
+FPWR:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 880
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.infonly
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Power Plant
+		Description: Looks like a Power Plant.
+		GenericName: Power Plant
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Bib:
+	RenderSprites:
+		Image: POWR
+	Valued:
+		Cost: 30
+
+FAPW:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 890
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Advanced Power Plant
+		Description: Looks like an Advanced Power Plant.
+		GenericName: Advanced Power Plant
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 700
+	Armor:
+		Type: Wood
+	Bib:
+	RenderSprites:
+		Image: APWR
+	Valued:
+		Cost: 60
+
 WEAF:
 	Inherits: ^FakeBuilding
 	Buildable:

@@ -127,6 +127,7 @@ powr:
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
 	icon: powricon
+	fake-icon: fpwricon
 
 apwr:
 	idle:
@@ -142,6 +143,7 @@ apwr:
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
 	icon: apwricon
+	fake-icon: fapwicon
 
 barr:
 	idle:
