@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
 
-		[Desc("This value is used to translate the unit cost into build time.")]
-		public readonly float BuildSpeed = 0.4f;
+		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
+		public readonly int BuildSpeed = 40;
 
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
@@ -319,8 +319,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed;
-			return (int)time;
+			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;
+			return time;
 		}
 
 		protected void CancelProduction(string itemName, uint numberToCancel)

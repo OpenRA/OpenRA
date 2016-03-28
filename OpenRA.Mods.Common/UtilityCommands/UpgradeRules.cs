@@ -644,6 +644,54 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "ReloadDelay";
 				}
 
+				// Migrated ProductionQueue BuildSpeed to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("ProductionQueue") || node.Key.StartsWith("ClassicProductionQueue"))
+					{
+						var buildSpeedNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "BuildSpeed");
+						if (buildSpeedNode != null)
+						{
+							// The BuildSpeed value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("BuildSpeed", buildSpeedNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							buildSpeedNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
+				// Migrated StrategicVictoryConditions RatioRequired to use int percentage instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("StrategicVictoryConditions"))
+					{
+						var ratioNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "RatioRequired");
+						if (ratioNode != null)
+						{
+							// The RatioRequired value is now an int percentage, so multiply the float with 100.
+							var oldValue = FieldLoader.GetValue<float>("RatioRequired", ratioNode.Value.Value);
+							var newValue = (int)(oldValue * 100);
+							ratioNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
+				// Migrated Minelayer.MinefieldDepth to use WDist instead of float
+				if (engineVersion < 20160325)
+				{
+					if (node.Key.StartsWith("Minelayer"))
+					{
+						var depthNode = node.Value.Nodes.FirstOrDefault(x => x.Key == "MinefieldDepth");
+						if (depthNode != null)
+						{
+							// The MinefieldDepth value is now a WDist, so multiply the float value with 1024.
+							var oldValue = FieldLoader.GetValue<float>("MinefieldDepth", depthNode.Value.Value);
+							var newValue = (int)(oldValue * 1024);
+							depthNode.Value.Value = newValue.ToString();
+						}
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

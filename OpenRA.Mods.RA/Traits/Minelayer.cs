@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly string AmmoPoolName = "primary";
 
-		public readonly float MinefieldDepth = 1.5f;
+		public readonly WDist MinefieldDepth = new WDist(1536);
 
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
 	}
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
-		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, float depth)
+		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, WDist depth)
 		{
 			var mins = CPos.Min(start, end);
 			var maxs = CPos.Max(start, end);
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			for (var i = mins.X; i <= maxs.X; i++)
 				for (var j = mins.Y; j <= maxs.Y; j++)
-					if (Math.Abs(q.X * i + q.Y * j + c) < depth)
+					if (Math.Abs(q.X * i + q.Y * j + c) * 1024 < depth.Length)
 						yield return new CPos(i, j);
 		}
 
