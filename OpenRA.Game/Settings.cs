@@ -74,6 +74,9 @@ namespace OpenRA
 		[Desc("Disallow games where only one player plays with bots.")]
 		public bool DisableSinglePlayer = false;
 
+		[Desc("Query map information from the Resource Center if they are not available locally.")]
+		public bool QueryMapRepository = true;
+
 		public string TimestampFormat = "s";
 
 		public ServerSettings Clone()
