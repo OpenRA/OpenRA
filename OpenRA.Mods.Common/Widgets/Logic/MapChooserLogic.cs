@@ -126,12 +126,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (initialMap == null && tabMaps.Keys.Contains(initialTab) && tabMaps[initialTab].Any())
 			{
-				selectedUid = Game.ModData.MapCache.ChooseInitialMap(tabMaps[initialTab].Select(mp => mp.Uid).First());
+				selectedUid = Game.ModData.MapCache.ChooseInitialMap(tabMaps[initialTab].Select(mp => mp.Uid).First(),
+					Game.CosmeticRandom);
 				currentTab = initialTab;
 			}
 			else
 			{
-				selectedUid = Game.ModData.MapCache.ChooseInitialMap(initialMap);
+				selectedUid = Game.ModData.MapCache.ChooseInitialMap(initialMap, Game.CosmeticRandom);
 				currentTab = tabMaps.Keys.FirstOrDefault(k => tabMaps[k].Select(mp => mp.Uid).Contains(selectedUid));
 			}
 
@@ -313,7 +314,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				modData.MapCache[map].Delete();
 				if (selectedUid == map)
-					selectedUid = Game.ModData.MapCache.ChooseInitialMap(tabMaps[currentTab].Select(mp => mp.Uid).FirstOrDefault());
+					selectedUid = Game.ModData.MapCache.ChooseInitialMap(tabMaps[currentTab].Select(mp => mp.Uid).FirstOrDefault(),
+						Game.CosmeticRandom);
 			}
 			catch (Exception ex)
 			{
@@ -348,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					maps.Do(m => DeleteMap(m));
 					if (after != null)
-						after(Game.ModData.MapCache.ChooseInitialMap(null));
+						after(Game.ModData.MapCache.ChooseInitialMap(null, Game.CosmeticRandom));
 				},
 				confirmText: "Delete",
 				onCancel: () => { });
