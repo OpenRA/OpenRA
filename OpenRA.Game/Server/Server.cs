@@ -418,7 +418,7 @@ namespace OpenRA.Server
 			int latency = 1;
 			if (!LobbyInfo.IsSinglePlayer)
 			{
-				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				var gameSpeeds = ModData.Manifest.Get<GameSpeeds>();
 				GameSpeed speed;
 				if (gameSpeeds.Speeds.TryGetValue(LobbyInfo.GlobalSettings.GameSpeedType, out speed))
 					latency = speed.OrderLatency;
