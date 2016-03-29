@@ -568,7 +568,7 @@ PBOX:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
-		PortCones: 86, 86, 86, 86, 86, 86
+		PortCones: 88, 88, 88, 88, 88, 88
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	Power:
@@ -619,7 +619,7 @@ HBOX:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
-		PortCones: 86, 86, 86, 86, 86, 86
+		PortCones: 88, 88, 88, 88, 88, 88
 	Power:
 		Amount: -15
 	-MustBeDestroyed:
