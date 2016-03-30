@@ -23,6 +23,17 @@ namespace OpenRA
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
 	public enum StatusBarsType { Standard, DamageShow, AlwaysShow }
 
+	[Flags]
+	public enum MPGameFilters
+	{
+		None = 0,
+		Waiting = 1,
+		Empty = 2,
+		Protected = 4,
+		Started = 8,
+		Incompatible = 16
+	}
+
 	public class ServerSettings
 	{
 		[Desc("Sets the server name.")]
@@ -182,6 +193,8 @@ namespace OpenRA
 
 		public bool FetchNews = true;
 		public string NewsUrl = "http://master.openra.net/gamenews";
+
+		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected;
 	}
 
 	public class KeySettings
