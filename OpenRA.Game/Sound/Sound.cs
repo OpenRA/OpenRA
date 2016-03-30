@@ -94,7 +94,6 @@ namespace OpenRA
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("Default", null, "Default Output"),
 				new SoundDevice("Null", null, "Output Disabled")
 			};
 
