@@ -194,7 +194,7 @@ namespace OpenRA
 		public bool FetchNews = true;
 		public string NewsUrl = "http://master.openra.net/gamenews";
 
-		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected;
+		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
 	}
 
 	public class KeySettings
