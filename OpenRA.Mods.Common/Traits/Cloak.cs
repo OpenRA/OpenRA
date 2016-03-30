@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -27,7 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 		Unload = 4,
 		Infiltrate = 8,
 		Demolish = 16,
-		Damage = 32
+		Damage = 32,
+		Dock = 64
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
@@ -39,9 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in game ticks.")]
 		public readonly int CloakDelay = 30;
 
-		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish and Damage")]
+		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock and Damage")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
-			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish;
+			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
@@ -59,10 +61,11 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated
+	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
+		bool isDocking;
 		UpgradeManager upgradeManager;
 
 		CPos? lastPos;
@@ -117,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!IsTraitDisabled)
 			{
-				if (remainingTime > 0 && !damageDisabled)
+				if (remainingTime > 0 && !damageDisabled && !isDocking)
 					remainingTime--;
 
 				if (self.IsDisabled())
@@ -177,6 +180,28 @@ namespace OpenRA.Mods.Common.Traits
 			if (upgradeManager != null)
 				foreach (var u in Info.WhileCloakedUpgrades)
 					upgradeManager.RevokeUpgrade(self, u, this);
+		}
+
+		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { }
+
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+
+		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+
+		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource) { }
+
+		void INotifyHarvesterAction.Docked()
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+			{
+				isDocking = true;
+				Uncloak();
+			}
+		}
+
+		void INotifyHarvesterAction.Undocked()
+		{
+			isDocking = false;
 		}
 	}
 }
