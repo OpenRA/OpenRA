@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -125,6 +126,12 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool IsNamedActor(Actor actor)
 		{
 			return actor.ActorID <= sma.LastMapActorID && actor.ActorID > sma.LastMapActorID - sma.Actors.Count;
+		}
+
+		[Desc("Returns a table of all actors tagged with the given string.")]
+		public Actor[] ActorsWithTag(string tag)
+		{
+			return Context.World.ActorsHavingTrait<ScriptTags>(t => t.HasTag(tag)).ToArray();
 		}
 	}
 }
