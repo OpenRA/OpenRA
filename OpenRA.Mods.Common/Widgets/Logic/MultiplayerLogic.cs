@@ -360,7 +360,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
 				rows.Add(header);
 
-				foreach (var loop in modGames.OrderByDescending(g => g.IsJoinable).ThenByDescending(g => g.Players))
+				Func<GameServer, int> listOrder = g =>
+				{
+					// Servers waiting for players are always first
+					if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
+						return 0;
+
+					// Then active games
+					if (g.State >= (int)ServerState.GameStarted)
+						return 1;
+
+					// Empty servers are shown at the end because a flood of empty servers
+					// at the top of the game list make the community look dead
+					return 2;
+				};
+
+				foreach (var loop in modGames.OrderBy(listOrder).ThenByDescending(g => g.Players))
 				{
 					var game = loop;
 					if (game == null || Filtered(game))
