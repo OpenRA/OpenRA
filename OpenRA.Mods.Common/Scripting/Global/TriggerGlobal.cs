@@ -51,6 +51,20 @@ namespace OpenRA.Mods.Common.Scripting
 			Context.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, doCall)));
 		}
 
+		[Desc("Call a function for each passenger when it enters a transport. " +
+		      "The callback function will be called as func(Actor transport, Actor passenger).")]
+		public void OnPassengerEntered(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnPassengerEntered, func, Context);
+		}
+
+		[Desc("Call a function for each passenger when it exits a transport. " +
+			"The callback function will be called as func(Actor transport, Actor passenger).")]
+		public void OnPassengerExited(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnPassengerExited, func, Context);
+		}
+
 		[Desc("Call a function each tick that the actor is idle. " +
 			"The callback function will be called as func(Actor self).")]
 		public void OnIdle(Actor a, LuaFunction func)

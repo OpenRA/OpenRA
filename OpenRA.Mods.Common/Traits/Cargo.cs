@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 			SetPassengerFacing(a);
 
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
-				npe.PassengerExited(self, a);
+				npe.OnPassengerExited(self, a);
 
 			var p = a.Trait<Passenger>();
 			p.Transport = null;
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-				npe.PassengerEntered(self, a);
+				npe.OnPassengerEntered(self, a);
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Traits
 					c.Trait<Passenger>().Transport = self;
 
 					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-						npe.PassengerEntered(self, c);
+						npe.OnPassengerEntered(self, c);
 				}
 
 				initialized = true;
@@ -421,8 +421,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public interface INotifyPassengerEntered { void PassengerEntered(Actor self, Actor passenger); }
-	public interface INotifyPassengerExited { void PassengerExited(Actor self, Actor passenger); }
+	[RequireExplicitImplementation]
+	public interface INotifyPassengerEntered { void OnPassengerEntered(Actor self, Actor passenger); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
 
 	public class RuntimeCargoInit : IActorInit<Actor[]>, ISuppressInitExport
 	{

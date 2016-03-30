@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			getArmaments = () => armaments;
 		}
 
-		public void PassengerEntered(Actor self, Actor passenger)
+		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
 		{
 			paxFacing.Add(passenger, passenger.Trait<IFacing>());
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => Info.Armaments.Contains(a.Info.Name)));
 		}
 
-		public void PassengerExited(Actor self, Actor passenger)
+		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
 		{
 			paxFacing.Remove(passenger);
 			paxPos.Remove(passenger);
