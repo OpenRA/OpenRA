@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Server
 									server.LobbyInfo.Clients.Remove(c);
 							}
 
-							// Validate if color is allowed and get an alternative it isn't
+							// Validate if color is allowed and get an alternative if it isn't
 							foreach (var c in server.LobbyInfo.Clients)
 								if (c.Slot == null || (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor))
 									c.Color = c.PreferredColor = SanitizePlayerColor(server, c.Color, c.Index, conn);
