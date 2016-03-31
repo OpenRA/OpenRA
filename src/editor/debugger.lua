@@ -572,6 +572,7 @@ function debugger:mapRemotePath(basedir, file, line, method)
 end
 
 function debugger:Listen(start)
+  local debugger = ide:GetDebugger()
   if start == false then
     if debugger.listening then
       debugger:terminate() -- terminate if running
@@ -596,6 +597,7 @@ function debugger:Listen(start)
 
   copas.autoclose = false
   copas.addserver(server, function (skt)
+      local debugger = ide:GetDebugger()
       local options = debugger.options or {}
       if options.refuseonconflict == nil then options.refuseonconflict = ide.config.debugger.refuseonconflict end
 
@@ -637,6 +639,8 @@ function debugger:Listen(start)
           editormap = {},
           runtocursor = nil,
       }))
+
+      if PackageEventHandle("onDebuggerPreLoad", debugger, options) == false then return end
 
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = ide:GetProjectStartFile() or options.startwith
@@ -691,8 +695,6 @@ function debugger:Listen(start)
               if m then DisplayOutputNoMarker(m) end
             end})
       end
-
-      if PackageEventHandle("onDebuggerPreLoad", debugger, options) == false then return end
 
       if (options.startwith) then
         local file, line, err = debugger:loadfile(options.startwith)
