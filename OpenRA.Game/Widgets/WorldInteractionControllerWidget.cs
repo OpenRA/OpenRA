@@ -100,9 +100,13 @@ namespace OpenRA.Widgets
 					{
 						if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 						{
-							if (!(World.ScreenMap.ActorsAt(mousePos).Any(x => x.Info.HasTraitInfo<SelectableInfo>() &&
-								(x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x))) && !mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
-								!mi.Modifiers.HasModifier(Modifiers.Alt) && UnitOrderGenerator.InputOverridesSelection(World, mousePos, mi)))
+							var selectableActor = World.ScreenMap.ActorsAt(mousePos).Any(x =>
+								x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
+
+							var ignoreSelection = mi.Modifiers.HasModifier(Modifiers.Ctrl) || mi.Modifiers.HasModifier(Modifiers.Alt) ||
+								UnitOrderGenerator.InputOverridesSelection(World, mousePos, mi);
+
+							if (ignoreSelection || !selectableActor)
 							{
 								// Order units instead of selecting
 								ApplyOrders(World, mi);
