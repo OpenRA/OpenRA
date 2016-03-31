@@ -88,6 +88,9 @@ namespace OpenRA.Graphics
 
 		public static Sprite GetImage(string collectionName, string imageName)
 		{
+			if (string.IsNullOrEmpty(collectionName))
+				return null;
+
 			// Cached sprite
 			Dictionary<string, Sprite> cachedCollection;
 			Sprite sprite;
