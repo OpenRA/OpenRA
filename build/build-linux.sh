@@ -194,6 +194,7 @@ fi
 if [ $BUILD_WXLUA ]; then
   git clone "$WXLUA_URL" "$WXLUA_BASENAME" || { echo "Error: failed to get wxWidgets"; exit 1; }
   cd "$WXLUA_BASENAME/wxLua"
+  git checkout wxwidgets311
 
   # the following patches wxlua source to fix live coding support in wxlua apps
   # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html

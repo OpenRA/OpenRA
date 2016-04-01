@@ -211,6 +211,7 @@ fi
 if [ $BUILD_WXLUA ]; then
   git clone "$WXLUA_URL" "$WXLUA_BASENAME" || { echo "Error: failed to get wxWidgets"; exit 1; }
   cd "$WXLUA_BASENAME/wxLua"
+  git checkout wxwidgets311
 
   sed -i 's|:-/\(.\)/|:-\1:/|' "$INSTALL_DIR/bin/wx-config"
   sed -i 's/execute_process(COMMAND/& sh/' build/CMakewxAppLib.cmake
