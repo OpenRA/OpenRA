@@ -5,6 +5,7 @@
 sudo apt-get install git-core
 sudo apt-get install g++
 sudo apt-get install libgtk2.0-dev
+sudo apt-get install libglew-dev
 sudo apt-get install cmake
 exit
 
