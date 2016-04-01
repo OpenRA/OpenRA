@@ -337,7 +337,7 @@ local function createOutlineWindow()
 
   ctrl:Connect(wx.wxEVT_COMMAND_TREE_ITEM_MENU,
     function (event)
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
         { ID_OUTLINESORT, TR("Sort By Name"), "", wx.wxITEM_CHECK },
       }
       menu:Check(ID_OUTLINESORT, ide.config.outline.sort)
@@ -507,14 +507,14 @@ local package = ide:AddPackage('core.outline', {
     onMenuFiletree = function(self, menu, tree, event)
       local item_id = event:GetItem()
       local name = tree:GetItemFullName(item_id)
-      local symboldirmenu = wx.wxMenu {
+      local symboldirmenu = ide:MakeMenu {
         {ID_SYMBOLDIRREFRESH, TR("Refresh Index"), TR("Refresh indexed symbols from files in the selected directory")},
         {ID_SYMBOLDIRDISABLE, TR("Disable Indexing For '%s'"):format(name), TR("Ignore and don't index symbols from files in the selected directory")},
       }
       local _, _, projdirpos = ide:FindMenuItem(ID_PROJECTDIR, menu)
       if projdirpos then
         local ignored = isIgnoredInIndex(name)
-        local enabledirmenu = wx.wxMenu()
+        local enabledirmenu = ide:MakeMenu {}
         local paths = {}
         for path in pairs(outline.settings.ignoredirs) do table.insert(paths, path) end
         table.sort(paths)

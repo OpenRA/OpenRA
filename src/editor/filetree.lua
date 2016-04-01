@@ -527,7 +527,7 @@ local function treeSetConnectorsAndIcons(tree)
       local fname = tree:GetItemText(item_id)
       local ext = GetFileExt(fname)
       local startfile = filetree.settings.startfile[FileTreeGetDir()]
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
         { ID_NEWFILE, TR("New &File") },
         { ID_NEWDIRECTORY, TR("&New Directory") },
         { },
@@ -563,9 +563,9 @@ local function treeSetConnectorsAndIcons(tree)
       assert(hideextpos, "Can't find HideExtension menu item")
       menu:Insert(hideextpos+1, wx.wxMenuItem(menu, ID_SHOWEXTENSION,
         TR("Show Hidden Files"), TR("Show files previously hidden"),
-        wx.wxITEM_NORMAL, wx.wxMenu(extlist)))
+        wx.wxITEM_NORMAL, ide:MakeMenu(extlist)))
 
-      local projectdirectorymenu = wx.wxMenu {
+      local projectdirectorymenu = ide:MakeMenu {
         { },
         {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
         {ID_PROJECTDIRFROMDIR, TR("Set To Selected Directory")..KSC(ID_PROJECTDIRFROMDIR), TR("Set project directory to the selected one")},

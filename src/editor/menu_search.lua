@@ -11,7 +11,7 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local findReplace = ide.findReplace
 
-local findMenu = wx.wxMenu{
+local findMenu = ide:MakeMenu {
   { ID_FIND, TR("&Find")..KSC(ID_FIND), TR("Find text") },
   { ID_FINDNEXT, TR("Find &Next")..KSC(ID_FINDNEXT), TR("Find the next text occurrence") },
   { ID_FINDPREV, TR("Find &Previous")..KSC(ID_FINDPREV), TR("Find the earlier text occurence") },
@@ -22,14 +22,13 @@ local findMenu = wx.wxMenu{
   { ID_FINDINFILES, TR("Find &In Files")..KSC(ID_FINDINFILES), TR("Find text in files") },
   { ID_REPLACEINFILES, TR("Re&place In Files")..KSC(ID_REPLACEINFILES), TR("Find and replace text in files") },
   { },
+  { ID_NAVIGATE, TR("Navigate"), "", {
+    { ID_NAVIGATETOFILE, TR("Go To File...")..KSC(ID_NAVIGATETOFILE), TR("Go to file") },
+    { ID_NAVIGATETOLINE, TR("Go To Line...")..KSC(ID_NAVIGATETOLINE), TR("Go to line") },
+    { ID_NAVIGATETOSYMBOL, TR("Go To Symbol...")..KSC(ID_NAVIGATETOSYMBOL), TR("Go to symbol") },
+    { ID_NAVIGATETOMETHOD, TR("Insert Library Function...")..KSC(ID_NAVIGATETOMETHOD), TR("Find and insert library function") },
+  } },
 }
-findMenu:Append(ID_NAVIGATE, TR("Navigate"), wx.wxMenu {
-  { ID_NAVIGATETOFILE, TR("Go To File...")..KSC(ID_NAVIGATETOFILE), TR("Go to file") },
-  { ID_NAVIGATETOLINE, TR("Go To Line...")..KSC(ID_NAVIGATETOLINE), TR("Go to line") },
-  { ID_NAVIGATETOSYMBOL, TR("Go To Symbol...")..KSC(ID_NAVIGATETOSYMBOL), TR("Go to symbol") },
-  { ID_NAVIGATETOMETHOD, TR("Insert Library Function...")..KSC(ID_NAVIGATETOMETHOD), TR("Find and insert library function") },
-})
-
 menuBar:Append(findMenu, TR("&Search"))
 
 local function onUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end

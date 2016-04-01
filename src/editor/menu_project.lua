@@ -13,7 +13,12 @@ local uimgr = frame.uimgr
 ------------------------
 -- Interpreters and Menu
 
-local debugTab = {
+local targetDirMenu = ide:MakeMenu {
+  {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
+  {ID_PROJECTDIRFROMFILE, TR("Set From Current File")..KSC(ID_PROJECTDIRFROMFILE), TR("Set project directory from current file")},
+}
+local targetMenu = ide:MakeMenu {}
+local debugMenu = ide:MakeMenu {
   { ID_RUN, TR("&Run")..KSC(ID_RUN), TR("Execute the current project/file") },
   { ID_RUNNOW, TR("Run As Scratchpad")..KSC(ID_RUNNOW), TR("Execute the current project/file and keep updating the code to see immediate results"), wx.wxITEM_CHECK },
   { ID_COMPILE, TR("&Compile")..KSC(ID_COMPILE), TR("Compile the current file") },
@@ -29,31 +34,23 @@ local debugTab = {
   { ID_TRACE, TR("Tr&ace")..KSC(ID_TRACE), TR("Trace execution showing each executed line") },
   { ID_BREAK, TR("&Break")..KSC(ID_BREAK), TR("Break execution at the next executed line of code") },
   { },
-  { ID_BREAKPOINT, TR("Breakpoint")..KSC(ID_BREAKPOINT) },
+  { ID_BREAKPOINT, TR("Breakpoint")..KSC(ID_BREAKPOINT), "", {
+    { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint")..KSC(ID_BREAKPOINTTOGGLE) },
+    { ID_BREAKPOINTNEXT, TR("Go To Next Breakpoint")..KSC(ID_BREAKPOINTNEXT) },
+    { ID_BREAKPOINTPREV, TR("Go To Previous Breakpoint")..KSC(ID_BREAKPOINTPREV) },
+  } },
   { },
   { ID_CLEAROUTPUT, TR("C&lear Output Window")..KSC(ID_CLEAROUTPUT), TR("Clear the output window before compiling or debugging"), wx.wxITEM_CHECK },
   { ID_COMMANDLINEPARAMETERS, TR("Command Line Parameters...")..KSC(ID_COMMANDLINEPARAMETERS), TR("Provide command line parameters") },
+  { ID_PROJECTDIR, TR("Project Directory"), TR("Set the project directory to be used"), targetDirMenu },
+  { ID_INTERPRETER, TR("Lua &Interpreter"), TR("Set the interpreter to be used"), targetMenu },
 }
+menuBar:Append(debugMenu, TR("&Project"))
 
-local targetDirMenu = wx.wxMenu{
-  {ID_PROJECTDIRCHOOSE, TR("Choose...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
-  {ID_PROJECTDIRFROMFILE, TR("Set From Current File")..KSC(ID_PROJECTDIRFROMFILE), TR("Set project directory from current file")},
-}
-local targetMenu = wx.wxMenu({})
-local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {
   start=TR("Start &Debugging")..KSC(ID_STARTDEBUG), continue=TR("Co&ntinue")..KSC(ID_STARTDEBUG)}
 local debugMenuStop = {
   debugging=TR("S&top Debugging")..KSC(ID_STOPDEBUG), process=TR("S&top Process")..KSC(ID_STOPDEBUG)}
-debugMenu:Append(ID_PROJECTDIR, TR("Project Directory"), targetDirMenu, TR("Set the project directory to be used"))
-debugMenu:Append(ID_INTERPRETER, TR("Lua &Interpreter"), targetMenu, TR("Set the interpreter to be used"))
-menuBar:Append(debugMenu, TR("&Project"))
-
-ide:AttachMenu(ID_BREAKPOINT, wx.wxMenu {
-  { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint")..KSC(ID_BREAKPOINTTOGGLE) },
-  { ID_BREAKPOINTNEXT, TR("Go To Next Breakpoint")..KSC(ID_BREAKPOINTNEXT) },
-  { ID_BREAKPOINTPREV, TR("Go To Previous Breakpoint")..KSC(ID_BREAKPOINTPREV) },
-})
 
 local interpreters
 local function selectInterpreter(id)

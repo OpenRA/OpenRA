@@ -8,31 +8,29 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local openDocuments = ide.openDocuments
 
-local fileMenu = wx.wxMenu({
-    { ID_NEW, TR("&New")..KSC(ID_NEW), TR("Create an empty document") },
-    { ID_OPEN, TR("&Open...")..KSC(ID_OPEN), TR("Open an existing document") },
-    { ID_CLOSE, TR("&Close Page")..KSC(ID_CLOSE), TR("Close the current editor window") },
-    { },
-    { ID_SAVE, TR("&Save")..KSC(ID_SAVE), TR("Save the current document") },
-    { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },
-    { ID_SAVEALL, TR("Save A&ll")..KSC(ID_SAVEALL), TR("Save all open documents") },
-    { },
-    { ID_RECENTFILES, TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history") },
-    { ID_RECENTPROJECTS, TR("Recent Projects")..KSC(ID_RECENTPROJECTS), TR("Project history") },
-    { },
-    { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") }})
+local filehistorymenu = ide:MakeMenu {
+  { },
+  { ID_RECENTFILESCLEAR, TR("Clear Items")..KSC(ID_RECENTFILESCLEAR), TR("Clear items from this list") },
+}
+local projecthistorymenu = ide:MakeMenu {
+  { },
+  { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear items from this list") },
+}
+local fileMenu = ide:MakeMenu {
+  { ID_NEW, TR("&New")..KSC(ID_NEW), TR("Create an empty document") },
+  { ID_OPEN, TR("&Open...")..KSC(ID_OPEN), TR("Open an existing document") },
+  { ID_CLOSE, TR("&Close Page")..KSC(ID_CLOSE), TR("Close the current editor window") },
+  { },
+  { ID_SAVE, TR("&Save")..KSC(ID_SAVE), TR("Save the current document") },
+  { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },
+  { ID_SAVEALL, TR("Save A&ll")..KSC(ID_SAVEALL), TR("Save all open documents") },
+  { },
+  { ID_RECENTFILES, TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), filehistorymenu },
+  { ID_RECENTPROJECTS, TR("Recent Projects")..KSC(ID_RECENTPROJECTS), TR("Project history"), projecthistorymenu },
+  { },
+  { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") },
+}
 menuBar:Append(fileMenu, TR("&File"))
-
-local filehistorymenu = wx.wxMenu({
-    { },
-    { ID_RECENTFILESCLEAR, TR("Clear Items")..KSC(ID_RECENTFILESCLEAR), TR("Clear items from this list") },
-})
-local projecthistorymenu = wx.wxMenu({
-    { },
-    { ID_RECENTPROJECTSCLEAR, TR("Clear Items")..KSC(ID_RECENTPROJECTSCLEAR), TR("Clear items from this list") },
-})
-ide:AttachMenu(ID_RECENTFILES, filehistorymenu)
-ide:AttachMenu(ID_RECENTPROJECTS, projecthistorymenu)
 
 do -- recent file history
   local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))

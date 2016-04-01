@@ -72,7 +72,7 @@ end
 if (cnt > 1) then
 
   -- Build Menu
-  local toolMenu = wx.wxMenu{
+  local toolMenu = ide:MakeMenu {
     unpack(toolArgs)
   }
   menuBar:Append(toolMenu, "&Tools")
@@ -94,7 +94,7 @@ function ToolsAddTool(name, command, updateui)
     local helpMenu, helpindex = ide:FindTopMenu('&Help')
     if not helpMenu then helpindex = ide:GetMenuBar():GetMenuCount() end
 
-    toolMenu = wx.wxMenu{}
+    toolMenu = ide:MakeMenu {}
     menuBar:Insert(helpindex, toolMenu, "&Tools")
   end
   local id = name2id(name)

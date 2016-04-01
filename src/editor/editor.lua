@@ -1415,7 +1415,7 @@ function CreateEditor(bare)
       local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
       local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
 
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
         { ID_UNDO, TR("&Undo") },
         { ID_REDO, TR("&Redo") },
         { },

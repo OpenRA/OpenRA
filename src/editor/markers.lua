@@ -159,7 +159,7 @@ local function createMarkersWindow()
       local item_id = event:GetItem()
       local ID_BOOKMARKTOGGLE = ID("markers.bookmarktoggle")
       local ID_BREAKPOINTTOGGLE = ID("markers.breakpointtoggle")
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
         { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark"), TR("Toggle bookmark") },
         { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint"), TR("Toggle breakpoint") },
       }

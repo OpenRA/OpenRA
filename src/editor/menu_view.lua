@@ -8,7 +8,7 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local uimgr = frame.uimgr
 
-local viewMenu = wx.wxMenu {
+local viewMenu = ide:MakeMenu {
   { ID_VIEWFILETREE, TR("Project/&FileTree Window")..KSC(ID_VIEWFILETREE), TR("View the project/filetree window"), wx.wxITEM_CHECK },
   { ID_VIEWOUTPUT, TR("&Output/Console Window")..KSC(ID_VIEWOUTPUT), TR("View the output/console window"), wx.wxITEM_CHECK },
   { ID_VIEWWATCHWINDOW, TR("&Watch Window")..KSC(ID_VIEWWATCHWINDOW), TR("View the watch window"), wx.wxITEM_CHECK },
@@ -24,7 +24,7 @@ local viewMenu = wx.wxMenu {
 }
 
 do -- Add zoom submenu
-  local zoomMenu = wx.wxMenu{
+  local zoomMenu = ide:MakeMenu {
     {ID_ZOOMRESET, TR("Zoom to 100%")..KSC(ID_ZOOMRESET)},
     {ID_ZOOMIN, TR("Zoom In")..KSC(ID_ZOOMIN)},
     {ID_ZOOMOUT, TR("Zoom Out")..KSC(ID_ZOOMOUT)},

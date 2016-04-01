@@ -140,9 +140,9 @@ function ide:AttachMenu(...)
   local item, menu, pos = self:FindMenuItem(id, menu)
   if not item then return end
 
-  local menuitem = wx.wxMenuItem(menu, id, item:GetItemLabel(), item:GetHelp(), wx.wxITEM_NORMAL, submenu)
-  menu:Destroy(item)
-  return menu:Insert(pos, menuitem), pos
+  menu:Remove(item)
+  item:SetSubMenu(submenu)
+  return menu:Insert(pos, item), pos
 end
 function ide:CloneMenu(menu)
   if not menu then return end
@@ -154,6 +154,36 @@ function ide:CloneMenu(menu)
     node = node:GetNext()
   end
   return newmenu
+end
+function ide:MakeMenu(t)
+  local menu = wx.wxMenu()
+  local menuicon = self.config.menuicon -- menu items need to have icons
+  local iconmap = self.config.toolbar.iconmap
+  for p = 1, #(t or {}) do
+    if type(t[p]) == "table" then
+      if #t[p] == 0 then -- empty table signals a separator
+        menu:AppendSeparator()
+      else
+        local id, label, help, kind = unpack(t[p])
+        local submenu
+        if type(kind) == "table" then
+          submenu, kind = self:MakeMenu(kind)
+        elseif type(kind) == "userdata" then
+          submenu, kind = kind
+        end
+        if submenu then
+          menu:Append(id, label, submenu, help or "")
+        else
+          local item = wx.wxMenuItem(menu, id, label, help or "", kind or wx.wxITEM_NORMAL)
+          if menuicon and type(iconmap[id]) == "table" then
+            item:SetBitmap(ide:GetBitmap(iconmap[id][1], "TOOLBAR", wx.wxSize(16,16)))
+          end
+          menu:Append(item)
+        end
+      end
+    end
+  end
+  return menu
 end
 
 function ide:FindDocument(path)

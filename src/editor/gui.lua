@@ -244,7 +244,7 @@ local function createNotebook(frame)
       -- save tab index the event is for
       selection = notebook:GetPageIndex(tabctrl:GetPage(idx).window)
 
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
         { ID_CLOSE, TR("&Close Page") },
         { ID_CLOSEALL, TR("Close A&ll Pages") },
         { ID_CLOSEOTHER, TR("Close &Other Pages") },
@@ -443,7 +443,7 @@ local function createBottomNotebook(frame)
 
   errorlog:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
           { ID_UNDO, TR("&Undo") },
           { ID_REDO, TR("&Redo") },
           { },
@@ -467,7 +467,7 @@ local function createBottomNotebook(frame)
   local menupos
   shellbox:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
-      local menu = wx.wxMenu {
+      local menu = ide:MakeMenu {
           { ID_UNDO, TR("&Undo") },
           { ID_REDO, TR("&Redo") },
           { },

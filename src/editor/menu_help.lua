@@ -20,7 +20,7 @@ local urls = {
   [ID_HELPCOMMUNITY] = "community",
 }
 
-local helpMenu = wx.wxMenu{
+local helpMenu = ide:MakeMenu {
   { ID_ABOUT, TR("&About")..KSC(ID_ABOUT), TR("About %s"):format(GetIDEString("editor")) },
   { ID_HELPPROJECT, TR("&Project Page")..KSC(ID_HELPPROJECT) },
   { ID_HELPDOCUMENTATION, TR("&Documentation")..KSC(ID_HELPDOCUMENTATION) },
