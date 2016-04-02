@@ -14,6 +14,7 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Radar;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits

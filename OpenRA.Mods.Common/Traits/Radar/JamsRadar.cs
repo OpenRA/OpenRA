@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Radar
 {
 	[Desc("When an actor with this trait is in range of an actor with ProvidesRadar, it will temporarily disable the radar minimap for the enemy player.")]
 	public class JamsRadarInfo : TraitInfo<JamsRadar>

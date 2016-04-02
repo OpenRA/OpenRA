@@ -12,7 +12,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Radar
 {
 	[Desc("This actor enables the radar minimap.")]
 	public class ProvidesRadarInfo : TraitInfo<ProvidesRadar> { }
