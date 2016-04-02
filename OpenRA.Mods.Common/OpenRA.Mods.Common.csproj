@@ -260,7 +260,6 @@
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
-    <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Traits\AttackMove.cs" />
@@ -401,12 +400,10 @@
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Production.cs" />
     <Compile Include="Traits\ProductionQueueFromSelection.cs" />
-    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
-    <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
@@ -737,6 +734,9 @@
     <Compile Include="Traits\World\MissionData.cs" />
     <Compile Include="UtilityCommands\ExtractMapRules.cs" />
     <Compile Include="Traits\ScriptTags.cs" />
+    <Compile Include="Traits\Radar\AppearsOnRadar.cs" />
+    <Compile Include="Traits\Radar\ProvidesRadar.cs" />
+    <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
