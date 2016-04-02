@@ -1036,6 +1036,9 @@ namespace OpenRA.Mods.Common.Server
 			var mapBuildRadius = rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
 			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
+			var mapCreeps = rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
+			gs.Creeps = mapCreeps != null && mapCreeps.Enabled;
+
 			var mapOptions = rules.Actors["world"].TraitInfo<MapOptionsInfo>();
 			gs.ShortGame = mapOptions.ShortGameEnabled;
 			gs.TechLevel = mapOptions.TechLevel;
