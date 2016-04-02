@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Widgets
 			string cancelText = null,
 			string otherText = null)
 		{
-			var prompt = Ui.OpenWindow("CONFIRM_PROMPT");
+			var promptName = onOther != null ? "CONFIRM_PROMPT_THREEBUTTON" : "CONFIRM_PROMPT_TWOBUTTON";
+			var prompt = Ui.OpenWindow(promptName);
 			var confirmButton = prompt.Get<ButtonWidget>("CONFIRM_BUTTON");
 			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
