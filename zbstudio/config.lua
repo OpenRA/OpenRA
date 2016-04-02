@@ -21,7 +21,6 @@ else
   outputshell.fontname = editor.fontname
 end
 
-hidpi = mac -- support Retina displays by default (OSX)
 singleinstance = not mac
 
 unhidewindow = { -- allow unhiding of GUI windows
