@@ -27,7 +27,7 @@ World:
 	FlashPaletteEffect@LIGHTNINGSTRIKE:
 		Type: LightningStrike
 	LuaScript:
-		Scripts: fort-lonestar.lua
+		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
 	ScriptUpgradesCache:
 		Upgrades: invulnerability
 	MapBuildRadius:
@@ -86,6 +86,12 @@ Player:
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 50
+	-HackyAI@RushAI:
+	-HackyAI@NormalAI:
+	-HackyAI@NavalAI:
+	-HackyAI@TurtleAI:
+	DummyAI@LonestarAI:
+		Name: Lonestar AI
 
 ^Infantry:
 	Inherits@IC: ^IronCurtainable

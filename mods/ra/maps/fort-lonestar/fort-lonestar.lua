@@ -197,9 +197,13 @@ end
 WorldLoaded = function()
 	soviets = Player.GetPlayer("Soviets")
 	players = { }
-	for i = 0, 4, 1 do
+	for i = 0, 4 do
 		local player = Player.GetPlayer("Multi" ..i)
 		players[i] = player
+
+		if players[i] and players[i].IsBot then
+			ActivateAI(players[i], i)
+		end
 	end
 
 	Media.DisplayMessage("Defend Fort Lonestar at all costs!")
