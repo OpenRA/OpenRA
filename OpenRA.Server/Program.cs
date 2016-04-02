@@ -35,7 +35,7 @@ namespace OpenRA.Server
 
 			settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
 
-			Console.WriteLine("Starting dedicated server for mod: " + mod);
+			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), mod);
 			while (true)
 			{
 				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);
@@ -45,13 +45,13 @@ namespace OpenRA.Server
 					Thread.Sleep(1000);
 					if (server.State == ServerState.GameStarted && server.Conns.Count < 1)
 					{
-						Console.WriteLine("No one is playing, shutting down...");
+						Console.WriteLine("[{0}] No one is playing, shutting down...", DateTime.Now.ToString(settings.TimestampFormat));
 						server.Shutdown();
 						break;
 					}
 				}
 
-				Console.WriteLine("Starting a new server instance...");
+				Console.WriteLine("[{0}] Starting a new server instance...", DateTime.Now.ToString(settings.TimestampFormat));
 			}
 		}
 	}
