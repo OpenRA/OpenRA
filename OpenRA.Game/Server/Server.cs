@@ -689,7 +689,7 @@ namespace OpenRA.Server
 		{
 			listener.Stop();
 
-			Console.WriteLine("Game started");
+			Console.WriteLine("[{0}] Game started", DateTime.Now.ToString(Settings.TimestampFormat));
 
 			// Drop any unvalidated clients
 			foreach (var c in PreConns.ToArray())
