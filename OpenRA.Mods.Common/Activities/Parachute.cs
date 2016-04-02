@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Activity LastTick(Actor self)
 		{
-			pos.SetPosition(self, currentPosition - new WVec(0, 0, currentPosition.Z));
+			pos.SetPosition(self, currentPosition);
 
 			if (um != null)
 				foreach (var u in para.ParachuteUpgrade)
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 			currentPosition -= fallVector;
 
 			// If the unit has landed, this will be the last tick
-			if (currentPosition.Z <= 0)
+			if (self.World.Map.DistanceAboveTerrain(currentPosition).Length <= 0)
 				return LastTick(self);
 
 			pos.SetVisualPosition(self, currentPosition);
