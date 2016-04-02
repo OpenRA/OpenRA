@@ -750,6 +750,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160402)
+				{
+					// Fix misleading property naming.
+					if (node.Key == "EffectSequence" && parent.Key == "SpawnActorPower")
+						node.Key = "EffectImage";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
