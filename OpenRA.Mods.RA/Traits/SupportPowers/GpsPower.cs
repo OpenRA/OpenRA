@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged
+	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged, ITick
 	{
 		readonly GpsPowerInfo info;
 		GpsWatcher owner;
@@ -82,6 +82,22 @@ namespace OpenRA.Mods.RA.Traits
 			RemoveGps(self);
 			owner = newOwner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);
+		}
+
+		bool wasDisabled;
+
+		public void Tick(Actor self)
+		{
+			if (!wasDisabled && self.IsDisabled())
+			{
+				wasDisabled = true;
+				RemoveGps(self);
+			}
+			else if (wasDisabled && !self.IsDisabled())
+			{
+				wasDisabled = false;
+				owner.GpsAdd(self);
+			}
 		}
 	}
 }
