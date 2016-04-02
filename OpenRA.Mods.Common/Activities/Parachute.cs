@@ -21,15 +21,17 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IPositionable pos;
 		readonly ParachutableInfo para;
 		readonly WVec fallVector;
+		readonly Actor ignore;
 
 		WPos dropPosition;
 		WPos currentPosition;
 		bool triggered = false;
 
-		public Parachute(Actor self, WPos dropPosition)
+		public Parachute(Actor self, WPos dropPosition, Actor ignoreActor = null)
 		{
 			um = self.TraitOrDefault<UpgradeManager>();
 			pos = self.TraitOrDefault<IPositionable>();
+			ignore = ignoreActor;
 
 			// Parachutable trait is a prerequisite for running this activity
 			para = self.Info.TraitInfo<ParachutableInfo>();
@@ -61,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 					um.RevokeUpgrade(self, u, this);
 
 			foreach (var npl in self.TraitsImplementing<INotifyParachuteLanded>())
-				npl.OnLanded();
+				npl.OnLanded(ignore);
 
 			return NextActivity;
 		}

@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class ProductionAirdropInfo : ProductionInfo
 	{
 		public readonly string ReadyAudio = "Reinforce";
-		[Desc("Cargo aircraft used.")]
-		[ActorReference] public readonly string ActorType = "c17";
+		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
+		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "c17";
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
