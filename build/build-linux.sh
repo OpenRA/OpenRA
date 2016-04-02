@@ -261,7 +261,7 @@ fi
 # now copy the compiled dependencies to ZBS binary directory
 mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1; }
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS" "$BIN_DIR"
-[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.so" "$BIN_DIR"
+[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.so" "$BIN_DIR/clibs"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

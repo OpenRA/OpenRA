@@ -4,6 +4,7 @@ bin/clibs/liblua.dll
 bin/clibs/libzlib.dll
 bin/clibs/mime/core.dll
 bin/clibs/socket/core.dll
+bin/clibs/wx.dll
 bin/clibs52/liblua.dll
 bin/clibs52/mime/core.dll
 bin/clibs52/socket/core.dll
@@ -17,5 +18,4 @@ bin/lua52.exe
 bin/lua53.dll
 bin/lua53.exe
 bin/winapi.dll
-bin/wx.dll
 zbstudio.exe

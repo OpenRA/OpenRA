@@ -289,7 +289,7 @@ if [ $BUILD_LUA ]; then
   cp "$INSTALL_DIR/bin/lua$LUAS" "$BIN_DIR/lua.app/Contents/MacOS"
   cp "$INSTALL_DIR/bin/lua$LUAS" "$INSTALL_DIR/lib/liblua$LUAS.dylib" "$BIN_DIR"
 fi
-[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR"
+[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR/clibs"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

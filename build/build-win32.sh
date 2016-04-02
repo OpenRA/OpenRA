@@ -336,7 +336,7 @@ fi
 mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1; }
 
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS.exe" "$INSTALL_DIR/lib/lua$LUAV.dll" "$BIN_DIR"
-[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
+[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/clibs/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/$LUAD/winapi.dll" "$BIN_DIR/clibs$LUAS"
 [ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" "$BIN_DIR/clibs$LUAS"
 
