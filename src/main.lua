@@ -340,11 +340,21 @@ local function setLuaPaths(mainpath, osname)
     .. mainpath.."lualibs/?/?/init.lua;"..mainpath.."lualibs/?/init.lua"
     .. (luadev_path and (';' .. luadev_path) or ''))
 
-  ide.osclibs = -- keep the list to use for other Lua versions
-    osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
-    osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    osname == "Unix" and mainpath..("bin/linux/%s/lib?.so;"):format(arch)
-                       ..mainpath..("bin/linux/%s/clibs/?.so"):format(arch) or
+  ide.osclibs = -- keep the list to use for various Lua versions
+    osname == "Windows" and table.concat({
+        mainpath.."bin/?.dll",
+        mainpath.."bin/clibs/?.dll",
+      },";") or
+    osname == "Macintosh" and table.concat({
+        mainpath.."bin/lib?.dylib",
+        mainpath.."bin/clibs/?.dylib",
+        mainpath.."bin/clibs/lib?.dylib",
+      },";") or
+    osname == "Unix" and table.concat({
+        mainpath..("bin/linux/%s/lib?.so"):format(arch),
+        mainpath..("bin/linux/%s/clibs/?.so"):format(arch),
+        mainpath..("bin/linux/%s/clibs/lib?.so"):format(arch),
+      },";") or
     assert(false, "Unexpected OS name")
 
   wx.wxSetEnv("LUA_CPATH",
