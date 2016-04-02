@@ -1,6 +1,6 @@
 #!/bin/sh
 # launch script (executed by Desura)
-mono OpenRA.Game.exe Server.Dedicated=False Server.DedicatedLoop=False "$@"
+mono OpenRA.Game.exe "$@"
 if [ $? != 0 -a $? != 1 ]
 then
 	ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."

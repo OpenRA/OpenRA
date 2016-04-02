@@ -248,18 +248,6 @@ namespace OpenRA.Widgets
 
 			return trimmed;
 		}
-
-		public static string ChooseInitialMap(string initialUid)
-		{
-			if (string.IsNullOrEmpty(initialUid) || Game.ModData.MapCache[initialUid].Status != MapStatus.Available)
-			{
-				var selected = Game.ModData.MapCache.Where(x => x.SuitableForInitialMap).RandomOrDefault(Game.CosmeticRandom) ??
-					Game.ModData.MapCache.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
-				return selected.Uid;
-			}
-
-			return initialUid;
-		}
 	}
 
 	public class CachedTransform<T, U>

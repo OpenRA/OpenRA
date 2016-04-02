@@ -20,6 +20,7 @@ using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -81,7 +82,7 @@ namespace OpenRA
 			if (!modData.Manifest.Contains<MapGrid>())
 				return;
 
-			var mapGrid = Game.ModData.Manifest.Get<MapGrid>();
+			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var kv in MapLocations)
 			{
 				foreach (var map in kv.Key.Contents)
@@ -235,6 +236,18 @@ namespace OpenRA
 					};
 					previewLoaderThread.Start();
 				});
+		}
+
+		public string ChooseInitialMap(string initialUid, MersenneTwister random)
+		{
+			if (string.IsNullOrEmpty(initialUid) || previews[initialUid].Status != MapStatus.Available)
+			{
+				var selected = previews.Values.Where(x => x.SuitableForInitialMap).RandomOrDefault(random) ??
+					previews.Values.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
+				return selected.Uid;
+			}
+
+			return initialUid;
 		}
 
 		public MapPreview this[string key]

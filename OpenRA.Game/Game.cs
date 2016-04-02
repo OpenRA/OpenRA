@@ -279,7 +279,7 @@ namespace OpenRA
 				}
 			}
 
-			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+			Sound = new Sound(Settings.Sound.Engine);
 
 			GlobalChat = new GlobalChat();
 
@@ -341,16 +341,10 @@ namespace OpenRA
 
 			Sound.StopVideo();
 
-			ModData = new ModData(mod, !Settings.Server.Dedicated);
+			ModData = new ModData(mod, true);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
-
-			if (Settings.Server.Dedicated)
-			{
-				RunDedicatedServer();
-				Environment.Exit(0);
-			}
 
 			var installData = ModData.Manifest.Get<ContentInstaller>();
 			var isModContentInstalled = installData.TestFiles.All(f => File.Exists(Platform.ResolvePath(f)));
@@ -396,37 +390,6 @@ namespace OpenRA
 			JoinLocal();
 
 			ModData.LoadScreen.StartGame(args);
-		}
-
-		public static void RunDedicatedServer()
-		{
-			while (true)
-			{
-				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
-				Settings.Save();
-				CreateServer(Settings.Server.Clone());
-
-				while (true)
-				{
-					Thread.Sleep(100);
-
-					if (server.State == Server.ServerState.GameStarted && server.Conns.Count < 1)
-					{
-						Console.WriteLine("No one is playing, shutting down...");
-						server.Shutdown();
-						break;
-					}
-				}
-
-				if (Settings.Server.DedicatedLoop)
-				{
-					Console.WriteLine("Starting a new server instance...");
-					ModData.MapCache.LoadMaps();
-					continue;
-				}
-
-				break;
-			}
 		}
 
 		public static void LoadEditor(string mapUid)
@@ -811,7 +774,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -824,7 +787,7 @@ namespace OpenRA
 				AllowPortForward = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
 
 			return server.Port;
 		}

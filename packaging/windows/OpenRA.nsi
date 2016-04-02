@@ -85,7 +85,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Game.exe.config"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.Platforms.Null.dll"
+	File "${SRCDIR}\OpenRA.Server.exe"
 	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
@@ -190,7 +190,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
-	Delete $INSTDIR\OpenRA.Platforms.Null.dll
+	Delete $INSTDIR\OpenRA.Server.exe
 	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll

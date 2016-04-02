@@ -719,7 +719,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+						var gameSpeeds = server.ModData.Manifest.Get<GameSpeeds>();
 
 						GameSpeed speed;
 						if (!gameSpeeds.Speeds.TryGetValue(s, out speed))

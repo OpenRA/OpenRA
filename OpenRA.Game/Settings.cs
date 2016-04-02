@@ -76,12 +76,6 @@ namespace OpenRA
 		[Desc("Value in milliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
 		public int TimeOut = 0;
 
-		[Desc("Run in headless mode with an empty renderer and without sound output.")]
-		public bool Dedicated = false;
-
-		[Desc("Automatically restart when a game ends. Disable this when something else already takes care about it.")]
-		public bool DedicatedLoop = true;
-
 		[Desc("Disallow games where only one player plays with bots.")]
 		public bool DisableSinglePlayer = false;
 
