@@ -32,6 +32,8 @@
 	<true/>
 	<key>LSRequiresCarbon</key>
 	<true/>
+        <key>NSHighResolutionCapable</key>
+	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright (C) 2011 Paul Kulchenko, ZeroBrane LLC</string>
 </dict>
