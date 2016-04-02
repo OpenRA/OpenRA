@@ -776,7 +776,7 @@ ATEK:
 		OneShot: yes
 		ChargeTime: 480
 		Description: GPS Satellite
-		LongDesc: Reveals map terrain and provides tactical\ninformation.
+		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
 		DisplayTimer: True
