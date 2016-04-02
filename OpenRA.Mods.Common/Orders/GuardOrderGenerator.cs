@@ -23,8 +23,10 @@ namespace OpenRA.Mods.Common.Orders
 
 		protected override IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
-			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
+			if (mi.Button != ExpectedButton)
+				yield break;
 
+			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 			if (target == null || Subjects.All(s => s.IsDead))
 				yield break;
 
