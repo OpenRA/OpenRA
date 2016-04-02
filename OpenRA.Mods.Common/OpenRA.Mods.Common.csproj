@@ -737,6 +737,7 @@
     <Compile Include="Traits\Radar\AppearsOnRadar.cs" />
     <Compile Include="Traits\Radar\ProvidesRadar.cs" />
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
+    <Compile Include="Traits\Radar\JamsRadar.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
