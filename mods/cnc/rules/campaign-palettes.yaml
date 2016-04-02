@@ -31,6 +31,8 @@
 ^Infantry:
 	RenderSprites:
 		PlayerPalette: player-units
+	WithDeathAnimation:
+		DeathSequencePalette: player-units
 
 ^CommonHuskDefaults:
 	RenderSprites:
