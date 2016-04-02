@@ -375,7 +375,7 @@ namespace OpenRA.Server
 				Log.Write("server", "{0} ({1}) has joined the game.",
 					client.Name, newConn.Socket.RemoteEndPoint);
 
-				if (!LobbyInfo.IsSinglePlayer)
+				if (Dedicated || !LobbyInfo.IsSinglePlayer)
 					SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
