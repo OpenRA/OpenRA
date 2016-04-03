@@ -56,7 +56,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		Activity LastTick(Actor self)
 		{
-			pos.SetPosition(self, currentPosition);
+			var dat = self.World.Map.DistanceAboveTerrain(currentPosition);
+			pos.SetPosition(self, currentPosition - new WVec(WDist.Zero, WDist.Zero, dat));
 
 			if (um != null)
 				foreach (var u in para.ParachuteUpgrade)
