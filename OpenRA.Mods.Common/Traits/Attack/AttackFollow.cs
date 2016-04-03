@@ -66,6 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Target target;
 			readonly bool forceAttack;
 			readonly bool onRailsHack;
+			bool hasTicked;
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
@@ -103,7 +104,13 @@ namespace OpenRA.Mods.Common.Traits
 					var maxRange = targetIsMobile ? new WDist(Math.Max(weapon.Weapon.MinRange.Length, modifiedRange.Length - 1024))
 						: modifiedRange;
 
+					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
+					// Having both this and AttackFollow modify that field is a horrible hack.
+					if (hasTicked && attack.Target.Type == TargetType.Invalid)
+						return NextActivity;
+
 					attack.Target = target;
+					hasTicked = true;
 
 					if (move != null)
 						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
