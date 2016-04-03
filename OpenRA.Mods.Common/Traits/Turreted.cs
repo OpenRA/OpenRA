@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool HasAchievedDesiredFacing
 		{
-			get { return DesiredFacing != null && TurretFacing == DesiredFacing.Value; }
+			get { return DesiredFacing == null || TurretFacing == DesiredFacing.Value; }
 		}
 
 		// Turret offset in world-space
