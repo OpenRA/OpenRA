@@ -104,6 +104,7 @@ FLARE:
 		Type: CenterPosition
 	RenderSprites:
 		Image: smokland
+		Palette: terrain
 	WithSpriteBody:
 		StartSequence: open
 	HiddenUnderFog:
