@@ -110,6 +110,7 @@ FLARE:
 		Type: CenterPosition
 	Tooltip:
 		Name: Flare
+		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
 	AutoSelectionSize:
