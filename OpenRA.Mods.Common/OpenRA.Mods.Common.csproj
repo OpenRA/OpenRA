@@ -755,6 +755,7 @@
     <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
     <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
     <Compile Include="FileFormats\MSCabCompression.cs" />
+    <Compile Include="UtilityCommands\OutputActorMiniYamlCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
