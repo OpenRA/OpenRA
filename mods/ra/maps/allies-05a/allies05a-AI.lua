@@ -276,7 +276,7 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Minutes(5), function()
 		ProduceInfantry()
 		ProduceVehicles()
-		if AirAttacks then
+		if false and AirAttacks then -- disable air strikes for now since they are broken
 			Trigger.AfterDelay(DateTime.Minutes(3), ProduceAircraft)
 		end
 	end)
