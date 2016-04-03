@@ -191,7 +191,6 @@ Colt:
 		InitialFacing: 224
 	RenderSprites:
 		Image: AGUN
-	WithTurretedSpriteBody:
 	Armament:
 		Weapon: MissionColt
 		LocalOffset: 432,150,-30, 432,-150,-30
