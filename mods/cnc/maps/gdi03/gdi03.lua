@@ -100,6 +100,14 @@ WorldLoaded = function()
 	Camera.Position = MCVwaypoint.CenterPosition
 
 	Trigger.AfterDelay(DateTime.Seconds(15), AttackPlayer)
+
+	Actor.Create("nuk2", true, { Owner = player, Location = CPos.New(16, 56) })
+	local eye = Actor.Create("eye", true, { Owner = player, Location = CPos.New(20, 56) })
+
+	local targetLoc = CPos.New(20, 30)
+	Actor.Create("camera", true, { Owner = player, Location = targetLoc })
+	Beacon.New(player, Map.CenterOfCell(targetLoc))
+	Trigger.AfterDelay(DateTime.Seconds(6), function() eye.IonCannon(targetLoc) end)
 end
 
 Tick = function()
