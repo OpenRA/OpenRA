@@ -113,7 +113,7 @@ namespace OpenRA
 			}
 		}
 
-		public void QueryRemoteMapDetails(IEnumerable<string> uids)
+		public void QueryRemoteMapDetails(IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
 		{
 			var maps = uids.Distinct()
 				.Select(uid => previews[uid])
@@ -137,6 +137,9 @@ namespace OpenRA
 					foreach (var p in maps.Values)
 						p.UpdateRemoteSearch(MapStatus.Unavailable, null);
 
+					if (queryFailed != null)
+						queryFailed();
+
 					return;
 				}
 
@@ -145,11 +148,13 @@ namespace OpenRA
 				{
 					var yaml = MiniYaml.FromString(data);
 					foreach (var kv in yaml)
-						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value);
+						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
 				}
 				catch
 				{
 					Log.Write("debug", "Can't parse remote map search data:\n{0}", data);
+					if (queryFailed != null)
+						queryFailed();
 				}
 			};
 

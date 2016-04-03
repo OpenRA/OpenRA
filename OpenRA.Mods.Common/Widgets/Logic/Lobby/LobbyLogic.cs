@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
 			{
-				startGameButton.IsDisabled = () => configurationDisabled() ||
+				startGameButton.IsDisabled = () => configurationDisabled() || Map.Status != MapStatus.Available ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
 					(orderManager.LobbyInfo.GlobalSettings.DisableSingleplayer && orderManager.LobbyInfo.IsSinglePlayer);
 
@@ -464,8 +464,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				startingUnits.IsDisabled = () => configurationDisabled() || startUnitsLocked.Update(Map);
-				startingUnits.GetText = () => Map.Status != MapStatus.Available ||
-					!Map.RulesLoaded || startUnitsLocked.Update(Map) ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+				startingUnits.GetText = () => !Map.RulesLoaded || startUnitsLocked.Update(Map) ?
+					"Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
 					var classes = startUnitsInfos.Update(Map).Select(a => a.Class).Distinct();
@@ -496,8 +496,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					map => map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>());
 
 				startingCash.IsDisabled = () => configurationDisabled() || playerResources.Update(Map).DefaultCashLocked;
-				startingCash.GetText = () => Map.Status != MapStatus.Available ||
-					!Map.RulesLoaded || playerResources.Update(Map).DefaultCashLocked ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
+				startingCash.GetText = () => !Map.RulesLoaded || playerResources.Update(Map).DefaultCashLocked ?
+					"Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
 				startingCash.OnMouseDown = _ =>
 				{
 					var options = playerResources.Update(Map).SelectableCash.Select(c => new DropDownOption
@@ -533,8 +533,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					techLevelDescription.IsVisible = techLevel.IsVisible;
 
 				techLevel.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).TechLevelLocked;
-				techLevel.GetText = () => Map.Status != MapStatus.Available ||
-					!Map.RulesLoaded || mapOptions.Update(Map).TechLevelLocked ? "Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
+				techLevel.GetText = () => !Map.RulesLoaded || mapOptions.Update(Map).TechLevelLocked ?
+					"Not Available" : "{0}".F(orderManager.LobbyInfo.GlobalSettings.TechLevel);
 				techLevel.OnMouseDown = _ =>
 				{
 					var options = techLevels.Update(Map).Select(c => new DropDownOption
@@ -776,6 +776,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
+		void LoadMapPreviewRules(MapPreview map)
+		{
+			new Task(() =>
+			{
+				// Force map rules to be loaded on this background thread
+				var unused = map.Rules;
+			}).Start();
+		}
+
 		void UpdateCurrentMap()
 		{
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
@@ -814,8 +823,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}).Start();
 			}
+			else if (Map.Status == MapStatus.DownloadAvailable)
+				LoadMapPreviewRules(Map);
 			else if (Game.Settings.Game.AllowDownloading)
-				modData.MapCache.QueryRemoteMapDetails(new[] { uid });
+				modData.MapCache.QueryRemoteMapDetails(new[] { uid }, LoadMapPreviewRules);
 		}
 
 		void UpdatePlayerList()

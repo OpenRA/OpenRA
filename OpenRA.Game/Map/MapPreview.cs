@@ -17,6 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
@@ -51,10 +52,72 @@ namespace OpenRA
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
+		public readonly string tileset;
+		public readonly string rules;
+		public readonly string players_block;
 	}
 
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
+		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion</summary>
+		class InnerData
+		{
+			public string Title;
+			public string[] Categories;
+			public string Author;
+			public string TileSet;
+			public MapPlayers Players;
+			public int PlayerCount;
+			public CPos[] SpawnPoints;
+			public MapGridType GridType;
+			public Rectangle Bounds;
+			public Bitmap Preview;
+			public MapStatus Status;
+			public MapClassification Class;
+			public MapVisibility Visibility;
+			public bool SuitableForInitialMap;
+
+			Lazy<Ruleset> rules;
+			public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
+			public bool InvalidCustomRules { get; private set; }
+			public bool RulesLoaded { get; private set; }
+
+			public void SetRulesetGenerator(ModData modData, Func<Ruleset> generator)
+			{
+				InvalidCustomRules = false;
+				RulesLoaded = false;
+
+				// Note: multiple threads may try to access the value at the same time
+				// We rely on the thread-safety guarantees given by Lazy<T> to prevent race conitions.
+				// If you're thinking about replacing this, then you must be careful to keep this safe.
+				rules = Exts.Lazy(() =>
+				{
+					if (generator == null)
+						return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
+
+					try
+					{
+						return generator();
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
+						InvalidCustomRules = true;
+						return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
+					}
+					finally
+					{
+						RulesLoaded = true;
+					}
+				});
+			}
+
+			public InnerData Clone()
+			{
+				return (InnerData)MemberwiseClone();
+			}
+		}
+
 		static readonly CPos[] NoSpawns = new CPos[] { };
 		MapCache cache;
 		ModData modData;
@@ -63,25 +126,26 @@ namespace OpenRA
 		public IReadOnlyPackage Package { get; private set; }
 		IReadOnlyPackage parentPackage;
 
-		public string Title { get; private set; }
-		public string[] Categories { get; private set; }
-		public string Author { get; private set; }
-		public string TileSet { get; private set; }
-		public MapPlayers Players { get; private set; }
-		public int PlayerCount { get; private set; }
-		public CPos[] SpawnPoints { get; private set; }
-		public MapGridType GridType { get; private set; }
-		public Rectangle Bounds { get; private set; }
-		public Bitmap Preview { get; private set; }
-		public MapStatus Status { get; private set; }
-		public MapClassification Class { get; private set; }
-		public MapVisibility Visibility { get; private set; }
-		public bool SuitableForInitialMap { get; private set; }
+		volatile InnerData innerData;
 
-		Lazy<Ruleset> rules;
-		public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
-		public bool InvalidCustomRules { get; private set; }
-		public bool RulesLoaded { get; private set; }
+		public string Title { get { return innerData.Title; } }
+		public string[] Categories { get { return innerData.Categories; } }
+		public string Author { get { return innerData.Author; } }
+		public string TileSet { get { return innerData.TileSet; } }
+		public MapPlayers Players { get { return innerData.Players; } }
+		public int PlayerCount { get { return innerData.PlayerCount; } }
+		public CPos[] SpawnPoints { get { return innerData.SpawnPoints; } }
+		public MapGridType GridType { get { return innerData.GridType; } }
+		public Rectangle Bounds { get { return innerData.Bounds; } }
+		public Bitmap Preview { get { return innerData.Preview; } }
+		public MapStatus Status { get { return innerData.Status; } }
+		public MapClassification Class { get { return innerData.Class; } }
+		public MapVisibility Visibility { get { return innerData.Visibility; } }
+		public bool SuitableForInitialMap { get { return innerData.SuitableForInitialMap; } }
+
+		public Ruleset Rules { get { return innerData.Rules; } }
+		public bool InvalidCustomRules { get { return innerData.InvalidCustomRules; } }
+		public bool RulesLoaded { get { return innerData.RulesLoaded; } }
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -115,16 +179,23 @@ namespace OpenRA
 			this.modData = modData;
 
 			Uid = uid;
-			Title = "Unknown Map";
-			Categories = new[] { "Unknown" };
-			Author = "Unknown Author";
-			PlayerCount = 0;
-			Bounds = Rectangle.Empty;
-			SpawnPoints = NoSpawns;
-			GridType = gridType;
-			Status = MapStatus.Unavailable;
-			Class = MapClassification.Unknown;
-			Visibility = MapVisibility.Lobby;
+			innerData = new InnerData
+			{
+				Title = "Unknown Map",
+				Categories = new[] { "Unknown" },
+				Author = "Unknown Author",
+				TileSet = "unknown",
+				Players = null,
+				PlayerCount = 0,
+				SpawnPoints = NoSpawns,
+				GridType = gridType,
+				Bounds = Rectangle.Empty,
+				Preview = null,
+				Status = MapStatus.Unavailable,
+				Class = MapClassification.Unknown,
+				Visibility = MapVisibility.Lobby,
+				SuitableForInitialMap = false
+			};
 		}
 
 		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
@@ -140,8 +211,10 @@ namespace OpenRA
 
 			Package = p;
 			parentPackage = parent;
-			GridType = gridType;
-			Class = classification;
+
+			var newData = innerData.Clone();
+			newData.GridType = gridType;
+			newData.Class = classification;
 
 			MiniYaml temp;
 			if (yaml.TryGetValue("MapFormat", out temp))
@@ -152,23 +225,29 @@ namespace OpenRA
 			}
 
 			if (yaml.TryGetValue("Title", out temp))
-				Title = temp.Value;
+				newData.Title = temp.Value;
+
 			if (yaml.TryGetValue("Categories", out temp))
-				Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
+				newData.Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
+
 			if (yaml.TryGetValue("Tileset", out temp))
-				TileSet = temp.Value;
+				newData.TileSet = temp.Value;
+
 			if (yaml.TryGetValue("Author", out temp))
-				Author = temp.Value;
+				newData.Author = temp.Value;
+
 			if (yaml.TryGetValue("Bounds", out temp))
-				Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
+				newData.Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
+
 			if (yaml.TryGetValue("Visibility", out temp))
-				Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
+				newData.Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
 
 			string requiresMod = string.Empty;
 			if (yaml.TryGetValue("RequiresMod", out temp))
 				requiresMod = temp.Value;
 
-			Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ? MapStatus.Available : MapStatus.Unavailable;
+			newData.Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ?
+				MapStatus.Available : MapStatus.Unavailable;
 
 			try
 			{
@@ -183,15 +262,15 @@ namespace OpenRA
 						spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
 					}
 
-					SpawnPoints = spawns.ToArray();
+					newData.SpawnPoints = spawns.ToArray();
 				}
 				else
-					SpawnPoints = new CPos[0];
+					newData.SpawnPoints = new CPos[0];
 			}
 			catch (Exception)
 			{
-				SpawnPoints = new CPos[0];
-				Status = MapStatus.Unavailable;
+				newData.SpawnPoints = new CPos[0];
+				newData.Status = MapStatus.Unavailable;
 			}
 
 			try
@@ -200,47 +279,34 @@ namespace OpenRA
 				MiniYaml playerDefinitions;
 				if (yaml.TryGetValue("Players", out playerDefinitions))
 				{
-					Players = new MapPlayers(playerDefinitions.Nodes);
-					PlayerCount = Players.Players.Count(x => x.Value.Playable);
-					SuitableForInitialMap = EvaluateUserFriendliness(Players.Players);
+					newData.Players = new MapPlayers(playerDefinitions.Nodes);
+					newData.PlayerCount = newData.Players.Players.Count(x => x.Value.Playable);
+					newData.SuitableForInitialMap = EvaluateUserFriendliness(newData.Players.Players);
 				}
 			}
 			catch (Exception)
 			{
-				Status = MapStatus.Unavailable;
+				newData.Status = MapStatus.Unavailable;
 			}
 
-			// Note: multiple threads may try to access the value at the same time
-			// We rely on the thread-safety guarantees given by Lazy<T> to prevent race conitions.
-			// If you're thinking about replacing this, then you must be careful to keep this safe.
-			rules = Exts.Lazy(() =>
+			newData.SetRulesetGenerator(modData, () =>
 			{
-				try
-				{
-					var ruleDefinitions = LoadRuleSection(yaml, "Rules");
-					var weaponDefinitions = LoadRuleSection(yaml, "Weapons");
-					var voiceDefinitions = LoadRuleSection(yaml, "Voices");
-					var musicDefinitions = LoadRuleSection(yaml, "Music");
-					var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
-					var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-					return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-						voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
-				}
-				catch (Exception e)
-				{
-					Log.Write("debug", "Failed to load rules for `{0}` with error :{1}", Title, e.Message);
-					InvalidCustomRules = true;
-					return Ruleset.LoadDefaultsForTileSet(modData, TileSet);
-				}
-				finally
-				{
-					RulesLoaded = true;
-				}
+				var ruleDefinitions = LoadRuleSection(yaml, "Rules");
+				var weaponDefinitions = LoadRuleSection(yaml, "Weapons");
+				var voiceDefinitions = LoadRuleSection(yaml, "Voices");
+				var musicDefinitions = LoadRuleSection(yaml, "Music");
+				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
+				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
+				return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
 			});
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
-					Preview = new Bitmap(dataStream);
+					newData.Preview = new Bitmap(dataStream);
+
+			// Assign the new data atomically
+			innerData = newData;
 		}
 
 		MiniYaml LoadRuleSection(Dictionary<string, MiniYaml> yaml, string section)
@@ -272,47 +338,70 @@ namespace OpenRA
 			return true;
 		}
 
-		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml)
+		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
 		{
-			// Update on the main thread to ensure consistency
-			Game.RunAfterTick(() =>
+			var newData = innerData.Clone();
+			newData.Status = status;
+			newData.Class = MapClassification.Remote;
+
+			if (status == MapStatus.DownloadAvailable)
 			{
-				if (status == MapStatus.DownloadAvailable)
+				try
 				{
-					try
+					var r = FieldLoader.Load<RemoteMapData>(yaml);
+
+					// Map download has been disabled server side
+					if (!r.downloading)
 					{
-						var r = FieldLoader.Load<RemoteMapData>(yaml);
-
-						// Map download has been disabled server side
-						if (!r.downloading)
-						{
-							Status = MapStatus.Unavailable;
-							return;
-						}
-
-						Title = r.title;
-						Categories = r.categories;
-						Author = r.author;
-						PlayerCount = r.players;
-						Bounds = r.bounds;
-
-						var spawns = new CPos[r.spawnpoints.Length / 2];
-						for (var j = 0; j < r.spawnpoints.Length; j += 2)
-							spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
-						SpawnPoints = spawns;
-						GridType = r.map_grid_type;
-
-						Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						newData.Status = MapStatus.Unavailable;
+						return;
 					}
-					catch (Exception) { }
 
-					if (Preview != null)
-						cache.CacheMinimap(this);
+					newData.Title = r.title;
+					newData.Categories = r.categories;
+					newData.Author = r.author;
+					newData.PlayerCount = r.players;
+					newData.Bounds = r.bounds;
+					newData.TileSet = r.tileset;
+
+					var spawns = new CPos[r.spawnpoints.Length / 2];
+					for (var j = 0; j < r.spawnpoints.Length; j += 2)
+						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
+					newData.SpawnPoints = spawns;
+					newData.GridType = r.map_grid_type;
+					newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+
+					var playersString = Encoding.UTF8.GetString(Convert.FromBase64String(r.players_block));
+					newData.Players = new MapPlayers(MiniYaml.FromString(playersString));
+
+					newData.SetRulesetGenerator(modData, () =>
+					{
+						var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
+						var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
+						var ruleDefinitions = LoadRuleSection(rulesYaml, "Rules");
+						var weaponDefinitions = LoadRuleSection(rulesYaml, "Weapons");
+						var voiceDefinitions = LoadRuleSection(rulesYaml, "Voices");
+						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
+						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
+						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
+						return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+					});
 				}
+				catch (Exception) { }
 
-				Status = status;
-				Class = MapClassification.Remote;
-			});
+				// Commit updated data before running the callbacks
+				innerData = newData;
+
+				if (innerData.Preview != null)
+					cache.CacheMinimap(this);
+
+				if (parseMetadata != null)
+					parseMetadata(this);
+			}
+
+			// Update the status and class unconditionally
+			innerData = newData;
 		}
 
 		public void Install(Action onSuccess)
@@ -320,12 +409,12 @@ namespace OpenRA
 			if (Status != MapStatus.DownloadAvailable || !Game.Settings.Game.AllowDownloading)
 				return;
 
-			Status = MapStatus.Downloading;
+			innerData.Status = MapStatus.Downloading;
 			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
 			if (installLocation.Key == null || !(installLocation.Key is IReadWritePackage))
 			{
 				Log.Write("debug", "Map install directory not found");
-				Status = MapStatus.DownloadError;
+				innerData.Status = MapStatus.DownloadError;
 				return;
 			}
 
@@ -346,7 +435,7 @@ namespace OpenRA
 						// Map not found
 						if (res.Headers["Content-Disposition"] == null)
 						{
-							Status = MapStatus.DownloadError;
+							innerData.Status = MapStatus.DownloadError;
 							return;
 						}
 
@@ -363,7 +452,7 @@ namespace OpenRA
 							Log.Write("debug", "Remote map download failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
 							Log.Write("debug", "URL was: {0}", mapUrl);
 
-							Status = MapStatus.DownloadError;
+							innerData.Status = MapStatus.DownloadError;
 							return;
 						}
 
@@ -382,7 +471,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Console.WriteLine(e.Message);
-					Status = MapStatus.DownloadError;
+					innerData.Status = MapStatus.DownloadError;
 				}
 			}).Start();
 		}
@@ -398,7 +487,7 @@ namespace OpenRA
 
 		public void Invalidate()
 		{
-			Status = MapStatus.Unavailable;
+			innerData.Status = MapStatus.Unavailable;
 		}
 
 		public void Dispose()
