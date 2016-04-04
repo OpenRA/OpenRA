@@ -21,15 +21,15 @@ namespace OpenRA.Graphics
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 		static readonly float[] ChannelSelect = { 0.2f, 0.4f, 0.6f, 0.8f };
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, float paletteTextureIndex, int nv, float2 size)
+		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, float paletteTextureIndex, int nv, float3 size)
 		{
-			var b = new float2(o.X + size.X, o.Y);
-			var c = new float2(o.X + size.X, o.Y + size.Y);
-			var d = new float2(o.X, o.Y + size.Y);
+			var b = new float3(o.X + size.X, o.Y, o.Z);
+			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
+			var d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
 			FastCreateQuad(vertices, o, b, c, d, r, paletteTextureIndex, nv);
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, float paletteTextureIndex, int nv)
+		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, float paletteTextureIndex, int nv)
 		{
 			var attribC = ChannelSelect[(int)r.Channel];
 			if (r.Sheet.Type == SheetType.DualIndexed)
