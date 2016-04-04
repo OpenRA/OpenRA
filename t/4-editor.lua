@@ -65,6 +65,8 @@ is(#editor:MarkerGetAll(), 0, "Breakpoint is removed after toggling on a line wi
 editor:BreakpointToggle(1)
 is(#editor:MarkerGetAll(), 0, "Breakpoint is not set on a comment line.")
 
+ok(ide.wxver >= "3.1.1" and wxstc.wxSTC_INDIC_TEXTFORE or nil, "Text foreground color indicator is available.")
+
 -- cleanup
 ide:GetDocument(editor):SetModified(false)
 ClosePage()
