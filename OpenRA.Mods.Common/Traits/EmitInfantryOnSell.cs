@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 
 			var health = self.TraitOrDefault<Health>();
-			var dudesValue = info.ValuePercent * cost;
+			var dudesValue = info.ValuePercent * cost / 100;
 			if (health != null)
 			{
 				if (100 * health.HP >= info.MinHpPercent * health.MaxHP)
