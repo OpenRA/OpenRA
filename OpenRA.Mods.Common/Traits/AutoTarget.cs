@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Attack(Actor self, Actor targetActor, bool allowMove)
 		{
 			TargetedActor = targetActor;
-			var target = Target.FromActor(targetActor);
+			var target = Target.FromActor(targetActor, TargetMethod.Automatic);
 			self.SetTargetLine(target, Color.Red, false);
 			attack.AttackTarget(target, false, allowMove);
 		}
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
 					continue;
 
-				if (PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+				if (self.PreventsAutoTarget(actor) || !self.Owner.CanTargetActor(actor))
 					continue;
 
 				// Select only the first compatible armament for each actor: if this actor is selected
@@ -220,14 +220,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			return null;
 		}
+	}
 
-		bool PreventsAutoTarget(Actor attacker, Actor target)
+	public static class TargetExts
+	{
+		public static bool MethodIsValidFor(this Target target, Actor targeter)
 		{
-			foreach (var pat in target.TraitsImplementing<IPreventsAutoTarget>())
-				if (pat.PreventsAutoTarget(target, attacker))
-					return true;
+			return !(target.Actor != null && target.TargetMethod == TargetMethod.Automatic && target.Actor.PreventsAutoTarget(targeter));
+		}
 
-			return false;
+		public static bool IsValidFor(this Target target, Actor targeter)
+		{
+			return target.IsValidForIgnoringMethod(targeter) && target.MethodIsValidFor(targeter);
 		}
 	}
 

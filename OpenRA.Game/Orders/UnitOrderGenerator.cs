@@ -117,7 +117,7 @@ namespace OpenRA.Orders
 			if (self.World.IsGameOver)
 				return null;
 
-			if (self.Disposed || !target.IsValidFor(self))
+			if (self.Disposed || !target.IsValidForIgnoringMethod(self))
 				return null;
 
 			var modifiers = TargetModifiers.None;

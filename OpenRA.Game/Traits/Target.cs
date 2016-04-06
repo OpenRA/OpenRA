@@ -16,12 +16,14 @@ using System.Linq;
 namespace OpenRA.Traits
 {
 	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
+	public enum TargetMethod { Manual, Automatic }
 	public struct Target
 	{
 		public static readonly Target[] None = { };
 		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
 
 		TargetType type;
+		public TargetMethod TargetMethod { get; private set; }
 		Actor actor;
 		FrozenActor frozen;
 		WPos pos;
@@ -40,7 +42,7 @@ namespace OpenRA.Traits
 				: FromCell(w, o.TargetLocation);
 		}
 
-		public static Target FromActor(Actor a)
+		public static Target FromActor(Actor a, TargetMethod targetMethod = TargetMethod.Manual)
 		{
 			if (a == null)
 				return Invalid;
@@ -50,6 +52,7 @@ namespace OpenRA.Traits
 				actor = a,
 				type = TargetType.Actor,
 				generation = a.Generation,
+				TargetMethod = targetMethod,
 			};
 		}
 
@@ -77,7 +80,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public bool IsValidFor(Actor targeter)
+		public bool IsValidForIgnoringMethod(Actor targeter)
 		{
 			if (targeter == null || Type == TargetType.Invalid)
 				return false;
