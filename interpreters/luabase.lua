@@ -2,7 +2,7 @@ function MakeLuaInterpreter(version, name)
 
 local function exePath(self, version)
   local version = tostring(version or ""):gsub('%.','')
-  local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
+  local mainpath = ide:GetRootPath()
   local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version)
   return ide.config.path['lua'..version]
      or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version))
