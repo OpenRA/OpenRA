@@ -34,14 +34,18 @@ namespace OpenRA.Graphics
 		readonly TerrainRenderer terrainRenderer;
 		readonly Lazy<DeveloperMode> devTrait;
 		readonly Func<string, PaletteReference> createPaletteReference;
+		readonly bool enableDepthBuffer;
 
-		internal WorldRenderer(World world)
+		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
 			TileSize = World.Map.Grid.TileSize;
 			Viewport = new Viewport(this, world.Map);
 
 			createPaletteReference = CreatePaletteReference;
+
+			var mapGrid = modData.Manifest.Get<MapGrid>();
+			enableDepthBuffer = mapGrid.EnableDepthBuffer;
 
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
@@ -133,11 +137,17 @@ namespace OpenRA.Graphics
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
+			if (enableDepthBuffer)
+				Game.Renderer.Device.EnableDepthBuffer();
+
 			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].Render(this);
+
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IPostRender>())
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
@@ -145,12 +155,18 @@ namespace OpenRA.Graphics
 
 			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
 
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
+
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
 				a.Trait.RenderShroud(this, renderShroud);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
 				for (var i = 0; i < renderables.Count; i++)
 					renderables[i].RenderDebugGeometry(this);
+
+			if (enableDepthBuffer)
+				Game.Renderer.Device.DisableDepthBuffer();
 
 			Game.Renderer.DisableScissor();
 
@@ -207,6 +223,12 @@ namespace OpenRA.Graphics
 		public float2 ScreenPosition(WPos pos)
 		{
 			return new float2(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f);
+		}
+
+		public float3 Screen3DPosition(WPos pos)
+		{
+			var z = ZPosition(pos, 0) * TileSize.Height / 1024f;
+			return new float3(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f, z);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)

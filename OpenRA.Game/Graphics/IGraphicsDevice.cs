@@ -70,6 +70,7 @@ namespace OpenRA
 
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
+		void ClearDepthBuffer();
 
 		void SetBlendMode(BlendMode mode);
 
