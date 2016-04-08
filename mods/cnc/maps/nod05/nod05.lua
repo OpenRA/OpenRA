@@ -275,7 +275,7 @@ CheckForSams = function(player)
 end
 
 checkProduction = function(player)
-	local Units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+	local Units = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.Owner == enemy
 	end)
 
@@ -304,7 +304,7 @@ checkProduction = function(player)
 end
 
 getStartUnits = function()
-	local Units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+	local Units = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.Owner == enemy and ( actor.Type == 'e2' or actor.Type == 'e1' or actor.Type == 'jeep' or actor.Type == 'mtnk')
 	end)
 	Utils.Do(Units, function(unit)
