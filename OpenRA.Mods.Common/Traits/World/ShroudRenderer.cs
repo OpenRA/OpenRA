@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var uv in w.Map.AllCells.MapCoords)
 			{
 				var pos = w.Map.CenterOfCell(uv.ToCPos(map));
-				var screen = wr.ScreenPosition(pos - new WVec(0, 0, pos.Z));
+				var screen = wr.Screen3DPosition(pos - new WVec(0, 0, pos.Z));
 				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tileInfos[uv] = new TileInfo(screen, variant);
 			}

@@ -274,6 +274,7 @@ resources:
 		Length: 12
 		ShadowStart: 12
 		Offset: 0, -12
+		ZRamp: 1
 	tib01: tib01
 	tib02: tib02
 	tib03: tib03
@@ -302,6 +303,7 @@ resources:
 shroud:
 	Defaults:
 		Offset: 0, -1
+		ZRamp: 1
 	shroud:
 		Length: *
 	fog: fog
