@@ -43,6 +43,7 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+		InsufficientFundsNotification: InsufficientFunds
 	ActorGroupProxy:
 	DeveloperMode:
 	GpsWatcher:
