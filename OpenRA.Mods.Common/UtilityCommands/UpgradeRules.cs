@@ -757,6 +757,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "EffectImage";
 				}
 
+				if (engineVersion < 20160408)
+				{
+					var traitNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "InsufficientFundsWarning");
+					if (traitNode != null)
+					{
+						var prNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "PlayerResources");
+						if (prNode != null)
+							prNode.Value.Nodes.Add(new MiniYamlNode("InsufficientFundsNotification", new MiniYaml("InsufficientFunds")));
+
+						node.Value.Nodes.Remove(traitNode);
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
