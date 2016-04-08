@@ -83,6 +83,9 @@ function DisplayOutputLn(...)
   DisplayOutputNoMarker("\n")
 end
 
+function errorlog:Print(...) return ide:Print(...) end
+function errorlog:Write(...) return DisplayOutputNoMarker(...) end
+
 local streamins = {}
 local streamerrs = {}
 local streamouts = {}
