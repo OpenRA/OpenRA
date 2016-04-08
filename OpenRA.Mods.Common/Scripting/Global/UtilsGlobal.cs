@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections;
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
@@ -52,6 +53,20 @@ namespace OpenRA.Mods.Common.Scripting
 						return false;
 
 			return true;
+		}
+
+		[Desc("Returns the original collection filtered with the func.")]
+		public LuaTable Where(LuaValue[] collection, LuaFunction func)
+		{
+			var t = Context.CreateTable();
+
+			foreach (var c in collection)
+				using (var ret = func.Call(c))
+				using (var result = ret.FirstOrDefault())
+					if (result != null && result.ToBoolean())
+						t.Add(t.Count + 1, c);
+
+			return t;
 		}
 
 		[Desc("Returns the first n values from a collection.")]
