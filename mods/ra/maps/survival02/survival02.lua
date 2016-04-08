@@ -386,11 +386,6 @@ SetupSoviets = function()
 				end
 			end)
 		end)
-
-		local units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Owner == soviets and self.HasProperty("AutoTarget") end)
-		Utils.Do(units, function(unit)
-			unit.Stance = "Defend"
-		end)
 	end)
 end
 
