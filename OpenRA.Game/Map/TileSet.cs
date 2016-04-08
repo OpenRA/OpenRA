@@ -27,6 +27,9 @@ namespace OpenRA
 		public readonly Color LeftColor;
 		public readonly Color RightColor;
 
+		public readonly float ZOffset = 0.0f;
+		public readonly float ZRamp = 1.0f;
+
 		public MiniYaml Save(TileSet tileSet)
 		{
 			var root = new List<MiniYamlNode>();
@@ -41,6 +44,12 @@ namespace OpenRA
 
 			if (RightColor != tileSet.TerrainInfo[TerrainType].Color)
 				root.Add(FieldSaver.SaveField(this, "RightColor"));
+
+			if (ZOffset != 0.0f)
+				root.Add(FieldSaver.SaveField(this, "ZOffset"));
+
+			if (ZRamp != 1.0f)
+				root.Add(FieldSaver.SaveField(this, "ZRamp"));
 
 			return new MiniYaml(tileSet.TerrainInfo[TerrainType].Type, root);
 		}
