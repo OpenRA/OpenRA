@@ -15,11 +15,7 @@ CheckForCYard = function()
 end
 
 CheckForSPen = function()
-	SPens = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-		return actor.Type == "spen"
-	end)
-
-	return #SPens >=1
+	return Utils.Any(Map.ActorsInWorld, function(actor) return actor.Type == "spen" end)
 end
 
 RunInitialActivities = function()
@@ -36,7 +32,7 @@ RunInitialActivities = function()
 		IdlingUnits()
 		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 
-		local buildings = Map.ActorsInBox(NWIdlePoint.CenterPosition, Map.BottomRight, function(self) return self.Owner == Greece and self.HasProperty("StartBuildingRepairs") end)
+		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Greece and self.HasProperty("StartBuildingRepairs") end)
 		Utils.Do(buildings, function(actor)
 			Trigger.OnDamaged(actor, function(building)
 				if building.Owner == Greece and building.Health < building.MaxHealth * 3/4 then

@@ -145,11 +145,12 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnKilled(ExplosiveBarrel, function()
-		local bridge = Map.ActorsInBox(USSRReinforcementsCameraWaypoint.CenterPosition, USSRReinforcementsEntryWaypoint.CenterPosition,
-			function(self) return self.Type == "bridge1" end)
 
-		if not bridge[1].IsDead then
-			bridge[1].Kill()
+		-- We need the first bridge which is returned
+		local bridge = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" end)[1]
+
+		if not bridge.IsDead then
+			bridge.Kill()
 		end
 	end)
 
@@ -237,7 +238,7 @@ InitTriggers = function()
 	end)
 
 	Trigger.AfterDelay(0, function()
-		local bridges = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Type == "bridge1" end)
+		local bridges = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" end)
 
 		Trigger.OnAllKilled(bridges, function()
 			player.MarkCompletedObjective(KillBridges)

@@ -128,7 +128,7 @@ WorldLoaded = function()
 		end
 	end)
 	Trigger.AfterDelay(0, function()
-		local buildings = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Owner == enemy and self.HasProperty("StartBuildingRepairs") end)
+		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == enemy and self.HasProperty("StartBuildingRepairs") end)
 		Utils.Do(buildings, function(actor)
 			Trigger.OnDamaged(actor, function(building, attacker)
 				if building.Owner == enemy and building.Health < building.MaxHealth * 0.8 then
