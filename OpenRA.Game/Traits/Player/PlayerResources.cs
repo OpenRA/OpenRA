@@ -25,6 +25,12 @@ namespace OpenRA.Traits
 		[Desc("Force the DefaultCash option by disabling changes in the lobby.")]
 		public readonly bool DefaultCashLocked = false;
 
+		[Desc("Speech notification to play when the player does not have any funds.")]
+		public readonly string InsufficientFundsNotification = null;
+
+		[Desc("Delay (in ticks) during which warnings will be muted.")]
+		public readonly int InsufficientFundsNotificationDelay = 750;
+
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
@@ -32,10 +38,12 @@ namespace OpenRA.Traits
 	{
 		const float DisplayCashFracPerFrame = .07f;
 		const int DisplayCashDeltaPerFrame = 37;
+		readonly PlayerResourcesInfo info;
 		readonly Player owner;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
+			this.info = info;
 			owner = self.Owner;
 
 			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
@@ -51,6 +59,8 @@ namespace OpenRA.Traits
 
 		public int Earned;
 		public int Spent;
+
+		int lastNotificationTick;
 
 		public bool CanGiveResources(int amount)
 		{
@@ -111,9 +121,19 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public bool TakeCash(int num)
+		public bool TakeCash(int num, bool notifyLowFunds = false)
 		{
-			if (Cash + Resources < num) return false;
+			if (Cash + Resources < num)
+			{
+				if (notifyLowFunds && !string.IsNullOrEmpty(info.InsufficientFundsNotification) &&
+					owner.World.WorldTick - lastNotificationTick >= info.InsufficientFundsNotificationDelay)
+				{
+					lastNotificationTick = owner.World.WorldTick;
+					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", info.InsufficientFundsNotification, owner.Faction.InternalName);
+				}
+
+				return false;
+			}
 
 			// Spend ore before cash
 			Resources -= num;

@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				var cost = Math.Max(1, (hpToRepair * Info.RepairPercent * buildingValue) / (health.MaxHP * 100));
 
 				// TakeCash will return false if the player can't pay, and will stop him from contributing this Tick
-				var activePlayers = Repairers.Count(player => player.PlayerActor.Trait<PlayerResources>().TakeCash(cost));
+				var activePlayers = Repairers.Count(player => player.PlayerActor.Trait<PlayerResources>().TakeCash(cost, true));
 
 				RepairActive = activePlayers > 0;
 

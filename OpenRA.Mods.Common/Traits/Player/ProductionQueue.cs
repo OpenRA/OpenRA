@@ -458,7 +458,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame))
+			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
 				return;
 
 			RemainingCost -= costThisFrame;
