@@ -96,9 +96,9 @@ namespace OpenRA.Orders
 
 			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null && o.Order.OverrideSelection)
-				return false;
+				return true;
 
-			return true;
+			return false;
 		}
 
 		/// <summary>
