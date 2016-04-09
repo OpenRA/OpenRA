@@ -720,7 +720,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly Mobile mobile;
 			readonly bool rejectMove;
-			public bool OverrideSelection { get { return false; } }
+			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			{
+				return modifiers.HasModifier(TargetModifiers.ForceMove);
+			}
 
 			public MoveOrderTargeter(Actor self, Mobile unit)
 			{
