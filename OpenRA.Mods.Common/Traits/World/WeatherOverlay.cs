@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds a particle-based overlay.")]
-	public class WeatherOverlayInfo : ITraitInfo
+	public class WeatherOverlayInfo : ITraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Factor for particle density. As higher as more particles will get spawned.")]
 		public readonly float ParticleDensityFactor = 0.0007625f;
