@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var pp = p;
 				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = playerTemplate.Clone();
-				LobbyUtils.SetupClientWidget(item, client, orderManager, client.Bot == null);
+				LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
