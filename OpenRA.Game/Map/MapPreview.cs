@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -80,12 +81,14 @@ namespace OpenRA
 			Lazy<Ruleset> rules;
 			public Ruleset Rules { get { return rules != null ? rules.Value : null; } }
 			public bool InvalidCustomRules { get; private set; }
+			public bool DefinesUnsafeCustomRules { get; private set; }
 			public bool RulesLoaded { get; private set; }
 
-			public void SetRulesetGenerator(ModData modData, Func<Ruleset> generator)
+			public void SetRulesetGenerator(ModData modData, Func<Pair<Ruleset, bool>> generator)
 			{
 				InvalidCustomRules = false;
 				RulesLoaded = false;
+				DefinesUnsafeCustomRules = false;
 
 				// Note: multiple threads may try to access the value at the same time
 				// We rely on the thread-safety guarantees given by Lazy<T> to prevent race conitions.
@@ -97,7 +100,9 @@ namespace OpenRA
 
 					try
 					{
-						return generator();
+						var ret = generator();
+						DefinesUnsafeCustomRules = ret.Second;
+						return ret.First;
 					}
 					catch (Exception e)
 					{
@@ -146,6 +151,15 @@ namespace OpenRA
 		public Ruleset Rules { get { return innerData.Rules; } }
 		public bool InvalidCustomRules { get { return innerData.InvalidCustomRules; } }
 		public bool RulesLoaded { get { return innerData.RulesLoaded; } }
+		public bool DefinesUnsafeCustomRules
+		{
+			get
+			{
+				// Force lazy rules to be evaluated
+				var force = innerData.Rules;
+				return innerData.DefinesUnsafeCustomRules;
+			}
+		}
 
 		Download download;
 		public long DownloadBytes { get; private set; }
@@ -297,8 +311,11 @@ namespace OpenRA
 				var musicDefinitions = LoadRuleSection(yaml, "Music");
 				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-				return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
 					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
+					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
+				return Pair.New(rules, flagged);
 			});
 
 			if (p.Contains("map.png"))
@@ -384,8 +401,11 @@ namespace OpenRA
 						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
 						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
 						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
-						return Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
+						var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
 							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
+							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
+						return Pair.New(rules, flagged);
 					});
 				}
 				catch (Exception) { }
