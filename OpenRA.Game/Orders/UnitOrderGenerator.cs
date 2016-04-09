@@ -109,7 +109,7 @@ namespace OpenRA.Orders
 					return true;
 			}
 
-			return true;
+			return false;
 		}
 
 		/// <summary>
