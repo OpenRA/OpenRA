@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var adminIndicator = parent.GetOrNull("ADMIN_INDICATOR");
 			if (adminIndicator != null)
-				adminIndicator.IsVisible = () => c.IsAdmin;
+				adminIndicator.IsVisible = () => c != null && c.IsAdmin;
 
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
@@ -253,8 +253,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
-			tooltip.IsVisible = () => visible;
-			tooltip.Bind(orderManager, c.Index);
+			tooltip.IsVisible = () => c != null && visible;
+			if (c != null)
+				tooltip.Bind(orderManager, c.Index);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
