@@ -4,13 +4,14 @@ uniform bool EnableDepthPreview;
 uniform float DepthTextureScale;
 
 varying vec4 vTexCoord;
+varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
 
 void main()
 {
 	vec4 x = texture2D(DiffuseTexture, vTexCoord.st);
-	vec2 p = vec2(dot(x, vChannelMask), vTexCoord.p);
+	vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
 	vec4 c = texture2D(Palette, p);
 
 	// Discard any transparent fragments (both color and depth)

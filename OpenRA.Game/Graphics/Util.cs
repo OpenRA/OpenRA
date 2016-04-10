@@ -35,12 +35,12 @@ namespace OpenRA.Graphics
 			if (r.Sheet.Type == SheetType.DualIndexed)
 				attribC *= -1;
 
-			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
+			vertices[nv] = new Vertex(a, r.Left, r.Top, 0, 0, paletteTextureIndex, attribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, 0, 0, paletteTextureIndex, attribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, 0, 0, paletteTextureIndex, attribC);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, 0, 0, paletteTextureIndex, attribC);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, 0, 0, paletteTextureIndex, attribC);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, 0, 0, paletteTextureIndex, attribC);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }

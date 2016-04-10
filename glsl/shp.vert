@@ -3,7 +3,9 @@ uniform vec3 r1, r2;
 
 attribute vec4 aVertexPosition;
 attribute vec4 aVertexTexCoord;
+attribute vec2 aVertexTexMetadata;
 varying vec4 vTexCoord;
+varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
 
@@ -38,6 +40,7 @@ void main()
 {
 	gl_Position = vec4((aVertexPosition.xyz - Scroll.xyz) * r1 + r2, 1);
 	vTexCoord = aVertexTexCoord;
-	vChannelMask = DecodeChannelMask(aVertexTexCoord.w);
-	vDepthMask = DecodeDepthChannelMask(aVertexTexCoord.w);
+	vTexMetadata = aVertexTexMetadata;
+	vChannelMask = DecodeChannelMask(aVertexTexMetadata.t);
+	vDepthMask = DecodeDepthChannelMask(aVertexTexMetadata.t);
 } 

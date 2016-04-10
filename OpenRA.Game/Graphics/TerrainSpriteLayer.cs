@@ -59,7 +59,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < vertices.Length; i++)
 			{
 				var v = vertices[i];
-				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.U, v.V, palette.TextureIndex, v.C);
+				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C);
 			}
 
 			for (var row = 0; row < map.MapSize.Y; row++)
