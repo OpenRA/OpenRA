@@ -332,7 +332,7 @@ namespace OpenRA.Graphics
 
 			var size = new Size(renderer.SheetSize, renderer.SheetSize);
 			var framebuffer = renderer.Device.CreateFrameBuffer(size);
-			var sheet = new Sheet(SheetType.DualIndexed, framebuffer.Texture);
+			var sheet = new Sheet(SheetType.BGRA, framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 
 			return sheet;
