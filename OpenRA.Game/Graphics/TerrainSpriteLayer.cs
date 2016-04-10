@@ -68,12 +68,15 @@ namespace OpenRA.Graphics
 
 		public void Update(CPos cell, Sprite sprite)
 		{
-			var pos = sprite == null ? float2.Zero :
+			var xy = sprite == null ? float2.Zero :
 				worldRenderer.ScreenPosition(map.CenterOfCell(cell)) + sprite.Offset - 0.5f * sprite.Size;
-			Update(cell.ToMPos(map.Grid.Type), sprite, pos);
+
+			// TODO: Deal with sprite z offsets
+			var z = worldRenderer.ScreenZPosition(map.CenterOfCell(cell), 0);
+			Update(cell.ToMPos(map.Grid.Type), sprite, new float3(xy.X, xy.Y, z));
 		}
 
-		public void Update(MPos uv, Sprite sprite, float2 pos)
+		public void Update(MPos uv, Sprite sprite, float3 pos)
 		{
 			if (sprite != null)
 			{

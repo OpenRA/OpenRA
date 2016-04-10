@@ -18,11 +18,8 @@ namespace OpenRA.Graphics
 	{
 		public readonly float X, Y, Z, U, V, P, C;
 
-		public Vertex(float2 xy, float u, float v, float p, float c)
-			: this(xy.X, xy.Y, 0, u, v, p, c) { }
-
-		public Vertex(float[] xyz, float u, float v, float p, float c)
-			: this(xyz[0], xyz[1], xyz[2], u, v, p, c) { }
+		public Vertex(float3 xyz, float u, float v, float p, float c)
+			: this(xyz.X, xyz.Y, xyz.Z, u, v, p, c) { }
 
 		public Vertex(float x, float y, float z, float u, float v, float p, float c)
 		{

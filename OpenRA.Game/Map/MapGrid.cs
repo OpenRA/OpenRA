@@ -28,6 +28,8 @@ namespace OpenRA
 
 		public readonly int MaximumTileSearchRange = 50;
 
+		public readonly bool EnableDepthBuffer = false;
+
 		public readonly WVec[] SubCellOffsets =
 		{
 			new WVec(0, 0, 0),       // full cell - index 0

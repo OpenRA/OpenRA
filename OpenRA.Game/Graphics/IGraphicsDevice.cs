@@ -95,6 +95,7 @@ namespace OpenRA
 		void SetBool(string name, bool value);
 		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
+		void SetVec(string name, float x, float y, float z);
 		void SetVec(string name, float[] vec, int length);
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);

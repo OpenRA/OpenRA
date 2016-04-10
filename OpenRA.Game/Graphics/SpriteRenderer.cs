@@ -114,11 +114,17 @@ namespace OpenRA.Graphics
 			shader.SetTexture("Palette", palette);
 		}
 
-		public void SetViewportParams(Size screen, float zoom, int2 scroll)
+		public void SetViewportParams(Size screen, float depthScale, float depthOffset, float zoom, int2 scroll)
 		{
-			shader.SetVec("Scroll", scroll.X, scroll.Y);
-			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
-			shader.SetVec("r2", -1, 1);
+			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
+			shader.SetVec("r1",
+				zoom * 2f / screen.Width,
+				-zoom * 2f / screen.Height,
+				-depthScale * zoom / screen.Height);
+			shader.SetVec("r2", -1, 1, 1 - depthOffset);
+
+			// Texture index is sampled as a float, so convert to pixels then scale
+			shader.SetVec("DepthTextureScale", 128 * depthScale * zoom / screen.Height);
 		}
 
 		public void SetDepthPreviewEnabled(bool enabled)

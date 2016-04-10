@@ -508,6 +508,26 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
+			else if (fieldType == typeof(float3))
+			{
+				if (value != null)
+				{
+					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					float x = 0;
+					float y = 0;
+					float z = 0;
+					float.TryParse(parts[0], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out x);
+					float.TryParse(parts[1], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out y);
+
+					// z component is optional for compatibility with older float2 definitions
+					if (parts.Length > 2)
+						float.TryParse(parts[2], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out z);
+
+					return new float3(x, y, z);
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
 			else if (fieldType == typeof(Rectangle))
 			{
 				if (value != null)

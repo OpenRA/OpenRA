@@ -189,6 +189,17 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void SetVec(string name, float x, float y, float z)
+		{
+			VerifyThreadAffinity();
+			OpenGL.glUseProgram(program);
+			OpenGL.CheckGLError();
+			var param = OpenGL.glGetUniformLocation(program, name);
+			OpenGL.CheckGLError();
+			OpenGL.glUniform3f(param, x, y, z);
+			OpenGL.CheckGLError();
+		}
+
 		public void SetVec(string name, float[] vec, int length)
 		{
 			VerifyThreadAffinity();
