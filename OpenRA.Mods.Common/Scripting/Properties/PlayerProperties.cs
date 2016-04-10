@@ -59,7 +59,13 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool IsNonCombatant { get { return Player.NonCombatant; } }
 
 		[Desc("Returns true if the player is the local player.")]
-		public bool IsLocalPlayer { get { return Player == (Player.World.RenderPlayer ?? Player.World.LocalPlayer); }	}
+		public bool IsLocalPlayer { get { return Player == (Player.World.RenderPlayer ?? Player.World.LocalPlayer); } }
+
+		[Desc("Returns all living actors staying inside the world for this player.")]
+		public Actor[] GetActors()
+		{
+			return Player.World.Actors.Where(actor => actor.Owner == Player && !actor.IsDead && actor.IsInWorld).ToArray();
+		}
 
 		[Desc("Returns an array of actors representing all ground attack units of this player.")]
 		public Actor[] GetGroundAttackers()
