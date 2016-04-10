@@ -200,5 +200,55 @@ namespace OpenRA
 
 			return ruleset;
 		}
+
+		static bool AnyCustomYaml(MiniYaml yaml)
+		{
+			return yaml != null && (yaml.Value != null || yaml.Nodes.Any());
+		}
+
+		static bool AnyFlaggedTraits(ModData modData, List<MiniYamlNode> actors)
+		{
+			foreach (var actorNode in actors)
+			{
+				foreach (var traitNode in actorNode.Value.Nodes)
+				{
+					try
+					{
+						var traitName = traitNode.Key.Split('@')[0];
+						var traitType = modData.ObjectCreator.FindType(traitName + "Info");
+						if (traitType.GetInterface("ILobbyCustomRulesIgnore") == null)
+							return true;
+					}
+					catch { }
+				}
+			}
+
+			return false;
+		}
+
+		public static bool DefinesUnsafeCustomRules(ModData modData, IReadOnlyFileSystem fileSystem,
+			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications, MiniYaml mapSequences)
+		{
+			// Maps that define any weapon, voice, notification, or sequence overrides are always flagged
+			if (AnyCustomYaml(mapWeapons) || AnyCustomYaml(mapVoices) || AnyCustomYaml(mapNotifications) ||	AnyCustomYaml(mapSequences))
+				return true;
+
+			// Any trait overrides that aren't explicitly whitelisted are flagged
+			if (mapRules != null)
+			{
+				if (AnyFlaggedTraits(modData, mapRules.Nodes))
+					return true;
+
+				if (mapRules.Value != null)
+				{
+					var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
+					foreach (var f in mapFiles)
+						if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f))))
+							return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
