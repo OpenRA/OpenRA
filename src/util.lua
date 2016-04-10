@@ -267,25 +267,22 @@ function FileSysGetRecursive(path, recursive, spec, opts)
 end
 
 local normalflags = wx.wxPATH_NORM_ABSOLUTE + wx.wxPATH_NORM_DOTS + wx.wxPATH_NORM_TILDE
-function GetFullPathIfExists(p, f)
-  if not p or not f then return end
-  local file = wx.wxFileName(f)
-  -- Normalize call is needed to make the case of p = '/abc/def' and
-  -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
-  return (file:Normalize(normalflags, p)
-    and file:FileExists()
-    and file:GetFullPath()
-    or nil)
-end
-
 function MergeFullPath(p, f)
   if not p or not f then return end
   local file = wx.wxFileName(f)
   -- Normalize call is needed to make the case of p = '/abc/def' and
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
+  -- Normalization with PATH_NORM_DOTS removes leading dots, which need to be added back
+  local rel, rest = p:match("(%.[/\\.]*[/\\])(.*)")
+  if rel and rest then p = rest end
   return (file:Normalize(normalflags, p)
-    and file:GetFullPath()
+    and (rel or ""):gsub("[/\\]", GetPathSeparator())..file:GetFullPath()
     or nil)
+end
+
+function GetFullPathIfExists(p, f)
+  local path = MergeFullPath(p, f)
+  return path and wx.wxFileExists(path) and path or nil
 end
 
 function FileWrite(file, content)
