@@ -21,10 +21,13 @@ namespace OpenRA.Mods.Common.Scripting
 	public class MapGlobal : ScriptGlobal
 	{
 		readonly SpawnMapActors sma;
+		readonly World world;
+
 		public MapGlobal(ScriptContext context)
 			: base(context)
 		{
 			sma = context.World.WorldActor.Trait<SpawnMapActors>();
+			world = context.World;
 
 			// Register map actors as globals (yuck!)
 			foreach (var kv in sma.Actors)
@@ -133,5 +136,8 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			return Context.World.ActorsHavingTrait<ScriptTags>(t => t.HasTag(tag)).ToArray();
 		}
+
+		[Desc("Returns a table of all the actors that are currently on the map/in the world.")]
+		public Actor[] ActorsInWorld { get { return world.Actors.ToArray(); } }
 	}
 }

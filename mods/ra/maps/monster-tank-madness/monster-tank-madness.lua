@@ -168,9 +168,7 @@ SuperTankDomeInfiltrated = function()
 end
 
 SuperTanksDestruction = function()
-	local badGuys = Map.ActorsInBox(Map.TopLeft, Map.BottomRight,
-		function(self) return self.Owner == badguy and self.HasProperty("Health") end)
-
+	local badGuys = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == badguy and self.HasProperty("Health") end)
 	Utils.Do(badGuys, function(unit)
 		unit.Kill()
 	end)

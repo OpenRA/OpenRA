@@ -88,9 +88,7 @@ WorldLoaded = function()
 	InitObjectives()
 
 	Trigger.OnRemovedFromWorld(AtreidesConyard, function()
-		local refs = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
-			return actor.Type == "refinery"
-		end)
+		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" end)
 
 		if #refs == 0 then
 			harkonnen.MarkCompletedObjective(KillAtreides)

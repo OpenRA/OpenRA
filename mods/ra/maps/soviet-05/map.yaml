@@ -581,9 +581,6 @@ Actors:
 	ReinfRoadPoint: waypoint
 		Location: 52,42
 		Owner: Neutral
-	NWIdlePoint: waypoint
-		Location: 38,42
-		Owner: Neutral
 	EIslandPoint: waypoint
 		Location: 51,58
 		Owner: Neutral

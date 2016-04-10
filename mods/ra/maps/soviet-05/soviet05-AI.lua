@@ -1,7 +1,7 @@
 IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
 
 IdlingUnits = function()
-	local lazyUnits = Map.ActorsInBox(NWIdlePoint.CenterPosition, Map.BottomRight, function(actor)
+	local lazyUnits = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.HasProperty("Hunt") and (actor.Owner == GoodGuy or actor.Owner == Greece) end)
 
 	Utils.Do(lazyUnits, function(unit)
@@ -12,7 +12,8 @@ IdlingUnits = function()
 	end)
 end
 
-BaseBuildings = {
+BaseBuildings =
+{
 	{ type = "powr", pos = CVec.New(3, -2), cost = 300 },
 	{ type = "tent", pos = CVec.New(0, 4), cost = 400 },
 	{ type = "hbox", pos = CVec.New(3, 6), cost = 600 },
