@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Sounds to play when killed.")]
 	public class DeathSoundsInfo : ITraitInfo

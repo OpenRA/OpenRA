@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Play the Build voice of this actor when trained.")]
 	public class AnnounceOnBuildInfo : ITraitInfo

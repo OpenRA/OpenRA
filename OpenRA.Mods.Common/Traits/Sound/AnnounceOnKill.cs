@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Play the Kill voice of this actor when eliminating enemies.")]
 	public class AnnounceOnKillInfo : ITraitInfo
