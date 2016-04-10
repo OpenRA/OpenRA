@@ -19,7 +19,10 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
-		public bool OverrideSelection { get { return false; } }
+		public bool TargetOverridesSelection(TargetModifiers modifiers)
+		{
+			return modifiers.HasModifier(TargetModifiers.ForceMove);
+		}
 
 		readonly AircraftInfo info;
 

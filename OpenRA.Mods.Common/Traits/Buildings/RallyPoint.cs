@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
-			public bool OverrideSelection { get { return true; } }
+			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
