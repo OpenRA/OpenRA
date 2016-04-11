@@ -55,13 +55,12 @@ namespace OpenRA.Graphics
 			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
 		}
 
-		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
-		public static void FastCopyIntoChannel(Sprite dest, int channelOffset, byte[] src)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
 			var data = dest.Sheet.GetData();
 			var srcStride = dest.Bounds.Width;
 			var destStride = dest.Sheet.Size.Width * 4;
-			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel + channelOffset];
+			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
 			var destSkip = destStride - 4 * srcStride;
 			var height = dest.Bounds.Height;
 

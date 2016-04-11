@@ -25,8 +25,7 @@ namespace OpenRA.Graphics
 	public enum SheetType
 	{
 		Indexed = 1,
-		DualIndexed = 2,
-		BGRA = 4,
+		BGRA = 2,
 	}
 
 	public sealed class SheetBuilder : IDisposable
