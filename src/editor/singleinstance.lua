@@ -67,7 +67,7 @@ else -- something different is running on our port
   if msg and msg:match(protocol.server.greeting:gsub("%%s",".+$")) then
     local username = msg:match(protocol.server.greeting:gsub("%%s","(.+)$"))
     if username ~= wx.wxGetUserName() then
-      print(("Another instance is running under user '%s' and can't be activated. This instance will continue running, which may cause interference with the debugger."):format(username))
+      ide:Print(("Another instance is running under user '%s' and can't be activated. This instance will continue running, which may cause interference with the debugger."):format(username))
     else
       local failed = false
       for index = 2, #arg do
@@ -80,17 +80,17 @@ else -- something different is running on our port
           local msg, err = cln:receive()
           if msg ~= protocol.server.answerok then
             failed = true
-            print(err,msg)
+            ide:Print(err,msg)
           end
         end
       end
       if failed then
-        print("The server instance failed to open the files, this instance will continue running.")
+        ide:Print("The server instance failed to open the files, this instance will continue running.")
       else -- done
         os.exit(0)
       end
     end
   else
-    print("The single instance communication has failed; there may be another instance running, which may cause interference with the debugger.")
+    ide:Print("The single instance communication has failed; there may be another instance running, which may cause interference with the debugger.")
   end
 end

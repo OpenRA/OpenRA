@@ -24,13 +24,13 @@ ini = ini and (not wx.wxIsAbsolutePath(ini) and wx.wxFileName(ini):GetDirCount()
   and MergeFullPath(GetPathWithSep(ide.editorFilename), ini) or ini)
 -- check that the ini file doesn't point to a directory
 if ini and (wx.wxFileName(ini):IsDir() or wx.wxIsAbsolutePath(ini) and wx.wxDirExists(ini)) then
-  print(("Can't use 'ini' configuration setting '%s' that points to a directory instead of a file; ignored.")
+  ide:Print(("Can't use 'ini' configuration setting '%s' that points to a directory instead of a file; ignored.")
     :format(ini))
   ini = nil
 end
 -- check that the directory is writable
 if ini and wx.wxIsAbsolutePath(ini) and not wx.wxFileName(ini):IsDirWritable() then
-  print(("Can't use 'ini' configuration setting '%s' that points to a non-writable directory; ignored.")
+  ide:Print(("Can't use 'ini' configuration setting '%s' that points to a non-writable directory; ignored.")
     :format(ini))
   ini = nil
 end
