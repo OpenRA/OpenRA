@@ -781,7 +781,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			new Task(() =>
 			{
 				// Force map rules to be loaded on this background thread
-				var unused = map.Rules;
+				map.PreloadRules();
 			}).Start();
 		}
 
@@ -799,7 +799,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				new Task(() =>
 				{
 					// Force map rules to be loaded on this background thread
-					var unused = currentMap.Rules;
+					currentMap.PreloadRules();
 					Game.RunAfterTick(() =>
 					{
 						// Map may have changed in the meantime
