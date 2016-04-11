@@ -21,8 +21,8 @@ void main()
 	float depth = gl_FragCoord.z;
 	if (length(vDepthMask) > 0.0)
 	{
-		// Preview vertex aware depth
-		depth = depth + DepthTextureScale * dot(x, vDepthMask);
+		vec4 y = texture2D(DiffuseTexture, vTexCoord.pq);
+		depth = depth + DepthTextureScale * dot(y, vDepthMask);
 	}
 
 	// Convert to window coords

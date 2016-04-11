@@ -48,6 +48,24 @@ namespace OpenRA.Graphics
 		}
 	}
 
+	public class SpriteWithSecondaryData : Sprite
+	{
+		public readonly Rectangle SecondaryBounds;
+		public readonly TextureChannel SecondaryChannel;
+		public readonly float SecondaryTop, SecondaryLeft, SecondaryBottom, SecondaryRight;
+
+		public SpriteWithSecondaryData(Sprite s, Rectangle secondaryBounds, TextureChannel secondaryChannel)
+			: base(s.Sheet, s.Bounds, s.ZRamp, s.Offset, s.Channel, s.BlendMode)
+		{
+			SecondaryBounds = secondaryBounds;
+			SecondaryChannel = secondaryChannel;
+			SecondaryLeft = (float)Math.Min(secondaryBounds.Left, secondaryBounds.Right) / s.Sheet.Size.Width;
+			SecondaryTop = (float)Math.Min(secondaryBounds.Top, secondaryBounds.Bottom) / s.Sheet.Size.Height;
+			SecondaryRight = (float)Math.Max(secondaryBounds.Left, secondaryBounds.Right) / s.Sheet.Size.Width;
+			SecondaryBottom = (float)Math.Max(secondaryBounds.Top, secondaryBounds.Bottom) / s.Sheet.Size.Height;
+		}
+	}
+
 	public enum TextureChannel : byte
 	{
 		Red = 0,
