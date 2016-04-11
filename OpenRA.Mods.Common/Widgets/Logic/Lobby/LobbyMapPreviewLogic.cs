@@ -109,8 +109,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
 				{
-					install.OnClick = () => lobby.Map.Install(
-						() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+					install.OnClick = () => lobby.Map.Install(() =>
+					{
+						lobby.Map.PreloadRules();
+						Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+					});
 					install.IsHighlighted = () => installHighlighted;
 				}
 			}

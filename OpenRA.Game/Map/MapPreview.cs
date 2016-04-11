@@ -355,6 +355,11 @@ namespace OpenRA
 			return true;
 		}
 
+		public void PreloadRules()
+		{
+			var unused = Rules;
+		}
+
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
 		{
 			var newData = innerData.Clone();
