@@ -52,7 +52,9 @@ namespace OpenRA.Graphics
 		float3 ScreenPosition(WorldRenderer wr)
 		{
 			var xy = wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset) - (0.5f * scale * sprite.Size.XY).ToInt2();
-			return new float3(xy, wr.ScreenZPosition(pos, 0) - 0.5f * scale * sprite.Size.Z);
+
+			// HACK: The z offset needs to be applied somewhere, but this probably is the wrong place.
+			return new float3(xy, sprite.Offset.Z + wr.ScreenZPosition(pos, 0) - 0.5f * scale * sprite.Size.Z);
 		}
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
