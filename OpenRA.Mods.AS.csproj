@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,7 +44,7 @@
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -87,6 +87,8 @@
     <Compile Include="Activities\ChronoResourceTeleport.cs" />
     <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
@@ -94,7 +96,7 @@
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
   </ItemGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
