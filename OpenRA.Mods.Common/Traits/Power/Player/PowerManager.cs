@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Attach this to the player actor.")]
 	public class PowerManagerInfo : ITraitInfo, Requires<DeveloperModeInfo>
 	{
 		public readonly int AdviceInterval = 250;
