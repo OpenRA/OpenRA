@@ -13,7 +13,7 @@ using System;
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Players will be notified when this actor becomes visible to them.")]
 	public class AnnounceOnSeenInfo : ITraitInfo

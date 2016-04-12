@@ -302,7 +302,6 @@
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
-    <Compile Include="Traits\CaptureNotification.cs" />
     <Compile Include="Traits\Captures.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\CashTrickler.cs" />
@@ -473,6 +472,7 @@
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\AnnounceOnSeen.cs" />
+    <Compile Include="Traits\Sound\CaptureNotification.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
