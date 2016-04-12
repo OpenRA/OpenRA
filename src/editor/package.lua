@@ -146,7 +146,7 @@ function ide:AttachMenu(...)
 end
 function ide:CloneMenu(menu)
   if not menu then return end
-  local newmenu = wx.wxMenu()
+  local newmenu = wx.wxMenu({})
   local node = menu:GetMenuItems():GetFirst()
   while node do
     local item = node:GetData():DynamicCast("wxMenuItem")
@@ -156,7 +156,7 @@ function ide:CloneMenu(menu)
   return newmenu
 end
 function ide:MakeMenu(t)
-  local menu = wx.wxMenu()
+  local menu = wx.wxMenu({})
   local menuicon = self.config.menuicon -- menu items need to have icons
   local iconmap = self.config.toolbar.iconmap
   for p = 1, #(t or {}) do

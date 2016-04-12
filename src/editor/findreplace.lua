@@ -771,7 +771,7 @@ function findReplace:createToolbar()
   tb:SetToolDropDown(ID_FINDSETDIR, true)
   tb:Connect(ID_FINDSETDIR, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
       if event:IsDropDownClicked() then
-        local menu = wx.wxMenu()
+        local menu = wx.wxMenu({})
         local pos = tb:GetToolRect(event:GetId()):GetBottomLeft()
         menu:Append(ID_FINDSETDIR, TR("Choose..."))
         menu:Append(ID_FINDSETTOPROJDIR, TR("Set To Project Directory"))

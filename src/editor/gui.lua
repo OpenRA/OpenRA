@@ -133,7 +133,7 @@ local function createToolBar(frame)
   toolBar:SetToolDropDown(ID_OPEN, true)
   toolBar:Connect(ID_OPEN, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
       if event:IsDropDownClicked() then
-        local menu = wx.wxMenu()
+        local menu = wx.wxMenu({})
         FileRecentListUpdate(menu)
         toolBar:PopupMenu(menu, menuDropDownPosition(event))
       else
@@ -144,7 +144,7 @@ local function createToolBar(frame)
   toolBar:SetToolDropDown(ID_PROJECTDIRCHOOSE, true)
   toolBar:Connect(ID_PROJECTDIRCHOOSE, wxaui.wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, function(event)
       if event:IsDropDownClicked() then
-        local menu = wx.wxMenu()
+        local menu = wx.wxMenu({})
         FileTreeProjectListUpdate(menu, 0)
         toolBar:PopupMenu(menu, menuDropDownPosition(event))
       else
