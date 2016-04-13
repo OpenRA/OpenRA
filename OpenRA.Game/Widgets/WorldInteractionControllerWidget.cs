@@ -199,7 +199,7 @@ namespace OpenRA.Widgets
 					else if (o.TargetLocation != CPos.Zero)
 					{
 						var pos = world.Map.CenterOfCell(cell);
-						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "idle", "moveflash", true, true)));
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "idle", "moveflash", 0, true, true)));
 						flashed = true;
 					}
 				}
