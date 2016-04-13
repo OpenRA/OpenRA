@@ -49,41 +49,78 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Delay between trail updates when moving.")]
 		public readonly int MovingInterval = 0;
 
+		[Desc("Delay before first trail.")]
+		public readonly int StartDelay = 0;
+
+		[Desc("Position relative to body.")]
+		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("Use opposite offset for every second spawned trail.")]
+		public readonly bool AlternateOffset = false;
+
 		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
 	}
 
-	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick
+	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick, INotifyCreated
 	{
+		BodyOrientation body;
+		IFacing facing;
+		int cachedFacing;
+		int cachedInterval;
+
 		public LeavesTrails(Actor self, LeavesTrailsInfo info)
-			: base(info) { }
+			: base(info)
+		{
+			cachedInterval = Info.StartDelay;
+		}
+
+		public void Created(Actor self)
+		{
+			body = self.Trait<BodyOrientation>();
+			facing = self.TraitOrDefault<IFacing>();
+			cachedFacing = facing != null ? facing.Facing : 0;
+		}
 
 		WPos cachedPosition;
 		int ticks;
+		bool evenNumber;
+		bool wasStationary;
+		bool isMoving;
 
 		public void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
 
-			var isMoving = self.CenterPosition != cachedPosition;
+			wasStationary = !isMoving;
+			isMoving = self.CenterPosition != cachedPosition;
 			if ((isMoving && !Info.TrailWhileMoving) || (!isMoving && !Info.TrailWhileStationary))
 				return;
 
-			var interval = isMoving ? Info.MovingInterval : Info.StationaryInterval;
-			if (++ticks >= interval)
+			if (isMoving && wasStationary)
+				cachedInterval = Info.StartDelay;
+
+			if (++ticks >= cachedInterval)
 			{
 				var cachedCell = self.World.Map.CellContaining(cachedPosition);
 				var type = self.World.Map.GetTerrainInfo(cachedCell).Type;
 
-				var pos = Info.Type == TrailType.CenterPosition ? cachedPosition :
-					self.World.Map.CenterOfCell(cachedCell);
+				var offset = Info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+				var pos = Info.Type == TrailType.CenterPosition ? cachedPosition + body.LocalToWorld(Info.AlternateOffset && evenNumber ? -offset : offset)
+					: self.World.Map.CenterOfCell(cachedCell);
 
 				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
-						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, 0, Info.VisibleThroughFog)));
+						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, cachedFacing, Info.VisibleThroughFog)));
 
 				cachedPosition = self.CenterPosition;
+				cachedFacing = facing != null ? facing.Facing : 0;
 				ticks = 0;
+
+				if (!evenNumber)
+					evenNumber ^= true;
+
+				cachedInterval = isMoving && !wasStationary ? Info.MovingInterval : Info.StationaryInterval;
 			}
 		}
 
