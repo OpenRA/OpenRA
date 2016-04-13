@@ -6,7 +6,7 @@ local ide = ide
 local unpack = table.unpack or unpack
 
 local bottomnotebook = ide.frame.bottomnotebook
-local out = bottomnotebook.shellbox
+local console = bottomnotebook.shellbox
 local remotesend
 
 local PROMPT_MARKER = StylesGetMarker("prompt")
@@ -16,59 +16,59 @@ local OUTPUT_MARKER = StylesGetMarker("output")
 local MESSAGE_MARKER = StylesGetMarker("message")
 local ANY_MARKER_VALUE = 2^25-1 -- marker numbers 0 to 24 have no pre-defined function
 
-out:SetFont(ide.font.oNormal)
-out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
-out:SetBufferedDraw(not ide.config.hidpi and true or false)
-out:StyleClearAll()
+console:SetFont(ide.font.oNormal)
+console:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
+console:SetBufferedDraw(not ide.config.hidpi and true or false)
+console:StyleClearAll()
 
-out:SetTabWidth(ide.config.editor.tabwidth or 2)
-out:SetIndent(ide.config.editor.tabwidth or 2)
-out:SetUseTabs(ide.config.editor.usetabs and true or false)
-out:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
-out:SetIndentationGuides(true)
+console:SetTabWidth(ide.config.editor.tabwidth or 2)
+console:SetIndent(ide.config.editor.tabwidth or 2)
+console:SetUseTabs(ide.config.editor.usetabs and true or false)
+console:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
+console:SetIndentationGuides(true)
 
-out:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
-out:SetWrapStartIndent(0)
-out:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
-out:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_END)
+console:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
+console:SetWrapStartIndent(0)
+console:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
+console:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_END)
 
-out:MarkerDefine(StylesGetMarker("prompt"))
-out:MarkerDefine(StylesGetMarker("error"))
-out:MarkerDefine(StylesGetMarker("output"))
-out:MarkerDefine(StylesGetMarker("message"))
-out:SetReadOnly(false)
+console:MarkerDefine(StylesGetMarker("prompt"))
+console:MarkerDefine(StylesGetMarker("error"))
+console:MarkerDefine(StylesGetMarker("output"))
+console:MarkerDefine(StylesGetMarker("message"))
+console:SetReadOnly(false)
 
-SetupKeywords(out,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
+SetupKeywords(console,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
 
 local function getPromptLine()
-  local totalLines = out:GetLineCount()
-  return out:MarkerPrevious(totalLines+1, PROMPT_MARKER_VALUE)
+  local totalLines = console:GetLineCount()
+  return console:MarkerPrevious(totalLines+1, PROMPT_MARKER_VALUE)
 end
 
 local function getPromptText()
   local prompt = getPromptLine()
-  return out:GetTextRangeDyn(out:PositionFromLine(prompt), out:GetLength())
+  return console:GetTextRangeDyn(console:PositionFromLine(prompt), console:GetLength())
 end
 
 local function setPromptText(text)
-  local length = out:GetLength()
-  out:SetSelectionStart(length - string.len(getPromptText()))
-  out:SetSelectionEnd(length)
-  out:ClearAny()
-  out:AddTextDyn(text)
+  local length = console:GetLength()
+  console:SetSelectionStart(length - string.len(getPromptText()))
+  console:SetSelectionEnd(length)
+  console:ClearAny()
+  console:AddTextDyn(text)
   -- refresh the output window to force recalculation of wrapped lines;
   -- otherwise a wrapped part of the last line may not be visible.
-  out:Update(); out:Refresh()
-  out:GotoPos(out:GetLength())
+  console:Update(); console:Refresh()
+  console:GotoPos(console:GetLength())
 end
 
 local function positionInLine(line)
-  return out:GetCurrentPos() - out:PositionFromLine(line)
+  return console:GetCurrentPos() - console:PositionFromLine(line)
 end
 
 local function caretOnPromptLine(disallowLeftmost, line)
   local promptLine = getPromptLine()
-  local currentLine = line or out:GetCurrentLine()
+  local currentLine = line or console:GetCurrentLine()
   local boundary = disallowLeftmost and 0 or -1
   return (currentLine > promptLine
     or currentLine == promptLine and positionInLine(promptLine) > boundary)
@@ -78,41 +78,41 @@ local function chomp(line) return (line:gsub("%s+$", "")) end
 
 local function getInput(line)
   local nextMarker = line
-  local count = out:GetLineCount()
+  local count = console:GetLineCount()
 
   repeat -- check until we find at least some marker
     nextMarker = nextMarker+1
-  until out:MarkerGet(nextMarker) > 0 or nextMarker > count-1
-  return chomp(out:GetTextRangeDyn(
-    out:PositionFromLine(line), out:PositionFromLine(nextMarker)))
+  until console:MarkerGet(nextMarker) > 0 or nextMarker > count-1
+  return chomp(console:GetTextRangeDyn(
+    console:PositionFromLine(line), console:PositionFromLine(nextMarker)))
 end
 
 function ConsoleSelectCommand(point)
-  local cpos = out:ScreenToClient(point or wx.wxGetMousePosition())
-  local position = out:PositionFromPoint(cpos)
+  local cpos = console:ScreenToClient(point or wx.wxGetMousePosition())
+  local position = console:PositionFromPoint(cpos)
   if position == wxstc.wxSTC_INVALID_POSITION then return end
 
-  local promptline = out:MarkerPrevious(out:LineFromPosition(position), PROMPT_MARKER_VALUE)
+  local promptline = console:MarkerPrevious(console:LineFromPosition(position), PROMPT_MARKER_VALUE)
   if promptline == wxstc.wxSTC_INVALID_POSITION then return end
-  local nextline = out:MarkerNext(promptline+1, ANY_MARKER_VALUE)
-  local epos = nextline ~= wxstc.wxSTC_INVALID_POSITION and out:PositionFromLine(nextline) or out:GetLength()
-  out:SetSelection(out:PositionFromLine(promptline), epos)
+  local nextline = console:MarkerNext(promptline+1, ANY_MARKER_VALUE)
+  local epos = nextline ~= wxstc.wxSTC_INVALID_POSITION and console:PositionFromLine(nextline) or console:GetLength()
+  console:SetSelection(console:PositionFromLine(promptline), epos)
   return true
 end
 
 local currentHistory
 local function getNextHistoryLine(forward, promptText)
-  local count = out:GetLineCount()
+  local count = console:GetLineCount()
   if currentHistory == nil then currentHistory = count end
 
   if forward then
-    currentHistory = out:MarkerNext(currentHistory+1, PROMPT_MARKER_VALUE)
+    currentHistory = console:MarkerNext(currentHistory+1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then
       currentHistory = count
       return ""
     end
   else
-    currentHistory = out:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
+    currentHistory = console:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then
       return ""
     end
@@ -127,12 +127,12 @@ local function getNextHistoryLine(forward, promptText)
 end
 
 local function getNextHistoryMatch(promptText)
-  local count = out:GetLineCount()
+  local count = console:GetLineCount()
   if currentHistory == nil then currentHistory = count end
 
   local current = currentHistory
   while true do
-    currentHistory = out:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
+    currentHistory = console:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then -- restart search from the last item
       currentHistory = count
     elseif currentHistory ~= getPromptLine() then -- skip current prompt
@@ -173,26 +173,26 @@ local function shellPrint(marker, text, newline)
   if not text or text == "" then return end -- return if nothing to print
   if newline then text = text:gsub("\n+$", "").."\n" end
   local isPrompt = marker and (getPromptLine() > -1)
-  local lines = out:GetLineCount()
+  local lines = console:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
-  local insertLineAt = isPrompt and not partial and getPromptLine() or out:GetLineCount()-1
-  local insertAt = isPrompt and not partial and out:PositionFromLine(getPromptLine()) or out:GetLength()
-  out:InsertTextDyn(insertAt, out.useraw and text or FixUTF8(text, function (s) return '\\'..string.byte(s) end))
-  local linesAdded = out:GetLineCount() - lines
+  local insertLineAt = isPrompt and not partial and getPromptLine() or console:GetLineCount()-1
+  local insertAt = isPrompt and not partial and console:PositionFromLine(getPromptLine()) or console:GetLength()
+  console:InsertTextDyn(insertAt, console.useraw and text or FixUTF8(text, function (s) return '\\'..string.byte(s) end))
+  local linesAdded = console:GetLineCount() - lines
 
   partial = text:find("\n$") == nil
 
   if marker then
-    if promptLine then out:MarkerDelete(promptLine, PROMPT_MARKER) end
+    if promptLine then console:MarkerDelete(promptLine, PROMPT_MARKER) end
     for line = insertLineAt, insertLineAt + linesAdded - 1 do
-      out:MarkerAdd(line, marker)
+      console:MarkerAdd(line, marker)
     end
-    if promptLine then out:MarkerAdd(promptLine+linesAdded, PROMPT_MARKER) end
+    if promptLine then console:MarkerAdd(promptLine+linesAdded, PROMPT_MARKER) end
   end
 
-  out:EmptyUndoBuffer() -- don't allow the user to undo shell text
-  out:GotoPos(out:GetLength())
-  out:EnsureVisibleEnforcePolicy(out:GetLineCount()-1)
+  console:EmptyUndoBuffer() -- don't allow the user to undo shell text
+  console:GotoPos(console:GetLength())
+  console:EnsureVisibleEnforcePolicy(console:GetLineCount()-1)
 end
 
 DisplayShell = function (...) shellPrint(OUTPUT_MARKER, concat("\t", ...), true) end
@@ -200,10 +200,10 @@ DisplayShellErr = function (...) shellPrint(ERROR_MARKER, concat("\t", ...), tru
 DisplayShellMsg = function (...) shellPrint(MESSAGE_MARKER, concat("\t", ...), true) end
 DisplayShellDirect = function (...) shellPrint(nil, concat("\t", ...), true) end
   -- don't print anything; just mark the line with a prompt mark
-DisplayShellPrompt = function (...) out:MarkerAdd(out:GetLineCount()-1, PROMPT_MARKER) end
+DisplayShellPrompt = function (...) console:MarkerAdd(console:GetLineCount()-1, PROMPT_MARKER) end
 
-function out:Print(...) return DisplayShell(...) end
-function out:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...), false) end
+function console:Print(...) return DisplayShell(...) end
+function console:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...), false) end
 
 local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
@@ -283,8 +283,8 @@ local function createenv()
     end,
   }
   env.os = setmetatable(os, {__index = _G.os})
-  env.io = setmetatable({write = function(...) out:Write(...) end}, {__index = _G.io})
-  env.print = function(...) out:Print(...) end
+  env.io = setmetatable({write = function(...) console:Write(...) end}, {__index = _G.io})
+  env.print = function(...) console:Print(...) end
   env.dofile = dofile
   env.loadfile = loadfile
   env.RELFILE = relativeFilename
@@ -372,7 +372,7 @@ end
 function ShellSupportRemote(client)
   remotesend = client
 
-  local index = bottomnotebook:GetPageIndex(out)
+  local index = bottomnotebook:GetPageIndex(console)
   if index then
     bottomnotebook:SetPageText(index,
       client and TR("Remote console") or TR("Local console"))
@@ -406,7 +406,7 @@ local function displayShellIntro()
   DisplayShellPrompt('')
 end
 
-out:Connect(wx.wxEVT_KEY_DOWN,
+console:Connect(wx.wxEVT_KEY_DOWN,
   function (event)
     -- this loop is only needed to allow to get to the end of function easily
     -- "return" aborts the processing and ignores the key
@@ -416,7 +416,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
       if key == wx.WXK_UP or key == wx.WXK_NUMPAD_UP then
         -- if we are below the prompt line, then allow to go up
         -- through multiline entry
-        if out:GetCurrentLine() > getPromptLine() then break end
+        if console:GetCurrentLine() > getPromptLine() then break end
 
         -- if we are not on the caret line, move normally
         if not caretOnPromptLine() then break end
@@ -427,8 +427,8 @@ out:Connect(wx.wxEVT_KEY_DOWN,
       elseif key == wx.WXK_DOWN or key == wx.WXK_NUMPAD_DOWN then
         -- if we are above the last line, then allow to go down
         -- through multiline entry
-        local totalLines = out:GetLineCount()-1
-        if out:GetCurrentLine() < totalLines then break end
+        local totalLines = console:GetLineCount()-1
+        if console:GetCurrentLine() < totalLines then break end
 
         -- if we are not on the caret line, move normally
         if not caretOnPromptLine() then break end
@@ -439,11 +439,11 @@ out:Connect(wx.wxEVT_KEY_DOWN,
       elseif key == wx.WXK_TAB then
         -- if we are above the prompt line, then don't move
         local promptline = getPromptLine()
-        if out:GetCurrentLine() < promptline then return end
+        if console:GetCurrentLine() < promptline then return end
 
         local promptText = getPromptText()
         -- save the position in the prompt text to restore
-        local pos = out:GetCurrentPos()
+        local pos = console:GetCurrentPos()
         local text = promptText:sub(1, positionInLine(promptline))
         if #text == 0 then return end
 
@@ -452,7 +452,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         if match then
           setPromptText(match)
           -- restore the position to make it easier to find the next match
-          out:GotoPos(pos)
+          console:GotoPos(pos)
         end
         return
       elseif key == wx.WXK_ESCAPE then
@@ -462,7 +462,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         if not caretOnPromptLine(true) then return end
       elseif key == wx.WXK_DELETE or key == wx.WXK_NUMPAD_DELETE then
         if not caretOnPromptLine()
-        or out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
+        or console:LineFromPosition(console:GetSelectionStart()) < getPromptLine() then
           return
         end
       elseif key == wx.WXK_PAGEUP or key == wx.WXK_NUMPAD_PAGEUP
@@ -476,7 +476,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         break
       elseif key == wx.WXK_RETURN or key == wx.WXK_NUMPAD_ENTER then
         if not caretOnPromptLine()
-        or out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
+        or console:LineFromPosition(console:GetSelectionStart()) < getPromptLine() then
           return
         end
 
@@ -486,21 +486,21 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         local promptText = getPromptText()
         if #promptText == 0 then return end -- nothing to execute, exit
         if promptText == 'clear' then
-          out:Erase()
+          console:Erase()
         else
           DisplayShellDirect('\n')
           executeShellCode(promptText)
         end
         currentHistory = getPromptLine() -- reset history
         return -- don't need to do anything else with return
-      elseif event:GetModifiers() == wx.wxMOD_NONE or out:GetSelectedText() == "" then
+      elseif event:GetModifiers() == wx.wxMOD_NONE or console:GetSelectedText() == "" then
         -- move cursor to end if not already there
         if not caretOnPromptLine() then
-          out:GotoPos(out:GetLength())
+          console:GotoPos(console:GetLength())
         -- check if the selection starts before the prompt line and reset it
-        elseif out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
-          out:GotoPos(out:GetLength())
-          out:SetSelection(out:GetSelectionEnd()+1,out:GetSelectionEnd())
+        elseif console:LineFromPosition(console:GetSelectionStart()) < getPromptLine() then
+          console:GotoPos(console:GetLength())
+          console:SetSelection(console:GetSelectionEnd()+1,console:GetSelectionEnd())
         end
       end
       break
@@ -510,7 +510,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
 
 local function inputEditable(line)
   return caretOnPromptLine(false, line) and
-    not (out:LineFromPosition(out:GetSelectionStart()) < getPromptLine())
+    not (console:LineFromPosition(console:GetSelectionStart()) < getPromptLine())
 end
 
 -- new Scintilla (3.2.1) changed the way markers move when the text is updated
@@ -521,32 +521,32 @@ if ide.wxver >= "2.9.5" then
   -- before insert and restores the same position after (as the marker)
   -- could have moved if the text is added at the beginning of the line.
   local promptAt
-  out:Connect(wxstc.wxEVT_STC_MODIFIED,
+  console:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
       local evtype = event:GetModificationType()
       if bit.band(evtype, wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0 then
         local promptLine = getPromptLine()
-        if promptLine and event:GetPosition() == out:PositionFromLine(promptLine)
+        if promptLine and event:GetPosition() == console:PositionFromLine(promptLine)
         then promptAt = promptLine end
       end
       if bit.band(evtype, wxstc.wxSTC_MOD_INSERTTEXT) ~= 0 then
         local promptLine = getPromptLine()
         if promptLine and promptAt then
-          out:MarkerDelete(promptLine, PROMPT_MARKER)
-          out:MarkerAdd(promptAt, PROMPT_MARKER)
+          console:MarkerDelete(promptLine, PROMPT_MARKER)
+          console:MarkerAdd(promptAt, PROMPT_MARKER)
           promptAt = nil
         end
       end
     end)
 end
 
-out:Connect(wxstc.wxEVT_STC_UPDATEUI,
-  function (event) out:SetReadOnly(not inputEditable()) end)
+console:Connect(wxstc.wxEVT_STC_UPDATEUI,
+  function (event) console:SetReadOnly(not inputEditable()) end)
 
 -- only allow copy/move text by dropping to the input line
-out:Connect(wxstc.wxEVT_STC_DO_DROP,
+console:Connect(wxstc.wxEVT_STC_DO_DROP,
   function (event)
-    if not inputEditable(out:LineFromPosition(event:GetPosition())) then
+    if not inputEditable(console:LineFromPosition(event:GetPosition())) then
       event:SetDragResult(wx.wxDragNone)
     end
   end)
@@ -554,7 +554,7 @@ out:Connect(wxstc.wxEVT_STC_DO_DROP,
 if ide.config.outputshell.nomousezoom then
   -- disable zoom using mouse wheel as it triggers zooming when scrolling
   -- on OSX with kinetic scroll and then pressing CMD.
-  out:Connect(wx.wxEVT_MOUSEWHEEL,
+  console:Connect(wx.wxEVT_MOUSEWHEEL,
     function (event)
       if wx.wxGetKeyState(wx.WXK_CONTROL) then return end
       event:Skip()
@@ -563,7 +563,7 @@ end
 
 displayShellIntro()
 
-function out:Erase()
+function console:Erase()
   self:ClearAll()
   displayShellIntro()
 end
