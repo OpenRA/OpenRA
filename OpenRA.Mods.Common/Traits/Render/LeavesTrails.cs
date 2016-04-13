@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Use opposite offset for every second spawned trail.")]
 		public readonly bool AlternateOffset = false;
 
+		[Desc("Should the trail spawn at the last position or at current position?")]
+		public readonly bool SpawnAtLastPosition = true;
+
 		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
 	}
 
@@ -74,14 +77,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			cachedInterval = Info.StartDelay;
 		}
 
+		WPos cachedPosition;
 		public void Created(Actor self)
 		{
 			body = self.Trait<BodyOrientation>();
 			facing = self.TraitOrDefault<IFacing>();
 			cachedFacing = facing != null ? facing.Facing : 0;
+			cachedPosition = self.CenterPosition;
 		}
 
-		WPos cachedPosition;
 		int ticks;
 		bool evenNumber;
 		bool wasStationary;
@@ -102,16 +106,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (++ticks >= cachedInterval)
 			{
-				var cachedCell = self.World.Map.CellContaining(cachedPosition);
-				var type = self.World.Map.GetTerrainInfo(cachedCell).Type;
+				var spawnCell = Info.SpawnAtLastPosition ? self.World.Map.CellContaining(cachedPosition) : self.World.Map.CellContaining(self.CenterPosition);
+				var type = self.World.Map.GetTerrainInfo(spawnCell).Type;
 
-				var offset = Info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-				var pos = Info.Type == TrailType.CenterPosition ? cachedPosition + body.LocalToWorld(Info.AlternateOffset && evenNumber ? -offset : offset)
-					: self.World.Map.CenterOfCell(cachedCell);
+				var offsetRotation = Info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+				var spawnOffset = body.LocalToWorld(Info.AlternateOffset && evenNumber ? -offsetRotation : offsetRotation);
+				var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
+
+				var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + spawnOffset :
+					self.World.Map.CenterOfCell(spawnCell);
+
+				var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : (facing != null ? facing.Facing : 0);
 
 				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
-						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, cachedFacing, Info.VisibleThroughFog)));
+						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, spawnFacing, Info.VisibleThroughFog)));
 
 				cachedPosition = self.CenterPosition;
 				cachedFacing = facing != null ? facing.Facing : 0;
