@@ -46,6 +46,7 @@ local pendingOutput = {}
 ide = {
   MODPREF = "* ",
   MAXMARGIN = 4,
+  ANYMARKERMASK = 2^24-1,
   config = {
     path = {
       projectdir = "",

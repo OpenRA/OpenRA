@@ -14,7 +14,6 @@ local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
 local ERROR_MARKER = StylesGetMarker("error")
 local OUTPUT_MARKER = StylesGetMarker("output")
 local MESSAGE_MARKER = StylesGetMarker("message")
-local ANY_MARKER_VALUE = 2^25-1 -- marker numbers 0 to 24 have no pre-defined function
 
 console:SetFont(ide.font.oNormal)
 console:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
@@ -94,7 +93,7 @@ function ConsoleSelectCommand(point)
 
   local promptline = console:MarkerPrevious(console:LineFromPosition(position), PROMPT_MARKER_VALUE)
   if promptline == wxstc.wxSTC_INVALID_POSITION then return end
-  local nextline = console:MarkerNext(promptline+1, ANY_MARKER_VALUE)
+  local nextline = console:MarkerNext(promptline+1, ide.ANYMARKERMASK)
   local epos = nextline ~= wxstc.wxSTC_INVALID_POSITION and console:PositionFromLine(nextline) or console:GetLength()
   console:SetSelection(console:PositionFromLine(promptline), epos)
   return true

@@ -413,7 +413,7 @@ function ide:CreateStyledTextCtrl(...)
   end
 
   function editor:MarkerGetAll(mask, from, to)
-    mask = mask or 2^24-1
+    mask = mask or ide.ANYMARKERMASK
     local markers = {}
     local line = editor:MarkerNext(from or 0, mask)
     while line > -1 do
