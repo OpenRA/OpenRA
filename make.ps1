@@ -164,8 +164,6 @@ elseif ($command -eq "check")
 	{
 		echo "Checking for code style violations in OpenRA.Platforms.Default..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Platforms.Null..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Null
 		echo "Checking for code style violations in OpenRA.GameMonitor..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 		echo "Checking for code style violations in OpenRA.Game..."
