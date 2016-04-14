@@ -53,9 +53,7 @@ static const char *luacode =
 "function(err) msg('Uncaught lua script exception',debug.traceback(err)) end)"
 ;
 
-#if defined(_WIN32) && defined (_MSC_VER)
-
-PCHAR*	CommandLineToArgvA(PCHAR CmdLine,int* _argc)
+PCHAR* CommandLineToArgv(PCHAR CmdLine,int* _argc)
 {
   PCHAR* argv;
   PCHAR  _argv;
@@ -71,8 +69,7 @@ PCHAR*	CommandLineToArgvA(PCHAR CmdLine,int* _argc)
   len = strlen(CmdLine);
   i = ((len+2)/2)*sizeof(PVOID) + sizeof(PVOID);
 
-  argv = (PCHAR*)GlobalAlloc(GMEM_FIXED,
-    i + (len+2)*sizeof(CHAR));
+  argv = (PCHAR*)GlobalAlloc(GMEM_FIXED, i + (len+2)*sizeof(CHAR));
 
   _argv = (PCHAR)(((PUCHAR)argv)+i);
 
@@ -135,15 +132,17 @@ PCHAR*	CommandLineToArgvA(PCHAR CmdLine,int* _argc)
   return argv;
 }
 
+PCHAR MultiByteToUTF8(LPCWSTR text) {
+  int size_needed = WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
+  PCHAR buffer = (PCHAR)GlobalAlloc(GMEM_FIXED, size_needed);
+  WideCharToMultiByte(CP_UTF8, 0, text, -1, buffer, size_needed, NULL, NULL);
+  return buffer;
+}
+
 int WINAPI WinMain(HINSTANCE hInstance,  HINSTANCE hPrevInstance,  LPSTR lpCmdLine, int nCmdShow)
 {
   int argc;
-  char ** argv = CommandLineToArgvA(GetCommandLineA(),&argc);
-
-#else
-int main (int argc, char *argv[])
-{
-#endif
+  char ** argv = CommandLineToArgv(MultiByteToUTF8(GetCommandLineW()),&argc);
   HINSTANCE hinstLib;
 
   char buffer[MAX_PATH],*file;
