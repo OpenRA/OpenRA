@@ -52,13 +52,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Delay before first trail.")]
 		public readonly int StartDelay = 0;
 
-		[Desc("Position relative to body.")]
-		public readonly WVec Offset = WVec.Zero;
+		[Desc("Trail spawn positions relative to actor position. (forward, right, up) triples")]
+		public readonly WVec[] Offsets = { WVec.Zero };
 
-		[Desc("Use opposite offset for every second spawned trail.")]
-		public readonly bool AlternateOffset = false;
-
-		[Desc("Should the trail spawn at the last position or at current position?")]
+		[Desc("Should the trail spawn relative to last position or current position?")]
 		public readonly bool SpawnAtLastPosition = true;
 
 		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
@@ -87,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		int ticks;
-		bool evenNumber;
+		int offset;
 		bool wasStationary;
 		bool isMoving;
 
@@ -109,11 +106,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var spawnCell = Info.SpawnAtLastPosition ? self.World.Map.CellContaining(cachedPosition) : self.World.Map.CellContaining(self.CenterPosition);
 				var type = self.World.Map.GetTerrainInfo(spawnCell).Type;
 
-				var offsetRotation = Info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-				var spawnOffset = body.LocalToWorld(Info.AlternateOffset && evenNumber ? -offsetRotation : offsetRotation);
+				if (++offset >= Info.Offsets.Length)
+					offset = 0;
+
+				var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self, self.Orientation));
 				var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
 
-				var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + spawnOffset :
+				var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + body.LocalToWorld(offsetRotation) :
 					self.World.Map.CenterOfCell(spawnCell);
 
 				var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : (facing != null ? facing.Facing : 0);
@@ -125,9 +124,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 				cachedPosition = self.CenterPosition;
 				cachedFacing = facing != null ? facing.Facing : 0;
 				ticks = 0;
-
-				if (!evenNumber)
-					evenNumber ^= true;
 
 				cachedInterval = isMoving && !wasStationary ? Info.MovingInterval : Info.StationaryInterval;
 			}
