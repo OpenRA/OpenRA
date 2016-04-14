@@ -150,6 +150,7 @@ namespace OpenRA
 		public string Device = null;
 
 		public bool CashTicks = true;
+		public bool SiloWarnings = true;
 		public bool Mute = false;
 	}
 

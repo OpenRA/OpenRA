@@ -310,6 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ss = Game.Settings.Sound;
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
+			BindCheckboxPref(panel, "SILO_WARNINGS", ss, "SiloWarnings");
 			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
@@ -363,6 +364,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.MusicVolume = dss.MusicVolume;
 				ss.VideoVolume = dss.VideoVolume;
 				ss.CashTicks = dss.CashTicks;
+				ss.SiloWarnings = dss.SiloWarnings;
 				ss.Mute = dss.Mute;
 				ss.Device = dss.Device;
 				ss.Engine = dss.Engine;
