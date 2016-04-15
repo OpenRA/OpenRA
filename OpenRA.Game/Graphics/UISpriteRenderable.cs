@@ -48,13 +48,13 @@ namespace OpenRA.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, sprite.Size * scale);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, screenPos, palette, scale * sprite.Size);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = screenPos + sprite.Offset;
-			Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + sprite.Size, 1, Color.Red);
+			var offset = screenPos + sprite.Offset.XY;
+			Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + sprite.Size.XY, 1, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr)

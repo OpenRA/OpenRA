@@ -81,8 +81,8 @@ namespace OpenRA.Graphics
 			var cursorSize = CursorProvider.CursorViewportZoomed ? 2.0f * cursorSprite.Size : cursorSprite.Size;
 
 			var cursorOffset = CursorProvider.CursorViewportZoomed ?
-				(2 * cursorSequence.Hotspot) + cursorSprite.Size.ToInt2() :
-				cursorSequence.Hotspot + (0.5f * cursorSprite.Size).ToInt2();
+				(2 * cursorSequence.Hotspot) + cursorSprite.Size.XY.ToInt2() :
+				cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
 
 			renderer.SetPalette(palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,

@@ -213,7 +213,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glClearColor(0, 0, 0, 1);
 			OpenGL.CheckGLError();
-			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT);
+			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 			OpenGL.CheckGLError();
 		}
 
@@ -224,12 +224,21 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_DEPTH_TEST);
 			OpenGL.CheckGLError();
+			OpenGL.glDepthFunc(OpenGL.GL_LEQUAL);
+			OpenGL.CheckGLError();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glDisable(OpenGL.GL_DEPTH_TEST);
+			OpenGL.CheckGLError();
+		}
+
+		public void ClearDepthBuffer()
+		{
+			VerifyThreadAffinity();
+			OpenGL.glClear(OpenGL.GL_DEPTH_BUFFER_BIT);
 			OpenGL.CheckGLError();
 		}
 

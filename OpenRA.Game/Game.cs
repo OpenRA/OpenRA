@@ -156,7 +156,7 @@ namespace OpenRA
 			using (new PerfTimer("NewWorld"))
 				OrderManager.World = new World(map, OrderManager, type);
 
-			worldRenderer = new WorldRenderer(OrderManager.World);
+			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);

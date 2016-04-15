@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// Draw sprite rect
 				var offset = pxOrigin + renderProxy.Sprite.Offset - 0.5f * renderProxy.Sprite.Size;
-				Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + renderProxy.Sprite.Size, iz, Color.Red);
+				Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset.XY, (offset + renderProxy.Sprite.Size).XY, iz, Color.Red);
 
 				// Draw transformed shadow sprite rect
 				var c = Color.Purple;

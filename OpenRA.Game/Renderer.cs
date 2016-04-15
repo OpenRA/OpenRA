@@ -255,6 +255,12 @@ namespace OpenRA
 			Device.DisableDepthBuffer();
 		}
 
+		public void ClearDepthBuffer()
+		{
+			Flush();
+			Device.ClearDepthBuffer();
+		}
+
 		public void GrabWindowMouseFocus()
 		{
 			Device.GrabWindowMouseFocus();
