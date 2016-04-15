@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
 

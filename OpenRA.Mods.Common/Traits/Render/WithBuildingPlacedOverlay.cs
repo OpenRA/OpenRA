@@ -12,7 +12,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Rendered when the actor constructed a building.")]
 	public class WithBuildingPlacedOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>

@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the building animation when it repairs a unit.")]
 	public class WithRepairAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>

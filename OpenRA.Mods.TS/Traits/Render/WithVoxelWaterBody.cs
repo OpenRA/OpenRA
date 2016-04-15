@@ -15,9 +15,10 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.TS.Traits.Render
 {
 	public class WithVoxelWaterBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{

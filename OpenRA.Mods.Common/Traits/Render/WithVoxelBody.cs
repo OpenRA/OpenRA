@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
 	public class WithVoxelBodyInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>

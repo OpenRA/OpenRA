@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities

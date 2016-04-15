@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	public enum TrailType { Cell, CenterPosition }
 

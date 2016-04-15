@@ -13,7 +13,7 @@ using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays an overlay whenever resources are harvested by the actor.")]
 	class WithHarvestOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>

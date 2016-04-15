@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
 	class ProductionBarInfo : ITraitInfo, Requires<ProductionInfo>

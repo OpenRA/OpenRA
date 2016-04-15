@@ -12,9 +12,10 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Renders ammo-dependent turret graphics for units with the Turreted trait.")]
 	public class WithReloadingSpriteTurretInfo : WithSpriteTurretInfo, Requires<AmmoPoolInfo>, Requires<ArmamentInfo>

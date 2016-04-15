@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Changes the animation when the actor constructed a building.")]
 	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>

@@ -13,7 +13,7 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays an overlay when the building is being repaired by the player.")]
 	public class WithRepairOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>

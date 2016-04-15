@@ -12,9 +12,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.RA.Traits.Render
 {
 	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{

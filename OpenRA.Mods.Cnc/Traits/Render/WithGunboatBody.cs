@@ -13,9 +13,10 @@ using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
 	{

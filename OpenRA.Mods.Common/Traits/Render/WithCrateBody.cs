@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders crates with both water and land variants.")]
 	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo

@@ -12,9 +12,10 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Renders the cargo loaded into the unit.")]
 	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<BodyOrientationInfo>

@@ -14,7 +14,7 @@ using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Display explosions over the building footprint when it is destroyed.")]
 	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>

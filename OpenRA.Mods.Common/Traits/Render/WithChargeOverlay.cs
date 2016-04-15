@@ -12,7 +12,7 @@
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Rendered together with AttackCharge.")]
 	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
