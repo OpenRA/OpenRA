@@ -1,8 +1,0 @@
-World:
-	-StartGameNotification:
-	-SpawnMPUnits:
-	-MPStartLocations:
-	MusicPlaylist:
-		BackgroundMusic: intro
-	LuaScript:
-		Scripts: map.lua
