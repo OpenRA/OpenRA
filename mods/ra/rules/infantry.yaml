@@ -240,6 +240,8 @@ SPY.England:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 250
+	GivesExperience:
+		Experience: 500
 	DisguiseToolTip:
 		Name: British Spy
 	RenderSprites:

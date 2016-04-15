@@ -575,7 +575,7 @@ button-disabled: dialog.png
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
 	corner-br: 639,383,1,1  
-    
+	
 # 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted: dialog.png
 	background: 769,129,126,126
@@ -657,7 +657,7 @@ newsbutton-highlighted: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-    
+	
 newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
@@ -966,5 +966,5 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
-    observer-separator: 768,256,1,19
+	separator: 512,1,1,19
+	observer-separator: 768,256,1,19

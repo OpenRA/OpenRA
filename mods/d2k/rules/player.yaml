@@ -87,3 +87,4 @@ Player:
 	ResourceStorageWarning:
 		AdviceInterval: 26
 	InsufficientFundsWarning:
+	PlayerExperience:

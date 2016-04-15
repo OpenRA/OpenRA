@@ -17,10 +17,10 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			200: firepower, damage, speed, reload, inaccuracy, rank
-			400: firepower, damage, speed, reload, inaccuracy, rank
-			800: firepower, damage, speed, reload, inaccuracy, rank
-			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
+			2: firepower, damage, speed, reload, inaccuracy, rank
+			4: firepower, damage, speed, reload, inaccuracy, rank
+			8: firepower, damage, speed, reload, inaccuracy, rank
+			16: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
 	FirepowerMultiplier@EXPERIENCE:
 		UpgradeTypes: firepower
 		Modifier: 105, 110, 120, 130
@@ -597,7 +597,6 @@
 	RenderSprites:
 		Palette: staticterrain
 	WithWallSpriteBody:
-	GivesExperience:
 	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud

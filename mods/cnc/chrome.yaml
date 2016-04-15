@@ -524,4 +524,4 @@ order-icons: chrome.png
 	stats-active: 480,128,16,16
 
 dropdown: chrome.png
-    separator: 64,1,1,19
+	separator: 64,1,1,19

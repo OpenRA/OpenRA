@@ -176,6 +176,7 @@
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
+    <Compile Include="Traits\Player\PlayerExperience.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Target.cs" />

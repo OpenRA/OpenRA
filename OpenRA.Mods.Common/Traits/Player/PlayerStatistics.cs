@@ -47,6 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 		public int BuildingsKilled;
 		public int BuildingsDead;
 
+		public int ExperienceGained;
+
 		public PlayerStatistics(Actor self)
 		{
 			world = self.World;
@@ -118,11 +120,22 @@ namespace OpenRA.Mods.Common.Traits
 				defenderStats.UnitsDead++;
 			}
 
+			var cost = 0;
 			if (self.Info.HasTraitInfo<ValuedInfo>())
 			{
-				var cost = self.Info.TraitInfo<ValuedInfo>().Cost;
+				cost = self.Info.TraitInfo<ValuedInfo>().Cost;
 				attackerStats.KillsCost += cost;
 				defenderStats.DeathsCost += cost;
+			}
+
+			var experienceInfo = self.Info.TraitInfo<GivesExperienceInfo>();
+			if (experienceInfo != null && experienceInfo.Experience > 0)
+			{
+				attackerStats.ExperienceGained += experienceInfo.Experience;
+			}
+			else if (experienceInfo != null && cost > 0)
+			{
+				attackerStats.ExperienceGained += cost;
 			}
 		}
 	}

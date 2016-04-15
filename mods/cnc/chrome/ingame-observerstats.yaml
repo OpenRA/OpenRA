@@ -2,7 +2,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 	Logic: ObserverStatsLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 940
+	Width: 1020
 	Height: 500
 	Children:
 		Background@BACKGROUND:
@@ -82,8 +82,16 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Kills/Deaths
 							Align: Right
+						Label@EXPERIENCE_HEADER:
+							X: 755
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Experience
+							Align: Right
 						Label@ACTIONS_MIN_HEADER:
-							X: 745
+							X: 875
 							Y: 40
 							Width: 40
 							Height: 25
@@ -325,8 +333,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
+								Label@EXPERIENCE:
+									X: 715
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
 								Label@ACTIONS_MIN:
-									X: 725
+									X: 855
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
