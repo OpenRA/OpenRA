@@ -332,7 +332,7 @@ U2:
 	Inherits: ^Plane
 	Health:
 		HP: 2000
-	EditorOnlyTooltip:
+	Tooltip:
 		Name: U2 Spy Plane
 	Armor:
 		Type: Heavy
