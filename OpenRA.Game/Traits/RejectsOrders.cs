@@ -41,5 +41,17 @@ namespace OpenRA.Traits
 			var r = self.TraitOrDefault<RejectsOrders>();
 			return r == null || r.Except.Contains(orderString);
 		}
+
+		public static void AddOrder(this Actor self, string orderString)
+		{
+			var r = self.TraitOrDefault<RejectsOrders>();
+			r.Except.Add(orderString);
+		}
+
+		public static void RemoveOrder(this Actor self, string orderString)
+		{
+			var r = self.TraitOrDefault<RejectsOrders>();
+			r.Except.Remove(orderString);
+		}
 	}
 }
