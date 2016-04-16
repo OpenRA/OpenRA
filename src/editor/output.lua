@@ -335,17 +335,52 @@ out:Connect(wx.wxEVT_IDLE, function()
     if ide.osname == 'Windows' then unHideWindow() end
   end)
 
-local jumptopatterns = {
+local function activateByPartialName(fname, jumpline, jumplinepos)
+  -- fname may include name of executable, as in "path/to/lua: file.lua";
+  -- strip it and try to find match again if needed.
+  -- try the stripped name first as if it doesn't match, the longer
+  -- name may have parts that may be interpreted as a network path and
+  -- may take few seconds to check.
+  local name
+  local fixedname = fname:match(":%s+(.+)")
+  if fixedname then
+    name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
+      or FileTreeFindByPartialName(fixedname)
+  end
+  name = name
+    or GetFullPathIfExists(FileTreeGetDir(), fname)
+    or FileTreeFindByPartialName(fname)
+
+  local editor = LoadFile(name or fname,nil,true)
+  if not editor then
+    local ed = GetEditor()
+    if ed and ide:GetDocument(ed):GetFileName() == (name or fname) then
+      editor = ed
+    end
+  end
+  if not editor then return false end
+
+  jumpline = tonumber(jumpline)
+  jumplinepos = tonumber(jumplinepos)
+
+  editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
+    + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
+  editor:EnsureVisibleEnforcePolicy(jumpline)
+  editor:SetFocus()
+  return true
+end
+
+local jumptopatterns = { -- ["pattern"] = true/false for multiple/single
   -- <filename>(line,linepos):
-  "^%s*(.-)%((%d+),(%d+)%)%s*:",
+  ["%s*(.-)%((%d+),(%d+)%)%s*:"] = false,
   -- <filename>(line):
-  "^%s*(.-)%((%d+).*%)%s*:",
+  ["%s*(.-)%((%d+).*%)%s*:"] = false,
   --[string "<filename>"]:line:
-  '^.-%[string "([^"]+)"%]:(%d+)%s*:',
+  ['.-%[string "([^"]+)"%]:(%d+)%s*:'] = false,
   -- <filename>:line:linepos
-  "^%s*(.-):(%d+):(%d+):",
+  ["%s*(.-):(%d+):(%d+):"] = false,
   -- <filename>:line:
-  "^%s*(.-):(%d+)%s*:",
+  ["%s*(.-):(%d+)%s*:"] = true,
 }
 
 out:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
@@ -354,50 +389,23 @@ out:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     local linetx = out:GetLineDyn(line)
 
     -- try to detect a filename and line in linetx
-    local fname, jumpline, jumplinepos
-    for _,pattern in ipairs(jumptopatterns) do
-      fname,jumpline,jumplinepos = linetx:match(pattern)
-      if (fname and jumpline) then break end
-    end
-
-    if not (fname and jumpline) then return end
-
-    -- fname may include name of executable, as in "path/to/lua: file.lua";
-    -- strip it and try to find match again if needed.
-    -- try the stripped name first as if it doesn't match, the longer
-    -- name may have parts that may be interpreter as network path and
-    -- may take few seconds to check.
-    local name
-    local fixedname = fname:match(":%s+(.+)")
-    if fixedname then
-      name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
-        or FileTreeFindByPartialName(fixedname)
-    end
-    name = name
-      or GetFullPathIfExists(FileTreeGetDir(), fname)
-      or FileTreeFindByPartialName(fname)
-
-    local editor = LoadFile(name or fname,nil,true)
-    if not editor then
-      local ed = GetEditor()
-      if ed and ide:GetDocument(ed):GetFileName() == (name or fname) then
-        editor = ed
+    for pattern, multiple in pairs(jumptopatterns) do
+      local results = {}
+      for fname, jumpline, jumplinepos in linetx:gmatch(pattern) do
+        -- insert matches in reverse order (if any)
+        table.insert(results, 1, {fname, jumpline, jumplinepos})
+        if not multiple then break end -- one match is enough if no multiple is requested
+      end
+      for _, result in ipairs(results) do
+        if activateByPartialName(unpack(result)) then
+          -- doubleclick can set selection, so reset it
+          local pos = event:GetPosition()
+          if pos == -1 then pos = out:GetLineEndPosition(event:GetLine()) end
+          out:SetSelection(pos, pos)
+          return
+        end
       end
     end
-    if editor then
-      jumpline = tonumber(jumpline)
-      jumplinepos = tonumber(jumplinepos)
-
-      editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
-        + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
-      editor:EnsureVisibleEnforcePolicy(jumpline)
-      editor:SetFocus()
-    end
-
-    -- doubleclick can set selection, so reset it
-    local pos = event:GetPosition()
-    if pos == -1 then pos = out:GetLineEndPosition(event:GetLine()) end
-    out:SetSelection(pos, pos)
   end)
 
 local function positionInLine(line)
