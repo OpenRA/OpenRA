@@ -207,8 +207,8 @@ HIND.Husk:
 
 U2.Husk:
 	Inherits: ^PlaneHusk
-	EditorOnlyTooltip:
-		Name: Husk (U2 Spy Plane)
+	Tooltip:
+		Name: Husk (Spy Plane)
 	Aircraft:
 		TurnSpeed: 7
 		Speed: 373
