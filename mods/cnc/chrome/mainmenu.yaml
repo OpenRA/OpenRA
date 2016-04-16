@@ -3,6 +3,10 @@ Container@MENU_BACKGROUND:
 	Height: WINDOW_BOTTOM
 	Logic: CncMainMenuLogic
 	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@RETICLE:

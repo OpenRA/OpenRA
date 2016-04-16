@@ -560,6 +560,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
+			// Music
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "NextTrack", "Next" },
+					{ "PreviousTrack", "Previous" },
+					{ "StopMusic", "Stop" },
+					{ "PauseMusic", "Pause or Resume" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Music commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
+			}
+
 			return () => { };
 		}
 
