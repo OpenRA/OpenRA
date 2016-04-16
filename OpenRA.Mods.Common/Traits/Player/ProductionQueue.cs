@@ -415,11 +415,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Started { get; private set; }
 		public int Slowdown { get; private set; }
 
-		readonly INotifyInsufficientFunds[] insufficientFunds;
-		readonly Player owner;
 		readonly PowerManager pm;
-
-		bool insufficientFundsPlayed;
 
 		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
 		{
@@ -429,8 +425,6 @@ namespace OpenRA.Mods.Common.Traits
 			OnComplete = onComplete;
 			Queue = queue;
 			this.pm = pm;
-			owner = queue.Actor.Owner;
-			insufficientFunds = owner.PlayerActor.TraitsImplementing<INotifyInsufficientFunds>().ToArray();
 		}
 
 		public void Tick(PlayerResources pr)
@@ -440,13 +434,6 @@ namespace OpenRA.Mods.Common.Traits
 				var time = Queue.GetBuildTime(Item);
 				if (time > 0)
 					RemainingTime = TotalTime = time;
-
-				// Don't play a QueuedAudio notification when we can't start building (because we don't have the money to)
-				// Also don't play it when the time to build is actually 0 (i.e. normally dev cheats)
-				// to prevent overlapping with the ReadyAudio notification
-				var initialCost = RemainingCost / RemainingTime;
-				if (time != 0 && initialCost != 0 && pr.Cash + pr.Resources > initialCost)
-					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", Queue.Info.QueuedAudio, owner.Faction.InternalName);
 
 				Started = true;
 			}
@@ -471,23 +458,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame))
-			{
-				if (!insufficientFundsPlayed)
-				{
-					insufficientFundsPlayed = true;
-					foreach (var funds in insufficientFunds)
-						funds.InsufficientFunds(owner.PlayerActor);
-				}
-
+			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
 				return;
-			}
-
-			if (insufficientFundsPlayed)
-				insufficientFundsPlayed = false;
-
-			foreach (var funds in insufficientFunds)
-				funds.SufficientFunds(owner.PlayerActor);
 
 			RemainingCost -= costThisFrame;
 			RemainingTime -= 1;

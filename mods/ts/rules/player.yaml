@@ -40,6 +40,7 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+		InsufficientFundsNotification: InsufficientFunds
 	ActorGroupProxy:
 	DeveloperMode:
 		Enabled: true
@@ -51,4 +52,3 @@ Player:
 	PlayerStatistics:
 	PlaceBeacon:
 	ResourceStorageWarning:
-	InsufficientFundsWarning:
