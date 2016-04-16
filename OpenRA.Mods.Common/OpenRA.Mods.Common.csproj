@@ -300,7 +300,7 @@
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\Player\InsufficientFundsWarning.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
-    <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
+    <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
     <Compile Include="Traits\Captures.cs" />
     <Compile Include="Traits\Cargo.cs" />
