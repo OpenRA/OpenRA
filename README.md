@@ -77,8 +77,8 @@ Set project directory:
   zbstudio <project directory> [<filename>...]
   (0.39+) a directory passed as a parameter will be set as the project directory
 
-Override default configuration:
-  zbstudio -cfg "<luacode overriding config>" [<filename>]
+Overwrite default configuration:
+  zbstudio -cfg "<lua configuration code>" [<filename>]
   e.g.: zbstudio -cfg "editor.fontsize=12" somefile.lua
 
 Load custom configuration:
