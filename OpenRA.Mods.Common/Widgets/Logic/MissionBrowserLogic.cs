@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var p in allPreviews)
 				{
 					p.GetMinimap();
-					var unused = p.Rules;
+					p.PreloadRules();
 				}
 			}).Start();
 
