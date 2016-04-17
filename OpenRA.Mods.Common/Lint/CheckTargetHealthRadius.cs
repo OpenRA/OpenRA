@@ -58,9 +58,16 @@ namespace OpenRA.Mods.Common.Lint
 					if (bullet == null && missile == null && areabeam == null)
 						continue;
 
-					var targetExtraSearchRadius = bullet != null ? bullet.TargetExtraSearchRadius :
-						missile != null ? missile.TargetExtraSearchRadius :
-						areabeam != null ? areabeam.TargetExtraSearchRadius : WDist.Zero;
+					var targetExtraSearchRadius = WDist.Zero;
+
+					if (bullet != null)
+						targetExtraSearchRadius = bullet.TargetExtraSearchRadius;
+
+					if (missile != null)
+						targetExtraSearchRadius = missile.TargetExtraSearchRadius;
+
+					if (areabeam != null)
+						targetExtraSearchRadius = areabeam.TargetExtraSearchRadius;
 
 					if (healthTraits.Where(x => x.Shape.OuterRadius.Length > targetExtraSearchRadius.Length).Any())
 						emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of the projectile on `{1}`!"
