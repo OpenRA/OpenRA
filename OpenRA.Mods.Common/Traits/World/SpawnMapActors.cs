@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var initDict = actorReference.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
+				initDict.Add(new SpawnedByMapInit(kv.Key));
 				var actor = world.CreateActor(actorReference.Type, initDict);
 				Actors[kv.Key] = actor;
 				LastMapActorID = actor.ActorID;
@@ -45,4 +46,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
+	public class SpawnedByMapInit : IActorInit<string>, ISuppressInitExport
+	{
+		public readonly string Name;
+		public SpawnedByMapInit(string name) { Name = name; }
+
+		public string Value(World world)
+		{
+			return Name;
+		}
+	}
 }

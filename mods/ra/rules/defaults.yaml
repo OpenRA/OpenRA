@@ -521,7 +521,6 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
-		StartsRevealed: true
 
 ^FakeBuilding:
 	Inherits: ^Building

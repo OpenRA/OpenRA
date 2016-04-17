@@ -607,7 +607,6 @@
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	FrozenUnderFog:
-		StartsRevealed: true
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
