@@ -9,16 +9,21 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace OpenRA.FileFormats
 {
-	public class XccGlobalDatabase
+	public class XccGlobalDatabase : IDisposable
 	{
 		public readonly string[] Entries;
-		public XccGlobalDatabase(Stream s)
+		readonly Stream s;
+
+		public XccGlobalDatabase(Stream stream)
 		{
+			s = stream;
+
 			var entries = new List<string>();
 			while (s.Peek() > -1)
 			{
@@ -39,6 +44,11 @@ namespace OpenRA.FileFormats
 			}
 
 			Entries = entries.ToArray();
+		}
+
+		public void Dispose()
+		{
+			s.Dispose();
 		}
 	}
 }
