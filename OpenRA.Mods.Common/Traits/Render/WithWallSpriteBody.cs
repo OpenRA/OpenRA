@@ -140,6 +140,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 			UpdateNeighbours(self);
+
+			// Set the initial animation frame before the render tick (for frozen actor previews)
+			self.World.AddFrameEndTask(_ => DefaultAnimation.Tick());
 		}
 
 		static void UpdateNeighbours(Actor self)
