@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (node.Key == "Color")
 					{
-						if (parent.Key.StartsWith("FixedColorPalette"))
+						if (parent != null && parent.Key.StartsWith("FixedColorPalette"))
 							TryUpdateHSLColor(ref node.Value.Value);
 						else
 							TryUpdateColor(ref node.Value.Value);
@@ -753,7 +753,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20160402)
 				{
 					// Fix misleading property naming.
-					if (node.Key == "EffectSequence" && parent.Key == "SpawnActorPower")
+					if (node.Key == "EffectSequence" && parent != null && parent.Key == "SpawnActorPower")
 						node.Key = "EffectImage";
 				}
 
