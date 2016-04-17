@@ -486,8 +486,13 @@ namespace OpenRA
 						Game.RunAfterTick(() =>
 						{
 							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
-							UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
-							onSuccess();
+							if (package == null)
+								innerData.Status = MapStatus.DownloadError;
+							else
+							{
+								UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+								onSuccess();
+							}
 						});
 					};
 
