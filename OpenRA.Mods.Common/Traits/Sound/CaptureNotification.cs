@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 	public class CaptureNotification : INotifyCapture
 	{
-		CaptureNotificationInfo info;
+		readonly CaptureNotificationInfo info;
 		public CaptureNotification(CaptureNotificationInfo info)
 		{
 			this.info = info;
@@ -31,11 +31,8 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			if (captor.World.LocalPlayer != captor.Owner)
-				return;
-
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
-			Game.Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, faction);
+			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
 		}
 	}
 }
