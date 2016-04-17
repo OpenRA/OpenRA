@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]

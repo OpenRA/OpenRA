@@ -18,6 +18,7 @@ using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;

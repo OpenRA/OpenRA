@@ -12,7 +12,7 @@
 using OpenRA.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the sprite during construction.")]
 	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>

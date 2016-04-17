@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the actor's type and ID above the actor.")]
 	class RenderDebugStateInfo : ITraitInfo

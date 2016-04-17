@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Invisible during games.")]
 	class RenderSpritesEditorOnlyInfo : RenderSpritesInfo

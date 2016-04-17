@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Attach this to the player actor. When attached, enables all actors possessing the LevelupWhenCreated ",
 		"trait to have their production queue icons render with an overlay defined in this trait. ",

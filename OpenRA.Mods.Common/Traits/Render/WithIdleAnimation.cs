@@ -11,7 +11,7 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Periodically plays an idle animation, replacing the default body animation.")]
 	public class WithIdleAnimationInfo : UpgradableTraitInfo, Requires<WithSpriteBodyInfo>
