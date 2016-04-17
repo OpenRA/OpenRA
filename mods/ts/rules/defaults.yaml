@@ -257,7 +257,9 @@
 			DirtRoad: 100
 			Rough: 80
 			Tiberium: 90
+				PathingCost: 90
 			BlueTiberium: 90
+				PathingCost: 90
 			Veins: 50
 	SelectionDecorations:
 		Palette: pips
