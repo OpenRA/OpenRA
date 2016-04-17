@@ -90,9 +90,11 @@ namespace OpenRA.FileSystem
 			// TODO: This should be passed to the mix file ctor
 			if (context.Exists("global mix database.dat"))
 			{
-				var db = new XccGlobalDatabase(context.Open("global mix database.dat"));
-				foreach (var e in db.Entries)
-					allPossibleFilenames.Add(e);
+				using (var db = new XccGlobalDatabase(context.Open("global mix database.dat")))
+				{
+					foreach (var e in db.Entries)
+						allPossibleFilenames.Add(e);
+				}
 			}
 
 			foreach (var filename in allPossibleFilenames)
