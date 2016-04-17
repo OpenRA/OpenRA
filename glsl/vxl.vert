@@ -3,6 +3,7 @@ uniform mat4 TransformMatrix;
 
 attribute vec4 aVertexPosition;
 attribute vec4 aVertexTexCoord;
+attribute vec2 aVertexTexMetadata;
 varying vec4 vTexCoord;
 varying vec4 vChannelMask;
 varying vec4 vNormalsMask;
@@ -19,6 +20,6 @@ void main()
 {
 	gl_Position = View*TransformMatrix*aVertexPosition;
 	vTexCoord = aVertexTexCoord;
-	vChannelMask = DecodeMask(aVertexTexCoord.z);
-	vNormalsMask = DecodeMask(aVertexTexCoord.w);
+	vChannelMask = DecodeMask(aVertexTexMetadata.s);
+	vNormalsMask = DecodeMask(aVertexTexMetadata.t);
 }

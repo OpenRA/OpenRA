@@ -43,7 +43,6 @@ namespace OpenRA.Graphics
 		{
 			this.tileset = tileset;
 			var allocated = false;
-			var type = tileset.EnableDepth ? SheetType.DualIndexed : SheetType.Indexed;
 
 			Func<Sheet> allocate = () =>
 			{
@@ -51,10 +50,10 @@ namespace OpenRA.Graphics
 					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				return new Sheet(type, new Size(tileset.SheetSize, tileset.SheetSize));
+				return new Sheet(SheetType.Indexed, new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			sheetBuilder = new SheetBuilder(type, allocate);
+			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			random = new MersenneTwister();
 
 			var frameCache = new FrameCache(Game.ModData.DefaultFileSystem, Game.ModData.SpriteLoaders);
@@ -71,10 +70,17 @@ namespace OpenRA.Graphics
 					{
 						var f = allFrames[j];
 						var s = sheetBuilder.Allocate(f.Size, f.Offset);
-						Util.FastCopyIntoChannel(s, 0, f.Data);
+						Util.FastCopyIntoChannel(s, f.Data);
 
 						if (tileset.EnableDepth)
-							Util.FastCopyIntoChannel(s, 1, allFrames[j + frameCount].Data);
+						{
+							var ss = sheetBuilder.Allocate(f.Size, f.Offset);
+							Util.FastCopyIntoChannel(ss, allFrames[j + frameCount].Data);
+
+							// s and ss are guaranteed to use the same sheet
+							// because of the custom terrain sheet allocation
+							s = new SpriteWithSecondaryData(s, ss.Bounds, ss.Channel);
+						}
 
 						return s;
 					}).ToArray());

@@ -31,25 +31,36 @@ namespace OpenRA.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, float paletteTextureIndex, int nv)
 		{
+			float sl = 0;
+			float st = 0;
+			float sr = 0;
+			float sb = 0;
 			var attribC = ChannelSelect[(int)r.Channel];
-			if (r.Sheet.Type == SheetType.DualIndexed)
-				attribC *= -1;
 
-			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
+			var ss = r as SpriteWithSecondaryData;
+			if (ss != null)
+			{
+				sl = ss.SecondaryLeft;
+				st = ss.SecondaryTop;
+				sr = ss.SecondaryRight;
+				sb = ss.SecondaryBottom;
+				attribC = -(attribC + ChannelSelect[(int)ss.Channel] / 10);
+			}
+
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, attribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, attribC);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
 		}
 
-		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
-		public static void FastCopyIntoChannel(Sprite dest, int channelOffset, byte[] src)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
 			var data = dest.Sheet.GetData();
 			var srcStride = dest.Bounds.Width;
 			var destStride = dest.Sheet.Size.Width * 4;
-			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel + channelOffset];
+			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
 			var destSkip = destStride - 4 * srcStride;
 			var height = dest.Bounds.Height;
 
