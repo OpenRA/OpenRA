@@ -518,7 +518,6 @@
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	FrozenUnderFog:
-		StartsRevealed: true
 
 ^CivBuildingHusk:
 	Inherits@1: ^SpriteActor
@@ -532,7 +531,6 @@
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	FrozenUnderFog:
-		StartsRevealed: true
 	ScriptTriggers:
 
 ^TechBuilding:
@@ -571,7 +569,6 @@
 		Palette: terrain
 	WithSpriteBody:
 	FrozenUnderFog:
-		StartsRevealed: true
 	ScriptTriggers:
 
 ^Wall:
