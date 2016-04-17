@@ -25,7 +25,6 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		AllowBots: False
 		LockTeam: True
 		Team: 1
 		LockFaction: True
@@ -35,7 +34,6 @@ Players:
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		AllowBots: False
 		LockTeam: True
 		Team: 1
 		LockFaction: True
@@ -45,7 +43,6 @@ Players:
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		AllowBots: False
 		LockTeam: True
 		Team: 1
 		LockFaction: True
@@ -55,7 +52,6 @@ Players:
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		AllowBots: False
 		LockTeam: True
 		Team: 1
 		LockFaction: True
