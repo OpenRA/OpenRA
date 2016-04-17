@@ -398,6 +398,7 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Veins: 50
+				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
 	Selectable:
