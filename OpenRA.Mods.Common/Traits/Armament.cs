@@ -233,13 +233,13 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
 						Game.Sound.Play(args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+
+					foreach (var na in self.TraitsImplementing<INotifyAttack>())
+						na.Attacking(self, target, this, barrel);
+
+					Recoil = Info.Recoil;
 				}
 			});
-
-			foreach (var na in self.TraitsImplementing<INotifyAttack>())
-				na.Attacking(self, target, this, barrel);
-
-			Recoil = Info.Recoil;
 
 			if (--Burst > 0)
 				FireDelay = Weapon.BurstDelay;
