@@ -21,6 +21,12 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
 
+		[Desc("The speech notification to play to the old owner.")]
+		public readonly string LoseNotification = null;
+
+		[Desc("Specifies if LoseNotification is played with the voice of the new owners faction.")]
+		public readonly bool LoseNewOwnerVoice = false;
+
 		public object Create(ActorInitializer init) { return new CaptureNotification(this); }
 	}
 
@@ -36,6 +42,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		{
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
+
+			var loseFaction = info.LoseNewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
+			Game.Sound.PlayNotification(self.World.Map.Rules, oldOwner, "Speech", info.LoseNotification, loseFaction);
 		}
 	}
 }
