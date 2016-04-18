@@ -23,7 +23,7 @@ World:
 		Red: 0.75
 		Green: 0.85
 		Blue: 1.5
-		Ambient: 0.35
+		Ambient: 0.45
 	MissionData:
 		Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
 		BriefingVideo: gdi6.vqa
