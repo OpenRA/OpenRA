@@ -225,32 +225,37 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
-			var scrolltype = Game.Settings.Game.MouseScroll;
-			if (scrolltype == MouseScrollType.Disabled)
+			var scrollType = MouseScrollType.Disabled;
+
+			if (mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right))
+				scrollType = Game.Settings.Game.MiddleMouseScroll;
+			else if (mi.Button == MouseButton.Right)
+				scrollType = Game.Settings.Game.RightMouseScroll;
+
+			if (scrollType == MouseScrollType.Disabled)
 				return false;
 
-			if (scrolltype == MouseScrollType.Standard || scrolltype == MouseScrollType.Inverted)
+			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
-				if (mi.Event == MouseInputEvent.Move &&
-					(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
+				if (mi.Event == MouseInputEvent.Move)
 				{
-					var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
+					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
 					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 					return true;
 				}
 			}
 
-			// Tiberian Sun style right-click-and-drag scrolling
-			if (scrolltype == MouseScrollType.Joystick)
+			// Tiberian Sun style click-and-drag scrolling
+			if (scrollType == MouseScrollType.Joystick)
 			{
-				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+				if (mi.Event == MouseInputEvent.Down)
 				{
 					if (!TakeMouseFocus(mi))
 						return false;
 					joystickScrollStart = mi.Location;
 				}
 
-				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
+				if (mi.Event == MouseInputEvent.Up)
 				{
 					var wasJoystickScrolling = IsJoystickScrolling;
 
@@ -261,10 +266,8 @@ namespace OpenRA.Mods.Common.Widgets
 						return true;
 				}
 
-				if (mi.Event == MouseInputEvent.Move && mi.Button == MouseButton.Right && joystickScrollStart.HasValue)
-				{
+				if (mi.Event == MouseInputEvent.Move && joystickScrollStart.HasValue)
 					joystickScrollEnd = mi.Location;
-				}
 			}
 
 			return false;
