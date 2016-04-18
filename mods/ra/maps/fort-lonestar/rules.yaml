@@ -21,7 +21,7 @@ World:
 		Red: 0.75
 		Green: 0.85
 		Blue: 1.5
-		Ambient: 0.35
+		Ambient: 0.45
 	MusicPlaylist:
 		BackgroundMusic: rain
 	FlashPaletteEffect@LIGHTNINGSTRIKE:
