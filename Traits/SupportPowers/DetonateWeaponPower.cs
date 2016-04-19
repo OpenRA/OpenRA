@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
@@ -15,6 +15,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
