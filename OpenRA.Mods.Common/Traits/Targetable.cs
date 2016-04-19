@@ -26,13 +26,15 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Targetable(init.Self, this); }
 	}
 
-	public class Targetable : UpgradableTrait<TargetableInfo>, ITargetable
+	public class Targetable : UpgradableTrait<TargetableInfo>, ITargetable, INotifyCreated
 	{
 		protected static readonly string[] None = new string[] { };
 		protected Cloak cloak;
 
 		public Targetable(Actor self, TargetableInfo info)
-			: base(info)
+			: base(info) { }
+
+		void INotifyCreated.Created(Actor self)
 		{
 			cloak = self.TraitOrDefault<Cloak>();
 		}
