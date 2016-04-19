@@ -45,7 +45,7 @@ namespace OpenRA.Mods.AS.Warheads
 			{
 				var tc = Target.FromCell(firedBy.World, cell);
 
-				if (!weapon.IsValidAgainst(tc, firedBy.World, firedBy) && ForceFire)
+				if (!weapon.IsValidAgainst(tc, firedBy.World, firedBy) && !ForceFire)
 					continue;
 
 				var args = new ProjectileArgs
