@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var next = bases
-				.SkipWhile(b => !world.Selection.Actors.Contains(b))
+				.SkipWhile(b => !world.Selection.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 
 			var next = facilities
-				.SkipWhile(b => !world.Selection.Actors.Contains(b))
+				.SkipWhile(b => !world.Selection.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
