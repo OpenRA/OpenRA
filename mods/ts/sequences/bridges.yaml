@@ -1,0 +1,86 @@
+lobrdg01:
+	idle:
+		Start: 1
+		ZOffset: -1c511
+		UseTilesetExtension: true
+
+lobrdg02:
+	Inherits: lobrdg01
+
+lobrdg03:
+	Inherits: lobrdg01
+
+lobrdg04:
+	Inherits: lobrdg01
+
+lobrdg05:
+	Inherits: lobrdg01
+
+lobrdg06:
+	Inherits: lobrdg01
+
+lobrdg07:
+	Inherits: lobrdg01
+
+lobrdg08:
+	Inherits: lobrdg01
+
+lobrdg09:
+	Inherits: lobrdg01
+
+lobrdg10:
+	Inherits: lobrdg01
+
+lobrdg11:
+	Inherits: lobrdg01
+
+lobrdg12:
+	Inherits: lobrdg01
+
+lobrdg13:
+	Inherits: lobrdg01
+
+lobrdg14:
+	Inherits: lobrdg01
+
+lobrdg15:
+	Inherits: lobrdg01
+
+lobrdg16:
+	Inherits: lobrdg01
+
+lobrdg17:
+	Inherits: lobrdg01
+
+lobrdg18:
+	Inherits: lobrdg01
+
+lobrdg19:
+	Inherits: lobrdg01
+
+lobrdg20:
+	Inherits: lobrdg01
+
+lobrdg21:
+	Inherits: lobrdg01
+
+lobrdg22:
+	Inherits: lobrdg01
+
+lobrdg23:
+	Inherits: lobrdg01
+
+lobrdg24:
+	Inherits: lobrdg01
+
+lobrdg25:
+	Inherits: lobrdg01
+
+lobrdg26:
+	Inherits: lobrdg01
+
+lobrdg27:
+	Inherits: lobrdg01
+
+lobrdg28:
+	Inherits: lobrdg01

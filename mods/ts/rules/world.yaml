@@ -97,6 +97,7 @@ World:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
+	CustomTerrainDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
 	MapOptions:

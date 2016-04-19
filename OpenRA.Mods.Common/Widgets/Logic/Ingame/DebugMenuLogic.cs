@@ -134,6 +134,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showActorTagsCheckbox.IsChecked = () => devTrait.ShowActorTags;
 				showActorTagsCheckbox.OnClick = () => devTrait.ShowActorTags ^= true;
 			}
+
+			var showCustomTerrainCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_CUSTOMTERRAIN_OVERLAY");
+			if (showCustomTerrainCheckbox != null)
+			{
+				showCustomTerrainCheckbox.IsChecked = () => devTrait.ShowCustomTerrain;
+				showCustomTerrainCheckbox.OnClick = () => devTrait.ShowCustomTerrain ^= true;
+			}
 		}
 
 		public void Order(World world, string order)

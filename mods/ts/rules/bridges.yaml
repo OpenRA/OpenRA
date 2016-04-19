@@ -1,0 +1,107 @@
+^NorthWestSouthEastBridge:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
+	LowBridge:
+
+LOBRDG01:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG02:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG03:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG04:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG05:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG06:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG07:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG08:
+	Inherits: ^NorthWestSouthEastBridge
+
+LOBRDG09:
+	Inherits: ^NorthWestSouthEastBridge
+
+^NorthEastSouthWestBridge:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
+	LowBridge:
+
+LOBRDG10:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG11:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG12:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG13:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG14:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG15:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG16:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG17:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG18:
+	Inherits: ^NorthEastSouthWestBridge
+
+LOBRDG19:
+	Inherits: ^NorthWestSouthEastBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG20:
+	Inherits: ^NorthWestSouthEastBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG21:
+	Inherits: ^NorthWestSouthEastBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG22:
+	Inherits: ^NorthWestSouthEastBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG23:
+	Inherits: ^NorthEastSouthWestBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG24:
+	Inherits: ^NorthEastSouthWestBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG25:
+	Inherits: ^NorthEastSouthWestBridge
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+
+LOBRDG26:
+	Inherits: ^NorthEastSouthWestBridge
+	Tooltip:
+		Name: Bridge Ramp
