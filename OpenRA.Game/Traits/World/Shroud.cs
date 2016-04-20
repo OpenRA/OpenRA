@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 
-	public class Shroud : ISync
+	public class Shroud : ISync, INotifyCreated
 	{
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
@@ -77,6 +77,12 @@ namespace OpenRA.Traits
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
+				self.World.AddFrameEndTask(w => ExploreAll());
 		}
 
 		void Invalidate(IEnumerable<PPos> changed)
@@ -241,7 +247,7 @@ namespace OpenRA.Traits
 			Invalidate(changed);
 		}
 
-		public void ExploreAll(World world)
+		public void ExploreAll()
 		{
 			var changed = new List<PPos>();
 			foreach (var puv in map.ProjectedCellBounds)

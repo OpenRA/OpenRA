@@ -107,7 +107,7 @@ namespace OpenRA.Traits
 
 						if (EnableAll)
 						{
-							self.Owner.Shroud.ExploreAll(self.World);
+							self.Owner.Shroud.ExploreAll();
 
 							var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 							self.Trait<PlayerResources>().GiveCash(amount);
@@ -177,7 +177,7 @@ namespace OpenRA.Traits
 
 				case "DevGiveExploration":
 					{
-						self.Owner.Shroud.ExploreAll(self.World);
+						self.Owner.Shroud.ExploreAll();
 						break;
 					}
 
