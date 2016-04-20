@@ -173,6 +173,17 @@ namespace OpenRA.Network
 			}
 		}
 
+		public class LobbyOptionState
+		{
+			public bool Locked;
+			public string Value;
+			public string PreferredValue;
+
+			public LobbyOptionState() { }
+
+			public bool Enabled { get { return Value == "True"; } }
+		}
+
 		public class Global
 		{
 			public string ServerName;
@@ -198,14 +209,45 @@ namespace OpenRA.Network
 			public string GameUid;
 			public bool DisableSingleplayer;
 
+			[FieldLoader.Ignore]
+			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();
+
 			public static Global Deserialize(MiniYaml data)
 			{
-				return FieldLoader.Load<Global>(data);
+				var gs = FieldLoader.Load<Global>(data);
+
+				var optionsNode = data.Nodes.FirstOrDefault(n => n.Key == "Options");
+				if (optionsNode != null)
+					foreach (var n in optionsNode.Value.Nodes)
+						gs.LobbyOptions[n.Key] = FieldLoader.Load<LobbyOptionState>(n.Value);
+
+				return gs;
 			}
 
 			public MiniYamlNode Serialize()
 			{
-				return new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
+				var data = new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
+				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value))).ToList();
+				data.Value.Nodes.Add(new MiniYamlNode("Options", new MiniYaml(null, options)));
+				return data;
+			}
+
+			public bool OptionOrDefault(string id, bool def)
+			{
+				LobbyOptionState option;
+				if (LobbyOptions.TryGetValue(id, out option))
+					return option.Enabled;
+
+				return def;
+			}
+
+			public string OptionOrDefault(string id, string def)
+			{
+				LobbyOptionState option;
+				if (LobbyOptions.TryGetValue(id, out option))
+					return option.Value;
+
+				return def;
 			}
 		}
 

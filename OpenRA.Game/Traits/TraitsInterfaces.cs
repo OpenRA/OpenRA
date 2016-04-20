@@ -412,4 +412,50 @@ namespace OpenRA.Traits
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
 	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface ILobbyOptions : ITraitInfoInterface
+	{
+		IEnumerable<LobbyOption> LobbyOptions(Ruleset rules);
+	}
+
+	public class LobbyOption
+	{
+		public readonly string Id;
+		public readonly string Name;
+		public readonly IReadOnlyDictionary<string, string> Values;
+		public readonly string DefaultValue;
+		public readonly bool Locked;
+
+		public LobbyOption(string id, string name, IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
+		{
+			Id = id;
+			Name = name;
+			Values = values;
+			DefaultValue = defaultValue;
+			Locked = locked;
+		}
+
+		public virtual string ValueChangedMessage(string playerName, string newValue)
+		{
+			return playerName + " changed " + Name + " to " + Values[newValue] + ".";
+		}
+	}
+
+	public class LobbyBooleanOption : LobbyOption
+	{
+		static readonly Dictionary<string, string> BoolValues = new Dictionary<string, string>()
+		{
+			{ true.ToString(), "enabled" },
+			{ false.ToString(), "disabled" }
+		};
+
+		public LobbyBooleanOption(string id, string name, bool defaultValue, bool locked)
+			: base(id, name, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
+
+		public override string ValueChangedMessage(string playerName, string newValue)
+		{
+			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
+		}
+	}
 }

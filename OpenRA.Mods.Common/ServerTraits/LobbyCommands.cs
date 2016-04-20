@@ -424,6 +424,47 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "option",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can change the configuration.");
+							return true;
+						}
+
+						var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+							.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+							.SelectMany(t => t.LobbyOptions(server.Map.Rules))
+							.ToDictionary(o => o.Id, o => o);
+
+						var split = s.Split(' ');
+						LobbyOption option;
+						if (split.Length < 2 || !options.TryGetValue(split[0], out option) ||
+							!option.Values.ContainsKey(split[1]))
+						{
+							server.SendOrderTo(conn, "Message", "Invalid configuration command.");
+							return true;
+						}
+
+						if (option.Locked)
+						{
+							server.SendOrderTo(conn, "Message", "{0} cannot be changed.".F(option.Name));
+							return true;
+						}
+
+						var oo = server.LobbyInfo.GlobalSettings.LobbyOptions[option.Id];
+						if (oo.Value == split[1])
+							return true;
+
+						oo.Value = oo.PreferredValue = split[1];
+
+						server.SyncLobbyGlobalSettings();
+						server.SendMessage(option.ValueChangedMessage(client.Name, split[1]));
+
+						return true;
+					}
+				},
 				{ "allowcheats",
 					s =>
 					{
@@ -1067,6 +1108,37 @@ namespace OpenRA.Mods.Common.Server
 
 		public static void LoadMapSettings(Session.Global gs, Ruleset rules)
 		{
+			var options = rules.Actors["player"].TraitInfos<ILobbyOptions>()
+				.Concat(rules.Actors["world"].TraitInfos<ILobbyOptions>())
+				.SelectMany(t => t.LobbyOptions(rules));
+
+			foreach (var o in options)
+			{
+				var value = o.DefaultValue;
+				var preferredValue = o.DefaultValue;
+				Session.LobbyOptionState state;
+				if (gs.LobbyOptions.TryGetValue(o.Id, out state))
+				{
+					// Propagate old state on map change
+					if (!o.Locked)
+					{
+						if (o.Values.Keys.Contains(state.PreferredValue))
+							value = state.PreferredValue;
+						else if (o.Values.Keys.Contains(state.Value))
+							value = state.Value;
+					}
+
+					preferredValue = state.PreferredValue;
+				}
+				else
+					state = new Session.LobbyOptionState();
+
+				state.Locked = o.Locked;
+				state.Value = value;
+				state.PreferredValue = preferredValue;
+				gs.LobbyOptions[o.Id] = state;
+			}
+
 			var devMode = rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
 			gs.AllowCheats = devMode.Enabled;
 
