@@ -612,6 +612,9 @@ namespace OpenRA.Mods.Common.Server
 				{ "difficulty",
 					s =>
 					{
+						if (server.LobbyInfo.GlobalSettings.Difficulty == s)
+							return true;
+
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
@@ -664,6 +667,9 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
+						if (server.LobbyInfo.GlobalSettings.StartingUnitsClass == selectedClass.Class)
+							return true;
+
 						server.LobbyInfo.GlobalSettings.StartingUnitsClass = selectedClass.Class;
 						server.SyncLobbyGlobalSettings();
 						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, selectedClass.ClassName));
@@ -696,6 +702,9 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
+						if (server.LobbyInfo.GlobalSettings.StartingCash == requestedCash)
+							return true;
+
 						server.LobbyInfo.GlobalSettings.StartingCash = requestedCash;
 						server.SyncLobbyGlobalSettings();
 						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, requestedCash));
@@ -706,6 +715,9 @@ namespace OpenRA.Mods.Common.Server
 				{ "techlevel",
 					s =>
 					{
+						if (server.LobbyInfo.GlobalSettings.TechLevel == s)
+							return true;
+
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
@@ -737,6 +749,9 @@ namespace OpenRA.Mods.Common.Server
 				{ "gamespeed",
 					s =>
 					{
+						if (server.LobbyInfo.GlobalSettings.GameSpeedType == s)
+							return true;
+
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
