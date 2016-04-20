@@ -152,6 +152,12 @@ Cursors:
 		nuke:
 			Start: 319
 			Length: 9
+		emp:
+			Start: 357
+			Length: 19
+		emp-blocked:
+			Start: 377
+			Length: 1
 		sell:
 			Start: 129
 			Length: 10
