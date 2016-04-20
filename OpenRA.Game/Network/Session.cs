@@ -191,20 +191,12 @@ namespace OpenRA.Network
 			public int Timestep = 40;
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
-			public bool AllowCheats = false;
 			public bool AllowSpectators = true;
-			public bool Dedicated;
 			public string Difficulty;
-			public bool Crates = true;
-			public bool Creeps = true;
-			public bool Shroud = true;
-			public bool Fog = true;
-			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
 			public string TechLevel;
 			public string StartingUnitsClass;
 			public string GameSpeedType = "default";
-			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;
 			public bool DisableSingleplayer;

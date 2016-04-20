@@ -9,10 +9,12 @@
  */
 #endregion
 
+using System.Collections.Generic;
+
 namespace OpenRA.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class DeveloperModeInfo : ITraitInfo
+	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
 		public bool Enabled = false;
@@ -55,6 +57,11 @@ namespace OpenRA.Traits
 
 		[Desc("Enable the actor tags overlay by default.")]
 		public bool ShowActorTags;
+
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption("cheats", "Debug Menu", Enabled, Locked);
+		}
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -106,7 +113,8 @@ namespace OpenRA.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			Enabled = self.World.LobbyInfo.GlobalSettings.AllowCheats || self.World.LobbyInfo.IsSinglePlayer;
+			Enabled = self.World.LobbyInfo.IsSinglePlayer || self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("cheats", info.Enabled);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

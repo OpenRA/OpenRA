@@ -347,73 +347,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			// Options panel
-			var allowCheats = optionsBin.GetOrNull<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
-			if (allowCheats != null)
+			var optionCheckboxes = new Dictionary<string, string>()
 			{
-				var cheatsLocked = new CachedTransform<MapPreview, bool>(
-					map => map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Locked);
+				{ "EXPLORED_MAP_CHECKBOX", "explored" },
+				{ "CRATES_CHECKBOX", "crates" },
+				{ "SHORTGAME_CHECKBOX", "shortgame" },
+				{ "FOG_CHECKBOX", "fog" },
+				{ "ALLYBUILDRADIUS_CHECKBOX", "allybuild" },
+				{ "ALLOWCHEATS_CHECKBOX", "cheats" },
+				{ "CREEPS_CHECKBOX", "creeps" },
+			};
 
-				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-				allowCheats.IsDisabled = () => configurationDisabled() || cheatsLocked.Update(Map);
-				allowCheats.OnClick = () => orderManager.IssueOrder(Order.Command(
-						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
-			}
-
-			var crates = optionsBin.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
-			if (crates != null)
+			foreach (var kv in optionCheckboxes)
 			{
-				var cratesLocked = new CachedTransform<MapPreview, bool>(map =>
+				var checkbox = optionsBin.GetOrNull<CheckboxWidget>(kv.Key);
+				if (checkbox != null)
 				{
-					var crateSpawner = map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
-					return crateSpawner == null || crateSpawner.Locked;
-				});
+					var option = new CachedTransform<Session.Global, Session.LobbyOptionState>(
+						gs => gs.LobbyOptions[kv.Value]);
 
-				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
-				crates.IsDisabled = () => configurationDisabled() || cratesLocked.Update(Map);
-				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
-			}
-
-			var creeps = optionsBin.GetOrNull<CheckboxWidget>("CREEPS_CHECKBOX");
-			if (creeps != null)
-			{
-				var creepsLocked = new CachedTransform<MapPreview, bool>(map =>
-				{
-					var mapCreeps = map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
-					return mapCreeps == null || mapCreeps.Locked;
-				});
-
-				creeps.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Creeps;
-				creeps.IsDisabled = () => configurationDisabled() || creepsLocked.Update(Map);
-				creeps.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"creeps {0}".F(!orderManager.LobbyInfo.GlobalSettings.Creeps)));
-			}
-
-			var allybuildradius = optionsBin.GetOrNull<CheckboxWidget>("ALLYBUILDRADIUS_CHECKBOX");
-			if (allybuildradius != null)
-			{
-				var allyBuildRadiusLocked = new CachedTransform<MapPreview, bool>(map =>
-				{
-					var mapBuildRadius = map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
-					return mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked;
-				});
-
-				allybuildradius.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius;
-				allybuildradius.IsDisabled = () => configurationDisabled() || allyBuildRadiusLocked.Update(Map);
-				allybuildradius.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
-			}
-
-			var shortGame = optionsBin.GetOrNull<CheckboxWidget>("SHORTGAME_CHECKBOX");
-			if (shortGame != null)
-			{
-				var shortGameLocked = new CachedTransform<MapPreview, bool>(
-					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>().ShortGameLocked);
-
-				shortGame.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.ShortGame;
-				shortGame.IsDisabled = () => configurationDisabled() || shortGameLocked.Update(Map);
-				shortGame.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"shortgame {0}".F(!orderManager.LobbyInfo.GlobalSettings.ShortGame)));
+					checkbox.IsChecked = () => option.Update(orderManager.LobbyInfo.GlobalSettings).Enabled;
+					checkbox.IsDisabled = () => configurationDisabled() ||
+						option.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
+					checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
+						"option {0} {1}".F(kv.Value, !option.Update(orderManager.LobbyInfo.GlobalSettings).Enabled)));
+				}
 			}
 
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
@@ -591,30 +549,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					gameSpeed.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 				};
-			}
-
-			var exploredMap = optionsBin.GetOrNull<CheckboxWidget>("EXPLORED_MAP_CHECKBOX");
-			if (exploredMap != null)
-			{
-				var exploredMapLocked = new CachedTransform<MapPreview, bool>(
-					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().ExploredMapLocked);
-
-				exploredMap.IsChecked = () => !orderManager.LobbyInfo.GlobalSettings.Shroud;
-				exploredMap.IsDisabled = () => configurationDisabled() || exploredMapLocked.Update(Map);
-				exploredMap.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
-			}
-
-			var enableFog = optionsBin.GetOrNull<CheckboxWidget>("FOG_CHECKBOX");
-			if (enableFog != null)
-			{
-				var fogLocked = new CachedTransform<MapPreview, bool>(
-					map => map.Rules.Actors["player"].TraitInfo<ShroudInfo>().FogLocked);
-
-				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
-				enableFog.IsDisabled = () => configurationDisabled() || fogLocked.Update(Map);
-				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");

@@ -13,12 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CrateSpawnerInfo : ITraitInfo
+	public class CrateSpawnerInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the crates checkbox in the lobby.")]
 		public readonly bool Enabled = true;
@@ -64,27 +65,39 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Spawn and remove the plane this far outside the map.")]
 		public readonly WDist Cordon = new WDist(5120);
 
-		public object Create(ActorInitializer init) { return new CrateSpawner(this, init.Self); }
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption("crates", "Crates", Enabled, Locked);
+		}
+
+		public object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
 	}
 
-	public class CrateSpawner : ITick
+	public class CrateSpawner : ITick, INotifyCreated
 	{
-		readonly CrateSpawnerInfo info;
 		readonly Actor self;
-		int crates = 0;
-		int ticks = 0;
+		readonly CrateSpawnerInfo info;
+		bool enabled;
+		int crates;
+		int ticks;
 
-		public CrateSpawner(CrateSpawnerInfo info, Actor self)
+		public CrateSpawner(Actor self, CrateSpawnerInfo info)
 		{
-			this.info = info;
 			this.self = self;
+			this.info = info;
 
 			ticks = info.InitialSpawnDelay;
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			enabled = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("crates", info.Enabled);
+		}
+
 		public void Tick(Actor self)
 		{
-			if (!self.World.LobbyInfo.GlobalSettings.Crates)
+			if (!enabled)
 				return;
 
 			if (--ticks <= 0)

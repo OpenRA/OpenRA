@@ -39,24 +39,6 @@ namespace OpenRA.Mods.Common.Server
 					server.SendOrderTo(conn, "Message", options[kv.Key].Name + ": " + kv.Value.Value);
 			}
 
-			if (server.LobbyInfo.GlobalSettings.AllowCheats != defaults.AllowCheats)
-				server.SendOrderTo(conn, "Message", "Allow Cheats: {0}".F(server.LobbyInfo.GlobalSettings.AllowCheats));
-
-			if (server.LobbyInfo.GlobalSettings.Shroud != defaults.Shroud)
-				server.SendOrderTo(conn, "Message", "Explored map: {0}".F(!server.LobbyInfo.GlobalSettings.Shroud));
-
-			if (server.LobbyInfo.GlobalSettings.Fog != defaults.Fog)
-				server.SendOrderTo(conn, "Message", "Fog of war: {0}".F(server.LobbyInfo.GlobalSettings.Fog));
-
-			if (server.LobbyInfo.GlobalSettings.Crates != defaults.Crates)
-				server.SendOrderTo(conn, "Message", "Crates Appear: {0}".F(server.LobbyInfo.GlobalSettings.Crates));
-
-			if (server.LobbyInfo.GlobalSettings.Creeps != defaults.Creeps)
-				server.SendOrderTo(conn, "Message", "Creeps Spawn: {0}".F(server.LobbyInfo.GlobalSettings.Creeps));
-
-			if (server.LobbyInfo.GlobalSettings.AllyBuildRadius != defaults.AllyBuildRadius)
-				server.SendOrderTo(conn, "Message", "Build off Ally ConYards: {0}".F(server.LobbyInfo.GlobalSettings.AllyBuildRadius));
-
 			if (server.LobbyInfo.GlobalSettings.StartingUnitsClass != defaults.StartingUnitsClass)
 			{
 				var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
@@ -70,9 +52,6 @@ namespace OpenRA.Mods.Common.Server
 
 			if (server.LobbyInfo.GlobalSettings.TechLevel != defaults.TechLevel)
 				server.SendOrderTo(conn, "Message", "Tech Level: {0}".F(server.LobbyInfo.GlobalSettings.TechLevel));
-
-			if (server.LobbyInfo.GlobalSettings.ShortGame != defaults.ShortGame)
-				server.SendOrderTo(conn, "Message", "Short Game: {0}".F(server.LobbyInfo.GlobalSettings.ShortGame));
 		}
 	}
 }

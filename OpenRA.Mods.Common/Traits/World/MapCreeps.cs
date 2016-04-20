@@ -15,22 +15,36 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the 'Creeps' checkbox in the lobby options.")]
-	public class MapCreepsInfo : TraitInfo<MapCreeps>
+	public class MapCreepsInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the creeps checkbox in the lobby.")]
 		public readonly bool Enabled = true;
 
 		[Desc("Prevent the creeps state from being changed in the lobby.")]
 		public readonly bool Locked = false;
+
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption("creeps", "Worms", Enabled, Locked);
+		}
+
+		public object Create(ActorInitializer init) { return new MapCreeps(this); }
 	}
 
 	public class MapCreeps : INotifyCreated
 	{
+		readonly MapCreepsInfo info;
 		public bool Enabled { get; private set; }
+
+		public MapCreeps(MapCreepsInfo info)
+		{
+			this.info = info;
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			Enabled = self.World.LobbyInfo.GlobalSettings.Creeps;
+			Enabled = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("creeps", info.Enabled);
 		}
 	}
 }

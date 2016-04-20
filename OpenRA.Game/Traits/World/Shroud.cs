@@ -12,11 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Network;
 
 namespace OpenRA.Traits
 {
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
-	public class ShroudInfo : ITraitInfo
+	public class ShroudInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the fog checkbox in the lobby.")]
 		public bool FogEnabled = true;
@@ -30,7 +31,13 @@ namespace OpenRA.Traits
 		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
 		public bool ExploredMapLocked = false;
 
-		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption("explored", "Explored Map", ExploredMapEnabled, ExploredMapLocked);
+			yield return new LobbyBooleanOption("fog", "Fog of War", FogEnabled, FogLocked);
+		}
+
+		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
 	public class Shroud : ISync, INotifyCreated
@@ -38,6 +45,7 @@ namespace OpenRA.Traits
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
 		readonly Actor self;
+		readonly ShroudInfo info;
 		readonly Map map;
 
 		readonly CellLayer<short> visibleCount;
@@ -72,9 +80,10 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
-		public Shroud(Actor self)
+		public Shroud(Actor self, ShroudInfo info)
 		{
 			this.self = self;
+			this.info = info;
 			map = self.World.Map;
 
 			visibleCount = new CellLayer<short>(map);
@@ -84,9 +93,11 @@ namespace OpenRA.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			fogEnabled = self.World.LobbyInfo.GlobalSettings.Fog;
-			var shroudEnabled = self.World.LobbyInfo.GlobalSettings.Shroud;
-			if (!shroudEnabled)
+			var gs = self.World.LobbyInfo.GlobalSettings;
+			fogEnabled = gs.OptionOrDefault("fog", info.FogEnabled);
+
+			var exploreMap = gs.OptionOrDefault("explored", info.ExploredMapEnabled);
+			if (exploreMap)
 				self.World.AddFrameEndTask(w => ExploreAll());
 		}
 
