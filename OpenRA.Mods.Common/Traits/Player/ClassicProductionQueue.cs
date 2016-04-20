@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
 		{
-			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+			if (developerMode.FastBuild)
 				return 0;
 
 			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;

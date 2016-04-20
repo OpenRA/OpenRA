@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
-			if (self.World.AllowDevCommands && developerMode.AllTech)
+			if (developerMode.AllTech)
 				return producible.Keys;
 
 			return allProducibles;
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
-			if (self.World.AllowDevCommands && developerMode.AllTech)
+			if (developerMode.AllTech)
 				return producible.Keys;
 
 			return buildableProducibles;
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!producible.TryGetValue(actor, out ps))
 				return false;
 
-			return ps.Buildable || (self.World.AllowDevCommands && developerMode.AllTech);
+			return ps.Buildable || developerMode.AllTech;
 		}
 
 		public virtual void Tick(Actor self)
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
 		{
-			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+			if (developerMode.FastBuild)
 				return 0;
 
 			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;

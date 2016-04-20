@@ -85,11 +85,6 @@ namespace OpenRA
 			get { return OrderManager.Connection is ReplayConnection; }
 		}
 
-		public bool AllowDevCommands
-		{
-			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }
-		}
-
 		void SetLocalPlayer(Player localPlayer)
 		{
 			if (localPlayer == null)
