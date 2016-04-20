@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!building.IsInWorld || !building.Owner.IsAlliedWith(building.World.LocalPlayer))
 				return SpriteRenderable.None;
 
-			if (!building.World.Selection.Actors.Contains(building))
+			if (!building.World.Selection.Contains(building))
 				return SpriteRenderable.None;
 
 			return RenderInner(wr);
