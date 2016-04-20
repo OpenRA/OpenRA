@@ -175,7 +175,10 @@ function ide:MakeMenu(t)
           menu:Append(id, label, submenu, help or "")
         else
           local item = wx.wxMenuItem(menu, id, label, help or "", kind or wx.wxITEM_NORMAL)
-          if menuicon and type(iconmap[id]) == "table" then
+          if menuicon and type(iconmap[id]) == "table"
+          -- only add icons to "normal" items (OSX can take them on checkbox items too),
+          -- otherwise this causes asert on Linux (http://trac.wxwidgets.org/ticket/17123)
+          and (ide.osname == "Macintosh" or item:GetKind() == wx.wxITEM_NORMAL) then
             item:SetBitmap(ide:GetBitmap(iconmap[id][1], "TOOLBAR", wx.wxSize(16,16)))
           end
           menu:Append(item)
