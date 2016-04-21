@@ -33,6 +33,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
+			var tileSize = modData.Manifest.Get<MapGrid>().TileSize;
 
 			var templateIndex = 0;
 
@@ -125,6 +126,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 								Console.WriteLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
 								Console.WriteLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								Console.WriteLine("\t\t\t\tZOffset: {0}", -tileSize.Height / 2.0f);
+								Console.WriteLine("\t\t\t\tZRamp: 0");
 							}
 						}
 					}

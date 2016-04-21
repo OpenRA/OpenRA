@@ -59,15 +59,15 @@ namespace OpenRA.Graphics
 			this.allocateSheet = allocateSheet;
 		}
 
-		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, frame.Offset); }
-		public Sprite Add(byte[] src, Size size) { return Add(src, size, float2.Zero); }
-		public Sprite Add(byte[] src, Size size, float2 spriteOffset)
+		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, 0, frame.Offset); }
+		public Sprite Add(byte[] src, Size size) { return Add(src, size, 0, float3.Zero); }
+		public Sprite Add(byte[] src, Size size, float zRamp, float3 spriteOffset)
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
 				return new Sprite(current, Rectangle.Empty, 0, spriteOffset, channel, BlendMode.Alpha);
 
-			var rect = Allocate(size, spriteOffset);
+			var rect = Allocate(size, zRamp, spriteOffset);
 			Util.FastCopyIntoChannel(rect, src);
 			current.CommitBufferedData();
 			return rect;
@@ -99,8 +99,8 @@ namespace OpenRA.Graphics
 			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize) { return Allocate(imageSize, float2.Zero); }
-		public Sprite Allocate(Size imageSize, float2 spriteOffset)
+		public Sprite Allocate(Size imageSize) { return Allocate(imageSize, 0, float3.Zero); }
+		public Sprite Allocate(Size imageSize, float zRamp, float3 spriteOffset)
 		{
 			if (imageSize.Width + p.X > current.Size.Width)
 			{
@@ -128,7 +128,7 @@ namespace OpenRA.Graphics
 				p = new Point(0, 0);
 			}
 
-			var rect = new Sprite(current, new Rectangle(p, imageSize), 0, spriteOffset, channel, BlendMode.Alpha);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), zRamp, spriteOffset, channel, BlendMode.Alpha);
 			p.X += imageSize.Width;
 
 			return rect;
