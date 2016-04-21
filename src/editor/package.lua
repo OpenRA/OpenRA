@@ -179,7 +179,8 @@ function ide:MakeMenu(t)
           -- only add icons to "normal" items (OSX can take them on checkbox items too),
           -- otherwise this causes asert on Linux (http://trac.wxwidgets.org/ticket/17123)
           and (ide.osname == "Macintosh" or item:GetKind() == wx.wxITEM_NORMAL) then
-            item:SetBitmap(ide:GetBitmap(iconmap[id][1], "TOOLBAR", wx.wxSize(16,16)))
+            local bitmap = ide:GetBitmap(iconmap[id][1], "TOOLBAR", wx.wxSize(16,16))
+            item:SetBitmap(bitmap)
           end
           menu:Append(item)
         end
