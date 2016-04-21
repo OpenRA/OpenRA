@@ -216,6 +216,7 @@ function ide:FindDocumentsByPartialPath(path)
   end
   return docs
 end
+function ide:SetInterpreter(name) return ProjectSetInterpreter(name) end
 function ide:GetInterpreter() return self.interpreter end
 function ide:GetInterpreters() return self.interpreters end
 function ide:GetConfig() return self.config end

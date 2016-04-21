@@ -81,6 +81,7 @@ function ProjectSetInterpreter(name)
   local id = IDget("debug.interpreter."..name)
   if id and interpreters[id] then
     selectInterpreter(id)
+    return true
   else
     DisplayOutputLn(("Can't load interpreter '%s'; using the default interpreter instead.")
       :format(name))
