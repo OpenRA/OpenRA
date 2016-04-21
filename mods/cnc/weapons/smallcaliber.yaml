@@ -135,7 +135,6 @@ MachineGun:
 			Wood: 20
 			Light: 50
 			Heavy: 15
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
