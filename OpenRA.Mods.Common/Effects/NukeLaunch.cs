@@ -64,11 +64,15 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (skipAscent)
 				ticks = turn;
+
+			firedBy.World.ScreenMap.Add(this, pos, anim.Image.Bounds);
 		}
 
 		public void Tick(World world)
 		{
 			anim.Tick();
+
+			world.ScreenMap.Update(this, pos, anim.Image.Bounds);
 
 			if (ticks == turn)
 				anim.PlayRepeating(downSequence);
@@ -86,7 +90,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void Explode(World world)
 		{
-			world.AddFrameEndTask(w => w.Remove(this));
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 

@@ -93,6 +93,8 @@ namespace OpenRA.Mods.Common.Effects
 		bool isHeadTravelling = true;
 		bool isTailTravelling;
 
+		Rectangle bounds;
+
 		bool IsBeamComplete { get { return !isHeadTravelling && headTicks >= length &&
 			!isTailTravelling && tailTicks >= length; } }
 
@@ -129,6 +131,8 @@ namespace OpenRA.Mods.Common.Effects
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
+
+			args.SourceActor.World.ScreenMap.Add(this, target, bounds);
 		}
 
 		public void Tick(World world)
@@ -177,6 +181,8 @@ namespace OpenRA.Mods.Common.Effects
 				length = Math.Min(headTicks, length);
 			}
 
+			world.ScreenMap.Update(this, target, bounds);
+
 			// Damage is applied to intersected actors every DamageInterval ticks
 			if (headTicks % info.DamageInterval == 0)
 			{
@@ -189,7 +195,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (IsBeamComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -197,6 +203,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!IsBeamComplete && info.RenderBeam && !(wr.World.FogObscures(tailPos) && wr.World.FogObscures(headPos)))
 			{
 				var beamRender = new BeamRenderable(headPos, info.ZOffset, tailPos - headPos, info.Shape, info.Width, color);
+				bounds = beamRender.ScreenBounds(wr);
 				return new[] { (IRenderable)beamRender };
 			}
 

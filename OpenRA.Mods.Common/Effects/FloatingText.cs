@@ -24,9 +24,11 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly SpriteFont font;
 		readonly string text;
+		readonly int duration;
 		Color color;
 		int remaining;
 		WPos pos;
+		Rectangle bounds;
 
 		public FloatingText(WPos pos, Color color, string text, int duration)
 		{
@@ -34,15 +36,20 @@ namespace OpenRA.Mods.Common.Effects
 			this.pos = pos;
 			this.color = color;
 			this.text = text;
+			this.duration = duration;
 			remaining = duration;
 		}
 
 		public void Tick(World world)
 		{
+			if (remaining == duration)
+				world.ScreenMap.Add(this, pos, bounds);
+
 			if (--remaining <= 0)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			pos += Velocity;
+			world.ScreenMap.Update(this, pos, bounds);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -51,7 +58,9 @@ namespace OpenRA.Mods.Common.Effects
 				yield break;
 
 			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
-			yield return new TextRenderable(font, pos, 4096, color, text);
+			var textRenderable = new TextRenderable(font, pos, 4096, color, text);
+			bounds = textRenderable.ScreenBounds(wr);
+			yield return textRenderable;
 		}
 
 		public static string FormatCashTick(int cashAmount)

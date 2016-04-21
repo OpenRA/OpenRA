@@ -63,6 +63,7 @@ namespace OpenRA.Mods.Common.Effects
 		bool doneDamage;
 		bool animationComplete;
 		WPos target;
+		Rectangle bounds;
 
 		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
 		{
@@ -70,6 +71,8 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 			this.color = color;
 			target = args.PassiveTarget;
+
+			args.SourceActor.World.ScreenMap.Add(this, target, bounds);
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
@@ -90,11 +93,13 @@ namespace OpenRA.Mods.Common.Effects
 				doneDamage = true;
 			}
 
+			world.ScreenMap.Update(this, target, bounds);
+
 			if (hitanim != null)
 				hitanim.Tick();
 
 			if (++ticks >= info.BeamDuration && animationComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -106,7 +111,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
-				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				var beam = new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				bounds = beam.ScreenBounds(wr);
+				yield return beam;
 			}
 
 			if (hitanim != null)

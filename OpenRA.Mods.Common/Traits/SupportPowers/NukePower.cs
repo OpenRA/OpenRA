@@ -142,6 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
 				{
 					w.Remove(beacon);
+					w.ScreenMap.Remove(beacon);
 					beacon = null;
 				});
 

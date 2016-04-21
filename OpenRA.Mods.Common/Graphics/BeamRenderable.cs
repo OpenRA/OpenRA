@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
-		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
+
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var start = wr.ScreenPosition(pos);
+			var end = wr.ScreenPosition(pos + length);
+			return new Rectangle((int)start.X, (int)start.Y, (int)end.X, (int)end.Y);
+		}
 	}
 }

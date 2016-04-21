@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
+		Rectangle bounds;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
 		bool initialized = false;
@@ -51,11 +53,12 @@ namespace OpenRA.Mods.RA.Effects
 		public void Tick(World world)
 		{
 			if (timeUntilRemove-- <= 0)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			if (!doneDamage)
 			{
 				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+				world.ScreenMap.Update(this, pos, bounds);
 				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
@@ -68,6 +71,8 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
 				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
 					info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
+				bounds = zap.ScreenBounds(wr);
+				wr.World.ScreenMap.Add(this, pos, bounds);
 			}
 
 			yield return zap;
