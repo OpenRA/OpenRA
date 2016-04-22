@@ -23,7 +23,6 @@ Rockets:
 			Wood: 85
 			Light: 100
 			Heavy: 100
-			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -57,7 +56,6 @@ BikeRockets:
 			Wood: 75
 			Light: 100
 			Heavy: 100
-			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

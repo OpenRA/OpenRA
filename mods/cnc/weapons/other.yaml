@@ -178,7 +178,6 @@ Tail:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Horn:
@@ -195,7 +194,6 @@ Horn:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Teeth:
@@ -212,7 +210,6 @@ Teeth:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Claw:
@@ -229,7 +226,6 @@ Claw:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Demolish:
