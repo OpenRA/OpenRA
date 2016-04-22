@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,24 +30,25 @@ namespace OpenRA.Mods.Common.Traits
 	public class Targetable : UpgradableTrait<TargetableInfo>, ITargetable, INotifyCreated
 	{
 		protected static readonly string[] None = new string[] { };
-		protected Cloak cloak;
+		protected Cloak[] cloaks;
 
 		public Targetable(Actor self, TargetableInfo info)
 			: base(info) { }
 
 		void INotifyCreated.Created(Actor self)
 		{
-			cloak = self.TraitOrDefault<Cloak>();
+			cloaks = self.TraitsImplementing<Cloak>().ToArray();
 		}
 
 		public virtual bool TargetableBy(Actor self, Actor viewer)
 		{
 			if (IsTraitDisabled)
 				return false;
-			if (cloak == null || (!viewer.IsDead && viewer.Info.HasTraitInfo<IgnoresCloakInfo>()))
+
+			if (!cloaks.Any() || (!viewer.IsDead && viewer.Info.HasTraitInfo<IgnoresCloakInfo>()))
 				return true;
 
-			return cloak.IsVisible(self, viewer.Owner);
+			return cloaks.All(c => c.IsTraitDisabled || c.IsVisible(self, viewer.Owner));
 		}
 
 		public virtual HashSet<string> TargetTypes { get { return Info.TargetTypes; } }
