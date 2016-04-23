@@ -579,6 +579,7 @@
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Tree
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -662,6 +663,7 @@
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
+		ShowOwnerRow: false
 	Targetable:
 		TargetTypes: Ground, Water
 		RequiresForceFire: true
@@ -681,6 +683,7 @@
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Rock
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -708,6 +711,7 @@
 	Tooltip:
 		Name: Crate
 		GenericName: Crate
+		ShowOwnerRow: false
 	Crate:
 		Lifetime: 180
 		TerrainTypes: Clear, Rough, Road, Ore, Beach
