@@ -25,11 +25,21 @@ namespace OpenRA.Mods.RA.Traits
 
 		public readonly string DoorImage = "atek";
 		[SequenceReference("DoorImage")] public readonly string DoorSequence = "active";
-		[PaletteReference] public readonly string DoorPalette = "effect";
+
+		[Desc("Palette to use for rendering the launch animation")]
+		[PaletteReference("DoorPaletteIsPlayerPalette")] public readonly string DoorPalette = "player";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool DoorPaletteIsPlayerPalette = true;
 
 		public readonly string SatelliteImage = "sputnik";
 		[SequenceReference("SatelliteImage")] public readonly string SatelliteSequence = "idle";
-		[PaletteReference] public readonly string SatellitePalette = "effect";
+
+		[Desc("Palette to use for rendering the satellite projectile")]
+		[PaletteReference("SatellitePaletteIsPlayerPalette")] public readonly string SatellitePalette = "player";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool SatellitePaletteIsPlayerPalette = true;
 
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
