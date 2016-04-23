@@ -18,17 +18,17 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
-		readonly GpsPowerInfo info;
 		readonly Animation anim;
+		readonly string palette;
 		WPos pos;
 
-		public GpsSatellite(World world, WPos pos, GpsPowerInfo info)
+		public GpsSatellite(World world, WPos pos, string image, string sequence, string palette)
 		{
-			this.info = info;
+			this.palette = palette;
 			this.pos = pos;
 
-			anim = new Animation(world, info.SatelliteImage);
-			anim.PlayRepeating(info.SatelliteSequence);
+			anim = new Animation(world, image);
+			anim.PlayRepeating(sequence);
 		}
 
 		public void Tick(World world)
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, wr.Palette(info.SatellitePalette));
+			return anim.Render(pos, wr.Palette(palette));
 		}
 	}
 }

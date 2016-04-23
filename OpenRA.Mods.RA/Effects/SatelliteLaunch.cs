@@ -19,19 +19,21 @@ namespace OpenRA.Mods.RA.Effects
 	class SatelliteLaunch : IEffect
 	{
 		readonly GpsPowerInfo info;
+		readonly Actor launcher;
 		readonly Animation doors;
 		readonly WPos pos;
 		int frame = 0;
 
-		public SatelliteLaunch(Actor a, GpsPowerInfo info)
+		public SatelliteLaunch(Actor launcher, GpsPowerInfo info)
 		{
 			this.info = info;
+			this.launcher = launcher;
 
-			doors = new Animation(a.World, info.DoorImage);
+			doors = new Animation(launcher.World, info.DoorImage);
 			doors.PlayThen(info.DoorSequence,
-				() => a.World.AddFrameEndTask(w => w.Remove(this)));
+				() => launcher.World.AddFrameEndTask(w => w.Remove(this)));
 
-			pos = a.CenterPosition;
+			pos = launcher.CenterPosition;
 		}
 
 		public void Tick(World world)
@@ -39,12 +41,16 @@ namespace OpenRA.Mods.RA.Effects
 			doors.Tick();
 
 			if (++frame == 19)
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info)));
+			{
+				var palette = info.SatellitePaletteIsPlayerPalette ? info.SatellitePalette + launcher.Owner.InternalName : info.SatellitePalette;
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info.SatelliteImage, info.SatelliteSequence, palette)));
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return doors.Render(pos, wr.Palette(info.DoorPalette));
+			var palette = info.DoorPaletteIsPlayerPalette ? info.DoorPalette + launcher.Owner.InternalName : info.DoorPalette;
+			return doors.Render(pos, wr.Palette(palette));
 		}
 	}
 }
