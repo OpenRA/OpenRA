@@ -770,6 +770,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160418)
+				{
+					// Removed FrozenUnderFog.StartsRevealed
+					if (node.Key == "FrozenUnderFog")
+						node.Value.Nodes.RemoveAll(x => x.Key == "StartsRevealed");
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
