@@ -611,6 +611,7 @@
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Tree
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
@@ -632,6 +633,7 @@
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Blossom Tree
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
@@ -648,6 +650,7 @@
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Rock
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: staticterrain
 	WithSpriteBody:
