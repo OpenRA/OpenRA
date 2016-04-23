@@ -24,9 +24,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: allies
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
@@ -43,7 +40,7 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Greece, Creeps
+		Enemies: Greece
 
 Actors:
 	Actor0: cycl

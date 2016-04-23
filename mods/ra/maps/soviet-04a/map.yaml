@@ -29,10 +29,6 @@ Players:
 		Faction: england
 		Allies: Greece
 		Enemies: USSR
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: england
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
