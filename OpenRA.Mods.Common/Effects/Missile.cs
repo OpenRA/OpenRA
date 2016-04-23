@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -701,9 +702,9 @@ namespace OpenRA.Mods.Common.Effects
 			var velVec = tarDistVec + predVel;
 			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
 
-			if (allowPassBy && System.Math.Abs(desiredHFacing - hFacing) >= System.Math.Abs(desiredHFacing + 128 - hFacing))
+			if (allowPassBy && Math.Abs((desiredHFacing - hFacing) & 0xFF) >= Math.Abs((desiredHFacing + 128 - hFacing) & 0xFF))
 			{
-				desiredHFacing += 128;
+				desiredHFacing = (desiredHFacing + 128) & 0xFF;
 				targetPassedBy = true;
 			}
 			else
