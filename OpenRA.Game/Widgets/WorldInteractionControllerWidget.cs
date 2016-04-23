@@ -345,8 +345,16 @@ namespace OpenRA.Widgets
 
 		bool TogglePixelDouble()
 		{
-			Game.Settings.Graphics.PixelDouble ^= true;
-			worldRenderer.Viewport.Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+			if (worldRenderer.Viewport.Zoom == 1f)
+				worldRenderer.Viewport.Zoom = 2f;
+			else
+			{
+				// Reset zoom to regular view if it was anything else before
+				// (like a zoom level only reachable by using the scroll wheel).
+				worldRenderer.Viewport.Zoom = 1f;
+			}
+
+			Game.Settings.Graphics.PixelDouble = worldRenderer.Viewport.Zoom == 2f;
 
 			return true;
 		}
