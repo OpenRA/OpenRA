@@ -565,6 +565,7 @@
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
+		ShowOwnerRow: false
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -720,6 +721,7 @@
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
+		ShowOwnerRow: false
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
@@ -736,6 +738,7 @@
 	Tooltip:
 		Name: Crate
 		GenericName: Crate
+		ShowOwnerRow: false
 	Crate:
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	RenderSprites:
