@@ -73,6 +73,14 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
+		public static int NormalizeFacing(int f)
+		{
+			if (f >= 0)
+				return f & 0xFF;
+
+			return 0xFF - (-f & 0xFF);
+		}
+
 		public static WPos BetweenCells(World w, CPos from, CPos to)
 		{
 			return WPos.Lerp(w.Map.CenterOfCell(from), w.Map.CenterOfCell(to), 1, 2);
