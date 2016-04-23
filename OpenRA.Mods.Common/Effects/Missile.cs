@@ -712,7 +712,8 @@ namespace OpenRA.Mods.Common.Effects
 			var velVec = tarDistVec + predVel;
 			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
 
-			if (allowPassBy && Math.Abs((desiredHFacing - hFacing) & 0xFF) >= Math.Abs((desiredHFacing + 128 - hFacing) & 0xFF))
+			var delta = Util.NormalizeFacing(hFacing - desiredHFacing);
+			if (allowPassBy && delta > 64 && delta < 192)
 			{
 				desiredHFacing = (desiredHFacing + 128) & 0xFF;
 				targetPassedBy = true;
