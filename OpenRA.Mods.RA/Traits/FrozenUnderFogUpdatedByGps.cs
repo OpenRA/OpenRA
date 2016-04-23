@@ -29,9 +29,12 @@ namespace OpenRA.Mods.RA.Traits
 		static readonly FrozenActorAction Refresh = (fufubg, fal, gps, fa) =>
 		{
 			// Refreshes the visual state of the frozen actor, so ownership changes can be seen.
-			fa.RefreshState();
+			// This only makes sense if the frozen actor has already been revealed (i.e. has renderables)
 			if (fa.HasRenderables)
+			{
+				fa.RefreshState();
 				fa.NeedRenderables = true;
+			}
 		};
 		static readonly FrozenActorAction Remove = (fufubg, fal, gps, fa) =>
 		{
