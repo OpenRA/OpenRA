@@ -45,7 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Beacons are only supported on the Airstrike and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
-		[PaletteReference(true)] public readonly string BeaconPalettePrefix = "player";
+
+		public readonly bool BeaconPaletteIsPlayerPalette = true;
+		[PaletteReference("BeaconPaletteIsPlayerPalette")] public readonly string BeaconPalette = "player";
+
 		public readonly string BeaconImage = "beacon";
 		[SequenceReference("BeaconImage")] public readonly string BeaconPoster = null;
 		[PaletteReference] public readonly string BeaconPosterPalette = "chrome";

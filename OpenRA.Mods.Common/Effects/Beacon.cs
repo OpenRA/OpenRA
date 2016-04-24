@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly Player owner;
 		readonly WPos position;
-		readonly string palettePrefix;
+		readonly string beaconPalette;
+		readonly bool isPlayerPalette;
 		readonly string posterPalette;
 		readonly Animation arrow;
 		readonly Animation circles;
@@ -34,11 +35,12 @@ namespace OpenRA.Mods.Common.Effects
 		int arrowSpeed = 50;
 
 		// Player-placed beacons are removed after a delay
-		public Beacon(Player owner, WPos position, int duration, string palettePrefix, string beaconCollection, string arrowSprite, string circleSprite)
+		public Beacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette, string beaconCollection, string arrowSprite, string circleSprite)
 		{
 			this.owner = owner;
 			this.position = position;
-			this.palettePrefix = palettePrefix;
+			this.beaconPalette = beaconPalette;
+			this.isPlayerPalette = isPlayerPalette;
 
 			arrow = new Animation(owner.World, beaconCollection);
 			circles = new Animation(owner.World, beaconCollection);
@@ -51,8 +53,9 @@ namespace OpenRA.Mods.Common.Effects
 		}
 
 		// Support power beacons are expected to clean themselves up
-		public Beacon(Player owner, WPos position, string palettePrefix, string posterCollection, string posterType, string posterPalette, string arrowSequence, string circleSequence,
-			string clockSequence, Func<float> clockFraction) : this(owner, position, -1, palettePrefix, posterCollection, arrowSequence, circleSequence)
+		public Beacon(Player owner, WPos position, bool isPlayerPalette, string palette, string posterCollection, string posterType, string posterPalette,
+			string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction)
+				: this(owner, position, -1, palette, isPlayerPalette, posterCollection, arrowSequence, circleSequence)
 		{
 			this.posterPalette = posterPalette;
 
@@ -91,7 +94,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
 				yield break;
 
-			var palette = r.Palette(palettePrefix + owner.InternalName);
+			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
 			foreach (var a in circles.Render(position, palette))
 				yield return a;
 
