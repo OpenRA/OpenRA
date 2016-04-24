@@ -34,6 +34,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Dimensions = new CVec(1, 1);
 		public readonly bool RequiresBaseProvider = false;
 		public readonly bool AllowInvalidPlacement = false;
+		[Desc("Clear smudges from underneath the building footprint.")]
+		public readonly bool RemoveSmudgesOnBuild = true;
+		[Desc("Clear smudges from underneath the building footprint on sell.")]
+		public readonly bool RemoveSmudgesOnSell = true;
+		[Desc("Clear smudges from underneath the building footprint on transform.")]
+		public readonly bool RemoveSmudgesOnTransform = true;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
@@ -185,6 +191,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void AddedToWorld(Actor self)
 		{
+			if (Info.RemoveSmudgesOnBuild)
+				RemoveSmudges();
+
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 
@@ -215,6 +224,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Selling(Actor self)
 		{
+			if (Info.RemoveSmudgesOnSell)
+				RemoveSmudges();
+
 			BuildComplete = false;
 		}
 
@@ -222,11 +234,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void BeforeTransform(Actor self)
 		{
+			if (Info.RemoveSmudgesOnTransform)
+				RemoveSmudges();
+
 			foreach (var s in Info.UndeploySounds)
 				Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 		}
 
 		public void OnTransform(Actor self) { }
 		public void AfterTransform(Actor self) { }
+
+		public void RemoveSmudges()
+		{
+			var smudgeLayers = self.World.WorldActor.TraitsImplementing<SmudgeLayer>();
+
+			foreach (var smudgeLayer in smudgeLayers)
+				foreach (var footprintTile in FootprintUtils.Tiles(self))
+					smudgeLayer.RemoveSmudge(footprintTile);
+		}
 	}
 }

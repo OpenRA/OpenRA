@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
 
-			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
+			if ((!dirty.ContainsKey(loc) || dirty[loc].Sprite == null) && !tiles.ContainsKey(loc))
 			{
 				// No smudge; create a new one
 				var st = smudges.Keys.Random(world.SharedRandom);
@@ -163,6 +163,22 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public void RemoveSmudge(CPos loc)
+		{
+			if (dirty.ContainsKey(loc))
+			{
+				var tile = dirty[loc];
+				tile.Depth = 0;
+				tile.Sprite = null;
+				dirty[loc] = tile;
+			}
+			else
+			{
+				var st = smudges.Keys.Random(world.SharedRandom);
+				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = null };
+			}
+		}
+
 		public void TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
@@ -170,7 +186,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!self.World.FogObscures(kv.Key))
 				{
-					tiles[kv.Key] = kv.Value;
+					if (kv.Value.Sprite == null)
+						tiles.Remove(kv.Key);
+					else
+						tiles[kv.Key] = kv.Value;
 					render.Update(kv.Key, kv.Value.Sprite);
 
 					remove.Add(kv.Key);
