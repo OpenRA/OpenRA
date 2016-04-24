@@ -34,25 +34,25 @@ namespace OpenRA.Mods.Common.Effects
 		int arrowSpeed = 50;
 
 		// Player-placed beacons are removed after a delay
-		public Beacon(Player owner, WPos position, int duration, string palettePrefix)
+		public Beacon(Player owner, WPos position, int duration, string palettePrefix, string beaconCollection, string arrowSprite, string circleSprite)
 		{
 			this.owner = owner;
 			this.position = position;
 			this.palettePrefix = palettePrefix;
 
-			arrow = new Animation(owner.World, "beacon");
-			circles = new Animation(owner.World, "beacon");
+			arrow = new Animation(owner.World, beaconCollection);
+			circles = new Animation(owner.World, beaconCollection);
 
-			arrow.Play("arrow");
-			circles.Play("circles");
+			arrow.Play(arrowSprite);
+			circles.Play(circleSprite);
 
 			if (duration > 0)
 				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
 
 		// Support power beacons are expected to clean themselves up
-		public Beacon(Player owner, WPos position, string palettePrefix, string posterCollection, string posterType, string posterPalette, string clockSequence, Func<float> clockFraction)
-			: this(owner, position, -1, palettePrefix)
+		public Beacon(Player owner, WPos position, string palettePrefix, string posterCollection, string posterType, string posterPalette, string arrowSequence, string circleSequence,
+			string clockSequence, Func<float> clockFraction) : this(owner, position, -1, palettePrefix, posterCollection, arrowSequence, circleSequence)
 		{
 			this.posterPalette = posterPalette;
 

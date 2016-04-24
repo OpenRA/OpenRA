@@ -138,6 +138,8 @@ namespace OpenRA.Mods.Common.Traits
 					Info.BeaconImage,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
+					Info.ArrowSequence,
+					Info.CircleSequence,
 					Info.ClockSequence,
 					() => missile.FractionComplete);
 
