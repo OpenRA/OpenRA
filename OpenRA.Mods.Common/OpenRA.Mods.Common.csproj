@@ -431,6 +431,7 @@
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
+    <Compile Include="Traits\Render\WithDamageOverlay.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingAnimation.cs" />
@@ -447,7 +448,6 @@
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithSpriteRotorOverlay.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
-    <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
     <Compile Include="Traits\Render\WithSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />

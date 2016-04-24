@@ -17,13 +17,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
-	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo> // TODO: rename to WithDamageOverlay
+	public class WithDamageOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public readonly string Sequence = "smoke_m"; // TODO: rename to image
+		public readonly string Image = "smoke_m";
 
-		[SequenceReference("Sequence")] public readonly string IdleSequence = "idle";
-		[SequenceReference("Sequence")] public readonly string LoopSequence = "loop";
-		[SequenceReference("Sequence")] public readonly string EndSequence = "end";
+		[SequenceReference("Image")] public readonly string IdleSequence = "idle";
+		[SequenceReference("Image")] public readonly string LoopSequence = "loop";
+		[SequenceReference("Image")] public readonly string EndSequence = "end";
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]
@@ -33,23 +33,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly DamageState MinimumDamageState = DamageState.Heavy;
 		public readonly DamageState MaximumDamageState = DamageState.Dead;
 
-		public object Create(ActorInitializer init) { return new WithSmoke(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithDamageOverlay(init.Self, this); }
 	}
 
-	public class WithSmoke : INotifyDamage
+	public class WithDamageOverlay : INotifyDamage
 	{
-		readonly WithSmokeInfo info;
+		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
 
 		bool isSmoking;
 
-		public WithSmoke(Actor self, WithSmokeInfo info)
+		public WithDamageOverlay(Actor self, WithDamageOverlayInfo info)
 		{
 			this.info = info;
 
 			var rs = self.Trait<RenderSprites>();
 
-			anim = new Animation(self.World, info.Sequence);
+			anim = new Animation(self.World, info.Image);
 			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
