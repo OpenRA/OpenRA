@@ -24,5 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool AllyBuildRadiusLocked = false;
 	}
 
-	public class MapBuildRadius { }
+	public class MapBuildRadius : INotifyCreated
+	{
+		public bool AllyBuildRadiusEnabled { get; private set; }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			AllyBuildRadiusEnabled = self.World.LobbyInfo.GlobalSettings.AllyBuildRadius;
+		}
+	}
 }

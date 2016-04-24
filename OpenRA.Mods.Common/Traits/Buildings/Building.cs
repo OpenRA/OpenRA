@@ -43,9 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
 			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
+			var allyBuildEnabled = world.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
+
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
-				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
+				var validOwner = bp.Actor.Owner == p || (allyBuildEnabled && bp.Actor.Owner.Stances[p] == Stance.Ally);
 				if (!validOwner || !bp.Trait.Ready())
 					continue;
 
@@ -76,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
-			var allyBuildRadius = world.LobbyInfo.GlobalSettings.AllyBuildRadius;
+			var allyBuildEnabled = world.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
 
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
 			{
@@ -89,14 +91,14 @@ namespace OpenRA.Mods.Common.Traits
 					if (buildingAtPos == null)
 					{
 						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
-							&& (a.Owner == p || (allyBuildRadius && a.Owner.Stances[p] == Stance.Ally))
+							&& (a.Owner == p || (allyBuildEnabled && a.Owner.Stances[p] == Stance.Ally))
 							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
 					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.HasTraitInfo<GivesBuildableAreaInfo>()
-						&& (buildingAtPos.Owner == p || (allyBuildRadius && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
+						&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
 			}
