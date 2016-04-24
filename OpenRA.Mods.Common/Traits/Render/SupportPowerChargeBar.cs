@@ -15,9 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Display the time remaining until the super weapon attached to the actor is ready to the player and his allies.")]
+	[Desc("Display the time remaining until the super weapon attached to the actor is ready.")]
 	class SupportPowerChargeBarInfo : ITraitInfo
 	{
+		[Desc("Defines to which players the bar is to be shown.")]
+		public readonly Stance DisplayStances = Stance.Ally;
+
 		public readonly Color Color = Color.Magenta;
 
 		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.Self, this); }
@@ -36,13 +39,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		float ISelectionBar.GetValue()
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return 0;
-
 			var spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 			var power = spm.GetPowersForActor(self).FirstOrDefault(sp => !sp.Disabled);
 
-			if (power == null) return 0;
+			if (power == null)
+				return 0;
+
+			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			if (viewer != null && info.DisplayStances.HasStance(self.Owner.Stances[viewer]))
+				return 0;
 
 			return 1 - (float)power.RemainingTime / power.TotalTime;
 		}
