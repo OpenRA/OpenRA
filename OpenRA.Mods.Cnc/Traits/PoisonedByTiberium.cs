@@ -24,16 +24,20 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
-		public override object Create(ActorInitializer init) { return new PoisonedByTiberium(this); }
+		public override object Create(ActorInitializer init) { return new PoisonedByTiberium(init, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
 	}
 
 	class PoisonedByTiberium : UpgradableTrait<PoisonedByTiberiumInfo>, ITick, ISync
 	{
+		readonly ResourceLayer rl;
 		[Sync] int poisonTicks;
 
-		public PoisonedByTiberium(PoisonedByTiberiumInfo info)
-			: base(info) { }
+		public PoisonedByTiberium(ActorInitializer init, PoisonedByTiberiumInfo info)
+			: base(info)
+		{
+			rl = init.Self.World.WorldActor.Trait<ResourceLayer>();
+		}
 
 		public void Tick(Actor self)
 		{
@@ -44,7 +48,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!self.IsInWorld)
 				return;
 
-			var rl = self.World.WorldActor.Trait<ResourceLayer>();
 			var r = rl.GetResource(self.Location);
 			if (r == null || !Info.Resources.Contains(r.Info.Name))
 				return;
