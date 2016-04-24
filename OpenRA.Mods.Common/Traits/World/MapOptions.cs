@@ -39,5 +39,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool DifficultyLocked = false;
 	}
 
-	public class MapOptions { }
+	public class MapOptions : INotifyCreated
+	{
+		public bool ShortGame { get; private set; }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			ShortGame = self.World.LobbyInfo.GlobalSettings.ShortGame;
+		}
+	}
 }
