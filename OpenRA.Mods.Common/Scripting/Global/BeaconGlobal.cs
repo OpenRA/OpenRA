@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Creates a new beacon that stays for the specified time at the specified WPos. " +
 			"Does not remove player set beacons, nor gets removed by placing them.")]
-		public Beacon New(Player owner, WPos position, int duration = 30 * 25, bool showRadarPings = true,
-			string palette = "player", bool isPlayerPalette = true, string beaconCollection = "beacon", string arrowSequence = "arrow", string circleSequence = "circle")
+		public Beacon New(Player owner, WPos position, int duration = 30 * 25, bool showRadarPings = true)
 		{
-			var playerBeacon = new Beacon(owner, position, duration, palette, isPlayerPalette, beaconCollection, arrowSequence, circleSequence);
+			var beacon = owner.PlayerActor.Info.TraitInfo<PlaceBeaconInfo>();
+			var playerBeacon = new Beacon(owner, position, duration, beacon.Palette, beacon.IsPlayerPalette, beacon.BeaconImage, beacon.ArrowSequence, beacon.CircleSequence);
 			owner.PlayerActor.World.AddFrameEndTask(w => w.Add(playerBeacon));
 
 			if (showRadarPings && radarPings != null)
