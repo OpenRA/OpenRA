@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
@@ -33,12 +33,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RepairableInfo info;
 		readonly Health health;
+		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
+			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
@@ -90,7 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
 					return;
 
-				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
 
