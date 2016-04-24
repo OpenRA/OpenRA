@@ -27,6 +27,7 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
+		Enemies: USSR
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies

@@ -24,10 +24,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: england
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: england
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
