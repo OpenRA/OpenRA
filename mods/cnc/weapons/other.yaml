@@ -1,4 +1,5 @@
 Flamethrower:
+	ValidTargets: Ground, Trees
 	ReloadDelay: 55
 	Range: 2c512
 	InvalidTargets: Wall
@@ -8,13 +9,14 @@ Flamethrower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 40
+		ValidTargets: Ground, Trees
 		InvalidTargets: Wall
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 20
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -22,6 +24,7 @@ Flamethrower:
 		ImpactSounds: flamer2.aud
 
 BigFlamer:
+	ValidTargets: Ground, Trees
 	ReloadDelay: 50
 	Range: 3c512
 	InvalidTargets: Wall
@@ -34,12 +37,13 @@ BigFlamer:
 		Spread: 341
 		Damage: 75
 		InvalidTargets: Wall
+		ValidTargets: Ground, Trees
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 67
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -93,7 +97,7 @@ Grenade:
 		ImpactSounds: xplos.aud
 
 Napalm:
-	ValidTargets: Ground, Water
+	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 4
 	Range: 2c0
 	Burst: 2
@@ -104,13 +108,13 @@ Napalm:
 		Spread: 341
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water
+		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 80
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect

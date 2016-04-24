@@ -634,8 +634,38 @@
 		HP: 500
 	Armor:
 		Type: Wood
+	Targetable:
+		TargetTypes: Trees
+	WithSmoke@SmallBurn:
+		DamageType: Incendiary
+		Sequence: burn-s
+		MinimumDamageState: Light
+		MaximumDamageState: Medium
+	WithSmoke@MediumBurn:
+		DamageType: Incendiary
+		Sequence: burn-m
+		MinimumDamageState: Medium
+		MaximumDamageState: Heavy
+	WithSmoke@LargeBurn:
+		DamageType: Incendiary
+		Sequence: burn-l
+		MinimumDamageState: Heavy
+		MaximumDamageState: Dead
 	AutoTargetIgnore:
 	HiddenUnderShroud:
+	ScriptTriggers:
+
+^TreeHusk:
+	Inherits@1: ^SpriteActor
+	AppearsOnRadar:
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	WithSpriteBody:
+	Tooltip:
+		Name: Tree (Burnt)
+		ShowOwnerRow: false
+	FrozenUnderFog:
 	ScriptTriggers:
 
 ^TibTree:

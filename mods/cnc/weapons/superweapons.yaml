@@ -1,17 +1,17 @@
 Atomic:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Trees
 	Report: nukemisl.aud
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Air, Trees
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 60
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Eff_impact: CreateEffect
 		Explosions: nuke_explosion
 		ImpactSounds: nukexplo.aud
@@ -26,7 +26,7 @@ Atomic:
 			Wood: 100
 			Light: 60
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@4Res_areanukea: DestroyResource
 		Size: 3
 		Delay: 3
@@ -42,13 +42,13 @@ Atomic:
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 6
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Air, Trees
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 60
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@8Res_areanukeb: DestroyResource
 		Size: 4
 		Delay: 6
@@ -61,13 +61,13 @@ Atomic:
 		Damage: 20
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 9
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Air, Trees
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 60
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@11Res_areanukec: DestroyResource
 		Size: 5
 		Delay: 9
@@ -77,13 +77,13 @@ Atomic:
 		Delay: 9
 
 IonCannon:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
 		Damage: 100
 		Falloff: 1000, 1000, 250, 100
-		ValidTargets: Ground, Air
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		ValidTargets: Ground, Air, Trees
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Smu_area: LeaveSmudge
