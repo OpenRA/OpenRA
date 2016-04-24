@@ -56,18 +56,18 @@ namespace OpenRA.Platforms.Default
 
 			var devices = new List<string>();
 			var next = ALC10.alcGetString(IntPtr.Zero, type);
+			if (next == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
+			{
+				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
+				return new string[] { };
+			}
+
 			do
 			{
 				var str = Marshal.PtrToStringAnsi(next);
 				next += str.Length + 1;
 				devices.Add(str);
 			} while (Marshal.ReadByte(next) != 0);
-
-			if (AL10.alGetError() != AL10.AL_NO_ERROR)
-			{
-				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
-				return new string[] { };
-			}
 
 			return devices.ToArray();
 		}
