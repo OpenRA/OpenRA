@@ -24,5 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Locked = false;
 	}
 
-	public class MapCreeps { }
+	public class MapCreeps : INotifyCreated
+	{
+		public bool Enabled { get; private set; }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			Enabled = self.World.LobbyInfo.GlobalSettings.Creeps;
+		}
+	}
 }

@@ -52,17 +52,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
+		readonly bool enabled;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
 			this.info = info;
-
+			enabled = !info.RequiresLobbyCreeps || init.Self.World.WorldActor.Trait<MapCreeps>().Enabled;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (info.RequiresLobbyCreeps && !self.World.LobbyInfo.GlobalSettings.Creeps)
+			if (!enabled)
 				return;
 
 			if (!self.IsInWorld)
