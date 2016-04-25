@@ -803,7 +803,8 @@ if ide.osname == 'Macintosh' then
           ide.timers.ctrltab:Start(20) -- check periodically
         end
       elseif key == wx.WXK_SHIFT then -- Shift
-        -- do nothing; timer is already started if needed
+        -- timer is started when `Ctrl` is pressed; even when `Shift` is pressed first,
+        -- the Ctrl will still be pressed eventually, which will start the timer
       else
         ide.timers.ctrltab:Stop()
       end
