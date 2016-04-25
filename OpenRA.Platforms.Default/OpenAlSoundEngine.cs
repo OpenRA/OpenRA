@@ -102,6 +102,8 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("Can't create OpenAL device");
 			}
 
+			Game.OnQuit += () => { ALC10.alcCloseDevice(device); };
+
 			var ctx = ALC10.alcCreateContext(device, null);
 			if (ctx == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
