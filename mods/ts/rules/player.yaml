@@ -50,5 +50,5 @@ Player:
 		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
 	PlayerStatistics:
-	PlaceBeacon:
+	PlaceSimpleBeacon:
 	ResourceStorageWarning:
