@@ -75,17 +75,17 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
-			foreach (var unit in world.FindActorsInCircle(pos, TargetSearchRadius))
+			foreach (var victim in world.FindActorsInCircle(pos, TargetSearchRadius))
 			{
-				if (checkTargetType && !IsValidAgainst(unit, firedBy))
+				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;
 
-				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
 
 				// If the impact position is within any actor's HitShape, we have a direct hit
-				if (healthInfo.Shape.DistanceFromEdge(pos, unit).Length <= 0)
+				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
 					return true;
 			}
 
