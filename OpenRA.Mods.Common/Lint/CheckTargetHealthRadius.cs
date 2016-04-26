@@ -47,7 +47,20 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetExtraSearchRadius.Length).Any())
-							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of a warhead on `{1}`!"
+							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of a SpreadDamageWarhead on `{1}`!"
+								.F(actorInfo.Key, weaponInfo.Key));
+					}
+
+					var effectWarheads = weaponInfo.Value.Warheads.OfType<CreateEffectWarhead>();
+
+					foreach (var warhead in effectWarheads)
+					{
+						// This warhead cannot affect this actor.
+						if (!warhead.ValidTargets.Overlaps(targetable))
+							continue;
+
+						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetSearchRadius.Length).Any())
+							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of a CreateEffectWarhead on `{1}`!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}
 
