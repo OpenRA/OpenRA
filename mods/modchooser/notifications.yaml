@@ -1,5 +1,5 @@
 Sounds:
 	Notifications:
-		TabClick: button
-		ClickSound: button
-		ClickDisabledSound: scold2
+		TabClick:
+		ClickSound:
+		ClickDisabledSound:
