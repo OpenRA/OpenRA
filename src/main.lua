@@ -735,19 +735,13 @@ for lid in pairs(remap) do
     -- if the same shortcut is used elsewhere (not one of IDs being checked)
     if shortcut:lower() == ksc:lower() and not remap[gid] then
       local fakeid = NewID()
-      ide.frame:Connect(fakeid, wx.wxEVT_COMMAND_MENU_SELECTED,
-        resolveConflict(lid, gid))
-
-      local ae = wx.wxAcceleratorEntry(); ae:FromString(ksc)
-      table.insert(at, wx.wxAcceleratorEntry(ae:GetFlags(), ae:GetKeyCode(), fakeid))
+      ide.frame:Connect(fakeid, wx.wxEVT_COMMAND_MENU_SELECTED, resolveConflict(lid, gid))
+      ide:SetAccelerator(fakeid, ksc)
     end
   end
 end
 
-if ide.osname == 'Macintosh' then
-  table.insert(at, wx.wxAcceleratorEntry(wx.wxACCEL_CTRL, ('M'):byte(), ID_VIEWMINIMIZE))
-end
-ide.frame:SetAcceleratorTable(wx.wxAcceleratorTable(at))
+if ide.osname == 'Macintosh' then ide:SetAccelerator(ID_VIEWMINIMIZE, "Ctrl-M") end
 
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS

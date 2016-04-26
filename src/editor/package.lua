@@ -815,3 +815,14 @@ function ide:AddTimer(ctrl, callback)
   ctrl:Connect(wx.wxEVT_TIMER, evhandler)
   return wx.wxTimer(ctrl, #timers)
 end
+
+local function setAcceleratorTable(accelerators)
+  local at = {}
+  for id, ksc in pairs(accelerators) do
+    local ae = wx.wxAcceleratorEntry(); ae:FromString(ksc)
+    table.insert(at, wx.wxAcceleratorEntry(ae:GetFlags(), ae:GetKeyCode(), id))
+  end
+  ide:GetMainFrame():SetAcceleratorTable(#at > 0 and wx.wxAcceleratorTable(at) or wx.wxNullAcceleratorTable)
+end
+local at = {}
+function ide:SetAccelerator(id, ksc) at[id] = ksc; setAcceleratorTable(at) end
