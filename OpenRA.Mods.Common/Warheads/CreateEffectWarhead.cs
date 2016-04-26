@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				// If the impact position is within any actor's HitShape, we have a direct hit
-				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Shape.DistanceFromEdge(pos, unit).LengthSquared)
+				if (healthInfo.Shape.DistanceFromEdge(pos, unit).Length <= 0)
 					return true;
 			}
 
