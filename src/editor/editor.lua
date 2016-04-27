@@ -1401,20 +1401,24 @@ function CreateEditor(bare)
       event:Skip()
     end)
 
-  local pos, value, instances
+  local pos
+  local function getPositionValues()
+    local p = pos or editor:GetCurrentPos()
+    local value = p ~= wxstc.wxSTC_INVALID_POSITION and editor:ValueFromPosition(p) or nil
+    local instances = value and indicateFindInstances(editor, value, p+1)
+    return p, value, instances
+  end
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local point = editor:ScreenToClient(event:GetPosition())
+      -- capture the position of the click to use in handlers later
       pos = editor:PositionFromPointClose(point.x, point.y)
-      value = pos ~= wxstc.wxSTC_INVALID_POSITION and editor:ValueFromPosition(pos) or nil
-      instances = value and indicateFindInstances(editor, value, pos+1)
 
+      local _, _, instances = getPositionValues()
       local occurrences = (not instances or #instances == 0) and ""
         or (" (%d)"):format(#instances+(instances[0] and 1 or 0))
       local line = instances and instances[0] and editor:LineFromPosition(instances[0]-1)+1
       local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
-      local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
-
       local menu = ide:MakeMenu {
         { ID_UNDO, TR("&Undo") },
         { ID_REDO, TR("&Redo") },
@@ -1424,27 +1428,15 @@ function CreateEditor(bare)
         { ID_PASTE, TR("&Paste") },
         { ID_SELECTALL, TR("Select &All") },
         { },
-        { ID_GOTODEFINITION, TR("Go To Definition")..def },
-        { ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences },
-        { ID_REPLACEALLSELECTIONS, TR("Replace All Selections") },
+        { ID_GOTODEFINITION, TR("Go To Definition")..def..KSC(ID_GOTODEFINITION) },
+        { ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences..KSC(ID_RENAMEALLINSTANCES) },
+        { ID_REPLACEALLSELECTIONS, TR("Replace All Selections")..KSC(ID_REPLACEALLSELECTIONS) },
         { },
-        { ID_QUICKADDWATCH, TR("Add Watch Expression") },
-        { ID_QUICKEVAL, TR("Evaluate In Console") },
-        { ID_ADDTOSCRATCHPAD, TR("Add To Scratchpad") },
-        { ID_RUNTO, TR("Run To Cursor") },
+        { ID_QUICKADDWATCH, TR("Add Watch Expression")..KSC(ID_QUICKADDWATCH) },
+        { ID_QUICKEVAL, TR("Evaluate In Console")..KSC(ID_QUICKEVAL) },
+        { ID_ADDTOSCRATCHPAD, TR("Add To Scratchpad")..KSC(ID_ADDTOSCRATCHPAD) },
+        { ID_RUNTO, TR("Run To Cursor")..KSC(ID_RUNTO) },
       }
-
-      menu:Enable(ID_GOTODEFINITION, instances and instances[0])
-      menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0)
-        or editor:GetSelectionStart() ~= editor:GetSelectionEnd())
-      menu:Enable(ID_REPLACEALLSELECTIONS, selections > 1)
-      menu:Enable(ID_QUICKADDWATCH, value ~= nil)
-      menu:Enable(ID_QUICKEVAL, value ~= nil)
-
-      local debugger = ide:GetDebugger()
-      menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
-        and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
-
       -- disable calltips that could open over the menu
       local dwelltime = editor:GetMouseDwellTime()
       editor:SetMouseDwellTime(0) -- disable dwelling
@@ -1456,24 +1448,37 @@ function CreateEditor(bare)
 
       editor:PopupMenu(menu)
       editor:SetMouseDwellTime(dwelltime) -- restore dwelling
+      pos = nil -- reset the position
     end)
 
   editor:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
     function()
-      if pos ~= wxstc.wxSTC_INVALID_POSITION then
+      local pos = getPositionValues()
+      if pos and pos ~= wxstc.wxSTC_INVALID_POSITION then
         ide:GetDebugger():RunTo(editor, editor:LineFromPosition(pos))
       end
     end)
 
+  editor:Connect(ID_GOTODEFINITION, wx.wxEVT_UPDATE_UI, function(event)
+      local _, _, instances = getPositionValues()
+      event:Enable(instances and instances[0])
+    end)
   editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
+      local _, value, instances = getPositionValues()
       if value and instances[0] then
         navigateToPosition(editor, editor:GetCurrentPos(), instances[0]-1, #value)
       end
     end)
 
+  editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_UPDATE_UI, function(event)
+      local _, _, instances = getPositionValues()
+      event:Enable(instances and (instances[0] or #instances > 0)
+        or editor:GetSelectionStart() ~= editor:GetSelectionEnd())
+    end)
   editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
+      local pos, value, instances = getPositionValues()
       if value and pos then
         if not (instances and (instances[0] or #instances > 0)) then
           -- if multiple instances (of a variable) are not detected,
@@ -1493,6 +1498,9 @@ function CreateEditor(bare)
       end
     end)
 
+  editor:Connect(ID_REPLACEALLSELECTIONS, wx.wxEVT_UPDATE_UI, function(event)
+      event:Enable((ide.wxver >= "2.9.5" and editor:GetSelections() or 1) > 1)
+    end)
   editor:Connect(ID_REPLACEALLSELECTIONS, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
       local main = editor:GetMainSelection()
@@ -1516,12 +1524,29 @@ function CreateEditor(bare)
       editor:SetMainSelection(main)
     end)
 
-  editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event) ide:AddWatch(value) end)
+  editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_UPDATE_UI, function(event)
+      local _, value = getPositionValues()
+      event:Enable(value ~= nil)
+    end)
+  editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, function(event)
+      local _, value = getPositionValues()
+      ide:AddWatch(value)
+    end)
 
-  editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(event) ShellExecuteCode(value) end)
+  editor:Connect(ID_QUICKEVAL, wx.wxEVT_UPDATE_UI, function(event)
+      local _, value = getPositionValues()
+      event:Enable(value ~= nil)
+    end)
+  editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED, function(event)
+      local _, value = getPositionValues()
+      ShellExecuteCode(value)
+    end)
 
+  editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_UPDATE_UI, function(event)
+      local debugger = ide:GetDebugger()
+      event:Enable(debugger.scratchpad
+        and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
+    end)
   editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ide:GetDebugger():ScratchpadOn(editor) end)
 

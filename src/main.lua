@@ -743,6 +743,20 @@ end
 
 if ide.osname == 'Macintosh' then ide:SetAccelerator(ID_VIEWMINIMIZE, "Ctrl-M") end
 
+-- these shortcuts need accelerators handling as they are not present anywhere in the menu
+for _, id in ipairs({ ID_GOTODEFINITION, ID_RENAMEALLINSTANCES,
+    ID_REPLACEALLSELECTIONS, ID_QUICKADDWATCH, ID_QUICKEVAL, ID_ADDTOSCRATCHPAD}) do
+  local ksc = ide.config.keymap[id]
+  if ksc and ksc > "" then
+    local fakeid = NewID()
+    ide.frame:Connect(fakeid, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+        local editor = ide:GetEditorWithFocus(ide:GetEditor())
+        if editor then rerouteMenuCommand(editor, id) end
+      end)
+    ide:SetAccelerator(fakeid, ksc)
+  end
+end
+
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.
