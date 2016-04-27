@@ -133,7 +133,6 @@ NASAM:
 		Queue: Defense
 		Prerequisites: naradr, ~structures.nod
 		BuildPaletteOrder: 60
-	Building:
 	Selectable:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
