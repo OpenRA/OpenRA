@@ -164,7 +164,7 @@ MMCH:
 	AttackTurreted:
 		Voice: Attack
 	WithSpriteTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: 120mm
 		MuzzleSequence: muzzle

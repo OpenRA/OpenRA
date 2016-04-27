@@ -150,7 +150,7 @@ NASAM:
 		InitialFacing: 224
 	AttackTurreted:
 	WithSpriteTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: RedEye2
 		LocalOffset: 384,0,576

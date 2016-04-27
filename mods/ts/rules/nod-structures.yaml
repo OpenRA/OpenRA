@@ -275,7 +275,7 @@ NARADR:
 		Range: 10c0
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:

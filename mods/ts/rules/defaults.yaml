@@ -519,7 +519,7 @@
 	Inherits@3: ^Cloakable
 	DrawLineToTarget:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	Targetable@GROUND:
 		TargetTypes: Ground
 		UpgradeTypes: airborne
