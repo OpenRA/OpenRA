@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Leave the current position in a random direction.")]
 		public void Scatter()
 		{
-			Self.Trait<Mobile>().Nudge(Self, Self, true);
+			mobile.Nudge(Self, Self, true);
 		}
 
 		[ScriptActorPropertyActivity]
