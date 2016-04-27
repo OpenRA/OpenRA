@@ -295,6 +295,7 @@ Stinger:
 		HorizontalRateOfTurn: 20
 		RangeLimit: 50
 		Speed: 170
+		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
