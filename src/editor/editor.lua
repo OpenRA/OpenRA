@@ -1410,7 +1410,7 @@ function CreateEditor(bare)
       instances = value and indicateFindInstances(editor, value, pos+1)
 
       local occurrences = (not instances or #instances == 0) and ""
-        or ("  (%d)"):format(#instances+(instances[0] and 1 or 0))
+        or (" (%d)"):format(#instances+(instances[0] and 1 or 0))
       local line = instances and instances[0] and editor:LineFromPosition(instances[0]-1)+1
       local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
       local selections = ide.wxver >= "2.9.5" and editor:GetSelections() or 1
