@@ -101,6 +101,7 @@ namespace OpenRA
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
 		public bool SendSystemInformation = true;
+		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
 	}
 

@@ -12,16 +12,20 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1203:ConstantsMustAppearBeforeFields",
+		Justification = "SystemInformation version should be defined next to the dictionary it refers to.")]
 	public class MainMenuLogic : ChromeLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, None }
+		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, SystemInfoPrompt, None }
 
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
@@ -31,6 +35,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		// Update news once per game launch
 		static bool fetchedNews;
+
+		// Increment the version number when adding new stats
+		const int SystemInformationVersion = 1;
+		Dictionary<string, Pair<string, string>> GetSystemInformation()
+		{
+			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+			return new Dictionary<string, Pair<string, string>>()
+			{
+				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
+				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
+				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
+				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
+				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
+				{ "lang", Pair.New("System Language", lang) }
+			};
+		}
 
 		void SwitchMenu(MenuType type)
 		{
@@ -201,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)
 			{
-				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None;
+				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.SystemInfoPrompt;
 
 				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
@@ -209,26 +229,79 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
 				SetNewsStatus("Loading news");
+			}
 
+			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
+
+			// System information opt-out prompt
+			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
+			sysInfoPrompt.IsVisible = () => menuType == MenuType.SystemInfoPrompt;
+			if (Game.Settings.Debug.SystemInformationVersionPrompt < SystemInformationVersion)
+			{
+				menuType = MenuType.SystemInfoPrompt;
+
+				var sysInfoCheckbox = sysInfoPrompt.Get<CheckboxWidget>("SYSINFO_CHECKBOX");
+				sysInfoCheckbox.IsChecked = () => Game.Settings.Debug.SendSystemInformation;
+				sysInfoCheckbox.OnClick = () => Game.Settings.Debug.SendSystemInformation ^= true;
+
+				var sysInfoData = sysInfoPrompt.Get<ScrollPanelWidget>("SYSINFO_DATA");
+				var template = sysInfoData.Get<LabelWidget>("DATA_TEMPLATE");
+				sysInfoData.RemoveChildren();
+
+				foreach (var info in GetSystemInformation().Values)
+				{
+					var label = template.Clone() as LabelWidget;
+					var text = info.First + ": " + info.Second;
+					label.GetText = () => text;
+					sysInfoData.AddChild(label);
+				}
+
+				sysInfoPrompt.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
+				{
+					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
+					Game.Settings.Save();
+					SwitchMenu(MenuType.Main);
+					LoadAndDisplayNews(newsBG);
+				};
+			}
+			else
+				LoadAndDisplayNews(newsBG);
+		}
+
+		void LoadAndDisplayNews(Widget newsBG)
+		{
+			if (newsBG != null)
+			{
 				var cacheFile = Platform.ResolvePath("^", "news.yaml");
 				var currentNews = ParseNews(cacheFile);
 				if (currentNews != null)
 					DisplayNews(currentNews);
 
 				var newsButton = newsBG.GetOrNull<DropDownButtonWidget>("NEWS_BUTTON");
-
 				if (newsButton != null)
 				{
 					if (!fetchedNews)
-						new Download(Game.Settings.Game.NewsUrl + SysInfoQuery(), cacheFile, e => { },
+					{
+						// Send the mod and engine version to support version-filtered news (update prompts)
+						var newsURL = Game.Settings.Game.NewsUrl + "?version={0}&mod={1}&modversion={2}".F(
+							Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
+							Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
+							Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
+
+						// Append system profile data if the player has opted in
+						if (Game.Settings.Debug.SendSystemInformation)
+							newsURL += "&" + GetSystemInformation()
+								.Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Second))
+								.JoinWith("&");
+
+						new Download(newsURL, cacheFile, e => { },
 							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews,
 							() => newsButton.AttachPanel(newsPanel)));
+					}
 
 					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
 				}
 			}
-
-			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
 		}
 
 		void OnRemoteDirectConnect(string host, int port)
@@ -250,23 +323,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"",
 				() => { Game.LoadEditor(uid); },
 				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
-		}
-
-		string SysInfoQuery()
-		{
-			if (!Game.Settings.Debug.SendSystemInformation)
-				return null;
-
-			return "?id={0}&platform={1}&os={2}&runtime={3}&gl={4}&lang={5}&version={6}&mod={7}&modversion={8}".F(
-				Uri.EscapeUriString(Game.Settings.Debug.UUID),
-				Uri.EscapeUriString(Platform.CurrentPlatform.ToString()),
-				Uri.EscapeUriString(Environment.OSVersion.ToString()),
-				Uri.EscapeUriString(Platform.RuntimeVersion),
-				Uri.EscapeUriString(Game.Renderer.GLVersion),
-				Uri.EscapeUriString(System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName),
-				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
-				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
 		}
 
 		void SetNewsStatus(string message)

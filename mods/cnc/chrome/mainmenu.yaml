@@ -226,6 +226,66 @@ Container@MENU_BACKGROUND:
 							Text: Back
 							Font: Bold
 							Key: escape
+		Container@SYSTEM_INFO_PROMPT:
+			X: (WINDOW_RIGHT - WIDTH)/2
+			Y: (WINDOW_BOTTOM - HEIGHT)/2
+			Width: 490
+			Height: 222
+			Children:
+				Label@TITLE:
+					Width: PARENT_RIGHT
+					Y: 0-25
+					Font: BigBold
+					Contrast: true
+					Align: Center
+					Text: System Information
+				Background@bg:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Background: panel-black
+					Children:
+						Label@PROMPT_TEXT_A:
+							X: 15
+							Y: 15
+							Width: PARENT_RIGHT - 30
+							Height: 16
+							Align: Center
+							Text: We would like to collect some details that will help us optimize OpenRA.
+						Label@PROMPT_TEXT_B:
+							X: 15
+							Y: 33
+							Width: PARENT_RIGHT - 30
+							Height: 16
+							Align: Center
+							Text: With your permission, the following anonymous system data will be sent:
+						ScrollPanel@SYSINFO_DATA:
+							X: 15
+							Y: 63
+							Width: PARENT_RIGHT - 30
+							TopBottomSpacing: 4
+							ItemSpacing: 4
+							Height: 110
+							Children:
+								Label@DATA_TEMPLATE:
+									X: 8
+									Height: 13
+									VAlign: Top
+									Font: Small
+						Checkbox@SYSINFO_CHECKBOX:
+							X: PARENT_RIGHT - 15 - WIDTH
+							Y: PARENT_BOTTOM - 35
+							Width: 190
+							Height: 20
+							Font: Regular
+							Text: Send System Information
+				Button@BACK_BUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: PARENT_BOTTOM - 1
+					Width: 140
+					Height: 35
+					Text: Continue
+					Font: Bold
+					Key: return
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:
