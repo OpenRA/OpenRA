@@ -536,7 +536,7 @@
 		CruisingUpgrades: cruising
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
-		LandWhenIdle: no
+		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
 	Voiced:
@@ -559,7 +559,6 @@
 ^Helicopter:
 	Inherits: ^Aircraft
 	Aircraft:
-		LandWhenIdle: no
 		CruiseAltitude: 2048
 		CanHover: True
 	Hovers@CRUISING:
@@ -569,7 +568,6 @@
 ^Plane:
 	Inherits: ^Aircraft
 	Aircraft:
-		LandWhenIdle: no
 		CruiseAltitude: 2560
 	ReturnOnIdle:
 
