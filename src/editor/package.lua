@@ -826,3 +826,5 @@ local function setAcceleratorTable(accelerators)
 end
 local at = {}
 function ide:SetAccelerator(id, ksc) at[id] = ksc; setAcceleratorTable(at) end
+function ide:GetAccelerator(id) return at[id] end
+function ide:GetAccelerators() return at end

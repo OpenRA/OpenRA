@@ -41,3 +41,9 @@ end
 
 ide:GetDocument(editor):SetModified(false)
 ClosePage()
+
+local at = ide:GetAccelerators()
+ok(next(at) ~= nil, "One or more accelerator is set in the accelerator table.")
+for id in pairs(at) do ide:SetAccelerator(id, nil) end
+at = ide:GetAccelerators()
+ok(next(at) == nil, "No accelerators are present after removing all of them.")
