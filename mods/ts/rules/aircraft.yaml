@@ -14,9 +14,6 @@ DPOD:
 		HP: 60
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 0
-		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
