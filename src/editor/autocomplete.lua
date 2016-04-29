@@ -279,9 +279,9 @@ function GetTipInfo(editor, content, short, fullmatch)
   local sep = editor.spec.sep
   local anysep = "["..q(sep).."]"
 
-  local caller = content:match("([%w_]+)%(?%s*$")
+  local caller = content:match("([%w_]+)%s*%(?%s*$")
   local class = (tab and tab.classname
-    or caller and content:match("([%w_]+)"..anysep..caller.."%(?%s*$") or "")
+    or caller and content:match("([%w_]+)"..anysep..caller.."%s*%(?%s*$") or "")
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass
