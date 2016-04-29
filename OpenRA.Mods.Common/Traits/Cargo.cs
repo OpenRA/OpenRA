@@ -266,9 +266,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (passengerFacing != null)
 				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
 
-			var passengerTurreted = passenger.TraitOrDefault<Turreted>();
-			if (passengerTurreted != null)
-				passengerTurreted.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
+			foreach (var t in passenger.TraitsImplementing<Turreted>())
+				t.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
