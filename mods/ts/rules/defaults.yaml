@@ -257,7 +257,9 @@
 			DirtRoad: 100
 			Rough: 80
 			Tiberium: 90
+				PathingCost: 90
 			BlueTiberium: 90
+				PathingCost: 90
 			Veins: 50
 	SelectionDecorations:
 		Palette: pips
@@ -396,6 +398,7 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Veins: 50
+				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
 	Selectable:
@@ -434,6 +437,9 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
+	PoisonedByTiberium:
+		Weapon: Veins
+		Resources: Veins
 
 ^Tank:
 	Inherits: ^Vehicle

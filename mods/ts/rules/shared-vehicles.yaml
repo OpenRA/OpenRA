@@ -97,6 +97,7 @@ HARV:
 		FactionImages:
 			gdi: harv.gdi
 			nod: harv.nod
+	-PoisonedByTiberium:
 
 LPST:
 	Inherits: ^VoxelTank

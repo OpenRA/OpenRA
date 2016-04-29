@@ -91,6 +91,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!target.IsValidFor(firedBy))
+				return;
+
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
