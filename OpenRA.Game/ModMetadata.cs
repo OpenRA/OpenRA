@@ -31,6 +31,7 @@ namespace OpenRA
 
 		public Dictionary<string, string> RequiresMods;
 		public ContentInstaller Content;
+		public ModContent ModContent;
 		public IReadOnlyPackage Package;
 
 		static Dictionary<string, ModMetadata> ValidateMods()
@@ -80,6 +81,9 @@ namespace OpenRA
 
 					if (nd.ContainsKey("ContentInstaller"))
 						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
+
+					if (nd.ContainsKey("ModContent"))
+						metadata.ModContent = FieldLoader.Load<ModContent>(nd["ModContent"]);
 
 					// Mods in the support directory and oramod packages (which are listed later
 					// in the CandidateMods list) override mods in the main install.
