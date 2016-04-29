@@ -751,6 +751,7 @@
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Radar\JamsRadar.cs" />
     <Compile Include="AI\DummyAI.cs" />
+    <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
