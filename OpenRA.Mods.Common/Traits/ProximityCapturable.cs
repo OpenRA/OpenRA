@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			skipTriggerUpdate = false;
+			Game.RunAfterTick(() => skipTriggerUpdate = false);
 		}
 	}
 }
