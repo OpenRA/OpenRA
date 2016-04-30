@@ -826,6 +826,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactor Missile RangeLimit from ticks to WDist
+				if (engineVersion < 20160501)
+				{
+					var weapRange = node.Value.Nodes.FirstOrDefault(n => n.Key == "Range");
+					var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
+
+					if (projectile != null && weapRange != null && projectile.Value.Value == "Missile")
+					{
+						var oldWDist = FieldLoader.GetValue<WDist>("Range", weapRange.Value.Value);
+						var rangeLimitNode = projectile.Value.Nodes.FirstOrDefault(x => x.Key == "RangeLimit");
+
+						// RangeLimit is now a WDist value, so for the conversion, we take weapon range and add 20% on top.
+						// Overly complicated calculations using Range, Speed and the old RangeLimit value would be rather pointless,
+						// because currently most mods have somewhat arbitrary, usually too high and in a few cases too low RangeLimits anyway.
+						var newValue = oldWDist.Length * 120 / 100;
+						var newCells = newValue / 1024;
+						var newCellPart = newValue % 1024;
+
+						if (rangeLimitNode != null)
+							rangeLimitNode.Value.Value = newCells.ToString() + "c" + newCellPart.ToString();
+						else
+						{
+							// Since the old default was 'unlimited', we're using weapon range * 1.2 for missiles not defining a custom RangeLimit as well
+							projectile.Value.Nodes.Add(new MiniYamlNode("RangeLimit", newCells.ToString() + "c" + newCellPart.ToString()));
+						}
+					}
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
