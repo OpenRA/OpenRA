@@ -15,7 +15,7 @@ Maverick:
 		Image: DRAGON
 		HorizontalRateOfTurn: 5
 		CruiseAltitude: 2c0
-		RangeLimit: 60
+		RangeLimit: 10c819
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
@@ -52,7 +52,7 @@ Dragon:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 5
-		RangeLimit: 35
+		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -90,7 +90,7 @@ HellfireAG:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 20
+		RangeLimit: 4c819
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
@@ -128,7 +128,7 @@ HellfireAA:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 20
+		RangeLimit: 4c819
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -164,7 +164,7 @@ MammothTusk:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 15
-		RangeLimit: 40
+		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 50
@@ -201,7 +201,7 @@ Nike:
 		ContrailLength: 10
 		Image: MISSILE
 		HorizontalRateOfTurn: 25
-		RangeLimit: 50
+		RangeLimit: 9c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -229,7 +229,7 @@ RedEye:
 		ContrailLength: 10
 		Image: MISSILE
 		HorizontalRateOfTurn: 20
-		RangeLimit: 30
+		RangeLimit: 9c0
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -293,7 +293,7 @@ Stinger:
 		ContrailLength: 10
 		Image: DRAGON
 		HorizontalRateOfTurn: 20
-		RangeLimit: 65
+		RangeLimit: 10c819
 		Speed: 170
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
@@ -334,7 +334,7 @@ StingerAA:
 		ContrailLength: 10
 		Image: DRAGON
 		HorizontalRateOfTurn: 20
-		RangeLimit: 50
+		RangeLimit: 10c819
 		Speed: 255
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
@@ -374,7 +374,7 @@ TorpTube:
 		Speed: 85
 		TrailImage: bubbles
 		HorizontalRateOfTurn: 1
-		RangeLimit: 160
+		RangeLimit: 10c819
 		BoundToTerrainType: Water
 		Palette: shadow
 	Warhead@1Dam: SpreadDamage
@@ -451,7 +451,7 @@ APTusk:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 22
+		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30

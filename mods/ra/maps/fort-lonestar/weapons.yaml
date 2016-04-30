@@ -28,7 +28,7 @@ MammothTusk:
 		ContrailLength: 150
 		Inaccuracy: 0c853
 		ROT: 10
-		RangeLimit: 80
+		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 640
 		ValidTargets: Ground, Air
