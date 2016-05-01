@@ -204,9 +204,14 @@ namespace OpenRA.Mods.RA.Traits
 					beacon = new Beacon(
 						self.Owner,
 						target - new WVec(0, 0, altitude),
-						Info.BeaconPalettePrefix,
+						Info.BeaconPaletteIsPlayerPalette,
+						Info.BeaconPalette,
+						Info.BeaconImage,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
+						Info.ArrowSequence,
+						Info.CircleSequence,
+						Info.ClockSequence,
 						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance);
 
 					w.Add(beacon);

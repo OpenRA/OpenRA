@@ -14,12 +14,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("A beacon that is constructed from a circle sprite that is animated once and a moving arrow sprite.")]
 	public class PlaceBeaconInfo : ITraitInfo
 	{
 		public readonly int Duration = 30 * 25;
 		public readonly string NotificationType = "Sounds";
 		public readonly string Notification = "Beacon";
-		public readonly string PalettePrefix = "player";
+
+		public readonly bool IsPlayerPalette = true;
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+
+		public readonly string BeaconImage = "beacon";
+		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
+		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
 
 		public object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}
@@ -50,7 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (playerBeacon != null)
 					self.World.Remove(playerBeacon);
 
-				playerBeacon = new Beacon(self.Owner, pos, info.Duration, info.PalettePrefix);
+				playerBeacon = new Beacon(self.Owner, pos, info.Duration, info.Palette, info.IsPlayerPalette, info.BeaconImage, info.ArrowSequence, info.CircleSequence);
+
 				self.World.Add(playerBeacon);
 
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
