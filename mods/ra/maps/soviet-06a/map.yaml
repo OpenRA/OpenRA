@@ -827,4 +827,4 @@ Actors:
 		Location: 22,15
 		Owner: Greece
 
-Rules: rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

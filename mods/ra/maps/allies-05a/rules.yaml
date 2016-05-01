@@ -1,81 +1,15 @@
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 0
-
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: allies05a.lua, allies05a-AI.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: Rescue Tanya.\n\nOnce disguised, your spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet Base where he will hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island and a Chinook will arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
 		BriefingVideo: ally5.vqa
 		StartVideo: tanya1.vqa
 		WinVideo: tanya2.vqa
 		LossVideo: grvestne.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
-		TechLevelLocked: True
 		TechLevel: Medium
 		Difficulties: Easy, Normal, Hard, Real tough guy
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	Demolishable:
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	Demolishable:
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-
-^Crate:
-	Tooltip:
-		ShowOwnerRow: false
 
 Camera.Truk:
 	AlwaysVisible:
@@ -105,9 +39,6 @@ LST:
 	-Selectable:
 	Targetable:
 		TargetTypes: Ground, Water
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 LST.IN:
 	Inherits: LST
@@ -120,8 +51,6 @@ TRAN:
 	-Selectable:
 	RevealsShroud:
 		Range: 4c0
-	Tooltip:
-		ShowOwnerRow: false
 	Targetable@GROUND:
 		TargetTypes: Ground
 
@@ -131,10 +60,6 @@ TRAN.IN:
 		Image: TRAN
 	Cargo:
 		Types: disabled
-
-FLARE:
-	Tooltip:
-		ShowOwnerRow: false
 
 TRUK.mission:
 	Inherits: TRUK
@@ -149,8 +74,6 @@ TRUK.mission:
 SPY:
 	Infiltrates:
 		Types: Mission Objectives
-	DisguiseToolTip:
-		ShowOwnerRow: false
 
 WEAP:
 	-InfiltrateForSupportPower:
@@ -160,17 +83,8 @@ WEAP:
 MISS:
 	Tooltip:
 		Name: Prison
-		ShowOwnerRow: False
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
-
-E7.noautotarget:
-	Inherits: E7
-	AutoTarget:
-		EnableStances: false
-	-AttackMove:
-	RenderSprites:
-		Image: E7
 
 Colt:
 	Inherits: ^Defense
@@ -229,8 +143,6 @@ AFLD:
 
 FCOM:
 	MustBeDestroyed:
-	Tooltip:
-		ShowOwnerRow: false
 
 4TNK:
 	Buildable:

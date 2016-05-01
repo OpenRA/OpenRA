@@ -1,63 +1,17 @@
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 0
-
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: soviet07.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
 		BriefingVideo: soviet7.vqa
 		StartVideo: countdwn.vqa
 		WinVideo: averted.vqa
 		LossVideo: nukestok.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Easy, Normal, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 ^Infantry:
 	-GivesBounty:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-
-^Crate:
-	Tooltip:
-		ShowOwnerRow: false
 
 BARL:
 	Health:

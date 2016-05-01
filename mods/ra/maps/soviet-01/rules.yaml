@@ -1,25 +1,6 @@
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 0
-
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: soviet01.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: A pitiful excuse for resistance has blockaded itself in this village.\n\nStalin has decided to make an example of them. Kill them all and destroy their homes. You will have Yak aircraft to use in teaching these rebels a lesson.
 		BackgroundVideo: prolog.vqa
@@ -27,51 +8,13 @@ World:
 		StartVideo: flare.vqa
 		WinVideo: snstrafe.vqa
 		LossVideo: sfrozen.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 V01:
 	SpawnActorOnDeath:
 		Actor: healcrate
 
-HEALCRATE:
-	Tooltip:
-		GenericStancePrefix: false
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
 ^CivBuilding:
 	MustBeDestroyed:
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
 
 JEEP:
 	Explodes:

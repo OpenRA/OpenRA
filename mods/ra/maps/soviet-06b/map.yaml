@@ -519,4 +519,4 @@ Actors:
 		Location: 67,41
 		Owner: Greece
 
-Rules: rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

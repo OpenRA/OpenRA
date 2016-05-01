@@ -1,77 +1,28 @@
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 0
-
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: soviet03.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: A spy who has compromised the security of one of the northern sarin gas sites has been traced back to Lund, Sweden, by Nadia's intelligence groups.\n\nHe has been marked for death and a squad of Soviet troops was dispatched to the location to hunt him down.
 		BriefingVideo: soviet3.vqa
 		StartVideo: search.vqa
 		WinVideo: execute.vqa
 		LossVideo: take_off.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Easy, Normal, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 ^TechBuilding:
 	AutoTargetIgnore:
-	Tooltip:
-		ShowOwnerRow: false
 
 ^Infantry:
 	-GivesBounty:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 ^Ship:
 	-GivesBounty:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 ^Helicopter:
 	-GivesBounty:
 	Health:
 		HP: 9000
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
 
 BARL:
 	Health:
@@ -88,12 +39,6 @@ BRL3:
 FENC:
 	Health:
 		HP: 9000
-
-HEALCRATE:
-	Tooltip:
-		GenericStancePrefix: false
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 V01:
 	Cargo:

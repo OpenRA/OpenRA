@@ -1,64 +1,14 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 5000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: survival01.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Easy, Medium, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
 
 powerproxy.paratroopers:
 	ParatroopersPower:

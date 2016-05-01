@@ -488,6 +488,6 @@ Actors:
 		Location: 67,75
 		Owner: Neutral
 
-Rules: rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
 Weapons: weapons.yaml

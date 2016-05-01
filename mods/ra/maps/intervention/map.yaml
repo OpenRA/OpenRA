@@ -2199,6 +2199,6 @@ Actors:
 		Location: 129,57
 		Owner: Soviets
 
-Rules: rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
 Weapons: weapons.yaml
