@@ -26,22 +26,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.Self, this); }
 	}
 
-	class SupportPowerChargeBar : ISelectionBar
+	class SupportPowerChargeBar : ISelectionBar, INotifyOwnerChanged
 	{
 		readonly Actor self;
 		readonly SupportPowerChargeBarInfo info;
+		SupportPowerManager spm;
 
 		public SupportPowerChargeBar(Actor self, SupportPowerChargeBarInfo info)
 		{
 			this.self = self;
 			this.info = info;
+			spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 		}
 
 		float ISelectionBar.GetValue()
 		{
-			var spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 			var power = spm.GetPowersForActor(self).FirstOrDefault(sp => !sp.Disabled);
-
 			if (power == null)
 				return 0;
 
@@ -53,5 +53,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			spm = newOwner.PlayerActor.Trait<SupportPowerManager>();
+		}
 	}
 }
