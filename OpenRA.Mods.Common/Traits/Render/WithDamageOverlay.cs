@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			isSmoking = true;
 			anim.PlayThen(info.IdleSequence,
 				() => anim.PlayThen(info.LoopSequence,
-					() => anim.PlayBackwardsThen(info.EndSequence,
+					() => anim.PlayThen(info.EndSequence,
 						() => isSmoking = false)));
 		}
 	}
