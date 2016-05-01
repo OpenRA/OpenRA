@@ -405,6 +405,7 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
+    <Compile Include="Traits\Render\CustomTerrainDebugOverlay.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />

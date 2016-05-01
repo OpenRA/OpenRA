@@ -94,6 +94,7 @@ World:
 		SmokeType: largesmoke
 		Sequence: largecraters
 	ResourceLayer:
+	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:

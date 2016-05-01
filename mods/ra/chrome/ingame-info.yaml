@@ -2,7 +2,7 @@ Container@GAME_INFO_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 522
-	Height: 455
+	Height: 485
 	Logic: GameInfoLogic
 	Visible: False
 	Children:
