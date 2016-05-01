@@ -38,6 +38,8 @@ function ClearOutput(force)
   out:SetReadOnly(true)
 end
 
+function out:Erase() ClearOutput(true) end
+
 local inputBound = 0 -- to track where partial output ends for input editing purposes
 local function getInputLine()
   return out:MarkerPrevious(out:GetLineCount()+1, PROMPT_MARKER_VALUE)
