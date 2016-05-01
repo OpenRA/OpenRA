@@ -138,4 +138,4 @@ Actors:
 		Owner: Neutral
 		Location: 30,28
 
-Rules: rules.yaml
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml
