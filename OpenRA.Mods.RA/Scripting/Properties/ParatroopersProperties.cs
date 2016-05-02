@@ -32,5 +32,14 @@ namespace OpenRA.Mods.RA.Scripting
 		{
 			return pp.SendParatroopers(Self, target, randomize, facing);
 		}
+
+		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units.")]
+		public Actor[] SendParatroopersFrom(CPos from, CPos to)
+		{
+			var i = Self.World.Map.CenterOfCell(from);
+			var j = Self.World.Map.CenterOfCell(to);
+
+			return pp.SendParatroopers(Self, j, false, (i - j).Yaw.Facing);
+		}
 	}
 }
