@@ -42,11 +42,17 @@ namespace OpenRA.Mods.Common.Effects
 			this.beaconPalette = beaconPalette;
 			this.isPlayerPalette = isPlayerPalette;
 
-			arrow = new Animation(owner.World, beaconCollection);
-			circles = new Animation(owner.World, beaconCollection);
+			if (!string.IsNullOrEmpty(arrowSprite))
+			{
+				arrow = new Animation(owner.World, beaconCollection);
+				arrow.Play(arrowSprite);
+			}
 
-			arrow.Play(arrowSprite);
-			circles.Play(circleSprite);
+			if (!string.IsNullOrEmpty(circleSprite))
+			{
+				circles = new Animation(owner.World, beaconCollection);
+				circles.Play(circleSprite);
+			}
 
 			if (duration > 0)
 				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
@@ -82,8 +88,11 @@ namespace OpenRA.Mods.Common.Effects
 				arrowSpeed *= -1;
 			}
 
-			arrow.Tick();
-			circles.Tick();
+			if (arrow != null)
+				arrow.Tick();
+
+			if (circles != null)
+				circles.Tick();
 
 			if (clock != null)
 				clock.Tick();
@@ -95,11 +104,14 @@ namespace OpenRA.Mods.Common.Effects
 				yield break;
 
 			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
-			foreach (var a in circles.Render(position, palette))
-				yield return a;
 
-			foreach (var a in arrow.Render(position + new WVec(0, 0, arrowHeight), palette))
-				yield return a;
+			if (circles != null)
+				foreach (var a in circles.Render(position, palette))
+					yield return a;
+
+			if (arrow != null)
+				foreach (var a in arrow.Render(position + new WVec(0, 0, arrowHeight), palette))
+					yield return a;
 
 			if (poster != null)
 			{
