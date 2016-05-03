@@ -11,8 +11,10 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
 {
@@ -23,11 +25,21 @@ namespace OpenRA.Mods.Common.HitShapes
 		[FieldLoader.Require]
 		public readonly WDist Radius = new WDist(426);
 
+		[Desc("Defines the top offset relative to the actor's target point.")]
+		public readonly int VerticalTopOffset = 0;
+
+		[Desc("Defines the bottom offset relative to the actor's target point.")]
+		public readonly int VerticalBottomOffset = 0;
+
 		public CircleShape() { }
 
 		public CircleShape(WDist radius) { Radius = radius; }
 
-		public void Initialize() { }
+		public void Initialize()
+		{
+			if (VerticalTopOffset < VerticalBottomOffset)
+				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
+		}
 
 		public WDist DistanceFromEdge(WVec v)
 		{
@@ -36,12 +48,25 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
-			return DistanceFromEdge(pos - actor.CenterPosition);
+			var actorPos = actor.CenterPosition;
+
+			if (pos.Z > actorPos.Z + VerticalTopOffset)
+				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalTopOffset)));
+
+			if (pos.Z < actorPos.Z + VerticalBottomOffset)
+				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalBottomOffset)));
+
+			return DistanceFromEdge(pos - new WPos(actorPos.X, actorPos.Y, pos.Z));
 		}
 
 		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
 		{
-			RangeCircleRenderable.DrawRangeCircle(wr, actor.CenterPosition, Radius, 1, Color.Yellow, 0, Color.Yellow);
+			var actorPos = actor.CenterPosition;
+
+			RangeCircleRenderable.DrawRangeCircle(
+				wr, actorPos + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow, 0, Color.Yellow);
+			RangeCircleRenderable.DrawRangeCircle(
+				wr, actorPos + new WVec(0, 0, VerticalBottomOffset), Radius, 1, Color.Yellow, 0, Color.Yellow);
 		}
 	}
 }
