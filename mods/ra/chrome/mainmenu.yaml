@@ -1,6 +1,10 @@
 Container@MAINMENU:
 	Logic: MainMenuLogic
 	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Background@BORDER:
 			Background: mainmenu-border
 			X: 0 - 15
