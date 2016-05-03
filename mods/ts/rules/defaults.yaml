@@ -220,6 +220,7 @@
 	Health:
 		Shape: Circle
 			Radius: 363
+			VerticalTopOffset: 512
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -239,6 +240,7 @@
 		HP: 50
 		Shape: Circle
 			Radius: 128
+			VerticalTopOffset: 512
 	Armor:
 		Type: None
 	Valued:
@@ -570,6 +572,7 @@
 	Health:
 		Shape: Circle
 			Radius: 256
+			VerticalTopOffset: 512
 	Armor:
 		Type: Light
 	Mobile:

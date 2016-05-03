@@ -540,6 +540,7 @@
     <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
+    <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />

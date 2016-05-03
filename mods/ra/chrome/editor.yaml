@@ -5,6 +5,10 @@ Background@NEW_MAP_BG:
 	Width: 300
 	Height: 185
 	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Label@LABEL_TITLE:
 			X: 0
 			Y: 20
