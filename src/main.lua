@@ -513,8 +513,10 @@ do
         elseif type(p) == 'string' then
           local config = ide.configqueue[#ide.configqueue]
           local pkg
-          for _, packagepath in ipairs({'.', 'packages/', '../packages/'}) do
-            local p = config and MergeFullPath(MergeFullPath(config,packagepath), p)
+          for _, packagepath in ipairs({
+              '.', 'packages/', '../packages/',
+              ide.oshome and MergeFullPath(ide.oshome, "."..ide.appname.."/packages")}) do
+            local p = MergeFullPath(config and MergeFullPath(config, packagepath) or packagepath, p)
             pkg = wx.wxDirExists(p) and loadToTab(nil, p, {}, false, ide.proto.Plugin)
               or wx.wxFileExists(p) and LoadLuaFileExt({}, p, ide.proto.Plugin)
               or wx.wxFileExists(p..".lua") and LoadLuaFileExt({}, p..".lua", ide.proto.Plugin)
