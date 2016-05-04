@@ -210,7 +210,7 @@ TRAN:
 		InitialFacing: 224
 		TurnSpeed: 5
 		Speed: 112
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
 		AltitudeVelocity: 0c100
 	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
