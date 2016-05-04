@@ -521,7 +521,7 @@ function LoadLuaConfig(filename,isstring)
     ide:Print(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
     setfenv(cfgfn,ide.config)
-    table.insert(ide.configqueue, filename)
+    table.insert(ide.configqueue, (wx.wxFileName().SplitPath(filename)))
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     table.remove(ide.configqueue)
     if err then

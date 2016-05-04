@@ -514,7 +514,7 @@ do
           local config = ide.configqueue[#ide.configqueue]
           local pkg
           for _, packagepath in ipairs({'.', 'packages/', '../packages/'}) do
-            local p = config and MergeFullPath(config.."/../"..packagepath, p)
+            local p = config and MergeFullPath(MergeFullPath(config,packagepath), p)
             pkg = wx.wxDirExists(p) and loadToTab(nil, p, {}, false, ide.proto.Plugin)
               or wx.wxFileExists(p) and LoadLuaFileExt({}, p, ide.proto.Plugin)
               or wx.wxFileExists(p..".lua") and LoadLuaFileExt({}, p..".lua", ide.proto.Plugin)
