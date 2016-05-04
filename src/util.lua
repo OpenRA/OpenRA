@@ -272,8 +272,9 @@ function MergeFullPath(p, f)
   local file = wx.wxFileName(f)
   -- Normalize call is needed to make the case of p = '/abc/def' and
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
-  -- Normalization with PATH_NORM_DOTS removes leading dots, which need to be added back
-  local rel, rest = p:match("(%.[/\\.]*[/\\])(.*)")
+  -- Normalization with PATH_NORM_DOTS removes leading dots, which need to be added back.
+  -- This allows things like `-cfg ../myconfig.lua` to work.
+  local rel, rest = p:match("^(%.[/\\.]*[/\\])(.*)")
   if rel and rest then p = rest end
   return (file:Normalize(normalflags, p)
     and (rel or ""):gsub("[/\\]", GetPathSeparator())..file:GetFullPath()
