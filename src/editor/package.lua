@@ -788,7 +788,7 @@ function ide:IsValidCtrl(ctrl)
 end
 
 function ide:IsValidProperty(ctrl, prop)
-  return ide:IsValidCtrl(ctrl) and pcall(function() return ctrl[prop] end)
+  return ide:IsValidCtrl(ctrl) and pcall(function() return ctrl[prop] end) and ctrl[prop]
 end
 
 function ide:IsWindowShown(win)
