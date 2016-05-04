@@ -95,7 +95,14 @@ function ide:GetMenuBar() return self.frame.menuBar end
 function ide:GetStatusBar() return self.frame.statusBar end
 function ide:GetToolBar() return self.frame.toolBar end
 function ide:GetDebugger() return self.debugger end
-function ide:SetDebugger(deb) self.debugger = deb; return deb end
+function ide:SetDebugger(deb)
+  self.debugger = deb
+  -- if the remote console is already assigned, then assign it based on the new debugger
+  local console = ide:GetConsole()
+  -- `SetDebugger` may be called before console is set, so need to check if it's available
+  if ide:IsValidProperty(console, 'GetRemote') and console:GetRemote() then console:SetRemote(deb:GetConsole()) end
+  return deb
+end
 function ide:GetMainFrame() return self.frame end
 function ide:GetUIManager() return self.frame.uimgr end
 function ide:GetDocument(ed) return ed and self.openDocuments[ed:GetId()] end
