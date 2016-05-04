@@ -368,7 +368,8 @@ local function executeShellCode(tx)
   end
 end
 
-function ShellSupportRemote(client)
+function console:GetRemote() return remotesend end
+function console:SetRemote(client)
   remotesend = client
 
   local index = bottomnotebook:GetPageIndex(console)

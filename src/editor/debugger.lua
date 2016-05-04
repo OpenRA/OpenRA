@@ -776,7 +776,7 @@ function debugger:Listen(start)
       end
 
       if (not options.noshell and not debugger.scratchpad) then
-        ShellSupportRemote(debugger:GetConsole())
+        ide:GetConsole():SetRemote(debugger:GetConsole())
       end
 
       debugger:toggleViews(true)
@@ -1499,7 +1499,7 @@ function debugger:teardown()
     end
     if PackageEventHandle("onDebuggerPreClose", debugger) ~= false then
       SetAllEditorsReadOnly(false)
-      ShellSupportRemote(nil)
+      ide:GetConsole():SetRemote(nil)
       ClearAllCurrentLineMarkers()
       debugger:toggleViews(false)
       PackageEventHandle("onDebuggerClose", debugger)
@@ -1645,7 +1645,7 @@ function debugger:ScratchpadOn(editor)
       debugger.scratchpad.updated = true
       ClearAllCurrentLineMarkers()
       SetAllEditorsReadOnly(false)
-      ShellSupportRemote(nil) -- disable remote shell
+      ide:GetConsole():SetRemote(nil) -- disable remote shell
       debugger:ScratchpadRefresh()
     elseif not ProjectDebug(true, "scratchpad") then
       debugger.scratchpad = nil

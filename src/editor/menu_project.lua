@@ -258,7 +258,7 @@ function ProjectDebug(skipcheck, debtype)
     if (debugger.scratchpad and debugger.scratchpad.paused) then
       debugger.scratchpad.paused = nil
       debugger.scratchpad.updated = true
-      ShellSupportRemote(nil) -- disable remote while Scratchpad running
+      ide:GetConsole():SetRemote(nil) -- disable remote while Scratchpad running
     elseif (not debugger:IsRunning()) then
       debugger:Run()
     end
@@ -451,7 +451,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
       debugger:breaknow()
       if debugger.scratchpad then
         debugger.scratchpad.paused = true
-        ShellSupportRemote(debugger:GetConsole())
+        ide:GetConsole():SetRemote(debugger:GetConsole())
       end
     end
   end)
