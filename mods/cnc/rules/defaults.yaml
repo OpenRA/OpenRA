@@ -544,6 +544,8 @@
 	EngineerRepairable:
 	RevealsShroud:
 		Range: 3c0
+	Tooltip:
+		ShowOwnerRow: True
 
 ^CivField:
 	Inherits: ^CivBuilding
