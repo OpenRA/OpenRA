@@ -390,7 +390,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (health != 100)
 						initDict.Add(new HealthInit(health));
 					if (facing != 0)
-						initDict.Add(new FacingInit(facing));
+						initDict.Add(new FacingInit(255 - facing));
 
 					if (section == "INFANTRY")
 						actor.Add(new SubCellInit(Exts.ParseIntegerInvariant(parts[4])));
