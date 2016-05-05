@@ -337,6 +337,7 @@ ARCO:
 		Actor: ARCO.Husk
 	Tooltip:
 		Name: Oil Pump
+		ShowOwnerRow: True
 
 ARCO.Husk:
 	Inherits: ^CivBuildingHusk
