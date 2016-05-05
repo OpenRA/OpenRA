@@ -39,7 +39,7 @@
 	SelfHealing@ELITE:
 		Step: 2
 		Delay: 125
-		HealIfBelow: 1
+		HealIfBelow: 100
 		DamageCooldown: 125
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
