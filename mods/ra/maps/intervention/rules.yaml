@@ -1,34 +1,14 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 2000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: intervention.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Medium, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 CAMERA:
 	RevealsShroud:
@@ -113,46 +93,6 @@ SAM:
 TSLA:
 	Power:
 		Amount: -50
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Ship:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
 
 ATEK:
 	Buildable:

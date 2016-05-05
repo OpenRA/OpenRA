@@ -111,4 +111,4 @@ Actors:
 		Location: 13,13
 		Owner: Neutral
 
-Rules: rules.yaml
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

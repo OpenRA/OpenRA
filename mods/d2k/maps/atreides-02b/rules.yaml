@@ -1,42 +1,16 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 5000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: atreides02b.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
-	WormManager:
-		Minimum: 1
-		Maximum: 1
 	MissionData:
 		Briefing: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
 		BriefingVideo: A_BR02_E.VQA
-	MapCreeps:
-		Locked: True
-		Enabled: True
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
-		TechLevelLocked: True
 		TechLevel: Low
 		Difficulties: Easy, Normal, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 carryall.reinforce:
 	Cargo:

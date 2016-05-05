@@ -1,90 +1,21 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 5000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: monster-tank-madness.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	-StartGameNotification:
 	MissionData:
 		Briefing: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 ^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 	AnnounceOnSeen:
-
-^TechBuilding:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Ship:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Helicopter:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-
-^Crate:
-	Tooltip:
-		ShowOwnerRow: false
 
 ^CivBuilding:
 	Explodes:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
-	Tooltip:
-		ShowOwnerRow: false
 
 DEMITRI:
 	Inherits: DELPHI

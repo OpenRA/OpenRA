@@ -1,87 +1,21 @@
-Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
-	PlayerResources:
-		DefaultCashLocked: True
-		DefaultCash: 0
-
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: allies03b.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nINTELLIGENCE RECON SHOWS HEAVY\nSOVIET MOVEMENT IN YOUR AREA.\nNEARBY BRIDGES ARE KEY TO SOVIET\nADVANCEMENT. DESTROY ALL BRIDGES\nASAP. TANYA WILL ASSIST. KEEP HER\nALIVE AT ALL COSTS.\n\nCONFIRMATION CODE 1612.\n\nTRANSMISSION ENDS.\n
 		StartVideo: brdgtilt.vqa
 		WinVideo: toofar.vqa
 		LossVideo: sovtstar.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Easy, Normal
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	Demolishable:
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-	Demolishable:
 
 ^Building:
 	Capturable:
 		CaptureThreshold: 25
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
 
 ^TechBuilding:
 	Capturable:
 		Type: ~disabled
-
-^CivBuilding:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-
-^Crate:
-	Tooltip:
-		ShowOwnerRow: false
-
-FCOM:
-	Tooltip:
-		ShowOwnerRow: false
 
 powerproxy.paratroopers:
 	ParatroopersPower:
@@ -108,14 +42,6 @@ MEDI:
 		UpgradeMaxEnabledLevel: 0
 	Targetable@PRISONER:
 		TargetTypes: Prisoner
-
-E7.noautotarget:
-	Inherits: E7
-	AutoTarget:
-		EnableStances: false
-	-AttackMove:
-	RenderSprites:
-		Image: E7
 
 PRISON:
 	HiddenUnderShroud:
@@ -200,12 +126,6 @@ TRAN:
 		Range: 0c0
 	Cargo:
 		Types: ~disabled
-	Tooltip:
-		ShowOwnerRow: false
-
-LST:
-	Tooltip:
-		ShowOwnerRow: false
 
 JEEP.mission:
 	Inherits: JEEP

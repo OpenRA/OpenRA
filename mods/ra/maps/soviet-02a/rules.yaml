@@ -1,75 +1,16 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 5000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: soviet02a.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: Tomorrow, the attack on Germany begins, but today, we must protect our facility from Allied attacks.\n\nKeep the Command Center intact at all costs, and destroy any Allied fortification you might find.
 		BriefingVideo: soviet2.vqa
 		StartVideo: spotter.vqa
 		WinVideo: sovtstar.vqa
 		LossVideo: sovcemet.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^CivBuilding:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
-
-FCOM:
-	Tooltip:
-		ShowOwnerRow: false
 
 SPEN:
 	Buildable:

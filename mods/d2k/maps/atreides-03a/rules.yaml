@@ -1,42 +1,16 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 3000
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: atreides03a.lua, atreides03a-AI.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
-	WormManager:
-		Minimum: 1
-		Maximum: 1
 	MissionData:
 		Briefing: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
 		BriefingVideo: A_BR03_E.VQA
-	MapCreeps:
-		Locked: True
-		Enabled: True
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
-		TechLevelLocked: True
 		TechLevel: Low
 		Difficulties: Easy, Normal, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 carryall.reinforce:
 	Cargo:

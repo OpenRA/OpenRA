@@ -1,81 +1,18 @@
 Player:
-	-ConquestVictoryConditions:
-	MissionObjectives:
-		EarlyGameOver: true
-	-EnemyWatcher:
-	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
 		DefaultCash: 11500
 
 World:
-	-CrateSpawner:
-	-SpawnMPUnits:
-	-MPStartLocations:
 	LuaScript:
 		Scripts: soviet06a.lua, soviet06a-AI.lua, soviet06a-reinforcements_teams.lua
-	ObjectivesPanel:
-		PanelName: MISSION_OBJECTIVES
 	MissionData:
 		Briefing: There is a special cargo that needs to be transported to a nearby Soviet base in the northeast.\n\nMake sure the trucks reach their destination intact. Along the way, there is a bridge which the Allies may have destroyed.\n\nIf so, use the Naval options at your disposal. Our attack subs will make short work of any Allied boats you discover.
 		BriefingVideo: soviet6.vqa
 		StartVideo: onthprwl.vqa
 		WinVideo: sitduck.vqa
 		LossVideo: dpthchrg.vqa
-	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
 	MapOptions:
 		Difficulties: Easy, Normal, Hard
-		ShortGameLocked: True
-		ShortGameEnabled: False
-
-^Building:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Infantry:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Vehicle:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Ship:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Plane:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
-^Wall:
-	Tooltip:
-		ShowOwnerRow: false
-
-^TechBuilding:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Crate:
-	Tooltip:
-		ShowOwnerRow: false
-
-^Husk:
-	Tooltip:
-		GenericVisibility: Enemy, Ally, Neutral
-		GenericStancePrefix: false
-		ShowOwnerRow: false
 
 APWR:
 	Buildable:
