@@ -468,7 +468,7 @@ TRUK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 20
-		Prerequisites: weap, ~techlevel.low
+		Prerequisites: ~techlevel.low
 	Valued:
 		Cost: 500
 	Tooltip:
