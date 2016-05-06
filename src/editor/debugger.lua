@@ -554,6 +554,8 @@ function debugger:mapRemotePath(basedir, file, line, method)
     if #parts == 0 then break end
     name = table.remove(parts, #parts) .. "/" .. name
   end
+  -- if the mapped directory empty or the same as the basedir, nothing to do
+  if remotedir == "" or wx.wxFileName(remotedir):SameAs(wx.wxFileName(debugger.basedir)) then return end
 
   -- if found a local mapping under basedir
   local activated = longestpath and debugger:ActivateDocument(longestpath, line, method or activate.NOREPORT)
