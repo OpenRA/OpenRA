@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			// Check for blocking actors
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, tailPos, headPos,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, tailPos, headPos,
 				info.Width, info.TargetExtraSearchRadius, out blockedPos))
 			{
 				headPos = blockedPos;

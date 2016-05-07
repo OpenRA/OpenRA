@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Any(Exts.IsTraitEnabled));
 		}
 
-		public static bool AnyBlockingActorsBetween(World world, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
+		public static bool AnyBlockingActorsBetween(World world, WPos source, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
 		{
 			var actors = world.FindActorsOnLine(start, end, width, overscan);
 			var length = (end - start).Length;
