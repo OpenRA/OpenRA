@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.HitShapes
 	public interface IHitShape
 	{
 		WDist OuterRadius { get; }
+		WDist InnerRadius { get; }
 
 		WDist DistanceFromEdge(WVec v);
 		WDist DistanceFromEdge(WPos pos, Actor actor);

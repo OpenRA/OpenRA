@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.HitShapes
 	public class CapsuleShape : IHitShape
 	{
 		public WDist OuterRadius { get; private set; }
+		public WDist InnerRadius { get { return Radius; } }
 
 		[FieldLoader.Require]
 		public readonly int2 PointA;
