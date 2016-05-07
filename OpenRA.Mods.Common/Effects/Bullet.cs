@@ -92,6 +92,7 @@ namespace OpenRA.Mods.Common.Effects
 		ContrailRenderable contrail;
 		string trailPalette;
 
+		WPos lastPos;
 		[Sync] WPos pos, target;
 		[Sync] int length;
 		[Sync] int facing;
@@ -104,6 +105,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
+			lastPos = pos;
 
 			var world = args.SourceActor.World;
 
@@ -166,13 +168,14 @@ namespace OpenRA.Mods.Common.Effects
 			if (anim != null)
 				anim.Tick();
 
-			var lastPos = pos;
+			var lastBeforeLastPos = lastPos;
+			lastPos = pos;
 			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
 
 			// Check for walls or other blocking obstacles
 			var shouldExplode = false;
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, lastPos, pos, info.Width,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastBeforeLastPos, lastPos, pos, info.Width,
 				info.TargetExtraSearchRadius, out blockedPos))
 			{
 				pos = blockedPos;

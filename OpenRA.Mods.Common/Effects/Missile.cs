@@ -177,6 +177,7 @@ namespace OpenRA.Mods.Common.Effects
 		WVec tarVel;
 		WVec predVel;
 
+		WPos lastPos;
 		[Sync] WPos pos;
 		WVec velocity;
 		int speed;
@@ -197,6 +198,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.args = args;
 
 			pos = args.Source;
+			lastPos = pos;
 			hFacing = args.Facing;
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
@@ -804,13 +806,14 @@ namespace OpenRA.Mods.Common.Effects
 			renderFacing = new WVec(move.X, move.Y - move.Z, 0).Yaw.Facing;
 
 			// Move the missile
-			var lastPos = pos;
+			var lastBeforeLastPos = lastPos;
+			lastPos = pos;
 			pos += move;
 
 			// Check for walls or other blocking obstacles
 			var shouldExplode = false;
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, lastPos, pos, info.Width,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastBeforeLastPos, lastPos, pos, info.Width,
 				info.TargetExtraSearchRadius, out blockedPos))
 			{
 				pos = blockedPos;
