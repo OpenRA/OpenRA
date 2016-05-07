@@ -10,7 +10,7 @@ Bazooka:
 		TrailImage: bazooka_trail2
 		TrailPalette: effect75alpha
 		TrailInterval: 1
-		RangeLimit: 35
+		RangeLimit: 3c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
@@ -43,7 +43,7 @@ Rocket:
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 		Speed: 343
-		RangeLimit: 35
+		RangeLimit: 4c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 50, 25, 0
@@ -76,7 +76,7 @@ TowerMissile:
 		Blockable: false
 		Shadow: true
 		HorizontalRateOfTurn: 1
-		RangeLimit: 50
+		RangeLimit: 6c614
 		Inaccuracy: 384
 		Image: MISSILE2
 		TrailImage: large_trail
@@ -112,7 +112,7 @@ mtank_pri:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Speed: 281
-		RangeLimit: 50
+		RangeLimit: 7c204
 		HorizontalRateOfTurn: 3
 		Blockable: false
 		Shadow: yes
@@ -147,7 +147,7 @@ DeviatorMissile:
 	Report: MISSLE1.WAV
 	Projectile: Missile
 		Speed: 281
-		RangeLimit: 40
+		RangeLimit: 6c0
 		HorizontalRateOfTurn: 3
 		Blockable: false
 		Shadow: yes

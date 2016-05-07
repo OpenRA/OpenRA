@@ -82,8 +82,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Gravity applied while in free fall.")]
 		public readonly int Gravity = 10;
 
-		[Desc("Run out of fuel after being activated this many ticks. Zero for unlimited fuel.")]
-		public readonly int RangeLimit = 0;
+		[Desc("Run out of fuel after covering this distance. Zero for defaulting to weapon range. Negative for unlimited fuel.")]
+		public readonly WDist RangeLimit = WDist.Zero;
 
 		[Desc("Explode when running out of fuel.")]
 		public readonly bool ExplodeWhenEmpty = true;
@@ -181,6 +181,8 @@ namespace OpenRA.Mods.Common.Effects
 		WVec velocity;
 		int speed;
 		int loopRadius;
+		WDist distanceCovered;
+		WDist rangeLimit;
 
 		int renderFacing;
 		[Sync] int hFacing;
@@ -198,6 +200,7 @@ namespace OpenRA.Mods.Common.Effects
 			hFacing = args.Facing;
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
+			rangeLimit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
 
 			var world = args.SourceActor.World;
 
@@ -766,7 +769,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			// Switch from homing mode to freefall mode
-			if (info.RangeLimit != 0 && ticks == info.RangeLimit + 1)
+			if (rangeLimit >= WDist.Zero && distanceCovered > rangeLimit)
 			{
 				state = States.Freefall;
 				velocity = new WVec(0, -speed, 0)
@@ -824,11 +827,12 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
+			distanceCovered += new WDist(speed);
 			var cell = world.Map.CellContaining(pos);
 			var height = world.Map.DistanceAboveTerrain(pos);
 			shouldExplode |= height.Length < 0 // Hit the ground
 				|| relTarDist < info.CloseEnough.Length // Within range
-				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
+				|| (info.ExplodeWhenEmpty && rangeLimit >= WDist.Zero && distanceCovered > rangeLimit) // Ran out of fuel
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst

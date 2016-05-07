@@ -13,7 +13,7 @@ Rockets:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 20
+		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 35
@@ -46,7 +46,7 @@ BikeRockets:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 213
-		RangeLimit: 30
+		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -80,7 +80,7 @@ OrcaAGMissiles:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 256
-		RangeLimit: 30
+		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
@@ -114,7 +114,7 @@ OrcaAAMissiles:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 30
+		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
@@ -145,7 +145,7 @@ MammothMissiles:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 341
-		RangeLimit: 35
+		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 45
@@ -218,7 +218,7 @@ MammothMissiles:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 213
-		RangeLimit: 40
+		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
@@ -250,7 +250,7 @@ BoatMissile:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 170
-		RangeLimit: 60
+		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
@@ -285,7 +285,7 @@ TowerMissle:
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 40
+		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
 		Damage: 25
@@ -313,7 +313,7 @@ SAMMissile:
 		Image: MISSILE
 		HorizontalRateOfTurn: 20
 		Speed: 426
-		RangeLimit: 35
+		RangeLimit: 9c614
 		TrailImage: smokey
 		ContrailLength: 8
 	Warhead@1Dam: SpreadDamage
@@ -374,7 +374,7 @@ Patriot:
 		ContrailLength: 8
 		HorizontalRateOfTurn: 20
 		Speed: 300
-		RangeLimit: 30
+		RangeLimit: 10c819
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
 		ValidTargets: Air

@@ -11,7 +11,7 @@ MultiCluster:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 8
-		RangeLimit: 35
+		RangeLimit: 7c204
 		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 384
