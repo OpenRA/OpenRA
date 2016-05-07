@@ -77,6 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
+				// Actor has been disposed by something else before its death (for example `Enter`).
+				if (self.Disposed)
+					return;
+
 				var td = new TypeDictionary
 				{
 					new ParentActorInit(self),
