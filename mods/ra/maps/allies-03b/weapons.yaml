@@ -1,5 +1,7 @@
 Colt45:
+	ValidTargets: Ground, Infantry, Truk
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: Barrel, Infantry, Truk
 		Versus:
 			Truk: 50
 
