@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts",
 		mods\cnc\maps\nod06c\nod06c.lua = mods\cnc\maps\nod06c\nod06c.lua
 		mods\cnc\maps\nod07a\nod07a-AI.lua = mods\cnc\maps\nod07a\nod07a-AI.lua
 		mods\cnc\maps\nod07a\nod07a.lua = mods\cnc\maps\nod07a\nod07a.lua
+		mods\cnc\maps\nod07a\nod07a-AI.lua = mods\cnc\maps\nod07b\nod07b-AI.lua
+		mods\cnc\maps\nod07a\nod07a.lua = mods\cnc\maps\nod07b\nod07b.lua
 		mods\cnc\maps\funpark01\scj01ea.lua = mods\cnc\maps\funpark01\scj01ea.lua
 		mods\cnc\maps\shellmap\shellmap.lua = mods\cnc\maps\shellmap\shellmap.lua
 	EndProjectSection
