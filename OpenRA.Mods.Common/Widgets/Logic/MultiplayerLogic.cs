@@ -315,7 +315,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => { }, onComplete);
+			var queryURL = Game.Settings.Server.MasterServer + "games?version={0}&mod={1}&modversion={2}".F(
+				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
+
+			currentQuery = new Download(queryURL, _ => { }, onComplete);
 		}
 
 		int GroupSortOrder(GameServer testEntry)
