@@ -241,7 +241,7 @@ namespace OpenRA.Chat
 
 		void OnJoin(object sender, JoinEventArgs e)
 		{
-			if (e.Who == client.Nickname || e.Channel != channel.Name)
+			if (e.Who == client.Nickname || channel == null || e.Channel != channel.Name)
 				return;
 
 			AddNotification("{0} joined the chat.".F(e.Who));
@@ -284,7 +284,7 @@ namespace OpenRA.Chat
 
 		void OnPart(object sender, PartEventArgs e)
 		{
-			if (e.Data.Channel != channel.Name)
+			if (channel == null || e.Data.Channel != channel.Name)
 				return;
 
 			AddNotification("{0} left the chat.".F(e.Who));
