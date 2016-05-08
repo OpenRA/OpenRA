@@ -656,7 +656,7 @@ namespace OpenRA.Mods.Common.Effects
 					else
 					{
 						// Aim for the target
-						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
+						var vDist = new WVec(-relTarHgt, relTarHorDist, 0);
 						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 							desiredVFacing = 0;
