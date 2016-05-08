@@ -77,7 +77,7 @@ SonicZap:
 		ZOffset: 2047
 		BeyondTargetRange: 0c256
 		Blockable: true
-		Color: 00FFFFC8
+		Color: 50F5FF45
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
