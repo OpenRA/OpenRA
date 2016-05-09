@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = "0.634",
+  _VERSION = "0.635",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -503,6 +503,22 @@ local function handle_breakpoint(peer)
   buf = nil
 end
 
+local function normalize_path(file)
+  local n
+  repeat
+    file, n = file:gsub("/+%.?/+","/") -- remove all `//` and `/./` references
+  until n == 0
+  -- collapse all up-dir references: this will clobber UNC prefix (\\?\)
+  -- and disk on Windows when there are too many up-dir references: `D:\foo\..\..\bar`;
+  -- handle the case of multiple up-dir references: `foo/bar/baz/../../../more`;
+  -- only remove one at a time as otherwise `../../` could be removed;
+  repeat
+    file, n = file:gsub("[^/]+/%.%./", "", 1)
+  until n == 0
+  -- there may still be a leading up-dir reference left (as `/../` or `../`); remove it
+  return (file:gsub("%.%./", "", 1))
+end
+
 local function debug_hook(event, line)
   -- (1) LuaJIT needs special treatment. Because debug_hook is set for
   -- *all* coroutines, and not just the one being debugged as in regular Lua
@@ -583,12 +599,18 @@ local function debug_hook(event, line)
       -- The following will work if the supplied filename uses Unix path.
       if find(file, "^@") then
         file = gsub(gsub(file, "^@", ""), "\\", "/")
+        -- normalize paths that may include up-dir or same-dir references
+        -- if the path starts from the up-dir or reference,
+        -- prepend `basedir` to generate absolute path to keep breakpoints working.
+        -- ignore qualified relative path (`D:../`) and UNC paths (`\\?\`)
+        if file:find("^%.%./") then file = basedir..file end
+        if file:find("/%.%.?/") then file = normalize_path(file) end
         -- need this conversion to be applied to relative and absolute
         -- file names as you may write "require 'Foo'" to
         -- load "foo.lua" (on a case insensitive file system) and breakpoints
         -- set on foo.lua will not work if not converted to the same case.
         if iscasepreserving then file = string.lower(file) end
-        if find(file, "%./") == 1 then file = sub(file, 3)
+        if find(file, "^%./") then file = sub(file, 3)
         else file = gsub(file, "^"..q(basedir), "") end
         -- some file systems allow newlines in file names; remove these.
         file = gsub(file, "\n", ' ')
