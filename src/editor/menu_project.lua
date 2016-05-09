@@ -448,7 +448,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local debugger = ide:GetDebugger()
     if debugger.server then
-      debugger:breaknow()
+      debugger:Break()
       if debugger.scratchpad then
         debugger.scratchpad.paused = true
         ide:GetConsole():SetRemote(debugger:GetConsole())

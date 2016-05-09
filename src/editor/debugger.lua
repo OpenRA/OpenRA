@@ -1068,7 +1068,7 @@ end
 function debugger:evaluate(expression) return self:handle('eval ' .. expression) end
 function debugger:execute(expression) return self:handle('exec ' .. expression) end
 function debugger:stack() return self:handle('stack') end
-function debugger:breaknow(command)
+function debugger:Break(command)
   local debugger = self
   -- stop if we're running a "trace" command
   debugger.loop = false
@@ -1564,7 +1564,7 @@ function debugger:ScratchpadRefresh()
       -- don't try too frequently to avoid overwhelming the debugger
       local now = TimeGet()
       if now - debugger.scratchpad.running > 0.250 then
-        debugger:breaknow()
+        debugger:Break()
         debugger.scratchpad.running = now
       end
     else
