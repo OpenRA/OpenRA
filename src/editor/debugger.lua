@@ -817,12 +817,6 @@ local function nameOutputTab(name)
   if index ~= -1 then nbk:SetPageText(index, name) end
 end
 
-local function statusUpdate(debugger, status)
-  PackageEventHandle("onDebuggerStatusUpdate", debugger, status)
-  local text = ({running = TR("Output (running)"), suspended = TR("Output (suspended)")})[status]
-  nameOutputTab(text or TR("Output"))
-end
-
 function debugger:handle(command, server, options)
   local debugger = self
   local verbose = ide.config.debugger.verbose
@@ -832,13 +826,13 @@ function debugger:handle(command, server, options)
   local ip, port = debugger.socket:getpeername()
   PackageEventHandle("onDebuggerCommand", debugger, command, server or debugger.server, options)
   debugger.running = true
-  statusUpdate(debugger, "running")
+  debugger:UpdateStatus("running")
   if verbose then ide:Print(("[%s:%s] Debugger sent (command):"):format(ip, port), command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server, options)
   if verbose then ide:Print(("[%s:%s] Debugger received (file, line, err):"):format(ip, port), file, line, err) end
   debugger.running = false
   -- only set suspended if the debugging hasn't been terminated
-  statusUpdate(debugger, debugger.server and "suspended" or nil)
+  debugger:UpdateStatus(debugger.server and "suspended" or "stopped")
 
   return file, line, err
 end
@@ -1467,6 +1461,21 @@ function debugger:PanelsRefresh() return self:updateStackAndWatches() end
 
 function debugger:BreakpointSet(...) return self:breakpoint(...) end
 
+local statuses = {
+  running = TR("Output (running)"),
+  suspended = TR("Output (suspended)"),
+  stopped = TR("Output"),
+}
+function debugger:UpdateStatus(status)
+  local debugger = self
+  if not status then
+    status = debugger.running and "running" or debugger.server and "suspended" or "stopped"
+  end
+  if PackageEventHandle("onDebuggerStatusUpdate", debugger, status) == false then return end
+  nameOutputTab(statuses[status] or statuses.stopped)
+  if status == "running" then ClearAllCurrentLineMarkers() end
+end
+
 function debugger:OutputSet(stream, mode, options)
   return self:handle(("output %s %s"):format(stream, mode), nil, options)
 end
@@ -1494,7 +1503,7 @@ function debugger:teardown()
   if debugger.server then
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
-    statusUpdate(debugger, ide:GetLaunchedProcess() and "running" or nil)
+    debugger:UpdateStatus(ide:GetLaunchedProcess() and "running" or "stopped")
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
       debugger:BreakpointToggle(ed, ln)
