@@ -330,6 +330,8 @@ function debugger:ActivateDocument(file, line, activatehow)
     file = debugger.basedir .. file
   end
 
+  if PackageEventHandle("onDebuggerPreActivate", debugger, file, line) == false then return end
+
   local activated
   local indebugger = file:find('mobdebug%.lua$')
   local fileName = wx.wxFileName(file)
@@ -863,7 +865,10 @@ function debugger:exec(command, func)
             -- the debugging was terminated; simply return in this case.
             return
           else
-            if debugger:ActivateDocument(file, line) then
+            local activated = debugger:ActivateDocument(file, line)
+            -- activation has been canceled; nothing else needs to be done
+            if activated == nil then return end
+            if activated then
               debugger.stats.line = debugger.stats.line + 1
               if debugger.loop then
                 debugger:updateStackSync()

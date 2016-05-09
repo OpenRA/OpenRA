@@ -55,6 +55,7 @@ local events = {
   onDebuggerLoad =     function(self, debugger, options) end,
   onDebuggerPreClose = function(self, debugger) end, -- return false
   onDebuggerClose =    function(self, debugger) end,
+  onDebuggerPreActivate = function(self, debugger, file, line) end, -- return false
   onDebuggerActivate = function(self, debugger, file, line, editor) end,
   onDebuggerStatusUpdate = function(self, debugger, status) end, -- return false
   onDebuggerCommand =  function(self, debugger, command, server, options) end,
