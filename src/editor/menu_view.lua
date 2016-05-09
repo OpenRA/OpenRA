@@ -98,9 +98,9 @@ frame:Connect(ID_VIEWTOOLBAR, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWOUTLINE, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWMARKERS, wx.wxEVT_COMMAND_MENU_SELECTED, togglePanel)
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) if togglePanel(event) then ide:GetDebugger():PanelsRefresh() end end)
+  function (event) if togglePanel(event) then ide:GetDebugger():RefreshPanels() end end)
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) if togglePanel(event) then ide:GetDebugger():PanelsRefresh() end end)
+  function (event) if togglePanel(event) then ide:GetDebugger():RefreshPanels() end end)
 
 frame:Connect(ID_VIEWSTATUSBAR, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)

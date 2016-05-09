@@ -1457,7 +1457,7 @@ debuggerCreateWatchWindow()
 ----------------------------------------------
 -- public api
 
-function debugger:PanelsRefresh() return self:updateStackAndWatches() end
+function debugger:RefreshPanels() return self:updateStackAndWatches() end
 
 function debugger:BreakpointSet(...) return self:breakpoint(...) end
 
