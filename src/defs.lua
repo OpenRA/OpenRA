@@ -294,7 +294,7 @@ tool = {
   }
 }
 
--- interpreter definition-- ----------------------------------------------------
+-- interpreter definition ------------------------------------------------------
 interpreter = {
   name = "",
   description = "",
@@ -308,4 +308,5 @@ interpreter = {
     -- false, scratchpad supported;
     -- true, scratchpad supported and requires handling for external loop.
   skipcompile = nil, -- don't compile before running if true
+  takeparameters = true, -- the interpreter may accept parameters
 }
