@@ -294,27 +294,6 @@ tool = {
   }
 }
 
--- debuginterface definition
--- ----------------------------------------------------
-debuginterface = {
-  update = function(self) end, -- run in idle when active
-  close = function(self) end, -- run when closed
-
-  -- following are "debugging" actions and must return
-  -- error, running, [filePath, fileLine]
-  run = function(self) end,
-  step = function(self) end,
-  over = function(self) end,
-  out = function(self) end,
-  terminate = function(self) end,
-  breaknow = function(self) end,
-  breakpoint = function(self,file,line,state) end, -- set breakpoint state
-
-  -- returns result table if successful
-  evaluate = function(self, expressions, fnSetValues) end, -- for watches tables
-  stack = function(self) end, -- get stack information
-}
-
 -- interpreter definition-- ----------------------------------------------------
 interpreter = {
   name = "",
