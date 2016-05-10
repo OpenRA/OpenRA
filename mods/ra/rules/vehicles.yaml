@@ -275,6 +275,11 @@ HARV:
 	HarvesterHuskModifier:
 		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
+	SelfHealing:
+		Step: 1
+		Delay: 25
+		HealIfBelow: 50
+		DamageCooldown: 500
 	Explodes:
 		Weapon: OreExplosion
 
