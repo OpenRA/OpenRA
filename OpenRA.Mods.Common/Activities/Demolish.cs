@@ -57,6 +57,10 @@ namespace OpenRA.Mods.Common.Activities
 				if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Demolish))
 					cloak.Uncloak();
 
+				var building = target.TraitOrDefault<Building>();
+				if (building != null)
+					building.Lock();
+
 				for (var f = 0; f < flashes; f++)
 					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
 						w.Add(new FlashTarget(target, ticks: flashDuration))));
