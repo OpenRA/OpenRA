@@ -218,7 +218,10 @@ function EditorAutoComplete(editor)
   -- the current position and the previous one have default style (0),
   -- so we need to check two positions back.
   local style = pos >= 2 and bit.band(editor:GetStyleAt(pos-2),31) or 0
-  if editor.spec.iscomment[style] or editor.spec.isstring[style] then return end
+  if editor.spec.iscomment[style]
+  or editor.spec.isstring[style]
+  or (MarkupIsAny and MarkupIsAny(style)) -- markup in comments
+  then return end
 
   -- retrieve the current line and get a string to the current cursor position in the line
   local line = editor:GetCurrentLine()
