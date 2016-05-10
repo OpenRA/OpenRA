@@ -138,7 +138,7 @@ TurretGun:
 
 155mm:
 	ReloadDelay: 85
-	Range: 14c0
+	Range: 12c0
 	MinRange: 3c0
 	Report: tank5.aud
 	Projectile: Bullet
