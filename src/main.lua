@@ -147,6 +147,7 @@ ide = {
     autocomplete = true,
     autoanalyzer = true,
     acandtip = {
+      startat = 2,
       shorttip = true,
       nodynwords = true,
       ignorecase = false,
