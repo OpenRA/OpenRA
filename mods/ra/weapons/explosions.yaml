@@ -104,7 +104,7 @@ MiniNuke:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater
 		Versus:
 			Concrete: 25
 		AffectsParent: true
@@ -117,7 +117,7 @@ MiniNuke:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater
 		Versus:
 			Concrete: 25
 		AffectsParent: true
