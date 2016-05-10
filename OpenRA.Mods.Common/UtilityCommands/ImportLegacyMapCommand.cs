@@ -60,7 +60,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var format = GetMapFormatVersion(basic);
 				ValidateMapFormat(format);
 
-				var tileset = GetTileset(mapSection);
+				// The original game isn't case sensitive, but we are.
+				var tileset = GetTileset(mapSection).ToUpperInvariant();
+				if (!modData.DefaultTileSets.ContainsKey(tileset))
+					throw new InvalidDataException("Unknown tileset {0}".F(tileset));
+
 				Map = new Map(modData, modData.DefaultTileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
