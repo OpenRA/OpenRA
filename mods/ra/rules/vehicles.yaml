@@ -239,7 +239,6 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: proc, ~techlevel.infonly
-		InitialActivity: FindResources
 	Valued:
 		Cost: 1100
 	Tooltip:

@@ -52,7 +52,6 @@ harvester:
 		Queue: Armor
 		Prerequisites: refinery
 		BuildPaletteOrder: 10
-		InitialActivity: FindResources
 	Valued:
 		Cost: 1200
 	CustomBuildTimeValue:

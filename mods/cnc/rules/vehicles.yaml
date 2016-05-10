@@ -48,7 +48,6 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
-		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
 	Harvester:
