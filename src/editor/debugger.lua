@@ -1478,7 +1478,6 @@ function debugger:UpdateStatus(status)
   end
   if PackageEventHandle("onDebuggerStatusUpdate", debugger, status) == false then return end
   nameOutputTab(statuses[status] or statuses.stopped)
-  if status == "running" then ClearAllCurrentLineMarkers() end
 end
 
 function debugger:OutputSet(stream, mode, options)
