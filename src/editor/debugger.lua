@@ -35,7 +35,7 @@ local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
 
-local activate = {CHECKONLY = 1, NOREPORT = 2}
+local activate = {CHECKONLY = "checkonly", NOREPORT = "noreport", CLEARALL = "clearall"}
 
 local function serialize(value, options) return mobdebug.line(value, options) end
 
@@ -306,6 +306,8 @@ local function killProcess(pid)
 end
 
 function debugger:ActivateDocument(file, line, activatehow)
+  if activatehow == activate.CLEARALL then ClearAllCurrentLineMarkers() end
+
   local debugger = self
   if not file then return end
   line = tonumber(line)
