@@ -48,7 +48,6 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~factory, proc
-		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
