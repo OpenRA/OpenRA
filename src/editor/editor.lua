@@ -1200,13 +1200,10 @@ function CreateEditor(bare)
         local ok, res = pcall(IndicateAll, editor, minupdated)
         if not ok then DisplayOutputLn("Internal error: ",res,minupdated) end
       end
-      local firstvisible = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
-      local lastline = math.min(editor:GetLineCount(),
-        firstvisible + editor:LinesOnScreen())
-      -- lastline - editor:LinesOnScreen() can get negative; fix it
-      local firstline = math.min(math.max(0, lastline - editor:LinesOnScreen()),
-        firstvisible)
-      MarkupStyle(editor,minupdated or firstline,lastline)
+      local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
+      local lastline = editor:DocLineFromVisible(firstline + editor:LinesOnScreen())
+      -- cap last line at the number of lines in the document
+      MarkupStyle(editor, minupdated or firstline, math.min(editor:GetLineCount(),lastline))
       editor.ev = {}
     end)
 
