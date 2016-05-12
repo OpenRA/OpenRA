@@ -346,7 +346,6 @@ function ide:CreateStyledTextCtrl(...)
 
   -- circle through "fold all" => "hide base lines" => "unfold all"
   function editor:FoldSome()
-    editor:Colourise(0, -1) -- update doc's folding info
     local foldall = false -- at least on header unfolded => fold all
     local hidebase = false -- at least one base is visible => hide all
     local lines = editor:GetLineCount()
