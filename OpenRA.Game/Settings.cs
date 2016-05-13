@@ -171,7 +171,8 @@ namespace OpenRA
 
 		public bool ViewportEdgeScroll = true;
 		public bool LockMouseWindow = false;
-		public MouseScrollType MouseScroll = MouseScrollType.Standard;
+		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;
+		public MouseScrollType RightMouseScroll = MouseScrollType.Disabled;
 		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;

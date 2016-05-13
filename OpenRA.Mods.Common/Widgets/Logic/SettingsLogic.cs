@@ -402,9 +402,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				MakeMouseFocusSettingsLive();
 			};
 
-			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
-			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+			var middleMouseScrollDropdown = panel.Get<DropDownButtonWidget>("MIDDLE_MOUSE_SCROLL");
+			middleMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(middleMouseScrollDropdown, gs, false);
+			middleMouseScrollDropdown.GetText = () => gs.MiddleMouseScroll.ToString();
+
+			var rightMouseScrollDropdown = panel.Get<DropDownButtonWidget>("RIGHT_MOUSE_SCROLL");
+			rightMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(rightMouseScrollDropdown, gs, true);
+			rightMouseScrollDropdown.GetText = () => gs.RightMouseScroll.ToString();
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
@@ -591,7 +595,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return () =>
 			{
 				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
-				gs.MouseScroll = dgs.MouseScroll;
+				gs.MiddleMouseScroll = dgs.MiddleMouseScroll;
+				gs.RightMouseScroll = dgs.RightMouseScroll;
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
@@ -651,7 +656,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s, bool rightMouse)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -664,8 +669,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => s.MouseScroll == options[o],
-					() => s.MouseScroll = options[o]);
+					() => (rightMouse ? s.RightMouseScroll : s.MiddleMouseScroll) == options[o],
+					() => { if (rightMouse) s.RightMouseScroll = options[o]; else s.MiddleMouseScroll = options[o]; });
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
