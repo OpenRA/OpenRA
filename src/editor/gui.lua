@@ -232,7 +232,8 @@ local function createNotebook(frame)
         end
 
         local selection = notebook:GetPageIndex(getTabWindow(event))
-        -- first set the selection on the dragged tab to reset its state
+        -- set the selection on the dragged tab to reset its state
+        -- workaround for wxwidgets issue http://trac.wxwidgets.org/ticket/15071
         notebook:SetSelection(selection)
         -- select the content of the tab after drag is done
         SetEditorSelection(selection)
@@ -409,6 +410,9 @@ local function addDND(notebook)
         end
       end
 
+      -- set the selection on the dragged tab to reset its state
+      -- workaround for wxwidgets issue http://trac.wxwidgets.org/ticket/15071
+      notebook:SetSelection(selection)
       -- set focus on the content of the selected tab
       notebook:GetPage(selection):SetFocus()
     end)
