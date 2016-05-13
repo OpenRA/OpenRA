@@ -383,32 +383,34 @@ local function addDND(notebook)
       local y = win:GetScreenPosition():GetY()
       local w, h = win:GetSize():GetWidth(), win:GetSize():GetHeight()
 
+      local win, tabctrl = getTabWindow(event)
+      local selection = notebook:GetPageIndex(win)
       local mouse = wx.wxGetMouseState()
       local mx, my = mouse:GetX(), mouse:GetY()
+      if mx < x or mx > x + w or my < y or my > y + h then
+        -- disallow split as the target is outside the notebook
+        local flags = notebook:GetWindowStyleFlag()
+        if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) ~= 0 then
+          notebook:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_TAB_SPLIT)
+        end
 
-      if mx >= x and mx <= x + w and my >= y and my <= y + h then return end
+        -- don't allow dragging out single tabs from tab ctrl
+        -- as wxwidgets doesn't like removing pages from split notebooks.
+        if tabctrl:GetPageCount() == 1 then return end
 
-      -- disallow split as the target is outside the notebook
-      local flags = notebook:GetWindowStyleFlag()
-      if bit.band(flags, wxaui.wxAUI_NB_TAB_SPLIT) ~= 0 then
-        notebook:SetWindowStyleFlag(flags - wxaui.wxAUI_NB_TAB_SPLIT)
+        local label = notebook:GetPageText(selection)
+        local pane = ide:RestorePanelByLabel(label)
+        if pane then
+          pane:FloatingPosition(mx-10, my-10)
+          pane:Show()
+          notebook:RemovePage(selection)
+          mgr:Update()
+          return
+        end
       end
 
-      -- don't allow dragging out single tabs from tab ctrl
-      -- as wxwidgets doesn't like removing pages from split notebooks.
-      local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
-      if tabctrl:GetPageCount() == 1 then return end
-
-      local idx = event:GetSelection() -- index within the current tab ctrl
-      local selection = notebook:GetPageIndex(tabctrl:GetPage(idx).window)
-      local label = notebook:GetPageText(selection)
-      local pane = ide:RestorePanelByLabel(label)
-      if not pane then return end
-
-      pane:FloatingPosition(mx-10, my-10)
-      pane:Show()
-      notebook:RemovePage(selection)
-      mgr:Update()
+      -- set focus on the content of the selected tab
+      notebook:GetPage(selection):SetFocus()
     end)
 end
 
