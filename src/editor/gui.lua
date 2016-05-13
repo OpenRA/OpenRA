@@ -425,8 +425,11 @@ local function createBottomNotebook(frame)
 
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
     function (event)
-      if not ide.findReplace then return end
       local nb = event:GetEventObject():DynamicCast("wxAuiNotebook")
+      -- set focus on the new page
+      nb:GetPage(event:GetSelection()):SetFocus()
+
+      if not ide.findReplace then return end
       local preview = ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection()))
       local flags = nb:GetWindowStyleFlag()
       if preview and bit.band(flags, wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB) == 0 then
