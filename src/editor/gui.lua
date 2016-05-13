@@ -159,6 +159,12 @@ local function createToolBar(frame)
   return toolBar
 end
 
+local function getTabWindow(event)
+  local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
+  local idx = event:GetSelection() -- index within the current tab ctrl
+  return tabctrl:GetPage(idx).window, tabctrl
+end
+
 local function createNotebook(frame)
   -- notebook for editors
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
@@ -224,10 +230,12 @@ local function createNotebook(frame)
           local editor = GetEditor(page)
           if editor then ide.openDocuments[editor:GetId()].index = page end
         end
+
+        local selection = notebook:GetPageIndex(getTabWindow(event))
         -- first set the selection on the dragged tab to reset its state
-        notebook:SetSelection(event:GetSelection())
+        notebook:SetSelection(selection)
         -- select the content of the tab after drag is done
-        SetEditorSelection(event:GetSelection())
+        SetEditorSelection(selection)
         event:Skip()
       end)
   end
