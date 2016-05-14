@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : UpgradableTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
 		readonly AttackBase[] attackBases;
-		readonly AttackFollow attackFollow;
+		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
 			PredictedStance = Stance;
-			attackFollow = self.TraitsImplementing<AttackFollow>().FirstOrDefault(Exts.IsTraitEnabled);
+			attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
-			if (attackFollow == null || !attackFollow.IsReachableTarget(attackFollow.Target, allowMove))
+			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
 				Attack(self, Aggressor, allowMove);
 		}
 
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
-			if (attackFollow == null || !attackFollow.IsReachableTarget(attackFollow.Target, allowMove))
+			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
 				ScanAndAttack(self, allowMove);
 		}
 
