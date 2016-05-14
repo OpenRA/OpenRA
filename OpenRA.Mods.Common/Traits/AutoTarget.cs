@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -45,14 +45,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool TargetWhenDamaged = true;
 
-		public object Create(ActorInitializer init) { return new AutoTarget(init, this); }
+		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : UpgradableTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
-		readonly AutoTargetInfo info;
 		readonly AttackBase attack;
 		readonly AttackFollow at;
 		[Sync] int nextScanTime = 0;
@@ -65,9 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 		public UnitStance PredictedStance;
 
 		public AutoTarget(ActorInitializer init, AutoTargetInfo info)
+			: base(info)
 		{
 			var self = init.Self;
-			this.info = info;
 			attack = self.Trait<AttackBase>();
 
 			if (init.Contains<StanceInit>())
@@ -81,13 +80,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetUnitStance" && info.EnableStances)
+			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
 				Stance = (UnitStance)order.ExtraData;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!self.IsIdle || !info.TargetWhenDamaged)
+			if (IsTraitDisabled)
+				return;
+
+			if (!self.IsIdle || !Info.TargetWhenDamaged)
 				return;
 
 			var attacker = e.Attacker;
@@ -115,23 +117,29 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Aggressor = attacker;
-			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
 			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
 				Attack(self, Aggressor, allowMove);
 		}
 
 		public void TickIdle(Actor self)
 		{
-			if (Stance < UnitStance.Defend || !info.TargetWhenIdle)
+			if (IsTraitDisabled)
 				return;
 
-			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
+			if (Stance < UnitStance.Defend || !Info.TargetWhenIdle)
+				return;
+
 			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
 				ScanAndAttack(self, allowMove);
 		}
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (nextScanTime > 0)
 				--nextScanTime;
 		}
@@ -140,13 +148,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (nextScanTime <= 0)
 			{
-				nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
+				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 				// If we can't attack right now, there's no need to try and find a target.
 				var attackStances = attack.UnforcedAttackTargetStances();
 				if (attackStances != OpenRA.Traits.Stance.None)
 				{
-					var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
+					var range = Info.ScanRadius > 0 ? WDist.FromCells(Info.ScanRadius) : attack.GetMaximumRange();
 					return ChooseTarget(self, attackStances, range, allowMove);
 				}
 			}
