@@ -840,6 +840,11 @@ if ide.osname == 'Macintosh' then
   if editor then editor:SetFocus() end
 end
 
+-- enable full screen view if supported (for example, on OSX)
+if ide:IsValidProperty(ide:GetMainFrame(), "EnableFullScreenView") then
+  ide:GetMainFrame():EnableFullScreenView()
+end
+
 wx.wxGetApp():MainLoop()
 
 -- There are several reasons for this call:
