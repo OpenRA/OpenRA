@@ -408,6 +408,11 @@ function ide:CreateStyledTextCtrl(...)
     self:SetXOffset(xoffset > xwidth and xoffset-xwidth or 0)
   end
 
+  -- wxSTC included with wxlua didn't have ScrollRange defined, so substitute if not present
+  if not ide:IsValidProperty(editor, "ScrollRange") then
+    function editor:ScrollRange(secondary, primary) self:ShowPosEnforcePolicy(primary) end
+  end
+
   function editor:ClearAny()
     local length = self:GetLength()
     local selections = ide.wxver >= "2.9.5" and self:GetSelections() or 1

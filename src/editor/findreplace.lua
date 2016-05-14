@@ -212,8 +212,8 @@ function findReplace:Find(reverse)
       self.foundString = true
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
-      editor:ShowPosEnforcePolicy(finish)
       editor:SetSelection(start, finish)
+      editor:ScrollRange(finish, start)
     end
   end
   self:SetStatus(msg)
