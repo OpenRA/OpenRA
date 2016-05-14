@@ -676,9 +676,6 @@ function ShowFullScreen(setFullScreen)
     end
     uimgr:Update()
     SetEditorSelection() -- make sure the focus is on the editor
-  elseif beforeFullScreenPerspective then
-    uimgr:LoadPerspective(beforeFullScreenPerspective, true)
-    beforeFullScreenPerspective = nil
   end
 
   -- On OSX, status bar is not hidden when switched to
@@ -692,6 +689,11 @@ function ShowFullScreen(setFullScreen)
 
   -- protect from systems that don't have ShowFullScreen (GTK on linux?)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
+
+  if not setFullScreen and beforeFullScreenPerspective then
+    uimgr:LoadPerspective(beforeFullScreenPerspective, true)
+    beforeFullScreenPerspective = nil
+  end
 
   if ide.osname == 'Macintosh' and not setFullScreen then
     if statusbarShown then
