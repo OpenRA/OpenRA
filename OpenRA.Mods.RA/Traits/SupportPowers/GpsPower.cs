@@ -41,17 +41,22 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool SatellitePaletteIsPlayerPalette = true;
 
+		[Desc("Requires an actor with an online `ProvidesRadar` to show GPS dots.")]
+		public readonly bool RequiresActiveRadar = true;
+
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged
+	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged, ITick
 	{
+		readonly Actor self;
 		readonly GpsPowerInfo info;
 		GpsWatcher owner;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
 		{
+			this.self = self;
 			this.info = info;
 			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);
@@ -92,6 +97,23 @@ namespace OpenRA.Mods.RA.Traits
 			RemoveGps(self);
 			owner = newOwner.PlayerActor.Trait<GpsWatcher>();
 			owner.GpsAdd(self);
+		}
+
+		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive).Any(a => a.Owner == self.Owner); } }
+		bool wasDisabled;
+
+		public void Tick(Actor self)
+		{
+			if (!wasDisabled && (self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar)))
+			{
+				wasDisabled = true;
+				RemoveGps(self);
+			}
+			else if (wasDisabled && !self.IsDisabled() && !(info.RequiresActiveRadar && NoActiveRadar))
+			{
+				wasDisabled = false;
+				owner.GpsAdd(self);
+			}
 		}
 	}
 }
