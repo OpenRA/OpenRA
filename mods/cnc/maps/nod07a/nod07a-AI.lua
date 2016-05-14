@@ -11,7 +11,7 @@ VehicleProductionCooldown = DateTime.Minutes(4)
 VehicleProductionTypes = { "jeep", "jeep", "mtnk", "mtnk", "mtnk" }
 StartingCash = 4000
 
-BaseProc =  { type = "proc", pos = CPos.New(22, 51), cost = 1500, exists = true }
+BaseProc = { type = "proc", pos = CPos.New(22, 51), cost = 1500, exists = true }
 BaseNuke1 = { type = "nuke", pos = CPos.New(16, 56), cost = 500, exists = true }
 BaseNuke2 = { type = "nuke", pos = CPos.New(18, 57), cost = 500, exists = true }
 BaseNuke3 = { type = "nuke", pos = CPos.New(27, 51), cost = 500, exists = true }
