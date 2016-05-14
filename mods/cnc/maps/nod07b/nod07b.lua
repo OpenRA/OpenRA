@@ -101,7 +101,7 @@ end
 SendAttackWave = function(team)
 	for type, amount in pairs(team.units) do
 		count = 0
-		actors =  enemy.GetActorsByType(type)
+		actors = enemy.GetActorsByType(type)
 		Utils.Do(actors, function(actor)
 			if actor.IsIdle and count < amount then
 				SetAttackWaypoints(actor, team.waypoints)
@@ -130,16 +130,16 @@ SendGDIAirstrike = function(hq, delay)
 
 		if target then
 			hq.SendAirstrike(target, false, Facing.NorthEast + 4)
-			Trigger.AfterDelay(delay, function() SendGDIAirstrike(hq, delay)  end)
+			Trigger.AfterDelay(delay, function() SendGDIAirstrike(hq, delay) end)
 		else
-			Trigger.AfterDelay(delay/4, function() SendGDIAirstrike(hq, delay)  end)
+			Trigger.AfterDelay(delay/4, function() SendGDIAirstrike(hq, delay) end)
 		end
 	end
 end
 
 SendWaves = function(counter, Waves)
 	if counter <= #Waves then
-		team = Waves[counter]
+		local team = Waves[counter]
 		SendAttackWave(team)
 		Trigger.AfterDelay(DateTime.Seconds(team.delay), function() SendWaves(counter + 1, Waves) end)
 	end

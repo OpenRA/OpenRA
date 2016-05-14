@@ -5,9 +5,9 @@ GDI4 = { teamType = "atk", units = { ['e1'] = 1, ['e2'] = 2 }, waypoints = { way
 GDI5 = { teamType = "atk", units = { ['mtnk'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint10, waypoint11, waypoint12, waypoint13 }, delay = 80 }
 GDI6 = { teamType = "atk", units = { ['mtnk'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint9 }, delay = 50 }
 GDI7 = { teamType = "atk", units = { ['jeep'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }
-GDI8 = { teamType = "rei", units = { ['e2'] = 3, ['e6'] = 2 }, waypoints = { waypoint12, waypoint11, waypoint10, waypoint4, waypoint5, waypoint8 },	delay = 8  }
+GDI8 = { teamType = "rei", units = { ['e2'] = 3, ['e6'] = 2 }, waypoints = { waypoint12, waypoint11, waypoint10, waypoint4, waypoint5, waypoint8 },	delay = 8 }
 GDI9 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint8 }, delay = 80 }
-GDI10 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint14 }, delay = 0  }
+GDI10 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint14 }, delay = 0 }
 
 AirstrikeDelay = DateTime.Minutes(2) + DateTime.Seconds(20)
 
@@ -95,7 +95,7 @@ end
 SendAttackWave = function(team)
 	for type, amount in pairs(team.units) do
 		count = 0
-		actors =  enemy.GetActorsByType(type)
+		actors = enemy.GetActorsByType(type)
 		Utils.Do(actors, function(actor)
 			if actor.IsIdle and count < amount then
 				SetAttackWaypoints(actor, team.waypoints)
@@ -124,16 +124,16 @@ SendGDIAirstrike = function(hq, delay)
 
 		if target then
 			hq.SendAirstrike(target, false, Facing.NorthEast + 4)
-			Trigger.AfterDelay(delay, function() SendGDIAirstrike(hq, delay)  end)
+			Trigger.AfterDelay(delay, function() SendGDIAirstrike(hq, delay) end)
 		else
-			Trigger.AfterDelay(delay/4, function() SendGDIAirstrike(hq, delay)  end)
+			Trigger.AfterDelay(delay/4, function() SendGDIAirstrike(hq, delay) end)
 		end
 	end
 end
 
 SendWaves = function(counter, Waves)
 	if counter <= #Waves then
-		team = Waves[counter]
+		local team = Waves[counter]
 		if team.teamType == "atk" then
 			SendAttackWave(team)
 		elseif team.teamType == "rei" then

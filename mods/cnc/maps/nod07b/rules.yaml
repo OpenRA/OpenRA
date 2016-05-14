@@ -2,7 +2,7 @@ World:
 	LuaScript:
 		Scripts: nod07b.lua, nod07b-AI.lua
 	MusicPlaylist:
-		StartingMusic: linefire
+		StartingMusic: justdoit
 		VictoryMusic: nod_win1
 	MissionData:
 		Briefing: The Brotherhood has located a huge field of Tiberium in the area.\n\nThe nearby village has laid claim to the field.\n\nEliminate the villagers, as to prevent any infection of our own workers.\n\nGDI forces are reported to be minimal, so elimination of them is of secondary importance.
