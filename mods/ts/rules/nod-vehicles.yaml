@@ -162,6 +162,7 @@ TTNK:
 		Type: Concrete
 		UpgradeTypes: deployed
 		UpgradeMinEnabledLevel: 1
+	AutoTarget:
 
 ART2:
 	Inherits: ^VoxelTank
