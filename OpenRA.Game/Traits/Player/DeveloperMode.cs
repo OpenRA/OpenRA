@@ -129,9 +129,7 @@ namespace OpenRA.Traits
 						self.Trait<PlayerResources>().GiveCash(amount);
 					}
 					else
-					{
 						self.Owner.Shroud.ResetExploration();
-					}
 
 					self.Owner.Shroud.Disabled = DisableShroud;
 					if (self.World.LocalPlayer == self.Owner)
@@ -168,10 +166,8 @@ namespace OpenRA.Traits
 				case "DevGrowResources":
 				{
 					foreach (var a in self.World.ActorsWithTrait<ISeedableResource>())
-					{
 						for (var i = 0; i < info.ResourceGrowth; i++)
 							a.Trait.Seed(a.Actor);
-					}
 
 					break;
 				}
@@ -182,6 +178,7 @@ namespace OpenRA.Traits
 					self.Owner.Shroud.Disabled = DisableShroud;
 					if (self.World.LocalPlayer == self.Owner)
 						self.World.RenderPlayer = DisableShroud ? null : self.Owner;
+
 					break;
 				}
 
