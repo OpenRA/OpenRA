@@ -33,7 +33,7 @@ namespace OpenRA.Primitives
 
 		void ValidateBounds(Rectangle bounds)
 		{
-			if (bounds.Width <= 0 || bounds.Height <= 0)
+			if (bounds.Width == 0 || bounds.Height == 0)
 				throw new ArgumentException("bounds must be non-empty.", "bounds");
 		}
 
@@ -69,10 +69,15 @@ namespace OpenRA.Primitives
 
 		void BoundsToBinRowsAndCols(Rectangle bounds, out int minRow, out int maxRow, out int minCol, out int maxCol)
 		{
-			minRow = Math.Max(0, bounds.Top / binSize);
-			minCol = Math.Max(0, bounds.Left / binSize);
-			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Bottom, binSize));
-			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Right, binSize));
+			var top = Math.Min(bounds.Top, bounds.Bottom);
+			var bottom = Math.Max(bounds.Top, bounds.Bottom);
+			var left = Math.Min(bounds.Left, bounds.Right);
+			var right = Math.Max(bounds.Left, bounds.Right);
+
+			minRow = Math.Max(0, top / binSize);
+			minCol = Math.Max(0, left / binSize);
+			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bottom, binSize));
+			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(right, binSize));
 		}
 
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
