@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Explore map-placed actors if the "Explore Map" option is enabled
 			var exploredMap = !init.World.LobbyInfo.GlobalSettings.Shroud;
 			startsRevealed = exploredMap && init.Contains<SpawnedByMapInit>() && !init.Contains<HiddenUnderFogInit>();
-			var footprintCells = FootprintUtils.Tiles(init.Self).ToList();
+			var footprintCells = FootprintUtils.FrozenUnderFogTiles(init.Self).ToList();
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 		}
 
