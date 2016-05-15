@@ -620,6 +620,8 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithResourceSeedingAnimation:
+	WithResourceSeedingOverlay:
+		Delay: 640
 
 ^Tree:
 	Inherits@1: ^SpriteActor
