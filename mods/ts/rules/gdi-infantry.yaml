@@ -38,7 +38,7 @@ MEDIC:
 	Voiced:
 		VoiceSet: Medic
 	RevealsShroud:
-		Range: 6c0		
+		Range: 6c0
 	Mobile:
 		Speed: 56
 	Health:
