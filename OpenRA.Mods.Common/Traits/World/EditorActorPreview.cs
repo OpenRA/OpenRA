@@ -167,5 +167,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return new ActorReference(actor.Type, actor.Save().ToDictionary());
 		}
+
+		public override string ToString()
+		{
+			return "{0} {1}".F(Info.Name, ID);
+		}
 	}
 }
