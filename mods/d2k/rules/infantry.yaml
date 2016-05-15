@@ -241,8 +241,8 @@ saboteur:
 		HP: 400
 	Mobile:
 		Speed: 43
-	C4Demolition:
-		C4Delay: 0
+	Demolition:
+		DetonationDelay: 0
 		Flashes: 0
 		EnterBehaviour: Suicide
 	-AutoTarget:

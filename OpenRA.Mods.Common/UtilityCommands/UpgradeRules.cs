@@ -777,6 +777,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.RemoveAll(x => x.Key == "StartsRevealed");
 				}
 
+				if (engineVersion < 20160515)
+				{
+					// Use generic naming for building demolition using explosives.
+					if (node.Key == "C4Demolition")
+						node.Key = "Demolition";
+
+					foreach (var n in node.Value.Nodes)
+						if (n.Key == "C4Delay")
+							n.Key = "DetonationDelay";
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

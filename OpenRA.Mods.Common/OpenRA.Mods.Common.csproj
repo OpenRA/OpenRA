@@ -297,7 +297,6 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
-    <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
@@ -325,6 +324,7 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\Demolishable.cs" />
+    <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
