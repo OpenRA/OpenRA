@@ -30,8 +30,8 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: atreides
-		Enemies: Atreides
 		Color: EF00FE
+		Enemies: Atreides
 
 Actors:
 	Actor4: spicebloom
@@ -46,21 +46,9 @@ Actors:
 	Actor8: spicebloom
 		Location: 65,64
 		Owner: Neutral
-	Actor26: concreteb
-		Location: 57,58
-		Owner: Neutral
-	Actor28: concretea
-		Location: 54,58
-		Owner: Neutral
-	Actor29: concretea
-		Location: 54,59
-		Owner: Neutral
 	Actor30: wind_trap
 		Location: 54,58
 		Owner: Atreides
-	Actor31: concretea
-		Location: 54,62
-		Owner: Neutral
 	Actor32: silo
 		Location: 54,62
 		Owner: Atreides
@@ -71,15 +59,6 @@ Actors:
 		Location: 54,56
 		Owner: Atreides
 		Facing: 24
-	Actor35: concretea
-		Location: 46,39
-		Owner: Neutral
-	Actor36: concreteb
-		Location: 48,37
-		Owner: Neutral
-	Actor37: concreteb
-		Location: 50,37
-		Owner: Neutral
 	Actor38: palace
 		Location: 50,37
 		Owner: Creeps
@@ -99,7 +78,7 @@ Actors:
 		Location: 46,64
 		Owner: Creeps
 	Entry: waypoint
-		Location: 80, 8
+		Location: 80,8
 		Owner: Neutral
 	AtreidesSpiceRefinery: refinery
 		Location: 57,58
