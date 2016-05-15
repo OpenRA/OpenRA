@@ -137,7 +137,7 @@ namespace OpenRA.Server
 			randomSeed = (int)DateTime.Now.ToBinary();
 
 			if (Settings.AllowPortForward)
-				UPnP.ForwardPort(3600);
+				UPnP.ForwardPort(Settings.ListenPort, Settings.ExternalPort).Wait();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
@@ -202,7 +202,8 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (Settings.AllowPortForward) UPnP.RemovePortforward();
+						if (Settings.AllowPortForward)
+							UPnP.RemovePortForward().Wait();
 						break;
 					}
 				}

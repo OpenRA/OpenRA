@@ -509,7 +509,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var lc = orderManager.LocalClient;
 			if (lc != null && lc.Index == clientIndex && address == IPAddress.Loopback.ToString())
 			{
-				var externalIP = UPnP.GetExternalIP();
+				var externalIP = UPnP.ExternalIP;
 				if (externalIP != null)
 					address = externalIP.ToString();
 			}

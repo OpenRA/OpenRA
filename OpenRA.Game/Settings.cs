@@ -59,13 +59,8 @@ namespace OpenRA
 		[Desc("Set this to false to disable UPnP even if compatible devices are found.")]
 		public bool AllowPortForward = true;
 
-		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
-
 		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
 		public int NatDiscoveryTimeout = 1000;
-
-		[Desc("Print very detailed logs for debugging issues with routers.")]
-		public bool VerboseNatDiscovery = false;
 
 		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
 		public string Map = null;
