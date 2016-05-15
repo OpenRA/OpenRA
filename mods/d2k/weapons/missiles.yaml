@@ -115,7 +115,7 @@ mtank_pri:
 		RangeLimit: 7c204
 		HorizontalRateOfTurn: 3
 		Blockable: false
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 96
 		Image: MISSILE2
 		TrailImage: large_trail
@@ -150,7 +150,7 @@ DeviatorMissile:
 		RangeLimit: 6c0
 		HorizontalRateOfTurn: 3
 		Blockable: false
-		Shadow: yes
+		Shadow: true
 		Inaccuracy: 384
 		Image: MISSILE
 		TrailImage: deviator_trail
