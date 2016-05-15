@@ -25,7 +25,7 @@
 		Name: France
 		InternalName: france
 		Side: Allies
-		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Mobile Gap Generator
+		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Units: Mobile Gap Generator, Sniper
 	Faction@3:
 		Name: Germany
 		InternalName: germany
