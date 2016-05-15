@@ -6,7 +6,7 @@ LtRail:
 		Speed: 20c0
 		Duration: 3
 		DamageInterval: 2
-		Width: 0c80
+		Width: 80
 		BeyondTargetRange: 0c64
 		Blockable: true
 		Color: 0080FFC8
@@ -49,7 +49,7 @@ MechRailgun:
 		Speed: 20c0
 		Duration: 3
 		DamageInterval: 2
-		Width: 0c80
+		Width: 80
 		BeyondTargetRange: 0c64
 		Blockable: true
 		Color: 00FFFFC8
@@ -72,7 +72,7 @@ SonicZap:
 		Speed: 0c128
 		Duration: 90
 		DamageInterval: 5 # Roughly 18 impacts.
-		Width: 0c384
+		Width: 384
 		Shape: Flat
 		ZOffset: 2047
 		BeyondTargetRange: 0c256
