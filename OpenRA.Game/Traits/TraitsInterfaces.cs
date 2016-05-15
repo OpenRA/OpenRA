@@ -280,7 +280,7 @@ namespace OpenRA.Traits
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
-	public interface ISelectionBar { float GetValue(); Color GetColor(); }
+	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
 	public interface IPositionableInfo : ITraitInfoInterface { }
 	public interface IPositionable : IOccupySpace

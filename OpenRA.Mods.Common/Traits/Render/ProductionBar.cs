@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
