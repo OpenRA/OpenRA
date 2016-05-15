@@ -152,7 +152,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var pos = self.CenterPosition - new WVec(0, 0, self.CenterPosition.Z);
+			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
 			var palette = wr.Palette(info.ShadowPalette);
 			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, true) };
 		}
