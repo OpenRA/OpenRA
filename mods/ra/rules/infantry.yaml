@@ -42,6 +42,7 @@ DOG:
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
+	RenderDetectionCircle:
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -226,6 +227,7 @@ SPY:
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
+	RenderDetectionCircle:
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -545,6 +547,7 @@ SNIPER:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
 		Range: 6c0
+	RenderDetectionCircle:
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
