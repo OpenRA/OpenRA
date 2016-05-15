@@ -80,7 +80,7 @@ return {
     end
     str = (str
       :gsub('%[=*%[.-%]=*%]','') -- remove long strings
-      :gsub('%[=*%[.*','') -- remove partial long strings
+      :gsub('%[=*%[.*',''):gsub('.*%]=*%]','') -- remove partial long strings
       :gsub('%-%-.*','') -- strip comments after strings are processed
       :gsub("%b()","()") -- remove all function calls
     )
