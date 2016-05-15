@@ -93,6 +93,12 @@ namespace OpenRA.Mods.Common.Scripting
 			return collection.Random(Context.World.SharedRandom).CopyReference();
 		}
 
+		[Desc("Returns the collection in a random order.")]
+		public LuaValue[] Shuffle(LuaValue[] collection)
+		{
+			return collection.Shuffle(Context.World.SharedRandom).ToArray();
+		}
+
 		[Desc("Expands the given footprint one step along the coordinate axes, and (if requested) diagonals.")]
 		public CPos[] ExpandFootprint(CPos[] footprint, bool allowDiagonal)
 		{
