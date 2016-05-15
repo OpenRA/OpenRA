@@ -24,7 +24,7 @@ V2RL:
 		VisualBounds: 28,28
 	AutoTarget:
 	Explodes:
-		Weapon: SCUD
+		Weapon: V2Explode
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
