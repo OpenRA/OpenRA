@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = "0.635",
+  _VERSION = "0.636",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -1105,7 +1105,7 @@ local function controller(controller_host, controller_port, scratchpad)
 
       coro_debugee = corocreate(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
-      local status, err = cororesume(coro_debugee)
+      local status, err = cororesume(coro_debugee, unpack(arg or {}))
 
       -- was there an error or is the script done?
       -- 'abort' state is allowed here; ignore it
