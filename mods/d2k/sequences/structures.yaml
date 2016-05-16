@@ -228,14 +228,14 @@ starport.atreides:
 	active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
@@ -723,14 +723,14 @@ starport.harkonnen:
 	active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
@@ -1127,14 +1127,14 @@ starport.ordos:
 	active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
@@ -1509,14 +1509,14 @@ starport.smuggler:
 	active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
 		Start: 4723
 		Length: 23
-		ZOffset: -1c511
+		ZOffset: -0c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200

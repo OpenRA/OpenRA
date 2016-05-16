@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		[Desc("Don't animate when the actor is disabled.")]
+		public readonly bool PauseOnLowPower = false;
+
 		public object Create(ActorInitializer init) { return new WithProductionOverlay(init.Self, this); }
 	}
 
@@ -39,6 +42,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly Animation overlay;
 		readonly ProductionInfo production;
+		readonly WithProductionOverlayInfo info;
+		readonly Actor self;
 		ProductionQueue queue;
 		bool buildComplete;
 
@@ -47,8 +52,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			get { return queue != null && queue.CurrentItem() != null && !queue.CurrentPaused; }
 		}
 
+		bool IsEnabled
+		{
+			get { return !(info.PauseOnLowPower && self.IsDisabled()); }
+		}
+
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
 		{
+			this.self = self;
+			this.info = info;
+
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
@@ -60,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !IsProducing || !buildComplete);
+				() => !IsEnabled || !IsProducing || !buildComplete);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}

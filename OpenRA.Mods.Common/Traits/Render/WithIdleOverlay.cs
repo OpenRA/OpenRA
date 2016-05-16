@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly bool PauseOnLowPower = false;
 
+		[Desc("Optional decoration element which doesn't cast shadows and won't get overlayed.")]
+		public readonly bool IsDecoration = false;
+
 		public override object Create(ActorInitializer init) { return new WithIdleOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -71,6 +74,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self),
 				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete);
+			overlay.IsDecoration = info.IsDecoration;
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
 					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence)));
