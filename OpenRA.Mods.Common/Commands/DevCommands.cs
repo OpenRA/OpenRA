@@ -24,10 +24,15 @@ namespace OpenRA.Mods.Common.Commands
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
 		World world;
+		DeveloperMode developerMode;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+
+			if (world.LocalPlayer != null)
+				developerMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
@@ -55,7 +60,7 @@ namespace OpenRA.Mods.Common.Commands
 			if (world.LocalPlayer == null)
 				return;
 
-			if (!world.AllowDevCommands)
+			if (!developerMode.Enabled)
 			{
 				Game.Debug("Cheats are disabled.");
 				return;

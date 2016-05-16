@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 
-	public class Shroud : ISync
+	public class Shroud : ISync, INotifyCreated
 	{
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
@@ -67,6 +67,9 @@ namespace OpenRA.Traits
 			}
 		}
 
+		bool fogEnabled;
+		public bool FogEnabled { get { return !Disabled && fogEnabled; } }
+
 		public int Hash { get; private set; }
 
 		public Shroud(Actor self)
@@ -77,6 +80,14 @@ namespace OpenRA.Traits
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			fogEnabled = self.World.LobbyInfo.GlobalSettings.Fog;
+			var shroudEnabled = self.World.LobbyInfo.GlobalSettings.Shroud;
+			if (!shroudEnabled)
+				self.World.AddFrameEndTask(w => ExploreAll());
 		}
 
 		void Invalidate(IEnumerable<PPos> changed)
@@ -241,7 +252,7 @@ namespace OpenRA.Traits
 			Invalidate(changed);
 		}
 
-		public void ExploreAll(World world)
+		public void ExploreAll()
 		{
 			var changed = new List<PPos>();
 			foreach (var puv in map.ProjectedCellBounds)
@@ -298,14 +309,12 @@ namespace OpenRA.Traits
 
 		public bool IsExplored(PPos puv)
 		{
-			if (!ShroudEnabled)
+			if (Disabled)
 				return map.Contains(puv);
 
 			var uv = (MPos)puv;
 			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
-
-		public bool ShroudEnabled { get { return !Disabled; } }
 
 		public bool IsVisible(WPos pos)
 		{
@@ -338,8 +347,6 @@ namespace OpenRA.Traits
 			var uv = (MPos)puv;
 			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
 		}
-
-		public bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
 
 		public bool Contains(PPos uv)
 		{

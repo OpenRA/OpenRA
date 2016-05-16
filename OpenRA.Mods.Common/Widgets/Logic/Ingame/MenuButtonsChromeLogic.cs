@@ -64,14 +64,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			var diplomacy = widget.GetOrNull<MenuButtonWidget>("DIPLOMACY_BUTTON");
-			if (diplomacy != null)
-			{
-				diplomacy.Visible = !world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && world.Players.Any(a => a != world.LocalPlayer && !a.NonCombatant);
-				diplomacy.IsDisabled = () => disableSystemButtons;
-				diplomacy.OnClick = () => OpenMenuPanel(diplomacy);
-			}
-
 			var debug = widget.GetOrNull<MenuButtonWidget>("DEBUG_BUTTON");
 			if (debug != null)
 			{

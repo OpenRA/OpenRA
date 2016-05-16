@@ -30,10 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseProvider : ITick, IPostRenderSelection, ISelectionBar
 	{
 		public readonly BaseProviderInfo Info;
-		DeveloperMode devMode;
-		Actor self;
+		readonly DeveloperMode devMode;
+		readonly Actor self;
+
 		int total;
 		int progress;
+		bool allyBuildEnabled;
 
 		public BaseProvider(Actor self, BaseProviderInfo info)
 		{
@@ -41,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 			progress = total = info.InitialDelay;
+			allyBuildEnabled = self.World.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
 		}
 
 		public void Tick(Actor self)
@@ -61,8 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ValidRenderPlayer()
 		{
-			var allyBuildRadius = self.World.LobbyInfo.GlobalSettings.AllyBuildRadius;
-			return self.Owner == self.World.RenderPlayer || (allyBuildRadius && self.Owner.IsAlliedWith(self.World.RenderPlayer));
+			return self.Owner == self.World.RenderPlayer || (allyBuildEnabled && self.Owner.IsAlliedWith(self.World.RenderPlayer));
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)

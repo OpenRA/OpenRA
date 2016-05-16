@@ -97,11 +97,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (!self.World.AllowDevCommands)
-				return;
-
 			if (order.OrderString == "DevLevelUp")
 			{
+				var developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+				if (!developerMode.Enabled)
+					return;
+
 				if ((int)order.ExtraData > 0)
 					GiveLevels((int)order.ExtraData);
 				else

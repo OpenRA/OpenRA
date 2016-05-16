@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Traits
 				i.Trait.RefreshGranted();
 
 			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(owner))
-				atek.Owner.Shroud.ExploreAll(atek.World);
+				atek.Owner.Shroud.ExploreAll();
 		}
 
 		void RefreshGranted()
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Traits
 			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
 
 			if (Granted || GrantedAllies)
-				owner.Shroud.ExploreAll(owner.World);
+				owner.Shroud.ExploreAll();
 
 			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
 				foreach (var tp in notifyOnRefresh.ToList())
