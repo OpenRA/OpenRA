@@ -560,14 +560,14 @@ TTNK:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
+		Description: Tank with mounted tesla coil.\n  Strong vs Vehicles, Buildings\n  Weak vs Aircraft, Infantry
 	Health:
 		HP: 400
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Crushes: mine, crate
 	RevealsShroud:
 		Range: 7c0
 	Armament:
