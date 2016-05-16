@@ -446,6 +446,10 @@
 	ActorLostNotification:
 	AttackMove:
 	DrawLineToTarget:
+	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeShip
+		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
 	Voiced:
