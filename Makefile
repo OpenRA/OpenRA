@@ -182,6 +182,15 @@ mod_ts_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ts
 mod_ts: $(mod_ts_TARGET)
 
+# Red Alert 2
+mod_ra2_SRCS := $(shell find OpenRA.Mods.RA2/ -iname '*.cs')
+mod_ra2_TARGET = mods/ra2/OpenRA.Mods.RA2.dll
+mod_ra2_KIND = library
+mod_ra2_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_ra2_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
+PROGRAMS += mod_ra2
+mod_ra2: $(mod_ra2_TARGET)
+
 check-scripts:
 	@echo
 	@echo "Checking for Lua syntax errors..."
@@ -213,6 +222,9 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.TS..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.RA2..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA2
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
@@ -324,7 +336,7 @@ tools: gamemonitor
 
 package: all-dependencies core tools docs version
 
-mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
+mods: mod_common mod_ra mod_cnc mod_d2k mod_ts mod_ra2
 
 all: dependencies core tools
 
