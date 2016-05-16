@@ -22,7 +22,16 @@ namespace OpenRA.Traits
 {
 	public sealed class RequireExplicitImplementationAttribute : Attribute { }
 
-	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
+	[Flags]
+	public enum DamageState
+	{
+		Undamaged = 1,
+		Light = 2,
+		Medium = 4,
+		Heavy = 8,
+		Critical = 16,
+		Dead = 32
+	}
 
 	public interface IHealth
 	{
