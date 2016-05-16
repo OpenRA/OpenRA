@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Traits
+namespace OpenRA.Mods.RA2.Traits
 {
 	[Desc("Actors with the \"ClonesProducedUnits\" trait will produce a free duplicate of me.")]
 	public class CloneableInfo : TraitInfo<Cloneable>
