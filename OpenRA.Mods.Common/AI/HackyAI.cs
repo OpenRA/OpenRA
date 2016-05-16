@@ -825,7 +825,8 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var mcv in mcvs)
 			{
-				if (mcv.IsMoving())
+				var mover = mcv.TraitOrDefault<IMove>();
+				if (mover != null && mover.IsMoving)
 					continue;
 
 				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;

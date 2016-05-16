@@ -179,13 +179,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool IsMovingInMyDirection(Actor self, Actor other)
 		{
-			if (!other.IsMoving()) return false;
-
 			var selfMobile = self.TraitOrDefault<Mobile>();
 			if (selfMobile == null) return false;
 
 			var otherMobile = other.TraitOrDefault<Mobile>();
 			if (otherMobile == null) return false;
+
+			if (!otherMobile.IsMoving) return false;
 
 			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
 			var dp = CVec.Dot(selfMobile.ToCell - self.Location, otherMobile.ToCell - other.Location);
