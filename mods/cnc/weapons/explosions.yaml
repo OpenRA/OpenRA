@@ -37,6 +37,11 @@ UnitExplode:
 		Explosions: poof
 		ImpactSounds: xplobig6.aud
 
+UnitExplodeShip:
+	Inherits: UnitExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: building
+
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
