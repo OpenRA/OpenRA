@@ -216,6 +216,10 @@ ArtilleryExplode:
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
+V2Explode:
+	Inherits: SCUD
+	-Report:
+
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
