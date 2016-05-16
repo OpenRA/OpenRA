@@ -452,6 +452,8 @@
 		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
+	Tooltip:
+		GenericName: Ship
 	Voiced:
 		VoiceSet: VehicleVoice
 
