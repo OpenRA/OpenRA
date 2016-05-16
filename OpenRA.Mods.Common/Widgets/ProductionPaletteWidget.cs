@@ -300,8 +300,12 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			var hotkey = Hotkey.FromKeyInput(e);
+			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
+			if (batchModifiers != Modifiers.None)
+				hotkey = new Hotkey(hotkey.Key, hotkey.Modifiers ^ Modifiers.Shift);
+
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, Modifiers.None) : false;
+			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
 		}
 
 		public void RefreshIcons()
