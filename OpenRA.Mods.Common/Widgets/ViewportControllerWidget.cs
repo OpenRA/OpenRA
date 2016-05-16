@@ -331,6 +331,29 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
+			if (key == ks.MapPushTop)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, 0, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushBottom)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, worldRenderer.World.Map.ProjectedBottomRight.Y, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushLeftEdge)
+			{
+				worldRenderer.Viewport.Center(new WPos(0, worldRenderer.Viewport.CenterPosition.Y, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushRightEdge)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.World.Map.ProjectedBottomRight.X, worldRenderer.Viewport.CenterPosition.Y, 0));
+			}
+
 			if (key == ks.ViewPortBookmarkSaveSlot1)
 			{
 				SaveCurrentPositionToBookmark(0);
