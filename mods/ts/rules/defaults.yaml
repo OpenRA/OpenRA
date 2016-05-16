@@ -370,6 +370,12 @@
 	WithInfantryBody:
 		AttackSequence: shoot
 		IdleSequences: idle1,idle2
+	UpgradeOnDamage@CRITICAL:
+		Upgrades: criticalspeed
+		ValidDamageStates: Critical
+	SpeedMultiplier@CRITICAL:
+		UpgradeTypes: criticalspeed
+		Modifier: 50
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -442,6 +448,18 @@
 	PoisonedByTiberium:
 		Weapon: Veins
 		Resources: Veins
+	UpgradeOnDamage@DAMAGED:
+		Upgrades: damagedspeed
+		ValidDamageStates: Heavy
+	UpgradeOnDamage@CRITICAL:
+		Upgrades: criticalspeed
+		ValidDamageStates: Critical
+	SpeedMultiplier@DAMAGED:
+		UpgradeTypes: damagedspeed
+		Modifier: 80
+	SpeedMultiplier@CRITICAL:
+		UpgradeTypes: criticalspeed
+		Modifier: 60
 
 ^Tank:
 	Inherits: ^Vehicle
