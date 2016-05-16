@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Activities\ChronoResourceTeleport.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
+    <Compile Include="Traits\Cloneable.cs" />
+    <Compile Include="Traits\ClonesProducedUnits.cs" />
     <Compile Include="Traits\Render\WithExitOverlay.cs" />
   </ItemGroup>
   <ItemGroup>

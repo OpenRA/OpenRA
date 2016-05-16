@@ -243,8 +243,6 @@
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
 		WaterCorpseSequence: small_splash
-	Cloneable:
-		Types: Infantry
 	Voiced:
 		VoiceSet: GenericVoice
 	WithParachute:
