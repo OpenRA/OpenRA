@@ -493,6 +493,7 @@
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnDamage.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
