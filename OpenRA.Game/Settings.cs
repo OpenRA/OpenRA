@@ -209,6 +209,11 @@ namespace OpenRA
 		public Hotkey MapScrollLeft = new Hotkey(Keycode.LEFT, Modifiers.None);
 		public Hotkey MapScrollRight = new Hotkey(Keycode.RIGHT, Modifiers.None);
 
+		public Hotkey MapPushTop = new Hotkey(Keycode.UP, Modifiers.Alt);
+		public Hotkey MapPushBottom = new Hotkey(Keycode.DOWN, Modifiers.Alt);
+		public Hotkey MapPushLeftEdge = new Hotkey(Keycode.LEFT, Modifiers.Alt);
+		public Hotkey MapPushRightEdge = new Hotkey(Keycode.RIGHT, Modifiers.Alt);
+
 		public Hotkey ViewPortBookmarkSaveSlot1 = new Hotkey(Keycode.Q, Modifiers.Ctrl);
 		public Hotkey ViewPortBookmarkSaveSlot2 = new Hotkey(Keycode.W, Modifiers.Ctrl);
 		public Hotkey ViewPortBookmarkSaveSlot3 = new Hotkey(Keycode.E, Modifiers.Ctrl);

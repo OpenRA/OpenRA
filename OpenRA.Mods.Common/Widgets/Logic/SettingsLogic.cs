@@ -455,7 +455,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "MapScrollUp", "Map scroll up" },
 					{ "MapScrollDown", "Map scroll down" },
 					{ "MapScrollLeft", "Map scroll left" },
-					{ "MapScrollRight", "Map scroll right" }
+					{ "MapScrollRight", "Map scroll right" },
+
+					{ "MapPushTop", "Map push to top" },
+					{ "MapPushBottom", "Map push to bottom" },
+					{ "MapPushLeftEdge", "Map push to left edge" },
+					{ "MapPushRightEdge", "Map push to right edge" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
