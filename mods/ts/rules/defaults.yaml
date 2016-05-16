@@ -240,7 +240,7 @@
 		HP: 50
 		Shape: Circle
 			Radius: 128
-			VerticalTopOffset: 512
+			VerticalTopOffset: 608
 	Armor:
 		Type: None
 	Valued:
@@ -473,6 +473,14 @@
 
 ^CivilianVoxelVehicle:
 	Inherits: ^VoxelVehicle
+	Health:
+		HP: 100
+		TargetablePositionOffset: 0, 0, 96
+		Shape: Rectangle
+			TopLeft: -160, -280
+			BottomRight: 160, 280
+			VerticalTopOffset: 96
+			VerticalBottomOffset: -96
 	-MustBeDestroyed:
 
 ^CivilianVoxelCrusher:
@@ -734,6 +742,12 @@
 		LoadingUpgrades: notmobile
 	Health:
 		HP: 100
+		TargetablePositionOffset: 0, 0, 96
+		Shape: Rectangle
+			TopLeft: -160, -320
+			BottomRight: 160, 320
+			VerticalTopOffset: 96
+			VerticalBottomOffset: -96
 	Armor:
 		Type: Light
 	RevealsShroud:

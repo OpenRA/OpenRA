@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, ITargetablePositions
+	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
@@ -169,11 +169,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
-
-		public IEnumerable<WPos> TargetablePositions(Actor self)
-		{
-			return OccupiedCells().Select(c => self.World.Map.CenterOfCell(c.First));
-		}
 
 		public void Created(Actor self)
 		{

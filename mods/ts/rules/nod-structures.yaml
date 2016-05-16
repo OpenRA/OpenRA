@@ -148,6 +148,7 @@ NAWEAP:
 		Bounds: 149, 80, -3, -10
 	Health:
 		HP: 1000
+		TargetablePositionOffset: 300, -300, 0
 	Armor:
 		Type: Heavy		
 	RevealsShroud:

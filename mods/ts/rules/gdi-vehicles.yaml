@@ -16,6 +16,12 @@ APC:
 			Water: 80
 	Health:
 		HP: 200
+		TargetablePositionOffset: 0, 0, 144
+		Shape: Rectangle
+			TopLeft: -180, -300
+			BottomRight: 180, 288
+			VerticalTopOffset: 144
+			VerticalBottomOffset: -144
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -63,6 +69,12 @@ HVR:
 			Veins: 100
 	Health:
 		HP: 230
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -160, -320
+			BottomRight: 160, 320
+			VerticalTopOffset: 96
+			VerticalBottomOffset: -192
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -103,6 +115,12 @@ SMECH:
 		Speed: 99
 	Health:
 		HP: 175
+		TargetablePositionOffset: 0, 0, 426
+		Shape: Rectangle
+			TopLeft: -160, -160
+			BottomRight: 160, 160
+			VerticalTopOffset: 256
+			VerticalBottomOffset: -384
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -143,6 +161,11 @@ MMCH:
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 400
+		TargetablePositionOffset: 0, 0, 768
+		Shape: Circle
+			Radius: 320
+			VerticalTopOffset: 256
+			VerticalBottomOffset: -768
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -184,7 +207,13 @@ HMEC:
 		Speed: 42
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 800
+		HP: 1200
+		TargetablePositionOffset: 0, 0, 640
+		Shape: Rectangle
+			TopLeft: -256, -512
+			BottomRight: 256, 400
+			VerticalTopOffset: 256
+			VerticalBottomOffset: -640
 	SelfHealing:
 	Armor:
 		Type: Heavy
@@ -224,6 +253,12 @@ SONIC:
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 500
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Rectangle
+			TopLeft: -192, -344
+			BottomRight: 192, 344
+			VerticalTopOffset: 80
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Heavy
 	RevealsShroud:

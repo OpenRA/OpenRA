@@ -13,6 +13,12 @@ MCV:
 		Priority: 3
 	Health:
 		HP: 600
+		TargetablePositionOffset: 0, 0, 150
+		Shape: Rectangle
+			TopLeft: -224, -352
+			BottomRight: 224, 352
+			VerticalTopOffset: 150
+			VerticalBottomOffset: -150
 	Armor:
 		Type: Light
 	Mobile:
@@ -73,6 +79,12 @@ HARV:
 			Veins: 80
 	Health:
 		HP: 1000
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -176, -352
+			BottomRight: 176, 352
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
@@ -113,6 +125,12 @@ LPST:
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Health:
 		HP: 600
+		TargetablePositionOffset: 0, 0, 192
+		Shape: Rectangle
+			TopLeft: -176, -336
+			BottomRight: 176, 336
+			VerticalTopOffset: 192
+			VerticalBottomOffset: -192
 	Armor:
 		Type: Wood
 	Mobile:

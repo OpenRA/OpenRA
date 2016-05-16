@@ -86,6 +86,13 @@ ORCA:
 		LandingSound: orcadwn1.aud
 	Health:
 		HP: 200
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Capsule
+			Radius: 160
+			PointA: 0, -280
+			PointB: 0, 280
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -130,6 +137,11 @@ ORCAB:
 		LandingSound: orcadwn1.aud
 	Health:
 		HP: 260
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Circle
+			Radius: 352
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -137,6 +149,7 @@ ORCAB:
 		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
+		IgnoreTargetOffset: true
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
@@ -177,6 +190,12 @@ ORCATRAN:
 		IdealSeparation: 1275
 	Health:
 		HP: 200
+		TargetablePositionOffset: 0, 0, 160
+		Shape: Rectangle
+			TopLeft: -256, -450
+			BottomRight: 256, 450
+			VerticalTopOffset: 160
+			VerticalBottomOffset: -160
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -214,6 +233,13 @@ TRNSPORT:
 		MoveIntoShroud: false
 	Health:
 		HP: 175
+		TargetablePositionOffset: 0, 0, 176
+		Shape: Capsule
+			Radius: 256
+			PointA: 0, -320
+			PointB: 0, 320
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -176
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -250,6 +276,11 @@ SCRIN:
 		LandingSound: dropdwn1.aud
 	Health:
 		HP: 280
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Circle
+			Radius: 352
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -291,6 +322,13 @@ APACHE:
 		MoveIntoShroud: false
 	Health:
 		HP: 225
+		TargetablePositionOffset: 0, 0, 128
+		Shape: Capsule
+			Radius: 144
+			PointA: 0, -280
+			PointB: 0, 280
+			VerticalTopOffset: 128
+			VerticalBottomOffset: -128
 	Armor:
 		Type: Light
 	RevealsShroud:
