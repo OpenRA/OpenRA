@@ -69,3 +69,8 @@ Gentoo
 * dev-lang/lua-5.1.5
 * x11-misc/xdg-utils
 * gnome-extra/zenity
+
+Troubleshooting
+-------------
+
+* __getting `error CS8001: Warning as Error: SDK path could not be resolved'__: This means you don't have the right version of the Mono SDK installed. Some systems, such as Debian testing, install 4.5 by default instead of 4.0. It's possible to edit the Makefile by changing -sdk:4.0 to -sdk:4.5 to still compile.
