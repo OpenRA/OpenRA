@@ -72,6 +72,29 @@ namespace OpenRA.Mods.Common.Widgets
 		ScrollDirection edgeDirections;
 		World world;
 		WorldRenderer worldRenderer;
+		WPos?[] viewPortBookmarkSlots = new WPos?[4];
+
+		void SaveBookmark(int index, WPos position)
+		{
+			viewPortBookmarkSlots[index] = position;
+		}
+
+		void SaveCurrentPositionToBookmark(int index)
+		{
+			SaveBookmark(index, worldRenderer.Viewport.CenterPosition);
+		}
+
+		WPos? JumpToBookmark(int index)
+		{
+			return viewPortBookmarkSlots[index];
+		}
+
+		void JumpToSavedBookmark(int index)
+		{
+			var bookmark = JumpToBookmark(index);
+			if (bookmark != null)
+				worldRenderer.Viewport.Center((WPos)bookmark);
+		}
 
 		[ObjectCreator.UseCtor]
 		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
@@ -161,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override string GetCursor(int2 pos)
 		{
 			if (!IsJoystickScrolling &&
-			    (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
+				(!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
 				return null;
 
 			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
@@ -306,6 +329,54 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				keyboardDirections = keyboardDirections.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down);
 				return true;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot1)
+			{
+				SaveCurrentPositionToBookmark(0);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot2)
+			{
+				SaveCurrentPositionToBookmark(1);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot3)
+			{
+				SaveCurrentPositionToBookmark(2);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot4)
+			{
+				SaveCurrentPositionToBookmark(3);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot1)
+			{
+				JumpToSavedBookmark(0);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot2)
+			{
+				JumpToSavedBookmark(1);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot3)
+			{
+				JumpToSavedBookmark(2);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot4)
+			{
+				JumpToSavedBookmark(3);
+				return false;
 			}
 
 			return false;
