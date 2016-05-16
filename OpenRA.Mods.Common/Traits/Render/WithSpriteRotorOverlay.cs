@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -33,13 +34,33 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			var anim = new Animation(init.World, image, () => facing);
-			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
+			if (init.Contains<DynamicFacingInit>())
+			{
+				var facing = init.Get<DynamicFacingInit, Func<int>>();
+				var anim = new Animation(init.World, image, facing);
+				anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
-			var offset = body.LocalToWorld(Offset.Rotate(orientation));
-			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+				Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromFacing(facing()), facings);
+				Func<WVec> offset = () => body.LocalToWorld(Offset.Rotate(orientation()));
+				Func<int> zOffset = () =>
+				{
+					var tmpOffset = offset();
+					return tmpOffset.Y + tmpOffset.Z + 1;
+				};
+
+				yield return new SpriteActorPreview(anim, offset, zOffset, p, rs.Scale);
+			}
+			else
+			{
+				var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+				var anim = new Animation(init.World, image, () => facing);
+				anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
+
+				var orientation = body.QuantizeOrientation(WRot.FromFacing(facing), facings);
+				var offset = body.LocalToWorld(Offset.Rotate(orientation));
+				var zOffset = offset.Y + offset.Z + 1;
+				yield return new SpriteActorPreview(anim, () => offset, () => zOffset, p, rs.Scale);
+			}
 		}
 	}
 

@@ -10,21 +10,36 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		{
+			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
+
+			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+				() => new[] { body.QuantizeOrientation(orientation(), facings) },
+				() => false, () => frame);
+		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick
+	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IBodyAnimation
 	{
 		WithVoxelWalkerBodyInfo info;
 		IMove movement;
@@ -55,6 +70,8 @@ namespace OpenRA.Mods.TS.Traits.Render
 		}
 
 		public int2 SelectionSize(Actor self) { return size; }
+
+		uint IBodyAnimation.GetBodyAnimationFrame() { return frame; }
 
 		public void Tick(Actor self)
 		{

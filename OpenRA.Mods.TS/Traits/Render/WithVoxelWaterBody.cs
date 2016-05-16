@@ -27,7 +27,8 @@ namespace OpenRA.Mods.TS.Traits.Render
 
 		public object Create(ActorInitializer init) { return new WithVoxelWaterBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var sequence = LandSequence;
 			if (init.Contains<LocationInit>())
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, sequence);
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
-				() => new[] { body.QuantizeOrientation(orientation, facings) },
+				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0);
 		}
 	}

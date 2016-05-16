@@ -77,16 +77,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\PickupUnit.cs" />
-    <Compile Include="Activities\DeliverUnit.cs" />
     <Compile Include="Activities\SwallowActor.cs" />
     <Compile Include="SpriteLoaders\R8Loader.cs" />
     <Compile Include="Traits\AttackSwallow.cs" />
-    <Compile Include="Traits\Carryall.cs" />
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\Buildings\DamagedWithoutFoundation.cs" />
     <Compile Include="Traits\Buildings\LaysTerrain.cs" />
-    <Compile Include="Traits\Carryable.cs" />
     <Compile Include="Traits\Player\HarvesterInsurance.cs" />
     <Compile Include="Traits\Render\WithCrumbleOverlay.cs" />
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />

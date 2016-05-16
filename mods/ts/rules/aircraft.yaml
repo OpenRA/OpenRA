@@ -212,6 +212,7 @@ TRNSPORT:
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
 		MoveIntoShroud: false
+	Carryall:
 	Health:
 		HP: 175
 	Armor:

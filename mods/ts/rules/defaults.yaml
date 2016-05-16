@@ -442,6 +442,7 @@
 	PoisonedByTiberium:
 		Weapon: Veins
 		Resources: Veins
+	Carryable:
 
 ^Tank:
 	Inherits: ^Vehicle
