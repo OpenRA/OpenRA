@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.HitShapes
 	public class RectangleShape : IHitShape
 	{
 		public WDist OuterRadius { get; private set; }
+		public WDist InnerRadius { get; private set; }
 
 		[FieldLoader.Require]
 		public readonly int2 TopLeft;
@@ -59,6 +60,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			center = TopLeft + quadrantSize;
 
 			OuterRadius = new WDist(Math.Max(TopLeft.Length, BottomRight.Length));
+			InnerRadius = new WDist(Math.Max(TopLeft.X, BottomRight.X));
 
 			combatOverlayVertsTop = new WVec[]
 			{

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Any(Exts.IsTraitEnabled));
 		}
 
-		public static bool AnyBlockingActorsBetween(World world, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
+		public static bool AnyBlockingActorsBetween(World world, WPos source, WPos start, WPos end, WDist width, WDist overscan, out WPos hit)
 		{
 			var actors = world.FindActorsOnLine(start, end, width, overscan);
 			var length = (end - start).Length;
@@ -58,7 +58,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!blockers.Any())
 					continue;
 
-				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
+				// FindActorsOnLine only finds actors with health trait, so this actor is guaranteed to have it
+				var healthInfo = a.Info.TraitInfo<HealthInfo>();
+				var vector = (a.CenterPosition - source) * healthInfo.Shape.InnerRadius.Length / (a.CenterPosition - source).Length;
+				var hitShapeEdgePos = a.CenterPosition - vector;
+				var hitPos = WorldExtensions.MinimumPointLineProjection(source, a.CenterPosition, hitShapeEdgePos);
+
 				var dat = world.Map.DistanceAboveTerrain(hitPos);
 				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight > dat))
 				{
