@@ -31,7 +31,9 @@ local findMenu = ide:MakeMenu {
 }
 menuBar:Append(findMenu, TR("&Search"))
 
-local function onUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
+-- allow search functions for either Editor with focus (which includes editor-like panels)
+-- or editor tabs (even when the current editor is not in focus)
+local function onUpdateUISearchMenu(event) event:Enable((GetEditorWithFocus() or GetEditor()) ~= nil) end
 
 frame:Connect(ID_FIND, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
