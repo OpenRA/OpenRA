@@ -1121,9 +1121,9 @@ function findReplace:refreshPanel(replace, infiles)
 
   local value = self.scope:GetValue()
   local ed = ide:GetEditor()
-  if ed and (not value or #value == 0) then
-    local doc = ide:GetDocument(ed)
-    local ext = doc:GetFileExt()
+  if not value or #value == 0 then
+    local doc = ed and ide:GetDocument(ed)
+    local ext = doc and doc:GetFileExt() or ""
     local proj = ide:GetProject()
     value = (proj and self:GetScopeMRU(proj..sep) or
       self:SetScope(proj or wx.wxGetCwd(), '*.'..(#ext > 0 and ext or '*')))
