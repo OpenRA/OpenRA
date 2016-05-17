@@ -106,9 +106,14 @@ namespace OpenRA.Mods.AS.Traits
 				var beacon = new Beacon(
 					order.Player,
 					targetPosition,
-					Info.BeaconPalettePrefix,
+					Info.BeaconPaletteIsPlayerPalette,
+					Info.BeaconPalette,
+					Info.BeaconImage,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
+					Info.ArrowSequence,
+					Info.CircleSequence,
+					Info.ClockSequence,
 					() => FractionComplete);
 
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
