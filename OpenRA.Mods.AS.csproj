@@ -89,6 +89,7 @@
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
+    <Compile Include="Effects\InstantExplode.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
