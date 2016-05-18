@@ -127,7 +127,7 @@
 		Interval: 4
 	Targetable:
 		TargetTypes: Ground, Vehicle
-		RequiresForceFire: yes
+		RequiresForceFire: true
 	DisabledOverlay:
 	Explodes:
 		Weapon: UnitExplodeMed
@@ -226,7 +226,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	HiddenUnderFog:
 		Type: CenterPosition
 		AlwaysVisibleStances: None

@@ -525,7 +525,7 @@ outpost:
 			mercenary: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
