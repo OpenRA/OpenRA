@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
+		[Desc("Search radius around impact for 'direct hit' check.")]
+		public readonly WDist TargetSearchRadius = new WDist(2048);
+
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
@@ -72,17 +75,17 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
-			foreach (var unit in world.ActorMap.GetActorsAt(cell))
+			foreach (var victim in world.FindActorsInCircle(pos, TargetSearchRadius))
 			{
-				if (checkTargetType && !IsValidAgainst(unit, firedBy))
+				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;
 
-				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
 
 				// If the impact position is within any actor's HitShape, we have a direct hit
-				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Shape.DistanceFromEdge(pos, unit).LengthSquared)
+				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
 					return true;
 			}
 
