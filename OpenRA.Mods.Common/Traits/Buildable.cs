@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int BuildDuration = -1;
 
 		[Desc("Percentage modifier to apply to the build duration.")]
-		public readonly int BuildDurationModifier = 150;
+		public readonly int BuildDurationModifier = 60;
 
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;

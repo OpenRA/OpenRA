@@ -321,11 +321,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var value = cbtv.Value.Nodes.First(n => n.Key == "Value");
 							value.Key = "BuildDuration";
 							bi.Value.Nodes.Add(value);
-							bi.Value.Nodes.Add(new MiniYamlNode("BuildDurationModifier", "100"));
+							bi.Value.Nodes.Add(new MiniYamlNode("BuildDurationModifier", "40"));
 						}
 
 						node.Value.Nodes.RemoveAll(n => n.Key == "CustomBuildTimeValue");
 						node.Value.Nodes.RemoveAll(n => n.Key == "-CustomBuildTimeValue");
+					}
+
+					// rename ProductionQueue.BuildSpeed
+					if (node.Key == "BuildSpeed")
+					{
+						node.Key = "BuildDurationModifier";
+						var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+						oldValue = oldValue * 100 / 40;
+						node.Value.Value = oldValue.ToString();
 					}
 				}
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Sticky = true;
 
 		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
-		public readonly int BuildSpeed = 40;
+		public readonly int BuildDurationModifier = 100;
 
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
@@ -327,7 +327,7 @@ namespace OpenRA.Mods.Common.Traits
 				time = valued != null ? valued.Cost : 0;
 			}
 
-			time = time * bi.BuildDurationModifier * Info.BuildSpeed / 10000;
+			time = time * bi.BuildDurationModifier * Info.BuildDurationModifier / 10000;
 			return time;
 		}
 
