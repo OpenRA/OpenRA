@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ShortGameLocked = false;
 
 		[Desc("Default tech level.")]
-		public readonly string TechLevel = "Unrestricted";
+		public readonly string TechLevel = "unrestricted";
 
 		[Desc("Prevent the tech level from being changed in the lobby.")]
 		public readonly bool TechLevelLocked = false;
@@ -41,6 +42,14 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption("shortgame", "Short Game", ShortGameEnabled, ShortGameLocked);
+
+			var techLevels = rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>()
+				.ToDictionary(t => t.Id, t => t.Name);
+
+			if (techLevels.Any())
+				yield return new LobbyOption("techlevel", "Tech Level",
+					new ReadOnlyDictionary<string, string>(techLevels),
+					TechLevel, TechLevelLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapOptions(this); }
@@ -51,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly MapOptionsInfo info;
 
 		public bool ShortGame { get; private set; }
+		public string TechLevel { get; private set; }
 
 		public MapOptions(MapOptionsInfo info)
 		{
@@ -61,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ShortGame = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("shortgame", info.ShortGameEnabled);
+
+			TechLevel = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("techlevel", info.TechLevel);
 		}
 	}
 }

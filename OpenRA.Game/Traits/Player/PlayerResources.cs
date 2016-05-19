@@ -10,11 +10,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public class PlayerResourcesInfo : ITraitInfo
+	public class PlayerResourcesInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Starting cash options that are available in the lobby options.")]
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
@@ -31,6 +32,14 @@ namespace OpenRA.Traits
 		[Desc("Delay (in ticks) during which warnings will be muted.")]
 		public readonly int InsufficientFundsNotificationDelay = 750;
 
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
+
+			if (startingCash.Any())
+				yield return new LobbyOption("startingcash", "Starting Cash", new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashLocked);
+		}
+
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
@@ -46,7 +55,11 @@ namespace OpenRA.Traits
 			this.info = info;
 			owner = self.Owner;
 
-			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
+			var startingCash = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("startingcash", info.DefaultCash.ToString());
+
+			if (!int.TryParse(startingCash, out Cash))
+				Cash = info.DefaultCash;
 		}
 
 		[Sync] public int Cash;

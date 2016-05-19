@@ -539,110 +539,6 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "startingunits",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
-						if (startingUnits == null || startingUnits.Locked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration.");
-							return true;
-						}
-
-						var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
-						var selectedClass = startUnitsInfo.Where(u => u.Class == s).FirstOrDefault();
-						if (selectedClass == null)
-						{
-							server.SendOrderTo(conn, "Message", "Invalid starting units option selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startUnitsInfo.Select(su => su.ClassName).JoinWith(", ")));
-							return true;
-						}
-
-						if (server.LobbyInfo.GlobalSettings.StartingUnitsClass == selectedClass.Class)
-							return true;
-
-						server.LobbyInfo.GlobalSettings.StartingUnitsClass = selectedClass.Class;
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, selectedClass.ClassName));
-
-						return true;
-					}
-				},
-				{ "startingcash",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var playerResources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-						if (playerResources.DefaultCashLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration.");
-							return true;
-						}
-
-						var startingCashOptions = playerResources.SelectableCash;
-						var requestedCash = Exts.ParseIntegerInvariant(s);
-						if (!startingCashOptions.Contains(requestedCash))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid starting cash value selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startingCashOptions.JoinWith(", ")));
-							return true;
-						}
-
-						if (server.LobbyInfo.GlobalSettings.StartingCash == requestedCash)
-							return true;
-
-						server.LobbyInfo.GlobalSettings.StartingCash = requestedCash;
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, requestedCash));
-
-						return true;
-					}
-				},
-				{ "techlevel",
-					s =>
-					{
-						if (server.LobbyInfo.GlobalSettings.TechLevel == s)
-							return true;
-
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-						if (mapOptions.TechLevelLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
-							return true;
-						}
-
-						var techlevels = server.Map.Rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().Select(t => t.Name);
-						if (!techlevels.Contains(s))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid tech level selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(techlevels.JoinWith(", ")));
-							return true;
-						}
-
-						server.LobbyInfo.GlobalSettings.TechLevel = s;
-						server.SyncLobbyInfo();
-						server.SendMessage("{0} changed Tech Level to {1}.".F(client.Name, s));
-
-						return true;
-					}
-				},
 				{ "gamespeed",
 					s =>
 					{
@@ -970,16 +866,6 @@ namespace OpenRA.Mods.Common.Server
 				state.PreferredValue = preferredValue;
 				gs.LobbyOptions[o.Id] = state;
 			}
-
-			var resources = rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-			gs.StartingCash = resources.DefaultCash;
-
-			var startingUnits = rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
-			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
-
-			var mapOptions = rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-			gs.TechLevel = mapOptions.TechLevel;
-			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
 		}
 
 		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)

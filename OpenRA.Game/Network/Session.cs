@@ -193,9 +193,6 @@ namespace OpenRA.Network
 			public int RandomSeed = 0;
 			public bool AllowSpectators = true;
 			public string Difficulty;
-			public int StartingCash = 5000;
-			public string TechLevel;
-			public string StartingUnitsClass;
 			public string GameSpeedType = "default";
 			public bool AllowVersionMismatch;
 			public string GameUid;

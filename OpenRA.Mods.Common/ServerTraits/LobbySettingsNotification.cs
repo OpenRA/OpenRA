@@ -38,20 +38,6 @@ namespace OpenRA.Mods.Common.Server
 				if (!defaults.LobbyOptions.TryGetValue(kv.Key, out def) || kv.Value.Value != def.Value)
 					server.SendOrderTo(conn, "Message", options[kv.Key].Name + ": " + kv.Value.Value);
 			}
-
-			if (server.LobbyInfo.GlobalSettings.StartingUnitsClass != defaults.StartingUnitsClass)
-			{
-				var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
-				var selectedClass = startUnitsInfo.Where(u => u.Class == server.LobbyInfo.GlobalSettings.StartingUnitsClass).Select(u => u.ClassName).FirstOrDefault();
-				var className = selectedClass != null ? selectedClass : server.LobbyInfo.GlobalSettings.StartingUnitsClass;
-				server.SendOrderTo(conn, "Message", "Starting Units: {0}".F(className));
-			}
-
-			if (server.LobbyInfo.GlobalSettings.StartingCash != defaults.StartingCash)
-				server.SendOrderTo(conn, "Message", "Starting Cash: ${0}".F(server.LobbyInfo.GlobalSettings.StartingCash));
-
-			if (server.LobbyInfo.GlobalSettings.TechLevel != defaults.TechLevel)
-				server.SendOrderTo(conn, "Message", "Tech Level: {0}".F(server.LobbyInfo.GlobalSettings.TechLevel));
 		}
 	}
 }

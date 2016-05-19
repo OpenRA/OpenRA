@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 		public ProvidesTechPrerequisite(ProvidesTechPrerequisiteInfo info, ActorInitializer init)
 		{
 			this.info = info;
-			enabled = info.Name == init.World.LobbyInfo.GlobalSettings.TechLevel;
+			var mapOptions = init.World.WorldActor.TraitOrDefault<MapOptions>();
+			enabled = mapOptions != null && mapOptions.TechLevel == info.Id;
 		}
 	}
 }
