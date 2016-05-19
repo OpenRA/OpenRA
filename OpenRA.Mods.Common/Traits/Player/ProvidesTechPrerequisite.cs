@@ -15,7 +15,14 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class ProvidesTechPrerequisiteInfo : ITechTreePrerequisiteInfo
 	{
+		[Desc("Internal id for this tech level.")]
+		public readonly string Id;
+
+		[Translate]
+		[Desc("Name shown in the lobby options.")]
 		public readonly string Name;
+
+		[Desc("Prerequisites to grant when this tech level is active.")]
 		public readonly string[] Prerequisites = { };
 
 		public object Create(ActorInitializer init) { return new ProvidesTechPrerequisite(this, init); }
@@ -23,8 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ProvidesTechPrerequisite : ITechTreePrerequisite
 	{
-		ProvidesTechPrerequisiteInfo info;
+		readonly ProvidesTechPrerequisiteInfo info;
 		bool enabled;
+
 		static readonly string[] NoPrerequisites = new string[0];
 
 		public string Name { get { return info.Name; } }
