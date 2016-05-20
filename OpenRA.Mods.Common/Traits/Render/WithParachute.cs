@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders a parachute on units.")]
-	public class WithParachuteInfo : UpgradableTraitInfo, ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithParachuteInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("The image that contains the parachute sequences.")]
 		public readonly string Image = null;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithParachute : UpgradableTrait<WithParachuteInfo>, IRender
+	public class WithParachute : UpgradableTrait<WithParachuteInfo>, ITick, IRender
 	{
 		readonly Animation shadow;
 		readonly AnimationWithOffset anim;
@@ -133,6 +133,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				anim.Animation.PlayBackwardsThen(info.OpeningSequence, () => renderProlonged = false);
 		}
 
+		public void Tick(Actor self)
+		{
+			shadow.Tick();
+		}
+
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (info.ShadowImage == null)
@@ -147,8 +152,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			shadow.Tick();
-			var pos = self.CenterPosition - new WVec(0, 0, self.CenterPosition.Z);
+			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
 			var palette = wr.Palette(info.ShadowPalette);
 			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, true) };
 		}
