@@ -212,12 +212,26 @@ TRAN:
 		Speed: 112
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
 		AltitudeVelocity: 0c100
-	WithSpriteRotorOverlay@PRIMARY:
+	WithIdleOverlay@ROTOR1AIR:
+		Offset: 597,0,213
+		Sequence: rotor
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTOR1GROUND:
+		Offset: 597,0,213
+		Sequence: slow-rotor
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	WithIdleOverlay@ROTOR2AIR:
 		Offset: -597,0,341
 		Sequence: rotor2
-		GroundSequence: slow-rotor2
-	WithSpriteRotorOverlay@SECONDARY:
-		Offset: 597,0,213
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTOR2GROUND:
+		Offset: -597,0,341
+		Sequence: slow-rotor2
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
@@ -262,8 +276,16 @@ HELI:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
-	WithSpriteRotorOverlay:
+	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
+		Sequence: rotor
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTORGROUND:
+		Offset: 0,0,85
+		Sequence: slow-rotor
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	AmmoPool:
 		Ammo: 8
 	SelectionDecorations:
@@ -313,7 +335,14 @@ HIND:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
-	WithSpriteRotorOverlay:
+	WithIdleOverlay@ROTORAIR:
+		Sequence: rotor
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTORGROUND:
+		Sequence: slow-rotor
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6

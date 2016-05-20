@@ -77,8 +77,9 @@ APACHE.Husk:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 130
-	WithSpriteRotorOverlay:
+	WithIdleOverlay:
 		Offset: 85,0,384
+		Sequence: rotor
 	RenderSprites:
 		Image: apache
 	RenderVoxels:
