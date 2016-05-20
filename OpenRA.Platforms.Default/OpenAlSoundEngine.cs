@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using OpenAL;
 
 namespace OpenRA.Platforms.Default
@@ -65,7 +66,7 @@ namespace OpenRA.Platforms.Default
 			do
 			{
 				var str = Marshal.PtrToStringAuto(next);
-				next += str.Length + 1;
+				next += UnicodeEncoding.Default.GetByteCount(str) + 1;
 				devices.Add(str);
 			} while (Marshal.ReadByte(next) != 0);
 
