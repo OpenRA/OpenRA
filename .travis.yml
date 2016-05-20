@@ -31,7 +31,7 @@ env:
 # Run the NUnit tests
 script:
  - travis_retry make all-dependencies
- - make all SDK="-sdk:4.0"
+ - make all SDK="-sdk:4.5"
  - make check
  - make check-scripts
  - make test
