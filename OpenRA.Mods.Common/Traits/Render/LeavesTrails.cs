@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
-						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, spawnFacing, Info.VisibleThroughFog)));
+						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog, false, spawnFacing)));
 
 				cachedPosition = self.CenterPosition;
 				cachedFacing = facing != null ? facing.Facing : 0;

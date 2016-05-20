@@ -23,7 +23,7 @@ namespace OpenRA.Effects
 		readonly bool visibleThroughFog;
 		readonly bool scaleSizeWithZoom;
 
-		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, int facing = 0, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
+		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false, int facing = 0)
 		{
 			this.world = world;
 			this.pos = pos;
