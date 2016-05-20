@@ -239,14 +239,14 @@ BoatMissile:
 	ReloadDelay: 35
 	Range: 8c0
 	Burst: 2
-	BurstDelay: 7
+	BurstDelay: 10
 	Report: rocket2.aud
 	Projectile: Missile
 		Arm: 0
 		Blockable: false
-		Inaccuracy: 213
+		Inaccuracy: 426
 		Image: DRAGON
-		HorizontalRateOfTurn: 10
+		HorizontalRateOfTurn: 5
 		TrailImage: smokey
 		ContrailLength: 8
 		Speed: 170
