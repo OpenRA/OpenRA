@@ -64,7 +64,7 @@ namespace OpenRA.Platforms.Default
 
 			do
 			{
-				var str = Marshal.PtrToStringAnsi(next);
+				var str = Marshal.PtrToStringAuto(next);
 				next += str.Length + 1;
 				devices.Add(str);
 			} while (Marshal.ReadByte(next) != 0);
