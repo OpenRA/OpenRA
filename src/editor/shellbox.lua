@@ -106,13 +106,13 @@ local function getNextHistoryLine(forward, promptText)
 
   if forward then
     currentHistory = console:MarkerNext(currentHistory+1, PROMPT_MARKER_VALUE)
-    if currentHistory == -1 then
+    if currentHistory == wx.wxNOT_FOUND then
       currentHistory = count
       return ""
     end
   else
     currentHistory = console:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
-    if currentHistory == -1 then
+    if currentHistory == wx.wxNOT_FOUND then
       return ""
     end
   end
@@ -132,7 +132,7 @@ local function getNextHistoryMatch(promptText)
   local current = currentHistory
   while true do
     currentHistory = console:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
-    if currentHistory == -1 then -- restart search from the last item
+    if currentHistory == wx.wxNOT_FOUND then -- restart search from the last item
       currentHistory = count
     elseif currentHistory ~= getPromptLine() then -- skip current prompt
       local input = getInput(currentHistory)
@@ -171,7 +171,7 @@ local partial = false
 local function shellPrint(marker, text, newline)
   if not text or text == "" then return end -- return if nothing to print
   if newline then text = text:gsub("\n+$", "").."\n" end
-  local isPrompt = marker and (getPromptLine() > -1)
+  local isPrompt = marker and (getPromptLine() ~= wx.wxNOT_FOUND)
   local lines = console:GetLineCount()
   local promptLine = isPrompt and getPromptLine() or nil
   local insertLineAt = isPrompt and not partial and getPromptLine() or console:GetLineCount()-1

@@ -787,8 +787,8 @@ function CreateEditor(bare)
   function editor:MarkerGotoNext(marker)
     local value = 2^marker
     local line = editor:MarkerNext(editor:GetCurrentLine()+1, value)
-    if line == -1 then line = editor:MarkerNext(0, value) end
-    if line == -1 then return end
+    if line == wx.wxNOT_FOUND then line = editor:MarkerNext(0, value) end
+    if line == wx.wxNOT_FOUND then return end
     editor:GotoLine(line)
     editor:EnsureVisibleEnforcePolicy(line)
     return line
@@ -796,8 +796,8 @@ function CreateEditor(bare)
   function editor:MarkerGotoPrev(marker)
     local value = 2^marker
     local line = editor:MarkerPrevious(editor:GetCurrentLine()-1, value)
-    if line == -1 then line = editor:MarkerPrevious(editor:GetLineCount(), value) end
-    if line == -1 then return end
+    if line == wx.wxNOT_FOUND then line = editor:MarkerPrevious(editor:GetLineCount(), value) end
+    if line == wx.wxNOT_FOUND then return end
     editor:GotoLine(line)
     editor:EnsureVisibleEnforcePolicy(line)
     return line
@@ -1490,7 +1490,7 @@ function CreateEditor(bare)
             editor:SetTargetStart(pos)
             editor:SetTargetEnd(length)
             pos = editor:SearchInTarget(value)
-            if pos == -1 then break end
+            if pos == wx.wxNOT_FOUND then break end
             table.insert(instances, pos+1)
             pos = pos + #value
           end
@@ -1557,7 +1557,7 @@ end
 -- ----------------------------------------------------------------------------
 -- Add an editor to the notebook
 function AddEditor(editor, name)
-  assert(notebook:GetPageIndex(editor) == -1, "Editor being added is not in the notebook: failed")
+  assert(notebook:GetPageIndex(editor) == wx.wxNOT_FOUND, "Editor being added is not in the notebook: failed")
 
   -- set the document properties
   local id = editor:GetId()

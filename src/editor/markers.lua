@@ -33,7 +33,7 @@ end
 local function getMarkers(editor)
   local edmarkers = {}
   local line = editor:MarkerNext(0, maskall)
-  while line > -1 do
+  while line ~= wx.wxNOT_FOUND do
     local markerval = editor:MarkerGet(line)
     for markertype, val in pairs(markertypes) do
       if bit.band(markerval, val) > 0 then

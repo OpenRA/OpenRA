@@ -47,7 +47,6 @@ ide.findReplace = {
   -- GetEditor() which editor to use
 }
 local findReplace = ide.findReplace
-local NOTFOUND = -1
 local replaceHintText = '<replace with>'
 local sep = ';'
 
@@ -196,7 +195,7 @@ function findReplace:Find(reverse)
     setSearchFlags(editor)
     setTarget(editor, {Down = fDown, StartPos = bf.spos, EndPos = bf.epos})
     local posFind = editor:SearchInTarget(findText)
-    if (posFind == NOTFOUND) and self:GetFlags().Wrap then
+    if (posFind == wx.wxNOT_FOUND) and self:GetFlags().Wrap then
       editor:SetTargetStart(iff(fDown, bf.spos or 0, bf.epos or editor:GetLength()))
       editor:SetTargetEnd(iff(fDown, bf.epos or editor:GetLength(), bf.spos or 0))
       posFind = editor:SearchInTarget(findText)
@@ -205,7 +204,7 @@ function findReplace:Find(reverse)
         or TR("Reached end of text and wrapped around.")
       )
     end
-    if posFind == NOTFOUND then
+    if posFind == wx.wxNOT_FOUND then
       self.foundString = false
       msg = TR("Text not found.")
     else
@@ -236,7 +235,7 @@ function findReplace:FindAll(inFileRegister)
     setSearchFlags(editor)
     while true do
       local posFind = editor:SearchInTarget(findText)
-      if posFind == NOTFOUND then break end
+      if posFind == wx.wxNOT_FOUND then break end
       inFileRegister(posFind, editor:GetTargetEnd()-posFind)
       editor:SetTargetStart(editor:GetTargetEnd())
       editor:SetTargetEnd(e)
@@ -284,9 +283,9 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       setSearchFlags(editor)
       local occurrences = 0
       local posFind = editor:SearchInTarget(findText)
-      if posFind ~= NOTFOUND then
+      if posFind ~= wx.wxNOT_FOUND then
         editor:BeginUndoAction()
-        while posFind ~= NOTFOUND do
+        while posFind ~= wx.wxNOT_FOUND do
           local length = editor:GetLength()
           -- if replace-in-files (resultsEditor) is being done,
           -- then check that the match starts with %d+:
@@ -327,7 +326,7 @@ function findReplace:Replace(fReplaceAll, resultsEditor)
       -- move the cursor after successful search
       if editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       -- check that the current selection matches what's being searched for
-      and editor:SearchInTarget(findText) ~= NOTFOUND then
+      and editor:SearchInTarget(findText) ~= wx.wxNOT_FOUND then
         local length = editor:GetLength()
         local start = editor:GetSelectionStart()
         local replaced = self:GetFlags().RegularExpr
@@ -1201,7 +1200,7 @@ local package = ide:AddPackage('core.findreplace', {
       if editor.replace and isModified then
         findReplace:SetStatus("")
 
-        local line = NOTFOUND
+        local line = wx.wxNOT_FOUND
         local oveditor = ide:CreateStyledTextCtrl(findReplace.panel, wx.wxID_ANY,
           wx.wxDefaultPosition, wx.wxSize(0,0), wx.wxBORDER_NONE)
         local files, lines = 0, 0
@@ -1209,7 +1208,7 @@ local package = ide:AddPackage('core.findreplace', {
         while true do
           -- for each marker that marks a file (MarkerNext)
           line = editor:MarkerNext(line + 1, FILE_MARKER_VALUE)
-          if line == NOTFOUND then break end
+          if line == wx.wxNOT_FOUND then break end
 
           local fname = getRawLine(editor, line) -- get the file name
           local filetext, err = FileRead(fname)
@@ -1227,7 +1226,7 @@ local package = ide:AddPackage('core.findreplace', {
                 lnum = tonumber(lnum)
                 if lmark == ':' then -- if the change line, then apply the change
                   local pos = oveditor:PositionFromLine(lnum-1)
-                  if pos == NOTFOUND then
+                  if pos == wx.wxNOT_FOUND then
                     mismatch = lnum
                     break
                   end

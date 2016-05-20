@@ -531,7 +531,7 @@ function debugger:stoppedAtBreakpoint(file, line)
 
   local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
   local breakpoint = editor:MarkerNext(current, BREAKPOINT_MARKER_VALUE)
-  return breakpoint > -1 and breakpoint == current
+  return breakpoint ~= wx.wxNOT_FOUND and breakpoint == current
 end
 
 function debugger:mapRemotePath(basedir, file, line, method)
@@ -818,7 +818,7 @@ end
 local function nameOutputTab(name)
   local nbk = ide.frame.bottomnotebook
   local index = nbk:GetPageIndex(ide:GetOutput())
-  if index ~= -1 then nbk:SetPageText(index, name) end
+  if index ~= wx.wxNOT_FOUND then nbk:SetPageText(index, name) end
 end
 
 function debugger:handle(command, server, options)

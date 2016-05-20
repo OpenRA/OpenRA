@@ -190,7 +190,7 @@ local function createNotebook(frame)
         and event:GetOldSelection() == notebook:GetPageCount()
         and debug:traceback():find("'AddPage'"))
 
-      if doc and event:GetOldSelection() ~= -1 and not double then
+      if doc and event:GetOldSelection() ~= wx.wxNOT_FOUND and not double then
         SetEditorSelection(notebook:GetSelection())
       end
     end)

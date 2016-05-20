@@ -65,14 +65,14 @@ function DisplayOutputNoMarker(...)
   end
 
   local promptLine = getInputLine()
-  local insertedAt = promptLine == -1 and out:GetLength() or out:PositionFromLine(promptLine) + inputBound
+  local insertedAt = promptLine == wx.wxNOT_FOUND and out:GetLength() or out:PositionFromLine(promptLine) + inputBound
   local current = out:GetReadOnly()
   out:SetReadOnly(false)
   out:InsertTextDyn(insertedAt, out.useraw and message or FixUTF8(message, "\022"))
   out:EmptyUndoBuffer()
   out:SetReadOnly(current)
   out:GotoPos(out:GetLength())
-  if promptLine ~= -1 then updateInputMarker() end
+  if promptLine ~= wx.wxNOT_FOUND then updateInputMarker() end
 end
 function DisplayOutput(...)
   out:MarkerAdd(out:GetLineCount()-1, MESSAGE_MARKER)
@@ -167,7 +167,7 @@ end
 
 local function nameTab(tab, name)
   local index = bottomnotebook:GetPageIndex(tab)
-  if index ~= -1 then bottomnotebook:SetPageText(index, name) end
+  if index ~= wx.wxNOT_FOUND then bottomnotebook:SetPageText(index, name) end
 end
 
 function OutputSetCallbacks(pid, proc, callback, endcallback)
@@ -273,7 +273,7 @@ local function getStreams()
           DisplayShell(str)
         else
           DisplayOutputNoMarker(str)
-          if str and (getInputLine() > -1 or out:GetReadOnly()) then
+          if str and (getInputLine() ~= wx.wxNOT_FOUND or out:GetReadOnly()) then
             ActivateOutput()
             updateInputMarker()
           end
@@ -317,7 +317,7 @@ out:Connect(wx.wxEVT_END_PROCESS, function(event)
       if not customprocs[pid].uid then return end
 
       -- delete markers and set focus to the editor if there is an input marker
-      if out:MarkerPrevious(out:GetLineCount(), PROMPT_MARKER_VALUE) > -1 then
+      if out:MarkerPrevious(out:GetLineCount(), PROMPT_MARKER_VALUE) > wx.wxNOT_FOUND then
         out:MarkerDeleteAll(PROMPT_MARKER)
         local editor = GetEditor()
         -- check if editor still exists; it may not if the window is closed
@@ -402,7 +402,7 @@ out:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
         if activateByPartialName(unpack(result)) then
           -- doubleclick can set selection, so reset it
           local pos = event:GetPosition()
-          if pos == -1 then pos = out:GetLineEndPosition(event:GetLine()) end
+          if pos == wx.wxNOT_FOUND then pos = out:GetLineEndPosition(event:GetLine()) end
           out:SetSelection(pos, pos)
           return
         end
@@ -481,7 +481,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
 local function inputEditable(line)
   local inputLine = getInputLine()
   local currentLine = line or out:GetCurrentLine()
-  return inputLine > -1 and
+  return inputLine ~= wx.wxNOT_FOUND and
     (currentLine > inputLine or
      currentLine == inputLine and positionInLine(inputLine) >= inputBound) and
     not (out:LineFromPosition(out:GetSelectionStart()) < getInputLine())

@@ -432,7 +432,7 @@ function ide:CreateStyledTextCtrl(...)
     mask = mask or ide.ANYMARKERMASK
     local markers = {}
     local line = editor:MarkerNext(from or 0, mask)
-    while line > -1 do
+    while line ~= wx.wxNOT_FOUND do
       table.insert(markers, {line, editor:MarkerGet(line)})
       if to and line > to then break end
       line = editor:MarkerNext(line + 1, mask)
