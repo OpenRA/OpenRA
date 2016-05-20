@@ -10,7 +10,7 @@ BOAT:
 		Type: Heavy
 	Mobile:
 		InitialFacing: 64
-		TurnSpeed: 4
+		TurnSpeed: 32
 		Speed: 28
 		OnRails: true
 	RevealsShroud:
