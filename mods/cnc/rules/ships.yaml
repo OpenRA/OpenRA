@@ -16,7 +16,7 @@ BOAT:
 	RevealsShroud:
 		Range: 7c0
 	Turreted:
-		TurnSpeed: 7
+		TurnSpeed: 5
 		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile
