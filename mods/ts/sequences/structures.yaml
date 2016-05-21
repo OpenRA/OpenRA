@@ -469,7 +469,7 @@ natech:
 
 natmpl:
 	Defaults:
-		Offset: 0, -24
+		Offset: -15, -39
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
