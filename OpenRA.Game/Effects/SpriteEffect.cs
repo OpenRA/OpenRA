@@ -23,14 +23,14 @@ namespace OpenRA.Effects
 		readonly bool visibleThroughFog;
 		readonly bool scaleSizeWithZoom;
 
-		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
+		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false, int facing = 0)
 		{
 			this.world = world;
 			this.pos = pos;
 			this.palette = palette;
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
-			anim = new Animation(world, image);
+			anim = new Animation(world, image, () => facing);
 			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
