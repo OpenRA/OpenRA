@@ -39,6 +39,13 @@ Player:
 	PlayerResources:
 		DefaultCash: 0
 
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+BRIDGEHUT:
+	-Targetable:
+
 FLARE:
 	RevealsShroud:
 		Range: 5c0
@@ -77,8 +84,8 @@ RMBO.easy:
 
 RMBO.hard:
 	Inherits: RMBO
-	AutoTarget:
-		TargetWhenDamaged: false
+	-AutoTarget:
+	-AttackMove:
 	RenderSprites:
 		Image: RMBO
 
