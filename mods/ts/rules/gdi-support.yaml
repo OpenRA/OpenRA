@@ -101,7 +101,7 @@ GACTWR:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
 		Weapon: VulcanTower
-		LocalOffset: 768,85,512
+		LocalOffset: 416,85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
@@ -109,19 +109,19 @@ GACTWR:
 		UpgradeMinEnabledLevel: 1
 		Name: secondary
 		Weapon: VulcanTower
-		LocalOffset: 768,-85,512
+		LocalOffset: 416,-85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@ROCKET:
 		UpgradeTypes: tower.rocket
 		UpgradeMinEnabledLevel: 1
 		Weapon: RPGTower
-		LocalOffset: 512,-128,512
+		LocalOffset: 192,-65,1056
 	Armament@SAM:
 		UpgradeTypes: tower.sam
 		UpgradeMinEnabledLevel: 1
 		Weapon: RedEye2
-		LocalOffset: 512,0,512
+		LocalOffset: 192,0,1152
 	WithMuzzleOverlay:
 		UpgradeTypes: tower.vulcan
 		UpgradeMinEnabledLevel: 1
