@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
 		public readonly int RealignDelay = 40;
 
+		[Desc("Should the turret face the target's center instead of any custom AttackPositions?")]
+		public readonly bool IgnoreAttackablePositions = false;
+
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
@@ -110,7 +113,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			var delta = target.AttackablePositions.PositionClosestTo(self.CenterPosition) - self.CenterPosition;
+			var aimPos = info.IgnoreAttackablePositions ? target.CenterPosition
+				: target.AttackablePositions.PositionClosestTo(self.CenterPosition);
+
+			var delta = aimPos - self.CenterPosition;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
 			return HasAchievedDesiredFacing;

@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int FacingTolerance = 1;
 
+		[Desc("Should the actor face target's center instead of any custom AttackPositions?")]
+		public readonly bool IgnoreAttackablePositions = false;
+
 		public override object Create(ActorInitializer init) { return new AttackFrontal(init.Self, this); }
 	}
 
@@ -39,7 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var f = facing.Value.Facing;
-			var delta = target.AttackablePositions.PositionClosestTo(self.CenterPosition) - self.CenterPosition;
+			var aimPos = info.IgnoreAttackablePositions ? target.CenterPosition
+				: target.AttackablePositions.PositionClosestTo(self.CenterPosition);
+
+			var delta = aimPos - self.CenterPosition;
 			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 
 			if (Math.Abs(facingToTarget - f) % 256 > info.FacingTolerance)
