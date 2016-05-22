@@ -159,10 +159,10 @@ local function createToolBar(frame)
   return toolBar
 end
 
-local function getTabWindow(event)
+local function getTabWindow(event, nb)
   local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
   local idx = event:GetSelection() -- index within the current tab ctrl
-  return tabctrl:GetPage(idx).window, tabctrl
+  return idx ~= wx.wxNOT_FOUND and nb:GetPageIndex(tabctrl:GetPage(idx).window) or wx.wxNOT_FOUND, tabctrl
 end
 
 local function createNotebook(frame)
@@ -176,7 +176,7 @@ local function createNotebook(frame)
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
     function (event)
       local ed = GetEditor(notebook:GetSelection())
-      local doc = ed and ed:GetId() and ide.openDocuments[ed:GetId()]
+      local doc = ed and ide:GetDocument(ed)
 
       -- skip activation when any of the following is true:
       -- (1) there is no document yet, the editor tab was just added,
@@ -197,7 +197,8 @@ local function createNotebook(frame)
 
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
-      ClosePage(event:GetSelection())
+      local idx = event:GetSelection()
+      if idx ~= wx.wxNOT_FOUND then ClosePage(idx) end
       event:Veto() -- don't propagate the event as the page is already closed
     end)
 
@@ -231,7 +232,8 @@ local function createNotebook(frame)
           if editor then ide.openDocuments[editor:GetId()].index = page end
         end
 
-        local selection = notebook:GetPageIndex(getTabWindow(event))
+        local selection = getTabWindow(event, notebook)
+        if selection == wx.wxNOT_FOUND then return end
         -- set the selection on the dragged tab to reset its state
         -- workaround for wxwidgets issue http://trac.wxwidgets.org/ticket/15071
         notebook:SetSelection(selection)
@@ -248,6 +250,7 @@ local function createNotebook(frame)
       -- for split notebooks, this may not be the same as the index
       -- in the notebook we are interested in here
       local idx = event:GetSelection()
+      if idx == wx.wxNOT_FOUND then return end
       local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
 
       -- save tab index the event is for
@@ -322,7 +325,9 @@ local function addDND(notebook)
       local notebookfrom = event:GetDragSource()
       if notebookfrom ~= ide.frame.notebook then
         -- disable cross-notebook movement of specific tabs
-        local win = notebookfrom:GetPage(event:GetSelection())
+        local idx = event:GetSelection()
+        if idx == wx.wxNOT_FOUND then return end
+        local win = notebookfrom:GetPage(idx)
         if not win then return end
         local winid = win:GetId()
         if winid == ide:GetOutput():GetId()
@@ -384,8 +389,9 @@ local function addDND(notebook)
       local y = win:GetScreenPosition():GetY()
       local w, h = win:GetSize():GetWidth(), win:GetSize():GetHeight()
 
-      local win, tabctrl = getTabWindow(event)
-      local selection = notebook:GetPageIndex(win)
+      local selection, tabctrl = getTabWindow(event, notebook)
+      if selection == wx.wxNOT_FOUND then return end
+
       local mouse = wx.wxGetMouseState()
       local mx, my = mouse:GetX(), mouse:GetY()
       if mx < x or mx > x + w or my < y or my > y + h then
@@ -431,7 +437,9 @@ local function createBottomNotebook(frame)
     function (event)
       local nb = event:GetEventObject():DynamicCast("wxAuiNotebook")
       -- set focus on the new page
-      nb:GetPage(event:GetSelection()):SetFocus()
+      local idx = event:GetSelection()
+      if idx == wx.wxNOT_FOUND then return end
+      nb:GetPage(idx):SetFocus()
 
       if not ide.findReplace then return end
       local preview = ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection()))
