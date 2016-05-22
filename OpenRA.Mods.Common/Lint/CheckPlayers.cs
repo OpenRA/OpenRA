@@ -72,7 +72,12 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					var ownerName = ownerInit.PlayerName;
 					if (!playerNames.Contains(ownerName))
-						emitError("Actor {0} is owned by unknown player {1}.".F(actorReference.Type, ownerName));
+						emitError("Actor {0} is owned by unknown player {1}.".F(kv.Key, ownerName));
+					else if (kv.Value.Value == "mpspawn" && !players[ownerName].OwnsWorld)
+					{
+						emitError("Actor {0} needs to be owned by the player that owns the world. ".F(kv.Key) +
+							"Use the `Spawn` and `LockSpawn` player properties to force players onto a particular spawn instead.");
+					}
 				}
 			}
 		}
