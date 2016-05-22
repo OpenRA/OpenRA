@@ -343,7 +343,7 @@ STNK:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 213,43,128, 213,-43,128
+		LocalOffset: 213,43,298, 213,-43,298
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
