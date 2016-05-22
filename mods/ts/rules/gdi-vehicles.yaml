@@ -158,8 +158,11 @@ MMCH:
 		Recoils: no
 	Armament:
 		Weapon: 120mm
+		MuzzleSequence: muzzle
 		Recoil: 127
 		RecoilRecovery: 26
+		LocalOffset: 512, 224, 784
+	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
 		LocalOffset: -128, 85, 256
