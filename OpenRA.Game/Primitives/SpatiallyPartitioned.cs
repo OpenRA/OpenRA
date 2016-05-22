@@ -31,22 +31,22 @@ namespace OpenRA.Primitives
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
 		}
 
-		void ValidateBounds(Rectangle bounds)
+		void ValidateBounds(T actor, Rectangle bounds)
 		{
 			if (bounds.Width == 0 || bounds.Height == 0)
-				throw new ArgumentException("bounds must be non-empty.", "bounds");
+				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), "bounds");
 		}
 
 		public void Add(T item, Rectangle bounds)
 		{
-			ValidateBounds(bounds);
+			ValidateBounds(item, bounds);
 			itemBounds.Add(item, bounds);
 			MutateBins(item, bounds, addItem);
 		}
 
 		public void Update(T item, Rectangle bounds)
 		{
-			ValidateBounds(bounds);
+			ValidateBounds(item, bounds);
 			MutateBins(item, itemBounds[item], removeItem);
 			MutateBins(item, itemBounds[item] = bounds, addItem);
 		}
