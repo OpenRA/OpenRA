@@ -163,6 +163,7 @@
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\Smoke.cs" />
+    <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
@@ -646,6 +647,7 @@
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
+    <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
