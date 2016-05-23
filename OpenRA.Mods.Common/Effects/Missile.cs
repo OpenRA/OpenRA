@@ -820,7 +820,7 @@ namespace OpenRA.Mods.Common.Effects
 			// Create the smoke trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, renderFacing, info.TrailImage, trailPalette, info.TrailSequence)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequence, trailPalette, false, false, renderFacing)));
 				ticksToNextSmoke = info.TrailInterval;
 			}
 

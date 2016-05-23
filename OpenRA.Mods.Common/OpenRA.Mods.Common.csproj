@@ -160,7 +160,6 @@
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
-    <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
