@@ -51,12 +51,18 @@ getAirstrikeTarget = function()
 
 	local target = list[DateTime.GameTime % #list + 1].CenterPosition
 
-	if searches < 6 then
+	local sams = Map.ActorsInCircle(target, WDist.New(8 * 1024), function(actor)
+		return actor.Type == "sam" end)
+
+	if #sams == 0 then
+		searches = 0
+		return target
+	elseif searches < 6 then
 		searches = searches + 1
 		return getAirstrikeTarget()
 	else
 		searches = 0
-		return target
+		return nil
 	end
 end
 
