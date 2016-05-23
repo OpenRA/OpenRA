@@ -1281,13 +1281,11 @@ function CreateEditor(bare)
         if event:ShiftDown() -- mark selection and scroll to caret
         then editor:SetCurrentPos(pos) editor:EnsureCaretVisible()
         else editor:GotoPos(pos) end
-      elseif mod == wx.wxMOD_RAW_CONTROL and keycode == wx.WXK_PAGEUP
-        or mod == (wx.wxMOD_RAW_CONTROL + wx.wxMOD_SHIFT) and keycode == wx.WXK_TAB then
+      elseif mod == wx.wxMOD_RAW_CONTROL and keycode == wx.WXK_PAGEUP then
         if notebook:GetSelection() == first
         then notebook:SetSelection(last)
         else notebook:AdvanceSelection(false) end
-      elseif mod == wx.wxMOD_RAW_CONTROL
-        and (keycode == wx.WXK_PAGEDOWN or keycode == wx.WXK_TAB) then
+      elseif mod == wx.wxMOD_RAW_CONTROL and keycode == wx.WXK_PAGEDOWN then
         if notebook:GetSelection() == last
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
