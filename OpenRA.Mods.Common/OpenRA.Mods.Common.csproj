@@ -152,7 +152,6 @@
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
-    <Compile Include="Effects\Explosion.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
