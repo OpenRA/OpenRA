@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette)
 		{
-			self.World.AddFrameEndTask(w => w.Add(new Corpse(w, pos, image, sequence, palette)));
+			self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, image, sequence, palette)));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
