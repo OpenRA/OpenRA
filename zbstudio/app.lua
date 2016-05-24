@@ -6,7 +6,6 @@ return {
   loadfilters = {
     tools = function(file) return false end,
     specs = function(file) return not skipspecs[file:match('spec[/\\]([^/\\]+)%.lua$') or ''] end,
-    interpreters = function(file) return not file:find('estrela') end,
   },
 
   postinit = function ()

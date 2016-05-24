@@ -6,7 +6,6 @@
 local all = function() return true end
 load.tools(all)
 load.specs(all)
-load.interpreters(all)
 
 -- this flag means that toggling between projects, will not affect the 
 -- list of opened files (old estrela default).
