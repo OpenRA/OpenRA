@@ -296,7 +296,7 @@ end
 
 dofile "src/version.lua"
 
-for _, file in ipairs({"proto", "ids", "style", "keymap", "toolbar"}) do
+for _, file in ipairs({"proto", "ids", "style", "keymap", "toolbar", "package"}) do
   dofile("src/editor/"..file..".lua")
 end
 
@@ -623,7 +623,7 @@ end
 -- Load App
 
 for _, file in ipairs({
-    "settings", "package", "singleinstance", "iofilters", "markup",
+    "settings", "singleinstance", "iofilters", "markup",
     "gui", "filetree", "output", "debugger", "outline", "commandbar",
     "editor", "findreplace", "commands", "autocomplete", "shellbox", "markers",
     "menu_file", "menu_edit", "menu_search",
