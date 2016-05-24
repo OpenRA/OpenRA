@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using OpenAL;
 
 namespace OpenRA.Platforms.Default
@@ -56,18 +57,18 @@ namespace OpenRA.Platforms.Default
 
 			var devices = new List<string>();
 			var next = ALC10.alcGetString(IntPtr.Zero, type);
-			do
-			{
-				var str = Marshal.PtrToStringAnsi(next);
-				next += str.Length + 1;
-				devices.Add(str);
-			} while (Marshal.ReadByte(next) != 0);
-
-			if (AL10.alGetError() != AL10.AL_NO_ERROR)
+			if (next == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
 				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
 				return new string[] { };
 			}
+
+			do
+			{
+				var str = Marshal.PtrToStringAuto(next);
+				next += UnicodeEncoding.Default.GetByteCount(str) + 1;
+				devices.Add(str);
+			} while (Marshal.ReadByte(next) != 0);
 
 			return devices.ToArray();
 		}
