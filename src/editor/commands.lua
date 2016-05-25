@@ -247,6 +247,7 @@ local function getExtsString(ed)
 end
 
 function ReportError(msg)
+  RequestAttention() -- request attention first in case the app is minimized or in the background
   return wx.wxMessageBox(msg, TR("Error"), wx.wxICON_ERROR + wx.wxOK + wx.wxCENTRE, ide.frame)
 end
 
