@@ -135,7 +135,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Tick(Actor self)
 		{
-			shadow.Tick();
+			if (shadow != null)
+				shadow.Tick();
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
