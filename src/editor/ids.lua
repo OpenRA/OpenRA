@@ -179,6 +179,9 @@ ID_FINDOPTCONTEXT   = NewID()
 ID_FINDOPTSUBDIR    = NewID()
 ID_FINDOPTMULTIRESULTS = NewID()
 ID_RECENTSCOPECLEAR = NewID()
+-- global shortcuts
+ID_NOTEBOOKTABNEXT  = NewID()
+ID_NOTEBOOKTABPREV  = NewID()
 
 local ids = {}
 function IDgen (name)

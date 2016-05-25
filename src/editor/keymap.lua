@@ -111,6 +111,9 @@ ide.config.keymap = {
 -- Filetree popup menu items
   [ID.RENAMEFILE]       = "F2",
   [ID.DELETEFILE]       = "Del",
+-- Special global accelerators
+  [ID.NOTEBOOKTABNEXT]  = "RawCtrl-PgDn",
+  [ID.NOTEBOOKTABPREV]  = "RawCtrl-PgUp",
 }
 
 function KSC(id, default)

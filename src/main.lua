@@ -761,6 +761,33 @@ for _, id in ipairs({ ID_GOTODEFINITION, ID_RENAMEALLINSTANCES,
   end
 end
 
+for _, id in ipairs({ ID_NOTEBOOKTABNEXT, ID_NOTEBOOKTABPREV }) do
+  local ksc = ide.config.keymap[id]
+  if ksc and ksc > "" then
+    local nbc = "wxAuiNotebook"
+    ide.frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, function(event)
+        local win = ide.frame:FindFocus()
+        if not win then return end
+
+        local notebook = win:GetClassInfo():GetClassName() == nbc and win:DynamicCast(nbc)
+        or win:GetParent():GetClassInfo():GetClassName() == nbc and win:GetParent():DynamicCast(nbc)
+        or nil
+        if not notebook then return end
+
+        local first, last = 0, notebook:GetPageCount()-1
+        local fwd = event:GetId() == ID_NOTEBOOKTABNEXT
+        if fwd and notebook:GetSelection() == last then
+          notebook:SetSelection(first)
+        elseif not fwd and notebook:GetSelection() == first then
+          notebook:SetSelection(last)
+        else
+          notebook:AdvanceSelection(fwd)
+        end
+      end)
+    ide:SetAccelerator(id, ksc)
+  end
+end
+
 -- only set menu bar *after* postinit handler as it may include adding
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.
