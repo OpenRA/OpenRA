@@ -2,8 +2,6 @@ carryall.reinforce:
 	Inherits: ^Plane
 	Valued:
 		Cost: 1100
-	CustomBuildTimeValue:
-		Value: 648
 	Tooltip:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
@@ -40,6 +38,9 @@ carryall.reinforce:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50
+	Buildable:
+		BuildDuration: 648
+		BuildDurationModifier: 40
 
 carryall:
 	Inherits: carryall.reinforce

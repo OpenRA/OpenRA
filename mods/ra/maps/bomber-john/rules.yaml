@@ -54,7 +54,7 @@ SILO:
 
 Player:
 	ClassicProductionQueue@Building:
-		BuildSpeed: 40
+		BuildDurationModifier: 100
 	Shroud:
 		FogLocked: True
 		FogEnabled: True

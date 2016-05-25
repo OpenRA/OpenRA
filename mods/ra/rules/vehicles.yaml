@@ -152,10 +152,10 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 190
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
+		BuildDuration: 2500
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 2000
-	CustomBuildTimeValue:
-		Value: 2500
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
@@ -288,8 +288,8 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
 		Prerequisites: fix, ~techlevel.medium
-	CustomBuildTimeValue:
-		Value: 2000
+		BuildDuration: 2000
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 2000
 	Tooltip:

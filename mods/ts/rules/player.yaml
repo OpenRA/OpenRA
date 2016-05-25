@@ -4,31 +4,31 @@ Player:
 	GlobalUpgradeManager:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: 48
+		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
-		BuildSpeed: 48
+		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildSpeed: 48
+		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildSpeed: 48
+		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
-		BuildSpeed: 48
+		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	PlaceBuilding:
