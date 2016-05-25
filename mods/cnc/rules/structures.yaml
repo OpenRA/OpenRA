@@ -25,7 +25,6 @@ FACT:
 		Type: Building.GDI
 		Factions: gdi
 		Group: Building
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -33,7 +32,6 @@ FACT:
 		Type: Building.Nod
 		Factions: nod
 		Group: Building
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -41,7 +39,6 @@ FACT:
 		Type: Defence.GDI
 		Factions: gdi
 		Group: Defence
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -49,7 +46,6 @@ FACT:
 		Type: Defence.Nod
 		Factions: nod
 		Group: Defence
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -260,7 +256,6 @@ PYLE:
 		Type: Infantry.GDI
 		Group: Infantry
 		RequireOwner: false
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -301,7 +296,6 @@ HAND:
 		Type: Infantry.Nod
 		Group: Infantry
 		RequireOwner: false
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -347,7 +341,6 @@ AFLD:
 		Type: Vehicle.Nod
 		Group: Vehicle
 		RequireOwner: false
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		ReadyAudio:
 	ProductionBar:
@@ -394,7 +387,6 @@ WEAP:
 		Type: Vehicle.GDI
 		RequireOwner: false
 		Group: Vehicle
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -432,13 +424,11 @@ HPAD:
 		Type: Aircraft.GDI
 		Factions: gdi
 		Group: Aircraft
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Factions: nod
 		Group: Aircraft
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI

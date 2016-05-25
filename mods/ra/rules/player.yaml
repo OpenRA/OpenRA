@@ -3,38 +3,32 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Ship:
 		Type: Ship
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		SpeedUp: True
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		BuildDurationModifier: 100
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		SpeedUp: True
