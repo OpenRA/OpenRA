@@ -224,7 +224,7 @@ function ide:FindDocumentsByPartialPath(path)
   return docs
 end
 function ide:SetInterpreter(name) return ProjectSetInterpreter(name) end
-function ide:GetInterpreter() return self.interpreter end
+function ide:GetInterpreter(name) return name == nil and self.interpreter or name and self.interpreters[name] or nil end
 function ide:GetInterpreters() return self.interpreters end
 function ide:GetConfig() return self.config end
 function ide:GetOutput() return self.frame.bottomnotebook.errorlog end
