@@ -120,7 +120,8 @@ namespace OpenRA.Widgets
 						var unit = World.ScreenMap.ActorsAt(mousePos)
 							.WithHighestSelectionPriority(mousePos);
 
-						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
+						var p = World.RenderPlayer ?? World.LocalPlayer;
+						if (unit != null && (unit.Owner == p || p == null || p.Spectating))
 						{
 							var s = unit.TraitOrDefault<Selectable>();
 							if (s != null)
@@ -306,11 +307,11 @@ namespace OpenRA.Widgets
 			return SelectActorsByOwnerAndSelectionClass(world.Actors.Where(a => a.IsInWorld), player, selectionClasses);
 		}
 
-		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player owner, IEnumerable<string> selectionClasses)
+		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, Player player, IEnumerable<string> selectionClasses)
 		{
 			return actors.Where(a =>
 			{
-				if (a.Owner != owner)
+				if (a.Owner != player && player != null && !player.Spectating)
 					return false;
 
 				var s = a.TraitOrDefault<Selectable>();
