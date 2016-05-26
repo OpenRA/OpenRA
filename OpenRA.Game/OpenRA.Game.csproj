@@ -171,7 +171,6 @@
     <Compile Include="Support\Program.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
-    <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
