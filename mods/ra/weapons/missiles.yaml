@@ -112,7 +112,7 @@ HellfireAG:
 
 HellfireAA:
 	ReloadDelay: 60
-	Range: 4c0
+	Range: 5c0
 	MinRange: 1c256
 	Report: missile6.aud
 	Burst: 2
@@ -126,7 +126,7 @@ HellfireAA:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 4c819
+		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
