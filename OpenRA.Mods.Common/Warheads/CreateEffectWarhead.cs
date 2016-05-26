@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
 			if (Image != null && explosion != null)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Image, explosion, palette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
 
 			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
 			if (impactSound != null)

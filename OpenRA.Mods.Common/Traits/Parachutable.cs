@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			var sequence = terrain.IsWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = terrain.IsWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
 			if (sequence != null && palette != null)
-				self.World.AddFrameEndTask(w => w.Add(new Explosion(w, self.OccupiesSpace.CenterPosition, info.Image, sequence, palette)));
+				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
 
 			self.Kill(self);
 		}

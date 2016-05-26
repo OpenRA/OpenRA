@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void SpawnExplosions(World world, IEnumerable<CPos> cells)
 		{
 			foreach (var c in cells)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(c), info.Image, info.Sequences.Random(w.SharedRandom), info.Palette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(w.Map.CenterOfCell(c), w, info.Image, info.Sequences.Random(w.SharedRandom), info.Palette)));
 		}
 	}
 }

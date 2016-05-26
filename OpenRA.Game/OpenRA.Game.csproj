@@ -227,7 +227,6 @@
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />
-    <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />
@@ -241,7 +240,6 @@
     <Compile Include="Widgets\WidgetLoader.cs" />
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
-    <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="Graphics\PaletteReference.cs" />
     <Compile Include="Graphics\TerrainSpriteLayer.cs" />
     <Compile Include="Map\ProjectedCellRegion.cs" />

@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Effects;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render

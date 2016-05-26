@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void AddSmudge(CPos loc)
 		{
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType, Info.SmokePalette, Info.SmokeSequence)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
 
 			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
