@@ -10,8 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be used to make a unit partly uncontrollable by the player.")]
 	public class RejectsOrdersInfo : ITraitInfo

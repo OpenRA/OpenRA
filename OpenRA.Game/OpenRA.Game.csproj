@@ -174,13 +174,11 @@
     <Compile Include="Traits\DrawLineToTarget.cs" />
     <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
-    <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
-    <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\World\Faction.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />

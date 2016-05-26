@@ -456,6 +456,7 @@
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
     <Compile Include="Traits\Render\WithVoxelBody.cs" />
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
+    <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
@@ -507,6 +508,7 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
