@@ -4,10 +4,11 @@ local function exePath(self, version)
   local version = tostring(version or ""):gsub('%.','')
   local mainpath = ide:GetRootPath()
   local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version)
-  return ide.config.path['lua'..version]
-     or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version))
-     or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua%s]]):format(ide.osarch, version))
-     or (wx.wxFileExists(macExe) and macExe or mainpath..([[bin/lua%s]]):format(version))
+  return (ide.config.path['lua'..version]
+    or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version))
+    or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua%s]]):format(ide.osarch, version))
+    or (wx.wxFileExists(macExe) and macExe or mainpath..([[bin/lua%s]]):format(version))),
+  ide.config.path['lua'..version] ~= nil
 end
 
 return {
@@ -17,7 +18,7 @@ return {
   luaversion = version or '5.1',
   fexepath = exePath,
   frun = function(self,wfilename,rundebug)
-    local exe = self:fexepath(version or "")
+    local exe, iscustom = self:fexepath(version or "")
     local filepath = wfilename:GetFullPath()
 
     do
@@ -70,7 +71,7 @@ return {
     end
 
     local cpath = os.getenv(envname)
-    if rundebug and cpath and not ide.config.path['lua'..(version or "")] then
+    if rundebug and cpath and not iscustom then
       -- prepend osclibs as the libraries may be needed for debugging,
       -- but only if no path.lua is set as it may conflict with system libs
       wx.wxSetEnv(envname, ide.osclibs..';'..cpath)
