@@ -108,7 +108,6 @@
     <Compile Include="Download.cs" />
     <Compile Include="Effects\AsyncAction.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
-    <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameRules\ActorInfo.cs" />
