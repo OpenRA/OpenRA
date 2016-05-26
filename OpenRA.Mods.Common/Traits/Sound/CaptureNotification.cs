@@ -15,15 +15,24 @@ namespace OpenRA.Mods.Common.Traits.Sound
 {
 	public class CaptureNotificationInfo : ITraitInfo
 	{
+		[Desc("The speech notification to play to the new owner.")]
 		public readonly string Notification = "BuildingCaptured";
+
+		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
+
+		[Desc("The speech notification to play to the old owner.")]
+		public readonly string LoseNotification = null;
+
+		[Desc("Specifies if LoseNotification is played with the voice of the new owners faction.")]
+		public readonly bool LoseNewOwnerVoice = false;
 
 		public object Create(ActorInitializer init) { return new CaptureNotification(this); }
 	}
 
 	public class CaptureNotification : INotifyCapture
 	{
-		CaptureNotificationInfo info;
+		readonly CaptureNotificationInfo info;
 		public CaptureNotification(CaptureNotificationInfo info)
 		{
 			this.info = info;
@@ -31,11 +40,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			if (captor.World.LocalPlayer != captor.Owner)
-				return;
-
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
-			Game.Sound.PlayNotification(self.World.Map.Rules, captor.World.LocalPlayer, "Speech", info.Notification, faction);
+			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
+
+			var loseFaction = info.LoseNewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
+			Game.Sound.PlayNotification(self.World.Map.Rules, oldOwner, "Speech", info.LoseNotification, loseFaction);
 		}
 	}
 }
