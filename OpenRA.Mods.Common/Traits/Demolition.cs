@@ -18,11 +18,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class C4DemolitionInfo : ITraitInfo
+	class DemolitionInfo : ITraitInfo
 	{
-		[Desc("Delay to demolish the target once the C4 is planted. " +
+		[Desc("Delay to demolish the target once the explosive device is planted. " +
 			"Measured in game ticks. Default is 1.8 seconds.")]
-		public readonly int C4Delay = 45;
+		public readonly int DetonationDelay = 45;
 
 		[Desc("Number of times to flash the target.")]
 		public readonly int Flashes = 3;
@@ -43,21 +43,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice string when planting explosive charges.")]
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new C4Demolition(this); }
+		public readonly string Cursor = "c4";
+
+		public object Create(ActorInitializer init) { return new Demolition(this); }
 	}
 
-	class C4Demolition : IIssueOrder, IResolveOrder, IOrderVoice
+	class Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly C4DemolitionInfo info;
+		readonly DemolitionInfo info;
 
-		public C4Demolition(C4DemolitionInfo info)
+		public Demolition(DemolitionInfo info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new C4DemolitionOrderTargeter(); }
+			get { yield return new DemolitionOrderTargeter(info.Cursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -88,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Demolish(self, target.Actor, info.EnterBehaviour, info.C4Delay,
+			self.QueueActivity(new Demolish(self, target.Actor, info.EnterBehaviour, info.DetonationDelay,
 				info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
 		}
 
@@ -97,10 +99,10 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == "C4" ? info.Voice : null;
 		}
 
-		class C4DemolitionOrderTargeter : UnitOrderTargeter
+		class DemolitionOrderTargeter : UnitOrderTargeter
 		{
-			public C4DemolitionOrderTargeter()
-				: base("C4", 6, "c4", true, false) { }
+			public DemolitionOrderTargeter(string cursor)
+				: base("C4", 6, cursor, true, false) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{

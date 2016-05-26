@@ -149,7 +149,7 @@ NAWEAP:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Heavy		
+		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
 	RallyPoint:
@@ -428,7 +428,7 @@ NAWAST:
 		PipCount: 15
 		Capacity: 56
 	Power:
-		Amount: -40		
+		Amount: -40
 	FreeActor:
 		Actor: WEED
 		SpawnOffset: 3,1

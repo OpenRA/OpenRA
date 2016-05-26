@@ -113,7 +113,7 @@ MHIJACK:
 		Weapon: TiberiumHeal
 	Mobile:
 		Speed: 99
-	-Crushable:	
+	-Crushable:
 	Captures:
 		CaptureTypes: Vehicle
 	RevealsShroud:

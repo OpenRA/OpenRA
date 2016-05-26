@@ -17,21 +17,21 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Combat")]
-	public class DemolitionProperties : ScriptActorProperties, Requires<IMoveInfo>, Requires<C4DemolitionInfo>
+	public class DemolitionProperties : ScriptActorProperties, Requires<IMoveInfo>, Requires<DemolitionInfo>
 	{
-		readonly C4DemolitionInfo info;
+		readonly DemolitionInfo info;
 
 		public DemolitionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			info = Self.Info.TraitInfo<C4DemolitionInfo>();
+			info = Self.Info.TraitInfo<DemolitionInfo>();
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Demolish the target actor.")]
 		public void Demolish(Actor target)
 		{
-			Self.QueueActivity(new Demolish(Self, target, info.EnterBehaviour, info.C4Delay,
+			Self.QueueActivity(new Demolish(Self, target, info.EnterBehaviour, info.DetonationDelay,
 				info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
 		}
 	}
