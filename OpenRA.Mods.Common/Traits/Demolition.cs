@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice string when planting explosive charges.")]
 		[VoiceReference] public readonly string Voice = "Action";
 
+		public readonly string Cursor = "c4";
+
 		public object Create(ActorInitializer init) { return new Demolition(this); }
 	}
 
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DemolitionOrderTargeter("c4"); }
+			get { yield return new DemolitionOrderTargeter(info.Cursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
