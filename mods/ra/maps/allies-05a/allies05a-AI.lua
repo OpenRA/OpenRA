@@ -243,25 +243,31 @@ ProduceAircraft = function()
 	end
 
 	ussr.Build(SovietAircraftType, function(units)
-		Yaks[#Yaks + 1] = units[1]
+		local yak = units[1]
+		Yaks[#Yaks + 1] = yak
 
-		if #Yaks == 2 then
-			Trigger.OnKilled(units[1], ProduceAircraft)
-		else
+		Trigger.OnKilled(yak, ProduceAircraft)
+		if #Yaks == 1 then
 			Trigger.AfterDelay(DateTime.Minutes(1), ProduceAircraft)
 		end
 
 		local target = nil
-		Trigger.OnIdle(units[1], function()
+		Trigger.OnIdle(yak, function()
 			if not target or target.IsDead or (not target.IsInWorld) then
 
 				local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") end)
 				if #enemies > 0 then
 					target = Utils.Random(enemies)
-					units[1].Attack(target)
+				else
+					yak.Wait(DateTime.Seconds(5))
 				end
+			end
+
+			if target and yak.AmmoCount() > 0 then
+				yak.Attack(target)
 			else
-				units[1].Attack(target)
+				yak.ReturnToBase()
+				yak.Resupply()
 			end
 		end)
 	end)
@@ -276,7 +282,7 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Minutes(5), function()
 		ProduceInfantry()
 		ProduceVehicles()
-		if false and AirAttacks then -- disable air strikes for now since they are broken
+		if AirAttacks then
 			Trigger.AfterDelay(DateTime.Minutes(3), ProduceAircraft)
 		end
 	end)
