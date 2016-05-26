@@ -325,6 +325,7 @@
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
