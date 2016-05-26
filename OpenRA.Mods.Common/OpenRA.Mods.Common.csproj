@@ -151,6 +151,7 @@
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
+    <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
@@ -324,6 +325,7 @@
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
@@ -455,6 +457,8 @@
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
     <Compile Include="Traits\Render\WithVoxelBody.cs" />
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
+    <Compile Include="Traits\Render\DrawLineToTarget.cs" />
+    <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
@@ -506,6 +510,7 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />

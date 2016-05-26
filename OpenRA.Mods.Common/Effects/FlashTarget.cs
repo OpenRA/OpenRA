@@ -11,9 +11,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Graphics;
 
-namespace OpenRA.Effects
+namespace OpenRA.Mods.Common.Effects
 {
 	public class FlashTarget : IEffect
 	{

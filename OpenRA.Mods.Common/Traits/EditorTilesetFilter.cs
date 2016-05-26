@@ -10,8 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class EditorTilesetFilterInfo : TraitInfo<EditorTilesetFilter>
 	{

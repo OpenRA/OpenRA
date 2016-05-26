@@ -10,8 +10,9 @@
 #endregion
 
 using OpenRA.Network;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to detect exploits. Attach this to the world actor.")]
 	public class ValidateOrderInfo : TraitInfo<ValidateOrder> { }
