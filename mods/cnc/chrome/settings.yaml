@@ -269,9 +269,16 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Cash Ticks
-						Checkbox@MUTE_SOUND:
+						Checkbox@SILO_WARNINGS:
 							X: 15
 							Y: 70
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: Cash Ticks
+						Checkbox@MUTE_SOUND:
+							X: 15
+							Y: 100
 							Width: 200
 							Height: 20
 							Font: Regular
