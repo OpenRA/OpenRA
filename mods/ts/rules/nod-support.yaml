@@ -68,7 +68,7 @@ NALASR:
 		Range: 3c0
 	Turreted:
 		TurnSpeed: 10
-		InitialFacing: 300
+		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
 	Armament:
@@ -150,7 +150,7 @@ NASAM:
 		RangeCircleType: aa
 	Turreted:
 		TurnSpeed: 10
-		InitialFacing: 50
+		InitialFacing: 224
 	AttackTurreted:
 	WithSpriteTurret:
 		Recoils: no
@@ -176,8 +176,8 @@ GAARTY:
 		Range: 9c0
 	Turreted:
 		TurnSpeed: 5
-		InitialFacing: 128
-		Offset: 0,0,171
+		InitialFacing: 96
+		Offset: 0,0,256
 	Armament:
 		Weapon: 155mm
 		LocalOffset: 811,0,0
@@ -187,7 +187,7 @@ GAARTY:
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	WithVoxelBarrel:
-		LocalOffset: 0,0,-512
+		LocalOffset: 0,0,-256
 	WithVoxelTurret:
 	Transforms:
 		IntoActor: art2

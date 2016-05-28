@@ -24,7 +24,7 @@ NAPULS:
 		Range: 8c0
 	Turreted:
 		TurnSpeed: 10
-		InitialFacing: 300
+		InitialFacing: 224
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon

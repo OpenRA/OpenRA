@@ -125,7 +125,7 @@ TTNK:
 	Turreted:
 		TurnSpeed: 6
 		Turret: deployed
-		InitialFacing: 128
+		InitialFacing: 160
 		Offset: -20, -130, 180
 	WithVoxelBarrel:
 		Armament: deployed
