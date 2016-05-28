@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Effects
+namespace OpenRA.Mods.RA.Projectiles
 {
 	class TeslaZapInfo : IProjectileInfo
 	{

@@ -15,11 +15,12 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	public class BulletInfo : IProjectileInfo
 	{

@@ -14,10 +14,11 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
 	class LaserZapInfo : IProjectileInfo
