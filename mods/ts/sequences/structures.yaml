@@ -838,7 +838,7 @@ nalasr:
 
 nasam:
 	Defaults:
-		Offset: 0, -12
+		Offset: 2, -12
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -851,7 +851,7 @@ nasam:
 		Tick: 400
 	turret: gtctwr_d
 		Facings: 32
-		Offset: -4, 0
+		Offset: 0, 0
 	make: ntsammk
 		Length: 8
 		ShadowStart: 8

@@ -156,7 +156,7 @@ NASAM:
 		Recoils: no
 	Armament:
 		Weapon: RedEye2
-		LocalOffset: 512,0,512
+		LocalOffset: 384,0,576
 	Power:
 		Amount: -30
 	SelectionDecorations:
