@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel = widget;
 
 			this.onStart = onStart;
+			Game.BeforeGameStart += OnGameStart;
 
 			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
 			playerHeader = playerList.Get<ScrollItemWidget>("HEADER");
@@ -664,16 +665,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void WatchReplay()
 		{
-			Action startReplay = () =>
+			if (selectedReplay != null && ReplayUtils.PromptConfirmReplayCompatibility(selectedReplay))
 			{
 				cancelLoadingReplays = true;
 				Game.JoinReplay(selectedReplay.FilePath);
-				Ui.CloseWindow();
-				onStart();
-			};
-
-			if (selectedReplay != null && ReplayUtils.PromptConfirmReplayCompatibility(selectedReplay))
-				startReplay();
+			}
 		}
 
 		void AddReplay(ReplayMetadata replay, ScrollItemWidget template)
@@ -695,6 +691,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			item.Get<LabelWidget>("TITLE").GetText = () => item.Text;
 			item.IsVisible = () => replayState[replay].Visible;
 			replayList.AddChild(item);
+		}
+
+		void OnGameStart()
+		{
+			Ui.CloseWindow();
+			onStart();
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				Game.BeforeGameStart -= OnGameStart;
+			}
+
+			base.Dispose(disposing);
 		}
 
 		class ReplayState
