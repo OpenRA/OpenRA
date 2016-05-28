@@ -197,7 +197,7 @@ namespace OpenRA
 				CreateAndStartLocalServer(lobbyInfo.GlobalSettings.Map, orders);
 		}
 
-		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders, Action onStart = null)
+		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders)
 		{
 			OrderManager om = null;
 
@@ -207,10 +207,8 @@ namespace OpenRA
 				LobbyInfoChanged -= lobbyReady;
 				foreach (var o in setupOrders)
 					om.IssueOrder(o);
-
-				if (onStart != null)
-					onStart();
 			};
+
 			LobbyInfoChanged += lobbyReady;
 
 			om = JoinServer(IPAddress.Loopback.ToString(), CreateLocalServer(mapUID), "");
