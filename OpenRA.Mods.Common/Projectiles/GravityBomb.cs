@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
-		public readonly WDist Velocity = WDist.Zero;
+		public readonly WDist Speed = WDist.Zero;
 
-		[Desc("Value added to velocity every tick.")]
+		[Desc("Value added to speed every tick.")]
 		public readonly WDist Acceleration = new WDist(15);
 
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
-			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Velocity);
+			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Speed);
 			acceleration = new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
 
 			if (!string.IsNullOrEmpty(info.Image))

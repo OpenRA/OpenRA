@@ -5,7 +5,7 @@ ParaBomb:
 	Projectile: GravityBomb
 		Image: PARABOMB
 		OpenSequence: open
-		Velocity: 86
+		Speed: 86
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
