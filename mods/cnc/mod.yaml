@@ -24,6 +24,7 @@ Packages:
 	~movies.mix
 	~scores.mix
 	~scores2.mix
+	~scores-covertops.mix
 	~transit.mix
 	cnc|bits/snow.mix
 	cnc|bits
@@ -143,19 +144,6 @@ LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png
 	Text: Loading
 
-ContentInstaller:
-	TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-	PackageMirrorList: http://www.openra.net/packages/cnc-mirrors.txt
-	DiskTestFiles: conquer.mix, desert.mix, install/setup.z
-	PackageToExtractFromCD: install/setup.z
-	ExtractFilesFromCD:
-		.: C&C95\SPEECH.MIX, C&C95\TEMPICNH.MIX, C&C95\TRANSIT.MIX
-	CopyFilesFromCD:
-		.: conquer.mix, desert.mix, general.mix, scores.mix, sounds.mix, temperat.mix, winter.mix
-	ShippedSoundtracks: 4
-	MusicPackageMirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
-	InstallShieldCABFileIds: 66, 45, 42, 65, 68, 67, 71, 47, 49, 60, 75, 73, 53
-
 ServerTraits:
 	LobbyCommands
 	PlayerPinger
@@ -232,3 +220,155 @@ GameSpeeds:
 		OrderLatency: 6
 
 ColorValidator:
+
+ModContent:
+	InstallPromptMessage: Tiberian Dawn requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2007 C&C Gold freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
+	QuickDownload: basefiles
+	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the 2007 freeware release.
+	Packages:
+		base: Base Game Files
+			TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
+			Discs: gdi95, gdi95-linux, nod95, nod95-linux
+			Required: true
+			Download: basefiles
+		music: Base Game Music
+			TestFiles: ^Content/cnc/scores.mix
+			Discs: gdi95, gdi95-linux, nod95, nod95-linux
+			Download: music
+		movies-gdi: GDI Campaign Briefings
+			TestFiles: ^Content/cnc/movies-gdi.mix
+			Discs: gdi95, gdi95-linux
+		movies-nod: Nod Campaign Briefings
+			TestFiles: ^Content/cnc/movies-nod.mix
+			Discs: nod95, nod95-linux
+		music-covertops: Covert Operations Music
+			TestFiles: ^Content/cnc/scores-covertops.mix
+			Discs: covertops, covertops-linux
+	Downloads:
+		basefiles: Base Freeware Content
+			MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
+			Extract:
+				^Content/cnc/conquer.mix: conquer.mix
+				^Content/cnc/desert.mix: desert.mix
+				^Content/cnc/general.mix: general.mix
+				^Content/cnc/sounds.mix: sounds.mix
+				^Content/cnc/speech.mix: speech.mix
+				^Content/cnc/temperat.mix: temperat.mix
+				^Content/cnc/tempicnh.mix: tempicnh.mix
+				^Content/cnc/transit.mix: transit.mix
+				^Content/cnc/winter.mix: winter.mix
+		music: Freeware Music
+			MirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
+			Extract:
+				^Content/cnc/scores.mix: scores.mix
+	Discs:
+		gdi95: C&C Gold (GDI Disc, English)
+			IDFiles:
+				DISK.WAV: 8bef9a6687c0fe0afd57c6561df58fa6e64f145d
+				CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/cnc/conquer.mix: CONQUER.MIX
+					^Content/cnc/desert.mix: DESERT.MIX
+					^Content/cnc/general.mix: GENERAL.MIX
+					^Content/cnc/scores.mix: SCORES.MIX
+					^Content/cnc/sounds.mix: SOUNDS.MIX
+					^Content/cnc/temperat.mix: TEMPERAT.MIX
+					^Content/cnc/winter.mix: WINTER.MIX
+					^Content/cnc/movies-gdi.mix: MOVIES.MIX
+				extract-blast: INSTALL/SETUP.Z
+					^Content/cnc/speech.mix:
+						Offset: 10203213
+						Length: 603293
+					^Content/cnc/tempicnh.mix:
+						Offset: 10925941
+						Length: 119096
+					^Content/cnc/transit.mix:
+						Offset: 11078017
+						Length: 3724462
+		gdi95-linux: C&C Gold (GDI Disc, English)
+			IDFiles:
+				disk.wav: 8bef9a6687c0fe0afd57c6561df58fa6e64f145d
+				conquer.mix: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/cnc/conquer.mix: conquer.mix
+					^Content/cnc/desert.mix: desert.mix
+					^Content/cnc/general.mix: general.mix
+					^Content/cnc/scores.mix: scores.mix
+					^Content/cnc/sounds.mix: sounds.mix
+					^Content/cnc/temperat.mix: temperat.mix
+					^Content/cnc/winter.mix: winter.mix
+					^Content/cnc/movies-gdi.mix: movies.mix
+				extract-blast: install/setup.z
+					^Content/cnc/speech.mix:
+						Offset: 10203213
+						Length: 603293
+					^Content/cnc/tempicnh.mix:
+						Offset: 10925941
+						Length: 119096
+					^Content/cnc/transit.mix:
+						Offset: 11078017
+						Length: 3724462
+		nod95: C&C Gold (Nod Disc, English)
+			IDFiles:
+				DISK.WAV: 83a0235525afa5cd6096f2967e3eae032996e38c
+				CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/cnc/conquer.mix: CONQUER.MIX
+					^Content/cnc/desert.mix: DESERT.MIX
+					^Content/cnc/general.mix: GENERAL.MIX
+					^Content/cnc/scores.mix: SCORES.MIX
+					^Content/cnc/sounds.mix: SOUNDS.MIX
+					^Content/cnc/temperat.mix: TEMPERAT.MIX
+					^Content/cnc/winter.mix: WINTER.MIX
+					^Content/cnc/movies-nod.mix: MOVIES.MIX
+				extract-blast: INSTALL/SETUP.Z
+					^Content/cnc/speech.mix:
+						Offset: 10203213
+						Length: 603293
+					^Content/cnc/tempicnh.mix:
+						Offset: 10925941
+						Length: 119096
+					^Content/cnc/transit.mix:
+						Offset: 11078017
+						Length: 3724462
+		nod95-linux: C&C Gold (Nod Disc, English)
+			IDFiles:
+				disk.wav: 83a0235525afa5cd6096f2967e3eae032996e38c
+				conquer.mix: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/cnc/conquer.mix: conquer.mix
+					^Content/cnc/desert.mix: desert.mix
+					^Content/cnc/general.mix: general.mix
+					^Content/cnc/scores.mix: scores.mix
+					^Content/cnc/sounds.mix: sounds.mix
+					^Content/cnc/temperat.mix: temperat.mix
+					^Content/cnc/winter.mix: winter.mix
+					^Content/cnc/movies-nod.mix: movies.mix
+				extract-blast: install/setup.z
+					^Content/cnc/speech.mix:
+						Offset: 10203213
+						Length: 603293
+					^Content/cnc/tempicnh.mix:
+						Offset: 10925941
+						Length: 119096
+					^Content/cnc/transit.mix:
+						Offset: 11078017
+						Length: 3724462
+		covertops: Covert Operations Expansion (English)
+			IDFiles:
+				GAME/GAME.DAT: be5a6c4c0a581da09e8f34a3bbf7bd17e525085c
+				CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
+			Install:
+				copy: .
+					^Content/cnc/scores-covertops.mix: SCORES.MIX
+		covertops-linux: Covert Operations Expansion (English)
+			IDFiles:
+				game/game.dat: be5a6c4c0a581da09e8f34a3bbf7bd17e525085c
+				conquer.mix: 713b53fa4c188ca9619c6bbeadbfc86513704266
+			Install:
+				copy: .
+					^Content/cnc/scores-covertops.mix: scores.mix
