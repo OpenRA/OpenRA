@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
+		public int BorderWidth = 1;
 		public int TopBottomSpacing = 2;
 		public int ItemSpacing = 0;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
@@ -165,7 +166,7 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
-			var drawBounds = backgroundRect.InflateBy(-1, -1, -1, -1);
+			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);
 			Game.Renderer.EnableScissor(drawBounds);
 
 			drawBounds.Offset((-ChildOrigin).ToPoint());
