@@ -10,13 +10,13 @@ BOAT:
 		Type: Heavy
 	Mobile:
 		InitialFacing: 64
-		TurnSpeed: 4
+		TurnSpeed: 32
 		Speed: 28
 		OnRails: true
 	RevealsShroud:
 		Range: 7c0
 	Turreted:
-		TurnSpeed: 7
+		TurnSpeed: 5
 		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile

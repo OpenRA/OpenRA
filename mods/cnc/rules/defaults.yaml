@@ -196,7 +196,8 @@
 	WithDeathAnimation:
 		DeathTypes:
 			DefaultDeath: 1
-			BulletDeath: 2
+			BulletDeath: 1
+			RippedApartDeath: 2
 			SmallExplosionDeath: 3
 			ExplosionDeath: 4
 			FireDeath: 5

@@ -178,7 +178,7 @@ Tail:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Horn:
 	ReloadDelay: 20
@@ -194,7 +194,7 @@ Horn:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Teeth:
 	ReloadDelay: 30
@@ -210,7 +210,7 @@ Teeth:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Claw:
 	ReloadDelay: 10
@@ -226,7 +226,7 @@ Claw:
 			Wood: 10
 			Light: 30
 			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
