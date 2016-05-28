@@ -265,7 +265,7 @@ SpiceExplosion:
 		Speed: 50, 75
 		Blockable: false
 		Angle: 60, 90
-		Trail: large_trail
+		TrailImage: large_trail
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Spread: 320

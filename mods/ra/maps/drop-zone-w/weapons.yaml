@@ -41,7 +41,7 @@ SubMissile:
 		Angle: 62
 		Inaccuracy: 2c938
 		Image: MISSILE
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 30
 	Warhead: SpreadDamage
 		Spread: 426

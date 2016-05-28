@@ -46,10 +46,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
 		[Desc("Trail animation.")]
-		public readonly string Trail = null;
+		public readonly string TrailImage = null;
 
-		[SequenceReference("Trail")] public readonly string[] TrailSequences = { "idle" };
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
+		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
 
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
@@ -183,10 +183,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				shouldExplode = true;
 			}
 
-			if (!string.IsNullOrEmpty(info.Trail) && --smokeTicks < 0)
+			if (!string.IsNullOrEmpty(info.TrailImage) && --smokeTicks < 0)
 			{
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.Trail, info.TrailSequences.Random(world.SharedRandom),
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
 					trailPalette, false, false, GetEffectiveFacing())));
 
 				smokeTicks = info.TrailInterval;

@@ -258,7 +258,7 @@ SubMissile:
 		Angle: 165
 		Inaccuracy: 2c938
 		Image: MISSILE
-		Trail: smokey
+		TrailImage: smokey
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
@@ -411,7 +411,7 @@ SCUD:
 		Speed: 170
 		Blockable: false
 		Shadow: false
-		Trail: smokey
+		TrailImage: smokey
 		TrailDelay: 5
 		Inaccuracy: 213
 		Image: V2
