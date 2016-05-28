@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Projectiles
 	{
 		public readonly string Image = null;
 
-		[Desc("Sequence to loop while falling.")]
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+		[Desc("Loop a randomly chosen sequence of Image from this list while falling.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
 		[SequenceReference("Image")] public readonly string OpenSequence = null;
@@ -64,9 +64,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				anim = new Animation(args.SourceActor.World, info.Image);
 
 				if (!string.IsNullOrEmpty(info.OpenSequence))
-					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
+					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom)));
 				else
-					anim.PlayRepeating(info.Sequence);
+					anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom));
 			}
 		}
 
