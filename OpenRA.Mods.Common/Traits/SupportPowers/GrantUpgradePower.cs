@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class GrantUpgradePower : SupportPower
 	{
-		GrantUpgradePowerInfo info;
+		readonly GrantUpgradePowerInfo info;
 
 		public GrantUpgradePower(Actor self, GrantUpgradePowerInfo info)
 			: base(self, info)

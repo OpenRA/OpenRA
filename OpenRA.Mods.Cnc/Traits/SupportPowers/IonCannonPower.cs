@@ -57,17 +57,22 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			base.Activate(self, order, manager);
 
+			ActivateIonCannon(self, order.TargetLocation);
+		}
+
+		public void ActivateIonCannon(Actor self, CPos targetLocation)
+		{
 			self.World.AddFrameEndTask(w =>
 			{
-				Game.Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
-				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
+				Game.Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(targetLocation));
+				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, targetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
 
 				if (info.CameraActor == null)
 					return;
 
 				var camera = w.CreateActor(info.CameraActor, new TypeDictionary
 				{
-					new LocationInit(order.TargetLocation),
+					new LocationInit(targetLocation),
 					new OwnerInit(self.Owner),
 				});
 

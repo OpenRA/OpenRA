@@ -93,6 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Activate(self, order, manager);
 
+			ActivateNuke(self, order.TargetLocation, order.Player);
+		}
+
+		public void ActivateNuke(Actor self, CPos targetLocation, Player beaconOwner)
+		{
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Game.Sound.Play(Info.LaunchSound);
 			else
@@ -104,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 				wsb.PlayCustomAnimation(self, info.ActivationSequence, () => wsb.CancelCustomAnimation(self));
 			}
 
-			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
+			var targetPosition = self.World.Map.CenterOfCell(targetLocation);
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
@@ -118,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var camera = self.World.CreateActor(false, info.CameraActor, new TypeDictionary
 				{
-					new LocationInit(order.TargetLocation),
+					new LocationInit(targetLocation),
 					new OwnerInit(self.Owner),
 				});
 
@@ -132,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DisplayBeacon)
 			{
 				var beacon = new Beacon(
-					order.Player,
+					beaconOwner,
 					targetPosition,
 					Info.BeaconPaletteIsPlayerPalette,
 					Info.BeaconPalette,

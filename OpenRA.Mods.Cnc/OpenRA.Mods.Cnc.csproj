@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="Effects\IonCannon.cs" />
+    <Compile Include="Scripting\Properties\IonCannonProperties.cs" />
     <Compile Include="Traits\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\PoisonedByTiberium.cs" />
@@ -118,6 +119,10 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripting" />
+    <Folder Include="Scripting\Properties" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

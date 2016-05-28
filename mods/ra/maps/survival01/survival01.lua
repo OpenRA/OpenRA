@@ -428,4 +428,12 @@ WorldLoaded = function()
 	InitObjectives()
 	InitMission()
 	SetupSoviets()
+	NukePowerTest()
+end
+
+NukePowerTest = function()
+	Actor.Create("apwr", true, { Owner = allies, Location = CPos.New(60, 40) })
+	local nk = Actor.Create("mslo", true, { Owner = allies, Location = CPos.New(60, 42) })
+
+	Trigger.AfterDelay(DateTime.Seconds(2), function() nk.Nuke(CPos.New(60, 60), allies) end)
 end
