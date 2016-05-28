@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var node in nodes)
 			{
 				// Refactor Missile RangeLimit from ticks to WDist
-				if (engineVersion < 20160501)
+				if (engineVersion < 20160509)
 				{
 					var weapRange = node.Value.Nodes.FirstOrDefault(n => n.Key == "Range");
 					var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
