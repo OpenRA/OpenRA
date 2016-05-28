@@ -524,8 +524,6 @@
 	-Building:
 	-WithSpriteBody:
 	WithGateSpriteBody:
-	Power:
-	CanPowerDown:
 	Tooltip:
 		Name: Gate
 		Description: Automated barrier that opens for allied units.

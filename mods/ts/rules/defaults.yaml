@@ -816,9 +816,6 @@
 	-MustBeDestroyed:
 	-WithSpriteBody:
 	WithGateSpriteBody:
-	Power:
-	CanPowerDown:
-		IndicatorPalette: mouse
 	Tooltip:
 		Description: Automated barrier that opens for allied units.
 	Gate:
