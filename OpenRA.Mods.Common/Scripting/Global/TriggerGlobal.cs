@@ -373,7 +373,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, invokeEntry, null);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, invokeEntry, null);
 
 			return triggerId;
 		}
@@ -400,7 +400,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, null, invokeExit);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, invokeExit);
 
 			return triggerId;
 		}

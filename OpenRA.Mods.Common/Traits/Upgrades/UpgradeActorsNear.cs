@@ -23,6 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The range to search for actors to upgrade.")]
 		public readonly WDist Range = WDist.FromCells(3);
 
+		[Desc("The maximum vertical range above terrain to search for actors to upgrade.",
+		"Ignored if 0 (actors are upgraded regardless of vertical distance).")]
+		public readonly WDist MaximumVerticalOffset = WDist.Zero;
+
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
@@ -44,6 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 		WPos cachedPosition;
 		WDist cachedRange;
 		WDist desiredRange;
+		WDist cachedVRange;
+		WDist desiredVRange;
 
 		bool cachedDisabled = true;
 
@@ -52,12 +58,13 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			this.self = self;
 			cachedRange = info.Range;
+			cachedVRange = info.MaximumVerticalOffset;
 		}
 
 		public void AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, ActorEntered, ActorExited);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, cachedVRange, ActorEntered, ActorExited);
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -73,14 +80,16 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Game.Sound.Play(disabled ? info.DisableSound : info.EnableSound, self.CenterPosition);
 				desiredRange = disabled ? WDist.Zero : info.Range;
+				desiredVRange = disabled ? WDist.Zero : info.MaximumVerticalOffset;
 				cachedDisabled = disabled;
 			}
 
-			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange)
+			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange || desiredVRange != cachedVRange)
 			{
 				cachedPosition = self.CenterPosition;
 				cachedRange = desiredRange;
-				self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, cachedPosition, cachedRange);
+				cachedVRange = desiredVRange;
+				self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, cachedPosition, cachedRange, cachedVRange);
 			}
 		}
 
