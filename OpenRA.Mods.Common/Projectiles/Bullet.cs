@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image to display.")]
 		public readonly string Image = null;
 
-		[Desc("Loop these sequences of Image while this projectile is moving.")]
+		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("The palette used to draw this projectile.")]
@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Trail animation.")]
 		public readonly string Trail = null;
 
-		[Desc("Loop these sequences of Trail while this projectile is moving.")]
 		[SequenceReference("Trail")] public readonly string[] TrailSequences = { "idle" };
+		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
@@ -69,7 +69,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
+		[Desc("Palette used to render the trail sequence.")]
 		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the trail sequence.")]
 		public readonly bool TrailUsePlayerPalette = false;
 
 		public readonly int ContrailLength = 0;
@@ -185,6 +188,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.Trail, info.TrailSequences.Random(world.SharedRandom),
 					trailPalette, false, false, GetEffectiveFacing())));
+
 				smokeTicks = info.TrailInterval;
 			}
 
