@@ -38,6 +38,10 @@ namespace OpenRA.Mods.Common.HitShapes
 			"Mobile actors do NOT need this!")]
 		public readonly bool RotateToIsometry = false;
 
+		// This is just a temporary work-around until we have a customizable PolygonShape
+		[Desc("Applies shape to every TargetablePosition instead of just CenterPosition.")]
+		public readonly bool ApplyToAllTargetablePositions = false;
+
 		int2 quadrantSize;
 		int2 center;
 
@@ -97,6 +101,13 @@ namespace OpenRA.Mods.Common.HitShapes
 			var orientation = new WRot(actor.Orientation.Roll, actor.Orientation.Pitch,
 				new WAngle(actor.Orientation.Yaw.Angle + (RotateToIsometry ? 128 : 0)));
 
+			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
+			if (ApplyToAllTargetablePositions && targetablePositions.Any())
+			{
+				var positions = targetablePositions.SelectMany(tp => tp.TargetablePositions(actor));
+				actorPos = positions.PositionClosestTo(pos);
+			}
+
 			if (pos.Z > actorPos.Z + VerticalTopOffset)
 				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
@@ -112,10 +123,25 @@ namespace OpenRA.Mods.Common.HitShapes
 			var orientation = new WRot(actor.Orientation.Roll, actor.Orientation.Pitch,
 				new WAngle(actor.Orientation.Yaw.Angle + (RotateToIsometry ? 128 : 0)));
 
-			var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
-			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
-			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
+			if (ApplyToAllTargetablePositions && targetablePositions.Any())
+			{
+				var positions = targetablePositions.SelectMany(tp => tp.TargetablePositions(actor));
+				foreach (var pos in positions)
+				{
+					var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(pos + v.Rotate(orientation)));
+					var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(pos + v.Rotate(orientation)));
+					wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
+					wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+				}
+			}
+			else
+			{
+				var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
+				var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
+				wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
+				wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+			}
 		}
 	}
 }
