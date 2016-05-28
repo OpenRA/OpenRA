@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
 
-		[Desc("Projectile sequence name.")]
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("Palette used to render the projectile sequence.")]
 		[PaletteReference] public readonly string Palette = "effect";
@@ -100,8 +100,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image that contains the trail animation.")]
 		public readonly string TrailImage = null;
 
-		[Desc("Trail sequence name.")]
-		[SequenceReference("TrailImage")] public readonly string TrailSequence = "idle";
+		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
+		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
 
 		[Desc("Palette used to render the trail sequence.")]
 		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, () => renderFacing);
-				anim.PlayRepeating(info.Sequence);
+				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 
 			if (info.ContrailLength > 0)
@@ -820,7 +820,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Create the sprite trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequence, trailPalette, false, false, renderFacing)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
+					trailPalette, false, false, renderFacing)));
+
 				ticksToNextSmoke = info.TrailInterval;
 			}
 
