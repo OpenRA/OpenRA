@@ -99,7 +99,7 @@
 	GivesBounty:
 	GpsDot:
 		String: Vehicle
-	WithSmoke:
+	WithDamageOverlay:
 	Guard:
 	Guardable:
 	Tooltip:
@@ -325,7 +325,7 @@
 	RepairableNear:
 	GpsDot:
 		String: Ship
-	WithSmoke:
+	WithDamageOverlay:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip

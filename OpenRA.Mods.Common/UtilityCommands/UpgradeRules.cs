@@ -788,6 +788,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							n.Key = "DetonationDelay";
 				}
 
+				// WithSmoke was refactored to become more generic and Sequence/Image notation has been unified.
+				if (engineVersion < 20160528)
+				{
+					if (depth == 1 && node.Key.StartsWith("WithSmoke"))
+					{
+						var s = node.Value.Nodes.FirstOrDefault(n => n.Key == "Sequence");
+						if (s != null)
+							s.Key = "Image";
+
+						var parts = node.Key.Split('@');
+						node.Key = "WithDamageOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
