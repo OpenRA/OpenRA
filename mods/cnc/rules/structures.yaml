@@ -283,14 +283,15 @@ HAND:
 		Prerequisites: anypower
 		Queue: Building.Nod
 	Building:
-		Footprint: __ xx xx
-		Dimensions: 2,3
+		Footprint: xx xx
+		Dimensions: 2,2
 	Health:
 		HP: 500
 	RevealsShroud:
 		Range: 5c0
 	Bib:
 	RallyPoint:
+		Offset: 1,2
 	Exit@1:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
@@ -366,8 +367,8 @@ WEAP:
 		Prerequisites: proc
 		Queue: Building.GDI
 	Building:
-		Footprint: ___ xxx ===
-		Dimensions: 3,3
+		Footprint: xxx ===
+		Dimensions: 3,2
 	Selectable:
 		Bounds: 72,54,0,5
 	SelectionDecorations:
@@ -380,10 +381,10 @@ WEAP:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
-		Offset: 0,3
+		Offset: 0,2
 	Exit@1:
-		SpawnOffset: -341,-341,0
-		ExitCell: 0,2
+		SpawnOffset: -512,-512,0
+		ExitCell: 0,1
 		ExitDelay: 3
 	Production:
 		Produces: Vehicle.GDI
@@ -604,8 +605,8 @@ TMPL:
 		Prerequisites: anyhq, ~techlevel.high
 		Queue: Building.Nod
 	Building:
-		Footprint: ___ xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 	Selectable:
 		Bounds: 72,60,0,9
 	SelectionDecorations:
@@ -740,13 +741,10 @@ OBLI:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Defence.Nod
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	Selectable:
-		Bounds: 24,24,0,12
+		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 22,42
+		VisualBounds: 22,42,0,-9
 	RequiresPower:
 	DisabledOverlay:
 	Health:
@@ -760,7 +758,7 @@ OBLI:
 	WithChargeAnimation:
 	Armament:
 		Weapon: Laser
-		LocalOffset: 0,0,725
+		LocalOffset: 0,-85,1280
 		FireDelay: 0
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
@@ -820,13 +818,10 @@ ATWR:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Defence.GDI
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	Selectable:
-		Bounds: 24,24,0,12
+		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,48,0,-3
+		VisualBounds: 22,42,0,-9
 	RequiresPower:
 	DisabledOverlay:
 	Health:
@@ -839,7 +834,7 @@ ATWR:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
-		Offset: 128,128,0
+		Offset: 128,128,384
 	Armament@PRIMARY:
 		Weapon: TowerMissle
 		LocalOffset: 256,128,0, 256,-128,0
