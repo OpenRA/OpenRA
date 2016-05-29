@@ -61,13 +61,10 @@ GAP:
 		Queue: Defense
 		BuildPaletteOrder: 110
 		Prerequisites: atek, ~structures.allies, ~techlevel.high
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	Selectable:
-		Bounds: 24,28,0,12
+		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,40,0,0
+		VisualBounds: 24,40,0,-8
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -407,14 +404,11 @@ TSLA:
 	Tooltip:
 		Name: Tesla Coil
 		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	RequiresPower:
 	Selectable:
-		Bounds: 24,24,0,16
+		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,36,0,4
+		VisualBounds: 24,36,0,-6
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
@@ -430,7 +424,7 @@ TSLA:
 	WithChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
-		LocalOffset: 0,0,427
+		LocalOffset: 0,0,896
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
@@ -454,13 +448,10 @@ AGUN:
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
 	Selectable:
-		Bounds: 24,28,0,16
+		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,36,0,12
+		VisualBounds: 24,32,0,-4
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -1293,12 +1284,12 @@ APWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: ___ xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 	Selectable:
-		Bounds: 72,48,0,12
+		Bounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,64,0,-2
+		VisualBounds: 72,60,0,-6
 	Health:
 		HP: 700
 	Armor:

@@ -131,12 +131,16 @@ powr:
 
 apwr:
 	idle:
+		Offset: 0,-10
 	damaged-idle:
 		Start: 1
+		Offset: 0,-10
 	make: apwrmake
 		Length: *
+		Offset: 0,-10
 	dead: apwrdead
 		Tick: 800
+		Offset: 0,-10
 	bib: bib2
 		Length: *
 		UseTilesetExtension: true
@@ -374,29 +378,29 @@ agun:
 	idle:
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: 0,-1
+		Offset: 0,-13
 	recoil:
 		Start: 32
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: 0,-1
+		Offset: 0,-13
 	make: agunmake
 		Length: *
-		Offset: 0,-1
+		Offset: 0,-13
 	damaged-idle:
 		Start: 64
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: 0,-1
+		Offset: 0,-13
 	damaged-recoil:
 		Start: 96
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: 0,-1
+		Offset: 0,-13
 	muzzle: gunfire2
 		Start: 1
 		Length: 4
-		Offset: 0,-1
+		Offset: 0,-13
 	bib: mbAGUN
 		Length: *
 		UseTilesetExtension: true
@@ -441,23 +445,23 @@ ftur:
 
 tsla:
 	idle:
-		Offset: 0,-1
+		Offset: 0,-13
 	damaged-idle:
 		Start: 10
-		Offset: 0,-1
+		Offset: 0,-13
 	make: tslamake
 		Length: *
-		Offset: 0,-1
+		Offset: 0,-13
 	active:
 		Start: 1
 		Length: 9
 		Tick: 100
-		Offset: 0,-1
+		Offset: 0,-13
 	damaged-active:
 		Start: 11
 		Length: 9
 		Tick: 100
-		Offset: 0,-1
+		Offset: 0,-13
 	bib: mbTSLA
 		Length: *
 		UseTilesetExtension: true
@@ -498,14 +502,14 @@ hbox:
 gap:
 	idle:
 		Length: 32
-		Offset: 0,-2
+		Offset: 0,-14
 	damaged-idle:
 		Start: 32
 		Length: 32
-		Offset: 0,-2
+		Offset: 0,-14
 	make: gapmake
 		Length: *
-		Offset: 0,-2
+		Offset: 0,-14
 	bib: mbGAP
 		Length: *
 		UseTilesetExtension: true
