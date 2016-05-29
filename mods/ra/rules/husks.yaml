@@ -285,6 +285,11 @@ T08.Husk:
 		Footprint: x_
 		Dimensions: 2,1
 
+T09.Husk:
+	Inherits: ^TreeHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+
 T10.Husk:
 	Inherits: ^TreeHusk
 	Building:

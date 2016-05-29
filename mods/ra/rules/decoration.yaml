@@ -76,6 +76,13 @@ T08:
 	SpawnActorOnDeath:
 		Actor: T08.Husk
 
+T09:
+	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T09.Husk
+
 T10:
 	Inherits: ^Tree
 	Building:

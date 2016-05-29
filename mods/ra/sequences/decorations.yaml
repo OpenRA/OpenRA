@@ -799,6 +799,21 @@ t04.husk:
 		Length: 8
 		Tick: 80
 
+t09:
+	Defaults:
+		AddExtension: false
+	idle: t09.des
+
+t09.husk:
+	Defaults: t09
+		AddExtension: false
+	idle: t09.des
+		Start: 1
+	dead: t09.des
+		Start: 2
+		Length: 8
+		Tick: 80
+
 v20:
 	Defaults:
 		AddExtension: false
