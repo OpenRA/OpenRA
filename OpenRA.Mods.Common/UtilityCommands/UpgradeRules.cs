@@ -289,11 +289,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
+		internal static void ModifyCPos(ref string input, CVec vector)
+		{
+			var oldCPos = FieldLoader.GetValue<CPos>("(value)", input);
+			var newCPos = oldCPos + vector;
+			input = newCPos.ToString();
+		}
+
 		internal static void UpgradeActors(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
-				// Add rules here
+				// Fix RA building footprints to not use _ when it's not necessary
+				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "ra" && depth == 1)
+				{
+					var buildings = new List<string>() { "tsla", "gap", "agun", "apwr", "fapw" };
+					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
+						ModifyCPos(ref node.Value.Value, new CVec(0, 1));
+				}
+
+				// Fix TD building footprints to not use _ when it's not necessary
+				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "cnc" && depth == 1)
+				{
+					var buildings = new List<string>() { "atwr", "obli", "tmpl", "weap", "hand" };
+					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
+						ModifyCPos(ref node.Value.Value, new CVec(0, 1));
+				}
+
 				UpgradeActors(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
