@@ -301,11 +301,11 @@ namespace OpenRA
 				Owner = newOwner;
 				Generation++;
 
-				if (wasInWorld)
-					w.Add(this);
-
 				foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
+
+				if (wasInWorld)
+					w.Add(this);
 			});
 		}
 
