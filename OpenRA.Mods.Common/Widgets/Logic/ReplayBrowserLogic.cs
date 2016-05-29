@@ -18,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -32,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly List<ReplayMetadata> replays = new List<ReplayMetadata>();
 		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
 		readonly Action onStart;
+		readonly ModData modData;
 
 		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
@@ -43,6 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			panel = widget;
 
+			this.modData = modData;
 			this.onStart = onStart;
 
 			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -649,7 +652,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var flag = item.Get<ImageWidget>("FLAG");
 						flag.GetImageCollection = () => "flags";
-						flag.GetImageName = () => o.FactionId;
+						var factionInfo = modData.DefaultRules.Actors["world"].TraitInfos<FactionInfo>();
+						flag.GetImageName = () => (factionInfo != null && factionInfo.Any(f => f.InternalName == o.FactionId)) ? o.FactionId : "Random";
 
 						playerList.AddChild(item);
 					}
