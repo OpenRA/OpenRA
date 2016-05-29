@@ -501,10 +501,10 @@ Actors:
 		Location: 67,45
 		Owner: Greece
 	Gap1: gap
-		Location: 83,51
+		Location: 83,52
 		Owner: Greece
 	Gap2: gap
-		Location: 59,65
+		Location: 59,66
 		Owner: Greece
 	Powr1: powr
 		Location: 47,47
@@ -516,7 +516,7 @@ Actors:
 		Location: 96,45
 		Owner: Greece
 	APwr: apwr
-		Location: 49,56
+		Location: 49,57
 		Owner: Greece
 	Fix1: fix
 		Location: 56,55

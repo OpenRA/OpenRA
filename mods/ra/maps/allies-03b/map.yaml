@@ -968,10 +968,10 @@ Actors:
 		Location: 83,79
 		Owner: USSR
 	Actor302: apwr
-		Location: 5,5
+		Location: 5,6
 		Owner: USSR
 	Actor304: apwr
-		Location: 5,5
+		Location: 5,6
 		Owner: USSR
 	ExplosiveBarrel: brl3
 		Location: 55,40

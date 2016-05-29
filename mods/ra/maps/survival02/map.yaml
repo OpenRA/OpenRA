@@ -215,10 +215,10 @@ Actors:
 		Location: 14,17
 		Owner: Soviets
 	Actor69: apwr
-		Location: 75,6
+		Location: 75,7
 		Owner: Soviets
 	Actor73: tsla
-		Location: 16,12
+		Location: 16,13
 		Owner: Soviets
 	Actor67: barb
 		Location: 19,11
@@ -413,7 +413,7 @@ Actors:
 		Location: 34,47
 		Owner: Neutral
 	Actor134: agun
-		Location: 35,42
+		Location: 35,43
 		Owner: Allies
 		Health: 40
 	Actor135: gun
@@ -437,7 +437,7 @@ Actors:
 		Owner: Allies
 		Health: 50
 	Actor141: agun
-		Location: 32,31
+		Location: 32,32
 		Owner: Allies
 		Health: 40
 	Actor143: fenc
@@ -518,7 +518,7 @@ Actors:
 		Location: 45,32
 		Owner: Allies
 	Actor166: agun
-		Location: 46,37
+		Location: 46,38
 		Owner: Allies
 		Health: 50
 	Actor167: e1
@@ -576,7 +576,7 @@ Actors:
 		Location: 29,15
 		Owner: Neutral
 	Actor182: apwr
-		Location: 22,2
+		Location: 22,3
 		Owner: Soviets
 	Actor77: v2rl
 		Location: 40,23
@@ -632,7 +632,7 @@ Actors:
 		Location: 62,75
 		Owner: Soviets
 	Actor196: tsla
-		Location: 60,8
+		Location: 60,9
 		Owner: Soviets
 	Actor235: barl
 		Location: 64,70
@@ -728,7 +728,7 @@ Actors:
 		Location: 23,6
 		Owner: Neutral
 	Actor190: apwr
-		Location: 25,4
+		Location: 25,5
 		Owner: Soviets
 	Actor83: barl
 		Location: 63,69
@@ -908,7 +908,7 @@ Actors:
 		Location: 58,71
 		Owner: Soviets
 	boom1: apwr
-		Location: 56,72
+		Location: 56,73
 		Owner: Soviets
 	boom2: barr
 		Location: 65,69

@@ -392,7 +392,7 @@ Actors:
 		Location: 74,36
 		Owner: Soviets
 	Actor306: apwr
-		Location: 54,65
+		Location: 54,67
 		Owner: Soviets
 	Actor134: tc03
 		Location: 110,107
@@ -717,7 +717,7 @@ Actors:
 		Location: 93,18
 		Owner: Soviets
 	Actor489: apwr
-		Location: 76,19
+		Location: 76,20
 		Owner: Soviets
 	Actor517: sbag
 		Location: 96,17
@@ -726,7 +726,7 @@ Actors:
 		Location: 93,19
 		Owner: Soviets
 	Actor488: apwr
-		Location: 80,19
+		Location: 80,20
 		Owner: Soviets
 	Actor116: cycl
 		Location: 74,20
@@ -744,7 +744,7 @@ Actors:
 		Location: 101,35
 		Owner: Soviets
 	Actor487: apwr
-		Location: 80,16
+		Location: 80,17
 		Owner: Soviets
 	Actor523: t17
 		Location: 85,20
@@ -786,13 +786,13 @@ Actors:
 		Location: 96,18
 		Owner: Soviets
 	Actor486: apwr
-		Location: 76,16
+		Location: 76,17
 		Owner: Soviets
 	Actor514: tc03
 		Location: 104,20
 		Owner: Neutral
 	Actor307: apwr
-		Location: 54,59
+		Location: 54,60
 		Owner: Soviets
 	Actor91: cycl
 		Location: 74,17
@@ -861,7 +861,7 @@ Actors:
 		Location: 35,99
 		Owner: Allies
 	Actor204: apwr
-		Location: 37,107
+		Location: 37,108
 		Owner: Allies
 	Actor92: powr
 		Location: 101,46
@@ -870,7 +870,7 @@ Actors:
 		Location: 110,93
 		Owner: Soviets
 	Actor83: apwr
-		Location: 37,104
+		Location: 37,105
 		Owner: Allies
 	Actor162: mine
 		Location: 20,91
@@ -923,7 +923,7 @@ Actors:
 		Location: 45,79
 		Owner: Neutral
 	Actor171: tsla
-		Location: 41,56
+		Location: 41,57
 		Owner: Soviets
 	Actor570: oilb
 		Location: 43,80
@@ -1010,7 +1010,7 @@ Actors:
 		Location: 102,78
 		Owner: Soviets
 	Actor283: apwr
-		Location: 51,58
+		Location: 51,59
 		Owner: Soviets
 	Actor72: dog
 		Location: 81,71
@@ -1079,7 +1079,7 @@ Actors:
 		Location: 64,63
 		Owner: Neutral
 	Actor265: tsla
-		Location: 61,64
+		Location: 61,65
 		Owner: Soviets
 	Actor257: proc
 		Location: 35,28
@@ -1124,7 +1124,7 @@ Actors:
 		Location: 81,97
 		Owner: Neutral
 	Actor176: tsla
-		Location: 56,36
+		Location: 56,37
 		Owner: Soviets
 	Actor681: wood
 		Location: 70,100
@@ -1133,7 +1133,7 @@ Actors:
 		Location: 69,100
 		Owner: Neutral
 	Actor308: apwr
-		Location: 54,62
+		Location: 54,63
 		Owner: Soviets
 	Actor262: t06
 		Location: 20,51
@@ -1175,13 +1175,13 @@ Actors:
 		Location: 45,44
 		Owner: Soviets
 	Actor179: tsla
-		Location: 25,52
+		Location: 25,53
 		Owner: Soviets
 	Actor180: ftur
 		Location: 32,25
 		Owner: Soviets
 	Actor700: tsla
-		Location: 55,17
+		Location: 55,18
 		Owner: Soviets
 	Actor183: ftur
 		Location: 22,40
@@ -1283,7 +1283,7 @@ Actors:
 		Location: 102,68
 		Owner: Soviets
 	Actor309: apwr
-		Location: 51,64
+		Location: 51,65
 		Owner: Soviets
 	Actor316: fact
 		Location: 59,61
@@ -1295,7 +1295,7 @@ Actors:
 		Location: 67,52
 		Owner: Neutral
 	Actor763: tsla
-		Location: 79,24
+		Location: 79,25
 		Owner: Soviets
 	Actor764: e1
 		Location: 95,59
@@ -1349,7 +1349,7 @@ Actors:
 		Location: 40,24
 		Owner: Neutral
 	Actor322: tsla
-		Location: 48,64
+		Location: 48,65
 		Owner: Soviets
 	Actor255: gun
 		Location: 42,91
@@ -1418,13 +1418,13 @@ Actors:
 		Location: 65,44
 		Owner: Soviets
 	Actor197: tsla
-		Location: 55,44
+		Location: 55,45
 		Owner: Soviets
 	Actor277: fenc
 		Location: 57,39
 		Owner: Soviets
 	Actor288: apwr
-		Location: 51,61
+		Location: 51,62
 		Owner: Soviets
 	Actor278: fenc
 		Location: 56,39

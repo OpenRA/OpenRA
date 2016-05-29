@@ -535,10 +535,10 @@ Actors:
 		Location: 96,54
 		Owner: Greece
 	Gap1: gap
-		Location: 86,50
+		Location: 86,51
 		Owner: Greece
 	Gap2: gap
-		Location: 90,62
+		Location: 90,63
 		Owner: Greece
 	Weap: weap
 		Location: 92,50

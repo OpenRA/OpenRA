@@ -117,7 +117,7 @@ Actors:
 		Location: 54,45
 		Owner: Neutral
 	Actor22: tsla
-		Location: 71,59
+		Location: 71,60
 		Owner: USSR
 	Actor23: powr
 		Location: 75,64
@@ -138,10 +138,10 @@ Actors:
 		Location: 61,64
 		Owner: USSR
 	Actor30: tsla
-		Location: 67,67
+		Location: 67,68
 		Owner: USSR
 	Actor31: tsla
-		Location: 60,66
+		Location: 60,67
 		Owner: USSR
 	Actor32: weap
 		Location: 65,62

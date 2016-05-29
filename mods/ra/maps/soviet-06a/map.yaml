@@ -526,7 +526,7 @@ Actors:
 		Owner: Greece
 		Facing: 128
 	Actor163: gap
-		Location: 24,21
+		Location: 24,22
 		Owner: Greece
 	Actor164: syrd
 		Location: 35,14
@@ -716,7 +716,7 @@ Actors:
 		Owner: Neutral
 	AGun: agun
 		Owner: Greece
-		Location: 25,4
+		Location: 25,5
 		TurretFacing: 92
 	APCWaypoint1: waypoint
 		Location: 52,50
@@ -725,11 +725,11 @@ Actors:
 		Location: 58,51
 		Owner: Neutral
 	Apwr: apwr
-		Location: 18,11
+		Location: 18,12
 		Owner: Greece
 	Apwr2: apwr
 		Owner: Greece
-		Location: 27,5
+		Location: 27,6
 	AttackWaypoint1: waypoint
 		Owner: Neutral
 		Location: 24,30
