@@ -145,20 +145,6 @@ LoadScreen: LogoStripeLoadScreen
 	Image: ra|uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
-ContentInstaller:
-	TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
-	PackageMirrorList: http://www.openra.net/packages/ra-mirrors.txt
-	DiskTestFiles: MAIN.MIX, INSTALL/REDALERT.MIX
-	PackageToExtractFromCD: MAIN.MIX
-	ExtractFilesFromCD:
-		.: conquer.mix, russian.mix, allies.mix, sounds.mix, scores.mix, snow.mix, interior.mix, temperat.mix, general.mix
-	CopyFilesFromCD:
-		.: INSTALL/REDALERT.MIX
-	ShippedSoundtracks: 2
-	MusicPackageMirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
-	InstallShieldCABFilePackageIds: 105
-	InstallShieldCABFileIds: 116
-
 ServerTraits:
 	LobbyCommands
 	PlayerPinger
@@ -234,3 +220,203 @@ GameSpeeds:
 		OrderLatency: 6
 
 ColorValidator:
+
+ModContent:
+	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
+	QuickDownload: basefiles
+	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the 2008 freeware release.
+	Packages:
+		base: Base Game Files
+			TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
+			Discs: allied, allied-linux, soviet, soviet-linux
+			Required: true
+			Download: basefiles
+		music: Base Game Music
+			TestFiles: ^Content/ra/scores.mix
+			Discs: allied, allied-linux, soviet, soviet-linux
+			Download: music
+		movies-allied: Allied Campaign Briefings
+			TestFiles: ^Content/ra/movies1.mix
+			Discs: allied, allied-linux
+		movies-soviet: Soviet Campaign Briefings
+			TestFiles: ^Content/ra/movies2.mix
+			Discs: soviet, soviet-linux
+		music-covertops: Counterstrike Music
+			TestFiles: ^Content/ra/scores-counterstrike.mix
+			Discs: counterstrike, counterstrike-linux
+	Downloads:
+		basefiles: Base Freeware Content
+			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
+			Extract:
+				^Content/ra/allies.mix: allies.mix
+				^Content/ra/conquer.mix: conquer.mix
+				^Content/ra/general.mix: general.mix
+				^Content/ra/interior.mix: interior.mix
+				^Content/ra/redalert.mix: redalert.mix
+				^Content/ra/russian.mix: russian.mix
+				^Content/ra/snow.mix: snow.mix
+				^Content/ra/sounds.mix: sounds.mix
+				^Content/ra/temperat.mix: temperat.mix
+		music: Freeware Music
+			MirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
+			Extract:
+				^Content/ra/scores.mix: scores.mix
+	Discs:
+		allied: Red Alert 95 (Allied Disc, English)
+			IDFiles:
+				eahelp.GID: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
+				INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+			Install:
+				copy: INSTALL
+					^Content/ra/redalert.mix: REDALERT.MIX
+				extract-raw: MAIN.MIX
+					^Content/ra/conquer.mix:
+						Offset: 236
+						Length: 2177047
+					^Content/ra/interior.mix:
+						Offset: 17172192
+						Length: 247425
+					^Content/ra/movies1.mix:
+						Offset: 17419617
+						Length: 369362336
+					^Content/ra/scores.mix:
+						Offset: 386781953
+						Length: 64171360
+					^Content/ra/snow.mix:
+						Offset: 450953313
+						Length: 1030861
+					^Content/ra/sounds.mix:
+						Offset: 451984174
+						Length: 1006778
+					^Content/ra/russian.mix:
+						Offset: 452990952
+						Length: 266077
+					^Content/ra/allies.mix:
+						Offset: 453257029
+						Length: 309406
+					^Content/ra/temperat.mix:
+						Offset: 453566435
+						Length: 1038859
+		allied-linux: Red Alert 95 (Allied Disc, English)
+			IDFiles:
+				eahelp.gid: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
+				install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+			Install:
+				copy: install
+					^Content/ra/redalert.mix: redalert.mix
+				extract-raw: main.mix
+					^Content/ra/conquer.mix:
+						Offset: 236
+						Length: 2177047
+					^Content/ra/interior.mix:
+						Offset: 17172192
+						Length: 247425
+					^Content/ra/movies1.mix:
+						Offset: 17419617
+						Length: 369362336
+					^Content/ra/scores.mix:
+						Offset: 386781953
+						Length: 64171360
+					^Content/ra/snow.mix:
+						Offset: 450953313
+						Length: 1030861
+					^Content/ra/sounds.mix:
+						Offset: 451984174
+						Length: 1006778
+					^Content/ra/russian.mix:
+						Offset: 452990952
+						Length: 266077
+					^Content/ra/allies.mix:
+						Offset: 453257029
+						Length: 309406
+					^Content/ra/temperat.mix:
+						Offset: 453566435
+						Length: 1038859
+		soviet: Red Alert 95 (Soviet Disc, English)
+			IDFiles:
+				automenu.apm: bb61132a492bfb37069a0139f95671da3655d916
+				INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+			Install:
+				copy: INSTALL
+					^Content/cnc/redalert.mix: REDALERT.MIX
+				extract-raw: MAIN.MIX
+					^Content/ra/conquer.mix:
+						Offset: 236
+						Length: 2177047
+					^Content/ra/interior.mix:
+						Offset: 17172192
+						Length: 247425
+					^Content/ra/movies2.mix:
+						Offset: 17419617
+						Length: 415334456
+					^Content/ra/scores.mix:
+						Offset: 432754073
+						Length: 64171360
+					^Content/ra/snow.mix:
+						Offset: 496925433
+						Length: 1030861
+					^Content/ra/russian.mix:
+						Offset: 497956294
+						Length: 266077
+					^Content/ra/allies.mix:
+						Offset: 498222371
+						Length: 309406
+					^Content/ra/sounds.mix:
+						Offset: 498531777
+						Length: 1006778
+					^Content/ra/temperat.mix:
+						Offset: 499538555
+						Length: 1038859
+		soviet-linux: Red Alert 95 (Soviet Disc, English)
+			IDFiles:
+				automenu.apm: bb61132a492bfb37069a0139f95671da3655d916
+				install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+			Install:
+				copy: install
+					^Content/cnc/redalert.mix: redalert.mix
+				extract-raw: main.mix
+					^Content/ra/conquer.mix:
+						Offset: 236
+						Length: 2177047
+					^Content/ra/interior.mix:
+						Offset: 17172192
+						Length: 247425
+					^Content/ra/movies2.mix:
+						Offset: 17419617
+						Length: 415334456
+					^Content/ra/scores.mix:
+						Offset: 432754073
+						Length: 64171360
+					^Content/ra/snow.mix:
+						Offset: 496925433
+						Length: 1030861
+					^Content/ra/russian.mix:
+						Offset: 497956294
+						Length: 266077
+					^Content/ra/allies.mix:
+						Offset: 498222371
+						Length: 309406
+					^Content/ra/sounds.mix:
+						Offset: 498531777
+						Length: 1006778
+					^Content/ra/temperat.mix:
+						Offset: 499538555
+						Length: 1038859
+		counterstrike: Counterstrike Expansion (English)
+			IDFiles:
+				README.TXT: 0efe8087383f0b159a9633f891fb5f53c6097cd4
+				SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
+			Install:
+				extract-raw: MAIN.MIX
+					^Content/ra/scores-counterstrike.mix:
+						Offset: 144899491
+						Length: 87483135
+		counterstrike-linux: Counterstrike Expansion (English)
+			IDFiles:
+				readme.txt: 0efe8087383f0b159a9633f891fb5f53c6097cd4
+				setup/install/cstrike.rtp: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
+			Install:
+				extract-raw: main.mix
+					^Content/ra/scores-counterstrike.mix:
+						Offset: 144899491
+						Length: 87483135
