@@ -752,6 +752,7 @@
     <Compile Include="Traits\Radar\JamsRadar.cs" />
     <Compile Include="AI\DummyAI.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
+    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

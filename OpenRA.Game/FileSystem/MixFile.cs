@@ -205,6 +205,15 @@ namespace OpenRA.FileSystem
 			return GetContent(e);
 		}
 
+		public IReadOnlyDictionary<string, PackageEntry> Index
+		{
+			get
+			{
+				var absoluteIndex = index.ToDictionary(e => e.Key, e => new PackageEntry(e.Value.Hash, (uint)(e.Value.Offset + dataStart), e.Value.Length));
+				return new ReadOnlyDictionary<string, PackageEntry>(absoluteIndex);
+			}
+		}
+
 		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
