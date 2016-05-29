@@ -413,7 +413,6 @@ install-core: default
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.GeoIP2.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Newtonsoft.Json.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) RestSharp.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) SmarIrc4net.dll "$(DATA_INSTALL_DIR)"
 
 ifneq ($(UNAME_S),Darwin)
