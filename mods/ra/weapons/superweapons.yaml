@@ -28,15 +28,15 @@ ParaBomb:
 		ValidImpactTypes: Water
 
 Atomic:
-	ValidTargets: Ground, Water, Underwater, Air
+	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Res_impact: DestroyResource
 		Size: 1
 	Warhead@3Smu_impact: LeaveSmudge
@@ -50,10 +50,10 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@6Res_areanuke1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -69,10 +69,10 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@10Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -85,10 +85,10 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@13Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -101,10 +101,10 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
-		ValidTargets: Ground, Water, Underwater, Air
+		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@16Res_areanuke4: DestroyResource
 		Size: 5
 		Delay: 20

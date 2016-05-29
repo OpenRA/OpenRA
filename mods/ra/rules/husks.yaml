@@ -222,3 +222,169 @@ U2.Husk:
 		MinDamage: Undamaged
 	RenderSprites:
 		Image: u2
+
+T01.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T02.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T03.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T04.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
+
+T05.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T06.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T07.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T08.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+
+T10.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T11.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T12.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T13.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T14.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T15.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T16.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T17.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC01.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
+
+TC02.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC03.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC04.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC05.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR

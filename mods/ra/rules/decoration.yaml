@@ -5,6 +5,8 @@ T01:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T01.Husk
 
 T02:
 	Inherits: ^Tree
@@ -13,6 +15,8 @@ T02:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T02.Husk
 
 T03:
 	Inherits: ^Tree
@@ -21,6 +25,8 @@ T03:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T03.Husk
 
 T04:
 	Inherits: ^Tree
@@ -29,6 +35,8 @@ T04:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	SpawnActorOnDeath:
+		Actor: T04.Husk
 
 T05:
 	Inherits: ^Tree
@@ -37,6 +45,8 @@ T05:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T05.Husk
 
 T06:
 	Inherits: ^Tree
@@ -45,6 +55,8 @@ T06:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T06.Husk
 
 T07:
 	Inherits: ^Tree
@@ -53,12 +65,16 @@ T07:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T07.Husk
 
 T08:
 	Inherits: ^Tree
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: T08.Husk
 
 T10:
 	Inherits: ^Tree
@@ -67,6 +83,8 @@ T10:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T10.Husk
 
 T11:
 	Inherits: ^Tree
@@ -75,6 +93,8 @@ T11:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T11.Husk
 
 T12:
 	Inherits: ^Tree
@@ -83,6 +103,8 @@ T12:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T12.Husk
 
 T13:
 	Inherits: ^Tree
@@ -91,6 +113,8 @@ T13:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T13.Husk
 
 T14:
 	Inherits: ^Tree
@@ -99,6 +123,8 @@ T14:
 		Dimensions: 3,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T14.Husk
 
 T15:
 	Inherits: ^Tree
@@ -107,6 +133,8 @@ T15:
 		Dimensions: 3,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T15.Husk
 
 T16:
 	Inherits: ^Tree
@@ -115,6 +143,8 @@ T16:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T16.Husk
 
 T17:
 	Inherits: ^Tree
@@ -123,6 +153,8 @@ T17:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: T17.Husk
 
 TC01:
 	Inherits: ^Tree
@@ -131,6 +163,8 @@ TC01:
 		Dimensions: 3,2
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	SpawnActorOnDeath:
+		Actor: TC01.Husk
 
 TC02:
 	Inherits: ^Tree
@@ -139,6 +173,8 @@ TC02:
 		Dimensions: 3,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: TC02.Husk
 
 TC03:
 	Inherits: ^Tree
@@ -147,6 +183,8 @@ TC03:
 		Dimensions: 3,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: TC03.Husk
 
 TC04:
 	Inherits: ^Tree
@@ -155,6 +193,8 @@ TC04:
 		Dimensions: 4,3
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: TC04.Husk
 
 TC05:
 	Inherits: ^Tree
@@ -163,6 +203,8 @@ TC05:
 		Dimensions: 4,3
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	SpawnActorOnDeath:
+		Actor: TC05.Husk
 
 BOXES01:
 	Inherits: ^Tree
