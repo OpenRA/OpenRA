@@ -185,29 +185,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (!IsModInstalled(mod))
 			{
-				if (mod.ModContent != null)
+				var widgetArgs = new WidgetArgs
 				{
-					var widgetArgs = new WidgetArgs
-					{
-						{ "continueLoading", () =>
-							Game.RunAfterTick(() => Game.InitializeMod(mod.Id, new Arguments())) },
-						{ "modId", mod.Id }
-					};
+					{ "continueLoading", () =>
+						Game.RunAfterTick(() => Game.InitializeMod(mod.Id, new Arguments())) },
+					{ "modId", mod.Id }
+				};
 
-					Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
-				}
-				else
-				{
-					var widgetArgs = new WidgetArgs
-					{
-						{ "continueLoading", () =>
-							Game.RunAfterTick(() => Game.InitializeMod(Game.Settings.Game.Mod, new Arguments())) },
-						{ "mirrorListUrl", mod.Content.PackageMirrorList },
-						{ "modId", mod.Id }
-					};
-
-					Ui.OpenWindow("INSTALL_PANEL", widgetArgs);
-				}
+				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
 
 				return;
 			}
@@ -222,7 +207,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static bool IsModInstalled(ModMetadata mod)
 		{
-			return mod.Content.TestFiles.All(file => File.Exists(Path.GetFullPath(Platform.ResolvePath(file))));
+			return mod.ModContent.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 	}
 }

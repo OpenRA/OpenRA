@@ -74,10 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
-				// Start playback with a random song, but only if the player has installed more music
-				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
-				if (playlist.Length > installData.ShippedSoundtracks)
-					currentSong = random.FirstOrDefault();
+				// Start playback with a random song
+				currentSong = random.FirstOrDefault();
 			}
 
 			if (SongExists(info.StartingMusic))

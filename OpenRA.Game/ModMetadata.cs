@@ -30,7 +30,6 @@ namespace OpenRA
 		public bool Hidden;
 
 		public Dictionary<string, string> RequiresMods;
-		public ContentInstaller Content;
 		public ModContent ModContent;
 		public IReadOnlyPackage Package;
 
@@ -78,9 +77,6 @@ namespace OpenRA
 						metadata.RequiresMods = nd["RequiresMods"].ToDictionary(my => my.Value);
 					else
 						metadata.RequiresMods = new Dictionary<string, string>();
-
-					if (nd.ContainsKey("ContentInstaller"))
-						metadata.Content = FieldLoader.Load<ContentInstaller>(nd["ContentInstaller"]);
 
 					if (nd.ContainsKey("ModContent"))
 						metadata.ModContent = FieldLoader.Load<ModContent>(nd["ModContent"]);

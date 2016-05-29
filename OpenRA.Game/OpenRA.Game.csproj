@@ -103,7 +103,6 @@
     <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="Map\MapGrid.cs" />
     <Compile Include="Map\MapPlayers.cs" />
-    <Compile Include="ContentInstaller.cs" />
     <Compile Include="MPos.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\AsyncAction.cs" />
