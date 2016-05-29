@@ -1,7 +1,7 @@
 Background@CONTENT_PANEL:
 	Logic: ModContentLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 500
 	Height: 268
 	Background: panel-bg
@@ -10,8 +10,8 @@ Background@CONTENT_PANEL:
 			X: 30
 			Y: 50
 			Width: 440
-			Height:150
-			Background:panel-rule
+			Height: 150
+			Background: panel-rule
 		Label@TITLE:
 			X: 0
 			Y: 12
@@ -88,7 +88,7 @@ Background@CONTENT_PANEL:
 		Button@CHECK_DISC_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Text: Detect Disc
@@ -96,7 +96,7 @@ Background@CONTENT_PANEL:
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Text: Back
@@ -163,7 +163,7 @@ Container@PACKAGE_DOWNLOAD_PANEL:
 		Button@RETRY_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 120
 			Height: 32
 			Visible: false
@@ -173,7 +173,7 @@ Container@PACKAGE_DOWNLOAD_PANEL:
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT - 30 - WIDTH
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Text: Cancel
@@ -193,7 +193,7 @@ Background@DISC_INSTALL_PANEL:
 			Y: 50
 			Width: 440
 			Height:150
-			Background:panel-rule
+			Background: panel-rule
 		Label@TITLE:
 			Y: 12
 			Width: PARENT_RIGHT
@@ -254,7 +254,7 @@ Background@DISC_INSTALL_PANEL:
 		Button@PRIMARY_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Font: Bold
@@ -262,7 +262,7 @@ Background@DISC_INSTALL_PANEL:
 		Button@SECONDARY_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Font: Bold
@@ -280,8 +280,8 @@ Background@CONTENT_PROMPT_PANEL:
 			X: 30
 			Y: 50
 			Width: 440
-			Height:150
-			Background:panel-rule
+			Height: 150
+			Background: panel-rule
 		Label@TITLE:
 			X: 0
 			Y: 12
@@ -298,7 +298,7 @@ Background@CONTENT_PROMPT_PANEL:
 		Button@ADVANCED_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 140
 			Height: 32
 			Text: Advanced Install
@@ -314,7 +314,7 @@ Background@CONTENT_PROMPT_PANEL:
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 30
 			Y: PARENT_BOTTOM - 52
-			Background:button-highlighted
+			Background: button-highlighted
 			Width: 110
 			Height: 32
 			Text: Back
