@@ -454,7 +454,7 @@ Actors:
 		Location: 24, 22
 		Owner: GDI
 	Factory: weap
-		Location: 20,23
+		Location: 20,24
 		Owner: GDI
 	Barracks: pyle
 		Location: 26,20

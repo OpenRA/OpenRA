@@ -474,10 +474,10 @@ Actors:
 		Location: 20,49
 		Owner: Nod
 	Actor142: obli
-		Location: 20,30
+		Location: 20,31
 		Owner: Nod
 	AttackTrigger4: obli
-		Location: 24,29
+		Location: 24,30
 		Owner: Nod
 	NodHQ: hq
 		Location: 47,46
@@ -533,13 +533,13 @@ Actors:
 		Location: 18,42
 		Owner: Nod
 	Obelisk01: obli
-		Location: 15,52
+		Location: 15,53
 		Owner: Nod
 	HandOfNod: hand
-		Location: 42,44
+		Location: 42,45
 		Owner: Nod
 	Actor163: obli
-		Location: 16,16
+		Location: 16,17
 		Owner: Nod
 	Actor164: nuk2
 		Location: 4,9
