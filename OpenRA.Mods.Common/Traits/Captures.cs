@@ -93,6 +93,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
+				if (self.Owner != target.Owner && self.Owner.IsAlliedWith(target.Owner) && modifiers == TargetModifiers.None)
+					return false;
+
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{

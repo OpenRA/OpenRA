@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
+				if (modifiers != TargetModifiers.None)
+					return false;
+
 				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
 					return false;
 
