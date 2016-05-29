@@ -614,7 +614,6 @@
     <Compile Include="Widgets\Logic\Installation\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallModLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\InstallMusicLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />

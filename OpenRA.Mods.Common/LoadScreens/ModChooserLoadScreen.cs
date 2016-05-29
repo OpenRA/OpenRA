@@ -50,14 +50,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			var widgetArgs = new WidgetArgs();
 
 			Ui.LoadWidget("MODCHOOSER_BACKGROUND", Ui.Root, widgetArgs);
-
-			if (args != null && args.Contains("installMusic"))
-			{
-				widgetArgs.Add("modId", args.GetValue("installMusic", ""));
-				Ui.OpenWindow("INSTALL_MUSIC_PANEL", widgetArgs);
-			}
-			else
-				Ui.OpenWindow("MODCHOOSER_DIALOG", widgetArgs);
+			Ui.OpenWindow("MODCHOOSER_DIALOG", widgetArgs);
 		}
 
 		public void Dispose()

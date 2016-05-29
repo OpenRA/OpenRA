@@ -154,15 +154,37 @@ Container@MUSIC_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Loop
-				Label@NO_MUSIC_LABEL:
+				Container@NO_MUSIC_LABEL:
 					X: 15
-					Y: 147
+					Y: 120
 					Width: 330
-					Height: 25
-					Font: Bold
-					Align: Center
+					Height: 80
 					Visible: false
-					Text: No Music Installed
+					Children:
+						Label@TITLE:
+							Width: PARENT_RIGHT-24
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: Music Not Installed
+						Label@DESCA:
+							Y: 20
+							Width: PARENT_RIGHT-24
+							Height: 25
+							Align: Center
+							Text: The game music can be installed
+						Label@DESCB:
+							Y: 40
+							Width: PARENT_RIGHT-24
+							Height: 25
+							Align: Center
+							Text: from the "Manage Content" menu
+						Label@DESCC:
+							Y: 60
+							Width: PARENT_RIGHT-24
+							Height: 25
+							Align: Center
+							Text: in the mod chooser.
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0
@@ -170,73 +192,9 @@ Container@MUSIC_PANEL:
 			Width: 140
 			Height: 35
 			Text: Back
-		Button@INSTALL_BUTTON:
-			X: 220
-			Y: 399
-			Width: 140
-			Height: 35
-			Text: Install Music
 		Label@MUTE_LABEL:
 			X: 165
 			Y: 399
 			Width: 300
 			Height: 20
 			Font: Small
-
-Container@INSTALL_MUSIC_PANEL:
-	Logic: InstallMusicLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 150)/2
-	Width: 640
-	Height: 150
-	Children:
-		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0-25
-			Font: BigBold
-			Contrast: true
-			Align: Center
-			Text: Install Music
-		Background@bg:
-			Width: 640
-			Height: 150
-			Background: panel-black
-			Children:
-				Image@INSTALL:
-					X: 11
-					Y: 11
-					ImageCollection: logos
-					ImageName: install
-		Label@INFO:
-			X: 170
-			Y: 35
-			Width: PARENT_RIGHT-30
-			Height: 25
-			Text: The soundtrack is currently unavailable.
-			Font: Bold
-		Label@INFO2:
-			X: 170
-			Y: 70
-			Width: PARENT_RIGHT-185
-			Height: 25
-			WordWrap: true
-			Text: OpenRA can download the music files from the internet, or you can install from the original C&C CDs.
-			Font: Bold
-		Button@CANCEL_BUTTON:
-			Key: escape
-			Y: 149
-			Width: 140
-			Height: 35
-			Text: Back
-		Button@DOWNLOAD_BUTTON:
-			X: 350
-			Y: 149
-			Width: 140
-			Height: 35
-			Text: Download
-		Button@COPY_FROM_CD_BUTTON:
-			X: 500
-			Y: 149
-			Width: 140
-			Height: 35
-			Text: Use CD

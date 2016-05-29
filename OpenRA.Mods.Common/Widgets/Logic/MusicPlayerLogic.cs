@@ -103,18 +103,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			musicSlider.OnChange += x => Game.Sound.MusicVolume = x;
 			musicSlider.Value = Game.Sound.MusicVolume;
 
-			var installButton = widget.GetOrNull<ButtonWidget>("INSTALL_BUTTON");
-			if (installButton != null)
-			{
-				installButton.IsDisabled = () => world.Type != WorldType.Shellmap;
-				var args = new[] { "installMusic={0}".F(modData.Manifest.Mod.Id) };
-				installButton.OnClick = () =>
-					Game.RunAfterTick(() => Game.InitializeMod("modchooser", new Arguments(args)));
-
-				var installData = modData.Manifest.Get<ContentInstaller>();
-				installButton.IsVisible = () => modData.DefaultRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
-			}
-
 			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");
 			if (songWatcher != null)
 			{
