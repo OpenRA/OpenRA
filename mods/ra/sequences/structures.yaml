@@ -152,11 +152,14 @@ apwr:
 barr:
 	idle:
 		Length: 10
+		Offset: 0,-6
 	damaged-idle:
 		Start: 10
 		Length: 10
+		Offset: 0,-6
 	make: barrmake
 		Length: *
+		Offset: 0,-6
 	bib: bib3
 		Length: *
 		UseTilesetExtension: true
@@ -283,22 +286,27 @@ afld:
 		Length: 8
 		Tick: 160
 		ZOffset: -1023
+		Offset: 0,-4
 	damaged-idle: afldidle
 		Start: 8
 		Length: 8
 		Tick: 160
 		ZOffset: -1023
+		Offset: 0,-4
 	active:
 		Length: 8
 		Tick: 160
 		ZOffset: -1023
+		Offset: 0,-4
 	damaged-active:
 		Start: 8
 		Length: 8
 		Tick: 160
 		ZOffset: -1023
+		Offset: 0,-4
 	make: afldmake
 		Length: *
+		Offset: 0,-4
 	icon: afldicon
 
 spen:

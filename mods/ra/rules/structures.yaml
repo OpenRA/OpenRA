@@ -1137,7 +1137,6 @@ AFLD:
 	RevealsShroud:
 		Range: 7c0
 	Exit@1:
-		SpawnOffset: 0,170,0
 		ExitCell: 1,1
 		Facing: 192
 		MoveIntoWorld: false
