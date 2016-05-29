@@ -49,10 +49,27 @@ namespace OpenRA.Mods.Common.Activities
 				if (nearestHpad == null)
 					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
 				else
-					return ActivityUtils.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
+				{
+					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
+					var distanceLength = heli.Info.WaitDistanceFromHelipad.Length;
+
+					// If no pad is available, move near one and wait
+					if (distanceFromHelipad > distanceLength)
+					{
+						var randomXPosition = self.World.SharedRandom.Next(-distanceLength, distanceLength);
+						var randomYPosition = self.World.SharedRandom.Next(-distanceLength, distanceLength);
+
+						var target = Target.FromPos(nearestHpad.CenterPosition + new WVec(randomXPosition, randomYPosition, 0));
+
+						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromHelipad), this);
+					}
+
+					return this;
+				}
 			}
 
 			heli.MakeReservation(dest);
+			heli.DisableRepulsing();
 
 			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;

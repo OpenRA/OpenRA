@@ -732,6 +732,8 @@
     <Compile Include="Util.cs" />
     <Compile Include="Traits\Render\WithGateSpriteBody.cs" />
     <Compile Include="ColorValidator.cs" />
+    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
+    <Compile Include="Activities\Execute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
