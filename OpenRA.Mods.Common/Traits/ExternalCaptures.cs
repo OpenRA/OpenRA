@@ -113,10 +113,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (self.Owner != target.Owner && self.Owner.IsAlliedWith(target.Owner) && modifiers == TargetModifiers.None)
-				return false;
-
 			var c = target.TraitOrDefault<ExternalCapturable>();
+
+			var stances = modifiers == TargetModifiers.ForceAttack ? c.Info.ForceTargetStances : c.Info.TargetStances;
+			if (!stances.HasStance(self.Owner.Stances[target.Owner]))
+				return false;
 
 			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
 			cursor = canTargetActor ? "ability" : "move-blocked";

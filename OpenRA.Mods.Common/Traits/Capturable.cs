@@ -18,9 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
 		public readonly string Type = "building";
-		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = true;
-		public readonly bool AllowEnemies = true;
+
+		public readonly Stance TargetStances = Stance.Enemy | Stance.Neutral;
+		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral;
+
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
@@ -33,17 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (c == null)
 				return false;
 
-			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
-				return false;
-
-			if (playerRelationship == Stance.Enemy && !AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !AllowNeutral)
-				return false;
-
 			if (!c.CaptureTypes.Contains(Type))
+				return false;
+
+			var stances = ForceTargetStances | TargetStances;
+			if (!stances.HasStance(captor.Owner.Stances[owner]))
 				return false;
 
 			return true;

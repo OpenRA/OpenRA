@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
+		public readonly Stance TargetStances = Stance.Ally;
+		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
+
 		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
 	}
 
@@ -112,7 +115,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				var info = self.Info.TraitInfo<EngineerRepairInfo>();
+				var stances = modifiers == TargetModifiers.ForceAttack ? info.ForceTargetStances : info.TargetStances;
+				if (!stances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
@@ -126,7 +131,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				var info = self.Info.TraitInfo<EngineerRepairInfo>();
+				var stances = modifiers == TargetModifiers.ForceAttack ? info.ForceTargetStances : info.TargetStances;
+				if (!stances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)
