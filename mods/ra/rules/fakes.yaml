@@ -1,33 +1,7 @@
-FACF:
-	Inherits: ^FakeBuilding
-	Buildable:
-		BuildPaletteOrder: 940
-		Queue: Defense
-		Prerequisites: ~structures.france, ~techlevel.medium
-	Tooltip:
-		Icon: fake-icon
-		Name: Fake Construction Yard
-		Description: Looks like a Construction Yard.
-		GenericName: Construction Yard
-		GenericVisibility: Enemy
-		GenericStancePrefix: False
-	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
-	Bib:
-	RenderSprites:
-		Image: FACT
-	Valued:
-		Cost: 250
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
-
 FPWR:
 	Inherits: ^FakeBuilding
 	Buildable:
-		BuildPaletteOrder: 880
+		BuildPaletteOrder: 870
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.infonly
 	Tooltip:
@@ -50,64 +24,10 @@ FPWR:
 	Valued:
 		Cost: 30
 
-FAPW:
-	Inherits: ^FakeBuilding
-	Buildable:
-		BuildPaletteOrder: 890
-		Queue: Defense
-		Prerequisites: ~structures.france, ~techlevel.medium
-	Tooltip:
-		Icon: fake-icon
-		Name: Fake Advanced Power Plant
-		Description: Looks like an Advanced Power Plant.
-		GenericName: Advanced Power Plant
-		GenericVisibility: Enemy
-		GenericStancePrefix: False
-	Building:
-		Footprint: ___ xxx xxx
-		Dimensions: 3,3
-	Health:
-		HP: 700
-	Armor:
-		Type: Wood
-	Bib:
-	RenderSprites:
-		Image: APWR
-	Valued:
-		Cost: 60
-
-WEAF:
-	Inherits: ^FakeBuilding
-	Buildable:
-		BuildPaletteOrder: 920
-		Prerequisites: ~structures.france, ~techlevel.medium
-		Queue: Defense
-	Tooltip:
-		Icon: fake-icon
-		Name: Fake War Factory
-		Description: Looks like a War Factory.
-		GenericName: War Factory
-		GenericVisibility: Enemy
-		GenericStancePrefix: False
-	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Bib:
-	RenderSprites:
-		Image: WEAP
-	WithProductionDoorOverlay:
-		Sequence: build-top
-	Valued:
-		Cost: 200
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
-
 SYRF:
 	Inherits: ^FakeBuilding
 	Buildable:
-		BuildPaletteOrder: 900
+		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 	Tooltip:
@@ -140,7 +60,7 @@ SPEF:
 	Targetable:
 		TargetTypes: Ground, Water, Structure
 	Buildable:
-		BuildPaletteOrder: 910
+		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~disabled
 	Tooltip:
@@ -165,6 +85,34 @@ SPEF:
 		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+
+WEAF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 920
+		Prerequisites: ~structures.france, ~techlevel.medium
+		Queue: Defense
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake War Factory
+		Description: Looks like a War Factory.
+		GenericName: War Factory
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Bib:
+	RenderSprites:
+		Image: WEAP
+	WithProductionDoorOverlay:
+		Sequence: build-top
+	Valued:
+		Cost: 200
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
 
 DOMF:
 	Inherits: ^FakeBuilding
@@ -194,6 +142,32 @@ DOMF:
 	RequiresPower:
 	DisabledOverlay:
 
+FAPW:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 950
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Advanced Power Plant
+		Description: Looks like an Advanced Power Plant.
+		GenericName: Advanced Power Plant
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: ___ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 700
+	Armor:
+		Type: Wood
+	Bib:
+	RenderSprites:
+		Image: APWR
+	Valued:
+		Cost: 60
+
 ATEF:
 	Inherits: ^FakeBuilding
 	Tooltip:
@@ -204,7 +178,7 @@ ATEF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
-		BuildPaletteOrder: 940
+		BuildPaletteOrder: 970
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.high
 	Building:
@@ -232,7 +206,7 @@ PDOF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
-		BuildPaletteOrder: 950
+		BuildPaletteOrder: 980
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
@@ -264,7 +238,7 @@ MSLF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
-		BuildPaletteOrder: 960
+		BuildPaletteOrder: 990
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
@@ -283,3 +257,29 @@ MSLF:
 		DamageThreshold: 50
 	RequiresPower:
 	DisabledOverlay:
+
+FACF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 1000
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Construction Yard
+		Description: Looks like a Construction Yard.
+		GenericName: Construction Yard
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Bib:
+	RenderSprites:
+		Image: FACT
+	Valued:
+		Cost: 250
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
