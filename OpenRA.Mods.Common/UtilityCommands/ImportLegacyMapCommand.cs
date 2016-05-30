@@ -365,7 +365,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				mapPlayers.Players[section] = pr;
 		}
 
-		public static void LoadActors(IniFile file, string section, List<string> players, int mapSize, Map map)
+		public virtual CPos ParseActorLocation(string input, int loc)
+		{
+			return new CPos(loc % MapSize, loc / MapSize);
+		}
+
+		public void LoadActors(IniFile file, string section, List<string> players, int mapSize, Map map)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{
@@ -385,8 +390,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var health = Exts.ParseIntegerInvariant(parts[2]) * 100 / 256;
 					var facing = (section == "INFANTRY") ? Exts.ParseIntegerInvariant(parts[6]) : Exts.ParseIntegerInvariant(parts[4]);
 
-					var actor = new ActorReference(parts[1].ToLowerInvariant()) {
-						new LocationInit(new CPos(loc % mapSize, loc / mapSize)),
+					var actorType = parts[1].ToLowerInvariant();
+
+					var actor = new ActorReference(actorType) {
+						new LocationInit(ParseActorLocation(actorType, loc)),
 						new OwnerInit(parts[0]),
 					};
 
@@ -424,9 +431,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var kv in terrain)
 			{
 				var loc = Exts.ParseIntegerInvariant(kv.Key);
-				var ar = new ActorReference(ParseTreeActor(kv.Value))
+				var treeActor = ParseTreeActor(kv.Value);
+
+				var ar = new ActorReference(treeActor)
 				{
-					new LocationInit(new CPos(loc % MapSize, loc / MapSize)),
+					new LocationInit(ParseActorLocation(treeActor, loc)),
 					new OwnerInit("Neutral")
 				};
 

@@ -116,6 +116,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			return input.Split(',')[0].ToLowerInvariant();
 		}
 
+		public override CPos ParseActorLocation(string input, int loc)
+		{
+			var newLoc = new CPos(loc % MapSize, loc / MapSize);
+			var vectorDown = new CVec(0, 1);
+
+			if (input == "obli" || input == "atwr" || input == "weap" || input == "hand" || input == "tmpl" || input == "split2" || input == "split3")
+				newLoc += vectorDown;
+
+			return newLoc;
+		}
+
 		public override void LoadPlayer(IniFile file, string section)
 		{
 			string color;
