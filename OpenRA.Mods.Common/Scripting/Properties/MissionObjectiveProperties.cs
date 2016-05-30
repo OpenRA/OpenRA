@@ -12,11 +12,12 @@
 using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("MissionObjectives")]
-	public class MissionObjectiveProperties : ScriptPlayerProperties
+	public class MissionObjectiveProperties : ScriptPlayerProperties, Requires<MissionObjectivesInfo>
 	{
 		readonly MissionObjectives mo;
 

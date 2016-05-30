@@ -214,8 +214,13 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					if (Info.EarlyGameOver)
+					{
 						foreach (var p in enemies)
-							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
+						{
+							p.WinState = WinState.Won;
+							p.World.OnPlayerWinStateChanged(p);
+						}
+					}
 				}
 			}
 			else
@@ -224,11 +229,13 @@ namespace OpenRA.Mods.Common.Traits
 				player.World.OnPlayerWinStateChanged(player);
 
 				if (Info.EarlyGameOver)
+				{
 					foreach (var p in enemies)
 					{
 						p.WinState = WinState.Won;
 						p.World.OnPlayerWinStateChanged(p);
 					}
+				}
 			}
 
 			CheckIfGameIsOver(player);

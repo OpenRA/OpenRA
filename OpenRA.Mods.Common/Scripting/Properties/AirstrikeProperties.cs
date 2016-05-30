@@ -32,5 +32,14 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			ap.SendAirstrike(Self, target, randomize, facing);
 		}
+
+		[Desc("Activate the actor's Airstrike Power.")]
+		public void SendAirstrikeFrom(CPos from, CPos to)
+		{
+			var i = Self.World.Map.CenterOfCell(from);
+			var j = Self.World.Map.CenterOfCell(to);
+
+			ap.SendAirstrike(Self, j, false, (i - j).Yaw.Facing);
+		}
 	}
 }

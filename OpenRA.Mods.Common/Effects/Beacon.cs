@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (duration > 0)
-				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
+				owner.World.AddFrameEndTask(w => w.Add(new DelayedAction(duration, () => owner.World.Remove(this))));
 		}
 
 		// Support power beacons are expected to clean themselves up
