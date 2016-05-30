@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 
+		[Desc("Ignore any custom attackable positions and always aim at the targets' CenterPosition.")]
+		public readonly bool IgnoreAttackablePositionOffset = false;
+
 		[Desc("Which limited ammo pool (if present) should this armament be assigned to.")]
 		public readonly string AmmoPoolName = "primary";
 
@@ -219,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
-				PassiveTarget = target.CenterPosition,
+				PassiveTarget = Info.IgnoreAttackablePositionOffset ? target.CenterPosition : target.AttackablePositions.PositionClosestTo(muzzlePosition()),
 				GuidedTarget = target
 			};
 

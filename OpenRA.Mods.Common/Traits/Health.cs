@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Traits;
@@ -19,8 +20,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
+
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
+
+		[Desc("Modifies offset of targeting position for targeting by weapons.")]
+		public readonly WVec AttackablePositionOffset = WVec.Zero;
 
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Shape;
@@ -55,9 +60,10 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public class Health : IHealth, ISync, ITick
+	public class Health : IHealth, ISync, ITick, IAttackablePositions, INotifyCreated
 	{
 		public readonly HealthInfo Info;
+		BodyOrientation body;
 
 		[Sync] int hp;
 
@@ -73,11 +79,26 @@ namespace OpenRA.Mods.Common.Traits
 			DisplayHP = hp;
 		}
 
+		public void Created(Actor self)
+		{
+			body = self.TraitOrDefault<BodyOrientation>();
+		}
+
 		public int HP { get { return hp; } }
 		public int MaxHP { get; private set; }
 
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
+
+		public IEnumerable<WPos> AttackablePositions(Actor self)
+		{
+			var offset = body != null ? Info.AttackablePositionOffset.Rotate(body.QuantizeOrientation(self, self.Orientation))
+				: Info.AttackablePositionOffset;
+
+			var pos = self.CenterPosition + (body != null ? body.LocalToWorld(offset) : offset);
+
+			return new WPos[] { pos };
+		}
 
 		public DamageState DamageState
 		{

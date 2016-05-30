@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			// Beam tracks target
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.GuidedTarget.CenterPosition;
+				target = args.GuidedTarget.AttackablePositions.PositionClosestTo(args.Source);
 
 			if (!doneDamage)
 			{
