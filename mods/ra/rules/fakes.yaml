@@ -142,6 +142,33 @@ DOMF:
 	RequiresPower:
 	DisabledOverlay:
 
+FIXF:
+	Inherits: ^FakeBuilding
+	Buildable:
+		BuildPaletteOrder: 940
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.medium
+	Tooltip:
+		Icon: fake-icon
+		Name: Fake Service Depot
+		Description: Looks like a Service Depot.
+		GenericName: Service Depot
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	Bib:
+		HasMinibib: Yes
+	RenderSprites:
+		Image: FIX
+	Valued:
+		Cost: 120
+
 FAPW:
 	Inherits: ^FakeBuilding
 	Buildable:

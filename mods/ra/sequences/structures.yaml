@@ -342,6 +342,7 @@ fix:
 		Offset: 0,-4
 		UseTilesetExtension: true
 	icon: fixicon
+	fake-icon: fixficon
 
 gun:
 	idle:
