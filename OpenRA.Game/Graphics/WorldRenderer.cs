@@ -190,9 +190,12 @@ namespace OpenRA.Graphics
 
 			if (World.Type == WorldType.Regular)
 			{
-				foreach (var g in World.ActorsHavingTrait<Selectable>().Where(a => !a.Disposed
-					&& !World.FogObscures(a)
-					&& !World.Selection.Contains(a)))
+				foreach (var g in World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
+					.Where(a =>
+						!a.Disposed &&
+						!World.Selection.Contains(a) &&
+						a.Info.HasTraitInfo<SelectableInfo>() &&
+						!World.FogObscures(a)))
 				{
 					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
 						new SelectionBarsRenderable(g, false, false).Render(this);
