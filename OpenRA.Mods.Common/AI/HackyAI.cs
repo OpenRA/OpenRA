@@ -559,45 +559,6 @@ namespace OpenRA.Mods.Common.AI
 				World.IssueOrder(orders.Dequeue());
 		}
 
-		internal Actor ChooseEnemyTarget()
-		{
-			if (Player.WinState != WinState.Undefined)
-				return null;
-
-			var liveEnemies = World.Players
-				.Where(p => Player != p && Player.Stances[p] == Stance.Enemy && p.WinState == WinState.Undefined);
-
-			if (!liveEnemies.Any())
-				return null;
-
-			var leastLikedEnemies = liveEnemies
-				.GroupBy(e => aggro[e].Aggro)
-				.MaxByOrDefault(g => g.Key);
-
-			var enemy = (leastLikedEnemies != null) ?
-				leastLikedEnemies.Random(Random) : liveEnemies.FirstOrDefault();
-
-			// Pick something worth attacking owned by that player
-			var target = World.ActorsHavingTrait<IOccupySpace>()
-				.Where(a => a.Owner == enemy)
-				.ClosestTo(World.Map.CenterOfCell(GetRandomBaseCenter()));
-
-			if (target == null)
-			{
-				/* Assume that "enemy" has nothing. Cool off on attacks. */
-				aggro[enemy].Aggro = aggro[enemy].Aggro / 2 - 1;
-				Log.Write("debug", "Bot {0} couldn't find target for player {1}", Player.ClientIndex, enemy.ClientIndex);
-
-				return null;
-			}
-
-			// Bump the aggro slightly to avoid changing our mind
-			if (leastLikedEnemies.Count() > 1)
-				aggro[enemy].Aggro++;
-
-			return target;
-		}
-
 		internal Actor FindClosestEnemy(WPos pos)
 		{
 			return World.Actors.Where(isEnemyUnit).ClosestTo(pos);
