@@ -50,22 +50,22 @@ end
 
 SendReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(20), function()
-		ReinforceWithLandingCraft(BaseReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), spawnpoint3.Location)
+		ReinforceWithLandingCraft(BaseReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), waypoint26.Location)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(10), function()
-		ReinforceWithLandingCraft(TankReinforcements, spawnpoint2.Location - CVec.New(0, -4), spawnpoint2.Location - CVec.New(0, -1), spawnpoint2.Location)
+		ReinforceWithLandingCraft(TankReinforcements, spawnpoint2.Location - CVec.New(0, -4), spawnpoint2.Location - CVec.New(0, -1), waypoint10.Location)
 
-		ReinforceWithLandingCraft(TankReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), spawnpoint3.Location)
+		ReinforceWithLandingCraft(TankReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), waypoint10.Location)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		ReinforceWithLandingCraft(JeepReinforcements, spawnpoint1.Location - CVec.New(0, -4), spawnpoint1.Location - CVec.New(0, -1), spawnpoint1.Location)
+		ReinforceWithLandingCraft(JeepReinforcements, spawnpoint1.Location - CVec.New(0, -4), spawnpoint1.Location - CVec.New(0, -1), waypoint10.Location)
 	end)
 
-	ReinforceWithLandingCraft(InfantryReinforcements, spawnpoint2.Location - CVec.New(0, -4), spawnpoint2.Location - CVec.New(0, -1), spawnpoint2.Location)
+	ReinforceWithLandingCraft(InfantryReinforcements, spawnpoint2.Location - CVec.New(0, -4), spawnpoint2.Location - CVec.New(0, -1), waypoint10.Location)
 
-	ReinforceWithLandingCraft(InfantryReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), spawnpoint3.Location)
+	ReinforceWithLandingCraft(InfantryReinforcements, spawnpoint3.Location - CVec.New(0, -4), spawnpoint3.Location - CVec.New(0, -1), waypoint10.Location)
 end
 
 AttackPlayer = function()
