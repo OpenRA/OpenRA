@@ -145,5 +145,14 @@ namespace OpenRA.Mods.Common
 		{
 			return cells.MinByOrDefault(c => (self.Location - c).LengthSquared);
 		}
+
+		public static bool PreventsAutoTarget(this Actor target, Actor attacker)
+		{
+			foreach (var pat in target.TraitsImplementing<IPreventsAutoTarget>())
+				if (pat.PreventsAutoTarget(target, attacker))
+					return true;
+
+			return false;
+		}
 	}
 }

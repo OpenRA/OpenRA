@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.RA.Graphics;
 using OpenRA.Traits;
 
