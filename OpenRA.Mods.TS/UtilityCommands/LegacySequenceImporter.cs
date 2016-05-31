@@ -27,12 +27,15 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		public string Name { get { return "--sequence-import"; } }
 
 		IniFile file;
+		MapGrid grid;
 
 		[Desc("FILENAME", "Convert ART.INI to the OpenRA sequence definition format.")]
 		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
+
+			grid = Game.ModData.Manifest.Get<MapGrid>();
 
 			file = new IniFile(File.Open(args[1], FileMode.Open));
 
@@ -53,6 +56,21 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			Console.WriteLine(section.Name + ":");
 
 			Console.WriteLine("\tDefaults:");
+
+			var foundation = section.GetValue("Foundation", string.Empty);
+			if (!string.IsNullOrEmpty(foundation))
+			{
+				var size = foundation.Split('x');
+				if (size.Length == 2)
+				{
+					var x = int.Parse(size[0]);
+					var y = int.Parse(size[1]);
+
+					var xOffset = (x - y) * grid.TileSize.Width / 4;
+					var yOffset = (x + y) * grid.TileSize.Height / 4;
+					Console.WriteLine("\t\tOffset: {0},{1}", -xOffset, -yOffset);
+				}
+			}
 
 			var theater = section.GetValue("Theater", string.Empty);
 			if (!string.IsNullOrEmpty(theater) && theater == "yes")
