@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))
 				resLayer.AddResource(resourceType, cell.Value, 1);
+
+			foreach (var notify in self.TraitsImplementing<INotifyResourceSeeded>())
+				notify.OnResourceSeeded(self);
 		}
 	}
 }
