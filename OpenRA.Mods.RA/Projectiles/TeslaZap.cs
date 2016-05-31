@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Projectiles
 {
-	class TeslaZapInfo : IProjectileInfo
+	public class TeslaZapInfo : IProjectileInfo
 	{
 		public readonly string Image = "litning";
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Projectiles
 		public IEffect Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
-	class TeslaZap : IEffect
+	public class TeslaZap : IEffect
 	{
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
