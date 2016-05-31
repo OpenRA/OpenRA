@@ -994,7 +994,7 @@ end
 local function isemptyline(editor, line)
   local text = editor:GetLineDyn(line-1)
   return not text:find("%S")
-  or (text:find("^%s*%-%-") ~= nil and text:find("^%s*%-%-%[=*%[") == nil)
+  or (editor.spec and editor.spec.linecomment and text:find("^%s*"..q(editor.spec.linecomment)) ~= nil)
 end
 
 function debugger:terminate()
