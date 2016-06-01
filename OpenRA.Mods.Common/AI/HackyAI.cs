@@ -192,8 +192,6 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public class Enemy { public int Aggro; }
-
 	public enum BuildingType { Building, Defense, Refinery }
 
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
@@ -232,7 +230,6 @@ namespace OpenRA.Mods.Common.AI
 
 		BitArray resourceTypeIndices;
 
-		Cache<Player, Enemy> aggro = new Cache<Player, Enemy>(_ => new Enemy());
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
@@ -1051,9 +1048,6 @@ namespace OpenRA.Mods.Common.AI
 
 			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
-
-			if (e.Damage > 0)
-				aggro[e.Attacker.Owner].Aggro += e.Damage;
 
 			// Protected harvesters or building
 			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) &&
