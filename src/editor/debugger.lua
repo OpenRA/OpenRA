@@ -991,12 +991,6 @@ do
   end
 end
 
-local function isemptyline(editor, line)
-  local text = editor:GetLineDyn(line-1)
-  return not text:find("%S")
-  or (editor.spec and editor.spec.linecomment and text:find("^%s*"..q(editor.spec.linecomment)) ~= nil)
-end
-
 function debugger:terminate()
   local debugger = self
   if debugger.server then
@@ -1018,7 +1012,7 @@ function debugger:RunTo(editor, line)
   local debugger = self
 
   -- check if the location is valid for a breakpoint
-  if isemptyline(editor, line+1) then return end
+  if editor:IsLineEmpty(line) then return end
 
   local ed, ln = unpack(debugger.runtocursor or {})
   local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
@@ -1552,7 +1546,7 @@ function debugger:BreakpointToggle(editor, line, value)
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
     if debugger.server then debugger:breakpoint(filePath, line+1, false) end
   else
-    if isemptyline(editor, line+1) then return end
+    if editor:IsLineEmpty(line) then return end
 
     editor:MarkerAdd(line, BREAKPOINT_MARKER)
     if debugger.server then debugger:breakpoint(filePath, line+1, true) end

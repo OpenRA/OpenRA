@@ -440,6 +440,12 @@ function ide:CreateStyledTextCtrl(...)
     return markers
   end
 
+  function editor:IsLineEmpty(line)
+    local text = self:GetLineDyn(line or editor:GetCurrentLine())
+    local lc = self.spec and self.spec.linecomment
+    return not text:find("%S") or (lc and text:find("^%s*"..q(lc)) ~= nil)
+  end
+
   editor:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
       local keycode = event:GetKeyCode()
