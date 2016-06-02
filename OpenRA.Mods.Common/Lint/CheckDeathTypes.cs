@@ -28,7 +28,9 @@ namespace OpenRA.Mods.Common.Lint
 				if (!animations.Any())
 					continue;
 
-				var deathTypes = animations.SelectMany(x => x.DeathTypes.Select(y => y.Key)).ToList();
+				var deathAnimationDeathtypes = animations.SelectMany(x => x.DeathTypes.Select(y => y.Key)).ToList();
+				var spawnActorDeathtypes = actorInfo.Value.TraitInfos<SpawnActorOnDeathInfo>().Where(s => !string.IsNullOrEmpty(s.DeathType)).Select(a => a.DeathType);
+				var deathTypes = deathAnimationDeathtypes.Concat(spawnActorDeathtypes).Distinct();
 				if (!deathTypes.Any())
 					continue;
 
@@ -51,7 +53,7 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (!warhead.DamageTypes.Overlaps(deathTypes))
-							emitError("Actor type `{0}` does not define a death animation for weapon `{1}`!"
+							emitError("Actor type {0} doesn't define a death animation or spawn an actor on death for weapon {1}!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}
 				}

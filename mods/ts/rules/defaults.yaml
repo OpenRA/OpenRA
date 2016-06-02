@@ -279,7 +279,9 @@
 			BulletDeath: 1
 			SmallExplosionDeath: 2
 			HeadshotDeath: 3
-			FireDeath: 5
+	SpawnActorOnDeath@FLAMEGUY:
+		Actor: FLAMEGUY
+		DeathType: FireDeath
 	WithDeathAnimation@explosion:
 		DeathSequencePalette: effect
 		DeathPaletteIsPlayerPalette: False
