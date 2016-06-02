@@ -737,6 +737,8 @@
     <Compile Include="Util.cs" />
     <Compile Include="Traits\Render\WithGateSpriteBody.cs" />
     <Compile Include="ColorValidator.cs" />
+    <Compile Include="Activities\Execute.cs" />
+    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ResizeMapCommand.cs" />
     <Compile Include="Traits\World\MapCreeps.cs" />
     <Compile Include="Traits\World\MapBuildRadius.cs" />
