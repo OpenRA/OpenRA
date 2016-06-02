@@ -774,6 +774,7 @@
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\ExitsDebugOverlay.cs" />
     <Compile Include="Traits\World\ExitsDebugOverlayManager.cs" />
+    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -106,11 +106,13 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var nearestAfld = ChooseAirfield(self, false);
 
-				self.CancelActivity();
 				if (nearestAfld != null)
-					return ActivityUtils.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
+					return ActivityUtils.SequenceActivities(
+						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
+						new FlyCircleTimed(plane.Info.NumberOfTicksToVerifyAvailableAirport, self),
+						this);
 				else
-					return new FlyCircle(self);
+					return NextActivity;
 			}
 
 			List<Activity> landingProcedures = new List<Activity>();
@@ -123,6 +125,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Fix a problem when the airplane is send to resupply near the airport
 			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
 			landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+			landingProcedures.Add(new ResupplyAircraft(self));
 			landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());

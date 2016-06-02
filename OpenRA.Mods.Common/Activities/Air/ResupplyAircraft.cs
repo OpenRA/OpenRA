@@ -32,8 +32,17 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return NextActivity;
 
+			if (aircraft.IsPlane)
+				return ActivityUtils.SequenceActivities(
+					aircraft.GetResupplyActivities(host)
+					.Append(new CallFunc(() => aircraft.UnReserve()))
+					.Append(new WaitFor(() => NextActivity != null || Reservable.IsReserved(host)))
+					.Append(new TakeOff(self))
+					.Append(NextActivity).ToArray());
+
+			// If is helicopter move away as soon as the resupply ends
 			return ActivityUtils.SequenceActivities(
-				aircraft.GetResupplyActivities(host).Append(NextActivity).ToArray());
+				aircraft.GetResupplyActivities(host).Append(new TakeOff(self)).Append(NextActivity).ToArray());
 		}
 	}
 }
