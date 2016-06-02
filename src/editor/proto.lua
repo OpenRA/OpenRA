@@ -48,6 +48,9 @@ ide.proto.Interpreter = {__index = {
   GetFileName = function(self) return self.fname end,
   GetExePath = function(self, ...) return self:fexepath(...) end,
   GetAPI = function(self) return self.api end,
+  GetCommandLineArg = function(self, name)
+    return ide.config.arg and (ide.config.arg.any or ide.config.arg[name or self.fname])
+  end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
