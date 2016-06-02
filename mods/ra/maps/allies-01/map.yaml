@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 01:   In the thick of it
-
-Description: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 49,45,30,36
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	BackgroundInfo: prolog.vqa
-	Briefing: ally1.vqa
-	GameStart: landing.vqa
-	GameWon: snowbomb.vqa
-	GameLost: bmap.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
+LockPreview: True
 
 Players:
 	PlayerReference@USSR:
@@ -462,122 +446,6 @@ Actors:
 		Location: 68,76
 		Owner: Neutral
 
-Smudges:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: allies01.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	TRAN.Extraction:
-		Inherits: TRAN
-		WithFacingSpriteBody:
-		RevealsShroud:
-			Range: 0c0
-		RejectsOrders:
-		-Selectable:
-		Cargo:
-			Types: Einstein
-			MaxWeight: 1
-		AutoSelectionSize:
-		RenderSprites:
-			Image: tran
-	TRAN.Insertion:
-		Inherits: TRAN.Extraction
-		WithFacingSpriteBody:
-		Cargo:
-			MaxWeight: 0
-		AutoSelectionSize:
-		RenderSprites:
-			Image: tran
-	EINSTEIN:
-		Passenger:
-			CargoType: Einstein
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^CivBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^CivInfantry:
-		RevealsShroud:
-			Range: 0c0
-	C8:
-		Inherits@2: ^ArmedCivilian
-		AutoTarget:
-	JEEP:
-		Cargo:
-			Types: Infantry, Einstein
-	E7:
-		AutoTarget:
-			EnableStances: false
-		-AttackMove:
-	TSLA:
-		Power:
-			Amount: -150
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	8Inch:
-		Range: 25c0
-	M60mg:
-		Range: 5c0
-		ReloadDelay: 20
-		Burst: 1
-		Warhead: SpreadDamage
-			Damage: 20
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

@@ -1,14 +1,16 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -45,14 +47,18 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (worldActor.HasTraitInfo<MPStartLocationsInfo>())
 			{
-				var multiPlayers = players.Count(p => p.Value.Playable);
-				var spawns = map.ActorDefinitions.Where(a => a.Value.Value == "mpspawn");
-				var spawnCount = spawns.Count();
+				var playerCount = players.Count(p => p.Value.Playable);
+				var spawns = new List<CPos>();
+				foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+				{
+					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+					spawns.Add(s.InitDict.Get<LocationInit>().Value(null));
+				}
 
-				if (multiPlayers > spawnCount)
-					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(multiPlayers, spawnCount));
+				if (playerCount > spawns.Count)
+					emitError("The map allows {0} possible players, but defines only {1} spawn points".F(playerCount, spawns.Count));
 
-				if (map.SpawnPoints.Value.Distinct().Count() != spawnCount)
+				if (spawns.Distinct().Count() != spawns.Count)
 					emitError("Duplicate spawn point locations detected.");
 			}
 
@@ -66,7 +72,12 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					var ownerName = ownerInit.PlayerName;
 					if (!playerNames.Contains(ownerName))
-						emitError("Actor {0} is owned by unknown player {1}.".F(actorReference.Type, ownerName));
+						emitError("Actor {0} is owned by unknown player {1}.".F(kv.Key, ownerName));
+					else if (kv.Value.Value == "mpspawn" && !players[ownerName].OwnsWorld)
+					{
+						emitError("Actor {0} needs to be owned by the player that owns the world. ".F(kv.Key) +
+							"Use the `Spawn` and `LockSpawn` player properties to force players onto a particular spawn instead.");
+					}
 				}
 			}
 		}

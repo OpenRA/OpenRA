@@ -34,8 +34,8 @@
 		Modifier: 90, 75
 	SelfHealing@ELITE:
 		Step: 2
-		Ticks: 100
-		HealIfBelow: 1
+		Delay: 100
+		HealIfBelow: 100
 		DamageCooldown: 125
 		UpgradeTypes: selfheal
 		UpgradeMinEnabledLevel: 1
@@ -220,6 +220,7 @@
 	Health:
 		Shape: Circle
 			Radius: 363
+			VerticalTopOffset: 512
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -239,6 +240,7 @@
 		HP: 50
 		Shape: Circle
 			Radius: 128
+			VerticalTopOffset: 512
 	Armor:
 		Type: None
 	Valued:
@@ -257,7 +259,9 @@
 			DirtRoad: 100
 			Rough: 80
 			Tiberium: 90
+				PathingCost: 90
 			BlueTiberium: 90
+				PathingCost: 90
 			Veins: 50
 	SelectionDecorations:
 		Palette: pips
@@ -315,6 +319,23 @@
 	DeathSounds@ZAPPED:
 		Voice: Zapped
 		DeathTypes: EnergyDeath
+	SelfHealing@HOSPITAL:
+		Step: 5
+		Delay: 100
+		HealIfBelow: 100
+		DamageCooldown: 125
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
+	GlobalUpgradable@HOSPITAL:
+		Upgrades: hospitalheal
+		Prerequisites: cahosp
+	WithDecoration@REDCROSS:
+		Image: pips
+		Sequence: medic
+		Palette: pips
+		ReferencePoint: Bottom, Right
+		UpgradeTypes: hospitalheal
+		UpgradeMinEnabledLevel: 1
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -349,6 +370,12 @@
 	WithInfantryBody:
 		AttackSequence: shoot
 		IdleSequences: idle1,idle2
+	UpgradeOnDamage@CRITICAL:
+		Upgrades: criticalspeed
+		ValidDamageStates: Critical
+	SpeedMultiplier@CRITICAL:
+		UpgradeTypes: criticalspeed
+		Modifier: 50
 
 ^CivilianInfantry:
 	Inherits: ^Infantry
@@ -379,7 +406,8 @@
 			Tiberium: 50
 			BlueTiberium: 50
 			Veins: 50
-		ROT: 5
+				PathingCost: 90
+		TurnSpeed: 5
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
@@ -401,7 +429,7 @@
 	ActorLostNotification:
 	Capturable:
 		Type: Vehicle
-		CaptureThreshold: 1
+		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
 		Voice: Move
@@ -417,6 +445,21 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
+	PoisonedByTiberium:
+		Weapon: Veins
+		Resources: Veins
+	UpgradeOnDamage@DAMAGED:
+		Upgrades: damagedspeed
+		ValidDamageStates: Heavy
+	UpgradeOnDamage@CRITICAL:
+		Upgrades: criticalspeed
+		ValidDamageStates: Critical
+	SpeedMultiplier@DAMAGED:
+		UpgradeTypes: damagedspeed
+		Modifier: 80
+	SpeedMultiplier@CRITICAL:
+		UpgradeTypes: criticalspeed
+		Modifier: 60
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -547,11 +590,12 @@
 	Health:
 		Shape: Circle
 			Radius: 256
+			VerticalTopOffset: 512
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 113
-		ROT: 16
+		TurnSpeed: 16
 		Crushes: crate
 		SharesCell: no
 		TerrainSpeeds:
@@ -590,7 +634,6 @@
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 	FrozenUnderFog:
-		StartsRevealed: true
 	SeedsResource:
 		ResourceType: Tiberium
 		Interval: 55
@@ -700,7 +743,7 @@
 		TerrainSpeeds:
 			Rail: 100
 		Crushes: wall, crate, infantry
-		ROT: 5
+		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
 	Cargo:
@@ -773,9 +816,6 @@
 	-MustBeDestroyed:
 	-WithSpriteBody:
 	WithGateSpriteBody:
-	Power:
-	CanPowerDown:
-		IndicatorPalette: mouse
 	Tooltip:
 		Description: Automated barrier that opens for allied units.
 	Gate:

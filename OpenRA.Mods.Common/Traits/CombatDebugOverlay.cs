@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -27,17 +28,15 @@ namespace OpenRA.Mods.Common.Traits
 	public class CombatDebugOverlay : IPostRender, INotifyDamage, INotifyCreated
 	{
 		readonly DeveloperMode devMode;
-
 		readonly HealthInfo healthInfo;
+		readonly Lazy<BodyOrientation> coords;
+
 		IBlocksProjectiles[] allBlockers;
-		Lazy<AttackBase> attack;
-		Lazy<BodyOrientation> coords;
 
 		public CombatDebugOverlay(Actor self)
 		{
 			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
-			attack = Exts.Lazy(() => self.TraitOrDefault<AttackBase>());
-			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
+			coords = Exts.Lazy(self.Trait<BodyOrientation>);
 
 			var localPlayer = self.World.LocalPlayer;
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
@@ -71,14 +70,16 @@ namespace OpenRA.Mods.Common.Traits
 				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
 			}
 
-			// No armaments to draw
-			if (attack.Value == null)
-				return;
+			foreach (var attack in self.TraitsImplementing<AttackBase>().Where(x => !x.IsTraitDisabled))
+				DrawArmaments(self, attack, wr, wcr, iz);
+		}
 
+		void DrawArmaments(Actor self, AttackBase attack, WorldRenderer wr, RgbaColorRenderer wcr, float iz)
+		{
 			var c = Color.White;
 
 			// Fire ports on garrisonable structures
-			var garrison = attack.Value as AttackGarrisoned;
+			var garrison = attack as AttackGarrisoned;
 			if (garrison != null)
 			{
 				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			foreach (var a in attack.Value.Armaments)
+			foreach (var a in attack.Armaments)
 			{
 				foreach (var b in a.Barrels)
 				{

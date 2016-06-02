@@ -8,7 +8,7 @@ BADR:
 		Type: Light
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
@@ -45,7 +45,7 @@ BADR.Bomber:
 		Type: Light
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		Repulsable: False
 		MaximumPitch: 56
@@ -101,7 +101,7 @@ MIG:
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 223
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -161,7 +161,7 @@ YAK:
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
@@ -172,7 +172,7 @@ YAK:
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
-		ReloadTicks: 11
+		ReloadDelay: 11
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
@@ -208,9 +208,9 @@ TRAN:
 		Type: CenterPosition
 	Aircraft:
 		InitialFacing: 224
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 112
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
 		AltitudeVelocity: 0c100
 	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
@@ -257,7 +257,7 @@ HELI:
 	Aircraft:
 		LandWhenIdle: false
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 149
 	AutoTarget:
 		InitialStance: HoldFire
@@ -308,7 +308,7 @@ HIND:
 	Aircraft:
 		LandWhenIdle: false
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:
 		InitialStance: HoldFire
@@ -317,7 +317,7 @@ HIND:
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6
-		ReloadTicks: 8
+		ReloadDelay: 8
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:
@@ -332,13 +332,13 @@ U2:
 	Inherits: ^Plane
 	Health:
 		HP: 2000
-	EditorOnlyTooltip:
-		Name: U2 Spy Plane
+	Tooltip:
+		Name: Spy Plane
 	Armor:
 		Type: Heavy
 	Aircraft:
 		CruiseAltitude: 2560
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 373
 		Repulsable: False
 		MaximumPitch: 56

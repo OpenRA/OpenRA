@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,6 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public struct MapSmudge
+	{
+		public string Type;
+		public int Depth;
+	}
+
 	[Desc("Attach this to the world actor.", "Order of the layers defines the Z sorting.")]
 	public class SmudgeLayerInfo : ITraitInfo
 	{
@@ -34,6 +41,33 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string SmokePalette = "effect";
 
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
+		[FieldLoader.LoadUsing("LoadInitialSmudges")]
+		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
+
+		public static object LoadInitialSmudges(MiniYaml yaml)
+		{
+			MiniYaml smudgeYaml;
+			var nd = yaml.ToDictionary();
+			var smudges = new Dictionary<CPos, MapSmudge>();
+			if (nd.TryGetValue("InitialSmudges", out smudgeYaml))
+			{
+				foreach (var node in smudgeYaml.Nodes)
+				{
+					try
+					{
+						var cell = FieldLoader.GetValue<CPos>("key", node.Key);
+						var parts = node.Value.Value.Split(',');
+						var type = parts[0];
+						var depth = FieldLoader.GetValue<int>("depth", parts[1]);
+						smudges.Add(cell, new MapSmudge { Type = type, Depth = depth });
+					}
+					catch { }
+				}
+			}
+
+			return smudges;
+		}
 
 		public object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }
 	}
@@ -60,10 +94,11 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			world = self.World;
 
-			var types = world.Map.SequenceProvider.Sequences(Info.Sequence);
+			var sequenceProvider = world.Map.Rules.Sequences;
+			var types = sequenceProvider.Sequences(Info.Sequence);
 			foreach (var t in types)
 			{
-				var seq = world.Map.SequenceProvider.GetSequence(Info.Sequence, t);
+				var seq = sequenceProvider.GetSequence(Info.Sequence, t);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				smudges.Add(t, sprites);
 			}
@@ -84,35 +119,28 @@ namespace OpenRA.Mods.Common.Traits
 			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), wr.World.Type != WorldType.Editor);
 
 			// Add map smudges
-			foreach (var s in w.Map.SmudgeDefinitions)
+			foreach (var kv in Info.InitialSmudges)
 			{
-				var name = s.Key;
-				var vals = name.Split(' ');
-				var type = vals[0];
-
-				if (!smudges.ContainsKey(type))
+				var s = kv.Value;
+				if (!smudges.ContainsKey(s.Type))
 					continue;
-
-				var loc = vals[1].Split(',');
-				var cell = new CPos(Exts.ParseIntegerInvariant(loc[0]), Exts.ParseIntegerInvariant(loc[1]));
-				var depth = Exts.ParseIntegerInvariant(vals[2]);
 
 				var smudge = new Smudge
 				{
-					Type = type,
-					Depth = depth,
-					Sprite = smudges[type][depth]
+					Type = s.Type,
+					Depth = s.Depth,
+					Sprite = smudges[s.Type][s.Depth]
 				};
 
-				tiles.Add(cell, smudge);
-				render.Update(cell, smudge.Sprite);
+				tiles.Add(kv.Key, smudge);
+				render.Update(kv.Key, smudge.Sprite);
 			}
 		}
 
 		public void AddSmudge(CPos loc)
 		{
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, world.Map.CenterOfCell(loc), Info.SmokeType, Info.SmokePalette, Info.SmokeSequence)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
 
 			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{

@@ -1,0 +1,30 @@
+World:
+	LuaScript:
+		Scripts: nod06b.lua
+	MusicPlaylist:
+		StartingMusic: rout
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI has imported a Nuclear Detonator in an attempt to sway a few local political leaders. Penetrate the base and steal the detonator. A chopper will be sent to meet you at a designated landing zone. Look for the landing flare once you have stolen the device.
+		BriefingVideo: nod6.vqa
+		StartVideo: sundial.vqa
+		LossVideo: banner.vqa
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+FLARE:
+	Tooltip:
+		ShowOwnerRow: false
+
+TRAN:
+	-Selectable:

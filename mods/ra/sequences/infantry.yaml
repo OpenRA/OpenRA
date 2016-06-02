@@ -725,7 +725,7 @@ e7:
 		Tick: 120
 	idle2:
 		Start: 248
-		Length: 15
+		Length: 14
 		Tick: 120
 	die1:
 		Start: 262

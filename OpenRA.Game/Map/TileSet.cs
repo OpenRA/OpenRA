@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -24,6 +26,9 @@ namespace OpenRA
 		public readonly byte RampType;
 		public readonly Color LeftColor;
 		public readonly Color RightColor;
+
+		public readonly float ZOffset = 0.0f;
+		public readonly float ZRamp = 1.0f;
 
 		public MiniYaml Save(TileSet tileSet)
 		{
@@ -39,6 +44,12 @@ namespace OpenRA
 
 			if (RightColor != tileSet.TerrainInfo[TerrainType].Color)
 				root.Add(FieldSaver.SaveField(this, "RightColor"));
+
+			if (ZOffset != 0.0f)
+				root.Add(FieldSaver.SaveField(this, "ZOffset"));
+
+			if (ZRamp != 1.0f)
+				root.Add(FieldSaver.SaveField(this, "ZRamp"));
 
 			return new MiniYaml(tileSet.TerrainInfo[TerrainType].Type, root);
 		}
@@ -191,9 +202,9 @@ namespace OpenRA
 		// Private default ctor for serialization comparison
 		TileSet() { }
 
-		public TileSet(ModData modData, string filepath)
+		public TileSet(IReadOnlyFileSystem fileSystem, string filepath)
 		{
-			var yaml = MiniYaml.DictFromFile(filepath);
+			var yaml = MiniYaml.DictFromStream(fileSystem.Open(filepath));
 
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

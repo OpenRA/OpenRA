@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: cnc
 
 Title: Strange Behavior
-
-Description: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 10,5,45,52
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: generic.vqa
-	GameStart: dino.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -361,7 +345,7 @@ Actors:
 		Location: 21,15
 		Owner: Civilian
 	Actor117: v06
-		Owner: Neutral # TREX can't attack it
+		Owner: Neutral
 		Location: 21,8
 	Actor100: v07
 		Location: 12,12
@@ -425,127 +409,8 @@ Actors:
 		Location: 16,50
 		Owner: Neutral
 
-Smudges:
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civilian: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: scj01ea.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: j1
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^CivInfantry:
-		-ActorLostNotification:
-	^CivBuilding:
-		AnnounceOnSeen:
-	OLDLST:
-		Inherits: LST
-		-WithRoof:
-		-Selectable:
-		RejectsOrders:
-		Cargo:
-			Types: disabled
-	TREX:
-		Health:
-			HP: 750
-		Mobile:
-			Speed: 34
-		AutoTarget:
-			ScanRadius: 5
-	TRIC:
-		Health:
-			HP: 700
-		Mobile:
-			Speed: 18
-		AutoTarget:
-			ScanRadius: 5
-	STEG:
-		Health:
-			HP: 600
-		Mobile:
-			Speed: 32
-	^DINO:
-		Tooltip:
-			ShowOwnerRow: false
-		MustBeDestroyed:
+Sequences: sequences.yaml
 
-Sequences:
-	oldlst:
-		idle: lst
-			Start: 0
-			Facings: 1
-			ZOffset: -1024
-		icon: lsticnh.tem
-			AddExtension: False
-
-VoxelSequences:
-
-Weapons:
-	Teeth:
-		Range: 1c900
-		Warhead@1Dam: SpreadDamage
-			Versus:
-				Wood: 35
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

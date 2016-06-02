@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Bomber John
-
-Description: Lay mines, wait for them to explode, kill your enemies.
 
 Author: Holloweye
 
@@ -16,19 +14,7 @@ Bounds: 16,16,24,24
 
 Visibility: Lobby
 
-Type: Minigame
-
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 60
-	TechLevel: Unrestricted
-	ConfigurableStartingUnits: False
+Categories: Minigame
 
 Players:
 	PlayerReference@Neutral:
@@ -40,7 +26,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: allies
-		Enemies: Creeps
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
@@ -766,213 +752,6 @@ Actors:
 		Location: 27,18
 		Owner: Multi7
 
-Smudges:
+Rules: rules.yaml
 
-Rules:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	STEK:
-		Buildable:
-			Prerequisites: ~disabled
-	BARR:
-		Buildable:
-			Prerequisites: ~disabled
-	FIX:
-		Buildable:
-			Prerequisites: ~disabled
-	POWR:
-		Buildable:
-			Prerequisites: ~disabled
-	AFLD:
-		Buildable:
-			Prerequisites: ~disabled
-	PROC:
-		Buildable:
-			Prerequisites: ~disabled
-	WEAP:
-		Buildable:
-			Prerequisites: ~disabled
-	DOME:
-		Buildable:
-			Prerequisites: ~disabled
-	SPEN:
-		Buildable:
-			Prerequisites: ~disabled
-	SILO:
-		Buildable:
-			Prerequisites: ~disabled
-	Player:
-		ClassicProductionQueue@Building:
-			BuildSpeed: 0.4
-	MNLYR:
-		Inherits: ^Tank
-		Buildable:
-			Queue: Vehicle
-			BuildPaletteOrder: 30
-			Prerequisites: fix
-		Valued:
-			Cost: 800
-		Tooltip:
-			Name: Bomber
-			Description: Lays mines to destroy unwary enemy units.\n  Unarmed
-		Health:
-			HP: 500
-		Armor:
-			Type: Heavy
-		Mobile:
-			Speed: 128
-			WaitAverage: 1
-			WaitSpread: 1
-			ROT: 900
-		RevealsShroud:
-			Range: 40c0
-		MustBeDestroyed:
-			RequiredForShortGame: true
-		Transforms:
-			IntoActor: ftur
-			Offset: 0,0
-			Facing: 96
-		CashTrickler:
-			Period: 150
-			Amount: 20
-		RenderSprites:
-			Image: MNLY
-		Chronoshiftable:
-			ReturnToOrigin: false
-	FTUR:
-		Health:
-			HP: 1000
-		Transforms:
-			IntoActor: mnlyr
-			Offset: 0,0
-			Facing: 96
-		MustBeDestroyed:
-			RequiredForShortGame: true
-		CashTrickler:
-			Period: 150
-			Amount: 30
-		ChronoshiftPower:
-			Icon: chrono
-			ChargeTime: 60
-			Description: Chronoshift
-			LongDesc: Teleport a group of vehicles across\nthe map.
-			SelectTargetSound: slcttgt1.aud
-			BeginChargeSound: chrochr1.aud
-			EndChargeSound: chrordy1.aud
-			Range: 3
-		GrantUpgradePower@IRONCURTAIN:
-			Icon: invuln
-			ChargeTime: 30
-			Description: Invulnerability
-			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 75
-			SelectTargetSound: slcttgt1.aud
-			BeginChargeSound: ironchg1.aud
-			EndChargeSound: ironrdy1.aud
-			Range: 1
-			Upgrades: invulnerability
-			GrantUpgradeSequence: idle
-		Power:
-			Amount: 0
-	MINVV:
-		Inherits@1: ^SpriteActor
-		HiddenUnderFog:
-		Building:
-			Adjacent: 99
-			TerrainTypes: Clear,Road
-		ProvidesPrerequisite:
-			Prerequisite: MNLYVV
-		Buildable:
-			Queue: Building
-			BuildPaletteOrder: 30
-		Valued:
-			Cost: 30
-		Health:
-			HP: 200
-		RenderSprites:
-			Image: miner
-		WithSpriteBody:
-		Tooltip:
-			Name: Bomb
-			Description: Bomb (Hotkey B)
-		SelfHealing:
-			Step: -1
-			Ticks: 1
-			HealIfBelow: 101%
-			DamageCooldown: 0
-		Explodes:
-			Weapon: CrateNuke
-			EmptyWeapon: CrateNuke
-	T17:
-		Health:
-			HP: 999999999
-		Building:
-			Adjacent: 99
-		GivesBuildableArea:
-		Production:
-			Produces: Building
-		BaseBuilding:
-		Tooltip:
-			Name: Tree
-		ChronoshiftPower:
-			Icon: chrono
-			ChargeTime: 60
-			Description: Chronoshift
-			LongDesc: Teleport a group of vehicles across\nthe map.
-			SelectTargetSound: slcttgt1.aud
-			BeginChargeSound: chrochr1.aud
-			EndChargeSound: chrordy1.aud
-			Duration: 999999
-			KillCargo: yes
-			Range: 3
-		GrantUpgradePower@IRONCURTAIN:
-			Icon: invuln
-			ChargeTime: 30
-			Description: Invulnerability
-			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
-			Duration: 75
-			SelectTargetSound: slcttgt1.aud
-			BeginChargeSound: ironchg1.aud
-			EndChargeSound: ironrdy1.aud
-			Range: 1
-			Upgrades: invulnerability
-			GrantUpgradeSequence: idle
-
-Sequences:
-	miner:
-		idle:
-			Start: 0
-			Length: 1
-			ZOffset: -512
-		damaged-idle:
-			Start: 1
-			Length: *
-			ZOffset: -512
-		damaged-build:
-			Start: 1
-			Length: *
-			ZOffset: -512
-		icon: jmin
-			Start: 0
-	mnlyr:
-		icon: mnlyicon
-	brick:
-		idle:
-			Start: 0
-			Length: *
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Sequences: sequences.yaml

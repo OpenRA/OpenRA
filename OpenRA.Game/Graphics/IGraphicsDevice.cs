@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -69,6 +70,7 @@ namespace OpenRA
 
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
+		void ClearDepthBuffer();
 
 		void SetBlendMode(BlendMode mode);
 
@@ -77,6 +79,8 @@ namespace OpenRA
 
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
 		void SetHardwareCursor(IHardwareCursor cursor);
+
+		string GLVersion { get; }
 	}
 
 	public interface IVertexBuffer<T> : IDisposable
@@ -92,6 +96,7 @@ namespace OpenRA
 		void SetBool(string name, bool value);
 		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
+		void SetVec(string name, float x, float y, float z);
 		void SetVec(string name, float[] vec, int length);
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);

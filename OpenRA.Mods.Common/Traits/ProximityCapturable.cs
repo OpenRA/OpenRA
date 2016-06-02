@@ -1,18 +1,19 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// TODO: Eventually support CellTriggers as well
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, ActorEntered, ActorLeft);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, WDist.Zero, ActorEntered, ActorLeft);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -83,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld || self.CenterPosition == prevPosition)
 				return;
 
-			self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, self.CenterPosition, Info.Range);
+			self.World.ActorMap.UpdateProximityTrigger(proximityTrigger, self.CenterPosition, Info.Range, WDist.Zero);
 			prevPosition = self.CenterPosition;
 		}
 
@@ -188,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			skipTriggerUpdate = false;
+			Game.RunAfterTick(() => skipTriggerUpdate = false);
 		}
 	}
 }

@@ -15,7 +15,7 @@ SS:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 71
 	RevealsShroud:
 		Range: 6c0
@@ -71,7 +71,7 @@ MSUB:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
@@ -127,12 +127,12 @@ DD:
 	Armor:
 		Type: Heavy
 	Mobile:
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 85
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 		Offset: 341,0,128
 	Armament@PRIMARY:
 		Weapon: Stinger
@@ -173,18 +173,18 @@ CA:
 	Armor:
 		Type: Heavy
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
 		Range: 7c0
 	Turreted@PRIMARY:
 		Turret: primary
 		Offset: -864,0,128
-		ROT: 3
+		TurnSpeed: 3
 	Turreted@SECONDARY:
 		Turret: secondary
 		Offset: 768,0,128
-		ROT: 3
+		TurnSpeed: 3
 	Armament@PRIMARY:
 		Turret: primary
 		Weapon: 8Inch
@@ -228,7 +228,7 @@ LST:
 	Mobile:
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 113
 	RevealsShroud:
 		Range: 6c0
@@ -261,12 +261,12 @@ PT:
 	Armor:
 		Type: Heavy
 	Mobile:
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 		Offset: 512,0,0
 	Armament@PRIMARY:
 		Weapon: 2Inch

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: d2k
 
 Title: Atreides 01b
-
-Description: Harvest Spice from the Imperial Basin. Construct a Spice Refinery and defend it against the Harkonnen troops scattered throughout the basin. You have been assigned only limited offensive forces - use them wisely.\n\nYou will have to learn the subtleties of mining as you go, but remember to build Silos to store the Spice. When you run out of storage space you can not gather more Spice. Also, any building without adequate concrete foundation will need immediate repair and be vulnerable to erosive damage from the harsh environment. Your greatest adversary may be the elements.\n\nGood luck.\n
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 2,2,28,24
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: A_BR01_E.VQA
-
-Options:
-	Crates: False
-	Creeps: True
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 2300
-	TechLevel: Low
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -126,56 +110,4 @@ Actors:
 		Location: 22,20
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: atreides01b.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		WormManager:
-			Minimum: 1
-			Maximum: 1
-	construction_yard:
-		Production:
-			Produces: Building
-	concreteb:
-		Buildable:
-			Prerequisites: ~disabled
-	barracks:
-		Buildable:
-			Prerequisites: ~disabled
-	light_factory:
-		Buildable:
-			Prerequisites: ~disabled
-	heavy_factory:
-		Buildable:
-			Prerequisites: ~disabled
-	medium_gun_turret:
-		Buildable:
-			Prerequisites: ~disabled
-	wall:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

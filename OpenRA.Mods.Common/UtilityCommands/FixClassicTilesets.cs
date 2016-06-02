@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -31,7 +32,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			modData.ModFiles.LoadFromManifest(Game.ModData.Manifest);
 
 			var imageField = typeof(TerrainTemplateInfo).GetField("Image");
 			var pickAnyField = typeof(TerrainTemplateInfo).GetField("PickAny");
@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var single = new int2(1, 1);
 			var exts = new[] { "" }.Concat(args[1].Split(','));
 
-			foreach (var t in Game.ModData.Manifest.TileSets)
+			foreach (var t in modData.Manifest.TileSets)
 			{
-				var ts = new TileSet(Game.ModData, t);
-				var frameCache = new FrameCache(Game.ModData.SpriteLoaders);
+				var ts = new TileSet(modData.DefaultFileSystem, t);
+				var frameCache = new FrameCache(modData.DefaultFileSystem, modData.SpriteLoaders);
 
 				Console.WriteLine("Tileset: " + ts.Name);
 				foreach (var template in ts.Templates.Values)
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var ext in exts)
 					{
 						Stream s;
-						if (modData.ModFiles.TryOpen(template.Images[0] + ext, out s))
+						if (modData.DefaultFileSystem.TryOpen(template.Images[0] + ext, out s))
 							s.Dispose();
 						else
 							continue;

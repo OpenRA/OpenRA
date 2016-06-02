@@ -62,7 +62,7 @@ Container@SERVER_LOBBY:
 					Y: PARENT_BOTTOM - 46
 					Width: 95
 					Height: 31
-					Text: Lobby
+					Text: Game
 				Button@GLOBALCHAT_TAB:
 					X: 115
 					Y: PARENT_BOTTOM - 46

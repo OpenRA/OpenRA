@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -29,10 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseProvider : ITick, IPostRenderSelection, ISelectionBar
 	{
 		public readonly BaseProviderInfo Info;
-		DeveloperMode devMode;
-		Actor self;
+		readonly DeveloperMode devMode;
+		readonly Actor self;
+
 		int total;
 		int progress;
+		bool allyBuildEnabled;
 
 		public BaseProvider(Actor self, BaseProviderInfo info)
 		{
@@ -40,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 			progress = total = info.InitialDelay;
+			allyBuildEnabled = self.World.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
 		}
 
 		public void Tick(Actor self)
@@ -60,8 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ValidRenderPlayer()
 		{
-			var allyBuildRadius = self.World.LobbyInfo.GlobalSettings.AllyBuildRadius;
-			return self.Owner == self.World.RenderPlayer || (allyBuildRadius && self.Owner.IsAlliedWith(self.World.RenderPlayer));
+			return self.Owner == self.World.RenderPlayer || (allyBuildEnabled && self.Owner.IsAlliedWith(self.World.RenderPlayer));
 		}
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)

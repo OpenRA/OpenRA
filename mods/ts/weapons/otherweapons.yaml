@@ -41,9 +41,9 @@ FiendShard:
 			Concrete: 20
 		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 
 SlimeAttack:
@@ -66,3 +66,13 @@ Tiberium:
 		Spread: 42
 		Damage: 2
 		DamageTypes: EnergyDeath # TODO: FIX ME!
+
+Veins:
+	ReloadDelay: 16
+	Warhead@Damage: SpreadDamage
+		Spread: 42
+		Damage: 5
+		DamageTypes: EnergyDeath # TODO: FIX ME!
+	Warhead@Effect: CreateEffect
+		Explosions: veins
+		ExplosionPalette: player

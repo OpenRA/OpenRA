@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -18,8 +19,7 @@ namespace OpenRA.FileSystem
 {
 	public sealed class ZipFile : IReadWritePackage
 	{
-		readonly string filename;
-		readonly int priority;
+		public string Name { get; private set; }
 		SZipFile pkg;
 
 		static ZipFile()
@@ -27,36 +27,27 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFile(FileSystem context, string filename, int priority)
+		public ZipFile(FileSystem context, string filename, Stream stream, bool createOrClearContents = false)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
 
-			try
-			{
-				// Pull the file into memory, don't keep it open.
-				pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
-			}
-			catch (ZipException e)
-			{
-				Log.Write("debug", "Couldn't load zip file: {0}", e.Message);
-			}
+			if (createOrClearContents)
+				pkg = SZipFile.Create(stream);
+			else
+				pkg = new SZipFile(stream);
 		}
 
-		// Create a new zip with the specified contents.
-		public ZipFile(FileSystem context, string filename, int priority, Dictionary<string, byte[]> contents)
+		public ZipFile(IReadOnlyFileSystem context, string filename, bool createOrClearContents = false)
 		{
-			this.priority = priority;
-			this.filename = filename;
+			Name = filename;
 
-			if (File.Exists(filename))
-				File.Delete(filename);
-
-			pkg = SZipFile.Create(filename);
-			Write(contents);
+			if (createOrClearContents)
+				pkg = SZipFile.Create(filename);
+			else
+				pkg = new SZipFile(filename);
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			var entry = pkg.GetEntry(filename);
 			if (entry == null)
@@ -71,33 +62,32 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public IEnumerable<string> AllFileNames()
+		public IEnumerable<string> Contents
 		{
-			foreach (ZipEntry entry in pkg)
-				yield return entry.Name;
+			get
+			{
+				foreach (ZipEntry entry in pkg)
+					yield return entry.Name;
+			}
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return pkg.GetEntry(filename) != null;
 		}
 
-		public int Priority { get { return 500 + priority; } }
-		public string Name { get { return filename; } }
-
-		public void Write(Dictionary<string, byte[]> contents)
+		public void Update(string filename, byte[] contents)
 		{
-			// TODO: Clear existing content?
-			pkg.Close();
-			pkg = SZipFile.Create(filename);
 			pkg.BeginUpdate();
-
-			foreach (var kvp in contents)
-				pkg.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
-
+			pkg.Add(new StaticMemoryDataSource(contents), filename);
 			pkg.CommitUpdate();
-			pkg.Close();
-			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
+		}
+
+		public void Delete(string filename)
+		{
+			pkg.BeginUpdate();
+			pkg.Delete(filename);
+			pkg.CommitUpdate();
 		}
 
 		public void Dispose()

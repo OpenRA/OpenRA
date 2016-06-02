@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -78,6 +79,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public int Facings { get; private set; }
 		public int Tick { get; private set; }
 		public int ZOffset { get; private set; }
+		public float ZRamp { get; private set; }
 		public int ShadowStart { get; private set; }
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
@@ -118,6 +120,7 @@ namespace OpenRA.Mods.Common.Graphics
 				ShadowStart = LoadField(d, "ShadowStart", -1);
 				ShadowZOffset = LoadField(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
 				ZOffset = LoadField(d, "ZOffset", WDist.Zero).Length;
+				ZRamp = LoadField(d, "ZRamp", 0);
 				Tick = LoadField(d, "Tick", 40);
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
@@ -138,7 +141,7 @@ namespace OpenRA.Mods.Common.Graphics
 						"{0}: Sequence {1}.{2}: UseClassicFacingFudge is only valid for 32 facings"
 						.F(info.Nodes[0].Location, sequence, animation));
 
-				var offset = LoadField(d, "Offset", float2.Zero);
+				var offset = LoadField(d, "Offset", float3.Zero);
 				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
 
 				MiniYaml combine;
@@ -158,7 +161,7 @@ namespace OpenRA.Mods.Common.Graphics
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
 						var subSprites = cache[subSrc].Select(
 							s => new Sprite(s.Sheet,
-								FlipRectangle(s.Bounds, subFlipX, subFlipY),
+								FlipRectangle(s.Bounds, subFlipX, subFlipY), ZRamp,
 								new float2(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y) + subOffset + offset,
 								s.Channel, blendMode));
 
@@ -181,7 +184,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
 						s => new Sprite(s.Sheet,
-							FlipRectangle(s.Bounds, flipX, flipY),
+							FlipRectangle(s.Bounds, flipX, flipY), ZRamp,
 							new float2(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y) + offset,
 							s.Channel, blendMode)).ToArray();
 				}

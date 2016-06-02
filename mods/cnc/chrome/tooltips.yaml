@@ -3,23 +3,12 @@ Background@SIMPLE_TOOLTIP:
 	Background: panel-black
 	Height: 27
 	Children:
+		Container@LINE_HEIGHT:
+			Y: 2
+			Height: 19
 		Label@LABEL:
 			X: 5
-			Height: 23
-			Font: Bold
-
-Background@TWO_LINE_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: panel-black
-	Height: 48
-	Children:
-		Label@LABEL:
-			X: 5
-			Height: 46
-			Font: Bold
-		Label@HOTKEY:
-			Visible: false
-			TextColor: FFFF00
+			Y: 0-2
 			Height: 23
 			Font: Bold
 

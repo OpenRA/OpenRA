@@ -434,7 +434,7 @@ TSLA:
 	AttackCharge:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
-		ReloadTime: 120
+		ReloadDelay: 120
 	Power:
 		Amount: -100
 	DetectCloaked:
@@ -475,7 +475,7 @@ AGUN:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 15
+		TurnSpeed: 15
 		InitialFacing: 224
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -554,7 +554,7 @@ PBOX:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -568,7 +568,7 @@ PBOX:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
-		PortCones: 86, 86, 86, 86, 86, 86
+		PortCones: 88, 88, 88, 88, 88, 88
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	Power:
@@ -601,7 +601,7 @@ HBOX:
 		CloakDelay: 60
 		IsPlayerPalette: true
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
@@ -619,7 +619,7 @@ HBOX:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
 		PortYaws: 0, 176, 341, 512, 682, 853
-		PortCones: 86, 86, 86, 86, 86, 86
+		PortCones: 88, 88, 88, 88, 88, 88
 	Power:
 		Amount: -15
 	-MustBeDestroyed:
@@ -647,7 +647,7 @@ GUN:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 12
+		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -687,7 +687,7 @@ FTUR:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 		Offset: 0,0,112
 	Armament:
 		Weapon: FireballLauncher
@@ -730,7 +730,7 @@ SAM:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 30
+		TurnSpeed: 30
 		InitialFacing: 0
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -776,7 +776,7 @@ ATEK:
 		OneShot: yes
 		ChargeTime: 480
 		Description: GPS Satellite
-		LongDesc: Reveals map terrain and provides tactical\ninformation.
+		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
 		DisplayTimer: True
@@ -1665,6 +1665,40 @@ BRIK:
 		Types: concrete
 	WithWallSpriteBody:
 		Type: concrete
+
+VGATE:
+	Inherits: ^Gate
+	Gate:
+		Footprint: x x x
+		Dimensions: 1,3
+	WithGateSpriteBody:
+		WallConnections: 0,-1, 0,3
+	LineBuildNode:
+		Connections: 0,-1, 0,1
+	Tooltip:
+		Name: Vertical Gate
+
+HGATE:
+	Inherits: ^Gate
+	Gate:
+		Footprint: xxx
+		Dimensions: 3,1
+	WithGateSpriteBody:
+		WallConnections: -1,0, 3,0
+	LineBuildNode:
+		Connections: -1,0, 1,0
+	Tooltip:
+		Name: Horizontal Gate
+	RenderSprites:
+		Image: agate
+		FactionImages:
+			allies: agate
+			england: agate
+			france: agate
+			germany: agate
+			soviet: sgate
+			russia: sgate
+			ukraine: sgate
 
 CYCL:
 	Inherits: ^Wall

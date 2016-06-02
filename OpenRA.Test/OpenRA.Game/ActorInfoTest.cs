@@ -1,15 +1,15 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
@@ -27,89 +27,49 @@ namespace OpenRA.Test
 	class MockEInfo : MockTraitInfo, Requires<MockFInfo> { }
 	class MockFInfo : MockTraitInfo, Requires<MockDInfo> { }
 
-	class MockA2Info : MockTraitInfo { }
-	class MockB2Info : MockTraitInfo { }
-	class MockC2Info : MockTraitInfo { }
-
-	class MockStringInfo : MockTraitInfo { public string AString = null; }
-
 	[TestFixture]
 	public class ActorInfoTest
 	{
-		[SetUp]
-		public void SetUp()
+		[TestCase(TestName = "Trait ordering sorts in dependency order correctly")]
+		public void TraitOrderingSortsCorrectly()
 		{
+			var unorderedTraits = new ITraitInfo[] { new MockBInfo(), new MockCInfo(), new MockAInfo(), new MockBInfo() };
+			var actorInfo = new ActorInfo("test", unorderedTraits);
+			var orderedTraits = actorInfo.TraitsInConstructOrder().ToArray();
+
+			CollectionAssert.AreEquivalent(unorderedTraits, orderedTraits);
+
+			for (var i = 0; i < orderedTraits.Length; i++)
+			{
+				var traitTypesThatMustOccurBeforeThisTrait = ActorInfo.PrerequisitesOf(orderedTraits[i]);
+				var traitTypesThatOccurAfterThisTrait = orderedTraits.Skip(i + 1).Select(ti => ti.GetType());
+				var traitTypesThatShouldOccurEarlier = traitTypesThatOccurAfterThisTrait.Intersect(traitTypesThatMustOccurBeforeThisTrait);
+				CollectionAssert.IsEmpty(traitTypesThatShouldOccurEarlier, "Dependency order has not been satisfied.");
+			}
 		}
 
-		[TestCase(TestName = "Sort traits in order of dependency")]
-		public void TraitsInConstructOrderA()
-		{
-			var actorInfo = new ActorInfo("test", new MockCInfo(), new MockBInfo(), new MockAInfo());
-
-			var i = new List<ITraitInfo>(actorInfo.TraitsInConstructOrder());
-
-			Assert.That(i[0], Is.InstanceOf<MockAInfo>());
-			Assert.That(i[1].GetType().Name, Is.EqualTo("MockBInfo"));
-			Assert.That(i[2].GetType().Name, Is.EqualTo("MockCInfo"));
-		}
-
-		[TestCase(TestName = "Exception reports missing dependencies")]
-		public void TraitsInConstructOrderB()
+		[TestCase(TestName = "Trait ordering exception reports missing dependencies")]
+		public void TraitOrderingReportsMissingDependencies()
 		{
 			var actorInfo = new ActorInfo("test", new MockBInfo(), new MockCInfo());
+			var ex = Assert.Throws<YamlException>(() => actorInfo.TraitsInConstructOrder());
 
-			try
-			{
-				actorInfo.TraitsInConstructOrder();
-				throw new Exception("Exception not thrown!");
-			}
-			catch (Exception e)
-			{
-				// Is.StringContaining is deprecated in NUnit 3, but we need to support NUnit 2 so we ignore the warning.
-				#pragma warning disable CS0618
-				Assert.That(e.Message, Is.StringContaining("MockA"));
-				Assert.That(e.Message, Is.StringContaining("MockB"));
-				Assert.That(e.Message, Is.StringContaining("MockC"));
-				Assert.That(e.Message, Is.StringContaining("MockInherit"), "Should recognize base classes");
-				Assert.That(e.Message, Is.StringContaining("IMock"), "Should recognize interfaces");
-				#pragma warning restore CS0618
-			}
+			StringAssert.Contains(typeof(MockAInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockBInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockCInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(typeof(MockInheritInfo).Name, ex.Message, "Exception message did not report a missing dependency (from a base class).");
+			StringAssert.Contains(typeof(IMock).Name, ex.Message, "Exception message did not report a missing dependency (from an interface).");
 		}
 
-		[TestCase(TestName = "Exception reports cyclic dependencies")]
-		public void TraitsInConstructOrderC()
+		[TestCase(TestName = "Trait ordering exception reports cyclic dependencies")]
+		public void TraitOrderingReportsCyclicDependencies()
 		{
 			var actorInfo = new ActorInfo("test", new MockDInfo(), new MockEInfo(), new MockFInfo());
+			var ex = Assert.Throws<YamlException>(() => actorInfo.TraitsInConstructOrder());
 
-			try
-			{
-				actorInfo.TraitsInConstructOrder();
-				throw new Exception("Exception not thrown!");
-			}
-			catch (Exception e)
-			{
-				var count = (
-					new Regex("MockD").Matches(e.Message).Count +
-					new Regex("MockE").Matches(e.Message).Count +
-					new Regex("MockF").Matches(e.Message).Count) / 3.0;
-
-				Assert.That(count, Is.EqualTo(Math.Floor(count)), "Should be symmetrical");
-			}
-		}
-
-		// This needs to match the logic used in RulesetCache.LoadYamlRules
-		ActorInfo CreateActorInfoFromYaml(string name, string mapYaml, params string[] yamls)
-		{
-			var nodes = mapYaml == null ? new List<MiniYamlNode>() : MiniYaml.FromString(mapYaml);
-			var sources = yamls.ToList();
-			if (mapYaml != null)
-				sources.Add(mapYaml);
-
-			var yaml = MiniYaml.Merge(sources.Select(s => MiniYaml.FromString(s)));
-			var allUnits = yaml.ToDictionary(node => node.Key, node => node.Value);
-			var unit = allUnits[name];
-			var creator = new ObjectCreator(new[] { typeof(ActorInfoTest).Assembly });
-			return new ActorInfo(creator, name, unit);
+			StringAssert.Contains(typeof(MockDInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(typeof(MockEInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(typeof(MockFInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
 		}
 	}
 }

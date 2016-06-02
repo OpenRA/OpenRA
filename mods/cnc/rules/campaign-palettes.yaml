@@ -1,0 +1,67 @@
+^Palettes:
+	-PlayerColorPalette:
+	IndexedPlayerPalette:
+		BasePalette: terrain
+		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+		PlayerIndex:
+			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
+			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		BasePalette: terrain
+		BaseName: player-units
+		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+		PlayerIndex:
+			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
+			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+^Vehicle:
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Tank:
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Helicopter:
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Infantry:
+	RenderSprites:
+		PlayerPalette: player-units
+	WithDeathAnimation:
+		DeathSequencePalette: player-units
+
+^CommonHuskDefaults:
+	RenderSprites:
+		PlayerPalette: player-units
+
+C17:
+	RenderSprites:
+		PlayerPalette: player-units
+	Contrail@1:
+		UsePlayerColor: False
+	Contrail@2:
+		UsePlayerColor: False
+	Contrail@3:
+		UsePlayerColor: False
+	Contrail@4:
+		UsePlayerColor: False
+
+HARV:
+	RenderSprites:
+		PlayerPalette: player
+
+MCV:
+	RenderSprites:
+		PlayerPalette: player
+
+HARV.Husk:
+	RenderSprites:
+		PlayerPalette: player
+
+MCV.Husk:
+	RenderSprites:
+		PlayerPalette: player

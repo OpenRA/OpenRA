@@ -1,0 +1,105 @@
+World:
+	LuaScript:
+		Scripts: gdi01.lua
+	MusicPlaylist:
+		StartingMusic: aoi
+	MissionData:
+		Briefing: Use the units provided to protect the Mobile Construction Vehicle (MCV).\n\nYou should then deploy the MCV by selecting it with a left-click and then right-clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
+		BackgroundVideo: intro2.vqa
+		BriefingVideo: gdi1.vqa
+		StartVideo: landing.vqa
+		WinVideo: consyard.vqa
+		LossVideo: gameover.vqa
+
+NUKE:
+	-Sellable:
+	Buildable:
+		BuildLimit: 1
+
+PYLE:
+	-Sellable:
+	Buildable:
+		BuildLimit: 1
+
+FACT:
+	-Sellable:
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+BOAT:
+	Health:
+		HP: 1500
+	AutoTarget:
+		InitialStance: AttackAnything
+	RejectsOrders:
+		Except: Attack
+
+OLDLST:
+	Inherits: LST
+	-WithRoof:
+	-Selectable:
+	RejectsOrders:
+	Cargo:
+		Types: disabled

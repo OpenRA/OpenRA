@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -15,6 +16,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -298,8 +300,12 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			var hotkey = Hotkey.FromKeyInput(e);
+			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
+			if (batchModifiers != Modifiers.None)
+				hotkey = new Hotkey(hotkey.Key, hotkey.Modifiers ^ Modifiers.Shift);
+
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
-			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, Modifiers.None) : false;
+			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
 		}
 
 		public void RefreshIcons()
@@ -331,7 +337,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
 
 				var rsi = item.TraitInfo<RenderSpritesInfo>();
-				var icon = new Animation(World, rsi.GetImage(item, World.Map.SequenceProvider, faction));
+				var icon = new Animation(World, rsi.GetImage(item, World.Map.Rules.Sequences, faction));
 				icon.Play(item.TraitInfo<TooltipInfo>().Icon);
 
 				var bi = item.TraitInfo<BuildableInfo>();

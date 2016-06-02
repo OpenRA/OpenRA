@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 05:   Distant Thunder
-
-Description: Khalkis island contains a large quantity of ore that we need.\n\nThe Allies are well aware of our plans, and intend to establish their own base there. See to it that they fail.\n\nIn addition, capture their radar center so we can track Allied activity in this area.
 
 Author: Westwood Studios
 
@@ -16,34 +14,14 @@ Bounds: 20,42,90,50
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet5.vqa
-	GameStart: double.vqa
-	GameWon: strafe.vqa
-	GameLost: sovbatl.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Medium
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
-		NonCombatant: True
-		Faction: england
-	PlayerReference@Creeps:
-		Name: Creeps
 		NonCombatant: True
 		Faction: england
 	PlayerReference@Greece:
@@ -599,9 +577,6 @@ Actors:
 	ReinfRoadPoint: waypoint
 		Location: 52,42
 		Owner: Neutral
-	NWIdlePoint: waypoint
-		Location: 38,42
-		Owner: Neutral
 	EIslandPoint: waypoint
 		Location: 51,58
 		Owner: Neutral
@@ -621,128 +596,4 @@ Actors:
 		Location: 21,80
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		-EnemyWatcher:
-		MissionObjectives:
-			EarlyGameOver: true
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet05.lua, soviet05-AI.lua, soviet05-reinforcements_teams.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	AFLD:
-		ParatroopersPower@paratroopers:
-			DropItems: E1,E1,E1,E2,E2
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~tent
-	E4:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	SPY:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	MCV:
-		Buildable:
-			Prerequisites: ~disabled
-	FTRK:
-		Buildable:
-			Prerequisites: ~disabled
-	TRUK:
-		Buildable:
-			Prerequisites: ~disabled
-	APC:
-		Buildable:
-			Prerequisites: ~disabled
-	DOME.IGNORE:
-		Inherits: DOME
-		RenderSprites:
-			Image: DOME
-		AutoTargetIgnore:
-		Buildable:
-			Prerequisites: ~disabled
-	powerproxy.paratroopers:
-		ParatroopersPower:
-			DropItems: E1,E1,E1,E1,E1
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

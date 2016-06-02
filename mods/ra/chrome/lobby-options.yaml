@@ -18,39 +18,34 @@ Background@LOBBY_OPTIONS_BIN:
 			Height: PARENT_BOTTOM-75
 			Children:
 				Checkbox@EXPLORED_MAP_CHECKBOX:
-					Width: 140
+					Width: 150
 					Height: 20
 					Text: Explored Map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
-					Width: 140
+					Width: 150
 					Height: 20
 					Text: Fog of War
-				Checkbox@SHORTGAME_CHECKBOX:
-					X: 150
-					Width: 140
-					Height: 20
-					Text: Short Game
 				Checkbox@CRATES_CHECKBOX:
-					X: 150
-					Y: 35
-					Width: 140
+					X: 170
+					Width: 225
 					Height: 20
 					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 290
-					Width: 140
+					X: 170
+					Y: 35
+					Width: 225
 					Height: 20
 					Text: Build off Allies' ConYards
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					X: 290
-					Y: 35
-					Width: 140
+				Checkbox@SHORTGAME_CHECKBOX:
+					X: 400
+					Width: 150
 					Height: 20
-					Text: Diplomacy Changes
+					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					Y: 70
-					Width: 140
+					X: 400
+					Y: 35
+					Width: 150
 					Height: 20
 					Text: Debug Menu
 				Label@DIFFICULTY_DESC:

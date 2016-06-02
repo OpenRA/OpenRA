@@ -1,0 +1,174 @@
+120mm:
+	ReloadDelay: 150
+	Range: 10c0
+	Burst: 6
+	Projectile: Bullet
+		Speed: 204
+		Blockable: false
+		Inaccuracy: 1c682
+		Image: 120MM
+		ContrailLength: 50
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Versus:
+			None: 75
+			Concrete: 100
+		Damage: 150
+	Warhead@3Eff: CreateEffect
+		Explosions: self_destruct
+
+MammothTusk:
+	ReloadDelay: 300
+	Range: 10c0
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Blockable: false
+		Speed: 128
+		TrailImage: smokey
+		ContrailLength: 150
+		Inaccuracy: 0c853
+		ROT: 10
+		RangeLimit: 12c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 640
+		ValidTargets: Ground, Air
+		Versus:
+			None: 125
+			Wood: 110
+			Light: 110
+			Heavy: 100
+			Concrete: 200
+		Damage: 250
+	Warhead@3Eff: CreateEffect
+		Explosions: nuke
+
+TankNapalm:
+	ReloadDelay: 40
+	Range: 8c0
+	Report: aacanon3.aud
+	ValidTargets: Ground
+	Burst: 6
+	BurstDelay: 1
+	Projectile: Bullet
+		Speed: 426
+		Image: 120MM
+		Inaccuracy: 2c512
+		TrailImage: smokey
+		ContrailLength: 2
+		Blockable: false
+	Warhead: SpreadDamage
+		Spread: 341
+		ValidTargets: Ground
+		Versus:
+			None: 90
+			Wood: 170
+			Light: 100
+			Heavy: 100
+			Concrete: 100
+		Damage: 15
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: firebl3.aud
+
+ParaBomb:
+	ReloadDelay: 5
+	Range: 5c0
+	Projectile: GravityBomb
+		Image: BOMBLET
+		OpenSequence: idle
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Versus:
+			None: 125
+			Wood: 100
+			Light: 60
+			Concrete: 25
+		Damage: 200
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+
+155mm:
+	ReloadDelay: 10
+	Range: 7c5
+	Burst: 20
+	-Report:
+	Projectile: Bullet
+		Speed: 170
+		TrailImage: fb4
+		Image: fb3
+		Blockable: false
+		Angle: 30
+		Inaccuracy: 1c682
+		ContrailLength: 2
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 80
+			Wood: 100
+			Heavy: 75
+			Concrete: 35
+		Damage: 20
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+		ImpactSounds: firebl3.aud
+
+FLAK-23:
+	ReloadDelay: 10
+	Range: 8c0
+	Report: aacanon3.aud
+	ValidTargets: Air, Ground
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead: SpreadDamage
+		Spread: 213
+		ValidTargets: Air, Ground
+		Versus:
+			None: 35
+			Wood: 30
+			Light: 30
+			Heavy: 40
+			Concrete: 30
+		Damage: 25
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+
+SCUD:
+	ReloadDelay: 280
+	Range: 7c0
+	Projectile: Bullet
+		Arm: 10
+		TrailImage: smokey
+		Blockable: false
+		Inaccuracy: 0c426
+		Angle: 216
+	Warhead@1Dam: SpreadDamage
+		Spread: 853
+		Falloff: 100, 37, 14, 5, 0
+		Versus:
+			None: 100
+			Wood: 90
+			Light: 80
+			Heavy: 70
+		Damage: 500
+		AffectsParent: true
+	Warhead@3Eff: CreateEffect
+		Explosions: nuke
+		ImpactSounds: kaboom1.aud
+
+SilencedPPK:
+	Range: 25c0
+	ValidTargets: Infantry, Tank, Vehicle, Husk
+	InvalidTargets: Water, Structure, Wall
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Infantry, Tank, Vehicle, Husk
+		Versus:
+			Heavy: 50

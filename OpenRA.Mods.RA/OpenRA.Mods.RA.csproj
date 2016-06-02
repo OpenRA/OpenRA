@@ -30,6 +30,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -108,6 +109,7 @@
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
+    <Compile Include="Traits\GpsWatcher.cs" />
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />

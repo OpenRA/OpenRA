@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int modOffset = 0;
 
 		[ObjectCreator.UseCtor]
-		public ModBrowserLogic(Widget widget)
+		public ModBrowserLogic(Widget widget, ModData modData)
 		{
 			modInstallStatus = new Cache<ModMetadata, bool>(IsModInstalled);
 			modPrerequisitesFulfilled = new Cache<string, bool>(Game.IsModInstalled);
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modChooserPanel = widget;
 			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
-			loadButton.IsDisabled = () => selectedMod.Id == Game.ModData.Manifest.Mod.Id;
+			loadButton.IsDisabled = () => selectedMod.Id == modData.Manifest.Mod.Id;
 
 			modChooserPanel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
@@ -82,17 +83,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					using (var preview = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "preview.png")))
-						if (preview.Width == 296 && preview.Height == 196)
-							previews.Add(mod.Id, sheetBuilder.Add(preview));
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("preview.png"))
+						using (var preview = new Bitmap(stream))
+							if (preview.Width == 296 && preview.Height == 196)
+								previews.Add(mod.Id, sheetBuilder.Add(preview));
 				}
 				catch (Exception) { }
 
 				try
 				{
-					using (var logo = new Bitmap(Platform.ResolvePath(ModMetadata.CandidateModPaths[mod.Id], "logo.png")))
-						if (logo.Width == 96 && logo.Height == 96)
-							logos.Add(mod.Id, sheetBuilder.Add(logo));
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("logo.png"))
+						using (var logo = new Bitmap(stream))
+							if (logo.Width == 96 && logo.Height == 96)
+								logos.Add(mod.Id, sheetBuilder.Add(logo));
 				}
 				catch (Exception) { }
 			}

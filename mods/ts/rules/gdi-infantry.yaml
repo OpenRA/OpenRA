@@ -37,6 +37,8 @@ MEDIC:
 		Prerequisites: ~gapile
 	Voiced:
 		VoiceSet: Medic
+	RevealsShroud:
+		Range: 6c0
 	Mobile:
 		Speed: 56
 	Health:
@@ -47,15 +49,15 @@ MEDIC:
 		Weapon: Heal
 		TargetStances: Ally
 		ForceTargetStances: None
+		Cursor: heal
+		OutsideRangeCursor: heal
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: heal
 	SelfHealing:
-		Ticks: 60
+		Delay: 60
 	Passenger:
 		PipType: Red
-	Selectable:
-		Priority: 5
 
 JUMPJET:
 	Inherits: ^Soldier
@@ -105,6 +107,8 @@ GHOST:
 		BuildLimit: 1
 	Voiced:
 		VoiceSet: Ghost
+	Armor:
+		Type: Light
 	Mobile:
 		Speed: 56
 	Health:
@@ -121,8 +125,8 @@ GHOST:
 		CrushSound: squishy2.aud
 	AttackFrontal:
 		Voice: Attack
-	C4Demolition:
-		C4Delay: 45
+	Demolition:
+		DetonationDelay: 45
 		Voice: Attack
 	WithInfantryBody:
 		AttackSequence: shoot

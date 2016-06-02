@@ -43,7 +43,7 @@ NAAPWR:
 		BuildPaletteOrder: 5
 		Prerequisites: factory, ~structures.nod
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
 		Description: Provides twice as much power as\nthe normal Power Plant.
@@ -55,7 +55,7 @@ NAAPWR:
 	Selectable:
 		Bounds: 100, 54, 0, -4
 	Health:
-		HP: 900
+		HP: 750
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -148,6 +148,8 @@ NAWEAP:
 		Bounds: 149, 80, -3, -10
 	Health:
 		HP: 1000
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
 	RallyPoint:
@@ -256,7 +258,7 @@ NARADR:
 	Selectable:
 		Bounds: 96, 48, 0, -6
 	Health:
-		HP: 800
+		HP: 1000
 	Armor:
 		Type: Wood
 	RequiresPower:
@@ -277,7 +279,7 @@ NARADR:
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
-		Amount: -50
+		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 72, 0, -12
@@ -289,7 +291,7 @@ NATECH:
 		BuildPaletteOrder: 100
 		Prerequisites: naweap, naradr, ~structures.nod
 	Valued:
-		Cost: 2000
+		Cost: 1500
 	Tooltip:
 		Name: Nod Tech Center
 		Description: Provides access to advanced Nod technologies.
@@ -425,6 +427,8 @@ NAWAST:
 		PipColor: Red
 		PipCount: 15
 		Capacity: 56
+	Power:
+		Amount: -40
 	FreeActor:
 		Actor: WEED
 		SpawnOffset: 3,1

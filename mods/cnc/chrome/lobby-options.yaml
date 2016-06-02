@@ -17,106 +17,104 @@ Background@LOBBY_OPTIONS_BIN:
 			Height: PARENT_BOTTOM-75
 			Children:
 				Checkbox@EXPLORED_MAP_CHECKBOX:
-					Width: 230
+					Width: 150
 					Height: 20
 					Font: Regular
 					Text: Explored Map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
-					Width: 230
+					Width: 150
 					Height: 20
 					Font: Regular
 					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X: 140
-					Width: 230
+					X: 170
+					Width: 225
 					Height: 20
 					Font: Regular
 					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X: 140
+					X: 170
 					Y: 35
-					Width: 230
+					Width: 225
 					Height: 20
 					Font: Regular
 					Text: Build off Allies' ConYards
 				Checkbox@SHORTGAME_CHECKBOX:
-					X: 365
-					Width: 230
+					X: 400
+					Width: 150
 					Height: 20
 					Font: Regular
 					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X: 365
+					X: 400
 					Y: 35
-					Width: 230
+					Width: 150
 					Height: 20
 					Font: Regular
 					Text: Debug Menu
-				Label@STARTINGCASH_DESC:
-					X: 10
-					Y: 72
-					Width: 70
+				Label@DIFFICULTY_DESC:
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 70
+					Width: 160
+					Height: 25
+					Text: Mission Difficulty:
+					Align: Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 70
+					Width: 160
 					Height: 25
 					Font: Regular
+				Label@STARTINGCASH_DESC:
+					Y: 110
+					Width: 80
+					Height: 25
 					Text: Starting Cash:
 					Align: Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X: 85
-					Y: 72
-					Width: 120
+					Y: 110
+					Width: 160
 					Height: 25
 					Font: Regular
 					Text: $5000
 				Label@STARTINGUNITS_DESC:
-					X: PARENT_RIGHT - WIDTH - 135
-					Y: 72
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 110
 					Width: 120
 					Height: 25
 					Text: Starting Units:
 					Align: Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-					X: PARENT_RIGHT - WIDTH + 10
-					Y: 72
-					Width: 140
+					X: PARENT_RIGHT - WIDTH
+					Y: 110
+					Width: 160
 					Height: 25
 					Font: Regular
 				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
 					X: 85
-					Y: 112
-					Width: 120
+					Y: 150
+					Width: 160
 					Height: 25
 					Font: Regular
 					Text: 10
 				Label@TECHLEVEL_DESC:
-					Y: 112
+					Y: 150
 					Width: 80
 					Height: 25
 					Text: Tech Level:
 					Align: Right
 				Label@GAMESPEED_DESC:
-					X: PARENT_RIGHT - WIDTH - 135
-					Y: 112
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 150
 					Width: 120
 					Height: 25
 					Text: Game Speed:
 					Align: Right
 				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
-					X: PARENT_RIGHT - WIDTH + 10
-					Y: 112
-					Width: 140
-					Height: 25
-					Font: Regular
-				Label@DIFFICULTY_DESC:
-					X: PARENT_RIGHT - WIDTH - 135
-					Y: 152
-					Width: 120
-					Height: 25
-					Text: Mission Difficulty:
-					Align: Right
-				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X: PARENT_RIGHT - WIDTH + 10
-					Y: 152
-					Width: 140
+					X: PARENT_RIGHT - WIDTH
+					Y: 150
+					Width: 160
 					Height: 25
 					Font: Regular

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: cnc
 
 Title: Storm the Beachhead
-
-Description: Use the units provided to protect the Mobile Construction Vehicle (MCV).\n\nYou should then deploy the MCV by selecting it with a left-click and then right-clicking on it.\n\nThen you can begin to build up a base. Start with a Power Plant.\n\nFinally, search out and destroy all enemy Nod units in the surrounding area.
 
 Author: Westwood Studios
 
@@ -16,25 +14,9 @@ Bounds: 35,39,27,23
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	BackgroundInfo: intro2.vqa
-	Briefing: gdi1.vqa
-	GameStart: landing.vqa
-	GameWon: consyard.vqa
-	GameLost: gameover.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Nod:
@@ -412,194 +394,8 @@ Actors:
 		Location: 54,53
 		Owner: Neutral
 
-Smudges:
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-		IndexedPlayerPalette@units:
-			BasePalette: terrain
-			BaseName: player-units
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		LuaScript:
-			Scripts: gdi01.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: aoi
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	NUKE:
-		-Sellable:
-		Buildable:
-			BuildLimit: 1
-	PYLE:
-		-Sellable:
-		Buildable:
-			BuildLimit: 1
-	FACT:
-		-Sellable:
-	PROC:
-		Buildable:
-			Prerequisites: ~disabled
-	SILO:
-		Buildable:
-			Prerequisites: ~disabled
-	WEAP:
-		Buildable:
-			Prerequisites: ~disabled
-	HQ:
-		Buildable:
-			Prerequisites: ~disabled
-	NUK2:
-		Buildable:
-			Prerequisites: ~disabled
-	FIX:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	EYE:
-		Buildable:
-			Prerequisites: ~disabled
-	GUN:
-		Buildable:
-			Prerequisites: ~disabled
-	GTWR:
-		Buildable:
-			Prerequisites: ~disabled
-	ATWR:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	E2:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~disabled
-	E6:
-		Buildable:
-			Prerequisites: ~disabled
-	RMBO:
-		Buildable:
-			Prerequisites: ~disabled
-	BOAT:
-		Health:
-			HP: 1500
-		AutoTarget:
-			InitialStance: AttackAnything
-		RejectsOrders:
-			Except: Attack
-	OLDLST:
-		Inherits: LST
-		-WithRoof:
-		-Selectable:
-		RejectsOrders:
-		Cargo:
-			Types: disabled
-	HARV:
-		RenderSprites:
-			PlayerPalette: player
-	MCV:
-		RenderSprites:
-			PlayerPalette: player
-	HARV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	MCV.Husk:
-		RenderSprites:
-			PlayerPalette: player
+Sequences: sequences.yaml
 
-Sequences:
-	oldlst:
-		idle: lst
-			Start: 0
-			Facings: 1
-			ZOffset: -1024
-		icon: lsticnh.tem
-			AddExtension: False
-
-VoxelSequences:
-
-Weapons:
-	BoatMissile:
-		Warhead: SpreadDamage
-			Versus:
-				Heavy: 50
-			Damage: 50
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

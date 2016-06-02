@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -71,6 +72,29 @@ namespace OpenRA.Mods.Common.Widgets
 		ScrollDirection edgeDirections;
 		World world;
 		WorldRenderer worldRenderer;
+		WPos?[] viewPortBookmarkSlots = new WPos?[4];
+
+		void SaveBookmark(int index, WPos position)
+		{
+			viewPortBookmarkSlots[index] = position;
+		}
+
+		void SaveCurrentPositionToBookmark(int index)
+		{
+			SaveBookmark(index, worldRenderer.Viewport.CenterPosition);
+		}
+
+		WPos? JumpToBookmark(int index)
+		{
+			return viewPortBookmarkSlots[index];
+		}
+
+		void JumpToSavedBookmark(int index)
+		{
+			var bookmark = JumpToBookmark(index);
+			if (bookmark != null)
+				worldRenderer.Viewport.Center((WPos)bookmark);
+		}
 
 		[ObjectCreator.UseCtor]
 		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
@@ -160,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override string GetCursor(int2 pos)
 		{
 			if (!IsJoystickScrolling &&
-			    (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
+				(!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
 				return null;
 
 			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
@@ -189,34 +213,72 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		bool IsZoomAllowed(float zoom)
+		{
+			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
+		}
+
+		void Zoom(int direction)
+		{
+			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
+			var currentZoom = worldRenderer.Viewport.Zoom;
+			var nextIndex = zoomSteps.IndexOf(currentZoom);
+
+			if (direction < 0)
+				nextIndex++;
+			else
+				nextIndex--;
+
+			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
+				return;
+
+			var zoom = zoomSteps.ElementAt(nextIndex);
+			if (!IsZoomAllowed(zoom))
+				return;
+
+			worldRenderer.Viewport.Zoom = zoom;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			var scrolltype = Game.Settings.Game.MouseScroll;
-			if (scrolltype == MouseScrollType.Disabled)
+			if (mi.Event == MouseInputEvent.Scroll &&
+				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			{
+				Zoom(mi.ScrollDelta);
+				return true;
+			}
+
+			var scrollType = MouseScrollType.Disabled;
+
+			if (mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right))
+				scrollType = Game.Settings.Game.MiddleMouseScroll;
+			else if (mi.Button == MouseButton.Right)
+				scrollType = Game.Settings.Game.RightMouseScroll;
+
+			if (scrollType == MouseScrollType.Disabled)
 				return false;
 
-			if (scrolltype == MouseScrollType.Standard || scrolltype == MouseScrollType.Inverted)
+			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
-				if (mi.Event == MouseInputEvent.Move &&
-					(mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right)))
+				if (mi.Event == MouseInputEvent.Move)
 				{
-					var d = scrolltype == MouseScrollType.Inverted ? -1 : 1;
+					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
 					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 					return true;
 				}
 			}
 
-			// Tiberian Sun style right-click-and-drag scrolling
-			if (scrolltype == MouseScrollType.Joystick)
+			// Tiberian Sun style click-and-drag scrolling
+			if (scrollType == MouseScrollType.Joystick)
 			{
-				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+				if (mi.Event == MouseInputEvent.Down)
 				{
 					if (!TakeMouseFocus(mi))
 						return false;
 					joystickScrollStart = mi.Location;
 				}
 
-				if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
+				if (mi.Event == MouseInputEvent.Up)
 				{
 					var wasJoystickScrolling = IsJoystickScrolling;
 
@@ -227,10 +289,8 @@ namespace OpenRA.Mods.Common.Widgets
 						return true;
 				}
 
-				if (mi.Event == MouseInputEvent.Move && mi.Button == MouseButton.Right && joystickScrollStart.HasValue)
-				{
+				if (mi.Event == MouseInputEvent.Move && joystickScrollStart.HasValue)
 					joystickScrollEnd = mi.Location;
-				}
 			}
 
 			return false;
@@ -269,6 +329,77 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				keyboardDirections = keyboardDirections.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down);
 				return true;
+			}
+
+			if (key == ks.MapPushTop)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, 0, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushBottom)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, worldRenderer.World.Map.ProjectedBottomRight.Y, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushLeftEdge)
+			{
+				worldRenderer.Viewport.Center(new WPos(0, worldRenderer.Viewport.CenterPosition.Y, 0));
+				return false;
+			}
+
+			if (key == ks.MapPushRightEdge)
+			{
+				worldRenderer.Viewport.Center(new WPos(worldRenderer.World.Map.ProjectedBottomRight.X, worldRenderer.Viewport.CenterPosition.Y, 0));
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot1)
+			{
+				SaveCurrentPositionToBookmark(0);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot2)
+			{
+				SaveCurrentPositionToBookmark(1);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot3)
+			{
+				SaveCurrentPositionToBookmark(2);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkSaveSlot4)
+			{
+				SaveCurrentPositionToBookmark(3);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot1)
+			{
+				JumpToSavedBookmark(0);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot2)
+			{
+				JumpToSavedBookmark(1);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot3)
+			{
+				JumpToSavedBookmark(2);
+				return false;
+			}
+
+			if (key == ks.ViewPortBookmarkUseSlot4)
+			{
+				JumpToSavedBookmark(3);
+				return false;
 			}
 
 			return false;

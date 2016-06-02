@@ -1,0 +1,157 @@
+World:
+	LuaScript:
+		Scripts: nod06c.lua
+	MusicPlaylist:
+		StartingMusic: rout
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI has imported a Nuclear Detonator in an attempt to sway a few local political leaders. Penetrate the base and steal the detonator. A chopper will be sent to meet you at a designated landing zone. Look for the landing flare once you have stolen the device.
+		BriefingVideo: nod6.vqa
+		StartVideo: sundial.vqa
+		LossVideo: banner.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			41,40: sc2,0
+			43,39: sc4,0
+			29,30: sc1,0
+			28,30: sc1,0
+			29,23: sc3,0
+			19,21: sc4,0
+			32,20: sc5,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			42,39: cr1,0
+			43,36: cr1,0
+
+Player:
+	PlayerResources:
+		DefaultCash: 4000
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+LST:
+	Buildable:
+		Prerequisites: ~disabled
+
+C17:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	-Selectable:
+	Buildable:
+		Prerequisites: ~disabled
+
+ORCA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+FLARE:
+	Tooltip:
+		ShowOwnerRow: false

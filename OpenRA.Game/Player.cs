@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -155,17 +156,6 @@ namespace OpenRA
 		{
 			// Observers are considered allies to active combatants
 			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
-		}
-
-		public void SetStance(Player target, Stance s)
-		{
-			var oldStance = Stances[target];
-			Stances[target] = s;
-			target.Shroud.UpdatePlayerStance(World, this, oldStance, s);
-			Shroud.UpdatePlayerStance(World, target, oldStance, s);
-
-			foreach (var nsc in World.ActorsWithTrait<INotifyStanceChanged>())
-				nsc.Trait.StanceChanged(nsc.Actor, this, target, oldStance, s);
 		}
 
 		public bool CanViewActor(Actor a)

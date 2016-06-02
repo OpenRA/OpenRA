@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Poland Raid
-
-Description: Great FFA map. There is lot of resources to control.
 
 Author: s1w
 
@@ -16,11 +14,7 @@ Bounds: 16,16,96,96
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest
 
 Players:
 	PlayerReference@Neutral:
@@ -783,27 +777,4 @@ Actors:
 		Location: 91,86
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	OILB:
-		CashTrickler:
-			Period: 250
-			Amount: 100
-	FACT:
-		RevealsShroud:
-			Range: 8c0
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

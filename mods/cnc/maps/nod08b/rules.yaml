@@ -1,0 +1,247 @@
+World:
+	LuaScript:
+		Scripts: nod08b.lua, nod08b-AI.lua
+	MusicPlaylist:
+		StartingMusic: linefire
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: Since we are low on troops, you will have to make use of all available resources.\n\n Locate the abandoned GDI base in the area and restore it to operational status. Once that is done, use GDI's own weapons against them.\n\nBe sure that no GDI forces remain alive.
+		BackgroundVideo: tiberfx.vqa
+		BriefingVideo: nod8.vqa
+		LossVideo: flag.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			sc2 44,57 0
+			sc1 40,56 0
+			sc5 50,55 0
+			sc3 45,55 0
+			sc2 61,43 0
+			sc6 58,42 0
+			sc4 61,41 0
+			sc1 55,41 0
+			sc5 59,39 0
+			sc5 53,39 0
+			sc4 60,9 0
+			sc6 58,9 0
+			sc2 57,8 0
+			sc3 54,6 0
+			sc2 60,5 0
+			sc4 55,5 0
+			sc6 61,4 0
+			sc6 55,4 0
+			sc1 57,3 0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			cr1 42,56 0
+			cr1 49,55 0
+			cr1 51,52 0
+			cr1 41,52 0
+			cr1 60,43 0
+			cr1 59,41 0
+			cr1 55,40 0
+			cr1 49,40 0
+			cr1 53,36 0
+			cr1 55,6 0
+			cr1 54,5 0
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E4:
+	Buildable:
+		Prerequisites: ~hand
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	-RepairsBridges:
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 30
+
+MTNK:
+	Buildable:
+		Prerequisites: ~weap
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 1
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+GTWR:
+	Buildable:
+		Queue: Defence.GDI
+
+A10.IN:
+	Inherits: A10
+	RenderSprites:
+		Image: A10
+	Armament@BOMBS:
+		Weapon: Napalm.in
+
+airstrike.proxy:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: airstrike
+		StartFullyCharged: True
+		ChargeTime: 120
+		SquadSize: 3
+		QuantizedFacings: 8
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
+		IncomingSound: enemya.aud
+		UnitType: a10.in
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		DisplayRadarPing: True
+		CameraActor: camera
+
+BOAT:
+	Health:
+		HP: 1500
+	AutoTarget:
+		InitialStance: AttackAnything
+	RejectsOrders:
+		Except: Attack
+
+Camera.Boat:
+	AlwaysVisible:
+	Mobile:
+		TerrainSpeeds:
+	RevealsShroud:
+		Range: 4c0
+	ScriptTriggers:
+
+FACT.IN:
+	Inherits: FACT
+	RenderSprites:
+		Image: FACT
+	ProvidesPrerequisite:
+		Prerequisite: fact
+	CustomSellValue:
+		Value: 12825
+
+FACTOUT.IN:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+	ProvidesPrerequisite:
+		Prerequisite: fact
+	Capturable:
+		CaptureThreshold: 100
+
+MoneyCrate:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 2000
+		UseCashTick: yes
+
+NUKEOUT.IN:
+	Inherits: NUKE
+	RenderSprites:
+		Image: nuke
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	Capturable:
+		CaptureThreshold: 100
+
+PROCOUT.IN:
+	Inherits: PROC
+	RenderSprites:
+		Image: proc
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: proc
+	Capturable:
+		CaptureThreshold: 100
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: cnc
 
 Title: Take Białystok
-
-Description: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
 
 Author: Westwood Studios
 
@@ -16,25 +14,9 @@ Bounds: 14,14,48,44
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	BackgroundInfo: bkground.vqa
-	Briefing: gdi4a.vqa
-	GameStart: nodsweep.vqa
-	GameWon: burdet1.vqa
-	GameLost: gameover.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -47,7 +29,7 @@ Players:
 		Faction: nod
 		Color: FE1100
 		Allies: Nod
-		Enemies: GDI, Civillians
+		Enemies: GDI, Civilians
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -61,8 +43,8 @@ Players:
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
-	PlayerReference@Civillians:
-		Name: Civillians
+	PlayerReference@Civilians:
+		Name: Civilians
 		NonCombatant: True
 		Faction: gdi
 		Enemies: Nod
@@ -436,19 +418,19 @@ Actors:
 		Owner: Neutral
 	Actor124: v05
 		Location: 25,55
-		Owner: Civillians
+		Owner: Civilians
 	Actor125: v03
 		Location: 21,50
-		Owner: Civillians
+		Owner: Civilians
 	Actor128: v05
 		Location: 21,52
-		Owner: Civillians
+		Owner: Civilians
 	Actor130: v07
 		Location: 19,52
-		Owner: Civillians
+		Owner: Civilians
 	Actor131: v06
 		Location: 17,52
-		Owner: Civillians
+		Owner: Civilians
 	Actor136: bggy
 		Location: 58,35
 		Owner: Nod
@@ -522,7 +504,7 @@ Actors:
 		SubCell: 0
 	Actor154: c2
 		Location: 23,56
-		Owner: Civillians
+		Owner: Civilians
 		SubCell: 0
 	Actor155: e1
 		Location: 55,29
@@ -536,15 +518,15 @@ Actors:
 		SubCell: 3
 	Actor157: c4
 		Location: 24,48
-		Owner: Civillians
+		Owner: Civilians
 		SubCell: 3
 	Actor158: c6
 		Location: 27,55
-		Owner: Civillians
+		Owner: Civilians
 		SubCell: 3
 	Actor159: c9
 		Location: 22,54
-		Owner: Civillians
+		Owner: Civilians
 		Facing: 128
 		SubCell: 1
 	Actor160: e3
@@ -664,38 +646,38 @@ Actors:
 		SubCell: 0
 	TrigHuntFarm1: v06
 		Location: 45,43
-		Owner: Civillians
+		Owner: Civilians
 	TrigRNF1Farm1: v07
 		Location: 31,53
-		Owner: Civillians
+		Owner: Civilians
 	TrigRNF1Farm2: v09
 		Location: 31,50
-		Owner: Civillians
+		Owner: Civilians
 	TrigRNF2Farm1: v08
 		Location: 30,53
-		Owner: Civillians
+		Owner: Civilians
 	TrigRNF2Farm2: v11
 		Location: 29,50
-		Owner: Civillians
+		Owner: Civilians
 	TrigLos2Farm1: v04
 		Location: 25,53
-		Owner: Civillians
+		Owner: Civilians
 	TrigLos2Farm2: v06
 		Location: 24,50
-		Owner: Civillians
+		Owner: Civilians
 	TrigLos2Farm3: v07
 		Location: 19,46
-		Owner: Civillians
+		Owner: Civilians
 	TrigLos2Farm4: v01
 		Location: 18,44
-		Owner: Civillians
+		Owner: Civilians
 	civvie1: c8
 		Location: 26,22
-		Owner: Civillians
+		Owner: Civilians
 		SubCell: 4
 	civvie2: c3
 		Location: 26,22
-		Owner: Civillians
+		Owner: Civilians
 		SubCell: 3
 	CivvieWpts1: waypoint
 		Location: 32,14
@@ -758,135 +740,6 @@ Actors:
 		Location: 28,47
 		Owner: Neutral
 
-Smudges:
-	sc5 58,38 0:
-	sc6 55,37 0:
-	sc5 56,34 0:
-	sc5 47,34 0:
-	sc6 54,33 0:
-	sc3 47,33 0:
-	sc4 46,33 0:
-	sc2 55,32 0:
-	cr1 23,32 0:
-	sc3 48,31 0:
-	sc2 47,31 0:
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-		IndexedPlayerPalette@units:
-			BasePalette: terrain
-			BaseName: player-units
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-				Civillians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		LuaScript:
-			Scripts: gdi04c.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: ind
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^CivInfantry:
-		Health:
-			HP: 125
-	^Bridge:
-		DamageMultiplier@INVULNERABLE:
-			Modifier: 0
-	HARV:
-		RenderSprites:
-			PlayerPalette: player
-	MCV:
-		RenderSprites:
-			PlayerPalette: player
-	HARV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	MCV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	Rockets:
-		Range: 5c0
-		Warhead: SpreadDamage
-			Versus:
-				None: 10
-				Light: 66
-				Heavy: 66
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

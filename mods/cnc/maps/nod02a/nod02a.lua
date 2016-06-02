@@ -26,7 +26,7 @@ getActors = function(owner, units)
 	local maxUnits = 0
 	local actors = { }
 	for type, count in pairs(units) do
-		local globalActors = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+		local globalActors = Utils.Where(Map.ActorsInWorld, function(actor)
 			return actor.Owner == owner and actor.Type == type and not actor.IsDead
 		end)
 		if #globalActors < count then
@@ -234,7 +234,7 @@ Tick = function()
 end
 
 checkProduction = function(player)
-	local Units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+	local Units = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.Owner == player and actor.Type == UnitToRebuild
 	end)
 
@@ -251,7 +251,7 @@ checkProduction = function(player)
 end
 
 getStartUnits = function()
-	local Units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(actor)
+	local Units = Utils.Where(Map.ActorsInWorld, function(actor)
 		return actor.Owner == enemy
 	end)
 	Utils.Do(Units, function(unit)

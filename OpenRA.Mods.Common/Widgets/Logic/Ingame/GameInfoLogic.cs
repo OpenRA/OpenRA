@@ -1,15 +1,17 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System.Linq;
 using OpenRA.Mods.Common.Scripting;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -31,14 +33,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-			var hasObjectives = hasError || (lp != null && iop != null && iop.PanelName != null);
+			var hasObjectivesPanel = hasError || (iop != null && iop.PanelName != null);
 
-			if (hasObjectives)
+			if (hasObjectivesPanel)
 			{
 				numTabs++;
 				var objectivesTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				objectivesTabButton.GetText = () => "Objectives";
-				objectivesTabButton.IsVisible = () => lp != null && numTabs > 1 && !hasError;
+				objectivesTabButton.IsVisible = () => numTabs > 1 && !hasError;
 				objectivesTabButton.OnClick = () => activePanel = IngameInfoPanel.Objectives;
 				objectivesTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Objectives;
 
@@ -53,7 +55,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Briefing tab
-			if (world.Map.CustomPreview != null)
+			var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
 			{
 				numTabs++;
 				var mapTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
@@ -95,12 +98,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var titleText = widget.Get<LabelWidget>("TITLE");
 			var titleTextNoTabs = widget.GetOrNull<LabelWidget>("TITLE_NO_TABS");
 
+			var mapTitle = world.Map.Title;
+			var firstCategory = world.Map.Categories.FirstOrDefault();
+			if (firstCategory != null)
+				mapTitle = firstCategory + ": " + mapTitle;
+
 			titleText.IsVisible = () => numTabs > 1 || (numTabs == 1 && titleTextNoTabs == null);
-			titleText.GetText = () => string.Concat(world.Map.Type, ": ", world.Map.Title);
+			titleText.GetText = () => mapTitle;
 			if (titleTextNoTabs != null)
 			{
 				titleTextNoTabs.IsVisible = () => numTabs == 1;
-				titleTextNoTabs.GetText = () => string.Concat(world.Map.Type, ": ", world.Map.Title);
+				titleTextNoTabs.GetText = () => mapTitle;
 			}
 
 			var bg = widget.Get<BackgroundWidget>("BACKGROUND");

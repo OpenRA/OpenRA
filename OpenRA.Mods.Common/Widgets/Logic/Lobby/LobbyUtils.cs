@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public static void ShowSlotDropDown(Ruleset rules, DropDownButtonWidget dropdown, Session.Slot slot,
+		public static void ShowSlotDropDown(LobbyLogic logic, DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
 			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() { { "Slot", new List<SlotDropDownOption>()
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
 			{
-				foreach (var b in rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
+				foreach (var b in logic.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -239,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var adminIndicator = parent.GetOrNull("ADMIN_INDICATOR");
 			if (adminIndicator != null)
-				adminIndicator.IsVisible = () => c.IsAdmin;
+				adminIndicator.IsVisible = () => c != null && c.IsAdmin;
 
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
@@ -252,8 +253,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
-			tooltip.IsVisible = () => visible;
-			tooltip.Bind(orderManager, c.Index);
+			tooltip.IsVisible = () => c != null && visible;
+			if (c != null)
+				tooltip.Bind(orderManager, c.Index);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
@@ -302,13 +304,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			name.GetText = () => label;
 		}
 
-		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Ruleset rules)
+		public static void SetupEditableSlotWidget(LobbyLogic logic, Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
-			slot.OnMouseDown = _ => ShowSlotDropDown(rules, slot, s, c, orderManager);
+			slot.OnMouseDown = _ => ShowSlotDropDown(logic, slot, s, c, orderManager);
 
 			// Ensure Name selector (if present) is hidden
 			var name = parent.GetOrNull("NAME");
@@ -455,12 +457,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 		}
 
-		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map, bool forceDisable)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
 			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
 			status.IsVisible = () => true;
-			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || map.RuleStatus != MapRuleStatus.Cached;
+			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || forceDisable;
 
 			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
 			status.OnClick = () => orderManager.IssueOrder(Order.Command("state {0}".F(state)));

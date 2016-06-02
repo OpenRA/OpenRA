@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -14,6 +15,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -22,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 
+		readonly ModData modData;
 		readonly Action onStart;
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
@@ -39,17 +44,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget headerTemplate;
 		readonly ScrollItemWidget template;
 
-		MapPreview selectedMapPreview;
-
+		MapPreview selectedMap;
 		PlayingVideo playingVideo;
 
 		string difficulty;
 		string gameSpeed;
 
 		[ObjectCreator.UseCtor]
-		public MissionBrowserLogic(Widget widget, World world, Action onStart, Action onExit)
+		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit)
 		{
-			var modData = Game.ModData;
+			this.modData = modData;
 			this.onStart = onStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
@@ -59,12 +63,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
-				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMapPreview.Title : title.Text;
+				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : title.Text;
 
-			widget.Get("MISSION_INFO").IsVisible = () => selectedMapPreview != null;
+			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
-			previewWidget.Preview = () => selectedMapPreview;
+			previewWidget.Preview = () => selectedMap;
 			previewWidget.IsVisible = () => playingVideo == PlayingVideo.None;
 
 			videoPlayer = widget.Get<VqaPlayerWidget>("MISSION_VIDEO");
@@ -89,44 +93,54 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
 			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
 
-			var allMaps = new List<Map>();
+			var allPreviews = new List<MapPreview>();
 			missionList.RemoveChildren();
 
 			// Add a group for each campaign
 			if (modData.Manifest.Missions.Any())
 			{
-				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(MiniYaml.FromFile));
+				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
+					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m))));
+
 				foreach (var kv in yaml)
 				{
 					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
 
-					var maps = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(Path.GetFullPath(p.Map.Path)))
-						.Select(p => p.Map)
-						.OrderBy(m => missionMapPaths.IndexOf(Path.GetFullPath(m.Path)));
+					var previews = modData.MapCache
+						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(p.Package.Name))
+						.OrderBy(p => missionMapPaths.IndexOf(p.Package.Name));
 
-					CreateMissionGroup(kv.Key, maps);
-					allMaps.AddRange(maps);
+					CreateMissionGroup(kv.Key, previews);
+					allPreviews.AddRange(previews);
 				}
 			}
 
 			// Add an additional group for loose missions
-			var looseMissions = modData.MapCache
-				.Where(p => p.Status == MapStatus.Available && p.Map.Visibility.HasFlag(MapVisibility.MissionSelector) && !allMaps.Contains(p.Map))
-				.Select(p => p.Map);
+			var loosePreviews = modData.MapCache
+				.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector) && !allPreviews.Any(a => a.Uid == p.Uid));
 
-			if (looseMissions.Any())
+			if (loosePreviews.Any())
 			{
-				CreateMissionGroup("Missions", looseMissions);
-				allMaps.AddRange(looseMissions);
+				CreateMissionGroup("Missions", loosePreviews);
+				allPreviews.AddRange(loosePreviews);
 			}
 
-			if (allMaps.Any())
-				SelectMap(allMaps.First());
+			if (allPreviews.Any())
+				SelectMap(allPreviews.First());
+
+			// Preload map preview and rules to reduce jank
+			new Thread(() =>
+			{
+				foreach (var p in allPreviews)
+				{
+					p.GetMinimap();
+					p.PreloadRules();
+				}
+			}).Start();
 
 			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
 			startButton.OnClick = StartMissionClicked;
-			startButton.IsDisabled = () => selectedMapPreview == null || selectedMapPreview.RuleStatus != MapRuleStatus.Cached;
+			startButton.IsDisabled = () => selectedMap == null || selectedMap.InvalidCustomRules;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -137,40 +151,74 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		void CreateMissionGroup(string title, IEnumerable<Map> maps)
+		void CreateMissionGroup(string title, IEnumerable<MapPreview> previews)
 		{
 			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
-			foreach (var m in maps)
+			foreach (var p in previews)
 			{
-				var map = m;
+				var preview = p;
 
 				var item = ScrollItemWidget.Setup(template,
-					() => selectedMapPreview != null && selectedMapPreview.Uid == map.Uid,
-					() => SelectMap(map),
+					() => selectedMap != null && selectedMap.Uid == preview.Uid,
+					() => SelectMap(preview),
 					StartMissionClicked);
 
-				item.Get<LabelWidget>("TITLE").GetText = () => map.Title;
+				item.Get<LabelWidget>("TITLE").GetText = () => preview.Title;
 				missionList.AddChild(item);
 			}
 		}
 
-		void SelectMap(Map map)
+		void SelectMap(MapPreview preview)
 		{
-			selectedMapPreview = Game.ModData.MapCache[map.Uid];
+			selectedMap = preview;
 
 			// Cache the rules on a background thread to avoid jank
-			new Thread(selectedMapPreview.CacheRules).Start();
+			var difficultyDisabled = true;
+			var difficulties = new string[0];
 
-			var briefingVideo = selectedMapPreview.Map.Videos.Briefing;
-			var briefingVideoVisible = briefingVideo != null;
-			var briefingVideoDisabled = !(briefingVideoVisible && Game.ModData.ModFiles.Exists(briefingVideo));
+			var briefingVideo = "";
+			var briefingVideoVisible = false;
+			var briefingVideoDisabled = true;
 
-			var infoVideo = selectedMapPreview.Map.Videos.BackgroundInfo;
-			var infoVideoVisible = infoVideo != null;
-			var infoVideoDisabled = !(infoVideoVisible && Game.ModData.ModFiles.Exists(infoVideo));
+			var infoVideo = "";
+			var infoVideoVisible = false;
+			var infoVideoDisabled = true;
+
+			new Thread(() =>
+			{
+				var mapOptions = preview.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+
+				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+				difficulties = mapOptions.Difficulties;
+				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
+
+				var missionData = preview.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+				if (missionData != null)
+				{
+					briefingVideo = missionData.BriefingVideo;
+					briefingVideoVisible = briefingVideo != null;
+					briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
+
+					infoVideo = missionData.BackgroundVideo;
+					infoVideoVisible = infoVideo != null;
+					infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
+
+					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
+					var height = descriptionFont.Measure(briefing).Y;
+					Game.RunAfterTick(() =>
+					{
+						if (preview == selectedMap)
+						{
+							description.Text = briefing;
+							description.Bounds.Height = height;
+							descriptionPanel.Layout.AdjustChildren();
+						}
+					});
+				}
+			}).Start();
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
@@ -180,22 +228,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			startInfoVideoButton.IsDisabled = () => infoVideoDisabled || playingVideo != PlayingVideo.None;
 			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info, () => StopVideo(videoPlayer));
 
-			var text = map.Description != null ? map.Description.Replace("\\n", "\n") : "";
-			text = WidgetUtils.WrapText(text, description.Bounds.Width, descriptionFont);
-			description.Text = text;
-			description.Bounds.Height = descriptionFont.Measure(text).Y;
 			descriptionPanel.ScrollToTop();
-			descriptionPanel.Layout.AdjustChildren();
 
 			if (difficultyButton != null)
 			{
-				difficultyButton.IsDisabled = () => !map.Options.Difficulties.Any();
-
-				difficulty = map.Options.Difficulties.FirstOrDefault();
+				difficultyButton.IsDisabled = () => difficultyDisabled;
 				difficultyButton.GetText = () => difficulty ?? "Normal";
 				difficultyButton.OnMouseDown = _ =>
 				{
-					var options = map.Options.Difficulties.Select(d => new DropDownOption
+					var options = difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => difficulty == d,
@@ -215,7 +256,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (gameSpeedButton != null)
 			{
-				var speeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
 				gameSpeed = "default";
 
 				gameSpeedButton.GetText = () => speeds[gameSpeed].Name;
@@ -286,22 +327,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			StopVideo(videoPlayer);
 
-			if (selectedMapPreview.RuleStatus != MapRuleStatus.Cached)
+			if (selectedMap.InvalidCustomRules)
 				return;
 
-			var gameStartVideo = selectedMapPreview.Map.Videos.GameStart;
-			if (gameStartVideo != null && Game.ModData.ModFiles.Exists(gameStartVideo))
+			var orders = new[] {
+				Order.Command("gamespeed {0}".F(gameSpeed)),
+				Order.Command("difficulty {0}".F(difficulty)),
+				Order.Command("state {0}".F(Session.ClientState.Ready))
+			};
+
+			var missionData = selectedMap.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
+			if (missionData != null && missionData.StartVideo != null && modData.DefaultFileSystem.Exists(missionData.StartVideo))
 			{
 				var fsPlayer = fullscreenVideoPlayer.Get<VqaPlayerWidget>("PLAYER");
 				fullscreenVideoPlayer.Visible = true;
-				PlayVideo(fsPlayer, gameStartVideo, PlayingVideo.GameStart, () =>
+				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
-					Game.StartMission(selectedMapPreview.Uid, gameSpeed, difficulty, onStart);
+					Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
 				});
 			}
 			else
-				Game.StartMission(selectedMapPreview.Uid, gameSpeed, difficulty, onStart);
+				Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
 		}
 
 		class DropDownOption

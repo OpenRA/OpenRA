@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 06b: Bridge over the River VizchGoi
-
-Description: There is a special cargo that needs to be transported to a nearby Soviet base in the northeast.\n\nMake sure the trucks reach their destination intact. Along the way, there is a bridge which the Allies may have destroyed.\n\nIf so, use the Naval options at your disposal. Our attack subs will make short work of any Allied boats you discover.
 
 Author: Westwood Studios
 
@@ -16,24 +14,9 @@ Bounds: 18,10,81,58
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet6.vqa
-	GameStart: onthprwl.vqa
-	GameWon: sitduck.vqa
-	GameLost: dpthchrg.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 11500
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -41,9 +24,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: allies
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
@@ -60,7 +40,7 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Greece, Creeps
+		Enemies: Greece
 
 Actors:
 	Actor0: cycl
@@ -539,174 +519,4 @@ Actors:
 		Location: 67,41
 		Owner: Greece
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet06b.lua, soviet06b-AI.lua, soviet06b-reinforcements_teams.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^TechBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	APWR:
-		Buildable:
-			Prerequisites: ~structures.allies
-	ARTY:
-		Buildable:
-			Prerequisites: ~vehicles.allies, ~techlevel.low
-	ATEK:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	IRON:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~tent
-	E7:
-		Buildable:
-			Prerequisites: ~disabled
-	SHOK:
-		Buildable:
-			Prerequisites: ~disabled
-	SPY:
-		Buildable:
-			Prerequisites: ~disabled
-	SNIPER:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	MIG:
-		Buildable:
-			Prerequisites: ~disabled
-	FTRK:
-		Buildable:
-			Prerequisites: ~disabled
-	2TNK:
-		Buildable:
-			Prerequisites: ~vehicles.allies, ~techlevel.low
-	4TNK:
-		Buildable:
-			Prerequisites: ~disabled
-	APC:
-		Buildable:
-			Prerequisites: ~disabled
-	TRUK:
-		-SpawnActorOnDeath:
-		-SupplyTruck:
-		Buildable:
-			Prerequisites: ~disabled
-	QTNK:
-		Buildable:
-			Prerequisites: ~disabled
-	MCV:
-		Buildable:
-			Prerequisites: ~disabled
-	MSUB:
-		Buildable:
-			Prerequisites: ~disabled
-	STEK:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOX:
-		Buildable:
-			Prerequisites: ~disabled
-	MRJ:
-		Buildable:
-			Prerequisites: ~disabled
-	CA:
-		Buildable:
-			Prerequisites: ~disabled
-	HELI:
-		Buildable:
-			Prerequisites: ~disabled
-	GAP:
-		Buildable:
-			Prerequisites: ~disabled
-	MNLY.AT:
-		Buildable:
-			Prerequisites: ~disabled
-	DOG:
-		Health:
-			HP: 25
-		AutoTarget:
-			ScanRadius: 5
-	HARV:
-		Harvester:
-			SearchFromProcRadius: 50
-			SearchFromOrderRadius: 50
-	AFLD:
-		ParatroopersPower@paratroopers:
-			DropItems: E1,E1,E1,E1,E1
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

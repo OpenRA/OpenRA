@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -16,12 +17,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
-	public class UpgradeManagerInfo : ITraitInfo, Requires<IUpgradableInfo>
+	public class UpgradeManagerInfo : TraitInfo<UpgradeManager>, IRulesetLoaded
 	{
-		public object Create(ActorInitializer init) { return new UpgradeManager(init); }
+		public void RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (!info.Name.StartsWith("^") && !info.TraitInfos<IUpgradableInfo>().Any())
+				throw new YamlException(
+					"There are no upgrades to be managed for actor '{0}'. You are either missing some upgradeable traits, or this UpgradeManager trait is not required.".F(
+						info.Name));
+		}
 	}
 
-	public class UpgradeManager : ITick
+	public class UpgradeManager : INotifyCreated, ITick
 	{
 		class TimedUpgrade
 		{
@@ -66,20 +73,21 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly List<TimedUpgrade> timedUpgrades = new List<TimedUpgrade>();
-		readonly Lazy<Dictionary<string, UpgradeState>> upgrades;
 		readonly Dictionary<IUpgradable, int> levels = new Dictionary<IUpgradable, int>();
+		Dictionary<string, UpgradeState> upgrades;
 
-		public UpgradeManager(ActorInitializer init)
+		void INotifyCreated.Created(Actor self)
 		{
-			upgrades = Exts.Lazy(() =>
-			{
-				var ret = new Dictionary<string, UpgradeState>();
-				foreach (var up in init.Self.TraitsImplementing<IUpgradable>())
-					foreach (var t in up.UpgradeTypes)
-						ret.GetOrAdd(t).Traits.Add(up);
+			upgrades = new Dictionary<string, UpgradeState>();
+			foreach (var up in self.TraitsImplementing<IUpgradable>())
+				foreach (var t in up.UpgradeTypes)
+					upgrades.GetOrAdd(t).Traits.Add(up);
+		}
 
-				return ret;
-			});
+		void CheckCanManageUpgrades()
+		{
+			if (upgrades == null)
+				throw new InvalidOperationException("Upgrades cannot be managed until the actor has been fully created.");
 		}
 
 		/// <summary>Upgrade level increments are limited to dupesAllowed per source, i.e., if a single
@@ -138,8 +146,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GrantUpgrade(Actor self, string upgrade, object source)
 		{
+			CheckCanManageUpgrades();
+
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			// Track the upgrade source so that the upgrade can be removed without conflicts
@@ -150,8 +160,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RevokeUpgrade(Actor self, string upgrade, object source)
 		{
+			CheckCanManageUpgrades();
+
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			if (!s.Sources.Remove(source))
@@ -163,14 +175,17 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Returns true if the actor uses the given upgrade. Does not check the actual level of the upgrade.</summary>
 		public bool AcknowledgesUpgrade(Actor self, string upgrade)
 		{
-			return upgrades.Value.ContainsKey(upgrade);
+			CheckCanManageUpgrades();
+			return upgrades.ContainsKey(upgrade);
 		}
 
 		/// <summary>Returns true only if the actor can accept another level of the upgrade.</summary>
 		public bool AcceptsUpgrade(Actor self, string upgrade)
 		{
+			CheckCanManageUpgrades();
+
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return false;
 
 			return s.Traits.Any(up => up.AcceptsUpgradeLevel(self, upgrade, GetOverallLevel(up) + 1));
@@ -178,8 +193,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RegisterWatcher(string upgrade, Action<int, int> action)
 		{
+			CheckCanManageUpgrades();
+
 			UpgradeState s;
-			if (!upgrades.Value.TryGetValue(upgrade, out s))
+			if (!upgrades.TryGetValue(upgrade, out s))
 				return;
 
 			s.Watchers.Add(action);
@@ -191,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// GrantTimedUpgrade).</summary>
 		public void Tick(Actor self)
 		{
+			CheckCanManageUpgrades();
+
 			foreach (var u in timedUpgrades)
 			{
 				u.Tick();
@@ -200,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				u.Sources.RemoveWhere(source => source.Remaining <= 0);
 
-				foreach (var a in upgrades.Value[u.Upgrade].Watchers)
+				foreach (var a in upgrades[u.Upgrade].Watchers)
 					a(u.Duration, u.Remaining);
 			}
 

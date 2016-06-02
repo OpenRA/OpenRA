@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -131,7 +132,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
-				tile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				tile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -194,10 +195,10 @@ namespace OpenRA.Mods.RA.Traits
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
 
-				var tileset = manager.Self.World.TileSet.Id.ToLowerInvariant();
-				validTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
-				invalidTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
-				sourceTile = world.Map.SequenceProvider.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				var tileset = world.Map.Tileset.ToLowerInvariant();
+				validTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
+				invalidTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
+				sourceTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)

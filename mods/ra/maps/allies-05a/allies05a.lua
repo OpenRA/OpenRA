@@ -226,11 +226,6 @@ ActivatePatrols = function()
 		GroupPatrol(PatrolA, PatrolAPath, DateTime.Seconds(7))
 		GroupPatrol(PatrolB, PatrolBPath, DateTime.Seconds(6))
 	end)
-
-	local units = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Owner == soviets and self.HasProperty("AutoTarget") end)
-	Utils.Do(units, function(unit)
-		unit.Stance = "Defend"
-	end)
 end
 
 InitTriggers = function()

@@ -525,7 +525,7 @@ outpost:
 			mercenary: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnLowPower: true
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
@@ -652,9 +652,9 @@ wall:
 		SellSounds: CHUNG.WAV
 	Guardable:
 	ThrowsShrapnel:
-		Weapons: Debris, Debris2, Debris3, Debris4
-		Pieces: 3, 7
-		Range: 2c0, 5c0
+		Weapons: Debris, Debris3
+		Pieces: 2, 2
+		Range: 2c0, 4c0
 
 medium_gun_turret:
 	Inherits: ^Defense
@@ -687,7 +687,7 @@ medium_gun_turret:
 		QuantizedFacings: 32
 	WithMuzzleOverlay:
 	Turreted:
-		ROT: 6
+		TurnSpeed: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: 110mm_Gun
@@ -731,7 +731,7 @@ large_gun_turret:
 		Weapon: TowerMissile
 		LocalOffset: 256,384,768, 256,-384,768
 	Turreted:
-		ROT: 8
+		TurnSpeed: 8
 		InitialFacing: 128
 	RequiresPower:
 	CanPowerDown:

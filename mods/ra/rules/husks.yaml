@@ -86,7 +86,7 @@ TRAN.Husk:
 	Tooltip:
 		Name: Transport Helicopter
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 149
 	WithSpriteRotorOverlay@PRIMARY:
 		Offset: -597,0,341
@@ -117,7 +117,7 @@ BADR.Husk:
 	Tooltip:
 		Name: Badger
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 	SmokeTrailWhenDamaged@0:
 		Offset: -432,560,0
@@ -139,7 +139,7 @@ MIG.Husk:
 	Contrail@2:
 		Offset: -598,683,0
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 186
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,171
@@ -158,7 +158,7 @@ YAK.Husk:
 	Contrail:
 		Offset: -853,0,0
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 	SmokeTrailWhenDamaged:
 		Offset: -853,0,0
@@ -175,7 +175,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Longbow
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 149
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
@@ -193,7 +193,7 @@ HIND.Husk:
 	Tooltip:
 		Name: Hind
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 112
 	WithSpriteRotorOverlay:
 	SmokeTrailWhenDamaged:
@@ -207,10 +207,10 @@ HIND.Husk:
 
 U2.Husk:
 	Inherits: ^PlaneHusk
-	EditorOnlyTooltip:
-		Name: Husk (U2 Spy Plane)
+	Tooltip:
+		Name: Husk (Spy Plane)
 	Aircraft:
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 373
 	Contrail@1:
 		Offset: -725,683,0

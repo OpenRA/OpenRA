@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -12,6 +13,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 
@@ -19,7 +21,16 @@ namespace OpenRA
 {
 	public interface ISoundLoader
 	{
-		bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate);
+		bool TryParseSound(Stream stream, out ISoundFormat sound);
+	}
+
+	public interface ISoundFormat
+	{
+		int Channels { get; }
+		int SampleBits { get; }
+		int SampleRate { get; }
+		float LengthInSeconds { get; }
+		Stream GetPCMInputStream();
 	}
 
 	public sealed class Sound : IDisposable
@@ -33,7 +44,7 @@ namespace OpenRA
 
 		public Sound(string engineName)
 		{
-			var enginePath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + engineName + ".dll"));
+			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
 			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
 		}
 
@@ -48,31 +59,32 @@ namespace OpenRA
 			throw new InvalidOperationException("Platform DLL is missing PlatformAttribute to tell us what type to use!");
 		}
 
-		ISoundSource LoadSound(string filename)
+		ISoundSource LoadSound(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem, string filename)
 		{
-			if (!Game.ModData.ModFiles.Exists(filename))
+			if (!fileSystem.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
-			using (var stream = Game.ModData.ModFiles.Open(filename))
+			using (var stream = fileSystem.Open(filename))
 			{
-				byte[] rawData;
-				int channels;
-				int sampleBits;
-				int sampleRate;
+				ISoundFormat soundFormat;
 				foreach (var loader in Game.ModData.SoundLoaders)
-					if (loader.TryParseSound(stream, filename, out rawData, out channels, out sampleBits, out sampleRate))
-						return soundEngine.AddSoundSourceFromMemory(rawData, channels, sampleBits, sampleRate);
-
-				throw new InvalidDataException(filename + " is not a valid sound file!");
+				{
+					stream.Position = 0;
+					if (loader.TryParseSound(stream, out soundFormat))
+						return soundEngine.AddSoundSourceFromMemory(
+							soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
+				}
 			}
+
+			throw new InvalidDataException(filename + " is not a valid sound file!");
 		}
 
-		public void Initialize()
+		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
-			sounds = new Cache<string, ISoundSource>(LoadSound);
+			sounds = new Cache<string, ISoundSource>(s => LoadSound(loaders, fileSystem, s));
 			music = null;
 			currentMusic = null;
 			video = null;
@@ -82,7 +94,6 @@ namespace OpenRA
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("Default", null, "Default Output"),
 				new SoundDevice("Null", null, "Output Disabled")
 			};
 

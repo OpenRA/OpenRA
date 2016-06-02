@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -21,7 +22,16 @@ namespace OpenRA.Traits
 {
 	public sealed class RequireExplicitImplementationAttribute : Attribute { }
 
-	public enum DamageState { Undamaged, Light, Medium, Heavy, Critical, Dead }
+	[Flags]
+	public enum DamageState
+	{
+		Undamaged = 1,
+		Light = 2,
+		Medium = 4,
+		Heavy = 8,
+		Critical = 16,
+		Dead = 32
+	}
 
 	public interface IHealth
 	{
@@ -107,7 +117,7 @@ namespace OpenRA.Traits
 		int OrderPriority { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
-		bool OverrideSelection { get; }
+		bool TargetOverridesSelection(TargetModifiers modifiers);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
@@ -295,23 +305,30 @@ namespace OpenRA.Traits
 
 	public interface IFacing
 	{
-		int ROT { get; }
+		int TurnSpeed { get; }
 		int Facing { get; set; }
 	}
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
 
+	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
-		void OnCrush(Actor crusher);
-		void WarnCrush(Actor crusher);
-		bool CrushableBy(HashSet<string> crushClasses, Player owner);
+		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyCrushed
+	{
+		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
 	}
 
 	public interface ITraitInfoInterface { }
 	public interface ITraitInfo : ITraitInfoInterface { object Create(ActorInitializer init); }
 
 	public class TraitInfo<T> : ITraitInfo where T : new() { public virtual object Create(ActorInitializer init) { return new T(); } }
+	public interface ILobbyCustomRulesIgnore { }
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
@@ -364,13 +381,7 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
-	public interface INotifyStanceChanged
-	{
-		void StanceChanged(Actor self, Player a, Player b,
-			Stance oldStance, Stance newStance);
-	}
-
-	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning); }
+	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData); }
 	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
 	public interface ILintRulesPass { void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules); }
 

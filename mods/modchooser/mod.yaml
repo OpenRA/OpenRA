@@ -6,53 +6,52 @@ Metadata:
 
 RequiresMods:
 
-Folders:
+Packages:
 	.
-	./mods/modchooser
+	./mods/modchooser: modchooser
+	./mods/common: common
 
 Cursors:
-	./mods/modchooser/cursors.yaml
+	modchooser|cursors.yaml
 
 Chrome:
-	./mods/modchooser/chrome.yaml
+	modchooser|chrome.yaml
 
 Assemblies:
-	./mods/common/OpenRA.Mods.Common.dll
+	common|OpenRA.Mods.Common.dll
 
 ChromeLayout:
-	./mods/modchooser/modchooser.yaml
-	./mods/modchooser/install.yaml
+	modchooser|modchooser.yaml
+	modchooser|install.yaml
 
 Notifications:
-	./mods/modchooser/notifications.yaml
+	modchooser|notifications.yaml
 
 LoadScreen: ModChooserLoadScreen
 	Image: ./mods/modchooser/chrome.png
 
 ChromeMetrics:
-	./mods/modchooser/metrics.yaml
+	modchooser|metrics.yaml
 
 Fonts:
 	Regular:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:14
 	BigBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:24
 	MediumBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:18
 	Tiny:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:10
-
-LobbyDefaults:
 
 SoundFormats:
 

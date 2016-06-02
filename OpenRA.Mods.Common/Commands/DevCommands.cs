@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -23,10 +24,15 @@ namespace OpenRA.Mods.Common.Commands
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
 		World world;
+		DeveloperMode developerMode;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+
+			if (world.LocalPlayer != null)
+				developerMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
 
@@ -54,7 +60,7 @@ namespace OpenRA.Mods.Common.Commands
 			if (world.LocalPlayer == null)
 				return;
 
-			if (!world.AllowDevCommands)
+			if (!developerMode.Enabled)
 			{
 				Game.Debug("Cheats are disabled.");
 				return;

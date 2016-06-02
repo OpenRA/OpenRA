@@ -118,26 +118,6 @@ Container@PLAYER_WIDGETS:
 									X: 0
 									Y: 0
 									ImageCollection: order-icons
-						MenuButton@DIPLOMACY_BUTTON:
-							Logic: AddFactionSuffixLogic
-							MenuContainer: INGAME_DIPLOMACY_BG
-							HideIngameUI: false
-							Pause: false
-							Key: P
-							X: 163
-							Width: 30
-							Height: 31
-							Background: sidebar-button
-							TooltipText: Diplomacy
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
-									ImageCollection: order-icons
-									ImageName: diplomacy
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddFactionSuffixLogic
 							Key: escape

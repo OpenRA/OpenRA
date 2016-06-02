@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 04a: Behind the lines
-
-Description: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
 
 Author: Westwood Studios
 
@@ -16,25 +14,9 @@ Bounds: 38,45,72,46
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet4.vqa
-	GameStart: sovmcv.vqa
-	GameWon: radrraid.vqa
-	GameLost: allymorf.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Medium
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -47,10 +29,6 @@ Players:
 		Faction: england
 		Allies: Greece
 		Enemies: USSR
-	PlayerReference@Creeps:
-		Name: Creeps
-		NonCombatant: True
-		Faction: england
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
@@ -639,130 +617,4 @@ Actors:
 		Location: 84,83
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		-EnemyWatcher:
-		MissionObjectives:
-			EarlyGameOver: true
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet04a.lua, soviet04a-AI.lua, soviet04a-reinforcements_teams.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		Demolishable:
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	^CivBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^TechBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	AFLD:
-		ParatroopersPower@paratroopers:
-			DropItems: E1,E1,E1,E2,E2
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~tent
-	E4:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	SPY:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	MCV:
-		Buildable:
-			Prerequisites: ~disabled
-	FTRK:
-		Buildable:
-			Prerequisites: ~disabled
-	TRUK:
-		Buildable:
-			Prerequisites: ~disabled
-	APC:
-		Buildable:
-			Prerequisites: ~disabled
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-	SPEN:
-		Buildable:
-			Prerequisites: ~disabled
-	SYRD:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

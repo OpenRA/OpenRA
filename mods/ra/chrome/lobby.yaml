@@ -62,7 +62,7 @@ Background@SERVER_LOBBY:
 			Y: PARENT_BOTTOM - 81
 			Width: 100
 			Height: 31
-			Text: Lobby
+			Text: Game
 			Font: Bold
 		Button@GLOBALCHAT_TAB:
 			X: 120

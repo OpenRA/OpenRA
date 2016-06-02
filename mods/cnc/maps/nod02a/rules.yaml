@@ -1,0 +1,238 @@
+^Palettes:
+	-PlayerColorPalette:
+	IndexedPlayerPalette:
+		BasePalette: terrain
+		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+		PlayerIndex:
+			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
+			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		BasePalette: terrain
+		BaseName: player-units
+		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+		PlayerIndex:
+			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
+			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+Player:
+	-ConquestVictoryConditions:
+	MissionObjectives:
+		EarlyGameOver: true
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 4000
+
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	ObjectivesPanel:
+		PanelName: MISSION_OBJECTIVES
+	LuaScript:
+		Scripts: nod02a.lua
+	MusicPlaylist:
+		StartingMusic: ind2
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI has kept a stranglehold on Egypt for many years.  Set up a forward attack base in your area.  To do this you must select your Mobile Construction Vehicle (MCV) and right click on it.  From here you can begin to build a base. This area contains plenty of Tiberium, so establishing the base should be easy.
+		BriefingVideo: nod2.vqa
+		StartVideo: seige.vqa
+		WinVideo: airstrk.vqa
+		LossVideo: deskill.vqa
+	MapCreeps:
+		Locked: True
+		Enabled: False
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		ShortGameLocked: True
+		ShortGameEnabled: False
+
+^Vehicle:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Tank:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Helicopter:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Infantry:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+^Plane:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Ship:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Building:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Wall:
+	Tooltip:
+		ShowOwnerRow: false
+
+^CommonHuskDefaults:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+	RenderSprites:
+		PlayerPalette: player-units
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		PlayerPalette: player
+
+MCV.Husk:
+	RenderSprites:
+		PlayerPalette: player
+
+HARV:
+	RenderSprites:
+		PlayerPalette: player
+
+HARV.Husk:
+	RenderSprites:
+		PlayerPalette: player
+
+LST:
+	Buildable:
+		Prerequisites: ~disabled
+
+C17:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled

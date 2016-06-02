@@ -33,8 +33,6 @@ bike:
 
 ttnk:
 	idle:
-
-gatick:
 	turret: ttnktur
 	barrel: ttnkbarl
 

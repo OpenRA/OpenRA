@@ -24,7 +24,7 @@ V2RL:
 		VisualBounds: 28,28
 	AutoTarget:
 	Explodes:
-		Weapon: SCUD
+		Weapon: V2Explode
 	WithAttackAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
@@ -52,7 +52,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 	Armament:
 		Weapon: 25mm
 		Recoil: 85
@@ -89,7 +89,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 90mm
 		Recoil: 128
@@ -128,7 +128,7 @@ V2RL:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 105mm
 		Recoil: 128
@@ -165,11 +165,11 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 42
-		Crushes: wall, mine, crate, infantry
+		Crushes: wall, mine, crate, infantry, heavywall
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 2
+		TurnSpeed: 2
 	Armament@PRIMARY:
 		Weapon: 120mm
 		LocalOffset: 900,180,340, 900,-180,340
@@ -191,8 +191,8 @@ V2RL:
 		Actor: 4TNK.Husk
 	SelfHealing:
 		Step: 1
-		Ticks: 3
-		HealIfBelow: 50%
+		Delay: 3
+		HealIfBelow: 50
 		DamageCooldown: 150
 	SelectionDecorations:
 		VisualBounds: 44,38,0,-4
@@ -215,7 +215,7 @@ ARTY:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 2
+		TurnSpeed: 2
 		Speed: 85
 	RevealsShroud:
 		Range: 5c0
@@ -239,7 +239,6 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: proc, ~techlevel.infonly
-		InitialActivity: FindResources
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -253,7 +252,7 @@ HARV:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
-		UnloadTicksPerBale: 1
+		BaleUnloadDelay: 1
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 15
 	Health:
@@ -275,6 +274,11 @@ HARV:
 	HarvesterHuskModifier:
 		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
+	SelfHealing:
+		Step: 1
+		Delay: 25
+		HealIfBelow: 50
+		DamageCooldown: 500
 	Explodes:
 		Weapon: OreExplosion
 
@@ -332,14 +336,14 @@ JEEP:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 170
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: 0,0,85
 	Armament:
 		Weapon: M60mg
@@ -468,7 +472,7 @@ TRUK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 20
-		Prerequisites: weap, ~techlevel.low
+		Prerequisites: ~techlevel.low
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -595,12 +599,12 @@ FTRK:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 128
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: -298,0,298
 	Armament@AA:
 		Weapon: FLAK-23-AA
@@ -744,7 +748,7 @@ STNK:
 		Weapon: APTusk
 		LocalOffset: 400,0,0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	AttackTurreted:
 	WithSpriteTurret:
 	Cargo:

@@ -1,0 +1,45 @@
+World:
+	LuaScript:
+		Scripts: soviet01.lua
+	MissionData:
+		Briefing: A pitiful excuse for resistance has blockaded itself in this village.\n\nStalin has decided to make an example of them. Kill them all and destroy their homes. You will have Yak aircraft to use in teaching these rebels a lesson.
+		BackgroundVideo: prolog.vqa
+		BriefingVideo: soviet1.vqa
+		StartVideo: flare.vqa
+		WinVideo: snstrafe.vqa
+		LossVideo: sfrozen.vqa
+
+V01:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+^CivBuilding:
+	MustBeDestroyed:
+
+JEEP:
+	Explodes:
+	JamsRadar:
+		Range: 10c0
+
+YAK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	AirstrikePower@spyplane:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		ChargeTime: 60
+		DropItems: E1,E1,E1,E2,E2
+	-RallyPoint:
+	-Sellable:
+
+DOME:
+	-Sellable:
+
+POWR:
+	-Sellable:

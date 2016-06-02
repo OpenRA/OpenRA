@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.Common.AI
 	{
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.ShouldFlee(owner, enemies => !owner.AttackOrFleeFuzzy.CanAttack(owner.Units, enemies));
+			return base.ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
 	}
 
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (enemyUnits.Any())
 			{
-				if (owner.AttackOrFleeFuzzy.CanAttack(owner.Units, enemyUnits))
+				if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 				{
 					foreach (var u in owner.Units)
 						owner.Bot.QueueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.TargetActor.Location });

@@ -491,8 +491,13 @@ gtwr:
 	dead:
 		Start: 2
 		Tick: 800
-	make: gtwrmake
-		Length: *
+	make: 
+		Combine:
+			gtwrmake:
+				Length: 17
+			gtwrmake:
+				Start: 19
+		Length: 18
 		Tick: 80
 	muzzle: minigun
 		Length: 6

@@ -54,7 +54,6 @@
 		PipColor: green
 		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
-	LoadWidgetAtGameStart:
 
 World:
 	Inherits: ^BaseWorld
@@ -88,7 +87,10 @@ World:
 		Type: SandCrater
 		Sequence: sandcraters
 		SmokePercentage: 0
+	MapCreeps:
 	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:
@@ -151,9 +153,11 @@ World:
 	RadarPings:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

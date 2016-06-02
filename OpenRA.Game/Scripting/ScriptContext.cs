@@ -1,16 +1,18 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Eluant;
@@ -158,7 +160,7 @@ namespace OpenRA.Scripting
 				.ToArray();
 
 			runtime.Globals["GameDir"] = Platform.GameDir;
-			runtime.DoBuffer(Game.ModData.ModFiles.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua")).ReadAllText(), "scriptwrapper.lua").Dispose();
+			runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
 			tick = (LuaFunction)runtime.Globals["Tick"];
 
 			// Register globals
@@ -197,7 +199,7 @@ namespace OpenRA.Scripting
 			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
 			{
 				foreach (var s in scripts)
-					loadScript.Call(s, Game.ModData.ModFiles.Open(s).ReadAllText()).Dispose();
+					loadScript.Call(s, world.Map.Open(s).ReadAllText()).Dispose();
 			}
 		}
 

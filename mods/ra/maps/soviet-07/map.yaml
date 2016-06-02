@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 07:   Core of the matter
-
-Description: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
 
 Author: Westwood Studios
 
@@ -16,24 +14,9 @@ Bounds: 40,43,70,45
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet7.vqa
-	GameStart: countdwn.vqa
-	GameWon: averted.vqa
-	GameLost: nukestok.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -45,6 +28,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: england
+		Enemies: Greece, USSR
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
@@ -806,146 +790,6 @@ Actors:
 		Owner: Neutral
 		Location: 45,52
 
-Smudges:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet07.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Infantry:
-		-GivesBounty:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	BARL:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplodeInterior
-	BRL3:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplodeInterior
-	CAMERA:
-		RevealsShroud:
-			Range: 6c0
-	E1:
-		Armament@PRIMARY:
-			Weapon: M1CarbineInterior
-	FTUR:
-		Armament:
-			Weapon: FireballLauncherInterior
-			LocalOffset: 512,0,0
-		Valued:
-			Cost: 0
-		Power:
-			Amount: 0
-		-Sellable:
-	PBOX:
-		-AutoTarget:
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	M1CarbineInterior:
-		ReloadDelay: 20
-		Range: 3c0
-		Report: gun11.aud
-		Projectile: Bullet
-			Speed: 1c682
-		Warhead@1Dam: SpreadDamage
-			Spread: 128
-			Damage: 15
-			Versus:
-				Wood: 25
-				Light: 30
-				Heavy: 10
-				Concrete: 10
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-		Warhead@2Eff: CreateEffect
-			Explosion: piffs
-			InvalidImpactTypes: Water
-		Warhead@3EffWater: CreateEffect
-			Explosion: water_piffs
-			ValidImpactTypes: Water
-	FireballLauncherInterior:
-		ReloadDelay: 65
-		Range: 3c0
-		Burst: 2
-		BurstDelay: 20
-		Projectile: Bullet
-			Speed: 204
-			Trail: fb2
-			Image: FB1
-		Warhead@1Dam: SpreadDamage
-			Spread: 213
-			Damage: 150
-			Versus:
-				None: 90
-				Wood: 50
-				Light: 60
-				Heavy: 25
-				Concrete: 50
-			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
-		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
-	MissionBarrelExplodeInterior:
-		Warhead@1Dam: SpreadDamage
-			Spread: 350
-			Damage: 250
-			Falloff: 1000, 368, 135, 50, 18, 7, 0
-			Delay: 5
-			Versus:
-				None: 120
-				Wood: 200
-				Light: 50
-				Heavy: 25
-				Concrete: 10
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 2,1
-			Delay: 5
-		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
-			Delay: 5
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

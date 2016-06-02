@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 02a: The thin red line
-
-Description: Tomorrow, the attack on Germany begins, but today, we must protect our facility from Allied attacks.\n\nKeep the Command Center intact at all costs, and destroy any Allied fortification you might find.
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 36,38,50,40
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet2.vqa
-	GameStart: spotter.vqa
-	GameWon: sovtstar.vqa
-	GameLost: sovcemet.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@USSR:
@@ -580,136 +564,4 @@ Actors:
 		Owner: Germany
 		SubCell: 2
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet02a.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^CivBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	FCOM:
-		Tooltip:
-			ShowOwnerRow: false
-	SPEN:
-		Buildable:
-			Prerequisites: ~disabled
-	DOME:
-		Buildable:
-			Prerequisites: ~disabled
-	WEAP:
-		Buildable:
-			Prerequisites: ~disabled
-	FIX:
-		Buildable:
-			Prerequisites: ~disabled
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	STEK:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	TSLA:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	IRON:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	E3:
-		Buildable:
-			Prerequisites: ~disabled
-	E4:
-		Buildable:
-			Prerequisites: ~disabled
-	E6:
-		Buildable:
-			Prerequisites: ~disabled
-	SHOK:
-		Buildable:
-			Prerequisites: ~disabled
-	SNIPER:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	MIG:
-		Buildable:
-			Prerequisites: ~disabled
-	AFLD:
-		Buildable:
-			Prerequisites: ~disabled
-		AirstrikePower@spyplane:
-			Prerequisites: ~disabled
-		ParatroopersPower@paratroopers:
-			Prerequisites: ~disabled
-	DOG:
-		Health:
-			HP: 25
-		AutoTarget:
-			ScanRadius: 5
-	powerproxy.paratroopers:
-		ParatroopersPower:
-			DropItems: E2,E2,E2,E2,E2
-	HARV:
-		Harvester:
-			SearchFromProcRadius: 50
-			SearchFromOrderRadius: 50
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenRA.Test</RootNamespace>
     <AssemblyName>OpenRA.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -50,6 +50,7 @@
     <Compile Include="OpenRA.Game\MiniYamlTest.cs" />
     <Compile Include="OpenRA.Game\ActorInfoTest.cs" />
     <Compile Include="OpenRA.Game\CoordinateTest.cs" />
+    <Compile Include="OpenRA.Game\PriorityQueueTest.cs" />
     <Compile Include="OpenRA.Game\SpatiallyPartitionedTest.cs" />
     <Compile Include="OpenRA.Mods.Common\ShapeTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />

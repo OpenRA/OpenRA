@@ -11,7 +11,7 @@ TRAN:
 		Queue: Aircraft.GDI, Aircraft.Nod
 	Aircraft:
 		LandWhenIdle: true
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 140
 		InitialFacing: 224
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
@@ -55,7 +55,7 @@ HELI:
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 186
 	Health:
 		HP: 125
@@ -80,7 +80,7 @@ HELI:
 		PipCount: 5
 		SelfReloads: true
 		ReloadCount: 10
-		SelfReloadTicks: 200
+		SelfReloadDelay: 200
 	WithSpriteRotorOverlay:
 		Offset: 0,0,85
 	WithMuzzleOverlay:
@@ -107,7 +107,7 @@ ORCA:
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 186
 	Health:
 		HP: 90
@@ -129,7 +129,7 @@ ORCA:
 		PipCount: 6
 		SelfReloads: true
 		ReloadCount: 2
-		SelfReloadTicks: 100
+		SelfReloadDelay: 100
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	AutoTarget:
@@ -151,7 +151,7 @@ C17:
 	Valued:
 		Cost: 2000
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 326
 		Repulsable: False
 		AirborneUpgrades: airborne
@@ -189,7 +189,7 @@ A10:
 	Valued:
 		Cost: 2000
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 373
 		Repulsable: False
 		AirborneUpgrades: airborne
@@ -222,7 +222,7 @@ TRAN.Husk:
 	Tooltip:
 		Name: Chinook Transport
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 140
 	RevealsShroud:
 		Range: 8c0
@@ -239,7 +239,7 @@ HELI.Husk:
 	Tooltip:
 		Name: Apache Longbow
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
@@ -254,7 +254,7 @@ ORCA.Husk:
 	Tooltip:
 		Name: Orca
 	Aircraft:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0

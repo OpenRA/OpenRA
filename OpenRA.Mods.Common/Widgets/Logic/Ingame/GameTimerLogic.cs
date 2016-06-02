@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -39,12 +40,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (timer != null)
 			{
+				// Timers in replays should be synced to the effective game time, not the playback time.
+				var timestep = world.Timestep;
+				if (world.IsReplay)
+				{
+					GameSpeed speed;
+					var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+					if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
+						timestep = speed.Timestep;
+				}
+
 				timer.GetText = () =>
 				{
 					if (status == null && shouldShowStatus())
 						return statusText();
 
-					return WidgetUtils.FormatTime(world.WorldTick, world.Timestep);
+					return WidgetUtils.FormatTime(world.WorldTick, timestep);
 				};
 			}
 

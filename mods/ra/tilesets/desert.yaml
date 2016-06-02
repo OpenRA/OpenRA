@@ -4,6 +4,7 @@ General:
 	Palette: desert.pal
 	PlayerPalette: temperat.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
+	HeightDebugColors: 880000
 
 Terrain:
 	TerrainType@Beach:

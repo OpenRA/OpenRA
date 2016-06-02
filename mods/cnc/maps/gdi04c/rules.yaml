@@ -1,0 +1,47 @@
+World:
+	LuaScript:
+		Scripts: gdi04c.lua
+	MusicPlaylist:
+		StartingMusic: ind
+	MissionData:
+		Briefing: Nod is moving to capture and hold a civilian town.\n\nYour mission is to reach the town first and hold off invading Nod units until GDI reinforcements can arrive.\n\nAll invading Nod units must be destroyed.
+		BackgroundVideo: bkground.vqa
+		BriefingVideo: gdi4a.vqa
+		StartVideo: nodsweep.vqa
+		WinVideo: burdet1.vqa
+		LossVideo: gameover.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			58,38: sc5,0
+			55,37: sc6,0
+			56,34: sc5,0
+			47,34: sc5,0
+			54,33: sc6,0
+			47,33: sc3,0
+			46,33: sc4,0
+			55,32: sc2,0
+			48,31: sc3,0
+			47,31: sc2,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			23,32: cr1,0
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+^CivInfantry:
+	Health:
+		HP: 125
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -99,9 +100,15 @@ namespace OpenRA
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
-			var more = unresolved.Where(u => u.Dependencies.All(d => resolved.Exists(r => testResolve(d, r.Type))));
 
-			// Re-evaluate the vars above until sorted
+			// This query detects which unresolved traits can be immediately resolved as all their direct dependencies are met.
+			var more = unresolved.Where(u =>
+				u.Dependencies.All(d => // To be resolvable, all dependencies must be satisfied according to the following conditions:
+					resolved.Exists(r => testResolve(d, r.Type)) && // There must exist a resolved trait that meets the dependency.
+					!unresolved.Any(u1 => testResolve(d, u1.Type)))); // All matching traits that meet this dependency must be resolved first.
+
+			// Continue resolving traits as long as possible.
+			// Each time we resolve some traits, this means dependencies for other traits may then be possible to satisfy in the next pass.
 			while (more.Any())
 				resolved.AddRange(more);
 
@@ -121,14 +128,14 @@ namespace OpenRA
 					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
 				}
 
-				throw new Exception(exceptionString);
+				throw new YamlException(exceptionString);
 			}
 
 			constructOrderCache = resolved.Select(r => r.Trait).ToList();
 			return constructOrderCache;
 		}
 
-		static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
+		public static IEnumerable<Type> PrerequisitesOf(ITraitInfo info)
 		{
 			return info
 				.GetType()

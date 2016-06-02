@@ -1,0 +1,142 @@
+World:
+	LuaScript:
+		Scripts: nod05.lua
+	MusicPlaylist:
+		StartingMusic: airstrik
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
+		BackgroundVideo: sethpre.vqa
+		BriefingVideo: nod5.vqa
+		StartVideo: samsite.vqa
+		WinVideo: insites.vqa
+		LossVideo: flag.vqa
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			46,48: cr1,0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+LST:
+	Buildable:
+		Prerequisites: ~disabled
+
+C17:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Buildable:
+		Prerequisites: ~disabled
+	Harvester:
+		SearchFromOrderRadius: 24
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ORCA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 1
+
+A10:
+	Targetable:

@@ -7,141 +7,140 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
-	.
-	./mods/cnc
-	./mods/cnc/bits
-	./mods/cnc/bits/jungle
-	./mods/cnc/bits/desert
-	./mods/cnc/bits/ss
-	./mods/cnc/uibits
-	~^Content/cnc
-
-MapFolders:
-	./mods/cnc/maps@System
-	~^maps/cnc@User
-
 Packages:
-	speech.mix
-	conquer.mix
-	sounds.mix
-	tempicnh.mix
-	temperat.mix
-	winter.mix
-	desert.mix
-	snow.mix
+	~^Content/cnc
+	.
+	$cnc: cnc
+	./mods/common: common
+	~speech.mix
+	~conquer.mix
+	~sounds.mix
+	~tempicnh.mix
+	~temperat.mix
+	~winter.mix
+	~desert.mix
 	~movies-gdi.mix
 	~movies-nod.mix
 	~movies.mix
 	~scores.mix
 	~scores2.mix
 	~transit.mix
+	cnc|bits/snow.mix
+	cnc|bits
+	cnc|bits/jungle
+	cnc|bits/desert
+	cnc|bits/ss
+	cnc|uibits
+
+MapFolders:
+	cnc|maps: System
+	~^maps/cnc/{DEV_VERSION}: User
 
 Rules:
-	./mods/cnc/rules/misc.yaml
-	./mods/cnc/rules/ai.yaml
-	./mods/cnc/rules/player.yaml
-	./mods/cnc/rules/world.yaml
-	./mods/cnc/rules/palettes.yaml
-	./mods/cnc/rules/defaults.yaml
-	./mods/cnc/rules/structures.yaml
-	./mods/cnc/rules/infantry.yaml
-	./mods/cnc/rules/vehicles.yaml
-	./mods/cnc/rules/trees.yaml
-	./mods/cnc/rules/civilian.yaml
-	./mods/cnc/rules/civilian-desert.yaml
-	./mods/cnc/rules/tech.yaml
-	./mods/cnc/rules/ships.yaml
-	./mods/cnc/rules/aircraft.yaml
-	./mods/cnc/rules/husks.yaml
+	cnc|rules/misc.yaml
+	cnc|rules/ai.yaml
+	cnc|rules/player.yaml
+	cnc|rules/world.yaml
+	cnc|rules/palettes.yaml
+	cnc|rules/defaults.yaml
+	cnc|rules/structures.yaml
+	cnc|rules/infantry.yaml
+	cnc|rules/vehicles.yaml
+	cnc|rules/trees.yaml
+	cnc|rules/civilian.yaml
+	cnc|rules/civilian-desert.yaml
+	cnc|rules/tech.yaml
+	cnc|rules/ships.yaml
+	cnc|rules/aircraft.yaml
+	cnc|rules/husks.yaml
 
 Sequences:
-	./mods/cnc/sequences/structures.yaml
-	./mods/cnc/sequences/vehicles.yaml
-	./mods/cnc/sequences/infantry.yaml
-	./mods/cnc/sequences/aircraft.yaml
-	./mods/cnc/sequences/decorations.yaml
-	./mods/cnc/sequences/misc.yaml
-	./mods/cnc/sequences/funpark.yaml
-	./mods/cnc/sequences/civilian.yaml
-	./mods/cnc/sequences/campaign.yaml
+	cnc|sequences/structures.yaml
+	cnc|sequences/vehicles.yaml
+	cnc|sequences/infantry.yaml
+	cnc|sequences/aircraft.yaml
+	cnc|sequences/decorations.yaml
+	cnc|sequences/misc.yaml
+	cnc|sequences/funpark.yaml
+	cnc|sequences/civilian.yaml
+	cnc|sequences/campaign.yaml
 
 TileSets:
-	./mods/cnc/tilesets/desert.yaml
-	./mods/cnc/tilesets/winter.yaml
-	./mods/cnc/tilesets/snow.yaml
-	./mods/cnc/tilesets/temperat.yaml
-	./mods/cnc/tilesets/jungle.yaml
+	cnc|tilesets/desert.yaml
+	cnc|tilesets/winter.yaml
+	cnc|tilesets/snow.yaml
+	cnc|tilesets/temperat.yaml
+	cnc|tilesets/jungle.yaml
 
 Weapons:
-	./mods/cnc/weapons/explosions.yaml
-	./mods/cnc/weapons/largecaliber.yaml
-	./mods/cnc/weapons/missiles.yaml
-	./mods/cnc/weapons/other.yaml
-	./mods/cnc/weapons/smallcaliber.yaml
-	./mods/cnc/weapons/superweapons.yaml
+	cnc|weapons/explosions.yaml
+	cnc|weapons/largecaliber.yaml
+	cnc|weapons/missiles.yaml
+	cnc|weapons/other.yaml
+	cnc|weapons/smallcaliber.yaml
+	cnc|weapons/superweapons.yaml
 
 Cursors:
-	./mods/cnc/cursors.yaml
+	cnc|cursors.yaml
 
 Chrome:
-	./mods/cnc/chrome.yaml
+	cnc|chrome.yaml
 
 Assemblies:
-	./mods/common/OpenRA.Mods.Common.dll
-	./mods/cnc/OpenRA.Mods.Cnc.dll
+	common|OpenRA.Mods.Common.dll
+	cnc|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	./mods/cnc/chrome/mainmenu.yaml
-	./mods/cnc/chrome/multiplayer.yaml
-	./mods/cnc/chrome/multiplayer-browser.yaml
-	./mods/cnc/chrome/multiplayer-createserver.yaml
-	./mods/cnc/chrome/multiplayer-directconnect.yaml
-	./mods/cnc/chrome/multiplayer-globalchat.yaml
-	./mods/cnc/chrome/lobby.yaml
-	./mods/cnc/chrome/lobby-mappreview.yaml
-	./mods/cnc/chrome/lobby-players.yaml
-	./mods/cnc/chrome/lobby-options.yaml
-	./mods/cnc/chrome/lobby-music.yaml
-	./mods/cnc/chrome/lobby-kickdialogs.yaml
-	./mods/cnc/chrome/lobby-globalchat.yaml
-	./mods/cnc/chrome/connection.yaml
-	./mods/cnc/chrome/color-picker.yaml
-	./mods/cnc/chrome/mapchooser.yaml
-	./mods/cnc/chrome/replaybrowser.yaml
-	./mods/cnc/chrome/ingame.yaml
-	./mods/cnc/chrome/ingame-chat.yaml
-	./mods/cnc/chrome/ingame-menu.yaml
-	./mods/cnc/chrome/ingame-debug.yaml
-	./mods/cnc/chrome/ingame-info.yaml
-	./mods/cnc/chrome/ingame-infobriefing.yaml
-	./mods/cnc/chrome/ingame-infoscripterror.yaml
-	./mods/cnc/chrome/ingame-infoobjectives.yaml
-	./mods/cnc/chrome/ingame-infostats.yaml
-	./mods/cnc/chrome/ingame-observerstats.yaml
-	./mods/cnc/chrome/music.yaml
-	./mods/cnc/chrome/settings.yaml
-	./mods/cnc/chrome/credits.yaml
-	./mods/cnc/chrome/dialogs.yaml
-	./mods/cnc/chrome/tooltips.yaml
-	./mods/cnc/chrome/assetbrowser.yaml
-	./mods/cnc/chrome/missionbrowser.yaml
-	./mods/cnc/chrome/editor.yaml
+	cnc|chrome/mainmenu.yaml
+	cnc|chrome/multiplayer.yaml
+	cnc|chrome/multiplayer-browser.yaml
+	cnc|chrome/multiplayer-createserver.yaml
+	cnc|chrome/multiplayer-directconnect.yaml
+	cnc|chrome/multiplayer-globalchat.yaml
+	cnc|chrome/lobby.yaml
+	cnc|chrome/lobby-mappreview.yaml
+	cnc|chrome/lobby-players.yaml
+	cnc|chrome/lobby-options.yaml
+	cnc|chrome/lobby-music.yaml
+	cnc|chrome/lobby-kickdialogs.yaml
+	cnc|chrome/lobby-globalchat.yaml
+	cnc|chrome/connection.yaml
+	cnc|chrome/color-picker.yaml
+	cnc|chrome/mapchooser.yaml
+	cnc|chrome/replaybrowser.yaml
+	cnc|chrome/ingame.yaml
+	cnc|chrome/ingame-chat.yaml
+	cnc|chrome/ingame-menu.yaml
+	cnc|chrome/ingame-debug.yaml
+	cnc|chrome/ingame-info.yaml
+	cnc|chrome/ingame-infobriefing.yaml
+	cnc|chrome/ingame-infoscripterror.yaml
+	cnc|chrome/ingame-infoobjectives.yaml
+	cnc|chrome/ingame-infostats.yaml
+	cnc|chrome/ingame-observerstats.yaml
+	cnc|chrome/music.yaml
+	cnc|chrome/settings.yaml
+	cnc|chrome/credits.yaml
+	cnc|chrome/dialogs.yaml
+	cnc|chrome/tooltips.yaml
+	cnc|chrome/assetbrowser.yaml
+	cnc|chrome/missionbrowser.yaml
+	cnc|chrome/editor.yaml
 
 Voices:
-	./mods/cnc/audio/voices.yaml
+	cnc|audio/voices.yaml
 
 Notifications:
-	./mods/cnc/audio/notifications.yaml
+	cnc|audio/notifications.yaml
 
 Music:
-	./mods/cnc/audio/music.yaml
+	cnc|audio/music.yaml
 
 Translations:
-	./mods/cnc/languages/english.yaml
+	cnc|languages/english.yaml
 
 LoadScreen: CncLoadScreen
-	Image: ./mods/cnc/uibits/chrome.png
+	Image: cnc|uibits/chrome.png
 	Text: Loading
 
 ContentInstaller:
@@ -163,43 +162,34 @@ ServerTraits:
 	MasterServerPinger
 	LobbySettingsNotification
 
-LobbyDefaults:
-	AllowCheats: false
-	Crates: true
-	StartingUnitsClass: light
-	FragileAlliances: false
-	Shroud: true
-	Fog: true
-	TechLevel: Unrestricted
-
 ChromeMetrics:
-	./mods/common/metrics.yaml
-	./mods/cnc/metrics.yaml
+	common|metrics.yaml
+	cnc|metrics.yaml
 
 Fonts:
 	Small:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:12
 	Regular:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:32
 	MediumBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:24
 	Tiny:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:10
 
 Missions:

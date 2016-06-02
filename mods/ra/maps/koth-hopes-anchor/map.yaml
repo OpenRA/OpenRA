@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Hopes Anchor
-
-Description: KOTH
 
 Author: Nuke'm Bro.
 
@@ -16,11 +14,7 @@ Bounds: 2,2,110,124
 
 Visibility: Lobby
 
-Type: KotH
-
-Videos:
-
-Options:
+Categories: KotH
 
 Players:
 	PlayerReference@Neutral:
@@ -627,42 +621,4 @@ Actors:
 		Location: 8,56
 		Owner: Neutral
 
-Smudges:
-
-Rules:
-	MISS:
-		ProximityCapturable:
-			MustBeClear: true
-			Range: 9c0
-			CaptorTypes: Ship,Vehicle,Tank,Infantry
-		StrategicPoint:
-			Critical: false
-		Tooltip:
-			Name: Strategic Point
-		RevealsShroud:
-			Range: 20c0
-		DamageMultiplier@INVULNERABLE:
-			Modifier: 0
-		-Selectable:
-		-Targetable:
-	Player:
-		StrategicVictoryConditions:
-			TicksToHold: 3000
-			ResetOnHoldLost: true
-			RatioRequired: 0.65
-			CriticalRatioRequired: 0.65
-		-ConquestVictoryConditions:
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ts
 
 Title: Cliffs of Insanity
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -16,11 +14,7 @@ Bounds: 2,4,121,238
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest, Playable, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -1505,23 +1499,7 @@ Actors:
 		Location: 123,87
 		Owner: Neutral
 
-Smudges:
-
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.68
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:

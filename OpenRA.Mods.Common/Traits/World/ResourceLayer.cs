@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in w.Map.AllCells)
 			{
 				ResourceType t;
-				if (!resources.TryGetValue(w.Map.MapResources.Value[cell].Type, out t))
+				if (!resources.TryGetValue(w.Map.Resources[cell].Type, out t))
 					continue;
 
 				if (!AllowResourceAt(t, cell))
@@ -192,8 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!rt.Info.AllowOnRamps)
 			{
-				var tile = world.Map.MapTiles.Value[cell];
-				var tileInfo = world.TileSet.GetTileInfo(tile);
+				var tile = world.Map.Tiles[cell];
+				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
 				if (tileInfo != null && tileInfo.RampType > 0)
 					return false;
 			}
@@ -213,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
-			world.Map.CustomTerrain[cell] = world.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(t.Info.TerrainType);
 
 			return new CellContents
 			{

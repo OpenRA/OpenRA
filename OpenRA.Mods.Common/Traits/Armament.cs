@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -80,7 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()];
+			WeaponInfo weaponInfo;
+
+			var weaponToLower = Weapon.ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weaponInfo))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			WeaponInfo = weaponInfo;
 			ModifiedRange = new WDist(Util.ApplyPercentageModifiers(
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
@@ -179,6 +186,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (ammoPool != null && !ammoPool.HasAmmo())
 				return null;
 
+			if (turret != null && !turret.HasAchievedDesiredFacing)
+				return null;
+
 			if (!target.IsInRange(self.CenterPosition, MaxRange()))
 				return null;
 
@@ -223,13 +233,13 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
 						Game.Sound.Play(args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+
+					foreach (var na in self.TraitsImplementing<INotifyAttack>())
+						na.Attacking(self, target, this, barrel);
+
+					Recoil = Info.Recoil;
 				}
 			});
-
-			foreach (var na in self.TraitsImplementing<INotifyAttack>())
-				na.Attacking(self, target, this, barrel);
-
-			Recoil = Info.Recoil;
 
 			if (--Burst > 0)
 				FireDelay = Weapon.BurstDelay;

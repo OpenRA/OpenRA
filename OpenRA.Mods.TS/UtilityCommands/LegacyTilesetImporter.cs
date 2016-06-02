@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -29,10 +30,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MountFiles();
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
+			var tileSize = modData.Manifest.Get<MapGrid>().TileSize;
 
 			var templateIndex = 0;
 
@@ -71,10 +72,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					for (var i = 1; i <= sectionCount; i++, templateIndex++)
 					{
 						var templateFilename = "{0}{1:D2}.{2}".F(sectionFilename, i, extension);
-						if (!Game.ModData.ModFiles.Exists(templateFilename))
+						if (!modData.DefaultFileSystem.Exists(templateFilename))
 							continue;
 
-						using (var s = Game.ModData.ModFiles.Open(templateFilename))
+						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
 							Console.WriteLine("\tTemplate@{0}:", templateIndex);
 							Console.WriteLine("\t\tCategory: {0}", sectionCategory);
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							for (var v = 'a'; v <= 'z'; v++)
 							{
 								var variant = "{0}{1:D2}{2}.{3}".F(sectionFilename, i, v, extension);
-								if (Game.ModData.ModFiles.Exists(variant))
+								if (modData.DefaultFileSystem.Exists(variant))
 									images.Add(variant);
 							}
 
@@ -125,6 +126,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 								Console.WriteLine("\t\t\t\tLeftColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
 								Console.WriteLine("\t\t\t\tRightColor: {0:X2}{1:X2}{2:X2}", s.ReadUInt8(), s.ReadUInt8(), s.ReadUInt8());
+								Console.WriteLine("\t\t\t\tZOffset: {0}", -tileSize.Height / 2.0f);
+								Console.WriteLine("\t\t\t\tZRamp: 0");
 							}
 						}
 					}
